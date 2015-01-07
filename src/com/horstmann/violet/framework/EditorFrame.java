@@ -740,24 +740,26 @@ public class EditorFrame extends JFrame
       }
    }
 
-   /**
-      Sets the frame title.
-   */
-   private void setTitle()
-   {
-      String appName = appResources.getString("app.name");
-      GraphFrame frame 
-         = (GraphFrame)desktop.getSelectedFrame();
-      if (frame == null) 
-         setTitle(appName);
-      else
-      {
-         String fileName = frame.getFileName();
-         if (fileName == null)
-            setTitle(appName);
-         else
-            setTitle(appName + " - " + fileName);
-      }
+   	private void setTitle()
+   	{
+   		String appName = appResources.getString("app.name");
+   		if(desktop.getSelectedFrame() == null || !(desktop.getSelectedFrame() instanceof GraphFrame ))
+   		{
+   			setTitle(appName);
+   		}
+   		else
+   		{
+   			GraphFrame frame = (GraphFrame)desktop.getSelectedFrame();
+   			String fileName = frame.getFileName();
+   			if( fileName == null )
+   			{
+   				setTitle(appName);
+   			}
+   			else
+   			{
+   				setTitle(appName + " - " + fileName);
+   			}
+   		}
    }
    
    /**

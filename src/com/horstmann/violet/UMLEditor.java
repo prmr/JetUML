@@ -20,68 +20,42 @@
 
 package com.horstmann.violet;
 
-import java.io.IOException;
-import java.net.URL;
-
-import javax.swing.JApplet;
-
 import com.horstmann.violet.framework.EditorFrame;
 import com.horstmann.violet.framework.VersionChecker;
-
 
 /**
  * A program for editing UML diagrams.
  */
-public class UMLEditor extends JApplet
+public final class UMLEditor
 {
-	   private static final String JAVA_VERSION = "1.4";
-
+	private static final String JAVA_VERSION = "1.4";
 	
-   public static void main(String[] args)
-   {
-      VersionChecker checker = new VersionChecker();
-      checker.check(JAVA_VERSION);
-      try
-      {
-         System.setProperty("apple.laf.useScreenMenuBar", "true");
-      }
-      catch (SecurityException ex)
-      {
-         // well, we tried...
-      }
+	private UMLEditor() {}
+	
+	/**
+	 * @param pArgs Each argument is a file to open upon launch.
+	 * Can be empty.
+	 */
+	public static void main(String[] pArgs)
+	{
+		VersionChecker checker = new VersionChecker();
+		checker.check(JAVA_VERSION);
+		try
+		{
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
+		catch (SecurityException ex)
+		{
+			// well, we tried...
+		}
 
-      EditorFrame frame = makeFrame();
-      frame.setVisible(true);
-      frame.readArgs(args);
+		EditorFrame frame = new EditorFrame(UMLEditor.class);
+		frame.addGraphType("class_diagram", ClassDiagramGraph.class);
+		frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
+		frame.addGraphType("state_diagram", StateDiagramGraph.class);
+	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
+	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+		frame.setVisible(true);
+		frame.readArgs(pArgs);
    }
-   
-   public void init()
-   {
-      EditorFrame frame = makeFrame();
-      setContentPane(frame.getContentPane());
-      setJMenuBar(frame.getJMenuBar());
-      
-      String url = getParameter("diagram");
-      if (url != null)
-         try
-         {
-            frame.openURL(new URL(getDocumentBase(), url));
-         }
-         catch (IOException ex)
-         {
-            ex.printStackTrace();
-         }
-   }
-
-   public static EditorFrame makeFrame()
-   {
-      EditorFrame frame = new EditorFrame(UMLEditor.class);
-      frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-      frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-      frame.addGraphType("state_diagram", StateDiagramGraph.class);
-      frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-      frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-      return frame;
-   }
-   
 }
