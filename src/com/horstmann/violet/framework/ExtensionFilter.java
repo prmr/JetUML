@@ -30,57 +30,82 @@ import javax.swing.filechooser.FileFilter;
 */
 public class ExtensionFilter extends FileFilter
 {
-	private String description;
-	private String[] extensions;
+	private String aDescription;
+	private String[] aExtensions;
 	
-   /**
-      Constructs an extension file filter.
-      @param description the description (e.g. "Woozle files")
-      @param extensions the accepted extensions (e.g.
-      new String[] { ".woozle", ".wzl" })
-   */
-   public ExtensionFilter(String description, String[] extensions)
-   {
-      this.description = description; 
-      this.extensions = extensions;
-   }
+	/**
+	 *  Constructs an extension file filter.
+	 *  @param pDescription the description (e.g. "Woozle files")
+	 *  @param pExtensions the accepted extensions (e.g.
+	 *   new String[] { ".woozle", ".wzl" })
+	 *   @pre pDescription != null
+	 *   @pre pExtensions != null && pExtensions.length > 0
+	 *   @pre None of the elements in pExtensions are null.
+	 */
+	public ExtensionFilter(String pDescription, String[] pExtensions)
+	{
+		assert pDescription != null;
+		assert pExtensions != null;
+		assert pExtensions.length > 0;
+		for( String extension : pExtensions )
+		{
+			assert extension != null;
+		}
+		aDescription = pDescription; 
+		aExtensions = pExtensions;
+	}
 
-   /**
-      Constructs an extension file filter.
-      @param description the description (e.g. "Woozle files")
-      @param extensions the accepted extensions, separated
-      by | (e.g.".woozle|.wzl" })
-   */
-   public ExtensionFilter(String description, 
-      String extensions)
-   {
-      this.description = description; 
-      StringTokenizer tokenizer = new StringTokenizer(
-         extensions, "|");
-      this.extensions = new String[tokenizer.countTokens()];
-      for (int i = 0; i < this.extensions.length; i++)
-         this.extensions[i] = tokenizer.nextToken();
+	/**
+     * Constructs an extension file filter.
+     * @param pDescription the description (e.g. "Woozle files")
+     * @param pExtensions the accepted extensions, separated
+     * by | (e.g.".woozle|.wzl" })
+     * @pre pDescription != null
+     * @pre pExtensions != null
+	 */
+   	public ExtensionFilter(String pDescription, String pExtensions)
+   	{
+   		assert pDescription != null;
+		assert pExtensions != null;
+	   	aDescription = pDescription; 
+	   	StringTokenizer tokenizer = new StringTokenizer(pExtensions, "|");
+	   	aExtensions = new String[tokenizer.countTokens()];
+	   	for(int i = 0; i < this.aExtensions.length; i++)
+	   	{
+		   aExtensions[i] = tokenizer.nextToken();
+	   	}
+   	}
+   
+   	@Override
+   	public boolean accept(File pFile)
+   	{  
+   		if( pFile.isDirectory() )
+   		{
+   			return true;
+   		}
+      
+   		String fileName = pFile.getName().toLowerCase();
+   		for(int i = 0; i < aExtensions.length; i++)
+		{
+			if(fileName.endsWith(aExtensions[i].toLowerCase()))
+			{
+				return true;
+			}
+		}
+   		return false;
    }
    
-   public boolean accept(File f)
-   {  
-      if (f.isDirectory()) return true;
-      String fname = f.getName().toLowerCase();
-      for (int i = 0; i < extensions.length; i++)
-         if (fname.endsWith(extensions[i].toLowerCase())) 
-            return true;
-      return false;
-   }
+   	@Override
+   	public String getDescription()
+   	{ 
+   		return aDescription; 
+   	}
    
-   public String getDescription()
-   { 
-      return description; 
-   }
-   
-   public String[] getExtensions()
-   {
-      return extensions;
-   }
-
-
+   	/**
+   	 * @return The extensions for this filter.
+   	 */
+   	public String[] getExtensions()
+   	{
+   		return aExtensions;
+   	}
 }
