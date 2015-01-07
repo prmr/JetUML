@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="@codebase@"
+  href="@jnlphref@">
+  <information>
+    <title>Violet</title>
+    <vendor>Cay S. Horstmann</vendor>
+    <description>Violet UML Editor</description>
+    <offline-allowed/>
+  </information>  
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="@jarhref@"/>
+    <property name="apple.laf.useScreenMenuBar" value="true"/>
+  </resources>
+  <application-desc/>
+</jnlp> 
