@@ -19,6 +19,8 @@ import javax.jnlp.UnavailableServiceException;
  */
 public class JNLPPreferencesService extends PreferencesService
 {
+	  private PersistenceService service;
+	
    /**
     * Gets an instance of the service, with storage location derived from the JNLP code base.
     * @return an instance of the service
@@ -99,5 +101,5 @@ public class JNLPPreferencesService extends PreferencesService
       }      
    }
    
-   private PersistenceService service;
+ 
 }

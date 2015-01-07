@@ -34,6 +34,12 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class CircularStateNode extends RectangularNode
 {
+	   private boolean finalState; // final is a keyword
+	   
+	   private static int DEFAULT_DIAMETER = 30;
+	   private static int DEFAULT_GAP = 4;   
+	
+	
    /**
       Construct a node with a default size
    */
@@ -116,9 +122,6 @@ public class CircularStateNode extends RectangularNode
             getBounds().getWidth() - 1, getBounds().getHeight() - 1);
    }
 
-   private boolean finalState; // final is a keyword
-   
-   private static int DEFAULT_DIAMETER = 30;
-   private static int DEFAULT_GAP = 4;   
+
 }
 

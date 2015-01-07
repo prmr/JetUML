@@ -63,6 +63,9 @@ public abstract class PreferencesService
  */
 class DefaultPreferencesService extends PreferencesService
 {   
+	
+	private Preferences prefs;
+	
    /**
     * Gets an instance of the service, suitable for the package of the given class.
     * @param appClass the main application class (only the package name is used as the path to  
@@ -77,7 +80,7 @@ class DefaultPreferencesService extends PreferencesService
    public String get(String key, String defval) { return prefs.get(key, defval); }
    public void put(String key, String defval) { prefs.put(key, defval); }
 
-   private Preferences prefs;
+   
 }
 
 /**

@@ -33,6 +33,8 @@ import com.horstmann.violet.framework.SegmentedLineEdge;
 */
 public class CallEdge extends SegmentedLineEdge
 {
+	   private boolean signal;
+	
    public CallEdge()
    {
       setSignal(false);
@@ -98,7 +100,7 @@ public class CallEdge extends SegmentedLineEdge
       return a;
    }
 
-   private boolean signal;
+
 }
 
 

@@ -39,6 +39,11 @@ import com.horstmann.violet.framework.ShapeEdge;
 */
 public class StateTransitionEdge extends ShapeEdge
 {
+	   private double angle;
+	   private String labelText = "";
+	   
+	   private static JLabel label = new JLabel();
+	
    /**
       Sets the label property value.
       @param newValue the new value
@@ -176,8 +181,5 @@ public class StateTransitionEdge extends ShapeEdge
       return new Line2D.Double(p, q);
    }
 
-   private double angle;
-   private String labelText = "";
-   
-   private static JLabel label = new JLabel();
+
 }

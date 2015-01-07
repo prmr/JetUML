@@ -31,6 +31,9 @@ import javax.swing.JOptionPane;
 */
 public class VersionChecker
 {
+	  private String RESOURCE_NAME 
+      = "com.horstmann.violet.framework.EditorStrings";
+	
    /**
       Checks if the current VM has at least the given
       version, and exits the program with an error dialog if not.
@@ -77,7 +80,6 @@ public class VersionChecker
       return t2.hasMoreTokens() ? -1 : 0;
    }
 
-   private String RESOURCE_NAME 
-      = "com.horstmann.violet.framework.EditorStrings";
+ 
 }
 

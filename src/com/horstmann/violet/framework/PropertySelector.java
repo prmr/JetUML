@@ -29,6 +29,9 @@ import java.beans.PropertyEditorSupport;
 */
 public class PropertySelector extends PropertyEditorSupport
 {
+	  private String[] names;
+	   private Object[] values;
+	
    /**
       Constructs a selector that correlates names and objects.
       @param n the strings to display in a combo box
@@ -58,6 +61,5 @@ public class PropertySelector extends PropertyEditorSupport
          if (s.equals(names[i])) setValue(values[i]);
    }
 
-   private String[] names;
-   private Object[] values;
+ 
 }

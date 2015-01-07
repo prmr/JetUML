@@ -41,6 +41,17 @@ import javax.swing.event.DocumentListener;
 */
 public class MultiLineStringEditor extends PropertyEditorSupport
 {
+	  private static final int ROWS = 5;
+	   private static final int COLUMNS = 30;
+	   
+	   private static Set tab = new HashSet(1);
+	   private static Set shiftTab = new HashSet (1);
+	   static 
+	   {
+	      tab.add(KeyStroke.getKeyStroke("TAB" ));
+	      shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
+	   } 
+	
    public boolean supportsCustomEditor()
    {
       return true;
@@ -91,14 +102,5 @@ public class MultiLineStringEditor extends PropertyEditorSupport
       }
    };
    
-   private static final int ROWS = 5;
-   private static final int COLUMNS = 30;
-   
-   private static Set tab = new HashSet(1);
-   private static Set shiftTab = new HashSet (1);
-   static 
-   {
-      tab.add(KeyStroke.getKeyStroke("TAB" ));
-      shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
-   } 
+ 
 }

@@ -28,17 +28,18 @@ import javax.swing.filechooser.FileFilter;
    A file filter that accepts all files with a given set
    of extensions.
 */
-public class ExtensionFilter 
-   extends FileFilter
+public class ExtensionFilter extends FileFilter
 {
+	private String description;
+	private String[] extensions;
+	
    /**
       Constructs an extension file filter.
       @param description the description (e.g. "Woozle files")
       @param extensions the accepted extensions (e.g.
       new String[] { ".woozle", ".wzl" })
    */
-   public ExtensionFilter(String description, 
-      String[] extensions)
+   public ExtensionFilter(String description, String[] extensions)
    {
       this.description = description; 
       this.extensions = extensions;
@@ -81,6 +82,5 @@ public class ExtensionFilter
       return extensions;
    }
 
-   private String description;
-   private String[] extensions;
+
 }

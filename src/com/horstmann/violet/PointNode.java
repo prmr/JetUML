@@ -35,6 +35,9 @@ import com.horstmann.violet.framework.Direction;
 */
 public class PointNode extends AbstractNode
 {
+	   private Point2D point;
+
+	
    /**
       Constructs a point node with coordinates (0, 0)
    */
@@ -70,5 +73,4 @@ public class PointNode extends AbstractNode
       return point;
    }
 
-   private Point2D point;
 }

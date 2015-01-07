@@ -33,6 +33,9 @@ import javax.swing.KeyStroke;
 
 public class ResourceFactory
 {
+	   private ResourceBundle bundle;
+
+	
    public ResourceFactory(ResourceBundle bundle)
    {
       this.bundle = bundle;
@@ -200,5 +203,4 @@ public class ResourceFactory
       return action;
    }
 
-   private ResourceBundle bundle;
 }

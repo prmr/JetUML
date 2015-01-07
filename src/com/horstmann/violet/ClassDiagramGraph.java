@@ -31,6 +31,10 @@ import com.horstmann.violet.framework.Node;
 */
 public class ClassDiagramGraph extends Graph
 {
+	   private static final Node[] NODE_PROTOTYPES = new Node[4];
+
+	   private static final Edge[] EDGE_PROTOTYPES = new Edge[7];
+	
 
    public boolean connect(Edge e, Point2D p1, Point2D p2)
    {
@@ -50,9 +54,7 @@ public class ClassDiagramGraph extends Graph
       return EDGE_PROTOTYPES;
    }
 
-   private static final Node[] NODE_PROTOTYPES = new Node[4];
 
-   private static final Edge[] EDGE_PROTOTYPES = new Edge[7];
 
    static
    {

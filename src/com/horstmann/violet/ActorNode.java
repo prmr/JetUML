@@ -34,6 +34,20 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ActorNode extends RectangularNode
 {
+	  private MultiLineString name;
+
+	   // Bounding rectangle
+	   private static int DEFAULT_WIDTH  = 48;
+	   private static int DEFAULT_HEIGHT = 64;
+	   // Stick man
+	   // Height = HEAD_SIZE + BODY_SIZE + LEG_SIZE/sqrt(2)
+	   private static int GAP_ABOVE = 4;
+	   private static int HEAD_SIZE = DEFAULT_WIDTH*4/12;
+	   private static int BODY_SIZE = DEFAULT_WIDTH*5/12;
+	   private static int LEG_SIZE  = DEFAULT_WIDTH*5/12;
+	   private static int ARMS_SIZE = DEFAULT_WIDTH*6/12;
+	   private static int NAME_HEIGHT = 12;
+	
    /**
       Construct an actor node with a default size and name
    */
@@ -125,17 +139,5 @@ public class ActorNode extends RectangularNode
       return cloned;
    }
 
-   private MultiLineString name;
-
-   // Bounding rectangle
-   private static int DEFAULT_WIDTH  = 48;
-   private static int DEFAULT_HEIGHT = 64;
-   // Stick man
-   // Height = HEAD_SIZE + BODY_SIZE + LEG_SIZE/sqrt(2)
-   private static int GAP_ABOVE = 4;
-   private static int HEAD_SIZE = DEFAULT_WIDTH*4/12;
-   private static int BODY_SIZE = DEFAULT_WIDTH*5/12;
-   private static int LEG_SIZE  = DEFAULT_WIDTH*5/12;
-   private static int ARMS_SIZE = DEFAULT_WIDTH*6/12;
-   private static int NAME_HEIGHT = 12;
+ 
 }

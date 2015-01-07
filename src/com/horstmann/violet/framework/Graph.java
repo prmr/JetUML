@@ -36,6 +36,13 @@ import java.util.Collection;
 */
 public abstract class Graph implements Serializable
 {
+	private ArrayList nodes;
+	private ArrayList edges;
+	private transient ArrayList nodesToBeRemoved;
+	private transient ArrayList edgesToBeRemoved;
+	private transient boolean needsLayout;
+	private transient Rectangle2D minBounds;
+	
    /**
       Constructs a graph with no nodes or edges.
    */
@@ -345,12 +352,7 @@ public abstract class Graph implements Serializable
       edges.add(e);
    }
 
-   private ArrayList nodes;
-   private ArrayList edges;
-   private transient ArrayList nodesToBeRemoved;
-   private transient ArrayList edgesToBeRemoved;
-   private transient boolean needsLayout;
-   private transient Rectangle2D minBounds;
+   
 }
 
 

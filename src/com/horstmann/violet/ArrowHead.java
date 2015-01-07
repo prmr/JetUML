@@ -32,6 +32,14 @@ import com.horstmann.violet.framework.SerializableEnumeration;
 */
 public class ArrowHead extends SerializableEnumeration
 {
+	   public static final ArrowHead NONE = new ArrowHead();
+	   public static final ArrowHead TRIANGLE = new ArrowHead();
+	   public static final ArrowHead BLACK_TRIANGLE = new ArrowHead();
+	   public static final ArrowHead V = new ArrowHead();
+	   public static final ArrowHead HALF_V = new ArrowHead();
+	   public static final ArrowHead DIAMOND = new ArrowHead();
+	   public static final ArrowHead BLACK_DIAMOND = new ArrowHead();
+	
    private ArrowHead() {}
    
    /**
@@ -101,11 +109,5 @@ public class ArrowHead extends SerializableEnumeration
       return path;
    }
    
-   public static final ArrowHead NONE = new ArrowHead();
-   public static final ArrowHead TRIANGLE = new ArrowHead();
-   public static final ArrowHead BLACK_TRIANGLE = new ArrowHead();
-   public static final ArrowHead V = new ArrowHead();
-   public static final ArrowHead HALF_V = new ArrowHead();
-   public static final ArrowHead DIAMOND = new ArrowHead();
-   public static final ArrowHead BLACK_DIAMOND = new ArrowHead();
+
 }

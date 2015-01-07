@@ -30,6 +30,8 @@ import com.horstmann.violet.framework.SegmentedLineEdge;
 */
 public class ClassRelationshipEdge extends SegmentedLineEdge
 {
+	   private BentStyle bentStyle;
+	
    /**
       Constructs a straight edge.
    */
@@ -55,5 +57,5 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
          getEnd().getBounds());
    }
 
-   private BentStyle bentStyle;
+
 }

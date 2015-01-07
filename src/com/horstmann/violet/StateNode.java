@@ -36,6 +36,12 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class StateNode extends RectangularNode
 {
+	  private MultiLineString name;
+
+	   private static int ARC_SIZE = 20;
+	   private static int DEFAULT_WIDTH = 80;
+	   private static int DEFAULT_HEIGHT = 60;
+	
    /**
       Construct a state node with a default size
    */
@@ -97,9 +103,5 @@ public class StateNode extends RectangularNode
       return cloned;
    }
 
-   private MultiLineString name;
-
-   private static int ARC_SIZE = 20;
-   private static int DEFAULT_WIDTH = 80;
-   private static int DEFAULT_HEIGHT = 60;
+ 
 }

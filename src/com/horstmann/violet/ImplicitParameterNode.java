@@ -41,6 +41,13 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ImplicitParameterNode extends RectangularNode
 {
+	   private double topHeight;
+	   private MultiLineString name;
+
+	   private static int DEFAULT_TOP_HEIGHT = 60;
+	   private static int DEFAULT_WIDTH = 80;
+	   private static int DEFAULT_HEIGHT = 120;
+	
    /**
       Construct an object node with a default size
    */
@@ -152,10 +159,5 @@ public class ImplicitParameterNode extends RectangularNode
       return n instanceof CallNode || n instanceof PointNode;
    }
 
-   private double topHeight;
-   private MultiLineString name;
 
-   private static int DEFAULT_TOP_HEIGHT = 60;
-   private static int DEFAULT_WIDTH = 80;
-   private static int DEFAULT_HEIGHT = 120;
 }

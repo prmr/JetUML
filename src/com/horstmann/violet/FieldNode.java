@@ -38,6 +38,17 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class FieldNode extends RectangularNode
 {
+	   private double axisX;
+	   private MultiLineString name;
+	   private MultiLineString value;
+	   private Rectangle2D nameBounds;
+	   private Rectangle2D valueBounds;
+	   private boolean boxedValue;
+	   private double boxWidth;
+
+	   public static int DEFAULT_WIDTH = 60;
+	   public static int DEFAULT_HEIGHT = 20;
+	
    public FieldNode()
    {
       name = new MultiLineString();
@@ -212,14 +223,5 @@ public class FieldNode extends RectangularNode
       if (boxedValue) return valueBounds; else return null;
    }
 
-   private double axisX;
-   private MultiLineString name;
-   private MultiLineString value;
-   private Rectangle2D nameBounds;
-   private Rectangle2D valueBounds;
-   private boolean boxedValue;
-   private double boxWidth;
 
-   public static int DEFAULT_WIDTH = 60;
-   public static int DEFAULT_HEIGHT = 20;
 }

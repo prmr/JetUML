@@ -36,6 +36,8 @@ import com.horstmann.violet.framework.ShapeEdge;
 */
 public class NoteEdge extends ShapeEdge
 {
+	   private static Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f,new float[] { 3.0f, 3.0f }, 0.0f);
+	
    public void draw(Graphics2D g2)
    {
       Stroke oldStroke = g2.getStroke();
@@ -62,5 +64,5 @@ public class NoteEdge extends ShapeEdge
       return path;
    }
 
-   private static Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f,new float[] { 3.0f, 3.0f }, 0.0f);
+
 }

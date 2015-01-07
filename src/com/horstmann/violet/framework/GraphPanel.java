@@ -50,6 +50,34 @@ import java.util.Set;
  */
 public class GraphPanel extends JPanel
 {
+	private Graph graph;
+	   private Grid grid;
+	   private GraphFrame frame;
+	   private ToolBar toolBar;
+
+	   private double zoom;
+	   private double gridSize;
+	   private boolean hideGrid;
+	   private boolean modified;
+
+	   private Object lastSelected;
+	   private Set selectedItems;
+
+	   private Point2D lastMousePoint;
+	   private Point2D mouseDownPoint;   
+	   private int dragMode;
+	      
+	   private static final int DRAG_NONE = 0;
+	   private static final int DRAG_MOVE = 1;
+	   private static final int DRAG_RUBBERBAND = 2;
+	   private static final int DRAG_LASSO = 3;
+	   
+	   private static final int GRID = 10;
+
+	   private static final int CONNECT_THRESHOLD = 8;
+
+	   private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
+	
    /**
     * Constructs a graph.
     * @param aToolBar the tool bar with the node and edge tools
@@ -594,31 +622,5 @@ public class GraphPanel extends JPanel
       return hideGrid;
    }
 
-   private Graph graph;
-   private Grid grid;
-   private GraphFrame frame;
-   private ToolBar toolBar;
-
-   private double zoom;
-   private double gridSize;
-   private boolean hideGrid;
-   private boolean modified;
-
-   private Object lastSelected;
-   private Set selectedItems;
-
-   private Point2D lastMousePoint;
-   private Point2D mouseDownPoint;   
-   private int dragMode;
-      
-   private static final int DRAG_NONE = 0;
-   private static final int DRAG_MOVE = 1;
-   private static final int DRAG_RUBBERBAND = 2;
-   private static final int DRAG_LASSO = 3;
    
-   private static final int GRID = 10;
-
-   private static final int CONNECT_THRESHOLD = 8;
-
-   private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
 }

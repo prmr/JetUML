@@ -34,6 +34,11 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class UseCaseNode extends RectangularNode
 {
+	   private MultiLineString name;
+
+	   private static int DEFAULT_WIDTH = 110;
+	   private static int DEFAULT_HEIGHT = 40;
+	
    /**
       Construct a use case node with a default size
    */
@@ -83,8 +88,5 @@ public class UseCaseNode extends RectangularNode
       return cloned;
    }
 
-   private MultiLineString name;
 
-   private static int DEFAULT_WIDTH = 110;
-   private static int DEFAULT_HEIGHT = 40;
 }

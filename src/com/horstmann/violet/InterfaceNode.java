@@ -35,6 +35,15 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class InterfaceNode extends RectangularNode
 {
+	   private double midHeight;
+	   private double botHeight;
+	   private MultiLineString name;
+	   private MultiLineString methods;
+
+	   private static int DEFAULT_COMPARTMENT_HEIGHT = 20;
+	   private static int DEFAULT_WIDTH = 100;
+	   private static int DEFAULT_HEIGHT = 60;
+	
    /**
       Construct an interface node with a default size and
       the text <<interface>>.
@@ -148,12 +157,5 @@ public class InterfaceNode extends RectangularNode
       return cloned;
    }
 
-   private double midHeight;
-   private double botHeight;
-   private MultiLineString name;
-   private MultiLineString methods;
 
-   private static int DEFAULT_COMPARTMENT_HEIGHT = 20;
-   private static int DEFAULT_WIDTH = 100;
-   private static int DEFAULT_HEIGHT = 60;
 }

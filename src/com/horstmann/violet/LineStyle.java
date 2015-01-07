@@ -30,6 +30,12 @@ import com.horstmann.violet.framework.SerializableEnumeration;
 */
 public class LineStyle extends SerializableEnumeration
 {
+	   private static Stroke SOLID_STROKE = new BasicStroke();
+	   private static Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, new float[] { 3.0f, 3.0f }, 0.0f);
+
+	   public static final LineStyle SOLID = new LineStyle();
+	   public static final LineStyle DOTTED = new LineStyle();
+	
    private LineStyle() {}
 
    /**
@@ -43,9 +49,5 @@ public class LineStyle extends SerializableEnumeration
       return SOLID_STROKE;
    }
 
-   private static Stroke SOLID_STROKE = new BasicStroke();
-   private static Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, new float[] { 3.0f, 3.0f }, 0.0f);
 
-   public static final LineStyle SOLID = new LineStyle();
-   public static final LineStyle DOTTED = new LineStyle();
 }

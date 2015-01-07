@@ -43,6 +43,14 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class CallNode extends RectangularNode
 {
+	   private ImplicitParameterNode implicitParameter;
+	   private boolean signaled;
+	   private boolean openBottom;
+	   
+	   private static int DEFAULT_WIDTH = 16;
+	   private static int DEFAULT_HEIGHT = 30;
+	   public static int CALL_YGAP = 20;
+	
    /**
       Construct a call node with a default size
    */
@@ -269,11 +277,5 @@ public class CallNode extends RectangularNode
    public void setOpenBottom(boolean newValue) { openBottom = newValue; }
 
 
-   private ImplicitParameterNode implicitParameter;
-   private boolean signaled;
-   private boolean openBottom;
-   
-   private static int DEFAULT_WIDTH = 16;
-   private static int DEFAULT_HEIGHT = 30;
-   public static int CALL_YGAP = 20;
+
 }

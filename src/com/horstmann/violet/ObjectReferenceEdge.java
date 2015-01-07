@@ -35,6 +35,9 @@ import com.horstmann.violet.framework.ShapeEdge;
 */
 public class ObjectReferenceEdge extends ShapeEdge
 {
+	   private static final int ENDSIZE = 10;
+
+	
    public void draw(Graphics2D g2)
    {
       g2.draw(getShape());
@@ -104,5 +107,4 @@ public class ObjectReferenceEdge extends ShapeEdge
       return b.getX() >= p.getX() + 2 * ENDSIZE;
    }
 
-   private static final int ENDSIZE = 10;
 }

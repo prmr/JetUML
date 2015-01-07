@@ -41,6 +41,15 @@ import com.horstmann.violet.LineStyle;
 */
 public abstract class SegmentedLineEdge extends ShapeEdge
 {
+	   private LineStyle lineStyle;
+	   private ArrowHead startArrowHead;
+	   private ArrowHead endArrowHead;
+	   private String startLabel;
+	   private String middleLabel;
+	   private String endLabel;
+	   
+	   private static JLabel label = new JLabel();
+	
    /**
       Costructs an edge with no adornments.
    */
@@ -327,12 +336,5 @@ public abstract class SegmentedLineEdge extends ShapeEdge
    */
    public abstract ArrayList getPoints();
 
-   private LineStyle lineStyle;
-   private ArrowHead startArrowHead;
-   private ArrowHead endArrowHead;
-   private String startLabel;
-   private String middleLabel;
-   private String endLabel;
-   
-   private static JLabel label = new JLabel();
+
 }

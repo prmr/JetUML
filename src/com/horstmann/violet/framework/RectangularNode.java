@@ -35,6 +35,9 @@ import java.io.ObjectOutputStream;
 */
 public abstract class RectangularNode extends AbstractNode
 {
+	   private transient Rectangle2D bounds;
+
+	
    public Object clone()
    {
       RectangularNode cloned = (RectangularNode)super.clone();
@@ -166,5 +169,4 @@ public abstract class RectangularNode extends AbstractNode
       return bounds;
    }
    
-   private transient Rectangle2D bounds;
 }

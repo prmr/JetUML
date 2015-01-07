@@ -52,6 +52,14 @@ import com.horstmann.violet.PointNode;
 */
 public class ToolBar extends JPanel
 {
+	   private ButtonGroup group;
+	   private ArrayList tools;
+	   private JPopupMenu popup = new JPopupMenu();
+	   private ActionListener popupListener;
+
+	   private static final int BUTTON_SIZE = 25;
+	   private static final int OFFSET = 4;
+	
    /**
       Constructs a tool bar with no icons.
    */
@@ -286,11 +294,5 @@ public class ToolBar extends JPanel
       popup.add(item);
    }
  
-   private ButtonGroup group;
-   private ArrayList tools;
-   private JPopupMenu popup = new JPopupMenu();
-   private ActionListener popupListener;
 
-   private static final int BUTTON_SIZE = 25;
-   private static final int OFFSET = 4;
 }

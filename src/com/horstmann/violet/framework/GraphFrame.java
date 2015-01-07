@@ -37,6 +37,11 @@ import javax.swing.JScrollPane;
 */
 public class GraphFrame extends JInternalFrame
 {
+	private Graph graph;
+	private GraphPanel panel;
+	private ToolBar toolBar;
+	private String fileName;
+	
    /**
       Constructs a graph frame with an empty tool bar
       @param aGraph the initial graph
@@ -122,8 +127,5 @@ public class GraphFrame extends JInternalFrame
       setTitle(newValue);
    }
 
-   private Graph graph;
-   private GraphPanel panel;
-   private ToolBar toolBar;
-   private String fileName;
+
 }

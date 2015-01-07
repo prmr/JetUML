@@ -32,6 +32,16 @@ import com.horstmann.violet.framework.SerializableEnumeration;
 */
 public class BentStyle extends SerializableEnumeration
 {
+	  private static final int MIN_SEGMENT = 10;
+	   private static final int SELF_WIDTH = 30;
+	   private static final int SELF_HEIGHT = 25;
+
+	   public static final BentStyle STRAIGHT = new BentStyle();
+	   public static final BentStyle HV = new BentStyle();
+	   public static final BentStyle VH = new BentStyle();
+	   public static final BentStyle HVH = new BentStyle();
+	   public static final BentStyle VHV = new BentStyle();
+	
    private BentStyle() {}
   
    /**
@@ -231,13 +241,5 @@ public class BentStyle extends SerializableEnumeration
       return r;
    }
 
-   private static final int MIN_SEGMENT = 10;
-   private static final int SELF_WIDTH = 30;
-   private static final int SELF_HEIGHT = 25;
-
-   public static final BentStyle STRAIGHT = new BentStyle();
-   public static final BentStyle HV = new BentStyle();
-   public static final BentStyle VH = new BentStyle();
-   public static final BentStyle HVH = new BentStyle();
-   public static final BentStyle VHV = new BentStyle();
+ 
 }

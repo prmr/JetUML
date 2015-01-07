@@ -38,6 +38,10 @@ import com.horstmann.violet.framework.Node;
 */
 public class SequenceDiagramGraph extends Graph
 {
+	   private static final Node[] NODE_PROTOTYPES = new Node[3];
+
+	   private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
+	
    public boolean add(Node n, Point2D p)
    {
       if (n instanceof CallNode) // must be inside an object
@@ -210,9 +214,7 @@ public class SequenceDiagramGraph extends Graph
       return EDGE_PROTOTYPES;
    }
 
-   private static final Node[] NODE_PROTOTYPES = new Node[3];
 
-   private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
 
    static
    {

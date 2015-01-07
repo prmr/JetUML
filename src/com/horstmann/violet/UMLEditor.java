@@ -34,6 +34,9 @@ import com.horstmann.violet.framework.VersionChecker;
  */
 public class UMLEditor extends JApplet
 {
+	   private static final String JAVA_VERSION = "1.4";
+
+	
    public static void main(String[] args)
    {
       VersionChecker checker = new VersionChecker();
@@ -81,5 +84,4 @@ public class UMLEditor extends JApplet
       return frame;
    }
    
-   private static final String JAVA_VERSION = "1.4";
 }

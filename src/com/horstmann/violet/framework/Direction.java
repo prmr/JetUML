@@ -30,6 +30,14 @@ import java.awt.geom.Point2D;
 */
 public class Direction
 {
+	public static final Direction NORTH = new Direction(0, -1);
+	public static final Direction SOUTH = new Direction(0, 1);
+	public static final Direction EAST = new Direction(1, 0);
+	public static final Direction WEST = new Direction(-1, 0);
+	
+	private double x;
+	private double y;   
+	
    /**
       Constructs a direction (normalized to length 1).
       @param dx the x-value of the direction
@@ -85,12 +93,4 @@ public class Direction
    {
       return y;
    }
-
-   private double x;
-   private double y;
-
-   public static final Direction NORTH = new Direction(0, -1);
-   public static final Direction SOUTH = new Direction(0, 1);
-   public static final Direction EAST = new Direction(1, 0);
-   public static final Direction WEST = new Direction(-1, 0);
 }

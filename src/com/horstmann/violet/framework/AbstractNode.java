@@ -37,6 +37,9 @@ import java.util.List;
 */
 public abstract class AbstractNode implements Node
 {
+	private ArrayList children;
+	private Node parent;
+	
    /**
       Constructs a node with no parents or children.
    */
@@ -181,7 +184,5 @@ public abstract class AbstractNode implements Node
             }
          });
    }
-   private ArrayList children;
-   private Node parent;
 }
 

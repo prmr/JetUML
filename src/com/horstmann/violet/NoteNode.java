@@ -38,6 +38,15 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class NoteNode extends RectangularNode
 {
+	   private MultiLineString text;
+	   private Color color;
+
+	   private static int DEFAULT_WIDTH = 60;
+	   private static int DEFAULT_HEIGHT = 40;
+	   private static Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // pale yellow
+	   private static int FOLD_X = 8;
+	   private static int FOLD_Y = 8;
+	
    /**
       Construct a note node with a default size and color
    */
@@ -156,12 +165,5 @@ public class NoteNode extends RectangularNode
       return cloned;
    }
 
-   private MultiLineString text;
-   private Color color;
 
-   private static int DEFAULT_WIDTH = 60;
-   private static int DEFAULT_HEIGHT = 40;
-   private static Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // pale yellow
-   private static int FOLD_X = 8;
-   private static int FOLD_Y = 8;
 }

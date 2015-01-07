@@ -29,6 +29,14 @@ import javax.swing.JPanel;
  */
 public class PrintDialog extends JDialog
 {
+	private PrintPreviewCanvas canvas;
+	   private PageFormat pageFormat;
+	   private PrintRequestAttributeSet attributes;
+	   private Graph graph;
+	   private Rectangle2D bounds; 
+	   private double scaleGraph = 1;
+	   private boolean showCropMarks;
+	
    /**
     * Constructs a print dialog.
     * @param gr the graph to be printed
@@ -277,11 +285,5 @@ public class PrintDialog extends JDialog
       private static final int DEFAULT_HEIGHT = 300;
    }
       
-   private PrintPreviewCanvas canvas;
-   private PageFormat pageFormat;
-   private PrintRequestAttributeSet attributes;
-   private Graph graph;
-   private Rectangle2D bounds; 
-   private double scaleGraph = 1;
-   private boolean showCropMarks;
+   
 }

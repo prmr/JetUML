@@ -41,6 +41,23 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class PackageNode extends RectangularNode
 {
+
+	   private String name;
+	   private MultiLineString contents;
+
+	   private Rectangle2D top;
+	   private Rectangle2D bot;
+	   
+	   private static int DEFAULT_TOP_WIDTH = 60;
+	   private static int DEFAULT_TOP_HEIGHT = 20;
+	   private static int DEFAULT_WIDTH = 100;
+	   private static int DEFAULT_HEIGHT = 80;
+	   private static final int NAME_GAP = 3;
+	   private static final int XGAP = 5;
+	   private static final int YGAP = 5;
+	   
+	   private static JLabel label = new JLabel();
+	
    /**
       Construct a package node with a default size
    */
@@ -189,19 +206,4 @@ public class PackageNode extends RectangularNode
    }
 
 
-   private String name;
-   private MultiLineString contents;
-
-   private Rectangle2D top;
-   private Rectangle2D bot;
-   
-   private static int DEFAULT_TOP_WIDTH = 60;
-   private static int DEFAULT_TOP_HEIGHT = 20;
-   private static int DEFAULT_WIDTH = 100;
-   private static int DEFAULT_HEIGHT = 80;
-   private static final int NAME_GAP = 3;
-   private static final int XGAP = 5;
-   private static final int YGAP = 5;
-   
-   private static JLabel label = new JLabel();
 }

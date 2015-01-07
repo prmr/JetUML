@@ -35,6 +35,16 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ClassNode extends RectangularNode
 {
+	  private double midHeight;
+	   private double botHeight;
+	   private MultiLineString name;
+	   private MultiLineString attributes;
+	   private MultiLineString methods;
+
+	   private static int DEFAULT_COMPARTMENT_HEIGHT = 20;
+	   private static int DEFAULT_WIDTH = 100;
+	   private static int DEFAULT_HEIGHT = 60;
+	
    /**
       Construct a class node with a default size
    */
@@ -171,13 +181,5 @@ public class ClassNode extends RectangularNode
       return cloned;
    }
 
-   private double midHeight;
-   private double botHeight;
-   private MultiLineString name;
-   private MultiLineString attributes;
-   private MultiLineString methods;
-
-   private static int DEFAULT_COMPARTMENT_HEIGHT = 20;
-   private static int DEFAULT_WIDTH = 100;
-   private static int DEFAULT_HEIGHT = 60;
+ 
 }

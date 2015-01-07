@@ -85,6 +85,27 @@ import com.horstmann.violet.LineStyle;
 */
 public class EditorFrame extends JFrame
 {
+	private ResourceFactory appFactory;
+	private ResourceBundle appResources;
+	private ResourceBundle versionResources;
+	private ResourceBundle editorResources;
+	private JDesktopPane desktop;
+	private FileService fileService;
+	private PreferencesService preferences;
+	private JMenu newMenu;
+	private String defaultExtension;
+	private ArrayList recentFiles;
+	private JMenu recentFilesMenu;
+	private int maxRecentFiles = DEFAULT_MAX_RECENT_FILES;
+
+	private ExtensionFilter violetFilter;
+	private ExtensionFilter exportFilter;
+
+	private static final int FRAME_GAP = 20;
+	private static final int ESTIMATED_FRAMES = 5;
+	private static final int DEFAULT_MAX_RECENT_FILES = 5;
+	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
+	
    /**
       Constructs a blank frame with a desktop pane
       but no graph windows.
@@ -1118,27 +1139,6 @@ public class EditorFrame extends JFrame
       }      
       preferences.put("recent", recent);   
    }
-
-   private ResourceFactory appFactory;
-   private ResourceBundle appResources;
-   private ResourceBundle versionResources;
-   private ResourceBundle editorResources;
-   private JDesktopPane desktop;
-   private FileService fileService;
-   private PreferencesService preferences;
-   private JMenu newMenu;
-   private String defaultExtension;
-   private ArrayList recentFiles;
-   private JMenu recentFilesMenu;
-   private int maxRecentFiles = DEFAULT_MAX_RECENT_FILES;
-
-   private ExtensionFilter violetFilter;
-   private ExtensionFilter exportFilter;
-
-   private static final int FRAME_GAP = 20;
-   private static final int ESTIMATED_FRAMES = 5;
-   private static final int DEFAULT_MAX_RECENT_FILES = 5;
-   private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 
    private static PersistenceDelegate staticFieldDelegate 
       = new 

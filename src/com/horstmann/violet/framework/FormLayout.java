@@ -27,6 +27,12 @@ import java.awt.*;
 */
 class FormLayout implements LayoutManager
 {  
+	private static final int GAP = 6;
+	
+	private int left;
+	private int right;
+	private int height;
+	
    public Dimension preferredLayoutSize(Container parent)
    {  
       Component[] components = parent.getComponents();
@@ -90,8 +96,5 @@ class FormLayout implements LayoutManager
    public void removeLayoutComponent(Component comp)
    {}
 
-   private int left;
-   private int right;
-   private int height;
-   private static final int GAP = 6;
+   
 }

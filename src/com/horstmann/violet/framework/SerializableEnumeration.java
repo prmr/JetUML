@@ -44,6 +44,9 @@ import java.lang.reflect.Field;
 */
 public class SerializableEnumeration implements Serializable
 {
+	   private String name;
+
+	
    protected Object writeReplace() throws ObjectStreamException
    {
       if (name == null) toString();
@@ -82,5 +85,4 @@ public class SerializableEnumeration implements Serializable
       throw new ObjectStreamException("No matching field") {};
    }
 
-   private String name;
 }

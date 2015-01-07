@@ -33,6 +33,9 @@ import java.awt.geom.Rectangle2D;
 */
 public class Grid
 {
+	   private double gridx;
+	   private double gridy;
+	
    /**
       Constructs a grid with no grid points.
    */
@@ -128,6 +131,4 @@ public class Grid
       r.setFrame(x, y, w, h);      
    }
 
-   private double gridx;
-   private double gridy;
 }

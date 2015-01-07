@@ -35,6 +35,22 @@ import javax.swing.JLabel;
 */
 public class MultiLineString implements Cloneable, Serializable
 {
+	   public static final int LEFT = 0;
+	   public static final int CENTER = 1;
+	   public static final int RIGHT = 2;
+	   public static final int LARGE = 3;
+	   public static final int NORMAL = 4;
+	   public static final int SMALL = 5;
+
+	   private static final int GAP = 3;
+
+	   private String text;
+	   private int justification;
+	   private int size;
+	   private boolean underlined;
+	   
+	   private transient JLabel label = new JLabel();
+	
    /**
       Constructs an empty, centered, normal size multiline
       string that is not underlined.
@@ -194,19 +210,5 @@ public class MultiLineString implements Cloneable, Serializable
       }
    }
 
-   public static final int LEFT = 0;
-   public static final int CENTER = 1;
-   public static final int RIGHT = 2;
-   public static final int LARGE = 3;
-   public static final int NORMAL = 4;
-   public static final int SMALL = 5;
 
-   private static final int GAP = 3;
-
-   private String text;
-   private int justification;
-   private int size;
-   private boolean underlined;
-   
-   private transient JLabel label = new JLabel();
 }

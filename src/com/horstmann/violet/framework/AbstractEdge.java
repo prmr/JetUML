@@ -32,6 +32,9 @@ import java.awt.geom.Rectangle2D;
 */
 abstract class AbstractEdge implements Edge
 {  
+	private Node start;
+	private Node end;
+	
    public Object clone()
    {
       try
@@ -82,7 +85,4 @@ abstract class AbstractEdge implements Edge
          start.getConnectionPoint(toEnd),
          end.getConnectionPoint(toEnd.turn(180)));
    }
-
-   private Node start;
-   private Node end;
 }

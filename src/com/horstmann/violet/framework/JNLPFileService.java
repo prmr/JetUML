@@ -22,6 +22,9 @@ import javax.jnlp.UnavailableServiceException;
  */
 public class JNLPFileService extends FileService
 {
+	   private FileOpenService openService;
+	   private FileSaveService saveService;
+	
    public JNLPFileService()
    {
       try
@@ -99,6 +102,5 @@ public class JNLPFileService extends FileService
    
    public boolean isWebStart() { return true; }   
 
-   private FileOpenService openService;
-   private FileSaveService saveService;
+
 }

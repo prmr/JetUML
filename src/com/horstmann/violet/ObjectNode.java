@@ -38,6 +38,14 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ObjectNode extends RectangularNode
 {
+	  private double topHeight;
+	   private MultiLineString name;
+
+	   private static int DEFAULT_WIDTH = 80;
+	   private static int DEFAULT_HEIGHT = 60;
+	   private static int XGAP = 5;
+	   private static int YGAP = 5;
+	
    /**
       Construct an object node with a default size
    */
@@ -190,11 +198,5 @@ public class ObjectNode extends RectangularNode
       setBounds(b);
    }
 
-   private double topHeight;
-   private MultiLineString name;
-
-   private static int DEFAULT_WIDTH = 80;
-   private static int DEFAULT_HEIGHT = 60;
-   private static int XGAP = 5;
-   private static int YGAP = 5;
+ 
 }

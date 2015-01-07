@@ -35,6 +35,10 @@ import javax.swing.event.*;
 */
 public class PropertySheet extends JPanel
 {
+	   private static final int WIDTH = 100;
+	   private static final int HEIGHT = 25;
+	   private static final int MAX_TEXT_LENGTH = 15;
+	
    /**
       Constructs a property sheet that shows the editable
       properties of a given object.
@@ -329,8 +333,6 @@ public class PropertySheet extends JPanel
       editors.put(java.awt.Color.class, ColorEditor.class);
    }
    
-   private static final int WIDTH = 100;
-   private static final int HEIGHT = 25;
-   private static final int MAX_TEXT_LENGTH = 15;
+
 }
 
