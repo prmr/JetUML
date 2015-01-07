@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.horstmann.violet.framework;
 
 import java.io.File;
-import java.util.StringTokenizer;
+
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -59,21 +59,18 @@ public class ExtensionFilter extends FileFilter
      * Constructs an extension file filter.
      * @param pDescription the description (e.g. "Woozle files")
      * @param pExtensions the accepted extensions, separated
-     * by | (e.g.".woozle|.wzl" })
+     * by | (e.g.".woozle|.wzl" }). No blank spaces allowed
      * @pre pDescription != null
      * @pre pExtensions != null
+     * @pre pExtensions != ""
 	 */
    	public ExtensionFilter(String pDescription, String pExtensions)
    	{
    		assert pDescription != null;
 		assert pExtensions != null;
+		assert pExtensions.length() > 0;
 	   	aDescription = pDescription; 
-	   	StringTokenizer tokenizer = new StringTokenizer(pExtensions, "|");
-	   	aExtensions = new String[tokenizer.countTokens()];
-	   	for(int i = 0; i < this.aExtensions.length; i++)
-	   	{
-		   aExtensions[i] = tokenizer.nextToken();
-	   	}
+	   	aExtensions = pExtensions.split("\\|");
    	}
    
    	@Override
@@ -85,9 +82,9 @@ public class ExtensionFilter extends FileFilter
    		}
       
    		String fileName = pFile.getName().toLowerCase();
-   		for(int i = 0; i < aExtensions.length; i++)
+   		for(String extension : aExtensions)
 		{
-			if(fileName.endsWith(aExtensions[i].toLowerCase()))
+			if(fileName.endsWith(extension.toLowerCase()))
 			{
 				return true;
 			}
