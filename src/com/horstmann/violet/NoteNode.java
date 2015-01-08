@@ -158,7 +158,7 @@ public class NoteNode extends RectangularNode
       return path;
    }
 
-   public Object clone()
+   public NoteNode clone()
    {
       NoteNode cloned = (NoteNode)super.clone();
       cloned.text = (MultiLineString)text.clone();

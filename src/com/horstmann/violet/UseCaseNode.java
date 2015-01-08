@@ -81,7 +81,7 @@ public class UseCaseNode extends RectangularNode
       return name;
    }
 
-   public Object clone()
+   public UseCaseNode clone()
    {
       UseCaseNode cloned = (UseCaseNode) super.clone();
       cloned.name = (MultiLineString) name.clone();

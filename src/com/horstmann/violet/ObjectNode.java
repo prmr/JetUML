@@ -152,7 +152,7 @@ public class ObjectNode extends RectangularNode
       return name;
    }
 
-   public Object clone()
+   public ObjectNode clone()
    {
       ObjectNode cloned = (ObjectNode)super.clone();
       cloned.name = (MultiLineString)name.clone();
