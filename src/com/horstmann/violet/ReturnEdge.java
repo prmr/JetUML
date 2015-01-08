@@ -28,37 +28,43 @@ import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.SegmentedLineEdge;
 
 /**
-   An edge that joins two call nodes.
-*/
+ *  An edge that joins two call nodes.
+ */
 public class ReturnEdge extends SegmentedLineEdge
 {
-   public ReturnEdge()
-   {
-      setEndArrowHead(ArrowHead.V);
-      setLineStyle(LineStyle.DOTTED);
-   }
+	private static final long serialVersionUID = -1974288499540230578L;
 
-   public ArrayList getPoints()
-   {
-      ArrayList a = new ArrayList();
-      Node n = getEnd();
-      Rectangle2D start = getStart().getBounds();
-      Rectangle2D end = getEnd().getBounds();
-      if (n instanceof PointNode) // show nicely in tool bar
-      {
-         a.add(new Point2D.Double(end.getX(), end.getY()));
-         a.add(new Point2D.Double(start.getMaxX(), end.getY()));
-      }      
-      else if (start.getCenterX() < end.getCenterX())
-      {
-         a.add(new Point2D.Double(start.getMaxX(), start.getMaxY()));
-         a.add(new Point2D.Double(end.getX(), start.getMaxY()));
-      }
-      else
-      {
-         a.add(new Point2D.Double(start.getX(), start.getMaxY()));
-         a.add(new Point2D.Double(end.getMaxX(), start.getMaxY()));
-      }
-      return a;
-   }
+	/**
+	 * Constructs a standard return edge.
+	 */
+	public ReturnEdge()
+	{
+		setEndArrowHead(ArrowHead.V);
+		setLineStyle(LineStyle.DOTTED);
+	}
+
+	@Override
+	protected ArrayList<Point2D> getPoints()
+	{
+		ArrayList<Point2D> lReturn = new ArrayList<>();
+		Node endNode = getEnd();
+		Rectangle2D start = getStart().getBounds();
+		Rectangle2D end = getEnd().getBounds();
+		if(endNode instanceof PointNode) // show nicely in tool bar
+		{
+			lReturn.add(new Point2D.Double(end.getX(), end.getY()));
+			lReturn.add(new Point2D.Double(start.getMaxX(), end.getY()));
+		}      
+		else if(start.getCenterX() < end.getCenterX())
+		{
+			lReturn.add(new Point2D.Double(start.getMaxX(), start.getMaxY()));
+			lReturn.add(new Point2D.Double(end.getX(), start.getMaxY()));
+		}
+		else
+		{
+			lReturn.add(new Point2D.Double(start.getX(), start.getMaxY()));
+			lReturn.add(new Point2D.Double(end.getMaxX(), start.getMaxY()));
+		}
+		return lReturn;
+	}
 }

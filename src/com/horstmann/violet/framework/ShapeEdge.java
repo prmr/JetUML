@@ -27,45 +27,48 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-
 /**
-   A class that assumes that an edge can yield its shape
-   and then takes advantage of the fact that containment testing can 
-   be done by stroking the shape with a fat stroke.
-   NOTE: Ideally, you should be able to draw the same shape that
-   is used for containment testing. However, in JDK 1.4, 
-   BasicStroke.createStrokedShape returns shitty-looking shapes. 
-*/
+ *  A class that assumes that an edge can yield its shape
+ *  and then takes advantage of the fact that containment testing can 
+ *  be done by stroking the shape with a fat stroke.
+ *  NOTE: Ideally, you should be able to draw the same shape that
+ *  is used for containment testing. However, in JDK 1.4, 
+ *  BasicStroke.createStrokedShape returns shitty-looking shapes. 
+ */
 public abstract class ShapeEdge extends AbstractEdge
 {  
-   /**
-      Returns the path that should be stroked to
-      draw this edge. The path does not include
-      arrow tips or labels.
-      @return a path along the edge
-   */
-   public abstract Shape getShape();
+	private static final long serialVersionUID = 6499381080506220606L;
 
-   public Rectangle2D getBounds(Graphics2D g2)
-   {
-      return getShape().getBounds();
-   }
+	/**
+     * Returns the path that should be stroked to
+     * draw this edge. The path does not include
+     * arrow tips or labels.
+     * @return a path along the edge
+	 */
+	public abstract Shape getShape();
 
-   public boolean contains(Point2D aPoint)
-   {
-      final double MAX_DIST = 3;
+	@Override
+	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	{
+		return getShape().getBounds();
+	}
 
-      // the end points may contain small nodes, so don't
-      // match them
-      Line2D conn = getConnectionPoints();
-      if (aPoint.distance(conn.getP1()) <= MAX_DIST 
-         || aPoint.distance(conn.getP2()) <= MAX_DIST)
-         return false;
+	@Override
+	public boolean contains(Point2D pPoint)
+	{
+		final double maxDistance = 3;
 
-      Shape p = getShape();
-      BasicStroke fatStroke = new BasicStroke(
-         (float)(2 * MAX_DIST));
-      Shape fatPath = fatStroke.createStrokedShape(p);
-      return fatPath.contains(aPoint);
-   }
+		// the end points may contain small nodes, so don't
+		// match them
+		Line2D conn = getConnectionPoints();
+		if(pPoint.distance(conn.getP1()) <= maxDistance || pPoint.distance(conn.getP2()) <= maxDistance)
+		{
+			return false;
+		}
+
+		Shape p = getShape();
+		BasicStroke fatStroke = new BasicStroke((float)(2 * maxDistance));
+		Shape fatPath = fatStroke.createStrokedShape(p);
+		return fatPath.contains(pPoint);
+	}
 }

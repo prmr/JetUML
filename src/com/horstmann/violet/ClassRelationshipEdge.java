@@ -20,42 +20,45 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import com.horstmann.violet.framework.SegmentedLineEdge;
 
 /**
-   An edge that is shaped like a line with up to 
-   three segments with an arrowhead
-*/
+ *  An edge that is shaped like a line with up to 
+ *  three segments with an arrowhead.
+ */
 public class ClassRelationshipEdge extends SegmentedLineEdge
 {
-	   private BentStyle bentStyle;
+	private static final long serialVersionUID = 8698457446192582750L;
+	private BentStyle aBentStyle;
 	
-   /**
-      Constructs a straight edge.
-   */
-   public ClassRelationshipEdge()
-   {
-      bentStyle = BentStyle.STRAIGHT;
-   }
+	/**
+     *  Constructs a straight edge.
+     */
+	public ClassRelationshipEdge()
+	{
+		aBentStyle = BentStyle.STRAIGHT;
+	}
 
-   /**
-      Sets the bentStyle property
-      @param newValue the bent style
-   */
-   public void setBentStyle(BentStyle newValue) { bentStyle = newValue; }
-   /**
-      Gets the bentStyle property
-      @return the bent style
-   */
-   public BentStyle getBentStyle() { return bentStyle; }
+	/**
+     *  Sets the bentStyle property.
+     * @param pNewValue the bent style
+     */
+	public void setBentStyle(BentStyle pNewValue)
+	{ aBentStyle = pNewValue; }
    
-   public ArrayList getPoints()
-   {
-      return bentStyle.getPath(getStart().getBounds(),
-         getEnd().getBounds());
+	/**
+     * Gets the bentStyle property.
+     * @return the bent style
+     */
+	public BentStyle getBentStyle() 
+	{ return aBentStyle; }
+   
+	@Override
+	public ArrayList<Point2D> getPoints()
+	{
+		return aBentStyle.getPath(getStart().getBounds(), getEnd().getBounds());
    }
-
-
 }

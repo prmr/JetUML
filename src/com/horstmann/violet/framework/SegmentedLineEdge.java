@@ -37,304 +37,303 @@ import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.LineStyle;
 
 /**
-   An edge that is composed of multiple line segments
-*/
+ *  An edge that is composed of multiple line segments.
+ */
 public abstract class SegmentedLineEdge extends ShapeEdge
 {
-	   private LineStyle lineStyle;
-	   private ArrowHead startArrowHead;
-	   private ArrowHead endArrowHead;
-	   private String startLabel;
-	   private String middleLabel;
-	   private String endLabel;
-	   
-	   private static JLabel label = new JLabel();
+	private static final long serialVersionUID = 8495488948295665697L;
 	
-   /**
-      Costructs an edge with no adornments.
-   */
-   public SegmentedLineEdge()
-   {
-      lineStyle = LineStyle.SOLID;
-      startArrowHead = ArrowHead.NONE;
-      endArrowHead = ArrowHead.NONE;
-      startLabel = "";
-      middleLabel = "";
-      endLabel = "";
-   }
+	private static JLabel label = new JLabel();
+	
+	private LineStyle aLineStyle;
+	private ArrowHead aStartArrowHead;
+	private ArrowHead aEndArrowHead;
+	private String aStartLabel;
+	private String aMiddleLabel;
+	private String aEndLabel;
+	
+	/**
+     * Constructs an edge with no adornments.
+	 */
+	public SegmentedLineEdge()
+	{
+		aLineStyle = LineStyle.SOLID;
+		aStartArrowHead = ArrowHead.NONE;
+		aEndArrowHead = ArrowHead.NONE;
+		aStartLabel = "";
+		aMiddleLabel = "";
+		aEndLabel = "";
+	}
 
    /**
-      Sets the line style property.
-      @param newValue the new value
-   */
-   public void setLineStyle(LineStyle newValue) { lineStyle = newValue; }
+    *  Sets the line style property.
+    *  @param pNewValue the new value
+    */
+   public void setLineStyle(LineStyle pNewValue) 
+   { aLineStyle = pNewValue; }
 
    /**
       Gets the line style property.
       @return the line style
    */
-   public LineStyle getLineStyle() { return lineStyle; }
+   	public LineStyle getLineStyle() 
+   	{ return aLineStyle; }
 
    /**
-      Sets the start arrow head property
-      @param newValue the new value
-   */
-   public void setStartArrowHead(ArrowHead newValue) { startArrowHead = newValue; }
+    *  Sets the start arrow head property.
+    *  @param pNewValue the new value
+    */
+   	public void setStartArrowHead(ArrowHead pNewValue) 
+   	{ aStartArrowHead = pNewValue; }
+
+   	/**
+     * Gets the start arrow head property.
+     * @return the start arrow head style
+   	 */
+   	public ArrowHead getStartArrowHead()
+   	{ return aStartArrowHead; }
+
+   	/**
+     *  Sets the end arrow head property.
+     * @param pNewValue the new value
+     */
+   	public void setEndArrowHead(ArrowHead pNewValue) 
+	{ aEndArrowHead = pNewValue; }
+
+   	/**
+     *  Gets the end arrow head property.
+     * @return the end arrow head style
+     */
+  	public ArrowHead getEndArrowHead() 
+  	{ return aEndArrowHead; }
+
+  	/**
+     * Sets the start label property.
+     * @param pNewValue the new value
+     */
+  	public void setStartLabel(String pNewValue) 
+  	{ aStartLabel = pNewValue; }
+
+  	/**
+     * Gets the start label property.
+     * @return the label at the start of the edge
+     */
+  	public String getStartLabel() 
+  	{ return aStartLabel; }
 
    /**
-      Gets the start arrow head property
-      @return the start arrow head style
-   */
-   public ArrowHead getStartArrowHead() { return startArrowHead; }
+    *  Sets the middle label property.
+    *  @param pNewValue the new value
+    */
+  	public void setMiddleLabel(String pNewValue) 
+  	{ aMiddleLabel = pNewValue; }
 
-   /**
-      Sets the end arrow head property
-      @param newValue the new value
-   */
-   public void setEndArrowHead(ArrowHead newValue) { endArrowHead = newValue; }
+  	/**
+     * Gets the middle label property.
+     * @return the label at the middle of the edge
+  	 */
+  	public String getMiddleLabel() 
+  	{ return aMiddleLabel; }
 
-   /**
-      Gets the end arrow head property
-      @return the end arrow head style
-   */
-   public ArrowHead getEndArrowHead() { return endArrowHead; }
+  	/**
+      Sets the end label property.
+      @param pNewValue the new value
+  	 */
+  	public void setEndLabel(String pNewValue) 
+  	{ aEndLabel = pNewValue; }
 
-   /**
-      Sets the start label property
-      @param newValue the new value
-   */
-   public void setStartLabel(String newValue) { startLabel = newValue; }
+  	/**
+     * Gets the end label property.
+     * @return the label at the end of the edge
+  	 */
+  	public String getEndLabel() 
+  	{ return aEndLabel; }
 
-   /**
-      Gets the start label property
-      @return the label at the start of the edge
-   */
-   public String getStartLabel() { return startLabel; }
-
-   /**
-      Sets the middle label property
-      @param newValue the new value
-   */
-   public void setMiddleLabel(String newValue) { middleLabel = newValue; }
-
-   /**
-      Gets the middle label property
-      @return the label at the middle of the edge
-   */
-   public String getMiddleLabel() { return middleLabel; }
-
-   /**
-      Sets the end label property
-      @param newValue the new value
-   */
-   public void setEndLabel(String newValue) { endLabel = newValue; }
-
-   /**
-      Gets the end label property
-      @return the label at the end of the edge
-   */
-   public String getEndLabel() { return endLabel; }
-
-   /**
-      Draws the edge.
-      @param g2 the graphics context
-   */
-   public void draw(Graphics2D g2)
-   {
-      ArrayList points = getPoints();
+  	@Override
+  	public void draw(Graphics2D pGraphics2D)
+  	{
+  		ArrayList<Point2D> points = getPoints();
       
-      Stroke oldStroke = g2.getStroke();
-      g2.setStroke(lineStyle.getStroke());
-      g2.draw(getSegmentPath());
-      g2.setStroke(oldStroke);
-      startArrowHead.draw(g2, (Point2D)points.get(1),
-         (Point2D)points.get(0));
-      endArrowHead.draw(g2, (Point2D)points.get(points.size() - 2),
-         (Point2D)points.get(points.size() - 1));
+  		Stroke oldStroke = pGraphics2D.getStroke();
+  		pGraphics2D.setStroke(aLineStyle.getStroke());
+  		pGraphics2D.draw(getSegmentPath());
+  		pGraphics2D.setStroke(oldStroke);
+  		aStartArrowHead.draw(pGraphics2D, points.get(1), points.get(0));
+  		aEndArrowHead.draw(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1));
 
-      drawString(g2, (Point2D)points.get(1), (Point2D)points.get(0), 
-            startArrowHead, startLabel, false);
-      drawString(g2, (Point2D)points.get(points.size() / 2 - 1),
-            (Point2D)points.get(points.size() / 2),
-            null, middleLabel, true);
-      drawString(g2, (Point2D)points.get(points.size() - 2),
-            (Point2D)points.get(points.size() - 1), 
-            endArrowHead, endLabel, false);
+  		drawString(pGraphics2D, points.get(1), points.get(0), aStartArrowHead, aStartLabel, false);
+  		drawString(pGraphics2D, points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, aMiddleLabel, true);
+  		drawString(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1), aEndArrowHead, aEndLabel, false);
    }
 
-   /**
-      Draws a string.
-      @param g2 the graphics context
-      @param p an endpoint of the segment along which to
-      draw the string
-      @param q the other endpoint of the segment along which to
-      draw the string
-      @param s the string to draw
-      @param center true if the string should be centered
-      along the segment
-   */
-   private static void drawString(Graphics2D g2, 
-      Point2D p, Point2D q, ArrowHead arrow, String s, boolean center)
-   {
-      if (s == null || s.length() == 0) return;
-      label.setText("<html>" + s + "</html>");
-      label.setFont(g2.getFont());
-      Dimension d = label.getPreferredSize();      
-      label.setBounds(0, 0, d.width, d.height);
+  	/**
+     * Draws a string.
+     * @param pGraphics2D the graphics context
+     * @param pEndPoint1 an endpoint of the segment along which to draw the string
+     * @param pEndPoint2 the other endpoint of the segment along which to draw the string
+     * @param pString the string to draw 
+     * @param pCenter true if the string should be centered along the segment
+     */
+  	private static void drawString(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+  			ArrowHead pArrowHead, String pString, boolean pCenter)
+  	{
+  		if (pString == null || pString.length() == 0)
+  		{
+  			return;
+  		}
+  		label.setText("<html>" + pString + "</html>");
+  		label.setFont(pGraphics2D.getFont());
+  		Dimension d = label.getPreferredSize();      
+  		label.setBounds(0, 0, d.width, d.height);
 
-      Rectangle2D b = getStringBounds(g2, p, q, arrow, s, center);
+  		Rectangle2D b = getStringBounds(pGraphics2D, pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
       
-      Color oldColor = g2.getColor();
-      g2.setColor(g2.getBackground());
-      g2.fill(b);
-      g2.setColor(oldColor);
+  		Color oldColor = pGraphics2D.getColor();
+  		pGraphics2D.setColor(pGraphics2D.getBackground());
+  		pGraphics2D.fill(b);
+  		pGraphics2D.setColor(oldColor);
       
-      g2.translate(b.getX(), b.getY());
-      label.paint(g2);
-      g2.translate(-b.getX(), -b.getY());        
+  		pGraphics2D.translate(b.getX(), b.getY());
+  		label.paint(pGraphics2D);
+  		pGraphics2D.translate(-b.getX(), -b.getY());        
+  	}
+
+  	/**
+     * Computes the attachment point for drawing a string.
+     * @param pGraphics2D the graphics context
+     * @param pEndPoint1 an endpoint of the segment along which to draw the string
+     * @param pEndPoint2 the other endpoint of the segment along which to draw the string
+     * @param b the bounds of the string to draw
+     * @param pCenter true if the string should be centered along the segment
+     * @return the point at which to draw the string
+     */
+  	private static Point2D getAttachmentPoint(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+  			ArrowHead pArrow, Dimension pDimension, boolean pCenter)
+  	{    
+  		final int gap = 3;
+  		double xoff = gap;
+  		double yoff = -gap - pDimension.getHeight();
+  		Point2D attach = pEndPoint2;
+  		if (pCenter)
+  		{
+  			if (pEndPoint1.getX() > pEndPoint2.getX()) 
+  			{ 
+  				return getAttachmentPoint(pGraphics2D, pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
+  			}
+  			attach = new Point2D.Double((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
+  					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
+  			if (pEndPoint1.getY() < pEndPoint2.getY())
+  			{
+  				yoff =  -gap-pDimension.getHeight();
+  			}
+  			else if (pEndPoint1.getY() == pEndPoint2.getY())
+  			{
+  				xoff = -pDimension.getWidth() / 2;
+  			}
+  			else
+  			{
+  				yoff = gap;
+  			}	
+  		}
+  		else 
+  		{
+  			if(pEndPoint1.getX() < pEndPoint2.getX())
+  			{
+  				xoff = -gap - pDimension.getWidth();
+  			}
+  			if(pEndPoint1.getY() > pEndPoint2.getY())
+  			{
+  				yoff = gap;
+  			}
+  			if(pArrow != null)
+  			{
+  				Rectangle2D arrowBounds = pArrow.getPath(pEndPoint1, pEndPoint2).getBounds2D();
+  				if(pEndPoint1.getX() < pEndPoint2.getX())
+  				{
+  					xoff -= arrowBounds.getWidth();
+  				}
+  				else
+  				{
+  					xoff += arrowBounds.getWidth();
+  				}
+  			}
+  		}
+  		return new Point2D.Double(attach.getX() + xoff, attach.getY() + yoff);
+  	}
+
+  	/*
+     * Computes the extent of a string that is drawn along a line segment.
+     * @param g2 the graphics context
+     * @param p an endpoint of the segment along which to draw the string
+     * @param q the other endpoint of the segment along which to draw the string
+     * @param s the string to draw
+     * @param center true if the string should be centered along the segment
+     * @return the rectangle enclosing the string
+  	 */
+  	private static Rectangle2D getStringBounds(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+  			ArrowHead pArrow, String pString, boolean pCenter)
+  	{
+  		if (pGraphics2D == null)
+  		{
+  			return new Rectangle2D.Double();
+  		}
+  		if (pString == null || pString.equals(""))
+  		{
+  			return new Rectangle2D.Double(pEndPoint2.getX(), pEndPoint2.getY(), 0, 0);
+  		}
+  		label.setText("<html>" + pString + "</html>");
+  		label.setFont(pGraphics2D.getFont());
+  		Dimension d = label.getPreferredSize();
+  		Point2D a = getAttachmentPoint(pGraphics2D, pEndPoint1, pEndPoint2, pArrow, d, pCenter);
+  		return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());
+  	}
+
+  	@Override
+  	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+  	{
+  		ArrayList<Point2D> points = getPoints();
+  		Rectangle2D r = super.getBounds(pGraphics2D);
+  		r.add(getStringBounds(pGraphics2D, points.get(1), points.get(0), aStartArrowHead, aStartLabel, false));
+  		r.add(getStringBounds(pGraphics2D, points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, aMiddleLabel, true));
+  		r.add(getStringBounds(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1), aEndArrowHead, aEndLabel, false));
+  		return r;
+  	}
+  	
+  	@Override
+  	public Shape getShape()
+  	{
+  		GeneralPath path = getSegmentPath();
+  		ArrayList<Point2D> points = getPoints();
+  		path.append(aStartArrowHead.getPath(points.get(1), points.get(0)), false);
+  		path.append(aEndArrowHead.getPath(points.get(points.size() - 2), points.get(points.size() - 1)), false);
+  		return path;
    }
 
-   /**
-      Computes the attachment point for drawing a string.
-      @param g2 the graphics context
-      @param p an endpoint of the segment along which to
-      draw the string
-      @param q the other endpoint of the segment along which to
-      draw the string
-      @param b the bounds of the string to draw
-      @param center true if the string should be centered
-      along the segment
-      @return the point at which to draw the string
-   */
-   private static Point2D getAttachmentPoint(Graphics2D g2, 
-      Point2D p, Point2D q, ArrowHead arrow, Dimension d, boolean center)
-   {    
-      final int GAP = 3;
-      double xoff = GAP;
-      double yoff = -GAP - d.getHeight();
-      Point2D attach = q;
-      if (center)
-      {
-         if (p.getX() > q.getX()) 
-         { 
-            return getAttachmentPoint(g2, q, p, arrow, d, center); 
-         }
-         attach = new Point2D.Double((p.getX() + q.getX()) / 2, 
-            (p.getY() + q.getY()) / 2);
-         if (p.getY() < q.getY())
-            yoff =  - GAP - d.getHeight();
-         else if (p.getY() == q.getY())
-            xoff = -d.getWidth() / 2;
-         else
-            yoff = GAP;
-      }
-      else 
-      {
-         if (p.getX() < q.getX())
-         {
-            xoff = -GAP - d.getWidth();
-         }
-         if (p.getY() > q.getY())
-         {
-            yoff = GAP;
-         }
-         if (arrow != null)
-         {
-            Rectangle2D arrowBounds = arrow.getPath(p, q).getBounds2D();
-            if (p.getX() < q.getX())
-            {
-               xoff -= arrowBounds.getWidth();
-            }
-            else
-            {
-               xoff += arrowBounds.getWidth();
-            }
-         }
-      }
-      return new Point2D.Double(attach.getX() + xoff, attach.getY() + yoff);
-   }
-
-   /**
-      Computes the extent of a string that is drawn along a line segment.
-      @param g2 the graphics context
-      @param p an endpoint of the segment along which to
-      draw the string
-      @param q the other endpoint of the segment along which to
-      draw the string
-      @param s the string to draw
-      @param center true if the string should be centered
-      along the segment
-      @return the rectangle enclosing the string
-   */
-   private static Rectangle2D getStringBounds(Graphics2D g2, 
-      Point2D p, Point2D q, ArrowHead arrow, String s, boolean center)
-   {
-      if (g2 == null) return new Rectangle2D.Double();
-      if (s == null || s.equals("")) return new Rectangle2D.Double(q.getX(), q.getY(), 0, 0);
-      label.setText("<html>" + s + "</html>");
-      label.setFont(g2.getFont());
-      Dimension d = label.getPreferredSize();
-      Point2D a = getAttachmentPoint(g2, p, q, arrow, d, center);
-      return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());
-   }
-
-   public Rectangle2D getBounds(Graphics2D g2)
-   {
-      ArrayList points = getPoints();
-      Rectangle2D r = super.getBounds(g2);
-      r.add(getStringBounds(g2, 
-               (Point2D) points.get(1), (Point2D) points.get(0), 
-               startArrowHead, startLabel, false));
-      r.add(getStringBounds(g2, 
-               (Point2D) points.get(points.size() / 2 - 1),
-               (Point2D) points.get(points.size() / 2), 
-               null, middleLabel, true));
-      r.add(getStringBounds(g2, 
-               (Point2D) points.get(points.size() - 2),
-               (Point2D) points.get(points.size() - 1), 
-               endArrowHead, endLabel, false));
-      return r;
-   }
-
-   public Shape getShape()
-   {
-      GeneralPath path = getSegmentPath();
-      ArrayList points = getPoints();
-      path.append(startArrowHead.getPath((Point2D)points.get(1),
-            (Point2D)points.get(0)), false);
-      path.append(endArrowHead.getPath((Point2D)points.get(points.size() - 2),
-            (Point2D)points.get(points.size() - 1)), false);
-      return path;
-   }
-
-   private GeneralPath getSegmentPath()
-   {
-      ArrayList points = getPoints();
-      
-      GeneralPath path = new GeneralPath();
-      Point2D p = (Point2D) points.get(points.size() - 1);
-      path.moveTo((float) p.getX(), (float) p.getY());
-      for (int i = points.size() - 2; i >= 0; i--)
-      {
-         p = (Point2D) points.get(i);
-         path.lineTo((float) p.getX(), (float) p.getY());
-      }
-      return path;
-   }
+  	private GeneralPath getSegmentPath()
+  	{
+  		ArrayList<Point2D> points = getPoints();
+  		GeneralPath path = new GeneralPath();
+  		Point2D p = points.get(points.size() - 1);
+  		path.moveTo((float) p.getX(), (float) p.getY());
+  		for(int i = points.size() - 2; i >= 0; i--)
+  		{
+  			p = points.get(i);
+  			path.lineTo((float) p.getX(), (float) p.getY());
+  		}
+  		return path;
+  	}
    
-   public Line2D getConnectionPoints()
-   {
-      ArrayList points = getPoints();
-      return new Line2D.Double((Point2D) points.get(0),
-         (Point2D) points.get(points.size() - 1));
-   }
+  	@Override
+  	public Line2D getConnectionPoints()
+  	{
+  		ArrayList<Point2D> points = getPoints();
+  		return new Line2D.Double(points.get(0), points.get(points.size() - 1));
+  	}
 
-   /**
-      Gets the corner points of this segmented line edge
-      @return an array list of Point2D objects, containing
-      the corner points
-   */
-   public abstract ArrayList getPoints();
-
-
+  	/**
+     * Gets the corner points of this segmented line edge.
+     * @return an array list of Point2D objects, containing
+     * the corner points
+  	 */
+  	protected abstract ArrayList<Point2D> getPoints();
 }

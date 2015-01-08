@@ -25,64 +25,66 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-
 /**
-   A class that supplies convenience implementations for 
-   a number of methods in the Edge interface
-*/
+ *  A class that supplies convenience implementations for 
+ *  a number of methods in the Edge interface.
+ */
 abstract class AbstractEdge implements Edge
 {  
-	private Node start;
-	private Node end;
+	private static final int DEGREES_180 = 180;
+	private static final long serialVersionUID = -303282704622122418L;
+	private Node aStart;
+	private Node aEnd;
 	
-   public Object clone()
-   {
-      try
-      {
-         return super.clone();
-      }
-      catch (CloneNotSupportedException exception)
-      {
-         return null;
-      }
-   }
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException exception)
+		{
+			return null;
+		}
+	}
 
-   public void connect(Node s, Node e)
-   {  
-      start = s;
-      end = e;
-   }
+	@Override
+	public void connect(Node pStart, Node pEnd)
+	{  
+		aStart = pStart;
+		aEnd = pEnd;
+	}
 
-   public Node getStart()
-   {
-      return start;
-   }
+	@Override
+	public Node getStart()
+	{
+		return aStart;
+	}
 
-   public Node getEnd()
-   {
-      return end;
-   }
+	@Override
+	public Node getEnd()
+	{
+		return aEnd;
+	}
 
-   public Rectangle2D getBounds(Graphics2D g2)
-   {
-      Line2D conn = getConnectionPoints();      
-      Rectangle2D r = new Rectangle2D.Double();
-      r.setFrameFromDiagonal(conn.getX1(), conn.getY1(),
-         conn.getX2(), conn.getY2());
-      return r;
-   }
+	@Override
+	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	{
+		Line2D conn = getConnectionPoints();      
+		Rectangle2D rectangle = new Rectangle2D.Double();
+		rectangle.setFrameFromDiagonal(conn.getX1(), conn.getY1(), conn.getX2(), conn.getY2());
+		return rectangle;
+	}
 
-   public Line2D getConnectionPoints()
-   {
-      Rectangle2D startBounds = start.getBounds();
-      Rectangle2D endBounds = end.getBounds();
-      Point2D startCenter = new Point2D.Double(
-         startBounds.getCenterX(), startBounds.getCenterY());
-      Point2D endCenter = new Point2D.Double(
-         endBounds.getCenterX(), endBounds.getCenterY());
-      Direction toEnd = new Direction(startCenter, endCenter);
-      return new Line2D.Double(
-         start.getConnectionPoint(toEnd),
-         end.getConnectionPoint(toEnd.turn(180)));
+	@Override
+	public Line2D getConnectionPoints()
+	{
+		Rectangle2D startBounds = aStart.getBounds();
+		Rectangle2D endBounds = aEnd.getBounds();
+		Point2D startCenter = new Point2D.Double(startBounds.getCenterX(), startBounds.getCenterY());
+		Point2D endCenter = new Point2D.Double(endBounds.getCenterX(), endBounds.getCenterY());
+		Direction toEnd = new Direction(startCenter, endCenter);
+		return new Line2D.Double(aStart.getConnectionPoint(toEnd), aEnd.getConnectionPoint(toEnd.turn(DEGREES_180)));
    }
 }
