@@ -187,7 +187,7 @@ public class PackageNode extends RectangularNode
       return contents;
    }
 
-   public PackageNode clone()
+   public Object clone()
    {
       PackageNode cloned = (PackageNode)super.clone();
       cloned.contents = (MultiLineString)contents.clone();

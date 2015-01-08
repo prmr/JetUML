@@ -149,7 +149,7 @@ public class InterfaceNode extends RectangularNode
       return methods;
    }
 
-   public InterfaceNode clone()
+   public Object clone()
    {
       InterfaceNode cloned = (InterfaceNode)super.clone();
       cloned.name = (MultiLineString)name.clone();

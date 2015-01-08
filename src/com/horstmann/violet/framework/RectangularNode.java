@@ -38,7 +38,7 @@ public abstract class RectangularNode extends AbstractNode
 	   private transient Rectangle2D bounds;
 
 	
-   public RectangularNode clone()
+   public Object clone()
    {
       RectangularNode cloned = (RectangularNode)super.clone();
       cloned.bounds = (Rectangle2D)bounds.clone();

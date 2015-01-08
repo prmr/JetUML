@@ -200,7 +200,7 @@ public class FieldNode extends RectangularNode
       return boxedValue;
    }
 
-   public FieldNode clone()
+   public Object clone()
    {
       FieldNode cloned = (FieldNode)super.clone();
       cloned.name = (MultiLineString)name.clone();
