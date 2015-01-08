@@ -124,7 +124,7 @@ public interface Node extends Serializable, Cloneable
      * Gets the children of this node.
      * @return an unmodifiable list of the children
 	 */
-	List getChildren();
+	List<Node> getChildren();
 
 	/**
      * Adds a child node.
@@ -142,5 +142,5 @@ public interface Node extends Serializable, Cloneable
 	/**
 	 * @return A clone of the node.
 	 */
-	Object clone();
+	Node clone();
 }

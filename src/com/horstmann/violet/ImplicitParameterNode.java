@@ -146,7 +146,7 @@ public class ImplicitParameterNode extends RectangularNode
       return name;
    }
 
-   public Object clone()
+   public ImplicitParameterNode clone()
    {
       ImplicitParameterNode cloned 
          = (ImplicitParameterNode)super.clone();

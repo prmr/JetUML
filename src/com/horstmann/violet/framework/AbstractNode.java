@@ -49,7 +49,7 @@ public abstract class AbstractNode implements Node
       parent = null;
    }
 
-   public Object clone()
+   public AbstractNode clone()
    {
       try
       {
