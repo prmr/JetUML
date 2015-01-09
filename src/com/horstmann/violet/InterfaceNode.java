@@ -31,131 +31,126 @@ import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.RectangularNode;
 
 /**
-   An interface node in a class diagram.
-*/
+ * An interface node in a class diagram.
+ */
+@SuppressWarnings("serial")
 public class InterfaceNode extends RectangularNode
 {
-	   private double midHeight;
-	   private double botHeight;
-	   private MultiLineString name;
-	   private MultiLineString methods;
-
-	   private static int DEFAULT_COMPARTMENT_HEIGHT = 20;
-	   private static int DEFAULT_WIDTH = 100;
-	   private static int DEFAULT_HEIGHT = 60;
+	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
+	private static final int DEFAULT_WIDTH = 100;
+	private static final int DEFAULT_HEIGHT = 60;
 	
-   /**
-      Construct an interface node with a default size and
-      the text <<interface>>.
-   */
-   public InterfaceNode()
-   {
-      name = new MultiLineString();
-      name.setSize(MultiLineString.LARGE);
-      name.setText("\u00ABinterface\u00BB");
-      methods = new MultiLineString();
-      methods.setJustification(MultiLineString.LEFT);
-      setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-      midHeight = DEFAULT_COMPARTMENT_HEIGHT;
-      botHeight = DEFAULT_COMPARTMENT_HEIGHT;
-   }
+	private double aMidHeight;
+	private double aBotHeight;
+	private MultiLineString aName;
+	private MultiLineString aMethods;   
+	
+	/**
+     * Construct an interface node with a default size and
+     * the text <<interface>>.
+	 */
+	public InterfaceNode()
+	{
+		aName = new MultiLineString();
+		aName.setSize(MultiLineString.LARGE);
+		aName.setText("\u00ABinterface\u00BB");
+		aMethods = new MultiLineString();
+		aMethods.setJustification(MultiLineString.LEFT);
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		aMidHeight = DEFAULT_COMPARTMENT_HEIGHT;
+		aBotHeight = DEFAULT_COMPARTMENT_HEIGHT;
+	}
 
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);
-      Rectangle2D top = new Rectangle2D.Double(getBounds().getX(),
-         getBounds().getY(), getBounds().getWidth(), 
-         getBounds().getHeight() - midHeight - botHeight);
-      g2.draw(top);
-      name.draw(g2, top);
-      Rectangle2D mid = new Rectangle2D.Double(top.getX(),
-         top.getMaxY(), top.getWidth(), midHeight);
-      g2.draw(mid);
-      Rectangle2D bot = new Rectangle2D.Double(top.getX(),
-         mid.getMaxY(), top.getWidth(), botHeight);
-      g2.draw(bot);
-      methods.draw(g2, bot);
-   }
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);
+		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+    		  getBounds().getWidth(), getBounds().getHeight() - aMidHeight - aBotHeight);
+		pGraphics2D.draw(top);
+		aName.draw(pGraphics2D, top);
+		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), aMidHeight);
+		pGraphics2D.draw(mid);
+		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), aBotHeight);
+		pGraphics2D.draw(bot);
+		aMethods.draw(pGraphics2D, bot);
+	}
 
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-      Rectangle2D min = new Rectangle2D.Double(0, 0, 
-         DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT);
-      Rectangle2D top = name.getBounds(g2); 
-      top.add(min);
-      Rectangle2D bot = methods.getBounds(g2);
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		Rectangle2D min = new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT);
+		Rectangle2D top = aName.getBounds(pGraphics2D); 
+		top.add(min);
+		Rectangle2D bot = aMethods.getBounds(pGraphics2D);
 
-      botHeight = bot.getHeight();
-      if (botHeight == 0)
-      {
-         top.add(new Rectangle2D.Double(0, 0, 
-                    DEFAULT_WIDTH, 
-                    DEFAULT_HEIGHT));
-         midHeight = 0;
-      }
-      else
-      {
-         bot.add(min);
-         midHeight = DEFAULT_COMPARTMENT_HEIGHT;
-         botHeight = bot.getHeight();
-      }
+		aBotHeight = bot.getHeight();
+		if(aBotHeight == 0)
+		{
+			top.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+			aMidHeight = 0;
+		}
+		else
+		{
+			bot.add(min);
+			aMidHeight = DEFAULT_COMPARTMENT_HEIGHT;
+			aBotHeight = bot.getHeight();
+		}
 
-      Rectangle2D b = new Rectangle2D.Double(
-         getBounds().getX(), getBounds().getY(),
-         Math.max(top.getWidth(), bot.getWidth()), 
-         top.getHeight() + midHeight + botHeight);
-      grid.snap(b);
-      setBounds(b);
-   }
+		Rectangle2D b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+				Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + aMidHeight + aBotHeight);
+		pGrid.snap(b);
+		setBounds(b);
+	}
 
-   public boolean addNode(Node n, Point2D p)
-   {
-      return n instanceof PointNode;
-   }
+	@Override
+	public boolean addNode(Node pNode, Point2D pPoint)
+	{
+		return pNode instanceof PointNode;
+	}
 
-   /**
-      Sets the name property value.
-      @param newValue the interface name
-   */
-   public void setName(MultiLineString newValue)
-   {
-      name = newValue;
-   }
+	/**
+     * Sets the name property value.
+     * @param pName the interface name
+	 */
+	public void setName(MultiLineString pName)
+	{
+		aName = pName;
+	}
 
-   /**
-      Gets the name property value.
-      @return the interface name
-   */
-   public MultiLineString getName()
-   {
-      return name;
-   }
+	/**
+     * Gets the name property value.
+     * @return the interface name
+	 */
+	public MultiLineString getName()
+	{
+		return aName;
+	}
 
-   /**
-      Sets the methods property value.
-      @param newValue the methods of this interface
-   */
-   public void setMethods(MultiLineString newValue)
-   {
-      methods = newValue;
-   }
+	/**
+     * Sets the methods property value.
+     * @param pMethods the methods of this interface
+	 */
+	public void setMethods(MultiLineString pMethods)
+	{
+		aMethods = pMethods;
+	}
+	
+	/**
+     * Gets the methods property value.
+     * @return the methods of this interface
+	 */
+	public MultiLineString getMethods()
+	{
+		return aMethods;
+	}
 
-   /**
-      Gets the methods property value.
-      @return the methods of this interface
-   */
-   public MultiLineString getMethods()
-   {
-      return methods;
-   }
-
-   public InterfaceNode clone()
-   {
-      InterfaceNode cloned = (InterfaceNode)super.clone();
-      cloned.name = (MultiLineString)name.clone();
-      cloned.methods = (MultiLineString)methods.clone();
-      return cloned;
-   }
-
-
+	@Override
+	public InterfaceNode clone()
+	{
+		InterfaceNode cloned = (InterfaceNode)super.clone();
+		cloned.aName = (MultiLineString)aName.clone();
+		cloned.aMethods = (MultiLineString)aMethods.clone();
+		return cloned;
+	}
 }
