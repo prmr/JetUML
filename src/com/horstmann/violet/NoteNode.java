@@ -34,136 +34,141 @@ import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.RectangularNode;
 
 /**
-   A note node in a UML diagram.
-*/
+ *  A note node in a UML diagram.
+ */
+@SuppressWarnings("serial")
 public class NoteNode extends RectangularNode
 {
-	   private MultiLineString text;
-	   private Color color;
-
-	   private static int DEFAULT_WIDTH = 60;
-	   private static int DEFAULT_HEIGHT = 40;
-	   private static Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // pale yellow
-	   private static int FOLD_X = 8;
-	   private static int FOLD_Y = 8;
+	private static final int DEFAULT_WIDTH = 60;
+	private static final int DEFAULT_HEIGHT = 40;
+	private static final Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // pale yellow
+	private static final int FOLD_X = 8;
+	private static final int FOLD_Y = 8;
 	
-   /**
-      Construct a note node with a default size and color
-   */
-   public NoteNode()
-   {
-      setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-      text = new MultiLineString();
-      text.setJustification(MultiLineString.LEFT);
-      color = DEFAULT_COLOR;
-   }
-
-   public boolean addEdge(Edge e, Point2D p1, Point2D p2)
-   {
-      PointNode end = new PointNode();
-      end.translate(p2.getX(), p2.getY());
-      e.connect(this, end);
-      return super.addEdge(e, p1, p2);
-   }
-
-   public void removeEdge(Graph g, Edge e)
-   {
-      if (e.getStart() == this) g.removeNode(e.getEnd());
-   }
-
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-      Rectangle2D b = text.getBounds(g2); // getMultiLineBounds(name, g2);
-      Rectangle2D bounds = getBounds();
-      b = new Rectangle2D.Double(bounds.getX(),
-         bounds.getY(), 
-         Math.max(b.getWidth(), DEFAULT_WIDTH),
-         Math.max(b.getHeight(), DEFAULT_HEIGHT));
-      grid.snap(b);
-      setBounds(b);
-   }
+	private MultiLineString aText;
+	private Color aColor;
 
    /**
-      Gets the value of the text property.
-      @return the text inside the note
-   */
-   public MultiLineString getText()
-   {
-      return text;
-   }
+    *  Construct a note node with a default size and color.
+    */
+	public NoteNode()
+	{
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		aText = new MultiLineString();
+		aText.setJustification(MultiLineString.LEFT);
+		aColor = DEFAULT_COLOR;
+	}
 
-   /**
-      Sets the value of the text property.
-      @param newValue the text inside the note
-   */
-   public void setText(MultiLineString newValue)
-   {
-      text = newValue;
-   }
+	@Override
+	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		PointNode end = new PointNode();
+		end.translate(pPoint2.getX(), pPoint2.getY());
+		pEdge.connect(this, end);
+		return super.addEdge(pEdge, pPoint1, pPoint2);
+	}
 
-   /**
-      Gets the value of the color property.
-      @return the background color of the note
-   */
-   public Color getColor()
-   {
-      return color;
-   }
+	@Override
+	public void removeEdge(Graph pGraph, Edge pEdge)
+	{
+		if(pEdge.getStart() == this)
+		{
+			pGraph.removeNode(pEdge.getEnd());
+		}
+	}
 
-   /**
-      Sets the value of the color property.
-      @param newValue the background color of the note
-   */
-   public void setColor(Color newValue)
-   {
-      color = newValue;
-   }
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		Rectangle2D b = aText.getBounds(pGraphics2D); // getMultiLineBounds(name, g2);
+		Rectangle2D bounds = getBounds();
+		b = new Rectangle2D.Double(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
+		pGrid.snap(b);
+		setBounds(b);
+	}
+
+	/**
+     * Gets the value of the text property.
+     * @return the text inside the note
+	 */
+	public MultiLineString getText()
+	{
+		return aText;
+	}
+
+	/**
+     * Sets the value of the text property.
+     * @param pText the text inside the note
+	 */
+	public void setText(MultiLineString pText)
+	{
+		aText = pText;
+	}
+
+	/**
+     * Gets the value of the color property.
+     * @return the background color of the note
+	 */
+	public Color getColor()
+	{
+		return aColor;
+	}
+
+	/**
+     * Sets the value of the color property.
+     * @param pColor the background color of the note
+	 */
+	public void setColor(Color pColor)
+	{
+		aColor = pColor;
+	}
    
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);
-      Color oldColor = g2.getColor();
-      g2.setColor(color);
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);
+		Color oldColor = pGraphics2D.getColor();
+		pGraphics2D.setColor(aColor);
 
-      Shape path = getShape();
-      g2.fill(path);
-      g2.setColor(oldColor);
-      g2.draw(path);
+		Shape path = getShape();
+		pGraphics2D.fill(path);
+		pGraphics2D.setColor(oldColor);
+		pGraphics2D.draw(path);
 
-      Rectangle2D bounds = getBounds();
-      GeneralPath fold = new GeneralPath();
-      fold.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-      fold.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
-      fold.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-      fold.closePath();
-      oldColor = g2.getColor();
-      g2.setColor(g2.getBackground());
-      g2.fill(fold);
-      g2.setColor(oldColor);      
-      g2.draw(fold);      
+		Rectangle2D bounds = getBounds();
+		GeneralPath fold = new GeneralPath();
+		fold.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+		fold.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
+		fold.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+		fold.closePath();
+		oldColor = pGraphics2D.getColor();
+		pGraphics2D.setColor(pGraphics2D.getBackground());
+		pGraphics2D.fill(fold);
+		pGraphics2D.setColor(oldColor);      
+		pGraphics2D.draw(fold);      
       
-      text.draw(g2, getBounds());
-   }
+		aText.draw(pGraphics2D, getBounds());
+	}
    
-   public Shape getShape()
-   {
-      Rectangle2D bounds = getBounds();
-      GeneralPath path = new GeneralPath();
-      path.moveTo((float)bounds.getX(), (float)bounds.getY());
-      path.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-      path.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-      path.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-      path.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-      path.closePath();
-      return path;
-   }
+	@Override
+	public Shape getShape()
+	{
+		Rectangle2D bounds = getBounds();
+		GeneralPath path = new GeneralPath();
+		path.moveTo((float)bounds.getX(), (float)bounds.getY());
+		path.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+		path.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+		path.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+		path.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+		path.closePath();
+		return path;
+	}
 
-   public NoteNode clone()
-   {
-      NoteNode cloned = (NoteNode)super.clone();
-      cloned.text = (MultiLineString)text.clone();
-      return cloned;
-   }
-
-
+	@Override
+	public NoteNode clone()
+	{
+		NoteNode cloned = (NoteNode)super.clone();
+		cloned.aText = (MultiLineString) aText.clone();
+		return cloned;
+	}
 }
