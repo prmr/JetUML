@@ -110,12 +110,12 @@ Edge</string>
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>160.0</double>
+      <double>80.0</double>
      </void>
     </void>
     <void method="setLocation">
      <double>650.0</double>
-     <double>160.0</double>
+     <double>80.0</double>
     </void>
    </object>
   </void>

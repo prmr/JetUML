@@ -32,154 +32,179 @@ import java.util.List;
 
 
 /**
-   A class that supplies convenience implementations for 
-   a number of methods in the Node interface
-*/
+ * A class that supplies convenience implementations for 
+ * a number of methods in the Node interface.
+ */
+@SuppressWarnings("serial")
 public abstract class AbstractNode implements Node
 {
-	private ArrayList children;
-	private Node parent;
+	public static final int SHADOW_GAP = 4;
 	
-   /**
-      Constructs a node with no parents or children.
-   */
-   public AbstractNode()
-   {
-      children = new ArrayList();
-      parent = null;
-   }
+	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
+	
+	private ArrayList<Node> aChildren;
+	private Node aParent;
+	
+	/**
+     * Constructs a node with no parents or children.
+	 */
+	public AbstractNode()
+	{
+		aChildren = new ArrayList<>();
+		aParent = null;
+	}
 
-   public AbstractNode clone()
-   {
-      try
-      {
-         AbstractNode cloned = (AbstractNode)super.clone();
-         cloned.children = new ArrayList(children.size());
-         for (int i = 0; i < children.size(); i++)
-         {
-            Node n = (Node)children.get(i);
-            cloned.children.set(i, n.clone());
-            n.setParent(cloned);
-         }
-         return cloned;
-      }
-      catch (CloneNotSupportedException exception)
-      {
-         return null;
-      }
-   }
+	@Override
+	public AbstractNode clone()
+	{
+		try
+		{
+			AbstractNode cloned = (AbstractNode) super.clone();
+			cloned.aChildren = new ArrayList<Node>(aChildren.size());
+			for(int i = 0; i < aChildren.size(); i++)
+			{
+				Node node = aChildren.get(i);
+				cloned.aChildren.set(i, node.clone());
+				node.setParent(cloned);
+			}
+			return cloned;
+		}
+		catch(CloneNotSupportedException exception)
+		{
+			return null;
+		}
+	}
 
-   public void translate(double dx, double dy)
-   {
-      for (int i = 0; i < children.size(); i++)
-      {
-         Node n = (Node)children.get(i);
-         n.translate(dx, dy);
-      }
-   }
+	@Override
+	public void translate(double pDeltaX, double pDeltaY)
+	{
+		for(Node node : aChildren)
+		{	
+			node.translate(pDeltaX, pDeltaY);
+		}
+	}
 
-   public boolean addEdge(Edge e, Point2D p1, Point2D p2)
-   {
-      return e.getEnd() != null;
-   }
+	@Override
+	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		return pEdge.getEnd() != null;
+	}
 
-   public void removeEdge(Graph g, Edge e)
-   {
-   }
+	@Override
+	public void removeEdge(Graph pGraph, Edge pEdge)
+	{}
 
-   public void removeNode(Graph g, Node e)
-   {
-      if (e == parent) parent = null; 
-      if (e.getParent() == this) children.remove(e);
-   }
+	@Override
+	public void removeNode(Graph pGraph, Node pNode)
+	{
+		if(pNode == aParent)
+		{
+			aParent = null;
+		}	 
+		if(pNode.getParent() == this)
+		{
+			aChildren.remove(pNode);
+		}
+	}
+	
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{}
 
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-   }
+	@Override
+	public boolean addNode(Node pNode, Point2D pPoint)
+	{
+		return false;
+	}
 
-   public boolean addNode(Node n, Point2D p)
-   {
-      return false;
-   }
+	@Override
+	public Node getParent() 
+   	{ return aParent; }
 
-   public Node getParent() { return parent; }
+	@Override
+	public void setParent(Node pNode) 
+	{ aParent = pNode; }
 
-   public void setParent(Node node) { parent = node; }
+	@Override
+	public List<Node> getChildren() 
+	{ return aChildren; }
 
-   public List getChildren() { return children; }
+	@Override
+	public void addChild(int pIndex, Node pNode) 
+	{
+		Node oldParent = pNode.getParent();
+		if (oldParent != null)
+		{
+			oldParent.removeChild(pNode);
+		}
+		aChildren.add(pIndex, pNode);
+		pNode.setParent(this);
+	}
 
-   public void addChild(int index, Node node) 
-   {
-      Node oldParent = node.getParent();
-      if (oldParent != null)
-         oldParent.removeChild(node);
-      children.add(index, node);
-      node.setParent(this);
-   }
+	/**
+	 * Adds a node at the end of the list.
+	 * @param pNode The node to add.
+	 */
+	protected void addChild(Node pNode)
+	{
+		addChild(aChildren.size(), pNode);
+	}
 
-   public void addChild(Node node)
-   {
-      addChild(children.size(), node);
-   }
+	@Override
+	public void removeChild(Node pNode)
+	{
+		if (pNode.getParent() != this)
+		{
+			return;
+		}
+		aChildren.remove(pNode);
+		pNode.setParent(null);
+	}
 
-   public void removeChild(Node node)
-   {
-      if (node.getParent() != this) return;
-      children.remove(node);
-      node.setParent(null);
-   }
-
-   public void draw(Graphics2D g2)
-   {
-      Shape shape = getShape();
-      if (shape == null) return;
-      /*
-      Area shadow = new Area(shape);
-      shadow.transform(AffineTransform.getTranslateInstance(SHADOW_GAP, SHADOW_GAP));
-      shadow.subtract(new Area(shape));
-      */
-      Color oldColor = g2.getColor();
-      g2.translate(SHADOW_GAP, SHADOW_GAP);      
-      g2.setColor(SHADOW_COLOR);
-      g2.fill(shape);
-      g2.translate(-SHADOW_GAP, -SHADOW_GAP);
-      g2.setColor(g2.getBackground());
-      g2.fill(shape);      
-      g2.setColor(oldColor);
-   }
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		Shape shape = getShape();
+		if(shape == null)
+		{
+			return;
+		}
+		/*
+      	Area shadow = new Area(shape);
+      	shadow.transform(AffineTransform.getTranslateInstance(SHADOW_GAP, SHADOW_GAP));
+      	shadow.subtract(new Area(shape));
+		 */
+		Color oldColor = pGraphics2D.getColor();
+		pGraphics2D.translate(SHADOW_GAP, SHADOW_GAP);      
+		pGraphics2D.setColor(SHADOW_COLOR);
+		pGraphics2D.fill(shape);
+		pGraphics2D.translate(-SHADOW_GAP, -SHADOW_GAP);
+		pGraphics2D.setColor(pGraphics2D.getBackground());
+		pGraphics2D.fill(shape);      
+		pGraphics2D.setColor(oldColor);
+	}
    
-   private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
-   public static final int SHADOW_GAP = 4;
-   
-   /**
-       @return the shape to be used for computing the drop shadow
+	/**
+     *  @return the shape to be used for computing the drop shadow
     */
-   public Shape getShape() { return null; }   
+	public Shape getShape() 
+	{ return null; }   
    
-   /**
-      Adds a persistence delegate to a given encoder that
-      encodes the child nodes of this node.
-      @param encoder the encoder to which to add the delegate
-   */
-   public static void setPersistenceDelegate(Encoder encoder)
-   {
-      encoder.setPersistenceDelegate(AbstractNode.class, new
-         DefaultPersistenceDelegate()
+	/**
+     *  Adds a persistence delegate to a given encoder that
+     * encodes the child nodes of this node.
+     * @param pEncoder the encoder to which to add the delegate
+     */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+      pEncoder.setPersistenceDelegate(AbstractNode.class, new DefaultPersistenceDelegate()
          {
-            protected void initialize(Class type, 
-               Object oldInstance, Object newInstance, 
-               Encoder out) 
+            protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
             {
-               super.initialize(type, oldInstance, 
-                  newInstance, out);
-               Node n = (Node)oldInstance;
-               List children = n.getChildren();
-               for (int i = 0; i < children.size(); i++)
-               {
-                  Node c = (Node)children.get(i);
-                  out.writeStatement(
-                     new Statement(oldInstance,
-                        "addChild", new Object[]{ c }) );            
+            	super.initialize(pType, pOldInstance, pNewInstance, pOut);
+            	for(Node node : ((Node) pOldInstance).getChildren())
+            	{
+            		pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
                }
             }
          });
