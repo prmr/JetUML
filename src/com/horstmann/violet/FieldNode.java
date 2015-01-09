@@ -34,194 +34,213 @@ import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.RectangularNode;
 
 /**
-   A field node in an object diagram.
-*/
+ *  A field node in an object diagram.
+ */
+@SuppressWarnings("serial")
 public class FieldNode extends RectangularNode
 {
-	   private double axisX;
-	   private MultiLineString name;
-	   private MultiLineString value;
-	   private Rectangle2D nameBounds;
-	   private Rectangle2D valueBounds;
-	   private boolean boxedValue;
-	   private double boxWidth;
-
-	   public static int DEFAULT_WIDTH = 60;
-	   public static int DEFAULT_HEIGHT = 20;
+	public static final int DEFAULT_WIDTH = 60;
+	public static final int DEFAULT_HEIGHT = 20;
 	
-   public FieldNode()
-   {
-      name = new MultiLineString();
-      name.setJustification(MultiLineString.RIGHT);
-      value = new MultiLineString();
-      setBounds(new Rectangle2D.Double(0, 0, 
-         DEFAULT_WIDTH, DEFAULT_HEIGHT));
+	private double aAxisX;
+	private MultiLineString aName;
+	private MultiLineString aValue;
+	private Rectangle2D aNameBounds;
+	private Rectangle2D aValueBounds;
+	private boolean aBoxedValue;
+	private double aBoxWidth;
+
+	/**
+	 * A default field node.
+	 */
+	public FieldNode()
+	{
+		aName = new MultiLineString();
+		aName.setJustification(MultiLineString.RIGHT);
+		aValue = new MultiLineString();
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
 
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);
-      Rectangle2D b = getBounds();
-      double leftWidth = name.getBounds(g2).getWidth();
-      MultiLineString equal = new MultiLineString();
-      equal.setText(" = ");
-      double midWidth = equal.getBounds(g2).getWidth();
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);
+		Rectangle2D b = getBounds();
+		double leftWidth = aName.getBounds(pGraphics2D).getWidth();
+		MultiLineString equal = new MultiLineString();
+		equal.setText(" = ");
+		double midWidth = equal.getBounds(pGraphics2D).getWidth();
       
-      double rightWidth = value.getBounds(g2).getWidth();
-      if (rightWidth == 0) rightWidth = DEFAULT_WIDTH / 2;
-      rightWidth = Math.max(rightWidth, boxWidth - midWidth / 2);
+		double rightWidth = aValue.getBounds(pGraphics2D).getWidth();
+		if(rightWidth == 0)
+		{
+			rightWidth = DEFAULT_WIDTH / 2;
+		}
+		rightWidth = Math.max(rightWidth, aBoxWidth - midWidth / 2);
 
-      nameBounds = new Rectangle2D.Double(b.getX(),
-         b.getY(), leftWidth, b.getHeight());
-      name.draw(g2, nameBounds);
-      Rectangle2D mid = new Rectangle2D.Double(b.getX() + 
-         leftWidth, b.getY(), 
-         midWidth,
-         b.getHeight());
-      equal.draw(g2, mid);
-      valueBounds = new Rectangle2D.Double(b.getMaxX() -
-         rightWidth, b.getY(), rightWidth, b.getHeight());
-      if (boxedValue)
-         value.setJustification(MultiLineString.CENTER);
-      else
-         name.setJustification(MultiLineString.LEFT);
-      value.draw(g2, valueBounds);
-      if (boxedValue) g2.draw(valueBounds);
-   }
+		aNameBounds = new Rectangle2D.Double(b.getX(), b.getY(), leftWidth, b.getHeight());
+		aName.draw(pGraphics2D, aNameBounds);
+		Rectangle2D mid = new Rectangle2D.Double(b.getX() + leftWidth, b.getY(), midWidth, b.getHeight());
+		equal.draw(pGraphics2D, mid);
+		aValueBounds = new Rectangle2D.Double(b.getMaxX() - rightWidth, b.getY(), rightWidth, b.getHeight());
+		if(aBoxedValue)
+		{
+			aValue.setJustification(MultiLineString.CENTER);
+		}
+		else
+		{
+			aName.setJustification(MultiLineString.LEFT);
+		}
+		aValue.draw(pGraphics2D, aValueBounds);
+		if(aBoxedValue)
+		{
+			pGraphics2D.draw(aValueBounds);
+		}
+	}
 
-   public boolean addEdge(Edge e, Point2D p1, Point2D p2)
-   {
-      if (e instanceof ObjectReferenceEdge 
-         && e.getEnd() instanceof ObjectNode)
-      {
-         value.setText("");
-         return true;
-      }
-      return false;
-   }
+	@Override
+	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if (pEdge instanceof ObjectReferenceEdge && pEdge.getEnd() instanceof ObjectNode)
+		{
+			aValue.setText("");
+			return true;
+		}
+		return false;
+	}
 
-   public boolean addNode(Node n, Point2D p)
-   {
-      return n instanceof PointNode;
-   }
+	@Override
+	public boolean addNode(Node pNode, Point2D pPoint)
+	{
+		return pNode instanceof PointNode;
+	}
 
-   public Point2D getConnectionPoint(Direction d)
-   {
-      Rectangle2D b = getBounds();
-      return new Point2D.Double(
-         (b.getMaxX() + b.getX() + axisX) / 2,
-         b.getCenterY());
-   }
+	@Override
+	public Point2D getConnectionPoint(Direction pDirection)
+	{
+		Rectangle2D b = getBounds();
+		return new Point2D.Double((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenterY());
+	}
 
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-      nameBounds = name.getBounds(g2); 
-      valueBounds = value.getBounds(g2);
-      MultiLineString equal = new MultiLineString();
-      equal.setText(" = ");
-      Rectangle2D e = equal.getBounds(g2);
-      double leftWidth = nameBounds.getWidth();
-      double midWidth = e.getWidth();
-      double rightWidth = valueBounds.getWidth();
-      if (rightWidth == 0) rightWidth = DEFAULT_WIDTH / 2;
-      rightWidth = Math.max(rightWidth, boxWidth - midWidth / 2);
-      double width = leftWidth + midWidth + rightWidth;
-      double height = Math.max(nameBounds.getHeight(), Math.max(
-         valueBounds.getHeight(), e.getHeight()));
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		aNameBounds = aName.getBounds(pGraphics2D); 
+		aValueBounds = aValue.getBounds(pGraphics2D);
+		MultiLineString equal = new MultiLineString();
+		equal.setText(" = ");
+		Rectangle2D e = equal.getBounds(pGraphics2D);
+		double leftWidth = aNameBounds.getWidth();
+		double midWidth = e.getWidth();
+		double rightWidth = aValueBounds.getWidth();
+		if(rightWidth == 0)
+		{
+			rightWidth = DEFAULT_WIDTH / 2;
+		}
+		rightWidth = Math.max(rightWidth, aBoxWidth - midWidth / 2);
+		double width = leftWidth + midWidth + rightWidth;
+		double height = Math.max(aNameBounds.getHeight(), Math.max(aValueBounds.getHeight(), e.getHeight()));
 
-      Rectangle2D b = getBounds();
-      setBounds(new Rectangle2D.Double(b.getX(), b.getY(), width, height));
-      axisX = leftWidth + midWidth / 2;
+		Rectangle2D b = getBounds();
+		setBounds(new Rectangle2D.Double(b.getX(), b.getY(), width, height));
+		aAxisX = leftWidth + midWidth / 2;
       
-      valueBounds.setFrame(b.getMaxX() - rightWidth, b.getY(), valueBounds.getWidth(), valueBounds.getHeight());
-   }
+		aValueBounds.setFrame(b.getMaxX() - rightWidth, b.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
+	}
 
+	/**
+     * Sets the name property value.
+     * @param pName the field name
+	 */
+	public void setName(MultiLineString pName)
+	{
+		aName = pName;
+	}
+
+	/**
+     * Gets the name property value.
+     * @return the field name
+	 */
+	public MultiLineString getName()
+	{
+		return aName;
+	}
+
+	/**
+     * Sets the value property value.
+     * @param pNewValue the field value
+	 */
+	public void setValue(MultiLineString pNewValue)
+	{
+		aValue = pNewValue;
+	}
+
+	/**
+     * Gets the value property value.
+     * @return the field value
+	 */
+	public MultiLineString getValue()
+	{
+		return aValue;
+	}
+
+	/**
+     * Sets the box width.
+     * @param pBoxWidth the new box width
+	 */
+	public void setBoxWidth(double pBoxWidth)
+	{
+		aBoxWidth = pBoxWidth;
+	}
    
-   /**
-      Sets the name property value.
-      @param newValue the field name
-   */
-   public void setName(MultiLineString newValue)
-   {
-      name = newValue;
-   }
+	/**
+     * Sets the boxedValue property value.
+     * @param pNewValue the new property value
+	 */
+	public void setBoxedValue(boolean pNewValue)
+	{
+		aBoxedValue = pNewValue;
+	}
 
-   /**
-      Gets the name property value.
-      @return the field name
-   */
-   public MultiLineString getName()
-   {
-      return name;
-   }
+	/**
+     * Gets the boxedValue property value.
+     * @return the property value
+	 */
+	public boolean isBoxedValue()
+	{
+		return aBoxedValue;
+	}
 
-   /**
-      Sets the value property value.
-      @param newValue the field value
-   */
-   public void setValue(MultiLineString newValue)
-   {
-      value = newValue;
-   }
+	@Override
+	public FieldNode clone()
+	{
+		FieldNode cloned = (FieldNode)super.clone();
+		cloned.aName = (MultiLineString)aName.clone();
+		cloned.aValue = (MultiLineString)aValue.clone();
+		return cloned;
+	}
 
-   /**
-      Gets the value property value.
-      @return the field value
-   */
-   public MultiLineString getValue()
-   {
-      return value;
-   }
-
-   /**
-      Sets the box width.
-      @param newValue the new box width
-   */
-   public void setBoxWidth(double newValue)
-   {
-      boxWidth = newValue;
-   }
+	/**
+     * Gets the x-offset of the axis (the location
+     * of the = sign) from the left corner of the bounding rectangle.
+     * @return the x-offset of the axis
+	 */
+	public double getAxisX()
+	{
+		return aAxisX;
+	}
    
-   /**
-      Sets the boxedValue property value.
-      @param newValue the new property value
-   */
-   public void setBoxedValue(boolean newValue)
-   {
-      boxedValue = newValue;
-   }
-
-   /**
-      Gets the boxedValue property value.
-      @return the property value
-   */
-   public boolean isBoxedValue()
-   {
-      return boxedValue;
-   }
-
-   public FieldNode clone()
-   {
-      FieldNode cloned = (FieldNode)super.clone();
-      cloned.name = (MultiLineString)name.clone();
-      cloned.value = (MultiLineString)value.clone();
-      return cloned;
-   }
-
-   /**
-      Gets the x-offset of the axis (the location
-      of the = sign) from the left corner of the bounding rectangle.
-      @return the x-offset of the axis
-   */
-   public double getAxisX()
-   {
-      return axisX;
-   }
-   
-   public Shape getShape()
-   {
-      if (boxedValue) return valueBounds; else return null;
-   }
-
-
+	@Override
+	public Shape getShape()
+	{
+		if(aBoxedValue)
+		{
+			return aValueBounds;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }
+
