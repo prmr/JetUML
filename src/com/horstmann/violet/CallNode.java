@@ -39,243 +39,287 @@ import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.RectangularNode;
 
 /**
-   A method call node in a scenario diagram.
+ * A method call node in a scenario diagram.
 */
+@SuppressWarnings("serial")
 public class CallNode extends RectangularNode
 {
-	   private ImplicitParameterNode implicitParameter;
-	   private boolean signaled;
-	   private boolean openBottom;
-	   
-	   private static int DEFAULT_WIDTH = 16;
-	   private static int DEFAULT_HEIGHT = 30;
-	   public static int CALL_YGAP = 20;
+	public static final int CALL_YGAP = 20;
 	
+	private static final int DEFAULT_WIDTH = 16;
+	private static final int DEFAULT_HEIGHT = 30;
+	
+	private ImplicitParameterNode aImplicitParameter;
+	private boolean aSignaled;
+	private boolean aOpenBottom;
+	   
    /**
-      Construct a call node with a default size
-   */
-   public CallNode()
-   {
-      setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-   }
+    *  Construct a call node with a default size.
+    */
+	public CallNode()
+	{
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+	}
 
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);
-      Color oldColor = g2.getColor();
-      g2.setColor(Color.WHITE);
-      g2.fill(getBounds());
-      g2.setColor(oldColor);
-      if (openBottom)
-      {
-         Rectangle2D b = getBounds();
-         double x1 = b.getX();
-         double x2 = x1 + b.getWidth();
-         double y1 = b.getY();
-         double y3 = y1 + b.getHeight();
-         double y2 = y3 - CALL_YGAP;
-         g2.draw(new Line2D.Double(x1, y1, x2, y1));
-         g2.draw(new Line2D.Double(x1, y1, x1, y2));
-         g2.draw(new Line2D.Double(x2, y1, x2, y2));
-         Stroke oldStroke = g2.getStroke();
-         g2.setStroke(new BasicStroke(1.0f, 
-                         BasicStroke.CAP_ROUND, 
-                         BasicStroke.JOIN_ROUND, 
-                         0.0f, 
-                         new float[] { 5.0f, 5.0f }, 0.0f));
-         g2.draw(new Line2D.Double(x1, y2, x1, y3));
-         g2.draw(new Line2D.Double(x2, y2, x2, y3));
-         g2.setStroke(oldStroke);
-      }
-      else
-         g2.draw(getBounds());
-   }
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);
+		Color oldColor = pGraphics2D.getColor();
+		pGraphics2D.setColor(Color.WHITE);
+		pGraphics2D.fill(getBounds());
+		pGraphics2D.setColor(oldColor);
+		if(aOpenBottom)
+		{
+			Rectangle2D b = getBounds();
+			double x1 = b.getX();
+			double x2 = x1 + b.getWidth();
+			double y1 = b.getY();
+			double y3 = y1 + b.getHeight();
+			double y2 = y3 - CALL_YGAP;
+			pGraphics2D.draw(new Line2D.Double(x1, y1, x2, y1));
+			pGraphics2D.draw(new Line2D.Double(x1, y1, x1, y2));
+			pGraphics2D.draw(new Line2D.Double(x2, y1, x2, y2));
+			Stroke oldStroke = pGraphics2D.getStroke();
+			// CSOFF:
+			pGraphics2D.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f, new float[] { 5.0f, 5.0f }, 0.0f));
+			// CSON:
+			pGraphics2D.draw(new Line2D.Double(x1, y2, x1, y3));
+			pGraphics2D.draw(new Line2D.Double(x2, y2, x2, y3));
+			pGraphics2D.setStroke(oldStroke);
+		}
+		else
+		{
+			pGraphics2D.draw(getBounds());
+		}
+	}
 
-   /**
-      Gets the implicit parameter of this call.
-      @return the implicit parameter node
-   */
-   public ImplicitParameterNode getImplicitParameter()
-   {
-      return implicitParameter;
-   }
+	/**
+     * Gets the implicit parameter of this call.
+     * @return the implicit parameter node
+	 */
+	public ImplicitParameterNode getImplicitParameter()
+	{
+		return aImplicitParameter;
+	}
 
-   /**
-      Sets the implicit parameter of this call.
-      @param newValue the implicit parameter node
-   */
-   public void setImplicitParameter(ImplicitParameterNode newValue)
-   {
-      implicitParameter = newValue;
-   }
+	/**
+     * Sets the implicit parameter of this call.
+     * @param pNewValue the implicit parameter node
+	 */
+	public void setImplicitParameter(ImplicitParameterNode pNewValue)
+	{
+		aImplicitParameter = pNewValue;
+	}
 
-   public Point2D getConnectionPoint(Direction d)
-   {
-      if (d.getX() > 0)
-         return new Point2D.Double(getBounds().getMaxX(),
-            getBounds().getMinY());
-      else
-         return new Point2D.Double(getBounds().getX(),
-            getBounds().getMinY());
-   }
+	@Override
+	public Point2D getConnectionPoint(Direction pDirection)
+	{
+		if(pDirection.getX() > 0)
+		{
+			return new Point2D.Double(getBounds().getMaxX(), getBounds().getMinY());
+		}
+		else
+		{
+			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
+		}
+	}
 
-   public boolean addEdge(Edge e, Point2D p1, Point2D p2)
-   {
-      Node end = e.getEnd();
-      if (end == null) return false;
+	@Override
+	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		Node end = pEdge.getEnd();
+		if(end == null)
+		{
+			return false;
+		}
 
-      if (e instanceof ReturnEdge) // check that there is a matching call 
-         return end == getParent();
+		if(pEdge instanceof ReturnEdge)
+		{
+			return end == getParent();
+		}
          
-      if (!(e instanceof CallEdge)) return false;
+		if(!(pEdge instanceof CallEdge))
+		{
+			return false;
+		}
       
-      Node n = null;
-      if (end instanceof CallNode) 
-      {
-         // check for cycles
-         Node parent = this; 
-         while (parent != null && end != parent) 
-            parent = parent.getParent();
+		Node n = null;
+		if(end instanceof CallNode) 
+		{
+			// check for cycles
+			Node parent = this; 
+			while(parent != null && end != parent)
+			{
+				parent = parent.getParent();
+			}
          
-         if (end.getParent() == null && end != parent)
-         {
-            n = end;
-         }
-         else
-         {
-            CallNode c = new CallNode();
-            c.implicitParameter = ((CallNode)end).implicitParameter;
-            e.connect(this, c);
-            n = c;
-         }
-      }
-      else if (end instanceof ImplicitParameterNode)
+			if(end.getParent() == null && end != parent)
+			{
+				n = end;
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.aImplicitParameter = ((CallNode)end).aImplicitParameter;
+				pEdge.connect(this, c);
+				n = c;
+			}
+		}
+		else if(end instanceof ImplicitParameterNode)
+		{
+			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
+			{
+				n = end;
+				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.aImplicitParameter = (ImplicitParameterNode)end;
+				pEdge.connect(this, c);
+				n = c;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+		int i = 0;
+		List<Node> calls = getChildren();
+		while(i < calls.size() && calls.get(i).getBounds().getY() <= pPoint1.getY())
+		{
+			i++;
+		}
+		addChild(i, n);
+		return true;
+	}
+
+	@Override
+	public void removeEdge(Graph pGraph, Edge pEdge)
+	{
+		if(pEdge.getStart() == this)
+		{
+			removeChild(pEdge.getEnd());
+		}
+	}
+
+	@Override
+	public void removeNode(Graph pGraph, Node pNode)
+	{
+      if(pNode == getParent() || pNode == aImplicitParameter)
       {
-         if (((ImplicitParameterNode)end).getTopRectangle().contains(p2))
-         {
-            n = end;
-            ((CallEdge)e).setMiddleLabel("\u00ABcreate\u00BB");
-         }
-         else
-         {
-            CallNode c = new CallNode();
-            c.implicitParameter = (ImplicitParameterNode)end;
-            e.connect(this, c);
-            n = c;
-         }
+    	  pGraph.removeNode(this);
       }
-      else return false;
-
-      int i = 0;
-      List calls = getChildren();
-      while (i < calls.size() && ((Node)calls.get(i)).getBounds().getY() <= p1.getY()) 
-         i++;
-      addChild(i, n);
-      return true;
-   }
-
-   public void removeEdge(Graph g, Edge e)
-   {
-      if (e.getStart() == this)
-         removeChild(e.getEnd());
-   }
-
-   public void removeNode(Graph g, Node n)
-   {
-      if (n == getParent() || n == implicitParameter)
-         g.removeNode(this);
-   }
+	}
    
-   private static Edge findEdge(Graph g, Node start, Node end)
-   {
-      Collection edges = g.getEdges();
-      Iterator iter = edges.iterator(); 
-      while (iter.hasNext())
-      {
-         Edge e = (Edge) iter.next();
-         if (e.getStart() == start && e.getEnd() == end) return e;
-      }
-      return null;
+	private static Edge findEdge(Graph pGraph, Node pStart, Node pEnd)
+	{
+		Collection<Edge> edges = pGraph.getEdges();
+		Iterator<Edge> iter = edges.iterator(); 
+		while(iter.hasNext())
+		{
+			Edge e = iter.next();
+			if(e.getStart() == pStart && e.getEnd() == pEnd)
+			{
+				return e;
+			}
+		}
+		return null;
    }
 
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-      
-      if (implicitParameter == null) return;
-      double xmid = implicitParameter.getBounds().getCenterX();
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		if(aImplicitParameter == null)
+		{
+			return;
+		}
+		double xmid = aImplicitParameter.getBounds().getCenterX();
 
-      for (CallNode c = (CallNode)getParent(); 
-           c != null; c = (CallNode)c.getParent())
-         if (c.implicitParameter == implicitParameter)
-            xmid += getBounds().getWidth() / 2;
+		for(CallNode c = (CallNode)getParent(); c != null; c = (CallNode)c.getParent())
+		{
+			if (c.aImplicitParameter == aImplicitParameter)
+			{
+				xmid += getBounds().getWidth() / 2;
+			}
+		}
 
-      translate(xmid - getBounds().getCenterX(), 0);
-      double ytop = getBounds().getY() + CALL_YGAP;
+		translate(xmid - getBounds().getCenterX(), 0);
+		double ytop = getBounds().getY() + CALL_YGAP;
 
-      List calls = getChildren();
-      for (int i = 0; i < calls.size(); i++)
-      {
-         Node n = (Node) calls.get(i);
-         if (n instanceof ImplicitParameterNode) // <<create>>
-         {
-            n.translate(0, ytop - ((ImplicitParameterNode) n).getTopRectangle().getCenterY());
-            ytop += ((ImplicitParameterNode)n).getTopRectangle().getHeight() / 2 + CALL_YGAP;
-         }
-         else if (n instanceof CallNode)
-         {  
-            Edge callEdge = findEdge(g, this, n);
-            // compute height of call edge
-            if (callEdge != null)
-            {
-               Rectangle2D edgeBounds = callEdge.getBounds(g2);
-               ytop += edgeBounds.getHeight() - CALL_YGAP;
-            }
+		List<Node> calls = getChildren();
+		for(int i = 0; i < calls.size(); i++)
+		{
+			Node n = calls.get(i);
+			if(n instanceof ImplicitParameterNode) // <<create>>
+			{
+				n.translate(0, ytop - ((ImplicitParameterNode) n).getTopRectangle().getCenterY());
+				ytop += ((ImplicitParameterNode)n).getTopRectangle().getHeight() / 2 + CALL_YGAP;
+			}
+			else if(n instanceof CallNode)
+			{  
+				Edge callEdge = findEdge(pGraph, this, n);
+				// compute height of call edge
+				if(callEdge != null)
+				{
+					Rectangle2D edgeBounds = callEdge.getBounds(pGraphics2D);
+					ytop += edgeBounds.getHeight() - CALL_YGAP;
+				}
             
-            n.translate(0, ytop - n.getBounds().getY());
-            n.layout(g, g2, grid);
-            if (((CallNode) n).signaled)
-               ytop += CALL_YGAP;
-            else
-               ytop += n.getBounds().getHeight() + CALL_YGAP;
-         }
-      }
-      if (openBottom) ytop += 2 * CALL_YGAP;
-      Rectangle2D b = getBounds();
+				n.translate(0, ytop - n.getBounds().getY());
+				n.layout(pGraph, pGraphics2D, pGrid);
+				if(((CallNode) n).aSignaled)
+				{
+					ytop += CALL_YGAP;
+				}
+				else
+				{
+					ytop += n.getBounds().getHeight() + CALL_YGAP;
+				}
+			}
+		}
+		if(aOpenBottom)
+		{
+			ytop += 2 * CALL_YGAP;
+		}
+		Rectangle2D b = getBounds();
       
-      double minHeight = DEFAULT_HEIGHT;
-      Edge returnEdge = findEdge(g, this, getParent());
-      if (returnEdge != null)
-      {
-         Rectangle2D edgeBounds = returnEdge.getBounds(g2);
-         minHeight = Math.max(minHeight, edgeBounds.getHeight());         
-      }
-      setBounds(new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), 
-            Math.max(minHeight, ytop - b.getY())));
-   }
+		double minHeight = DEFAULT_HEIGHT;
+		Edge returnEdge = findEdge(pGraph, this, getParent());
+		if(returnEdge != null)
+		{
+			Rectangle2D edgeBounds = returnEdge.getBounds(pGraphics2D);
+			minHeight = Math.max(minHeight, edgeBounds.getHeight());         
+		}
+		setBounds(new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), Math.max(minHeight, ytop - b.getY())));
+	}
 
-   public boolean addNode(Node n, Point2D p)
-   {
-      return n instanceof PointNode;
-   }
+	@Override
+	public boolean addNode(Node pNode, Point2D pPoint)
+	{
+		return pNode instanceof PointNode;
+	}
 
-   /**
-      Sets the signaled property.
-      @param newValue true if this node is the target of a signal edge
-   */      
-   public void setSignaled(boolean newValue) { signaled = newValue; }
+	/**
+     * Sets the signaled property.
+     * @param pNewValue true if this node is the target of a signal edge
+	 */      
+	public void setSignaled(boolean pNewValue)
+	{ aSignaled = pNewValue; }
 
-   /**
-      Gets the openBottom property.
-      @return true if this node is the target of a signal edge
-   */
-   public boolean isOpenBottom() { return openBottom; }
+	/**
+     * Gets the openBottom property.
+     * @return true if this node is the target of a signal edge
+	 */
+	public boolean isOpenBottom() 
+	{ return aOpenBottom; }
 
-   /**
-      Sets the openBottom property.
-      @param newValue true if this node is the target of a signal edge
-   */      
-   public void setOpenBottom(boolean newValue) { openBottom = newValue; }
-
-
-
+	/**
+     * Sets the openBottom property.
+     * @param pNewValue true if this node is the target of a signal edge
+	 */      
+	public void setOpenBottom(boolean pNewValue)
+	{ aOpenBottom = pNewValue; }
 }
