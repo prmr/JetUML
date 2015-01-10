@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -30,11 +30,8 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.MultiLineString;
-import com.horstmann.violet.framework.Node;
-import com.horstmann.violet.framework.RectangularNode;
 
 /**
  *   A package node in a UML diagram.

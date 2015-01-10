@@ -24,6 +24,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+
 /**
  * This class implements a dialog for previewing and printing a graph.
  */

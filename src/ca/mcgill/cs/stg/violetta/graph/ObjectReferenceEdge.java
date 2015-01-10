@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -27,8 +27,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.framework.Direction;
-import com.horstmann.violet.framework.ShapeEdge;
 
 /**
  * An S- or C-shaped edge with an arrowhead.

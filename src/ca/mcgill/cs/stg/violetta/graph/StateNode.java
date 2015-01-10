@@ -18,17 +18,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.MultiLineString;
-import com.horstmann.violet.framework.RectangularNode;
 
 /**
    A node in a state diagram.

@@ -31,6 +31,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+
 
 /**
    A frame for showing a graphical editor

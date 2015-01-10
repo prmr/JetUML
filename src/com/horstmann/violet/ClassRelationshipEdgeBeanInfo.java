@@ -24,6 +24,8 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
+import ca.mcgill.cs.stg.violetta.graph.ClassRelationshipEdge;
+
 /**
    The bean info for the ClassRelationshipEdge type.
 */

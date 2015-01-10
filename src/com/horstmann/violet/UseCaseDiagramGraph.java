@@ -20,9 +20,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet;
 
-import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
-import com.horstmann.violet.framework.Node;
+import ca.mcgill.cs.stg.violetta.graph.ActorNode;
+import ca.mcgill.cs.stg.violetta.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.violetta.graph.Edge;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+import ca.mcgill.cs.stg.violetta.graph.Node;
+import ca.mcgill.cs.stg.violetta.graph.NoteEdge;
+import ca.mcgill.cs.stg.violetta.graph.NoteNode;
+import ca.mcgill.cs.stg.violetta.graph.UseCaseNode;
 
 
 /**

@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -32,11 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.horstmann.violet.framework.Direction;
-import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Grid;
-import com.horstmann.violet.framework.Node;
-import com.horstmann.violet.framework.RectangularNode;
 
 /**
  * A method call node in a scenario diagram.

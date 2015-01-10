@@ -34,10 +34,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import ca.mcgill.cs.stg.violetta.graph.Edge;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+import ca.mcgill.cs.stg.violetta.graph.Node;
 
 import java.util.ArrayList;
 import java.util.HashSet;

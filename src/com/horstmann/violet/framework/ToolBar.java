@@ -43,7 +43,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
-import com.horstmann.violet.PointNode;
+import ca.mcgill.cs.stg.violetta.graph.Edge;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+import ca.mcgill.cs.stg.violetta.graph.Node;
+import ca.mcgill.cs.stg.violetta.graph.PointNode;
 
 
 /**

@@ -18,13 +18,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet.framework;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.List;
+
+import com.horstmann.violet.framework.Direction;
+import com.horstmann.violet.framework.Grid;
 
 /**
   * A node in a graph.

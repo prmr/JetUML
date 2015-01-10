@@ -22,9 +22,15 @@ package com.horstmann.violet;
 
 import java.awt.geom.Point2D;
 
-import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
-import com.horstmann.violet.framework.Node;
+import ca.mcgill.cs.stg.violetta.graph.ClassNode;
+import ca.mcgill.cs.stg.violetta.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.violetta.graph.Edge;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+import ca.mcgill.cs.stg.violetta.graph.InterfaceNode;
+import ca.mcgill.cs.stg.violetta.graph.Node;
+import ca.mcgill.cs.stg.violetta.graph.NoteEdge;
+import ca.mcgill.cs.stg.violetta.graph.NoteNode;
+import ca.mcgill.cs.stg.violetta.graph.PackageNode;
 
 /**
    A UML class diagram.

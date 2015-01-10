@@ -27,10 +27,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
+import ca.mcgill.cs.stg.violetta.graph.CallEdge;
+import ca.mcgill.cs.stg.violetta.graph.CallNode;
+import ca.mcgill.cs.stg.violetta.graph.Edge;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+import ca.mcgill.cs.stg.violetta.graph.ImplicitParameterNode;
+import ca.mcgill.cs.stg.violetta.graph.Node;
+import ca.mcgill.cs.stg.violetta.graph.NoteEdge;
+import ca.mcgill.cs.stg.violetta.graph.NoteNode;
+import ca.mcgill.cs.stg.violetta.graph.ReturnEdge;
+
 import com.horstmann.violet.framework.Grid;
-import com.horstmann.violet.framework.Node;
 
 
 /**

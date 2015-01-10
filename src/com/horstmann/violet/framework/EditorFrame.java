@@ -76,6 +76,9 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import ca.mcgill.cs.stg.violetta.graph.AbstractNode;
+import ca.mcgill.cs.stg.violetta.graph.Graph;
+
 import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.BentStyle;
 import com.horstmann.violet.LineStyle;
