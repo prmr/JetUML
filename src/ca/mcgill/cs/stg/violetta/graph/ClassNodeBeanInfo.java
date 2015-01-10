@@ -18,33 +18,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
-import ca.mcgill.cs.stg.violetta.graph.ClassNode;
-
 /**
-   The bean info for the ClassNode type.
-*/
+ *   The bean info for the ClassNode type.
+ */
 public class ClassNodeBeanInfo extends SimpleBeanInfo
 {
-   public PropertyDescriptor[] getPropertyDescriptors()
-   {
-      try
-      {
-         PropertyDescriptor nameDescriptor 
-            = new PropertyDescriptor("name", ClassNode.class);
-         nameDescriptor.setValue("priority", new Integer(1));
-         PropertyDescriptor attributesDescriptor
-            = new PropertyDescriptor("attributes", ClassNode.class);
-         attributesDescriptor.setValue("priority", new Integer(2));
-         PropertyDescriptor methodsDescriptor
-            = new PropertyDescriptor("methods", ClassNode.class);
-         methodsDescriptor.setValue("priority", new Integer(3));
-         return new PropertyDescriptor[]
+	@Override
+	public PropertyDescriptor[] getPropertyDescriptors()
+	{
+		try
+		{
+			PropertyDescriptor nameDescriptor = new PropertyDescriptor("name", ClassNode.class);
+			nameDescriptor.setValue("priority", new Integer(1));
+			PropertyDescriptor attributesDescriptor = new PropertyDescriptor("attributes", ClassNode.class);
+			attributesDescriptor.setValue("priority", new Integer(2));
+			PropertyDescriptor methodsDescriptor = new PropertyDescriptor("methods", ClassNode.class);
+			methodsDescriptor.setValue("priority", new Integer(3));
+			return new PropertyDescriptor[]
             {
                nameDescriptor,
                attributesDescriptor,

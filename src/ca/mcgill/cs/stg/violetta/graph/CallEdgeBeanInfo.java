@@ -18,33 +18,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package ca.mcgill.cs.stg.violetta.graph;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
-import ca.mcgill.cs.stg.violetta.graph.CallNode;
-
 /**
-   The bean info for the CallNode type.
-*/
-public class CallNodeBeanInfo extends SimpleBeanInfo
+ *  The bean info for the CallEdge type.
+ */
+public class CallEdgeBeanInfo extends SimpleBeanInfo
 {
-   public PropertyDescriptor[] getPropertyDescriptors()
-   {
-      try
-      {
-         return new PropertyDescriptor[]
-            {
-               new PropertyDescriptor("openBottom", CallNode.class),
-               new PropertyDescriptor("implicitParameter", CallNode.class)
+	@Override
+	public PropertyDescriptor[] getPropertyDescriptors()
+	{
+		try
+		{
+			return new PropertyDescriptor[]
+			{
+					new PropertyDescriptor("middleLabel", CallEdge.class),
+					new PropertyDescriptor("signal", CallEdge.class)
             };
-      }
-      catch (IntrospectionException exception)
-      {
-         return null;
-      }
+		}
+		catch (IntrospectionException exception)
+		{
+			return null;
+		}
    }
 }
 

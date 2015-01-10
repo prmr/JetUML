@@ -20,72 +20,99 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet.framework;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
+import java.beans.PropertyEditorSupport;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
-   A component filled with editors for all editable properties 
-   of an object.
-*/
+ *   A component filled with editors for all editable properties 
+ *  of an object.
+ */
+@SuppressWarnings("serial")
 public class PropertySheet extends JPanel
 {
-	   private static final int WIDTH = 100;
-	   private static final int HEIGHT = 25;
-	   private static final int MAX_TEXT_LENGTH = 15;
+	private static final int MAX_TEXT_LENGTH = 15;
 	
-   /**
-      Constructs a property sheet that shows the editable
-      properties of a given object.
-      @param object the object whose properties are being edited
-      @param parent the parent component
-   */
-   public PropertySheet(Object bean, Component parent)
-   {
-      this.parent = parent;
-      try
-      {
-         BeanInfo info 
-            = Introspector.getBeanInfo(bean.getClass());
-         PropertyDescriptor[] descriptors 
-            = (PropertyDescriptor[])info.getPropertyDescriptors().clone();      
-         Arrays.sort(descriptors, new
-            Comparator()
-            {
-               public int compare(Object o1, Object o2)
-               {
-                  PropertyDescriptor d1 = (PropertyDescriptor)o1;
-                  PropertyDescriptor d2 = (PropertyDescriptor)o2;
-                  Integer p1 = (Integer)d1.getValue("priority");
-                  Integer p2 = (Integer)d2.getValue("priority");
-                  if (p1 == null && p2 == null) return 0;
-                  if (p1 == null) return 1;
-                  if (p2 == null) return -1;
-                  return p1.intValue() - p2.intValue();
-               }
-            });
-         setLayout(new FormLayout());
-         for (int i = 0; i < descriptors.length; i++)
-         {
-            PropertyEditor editor 
-               = getEditor(bean, descriptors[i]);
-            if (editor != null)
-            {
-               add(new JLabel(descriptors[i].getName()));
-               add(getEditorComponent(editor));
-            }
-         }
-      }
-      catch (IntrospectionException exception)
-      {
-         exception.printStackTrace();
-      }
-   }
+	private static Map editors;
+
+	private ArrayList aChangeListeners = new ArrayList();
+	private Component aParent;
+	
+	/**
+     * Constructs a property sheet that shows the editable
+     * properties of a given object.
+     * @param pBean the object whose properties are being edited
+     * @param pParent the parent component
+	 */
+	public PropertySheet(Object pBean, Component pParent)
+	{
+		aParent = pParent;
+		try
+		{
+			BeanInfo info = Introspector.getBeanInfo(pBean.getClass());
+			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();      
+			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
+					{
+						public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
+						{
+							Integer p1 = (Integer)pDescriptor1.getValue("priority");
+							Integer p2 = (Integer)pDescriptor2.getValue("priority");
+							if(p1 == null && p2 == null)
+							{
+								return 0;
+							}
+							if(p1 == null)
+							{
+								return 1;
+							}
+							if(p2 == null)
+							{
+								return -1;
+							}
+							return p1.intValue() - p2.intValue();
+						}
+					});
+			setLayout(new FormLayout());
+			for(int i = 0; i < descriptors.length; i++)
+			{
+				PropertyEditor editor = getEditor(pBean, descriptors[i]);
+				if(editor != null)
+				{
+					add(new JLabel(descriptors[i].getName()));
+					add(getEditorComponent(editor));
+				}
+			}		
+		}
+		catch (IntrospectionException exception)
+		{
+			exception.printStackTrace();
+		}
+	}
 
    /**
       Gets the property editor for a given property,
@@ -171,60 +198,7 @@ public class PropertySheet extends JPanel
       if (editor.supportsCustomEditor())
       {
          return editor.getCustomEditor();         
-         /*
          
-         // Make a button that pops up the custom editor
-         final JButton button = new JButton();
-         // if the editor is paintable, have it paint an icon
-         if (editor.isPaintable())
-         {
-            button.setIcon(new 
-               Icon()
-               {
-                  public int getIconWidth() { return WIDTH - 8; }
-                  public int getIconHeight() { return HEIGHT - 8; }
-
-                  public void paintIcon(Component c, Graphics g, 
-                     int x, int y)
-                  {
-                     g.translate(x, y);
-                     Rectangle r = new Rectangle(0, 0, 
-                        getIconWidth(), getIconHeight());
-                     Color oldColor = g.getColor();
-                     g.setColor(Color.BLACK);
-                     editor.paintValue(g, r);
-                     g.setColor(oldColor);
-                     g.translate(-x, -y);
-                  }
-               });
-         } 
-         else 
-            button.setText(buttonText(text));
-         // pop up custom editor when button is clicked
-         button.addActionListener(new
-            ActionListener()
-            {
-               public void actionPerformed(ActionEvent event)
-               {
-                  final Component customEditor = 
-                     editor.getCustomEditor();
-                   
-                  JOptionPane.showMessageDialog(parent,
-                     customEditor);
-                  
-                  // This should really be showInternalMessageDialog,
-                  // but then you get awful focus behavior with JDK 5.0
-                  // (i.e. the property sheet retains focus). In 
-                  // particular, the color dialog never works.
-                  
-                  if (editor.isPaintable())
-                     button.repaint();
-                  else 
-                     button.setText(buttonText(editor.getAsText()));
-               }
-            });
-         return button;
-         */         
       }
       else if (tags != null)
       {
@@ -298,7 +272,7 @@ public class PropertySheet extends JPanel
    */
    public void addChangeListener(ChangeListener listener)
    {
-      changeListeners.add(listener);
+      aChangeListeners.add(listener);
    }
 
    /**
@@ -307,17 +281,14 @@ public class PropertySheet extends JPanel
    */
    private void fireStateChanged(ChangeEvent event)
    {
-      for (int i = 0; i < changeListeners.size(); i++)
+      for (int i = 0; i < aChangeListeners.size(); i++)
       {
-         ChangeListener listener = (ChangeListener)changeListeners.get(i);
+         ChangeListener listener = (ChangeListener)aChangeListeners.get(i);
          listener.stateChanged(event);
       }
    }
    
-   private ArrayList changeListeners = new ArrayList();
-   private Component parent;
    
-   private static Map editors;
    
    // workaround for Web Start bug
    public static class StringEditor extends PropertyEditorSupport
