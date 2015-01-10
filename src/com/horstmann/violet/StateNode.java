@@ -30,78 +30,75 @@ import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.RectangularNode;
 
-
 /**
    A node in a state diagram.
 */
+@SuppressWarnings("serial")
 public class StateNode extends RectangularNode
 {
-	  private MultiLineString name;
-
-	   private static int ARC_SIZE = 20;
-	   private static int DEFAULT_WIDTH = 80;
-	   private static int DEFAULT_HEIGHT = 60;
+	private static final int ARC_SIZE = 20;
+	private static final int DEFAULT_WIDTH = 80;
+	private static final int DEFAULT_HEIGHT = 60;
 	
-   /**
-      Construct a state node with a default size
-   */
-   public StateNode()
-   {
-      name = new MultiLineString();
-      setBounds(new Rectangle2D.Double(0, 0, 
-         DEFAULT_WIDTH, DEFAULT_HEIGHT));
-   }
+	private MultiLineString aName;
 
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);
-      g2.draw(getShape());
-      name.draw(g2, getBounds());
-   }
+	/**
+     * Construct a state node with a default size.
+	 */
+	public StateNode()
+	{
+		aName = new MultiLineString();
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+	}
+
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);
+		pGraphics2D.draw(getShape());
+		aName.draw(pGraphics2D, getBounds());
+	}
    
-   public Shape getShape()
-   {       
-      return new RoundRectangle2D.Double(getBounds().getX(),
-         getBounds().getY(), getBounds().getWidth(), 
-         getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+	@Override
+	public Shape getShape()
+	{       
+		return new RoundRectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
    }
 
-   public void layout(Graph g, Graphics2D g2, Grid grid)
-   {
-      Rectangle2D b = name.getBounds(g2);
-      b = new Rectangle2D.Double(getBounds().getX(), 
-         getBounds().getY(),
-         Math.max(b.getWidth(), DEFAULT_WIDTH),
-         Math.max(b.getHeight(), DEFAULT_HEIGHT));
+	@Override	
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		Rectangle2D b = aName.getBounds(pGraphics2D);
+		b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+				Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
+		pGrid.snap(b);
+		setBounds(b);
+	}
 
-      grid.snap(b);
-      setBounds(b);
-   }
+	/**
+     * Sets the name property value.
+     * @param pName the new state name
+	 */
+	public void setName(MultiLineString pName)
+	{
+		aName = pName;
+	}
 
-   /**
-      Sets the name property value.
-      @param newValue the new state name
-   */
-   public void setName(MultiLineString newValue)
-   {
-      name = newValue;
-   }
+	/**
+     * Gets the name property value.
+     * @return the state name
+	 */
+	public MultiLineString getName()
+	{
+		return aName;
+	}
 
-   /**
-      Gets the name property value.
-      @param the state name
-   */
-   public MultiLineString getName()
-   {
-      return name;
-   }
-
-   public StateNode clone()
-   {
-      StateNode cloned = (StateNode)super.clone();
-      cloned.name = (MultiLineString)name.clone();
-      return cloned;
-   }
-
- 
+	@Override
+	public StateNode clone()
+	{
+		StateNode cloned = (StateNode)super.clone();
+		cloned.aName = (MultiLineString)aName.clone();
+		return cloned;
+	}
 }
