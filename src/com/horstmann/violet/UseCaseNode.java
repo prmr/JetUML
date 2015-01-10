@@ -28,65 +28,63 @@ import java.awt.geom.Ellipse2D;
 import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.RectangularNode;
 
-
 /**
-   A use case node in a use case diagram.
-*/
+ *  A use case node in a use case diagram.
+ */
+@SuppressWarnings("serial")
 public class UseCaseNode extends RectangularNode
 {
-	   private MultiLineString name;
-
-	   private static int DEFAULT_WIDTH = 110;
-	   private static int DEFAULT_HEIGHT = 40;
+	private static final int DEFAULT_WIDTH = 110;
+	private static final int DEFAULT_HEIGHT = 40;
 	
-   /**
-      Construct a use case node with a default size
-   */
-   public UseCaseNode()
-   {
-      name = new MultiLineString();
-      setBounds(new Rectangle2D.Double(0, 0,
-         DEFAULT_WIDTH, DEFAULT_HEIGHT));
-   }
+	private MultiLineString aName;
 
-   public void draw(Graphics2D g2)
-   {
-      super.draw(g2);      
-      g2.draw(getShape());
-      name.draw(g2, getBounds());
-   }
+	/**
+     * Construct a use case node with a default size.
+	 */
+	public UseCaseNode()
+	{
+		aName = new MultiLineString();
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+	}
+	
+	@Override
+	public void draw(Graphics2D pGraphics2D)
+	{
+		super.draw(pGraphics2D);      
+		pGraphics2D.draw(getShape());
+		aName.draw(pGraphics2D, getBounds());
+	}
    
-   public Shape getShape()
-   {
-      return new Ellipse2D.Double(
-            getBounds().getX(), getBounds().getY(),
-            getBounds().getWidth(), getBounds().getHeight());
-   }
+	@Override
+	public Shape getShape()
+	{
+		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), getBounds().getHeight());
+	}
    
-   /**
-      Sets the name property value.
-      @param newValue the new use case name
-   */
-   public void setName(MultiLineString newValue)
-   {
-      name = newValue;
-   }
+	/**
+     * Sets the name property value.
+     * @param pName the new use case name
+	 */
+	public void setName(MultiLineString pName)
+	{
+		aName = pName;
+	}
 
-   /**
-      Gets the name property value.
-      @param the use case name
-   */
-   public MultiLineString getName()
-   {
-      return name;
-   }
+	/**
+     * Gets the name property value.
+     * @return the use case name
+	 */
+	public MultiLineString getName()
+	{
+		return aName;
+	}
 
-   public UseCaseNode clone()
-   {
-      UseCaseNode cloned = (UseCaseNode) super.clone();
-      cloned.name = (MultiLineString) name.clone();
-      return cloned;
-   }
-
-
+	@Override
+	public UseCaseNode clone()
+	{
+		UseCaseNode cloned = (UseCaseNode) super.clone();
+		cloned.aName = (MultiLineString) aName.clone();
+		return cloned;
+	}
 }
