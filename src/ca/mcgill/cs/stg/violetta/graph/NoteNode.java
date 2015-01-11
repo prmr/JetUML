@@ -43,7 +43,7 @@ public class NoteNode extends RectangularNode
 	private static final int FOLD_Y = 8;
 	
 	private MultiLineString aText;
-	private Color aColor;
+//	private Color aColor;
 
    /**
     *  Construct a note node with a default size and color.
@@ -53,7 +53,7 @@ public class NoteNode extends RectangularNode
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aText = new MultiLineString();
 		aText.setJustification(MultiLineString.LEFT);
-		aColor = DEFAULT_COLOR;
+//		aColor = DEFAULT_COLOR;
 	}
 
 	@Override
@@ -102,30 +102,30 @@ public class NoteNode extends RectangularNode
 		aText = pText;
 	}
 
-	/**
-     * Gets the value of the color property.
-     * @return the background color of the note
-	 */
-	public Color getColor()
-	{
-		return aColor;
-	}
+//	/**
+//     * Gets the value of the color property.
+//     * @return the background color of the note
+//	 */
+//	public Color getColor()
+//	{
+//		return aColor;
+//	}
 
-	/**
-     * Sets the value of the color property.
-     * @param pColor the background color of the note
-	 */
-	public void setColor(Color pColor)
-	{
-		aColor = pColor;
-	}
+//	/**
+//     * Sets the value of the color property.
+//     * @param pColor the background color of the note
+//	 */
+//	public void setColor(Color pColor)
+//	{
+//		aColor = pColor;
+//	}
    
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
 		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(aColor);
+		pGraphics2D.setColor(DEFAULT_COLOR);
 
 		Shape path = getShape();
 		pGraphics2D.fill(path);

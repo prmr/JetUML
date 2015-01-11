@@ -50,7 +50,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- *   A component filled with editors for all editable properties 
+ *  A component filled with editors for all editable properties 
  *  of an object.
  */
 @SuppressWarnings("serial")
@@ -114,76 +114,70 @@ public class PropertySheet extends JPanel
 		}
 	}
 
-   /**
-      Gets the property editor for a given property,
-      and wires it so that it updates the given object.
-      @param bean the object whose properties are being edited
-      @param descriptor the descriptor of the property to
-      be edited
-      @return a property editor that edits the property
-      with the given descriptor and updates the given object
-   */
-   public PropertyEditor getEditor(final Object bean,
-      PropertyDescriptor descriptor)
-   {
-      try
-      {
-         Method getter = descriptor.getReadMethod();
-         if (getter == null) return null;
-         final Method setter = descriptor.getWriteMethod();
-         if (setter == null) return null;
-         Class type = descriptor.getPropertyType();
-         final PropertyEditor editor;
-         Class editorClass = descriptor.getPropertyEditorClass();
-         if (editorClass == null && editors.containsKey(type))
-            editorClass = (Class) editors.get(type);
-         if (editorClass != null)            
-            editor = (PropertyEditor) editorClass.newInstance();
-         else
-            editor = PropertyEditorManager.findEditor(type);
-         if (editor == null) return null;
+	/**
+     * Gets the property editor for a given property,
+     * and wires it so that it updates the given object.
+     * @param pBean the object whose properties are being edited
+     * @param pDescriptor the descriptor of the property to be edited
+     * @return a property editor that edits the property
+     *  with the given descriptor and updates the given object
+	 */
+	public PropertyEditor getEditor(final Object pBean, PropertyDescriptor pDescriptor)
+	{
+		try
+		{
+			final Method getter = pDescriptor.getReadMethod();
+			final Method setter = pDescriptor.getWriteMethod();
+			if(getter == null || setter == null )
+			{
+				return null;
+			}
+			
+			Class<?> type = pDescriptor.getPropertyType();
+			final PropertyEditor editor;
+			Class<?> editorClass = pDescriptor.getPropertyEditorClass();
+			if(editorClass == null && editors.containsKey(type))
+			{
+				editorClass = (Class<?>) editors.get(type);
+			}
+			if(editorClass != null)
+			{
+				editor = (PropertyEditor) editorClass.newInstance();
+			}
+			else
+			{
+				editor = PropertyEditorManager.findEditor(type);
+			}
+			if(editor == null)
+			{
+				return null;
+			}
 
-         Object value = getter.invoke(bean, new Object[] {});
-         editor.setValue(value);
-         editor.addPropertyChangeListener(new
-            PropertyChangeListener()
-            {
-               public void propertyChange(PropertyChangeEvent event)
-               {
-                  try
-                  {
-                     setter.invoke(bean, 
-                        new Object[] { editor.getValue() });
-                     fireStateChanged(null);
-                  }
-                  catch (IllegalAccessException exception)
-                  {
-                     exception.printStackTrace();
-                  }
-                  catch (InvocationTargetException exception)
-                  {
-                     exception.printStackTrace();
-                  }
-               }
-            });
-         return editor;
-      }
-      catch (InstantiationException exception)
-      {
-         exception.printStackTrace();
-         return null;
-      }
-      catch (IllegalAccessException exception)
-      {
-         exception.printStackTrace();
-         return null;
-      }
-      catch (InvocationTargetException exception)
-      {
-         exception.printStackTrace();
-         return null;
-      }
-   }
+			Object value = getter.invoke(pBean, new Object[] {});
+			editor.setValue(value);
+			editor.addPropertyChangeListener(new PropertyChangeListener()
+            	{
+					public void propertyChange(PropertyChangeEvent pEvent)
+					{
+						try
+						{	
+							setter.invoke(pBean, new Object[] { editor.getValue() });
+							fireStateChanged(null);
+						}
+						catch(IllegalAccessException | InvocationTargetException exception)
+						{
+							exception.printStackTrace();
+						}
+					}
+            	});
+			return editor;
+		}
+		catch(InstantiationException | IllegalAccessException | InvocationTargetException exception)
+		{
+			exception.printStackTrace();
+			return null;
+		}
+	}
 
    /**
       Wraps a property editor into a component.
