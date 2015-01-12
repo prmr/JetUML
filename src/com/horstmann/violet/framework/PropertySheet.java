@@ -56,11 +56,16 @@ import javax.swing.event.DocumentListener;
 @SuppressWarnings("serial")
 public class PropertySheet extends JPanel
 {
-	private static final int MAX_TEXT_LENGTH = 15;
-	
-	private static Map editors;
+	private static Map<Class<?>, Class<?>> editors;
 
-	private ArrayList aChangeListeners = new ArrayList();
+	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
+	
+	static
+	{  
+	      editors = new HashMap<>();
+	      editors.put(String.class, StringEditor.class);
+	      editors.put(java.awt.Color.class, ColorEditor.class);
+	}
 	
 	/**
      * Constructs a property sheet that shows the editable
@@ -176,125 +181,89 @@ public class PropertySheet extends JPanel
 		}
 	}
 
-   /**
-      Wraps a property editor into a component.
-      @param editor the editor to wrap
-      @return a button (if there is a custom editor), 
-      combo box (if the editor has tags), or text field (otherwise)
-   */      
-   public Component getEditorComponent(final PropertyEditor editor)   
-   {      
-      String[] tags = editor.getTags();
-      String text = editor.getAsText();
-      if (editor.supportsCustomEditor())
-      {
-         return editor.getCustomEditor();         
+	/**
+     * Wraps a property editor into a component.
+     * @param pEditor the editor to wrap
+     * @return a button (if there is a custom editor), 
+     * combo box (if the editor has tags), or text field (otherwise)
+	 */      
+	public Component getEditorComponent(final PropertyEditor pEditor)   
+	{      
+		String[] tags = pEditor.getTags();
+		String text = pEditor.getAsText();
+		if(pEditor.supportsCustomEditor())
+		{
+			return pEditor.getCustomEditor();         
          
-      }
-      else if (tags != null)
-      {
-         // make a combo box that shows all tags
-         final JComboBox comboBox = new JComboBox(tags);
-         comboBox.setSelectedItem(text);
-         comboBox.addItemListener(new
-            ItemListener()
-            {
-               public void itemStateChanged(ItemEvent event)
-               {
-                  if (event.getStateChange() == ItemEvent.SELECTED)
-                     editor.setAsText(
-                        (String)comboBox.getSelectedItem());
-               }
-            });
-         return comboBox;
-      }
-      else 
-      {
-         final JTextField textField = new JTextField(text, 10);
-         textField.getDocument().addDocumentListener(new
-            DocumentListener()
-            {
-               public void insertUpdate(DocumentEvent e) 
-               {
-                  try
-                  {
-                     editor.setAsText(textField.getText());
-                  }
-                  catch (IllegalArgumentException exception)
-                  {
-                  }
-               }
-               public void removeUpdate(DocumentEvent e) 
-               {
-                  try
-                  {
-                     editor.setAsText(textField.getText());
-                  }
-                  catch (IllegalArgumentException exception)
-                  {
-                  }
-               }
-               public void changedUpdate(DocumentEvent e) 
-               {
-               }
-            });
-         return textField;
-      }
-   }
+		}
+		else if(tags != null)
+		{
+			// make a combo box that shows all tags
+			final JComboBox<String> comboBox = new JComboBox<>(tags);
+			comboBox.setSelectedItem(text);
+			comboBox.addItemListener(new ItemListener()
+            	{
+					public void itemStateChanged(ItemEvent pEvent)
+					{
+						if(pEvent.getStateChange() == ItemEvent.SELECTED)
+						{
+							pEditor.setAsText((String)comboBox.getSelectedItem());
+						}
+					}
+            	});
+			return comboBox;
+		}
+		else 
+		{
+			final JTextField textField = new JTextField(text, 10);
+			textField.getDocument().addDocumentListener(new DocumentListener()
+            	{
+					public void insertUpdate(DocumentEvent pEvent) 
+					{
+						pEditor.setAsText(textField.getText());	
+					}
+					public void removeUpdate(DocumentEvent pEvent) 
+					{
+						pEditor.setAsText(textField.getText());
+					}
+					public void changedUpdate(DocumentEvent pEvent) 
+					{}
+            	});
+			return textField;
+		}
+	}
 
-   /**
-      Formats text for the button that pops up a
-      custom editor.
-      @param text the property value as text
-      @return the text to put on the button
-   */
-   private static String buttonText(String text)
-   {
-      if (text == null || text.equals("")) 
-         return " ";
-      if (text.length() > MAX_TEXT_LENGTH)
-         return text.substring(0, MAX_TEXT_LENGTH) + "...";
-      return text;
-   }
+	/**
+     * Adds a change listener to the list of listeners.
+     * @param pListener the listener to add
+	 */
+	public void addChangeListener(ChangeListener pListener)
+	{
+		aChangeListeners.add(pListener);
+	}
 
-   /**
-      Adds a change listener to the list of listeners.
-      @param listener the listener to add
-   */
-   public void addChangeListener(ChangeListener listener)
-   {
-      aChangeListeners.add(listener);
-   }
-
-   /**
-      Notifies all listeners of a state change.
-      @param event the event to propagate
-   */
-   private void fireStateChanged(ChangeEvent event)
-   {
-      for (int i = 0; i < aChangeListeners.size(); i++)
-      {
-         ChangeListener listener = (ChangeListener)aChangeListeners.get(i);
-         listener.stateChanged(event);
-      }
-   }
+	/**
+     * Notifies all listeners of a state change.
+     * @param pEvent the event to propagate
+	 */
+	private void fireStateChanged(ChangeEvent pEvent)
+	{
+		for(ChangeListener listener : aChangeListeners)
+		{
+			listener.stateChanged(pEvent);
+		}
+	}
    
-   
-   
-   // workaround for Web Start bug
-   public static class StringEditor extends PropertyEditorSupport
-   {
-      public String getAsText() { return (String) getValue(); }
-      public void setAsText(String s) { setValue(s); }      
-   }
-   
-   static
-   {  
-      editors = new HashMap();
-      editors.put(String.class, StringEditor.class);
-      editors.put(java.awt.Color.class, ColorEditor.class);
-   }
-   
-
+	// workaround for Web Start bug TODO Remove eventually
+	// CSOFF:
+	public static class StringEditor extends PropertyEditorSupport
+	{
+		public String getAsText() 
+		{ return (String) getValue(); }
+		
+		public void setAsText(String pString) 
+		{ setValue(pString); }      
+	}
+	// CSON:
 }
 
