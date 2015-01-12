@@ -636,23 +636,21 @@ public class EditorFrame extends JFrame
          }));
    }
 
-   /**
-      Reads the command line arguments.
-      @param args the command line arguments
-   */
-   public void readArgs(String[] args)
+   	/**
+     * Reads the command line arguments.
+     * @param pArgs the command line arguments
+   	 */
+   public void readArgs(String[] pArgs)
    {
-      if (args.length == 0)
-         showAboutDialog();
-      else
-      {
-         for (int i = 0; i < args.length; i++)
-         {
-            open(args[i]);
-         }
-      }   
-      setTitle();
-   }
+	   if(pArgs.length != 0)
+	   {	
+		   for(String argument : pArgs)
+		   {
+			   open(argument);
+		   }
+	   } 
+	   setTitle();
+   	}
    
    /**
     * Opens a file with the given name, or switches to the frame if it is already open.
