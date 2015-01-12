@@ -23,43 +23,56 @@ package com.horstmann.violet.framework;
 import java.beans.PropertyEditorSupport;
 
 /**
-   A helper class for showing names of objects in a property
-   sheet that allows the user to pick one of a finite set of 
-   named values.
+ * A helper class for showing names of objects in a property
+ * sheet that allows the user to pick one of a finite set of 
+ * named values.
 */
 public class PropertySelector extends PropertyEditorSupport
 {
-	  private String[] names;
-	   private Object[] values;
+	private String[] aNames;
+	private Object[] aValues;
 	
-   /**
-      Constructs a selector that correlates names and objects.
-      @param n the strings to display in a combo box
-      @param v the corresponding object values
-   */
-   public PropertySelector(String[] n, Object[] v)
-   {
-      names = n;
-      values = v;
-   }
+	/**
+     * Constructs a selector that correlates names and objects.
+     * @param pTags the strings to display in a combo box
+     * @param pValues the corresponding object values
+	 */
+	public PropertySelector(String[] pTags, Object[] pValues)
+	{
+		aNames = pTags;
+		aValues = pValues;
+	}
 
-   public String[] getTags()
-   {
-      return names;
-   }
+	@Override
+	public String[] getTags()
+	{
+		return aNames;
+	}
 
-   public String getAsText()
-   {
-      for (int i = 0; i < values.length; i++)
-         if (getValue().equals(values[i])) return names[i];
-      return null;
-   }
+	@Override
+	public String getAsText()
+	{
+		for(int i = 0; i < aValues.length; i++)
+		{
+			if(getValue().equals(aValues[i]))
+			{
+				return aNames[i];
+			}
+		}
+		return null;
+	}
 
-   public void setAsText(String s)
-   {
-      for (int i = 0; i < names.length; i++)
-         if (s.equals(names[i])) setValue(values[i]);
-   }
+	@Override
+	public void setAsText(String pString)
+	{
+		for(int i = 0; i < aNames.length; i++)
+		{
+			if(pString.equals(aNames[i]))
+			{
+				setValue(aValues[i]);
+			}
+		}
+	}
 
  
 }

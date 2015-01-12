@@ -324,7 +324,7 @@ public class GraphPanel extends JPanel
       });
       JOptionPane.showInternalMessageDialog(this, sheet, 
             ResourceBundle.getBundle("com.horstmann.violet.framework.EditorStrings").getString("dialog.properties"),            
-            JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.PLAIN_MESSAGE);
       setModified(true);
    }
 
