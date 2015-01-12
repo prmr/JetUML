@@ -3,25 +3,6 @@
  <object class="com.horstmann.violet.ClassDiagramGraph">
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.InterfaceNode" id="InterfaceNode0">
-    <void id="Rectangle2D$Double0" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double0"/>
-       <double>380.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double0"/>
-       <double>50.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double0"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>«interface»
@@ -52,25 +33,6 @@ Node</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.InterfaceNode" id="InterfaceNode1">
-    <void id="Rectangle2D$Double1" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double1"/>
-       <double>800.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double1"/>
-       <double>50.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double1"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>«interface»
@@ -101,25 +63,6 @@ Edge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode0">
-    <void id="Rectangle2D$Double2" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double2"/>
-       <double>590.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double2"/>
-       <double>50.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double2"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>Graph</string>
@@ -149,25 +92,6 @@ Edge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode1">
-    <void id="Rectangle2D$Double3" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double3"/>
-       <double>30.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double3"/>
-       <double>140.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double3"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>PointNode</string>
@@ -179,50 +103,24 @@ Edge</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>30.0</double>
+      <double>10.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double3"/>
-      <double>140.0</double>
+      <double>160.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>30.0</double>
-     <double>140.0</double>
+     <double>10.0</double>
+     <double>160.0</double>
     </void>
    </object>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode2">
-    <void id="Rectangle2D$Double4" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double4"/>
-       <double>120.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double4"/>
-       <double>400.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double4"/>
-       <double>160.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double4"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>«abstract»
@@ -235,50 +133,24 @@ RectangularNode</string>
      <string>x</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>120.0</double>
+      <double>110.0</double>
      </void>
     </void>
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>y</string>
      <void method="set">
       <object idref="Point2D$Double4"/>
-      <double>400.0</double>
+      <double>300.0</double>
      </void>
     </void>
     <void method="setLocation">
-     <double>120.0</double>
-     <double>400.0</double>
+     <double>110.0</double>
+     <double>300.0</double>
     </void>
    </object>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode3">
-    <void id="Rectangle2D$Double5" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double5"/>
-       <double>130.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double5"/>
-       <double>50.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double5"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double5"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>AbstractNode</string>
@@ -308,25 +180,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode4">
-    <void id="Rectangle2D$Double6" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double6"/>
-       <double>10.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double6"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double6"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ActorNode</string>
@@ -356,25 +209,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode5">
-    <void id="Rectangle2D$Double7" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double7"/>
-       <double>120.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double7"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double7"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>CallNode</string>
@@ -404,32 +238,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode6">
-    <void id="Rectangle2D$Double8" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double8"/>
-       <double>230.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double8"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double8"/>
-       <double>160.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double8"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>CircularStateNode</string>
@@ -459,25 +267,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode7">
-    <void id="Rectangle2D$Double9" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double9"/>
-       <double>400.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double9"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double9"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ClassNode</string>
@@ -507,25 +296,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode8">
-    <void id="Rectangle2D$Double10" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double10"/>
-       <double>510.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double10"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double10"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>FieldNode</string>
@@ -555,32 +325,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode9">
-    <void id="Rectangle2D$Double11" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double11"/>
-       <double>620.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double11"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double11"/>
-       <double>200.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double11"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ImplicitParameterNode</string>
@@ -610,32 +354,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode10">
-    <void id="Rectangle2D$Double12" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double12"/>
-       <double>830.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double12"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double12"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double12"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>InterfaceNode</string>
@@ -665,25 +383,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode11">
-    <void id="Rectangle2D$Double13" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double13"/>
-       <double>960.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double13"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double13"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>NoteNode</string>
@@ -713,32 +412,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode12">
-    <void id="Rectangle2D$Double14" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double14"/>
-       <double>1070.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double14"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double14"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double14"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ObjectNode</string>
@@ -768,32 +441,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode13">
-    <void id="Rectangle2D$Double15" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double15"/>
-       <double>1200.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double15"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double15"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double15"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>PackageNode</string>
@@ -823,25 +470,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode14">
-    <void id="Rectangle2D$Double16" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double16"/>
-       <double>1330.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double16"/>
-       <double>530.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double16"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>StateNode</string>
@@ -871,32 +499,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode15">
-    <void id="Rectangle2D$Double17" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double17"/>
-       <double>1440.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double17"/>
-       <double>530.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double17"/>
-       <double>140.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double17"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>UseCaseNode</string>
@@ -926,32 +528,6 @@ RectangularNode</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode16">
-    <void id="Rectangle2D$Double18" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double18"/>
-       <double>950.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double18"/>
-       <double>50.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double18"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double18"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>«abstract»
@@ -982,25 +558,6 @@ AbstractEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode17">
-    <void id="Rectangle2D$Double19" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double19"/>
-       <double>1120.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double19"/>
-       <double>50.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double19"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>«abstract»
@@ -1031,25 +588,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode18">
-    <void id="Rectangle2D$Double20" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double20"/>
-       <double>580.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double20"/>
-       <double>200.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double20"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>NoteEdge</string>
@@ -1079,32 +617,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode19">
-    <void id="Rectangle2D$Double21" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double21"/>
-       <double>690.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double21"/>
-       <double>200.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double21"/>
-       <double>200.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double21"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ObjectReferenceEdge</string>
@@ -1134,32 +646,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode20">
-    <void id="Rectangle2D$Double22" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double22"/>
-       <double>900.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double22"/>
-       <double>200.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double22"/>
-       <double>180.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double22"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>SegmentedLineEdge</string>
@@ -1189,32 +675,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode21">
-    <void id="Rectangle2D$Double23" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double23"/>
-       <double>1090.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double23"/>
-       <double>200.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double23"/>
-       <double>180.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double23"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>StateTransitionEdge</string>
@@ -1244,25 +704,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode22">
-    <void id="Rectangle2D$Double24" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double24"/>
-       <double>790.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double24"/>
-       <double>300.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double24"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>CallEdge</string>
@@ -1292,32 +733,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode23">
-    <void id="Rectangle2D$Double25" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double25"/>
-       <double>900.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double25"/>
-       <double>300.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double25"/>
-       <double>200.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double25"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ClassRelationshipEdge</string>
@@ -1347,32 +762,6 @@ ShapeEdge</string>
   </void>
   <void method="addNode">
    <object class="ca.mcgill.cs.stg.violetta.graph.ClassNode" id="ClassNode24">
-    <void id="Rectangle2D$Double26" property="bounds">
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>x</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double26"/>
-       <double>1110.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>y</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double26"/>
-       <double>300.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double26"/>
-       <double>120.0</double>
-      </void>
-     </void>
-    </void>
-    <void property="bounds">
-     <object idref="Rectangle2D$Double26"/>
-    </void>
     <void property="name">
      <void property="text">
       <string>ReturnEdge</string>

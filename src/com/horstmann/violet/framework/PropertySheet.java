@@ -64,7 +64,6 @@ public class PropertySheet extends JPanel
 	{  
 	      editors = new HashMap<>();
 	      editors.put(String.class, StringEditor.class);
-	      editors.put(java.awt.Color.class, ColorEditor.class);
 	}
 	
 	/**
