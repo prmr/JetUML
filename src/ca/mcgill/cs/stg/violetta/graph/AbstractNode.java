@@ -147,7 +147,7 @@ public abstract class AbstractNode implements Node
 	 * Adds a node at the end of the list.
 	 * @param pNode The node to add.
 	 */
-	protected void addChild(Node pNode)
+	public void addChild(Node pNode)
 	{
 		addChild(aChildren.size(), pNode);
 	}
