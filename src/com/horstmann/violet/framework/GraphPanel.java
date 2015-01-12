@@ -313,7 +313,7 @@ public class GraphPanel extends JPanel
             return;
       }
 
-      PropertySheet sheet = new PropertySheet(edited, this);
+      PropertySheet sheet = new PropertySheet(edited);
       sheet.addChangeListener(new ChangeListener()
       {
          public void stateChanged(ChangeEvent event)

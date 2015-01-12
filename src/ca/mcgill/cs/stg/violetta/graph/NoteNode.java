@@ -110,7 +110,7 @@ public class NoteNode extends RectangularNode
 //	{
 //		return aColor;
 //	}
-
+//
 //	/**
 //     * Sets the value of the color property.
 //     * @param pColor the background color of the note

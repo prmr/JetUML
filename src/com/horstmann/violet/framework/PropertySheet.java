@@ -61,17 +61,14 @@ public class PropertySheet extends JPanel
 	private static Map editors;
 
 	private ArrayList aChangeListeners = new ArrayList();
-	private Component aParent;
 	
 	/**
      * Constructs a property sheet that shows the editable
      * properties of a given object.
      * @param pBean the object whose properties are being edited
-     * @param pParent the parent component
 	 */
-	public PropertySheet(Object pBean, Component pParent)
+	public PropertySheet(Object pBean)
 	{
-		aParent = pParent;
 		try
 		{
 			BeanInfo info = Introspector.getBeanInfo(pBean.getClass());
