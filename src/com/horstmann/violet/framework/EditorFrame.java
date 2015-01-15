@@ -81,7 +81,11 @@ import ca.mcgill.cs.stg.violetta.graph.Graph;
 
 import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.BentStyle;
+import com.horstmann.violet.ClassDiagramGraph;
 import com.horstmann.violet.LineStyle;
+import com.horstmann.violet.ObjectDiagramGraph;
+import com.horstmann.violet.SequenceDiagramGraph;
+import com.horstmann.violet.UseCaseDiagramGraph;
 
 /**
    This desktop frame contains panes that show graphs.
@@ -204,10 +208,6 @@ public class EditorFrame extends JFrame
             "file.export_image", this, "exportImage"); 
       fileMenu.add(fileExportItem);
 
-      JMenuItem filePrintItem = factory.createMenuItem(
-            "file.print", this, "print"); 
-      fileMenu.add(filePrintItem);
-
       JMenuItem fileExitItem = factory.createMenuItem(
             "file.exit", this, "exit");
       fileMenu.add(fileExitItem);
@@ -217,7 +217,7 @@ public class EditorFrame extends JFrame
          fileOpenItem.setEnabled(false);
          fileSaveAsItem.setEnabled(false);
          fileExportItem.setEnabled(false);
-         filePrintItem.setEnabled(false);
+//         filePrintItem.setEnabled(false);
          fileExitItem.setEnabled(false);
       }
 
@@ -956,18 +956,6 @@ public class EditorFrame extends JFrame
       }      
    }
 
-   /**
-      Prints the current graph.
-   */
-   public void print()
-   {
-      GraphFrame frame 
-         = (GraphFrame)desktop.getSelectedFrame();
-      if (frame == null) return;
-
-      PrintDialog dialog = new PrintDialog(frame.getGraph());
-      dialog.setVisible(true);
-   }
    
    /**
       Reads a graph file
