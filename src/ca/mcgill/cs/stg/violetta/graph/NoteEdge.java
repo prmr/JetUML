@@ -36,7 +36,6 @@ import com.horstmann.violet.framework.Direction;
 public class NoteEdge extends ShapeEdge
 {
 	private static final int DEGREES_180 = 180;
-	private static final long serialVersionUID = -4764227899721500613L;
 	private static final Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, 
 													  BasicStroke.JOIN_ROUND, 0.0f, new float[] { 3.0f, 3.0f }, 0.0f);
 	

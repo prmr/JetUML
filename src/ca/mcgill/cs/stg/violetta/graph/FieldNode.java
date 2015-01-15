@@ -32,7 +32,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-@SuppressWarnings("serial")
 public class FieldNode extends RectangularNode
 {
 	public static final int DEFAULT_WIDTH = 60;

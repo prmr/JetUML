@@ -31,7 +31,6 @@ import com.horstmann.violet.framework.Grid;
 /**
  * A node that has a rectangular shape.
  */
-@SuppressWarnings("serial")
 public abstract class RectangularNode extends AbstractNode
 {
 	private transient Rectangle2D aBounds;
@@ -116,57 +115,6 @@ public abstract class RectangularNode extends AbstractNode
 		}
 		return new Point2D.Double(x, y);
 	}
-
-//   private void writeObject(ObjectOutputStream out)
-//      throws IOException
-//   {
-//      out.defaultWriteObject();
-//      writeRectangularShape(out, aBounds);
-//   }
-
-//   /**
-//      A helper method to overcome the problem that the 2D shapes
-//      aren't serializable. It writes x, y, width and height
-//      to the stream.
-//      @param out the stream
-//      @param s the shape      
-//   */
-//   private static void writeRectangularShape(
-//      ObjectOutputStream out, 
-//      RectangularShape s)
-//      throws IOException
-//   {
-//      out.writeDouble(s.getX());
-//      out.writeDouble(s.getY());
-//      out.writeDouble(s.getWidth());
-//      out.writeDouble(s.getHeight());
-//   }
-
-//   private void readObject(ObjectInputStream in)
-//      throws IOException, ClassNotFoundException
-//   {
-//      in.defaultReadObject();
-//      aBounds = new Rectangle2D.Double();
-//      readRectangularShape(in, aBounds);
-//   }
-   
-//   /**
-//      A helper method to overcome the problem that the 2D shapes
-//      aren't serializable. It reads x, y, width and height
-//      from the stream.
-//      @param in the stream
-//      @param s the shape whose frame is set from the stream values
-//   */
-//   private static void readRectangularShape(ObjectInputStream in,
-//      RectangularShape s)
-//      throws IOException
-//   {
-//      double x = in.readDouble();
-//      double y = in.readDouble();
-//      double width = in.readDouble();
-//      double height = in.readDouble();
-//      s.setFrame(x, y, width, height);
-//   }
 
 	@Override
 	public Shape getShape()

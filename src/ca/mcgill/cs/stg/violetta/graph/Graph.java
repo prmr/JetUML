@@ -26,7 +26,6 @@ import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -35,8 +34,7 @@ import com.horstmann.violet.framework.Grid;
 /**
  *  A graph consisting of selectable nodes and edges.
  */
-@SuppressWarnings("serial")
-public abstract class Graph implements Serializable
+public abstract class Graph
 {
 	private ArrayList<Node> aNodes;
 	private ArrayList<Edge> aEdges;

@@ -41,8 +41,6 @@ import com.horstmann.violet.LineStyle;
  */
 public abstract class SegmentedLineEdge extends ShapeEdge
 {
-	private static final long serialVersionUID = 8495488948295665697L;
-	
 	private static JLabel label = new JLabel();
 	
 	private LineStyle aLineStyle;

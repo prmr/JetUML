@@ -30,7 +30,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  * An interface node in a class diagram.
  */
-@SuppressWarnings("serial")
 public class InterfaceNode extends RectangularNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;

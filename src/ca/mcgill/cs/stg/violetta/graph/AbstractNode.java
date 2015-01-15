@@ -37,7 +37,6 @@ import com.horstmann.violet.framework.Grid;
  * A class that supplies convenience implementations for 
  * a number of methods in the Node interface.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractNode implements Node
 {
 	public static final int SHADOW_GAP = 4;

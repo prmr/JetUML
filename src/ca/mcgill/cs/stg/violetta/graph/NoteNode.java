@@ -33,7 +33,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  *  A note node in a UML diagram.
  */
-@SuppressWarnings("serial")
 public class NoteNode extends RectangularNode
 {
 	private static final int DEFAULT_WIDTH = 60;

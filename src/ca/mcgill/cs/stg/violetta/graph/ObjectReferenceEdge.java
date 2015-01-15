@@ -35,7 +35,6 @@ import com.horstmann.violet.framework.Direction;
  */
 public class ObjectReferenceEdge extends ShapeEdge
 {
-	private static final long serialVersionUID = -4998194762240958708L;
 	private static final int ENDSIZE = 10;
 
 	@Override

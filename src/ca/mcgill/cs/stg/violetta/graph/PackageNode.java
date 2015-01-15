@@ -36,7 +36,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-@SuppressWarnings("serial")
 public class PackageNode extends RectangularNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;

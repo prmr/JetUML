@@ -37,7 +37,6 @@ import com.horstmann.violet.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-@SuppressWarnings("serial")
 public class CallNode extends RectangularNode
 {
 	public static final int CALL_YGAP = 20;

@@ -31,7 +31,6 @@ import com.horstmann.violet.framework.Direction;
  *  edge, and in notes to serve as an end point of the node
  *  connector.
  */
-@SuppressWarnings("serial")
 public class PointNode extends AbstractNode
 {
 	private Point2D aPoint;

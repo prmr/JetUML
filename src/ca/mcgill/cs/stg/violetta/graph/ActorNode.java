@@ -30,7 +30,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  *   An actor node in a use case diagram.
  */
-@SuppressWarnings("serial")
 public class ActorNode extends RectangularNode
 {
 	// Bounding rectangle

@@ -23,7 +23,6 @@ package com.horstmann.violet.framework;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -33,7 +32,7 @@ import javax.swing.JLabel;
 /**
    A string that can extend over multiple lines.
 */
-public class MultiLineString implements Cloneable, Serializable
+public class MultiLineString implements Cloneable
 {
 	   public static final int LEFT = 0;
 	   public static final int CENTER = 1;

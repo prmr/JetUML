@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.violetta.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.Serializable;
 import java.util.List;
 
 import com.horstmann.violet.framework.Direction;
@@ -32,7 +31,7 @@ import com.horstmann.violet.framework.Grid;
 /**
   * A node in a graph.
   */
-public interface Node extends Serializable, Cloneable
+public interface Node extends Cloneable
 {
 	/**
      *  Draw the node.

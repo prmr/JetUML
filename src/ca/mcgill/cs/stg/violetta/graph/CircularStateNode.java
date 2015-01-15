@@ -31,7 +31,6 @@ import com.horstmann.violet.framework.Direction;
 /**
  * An initial or final node (bull's eye) in a state or activity diagram.
  */
-@SuppressWarnings("serial")
 public class CircularStateNode extends RectangularNode
 {
 	private static final int DEFAULT_DIAMETER = 30;

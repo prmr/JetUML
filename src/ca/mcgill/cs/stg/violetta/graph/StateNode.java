@@ -31,7 +31,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
    A node in a state diagram.
 */
-@SuppressWarnings("serial")
 public class StateNode extends RectangularNode
 {
 	private static final int ARC_SIZE = 20;

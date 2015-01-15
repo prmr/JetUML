@@ -24,23 +24,23 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import com.horstmann.violet.framework.SerializableEnumeration;
-
 /**
-   A style for a segmented line that indicates the number
-   and sequence of bends.
+ * A style for a segmented line that indicates the number
+ * and sequence of bends.
 */
-public class BentStyle extends SerializableEnumeration
+public final class BentStyle
 {
-	  private static final int MIN_SEGMENT = 10;
-	   private static final int SELF_WIDTH = 30;
-	   private static final int SELF_HEIGHT = 25;
-
-	   public static final BentStyle STRAIGHT = new BentStyle();
+	public static final BentStyle STRAIGHT = new BentStyle();
 	   public static final BentStyle HV = new BentStyle();
 	   public static final BentStyle VH = new BentStyle();
 	   public static final BentStyle HVH = new BentStyle();
 	   public static final BentStyle VHV = new BentStyle();
+	
+	  private static final int MIN_SEGMENT = 10;
+	   private static final int SELF_WIDTH = 30;
+	   private static final int SELF_HEIGHT = 25;
+
+	   
 	
    private BentStyle() {}
   

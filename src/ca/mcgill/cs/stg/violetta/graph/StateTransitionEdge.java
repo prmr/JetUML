@@ -42,7 +42,6 @@ public class StateTransitionEdge extends ShapeEdge
 	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_30 = 30;
 	private static final int DEGREES_60 = 60;
-	private static final long serialVersionUID = -3758718744985774362L;
 	private static JLabel label = new JLabel();
 	private double aAngle;
 	private String aLabelText = "";

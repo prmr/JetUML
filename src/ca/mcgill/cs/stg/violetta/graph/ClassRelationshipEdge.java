@@ -31,7 +31,6 @@ import com.horstmann.violet.BentStyle;
  */
 public class ClassRelationshipEdge extends SegmentedLineEdge
 {
-	private static final long serialVersionUID = 8698457446192582750L;
 	private BentStyle aBentStyle;
 	
 	/**

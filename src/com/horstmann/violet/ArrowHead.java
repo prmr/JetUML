@@ -25,12 +25,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
-import com.horstmann.violet.framework.SerializableEnumeration;
-
 /**
-   This class defines arrowheads of various shapes.
-*/
-public class ArrowHead extends SerializableEnumeration
+ * This class defines arrowheads of various shapes.
+ */
+public final class ArrowHead
 {
 	   public static final ArrowHead NONE = new ArrowHead();
 	   public static final ArrowHead TRIANGLE = new ArrowHead();

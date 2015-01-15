@@ -34,7 +34,6 @@ import com.horstmann.violet.framework.Direction;
 abstract class AbstractEdge implements Edge
 {  
 	private static final int DEGREES_180 = 180;
-	private static final long serialVersionUID = -303282704622122418L;
 	private Node aStart;
 	private Node aEnd;
 	

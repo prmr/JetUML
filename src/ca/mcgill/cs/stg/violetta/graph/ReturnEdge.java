@@ -32,8 +32,6 @@ import com.horstmann.violet.LineStyle;
  */
 public class ReturnEdge extends SegmentedLineEdge
 {
-	private static final long serialVersionUID = -1974288499540230578L;
-
 	/**
 	 * Constructs a standard return edge.
 	 */

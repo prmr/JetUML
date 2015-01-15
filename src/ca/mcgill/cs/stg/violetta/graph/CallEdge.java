@@ -32,7 +32,6 @@ import com.horstmann.violet.framework.Direction;
  */
 public class CallEdge extends SegmentedLineEdge
 {
-	private static final long serialVersionUID = -8265868130886054460L;
 	private boolean aSignal;
 	
 	/**

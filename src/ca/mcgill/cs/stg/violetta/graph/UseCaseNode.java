@@ -30,7 +30,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  *  A use case node in a use case diagram.
  */
-@SuppressWarnings("serial")
 public class UseCaseNode extends RectangularNode
 {
 	private static final int DEFAULT_WIDTH = 110;

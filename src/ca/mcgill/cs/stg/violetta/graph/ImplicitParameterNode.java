@@ -35,7 +35,6 @@ import com.horstmann.violet.framework.MultiLineString;
 /**
  * An object node in a scenario diagram.
  */
-@SuppressWarnings("serial")
 public class ImplicitParameterNode extends RectangularNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
