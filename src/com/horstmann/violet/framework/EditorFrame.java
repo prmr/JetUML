@@ -81,7 +81,11 @@ import ca.mcgill.cs.stg.violetta.graph.Graph;
 
 import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.BentStyle;
+import com.horstmann.violet.ClassDiagramGraph;
 import com.horstmann.violet.LineStyle;
+import com.horstmann.violet.ObjectDiagramGraph;
+import com.horstmann.violet.SequenceDiagramGraph;
+import com.horstmann.violet.UseCaseDiagramGraph;
 
 /**
    This desktop frame contains panes that show graphs.
@@ -877,7 +881,30 @@ public class EditorFrame extends JFrame
       Graph graph = frame.getGraph();    
       try
       {
-      	FileService.Save save = fileService.save(null, frame.getFileName(), violetFilter, null, defaultExtension);
+    	//This is an add-in by JoelChev to try to modify the savedName.  
+    	//Added into the save as method of the EditorFrame class.
+      	String specificExtension;
+      	if(graph instanceof UseCaseDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("usecase.extension");
+      	}
+      	else if(graph instanceof ClassDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("class.extension");
+      	}
+      	else if(graph instanceof ObjectDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("object.extension");
+      	}
+      	else if(graph instanceof SequenceDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("sequence.extension");
+      	}
+      	else
+      	{
+      		specificExtension = appResources.getString("state.extension");
+      	}  
+      	FileService.Save save = fileService.save(null, frame.getFileName(), violetFilter, null, specificExtension+defaultExtension);
       	OutputStream out = save.getOutputStream();
       	if (out != null)
       	{
