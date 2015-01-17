@@ -23,6 +23,10 @@ package com.horstmann.violet;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.horstmann.violet.framework.EditorFrame;
 
@@ -43,24 +47,44 @@ public final class UMLEditor
 	public static void main(String[] pArgs)
 	{
 		checkVersion();
+		final String[] arguments = pArgs;
+		
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				setLookAndFeel();
+				EditorFrame frame = new EditorFrame(UMLEditor.class);
+				frame.addGraphType("class_diagram", ClassDiagramGraph.class);
+				frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
+				frame.addGraphType("state_diagram", StateDiagramGraph.class);
+			    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
+			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+				frame.setVisible(true);
+				frame.readArgs(arguments);
+			}
+		});
+   }
+	
+	private static void setLookAndFeel()
+	{
 		try
 		{
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-		}
-		catch (SecurityException ex)
+			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) 
+			{
+				if("Nimbus".equals(info.getName())) 
+				{
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} 
+		catch(UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException e) 
 		{
-			// well, we tried...
+		    // Nothing: We revert to the default LAF
 		}
-
-		EditorFrame frame = new EditorFrame(UMLEditor.class);
-		frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-		frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-		frame.addGraphType("state_diagram", StateDiagramGraph.class);
-	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-		frame.setVisible(true);
-		frame.readArgs(pArgs);
-   }
+	}
 	
 	/**
 	 *  Checks if the current VM has at least the given
