@@ -63,7 +63,7 @@ public class PropertySheet extends JPanel
 	static
 	{  
 	      editors = new HashMap<>();
-	      editors.put(String.class, StringEditor.class);
+	      editors.put(String.class, PropertyEditorSupport.class);
 	}
 	
 	/**
@@ -252,17 +252,5 @@ public class PropertySheet extends JPanel
 			listener.stateChanged(pEvent);
 		}
 	}
-   
-	// workaround for Web Start bug TODO Remove eventually
-	// CSOFF:
-	public static class StringEditor extends PropertyEditorSupport
-	{
-		public String getAsText() 
-		{ return (String) getValue(); }
-		
-		public void setAsText(String pString) 
-		{ setValue(pString); }      
-	}
-	// CSON:
 }
 
