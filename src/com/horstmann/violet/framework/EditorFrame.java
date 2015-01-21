@@ -221,7 +221,7 @@ public class EditorFrame extends JFrame
          fileExitItem.setEnabled(false);
       }
 
-      if (fileService == null || fileService.isWebStart()) 
+      if (fileService == null) 
       {
          recentFilesMenu.setEnabled(false);
          fileSaveItem.setEnabled(false);

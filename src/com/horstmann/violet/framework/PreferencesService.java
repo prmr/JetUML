@@ -4,7 +4,7 @@ import java.util.prefs.Preferences;
 
 /**
  * A service for storing and loading user preferences.
- * This service uses either the standard Java preferences API or the WebStart 
+ * This service uses the standard Java preferences API 
  * persistence service ("muffins"). 
  */
 public abstract class PreferencesService
@@ -20,18 +20,8 @@ public abstract class PreferencesService
       if (service != null) return service;
       try
       {
-         service = new DefaultPreferencesService(appClass);
-         return service;
-      }
-      catch (SecurityException exception)
-      {
-         // that happens when we run under Web Start         
-      }
-      try
-      {
-         // we load this lazily so that the JAR can load without WebStart
-         service = (PreferencesService) Class.forName("com.horstmann.violet.framework.JNLPPreferencesService").newInstance();
-         return service;
+    	  service = new DefaultPreferencesService(appClass);
+          return service;
       }
       catch (Throwable exception)
       {
