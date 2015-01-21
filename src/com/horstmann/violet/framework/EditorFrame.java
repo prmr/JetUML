@@ -221,7 +221,7 @@ public class EditorFrame extends JFrame
          fileExitItem.setEnabled(false);
       }
 
-      if (fileService == null || fileService.isWebStart()) 
+      if (fileService == null) 
       {
          recentFilesMenu.setEnabled(false);
          fileSaveItem.setEnabled(false);
@@ -664,7 +664,7 @@ public class EditorFrame extends JFrame
          if (frames[i] instanceof GraphFrame)
          {
             GraphFrame frame = (GraphFrame)frames[i];
-            if (frame.getFileName().equals(name)) 
+            if (frame.getFileName() != null && frame.getFileName().equals(name)) 
             {
                try
                {

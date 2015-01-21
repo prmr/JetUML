@@ -14,14 +14,13 @@ import javax.swing.JOptionPane;
 
 
 /*
- * This class produces common file open and file save dialogs for normal operation and for Java Web Start.
- * Note that the JNLP service is loaded lazily: the JNLP library need not be present for local execution. 
+ * This class produces common file open and file save dialogs for normal operation.
  */
 public abstract class FileService
 {
 	/**
     * Gets a service that is appropriate for the mode in which this program works.
-    * @return a service for local dialogs or for Java Web Start
+    * @return a service for local dialogs
 	 */
    public static synchronized FileService getInstance(File initialDirectory)
    {
@@ -31,28 +30,12 @@ public abstract class FileService
          service = new JFileChooserService(initialDirectory);
          return service;
       }
-      catch (SecurityException exception)
-      {
-         // that happens when we run under Web Start         
-      }
-      try
-      {
-         // we load this lazily so that the JAR can load without WebStart
-         service = (FileService) Class.forName("com.horstmann.violet.framework.JNLPFileService").newInstance();
-         return service;
-      }
       catch (Throwable exception)
       {
          // that happens when we are an applet
       }
       return null;
    }
-   
-   /**
-    * Tests whether the service is provided by WebStart
-    * @return true if this service is provided by WebStart
-    */
-   public abstract boolean isWebStart();
    
    /**
     * Gets an Open object that encapsulates the stream and name of the file that the user selected
@@ -77,7 +60,6 @@ public abstract class FileService
    public abstract Save save(String defaultDirectory, String defaultFile, ExtensionFilter extensions,
       String removeExtension, String addExtension) throws IOException;
    
-   private static boolean webStart = false;
    private static FileService service;
 
    /**
@@ -217,8 +199,6 @@ public abstract class FileService
          private String name;
          private OutputStream out;
       }
-      
-      public boolean isWebStart() { return false; }      
       
       private JFileChooser fileChooser;
    }
