@@ -22,27 +22,20 @@
 
 package ca.mcgill.cs.stg.jetuml.framework;
 
-
 /**
-   A property editor for the LineStyle type.
-*/
+ * A property editor for the LineStyle type.
+ */
 public class LineStyleEditor extends PropertySelector
 {
-   public LineStyleEditor()
-   {
-      super(names, values);
-   }
-
-   private static final String[] names = 
-   { 
-      "Solid", 
-      "Dotted" 
-   };
-   
-   private static final Object[] values = 
-   {
-      LineStyle.SOLID,
-      LineStyle.DOTTED
-   };
+	private static final String[] NAMES = { "Solid", "Dotted" };
+	private static final Object[] VALUES = { LineStyle.SOLID, LineStyle.DOTTED };
+	
+	/**
+	 * Creates a line style editor with the default values.
+	 */
+	public LineStyleEditor()
+	{
+		super(NAMES, VALUES);
+	}
 }
 

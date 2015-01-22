@@ -22,32 +22,19 @@
 
 package ca.mcgill.cs.stg.jetuml.framework;
 
-
 /**
-   A property editor for the BentStyle type.
-*/
+ * A property editor for the BentStyle type.
+ */
 public class BentStyleEditor extends PropertySelector
 {
-   public BentStyleEditor()
-   {
-      super(names, values);
-   }
-
-   private static final String[] names = 
-   { 
-      "Straight", 
-      "HV", 
-      "VH", 
-      "HVH", 
-      "VHV" 
-   };
-   
-   private static final Object[] values = 
-   {
-      BentStyle.STRAIGHT,
-      BentStyle.HV,
-      BentStyle.VH,
-      BentStyle.HVH,
-      BentStyle.VHV
-   };
+	private static final String[] NAMES = { "Straight", "HV", "VH", "HVH", "VHV" };
+	private static final Object[] VALUES = { BentStyle.STRAIGHT, BentStyle.HV, BentStyle.VH, BentStyle.HVH, BentStyle.VHV };
+	
+	/**
+     * Creates a bent style editor with the default values. 
+     */
+	public BentStyleEditor()
+	{
+		super(NAMES, VALUES);
+	}
 }

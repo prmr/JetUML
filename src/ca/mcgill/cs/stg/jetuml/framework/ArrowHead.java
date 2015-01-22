@@ -32,13 +32,18 @@ import java.awt.geom.Point2D;
  */
 public final class ArrowHead
 {
-	   public static final ArrowHead NONE = new ArrowHead();
-	   public static final ArrowHead TRIANGLE = new ArrowHead();
-	   public static final ArrowHead BLACK_TRIANGLE = new ArrowHead();
-	   public static final ArrowHead V = new ArrowHead();
-	   public static final ArrowHead HALF_V = new ArrowHead();
-	   public static final ArrowHead DIAMOND = new ArrowHead();
-	   public static final ArrowHead BLACK_DIAMOND = new ArrowHead();
+	public static final ArrowHead NONE = new ArrowHead();
+	public static final ArrowHead TRIANGLE = new ArrowHead();
+	public static final ArrowHead BLACK_TRIANGLE = new ArrowHead();
+	public static final ArrowHead V = new ArrowHead();
+	public static final ArrowHead HALF_V = new ArrowHead();
+	public static final ArrowHead DIAMOND = new ArrowHead();
+	public static final ArrowHead BLACK_DIAMOND = new ArrowHead();
+	   
+	// CSOFF:
+	private static final double ARROW_ANGLE = Math.PI / 6; 
+	private static final double ARROW_LENGTH = 10;
+	// CSON:
 	
    private ArrowHead() {}
    
@@ -78,9 +83,7 @@ public final class ArrowHead
    		{
    			return path;
    		}
-   		final double ARROW_ANGLE = Math.PI / 6;
-   		final double ARROW_LENGTH = 10;
-
+   		
    		double dx = pEnd.getX() - pPoint1.getX();
    		double dy = pEnd.getY() - pPoint1.getY();
    		double angle = Math.atan2(dy, dx);
