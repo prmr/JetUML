@@ -30,6 +30,26 @@ public abstract class FileService
          service = new JFileChooserService(initialDirectory);
          return service;
       }
+      catch (SecurityException exception)
+      {
+         // that happens when we run under Web Start         
+      }
+      try
+      {
+         // we load this lazily so that the JAR can load without WebStart
+         service = (FileService) Class.forName("com.horstmann.violet.framework.JNLPFileService").newInstance();
+         return service;
+      }
+      catch (SecurityException exception)
+      {
+         // that happens when we run under Web Start         
+      }
+      try
+      {
+         // we load this lazily so that the JAR can load without WebStart
+         service = (FileService) Class.forName("com.horstmann.violet.framework.JNLPFileService").newInstance();
+         return service;
+      }
       catch (Throwable exception)
       {
          // that happens when we are an applet
@@ -38,14 +58,22 @@ public abstract class FileService
    }
    
    /**
+    * Tests whether the service is provided by WebStart
+    * @return true if this service is provided by WebStart
+    */
+   public abstract boolean isWebStart();
+   
+   
+   /**
     * Gets an Open object that encapsulates the stream and name of the file that the user selected
     * @param defaultDirectory the default directory for the file chooser
     * @param defaultFile the default file for the file chooser
     * @param extensions the extension filter
+    * @param optionalExtensions is an array of diagram type specific extensions. It can be null.
     * @return the Open object for the selected file
     * @throws IOException
     */
-   public abstract Open open(String defaultDirectory, String defaultFile, ExtensionFilter extensions) throws IOException;
+   public abstract Open open(String defaultDirectory, String defaultFile, ExtensionFilter extensions, ExtensionFilter[] optionalExtensions) throws IOException;
    /**
     * Gets a Save object that encapsulates the stream and name of the file that the user selected (or will
     * select)
@@ -77,6 +105,7 @@ public abstract class FileService
        * @return the file name      
        */
       String getName() throws IOException ;
+      
    }
 
    /**
@@ -95,6 +124,7 @@ public abstract class FileService
        * stream is closed.       
        */
       String getName() throws IOException ;
+     
    }
 
    /**
@@ -109,10 +139,18 @@ public abstract class FileService
       }
 
       public FileService.Open open(String defaultDirectory, String defaultFile, 
-         ExtensionFilter filter) throws FileNotFoundException
+         ExtensionFilter filter, ExtensionFilter[] optionalFilters) throws FileNotFoundException
       {
          fileChooser.resetChoosableFileFilters();
          fileChooser.setFileFilter(filter);
+         //The following loop adds in FileExtensions for a user to choose based on Diagram type.
+         //Done by JoelChev
+         if(optionalFilters != null){
+        	 for(ExtensionFilter aFilter: optionalFilters)
+        	 {
+        		 fileChooser.addChoosableFileFilter(aFilter);
+        	 }
+         }
          if (defaultDirectory != null)
             fileChooser.setCurrentDirectory(new File(defaultDirectory));
          if (defaultFile == null)             
@@ -177,6 +215,8 @@ public abstract class FileService
 
          public String getName() { return name; }
          public InputStream getInputStream() { return in; }
+        
+
 
          private String name;
          private InputStream in;
@@ -231,4 +271,5 @@ public abstract class FileService
       }
    	return path;      
    }
+   
 }
