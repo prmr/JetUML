@@ -28,107 +28,117 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
-   A grid to which points and rectangles can be "snapped". The
-   snapping operation moves a point to the nearest grid point.
-*/
+ * A grid to which points and rectangles can be "snapped". The
+ * snapping operation moves a point to the nearest grid point.
+ */
 public class Grid
 {
-	   private double gridx;
-	   private double gridy;
+	private static final Color GRID_COLOR = new Color(220, 220, 220); // Pale grey
 	
-   /**
-      Constructs a grid with no grid points.
-   */
-   public Grid()
-   {
-      setGrid(0, 0);
-   }
+	private double aGridX;
+	private double aGridY;
+	
+	/**
+     *  Constructs a grid with no grid points.
+     */
+	public Grid()
+	{
+		setGrid(0, 0);
+	}
    
-   /**
-      Sets the grid point distances in x- and y-direction
-      @param x the grid point distance in x-direction
-      @param y the grid point distance in y-direction
-   */
-   public void setGrid(double x, double y)
-   {
-      gridx = x;
-      gridy = y;
-   }
+	/**
+     *  Sets the grid point distances in x- and y-direction.
+     * @param pX the grid point distance in x-direction
+     * @param pY the grid point distance in y-direction
+     */
+	public void setGrid(double pX, double pY)
+	{
+		aGridX = pX;
+		aGridY = pY;
+	}
    
-   /**
-      Draws this grid inside a rectangle.
-      @param g2 the graphics context
-      @param bounds the bounding rectangle
-   */
-   public void draw(Graphics2D g2, Rectangle2D bounds)
-   {
-      Color PALE_BLUE = new Color(0.9F, 0.8F, 0.9F);
-      Color oldColor = g2.getColor();
-      g2.setColor(PALE_BLUE);
-      Stroke oldStroke = g2.getStroke();
-      for (double x = bounds.getX(); x < bounds.getMaxX(); x += gridx)
-         g2.draw(new Line2D.Double(x, bounds.getY(), x, bounds.getMaxY()));
-      for (double y = bounds.getY(); y < bounds.getMaxY(); y += gridy)
-         g2.draw(new Line2D.Double(bounds.getX(), y, bounds.getMaxX(), y));
-      g2.setStroke(oldStroke);
-      g2.setColor(oldColor);
+	/**
+     * Draws this grid inside a rectangle.
+     * @param pGraphics2D the graphics context
+     * @param pBounds the bounding rectangle
+     */
+	public void draw(Graphics2D pGraphics2D, Rectangle2D pBounds)
+	{
+		Color oldColor = pGraphics2D.getColor();
+		pGraphics2D.setColor(GRID_COLOR);
+		Stroke oldStroke = pGraphics2D.getStroke();
+		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += aGridX)
+		{
+			pGraphics2D.draw(new Line2D.Double(x, pBounds.getY(), x, pBounds.getMaxY()));
+		}
+		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += aGridY)
+		{
+			pGraphics2D.draw(new Line2D.Double(pBounds.getX(), y, pBounds.getMaxX(), y));
+		}
+		pGraphics2D.setStroke(oldStroke);
+		pGraphics2D.setColor(oldColor);
+	}
+
+	/**
+     * Snaps a point to the nearest grid point.
+     * @param pPoint the point to snap. After the call, the 
+     * coordinates of p are changed so that p falls on the grid.
+     */
+	public void snap(Point2D pPoint)
+	{
+		double x;
+		if(aGridX == 0)
+		{
+			x = pPoint.getX();
+		}
+		else
+		{
+			x = Math.round(pPoint.getX() / aGridX) * aGridX;
+		}
+		double y;
+		if(aGridY == 0)
+		{
+			y = pPoint.getY();
+		}
+		else
+		{
+			y = Math.round(pPoint.getY() / aGridY) * aGridY;
+		}
+		pPoint.setLocation(x, y);
    }
 
-   /**
-      Snaps a point to the nearest grid point
-      @param p the point to snap. After the call, the 
-      coordinates of p are changed so that p falls on the grid.
-   */
-   public void snap(Point2D p)
-   {
-      double x;
-      if (gridx == 0)
-         x = p.getX();
-      else
-         x = Math.round(p.getX() / gridx) * gridx;
-      double y;
-      if (gridy == 0)
-         y = p.getY();
-      else
-         y = Math.round(p.getY() / gridy) * gridy;
-         
-      p.setLocation(x, y);
-   }
-
-   /**
-      Snaps a rectangle to the nearest grid points
-      @param r the rectangle to snap. After the call, the 
-      coordinates of r are changed so that all of its corners
-      falls on the grid.
-   */
-   public void snap(Rectangle2D r)
-   {
-      double x;
-      double w;
-      if (gridx == 0)
-      {
-         x = r.getX();
-         w = r.getWidth();
-      }
-      else
-      {
-         x = Math.round(r.getX() / gridx) * gridx;
-         w = Math.ceil(r.getWidth() / (2 * gridx)) * (2 * gridx);
-      }
-      double y;
-      double h;
-      if (gridy == 0)
-      {
-         y = r.getY();
-         h = r.getHeight();
-      }
-      else
-      {
-         y = Math.round(r.getY() / gridy) * gridy;
-         h = Math.ceil(r.getHeight() / (2 * gridy)) * (2 * gridy);
-      }
-         
-      r.setFrame(x, y, w, h);      
-   }
-
+	/**
+     * Snaps a rectangle to the nearest grid points.
+     * @param pRectangle the rectangle to snap. After the call, the 
+     * coordinates of r are changed so that all of its corners
+     * falls on the grid.
+	 */
+	public void snap(Rectangle2D pRectangle)
+	{
+		double x;
+		double w;
+		if(aGridX == 0)
+		{
+			x = pRectangle.getX();
+			w = pRectangle.getWidth();
+		}
+		else
+		{
+			x = Math.round(pRectangle.getX() / aGridX) * aGridX;
+			w = Math.ceil(pRectangle.getWidth() / (2 * aGridX)) * (2 * aGridX);
+		}
+		double y;
+		double h;
+		if(aGridY == 0)
+		{
+			y = pRectangle.getY();
+			h = pRectangle.getHeight();
+		}
+		else
+		{
+			y = Math.round(pRectangle.getY() / aGridY) * aGridY;
+			h = Math.ceil(pRectangle.getHeight() / (2 * aGridY)) * (2 * aGridY);
+		} 
+		pRectangle.setFrame(x, y, w, h);      
+	}
 }
