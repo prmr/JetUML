@@ -32,36 +32,10 @@ public abstract class FileService
       }
       catch (SecurityException exception)
       {
-         // that happens when we run under Web Start         
-      }
-      try
-      {
-         // we load this lazily so that the JAR can load without WebStart
-         service = (FileService) Class.forName("com.horstmann.violet.framework.JNLPFileService").newInstance();
-         return service;
-      }
-      catch (SecurityException exception)
-      {
-         // that happens when we run under Web Start         
-      }
-      try
-      {
-         // we load this lazily so that the JAR can load without WebStart
-         service = (FileService) Class.forName("com.horstmann.violet.framework.JNLPFileService").newInstance();
-         return service;
-      }
-      catch (Throwable exception)
-      {
          // that happens when we are an applet
       }
       return null;
    }
-   
-   /**
-    * Tests whether the service is provided by WebStart
-    * @return true if this service is provided by WebStart
-    */
-   public abstract boolean isWebStart();
    
    
    /**

@@ -63,7 +63,7 @@ public class PropertySheet extends JPanel
 	static
 	{  
 	      editors = new HashMap<>();
-	      editors.put(String.class, StringEditor.class);
+	      editors.put(String.class, PropertyEditorSupport.class);
 	}
 	
 	/**
