@@ -71,6 +71,9 @@ public class PropertySheet extends JPanel
      * properties of a given object.
      * @param pBean the object whose properties are being edited
 	 */
+	/**
+	 * @param pBean
+	 */
 	public PropertySheet(Object pBean)
 	{
 		try
@@ -104,7 +107,7 @@ public class PropertySheet extends JPanel
 				PropertyEditor editor = getEditor(pBean, descriptors[i]);
 				if(editor != null)
 				{
-					add(new JLabel(descriptors[i].getName()));
+					add(new JLabel(toTitleCase(descriptors[i].getName())));
 					add(getEditorComponent(editor));
 				}
 			}		
@@ -264,5 +267,32 @@ public class PropertySheet extends JPanel
 		{ setValue(pString); }      
 	}
 	// CSON:
+	
+	//An addition by JoelChev to format Strings into a TitleCase.
+	/**
+	 * @param input is a String to format into a Title
+	 * @return is a String that is in Title Format.
+	 */
+	public static String toTitleCase(String input) 
+	{
+	    StringBuilder titleCase = new StringBuilder();
+	    boolean nextTitleCase = true;
+
+	    for (char c : input.toCharArray()) 
+	    {
+	        if (Character.isSpaceChar(c)) 
+	        {
+	            nextTitleCase = true;
+	        } else if (nextTitleCase) 
+	        {
+	            c = Character.toTitleCase(c);
+	            nextTitleCase = false;
+	        }
+
+	        titleCase.append(c);
+	    }
+
+	    return titleCase.toString();
+	}
 }
 
