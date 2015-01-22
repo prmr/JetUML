@@ -47,6 +47,14 @@ public final class UMLEditor
 	public static void main(String[] pArgs)
 	{
 		checkVersion();
+		try
+		{
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
+		catch (SecurityException ex)
+		{
+			// well, we tried...
+		}
 		final String[] arguments = pArgs;
 		
 		SwingUtilities.invokeLater(new Runnable()
