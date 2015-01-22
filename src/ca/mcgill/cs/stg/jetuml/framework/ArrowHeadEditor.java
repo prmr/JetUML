@@ -20,30 +20,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml;
+package ca.mcgill.cs.stg.jetuml.framework;
 
-import ca.mcgill.cs.stg.jetuml.framework.PropertySelector;
 
 /**
-   A property editor for the LineStyle type.
+   A property editor for the ArrowHead type.
 */
-public class LineStyleEditor extends PropertySelector
+public class ArrowHeadEditor extends PropertySelector
 {
-   public LineStyleEditor()
+   public ArrowHeadEditor()
    {
       super(names, values);
    }
 
    private static final String[] names = 
    { 
-      "Solid", 
-      "Dotted" 
+      "None", 
+      "Triangle", 
+      "V", 
+      "Diamond", 
+      "Black Diamond" 
    };
    
    private static final Object[] values = 
    {
-      LineStyle.SOLID,
-      LineStyle.DOTTED
+      ArrowHead.NONE,
+      ArrowHead.TRIANGLE,
+      ArrowHead.V,
+      ArrowHead.DIAMOND,
+      ArrowHead.BLACK_DIAMOND
    };
 }
-

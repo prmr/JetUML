@@ -25,7 +25,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import ca.mcgill.cs.stg.jetuml.BentStyle;
+import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 
 /**
  *  An edge that is shaped like a line with up to 

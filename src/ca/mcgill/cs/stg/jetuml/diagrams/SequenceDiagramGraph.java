@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml;
+package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;

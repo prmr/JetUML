@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml;
+package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.BasicStroke;
 import java.awt.Stroke;

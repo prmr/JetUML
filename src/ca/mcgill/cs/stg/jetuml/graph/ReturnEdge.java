@@ -26,8 +26,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import ca.mcgill.cs.stg.jetuml.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 
 /**
  *  An edge that joins two call nodes.

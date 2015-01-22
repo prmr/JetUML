@@ -75,13 +75,10 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import ca.mcgill.cs.stg.jetuml.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.BentStyle;
-import ca.mcgill.cs.stg.jetuml.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.LineStyle;
-import ca.mcgill.cs.stg.jetuml.ObjectDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.SequenceDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.UseCaseDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 

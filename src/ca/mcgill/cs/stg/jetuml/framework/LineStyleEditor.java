@@ -20,35 +20,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml;
+package ca.mcgill.cs.stg.jetuml.framework;
 
-import ca.mcgill.cs.stg.jetuml.framework.PropertySelector;
 
 /**
-   A property editor for the BentStyle type.
+   A property editor for the LineStyle type.
 */
-public class BentStyleEditor extends PropertySelector
+public class LineStyleEditor extends PropertySelector
 {
-   public BentStyleEditor()
+   public LineStyleEditor()
    {
       super(names, values);
    }
 
    private static final String[] names = 
    { 
-      "Straight", 
-      "HV", 
-      "VH", 
-      "HVH", 
-      "VHV" 
+      "Solid", 
+      "Dotted" 
    };
    
    private static final Object[] values = 
    {
-      BentStyle.STRAIGHT,
-      BentStyle.HV,
-      BentStyle.VH,
-      BentStyle.HVH,
-      BentStyle.VHV
+      LineStyle.SOLID,
+      LineStyle.DOTTED
    };
 }
+

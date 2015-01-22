@@ -29,7 +29,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 
 /**

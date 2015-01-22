@@ -32,7 +32,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 
 /**
