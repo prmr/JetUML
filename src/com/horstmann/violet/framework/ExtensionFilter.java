@@ -88,6 +88,14 @@ public class ExtensionFilter extends FileFilter
 			{
 				return true;
 			}
+			//Edited by JoelChev to handle searching for specific diagram types.
+			else if(!extension.equals(".violet"))
+			{
+				if(fileName.contains(extension) && fileName.endsWith(".violet"))
+				{
+					return true;
+				}
+			}
 		}
    		return false;
    }

@@ -81,7 +81,11 @@ import ca.mcgill.cs.stg.violetta.graph.Graph;
 
 import com.horstmann.violet.ArrowHead;
 import com.horstmann.violet.BentStyle;
+import com.horstmann.violet.ClassDiagramGraph;
 import com.horstmann.violet.LineStyle;
+import com.horstmann.violet.ObjectDiagramGraph;
+import com.horstmann.violet.SequenceDiagramGraph;
+import com.horstmann.violet.UseCaseDiagramGraph;
 
 /**
    This desktop frame contains panes that show graphs.
@@ -102,7 +106,13 @@ public class EditorFrame extends JFrame
 	private int maxRecentFiles = DEFAULT_MAX_RECENT_FILES;
 
 	private ExtensionFilter violetFilter;
+	private ExtensionFilter stateFilter;
+	private ExtensionFilter sequenceFilter;
+	private ExtensionFilter objectFilter;
+	private ExtensionFilter usecaseFilter;
+	private ExtensionFilter classFilter;
 	private ExtensionFilter exportFilter;
+	private ExtensionFilter[] optionalFilters;
 
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
@@ -170,6 +180,28 @@ public class EditorFrame extends JFrame
       violetFilter = new ExtensionFilter(
          appResources.getString("files.name"), 
          new String[] { defaultExtension });
+      stateFilter = new ExtensionFilter(
+    	         appResources.getString("state.name"), 
+    	         appResources.getString("state.extension"));
+      objectFilter = new ExtensionFilter(
+    	         appResources.getString("object.name"), 
+    	         appResources.getString("object.extension"));
+      classFilter = new ExtensionFilter(
+    	         appResources.getString("class.name"), 
+    	         appResources.getString("class.extension"));
+      usecaseFilter = new ExtensionFilter(
+    	         appResources.getString("usecase.name"), 
+    	         appResources.getString("usecase.extension"));
+      sequenceFilter = new ExtensionFilter(
+    	         appResources.getString("sequence.name"), 
+    	         appResources.getString("sequence.extension"));
+      
+      optionalFilters = new ExtensionFilter[5];
+      optionalFilters[0]=classFilter;
+      optionalFilters[1]=objectFilter;
+      optionalFilters[2]=stateFilter;
+      optionalFilters[3]=sequenceFilter;
+      optionalFilters[4]=usecaseFilter;
       exportFilter = new ExtensionFilter(
          editorResources.getString("files.image.name"), 
          editorResources.getString("files.image.extension"));
@@ -204,10 +236,6 @@ public class EditorFrame extends JFrame
             "file.export_image", this, "exportImage"); 
       fileMenu.add(fileExportItem);
 
-      JMenuItem filePrintItem = factory.createMenuItem(
-            "file.print", this, "print"); 
-      fileMenu.add(filePrintItem);
-
       JMenuItem fileExitItem = factory.createMenuItem(
             "file.exit", this, "exit");
       fileMenu.add(fileExitItem);
@@ -217,7 +245,7 @@ public class EditorFrame extends JFrame
          fileOpenItem.setEnabled(false);
          fileSaveAsItem.setEnabled(false);
          fileExportItem.setEnabled(false);
-         filePrintItem.setEnabled(false);
+//         filePrintItem.setEnabled(false);
          fileExitItem.setEnabled(false);
       }
 
@@ -809,7 +837,9 @@ public class EditorFrame extends JFrame
    {  
       try
       {
-         FileService.Open open = fileService.open(null, null, violetFilter);
+    	  //Now optionalFilters are passed in when open is selected, so a user
+    	  //Can filter for a specific type of diagram. Done by JoelChev.
+         FileService.Open open = fileService.open(null, null, violetFilter, optionalFilters);
          InputStream in = open.getInputStream();
          if (in != null)
          {      
@@ -877,7 +907,36 @@ public class EditorFrame extends JFrame
       Graph graph = frame.getGraph();    
       try
       {
-      	FileService.Save save = fileService.save(null, frame.getFileName(), violetFilter, null, defaultExtension);
+    	//This is an add-in by JoelChev to try to modify the savedName.  
+    	//Added into the save as method of the EditorFrame class.
+    	//It is a big switch statement that covers all possible values of specific file extensions.
+      	String specificExtension;
+      	FileService.Save save;
+      	if(graph instanceof UseCaseDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("usecase.extension");
+      		save = fileService.save(null, frame.getFileName(), usecaseFilter, null, specificExtension+defaultExtension);
+      	}
+      	else if(graph instanceof ClassDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("class.extension");
+      		save = fileService.save(null, frame.getFileName(), classFilter, null, specificExtension+defaultExtension);
+      	}	
+      	else if(graph instanceof ObjectDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("object.extension");
+      		save = fileService.save(null, frame.getFileName(), objectFilter, null, specificExtension+defaultExtension);
+      	}
+      	else if(graph instanceof SequenceDiagramGraph)
+      	{
+      		specificExtension = appResources.getString("sequence.extension");
+      		save = fileService.save(null, frame.getFileName(), sequenceFilter, null, specificExtension+defaultExtension);
+      	}
+      	else
+      	{
+      		specificExtension = appResources.getString("state.extension");
+      		save = fileService.save(null, frame.getFileName(), stateFilter, null, specificExtension+defaultExtension);
+      	}  
       	OutputStream out = save.getOutputStream();
       	if (out != null)
       	{
@@ -956,18 +1015,6 @@ public class EditorFrame extends JFrame
       }      
    }
 
-   /**
-      Prints the current graph.
-   */
-   public void print()
-   {
-      GraphFrame frame 
-         = (GraphFrame)desktop.getSelectedFrame();
-      if (frame == null) return;
-
-      PrintDialog dialog = new PrintDialog(frame.getGraph());
-      dialog.setVisible(true);
-   }
    
    /**
       Reads a graph file
