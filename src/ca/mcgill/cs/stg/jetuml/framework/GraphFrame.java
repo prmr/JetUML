@@ -35,8 +35,8 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
 
 /**
-   A frame for showing a graphical editor
-*/
+ *A frame for showing a graphical editor.
+ */
 public class GraphFrame extends JInternalFrame
 {
 	private Graph graph;

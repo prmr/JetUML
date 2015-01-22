@@ -20,81 +20,81 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
 
 /**
-   A layout manager that lays out components along a central axis
-*/
+ *   A layout manager that lays out components along a central axis.
+ */
 class FormLayout implements LayoutManager
 {  
 	private static final int GAP = 6;
 	
-	private int left;
-	private int right;
-	private int height;
+	private int aLeft;
+	private int aRight;
+	private int aHeight;
 	
-   public Dimension preferredLayoutSize(Container parent)
-   {  
-      Component[] components = parent.getComponents();
-      left = 0;
-      right = 0;
-      height = 0;
-      for (int i = 0; i < components.length; i += 2)
-      {
-         Component cleft = components[i];
-         Component cright = components[i + 1];
-
-         Dimension dleft = cleft.getPreferredSize();
-         Dimension dright = cright.getPreferredSize();
-         left = Math.max(left, dleft.width);
-         right = Math.max(right, dright.width);
-         height = height + Math.max(dleft.height,
-            dright.height);
-      }      
-      return new Dimension(left + GAP + right, height);
-   }
+	@Override
+	public Dimension preferredLayoutSize(Container pParent)
+	{  
+		Component[] components = pParent.getComponents();
+		aLeft = 0;
+		aRight = 0;
+		aHeight = 0;
+		for(int i = 0; i < components.length; i += 2)
+		{
+			Component cleft = components[i];
+			Component cright = components[i + 1];
+			Dimension dleft = cleft.getPreferredSize();
+			Dimension dright = cright.getPreferredSize();
+			aLeft = Math.max(aLeft, dleft.width);
+			aRight = Math.max(aRight, dright.width);
+			aHeight = aHeight + Math.max(dleft.height, dright.height);
+		}      
+		return new Dimension(aLeft + GAP + aRight, aHeight);
+	}
       
-   public Dimension minimumLayoutSize(Container parent)
-   {  
-      return preferredLayoutSize(parent);
-   }
+	@Override
+	public Dimension minimumLayoutSize(Container pParent)
+	{  
+		return preferredLayoutSize(pParent);
+	}
 
-   public void layoutContainer(Container parent)
-   {  
-      preferredLayoutSize(parent); // sets left, right
+	@Override
+	public void layoutContainer(Container pParent)
+	{  
+		preferredLayoutSize(pParent); // sets left, right
+		Component[] components = pParent.getComponents();
+		Insets insets = pParent.getInsets();
+		int xcenter = insets.left + aLeft;
+		int y = insets.top;
 
-      Component[] components = parent.getComponents();
+		for(int i = 0; i < components.length; i += 2)
+		{
+			Component cleft = components[i];
+			Component cright = components[i + 1];
 
-      Insets insets = parent.getInsets();
-      int xcenter = insets.left + left;
-      int y = insets.top;
+			Dimension dleft = cleft.getPreferredSize();
+			Dimension dright = cright.getPreferredSize();
 
-      for (int i = 0; i < components.length; i += 2)
-      {
-         Component cleft = components[i];
-         Component cright = components[i + 1];
+			int height = Math.max(dleft.height, dright.height);
 
-         Dimension dleft = cleft.getPreferredSize();
-         Dimension dright = cright.getPreferredSize();
+			cleft.setBounds(xcenter - dleft.width, y + (height - dleft.height) / 2, dleft.width, dleft.height);
+			cright.setBounds(xcenter + GAP, y + (height - dright.height) / 2, dright.width, dright.height);
+			y += height;
+		}
+	}
 
-         int height = Math.max(dleft.height,
-            dright.height);
+	@Override
+	public void addLayoutComponent(String pName, Component pComponent) 
+	{}
 
-         cleft.setBounds(xcenter - dleft.width, y + (height -
-            dleft.height) / 2, dleft.width, dleft.height);
-
-         cright.setBounds(xcenter + GAP, y + (height 
-            - dright.height) / 2, dright.width, dright.height);
-         y += height;
-      }
-   }
-
-   public void addLayoutComponent(String name,
-      Component comp)
-   {}
-
-   public void removeLayoutComponent(Component comp)
-   {}
+	@Override
+	public void removeLayoutComponent(Component pComponent)
+	{}
 
    
 }
