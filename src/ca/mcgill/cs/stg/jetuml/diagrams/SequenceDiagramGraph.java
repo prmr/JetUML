@@ -40,199 +40,173 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 
-
 /**
-   A UML sequence diagram.
-*/
+ * A UML sequence diagram.
+ */
 public class SequenceDiagramGraph extends Graph
 {
-	   private static final Node[] NODE_PROTOTYPES = new Node[3];
-
-	   private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
-   public boolean add(Node n, Point2D p)
-   {
-      if (n instanceof CallNode) // must be inside an object
-      {
-         Collection nodes = getNodes();
-         boolean inside = false;
-         Iterator iter = nodes.iterator();
-         while (!inside && iter.hasNext())
-         {
-            Node n2 = (Node)iter.next();
-            if (n2 instanceof ImplicitParameterNode
-               && n2.contains(p)) 
-            {
-               inside = true;
-               ((CallNode)n).setImplicitParameter(
-                  (ImplicitParameterNode)(n2));
-            }
-         }
-         if (!inside) return false;
-      }
+	@Override
+	public boolean add(Node pNode, Point2D pPoint)
+	{
+		if(pNode instanceof CallNode) // must be inside an object
+		{
+			Collection<Node> nodes = getNodes();
+			boolean inside = false;
+			Iterator<Node> iter = nodes.iterator();
+			while(!inside && iter.hasNext())
+			{
+				Node n2 = (Node)iter.next();
+				if(n2 instanceof ImplicitParameterNode && n2.contains(pPoint)) 
+				{
+					inside = true;
+					((CallNode)pNode).setImplicitParameter((ImplicitParameterNode)n2);
+				}
+			}
+			if (!inside)
+			{
+				return false;
+			}
+		}
 
-      if (!super.add(n, p)) return false;
+		if(!super.add(pNode, pPoint)) 
+		{
+			return false;
+		}
+		return true;
+	}
 
-      return true;
-   }
-
-   public void removeEdge(Edge e)
-   {
-      super.removeEdge(e);
-      if (e instanceof CallEdge && e.getEnd().getChildren().size() == 0)
-         removeNode(e.getEnd());
-   }
+	@Override
+	public void removeEdge(Edge pEdge)
+	{
+		super.removeEdge(pEdge);
+		if(pEdge instanceof CallEdge && pEdge.getEnd().getChildren().size() == 0) 
+		{
+			removeNode(pEdge.getEnd());
+		}		
+	}
  
-   public void layout(Graphics2D g2, Grid grid)
-   {
-      super.layout(g2, grid);
+	@Override
+	public void layout(Graphics2D pGraphics2D, Grid pGrid)
+	{
+		super.layout(pGraphics2D, pGrid);
 
-      ArrayList topLevelCalls = new ArrayList();
-      ArrayList objects = new ArrayList();
-      Collection nodes = getNodes();
-      Iterator iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node)iter.next();
+		ArrayList<Node> topLevelCalls = new ArrayList<>();
+		ArrayList<Node> objects = new ArrayList<>();
+		Collection<Node> nodes = getNodes();
+		Iterator<Node> iter = nodes.iterator();
+		while(iter.hasNext())
+		{
+			Node n = (Node)iter.next();
          
-         if (n instanceof CallNode && n.getParent() == null) 
-            topLevelCalls.add(n);
-         else if (n instanceof ImplicitParameterNode)
-            objects.add(n);      
-      }
+			if(n instanceof CallNode && n.getParent() == null)
+			{
+				topLevelCalls.add(n);
+			} 
+			else if(n instanceof ImplicitParameterNode)
+			{	
+				objects.add(n);
+			}      
+		}
+		Collection<Edge> edges = getEdges();
+		Iterator<Edge> iter2 = edges.iterator();
+		while(iter2.hasNext())
+		{
+			Edge e = (Edge)iter2.next();
+			if(e instanceof CallEdge)
+			{
+				Node end = e.getEnd();
+				if(end instanceof CallNode)
+				{
+					((CallNode)end).setSignaled(((CallEdge)e).isSignal());
+				}
+			}
+		}
 
-      Collection edges = getEdges();
-      iter = edges.iterator();
-      while (iter.hasNext())
-      {
-         Edge e = (Edge)iter.next();
-         if (e instanceof CallEdge)
-         {
-            Node end = e.getEnd();
-            if (end instanceof CallNode)
-               ((CallNode)end).setSignaled(((CallEdge)e).isSignal());
-         }
-      }
+		// find the max of the heights of the objects
 
-      double left = 0;
+		double top = 0;
+		for(int i = 0; i < objects.size(); i++)
+		{
+			ImplicitParameterNode n = (ImplicitParameterNode)objects.get(i);
+			n.translate(0, -n.getBounds().getY());
+			top = Math.max(top, n.getTopRectangle().getHeight());
+		}
 
-      // find the max of the heights of the objects
+		for (int i = 0; i < topLevelCalls.size(); i++)
+		{
+			CallNode call = (CallNode) topLevelCalls.get(i);
+			call.layout(this, pGraphics2D, pGrid);
+		}
 
-      double top = 0;
-      for (int i = 0; i < objects.size(); i++)
-      {
-         ImplicitParameterNode n = (ImplicitParameterNode)objects.get(i);
-         n.translate(0, -n.getBounds().getY());
-         top = Math.max(top, n.getTopRectangle().getHeight());
-      }
+		iter = nodes.iterator();
+		while(iter.hasNext())
+		{
+			Node n = (Node)iter.next();
+			if(n instanceof CallNode) 
+			{
+				top = Math.max(top, n.getBounds().getY() + n.getBounds().getHeight());
+			}
+		}
 
-      /*
+		top += CallNode.CALL_YGAP;
 
-      // sort topLevelCalls by y position
-      Collections.sort(topLevelCalls, new
-         Comparator()
-         {
-            public int compare(Object o1, Object o2)
-            {
-               CallNode c1 = (CallNode)o1;
-               CallNode c2 = (CallNode)o2;
-               double diff = c1.getBounds().getY()
-                  - c2.getBounds().getY();
-               if (diff < 0) return -1;
-               if (diff > 0) return 1;
-               return 0;
-            }            
-         });
-
-      for (int i = 0; i < topLevelCalls.size(); i++)
-      {
-         CallNode call = (CallNode)topLevelCalls.get(i);
-         top += CallNode.CALL_YGAP;
-
-         call.translate(0, top - call.getBounds().getY());
-         call.layout(this, g2, grid);
-         top += call.getBounds().getHeight();
-      }
-      */
-
-      for (int i = 0; i < topLevelCalls.size(); i++)
-      {
-         CallNode call = (CallNode) topLevelCalls.get(i);
-         call.layout(this, g2, grid);
-      }
-
-      iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node)iter.next();
-         if (n instanceof CallNode)
-            top = Math.max(top, n.getBounds().getY()
-               + n.getBounds().getHeight());
-      }
-
-      top += CallNode.CALL_YGAP;
-
-      for (int i = 0; i < objects.size(); i++)
-      {
-         ImplicitParameterNode n = (ImplicitParameterNode) objects.get(i);
-         Rectangle2D b = n.getBounds();
-         n.setBounds(new Rectangle2D.Double(
+		for(int i = 0; i < objects.size(); i++)
+		{
+			ImplicitParameterNode n = (ImplicitParameterNode) objects.get(i);
+			Rectangle2D b = n.getBounds();
+			n.setBounds(new Rectangle2D.Double(
             b.getX(), b.getY(), 
             b.getWidth(), top - b.getY()));         
-      }
-   }
+		}
+	}
 
-   public void draw(Graphics2D g2, Grid g)
-   {
-      layout(g2, g);
+	@Override
+	public void draw(Graphics2D pGraphics2D, Grid pGrid)
+	{
+		layout(pGraphics2D, pGrid);
+		Collection<Node> nodes = getNodes();
+		Iterator<Node> iter = nodes.iterator();
+		while (iter.hasNext())
+		{
+			Node n = (Node) iter.next();
+			if(!(n instanceof CallNode)) 
+			{
+				n.draw(pGraphics2D);
+			}
+		}
 
-      Collection nodes = getNodes();
-      Iterator iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node) iter.next();
-         if (!(n instanceof CallNode))
-            n.draw(g2);
-      }
+		iter = nodes.iterator();
+		while(iter.hasNext())
+		{
+			Node n = (Node) iter.next();
+			if(n instanceof CallNode) 
+			{
+				n.draw(pGraphics2D);
+			}
+		}
+		Collection<Edge> edges = getEdges();
+		Iterator<Edge> iter2 = edges.iterator();
+		while(iter2.hasNext())
+		{
+			Edge e = (Edge) iter2.next();
+			e.draw(pGraphics2D);
+		}
+	}
 
-      iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node) iter.next();
-         if (n instanceof CallNode)
-            n.draw(g2);
-      }
+	@Override
+	public Node[] getNodePrototypes()
+	{
+		return NODE_PROTOTYPES;
+	}
 
-      Collection edges = getEdges();
-      iter = edges.iterator();
-      while (iter.hasNext())
-      {
-         Edge e = (Edge) iter.next();
-         e.draw(g2);
-      }
-   }
-
-   public Node[] getNodePrototypes()
-   {
-      return NODE_PROTOTYPES;
-   }
-
-   public Edge[] getEdgePrototypes()
-   {
-      return EDGE_PROTOTYPES;
-   }
-
-
-
-   static
-   {
-      NODE_PROTOTYPES[0] = new ImplicitParameterNode();
-      NODE_PROTOTYPES[1] = new CallNode();
-      NODE_PROTOTYPES[2] = new NoteNode();
-      EDGE_PROTOTYPES[0] = new CallEdge();
-      EDGE_PROTOTYPES[1] = new ReturnEdge();
-      EDGE_PROTOTYPES[2] = new NoteEdge();
-   }
+	@Override
+	public Edge[] getEdgePrototypes()
+	{
+		return EDGE_PROTOTYPES;
+	}
 }
 
 
