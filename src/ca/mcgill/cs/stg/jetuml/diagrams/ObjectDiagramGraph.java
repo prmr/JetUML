@@ -35,42 +35,47 @@ import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 
 /**
-   An UML-style object diagram that shows object references.
-*/
+ *   An UML-style object diagram that shows object references.
+ */
 public class ObjectDiagramGraph extends Graph
 {
-   public Node[] getNodePrototypes()
-   {
-      return NODE_PROTOTYPES;
-   }
+	private static final Node[] NODE_PROTOTYPES = new Node[3];
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
+	
+	static
+	{
+		NODE_PROTOTYPES[0] = new ObjectNode();
+	      
+		FieldNode f = new FieldNode();
+	    MultiLineString fn = new MultiLineString();
+	    fn.setText("name");
+	    f.setName(fn);
+	    MultiLineString fv = new MultiLineString();
+	    fv.setText("value");
+	    f.setValue(fv);
+	    NODE_PROTOTYPES[1] = f;
+	      
+	    NODE_PROTOTYPES[2] = new NoteNode();
+	    
+	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
+	    
+	    ClassRelationshipEdge association = new ClassRelationshipEdge();
+	    association.setBentStyle(BentStyle.STRAIGHT);
+	    EDGE_PROTOTYPES[1] = association;
+	    EDGE_PROTOTYPES[2] = new NoteEdge();
+	}
+	
+	@Override
+	public Node[] getNodePrototypes()
+	{
+		return NODE_PROTOTYPES;
+	}
 
-   public Edge[] getEdgePrototypes()
-   {
-      return EDGE_PROTOTYPES;
-   }
-
-   private static final Node[] NODE_PROTOTYPES = new Node[3];
-
-   private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
-
-   static
-   {
-      NODE_PROTOTYPES[0] = new ObjectNode();
-      FieldNode f = new FieldNode();
-      MultiLineString fn = new MultiLineString();
-      fn.setText("name");
-      f.setName(fn);
-      MultiLineString fv = new MultiLineString();
-      fv.setText("value");
-      f.setValue(fv);
-      NODE_PROTOTYPES[1] = f;
-      NODE_PROTOTYPES[2] = new NoteNode();
-      EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
-      ClassRelationshipEdge association = new ClassRelationshipEdge();
-      association.setBentStyle(BentStyle.STRAIGHT);
-      EDGE_PROTOTYPES[1] = association;
-      EDGE_PROTOTYPES[2] = new NoteEdge();
-   }
+	@Override
+	public Edge[] getEdgePrototypes()
+	{
+		return EDGE_PROTOTYPES;
+	}   
 }
 
 
