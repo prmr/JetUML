@@ -31,37 +31,30 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.StateNode;
 import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 
-
 /**
-   A UML state diagram.
-*/
+ * A UML state diagram.
+ */
 public class StateDiagramGraph extends Graph
 {
-   public Node[] getNodePrototypes()
-   {
-      return NODE_PROTOTYPES;
-   }
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new CircularStateNode(), new CircularStateNode(), new NoteNode()};
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
+	
+	static
+	{
+		((CircularStateNode)NODE_PROTOTYPES[2]).setFinal(true);
+	}
+	
+	@Override
+	public Node[] getNodePrototypes()
+	{
+		return NODE_PROTOTYPES;
+	}
 
-   public Edge[] getEdgePrototypes()
-   {
-      return EDGE_PROTOTYPES;
-   }
-
-   private static final Node[] NODE_PROTOTYPES = new Node[4];
-
-   private static final Edge[] EDGE_PROTOTYPES = new Edge[2];
-
-   static
-   {
-      NODE_PROTOTYPES[0] = new StateNode();
-      NODE_PROTOTYPES[1] = new CircularStateNode();
-      CircularStateNode finalState = new CircularStateNode();
-      finalState.setFinal(true);
-      NODE_PROTOTYPES[2] = finalState;     
-      NODE_PROTOTYPES[3] = new NoteNode();
-      EDGE_PROTOTYPES[0] = new StateTransitionEdge();
-      EDGE_PROTOTYPES[1] = new NoteEdge();
-   }
+	@Override
+	public Edge[] getEdgePrototypes()
+	{
+		return EDGE_PROTOTYPES;
+	}
 }
 
 
