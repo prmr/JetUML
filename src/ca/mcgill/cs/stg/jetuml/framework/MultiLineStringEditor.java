@@ -37,58 +37,58 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
 /**
-   A property editor for the MultiLineString type.
-*/
+ *  A property editor for the MultiLineString type.
+ */
 public class MultiLineStringEditor extends PropertyEditorSupport
 {
-	  private static final int ROWS = 5;
-	   private static final int COLUMNS = 30;
+	private static final int ROWS = 5;
+	private static final int COLUMNS = 30;
 	   
-	   private static Set tab = new HashSet(1);
-	   private static Set shiftTab = new HashSet (1);
-	   static 
-	   {
-	      tab.add(KeyStroke.getKeyStroke("TAB" ));
-	      shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
-	   } 
+	private static Set tab = new HashSet(1);
+	private static Set shiftTab = new HashSet(1);
 	
-   public boolean supportsCustomEditor()
-   {
-      return true;
-   }
+	static 
+	{
+		tab.add(KeyStroke.getKeyStroke("TAB" ));
+		shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
+	} 
+	
+	@Override
+	public boolean supportsCustomEditor()
+	{
+		return true;
+	}
 
-   public Component getCustomEditor()
-   {
-      final MultiLineString value = (MultiLineString)getValue();
-      final JTextArea textArea = new JTextArea(ROWS, COLUMNS);
+	@Override
+	public Component getCustomEditor()
+	{
+		final MultiLineString value = (MultiLineString)getValue();
+		final JTextArea textArea = new JTextArea(ROWS, COLUMNS);
 
-      textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
-      textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
       
-      textArea.setText(value.getText());
-      textArea.getDocument().addDocumentListener(new
-         DocumentListener()
-         {
-            public void insertUpdate(DocumentEvent e) 
+		textArea.setText(value.getText());
+		textArea.getDocument().addDocumentListener(new DocumentListener()
+		{
+            public void insertUpdate(DocumentEvent pEvent) 
             {
                value.setText(textArea.getText());
                firePropertyChange();
             }
-            public void removeUpdate(DocumentEvent e) 
+            public void removeUpdate(DocumentEvent pEvent) 
             {
                value.setText(textArea.getText());
                firePropertyChange();
             }
-            public void changedUpdate(DocumentEvent e) 
-            {
-            }
+            public void changedUpdate(DocumentEvent pEvent) 
+            {}
          });
       return new JScrollPane(textArea);
    }
    
-// The actions
+	// The actions
    private static Action nextFocusAction = new AbstractAction("Move Focus Forward") 
    {
       public void actionPerformed(ActionEvent evt) 
@@ -96,6 +96,7 @@ public class MultiLineStringEditor extends PropertyEditorSupport
          ((Component)evt.getSource()).transferFocus();
       }
    };
+   
    private static Action prevFocusAction = new AbstractAction("Move Focus Backwards") 
    {
       public void actionPerformed(ActionEvent evt) 
