@@ -404,45 +404,46 @@ public class EditorFrame extends JFrame
       JMenu windowMenu = factory.createMenu("window");
       menuBar.add(windowMenu);
 
-      windowMenu.add(factory.createMenuItem(
-         "window.next", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               JInternalFrame[] frames = aDesktop.getAllFrames();
-               for (int i = 0; i < frames.length; i++)
-               {
-                  if (frames[i] == aDesktop.getSelectedFrame())
+      windowMenu.add(factory.createMenuItem("window.next", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+    	  {
+    		  JInternalFrame[] frames = aDesktop.getAllFrames();
+    		  for (int i = 0; i < frames.length; i++)
+    		  {
+    			  if(frames[i] == aDesktop.getSelectedFrame())
                   {
-                     i++; 
-                     if (i == frames.length) i = 0;
-                     try
-                     {
-                        frames[i].toFront();
-                        frames[i].setSelected(true); 
-                     }
-                     catch (PropertyVetoException exception)
-                     {
-                     }
-                     return;
+    				  i++; 
+    				  if(i == frames.length)
+    				  {
+    					  i = 0;
+    				  }
+    				  try
+    				  {
+    					  frames[i].toFront();
+    					  frames[i].setSelected(true); 
+    				  }
+    				  catch (PropertyVetoException exception)
+    				  {}
+    				  return;
                   }
-               }
-            }
-         }));
+    		  }
+    	  }
+      }));
 
-      windowMenu.add(factory.createMenuItem(
-         "window.previous", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               JInternalFrame[] frames = aDesktop.getAllFrames();
-               for (int i = 0; i < frames.length; i++)
-               {
-                  if (frames[i] == aDesktop.getSelectedFrame())
+      windowMenu.add(factory.createMenuItem("window.previous", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+    	  {
+    		  JInternalFrame[] frames = aDesktop.getAllFrames();
+    		  for(int i = 0; i < frames.length; i++)
+    		  {
+    			  if(frames[i] == aDesktop.getSelectedFrame())
                   {
-                     if (i == 0) i = frames.length;
+                     if (i == 0)
+                     {
+						i = frames.length;
+                     }	
                      i--; 
                      try
                      {
@@ -450,127 +451,110 @@ public class EditorFrame extends JFrame
                         frames[i].setSelected(true); 
                      }
                      catch (PropertyVetoException exception)
-                     {
-                     }
+                     {}
                      return;
                   }
-               }
-            }
-         }));
+    		  }
+    	  }
+      }));
 
-      windowMenu.add(factory.createMenuItem(
-         "window.maximize", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               GraphFrame frame 
-                  = (GraphFrame)aDesktop.getSelectedFrame();
-               if (frame == null) return;
-               try
-               {
-                  frame.setMaximum(true);
-               }
-               catch (PropertyVetoException exception)
-               {
-               }
-            }
-         }));
+      windowMenu.add(factory.createMenuItem("window.maximize", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+    	  {
+    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+    		  if(frame == null)
+    		  {
+    			  return;
+    		  }
+              try
+              {
+            	  frame.setMaximum(true);
+              }
+              catch(PropertyVetoException exception)
+              {}
+    	  }
+      }));
 
-      windowMenu.add(factory.createMenuItem(
-         "window.restore", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               GraphFrame frame 
-                  = (GraphFrame)aDesktop.getSelectedFrame();
-               if (frame == null) return;
-               try
-               {
-                  frame.setMaximum(false);
-               }
-               catch (PropertyVetoException exception)
-               {
-               }
-            }
-         }));
+      windowMenu.add(factory.createMenuItem("window.restore", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+    	  {
+    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+    		  if(frame == null)
+    		  {
+    			  return;
+    		  }
+    		  try
+              {
+    			  frame.setMaximum(false);
+              }
+    		  catch (PropertyVetoException exception) 
+    		  {}
+    	  }
+      }));
 
-      windowMenu.add(factory.createMenuItem(
-         "window.close", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               GraphFrame frame 
-                  = (GraphFrame)aDesktop.getSelectedFrame();
-               if (frame == null) return;
-               try
-               {
-                  frame.setClosed(true);
-               }
-               catch (PropertyVetoException exception)
-               {
-               }
-            }
-         }));
+      windowMenu.add(factory.createMenuItem("window.close", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+          {
+    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+              if(frame == null)
+              {
+            	  return;
+              }
+              try
+              {
+            	  frame.setClosed(true);
+              }
+              catch(PropertyVetoException exception)
+              {}
+          }
+      }));
 
       JMenu helpMenu = factory.createMenu("help");
       menuBar.add(helpMenu);
 
-      helpMenu.add(factory.createMenuItem(
-         "help.about", this, "showAboutDialog"));
+      helpMenu.add(factory.createMenuItem("help.about", this, "showAboutDialog"));
 
-      helpMenu.add(factory.createMenuItem(
-         "help.license", new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
-            {
-               try
-               {
-                  BufferedReader reader 
-                     = new BufferedReader(
-                        new InputStreamReader(
-                           getClass().getResourceAsStream(
-                              "license.txt")));
+      helpMenu.add(factory.createMenuItem("help.license", new ActionListener()
+      {
+    	  public void actionPerformed(ActionEvent pEvent)
+    	  {
+    		  try
+    		  {
+    			  BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
                   JTextArea text = new JTextArea(10, 50);
                   String line;
                   while ((line = reader.readLine()) != null)
                   {
-                     text.append(line);
-                     text.append("\n");
+                	  text.append(line);
+                	  text.append("\n");
                   }   
                   text.setCaretPosition(0);
                   text.setEditable(false);
-                  JOptionPane.showInternalMessageDialog(
-                     aDesktop, 
-                     new JScrollPane(text),
-                     null, 
-                     JOptionPane.INFORMATION_MESSAGE);
-               }
-               catch (IOException exception) {}
-            }
-         }));
-   }
+                  JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), null, JOptionPane.INFORMATION_MESSAGE);
+              }
+              catch(IOException exception) 
+    		  {}
+    	  }
+      }));
+	}
 
-   /**
-      Adds a graph type to the File->New menu.
-      @param resourceName the name of the menu item resource
-      @param graphClass the class object for the graph
-   */
-   public void addGraphType(String resourceName,
-      final Class graphClass)
-   {
-      aNewMenu.add(aAppFactory.createMenuItem(resourceName, new
-         ActionListener()
-         {
-            public void actionPerformed(ActionEvent event)
+	/**
+     * Adds a graph type to the File->New menu.
+     * @param pResourceName the name of the menu item resource
+     * @param pGraphClass the class object for the graph
+     */
+	public void addGraphType(String pResourceName, final Class<?> pGraphClass)
+	{
+		aNewMenu.add(aAppFactory.createMenuItem(pResourceName, new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
             {
                try
                {
-                  GraphFrame frame = new GraphFrame(
-                        (Graph) graphClass.newInstance());
+                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance());
                   addInternalFrame(frame);
                }
                catch (Exception exception)
@@ -579,14 +563,14 @@ public class EditorFrame extends JFrame
                }
             }
          }));
-   }
+	}
 
    	/**
      * Reads the command line arguments.
      * @param pArgs the command line arguments
    	 */
-   public void readArgs(String[] pArgs)
-   {
+	public void readArgs(String[] pArgs)
+	{
 	   if(pArgs.length != 0)
 	   {	
 		   for(String argument : pArgs)
@@ -597,11 +581,11 @@ public class EditorFrame extends JFrame
 	   setTitle();
    	}
    
-   /**
+   /*
     * Opens a file with the given name, or switches to the frame if it is already open.
-    * @param name the file name
+    * @param pName the file name
     */
-   private void open(String name)
+   private void open(String pName)
    {
       JInternalFrame[] frames = aDesktop.getAllFrames();
       for (int i = 0; i < frames.length; i++)
@@ -609,16 +593,15 @@ public class EditorFrame extends JFrame
          if (frames[i] instanceof GraphFrame)
          {
             GraphFrame frame = (GraphFrame)frames[i];
-            if (frame.getFileName() != null && frame.getFileName().equals(name)) 
+            if (frame.getFileName() != null && frame.getFileName().equals(pName)) 
             {
                try
                {
                   frame.toFront();
                   frame.setSelected(true); 
                }
-               catch (PropertyVetoException exception)
-               {
-               }
+               catch(PropertyVetoException exception)
+               {}
                return;
             }
          }
@@ -626,65 +609,59 @@ public class EditorFrame extends JFrame
       
       try
       {              
-         Graph graph = read(new FileInputStream(name));
+         Graph graph = read(new FileInputStream(pName));
          GraphFrame frame = new GraphFrame(graph);
          addInternalFrame(frame);
-         frame.setFileName(name);              
+         frame.setFileName(pName);              
       }
-      catch (IOException exception)
+      catch(IOException exception)
       {
-         JOptionPane.showInternalMessageDialog(aDesktop, 
-               exception);
+         JOptionPane.showInternalMessageDialog(aDesktop, exception);
       }      
    }   
 
-   /**
-      Creates an internal frame on the desktop.
-      @param c the component to display in the internal frame
-      @param t the title of the internal frame.
-   */
-   private void addInternalFrame(final JInternalFrame iframe)
+   	/*
+     * Creates an internal frame on the desktop.
+     * @param c the component to display in the internal frame
+     * @param t the title of the internal frame.
+    */
+   private void addInternalFrame(final JInternalFrame pInternalFrame)
    {  
-      iframe.setResizable(true);
-      iframe.setClosable(true);
-      iframe.setMaximizable(true);
-      iframe.setIconifiable(true);
-      int frameCount = aDesktop.getAllFrames().length;      
-      aDesktop.add(iframe);
-      // position frame
-      int emptySpace 
-         = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
-      int width = Math.max(aDesktop.getWidth() / 2, 
-            aDesktop.getWidth() - emptySpace);            
-      int height = Math.max(aDesktop.getHeight() / 2, 
-         aDesktop.getHeight() - emptySpace);
+	   pInternalFrame.setResizable(true);
+	   pInternalFrame.setClosable(true);
+	   pInternalFrame.setMaximizable(true);
+	   pInternalFrame.setIconifiable(true);
+	   int frameCount = aDesktop.getAllFrames().length;      
+	   aDesktop.add(pInternalFrame);
+	   // position frame
+	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
+	   int width = Math.max(aDesktop.getWidth() / 2, aDesktop.getWidth() - emptySpace);            
+	   int height = Math.max(aDesktop.getHeight() / 2, aDesktop.getHeight() - emptySpace);
 
-      iframe.reshape(frameCount * FRAME_GAP, 
-         frameCount * FRAME_GAP, width, height);
-      iframe.show();
+	   pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
+	   pInternalFrame.show();
 
-      iframe.addInternalFrameListener(new
-         InternalFrameAdapter()
-         {
-            public void internalFrameActivated(InternalFrameEvent event)
-            {
+	   pInternalFrame.addInternalFrameListener(new InternalFrameAdapter()
+       {
+		   public void internalFrameActivated(InternalFrameEvent pEvent)
+		   {
                setTitle();
-            }
-            public void internalFrameDeactivated(InternalFrameEvent event)
-            {
+		   }
+            
+		   public void internalFrameDeactivated(InternalFrameEvent pEvent)
+		   {
                setTitle();
-            }
-         });
+		   }
+       });
 
-      // select the frame--might be vetoed
-      try
-      {  
-         iframe.setSelected(true);
-      }
-      catch(PropertyVetoException e)
-      {
-      }
-   }
+	   // select the frame--might be vetoed
+	   try
+	   {  
+		   pInternalFrame.setSelected(true);
+	   }
+	   catch(PropertyVetoException e)
+	   {}
+   	}
 
    	private void setTitle()
    	{
@@ -708,245 +685,270 @@ public class EditorFrame extends JFrame
    		}
    }
    
-   /**
-    * Adds a file name to the "recent files" list and rebuilds the "recent files" menu. 
-    * @param newFile the file name to add
-    */
-   private void addRecentFile(final String newFile)
-   {
-      aRecentFiles.remove(newFile);
-      if (newFile == null || newFile.equals("")) return;
-      aRecentFiles.add(0, newFile);
-      buildRecentFilesMenu();
-   }
+   	/*
+   	 * Adds a file name to the "recent files" list and rebuilds the "recent files" menu. 
+   	 * @param pNewFile the file name to add
+   	 */
+   	private void addRecentFile(final String pNewFile)
+   	{
+   		aRecentFiles.remove(pNewFile);
+   		if(pNewFile == null || pNewFile.equals("")) 
+   		{
+   			return;
+   		}
+   		aRecentFiles.add(0, pNewFile);
+   		buildRecentFilesMenu();
+   	}
    
-   /**
-    * Rebuilds the "recent files" menu.
-    */
-   private void buildRecentFilesMenu()
-   {
-      aRecentFilesMenu.removeAll();
-      for (int i = 0; i < aRecentFiles.size(); i++)
-      {
+   	/*
+   	 * Rebuilds the "recent files" menu.
+   	 */
+   	private void buildRecentFilesMenu()
+   	{
+   		aRecentFilesMenu.removeAll();
+   		for(int i = 0; i < aRecentFiles.size(); i++)
+   		{
          final String file = (String) aRecentFiles.get(i); 
          String name = new File(file).getName();
-         if (i < 10) name = i + " " + name;
-         else if (i == 10) name = "0 " + name;         
-         JMenuItem item = new JMenuItem(name);
-         if (i < 10) item.setMnemonic((char)('0' + i));
-         else if (i == 10) item.setMnemonic('0');
-         aRecentFilesMenu.add(item);
-         item.addActionListener(new
-               ActionListener()
-               {
-                  public void actionPerformed(ActionEvent event)
-                  {
-                     open(file);
-                  }
-               });
-      }      
-   }
-
-   /**
-      Asks the user to open a graph file.
-   */
-   public void openFile()
-   {  
-      try
-      {
-    	  //Now optionalFilters are passed in when open is selected, so a user
-    	  //Can filter for a specific type of diagram. Done by JoelChev.
-         FileService.Open open = aFileService.open(null, null, aVioletFilter, aOptionalFilters);
-         InputStream in = open.getInputStream();
-         if (in != null)
-         {      
-            Graph graph = read(in);
-            GraphFrame frame = new GraphFrame(graph);
-            addInternalFrame(frame);
-            frame.setFileName(open.getName());
-            addRecentFile(open.getName());
-            setTitle();
-         }               
-      }
-      catch (IOException exception)      {
-         JOptionPane.showInternalMessageDialog(aDesktop, 
-            exception);
-      }
-   }
-
-   /**
-    * Open a file from an URL--used by applet
-    * @param url the URL 
-    */
-   public void openURL(URL url) throws IOException
-   {
-      InputStream in = url.openStream();
-      if (in != null)
-      {      
-         Graph graph = read(in);
-         GraphFrame frame = new GraphFrame(graph);
-         addInternalFrame(frame);
-         try
+         if(i < 10)
          {
-            frame.setMaximum(true);
+			name = i + " " + name;
+         } 
+         else if(i == 10) 
+         {
+			name = "0 " + name;
+         }         
+         JMenuItem item = new JMenuItem(name);
+         if (i < 10)
+         {
+			item.setMnemonic((char)('0' + i));
          }
-         catch (PropertyVetoException ex) {}
-      }               
-   }
-   
-   public void save()
-   {
-      GraphFrame frame 
-         = (GraphFrame) aDesktop.getSelectedFrame();
-      if (frame == null) return;
-      String fileName = frame.getFileName(); 
-      if (fileName == null) { saveAs(); return; }
-      try
-      {
-      	saveFile(frame.getGraph(), new FileOutputStream(fileName));
-         frame.getGraphPanel().setModified(false);
-      }        
-      catch (Exception exception)
-      {
-         JOptionPane.showInternalMessageDialog(aDesktop, 
-            exception);
-      }        
-   }
-   
-   /**
-      Saves the current graph as a new file.
-   */
-   public void saveAs()
-   {
-      GraphFrame frame 
-         = (GraphFrame)aDesktop.getSelectedFrame();
-      if (frame == null) return;
-      Graph graph = frame.getGraph();    
-      try
-      {
-    	//This is an add-in by JoelChev to try to modify the savedName.  
-    	//Added into the save as method of the EditorFrame class.
-    	//It is a big switch statement that covers all possible values of specific file extensions.
-      	String specificExtension;
-      	FileService.Save save;
-      	if(graph instanceof UseCaseDiagramGraph)
-      	{
-      		specificExtension = aAppResources.getString("usecase.extension");
-      		save = aFileService.save(null, frame.getFileName(), aUsecaseFilter, null, specificExtension+aDefaultExtension);
-      	}
-      	else if(graph instanceof ClassDiagramGraph)
-      	{
-      		specificExtension = aAppResources.getString("class.extension");
-      		save = aFileService.save(null, frame.getFileName(), aClassFilter, null, specificExtension+aDefaultExtension);
-      	}	
-      	else if(graph instanceof ObjectDiagramGraph)
-      	{
-      		specificExtension = aAppResources.getString("object.extension");
-      		save = aFileService.save(null, frame.getFileName(), aObjectFilter, null, specificExtension+aDefaultExtension);
-      	}
-      	else if(graph instanceof SequenceDiagramGraph)
-      	{
-      		specificExtension = aAppResources.getString("sequence.extension");
-      		save = aFileService.save(null, frame.getFileName(), aSequenceFilter, null, specificExtension+aDefaultExtension);
-      	}
-      	else
-      	{
-      		specificExtension = aAppResources.getString("state.extension");
-      		save = aFileService.save(null, frame.getFileName(), aStateFilter, null, specificExtension+aDefaultExtension);
-      	}  
-      	OutputStream out = save.getOutputStream();
-      	if (out != null)
-      	{
-            try
-            {
-               saveFile(graph, out);
-            }
-            finally
-            {
-               out.close();
-            }
-            frame.setFileName(save.getName());
-            setTitle();
-            frame.getGraphPanel().setModified(false);
-      	}
-      }
-      catch (IOException exception)
-      {
-         JOptionPane.showInternalMessageDialog(aDesktop, 
-            exception);
-      }
-   }
-
-   /**
-      Exports the current graph to an image file.
-   */
-   public void exportImage()
-   {
-      GraphFrame frame 
-         = (GraphFrame)aDesktop.getSelectedFrame();
-      if (frame == null) return;
-
-      try
-      {
-         String imageExtensions = aEditorResources.getString("files.image.extension");
-      	FileService.Save save = aFileService.save(null, frame.getFileName(), aExportFilter, 
-               aDefaultExtension, imageExtensions);
-      	OutputStream out = save.getOutputStream();
-      	if (out != null)
-      	{
-            String format;
-            String fileName = save.getName();
-            if (fileName == null)
-            {
-               int n = imageExtensions.indexOf("|");
-               if (n < 0) n = imageExtensions.length();
-               format = imageExtensions.substring(1, n);
-            }
-            else
-            	format = fileName.substring(fileName.lastIndexOf(".") + 1);
-            if (!ImageIO.getImageWritersByFormatName(format)
-               .hasNext())
-            {
-               MessageFormat formatter = new MessageFormat(
-                  aEditorResources.getString("error.unsupported_image"));
-               JOptionPane.showInternalMessageDialog(aDesktop, 
-                  formatter.format(new Object[] { format }));
-               return;
-            }
-         
-            Graph graph = frame.getGraph();
-            try
-            {
-               saveImage(graph, out, format);
-            }
-            finally
-            {
-               out.close();
-            }
+         else if(i == 10) 
+         {
+			item.setMnemonic('0');
          }
-      }
-      catch (Exception exception)
-      {
-         JOptionPane.showInternalMessageDialog(aDesktop, 
-            exception);
+         aRecentFilesMenu.add(item);
+         item.addActionListener(new ActionListener()
+         {
+        	 public void actionPerformed(ActionEvent pEvent)
+        	 {
+        		 open(file);
+        	 }
+         });
       }      
    }
 
+   	/**
+     * Asks the user to open a graph file.
+   	 */
+   	public void openFile()
+   	{  
+   		try
+   		{
+   			//Now optionalFilters are passed in when open is selected, so a user
+   			//Can filter for a specific type of diagram. Done by JoelChev.
+   			FileService.Open open = aFileService.open(null, null, aVioletFilter, aOptionalFilters);
+   			InputStream in = open.getInputStream();
+   			if(in != null)
+   			{      
+   				Graph graph = read(in);
+   				GraphFrame frame = new GraphFrame(graph);
+   				addInternalFrame(frame);
+   				frame.setFileName(open.getName());
+   				addRecentFile(open.getName());
+   				setTitle();
+   			}               
+   		}
+   		catch(IOException exception)     
+   		{
+   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   		}
+   	}
+
+   	/**
+   	 * Open a file from an URL--used by applet.
+   	 * @param pURL the URL 
+   	 * @throws IOException If the graph can't be read.
+   	 */
+   	public void openURL(URL pURL) throws IOException
+   	{
+   		InputStream in = pURL.openStream();
+   		if(in != null)
+   		{      
+   			Graph graph = read(in);
+   			GraphFrame frame = new GraphFrame(graph);
+   			addInternalFrame(frame);
+   			try
+   			{
+   				frame.setMaximum(true);
+   			}
+   			catch(PropertyVetoException ex) 
+   			{}
+   		}	               
+   	}
+   
+   	/**
+   	 * Save a file. Called by reflection. 
+   	 */
+   	public void save()
+   	{
+   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		if(frame == null)
+   		{
+   			return;
+   		}
+   		String fileName = frame.getFileName(); 
+   		if(fileName == null) 
+   		{	saveAs(); 
+   			return; 
+   		}
+   		try
+   		{
+   			saveFile(frame.getGraph(), new FileOutputStream(fileName));
+   			frame.getGraphPanel().setModified(false);
+   		}        
+   		catch(Exception exception)
+   		{
+   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   		}        
+   	}
+   
+   	/**
+     * Saves the current graph as a new file.
+   	 */
+   	public void saveAs()
+   	{
+   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		if(frame == null) 
+   		{
+   			return;
+   		}
+   		Graph graph = frame.getGraph();    
+   		try
+   		{
+   			//This is an add-in by JoelChev to try to modify the savedName.  
+   			//Added into the save as method of the EditorFrame class.
+   			//It is a big switch statement that covers all possible values of specific file extensions.
+   			String specificExtension;
+   			FileService.Save save;
+   			if(graph instanceof UseCaseDiagramGraph)
+   			{
+   				specificExtension = aAppResources.getString("usecase.extension");
+   				save = aFileService.save(null, frame.getFileName(), aUsecaseFilter, null, specificExtension+aDefaultExtension);
+   			}
+   			else if(graph instanceof ClassDiagramGraph)
+   			{
+   				specificExtension = aAppResources.getString("class.extension");
+   				save = aFileService.save(null, frame.getFileName(), aClassFilter, null, specificExtension+aDefaultExtension);
+   			}	
+   			else if(graph instanceof ObjectDiagramGraph)
+   			{
+   				specificExtension = aAppResources.getString("object.extension");
+   				save = aFileService.save(null, frame.getFileName(), aObjectFilter, null, specificExtension+aDefaultExtension);
+   			}
+   			else if(graph instanceof SequenceDiagramGraph)
+   			{
+   				specificExtension = aAppResources.getString("sequence.extension");
+   				save = aFileService.save(null, frame.getFileName(), aSequenceFilter, null, specificExtension+aDefaultExtension);
+   			}
+   			else
+   			{
+   				specificExtension = aAppResources.getString("state.extension");
+   				save = aFileService.save(null, frame.getFileName(), aStateFilter, null, specificExtension+aDefaultExtension);
+   			} 	 
+   			OutputStream out = save.getOutputStream();
+   			if(out != null)
+   			{
+   				try
+   				{
+   					saveFile(graph, out);
+   				}
+   				finally
+   				{
+   					out.close();
+   				}
+   				frame.setFileName(save.getName());
+   				setTitle();
+   				frame.getGraphPanel().setModified(false);
+   			}
+   		}
+   		catch(IOException exception)
+   		{
+   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   		}
+   	}
+
+   	/**
+     * Exports the current graph to an image file.
+   	 */	
+   	public void exportImage()
+   	{
+   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		if(frame == null) 
+   		{
+   			return;
+   		}
+
+   		try
+   		{
+   			String imageExtensions = aEditorResources.getString("files.image.extension");
+   			FileService.Save save = aFileService.save(null, frame.getFileName(), aExportFilter, aDefaultExtension, imageExtensions);
+   			OutputStream out = save.getOutputStream();
+   			if(out != null)
+   			{
+   				String format;
+   				String fileName = save.getName();
+   				if(fileName == null)
+   				{
+   					int n = imageExtensions.indexOf("|");
+   					if(n < 0)
+   					{
+   						n = imageExtensions.length();
+   					}
+   					format = imageExtensions.substring(1, n);
+   				} 
+   				else 
+   				{
+					format = fileName.substring(fileName.lastIndexOf(".") + 1);
+				}
+   				if(!ImageIO.getImageWritersByFormatName(format).hasNext())
+   				{
+   					MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
+   					JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
+              	return;
+   				}
+         
+   				Graph graph = frame.getGraph();
+   				try
+   				{
+   					saveImage(graph, out, format);
+   				}
+   				finally
+   				{
+   					out.close();
+   				}
+   			}
+   		}
+   		catch(Exception exception)
+   		{
+   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   		}      
+   	}
+
    
    /**
-      Reads a graph file
-      @param in the input stream to read
-      @return the graph that is read in
-   */
-   public static Graph read(InputStream in)
-      throws IOException
-   {
-      XMLDecoder reader 
-         = new XMLDecoder(in);
-      Graph graph = (Graph) reader.readObject();
-      in.close();
-      return graph;
-   }
+    * Reads a graph file.
+    *  @param pIn the input stream to read
+    *  @return the graph that is read in
+    *  @throws IOException if the graph cannot be read.
+    */
+   	public static Graph read(InputStream pIn) throws IOException
+   	{
+   		XMLDecoder reader = new XMLDecoder(pIn);
+   		Graph graph = (Graph) reader.readObject();
+   		pIn.close();
+   		return graph;
+   	}
 
    /**
       Saves the current graph in a file. We use long-term
