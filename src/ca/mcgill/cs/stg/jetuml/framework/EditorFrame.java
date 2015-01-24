@@ -45,6 +45,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,7 +114,6 @@ public class EditorFrame extends JFrame
 	private ExtensionFilter aObjectFilter;
 	private ExtensionFilter aUsecaseFilter;
 	private ExtensionFilter aClassFilter;
-	private ExtensionFilter aExportFilter;
 	private ExtensionFilter[] aOptionalFilters;
 
 	/**
@@ -175,7 +175,6 @@ public class EditorFrame extends JFrame
 		aSequenceFilter = new ExtensionFilter(aAppResources.getString("sequence.name"), aAppResources.getString("sequence.extension"));
       
      	aOptionalFilters = new ExtensionFilter[]{aClassFilter, aObjectFilter, aStateFilter, aSequenceFilter, aUsecaseFilter};
-     	aExportFilter = new ExtensionFilter(aEditorResources.getString("files.image.name"), aEditorResources.getString("files.image.extension"));
 
      	JMenuBar menuBar = new JMenuBar();
      	setJMenuBar(menuBar);
@@ -819,39 +818,33 @@ public class EditorFrame extends JFrame
    		Graph graph = frame.getGraph();    
    		try
    		{
-   			//This is an add-in by JoelChev to try to modify the savedName.  
-   			//Added into the save as method of the EditorFrame class.
-   			//It is a big switch statement that covers all possible values of specific file extensions.
-   			String specificExtension;
-   			FileService.Save save;
+   			File result;
+   			ExtensionFilter filter;
    			if(graph instanceof UseCaseDiagramGraph)
    			{
-   				specificExtension = aAppResources.getString("usecase.extension");
-   				save = aFileService.save(frame.getFileName(), aUsecaseFilter, null, specificExtension+aDefaultExtension);
+   				filter = aUsecaseFilter;
    			}
    			else if(graph instanceof ClassDiagramGraph)
    			{
-   				specificExtension = aAppResources.getString("class.extension");
-   				save = aFileService.save(frame.getFileName(), aClassFilter, null, specificExtension+aDefaultExtension);
+   				filter = aClassFilter;
    			}	
    			else if(graph instanceof ObjectDiagramGraph)
    			{
-   				specificExtension = aAppResources.getString("object.extension");
-   				save = aFileService.save(frame.getFileName(), aObjectFilter, null, specificExtension+aDefaultExtension);
+   				filter = aObjectFilter;
    			}
    			else if(graph instanceof SequenceDiagramGraph)
    			{
-   				specificExtension = aAppResources.getString("sequence.extension");
-   				save = aFileService.save(frame.getFileName(), aSequenceFilter, null, specificExtension+aDefaultExtension);
+   				filter = aSequenceFilter;
    			}
    			else
    			{
-   				specificExtension = aAppResources.getString("state.extension");
-   				save = aFileService.save(frame.getFileName(), aStateFilter, null, specificExtension+aDefaultExtension);
-   			} 	 
-   			OutputStream out = save.getOutputStream();
-   			if(out != null)
+   				filter = aStateFilter;
+   			} 
+   			result = activateSaveDialog(filter, null);
+   			
+   			if(result != null)
    			{
+   				OutputStream out = new FileOutputStream(result);
    				try
    				{
    					saveFile(graph, out);
@@ -860,7 +853,7 @@ public class EditorFrame extends JFrame
    				{
    					out.close();
    				}
-   				frame.setFileName(save.getName());
+   				frame.setFileName(result.getPath());
    				setTitle();
    				frame.getGraphPanel().setModified(false);
    			}
@@ -871,6 +864,82 @@ public class EditorFrame extends JFrame
    		}
    	}
 
+   	/*
+   	 * Can return null if the operation is cancelled.
+   	 */
+   	private File activateSaveDialog(ExtensionFilter pFilter, String pRemoveExtension) throws FileNotFoundException
+	{
+   		assert pFilter.getExtensions().length == 0;
+   		
+   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(pFilter);
+		fileChooser.setCurrentDirectory(new File("."));
+		
+		if(frame.getFileName() != null)
+		{
+			File f = new File(editExtension(frame.getFileName(), pRemoveExtension, pFilter.getExtensions()[0]));                  
+			fileChooser.setSelectedFile(f);
+		}
+		else 
+		{
+			fileChooser.setSelectedFile(new File(""));
+		}
+		int response = fileChooser.showSaveDialog(this);         
+		if(response == JFileChooser.APPROVE_OPTION)
+		{
+			File f = fileChooser.getSelectedFile();
+			if(pFilter.getExtensions()[0] != null && f.getName().indexOf(".") < 0)
+			{
+				f = new File(f.getPath() + pFilter.getExtensions()[0]);
+			}
+
+			if(!f.exists()) 
+			{
+				return f;
+			}
+        
+			ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+			int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+			if(result == JOptionPane.YES_OPTION) 
+			{
+				return f;
+			}                       
+		}
+		return null;
+	}
+
+   	/**
+   	 * Edits the file path so that it ends in the desired extension.
+   	 * @param pOriginal the file to use as a starting point
+     * @param pToBeRemoved the extension that is to be removed before adding the desired extension. Use
+     * null if nothing needs to be removed. 
+   	 * @param pDesired the desired extension (e.g. ".png"), or a | separated list of extensions
+   	 * @return original if it already has the desired extension, or a new file with the edited file path
+   	 */
+	public static String editExtension(String pOriginal, String pToBeRemoved, String pDesired)
+	{
+		if (pOriginal == null) 
+		{
+			return null;
+		}
+		int n = pDesired.indexOf('|');
+		if(n >= 0) 
+		{
+			pDesired = pDesired.substring(0, n);
+		}
+		String path = pOriginal;
+		if(!path.toLowerCase().endsWith(pDesired.toLowerCase()))
+		{   		
+			if(pToBeRemoved != null && path.toLowerCase().endsWith(pToBeRemoved.toLowerCase())) 
+			{
+				path = path.substring(0, path.length() - pToBeRemoved.length());
+			}
+			path = path + pDesired;
+		}
+		return path;      
+	}
+   	
    	/**
      * Exports the current graph to an image file.
    	 */	
@@ -885,12 +954,15 @@ public class EditorFrame extends JFrame
    		try
    		{
    			String imageExtensions = aEditorResources.getString("files.image.extension");
-   			FileService.Save save = aFileService.save(frame.getFileName(), aExportFilter, aDefaultExtension, imageExtensions);
-   			OutputStream out = save.getOutputStream();
-   			if(out != null)
+   			ExtensionFilter imageFilter = new ExtensionFilter(aEditorResources.getString("files.image.name"), 
+   					aEditorResources.getString("files.image.extension"));
+   			File file = activateSaveDialog(imageFilter, aAppResources.getString("files.extension"));
+   			
+   			if(file != null)
    			{
+   				OutputStream out = new FileOutputStream(file);
    				String format;
-   				String fileName = save.getName();
+   				String fileName = file.getPath();
    				if(fileName == null)
    				{
    					int n = imageExtensions.indexOf("|");
@@ -908,7 +980,8 @@ public class EditorFrame extends JFrame
    				{
    					MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
    					JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
-              	return;
+   					out.close();
+   					return;
    				}
          
    				Graph graph = frame.getGraph();
