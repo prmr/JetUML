@@ -45,7 +45,6 @@ import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -791,13 +790,16 @@ public class EditorFrame extends JFrame
    				{
    					result = f;
    				}
-   	        
-   				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-   				int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-   				if(theresult == JOptionPane.YES_OPTION) 
+   				else
    				{
-   					result = f;
-   				}                       
+   	        		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+   	        		int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), 
+   	        				null, JOptionPane.YES_NO_OPTION);
+   	        		if(theresult == JOptionPane.YES_OPTION) 
+   	        		{
+   	        			result = f;
+   	        		}
+   				}
    			}
    			
    			if(result != null)
