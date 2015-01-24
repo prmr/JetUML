@@ -226,72 +226,68 @@ public class GraphPanel extends JPanel
 			{
 				Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
 				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-
-            if (dragMode == DRAG_MOVE && lastSelected instanceof Node)
-            {               
-               Node lastNode = (Node) lastSelected;
-               Rectangle2D bounds = lastNode.getBounds();
-               double dx = mousePoint.getX() - lastMousePoint.getX();
-               double dy = mousePoint.getY() - lastMousePoint.getY();
+				if(dragMode == DRAG_MOVE && lastSelected instanceof Node)
+				{               
+					Node lastNode = (Node) lastSelected;
+					Rectangle2D bounds = lastNode.getBounds();
+					double dx = mousePoint.getX() - lastMousePoint.getX();
+					double dy = mousePoint.getY() - lastMousePoint.getY();
                             
-               // we don't want to drag nodes into negative coordinates
-               // particularly with multiple selection, we might never be 
-               // able to get them back.
-               Iterator iter = selectedItems.iterator();
-               while (iter.hasNext())
-               {
-                  Object selected = iter.next();                 
-                  if (selected instanceof Node)
-                  {
-                     Node n = (Node) selected;
-                     bounds.add(n.getBounds());
-                  }
-               }
-               dx = Math.max(dx, -bounds.getX());
-               dy = Math.max(dy, -bounds.getY());
+					// we don't want to drag nodes into negative coordinates
+					// particularly with multiple selection, we might never be 
+					// able to get them back.
+					Iterator iter = selectedItems.iterator();
+					while(iter.hasNext())
+					{
+						Object selected = iter.next();                 
+						if(selected instanceof Node)
+						{
+							Node n = (Node) selected;
+							bounds.add(n.getBounds());
+						}
+					}
+					dx = Math.max(dx, -bounds.getX());
+					dy = Math.max(dy, -bounds.getY());
                
-               iter = selectedItems.iterator();
-               while (iter.hasNext())
-               {
-                  Object selected = iter.next();                 
-                  if (selected instanceof Node)
-                  {
-                     Node n = (Node) selected;
-                     n.translate(dx, dy);                           
-                  }
-               }
-               // we don't want continuous layout any more because of multiple selection
-               // graph.layout();
-            }            
-            else if (dragMode == DRAG_LASSO)
-            {
-               double x1 = mouseDownPoint.getX();
-               double y1 = mouseDownPoint.getY();
-               double x2 = mousePoint.getX();
-               double y2 = mousePoint.getY();
-               Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), 
-                     Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
-               Iterator iter = graph.getNodes().iterator();
-               while (iter.hasNext())
-               {
-                  Node n = (Node) iter.next();
-                  Rectangle2D bounds = n.getBounds();
-                  if (!isCtrl && !lasso.contains(n.getBounds())) 
-                  {
-                     removeSelectedItem(n);
-                  }
-                  else if (lasso.contains(n.getBounds())) 
-                  {
-                     addSelectedItem(n);
-                  }
-               }
-            }
-            
-            lastMousePoint = mousePoint;
-            repaint();
-         }
-      });
-   }
+					iter = selectedItems.iterator();
+					while(iter.hasNext())
+					{
+						Object selected = iter.next();                 
+						if(selected instanceof Node)
+						{
+							Node n = (Node) selected;
+							n.translate(dx, dy);                           
+						}
+					}
+					// we don't want continuous layout any more because of multiple selection
+					// graph.layout();
+				}            
+				else if(dragMode == DRAG_LASSO)
+				{
+					double x1 = mouseDownPoint.getX();
+					double y1 = mouseDownPoint.getY();
+					double x2 = mousePoint.getX();
+					double y2 = mousePoint.getY();
+					Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
+					Iterator iter = graph.getNodes().iterator();
+					while(iter.hasNext())
+					{
+						Node n = (Node) iter.next();
+						if(!isCtrl && !lasso.contains(n.getBounds())) 
+						{
+							removeSelectedItem(n);
+						}
+						else if (lasso.contains(n.getBounds())) 
+						{
+							addSelectedItem(n);
+						}
+					}
+				}
+				lastMousePoint = mousePoint;
+				repaint();
+			}
+		});
+	}
 
    /**
     * Edits the properties of the selected graph element.
@@ -463,25 +459,6 @@ public class GraphPanel extends JPanel
       revalidate();
       repaint();
    }
-
-//   /**
-//    * Changes the grid size of this panel. The zoom is 10 by default and is
-//    * multiplied by sqrt(2) for each positive stem or divided by sqrt(2) for
-//    * each negative step.
-//    * @param steps the number of steps by which to change the zoom. A positive
-//    * value zooms in, a negative value zooms out.
-//    */
-//   public void changeGridSize(int steps)
-//   {
-//      final double FACTOR = Math.sqrt(2);
-//      for (int i = 1; i <= steps; i++)
-//         gridSize *= FACTOR;
-//      for (int i = 1; i <= -steps; i++)
-//         gridSize /= FACTOR;
-//      grid.setGrid((int) gridSize, (int) gridSize);
-//      graph.layout();
-//      repaint();
-//   }
 
    public void selectNext(int n)
    {
