@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -35,79 +34,30 @@ import java.awt.geom.Rectangle2D;
  */
 public class Grid
 {
-	private static final Color GRID_COLOR = new Color(220, 220, 220); // Pale grey
+	private static final Color GRID_COLOR = new Color(220, 220, 220); 
+	private static final double GRID_SIZE = 10.0;
 	
-	private double aGridX;
-	private double aGridY;
-	
-	/**
-     *  Constructs a grid with no grid points.
-     */
-	public Grid()
-	{
-		setGrid(0, 0);
-	}
-   
-	/**
-     *  Sets the grid point distances in x- and y-direction.
-     * @param pX the grid point distance in x-direction
-     * @param pY the grid point distance in y-direction
-     */
-	public void setGrid(double pX, double pY)
-	{
-		aGridX = pX;
-		aGridY = pY;
-	}
-   
 	/**
      * Draws this grid inside a rectangle.
      * @param pGraphics2D the graphics context
      * @param pBounds the bounding rectangle
      */
-	public void draw(Graphics2D pGraphics2D, Rectangle2D pBounds)
+	public static void draw(Graphics2D pGraphics2D, Rectangle2D pBounds)
 	{
 		Color oldColor = pGraphics2D.getColor();
 		pGraphics2D.setColor(GRID_COLOR);
 		Stroke oldStroke = pGraphics2D.getStroke();
-		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += aGridX)
+		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += GRID_SIZE)
 		{
 			pGraphics2D.draw(new Line2D.Double(x, pBounds.getY(), x, pBounds.getMaxY()));
 		}
-		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += aGridY)
+		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += GRID_SIZE)
 		{
 			pGraphics2D.draw(new Line2D.Double(pBounds.getX(), y, pBounds.getMaxX(), y));
 		}
 		pGraphics2D.setStroke(oldStroke);
 		pGraphics2D.setColor(oldColor);
 	}
-
-	/**
-     * Snaps a point to the nearest grid point.
-     * @param pPoint the point to snap. After the call, the 
-     * coordinates of p are changed so that p falls on the grid.
-     */
-	public void snap(Point2D pPoint)
-	{
-		double x;
-		if(aGridX == 0)
-		{
-			x = pPoint.getX();
-		}
-		else
-		{
-			x = Math.round(pPoint.getX() / aGridX) * aGridX;
-		}
-		double y;
-		if(aGridY == 0)
-		{
-			y = pPoint.getY();
-		}
-		else
-		{
-			y = Math.round(pPoint.getY() / aGridY) * aGridY;
-		}
-		pPoint.setLocation(x, y);
-   }
 
 	/**
      * Snaps a rectangle to the nearest grid points.
@@ -117,30 +67,10 @@ public class Grid
 	 */
 	public void snap(Rectangle2D pRectangle)
 	{
-		double x;
-		double w;
-		if(aGridX == 0)
-		{
-			x = pRectangle.getX();
-			w = pRectangle.getWidth();
-		}
-		else
-		{
-			x = Math.round(pRectangle.getX() / aGridX) * aGridX;
-			w = Math.ceil(pRectangle.getWidth() / (2 * aGridX)) * (2 * aGridX);
-		}
-		double y;
-		double h;
-		if(aGridY == 0)
-		{
-			y = pRectangle.getY();
-			h = pRectangle.getHeight();
-		}
-		else
-		{
-			y = Math.round(pRectangle.getY() / aGridY) * aGridY;
-			h = Math.ceil(pRectangle.getHeight() / (2 * aGridY)) * (2 * aGridY);
-		} 
+		double x = Math.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE;
+		double w = Math.ceil(pRectangle.getWidth() / (2 * GRID_SIZE)) * (2 * GRID_SIZE);
+		double y = Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE;
+		double h = Math.ceil(pRectangle.getHeight() / (2 * GRID_SIZE)) * (2 * GRID_SIZE);
 		pRectangle.setFrame(x, y, w, h);      
 	}
 }

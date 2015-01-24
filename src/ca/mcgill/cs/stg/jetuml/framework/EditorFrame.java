@@ -339,34 +339,6 @@ public class EditorFrame extends JFrame
      		}
      	}));
 
-     	viewMenu.add(factory.createMenuItem("view.smaller_grid", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-            {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.changeGridSize(-1);
-            }
-         }));
-
-     	viewMenu.add(factory.createMenuItem("view.larger_grid", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-               if (frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.changeGridSize(1);
-            }
-         }));
-
      	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) factory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)

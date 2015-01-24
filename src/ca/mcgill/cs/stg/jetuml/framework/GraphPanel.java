@@ -53,187 +53,179 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
- * A panel to draw a graph
+ * A panel to draw a graph.
  */
+@SuppressWarnings("serial")
 public class GraphPanel extends JPanel
 {
-	private Graph graph;
-	   private Grid grid;
-	   private GraphFrame frame;
-	   private ToolBar toolBar;
-
-	   private double zoom;
-	   private double gridSize;
-	   private boolean hideGrid;
-	   private boolean modified;
-
-	   private Object lastSelected;
-	   private Set selectedItems;
-
-	   private Point2D lastMousePoint;
-	   private Point2D mouseDownPoint;   
-	   private int dragMode;
-	      
-	   private static final int DRAG_NONE = 0;
-	   private static final int DRAG_MOVE = 1;
-	   private static final int DRAG_RUBBERBAND = 2;
-	   private static final int DRAG_LASSO = 3;
-	   
-	   private static final int GRID = 10;
-
-	   private static final int CONNECT_THRESHOLD = 8;
-
-	   private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
+	private static final int DRAG_NONE = 0;
+	private static final int DRAG_MOVE = 1;
+	private static final int DRAG_RUBBERBAND = 2;
+	private static final int DRAG_LASSO = 3;
+	private static final int CONNECT_THRESHOLD = 8;
+	private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
 	
-   /**
-    * Constructs a graph.
-    * @param aToolBar the tool bar with the node and edge tools
-    */
-   public GraphPanel(ToolBar aToolBar)
-   {
-      grid = new Grid();
-      gridSize = GRID;
-      grid.setGrid((int) gridSize, (int) gridSize);
-      zoom = 1;
-      toolBar = aToolBar;
-      setBackground(Color.WHITE);
-
-      selectedItems = new HashSet();
+	private Graph graph;
+	private GraphFrame frame;
+	private ToolBar toolBar;
+	private double zoom;	
+	private boolean hideGrid;
+	private boolean modified;
+	private Object lastSelected;
+	private Set selectedItems;
+	private Point2D lastMousePoint;
+	private Point2D mouseDownPoint;   
+	private int dragMode;
+	
+	/**
+	 * Constructs a graph.
+	 * @param pToolBar the tool bar with the node and edge tools
+	 */
+	public GraphPanel(ToolBar pToolBar)
+	{
+		zoom = 1;
+		toolBar = pToolBar;
+		setBackground(Color.WHITE);
+		selectedItems = new HashSet();
       
-      addMouseListener(new MouseAdapter()
-      {
-         public void mousePressed(MouseEvent event)
-         {
-            requestFocus();
-            final Point2D mousePoint = new Point2D.Double(event.getX() / zoom,
-                  event.getY() / zoom);
-            boolean isCtrl = (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-            Node n = graph.findNode(mousePoint);
-            Edge e = graph.findEdge(mousePoint);
-            Object tool = toolBar.getSelectedTool();
-            if (event.getClickCount() > 1
-                  || (event.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
-            // double/right-click
-            {
-               if (e != null)
-               {
-                  setSelectedItem(e);
-                  editSelected();
-               }
-               else if (n != null)
-               {
-                  setSelectedItem(n);
-                  editSelected();
-               }
-               else
-               {
-                  toolBar.showPopup(GraphPanel.this, mousePoint,
-                        new ActionListener()
+		addMouseListener(new MouseAdapter() 
+		{
+			public void mousePressed(MouseEvent pEvent)
+			{
+				requestFocus();
+				final Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
+				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
+				Node n = graph.findNode(mousePoint);
+				Edge e = graph.findEdge(mousePoint);
+				Object tool = toolBar.getSelectedTool();
+				if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
+				{  // double/right-click
+					if(e != null)
+					{
+						setSelectedItem(e);
+						editSelected();
+					}
+					else if(n != null)
+					{
+						setSelectedItem(n);
+						editSelected();
+					}
+					else
+					{
+						toolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
                         {
-                           public void actionPerformed(ActionEvent event)
+                           public void actionPerformed(ActionEvent pEvent)
                            {
-                              Object tool = toolBar.getSelectedTool();
-                              if (tool instanceof Node)
-                              {
-                                 Node prototype = (Node) tool;
-                                 Node newNode = (Node) prototype.clone();
-                                 boolean added = graph.add(newNode, mousePoint);
-                                 if (added)
-                                 {
-                                    setModified(true);
-                                    setSelectedItem(newNode);
-                                 }
-                              }
-                           }
+                        	   Object tool = toolBar.getSelectedTool();
+                        	   if(tool instanceof Node)
+                        	   {
+                        		   Node prototype = (Node) tool;
+                        		   Node newNode = (Node) prototype.clone();
+                        		   boolean added = graph.add(newNode, mousePoint);
+                        		   if(added)
+                        		   {
+                        			   setModified(true);
+                        			   setSelectedItem(newNode);
+                        		   }
+                        	   }
+                           	}
                         });
-               }
-            }
-            else if (tool == null) // select
-            {
-               if (e != null)
-               {
-                  setSelectedItem(e);
-               }
-               else if (n != null)
-               {
-                  if (isCtrl)
-                     addSelectedItem(n);
-                  else if (!selectedItems.contains(n))
-                     setSelectedItem(n);
-                  dragMode = DRAG_MOVE;
-               }
-               else
-               {
-                  if (!isCtrl)
-                     clearSelection();
-                  dragMode = DRAG_LASSO;
-               }
-            }
-            else if (tool instanceof Node)
-            {
-               Node prototype = (Node) tool;
-               Node newNode = (Node) prototype.clone();
-               boolean added = graph.add(newNode, mousePoint);
-               if (added)
-               {
-                  setModified(true);
-                  setSelectedItem(newNode);
-                  dragMode = DRAG_MOVE;
-               }
-               else if (n != null)
-               {
-                  if (isCtrl)
-                     addSelectedItem(n);
-                  else if (!selectedItems.contains(n))
-                     setSelectedItem(n);
-                  dragMode = DRAG_MOVE;
-               }
-            }
-            else if (tool instanceof Edge)
-            {
-               if (n != null) dragMode = DRAG_RUBBERBAND;
-            }
+					}
+				}
+				else if(tool == null) // select
+				{
+					if(e != null)
+					{
+						setSelectedItem(e);
+					}
+					else if(n != null)
+					{
+						if(isCtrl) 
+						{
+							addSelectedItem(n);
+						}
+						else if(!selectedItems.contains(n)) 
+						{
+							setSelectedItem(n);
+						}
+						dragMode = DRAG_MOVE;
+					}
+					else
+					{
+						if(!isCtrl) 
+						{
+							clearSelection();
+						}
+						dragMode = DRAG_LASSO;
+					}
+				}
+				else if(tool instanceof Node)
+				{
+					Node prototype = (Node) tool;
+					Node newNode = (Node) prototype.clone();
+					boolean added = graph.add(newNode, mousePoint);
+					if(added)
+					{
+						setModified(true);
+						setSelectedItem(newNode);
+						dragMode = DRAG_MOVE;
+					}
+					else if(n != null)
+					{
+						if(isCtrl) 
+						{
+							addSelectedItem(n);
+						}
+						else if(!selectedItems.contains(n))
+						{
+							setSelectedItem(n);
+						}
+						dragMode = DRAG_MOVE;
+					}
+				}
+				else if(tool instanceof Edge)
+				{
+					if(n != null) 
+					{
+						dragMode = DRAG_RUBBERBAND;
+					}
+				}
+				lastMousePoint = mousePoint;
+				mouseDownPoint = mousePoint;
+				repaint();
+			}
 
-            lastMousePoint = mousePoint;
-            mouseDownPoint = mousePoint;
-            repaint();
-         }
+			public void mouseReleased(MouseEvent pEvent)
+			{
+				Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
+				Object tool = toolBar.getSelectedTool();
+				if(dragMode == DRAG_RUBBERBAND)
+				{
+					Edge prototype = (Edge) tool;
+					Edge newEdge = (Edge) prototype.clone();
+					if(mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD && graph.connect(newEdge, mouseDownPoint, mousePoint))
+					{
+						setModified(true);
+						setSelectedItem(newEdge);
+					}
+				}
+				else if(dragMode == DRAG_MOVE)
+				{
+					graph.layout();
+					setModified(true);
+				}
+				dragMode = DRAG_NONE;
+				revalidate();
+				repaint();
+			}
+		});
 
-         public void mouseReleased(MouseEvent event)
-         {
-            Point2D mousePoint = new Point2D.Double(event.getX() / zoom,
-                  event.getY() / zoom);
-            Object tool = toolBar.getSelectedTool();
-            if (dragMode == DRAG_RUBBERBAND)
-            {
-               Edge prototype = (Edge) tool;
-               Edge newEdge = (Edge) prototype.clone();
-               if (mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD
-                     && graph.connect(newEdge, mouseDownPoint, mousePoint))
-               {
-                  setModified(true);
-                  setSelectedItem(newEdge);
-               }
-            }
-            else if (dragMode == DRAG_MOVE)
-            {
-               graph.layout();
-               setModified(true);
-            }
-            dragMode = DRAG_NONE;
-
-            revalidate();
-            repaint();
-         }
-      });
-
-      addMouseMotionListener(new MouseMotionAdapter()
-      {
-         public void mouseDragged(MouseEvent event)
-         {
-            Point2D mousePoint = new Point2D.Double(event.getX() / zoom, 
-                  event.getY() / zoom);
-            boolean isCtrl = (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
+		addMouseMotionListener(new MouseMotionAdapter()
+		{
+			public void mouseDragged(MouseEvent pEvent)
+			{
+				Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
+				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 
             if (dragMode == DRAG_MOVE && lastSelected instanceof Node)
             {               
@@ -364,17 +356,20 @@ public class GraphPanel extends JPanel
       repaint();
    }
 
-   public void paintComponent(Graphics g)
+   @Override
+   public void paintComponent(Graphics pGraphics)
    {
-      super.paintComponent(g);
-      Graphics2D g2 = (Graphics2D) g;
-      g2.scale(zoom, zoom);
-      Rectangle2D bounds = getBounds();
-      Rectangle2D graphBounds = graph.getBounds(g2);
-      if (!hideGrid) grid.draw(g2, new Rectangle2D.Double(0, 0, 
-            Math.max(bounds.getMaxX() / zoom, graphBounds.getMaxX()), 
-            Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
-      graph.draw(g2, grid);
+	   super.paintComponent(pGraphics);
+	   Graphics2D g2 = (Graphics2D) pGraphics;
+	   g2.scale(zoom, zoom);
+	   Rectangle2D bounds = getBounds();
+	   Rectangle2D graphBounds = graph.getBounds(g2);
+	   if(!hideGrid) 
+	   {
+		   Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / zoom, graphBounds.getMaxX()), 
+				   Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
+	   }
+	   graph.draw(g2, new Grid());
 
       Iterator iter = selectedItems.iterator();
       Set toBeRemoved = new HashSet();
@@ -469,24 +464,24 @@ public class GraphPanel extends JPanel
       repaint();
    }
 
-   /**
-    * Changes the grid size of this panel. The zoom is 10 by default and is
-    * multiplied by sqrt(2) for each positive stem or divided by sqrt(2) for
-    * each negative step.
-    * @param steps the number of steps by which to change the zoom. A positive
-    * value zooms in, a negative value zooms out.
-    */
-   public void changeGridSize(int steps)
-   {
-      final double FACTOR = Math.sqrt(2);
-      for (int i = 1; i <= steps; i++)
-         gridSize *= FACTOR;
-      for (int i = 1; i <= -steps; i++)
-         gridSize /= FACTOR;
-      grid.setGrid((int) gridSize, (int) gridSize);
-      graph.layout();
-      repaint();
-   }
+//   /**
+//    * Changes the grid size of this panel. The zoom is 10 by default and is
+//    * multiplied by sqrt(2) for each positive stem or divided by sqrt(2) for
+//    * each negative step.
+//    * @param steps the number of steps by which to change the zoom. A positive
+//    * value zooms in, a negative value zooms out.
+//    */
+//   public void changeGridSize(int steps)
+//   {
+//      final double FACTOR = Math.sqrt(2);
+//      for (int i = 1; i <= steps; i++)
+//         gridSize *= FACTOR;
+//      for (int i = 1; i <= -steps; i++)
+//         gridSize /= FACTOR;
+//      grid.setGrid((int) gridSize, (int) gridSize);
+//      graph.layout();
+//      repaint();
+//   }
 
    public void selectNext(int n)
    {

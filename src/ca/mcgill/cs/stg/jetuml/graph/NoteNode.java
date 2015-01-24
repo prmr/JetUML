@@ -103,24 +103,6 @@ public class NoteNode extends RectangularNode
 		aText = pText;
 	}
 
-//	/**
-//     * Gets the value of the color property.
-//     * @return the background color of the note
-//	 */
-//	public Color getColor()
-//	{
-//		return aColor;
-//	}
-//
-//	/**
-//     * Sets the value of the color property.
-//     * @param pColor the background color of the note
-//	 */
-//	public void setColor(Color pColor)
-//	{
-//		aColor = pColor;
-//	}
-   
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
