@@ -131,7 +131,7 @@ public class EditorFrame extends JFrame
 		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
 		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");      
 		ResourceFactory factory = new ResourceFactory(aEditorResources);
-		aPreferences = PreferencesService.getInstance(pAppClass);
+		aPreferences = PreferencesService.getInstance();
       
 		aRecentFiles = new ArrayList<>(); 
 		File lastDir = new File(".");
@@ -922,14 +922,12 @@ public class EditorFrame extends JFrame
    		return graph;
    	}
 
-   /**
-      Saves the current graph in a file. We use long-term
-      bean persistence to save the program data. See
-      http://java.sun.com/products/jfc/tsc/articles/persistence4/index.html
-      for an overview.
-      @param out the stream for saving
-   */
-   private static void saveFile(Graph graph, OutputStream out)
+   	/**
+     * Saves the current graph in a file. We use long-term
+     * bean persistence to save the program data. 
+     * @param out the stream for saving
+     */
+   	private static void saveFile(Graph graph, OutputStream out)
    {
       XMLEncoder encoder = new XMLEncoder(out);
          
@@ -979,107 +977,96 @@ public class EditorFrame extends JFrame
       encoder.close();
    }
 
-   /**
-      Exports a current graph to an image file.
-      @param graph the graph
-      @param out the output stream
-      @param format the image file format
-   */
-   public static void saveImage(Graph graph, OutputStream out, String format)
-      throws IOException
-   {
-      BufferedImage dummy = new BufferedImage(1, 1,
-         BufferedImage.TYPE_INT_RGB);
-      // need a dummy image to get a Graphics to
-      // measure the size
-      Rectangle2D bounds = graph.getBounds(
-         (Graphics2D) dummy.getGraphics());
-      BufferedImage image 
-         = new BufferedImage((int)bounds.getWidth() + 1,
-            (int)bounds.getHeight() + 1, 
-            BufferedImage.TYPE_INT_RGB);
-      Graphics2D g2 = (Graphics2D)image.getGraphics();
-      g2.translate(-bounds.getX(), -bounds.getY());
-      g2.setColor(Color.WHITE);
-      g2.fill(new Rectangle2D.Double(
-                 bounds.getX(),
-                 bounds.getY(), 
-                 bounds.getWidth() + 1,
-                 bounds.getHeight() + 1));
-      g2.setColor(Color.BLACK);
-      g2.setBackground(Color.WHITE);
-      graph.draw(g2, null);
-      ImageIO.write(image, format, out);
-   }
+   	/**
+     * Exports a current graph to an image file.
+     * @param pGraph the graph
+     * @param pOut the output stream
+     * @param pFormat the image file format
+     * @throws IOException if the image cannot be exported.
+   	 */
+   	public static void saveImage(Graph pGraph, OutputStream pOut, String pFormat) throws IOException
+   	{
+   		BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+   		// need a dummy image to get a Graphics to measure the size
+   		Rectangle2D bounds = pGraph.getBounds((Graphics2D) dummy.getGraphics());
+   		BufferedImage image = new BufferedImage((int)bounds.getWidth() + 1, (int)bounds.getHeight() + 1, BufferedImage.TYPE_INT_RGB);
+   		Graphics2D g2 = (Graphics2D)image.getGraphics();
+   		g2.translate(-bounds.getX(), -bounds.getY());
+   		g2.setColor(Color.WHITE);
+   		g2.fill(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth() + 1, bounds.getHeight() + 1));
+   		g2.setColor(Color.BLACK);
+   		g2.setBackground(Color.WHITE);
+   		pGraph.draw(g2, null);
+   		ImageIO.write(image, pFormat, pOut);
+   	}
    
-   /**
-      Displays the About dialog box.
-   */
-   public void showAboutDialog()
-   {
-      MessageFormat formatter = new MessageFormat(
-            aEditorResources.getString("dialog.about.version"));
-      JOptionPane.showInternalMessageDialog(aDesktop, 
-         formatter.format(new Object[] { 
+   	/**
+     * Displays the About dialog box.
+   	 */
+   	public void showAboutDialog()
+   	{
+   		MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
+   		JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { 
                aAppResources.getString("app.name"),
                aVersionResources.getString("version.number"),
                aVersionResources.getString("version.date"),
                aAppResources.getString("app.copyright"),
                aEditorResources.getString("dialog.about.license")}),
-         null, 
-         JOptionPane.INFORMATION_MESSAGE,
-         new ImageIcon(
-            getClass().getResource(aAppResources.getString("app.icon"))));  
-   }
+               null, JOptionPane.INFORMATION_MESSAGE,
+               new ImageIcon(getClass().getResource(aAppResources.getString("app.icon"))));  
+   	}
 
-   /**
-      Exits the program if no graphs have been modified
-      or if the user agrees to abandon modified graphs.
-   */
-   public void exit()
-   {
-      int modcount = 0;
-      JInternalFrame[] frames = aDesktop.getAllFrames();
-      for (int i = 0; i < frames.length; i++)
-      {
-         if (frames[i] instanceof GraphFrame)
-         {
-            GraphFrame frame = (GraphFrame)frames[i];
-            if (frame.getGraphPanel().isModified()) modcount++;
-         }
-      }
-      if (modcount > 0)
-      {
-         // ask user if it is ok to close
-         int result
-            = JOptionPane.showInternalConfirmDialog(
-               aDesktop, 
-               MessageFormat.format(aEditorResources.getString("dialog.exit.ok"),
-                     new Object[] { new Integer(modcount) }),
-               null, 
-               JOptionPane.YES_NO_OPTION);
+   	/**
+     * Exits the program if no graphs have been modified
+     * or if the user agrees to abandon modified graphs.
+   	 */
+   	public void exit()
+   	{
+   		int modcount = 0;
+   		JInternalFrame[] frames = aDesktop.getAllFrames();
+   		for(int i = 0; i < frames.length; i++)
+   		{
+   			if(frames[i] instanceof GraphFrame)
+   			{
+   				GraphFrame frame = (GraphFrame)frames[i];
+   				if(frame.getGraphPanel().isModified()) 
+   				{
+   					modcount++;
+   				}
+   			}	
+   		}
+   		if(modcount > 0)
+   		{
+   			// ask user if it is ok to close
+   			int result = JOptionPane.showInternalConfirmDialog(aDesktop, MessageFormat.format(aEditorResources.getString("dialog.exit.ok"),
+                     new Object[] { new Integer(modcount) }), null, JOptionPane.YES_NO_OPTION);
          
-         // if the user doesn't agree, veto the close
-         if (result != JOptionPane.YES_OPTION)
-            return;
-      }
-      savePreferences();
-      System.exit(0);
-   }
+   			// if the user doesn't agree, veto the close
+   			if(result != JOptionPane.YES_OPTION) 
+   			{
+   				return;
+   			}
+   		}
+   		savePreferences();
+   		System.exit(0);
+   	}
    
-   /**
-    * Saves the user preferences before exiting.
-    */
-   public void savePreferences()
-   {
-      String recent = "";     
-      for (int i = 0; i < Math.min(aRecentFiles.size(), aMaxRecentFiles); i++)
-      {
-         if (recent.length() > 0) recent += "|";
-         recent += aRecentFiles.get(i);
-      }      
-      aPreferences.put("recent", recent);   
-   }
+   	/**
+   	 * Saves the user preferences before exiting.
+   	 */
+   	public void savePreferences()
+   	{
+   		String recent = "";     
+   		for(int i = 0; i < Math.min(aRecentFiles.size(), aMaxRecentFiles); i++)
+   		{
+   			if(recent.length() > 0) 
+   			{
+   				recent += "|";
+   			}
+   			recent += aRecentFiles.get(i);
+   		}      
+   		aPreferences.put("recent", recent);   
+   	}
 
    private static PersistenceDelegate staticFieldDelegate 
       = new 
