@@ -100,7 +100,6 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
 	private JDesktopPane aDesktop;
-	private FileService aFileService;
 	private PreferencesService aPreferences;
 	private JMenu aNewMenu;
 	private String aDefaultExtension;
@@ -142,8 +141,6 @@ public class EditorFrame extends JFrame
 			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
 			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
 		}
-		aFileService = FileService.getInstance();      
-		aFileService.setInitialDirectory(lastDir);
       
 		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -202,21 +199,7 @@ public class EditorFrame extends JFrame
      	JMenuItem fileExitItem = factory.createMenuItem("file.exit", this, "exit");
      	fileMenu.add(fileExitItem);
 
-     	if(aFileService == null)
-     	{
-     		fileOpenItem.setEnabled(false);
-     		fileSaveAsItem.setEnabled(false);
-     		fileExportItem.setEnabled(false);
-     		fileExitItem.setEnabled(false);
-     	}
-
-     	if(aFileService == null) 
-     	{
-     		aRecentFilesMenu.setEnabled(false);
-     		fileSaveItem.setEnabled(false);
-     	}
-                  
-     	JMenu editMenu = factory.createMenu("edit");
+    	JMenu editMenu = factory.createMenu("edit");
      	menuBar.add(editMenu);
 
      	editMenu.add(factory.createMenuItem("edit.properties", new ActionListener()
