@@ -62,6 +62,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -513,6 +514,18 @@ public class EditorFrame extends JFrame
     	  }
       }));
 	}
+	
+	private File getLastDirectory()
+	{
+		File lastDir = new File(".");
+		String recent = aPreferences.get("recent", "").trim();
+		if(recent.length() > 0)
+		{
+			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
+			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
+		}
+		return lastDir;
+	}
 
 	/**
      * Adds a graph type to the File->New menu.
@@ -718,17 +731,24 @@ public class EditorFrame extends JFrame
    	{  
    		try
    		{
-   			//Now optionalFilters are passed in when open is selected, so a user
-   			//Can filter for a specific type of diagram. Done by JoelChev.
-   			FileService.Open open = aFileService.open(null, null, aVioletFilter, aOptionalFilters);
-   			InputStream in = open.getInputStream();
+   			JFileChooser fileChooser = new JFileChooser(getLastDirectory());
+   			fileChooser.setFileFilter(aVioletFilter);
+   			for(ExtensionFilter filter: aOptionalFilters)
+			{
+				fileChooser.addChoosableFileFilter(filter);
+			}
+   			InputStream in = null;
+   			if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
+   			{
+   				in = new FileInputStream(fileChooser.getSelectedFile());
+   			}
    			if(in != null)
    			{      
    				Graph graph = read(in);
    				GraphFrame frame = new GraphFrame(graph);
    				addInternalFrame(frame);
-   				frame.setFileName(open.getName());
-   				addRecentFile(open.getName());
+   				frame.setFileName(fileChooser.getSelectedFile().getPath());
+   				addRecentFile(fileChooser.getSelectedFile().getPath());
    				setTitle();
    			}               
    		}
@@ -807,27 +827,27 @@ public class EditorFrame extends JFrame
    			if(graph instanceof UseCaseDiagramGraph)
    			{
    				specificExtension = aAppResources.getString("usecase.extension");
-   				save = aFileService.save(null, frame.getFileName(), aUsecaseFilter, null, specificExtension+aDefaultExtension);
+   				save = aFileService.save(frame.getFileName(), aUsecaseFilter, null, specificExtension+aDefaultExtension);
    			}
    			else if(graph instanceof ClassDiagramGraph)
    			{
    				specificExtension = aAppResources.getString("class.extension");
-   				save = aFileService.save(null, frame.getFileName(), aClassFilter, null, specificExtension+aDefaultExtension);
+   				save = aFileService.save(frame.getFileName(), aClassFilter, null, specificExtension+aDefaultExtension);
    			}	
    			else if(graph instanceof ObjectDiagramGraph)
    			{
    				specificExtension = aAppResources.getString("object.extension");
-   				save = aFileService.save(null, frame.getFileName(), aObjectFilter, null, specificExtension+aDefaultExtension);
+   				save = aFileService.save(frame.getFileName(), aObjectFilter, null, specificExtension+aDefaultExtension);
    			}
    			else if(graph instanceof SequenceDiagramGraph)
    			{
    				specificExtension = aAppResources.getString("sequence.extension");
-   				save = aFileService.save(null, frame.getFileName(), aSequenceFilter, null, specificExtension+aDefaultExtension);
+   				save = aFileService.save(frame.getFileName(), aSequenceFilter, null, specificExtension+aDefaultExtension);
    			}
    			else
    			{
    				specificExtension = aAppResources.getString("state.extension");
-   				save = aFileService.save(null, frame.getFileName(), aStateFilter, null, specificExtension+aDefaultExtension);
+   				save = aFileService.save(frame.getFileName(), aStateFilter, null, specificExtension+aDefaultExtension);
    			} 	 
    			OutputStream out = save.getOutputStream();
    			if(out != null)
@@ -865,7 +885,7 @@ public class EditorFrame extends JFrame
    		try
    		{
    			String imageExtensions = aEditorResources.getString("files.image.extension");
-   			FileService.Save save = aFileService.save(null, frame.getFileName(), aExportFilter, aDefaultExtension, imageExtensions);
+   			FileService.Save save = aFileService.save(frame.getFileName(), aExportFilter, aDefaultExtension, imageExtensions);
    			OutputStream out = save.getOutputStream();
    			if(out != null)
    			{

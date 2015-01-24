@@ -73,57 +73,8 @@ public final class FileService
 	}
    
 	/**
-	 * Gets an Open object that encapsulates the stream and name of the file that the user selected.
-	 * @param pDefaultDirectory the default directory for the file chooser
-	 * @param pDefaultFile the default file for the file chooser
-	 * @param pFilter the extension filter
-	 * @param pOptionalFilters is an array of diagram type specific extensions. It can be null.
-	 * @return the Open object for the selected file
-	 * @throws FileNotFoundException If there's any problem opening the file.
-	 */
-	public FileService.Open open(String pDefaultDirectory, String pDefaultFile, 
-			ExtensionFilter pFilter, ExtensionFilter[] pOptionalFilters) throws FileNotFoundException
-	{
-		aFileChooser.resetChoosableFileFilters();
-		aFileChooser.setFileFilter(pFilter);
-     
-		//The following loop adds in FileExtensions for a user to choose based on Diagram type.
-		//Done by JoelChev
-		if(pOptionalFilters != null)
-		{
-			for(ExtensionFilter aFilter: pOptionalFilters)
-			{
-				aFileChooser.addChoosableFileFilter(aFilter);
-			}
-		}
-		if(pDefaultDirectory != null)
-		{
-			aFileChooser.setCurrentDirectory(new File(pDefaultDirectory));
-		}
-		if(pDefaultFile == null)
-		{
-			aFileChooser.setSelectedFile(null);
-		} 
-		else
-		{
-			aFileChooser.setSelectedFile(new File(pDefaultFile));
-		}         
-		int response = aFileChooser.showOpenDialog(null);         
-		if(response == JFileChooser.APPROVE_OPTION) 
-		{
-			return new Open(aFileChooser.getSelectedFile());
-		}
-		else 
-		{
-			return new Open(null);
-		}
-	}
-			
-   
-	/**
 	 * Gets a Save object that encapsulates the stream and name of the file that the user selected (or will
 	 * select).
-	 * @param pDefaultDirectory the default directory for the file chooser
 	 * @param pDefaultFile the default file for the file chooser
 	 * @param pFilter the extension filter
 	 * @param pRemoveExtension the extension to remove from the default file name
@@ -131,19 +82,13 @@ public final class FileService
 	 * @return the Save object for the selected file
 	 * @throws FileNotFoundException If there's any problem saving the file.
 	 */
-	public FileService.Save save(String pDefaultDirectory, String pDefaultFile, 
-			ExtensionFilter pFilter, String pRemoveExtension, String pAddExtension) throws FileNotFoundException
+	public FileService.Save save(String pDefaultFile, ExtensionFilter pFilter, 
+			String pRemoveExtension, String pAddExtension) throws FileNotFoundException
 	{
 		aFileChooser.resetChoosableFileFilters();
 		aFileChooser.setFileFilter(pFilter);
-		if(pDefaultDirectory == null) 
-		{
-			aFileChooser.setCurrentDirectory(new File("."));
-		}
-		else 
-		{
-			aFileChooser.setCurrentDirectory(new File(pDefaultDirectory));
-		}
+		aFileChooser.setCurrentDirectory(new File("."));
+		
 		if(pDefaultFile != null)
 		{
 			File f = new File(editExtension(pDefaultFile, pRemoveExtension, pAddExtension));                  
@@ -175,47 +120,6 @@ public final class FileService
 			}                       
 		}
 		return new Save(null);
-	}
-
-	/**
-	 * An Open object encapsulates the stream and name of the file that the user selected for opening.
-	 */
-	public class Open
-	{
-		private String aName;
-		private InputStream aIn;
-			
-		/**
-		 * Creates a new open object.
-		 * @param pFile The file that is being opened.
-		 * @throws FileNotFoundException If it's not possible to open it.
-		 */
-		public Open(File pFile) throws FileNotFoundException
-		{
-			if(pFile != null)
-			{
-				aName = pFile.getPath();
-				aIn = new FileInputStream(pFile);
-			}
-		}
-
-		/**
-		 * Gets the name of the file that the user selected.
-		 * @return the file name      
-		 */
-		public String getName()
-		{
-			return aName; 
-		}
-         
-		/**
-		 * Gets the input stream corresponding to the user selection.
-		 * @return the input stream     
-		 */
-		public InputStream getInputStream()
-		{ 
-			return aIn; 
-		}
 	}
 
 	/**
