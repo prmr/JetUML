@@ -34,18 +34,13 @@ public class TestExtensionFilter
 	@Test
 	public void testBasicConstructor()
 	{
-		ExtensionFilter filter = new ExtensionFilter("", new String[]{""});
+		ExtensionFilter filter = new ExtensionFilter("", "");
 		assertEquals("", filter.getDescription());
-		String[] extensions = filter.getExtensions();
-		assertEquals(1, extensions.length);
-		assertEquals("", extensions[0]);
+		assertEquals("", filter.getExtension());
 		
-		filter = new ExtensionFilter("Tar files", new String[]{".tar", ".tar.gz"});
+		filter = new ExtensionFilter("Tar files", ".tar");
 		assertEquals("Tar files", filter.getDescription());
-		extensions = filter.getExtensions();
-		assertEquals(2, extensions.length);
-		assertEquals(".tar", extensions[0]);
-		assertEquals(".tar.gz", extensions[1]);
+		assertEquals(".tar", filter.getExtension());
 	}
 	
 	@Test 
@@ -53,33 +48,25 @@ public class TestExtensionFilter
 	{
 		ExtensionFilter filter = new ExtensionFilter("Tar files", ".tar");
 		assertEquals("Tar files", filter.getDescription());
-		String[] extensions = filter.getExtensions();
-		assertEquals(1, extensions.length);
-		assertEquals(".tar", extensions[0]);
+		assertEquals(".tar", filter.getExtension());
 		
-		filter = new ExtensionFilter("Tar files", ".tar|.tar.gz");
+		filter = new ExtensionFilter("Tar files", ".tar");
 		assertEquals("Tar files", filter.getDescription());
-		extensions = filter.getExtensions();
-		assertEquals(2, extensions.length);
-		assertEquals(".tar", extensions[0]);
-		assertEquals(".tar.gz", extensions[1]);
+		assertEquals(".tar", filter.getExtension());
 		
-		filter = new ExtensionFilter("Tar files", " .tar | .tar.gz ");
+		filter = new ExtensionFilter("Tar files", " .tar ");
 		assertEquals("Tar files", filter.getDescription());
-		extensions = filter.getExtensions();
-		assertEquals(2, extensions.length);
-		assertEquals(" .tar ", extensions[0]);
-		assertEquals(" .tar.gz ", extensions[1]);
+		assertEquals(" .tar ", filter.getExtension());
 	}
 	
 	@Test 
 	public void testAccept()
 	{
-		ExtensionFilter filter = new ExtensionFilter("", new String[] {""});
+		ExtensionFilter filter = new ExtensionFilter("", "");
 		assertTrue(filter.accept(new File("test")));
-		filter = new ExtensionFilter("Test files", new String[] {".txt"});
+		filter = new ExtensionFilter("Test files", ".txt");
 		assertFalse(filter.accept(new File("README.md")));
-		filter = new ExtensionFilter("Readme files", new String[] {".md"});
+		filter = new ExtensionFilter("Readme files", ".md");
 		assertTrue(filter.accept(new File("README.md")));
 	}
 }

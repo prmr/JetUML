@@ -882,7 +882,7 @@ public class EditorFrame extends JFrame
    				
    				if( !fileChooser.getFileFilter().accept(f))
    				{
-   					f = new File(f.getPath() + ((ExtensionFilter)fileChooser.getFileFilter()).getExtensions()[0]);
+   					f = new File(f.getPath() + ((ExtensionFilter)fileChooser.getFileFilter()).getExtension());
    				}
 
    				if(!f.exists()) 

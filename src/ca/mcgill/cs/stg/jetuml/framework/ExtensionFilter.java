@@ -33,46 +33,24 @@ import javax.swing.filechooser.FileFilter;
 public class ExtensionFilter extends FileFilter
 {
 	private String aDescription;
-	private String[] aExtensions;
+	private String aExtension;
 	
-	/**
-	 *  Constructs an extension file filter.
-	 *  @param pDescription the description (e.g. "Woozle files")
-	 *  @param pExtensions the accepted extensions (e.g.
-	 *   new String[] { ".woozle", ".wzl" })
-	 *   @pre pDescription != null
-	 *   @pre pExtensions != null && pExtensions.length > 0
-	 *   @pre None of the elements in pExtensions are null.
-	 */
-	public ExtensionFilter(String pDescription, String[] pExtensions)
-	{
-		assert pDescription != null;
-		assert pExtensions != null;
-		assert pExtensions.length > 0;
-		for( String extension : pExtensions )
-		{
-			assert extension != null;
-		}
-		aDescription = pDescription; 
-		aExtensions = pExtensions;
-	}
-
 	/**
      * Constructs an extension file filter.
      * @param pDescription the description (e.g. "Woozle files")
-     * @param pExtensions the accepted extensions, separated
-     * by | (e.g.".woozle|.wzl" }). No blank spaces allowed
+     * @param pExtension the single accepted extension that corresponds
+     * to this type of file.
      * @pre pDescription != null
      * @pre pExtensions != null
      * @pre pExtensions != ""
 	 */
-   	public ExtensionFilter(String pDescription, String pExtensions)
+   	public ExtensionFilter(String pDescription, String pExtension)
    	{
    		assert pDescription != null;
-		assert pExtensions != null;
-		assert pExtensions.length() > 0;
+		assert pExtension != null;
+		assert pExtension.length() > 0;
 	   	aDescription = pDescription; 
-	   	aExtensions = pExtensions.split("\\|");
+	   	aExtension = pExtension;
    	}
    
    	@Override
@@ -84,12 +62,9 @@ public class ExtensionFilter extends FileFilter
    		}
       
    		String fileName = pFile.getName().toLowerCase();
-   		for(String extension : aExtensions)
+   		if(fileName.endsWith(aExtension.toLowerCase()))
 		{
-			if(fileName.endsWith(extension.toLowerCase()))
-			{
-				return true;
-			}
+			return true;
 		}
    		return false;
    }
@@ -101,10 +76,10 @@ public class ExtensionFilter extends FileFilter
    	}
    
    	/**
-   	 * @return The extensions for this filter.
+   	 * @return The extension for this filter.
    	 */
-   	public String[] getExtensions()
+   	public String getExtension()
    	{
-   		return aExtensions;
+   		return aExtension;
    	}
 }
