@@ -763,9 +763,42 @@ public class EditorFrame extends JFrame
    		Graph graph = frame.getGraph();    
    		try
    		{
-   			File result;
-   			result = activateSaveDialog(new ExtensionFilter(graph.getDescription(), 
-   					graph.getFileExtension() + aAppResources.getString("files.extension")), null);
+   			File result = null;
+   			
+   	   		JFileChooser fileChooser = new JFileChooser();
+   			fileChooser.setFileFilter(new ExtensionFilter(graph.getDescription(), 
+					graph.getFileExtension() + aAppResources.getString("files.extension")));
+   			fileChooser.setCurrentDirectory(new File("."));
+   			
+   			if(frame.getFileName() != null)
+   			{           
+   				fileChooser.setSelectedFile(new File(frame.getFileName()));
+   			}
+   			else 
+   			{
+   				fileChooser.setSelectedFile(new File(""));
+   			}
+   			int response = fileChooser.showSaveDialog(this);         
+   			if(response == JFileChooser.APPROVE_OPTION)
+   			{
+   				File f = fileChooser.getSelectedFile();
+   				if( !fileChooser.getFileFilter().accept(f))
+   				{
+   					f = new File(f.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+   				}
+
+   				if(!f.exists()) 
+   				{
+   					result = f;
+   				}
+   	        
+   				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+   				int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+   				if(theresult == JOptionPane.YES_OPTION) 
+   				{
+   					result = f;
+   				}                       
+   			}
    			
    			if(result != null)
    			{
@@ -789,80 +822,26 @@ public class EditorFrame extends JFrame
    		}
    	}
 
-   	/*
-   	 * Can return null if the operation is cancelled.
-   	 */
-   	private File activateSaveDialog(ExtensionFilter pFilter, String pRemoveExtension) throws FileNotFoundException
-	{
-   		assert pFilter.getExtensions().length == 0;
-   		
-   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-   		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileFilter(pFilter);
-		fileChooser.setCurrentDirectory(new File("."));
-		
-		if(frame.getFileName() != null)
-		{
-			File f = new File(editExtension(frame.getFileName(), pRemoveExtension, pFilter.getExtensions()[0]));                  
-			fileChooser.setSelectedFile(f);
-		}
-		else 
-		{
-			fileChooser.setSelectedFile(new File(""));
-		}
-		int response = fileChooser.showSaveDialog(this);         
-		if(response == JFileChooser.APPROVE_OPTION)
-		{
-			File f = fileChooser.getSelectedFile();
-			if(pFilter.getExtensions()[0] != null && f.getName().indexOf(".") < 0)
-			{
-				f = new File(f.getPath() + pFilter.getExtensions()[0]);
-			}
-
-			if(!f.exists()) 
-			{
-				return f;
-			}
-        
-			ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-			int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-			if(result == JOptionPane.YES_OPTION) 
-			{
-				return f;
-			}                       
-		}
-		return null;
-	}
-
-   	/**
-   	 * Edits the file path so that it ends in the desired extension.
+	/**
+   	 * Edits the file path so that the pToBeRemoved extension, if found, is replaced 
+   	 * with pDesired.
    	 * @param pOriginal the file to use as a starting point
-     * @param pToBeRemoved the extension that is to be removed before adding the desired extension. Use
-     * null if nothing needs to be removed. 
-   	 * @param pDesired the desired extension (e.g. ".png"), or a | separated list of extensions
+     * @param pToBeRemoved the extension that is to be removed before adding the desired extension.
+   	 * @param pDesired the desired extension (e.g. ".png")
    	 * @return original if it already has the desired extension, or a new file with the edited file path
    	 */
-	public static String editExtension(String pOriginal, String pToBeRemoved, String pDesired)
+	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired)
 	{
-		if (pOriginal == null) 
+		assert pOriginal != null && pToBeRemoved != null && pDesired != null;
+	
+		if(pOriginal.endsWith(pToBeRemoved))
 		{
-			return null;
+			return pOriginal.substring(0, pOriginal.length() - pToBeRemoved.length()) + pDesired;
 		}
-		int n = pDesired.indexOf('|');
-		if(n >= 0) 
+		else
 		{
-			pDesired = pDesired.substring(0, n);
+			return pOriginal;
 		}
-		String path = pOriginal;
-		if(!path.toLowerCase().endsWith(pDesired.toLowerCase()))
-		{   		
-			if(pToBeRemoved != null && path.toLowerCase().endsWith(pToBeRemoved.toLowerCase())) 
-			{
-				path = path.substring(0, path.length() - pToBeRemoved.length());
-			}
-			path = path + pDesired;
-		}
-		return path;      
 	}
    	
    	/**
@@ -878,28 +857,57 @@ public class EditorFrame extends JFrame
 
    		try
    		{
-   			String imageExtensions = aEditorResources.getString("files.image.extension");
-   			ExtensionFilter imageFilter = new ExtensionFilter(aEditorResources.getString("files.image.name"), 
-   					aEditorResources.getString("files.image.extension"));
-   			File file = activateSaveDialog(imageFilter, aAppResources.getString("files.extension"));
+   			File file = null;
+   	   		JFileChooser fileChooser = new JFileChooser();
+   			fileChooser.setFileFilter(new ExtensionFilter(aEditorResources.getString("files.png.name"), 
+   					aEditorResources.getString("files.png.extension")));
+   			fileChooser.addChoosableFileFilter(new ExtensionFilter(aEditorResources.getString("files.jpg.name"), 
+   					aEditorResources.getString("files.jpg.extension")));
+   			fileChooser.setCurrentDirectory(new File("."));
    			
+   			if(frame.getFileName() != null)
+   			{
+   				File f = new File(replaceExtension(frame.getFileName(), 
+   						aAppResources.getString("files.extension"), aEditorResources.getString("files.png.extension")));                  
+   				fileChooser.setSelectedFile(f);
+   			}
+   			else    			
+   			{
+   				fileChooser.setSelectedFile(new File(""));
+   			}
+   			int response = fileChooser.showSaveDialog(this);
+   			if(response == JFileChooser.APPROVE_OPTION)
+   			{
+   				File f = fileChooser.getSelectedFile();
+   				
+   				if( !fileChooser.getFileFilter().accept(f))
+   				{
+   					f = new File(f.getPath() + ((ExtensionFilter)fileChooser.getFileFilter()).getExtensions()[0]);
+   				}
+
+   				if(!f.exists()) 
+   				{
+   					file = f;
+   				}
+   				else
+   				{
+   					ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+   					int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+   					if(result == JOptionPane.YES_OPTION) 
+   					{
+   						file = f;
+   					}	     
+   				}
+   			}
+   			   			
    			if(file != null)
    			{
    				OutputStream out = new FileOutputStream(file);
-   				String format;
+   				String format = "png";
    				String fileName = file.getPath();
-   				if(fileName == null)
+   				if(fileName != null)
    				{
-   					int n = imageExtensions.indexOf("|");
-   					if(n < 0)
-   					{
-   						n = imageExtensions.length();
-   					}
-   					format = imageExtensions.substring(1, n);
-   				} 
-   				else 
-   				{
-					format = fileName.substring(fileName.lastIndexOf(".") + 1);
+   					format = fileName.substring(fileName.lastIndexOf(".") + 1);
 				}
    				if(!ImageIO.getImageWritersByFormatName(format).hasNext())
    				{
