@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
@@ -206,6 +207,18 @@ public class SequenceDiagramGraph extends Graph
 	public Edge[] getEdgePrototypes()
 	{
 		return EDGE_PROTOTYPES;
+	}
+	
+	@Override
+	public String getFileExtension() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.extension");
+	}
+
+	@Override
+	public String getDescription() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
 	}
 }
 

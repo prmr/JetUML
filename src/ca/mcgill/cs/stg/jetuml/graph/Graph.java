@@ -56,6 +56,18 @@ public abstract class Graph
 		aEdgesToBeRemoved = new ArrayList<>();
 		aNeedsLayout = true;
 	}
+	
+	/**
+	 * @return The file extension (including the dot) corresponding
+	 * to files of this diagram type.
+	 */
+	public abstract String getFileExtension();
+	
+	/**
+	 * @return A short description of this diagram, usually
+	 * ending in "Diagram", e.g., "State Diagram".
+	 */
+	public abstract String getDescription();
 
 	/**
      * Adds an edge to the graph that joins the nodes containing

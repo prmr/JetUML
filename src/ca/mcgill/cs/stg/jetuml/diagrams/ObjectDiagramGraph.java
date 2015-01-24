@@ -22,6 +22,8 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.util.ResourceBundle;
+
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
@@ -76,6 +78,18 @@ public class ObjectDiagramGraph extends Graph
 	{
 		return EDGE_PROTOTYPES;
 	}   
+	
+	@Override
+	public String getFileExtension() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("object.extension");
+	}
+
+	@Override
+	public String getDescription() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("object.name");
+	}
 }
 
 

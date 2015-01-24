@@ -22,6 +22,8 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.util.ResourceBundle;
+
 import ca.mcgill.cs.stg.jetuml.graph.CircularStateNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -54,6 +56,18 @@ public class StateDiagramGraph extends Graph
 	public Edge[] getEdgePrototypes()
 	{
 		return EDGE_PROTOTYPES;
+	}
+	
+	@Override
+	public String getFileExtension() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("state.extension");
+	}
+
+	@Override
+	public String getDescription() 
+	{
+		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("state.name");
 	}
 }
 

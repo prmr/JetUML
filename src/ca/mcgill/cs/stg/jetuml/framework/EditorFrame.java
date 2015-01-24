@@ -77,10 +77,6 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
@@ -102,18 +98,9 @@ public class EditorFrame extends JFrame
 	private JDesktopPane aDesktop;
 	private PreferencesService aPreferences;
 	private JMenu aNewMenu;
-	private String aDefaultExtension;
 	private ArrayList<String> aRecentFiles;
 	private JMenu aRecentFilesMenu;
 	private int aMaxRecentFiles = DEFAULT_MAX_RECENT_FILES;
-
-	private ExtensionFilter aVioletFilter;
-	private ExtensionFilter aStateFilter;
-	private ExtensionFilter aSequenceFilter;
-	private ExtensionFilter aObjectFilter;
-	private ExtensionFilter aUsecaseFilter;
-	private ExtensionFilter aClassFilter;
-	private ExtensionFilter[] aOptionalFilters;
 
 	/**
 	 * Constructs a blank frame with a desktop pane
@@ -154,17 +141,6 @@ public class EditorFrame extends JFrame
 
 		aDesktop = new JDesktopPane();
 		setContentPane(aDesktop);
-
-		aDefaultExtension = aAppResources.getString("files.extension");
-
-		aVioletFilter = new ExtensionFilter(aAppResources.getString("files.name"), new String[] { aDefaultExtension });
-		aStateFilter = new ExtensionFilter(aAppResources.getString("state.name"), aAppResources.getString("state.extension"));
-		aObjectFilter = new ExtensionFilter(aAppResources.getString("object.name"), aAppResources.getString("object.extension"));
-		aClassFilter = new ExtensionFilter(aAppResources.getString("class.name"), aAppResources.getString("class.extension"));
-		aUsecaseFilter = new ExtensionFilter(aAppResources.getString("usecase.name"), aAppResources.getString("usecase.extension"));
-		aSequenceFilter = new ExtensionFilter(aAppResources.getString("sequence.name"), aAppResources.getString("sequence.extension"));
-      
-     	aOptionalFilters = new ExtensionFilter[]{aClassFilter, aObjectFilter, aStateFilter, aSequenceFilter, aUsecaseFilter};
 
      	JMenuBar menuBar = new JMenuBar();
      	setJMenuBar(menuBar);
@@ -707,8 +683,21 @@ public class EditorFrame extends JFrame
    		try
    		{
    			JFileChooser fileChooser = new JFileChooser(getLastDirectory());
-   			fileChooser.setFileFilter(aVioletFilter);
-   			for(ExtensionFilter filter: aOptionalFilters)
+   			fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
+   			// TODO This Editor frame should keep a list of graph types to make this operation not hard-code them
+   			ExtensionFilter[] filters = new ExtensionFilter[]{
+   				new ExtensionFilter(aAppResources.getString("state.name"), 
+   						aAppResources.getString("state.extension") + aAppResources.getString("files.extension")),
+   				new ExtensionFilter(aAppResources.getString("object.name"), 
+   						aAppResources.getString("object.extension") + aAppResources.getString("files.extension")),
+   				new ExtensionFilter(aAppResources.getString("class.name"), 
+   						aAppResources.getString("class.extension") + aAppResources.getString("files.extension")),
+   				new ExtensionFilter(aAppResources.getString("usecase.name"), 
+   						aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")),
+   				new ExtensionFilter(aAppResources.getString("sequence.name"), 
+   						aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension"))
+   			};
+   			for(ExtensionFilter filter: filters)
 			{
 				fileChooser.addChoosableFileFilter(filter);
 			}
@@ -733,28 +722,6 @@ public class EditorFrame extends JFrame
    		}
    	}
 
-   	/**
-   	 * Open a file from an URL--used by applet.
-   	 * @param pURL the URL 
-   	 * @throws IOException If the graph can't be read.
-   	 */
-   	public void openURL(URL pURL) throws IOException
-   	{
-   		InputStream in = pURL.openStream();
-   		if(in != null)
-   		{      
-   			Graph graph = read(in);
-   			GraphFrame frame = new GraphFrame(graph);
-   			addInternalFrame(frame);
-   			try
-   			{
-   				frame.setMaximum(true);
-   			}
-   			catch(PropertyVetoException ex) 
-   			{}
-   		}	               
-   	}
-   
    	/**
    	 * Save a file. Called by reflection. 
    	 */
@@ -795,28 +762,8 @@ public class EditorFrame extends JFrame
    		try
    		{
    			File result;
-   			ExtensionFilter filter;
-   			if(graph instanceof UseCaseDiagramGraph)
-   			{
-   				filter = aUsecaseFilter;
-   			}
-   			else if(graph instanceof ClassDiagramGraph)
-   			{
-   				filter = aClassFilter;
-   			}	
-   			else if(graph instanceof ObjectDiagramGraph)
-   			{
-   				filter = aObjectFilter;
-   			}
-   			else if(graph instanceof SequenceDiagramGraph)
-   			{
-   				filter = aSequenceFilter;
-   			}
-   			else
-   			{
-   				filter = aStateFilter;
-   			} 
-   			result = activateSaveDialog(filter, null);
+   			result = activateSaveDialog(new ExtensionFilter(graph.getDescription(), 
+   					graph.getFileExtension() + aAppResources.getString("files.extension")), null);
    			
    			if(result != null)
    			{
