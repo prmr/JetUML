@@ -53,11 +53,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -77,6 +77,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
@@ -96,7 +97,6 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
 	private JDesktopPane aDesktop;
-	private PreferencesService aPreferences;
 	private JMenu aNewMenu;
 	private ArrayList<String> aRecentFiles;
 	private JMenu aRecentFilesMenu;
@@ -118,9 +118,13 @@ public class EditorFrame extends JFrame
 		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
 		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");      
 		ResourceFactory factory = new ResourceFactory(aEditorResources);
-		aPreferences = PreferencesService.getInstance();
-      
 		aRecentFiles = new ArrayList<>(); 
+		
+		String recent = Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim();
+		if(recent.length() > 0)
+		{
+			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
+		}
       
 		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -469,10 +473,8 @@ public class EditorFrame extends JFrame
 	private File getLastDirectory()
 	{
 		File lastDir = new File(".");
-		String recent = aPreferences.get("recent", "").trim();
-		if(recent.length() > 0)
+		if(aRecentFiles.size() > 0)
 		{
-			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
 			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
 		}
 		return lastDir;
@@ -1082,7 +1084,7 @@ public class EditorFrame extends JFrame
    			}
    			recent += aRecentFiles.get(i);
    		}      
-   		aPreferences.put("recent", recent);   
+   		Preferences.userNodeForPackage(UMLEditor.class).put("recent", recent);   
    	}
 
    private static PersistenceDelegate staticFieldDelegate 
