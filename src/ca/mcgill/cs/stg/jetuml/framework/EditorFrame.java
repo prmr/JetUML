@@ -134,13 +134,6 @@ public class EditorFrame extends JFrame
 		aPreferences = PreferencesService.getInstance();
       
 		aRecentFiles = new ArrayList<>(); 
-		File lastDir = new File(".");
-		String recent = aPreferences.get("recent", "").trim();
-		if(recent.length() > 0)
-		{
-			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
-			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
-		}
       
 		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
