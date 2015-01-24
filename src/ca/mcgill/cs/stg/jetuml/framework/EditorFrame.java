@@ -141,7 +141,8 @@ public class EditorFrame extends JFrame
 			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
 			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
 		}
-		aFileService = FileService.getInstance(lastDir);      
+		aFileService = FileService.getInstance();      
+		aFileService.setInitialDirectory(lastDir);
       
 		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
