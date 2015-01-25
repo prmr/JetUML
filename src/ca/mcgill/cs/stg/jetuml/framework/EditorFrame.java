@@ -88,7 +88,7 @@ public class EditorFrame extends JFrame
 {
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
-	private static final int DEFAULT_MAX_RECENT_FILES = 5;
+	private static final int MAX_RECENT_FILES = 5;
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 	
 	private ResourceFactory aAppFactory;
@@ -97,9 +97,10 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aEditorResources;
 	private JDesktopPane aDesktop;
 	private JMenu aNewMenu;
-	private ArrayList<String> aRecentFiles;
+	
+	// The head of the array (element 0) is the most recent file.
+	private ArrayList<String> aRecentFiles; 
 	private JMenu aRecentFilesMenu;
-	private int aMaxRecentFiles = DEFAULT_MAX_RECENT_FILES;
 
 	/**
 	 * Constructs a blank frame with a desktop pane
@@ -1086,7 +1087,7 @@ public class EditorFrame extends JFrame
    	public void savePreferences()
    	{
    		String recent = "";     
-   		for(int i = 0; i < Math.min(aRecentFiles.size(), aMaxRecentFiles); i++)
+   		for(int i = 0; i < Math.min(aRecentFiles.size(), MAX_RECENT_FILES); i++)
    		{
    			if(recent.length() > 0) 
    			{
@@ -1097,12 +1098,9 @@ public class EditorFrame extends JFrame
    		Preferences.userNodeForPackage(UMLEditor.class).put("recent", recent);   
    	}
 
-   private static PersistenceDelegate staticFieldDelegate 
-      = new 
-         DefaultPersistenceDelegate()
-         {
-            protected Expression instantiate(Object 
-               oldInstance, Encoder out)
+   	private static PersistenceDelegate staticFieldDelegate = new DefaultPersistenceDelegate()
+    {
+            protected Expression instantiate(Object oldInstance, Encoder out)
             {
                try
                {
@@ -1127,8 +1125,7 @@ public class EditorFrame extends JFrame
                return null;
             }
             
-            protected boolean mutatesTo(
-               Object oldInstance, Object newInstance)
+            protected boolean mutatesTo(Object oldInstance, Object newInstance)
             {
                return oldInstance == newInstance;
             }
