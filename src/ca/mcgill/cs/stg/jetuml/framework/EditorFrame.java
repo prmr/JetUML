@@ -73,6 +73,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileFilter;
 
 import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
@@ -829,86 +830,94 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-
-   		try
+   		File file = chooseFileToExportTo();
+   		if( file == null )
    		{
-   			File file = null;
-   	   		JFileChooser fileChooser = new JFileChooser();
-   			fileChooser.setFileFilter(new ExtensionFilter(aEditorResources.getString("files.png.name"), 
-   					aEditorResources.getString("files.png.extension")));
-   			fileChooser.addChoosableFileFilter(new ExtensionFilter(aEditorResources.getString("files.jpg.name"), 
-   					aEditorResources.getString("files.jpg.extension")));
-   			fileChooser.setCurrentDirectory(new File("."));
-   			
-   			if(frame.getFileName() != null)
-   			{
-   				File f = new File(replaceExtension(frame.getFileName(), 
-   						aAppResources.getString("files.extension"), aEditorResources.getString("files.png.extension")));                  
-   				fileChooser.setSelectedFile(f);
-   			}
-   			else    			
-   			{
-   				fileChooser.setSelectedFile(new File(""));
-   			}
-   			int response = fileChooser.showSaveDialog(this);
-   			if(response == JFileChooser.APPROVE_OPTION)
-   			{
-   				File f = fileChooser.getSelectedFile();
-   				
-   				if( !fileChooser.getFileFilter().accept(f))
-   				{
-   					f = new File(f.getPath() + ((ExtensionFilter)fileChooser.getFileFilter()).getExtension());
-   				}
-
-   				if(!f.exists()) 
-   				{
-   					file = f;
-   				}
-   				else
-   				{
-   					ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-   					int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-   					if(result == JOptionPane.YES_OPTION) 
-   					{
-   						file = f;
-   					}	     
-   				}
-   			}
-   			   			
-   			if(file != null)
-   			{
-   				OutputStream out = new FileOutputStream(file);
-   				String format = "png";
-   				String fileName = file.getPath();
-   				if(fileName != null)
-   				{
-   					format = fileName.substring(fileName.lastIndexOf(".") + 1);
-				}
-   				if(!ImageIO.getImageWritersByFormatName(format).hasNext())
-   				{
-   					MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
-   					JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
-   					out.close();
-   					return;
-   				}
-         
-   				Graph graph = frame.getGraph();
-   				try
-   				{
-   					saveImage(graph, out, format);
-   				}
-   				finally
-   				{
-   					out.close();
-   				}
-   			}
+   			return;
    		}
-   		catch(Exception exception)
+   		try( OutputStream out = new FileOutputStream(file))
+   		{
+   			String format = "png";
+   			String fileName = file.getPath();
+   			if(fileName != null)
+   			{
+   				format = fileName.substring(fileName.lastIndexOf(".") + 1);
+			}
+   			if(!ImageIO.getImageWritersByFormatName(format).hasNext())
+   			{
+   				MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
+   				JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
+   				return;
+   			}
+   			saveImage(frame.getGraph(), out, format);
+   		}
+   		catch(IOException exception)
    		{
    			JOptionPane.showInternalMessageDialog(aDesktop, exception);
    		}      
    	}
 
+   	/*
+   	 * Can return null if no file is selected.
+   	 */
+   	private File chooseFileToExportTo()
+   	{
+   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		assert frame != null;
+   		File file = null;
+	   	JFileChooser fileChooser = new JFileChooser();
+	   	FileFilter imageFilter = new FileFilter()
+		{
+			@Override
+			public String getDescription()
+			{
+				return aEditorResources.getString("files.image.name");
+			}
+			
+			@Override
+			public boolean accept(File pFile)
+			{
+				return !pFile.isDirectory() && (pFile.getName().endsWith(".png") ||
+						pFile.getName().endsWith(".jpg") || pFile.getName().endsWith(".jpeg"));
+			}
+		};
+	   	fileChooser.setFileFilter(imageFilter);
+	   	
+		fileChooser.setCurrentDirectory(new File("."));
+		if(frame.getFileName() != null)
+		{
+			File f = new File(replaceExtension(frame.getFileName(), aAppResources.getString("files.extension"), ""));                  
+			fileChooser.setSelectedFile(f);
+		}
+		else    			
+		{
+			fileChooser.setSelectedFile(new File(""));
+		}
+		int response = fileChooser.showSaveDialog(this);
+		if(response == JFileChooser.APPROVE_OPTION)
+		{
+			File f = fileChooser.getSelectedFile();	
+			if( !imageFilter.accept(f))
+			{
+				f = new File(f.getPath() + ".png");
+			}
+
+			if(!f.exists()) 
+			{
+				file = f;
+			}
+			else
+			{
+				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+				int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+				if(result == JOptionPane.YES_OPTION) 
+				{
+					file = f;
+				}	     
+			}
+		}
+		return file;
+   	}
    
    /**
     * Reads a graph file.
