@@ -541,7 +541,8 @@ public class EditorFrame extends JFrame
       }
       catch(IOException exception)
       {
-         JOptionPane.showInternalMessageDialog(aDesktop, exception);
+    	  JOptionPane.showInternalMessageDialog(aDesktop, exception.getMessage(), 
+    			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
       }      
    }   
 
