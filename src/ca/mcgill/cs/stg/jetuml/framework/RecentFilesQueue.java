@@ -16,15 +16,15 @@ public class RecentFilesQueue implements Iterable<File>
 	private final LinkedList<File> aFiles = new LinkedList<>();
 	
 	/* 
-	 * Somehow java.io.File does not consider two File object
-	 * equals if the don't have the same pathname so 
+	 * Somehow java.io.File does not consider two File objects
+	 * equal if they don't have the same pathname so 
 	 * new File("foo") != new File(new File("foo").getAbsolutePath())
 	 * To get around this all files in this class are stored with
 	 * their absolute path.
 	 */
 	
 	/**
-	 * Adds a file name to the queue and remove the oldest
+	 * Adds a file to the queue and removes the oldest
 	 * file name from the queue if the queue is at capacity.
 	 * The empty string is ignored. If the file corresponding
 	 * to pFileName is already in the queue, it is not added, 
@@ -109,7 +109,7 @@ public class RecentFilesQueue implements Iterable<File>
 	/**
 	 * Clears the list and initializes it from pString, which should be
 	 * a pipe-separated list of entries created using the serialize() method.
-	 * Only existing files are loaded into the list. Any file name in pString
+	 * Only files that actually exist are loaded into the list. Any file name in pString
 	 * that does not corresponding to an existing file at the time this method
 	 * is called is simply dropped.
 	 * @param pString A pipe-separated list of entries.

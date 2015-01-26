@@ -53,8 +53,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -82,13 +80,15 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
 /**
  * This desktop frame contains panes that show graphs.
+ * @author Cay S. Horstmann - Original code
+ * @author Martin P. Robillard - Refactoring of the file handling
  */
 @SuppressWarnings("serial")
 public class EditorFrame extends JFrame
 {
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
-	private static final int MAX_RECENT_FILES = 5;
+	private static final int MAX_RECENT_FILES = 8;
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 	
 	private ResourceFactory aAppFactory;
@@ -98,8 +98,8 @@ public class EditorFrame extends JFrame
 	private JDesktopPane aDesktop;
 	private JMenu aNewMenu;
 	
-	// The head of the array (element 0) is the most recent file.
-	private ArrayList<String> aRecentFiles; 
+	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
+	
 	private JMenu aRecentFilesMenu;
 
 	/**
@@ -118,13 +118,8 @@ public class EditorFrame extends JFrame
 		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
 		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");      
 		ResourceFactory factory = new ResourceFactory(aEditorResources);
-		aRecentFiles = new ArrayList<>(); 
 		
-		String recent = Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim();
-		if(recent.length() > 0)
-		{
-			aRecentFiles.addAll(Arrays.asList(recent.split("[|]")));         
-		}
+		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
       
 		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -470,16 +465,6 @@ public class EditorFrame extends JFrame
       }));
 	}
 	
-	private File getLastDirectory()
-	{
-		File lastDir = new File(".");
-		if(aRecentFiles.size() > 0)
-		{
-			lastDir = new File((String) aRecentFiles.get(0)).getParentFile();
-		}
-		return lastDir;
-	}
-
 	/**
      * Adds a graph type to the File->New menu.
      * @param pResourceName the name of the menu item resource
@@ -551,7 +536,7 @@ public class EditorFrame extends JFrame
          Graph graph = read(new FileInputStream(pName));
          GraphFrame frame = new GraphFrame(graph);
          addInternalFrame(frame);
-         frame.setFileName(pName);              
+         frame.setFileName(new File(pName).getName());              
       }
       catch(IOException exception)
       {
@@ -628,53 +613,39 @@ public class EditorFrame extends JFrame
    	 * Adds a file name to the "recent files" list and rebuilds the "recent files" menu. 
    	 * @param pNewFile the file name to add
    	 */
-   	private void addRecentFile(final String pNewFile)
+   	private void addRecentFile(String pNewFile)
    	{
-   		aRecentFiles.remove(pNewFile);
-   		if(pNewFile == null || pNewFile.equals("")) 
-   		{
-   			return;
-   		}
-   		aRecentFiles.add(0, pNewFile);
+   		aRecentFiles.add(pNewFile);
    		buildRecentFilesMenu();
    	}
    
    	/*
-   	 * Rebuilds the "recent files" menu.
+   	 * Rebuilds the "recent files" menu. Only works if the number of
+   	 * recent files is less than 8. Otherwise, additional logic will need
+   	 * to be added to 0-index the mnemonics for files 1-9
    	 */
    	private void buildRecentFilesMenu()
-   	{
+   	{ 
+   		assert aRecentFiles.size() <= MAX_RECENT_FILES;
    		aRecentFilesMenu.removeAll();
-   		for(int i = 0; i < aRecentFiles.size(); i++)
+   		aRecentFilesMenu.setEnabled(aRecentFiles.size() > 0);
+   		int i = 1;
+   		for( File file : aRecentFiles )
    		{
-         final String file = (String) aRecentFiles.get(i); 
-         String name = new File(file).getName();
-         if(i < 10)
-         {
-			name = i + " " + name;
-         } 
-         else if(i == 10) 
-         {
-			name = "0 " + name;
-         }         
-         JMenuItem item = new JMenuItem(name);
-         if (i < 10)
-         {
-			item.setMnemonic((char)('0' + i));
-         }
-         else if(i == 10) 
-         {
-			item.setMnemonic('0');
-         }
-         aRecentFilesMenu.add(item);
-         item.addActionListener(new ActionListener()
-         {
-        	 public void actionPerformed(ActionEvent pEvent)
-        	 {
-        		 open(file);
-        	 }
-         });
-      }      
+   			String name = i + " " + file.getName();
+   			final String fileName = file.getAbsolutePath();
+   			JMenuItem item = new JMenuItem(name);
+   			item.setMnemonic((char)'0'+i);
+   			aRecentFilesMenu.add(item);
+            item.addActionListener(new ActionListener()
+            {
+           	 	public void actionPerformed(ActionEvent pEvent)
+           	 	{
+           	 		open(fileName);
+           	 	}
+            });
+            i++;
+   		}     
    }
 
    	/**
@@ -684,7 +655,7 @@ public class EditorFrame extends JFrame
    	{  
    		try
    		{
-   			JFileChooser fileChooser = new JFileChooser(getLastDirectory());
+   			JFileChooser fileChooser = new JFileChooser(aRecentFiles.getMostRecentDirectory());
    			fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
    			// TODO This Editor frame should keep a list of graph types to make this operation not hard-code them
    			ExtensionFilter[] filters = new ExtensionFilter[]{
@@ -713,7 +684,7 @@ public class EditorFrame extends JFrame
    				Graph graph = read(in);
    				GraphFrame frame = new GraphFrame(graph);
    				addInternalFrame(frame);
-   				frame.setFileName(fileChooser.getSelectedFile().getPath());
+   				frame.setFileName(fileChooser.getSelectedFile().getName());
    				addRecentFile(fileChooser.getSelectedFile().getPath());
    				setTitle();
    			}               
@@ -814,7 +785,8 @@ public class EditorFrame extends JFrame
    				{
    					out.close();
    				}
-   				frame.setFileName(result.getPath());
+   				addRecentFile(result.getAbsolutePath());
+   				frame.setFileName(result.getName());
    				setTitle();
    				frame.getGraphPanel().setModified(false);
    			}
@@ -1077,25 +1049,8 @@ public class EditorFrame extends JFrame
    				return;
    			}
    		}
-   		savePreferences();
+   		Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
    		System.exit(0);
-   	}
-   
-   	/**
-   	 * Saves the user preferences before exiting.
-   	 */
-   	public void savePreferences()
-   	{
-   		String recent = "";     
-   		for(int i = 0; i < Math.min(aRecentFiles.size(), MAX_RECENT_FILES); i++)
-   		{
-   			if(recent.length() > 0) 
-   			{
-   				recent += "|";
-   			}
-   			recent += aRecentFiles.get(i);
-   		}      
-   		Preferences.userNodeForPackage(UMLEditor.class).put("recent", recent);   
    	}
 
    	private static PersistenceDelegate staticFieldDelegate = new DefaultPersistenceDelegate()
