@@ -476,7 +476,7 @@ public class EditorFrame extends JFrame
 				try
 				{
 					BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
-					JTextArea text = new JTextArea(10, 50);
+					JTextArea text = new JTextArea(10, 40);
 					String line;
 					while ((line = reader.readLine()) != null)
 					{
@@ -485,7 +485,8 @@ public class EditorFrame extends JFrame
 					}   
 					text.setCaretPosition(0);
 					text.setEditable(false);
-					JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), 
+							aEditorResources.getString("dialog.license.title"), JOptionPane.PLAIN_MESSAGE);
 				}
 				catch(IOException exception) 
 				{}
@@ -1051,7 +1052,9 @@ public class EditorFrame extends JFrame
                aVersionResources.getString("version.date"),
                aAppResources.getString("app.copyright"),
                aEditorResources.getString("dialog.about.license")}),
-               null, JOptionPane.INFORMATION_MESSAGE,
+               new MessageFormat(aEditorResources.getString("dialog.about.title")).format(new Object[] { 
+                       aAppResources.getString("app.name")}),
+               JOptionPane.INFORMATION_MESSAGE,
                new ImageIcon(getClass().getResource(aAppResources.getString("app.icon"))));  
    	}
 
