@@ -91,6 +91,7 @@ public class EditorFrame extends JFrame
 	private static final int ESTIMATED_FRAMES = 5;
 	private static final int MAX_RECENT_FILES = 8;
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
+	private static final int MARGIN = 8; // Fraction of the screen to leave around the sides
 	
 	private ResourceFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -100,7 +101,6 @@ public class EditorFrame extends JFrame
 	private JMenu aNewMenu;
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
-	
 	private JMenu aRecentFilesMenu;
 
 	/**
@@ -128,7 +128,8 @@ public class EditorFrame extends JFrame
 		int screenWidth = (int)screenSize.getWidth();
 		int screenHeight = (int)screenSize.getHeight();
 
-		setBounds(screenWidth / 16, screenHeight / 16, screenWidth * 7 / 8, screenHeight * 7 / 8);
+		setBounds(screenWidth / (MARGIN*2), screenHeight / (MARGIN*2), (screenWidth * (MARGIN-1)) / MARGIN, 
+				(screenHeight * (MARGIN-1))/MARGIN);
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()
@@ -142,36 +143,50 @@ public class EditorFrame extends JFrame
 		aDesktop = new JDesktopPane();
 		setContentPane(aDesktop);
 
-     	JMenuBar menuBar = new JMenuBar();
-     	setJMenuBar(menuBar);
-     	JMenu fileMenu = factory.createMenu("file");
+     	setJMenuBar(new JMenuBar());
+     	
+		createFileMenu(factory);
+		createEditMenu(factory);
+		createViewMenu(factory);
+    	createWindowMenu(factory);
+     	createHelpMenu(factory);
+	}
+	
+	private void createFileMenu(ResourceFactory pFactory)
+	{
+		JMenuBar menuBar = getJMenuBar();
+     	JMenu fileMenu = pFactory.createMenu("file");
      	menuBar.add(fileMenu);
 
-     	aNewMenu = factory.createMenu("file.new");
+     	aNewMenu = pFactory.createMenu("file.new");
      	fileMenu.add(aNewMenu);
 
-     	JMenuItem fileOpenItem = factory.createMenuItem("file.open", this, "openFile"); 
+     	JMenuItem fileOpenItem = pFactory.createMenuItem("file.open", this, "openFile"); 
      	fileMenu.add(fileOpenItem);      
 
-     	aRecentFilesMenu = factory.createMenu("file.recent");
+     	aRecentFilesMenu = pFactory.createMenu("file.recent");
      	buildRecentFilesMenu();
      	fileMenu.add(aRecentFilesMenu);
       
-     	JMenuItem fileSaveItem = factory.createMenuItem("file.save", this, "save"); 
+     	JMenuItem fileSaveItem = pFactory.createMenuItem("file.save", this, "save"); 
      	fileMenu.add(fileSaveItem);
-     	JMenuItem fileSaveAsItem = factory.createMenuItem("file.save_as", this, "saveAs");
+     	JMenuItem fileSaveAsItem = pFactory.createMenuItem("file.save_as", this, "saveAs");
      	fileMenu.add(fileSaveAsItem);
 
-     	JMenuItem fileExportItem = factory.createMenuItem("file.export_image", this, "exportImage"); 
+     	JMenuItem fileExportItem = pFactory.createMenuItem("file.export_image", this, "exportImage"); 
      	fileMenu.add(fileExportItem);
 
-     	JMenuItem fileExitItem = factory.createMenuItem("file.exit", this, "exit");
+     	JMenuItem fileExitItem = pFactory.createMenuItem("file.exit", this, "exit");
      	fileMenu.add(fileExitItem);
-
-    	JMenu editMenu = factory.createMenu("edit");
+	}
+	
+	private void createEditMenu(ResourceFactory pFactory)
+	{
+		JMenuBar menuBar = getJMenuBar();
+		JMenu editMenu = pFactory.createMenu("edit");
      	menuBar.add(editMenu);
 
-     	editMenu.add(factory.createMenuItem("edit.properties", new ActionListener()
+     	editMenu.add(pFactory.createMenuItem("edit.properties", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
@@ -185,7 +200,7 @@ public class EditorFrame extends JFrame
             }
          }));
 
-     	editMenu.add(factory.createMenuItem("edit.delete", new ActionListener()
+     	editMenu.add(pFactory.createMenuItem("edit.delete", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -199,7 +214,7 @@ public class EditorFrame extends JFrame
             }
      	}));
 
-     	editMenu.add(factory.createMenuItem("edit.select_next", new ActionListener()
+     	editMenu.add(pFactory.createMenuItem("edit.select_next", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -213,7 +228,7 @@ public class EditorFrame extends JFrame
             }
      	}));
 
-     	editMenu.add(factory.createMenuItem("edit.select_previous", new ActionListener()
+     	editMenu.add(pFactory.createMenuItem("edit.select_previous", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -226,11 +241,16 @@ public class EditorFrame extends JFrame
             	panel.selectNext(-1);
             }
      	}));
-
-     	JMenu viewMenu = factory.createMenu("view");
+	}
+	
+	private void createViewMenu(ResourceFactory pFactory)
+	{
+		JMenuBar menuBar = getJMenuBar();
+		
+		JMenu viewMenu = pFactory.createMenu("view");
      	menuBar.add(viewMenu);
 
-     	viewMenu.add(factory.createMenuItem("view.zoom_out", new ActionListener()
+     	viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -244,7 +264,7 @@ public class EditorFrame extends JFrame
             }
          }));
 
-     	viewMenu.add(factory.createMenuItem("view.zoom_in", new ActionListener()
+     	viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -258,7 +278,7 @@ public class EditorFrame extends JFrame
             }
          }));
       
-     	viewMenu.add(factory.createMenuItem("view.grow_drawing_area", new ActionListener()
+     	viewMenu.add(pFactory.createMenuItem("view.grow_drawing_area", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
@@ -276,7 +296,7 @@ public class EditorFrame extends JFrame
      		}
      	}));
       
-     	viewMenu.add(factory.createMenuItem("view.clip_drawing_area", new ActionListener()
+     	viewMenu.add(pFactory.createMenuItem("view.clip_drawing_area", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
@@ -292,7 +312,7 @@ public class EditorFrame extends JFrame
      		}
      	}));
 
-     	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) factory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
+     	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
@@ -325,145 +345,152 @@ public class EditorFrame extends JFrame
             public void menuCanceled(MenuEvent pEvent)
             {}
      	});
-      
-      JMenu windowMenu = factory.createMenu("window");
-      menuBar.add(windowMenu);
+	}
+	
+	private void createWindowMenu(ResourceFactory pFactory)
+	{
+		JMenuBar menuBar = getJMenuBar();
+		JMenu windowMenu = pFactory.createMenu("window");
+		menuBar.add(windowMenu);
 
-      windowMenu.add(factory.createMenuItem("window.next", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-    	  {
-    		  JInternalFrame[] frames = aDesktop.getAllFrames();
-    		  for (int i = 0; i < frames.length; i++)
-    		  {
-    			  if(frames[i] == aDesktop.getSelectedFrame())
-                  {
-    				  i++; 
-    				  if(i == frames.length)
-    				  {
-    					  i = 0;
-    				  }
-    				  try
-    				  {
-    					  frames[i].toFront();
-    					  frames[i].setSelected(true); 
-    				  }
-    				  catch (PropertyVetoException exception)
-    				  {}
-    				  return;
-                  }
-    		  }
-    	  }
-      }));
+		windowMenu.add(pFactory.createMenuItem("window.next", new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				JInternalFrame[] frames = aDesktop.getAllFrames();
+				for (int i = 0; i < frames.length; i++)
+				{
+					if(frames[i] == aDesktop.getSelectedFrame())
+					{
+						i++; 
+						if(i == frames.length)
+						{
+							i = 0;
+						}
+						try
+						{
+							frames[i].toFront();
+							frames[i].setSelected(true); 
+						}
+						catch (PropertyVetoException exception)
+						{}
+						return;
+					}
+				}
+			}
+		}));
 
-      windowMenu.add(factory.createMenuItem("window.previous", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-    	  {
-    		  JInternalFrame[] frames = aDesktop.getAllFrames();
-    		  for(int i = 0; i < frames.length; i++)
-    		  {
-    			  if(frames[i] == aDesktop.getSelectedFrame())
-                  {
-                     if (i == 0)
-                     {
-						i = frames.length;
-                     }	
-                     i--; 
-                     try
-                     {
-                        frames[i].toFront();
-                        frames[i].setSelected(true); 
-                     }
-                     catch (PropertyVetoException exception)
-                     {}
-                     return;
-                  }
-    		  }
-    	  }
-      }));
+	      windowMenu.add(pFactory.createMenuItem("window.previous", new ActionListener()
+	      {
+	    	  public void actionPerformed(ActionEvent pEvent)
+	    	  {
+	    		  JInternalFrame[] frames = aDesktop.getAllFrames();
+	    		  for(int i = 0; i < frames.length; i++)
+	    		  {
+	    			  if(frames[i] == aDesktop.getSelectedFrame())
+	                  {
+	                     if (i == 0)
+	                     {
+							i = frames.length;
+	                     }	
+	                     i--; 
+	                     try
+	                     {
+	                        frames[i].toFront();
+	                        frames[i].setSelected(true); 
+	                     }
+	                     catch (PropertyVetoException exception)
+	                     {}
+	                     return;
+	                  }
+	    		  }
+	    	  }
+	      }));
 
-      windowMenu.add(factory.createMenuItem("window.maximize", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-    	  {
-    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-    		  if(frame == null)
-    		  {
-    			  return;
-    		  }
-              try
-              {
-            	  frame.setMaximum(true);
-              }
-              catch(PropertyVetoException exception)
-              {}
-    	  }
-      }));
+	      windowMenu.add(pFactory.createMenuItem("window.maximize", new ActionListener()
+	      {
+	    	  public void actionPerformed(ActionEvent pEvent)
+	    	  {
+	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+	    		  if(frame == null)
+	    		  {
+	    			  return;
+	    		  }
+	              try
+	              {
+	            	  frame.setMaximum(true);
+	              }
+	              catch(PropertyVetoException exception)
+	              {}
+	    	  }
+	      }));
 
-      windowMenu.add(factory.createMenuItem("window.restore", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-    	  {
-    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-    		  if(frame == null)
-    		  {
-    			  return;
-    		  }
-    		  try
-              {
-    			  frame.setMaximum(false);
-              }
-    		  catch (PropertyVetoException exception) 
-    		  {}
-    	  }
-      }));
+	      windowMenu.add(pFactory.createMenuItem("window.restore", new ActionListener()
+	      {
+	    	  public void actionPerformed(ActionEvent pEvent)
+	    	  {
+	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+	    		  if(frame == null)
+	    		  {
+	    			  return;
+	    		  }
+	    		  try
+	              {
+	    			  frame.setMaximum(false);
+	              }
+	    		  catch (PropertyVetoException exception) 
+	    		  {}
+	    	  }
+	      }));
 
-      windowMenu.add(factory.createMenuItem("window.close", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-          {
-    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-              if(frame == null)
-              {
-            	  return;
-              }
-              try
-              {
-            	  frame.setClosed(true);
-              }
-              catch(PropertyVetoException exception)
-              {}
-          }
-      }));
-
-      JMenu helpMenu = factory.createMenu("help");
-      menuBar.add(helpMenu);
-
-      helpMenu.add(factory.createMenuItem("help.about", this, "showAboutDialog"));
-
-      helpMenu.add(factory.createMenuItem("help.license", new ActionListener()
-      {
-    	  public void actionPerformed(ActionEvent pEvent)
-    	  {
-    		  try
-    		  {
-    			  BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
-                  JTextArea text = new JTextArea(10, 50);
-                  String line;
-                  while ((line = reader.readLine()) != null)
-                  {
-                	  text.append(line);
-                	  text.append("\n");
-                  }   
-                  text.setCaretPosition(0);
-                  text.setEditable(false);
-                  JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), null, JOptionPane.INFORMATION_MESSAGE);
-              }
-              catch(IOException exception) 
-    		  {}
-    	  }
-      }));
+	      windowMenu.add(pFactory.createMenuItem("window.close", new ActionListener()
+	      {
+	    	  public void actionPerformed(ActionEvent pEvent)
+	          {
+	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+	              if(frame == null)
+	              {
+	            	  return;
+	              }
+	              try
+	              {
+	            	  frame.setClosed(true);
+	              }
+	              catch(PropertyVetoException exception)
+	              {}
+	          }
+	      }));
+	}
+	
+	private void createHelpMenu(ResourceFactory pFactory)
+	{
+		JMenuBar menuBar = getJMenuBar();
+		JMenu helpMenu = pFactory.createMenu("help");
+		menuBar.add(helpMenu);
+		
+		helpMenu.add(pFactory.createMenuItem("help.about", this, "showAboutDialog"));
+		helpMenu.add(pFactory.createMenuItem("help.license", new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				try
+				{
+					BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
+					JTextArea text = new JTextArea(10, 50);
+					String line;
+					while ((line = reader.readLine()) != null)
+					{
+						text.append(line);
+						text.append("\n");
+					}   
+					text.setCaretPosition(0);
+					text.setEditable(false);
+					JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), null, JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch(IOException exception) 
+				{}
+			}
+		}));
 	}
 	
 	/**
