@@ -93,7 +93,7 @@ public class EditorFrame extends JFrame
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 	private static final int MARGIN = 8; // Fraction of the screen to leave around the sides
 	
-	private ResourceFactory aAppFactory;
+	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
@@ -115,10 +115,10 @@ public class EditorFrame extends JFrame
 	{  
 		String appClassName = pAppClass.getName();
 		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
-		aAppFactory = new ResourceFactory(aAppResources);
+		aAppFactory = new MenuFactory(aAppResources);
 		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
 		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");      
-		ResourceFactory factory = new ResourceFactory(aEditorResources);
+		MenuFactory factory = new MenuFactory(aEditorResources);
 		
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
       
@@ -152,7 +152,7 @@ public class EditorFrame extends JFrame
      	createHelpMenu(factory);
 	}
 	
-	private void createFileMenu(ResourceFactory pFactory)
+	private void createFileMenu(MenuFactory pFactory)
 	{
 		JMenuBar menuBar = getJMenuBar();
      	JMenu fileMenu = pFactory.createMenu("file");
@@ -180,7 +180,7 @@ public class EditorFrame extends JFrame
      	fileMenu.add(fileExitItem);
 	}
 	
-	private void createEditMenu(ResourceFactory pFactory)
+	private void createEditMenu(MenuFactory pFactory)
 	{
 		JMenuBar menuBar = getJMenuBar();
 		JMenu editMenu = pFactory.createMenu("edit");
@@ -243,7 +243,7 @@ public class EditorFrame extends JFrame
      	}));
 	}
 	
-	private void createViewMenu(ResourceFactory pFactory)
+	private void createViewMenu(MenuFactory pFactory)
 	{
 		JMenuBar menuBar = getJMenuBar();
 		
@@ -347,7 +347,7 @@ public class EditorFrame extends JFrame
      	});
 	}
 	
-	private void createWindowMenu(ResourceFactory pFactory)
+	private void createWindowMenu(MenuFactory pFactory)
 	{
 		JMenuBar menuBar = getJMenuBar();
 		JMenu windowMenu = pFactory.createMenu("window");
@@ -462,7 +462,7 @@ public class EditorFrame extends JFrame
 	      }));
 	}
 	
-	private void createHelpMenu(ResourceFactory pFactory)
+	private void createHelpMenu(MenuFactory pFactory)
 	{
 		JMenuBar menuBar = getJMenuBar();
 		JMenu helpMenu = pFactory.createMenu("help");

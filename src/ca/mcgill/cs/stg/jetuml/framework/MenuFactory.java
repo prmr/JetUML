@@ -24,7 +24,6 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.event.ActionListener;
 import java.beans.EventHandler;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -36,7 +35,7 @@ import javax.swing.KeyStroke;
  * A class for creating menus from strings in a 
  * resource bundle.
  */
-public class ResourceFactory
+class MenuFactory
 {
 	private ResourceBundle aBundle;
 
@@ -44,7 +43,7 @@ public class ResourceFactory
 	 * @param pBundle The bundle to use to fetch
 	 * resources.
 	 */
-	public ResourceFactory(ResourceBundle pBundle)
+	public MenuFactory(ResourceBundle pBundle)
 	{
 		aBundle = pBundle;
 	}
@@ -93,32 +92,17 @@ public class ResourceFactory
 	private JMenuItem configure(JMenuItem pMenuItem, String pPrefix, ActionListener pListener)
 	{      
 		pMenuItem.addActionListener(pListener);
-		try
+		if( aBundle.containsKey(pPrefix + ".mnemonic"))
 		{
-			String mnemonic = aBundle.getString(pPrefix + ".mnemonic");
-			pMenuItem.setMnemonic(mnemonic.charAt(0));
+			pMenuItem.setMnemonic(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
 		}
-		catch(MissingResourceException exception) // TODO use containsKey instead
-		{} // ok not to set mnemonic
-      
-		try
+		if( aBundle.containsKey(pPrefix + ".accelerator"))
 		{
-			String accelerator = aBundle.getString(pPrefix + ".accelerator");
-			pMenuItem.setAccelerator(KeyStroke.getKeyStroke(accelerator));
+			pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator")));
 		}
-		catch (MissingResourceException exception)
+		if( aBundle.containsKey(pPrefix + ".tooltip"))
 		{
-			// ok not to set accelerator
-		}
-
-		try
-		{
-			String tooltip = aBundle.getString(pPrefix + ".tooltip");
-			pMenuItem.setToolTipText(tooltip);         
-		}
-		catch (MissingResourceException exception)
-		{
-			// ok not to set tooltip
+			pMenuItem.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
 		}
 		return pMenuItem;
 	}
@@ -132,24 +116,13 @@ public class ResourceFactory
 	{
 		String text = aBundle.getString(pPrefix + ".text");
 		JMenu menu = new JMenu(text);
-		try
+		if( aBundle.containsKey(pPrefix + ".mnemonic"))
 		{
-			String mnemonic = aBundle.getString(pPrefix + ".mnemonic");
-			menu.setMnemonic(mnemonic.charAt(0));
+			menu.setMnemonic(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
 		}
-		catch(MissingResourceException exception)
-		{
-			// ok not to set mnemonic
-		}
-
-      	try
+		if( aBundle.containsKey(pPrefix + ".tooltip"))
       	{
-      		String tooltip = aBundle.getString(pPrefix + ".tooltip");
-      		menu.setToolTipText(tooltip);         
-      	}
-      	catch(MissingResourceException exception)
-      	{
-      		// ok not to set tooltip
+      		menu.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
       	}
       	return menu;
 	}
