@@ -82,7 +82,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 /**
  * This desktop frame contains panes that show graphs.
  * @author Cay S. Horstmann - Original code
- * @author Martin P. Robillard - Refactoring of the file handling
+ * @author Martin P. Robillard - Refactorings, file handling.
  */
 @SuppressWarnings("serial")
 public class EditorFrame extends JFrame

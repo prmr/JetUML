@@ -24,185 +24,133 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.event.ActionListener;
 import java.beans.EventHandler;
-import java.util.ResourceBundle;
 import java.util.MissingResourceException;
-import javax.swing.Action;
-import javax.swing.JButton;
+import java.util.ResourceBundle;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+/**
+ * A class for creating menus from strings in a 
+ * resource bundle.
+ */
 public class ResourceFactory
 {
-	   private ResourceBundle bundle;
+	private ResourceBundle aBundle;
 
-	
-   public ResourceFactory(ResourceBundle bundle)
-   {
-      this.bundle = bundle;
-   }
+	/**
+	 * @param pBundle The bundle to use to fetch
+	 * resources.
+	 */
+	public ResourceFactory(ResourceBundle pBundle)
+	{
+		aBundle = pBundle;
+	}
 
-   public ResourceBundle getBundle()
-   {
-      return bundle;
-   }
+	/**
+	 * Creates a menu item that calls a method in response to the action event.
+	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
+	 * @param pTarget The object on which pMethodName will be invoked when the menu is selected.
+	 * @param pMethodName The method to invoke when the menu is selected.
+	 * @return A menu item for the action described.
+	 */
+	public JMenuItem createMenuItem(String pPrefix, Object pTarget, String pMethodName)
+	{
+		return createMenuItem(pPrefix, (ActionListener) EventHandler.create(ActionListener.class, pTarget, pMethodName));
+	}
 
-   public JMenuItem createMenuItem(String prefix, 
-      Object target, String methodName)
-   {
-      return createMenuItem(prefix,
-         (ActionListener) EventHandler.create(
-            ActionListener.class, target, methodName));
-   }
+	/**
+	 * Creates a menu item where pListener is triggered when the menu item is selected.
+	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
+	 * @param pListener The callback to execute when the menu item is selected.
+	 * @return A menu item for the action described.
+	 */
+	public JMenuItem createMenuItem(String pPrefix, ActionListener pListener)
+	{
+		String text = aBundle.getString(pPrefix + ".text");
+		JMenuItem menuItem = new JMenuItem(text);
+		return configure(menuItem, pPrefix, pListener);
+	}
 
-   public JMenuItem createMenuItem(String prefix, 
-      ActionListener listener)
-   {
-      String text = bundle.getString(prefix + ".text");
-      JMenuItem menuItem = new JMenuItem(text);
-      return configure(menuItem, prefix, listener);
-   }
+	/**
+	 * Create a checkbox menu.
+	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
+	 * @param pListener The callback to execute when the menu item is selected.
+	 * @return A menu item for the action described.
+	 */
+	public JMenuItem createCheckBoxMenuItem(String pPrefix, ActionListener pListener)
+	{
+		String text = aBundle.getString(pPrefix + ".text");
+		JMenuItem menuItem = new JCheckBoxMenuItem(text);
+		return configure(menuItem, pPrefix, pListener);
+	}	
 
-   public JMenuItem createCheckBoxMenuItem(String prefix, 
-      ActionListener listener)
-   {
-      String text = bundle.getString(prefix + ".text");
-      JMenuItem menuItem = new JCheckBoxMenuItem(text);
-      return configure(menuItem, prefix, listener);
-   }
-
-   public JMenuItem configure(JMenuItem menuItem, 
-      String prefix, ActionListener listener)
-   {      
-      menuItem.addActionListener(listener);
-      try
-      {
-         String mnemonic = bundle.getString(prefix + ".mnemonic");
-         menuItem.setMnemonic(mnemonic.charAt(0));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set mnemonic
-      }
-
-      try
-      {
-         String accelerator = bundle.getString(prefix + ".accelerator");
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(accelerator));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set accelerator
-      }
-
-      try
-      {
-         String tooltip = bundle.getString(prefix + ".tooltip");
-         menuItem.setToolTipText(tooltip);         
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set tooltip
-      }
-      return menuItem;
-   }
-   
-   public JMenu createMenu(String prefix)
-   {
-      String text = bundle.getString(prefix + ".text");
-      JMenu menu = new JMenu(text);
-      try
-      {
-         String mnemonic = bundle.getString(prefix + ".mnemonic");
-         menu.setMnemonic(mnemonic.charAt(0));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set mnemonic
-      }
-
-      try
-      {
-         String tooltip = bundle.getString(prefix + ".tooltip");
-         menu.setToolTipText(tooltip);         
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set tooltip
-      }
-      return menu;
-   }
+	/*
+	 * Configures the menu with text, mnemonic, accelerator, etc
+	 */
+	private JMenuItem configure(JMenuItem pMenuItem, String pPrefix, ActionListener pListener)
+	{      
+		pMenuItem.addActionListener(pListener);
+		try
+		{
+			String mnemonic = aBundle.getString(pPrefix + ".mnemonic");
+			pMenuItem.setMnemonic(mnemonic.charAt(0));
+		}
+		catch(MissingResourceException exception) // TODO use containsKey instead
+		{} // ok not to set mnemonic
       
-   public JButton createButton(String prefix)
-   {
-      String text = bundle.getString(prefix + ".text");
-      JButton button = new JButton(text);
-      try
-      {
-         String mnemonic = bundle.getString(prefix + ".mnemonic");
-         button.setMnemonic(mnemonic.charAt(0));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set mnemonic
-      }
+		try
+		{
+			String accelerator = aBundle.getString(pPrefix + ".accelerator");
+			pMenuItem.setAccelerator(KeyStroke.getKeyStroke(accelerator));
+		}
+		catch (MissingResourceException exception)
+		{
+			// ok not to set accelerator
+		}
 
-      try
-      {
-         String tooltip = bundle.getString(prefix + ".tooltip");
-         button.setToolTipText(tooltip);         
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set tooltip
-      }
-      return button;
-   }
-   
-   
-   public Action configureAction(String prefix, Action action)
-   {
-      try
-      {
-         String text = bundle.getString(prefix + ".text");
-         action.putValue(Action.NAME, text);
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set name
-      }
+		try
+		{
+			String tooltip = aBundle.getString(pPrefix + ".tooltip");
+			pMenuItem.setToolTipText(tooltip);         
+		}
+		catch (MissingResourceException exception)
+		{
+			// ok not to set tooltip
+		}
+		return pMenuItem;
+	}
+	
+	/**
+	 * Create a menu that corresponds to the resource for key pPrefix.
+	 * @param pPrefix A string such as "file" that indicates the menu->submenu path
+	 * @return A configured menu
+	 */
+	public JMenu createMenu(String pPrefix)
+	{
+		String text = aBundle.getString(pPrefix + ".text");
+		JMenu menu = new JMenu(text);
+		try
+		{
+			String mnemonic = aBundle.getString(pPrefix + ".mnemonic");
+			menu.setMnemonic(mnemonic.charAt(0));
+		}
+		catch(MissingResourceException exception)
+		{
+			// ok not to set mnemonic
+		}
 
-      try
-      {
-         String mnemonic = bundle.getString(prefix + ".mnemonic");
-         action.putValue(Action.MNEMONIC_KEY, new Integer(mnemonic.charAt(0)));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set mnemonic
-      }
-
-      try
-      {
-         String accelerator = bundle.getString(prefix + ".accelerator");
-         action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(accelerator));
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set accelerator
-      }
-
-      try
-      {
-         String tooltip = bundle.getString(prefix + ".tooltip");
-         action.putValue(Action.SHORT_DESCRIPTION, tooltip);         
-      }
-      catch (MissingResourceException exception)
-      {
-         // ok not to set tooltip
-      }
-      return action;
-   }
-
+      	try
+      	{
+      		String tooltip = aBundle.getString(pPrefix + ".tooltip");
+      		menu.setToolTipText(tooltip);         
+      	}
+      	catch(MissingResourceException exception)
+      	{
+      		// ok not to set tooltip
+      	}
+      	return menu;
+	}
 }
