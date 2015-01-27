@@ -66,16 +66,16 @@ public class GraphPanel extends JPanel
 	private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
 	
 	private Graph graph;
-	private GraphFrame frame;
-	private ToolBar toolBar;
-	private double zoom;	
-	private boolean hideGrid;
-	private boolean modified;
-	private Object lastSelected;
-	private Set selectedItems;
-	private Point2D lastMousePoint;
-	private Point2D mouseDownPoint;   
-	private int dragMode;
+	private GraphFrame aFrame;
+	private ToolBar aToolBar;
+	private double aZoom;	
+	private boolean aHideGrid;
+	private boolean aModified;
+	private Object aLastSelected;
+	private Set aSelectedItems;
+	private Point2D aLastMousePoint;
+	private Point2D aMouseDownPoint;   
+	private int aDragMode;
 	
 	/**
 	 * Constructs a graph.
@@ -83,23 +83,24 @@ public class GraphPanel extends JPanel
 	 */
 	public GraphPanel(ToolBar pToolBar)
 	{
-		zoom = 1;
-		toolBar = pToolBar;
+		aZoom = 1;
+		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
-		selectedItems = new HashSet();
+		aSelectedItems = new HashSet();
       
 		addMouseListener(new MouseAdapter() 
 		{
 			public void mousePressed(MouseEvent pEvent)
 			{
 				requestFocus();
-				final Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
+				final Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 				Node n = graph.findNode(mousePoint);
 				Edge e = graph.findEdge(mousePoint);
-				Object tool = toolBar.getSelectedTool();
+				Object tool = aToolBar.getSelectedTool();
 				if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
-				{  // double/right-click
+				{  
+					// double/right-click
 					if(e != null)
 					{
 						setSelectedItem(e);
@@ -112,11 +113,11 @@ public class GraphPanel extends JPanel
 					}
 					else
 					{
-						toolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
+						aToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
                         {
                            public void actionPerformed(ActionEvent pEvent)
                            {
-                        	   Object tool = toolBar.getSelectedTool();
+                        	   Object tool = aToolBar.getSelectedTool();
                         	   if(tool instanceof Node)
                         	   {
                         		   Node prototype = (Node) tool;
@@ -144,11 +145,11 @@ public class GraphPanel extends JPanel
 						{
 							addSelectedItem(n);
 						}
-						else if(!selectedItems.contains(n)) 
+						else if(!aSelectedItems.contains(n)) 
 						{
 							setSelectedItem(n);
 						}
-						dragMode = DRAG_MOVE;
+						aDragMode = DRAG_MOVE;
 					}
 					else
 					{
@@ -156,7 +157,7 @@ public class GraphPanel extends JPanel
 						{
 							clearSelection();
 						}
-						dragMode = DRAG_LASSO;
+						aDragMode = DRAG_LASSO;
 					}
 				}
 				else if(tool instanceof Node)
@@ -168,7 +169,7 @@ public class GraphPanel extends JPanel
 					{
 						setModified(true);
 						setSelectedItem(newNode);
-						dragMode = DRAG_MOVE;
+						aDragMode = DRAG_MOVE;
 					}
 					else if(n != null)
 					{
@@ -176,45 +177,45 @@ public class GraphPanel extends JPanel
 						{
 							addSelectedItem(n);
 						}
-						else if(!selectedItems.contains(n))
+						else if(!aSelectedItems.contains(n))
 						{
 							setSelectedItem(n);
 						}
-						dragMode = DRAG_MOVE;
+						aDragMode = DRAG_MOVE;
 					}
 				}
 				else if(tool instanceof Edge)
 				{
 					if(n != null) 
 					{
-						dragMode = DRAG_RUBBERBAND;
+						aDragMode = DRAG_RUBBERBAND;
 					}
 				}
-				lastMousePoint = mousePoint;
-				mouseDownPoint = mousePoint;
+				aLastMousePoint = mousePoint;
+				aMouseDownPoint = mousePoint;
 				repaint();
 			}
 
 			public void mouseReleased(MouseEvent pEvent)
 			{
-				Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
-				Object tool = toolBar.getSelectedTool();
-				if(dragMode == DRAG_RUBBERBAND)
+				Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+				Object tool = aToolBar.getSelectedTool();
+				if(aDragMode == DRAG_RUBBERBAND)
 				{
 					Edge prototype = (Edge) tool;
 					Edge newEdge = (Edge) prototype.clone();
-					if(mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD && graph.connect(newEdge, mouseDownPoint, mousePoint))
+					if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && graph.connect(newEdge, aMouseDownPoint, mousePoint))
 					{
 						setModified(true);
 						setSelectedItem(newEdge);
 					}
 				}
-				else if(dragMode == DRAG_MOVE)
+				else if(aDragMode == DRAG_MOVE)
 				{
 					graph.layout();
 					setModified(true);
 				}
-				dragMode = DRAG_NONE;
+				aDragMode = DRAG_NONE;
 				revalidate();
 				repaint();
 			}
@@ -224,19 +225,19 @@ public class GraphPanel extends JPanel
 		{
 			public void mouseDragged(MouseEvent pEvent)
 			{
-				Point2D mousePoint = new Point2D.Double(pEvent.getX() / zoom, pEvent.getY() / zoom);
+				Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-				if(dragMode == DRAG_MOVE && lastSelected instanceof Node)
+				if(aDragMode == DRAG_MOVE && aLastSelected instanceof Node)
 				{               
-					Node lastNode = (Node) lastSelected;
+					Node lastNode = (Node) aLastSelected;
 					Rectangle2D bounds = lastNode.getBounds();
-					double dx = mousePoint.getX() - lastMousePoint.getX();
-					double dy = mousePoint.getY() - lastMousePoint.getY();
+					double dx = mousePoint.getX() - aLastMousePoint.getX();
+					double dy = mousePoint.getY() - aLastMousePoint.getY();
                             
 					// we don't want to drag nodes into negative coordinates
 					// particularly with multiple selection, we might never be 
 					// able to get them back.
-					Iterator iter = selectedItems.iterator();
+					Iterator iter = aSelectedItems.iterator();
 					while(iter.hasNext())
 					{
 						Object selected = iter.next();                 
@@ -249,7 +250,7 @@ public class GraphPanel extends JPanel
 					dx = Math.max(dx, -bounds.getX());
 					dy = Math.max(dy, -bounds.getY());
                
-					iter = selectedItems.iterator();
+					iter = aSelectedItems.iterator();
 					while(iter.hasNext())
 					{
 						Object selected = iter.next();                 
@@ -262,10 +263,10 @@ public class GraphPanel extends JPanel
 					// we don't want continuous layout any more because of multiple selection
 					// graph.layout();
 				}            
-				else if(dragMode == DRAG_LASSO)
+				else if(aDragMode == DRAG_LASSO)
 				{
-					double x1 = mouseDownPoint.getX();
-					double y1 = mouseDownPoint.getY();
+					double x1 = aMouseDownPoint.getX();
+					double y1 = aMouseDownPoint.getY();
 					double x2 = mousePoint.getX();
 					double y2 = mousePoint.getY();
 					Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
@@ -283,185 +284,194 @@ public class GraphPanel extends JPanel
 						}
 					}
 				}
-				lastMousePoint = mousePoint;
+				aLastMousePoint = mousePoint;
 				repaint();
 			}
 		});
 	}
 
-   /**
-    * Edits the properties of the selected graph element.
-    */
-   public void editSelected()
-   {
-      Object edited = lastSelected;
-      if (lastSelected == null)
-      {
-         if (selectedItems.size() == 1)
-            edited = selectedItems.iterator().next();
-         else
-            return;
-      }
-
-      PropertySheet sheet = new PropertySheet(edited);
-      sheet.addChangeListener(new ChangeListener()
-      {
-         public void stateChanged(ChangeEvent event)
-         {
-            graph.layout();
-            repaint();
-         }
-      });
-      JOptionPane.showInternalMessageDialog(this, sheet, 
+	/**
+	 * Edits the properties of the selected graph element.
+	 */
+	public void editSelected()
+	{
+		Object edited = aLastSelected;
+		if(aLastSelected == null)
+		{
+			if (aSelectedItems.size() == 1)
+			{
+				edited = aSelectedItems.iterator().next();
+			}
+			else
+			{
+				return;
+			}
+		}
+		PropertySheet sheet = new PropertySheet(edited);
+		sheet.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent pEvent)
+			{
+				graph.layout();
+				repaint();
+			}
+		});
+		JOptionPane.showInternalMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
-      setModified(true);
-   }
+		setModified(true);
+	}
 
-   /**
-    * Removes the selected nodes or edges.
-    */
-   public void removeSelected()
-   {
-      Iterator iter = selectedItems.iterator();
-      while (iter.hasNext())
+	/**
+	 * Removes the selected nodes or edges.
+	 */
+	public void removeSelected()
+	{
+		Iterator iter = aSelectedItems.iterator();
+		while(iter.hasNext())
+		{
+			Object selected = iter.next();                 
+			if(selected instanceof Node)
+			{
+				graph.removeNode((Node) selected);
+			}
+			else if(selected instanceof Edge)
+			{
+				graph.removeEdge((Edge) selected);
+			}
+		}
+		if(aSelectedItems.size() > 0)
+		{
+			setModified(true);
+		}
+		repaint();
+	}
+
+	/**
+	 * Set the graph in the panel.
+	 * @param pGraph the graph to be displayed and edited
+	 */
+	public void setGraph(Graph pGraph)
+	{
+		graph = pGraph;
+		setModified(false);
+		revalidate();
+		repaint();
+	}
+
+	@Override
+	public void paintComponent(Graphics pGraphics)
+	{
+		super.paintComponent(pGraphics);
+		Graphics2D g2 = (Graphics2D) pGraphics;
+		g2.scale(aZoom, aZoom);
+		Rectangle2D bounds = getBounds();
+		Rectangle2D graphBounds = graph.getBounds(g2);
+		if(!aHideGrid) 
+		{
+			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / aZoom, graphBounds.getMaxX()), 
+				   Math.max(bounds.getMaxY() / aZoom, graphBounds.getMaxY())));
+		}
+		graph.draw(g2, new Grid());
+
+		Iterator iter = aSelectedItems.iterator();
+		Set toBeRemoved = new HashSet();
+		while(iter.hasNext())
+		{
+			Object selected = iter.next();                 
+			if(!graph.getNodes().contains(selected) && !graph.getEdges().contains(selected)) 
+			{
+				toBeRemoved.add(selected);
+			}
+			else if(selected instanceof Node)
+			{
+				Rectangle2D grabberBounds = ((Node) selected).getBounds();
+				drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
+				drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
+				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
+				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
+			}
+			else if(selected instanceof Edge)
+			{
+				Line2D line = ((Edge) selected).getConnectionPoints();
+				drawGrabber(g2, line.getX1(), line.getY1());
+				drawGrabber(g2, line.getX2(), line.getY2());
+			}
+		}
+
+		iter = toBeRemoved.iterator();
+		while(iter.hasNext())
+		{
+			removeSelectedItem(iter.next());
+		}                 
+      
+		if(aDragMode == DRAG_RUBBERBAND)
+		{
+			Color oldColor = g2.getColor();
+			g2.setColor(PURPLE);
+			g2.draw(new Line2D.Double(aMouseDownPoint, aLastMousePoint));
+			g2.setColor(oldColor);
+		}      
+		else if(aDragMode == DRAG_LASSO)
+		{
+			Color oldColor = g2.getColor();
+			g2.setColor(PURPLE);
+			double x1 = aMouseDownPoint.getX();
+			double y1 = aMouseDownPoint.getY();
+			double x2 = aLastMousePoint.getX();
+			double y2 = aLastMousePoint.getY();
+			Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), 
+					Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
+			g2.draw(lasso);
+			g2.setColor(oldColor);
+		}      
+	}
+
+	/**
+	 * Draws a single "grabber", a filled square.
+	 * @param pGraphics2D the graphics context
+	 * @param pX the x coordinate of the center of the grabber
+	 * @param pY the y coordinate of the center of the grabber
+	 */
+	public static void drawGrabber(Graphics2D pGraphics2D, double pX, double pY)
+	{
+		final int size = 5;
+		Color oldColor = pGraphics2D.getColor();
+		pGraphics2D.setColor(PURPLE);
+		pGraphics2D.fill(new Rectangle2D.Double(pX - size / 2, pY - size / 2, size, size));
+		pGraphics2D.setColor(oldColor);
+	}
+
+	@Override
+	public Dimension getPreferredSize()
+	{
+		Rectangle2D bounds = graph.getBounds((Graphics2D) getGraphics());
+		return new Dimension((int) (aZoom * bounds.getMaxX()), (int) (aZoom * bounds.getMaxY()));
+	}
+
+	/**
+	 * Changes the zoom of this panel. The zoom is 1 by default and is multiplied
+	 * by sqrt(2) for each positive stem or divided by sqrt(2) for each negative step.
+	 * @param pSteps the number of steps by which to change the zoom. A positive
+	 * value zooms in, a negative value zooms out.
+	 */
+	public void changeZoom(int pSteps)
+	{
+      final double factor = Math.sqrt(2);
+      for(int i = 1; i <= pSteps; i++)
       {
-         Object selected = iter.next();                 
-         if (selected instanceof Node)
-         {
-            graph.removeNode((Node) selected);
-         }
-         else if (selected instanceof Edge)
-         {
-            graph.removeEdge((Edge) selected);
-         }
+    	  aZoom *= factor;
       }
-      if (selectedItems.size() > 0) setModified(true);
-      repaint();
-   }
-
-   /**
-    * Set the graph in the panel
-    * @param aGraph the graph to be displayed and edited
-    */
-   public void setGraph(Graph aGraph)
-   {
-      graph = aGraph;
-      setModified(false);
+      for(int i = 1; i <= -pSteps; i++)
+      {
+    	  aZoom /= factor;
+      }
       revalidate();
       repaint();
-   }
+	}
 
-   @Override
-   public void paintComponent(Graphics pGraphics)
-   {
-	   super.paintComponent(pGraphics);
-	   Graphics2D g2 = (Graphics2D) pGraphics;
-	   g2.scale(zoom, zoom);
-	   Rectangle2D bounds = getBounds();
-	   Rectangle2D graphBounds = graph.getBounds(g2);
-	   if(!hideGrid) 
-	   {
-		   Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / zoom, graphBounds.getMaxX()), 
-				   Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
-	   }
-	   graph.draw(g2, new Grid());
-
-      Iterator iter = selectedItems.iterator();
-      Set toBeRemoved = new HashSet();
-      while (iter.hasNext())
-      {
-         Object selected = iter.next();                 
-      
-         if (!graph.getNodes().contains(selected)
-               && !graph.getEdges().contains(selected)) 
-         {
-            toBeRemoved.add(selected);
-         }
-         else if (selected instanceof Node)
-         {
-            Rectangle2D grabberBounds = ((Node) selected).getBounds();
-            drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
-            drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
-            drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
-            drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
-         }
-         else if (selected instanceof Edge)
-         {
-            Line2D line = ((Edge) selected).getConnectionPoints();
-            drawGrabber(g2, line.getX1(), line.getY1());
-            drawGrabber(g2, line.getX2(), line.getY2());
-         }
-      }
-
-      iter = toBeRemoved.iterator();
-      while (iter.hasNext())      
-         removeSelectedItem(iter.next());                 
-      
-      if (dragMode == DRAG_RUBBERBAND)
-      {
-         Color oldColor = g2.getColor();
-         g2.setColor(PURPLE);
-         g2.draw(new Line2D.Double(mouseDownPoint, lastMousePoint));
-         g2.setColor(oldColor);
-      }      
-      else if (dragMode == DRAG_LASSO)
-      {
-         Color oldColor = g2.getColor();
-         g2.setColor(PURPLE);
-         double x1 = mouseDownPoint.getX();
-         double y1 = mouseDownPoint.getY();
-         double x2 = lastMousePoint.getX();
-         double y2 = lastMousePoint.getY();
-         Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), 
-               Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
-         g2.draw(lasso);
-         g2.setColor(oldColor);
-      }      
-   }
-
-   /**
-    * Draws a single "grabber", a filled square
-    * @param g2 the graphics context
-    * @param x the x coordinate of the center of the grabber
-    * @param y the y coordinate of the center of the grabber
-    */
-   public static void drawGrabber(Graphics2D g2, double x, double y)
-   {
-      final int SIZE = 5;
-      Color oldColor = g2.getColor();
-      g2.setColor(PURPLE);
-      g2.fill(new Rectangle2D.Double(x - SIZE / 2, y - SIZE / 2, SIZE, SIZE));
-      g2.setColor(oldColor);
-   }
-
-   public Dimension getPreferredSize()
-   {
-      Rectangle2D bounds = graph.getBounds((Graphics2D) getGraphics());
-      return new Dimension((int) (zoom * bounds.getMaxX()),
-            (int) (zoom * bounds.getMaxY()));
-   }
-
-   /**
-    * Changes the zoom of this panel. The zoom is 1 by default and is multiplied
-    * by sqrt(2) for each positive stem or divided by sqrt(2) for each negative
-    * step.
-    * @param steps the number of steps by which to change the zoom. A positive
-    * value zooms in, a negative value zooms out.
-    */
-   public void changeZoom(int steps)
-   {
-      final double FACTOR = Math.sqrt(2);
-      for (int i = 1; i <= steps; i++)
-         zoom *= FACTOR;
-      for (int i = 1; i <= -steps; i++)
-         zoom /= FACTOR;
-      revalidate();
-      repaint();
-   }
-
-   public void selectNext(int n)
-   {
+	public void selectNext(int n)
+	{
       ArrayList selectables = new ArrayList();
       selectables.addAll(graph.getNodes());
       selectables.addAll(graph.getEdges());
@@ -506,8 +516,8 @@ public class GraphPanel extends JPanel
          }
       });
       int index;
-      if (lastSelected == null) index = 0;
-      else index = selectables.indexOf(lastSelected) + n;
+      if (aLastSelected == null) index = 0;
+      else index = selectables.indexOf(aLastSelected) + n;
       while (index < 0)
          index += selectables.size();
       index %= selectables.size();
@@ -521,7 +531,7 @@ public class GraphPanel extends JPanel
     */
    public boolean isModified()
    {
-      return modified;
+      return aModified;
    }
 
    /**
@@ -530,9 +540,9 @@ public class GraphPanel extends JPanel
     */
    public void setModified(boolean newValue)
    {
-      modified = newValue;
+      aModified = newValue;
 
-      if (frame == null)
+      if (aFrame == null)
       {
          Component parent = this;
          do
@@ -540,46 +550,46 @@ public class GraphPanel extends JPanel
             parent = parent.getParent();
          }
          while (parent != null && !(parent instanceof GraphFrame));
-         if (parent != null) frame = (GraphFrame) parent;
+         if (parent != null) aFrame = (GraphFrame) parent;
       }
-      if (frame != null)
+      if (aFrame != null)
       {
-         String title = frame.getFileName();
+         String title = aFrame.getFileName();
          if (title != null)
          {
-            if (modified)
+            if (aModified)
             {
-               if (!frame.getTitle().endsWith("*")) frame.setTitle(title + "*");
+               if (!aFrame.getTitle().endsWith("*")) aFrame.setTitle(title + "*");
             }
-            else frame.setTitle(title);
+            else aFrame.setTitle(title);
          }
       }
    }
 
    private void addSelectedItem(Object obj)
    {
-      lastSelected = obj;      
-      selectedItems.add(obj);
+      aLastSelected = obj;      
+      aSelectedItems.add(obj);
    }
    
    private void removeSelectedItem(Object obj)
    {
-      if (obj == lastSelected)
-         lastSelected = null;
-      selectedItems.remove(obj);
+      if (obj == aLastSelected)
+         aLastSelected = null;
+      aSelectedItems.remove(obj);
    }
    
    private void setSelectedItem(Object obj)
    {
-      selectedItems.clear();
-      lastSelected = obj;
-      if (obj != null) selectedItems.add(obj);
+      aSelectedItems.clear();
+      aLastSelected = obj;
+      if (obj != null) aSelectedItems.add(obj);
    }
    
    private void clearSelection()
    {
-      selectedItems.clear();
-      lastSelected = null;
+      aSelectedItems.clear();
+      aLastSelected = null;
    }
    
    /**
@@ -588,7 +598,7 @@ public class GraphPanel extends JPanel
     */
    public void setHideGrid(boolean newValue)
    {
-      hideGrid = newValue;
+      aHideGrid = newValue;
       repaint();
    }
 
@@ -598,7 +608,7 @@ public class GraphPanel extends JPanel
     */
    public boolean getHideGrid()
    {
-      return hideGrid;
+      return aHideGrid;
    }
 
    
