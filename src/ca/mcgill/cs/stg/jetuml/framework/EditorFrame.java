@@ -175,6 +175,8 @@ public class EditorFrame extends JFrame
 
      	JMenuItem fileExportItem = pFactory.createMenuItem("file.export_image", this, "exportImage"); 
      	fileMenu.add(fileExportItem);
+     	
+     	fileMenu.addSeparator();
 
      	JMenuItem fileExitItem = pFactory.createMenuItem("file.exit", this, "exit");
      	fileMenu.add(fileExitItem);

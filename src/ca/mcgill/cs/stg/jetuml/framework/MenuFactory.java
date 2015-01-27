@@ -26,6 +26,8 @@ import java.awt.event.ActionListener;
 import java.beans.EventHandler;
 import java.util.ResourceBundle;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -104,6 +106,10 @@ class MenuFactory
 		{
 			pMenuItem.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
 		}
+		if( aBundle.containsKey(pPrefix + ".icon"))
+		{
+			pMenuItem.setIcon(new ImageIcon(aBundle.getString(pPrefix + ".icon")));
+		}
 		return pMenuItem;
 	}
 	
@@ -124,6 +130,16 @@ class MenuFactory
       	{
       		menu.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
       	}
+		if( aBundle.containsKey(pPrefix + ".accelerator"))
+		{
+			menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator")));
+		}
+		if( aBundle.containsKey(pPrefix + ".icon"))
+		{
+			Icon icon = new ImageIcon(aBundle.getString(pPrefix + ".icon"));
+			menu.setIcon(new ImageIcon(aBundle.getString(pPrefix + ".icon")));
+		}
+		
       	return menu;
 	}
 }
