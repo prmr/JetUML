@@ -538,41 +538,43 @@ public class EditorFrame extends JFrame
     * Opens a file with the given name, or switches to the frame if it is already open.
     * @param pName the file name
     */
-   private void open(String pName)
-   {
-      JInternalFrame[] frames = aDesktop.getAllFrames();
-      for (int i = 0; i < frames.length; i++)
-      {
-         if (frames[i] instanceof GraphFrame)
-         {
-            GraphFrame frame = (GraphFrame)frames[i];
-            if (frame.getFileName() != null && frame.getFileName().equals(pName)) 
-            {
-               try
-               {
-                  frame.toFront();
-                  frame.setSelected(true); 
-               }
-               catch(PropertyVetoException exception)
-               {}
-               return;
-            }
-         }
-      }      
-      
-      try
-      {              
-         Graph graph = read(new FileInputStream(pName));
-         GraphFrame frame = new GraphFrame(graph);
-         addInternalFrame(frame);
-         frame.setFileName(new File(pName).getName());              
-      }
-      catch(IOException exception)
-      {
-    	  JOptionPane.showInternalMessageDialog(aDesktop, exception.getMessage(), 
+	private void open(String pName)
+	{	
+		JInternalFrame[] frames = aDesktop.getAllFrames();
+		for(int i = 0; i < frames.length; i++)
+		{
+			if(frames[i] instanceof GraphFrame)
+			{
+				GraphFrame frame = (GraphFrame)frames[i];
+				if(frame.getFileName() != null && new File(frame.getFileName()).getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				{
+					try
+					{
+						frame.toFront();
+						frame.setSelected(true); 
+						addRecentFile(new File(pName).getPath());
+					}
+					catch(PropertyVetoException exception)
+					{}
+					return;
+				}
+			}
+		}	      
+		try
+		{	              
+			Graph graph = read(new FileInputStream(pName));
+			GraphFrame frame = new GraphFrame(graph);
+			addInternalFrame(frame);
+			frame.setFileName(new File(pName).getName());    
+			addRecentFile(new File(pName).getPath());
+			setTitle();
+		}
+		catch(IOException exception)
+		{
+			JOptionPane.showInternalMessageDialog(aDesktop, exception.getMessage(), 
     			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
-      }      
-   }   
+		}      
+	}   
 
    	/*
      * Creates an internal frame on the desktop.
@@ -683,8 +685,8 @@ public class EditorFrame extends JFrame
    	 */
    	public void openFile()
    	{  
-   		try
-   		{
+//   		try
+//   		{
    			JFileChooser fileChooser = new JFileChooser(aRecentFiles.getMostRecentDirectory());
    			fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
    			// TODO This Editor frame should keep a list of graph types to make this operation not hard-code them
@@ -704,25 +706,28 @@ public class EditorFrame extends JFrame
 			{
 				fileChooser.addChoosableFileFilter(filter);
 			}
-   			InputStream in = null;
+//   			InputStream in = null;
    			if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
    			{
-   				in = new FileInputStream(fileChooser.getSelectedFile());
+   				File file = fileChooser.getSelectedFile();
+   				open(file.getAbsolutePath());
+//   				in = new FileInputStream(fileChooser.getSelectedFile());
    			}
-   			if(in != null)
-   			{      
-   				Graph graph = read(in);
-   				GraphFrame frame = new GraphFrame(graph);
-   				addInternalFrame(frame);
-   				frame.setFileName(fileChooser.getSelectedFile().getName());
-   				addRecentFile(fileChooser.getSelectedFile().getPath());
-   				setTitle();
-   			}               
-   		}
-   		catch(IOException exception)     
-   		{
-   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
-   		}
+//   			if(in != null)
+//   			{      
+//   				
+//   				Graph graph = read(in);
+//   				GraphFrame frame = new GraphFrame(graph);
+//   				addInternalFrame(frame);
+//   				frame.setFileName(fileChooser.getSelectedFile().getName());
+//   				addRecentFile(fileChooser.getSelectedFile().getPath());
+//   				setTitle();
+//   			}               
+//   		}
+//   		catch(IOException exception)     
+//   		{
+//   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+//   		}
    	}
 
    	/**
