@@ -22,6 +22,7 @@
 
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -50,254 +51,246 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
-
 /**
-   A tool bar that contains node and edge prototype icons.
-   Exactly one icon is selected at any time.
-*/
+ *  A tool bar that contains node and edge prototype icons.
+ *  Exactly one icon is selected at any time.
+ */
+@SuppressWarnings("serial")
 public class ToolBar extends JPanel
 {
-	   private ButtonGroup group;
-	   private ArrayList tools;
-	   private JPopupMenu popup = new JPopupMenu();
-	   private ActionListener popupListener;
-
-	   private static final int BUTTON_SIZE = 25;
-	   private static final int OFFSET = 4;
+	private static final int BUTTON_SIZE = 25;
+	private static final int OFFSET = 4;
 	
-   /**
-      Constructs a tool bar with no icons.
-   */
-   public ToolBar(Graph graph)
-   {
-      group = new ButtonGroup();
-      tools = new ArrayList();
+	private ButtonGroup aGroup;
+	private ArrayList aTools;
+	private JPopupMenu aPopupMenu = new JPopupMenu();
+	private ActionListener aPopupListener;
 
-      Icon icon = new       
-         Icon()
-         {
-            public int getIconHeight() { return BUTTON_SIZE; }
-            public int getIconWidth() { return BUTTON_SIZE; }
-            public void paintIcon(Component c, Graphics g,
-               int x, int y)
+	/**
+     * Constructs a tool bar with no icons.
+     * @param pGraph The graph associated with this toolbar.
+	 */
+	public ToolBar(Graph pGraph)
+	{
+		aGroup = new ButtonGroup();
+		aTools = new ArrayList();
+
+		Icon icon = new Icon()
+		{
+			public int getIconHeight() 
+			{ return BUTTON_SIZE; }
+            
+			public int getIconWidth() 
+			{ return BUTTON_SIZE; }
+            
+			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
             {
-               Graphics2D g2 = (Graphics2D)g;
-               GraphPanel.drawGrabber(g2, x + OFFSET, y + OFFSET);
-               GraphPanel.drawGrabber(g2, x + OFFSET, y + BUTTON_SIZE - OFFSET);
-               GraphPanel.drawGrabber(g2, x + BUTTON_SIZE - OFFSET, y + OFFSET);
-               GraphPanel.drawGrabber(g2, x + BUTTON_SIZE - OFFSET, y + BUTTON_SIZE - OFFSET);
+				Graphics2D g2 = (Graphics2D)pGraphics;
+				GraphPanel.drawGrabber(g2, pX + OFFSET, pY + OFFSET);
+				GraphPanel.drawGrabber(g2, pX + OFFSET, pY + BUTTON_SIZE - OFFSET);
+				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - OFFSET, pY + OFFSET);
+				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - OFFSET, pY + BUTTON_SIZE - OFFSET);
             }
-         };
-      final JToggleButton button = new JToggleButton(icon);
-      ResourceBundle editorResources = 
-         ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-      String tip = editorResources.getString("grabber.tooltip");
-      button.setToolTipText(tip);
-      group.add(button);      
-      add(button);
-      button.setSelected(true);
-      tools.add(null);
+		};
+		final JToggleButton button = new JToggleButton(icon);
+		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+		String tip = editorResources.getString("grabber.tooltip");
+		button.setToolTipText(tip);
+		aGroup.add(button);      
+		add(button);
+		button.setSelected(true);
+		aTools.add(null);
       
-      JMenuItem item = new JMenuItem(tip, icon);
-      item.addActionListener(new
-            ActionListener()
-            {
-               public void actionPerformed(ActionEvent event)
-               {
-                  button.setSelected(true);
-                  if (popupListener != null)
-                     popupListener.actionPerformed(event);
-               }
-            });
-      popup.add(item);
+		JMenuItem item = new JMenuItem(tip, icon);
+		item.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				button.setSelected(true);
+				if(aPopupListener != null)
+				{
+					aPopupListener.actionPerformed(pEvent);
+				}
+			}
+		});
+		aPopupMenu.add(item);
       
-      
-      ResourceBundle graphResources = 
-         ResourceBundle.getBundle(graph.getClass().getName() + "Strings");
+		ResourceBundle graphResources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
 
-      Node[] nodeTypes = graph.getNodePrototypes();
-      for (int i = 0; i < nodeTypes.length; i++)
-      {
-         tip = graphResources.getString("node" + (i + 1) + ".tooltip");
-         add(nodeTypes[i], tip);
-      }
-      Edge[] edgeTypes = graph.getEdgePrototypes();
-      for (int i = 0; i < edgeTypes.length; i++)
-      {
-         tip = graphResources.getString("edge" + (i + 1) + ".tooltip");
-         add(edgeTypes[i], tip);
-      }
+		Node[] nodeTypes = pGraph.getNodePrototypes();
+		for(int i = 0; i < nodeTypes.length; i++)
+		{
+			tip = graphResources.getString("node" + (i + 1) + ".tooltip");
+			add(nodeTypes[i], tip);
+		}
+		Edge[] edgeTypes = pGraph.getEdgePrototypes();
+		for(int i = 0; i < edgeTypes.length; i++)
+		{
+			tip = graphResources.getString("edge" + (i + 1) + ".tooltip");
+			add(edgeTypes[i], tip);
+		}
          
-      // free up ctrl TAB for cycling windows
-      Set oldKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
-      HashSet newKeys = new HashSet();
-      newKeys.addAll(oldKeys);
-      newKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
-      setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newKeys);
-      oldKeys = getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS);
-      newKeys = new HashSet();
-      newKeys.addAll(oldKeys);
-      newKeys.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
-      setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys);          
-   }
+		// free up ctrl TAB for cycling windows
+		Set<AWTKeyStroke> oldKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
+		HashSet<AWTKeyStroke> newKeys = new HashSet<>();
+		newKeys.addAll(oldKeys);
+		newKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
+		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newKeys);
+		oldKeys = getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS);
+		newKeys = new HashSet<>();
+		newKeys.addAll(oldKeys);
+		newKeys.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
+		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys);          
+	}
 
-   /**
-      Gets the node or edge prototype that is associated with
-      the currently selected button
-      @return a Node or Edge prototype
-   */
-   public Object getSelectedTool()
-   {
-      for (int i = 0; i < tools.size(); i++)
-      {
-         JToggleButton button = (JToggleButton)getComponent(i);
-         if (button.isSelected()) return tools.get(i);
-      }
-      return null;
-   }
+	/**
+     * Gets the node or edge prototype that is associated with
+     * the currently selected button.
+     * @return a Node or Edge prototype
+	 */
+	public Object getSelectedTool()
+	{
+		for (int i = 0; i < aTools.size(); i++)
+		{
+			JToggleButton button = (JToggleButton)getComponent(i);
+			if (button.isSelected())
+			{
+				return aTools.get(i);
+			}
+		}
+		return null;
+	}
 
-   /**
-      Adds a node to the tool bar.
-      @param n the node to add
-      @param tip the tool tip
-   */
-   public void add(final Node n, String tip)
-   {
-      Icon icon = new
-         Icon()
-         {
-            public int getIconHeight() { return BUTTON_SIZE; }
-            public int getIconWidth() { return BUTTON_SIZE; }
-            public void paintIcon(Component c, Graphics g,
-                  int x, int y)
+	/**
+     * Adds a node to the tool bar.
+     * @param pNode the node to add
+     * @param pTip the tool tip
+	 */
+	public void add(final Node pNode, String pTip)
+	{
+		Icon icon = new Icon()
+		{
+            public int getIconHeight() 
+            { return BUTTON_SIZE; }
+            
+            public int getIconWidth() 
+            { return BUTTON_SIZE; }
+            
+            public void paintIcon(Component pComponent, Graphics pGraphic, int pX, int pY)
             {
-               double width = n.getBounds().getWidth();
-               double height = n.getBounds().getHeight();
-               Graphics2D g2 = (Graphics2D)g;
-               double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-               double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-               double scale = Math.min(scaleX, scaleY);
+            	double width = pNode.getBounds().getWidth();
+            	double height = pNode.getBounds().getHeight();
+               	Graphics2D g2 = (Graphics2D)pGraphic;
+               	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
+               	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
+               	double scale = Math.min(scaleX, scaleY);
 
-               AffineTransform oldTransform = g2.getTransform();
-               g2.translate(x, y);
-               g2.scale(scale, scale);
-               g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-               g2.setColor(Color.black);
-               n.draw(g2);
-               g2.setTransform(oldTransform);
+               	AffineTransform oldTransform = g2.getTransform();
+               	g2.translate(pX, pY);
+               	g2.scale(scale, scale);
+               	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+               	g2.setColor(Color.black);
+               	pNode.draw(g2);
+               	g2.setTransform(oldTransform);
             }
-         };
+		};
 
-      final JToggleButton button = new JToggleButton(icon);
-      button.setToolTipText(tip);
-      group.add(button);      
-      add(button);
-      tools.add(n);
+		final JToggleButton button = new JToggleButton(icon);
+		button.setToolTipText(pTip);
+		aGroup.add(button);      
+		add(button);
+		aTools.add(pNode);
       
-      JMenuItem item = new JMenuItem(tip, icon);
-      item.addActionListener(new
-            ActionListener()
+		JMenuItem item = new JMenuItem(pTip, icon);
+		item.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent pEvent)
             {
-               public void actionPerformed(ActionEvent event)
-               {
-                  button.setSelected(true);
-                  if (popupListener != null)
-                     popupListener.actionPerformed(event);
-               }
-            });
-      popup.add(item);
-   }
+				button.setSelected(true);
+				if(aPopupListener != null)
+				{
+					aPopupListener.actionPerformed(pEvent);
+				}
+            }
+		});
+		aPopupMenu.add(item);
+	}
 
-   public void showPopup(final GraphPanel panel, final Point2D p, final ActionListener listener) 
-   {
-      /*
-      JPopupMenu popup = new JPopupMenu();
-      Enumeration buttons = group.getElements();
-      int i = 0;
-      while (buttons.hasMoreElements())
-      {
-         final Object tool = tools.get(i);
-         i++;
-         final JToggleButton button = (JToggleButton) buttons.nextElement();
-         JMenuItem item = new JMenuItem(button.getToolTipText(), button.getIcon());
-         item.addActionListener(new
-               ActionListener()
-               {
-                  public void actionPerformed(ActionEvent event)
-                  {
-                     button.setSelected(true);
-                     listener.actionPerformed(event);
-                  }
-               });
-         popup.add(item);
-      }
-      */
-      popupListener = listener;
-      popup.show(panel, (int) p.getX(), (int) p.getY());
-   }
+	/**
+	 * Show the popup menu corresponding to this toolbar.
+	 * @param pPanel The panel associated with this menu.
+	 * @param pPoint The point where to show the menu.
+	 * @param pListener The listener for the menu selection.
+	 */
+	public void showPopup(GraphPanel pPanel, Point2D pPoint, ActionListener pListener) 
+	{
+		aPopupListener = pListener;
+		aPopupMenu.show(pPanel, (int) pPoint.getX(), (int) pPoint.getY());
+	}
    
-   /**
-      Adds an edge to the tool bar.
-      @param n the node to add
-      @param tip the tool tip
-   */
-   public void add(final Edge e, String tip)
-   {
-      Icon icon = new      
-         Icon()
+	/**
+     * Adds an edge to the tool bar.
+     * @param pEdge the edge to add
+     * @param pTip the tool tip
+	 */
+	public void add(final Edge pEdge, String pTip)
+	{
+		Icon icon = new Icon()
          {
-            public int getIconHeight() { return BUTTON_SIZE; }
-            public int getIconWidth() { return BUTTON_SIZE; }
-            public void paintIcon(Component c, Graphics g,
-               int x, int y)
+            public int getIconHeight() 
+            { return BUTTON_SIZE; }
+            
+            public int getIconWidth() 
+            { return BUTTON_SIZE; }
+            
+            public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
             {
-               Graphics2D g2 = (Graphics2D)g;
-               PointNode p = new PointNode();
-               p.translate(OFFSET, OFFSET);
-               PointNode q = new PointNode();
-               q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-               e.connect(p, q);
+            	Graphics2D g2 = (Graphics2D)pGraphics;
+            	PointNode p = new PointNode();
+            	p.translate(OFFSET, OFFSET);
+            	PointNode q = new PointNode();
+            	q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
+            	pEdge.connect(p, q);
                
-               Rectangle2D bounds = new Rectangle2D.Double();
-               bounds.add(p.getBounds());
-               bounds.add(q.getBounds());
-               bounds.add(e.getBounds(g2));
+            	Rectangle2D bounds = new Rectangle2D.Double();
+            	bounds.add(p.getBounds());
+            	bounds.add(q.getBounds());
+            	bounds.add(pEdge.getBounds(g2));
                
-               double width = bounds.getWidth();
-               double height = bounds.getHeight();
-               double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-               double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-               double scale = Math.min(scaleX, scaleY);
+            	double width = bounds.getWidth();
+            	double height = bounds.getHeight();
+            	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
+            	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
+            	double scale = Math.min(scaleX, scaleY);
 
-               AffineTransform oldTransform = g2.getTransform();
-               g2.translate(x, y);
-               g2.scale(scale, scale);
-               g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+            	AffineTransform oldTransform = g2.getTransform();
+            	g2.translate(pX, pY);
+            	g2.scale(scale, scale);
+            	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
                               
-               g2.setColor(Color.black);
-               e.draw(g2);
-               g2.setTransform(oldTransform);
+            	g2.setColor(Color.black);
+            	pEdge.draw(g2);
+            	g2.setTransform(oldTransform);
             }
          };
-      final JToggleButton button = new JToggleButton(icon);               
-      button.setToolTipText(tip);
-      group.add(button);
-      add(button);      
-      tools.add(e);
+         final JToggleButton button = new JToggleButton(icon);               
+         button.setToolTipText(pTip);
+         aGroup.add(button);
+         add(button);      
+         aTools.add(pEdge);
 
-      JMenuItem item = new JMenuItem(tip, icon);
-      item.addActionListener(new
-            ActionListener()
-            {
-               public void actionPerformed(ActionEvent event)
-               {
-                  button.setSelected(true);
-                  if (popupListener != null)
-                     popupListener.actionPerformed(event);
-               }
-            });
-      popup.add(item);
-   }
- 
-
+         JMenuItem item = new JMenuItem(pTip, icon);
+         item.addActionListener(new ActionListener()
+         {
+        	 public void actionPerformed(ActionEvent pEvent)
+        	 {
+        		 button.setSelected(true);
+        		 if(aPopupListener != null)
+        		 {
+        			 aPopupListener.actionPerformed(pEvent);
+        		 }
+        	 }
+         });
+         aPopupMenu.add(item);
+	}
 }
