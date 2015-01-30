@@ -215,34 +215,6 @@ public class EditorFrame extends JFrame
                panel.removeSelected();
             }
      	}));
-
-     	editMenu.add(pFactory.createMenuItem("edit.select_next", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.selectNext(1);
-            }
-     	}));
-
-     	editMenu.add(pFactory.createMenuItem("edit.select_previous", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-            	GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-            	if(frame == null)
-            	{
-            		return;
-            	}
-            	GraphPanel panel = frame.getGraphPanel();
-            	panel.selectNext(-1);
-            }
-     	}));
 	}
 	
 	private void createViewMenu(MenuFactory pFactory)
@@ -687,49 +659,30 @@ public class EditorFrame extends JFrame
    	 */
    	public void openFile()
    	{  
-//   		try
-//   		{
-   			JFileChooser fileChooser = new JFileChooser(aRecentFiles.getMostRecentDirectory());
-   			fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
+		JFileChooser fileChooser = new JFileChooser(aRecentFiles.getMostRecentDirectory());
+		fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
    			// TODO This Editor frame should keep a list of graph types to make this operation not hard-code them
-   			ExtensionFilter[] filters = new ExtensionFilter[]{
-   				new ExtensionFilter(aAppResources.getString("state.name"), 
-   						aAppResources.getString("state.extension") + aAppResources.getString("files.extension")),
-   				new ExtensionFilter(aAppResources.getString("object.name"), 
+		ExtensionFilter[] filters = new ExtensionFilter[]{
+			new ExtensionFilter(aAppResources.getString("state.name"), 
+					aAppResources.getString("state.extension") + aAppResources.getString("files.extension")),
+   			new ExtensionFilter(aAppResources.getString("object.name"), 
    						aAppResources.getString("object.extension") + aAppResources.getString("files.extension")),
-   				new ExtensionFilter(aAppResources.getString("class.name"), 
+   			new ExtensionFilter(aAppResources.getString("class.name"), 
    						aAppResources.getString("class.extension") + aAppResources.getString("files.extension")),
-   				new ExtensionFilter(aAppResources.getString("usecase.name"), 
+   			new ExtensionFilter(aAppResources.getString("usecase.name"), 
    						aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")),
-   				new ExtensionFilter(aAppResources.getString("sequence.name"), 
+   			new ExtensionFilter(aAppResources.getString("sequence.name"), 
    						aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension"))
-   			};
-   			for(ExtensionFilter filter: filters)
-			{
-				fileChooser.addChoosableFileFilter(filter);
-			}
-//   			InputStream in = null;
-   			if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-   			{
-   				File file = fileChooser.getSelectedFile();
-   				open(file.getAbsolutePath());
-//   				in = new FileInputStream(fileChooser.getSelectedFile());
-   			}
-//   			if(in != null)
-//   			{      
-//   				
-//   				Graph graph = read(in);
-//   				GraphFrame frame = new GraphFrame(graph);
-//   				addInternalFrame(frame);
-//   				frame.setFileName(fileChooser.getSelectedFile().getName());
-//   				addRecentFile(fileChooser.getSelectedFile().getPath());
-//   				setTitle();
-//   			}               
-//   		}
-//   		catch(IOException exception)     
-//   		{
-//   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
-//   		}
+   		};
+   		for(ExtensionFilter filter: filters)
+		{
+			fileChooser.addChoosableFileFilter(filter);
+		}
+		if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
+		{
+			File file = fileChooser.getSelectedFile();
+   			open(file.getAbsolutePath());
+		}
    	}
 
    	/**

@@ -27,7 +27,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -35,22 +34,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+import java.util.Set;
 
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.ResourceBundle;
-import java.util.Set;
 
 /**
  * A panel to draw a graph.
@@ -468,84 +466,6 @@ public class GraphPanel extends JPanel
       }
       revalidate();
       repaint();
-	}
-
-	public void selectNext(int n)
-	{
-		ArrayList selectables = new ArrayList();
-		selectables.addAll(aGraph.getNodes());
-		selectables.addAll(aGraph.getEdges());
-		if(selectables.size() == 0)
-		{
-			return;
-		}
-		java.util.Collections.sort(selectables, new java.util.Comparator()
-		{
-			public int compare(Object obj1, Object obj2)
-			{
-				double x1;
-				double y1;
-				if(obj1 instanceof Node)
-				{
-					Rectangle2D bounds = ((Node) obj1).getBounds();
-					x1 = bounds.getX();
-					y1 = bounds.getY();
-				}
-				else
-				{
-					Point2D start = ((Edge) obj1).getConnectionPoints().getP1();
-					x1 = start.getX();
-					y1 = start.getY();
-				}
-				double x2;
-				double y2;
-				if(obj2 instanceof Node)
-				{
-					Rectangle2D bounds = ((Node) obj2).getBounds();
-					x2 = bounds.getX();
-					y2 = bounds.getY();
-				}
-				else
-				{
-					Point2D start = ((Edge) obj2).getConnectionPoints().getP1();
-					x2 = start.getX();
-					y2 = start.getY();
-				}
-				if (y1 < y2)
-				{
-					return -1;
-				}
-				if (y1 > y2)
-				{
-					return 1;
-				}
-				if (x1 < x2)
-				{
-					return -1;
-				}
-				if (x1 > x2)
-				{
-					return 1;
-				}
-				return 0;
-			}
-		});
-		int index;
-		if(aLastSelected == null)
-		{
-			index = 0;
-		}
-		else
-		{
-			index = selectables.indexOf(aLastSelected) + n;
-		}
-		while(index < 0)
-		{
-			index += selectables.size();
-		}
-		index %= selectables.size();
-		setSelectedItem(selectables.get(index));
-		repaint();
 	}
 
 	/**
