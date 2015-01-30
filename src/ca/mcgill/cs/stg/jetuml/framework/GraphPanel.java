@@ -86,206 +86,8 @@ public class GraphPanel extends JPanel
 		setBackground(Color.WHITE);
 		aSelectedItems = new HashSet();
       
-		addMouseListener(new MouseAdapter() 
-		{
-			public void mousePressed(MouseEvent pEvent)
-			{
-				requestFocus();
-				final Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
-				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-				Node n = aGraph.findNode(mousePoint);
-				Edge e = aGraph.findEdge(mousePoint);
-				Object tool = aToolBar.getSelectedTool();
-				if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
-				{  
-					// double/right-click
-					if(e != null)
-					{
-						setSelectedItem(e);
-						editSelected();
-					}
-					else if(n != null)
-					{
-						setSelectedItem(n);
-						editSelected();
-					}
-					else
-					{
-						aToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
-                        {
-                           public void actionPerformed(ActionEvent pEvent)
-                           {
-                        	   Object tool = aToolBar.getSelectedTool();
-                        	   if(tool instanceof Node)
-                        	   {
-                        		   Node prototype = (Node) tool;
-                        		   Node newNode = (Node) prototype.clone();
-                        		   boolean added = aGraph.add(newNode, mousePoint);
-                        		   if(added)
-                        		   {
-                        			   setModified(true);
-                        			   setSelectedItem(newNode);
-                        		   }
-                        	   }
-                           	}
-                        });
-					}
-				}
-				else if(tool == null) // select
-				{
-					if(e != null)
-					{
-						setSelectedItem(e);
-					}
-					else if(n != null)
-					{
-						if(isCtrl) 
-						{
-							addSelectedItem(n);
-						}
-						else if(!aSelectedItems.contains(n)) 
-						{
-							setSelectedItem(n);
-						}
-						aDragMode = DRAG_MOVE;
-					}
-					else
-					{
-						if(!isCtrl) 
-						{
-							clearSelection();
-						}
-						aDragMode = DRAG_LASSO;
-					}
-				}
-				else if(tool instanceof Node)
-				{
-					Node prototype = (Node) tool;
-					Node newNode = (Node) prototype.clone();
-					boolean added = aGraph.add(newNode, mousePoint);
-					if(added)
-					{
-						setModified(true);
-						setSelectedItem(newNode);
-						aDragMode = DRAG_MOVE;
-					}
-					else if(n != null)
-					{
-						if(isCtrl) 
-						{
-							addSelectedItem(n);
-						}
-						else if(!aSelectedItems.contains(n))
-						{
-							setSelectedItem(n);
-						}
-						aDragMode = DRAG_MOVE;
-					}
-				}
-				else if(tool instanceof Edge)
-				{
-					if(n != null) 
-					{
-						aDragMode = DRAG_RUBBERBAND;
-					}
-				}
-				aLastMousePoint = mousePoint;
-				aMouseDownPoint = mousePoint;
-				repaint();
-			}
-
-			public void mouseReleased(MouseEvent pEvent)
-			{
-				Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
-				Object tool = aToolBar.getSelectedTool();
-				if(aDragMode == DRAG_RUBBERBAND)
-				{
-					Edge prototype = (Edge) tool;
-					Edge newEdge = (Edge) prototype.clone();
-					if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
-					{
-						setModified(true);
-						setSelectedItem(newEdge);
-					}
-				}
-				else if(aDragMode == DRAG_MOVE)
-				{
-					aGraph.layout();
-					setModified(true);
-				}
-				aDragMode = DRAG_NONE;
-				revalidate();
-				repaint();
-			}
-		});
-
-		addMouseMotionListener(new MouseMotionAdapter()
-		{
-			public void mouseDragged(MouseEvent pEvent)
-			{
-				Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
-				boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-				if(aDragMode == DRAG_MOVE && aLastSelected instanceof Node)
-				{               
-					Node lastNode = (Node) aLastSelected;
-					Rectangle2D bounds = lastNode.getBounds();
-					double dx = mousePoint.getX() - aLastMousePoint.getX();
-					double dy = mousePoint.getY() - aLastMousePoint.getY();
-                            
-					// we don't want to drag nodes into negative coordinates
-					// particularly with multiple selection, we might never be 
-					// able to get them back.
-					Iterator iter = aSelectedItems.iterator();
-					while(iter.hasNext())
-					{
-						Object selected = iter.next();                 
-						if(selected instanceof Node)
-						{
-							Node n = (Node) selected;
-							bounds.add(n.getBounds());
-						}
-					}
-					dx = Math.max(dx, -bounds.getX());
-					dy = Math.max(dy, -bounds.getY());
-               
-					iter = aSelectedItems.iterator();
-					while(iter.hasNext())
-					{
-						Object selected = iter.next();                 
-						if(selected instanceof Node)
-						{
-							Node n = (Node) selected;
-							n.translate(dx, dy);                           
-						}
-					}
-					// we don't want continuous layout any more because of multiple selection
-					// graph.layout();
-				}            
-				else if(aDragMode == DRAG_LASSO)
-				{
-					double x1 = aMouseDownPoint.getX();
-					double y1 = aMouseDownPoint.getY();
-					double x2 = mousePoint.getX();
-					double y2 = mousePoint.getY();
-					Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
-					Iterator iter = aGraph.getNodes().iterator();
-					while(iter.hasNext())
-					{
-						Node n = (Node) iter.next();
-						if(!isCtrl && !lasso.contains(n.getBounds())) 
-						{
-							removeSelectedItem(n);
-						}
-						else if (lasso.contains(n.getBounds())) 
-						{
-							addSelectedItem(n);
-						}
-					}
-				}
-				aLastMousePoint = mousePoint;
-				repaint();
-			}
-		});
+		addMouseListener(new GraphPanelMouseListener());
+		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
 
 	/**
@@ -566,5 +368,209 @@ public class GraphPanel extends JPanel
 	public boolean getHideGrid()
 	{
 		return aHideGrid;
+	}
+	
+	private class GraphPanelMouseListener extends MouseAdapter
+	{
+		@Override
+		public void mousePressed(MouseEvent pEvent)
+		{
+			requestFocus();
+			final Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
+			Node n = aGraph.findNode(mousePoint);
+			Edge e = aGraph.findEdge(mousePoint);
+			Object tool = aToolBar.getSelectedTool();
+			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
+			{  
+				// double/right-click
+				if(e != null)
+				{
+					setSelectedItem(e);
+					editSelected();
+				}
+				else if(n != null)
+				{
+					setSelectedItem(n);
+					editSelected();
+				}
+				else
+				{
+					aToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
+                    {
+                       public void actionPerformed(ActionEvent pEvent)
+                       {
+                    	   Object tool = aToolBar.getSelectedTool();
+                    	   if(tool instanceof Node)
+                    	   {
+                    		   Node prototype = (Node) tool;
+                    		   Node newNode = (Node) prototype.clone();
+                    		   boolean added = aGraph.add(newNode, mousePoint);
+                    		   if(added)
+                    		   {
+                    			   setModified(true);
+                    			   setSelectedItem(newNode);
+                    		   }
+                    	   }
+                       	}
+                    });
+				}
+			}
+			else if(tool == null) // select
+			{
+				if(e != null)
+				{
+					setSelectedItem(e);
+				}
+				else if(n != null)
+				{
+					if(isCtrl) 
+					{
+						addSelectedItem(n);
+					}
+					else if(!aSelectedItems.contains(n)) 
+					{
+						setSelectedItem(n);
+					}
+					aDragMode = DRAG_MOVE;
+				}
+				else
+				{
+					if(!isCtrl) 
+					{
+						clearSelection();
+					}
+					aDragMode = DRAG_LASSO;
+				}
+			}
+			else if(tool instanceof Node)
+			{
+				Node prototype = (Node) tool;
+				Node newNode = (Node) prototype.clone();
+				boolean added = aGraph.add(newNode, mousePoint);
+				if(added)
+				{
+					setModified(true);
+					setSelectedItem(newNode);
+					aDragMode = DRAG_MOVE;
+				}
+				else if(n != null)
+				{
+					if(isCtrl) 
+					{
+						addSelectedItem(n);
+					}
+					else if(!aSelectedItems.contains(n))
+					{
+						setSelectedItem(n);
+					}
+					aDragMode = DRAG_MOVE;
+				}
+			}
+			else if(tool instanceof Edge)
+			{
+				if(n != null) 
+				{
+					aDragMode = DRAG_RUBBERBAND;
+				}
+			}
+			aLastMousePoint = mousePoint;
+			aMouseDownPoint = mousePoint;
+			repaint();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent pEvent)
+		{
+			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			Object tool = aToolBar.getSelectedTool();
+			if(aDragMode == DRAG_RUBBERBAND)
+			{
+				Edge prototype = (Edge) tool;
+				Edge newEdge = (Edge) prototype.clone();
+				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
+				{
+					setModified(true);
+					setSelectedItem(newEdge);
+				}
+			}
+			else if(aDragMode == DRAG_MOVE)
+			{
+				aGraph.layout();
+				setModified(true);
+			}
+			aDragMode = DRAG_NONE;
+			revalidate();
+			repaint();
+		}
+	}
+	
+	private class GraphPanelMouseMotionListener extends MouseMotionAdapter
+	{
+		@Override
+		public void mouseDragged(MouseEvent pEvent)
+		{
+			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
+			if(aDragMode == DRAG_MOVE && aLastSelected instanceof Node)
+			{               
+				Node lastNode = (Node) aLastSelected;
+				Rectangle2D bounds = lastNode.getBounds();
+				double dx = mousePoint.getX() - aLastMousePoint.getX();
+				double dy = mousePoint.getY() - aLastMousePoint.getY();
+                        
+				// we don't want to drag nodes into negative coordinates
+				// particularly with multiple selection, we might never be 
+				// able to get them back.
+				Iterator iter = aSelectedItems.iterator();
+				while(iter.hasNext())
+				{
+					Object selected = iter.next();                 
+					if(selected instanceof Node)
+					{
+						Node n = (Node) selected;
+						bounds.add(n.getBounds());
+					}
+				}
+				dx = Math.max(dx, -bounds.getX());
+				dy = Math.max(dy, -bounds.getY());
+           
+				iter = aSelectedItems.iterator();
+				while(iter.hasNext())
+				{
+					Object selected = iter.next();                 
+					if(selected instanceof Node)
+					{
+						Node n = (Node) selected;
+						n.translate(dx, dy);                           
+					}
+				}
+				// we don't want continuous layout any more because of multiple selection
+				// graph.layout();
+			}            
+			else if(aDragMode == DRAG_LASSO)
+			{
+				double x1 = aMouseDownPoint.getX();
+				double y1 = aMouseDownPoint.getY();
+				double x2 = mousePoint.getX();
+				double y2 = mousePoint.getY();
+				Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
+				Iterator iter = aGraph.getNodes().iterator();
+				while(iter.hasNext())
+				{
+					Node n = (Node) iter.next();
+					if(!isCtrl && !lasso.contains(n.getBounds())) 
+					{
+						removeSelectedItem(n);
+					}
+					else if (lasso.contains(n.getBounds())) 
+					{
+						addSelectedItem(n);
+					}
+				}
+			}
+			aLastMousePoint = mousePoint;
+			repaint();
+		}
 	}
 }
