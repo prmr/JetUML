@@ -698,6 +698,8 @@ public class EditorFrame extends JFrame
    		{
    			FileExportService.exportToclipBoard(frame.getGraph());
    		}
+   		JOptionPane.showInternalMessageDialog(aDesktop, aEditorResources.getString("dialog.to_clipboard.message"), 
+   				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
 
    	/**
