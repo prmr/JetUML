@@ -37,7 +37,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -48,6 +47,7 @@ import javax.swing.event.ChangeListener;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -69,8 +69,7 @@ public class GraphPanel extends JPanel
 	private double aZoom;	
 	private boolean aHideGrid;
 	private boolean aModified;
-	private Object aLastSelected;
-	private Set aSelectedItems;
+	private SelectionList aSelectedElements = new SelectionList();
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
 	private int aDragMode;
@@ -84,8 +83,6 @@ public class GraphPanel extends JPanel
 		aZoom = 1;
 		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
-		aSelectedItems = new HashSet();
-      
 		addMouseListener(new GraphPanelMouseListener());
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
@@ -95,17 +92,10 @@ public class GraphPanel extends JPanel
 	 */
 	public void editSelected()
 	{
-		Object edited = aLastSelected;
-		if(aLastSelected == null)
+		Object edited = aSelectedElements.getLastSelected();
+		if( edited == null )
 		{
-			if (aSelectedItems.size() == 1)
-			{
-				edited = aSelectedItems.iterator().next();
-			}
-			else
-			{
-				return;
-			}
+			return;
 		}
 		PropertySheet sheet = new PropertySheet(edited);
 		sheet.addChangeListener(new ChangeListener()
@@ -123,24 +113,15 @@ public class GraphPanel extends JPanel
 	}
 
 	/**
-	 * Removes the selected nodes or edges.
+	 * Removes the selected graph elements.
 	 */
 	public void removeSelected()
 	{
-		Iterator iter = aSelectedItems.iterator();
-		while(iter.hasNext())
+		for( GraphElement element : aSelectedElements )
 		{
-			Object selected = iter.next();                 
-			if(selected instanceof Node)
-			{
-				aGraph.removeNode((Node) selected);
-			}
-			else if(selected instanceof Edge)
-			{
-				aGraph.removeEdge((Edge) selected);
-			}
+			aGraph.removeElement(element);
 		}
-		if(aSelectedItems.size() > 0)
+		if(aSelectedElements.size() > 0)
 		{
 			setModified(true);
 		}
@@ -174,12 +155,10 @@ public class GraphPanel extends JPanel
 		}
 		aGraph.draw(g2, new Grid());
 
-		Iterator iter = aSelectedItems.iterator();
-		Set toBeRemoved = new HashSet();
-		while(iter.hasNext())
+		Set<GraphElement> toBeRemoved = new HashSet<>();
+		for(GraphElement selected : aSelectedElements)
 		{
-			Object selected = iter.next();                 
-			if(!aGraph.getNodes().contains(selected) && !aGraph.getEdges().contains(selected)) 
+			if(!aGraph.contains(selected)) 
 			{
 				toBeRemoved.add(selected);
 			}
@@ -199,10 +178,9 @@ public class GraphPanel extends JPanel
 			}
 		}
 
-		iter = toBeRemoved.iterator();
-		while(iter.hasNext())
+		for( GraphElement element : toBeRemoved )
 		{
-			removeSelectedItem(iter.next());
+			aSelectedElements.remove(element);
 		}                 
       
 		if(aDragMode == DRAG_RUBBERBAND)
@@ -319,37 +297,6 @@ public class GraphPanel extends JPanel
 			}
 		}
 	}
-
-	private void addSelectedItem(Object pObject)
-	{
-		aLastSelected = pObject;      
-		aSelectedItems.add(pObject);
-	}
-   
-	private void removeSelectedItem(Object pObject)
-	{
-		if(pObject == aLastSelected)
-		{
-			aLastSelected = null;
-		}
-		aSelectedItems.remove(pObject);
-	}
-   
-	private void setSelectedItem(Object pObject)
-	{
-		aSelectedItems.clear();
-		aLastSelected = pObject;
-		if (pObject != null)
-		{
-			aSelectedItems.add(pObject);
-		}
-	}
-   
-	private void clearSelection()
-	{
-		aSelectedItems.clear();
-		aLastSelected = null;
-	}
    
 	/**
 	 * Sets the value of the hideGrid property.
@@ -386,12 +333,12 @@ public class GraphPanel extends JPanel
 				// double/right-click
 				if(e != null)
 				{
-					setSelectedItem(e);
+					aSelectedElements.set(e);
 					editSelected();
 				}
 				else if(n != null)
 				{
-					setSelectedItem(n);
+					aSelectedElements.set(n);
 					editSelected();
 				}
 				else
@@ -409,7 +356,7 @@ public class GraphPanel extends JPanel
                     		   if(added)
                     		   {
                     			   setModified(true);
-                    			   setSelectedItem(newNode);
+                    			   aSelectedElements.set(newNode);
                     		   }
                     	   }
                        	}
@@ -420,17 +367,17 @@ public class GraphPanel extends JPanel
 			{
 				if(e != null)
 				{
-					setSelectedItem(e);
+					aSelectedElements.set(e);
 				}
 				else if(n != null)
 				{
 					if(isCtrl) 
 					{
-						addSelectedItem(n);
+						aSelectedElements.add(n);
 					}
-					else if(!aSelectedItems.contains(n)) 
+					else 
 					{
-						setSelectedItem(n);
+						aSelectedElements.set(n);
 					}
 					aDragMode = DRAG_MOVE;
 				}
@@ -438,7 +385,7 @@ public class GraphPanel extends JPanel
 				{
 					if(!isCtrl) 
 					{
-						clearSelection();
+						aSelectedElements.clearSelection();
 					}
 					aDragMode = DRAG_LASSO;
 				}
@@ -451,18 +398,18 @@ public class GraphPanel extends JPanel
 				if(added)
 				{
 					setModified(true);
-					setSelectedItem(newNode);
+					aSelectedElements.set(newNode);
 					aDragMode = DRAG_MOVE;
 				}
 				else if(n != null)
 				{
 					if(isCtrl) 
 					{
-						addSelectedItem(n);
+						aSelectedElements.add(n);
 					}
-					else if(!aSelectedItems.contains(n))
+					else
 					{
-						setSelectedItem(n);
+						aSelectedElements.set(n);
 					}
 					aDragMode = DRAG_MOVE;
 				}
@@ -491,7 +438,7 @@ public class GraphPanel extends JPanel
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
-					setSelectedItem(newEdge);
+					aSelectedElements.set(newEdge);
 				}
 			}
 			else if(aDragMode == DRAG_MOVE)
@@ -512,9 +459,9 @@ public class GraphPanel extends JPanel
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-			if(aDragMode == DRAG_MOVE && aLastSelected instanceof Node)
+			if(aDragMode == DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
 			{               
-				Node lastNode = (Node) aLastSelected;
+				Node lastNode = (Node) aSelectedElements.getLastSelected();
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
@@ -522,10 +469,8 @@ public class GraphPanel extends JPanel
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
-				Iterator iter = aSelectedItems.iterator();
-				while(iter.hasNext())
+				for( GraphElement selected : aSelectedElements )
 				{
-					Object selected = iter.next();                 
 					if(selected instanceof Node)
 					{
 						Node n = (Node) selected;
@@ -535,10 +480,8 @@ public class GraphPanel extends JPanel
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
            
-				iter = aSelectedItems.iterator();
-				while(iter.hasNext())
+				for( GraphElement selected : aSelectedElements )
 				{
-					Object selected = iter.next();                 
 					if(selected instanceof Node)
 					{
 						Node n = (Node) selected;
@@ -555,17 +498,15 @@ public class GraphPanel extends JPanel
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
 				Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
-				Iterator iter = aGraph.getNodes().iterator();
-				while(iter.hasNext())
+				for( Node node : aGraph.getNodes() )
 				{
-					Node n = (Node) iter.next();
-					if(!isCtrl && !lasso.contains(n.getBounds())) 
+					if(!isCtrl && !lasso.contains(node.getBounds())) 
 					{
-						removeSelectedItem(n);
+						aSelectedElements.remove(node);
 					}
-					else if (lasso.contains(n.getBounds())) 
+					else if(lasso.contains(node.getBounds())) 
 					{
-						addSelectedItem(n);
+						aSelectedElements.add(node);
 					}
 				}
 			}

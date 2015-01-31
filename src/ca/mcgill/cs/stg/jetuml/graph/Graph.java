@@ -220,6 +220,39 @@ public abstract class Graph
 		}
 		aNeedsLayout = true;
 	}
+	
+	/**
+	 * Removes pElement from the graph.
+	 * @param pElement The element to remove.
+	 */
+	public void removeElement(GraphElement pElement)
+	{
+		if(pElement instanceof Node)
+		{
+			removeNode((Node) pElement);
+		}
+		else if(pElement instanceof Edge)
+		{
+			removeEdge((Edge) pElement);
+		}
+	}
+	
+	/**
+	 * @param pElement The element we want to check is in the grapgh.
+	 * @return True if pElement is a node or edge in this graph.
+	 */
+	public boolean contains( GraphElement pElement )
+	{
+		if( aNodes.contains(pElement))
+		{
+			return true;
+		}
+		if( aEdges.contains( pElement ))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	/**
      * Removes an edge from the graph.

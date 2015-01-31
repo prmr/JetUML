@@ -30,7 +30,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * An edge in a graph.
  */
-public interface Edge extends Cloneable
+public interface Edge extends GraphElement
 {
 	/**
      * Draw the edge.

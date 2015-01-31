@@ -33,7 +33,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
   * A node in a graph.
   */
-public interface Node extends Cloneable
+public interface Node extends GraphElement
 {
 	/**
      *  Draw the node.
