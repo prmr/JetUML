@@ -309,10 +309,9 @@ public abstract class Graph
 
 	/**
      * Gets the smallest rectangle enclosing the graph.
-     * @param pGraphics2D the graphics context
      * @return the bounding rectangle
 	 */
-	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	public Rectangle2D getBounds()
 	{
 		Rectangle2D r = aMinBounds;
 		for(int i = 0; i < aNodes.size(); i++)
@@ -331,7 +330,7 @@ public abstract class Graph
 		for(int i = 0; i < aEdges.size(); i++)
 		{
 			Edge e = aEdges.get(i);
-			r.add(e.getBounds(pGraphics2D));
+			r.add(e.getBounds());
 		}
 		if(r == null )
 		{

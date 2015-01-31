@@ -22,7 +22,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -72,7 +71,7 @@ abstract class AbstractEdge implements Edge
 	}
 
 	@Override
-	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	public Rectangle2D getBounds()
 	{
 		Line2D conn = getConnectionPoints();      
 		Rectangle2D rectangle = new Rectangle2D.Double();

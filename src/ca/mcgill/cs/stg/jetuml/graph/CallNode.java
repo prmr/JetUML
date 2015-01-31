@@ -261,7 +261,7 @@ public class CallNode extends RectangularNode
 				// compute height of call edge
 				if(callEdge != null)
 				{
-					Rectangle2D edgeBounds = callEdge.getBounds(pGraphics2D);
+					Rectangle2D edgeBounds = callEdge.getBounds();
 					ytop += edgeBounds.getHeight() - CALL_YGAP;
 				}
             
@@ -287,7 +287,7 @@ public class CallNode extends RectangularNode
 		Edge returnEdge = findEdge(pGraph, this, getParent());
 		if(returnEdge != null)
 		{
-			Rectangle2D edgeBounds = returnEdge.getBounds(pGraphics2D);
+			Rectangle2D edgeBounds = returnEdge.getBounds();
 			minHeight = Math.max(minHeight, edgeBounds.getHeight());         
 		}
 		setBounds(new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), Math.max(minHeight, ytop - b.getY())));

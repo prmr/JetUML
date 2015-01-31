@@ -74,10 +74,9 @@ public interface Edge extends GraphElement
    	/**
      * Gets the smallest rectangle that bounds this edge.
      * The bounding rectangle contains all labels.
-     * @param pGraphics2D The graphics object.
      * @return the bounding rectangle
    	 */
-   	Rectangle2D getBounds(Graphics2D pGraphics2D);
+   	Rectangle2D getBounds();
 
    	/**
    	 * @return A clone of this edge.

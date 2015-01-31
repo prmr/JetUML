@@ -80,7 +80,7 @@ public class StateTransitionEdge extends ShapeEdge
 	 */
 	private void drawLabel(Graphics2D pGraphics2D)
 	{
-		Rectangle2D labelBounds = getLabelBounds(pGraphics2D);
+		Rectangle2D labelBounds = getLabelBounds();
 		double x = labelBounds.getX();
 		double y = labelBounds.getY();
 		pGraphics2D.translate(x, y);
@@ -90,10 +90,9 @@ public class StateTransitionEdge extends ShapeEdge
 
 	/*
      *  Gets the bounds of the label text .
-     * @param pGraphics2D the graphics context
      * @return the bounds of the label text
      */
-	private Rectangle2D getLabelBounds(Graphics2D pGraphics2D)
+	private Rectangle2D getLabelBounds()
 	{
 		Line2D line = getConnectionPoints();
 		Point2D control = getControlPoint();
@@ -101,7 +100,6 @@ public class StateTransitionEdge extends ShapeEdge
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
 		label.setText("<html>" + aLabelText + "</html>");
-		label.setFont(pGraphics2D.getFont());
 		Dimension d = label.getPreferredSize();
 		label.setBounds(0, 0, d.width, d.height);
    
@@ -158,10 +156,10 @@ public class StateTransitionEdge extends ShapeEdge
 	}
 
 	@Override
-	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	public Rectangle2D getBounds()
 	{
-		Rectangle2D r = super.getBounds(pGraphics2D);
-		r.add(getLabelBounds(pGraphics2D));
+		Rectangle2D r = super.getBounds();
+		r.add(getLabelBounds());
 		return r;
 	}
    

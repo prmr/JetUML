@@ -146,7 +146,7 @@ public class GraphPanel extends JPanel
 		Graphics2D g2 = (Graphics2D) pGraphics;
 		g2.scale(aZoom, aZoom);
 		Rectangle2D bounds = getBounds();
-		Rectangle2D graphBounds = aGraph.getBounds(g2);
+		Rectangle2D graphBounds = aGraph.getBounds();
 		if(!aHideGrid) 
 		{
 			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / aZoom, graphBounds.getMaxX()), 
@@ -222,7 +222,7 @@ public class GraphPanel extends JPanel
 	@Override
 	public Dimension getPreferredSize()
 	{
-		Rectangle2D bounds = aGraph.getBounds((Graphics2D) getGraphics());
+		Rectangle2D bounds = aGraph.getBounds();
 		return new Dimension((int) (aZoom * bounds.getMaxX()), (int) (aZoom * bounds.getMaxY()));
 	}
 

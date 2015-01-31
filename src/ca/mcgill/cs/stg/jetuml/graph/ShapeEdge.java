@@ -48,7 +48,7 @@ public abstract class ShapeEdge extends AbstractEdge
 	public abstract Shape getShape();
 
 	@Override
-	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	public Rectangle2D getBounds()
 	{
 		return getShape().getBounds();
 	}

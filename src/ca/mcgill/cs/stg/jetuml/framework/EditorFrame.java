@@ -176,6 +176,9 @@ public class EditorFrame extends JFrame
      	JMenuItem fileExportItem = pFactory.createMenuItem("file.export_image", this, "exportImage"); 
      	fileMenu.add(fileExportItem);
      	
+     	JMenuItem fileCopyToClipboard = pFactory.createMenuItem("file.copy_to_clipboard", this, "copyToClipboard"); 
+     	fileMenu.add(fileCopyToClipboard);
+     	
      	fileMenu.addSeparator();
 
      	JMenuItem fileExitItem = pFactory.createMenuItem("file.exit", this, "exit");
@@ -262,7 +265,7 @@ public class EditorFrame extends JFrame
 					return;
 				}
      			Graph g = frame.getGraph();
-     			Rectangle2D bounds = g.getBounds((Graphics2D) frame.getGraphics());
+     			Rectangle2D bounds = g.getBounds();
      			bounds.add(frame.getGraphPanel().getBounds());
      			g.setMinBounds(new Rectangle2D.Double(0, 0, GROW_SCALE_FACTOR * bounds.getWidth(), GROW_SCALE_FACTOR * bounds.getHeight()));
                 frame.getGraphPanel().revalidate();
@@ -684,6 +687,18 @@ public class EditorFrame extends JFrame
    			open(file.getAbsolutePath());
 		}
    	}
+   	
+   	/**
+   	 * Copies the current image to the clipboard.
+   	 */
+   	public void copyToClipboard()
+   	{
+   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		if( frame != null )
+   		{
+   			FileExportService.exportToclipBoard(frame.getGraph());
+   		}
+   	}
 
    	/**
    	 * Save a file. Called by reflection. 
@@ -986,9 +1001,7 @@ public class EditorFrame extends JFrame
    	 */
    	public static void saveImage(Graph pGraph, OutputStream pOut, String pFormat) throws IOException
    	{
-   		BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-   		// need a dummy image to get a Graphics to measure the size
-   		Rectangle2D bounds = pGraph.getBounds((Graphics2D) dummy.getGraphics());
+   		Rectangle2D bounds = pGraph.getBounds();
    		BufferedImage image = new BufferedImage((int)bounds.getWidth() + 1, (int)bounds.getHeight() + 1, BufferedImage.TYPE_INT_RGB);
    		Graphics2D g2 = (Graphics2D)image.getGraphics();
    		g2.translate(-bounds.getX(), -bounds.getY());

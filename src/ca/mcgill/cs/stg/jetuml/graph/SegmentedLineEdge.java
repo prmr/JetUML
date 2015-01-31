@@ -186,7 +186,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
   		Dimension d = label.getPreferredSize();      
   		label.setBounds(0, 0, d.width, d.height);
 
-  		Rectangle2D b = getStringBounds(pGraphics2D, pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
+  		Rectangle2D b = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
       
   		Color oldColor = pGraphics2D.getColor();
   		pGraphics2D.setColor(pGraphics2D.getBackground());
@@ -200,14 +200,13 @@ public abstract class SegmentedLineEdge extends ShapeEdge
 
   	/**
      * Computes the attachment point for drawing a string.
-     * @param pGraphics2D the graphics context
      * @param pEndPoint1 an endpoint of the segment along which to draw the string
      * @param pEndPoint2 the other endpoint of the segment along which to draw the string
      * @param b the bounds of the string to draw
      * @param pCenter true if the string should be centered along the segment
      * @return the point at which to draw the string
      */
-  	private static Point2D getAttachmentPoint(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+  	private static Point2D getAttachmentPoint(Point2D pEndPoint1, Point2D pEndPoint2, 
   			ArrowHead pArrow, Dimension pDimension, boolean pCenter)
   	{    
   		final int gap = 3;
@@ -218,7 +217,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
   		{
   			if (pEndPoint1.getX() > pEndPoint2.getX()) 
   			{ 
-  				return getAttachmentPoint(pGraphics2D, pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
+  				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
   			}
   			attach = new Point2D.Double((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
   					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
@@ -263,39 +262,33 @@ public abstract class SegmentedLineEdge extends ShapeEdge
 
   	/*
      * Computes the extent of a string that is drawn along a line segment.
-     * @param g2 the graphics context
      * @param p an endpoint of the segment along which to draw the string
      * @param q the other endpoint of the segment along which to draw the string
      * @param s the string to draw
      * @param center true if the string should be centered along the segment
      * @return the rectangle enclosing the string
   	 */
-  	private static Rectangle2D getStringBounds(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+  	private static Rectangle2D getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
   			ArrowHead pArrow, String pString, boolean pCenter)
   	{
-  		if (pGraphics2D == null)
-  		{
-  			return new Rectangle2D.Double();
-  		}
   		if (pString == null || pString.equals(""))
   		{
   			return new Rectangle2D.Double(pEndPoint2.getX(), pEndPoint2.getY(), 0, 0);
   		}
   		label.setText("<html>" + pString + "</html>");
-  		label.setFont(pGraphics2D.getFont());
   		Dimension d = label.getPreferredSize();
-  		Point2D a = getAttachmentPoint(pGraphics2D, pEndPoint1, pEndPoint2, pArrow, d, pCenter);
+  		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, d, pCenter);
   		return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());
   	}
 
   	@Override
-  	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+  	public Rectangle2D getBounds()
   	{
   		ArrayList<Point2D> points = getPoints();
-  		Rectangle2D r = super.getBounds(pGraphics2D);
-  		r.add(getStringBounds(pGraphics2D, points.get(1), points.get(0), aStartArrowHead, aStartLabel, false));
-  		r.add(getStringBounds(pGraphics2D, points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, aMiddleLabel, true));
-  		r.add(getStringBounds(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1), aEndArrowHead, aEndLabel, false));
+  		Rectangle2D r = super.getBounds();
+  		r.add(getStringBounds(points.get(1), points.get(0), aStartArrowHead, aStartLabel, false));
+  		r.add(getStringBounds(points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, aMiddleLabel, true));
+  		r.add(getStringBounds(points.get(points.size() - 2), points.get(points.size() - 1), aEndArrowHead, aEndLabel, false));
   		return r;
   	}
   	
