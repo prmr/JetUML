@@ -48,6 +48,7 @@ import javax.swing.KeyStroke;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
@@ -62,7 +63,7 @@ public class ToolBar extends JPanel
 	private static final int OFFSET = 4;
 	
 	private ButtonGroup aGroup;
-	private ArrayList aTools;
+	private ArrayList<GraphElement> aTools;
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 	private ActionListener aPopupListener;
 
@@ -73,7 +74,7 @@ public class ToolBar extends JPanel
 	public ToolBar(Graph pGraph)
 	{
 		aGroup = new ButtonGroup();
-		aTools = new ArrayList();
+		aTools = new ArrayList<>();
 
 		Icon icon = new Icon()
 		{
@@ -150,7 +151,7 @@ public class ToolBar extends JPanel
 	 */
 	public Object getSelectedTool()
 	{
-		for (int i = 0; i < aTools.size(); i++)
+		for(int i = 0; i < aTools.size(); i++)
 		{
 			JToggleButton button = (JToggleButton)getComponent(i);
 			if (button.isSelected())
