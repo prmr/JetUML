@@ -374,7 +374,7 @@ public class GraphPanel extends JPanel
 					{
 						aSelectedElements.add(n);
 					}
-					else 
+					else if(!aSelectedElements.contains(n)) 
 					{
 						aSelectedElements.set(n);
 					}
@@ -406,7 +406,7 @@ public class GraphPanel extends JPanel
 					{
 						aSelectedElements.add(n);
 					}
-					else
+					else if( !aSelectedElements.contains(n) )
 					{
 						aSelectedElements.set(n);
 					}

@@ -2,6 +2,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
 
 import java.util.Iterator;
@@ -10,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -22,7 +22,6 @@ public class TestSelectionList
 	private Edge aEdge1; 
 	private Edge aEdge2; 
 	private Node aNode1;
-	private Node aNode2;
 	private SelectionList aList;
 	
 	@Before
@@ -31,7 +30,6 @@ public class TestSelectionList
 		aEdge1 = new CallEdge();
 		aEdge2 = new NoteEdge();
 		aNode1 = new ClassNode();
-		aNode2 = new CallNode();
 		aList = new SelectionList();
 	}
 	
@@ -43,6 +41,17 @@ public class TestSelectionList
 		aList.remove(aEdge1);
 		assertFalse(aList.iterator().hasNext());
 		assertEquals(0, aList.size());
+		assertFalse(aList.contains(aEdge1));
+	}
+	
+	@Test
+	public void testContains()
+	{
+		aList.add(aNode1);
+		aList.add(aEdge1);
+		assertTrue(aList.contains(aNode1));
+		assertTrue(aList.contains(aEdge1));
+		assertFalse(aList.contains(aEdge2));
 	}
 	
 	@Test

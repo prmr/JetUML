@@ -55,6 +55,15 @@ public class SelectionList implements Iterable<GraphElement>
 	}
 	
 	/**
+	 * @param pElement The element to test.
+	 * @return True if pElement is in the list of selected elements.
+	 */
+	public boolean contains(GraphElement pElement)
+	{
+		return aSelected.contains(pElement);
+	}
+	
+	/**
 	 * Removes pElement from the list of selected elements,
 	 * or does nothing if pElement is not selected.
 	 * @param pElement The element to remove. Cannot be null.
