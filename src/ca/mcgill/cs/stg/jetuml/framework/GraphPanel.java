@@ -56,10 +56,9 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 @SuppressWarnings("serial")
 public class GraphPanel extends JPanel
 {
-	private static final int DRAG_NONE = 0;
-	private static final int DRAG_MOVE = 1;
-	private static final int DRAG_RUBBERBAND = 2;
-	private static final int DRAG_LASSO = 3;
+	private enum DragMode 
+	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
+	
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
 	
@@ -72,7 +71,7 @@ public class GraphPanel extends JPanel
 	private SelectionList aSelectedElements = new SelectionList();
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
-	private int aDragMode;
+	private DragMode aDragMode;
 	
 	/**
 	 * Constructs a graph.
@@ -183,14 +182,14 @@ public class GraphPanel extends JPanel
 			aSelectedElements.remove(element);
 		}                 
       
-		if(aDragMode == DRAG_RUBBERBAND)
+		if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
 			Color oldColor = g2.getColor();
 			g2.setColor(PURPLE);
 			g2.draw(new Line2D.Double(aMouseDownPoint, aLastMousePoint));
 			g2.setColor(oldColor);
 		}      
-		else if(aDragMode == DRAG_LASSO)
+		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
 			Color oldColor = g2.getColor();
 			g2.setColor(PURPLE);
@@ -379,7 +378,7 @@ public class GraphPanel extends JPanel
 					{
 						aSelectedElements.set(n);
 					}
-					aDragMode = DRAG_MOVE;
+					aDragMode = DragMode.DRAG_MOVE;
 				}
 				else
 				{
@@ -387,7 +386,7 @@ public class GraphPanel extends JPanel
 					{
 						aSelectedElements.clearSelection();
 					}
-					aDragMode = DRAG_LASSO;
+					aDragMode = DragMode.DRAG_LASSO;
 				}
 			}
 			else if(tool instanceof Node)
@@ -399,7 +398,7 @@ public class GraphPanel extends JPanel
 				{
 					setModified(true);
 					aSelectedElements.set(newNode);
-					aDragMode = DRAG_MOVE;
+					aDragMode = DragMode.DRAG_MOVE;
 				}
 				else if(n != null)
 				{
@@ -411,14 +410,14 @@ public class GraphPanel extends JPanel
 					{
 						aSelectedElements.set(n);
 					}
-					aDragMode = DRAG_MOVE;
+					aDragMode = DragMode.DRAG_MOVE;
 				}
 			}
 			else if(tool instanceof Edge)
 			{
 				if(n != null) 
 				{
-					aDragMode = DRAG_RUBBERBAND;
+					aDragMode = DragMode.DRAG_RUBBERBAND;
 				}
 			}
 			aLastMousePoint = mousePoint;
@@ -431,7 +430,7 @@ public class GraphPanel extends JPanel
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			Object tool = aToolBar.getSelectedTool();
-			if(aDragMode == DRAG_RUBBERBAND)
+			if(aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
 				Edge prototype = (Edge) tool;
 				Edge newEdge = (Edge) prototype.clone();
@@ -441,12 +440,12 @@ public class GraphPanel extends JPanel
 					aSelectedElements.set(newEdge);
 				}
 			}
-			else if(aDragMode == DRAG_MOVE)
+			else if(aDragMode == DragMode.DRAG_MOVE)
 			{
 				aGraph.layout();
 				setModified(true);
 			}
-			aDragMode = DRAG_NONE;
+			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
 			repaint();
 		}
@@ -459,7 +458,7 @@ public class GraphPanel extends JPanel
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-			if(aDragMode == DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
+			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
 			{               
 				Node lastNode = (Node) aSelectedElements.getLastSelected();
 				Rectangle2D bounds = lastNode.getBounds();
@@ -491,7 +490,7 @@ public class GraphPanel extends JPanel
 				// we don't want continuous layout any more because of multiple selection
 				// graph.layout();
 			}            
-			else if(aDragMode == DRAG_LASSO)
+			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
 				double x1 = aMouseDownPoint.getX();
 				double y1 = aMouseDownPoint.getY();
