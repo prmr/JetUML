@@ -26,6 +26,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -91,7 +94,8 @@ public class EditorFrame extends JFrame
 	private static final int ESTIMATED_FRAMES = 5;
 	private static final int MAX_RECENT_FILES = 8;
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
-	private static final int MARGIN = 8; // Fraction of the screen to leave around the sides
+	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
+	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
 	
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -128,8 +132,8 @@ public class EditorFrame extends JFrame
 		int screenWidth = (int)screenSize.getWidth();
 		int screenHeight = (int)screenSize.getHeight();
 
-		setBounds(screenWidth / (MARGIN*2), screenHeight / (MARGIN*2), (screenWidth * (MARGIN-1)) / MARGIN, 
-				(screenHeight * (MARGIN-1))/MARGIN);
+		setBounds(screenWidth / (MARGIN_SCREEN*2), screenHeight / (MARGIN_SCREEN*2), (screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN, 
+				(screenHeight * (MARGIN_SCREEN-1))/MARGIN_SCREEN);
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()
@@ -694,10 +698,38 @@ public class EditorFrame extends JFrame
    	public void copyToClipboard()
    	{
    		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
-   		if( frame != null )
+   		if( frame == null )
    		{
-   			FileExportService.exportToclipBoard(frame.getGraph());
+   			return;
    		}
+   		final BufferedImage image = getImage(frame.getGraph());
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable()
+		{
+			@Override
+			public boolean isDataFlavorSupported(DataFlavor pFlavor)
+			{
+				return DataFlavor.imageFlavor.equals(pFlavor);
+			}
+			
+			@Override
+			public DataFlavor[] getTransferDataFlavors()
+			{
+				return new DataFlavor[] { DataFlavor.imageFlavor };
+			}
+			
+			@Override
+			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException
+			{
+				if(DataFlavor.imageFlavor.equals(pFlavor))
+		        {
+		            return image;
+		        }
+		        else
+		        {
+		            throw new UnsupportedFlavorException(pFlavor);
+		        }
+			}
+		}, null);
    		JOptionPane.showInternalMessageDialog(aDesktop, aEditorResources.getString("dialog.to_clipboard.message"), 
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
@@ -855,7 +887,7 @@ public class EditorFrame extends JFrame
    				JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
    				return;
    			}
-   			saveImage(frame.getGraph(), out, format);
+   			ImageIO.write(getImage(frame.getGraph()), format, out);
    		}
    		catch(IOException exception)
    		{
@@ -994,26 +1026,28 @@ public class EditorFrame extends JFrame
       encoder.close();
    }
 
-   	/**
-     * Exports a current graph to an image file.
-     * @param pGraph the graph
-     * @param pOut the output stream
-     * @param pFormat the image file format
-     * @throws IOException if the image cannot be exported.
-   	 */
-   	public static void saveImage(Graph pGraph, OutputStream pOut, String pFormat) throws IOException
-   	{
-   		Rectangle2D bounds = pGraph.getBounds();
-   		BufferedImage image = new BufferedImage((int)bounds.getWidth() + 1, (int)bounds.getHeight() + 1, BufferedImage.TYPE_INT_RGB);
-   		Graphics2D g2 = (Graphics2D)image.getGraphics();
-   		g2.translate(-bounds.getX(), -bounds.getY());
-   		g2.setColor(Color.WHITE);
-   		g2.fill(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth() + 1, bounds.getHeight() + 1));
-   		g2.setColor(Color.BLACK);
-   		g2.setBackground(Color.WHITE);
-   		pGraph.draw(g2, null);
-   		ImageIO.write(image, pFormat, pOut);
-   	}
+   	/*
+     * Return the image corresponding to the graph.
+     * 
+     * @param pGraph The graph to convert to an image.
+     * @return bufferedImage. To convert it into an image, use the syntax :
+     *         Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
+     */
+    private static BufferedImage getImage(Graph pGraph)
+    {
+        Rectangle2D bounds = pGraph.getBounds();
+        BufferedImage image = new BufferedImage((int) (bounds.getWidth() + MARGIN_IMAGE*2), 
+        		(int) (bounds.getHeight() + MARGIN_IMAGE*2), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = (Graphics2D) image.getGraphics();
+        g2.translate(-bounds.getX(), -bounds.getY());
+        g2.setColor(Color.WHITE);
+        g2.fill(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth() + MARGIN_IMAGE*2, bounds.getHeight() + MARGIN_IMAGE*2));
+        g2.translate(MARGIN_IMAGE, MARGIN_IMAGE);
+        g2.setColor(Color.BLACK);
+        g2.setBackground(Color.WHITE);
+        pGraph.draw(g2, null);
+        return image;
+    }
    
    	/**
      * Displays the About dialog box.
