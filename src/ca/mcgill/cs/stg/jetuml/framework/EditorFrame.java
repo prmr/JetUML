@@ -103,6 +103,7 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aEditorResources;
 	private JDesktopPane aDesktop;
 	private JMenu aNewMenu;
+	private Clipboard aClipboard = new Clipboard();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
@@ -704,6 +705,16 @@ public class EditorFrame extends JFrame
    	public void cut()
    	{
    		System.out.println("Cut Behavior To Be Implemented"); // TODO 
+   		// Something like
+   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		if( frame == null )
+   		{
+   			return;
+   		}
+   		GraphPanel panel = frame.getGraphPanel();
+   		// panel.getSelection()
+   		panel.removeSelected();
+   		// aClipboard.setContent();
    	}
    	
    	/**
