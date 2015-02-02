@@ -208,6 +208,11 @@ public class EditorFrame extends JFrame
                panel.editSelected();
             }
          }));
+     	
+     	editMenu.add(pFactory.createMenuItem("edit.cut", this, "cut"));
+     	editMenu.add(pFactory.createMenuItem("edit.paste", this, "paste"));
+     	editMenu.add(pFactory.createMenuItem("edit.copy", this, "copy"));
+     	
 
      	editMenu.add(pFactory.createMenuItem("edit.delete", new ActionListener()
      	{
@@ -690,6 +695,33 @@ public class EditorFrame extends JFrame
 			File file = fileChooser.getSelectedFile();
    			open(file.getAbsolutePath());
 		}
+   	}
+   	
+   	/**
+   	 * Cuts the current selection of the current panel and 
+   	 * puts the content into the application-specific clipboard.
+   	 */
+   	public void cut()
+   	{
+   		System.out.println("Cut Behavior To Be Implemented"); // TODO 
+   	}
+   	
+   	/**
+   	 * Cuts the current selection of the current panel and 
+   	 * puts the content into the application-specific clipboard.
+   	 */
+   	public void copy()
+   	{
+   		System.out.println("Copy Behavior To Be Implemented"); // TODO 
+   	}
+   	
+   	/**
+   	 * Cuts the current selection of the current panel and 
+   	 * puts the content into the application-specific clipboard.
+   	 */
+   	public void paste()
+   	{
+   		System.out.println("Paste Behavior To Be Implemented"); // TODO 
    	}
    	
    	/**
