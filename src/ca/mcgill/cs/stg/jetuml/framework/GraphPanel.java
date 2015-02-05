@@ -322,6 +322,22 @@ public class GraphPanel extends JPanel
 		return aHideGrid;
 	}
 	
+	/**
+	 * @return the currently SelectedElements from the GraphPanel.
+	 */
+	public SelectionList getSelectionList()
+	{
+		return aSelectedElements;
+	}
+	
+	/**
+	 * @parameter pSelectionList the new SelectedElements for the GraphPanel.
+	 */
+	public void setSelectionList(SelectionList pSelectionList)
+	{
+		aSelectedElements = pSelectionList;
+	}
+	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{
 		@Override
@@ -512,6 +528,21 @@ public class GraphPanel extends JPanel
 					else if(lasso.contains(node.getBounds())) 
 					{
 						aSelectedElements.add(node);
+					}
+				}
+				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
+				for (Edge edge: aGraph.getEdges())
+				{
+					if(!isCtrl && !lasso.contains(edge.getBounds()))
+					{
+						aSelectedElements.remove(edge);
+					}
+					else if(lasso.contains(edge.getBounds()))
+					{
+						if(aSelectedElements.contains(edge.getStart()) && aSelectedElements.contains(edge.getEnd()))
+						{
+							aSelectedElements.add(edge);
+						}
 					}
 				}
 			}
