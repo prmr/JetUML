@@ -60,7 +60,9 @@ public class GraphPanel extends JPanel
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
-	private static final Color PURPLE = new Color(0.7f, 0.4f, 0.7f);
+	private static final Color GRABBER_COLOR = new Color(77, 115, 153);
+	private static final Color GRABBER_FILL_COLOR = new Color(173, 193, 214);
+	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
 	private Graph aGraph;
 	private GraphFrame aFrame;
@@ -185,14 +187,14 @@ public class GraphPanel extends JPanel
 		if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
 			Color oldColor = g2.getColor();
-			g2.setColor(PURPLE);
+			g2.setColor(GRABBER_COLOR);
 			g2.draw(new Line2D.Double(aMouseDownPoint, aLastMousePoint));
 			g2.setColor(oldColor);
 		}      
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
 			Color oldColor = g2.getColor();
-			g2.setColor(PURPLE);
+			g2.setColor(GRABBER_COLOR);
 			double x1 = aMouseDownPoint.getX();
 			double y1 = aMouseDownPoint.getY();
 			double x2 = aLastMousePoint.getX();
@@ -200,6 +202,8 @@ public class GraphPanel extends JPanel
 			Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), 
 					Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
 			g2.draw(lasso);
+			g2.setColor(GRABBER_FILL_COLOR_TRANSPARENT);
+			g2.fill(lasso);
 			g2.setColor(oldColor);
 		}      
 	}
@@ -212,10 +216,12 @@ public class GraphPanel extends JPanel
 	 */
 	public static void drawGrabber(Graphics2D pGraphics2D, double pX, double pY)
 	{
-		final int size = 5;
+		final int size = 6;
 		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(PURPLE);
-		pGraphics2D.fill(new Rectangle2D.Double(pX - size / 2, pY - size / 2, size, size));
+		pGraphics2D.setColor(GRABBER_COLOR);
+		pGraphics2D.drawRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
+		pGraphics2D.setColor(GRABBER_FILL_COLOR);
+		pGraphics2D.fillRect((int)(pX - size / 2)+1, (int)(pY - size / 2)+1, size-1, size-1);
 		pGraphics2D.setColor(oldColor);
 	}
 

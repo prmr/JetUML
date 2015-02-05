@@ -86,11 +86,12 @@ public class ToolBar extends JPanel
             
 			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
             {
+				int offset = OFFSET+2;
 				Graphics2D g2 = (Graphics2D)pGraphics;
-				GraphPanel.drawGrabber(g2, pX + OFFSET, pY + OFFSET);
-				GraphPanel.drawGrabber(g2, pX + OFFSET, pY + BUTTON_SIZE - OFFSET);
-				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - OFFSET, pY + OFFSET);
-				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - OFFSET, pY + BUTTON_SIZE - OFFSET);
+				GraphPanel.drawGrabber(g2, pX + offset, pY + offset);
+				GraphPanel.drawGrabber(g2, pX + offset, pY + BUTTON_SIZE - offset);
+				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + offset);
+				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + BUTTON_SIZE - offset);
             }
 		};
 		final JToggleButton button = new JToggleButton(icon);
