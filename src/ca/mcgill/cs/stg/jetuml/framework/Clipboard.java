@@ -1,32 +1,53 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.util.List;
-
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
+import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
+
 
 /**
- * Application-specific clipboard to hold grap data
- * for copy and paste operations.
+ * @author JoelChev
  * 
- * @author Martin P. Robillard
+ * A class that will be used to store the current graph for cutting/copying and then pasting.
+ *
  */
-public class Clipboard
+public final class Clipboard 
 {
-	private Class<? extends Graph> aDiagramType; // We can use the diagram class to tag the type of nodes and edges.
-	private List<Node> aNodes;
-	private List<Edge> aEdges;
+	private Object aContents;
 	
 	/**
-	 * Looks at all the elements currently selected and makes 
-	 * some intelligent decision about what to add in here, e.g., bring
-	 * in the edges between selected nodes, etc.
-	 * 
-	 * @param pSelection
+	 * A constructor for a Clipboard object.
 	 */
-	public void setContent(Class<? extends Graph> pDiagramType, SelectionList pSelection)
+	public Clipboard() 
 	{
-		
 	}
+	
+	/**
+	 * @param pContents Sets the contents of the clipboard.
+	 */
+	public void setContents(Object pContents) 
+	{
+		aContents = pContents;
+	}
+
+	/**
+	 * @return Gets the contents of the clipboard.
+	 */
+	public Object getContents() 
+	{
+		return aContents;
+	}
+	
+	
+		
 }

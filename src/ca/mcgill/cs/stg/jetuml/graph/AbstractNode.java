@@ -63,11 +63,12 @@ public abstract class AbstractNode implements Node
 		try
 		{
 			AbstractNode cloned = (AbstractNode) super.clone();
-			cloned.aChildren = new ArrayList<Node>(aChildren.size());
+			//Slight modifications to check for bugs. @JoelChev
+			cloned.aChildren = new ArrayList<Node>();
 			for(int i = 0; i < aChildren.size(); i++)
 			{
 				Node node = aChildren.get(i);
-				cloned.aChildren.set(i, node.clone());
+				cloned.aChildren.add(i, node.clone());
 				node.setParent(cloned);
 			}
 			return cloned;

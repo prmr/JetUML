@@ -56,6 +56,11 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -80,7 +85,13 @@ import javax.swing.filechooser.FileFilter;
 
 import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * This desktop frame contains panes that show graphs.
@@ -104,6 +115,7 @@ public class EditorFrame extends JFrame
 	private JDesktopPane aDesktop;
 	private JMenu aNewMenu;
 	private Clipboard aClipboard = new Clipboard();
+	private CutPasteBehavior aCutPasteBehavior = new CutPasteBehavior();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
@@ -704,35 +716,62 @@ public class EditorFrame extends JFrame
    	 */
    	public void cut()
    	{
-   		System.out.println("Cut Behavior To Be Implemented"); // TODO 
-   		// Something like
    		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
-   		if( frame == null )
+   		if(frame == null)
    		{
    			return;
    		}
    		GraphPanel panel = frame.getGraphPanel();
-   		// panel.getSelection()
-   		panel.removeSelected();
-   		// aClipboard.setContent();
+   		SelectionList currentSelection = panel.getSelectionList();
+   		Graph curGraph = frame.getGraph();
+   		//This call to cutBehavior handles all the logic of cutting elements from the GraphPanel.
+   		aCutPasteBehavior.cutBehavior(currentSelection, aClipboard, curGraph);
+   		panel.setGraph(curGraph);
    	}
    	
    	/**
-   	 * Cuts the current selection of the current panel and 
+   	 * Copies the current selection of the current panel and 
    	 * puts the content into the application-specific clipboard.
    	 */
    	public void copy()
    	{
-   		System.out.println("Copy Behavior To Be Implemented"); // TODO 
+   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		if(frame == null){
+   			return;
+   		}
+   		GraphPanel panel = frame.getGraphPanel();
+   		if(panel.getSelectionList().size()>0){
+   			SelectionList currentSelection=panel.getSelectionList();
+   			aClipboard.setContents(currentSelection);
+   		}	
    	}
    	
    	/**
-   	 * Cuts the current selection of the current panel and 
-   	 * puts the content into the application-specific clipboard.
+   	 * Pastes a past selection from the application-specific Clipboard into current panel. All the
+   	 * logic is done in the application-specific CutPasteBehavior. 
+   	 * 
    	 */
    	public void paste()
    	{
-   		System.out.println("Paste Behavior To Be Implemented"); // TODO 
+   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		if(frame == null)
+   		{
+   			return;
+   		}
+   		Graph curGraph = frame.getGraph();
+   		
+   		GraphPanel panel = frame.getGraphPanel();
+   		try
+   		{
+   			SelectionList pastSelection = (SelectionList) aClipboard.getContents();
+   			//This method call handles all the paste logic on the current GraphPanel.
+   			SelectionList updatedSelectionList = aCutPasteBehavior.pasteBehavior(curGraph, pastSelection);
+   			panel.setSelectionList(updatedSelectionList);
+   			panel.setGraph(curGraph);
+   		}
+   		finally
+   		{
+   		}
    	}
    	
    	/**
