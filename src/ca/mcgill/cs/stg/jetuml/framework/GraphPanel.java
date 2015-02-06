@@ -133,37 +133,23 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
-	 * Removes the selected graph elements.
+	 * Undoes the most recent command.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
 	 */
 	public void undo()
 	{
-		modListener.removeElements(aSelectedElements);
-		for( GraphElement element : aSelectedElements )
-		{
-			aGraph.removeElement(element);
-		}
-		if(aSelectedElements.size() > 0)
-		{
-			setModified(true);
-		}
-		repaint();
+		aUndo.undoCommand();
 	}
 	
 	/**
-	 * Removes the last undone action.
+	 * Removes the last undone action and performs it.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
 	 */
 	public void redo()
 	{
-		modListener.removeElements(aSelectedElements);
-		for( GraphElement element : aSelectedElements )
-		{
-			aGraph.removeElement(element);
-		}
-		if(aSelectedElements.size() > 0)
-		{
-			setModified(true);
-		}
-		repaint();
+		aUndo.redoCommand();
 	}
 
 	/**

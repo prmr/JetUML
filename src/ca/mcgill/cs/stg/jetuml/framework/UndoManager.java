@@ -4,11 +4,11 @@ import java.util.Stack;
 
 public class UndoManager {
 	private Stack<Command> aPastCommands;
-	private Stack<Command> aRedoneCommands;
+	private Stack<Command> aUndoneCommands;
 	
-	void addCommand(Command pCommand)
+	void add(Command pCommand)
 	{
-		aRedoneCommands.clear();
+		aUndoneCommands.clear();
 		aPastCommands.add(pCommand);
 	}
 	
@@ -18,15 +18,17 @@ public class UndoManager {
 		{
 			return;
 		}
+		Command toUndo = aPastCommands.pop();
+		toUndo.undo();
 	}
 	
 	void redoCommand()
 	{
-		if (aRedoneCommands.empty())
+		if (aUndoneCommands.empty())
 		{
 			return;
 		}
-		Command toRedo = aRedoneCommands.pop();
+		Command toRedo = aUndoneCommands.pop();
 		//toRedo.execute();
 		
 	}

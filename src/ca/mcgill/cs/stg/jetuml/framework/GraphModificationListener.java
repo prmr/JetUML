@@ -7,7 +7,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 
 public class GraphModificationListener {
-	private Command aCurCommand; //used for collecting commands being entered
+	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
 	
 	public GraphModificationListener(UndoManager pUndo)
@@ -23,16 +23,17 @@ public class GraphModificationListener {
 		}
 		else
 		{
-			aCurCommand= new Command();
+			aCurCommand= new CompoundCommand();
 			
 			
-			aUndoManager.addCommand(aCurCommand);
+			aUndoManager.add(aCurCommand);
 		}
 	}
 	
 	void nodeAdded(Graph pGraph, Node pNode)
 	{
-		
+		AddCommand ac = new AddCommand(pGraph, pNode);
+		aUndoManager.add(ac);
 	}
 
 	void nodeRemoved(Graph pGraph, Node pNode)

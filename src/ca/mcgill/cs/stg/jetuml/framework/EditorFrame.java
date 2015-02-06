@@ -762,21 +762,6 @@ public class EditorFrame extends JFrame
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
 
-   	/**
-   	 * Undoes the msot recent action taken and adds it to the undo stack
-   	 */
-   	public void undo()
-   	{
-   		
-   	}
-   	
-   	/**
-   	 * Pops the most recent action from the undo stack, performs it, and adds it to the completed stack
-   	 */
-   	public void redo()
-   	{
-   		
-   	}
    	
    	/**
    	 * Save a file. Called by reflection. 
