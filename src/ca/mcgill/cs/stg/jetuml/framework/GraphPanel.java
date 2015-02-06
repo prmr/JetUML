@@ -75,7 +75,7 @@ public class GraphPanel extends JPanel
 	private Point2D aMouseDownPoint;   
 	private DragMode aDragMode;
 	private UndoManager aUndo = new UndoManager();
-	private GraphModificationListener modListener = new GraphModificationListener(aUndo);
+	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
 	
 	/**
 	 * Constructs a graph.
@@ -120,7 +120,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void removeSelected()
 	{
-		modListener.removeElements(aSelectedElements);
+		aUndo.startTracking();
 		for( GraphElement element : aSelectedElements )
 		{
 			aGraph.removeElement(element);
@@ -130,6 +130,7 @@ public class GraphPanel extends JPanel
 			setModified(true);
 		}
 		repaint();
+		aUndo.endTracking();
 	}
 	
 	/**
@@ -159,6 +160,8 @@ public class GraphPanel extends JPanel
 	public void setGraph(Graph pGraph)
 	{
 		aGraph = pGraph;
+		aGraph.addModListener(aModListener);
+		aGraph.addUndoManager(aUndo);
 		setModified(false);
 		revalidate();
 		repaint();

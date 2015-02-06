@@ -5,8 +5,9 @@ import java.util.Stack;
 public class CompoundCommand implements Command{
 	private Stack<Command> aCommands;
 	
-	public void CompundCommand()
+	public CompoundCommand()
 	{
+		aCommands = new Stack<Command>();
 	}
 	
 	public void add(Command pCommand)
@@ -16,16 +17,18 @@ public class CompoundCommand implements Command{
 	
 	public void undo()
 	{
-		for(Command c : aCommands)
+		while(!aCommands.empty())
 		{
+			Command c = aCommands.pop();
 			c.undo();
 		}
 	}
 	
 	public void execute()
 	{
-		for(Command c: aCommands)
+		while(!aCommands.empty())
 		{
+			Command c = aCommands.pop();
 			c.execute();
 		}
 	}

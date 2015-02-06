@@ -31,7 +31,9 @@ import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.framework.UndoManager;
 
 /**
  *  A graph consisting of selectable nodes and edges.
@@ -44,6 +46,8 @@ public abstract class Graph
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
+	private GraphModificationListener aModListener;
+	private UndoManager aUndo;
 	
 	/**
      * Constructs a graph with no nodes or edges.
@@ -203,7 +207,7 @@ public abstract class Graph
 			return;
 		}
 		aNodesToBeRemoved.add(pNode);
-      
+		aModListener.nodeRemoved(this, (Node)pNode.clone());
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
@@ -229,10 +233,12 @@ public abstract class Graph
 	{
 		if(pElement instanceof Node)
 		{
+			
 			removeNode((Node) pElement);
 		}
 		else if(pElement instanceof Edge)
 		{
+			
 			removeEdge((Edge) pElement);
 		}
 	}
@@ -265,6 +271,7 @@ public abstract class Graph
 			return;
 		}
 		aEdgesToBeRemoved.add(pEdge);
+		aModListener.edgeRemoved(this, (Edge)pEdge.clone());
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
@@ -434,6 +441,16 @@ public abstract class Graph
 	{
      	pEdge.connect(pStart, pEnd);
      	aEdges.add(pEdge);
+	}
+	
+	public void addModListener(GraphModificationListener pListener)
+	{
+		aModListener = pListener;
+	}
+	
+	public void addUndoManager(UndoManager pUndo)
+	{
+		aUndo = pUndo;
 	}
 }
 
