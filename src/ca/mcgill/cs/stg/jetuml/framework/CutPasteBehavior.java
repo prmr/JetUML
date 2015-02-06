@@ -27,7 +27,8 @@ import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
  * @author JoelChev
  *
  */
-public class CutPasteBehavior {
+public class CutPasteBehavior 
+{
 
 
 	/**
@@ -48,16 +49,18 @@ public class CutPasteBehavior {
    		Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
    		for(GraphElement element: pSelection)
    		{
-   			if(element instanceof Node){
+   			if(element instanceof Node)
+   			{
    				Node curNode = (Node) element;
    				Node cloneNode = curNode.clone();
    				newSelection.add(cloneNode);
-   				originalAndClonedNodes.put(curNode,cloneNode);
+   				originalAndClonedNodes.put(curNode, cloneNode);
    			}
    		}
    		for(GraphElement element: pSelection)
    		{
-   			if(element instanceof Edge){
+   			if(element instanceof Edge)
+   			{
    				Edge curEdge = (Edge) element;
    				Node start = originalAndClonedNodes.get(curEdge.getStart());
 	            Node end = originalAndClonedNodes.get(curEdge.getEnd());  
@@ -69,16 +72,20 @@ public class CutPasteBehavior {
 	            }
    			}
    		}
-   		if(pSelection.size()>0){
+   		if(pSelection.size()>0)
+   		{
    			pClipboard.setContents(newSelection);
    		}
-   		Iterator<GraphElement> iter=pSelection.iterator();
-   		while(iter.hasNext()){
+   		Iterator<GraphElement> iter = pSelection.iterator();
+   		while(iter.hasNext())
+   		{
    			GraphElement element = iter.next();
-   			if(element instanceof Edge){
+   			if(element instanceof Edge)
+   			{
    				pGraph.removeEdge((Edge)element);
    			}
-   			else{
+   			else
+   			{
    				pGraph.removeNode((Node)element);
    			}
  			iter.remove();
@@ -90,11 +97,12 @@ public class CutPasteBehavior {
 	 * @param pSelection the SelectionList from a previous cut or paste operation
 	 * @return a new SelectionList of GraphElements to be selected on the GraphPanel.
 	 */
-	public SelectionList pasteBehavior(Graph pGraph,SelectionList pSelection){
-		Rectangle2D bounds =null;
+	public SelectionList pasteBehavior(Graph pGraph, SelectionList pSelection)
+	{
+		Rectangle2D bounds = null;
 		Node[]currentProtoTypes = pGraph.getNodePrototypes();
    		Edge[]currentEdgeTypes = pGraph.getEdgePrototypes();
-		Iterator<GraphElement> NodeIter = pSelection.iterator();
+		Iterator<GraphElement> nodeIter = pSelection.iterator();
 			ArrayList<Node> copyNodes = new ArrayList<Node>();
 			/*
          * Clone all nodes and remember the original-cloned correspondence
@@ -104,9 +112,9 @@ public class CutPasteBehavior {
          * First clone all of the nodes and link them with the previous nodes. All the nodes will be iterated over in
          * the pastSelection SelectionList
          */
-			while(NodeIter.hasNext())
+			while(nodeIter.hasNext())
 			{
-				GraphElement element = NodeIter.next();
+				GraphElement element = nodeIter.next();
 				if(element instanceof Node)
 				{
 					Node curNode = (Node) element;
@@ -114,8 +122,8 @@ public class CutPasteBehavior {
 					{
 						if(curNode.getClass() == n.getClass())
 						{
-							Node newNode=curNode.clone();
-							originalAndClonedNodes.put(curNode,newNode);
+							Node newNode = curNode.clone();
+							originalAndClonedNodes.put(curNode, newNode);
 							copyNodes.add(newNode);
 							if(bounds ==null)
 							{
@@ -173,7 +181,7 @@ public class CutPasteBehavior {
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
-				pGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(),y-bounds.getY()));
+				pGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
 				updatedSelectionList.add(cloneNode);
 			}
 			for(Edge cloneEdge: copyEdges)
@@ -183,71 +191,73 @@ public class CutPasteBehavior {
 			return updatedSelectionList;
 	}
 	
-	public void copyBehavior(){
-		
-	}
-	
 	/**
-	 * @param e1 The copied or cut edge whose actual type needs to be determined.
-	 * @param e2 The edge from the list of edge types in the pGraph.
+	 * @param pEdge1 The copied or cut edge whose actual type needs to be determined.
+	 * @param pEdge2 The edge from the list of edge types in the pGraph.
 	 * @param pGraph The current graph in the GraphPanel.
 	 * @return true if the two edges have the same type and false if not.
 	 */
-	public boolean checkEdgeEquality(Edge e1, Edge e2, Graph pGraph)
+	public boolean checkEdgeEquality(Edge pEdge1, Edge pEdge2, Graph pGraph)
 	{
-		if (e1 instanceof NoteEdge && e2 instanceof NoteEdge)
+		boolean equal = false;
+		if (pEdge1 instanceof NoteEdge && pEdge2 instanceof NoteEdge)
 		{
-			return true;
+			equal = true;
 		}
 		if(pGraph instanceof ClassDiagramGraph || pGraph instanceof UseCaseDiagramGraph)
 		{
-			if(e1 instanceof ClassRelationshipEdge && e2 instanceof ClassRelationshipEdge)
+			if(pEdge1 instanceof ClassRelationshipEdge && pEdge2 instanceof ClassRelationshipEdge)
 			{
-				if(((ClassRelationshipEdge) e1).getLineStyle()==((ClassRelationshipEdge)e2).getLineStyle())
-				{
-					if(((ClassRelationshipEdge) e1).getStartArrowHead()==((ClassRelationshipEdge)e2).getStartArrowHead())
-					{
-						if(((ClassRelationshipEdge) e1).getEndArrowHead()==((ClassRelationshipEdge)e2).getEndArrowHead())
-						{
-							if(((ClassRelationshipEdge) e1).getBentStyle()==((ClassRelationshipEdge)e2).getBentStyle())
-							{
-								if(((ClassRelationshipEdge) e1).getMiddleLabel().equals(((ClassRelationshipEdge)e2).getMiddleLabel()))
-								{
-									return true;
-								}
-							}
-						}
-					}
-				}
+				equal = classDiagramEdgeEqual((ClassRelationshipEdge)pEdge1, (ClassRelationshipEdge)pEdge2, (ClassDiagramGraph)pGraph);
 			}
 		}
 		else if(pGraph instanceof ObjectDiagramGraph)
 		{
-			if(e1 instanceof ClassRelationshipEdge && e2 instanceof ClassRelationshipEdge)
+			if(pEdge1 instanceof ClassRelationshipEdge && pEdge2 instanceof ClassRelationshipEdge || 
+					pEdge1 instanceof ObjectReferenceEdge && pEdge2 instanceof ObjectReferenceEdge)
 			{
-				return true;
-			}
-			else if(e1 instanceof ObjectReferenceEdge && e2 instanceof ObjectReferenceEdge)
-			{
-				return true;
+				equal = true;
 			}
 		}
 		else if(pGraph instanceof SequenceDiagramGraph)
 		{
-			if(e1 instanceof CallEdge && e2 instanceof CallEdge)
+			if(pEdge1 instanceof CallEdge && pEdge2 instanceof CallEdge || pEdge1 instanceof ReturnEdge && pEdge2 instanceof ReturnEdge)
 			{
-				return true;
-			}
-			else if(e1 instanceof ReturnEdge && e2 instanceof ReturnEdge)
-			{
-				return true;
+				equal = true;
 			}
 		}
 		else if(pGraph instanceof StateDiagramGraph)
 		{
-			if(e1 instanceof StateTransitionEdge && e2 instanceof StateTransitionEdge)
+			if(pEdge1 instanceof StateTransitionEdge && pEdge2 instanceof StateTransitionEdge)
 			{
-				return true;
+				equal = true;
+			}
+		}
+		return equal;
+	}
+	
+	/**
+	 * @param pEdge1 The copied or cut Edge whose actual type needs to be determined.
+	 * @param pEdge2 The edge from the list of ClassRelationshipEdges in the pGraph.
+	 * @param pGraph The current ClassDiagramGraph in the GraphPanel
+	 * @return true if the two edges have the same type, false otherwise.
+	 */
+	public boolean classDiagramEdgeEqual(ClassRelationshipEdge pEdge1, ClassRelationshipEdge pEdge2, ClassDiagramGraph pGraph)
+	{
+		if(pEdge1.getLineStyle() == pEdge2.getLineStyle())
+		{
+			if(pEdge1.getStartArrowHead() == pEdge2.getStartArrowHead())
+			{
+				if(pEdge1.getEndArrowHead()== pEdge2.getEndArrowHead())
+				{
+					if(pEdge1.getBentStyle() == pEdge2.getBentStyle())
+					{
+						if(pEdge1.getMiddleLabel().equals(pEdge2.getMiddleLabel()))
+						{
+							return true;
+						}
+					}
+				}
 			}
 		}
 		return false;
