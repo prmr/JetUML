@@ -32,23 +32,25 @@ public class GraphModificationListener {
 	
 	void nodeAdded(Graph pGraph, Node pNode)
 	{
-		AddCommand ac = new AddCommand(pGraph, pNode);
+		AddDeleteCommand ac = new AddDeleteCommand(pGraph, pNode, true);
 		aUndoManager.add(ac);
 	}
 
 	void nodeRemoved(Graph pGraph, Node pNode)
 	{
-		
+		AddDeleteCommand dc = new AddDeleteCommand(pGraph, pNode, false);
+		aUndoManager.add(dc);
 	}
 
 	void nodeMoved(Graph pGraph, Node pNode, double dx, double dy)
 	{
-		
+		MoveCommand mc = new MoveCommand(pGraph, pNode, dx, dy);
+		aUndoManager.add(mc);
 	}
 
 	void childAttached(Graph pGraph, int index, Node pNode1, Node pNode2)
 	{
-
+		
 	}
 
 	void edgeAdded(Graph pGraph, Edge pEdge)
