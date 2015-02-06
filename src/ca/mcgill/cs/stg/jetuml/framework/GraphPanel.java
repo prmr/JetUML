@@ -331,7 +331,7 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
-	 * @parameter pSelectionList the new SelectedElements for the GraphPanel.
+	 * @param pSelectionList the new SelectedElements for the GraphPanel.
 	 */
 	public void setSelectionList(SelectionList pSelectionList)
 	{
