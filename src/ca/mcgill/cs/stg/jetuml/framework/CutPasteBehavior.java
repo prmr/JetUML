@@ -182,7 +182,13 @@ public class CutPasteBehavior
 				 * GraphPanel.
 				 */
 				pGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
-				updatedSelectionList.add(cloneNode);
+				/*
+				 * Don't add any Children to the SelectionList
+				 */
+				if(cloneNode.getParent()==null)
+				{
+					updatedSelectionList.add(cloneNode);
+				}	
 			}
 			for(Edge cloneEdge: copyEdges)
 			{

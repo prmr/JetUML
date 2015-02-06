@@ -218,6 +218,11 @@ public abstract class Graph
 				removeEdge(e);
 			}
 		}
+		/*Remove the children too @JoelChev*/
+		for(Node childNode: pNode.getChildren())
+		{
+			removeNode(childNode);
+		}
 		aNeedsLayout = true;
 	}
 	
