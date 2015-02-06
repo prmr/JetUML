@@ -194,7 +194,35 @@ public class EditorFrame extends JFrame
 		JMenuBar menuBar = getJMenuBar();
 		JMenu editMenu = pFactory.createMenu("edit");
      	menuBar.add(editMenu);
-
+     	
+     	editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener()
+     	{
+     		public void actionPerformed(ActionEvent pEvent)
+            {
+               final GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               if(frame == null)
+               {
+            	   return;
+               }
+               GraphPanel panel = frame.getGraphPanel();
+               panel.undo();
+            }
+         }));
+     	
+     	editMenu.add(pFactory.createMenuItem("edit.redo", new ActionListener()
+     	{
+     		public void actionPerformed(ActionEvent pEvent)
+            {
+               final GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               if(frame == null)
+               {
+            	   return;
+               }
+               GraphPanel panel = frame.getGraphPanel();
+               panel.redo();
+            }
+         }));
+     	
      	editMenu.add(pFactory.createMenuItem("edit.properties", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
@@ -734,7 +762,7 @@ public class EditorFrame extends JFrame
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
 
-   	/*
+   	/**
    	 * Undoes the msot recent action taken and adds it to the undo stack
    	 */
    	public void undo()
@@ -742,7 +770,7 @@ public class EditorFrame extends JFrame
    		
    	}
    	
-   	/*
+   	/**
    	 * Pops the most recent action from the undo stack, performs it, and adds it to the completed stack
    	 */
    	public void redo()
