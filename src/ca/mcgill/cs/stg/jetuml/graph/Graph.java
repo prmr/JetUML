@@ -96,6 +96,7 @@ public abstract class Graph
 				{
 					aNodes.add(pEdge.getEnd());
 				}
+				aModListener.edgeAdded(this,  pEdge);
 				aNeedsLayout = true;
 				return true;
 			}
@@ -134,6 +135,7 @@ public abstract class Graph
 			return false;
 		}
 		aNodes.add(pNode);
+		aModListener.nodeAdded(this,  pNode);
 		aNeedsLayout = true;
 		return true;
 	}
@@ -207,7 +209,7 @@ public abstract class Graph
 			return;
 		}
 		aNodesToBeRemoved.add(pNode);
-		aModListener.nodeRemoved(this, (Node)pNode.clone());
+		aModListener.nodeRemoved(this, pNode);
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
@@ -271,7 +273,7 @@ public abstract class Graph
 			return;
 		}
 		aEdgesToBeRemoved.add(pEdge);
-		aModListener.edgeRemoved(this, (Edge)pEdge.clone());
+		aModListener.edgeRemoved(this, pEdge);
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);

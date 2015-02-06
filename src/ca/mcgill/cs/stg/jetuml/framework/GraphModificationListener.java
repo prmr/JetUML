@@ -43,12 +43,14 @@ public class GraphModificationListener {
 
 	public void edgeAdded(Graph pGraph, Edge pEdge)
 	{
-		
+		AddDeleteEdgeCommand ac = new AddDeleteEdgeCommand(pGraph, pEdge, true);
+		aUndoManager.add(ac);
 	}
 
 	public void edgeRemoved(Graph pGraph, Edge pEdge)
 	{
-		
+		AddDeleteEdgeCommand dc = new AddDeleteEdgeCommand(pGraph, pEdge, false);
+		aUndoManager.add(dc);
 	}
 	
 //TODO
