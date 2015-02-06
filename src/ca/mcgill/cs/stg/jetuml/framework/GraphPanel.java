@@ -411,6 +411,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
+					aUndo.startTracking();
 				}
 				else
 				{
@@ -431,6 +432,7 @@ public class GraphPanel extends JPanel
 					setModified(true);
 					aSelectedElements.set(newNode);
 					aDragMode = DragMode.DRAG_MOVE;
+					aUndo.startTracking();
 				}
 				else if(n != null)
 				{
@@ -443,6 +445,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
+					aUndo.startTracking();
 				}
 			}
 			else if(tool instanceof Edge)
@@ -476,6 +479,7 @@ public class GraphPanel extends JPanel
 			{
 				aGraph.layout();
 				setModified(true);
+				aUndo.endTracking();
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
@@ -491,7 +495,7 @@ public class GraphPanel extends JPanel
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
-			{               
+			{        
 				Node lastNode = (Node) aSelectedElements.getLastSelected();
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
@@ -515,13 +519,14 @@ public class GraphPanel extends JPanel
 				{
 					if(selected instanceof Node)
 					{
+						aModListener.nodeMoved(aGraph, (Node)selected, dx, dy);
 						Node n = (Node) selected;
 						n.translate(dx, dy);                           
 					}
 				}
 				// we don't want continuous layout any more because of multiple selection
 				// graph.layout();
-			}            
+			}
 			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
 				double x1 = aMouseDownPoint.getX();
