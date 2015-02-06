@@ -4,6 +4,7 @@ import java.util.Stack;
 
 public class CompoundCommand implements Command{
 	private Stack<Command> aCommands;
+	private int aSize;
 	
 	public CompoundCommand()
 	{
@@ -13,6 +14,12 @@ public class CompoundCommand implements Command{
 	public void add(Command pCommand)
 	{
 		aCommands.push(pCommand);
+		aSize++;
+	}
+	
+	public int size()
+	{
+		return aSize;
 	}
 	
 	public void undo()

@@ -36,6 +36,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class GraphPanel extends JPanel
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
 	private DragMode aDragMode;
-	private UndoManager aUndo = new UndoManager();
+	private UndoManager aUndo = new UndoManager(this);
 	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
 	
 	/**
@@ -100,6 +101,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
+		//aModListener.trackPropertyChange(aGraph, edited);
 		PropertySheet sheet = new PropertySheet(edited);
 		sheet.addChangeListener(new ChangeListener()
 		{
@@ -112,6 +114,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showInternalMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
+		//aModListener.finishPropertyChange(aGraph, edited);
 		setModified(true);
 	}
 

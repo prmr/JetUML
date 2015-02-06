@@ -1,6 +1,14 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
 import java.util.Iterator;
+
+import javax.swing.JLabel;
 
 import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -12,6 +20,7 @@ import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 public class GraphModificationListener {
 	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
+	private boolean aTrackPropChange = false;
 	
 	public GraphModificationListener(UndoManager pUndo)
 	{
@@ -40,6 +49,49 @@ public class GraphModificationListener {
 	{
 		
 	}
+	
+	public void childDetached(Graph pGraph, int index, Node pNode1, Node pNode2)
+	{
+		
+	}
+	
+//	public void trackPropertyChange(Graph aGraph, Object edited)
+//	{
+//		aTrackPropChange = true;
+//		BeanInfo info;
+//		try {
+//			info = Introspector.getBeanInfo(edited.getClass());
+//			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+//			for(int i = 0; i < descriptors.length; i++)
+//			{
+//				PropertyEditor editor = getEditor(edited, descriptors[i]);
+//				if(editor != null)
+//				{
+//					
+//					
+//				}
+//			}		
+//		} catch (IntrospectionException e) {
+//			return;
+//		}   
+//		
+//	}
+	
+//	public void finishPropertyChange(Graph aGraph, Object edited)
+//	{
+//		BeanInfo info;
+//		try {
+//			info = Introspector.getBeanInfo(edited.getClass());
+//			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+//			
+//			
+//			
+//			
+//		} catch (IntrospectionException e) {
+//			return;
+//		}  
+//		aTrackPropChange = false;
+//	}
 
 	public void edgeAdded(Graph pGraph, Edge pEdge)
 	{
@@ -53,12 +105,10 @@ public class GraphModificationListener {
 		aUndoManager.add(dc);
 	}
 	
-//TODO
-//Not added as the way to change properties yet
-//	void propertyChangedOnNodeOrEdge(Graph g, PropertyChangeEvent event)
-//	{
-//
-//	}
+	void propertyChangedOnNodeOrEdge(Graph pGraph, PropertyChangeEvent pEvent)
+	{
+		
+	}
 
 //	public void removeElements(Graph pGraph, SelectionList l)
 //	{

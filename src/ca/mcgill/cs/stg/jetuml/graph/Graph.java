@@ -445,11 +445,19 @@ public abstract class Graph
      	aEdges.add(pEdge);
 	}
 	
+	/**
+	 * Adds lister for the graph to be able to make changes and undo
+	 * @param pListener
+	 */
 	public void addModListener(GraphModificationListener pListener)
 	{
 		aModListener = pListener;
 	}
 	
+	/**
+	 * Works with Modification Listener for undoes and redoes.
+	 * @param pUndo
+	 */
 	public void addUndoManager(UndoManager pUndo)
 	{
 		aUndo = pUndo;
