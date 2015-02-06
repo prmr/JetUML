@@ -8,6 +8,7 @@ public class UndoManager {
 	private CompoundCommand aTrackingCommand; //used for many commands coming at once
 	private boolean aTracking;
 	private boolean areUndoneCommands = false;
+	private boolean holdChanges = false;
 	
 	public UndoManager()
 	{
@@ -21,13 +22,16 @@ public class UndoManager {
 		{
 			aUndoneCommands.clear();
 		}
-		if(aTracking)
+		if(!holdChanges)
 		{
-			aTrackingCommand.add(pCommand);
-		}
-		else
-		{
-			aPastCommands.push(pCommand);
+			if(aTracking)
+			{
+				aTrackingCommand.add(pCommand);
+			}
+			else
+			{
+				aPastCommands.push(pCommand);
+			}
 		}
 	}
 	
