@@ -736,12 +736,14 @@ public class EditorFrame extends JFrame
    	public void copy()
    	{
    		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
-   		if(frame == null){
+   		if(frame == null)
+   		{
    			return;
    		}
    		GraphPanel panel = frame.getGraphPanel();
-   		if(panel.getSelectionList().size()>0){
-   			SelectionList currentSelection=panel.getSelectionList();
+   		if(panel.getSelectionList().size()>0)
+   		{
+   			SelectionList currentSelection = panel.getSelectionList();
    			aClipboard.setContents(currentSelection);
    		}	
    	}
@@ -1058,7 +1060,7 @@ public class EditorFrame extends JFrame
      * bean persistence to save the program data. 
      * @param out the stream for saving
      */
-   	private static void saveFile(Graph graph, OutputStream out)
+   	private static void saveFile(Graph pGraph, OutputStream out)
    {
       XMLEncoder encoder = new XMLEncoder(out);
          
@@ -1104,7 +1106,7 @@ public class EditorFrame extends JFrame
       Graph.setPersistenceDelegate(encoder);
       AbstractNode.setPersistenceDelegate(encoder);
       
-      encoder.writeObject(graph);
+      encoder.writeObject(pGraph);
       encoder.close();
    }
 
