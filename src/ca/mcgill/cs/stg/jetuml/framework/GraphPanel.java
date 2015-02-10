@@ -169,6 +169,14 @@ public class GraphPanel extends JPanel
 		revalidate();
 		repaint();
 	}
+	
+	/**
+	 * Returns the graph belonging to the panel.
+	 */
+	public Graph getGraph()
+	{
+		return aGraph;
+	}
 
 	@Override
 	public void paintComponent(Graphics pGraphics)
@@ -517,12 +525,11 @@ public class GraphPanel extends JPanel
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-           
+            
 				for( GraphElement selected : aSelectedElements )
 				{
 					if(selected instanceof Node)
 					{
-						aModListener.nodeMoved(aGraph, (Node)selected, dx, dy);
 						Node n = (Node) selected;
 						n.translate(dx, dy);                           
 					}

@@ -1,4 +1,4 @@
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.commands;
 
 import java.util.Stack;
 

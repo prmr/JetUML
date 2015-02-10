@@ -1,14 +1,16 @@
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.commands;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
+import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 public class AttachDetachChildCommand implements Command{
 	Node aNode1;
 	Node aNode2;
+	GraphPanel aGraphPanel;
 	Graph aGraph;
 	double aX;
 	double aY;
@@ -22,9 +24,10 @@ public class AttachDetachChildCommand implements Command{
 	 * @param pNode2
 	 * @param pAdding
 	 */
-	public AttachDetachChildCommand(Graph pGraph, Node pNode1, Node pNode2, boolean pAdding)
+	public AttachDetachChildCommand(GraphPanel pGraphPanel, Node pNode1, Node pNode2, boolean pAdding)
 	{
-		aGraph = pGraph;
+		aGraphPanel = pGraphPanel;
+		aGraph = pGraphPanel.getGraph();
 		aNode1 = pNode1;
 		aNode2 = pNode2;
 		aAdding = pAdding;

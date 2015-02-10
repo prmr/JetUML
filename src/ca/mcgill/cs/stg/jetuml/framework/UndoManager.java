@@ -2,6 +2,9 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.util.Stack;
 
+import ca.mcgill.cs.stg.jetuml.commands.Command;
+import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
+
 public class UndoManager {
 	private Stack<Command> aPastCommands;
 	private Stack<Command> aUndoneCommands;

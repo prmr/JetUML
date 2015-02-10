@@ -15,6 +15,10 @@ import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
+import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 
 public class GraphModificationListener {
@@ -27,30 +31,30 @@ public class GraphModificationListener {
 		aUndoManager = pUndo;
 	}
 	
-	public void nodeAdded(Graph pGraph, Node pNode)
+	public void nodeAdded(GraphPanel pGraphPanel, Node pNode)
 	{
-		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraph, pNode, true);
+		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraphPanel, pNode, true);
 		aUndoManager.add(ac);
 	}
 
-	public void nodeRemoved(Graph pGraph, Node pNode)
+	public void nodeRemoved(GraphPanel pGraphPanel, Node pNode)
 	{
-		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraph, pNode, false);
+		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraphPanel, pNode, false);
 		aUndoManager.add(dc);
 	}
 
-	public void nodeMoved(Graph pGraph, Node pNode, double dx, double dy)
+	public void nodeMoved(GraphPanel pGraphPanel, Node pNode, double dx, double dy)
 	{
-		MoveCommand mc = new MoveCommand(pGraph, pNode, dx, dy);
+		MoveCommand mc = new MoveCommand(pGraphPanel, pNode, dx, dy);
 		aUndoManager.add(mc);
 	}
 
-	public void childAttached(Graph pGraph, int index, Node pNode1, Node pNode2)
+	public void childAttached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
 	{
 		
 	}
 	
-	public void childDetached(Graph pGraph, int index, Node pNode1, Node pNode2)
+	public void childDetached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
 	{
 		
 	}
@@ -93,19 +97,19 @@ public class GraphModificationListener {
 //		aTrackPropChange = false;
 //	}
 
-	public void edgeAdded(Graph pGraph, Edge pEdge)
+	public void edgeAdded(GraphPanel pGraphPanel, Edge pEdge)
 	{
-		AddDeleteEdgeCommand ac = new AddDeleteEdgeCommand(pGraph, pEdge, true);
+		AddDeleteEdgeCommand ac = new AddDeleteEdgeCommand(pGraphPanel, pEdge, true);
 		aUndoManager.add(ac);
 	}
 
-	public void edgeRemoved(Graph pGraph, Edge pEdge)
+	public void edgeRemoved(GraphPanel pGraphPanel, Edge pEdge)
 	{
-		AddDeleteEdgeCommand dc = new AddDeleteEdgeCommand(pGraph, pEdge, false);
+		AddDeleteEdgeCommand dc = new AddDeleteEdgeCommand(pGraphPanel, pEdge, false);
 		aUndoManager.add(dc);
 	}
 	
-	void propertyChangedOnNodeOrEdge(Graph pGraph, PropertyChangeEvent pEvent)
+	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
 	{
 		
 	}
