@@ -64,6 +64,19 @@ public class ObjectNode extends RectangularNode
 		pGraphics2D.draw(getBounds());
 		aName.draw(pGraphics2D, top);
 	}
+	
+	/* 
+	 * Object Nodes are now responsible for translating their Field Node children.
+	 */
+	@Override
+    public void translate(double pDeltaX, double pDeltaY)
+    {
+        super.translate(pDeltaX, pDeltaY);
+        for (Node childNode : getChildren())
+        {
+        	childNode.translate(pDeltaX, pDeltaY);
+        }   
+    }    
 
 	/**
      * Returns the rectangle at the top of the object node.
