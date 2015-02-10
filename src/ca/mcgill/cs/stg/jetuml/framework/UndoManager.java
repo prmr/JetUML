@@ -6,11 +6,11 @@ import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 
 public class UndoManager {
-	private Stack<Command> aPastCommands;
-	private Stack<Command> aUndoneCommands;
+	private Stack<Command> aPastCommands; //the commands that haev been inputted and can be undone
+	private Stack<Command> aUndoneCommands; //the commands that have been undone and can be redone
 	private CompoundCommand aTrackingCommand; //used for many commands coming at once
-	private boolean aTracking;
-	private boolean holdChanges = false;
+	private boolean aTracking; //turned on to allow many things to be changed in one command
+	private boolean holdChanges = false; //turned on while undoing or redoing to prevent duplication
 	private GraphPanel aGraphPanel;
 	
 	public UndoManager(GraphPanel pPanel)
@@ -24,7 +24,7 @@ public class UndoManager {
 	{
 		if(!holdChanges)
 		{
-			if(aUndoneCommands.empty())
+			if(!aUndoneCommands.empty())
 			{
 				aUndoneCommands.clear();
 			}
@@ -86,7 +86,7 @@ public class UndoManager {
 	public void endTracking()
 	{
 		aTracking = false;
-		if(aTrackingCommand.size() != 0)
+		if(aTrackingCommand.size() > 0)
 		{
 			add(aTrackingCommand);
 		}

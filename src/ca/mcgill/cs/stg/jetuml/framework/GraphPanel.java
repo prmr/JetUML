@@ -87,8 +87,8 @@ public class GraphPanel extends JPanel
 		aZoom = 1;
 		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
-		addMouseListener(new GraphPanelMouseListener());
-		addMouseMotionListener(new GraphPanelMouseMotionListener());
+		addMouseListener(new GraphPanelMouseListener(this));
+		addMouseMotionListener(new GraphPanelMouseMotionListener(this));
 	}
 
 	/**
@@ -361,6 +361,13 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{
+		GraphPanel aGraphPanel;
+		public GraphPanelMouseListener(GraphPanel pGraphPanel)
+		{
+			super();
+			aGraphPanel  = pGraphPanel;
+		}
+		
 		@Override
 		public void mousePressed(MouseEvent pEvent)
 		{
@@ -389,6 +396,7 @@ public class GraphPanel extends JPanel
                     {
                        public void actionPerformed(ActionEvent pEvent)
                        {
+                    	   
                     	   Object tool = aToolBar.getSelectedTool();
                     	   if(tool instanceof Node)
                     	   {
@@ -422,7 +430,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
-					aUndo.startTracking();
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 				else
 				{
@@ -443,7 +451,7 @@ public class GraphPanel extends JPanel
 					setModified(true);
 					aSelectedElements.set(newNode);
 					aDragMode = DragMode.DRAG_MOVE;
-					aUndo.startTracking();
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 				else if(n != null)
 				{
@@ -456,7 +464,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
-					aUndo.startTracking();
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 			}
 			else if(tool instanceof Edge)
@@ -482,6 +490,7 @@ public class GraphPanel extends JPanel
 				Edge newEdge = (Edge) prototype.clone();
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
 				{
+					aModListener.edgeAdded(aGraphPanel, newEdge);
 					setModified(true);
 					aSelectedElements.set(newEdge);
 				}
@@ -490,7 +499,7 @@ public class GraphPanel extends JPanel
 			{
 				aGraph.layout();
 				setModified(true);
-				aUndo.endTracking();
+				aModListener.endTrackingMove(aGraphPanel, aSelectedElements);
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
@@ -500,6 +509,13 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseMotionListener extends MouseMotionAdapter
 	{
+		GraphPanel aGraphPanel;
+		public GraphPanelMouseMotionListener(GraphPanel pGraphPanel)
+		{
+			super();
+			aGraphPanel  = pGraphPanel;
+		}
+		
 		@Override
 		public void mouseDragged(MouseEvent pEvent)
 		{
@@ -511,7 +527,7 @@ public class GraphPanel extends JPanel
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
-                        
+                   
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
