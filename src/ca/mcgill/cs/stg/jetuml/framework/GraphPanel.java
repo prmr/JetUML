@@ -37,9 +37,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -101,7 +103,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		//aModListener.trackPropertyChange(aGraph, edited);
+		aModListener.trackPropertyChange(this, edited);
 		PropertySheet sheet = new PropertySheet(edited);
 		sheet.addChangeListener(new ChangeListener()
 		{
@@ -114,7 +116,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showInternalMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
-		//aModListener.finishPropertyChange(aGraph, edited);
+		aModListener.finishPropertyChange(this, edited);
 		setModified(true);
 	}
 
@@ -124,16 +126,50 @@ public class GraphPanel extends JPanel
 	public void removeSelected()
 	{
 		aUndo.startTracking();
+		Stack<Node> nodes = new Stack<Node>();
 		for( GraphElement element : aSelectedElements )
 		{
-			aGraph.removeElement(element);
+			if (element instanceof Node)
+			{
+				for(Edge e : aGraph.getNodeEdges((Node) element))
+				{
+					removeEdge(e);
+				}
+				nodes.add((Node) element);
+			}
+			else if(element instanceof Edge)
+			{
+				removeEdge((Edge) element);
+			}
 		}
+		while(!nodes.empty())
+		{
+			removeNode(nodes.pop());
+		}
+		aUndo.endTracking();
 		if(aSelectedElements.size() > 0)
 		{
 			setModified(true);
 		}
 		repaint();
-		aUndo.endTracking();
+	}
+	
+	/**
+	 * Removes the node from aGraph
+	 */
+	public void removeNode(Node pNode)
+	{
+		aModListener.nodeRemoved(this, pNode);
+		aGraph.removeNode(pNode);
+	}
+	
+	/**
+	 * Removes the edge from aGraph
+	 */
+	public void removeEdge(Edge pEdge)
+	{
+		aModListener.edgeRemoved(this, pEdge);
+		aGraph.removeEdge(pEdge);
 	}
 	
 	/**
@@ -163,8 +199,6 @@ public class GraphPanel extends JPanel
 	public void setGraph(Graph pGraph)
 	{
 		aGraph = pGraph;
-		aGraph.addModListener(aModListener);
-		aGraph.addUndoManager(aUndo);
 		setModified(false);
 		revalidate();
 		repaint();
@@ -405,6 +439,7 @@ public class GraphPanel extends JPanel
                     		   boolean added = aGraph.add(newNode, mousePoint);
                     		   if(added)
                     		   {
+                    			   aModListener.nodeAdded(aGraphPanel, newNode);
                     			   setModified(true);
                     			   aSelectedElements.set(newNode);
                     		   }
@@ -448,6 +483,7 @@ public class GraphPanel extends JPanel
 				boolean added = aGraph.add(newNode, mousePoint);
 				if(added)
 				{
+					aModListener.nodeAdded(aGraphPanel, newNode);
 					setModified(true);
 					aSelectedElements.set(newNode);
 					aDragMode = DragMode.DRAG_MOVE;
@@ -547,7 +583,7 @@ public class GraphPanel extends JPanel
 					if(selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						n.translate(dx, dy);                           
+						n.translate(dx, dy);
 					}
 				}
 				// we don't want continuous layout any more because of multiple selection

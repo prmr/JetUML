@@ -46,8 +46,6 @@ public abstract class Graph
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
-	private GraphModificationListener aModListener;
-	private UndoManager aUndo;
 	
 	/**
      * Constructs a graph with no nodes or edges.
@@ -96,7 +94,6 @@ public abstract class Graph
 				{
 					aNodes.add(pEdge.getEnd());
 				}
-				//aModListener.edgeAdded(this,  pEdge);
 				aNeedsLayout = true;
 				return true;
 			}
@@ -135,7 +132,6 @@ public abstract class Graph
 			return false;
 		}
 		aNodes.add(pNode);
-		//aModListener.nodeAdded(this,  pNode);
 		aNeedsLayout = true;
 		return true;
 	}
@@ -177,6 +173,25 @@ public abstract class Graph
 	}
    
 	/**
+	 * Returns all edges connected to the given node
+	 * @param pNode
+	 * @return
+	 */
+	public ArrayList<Edge> getNodeEdges(Node pNode)
+	{
+		ArrayList<Edge> toRet = new ArrayList<Edge>();
+		for(int i = 0; i < aEdges.size(); i++)
+		{
+			Edge e = aEdges.get(i);
+			if((e.getStart() == pNode || e.getEnd() == pNode) && !aEdgesToBeRemoved.contains(e))
+			{
+				toRet.add(e);
+			}
+		}
+		return toRet;
+	}
+	
+	/**
      * Draws the graph.
      * @param pGraphics2D the graphics context
      * @param pGrid The grid
@@ -209,7 +224,6 @@ public abstract class Graph
 			return;
 		}
 		aNodesToBeRemoved.add(pNode);
-		//aModListener.nodeRemoved(this, pNode);
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
@@ -235,7 +249,6 @@ public abstract class Graph
 	{
 		if(pElement instanceof Node)
 		{
-			
 			removeNode((Node) pElement);
 		}
 		else if(pElement instanceof Edge)
@@ -273,7 +286,6 @@ public abstract class Graph
 			return;
 		}
 		aEdgesToBeRemoved.add(pEdge);
-		//aModListener.edgeRemoved(this, pEdge);
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
@@ -443,24 +455,6 @@ public abstract class Graph
 	{
      	pEdge.connect(pStart, pEnd);
      	aEdges.add(pEdge);
-	}
-	
-	/**
-	 * Adds lister for the graph to be able to make changes and undo
-	 * @param pListener
-	 */
-	public void addModListener(GraphModificationListener pListener)
-	{
-		aModListener = pListener;
-	}
-	
-	/**
-	 * Works with Modification Listener for undoes and redoes.
-	 * @param pUndo
-	 */
-	public void addUndoManager(UndoManager pUndo)
-	{
-		aUndo = pUndo;
 	}
 }
 

@@ -5,23 +5,23 @@ import java.util.Stack;
 public class CompoundCommand implements Command{
 	private Stack<Command> aCommands;
 	private int aSize;
-	
+
 	public CompoundCommand()
 	{
 		aCommands = new Stack<Command>();
 	}
-	
+
 	public void add(Command pCommand)
 	{
 		aCommands.push(pCommand);
 		aSize++;
 	}
-	
+
 	public int size()
 	{
 		return aSize;
 	}
-	
+
 	/**
 	 * Undoes each command on the stack
 	 * Puts them in a temporary stack and pops them to retain the order
@@ -35,9 +35,12 @@ public class CompoundCommand implements Command{
 			c.undo();
 			temp.push(c);
 		}
-		aCommands.push(temp.pop());
+		while(!temp.empty())
+		{
+			aCommands.push(temp.pop());
+		}
 	}
-	
+
 	/**
 	 * Executes each command on the stack
 	 * Puts them in a temporary stack and pops them to retain the order
@@ -51,6 +54,9 @@ public class CompoundCommand implements Command{
 			c.execute();
 			temp.push(c);
 		}
-		aCommands.push(temp.pop());
+		while(!temp.empty())
+		{
+			aCommands.push(temp.pop());
+		}
 	}
 }
