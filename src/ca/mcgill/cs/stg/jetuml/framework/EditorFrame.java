@@ -56,11 +56,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -85,12 +81,9 @@ import javax.swing.filechooser.FileFilter;
 
 import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
-import ca.mcgill.cs.stg.jetuml.graph.CallNode;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -115,7 +108,6 @@ public class EditorFrame extends JFrame
 	private JDesktopPane aDesktop;
 	private JMenu aNewMenu;
 	private Clipboard aClipboard = new Clipboard();
-	private CutPasteBehavior aCutPasteBehavior = new CutPasteBehavior();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
@@ -722,11 +714,27 @@ public class EditorFrame extends JFrame
    			return;
    		}
    		GraphPanel panel = frame.getGraphPanel();
-   		SelectionList currentSelection = panel.getSelectionList();
    		Graph curGraph = frame.getGraph();
-   		//This call to cutBehavior handles all the logic of cutting elements from the GraphPanel.
-   		aCutPasteBehavior.cutBehavior(currentSelection, aClipboard, curGraph);
-   		panel.setGraph(curGraph);
+   		if(panel.getSelectionList().size()>0)
+   		{
+   			SelectionList currentSelection = panel.getSelectionList();
+   			aClipboard.addSelection(currentSelection);	
+   			Iterator<GraphElement> iter = currentSelection.iterator();
+   			while(iter.hasNext())
+   			{
+   				GraphElement element = iter.next();
+   				if(element instanceof Edge)
+   				{
+   					curGraph.removeEdge((Edge)element);
+   				}
+   				else
+   				{
+   					curGraph.removeNode((Node)element);
+   				}
+   				iter.remove();
+   			}
+   		}	
+   		panel.repaint();
    	}
    	
    	/**
@@ -744,7 +752,7 @@ public class EditorFrame extends JFrame
    		if(panel.getSelectionList().size()>0)
    		{
    			SelectionList currentSelection = panel.getSelectionList();
-   			aClipboard.setContents(currentSelection);
+   			aClipboard.addSelection(currentSelection);
    		}	
    	}
    	
@@ -765,11 +773,10 @@ public class EditorFrame extends JFrame
    		GraphPanel panel = frame.getGraphPanel();
    		try
    		{
-   			SelectionList pastSelection = (SelectionList) aClipboard.getContents();
    			//This method call handles all the paste logic on the current GraphPanel.
-   			SelectionList updatedSelectionList = aCutPasteBehavior.pasteBehavior(curGraph, pastSelection);
+   			SelectionList updatedSelectionList = aClipboard.pasteInto(curGraph);
    			panel.setSelectionList(updatedSelectionList);
-   			panel.setGraph(curGraph);
+   			panel.repaint();
    		}
    		finally
    		{
