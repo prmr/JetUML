@@ -11,7 +11,6 @@ public class AttachDetachChildCommand implements Command{
 	Node aNode1;
 	Node aNode2;
 	GraphPanel aGraphPanel;
-	Graph aGraph;
 	double aX;
 	double aY;
 	boolean aAdding; //true for adding, false for deleting
@@ -27,7 +26,6 @@ public class AttachDetachChildCommand implements Command{
 	public AttachDetachChildCommand(GraphPanel pGraphPanel, Node pNode1, Node pNode2, boolean pAdding)
 	{
 		aGraphPanel = pGraphPanel;
-		aGraph = pGraphPanel.getGraph();
 		aNode1 = pNode1;
 		aNode2 = pNode2;
 		aAdding = pAdding;
@@ -63,14 +61,14 @@ public class AttachDetachChildCommand implements Command{
 	private void delete() 
 	{
 		
-		aGraph.layout();
+		aGraphPanel.repaint();
 
 	}
 	
 	private void add() 
 	{
 		
-		aGraph.layout();
+		aGraphPanel.repaint();
 	}
 	
 }

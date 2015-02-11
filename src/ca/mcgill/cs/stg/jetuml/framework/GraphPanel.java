@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -90,7 +91,7 @@ public class GraphPanel extends JPanel
 		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
 		addMouseListener(new GraphPanelMouseListener(this));
-		addMouseMotionListener(new GraphPanelMouseMotionListener(this));
+		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
 
 	/**
@@ -155,21 +156,54 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
-	 * Removes the node from aGraph
+	 * Removes the node from aGraph.
+	 * @param pNode the node to be deleted
 	 */
 	public void removeNode(Node pNode)
 	{
-		aModListener.nodeRemoved(this, pNode);
 		aGraph.removeNode(pNode);
+		aModListener.nodeRemoved(this, pNode);
 	}
 	
 	/**
-	 * Removes the edge from aGraph
+	 * Removes the edge from aGraph.
+	 * @param pEdge the edge to be deleted
 	 */
 	public void removeEdge(Edge pEdge)
 	{
-		aModListener.edgeRemoved(this, pEdge);
 		aGraph.removeEdge(pEdge);
+		aModListener.edgeRemoved(this, pEdge);
+	}
+	
+	/**
+	 * Adds the node to aGraph.
+	 * @param pNode the node to be added
+	 */
+	public void addNode(Node pNode, Point.Double pPoint)
+	{
+		aGraph.addNode(pNode, pPoint);
+		aModListener.nodeAdded(this, pNode);
+	}
+	
+	/**
+	 * Adds the edge to aGraph.
+	 * @param pEdge the node to be added
+	 */
+	public void addEdge(Edge pEdge, Point.Double pPoint1, Point.Double pPoint2)
+	{
+		aGraph.connect(pEdge, pPoint1, pPoint2);
+		aModListener.edgeAdded(this, pEdge);
+	}
+	
+	/**
+	 * Moves the node in aGraph by DX and DY.
+	 * @param pNode the node to be moved
+	 * @param pDX the amount to move in the x direction
+	 * @param pDY the amounnt to move in the y direction
+	 */
+	public void moveNode(Node pNode, double pDX, double pDY) 
+	{
+		pNode.translate(pDX, pDY);
 	}
 	
 	/**
@@ -203,14 +237,7 @@ public class GraphPanel extends JPanel
 		revalidate();
 		repaint();
 	}
-	
-	/**
-	 * Returns the graph belonging to the panel.
-	 */
-	public Graph getGraph()
-	{
-		return aGraph;
-	}
+
 
 	@Override
 	public void paintComponent(Graphics pGraphics)
@@ -395,7 +422,7 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{
-		GraphPanel aGraphPanel;
+		private GraphPanel aGraphPanel;
 		public GraphPanelMouseListener(GraphPanel pGraphPanel)
 		{
 			super();
@@ -545,13 +572,6 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseMotionListener extends MouseMotionAdapter
 	{
-		GraphPanel aGraphPanel;
-		public GraphPanelMouseMotionListener(GraphPanel pGraphPanel)
-		{
-			super();
-			aGraphPanel  = pGraphPanel;
-		}
-		
 		@Override
 		public void mouseDragged(MouseEvent pEvent)
 		{

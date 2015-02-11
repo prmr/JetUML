@@ -1,5 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
@@ -10,7 +11,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class AddDeleteNodeCommand implements Command{
 	Node aNode;
 	GraphPanel aGraphPanel;
-	Graph aGraph;
 	double aX;
 	double aY;
 	boolean aAdding; //true for adding, false for deleting
@@ -18,7 +18,6 @@ public class AddDeleteNodeCommand implements Command{
 	public AddDeleteNodeCommand(GraphPanel pGraphPanel, Node pNode, boolean pAdding)
 	{
 		aGraphPanel = pGraphPanel;
-		aGraph = pGraphPanel.getGraph();
 		aNode = pNode;
 		aX = aNode.getBounds().getMinX();
 		aY = aNode.getBounds().getMinY();
@@ -54,15 +53,15 @@ public class AddDeleteNodeCommand implements Command{
 
 	private void delete() 
 	{
-		aGraph.removeNode(aNode);
-		aGraph.layout();
+		aGraphPanel.removeNode(aNode);
+		aGraphPanel.repaint();
 	}
 	
 	private void add() 
 	{
-		Point2D point = new Point.Double(aX, aY);
-		aGraph.add(aNode, point);
-		aGraph.layout();
+		Point.Double point = new Point.Double(aX, aY);
+		aGraphPanel.addNode(aNode, point);
+		aGraphPanel.repaint();
 	}
 	
 }

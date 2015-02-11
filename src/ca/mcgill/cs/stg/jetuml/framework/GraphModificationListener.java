@@ -6,29 +6,21 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.util.Iterator;
-import java.util.Stack;
-
-import javax.swing.JLabel;
-
-import ca.mcgill.cs.stg.jetuml.UMLEditor;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
-import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
-import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
+import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 
 public class GraphModificationListener {
 	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
 	private Node[] selectionNodes;
 	private Rectangle2D[] selectionBounds;
+	private PropertyDescriptor[] oldDescriptors;
 	
 	public GraphModificationListener(UndoManager pUndo)
 	{
@@ -64,8 +56,7 @@ public class GraphModificationListener {
 	}
 	
 	/**
-	 * Tracks the elements in pSelectedElements and records their positions
-	 * Used to many commands at once
+	 * Tracks the elements in pSelectedElements and records their positions.
 	 */
 	public void startTrackingMove(GraphPanel pGraphPanel, SelectionList pSelectedElements)
 	{
@@ -84,63 +75,83 @@ public class GraphModificationListener {
 	}
 	
 	/**
-	 * Creates a compound command with each node move and adds it to the stack
+	 * Creates a compound command with each node move and adds it to the stack.
 	 */
 	public void endTrackingMove(GraphPanel pGraphPanel, SelectionList pSelectedElements)
 	{
-//		CompoundCommand cc = new CompoundCommand();
-//		Rectangle2D[] selectionBounds2 = new Rectangle2D[pSelectedElements.size()];
-//		int i = 0;
-//		for(GraphElement e : pSelectedElements)
-//		{
-//			if(e instanceof Node)
-//			{
-//				selectionBounds2[i] = ((Node) e).getBounds();
-//				i++;
-//			}
-//		}
-//		for(i = 0; i<selectionNodes.length && selectionNodes[i] != null; i++)
-//		{
-//			double dY = selectionBounds2[i].getY() - selectionBounds[i].getY();
-//			double dX = selectionBounds2[i].getX() - selectionBounds[i].getX();
-//			if (dX > 0 || dY > 0)
-//			{
-//				cc.add(new MoveCommand(pGraphPanel, selectionNodes[i], dX, dY));
-//			}
-//		}
-//		if (cc.size() > 0) {
-//			aUndoManager.add(cc);
-//		}
+		CompoundCommand cc = new CompoundCommand();
+		Rectangle2D[] selectionBounds2 = new Rectangle2D[pSelectedElements.size()];
+		int i = 0;
+		for(GraphElement e : pSelectedElements)
+		{
+			if(e instanceof Node)
+			{
+				selectionBounds2[i] = ((Node) e).getBounds();
+				i++;
+			}
+		}
+		for(i = 0; i<selectionNodes.length && selectionNodes[i] != null; i++)
+		{
+			double dY = selectionBounds2[i].getY() - selectionBounds[i].getY();
+			double dX = selectionBounds2[i].getX() - selectionBounds[i].getX();
+			if (dX > 0 || dY > 0)
+			{
+				cc.add(new MoveCommand(pGraphPanel, selectionNodes[i], dX, dY));
+			}
+		}
+		if (cc.size() > 0) 
+		{
+			aUndoManager.add(cc);
+		}
 	}
+	
 	public void trackPropertyChange(GraphPanel aGraphPanel, Object edited)
 	{
-//		BeanInfo info;
-//		try {
-//			info = Introspector.getBeanInfo(edited.getClass());
-//			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
-//		} 
-//		catch (IntrospectionException e) 
-//		{
-//			return;
-//		}   
+		BeanInfo info;
+		try 
+		{
+			info = Introspector.getBeanInfo(edited.getClass());
+			oldDescriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
+		} 
+		catch (IntrospectionException e) 
+		{
+			return;
+		}   
 		
 	}
 	
 	public void finishPropertyChange(GraphPanel aGraphPanel, Object edited)
 	{
 		BeanInfo info;
-		try {
+		CompoundCommand cc = new CompoundCommand();
+		try 
+		{
 			info = Introspector.getBeanInfo(edited.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
 			
-			
-			
-			
+			for(int i = 0; i<descriptors.length; i++)
+			{
+				if (!descriptors[i].equals(oldDescriptors[i]))
+				{
+					String propName = descriptors[i].getName();
+					//Method getAttributes =  oldDescriptors[0].getReadMethod()
+					Object oldPropValue = oldDescriptors[i].getValue(propName);
+					Object propValue = descriptors[i].getValue(propName);
+					cc.add(new PropertyChangeCommand(aGraphPanel, edited, propName, oldPropValue, propValue, i));
+				}
+			}
 		}
 		catch (IntrospectionException e) 
 		{
 			return;
-		}  
+		}
+		finally
+		{
+			if (cc.size() > 0)
+			{
+				aUndoManager.add(cc);
+			}
+		}
 	}
 
 	public void edgeAdded(GraphPanel pGraphPanel, Edge pEdge)

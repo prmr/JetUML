@@ -30,14 +30,14 @@
     <module name="ConstantName"/>
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName">
-      <property name="tokens" value="VARIABLE_DEF"/>
+      <property name="tokens" value="VARIABLE_DEF" />
     </module>
     <module name="MemberName">
-      <property name="format" value="^a[A-Z][a-zA-Z0-9]*$"/>
+      <property name="format" value="^a[A-Z][a-zA-Z0-9]*$" />
     </module>
     <module name="MethodName"/>
     <module name="PackageName">
-      <property name="format" value="^[a-z][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z0-9_]*)*$"/>
+      <property name="format" value="^[a-z][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z0-9_]*)*$" />
     </module>
     <module name="ParameterName">
       <property name="format" value="^p[A-Z][a-zA-Z0-9]*$"/>
@@ -113,9 +113,6 @@
       <property name="ignoreNumbers" value="-1, 0, 1, 2,3,4"/>
     </module>
     <module name="MissingSwitchDefault"/>
-    <module name="RedundantThrows">
-      <property name="suppressLoadErrors" value="true"/>
-    </module>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
     <module name="FinalClass"/>
@@ -156,7 +153,6 @@
     <module name="IllegalCatch">
       <property name="illegalClassNames" value="java.lang.Throwable, java.lang.RuntimeException"/>
     </module>
-    <module name="JUnitTestCase"/>
     <module name="ReturnCount">
       <property name="max" value="5"/>
     </module>
