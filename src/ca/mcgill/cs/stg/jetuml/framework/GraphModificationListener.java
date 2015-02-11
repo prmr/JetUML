@@ -6,6 +6,9 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
@@ -18,15 +21,15 @@ import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 public class GraphModificationListener {
 	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
-	private Node[] selectionNodes;
-	private Rectangle2D[] selectionBounds;
-	private PropertyDescriptor[] oldDescriptors;
-	
+	private Node[] aSelectionNodes;
+	private Rectangle2D[] aSelectionBounds;
+	private Object[] aPropertyValues;
+
 	public GraphModificationListener(UndoManager pUndo)
 	{
 		aUndoManager = pUndo;
 	}
-	
+
 	public void nodeAdded(GraphPanel pGraphPanel, Node pNode)
 	{
 		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraphPanel, pNode, true);
@@ -47,33 +50,33 @@ public class GraphModificationListener {
 
 	public void childAttached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
 	{
-		
+
 	}
-	
+
 	public void childDetached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
 	{
-		
+
 	}
-	
+
 	/**
 	 * Tracks the elements in pSelectedElements and records their positions.
 	 */
 	public void startTrackingMove(GraphPanel pGraphPanel, SelectionList pSelectedElements)
 	{
-		selectionNodes = new Node[pSelectedElements.size()];
-		selectionBounds = new Rectangle2D[pSelectedElements.size()];
+		aSelectionNodes = new Node[pSelectedElements.size()];
+		aSelectionBounds = new Rectangle2D[pSelectedElements.size()];
 		int i = 0;
 		for(GraphElement e : pSelectedElements)
 		{
 			if(e instanceof Node)
 			{
-				selectionNodes[i] = (Node) e;
-				selectionBounds[i] = selectionNodes[i].getBounds();
+				aSelectionNodes[i] = (Node) e;
+				aSelectionBounds[i] = aSelectionNodes[i].getBounds();
 				i++;
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a compound command with each node move and adds it to the stack.
 	 */
@@ -90,13 +93,13 @@ public class GraphModificationListener {
 				i++;
 			}
 		}
-		for(i = 0; i<selectionNodes.length && selectionNodes[i] != null; i++)
+		for(i = 0; i<aSelectionNodes.length && aSelectionNodes[i] != null; i++)
 		{
-			double dY = selectionBounds2[i].getY() - selectionBounds[i].getY();
-			double dX = selectionBounds2[i].getX() - selectionBounds[i].getX();
+			double dY = selectionBounds2[i].getY() - aSelectionBounds[i].getY();
+			double dX = selectionBounds2[i].getX() - aSelectionBounds[i].getX();
 			if (dX > 0 || dY > 0)
 			{
-				cc.add(new MoveCommand(pGraphPanel, selectionNodes[i], dX, dY));
+				cc.add(new MoveCommand(pGraphPanel, aSelectionNodes[i], dX, dY));
 			}
 		}
 		if (cc.size() > 0) 
@@ -104,22 +107,39 @@ public class GraphModificationListener {
 			aUndoManager.add(cc);
 		}
 	}
-	
+
 	public void trackPropertyChange(GraphPanel aGraphPanel, Object edited)
 	{
 		BeanInfo info;
 		try 
 		{
 			info = Introspector.getBeanInfo(edited.getClass());
-			oldDescriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
+			PropertyDescriptor[] oldDescriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
+			aPropertyValues = new Object[oldDescriptors.length];
+			for(int i = 0; i< aPropertyValues.length; i++)
+			{
+				final Method getter = oldDescriptors[i].getReadMethod();
+				aPropertyValues[i] = getter.invoke(edited, new Object[] {});
+				if(aPropertyValues[i] instanceof MultiLineString)
+				{
+					MultiLineString temp = (MultiLineString) aPropertyValues[i];
+					aPropertyValues[i] = temp.clone();
+				}
+			}
 		} 
 		catch (IntrospectionException e) 
 		{
+			e.printStackTrace();
 			return;
-		}   
-		
+		} 
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			e.printStackTrace();
+			return;
+		}
+
 	}
-	
+
 	public void finishPropertyChange(GraphPanel aGraphPanel, Object edited)
 	{
 		BeanInfo info;
@@ -128,21 +148,35 @@ public class GraphModificationListener {
 		{
 			info = Introspector.getBeanInfo(edited.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
-			
 			for(int i = 0; i<descriptors.length; i++)
 			{
-				if (!descriptors[i].equals(oldDescriptors[i]))
+				final Method getter = descriptors[i].getReadMethod();
+				Object propVal = getter.invoke(edited, new Object[] {});
+				if (!propVal.equals(aPropertyValues[i]))
 				{
-					String propName = descriptors[i].getName();
-					//Method getAttributes =  oldDescriptors[0].getReadMethod()
-					Object oldPropValue = oldDescriptors[i].getValue(propName);
-					Object propValue = descriptors[i].getValue(propName);
-					cc.add(new PropertyChangeCommand(aGraphPanel, edited, propName, oldPropValue, propValue, i));
+					Object oldPropValue = aPropertyValues[i];
+					Object propValue;
+					if(aPropertyValues[i] instanceof MultiLineString)
+					{
+						MultiLineString temp = (MultiLineString) propVal;
+						propValue = temp.clone();
+					}
+					else
+					{
+						propValue = propVal;
+					}
+					cc.add(new PropertyChangeCommand(aGraphPanel, edited, oldPropValue, propValue, i));
 				}
 			}
 		}
 		catch (IntrospectionException e) 
 		{
+			e.printStackTrace();
+			return;
+		}
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			e.printStackTrace();
 			return;
 		}
 		finally
@@ -165,10 +199,10 @@ public class GraphModificationListener {
 		AddDeleteEdgeCommand dc = new AddDeleteEdgeCommand(pGraphPanel, pEdge, false);
 		aUndoManager.add(dc);
 	}
-	
+
 	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
 	{
-		
+
 	}
 
 }

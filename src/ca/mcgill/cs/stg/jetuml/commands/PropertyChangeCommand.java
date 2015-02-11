@@ -4,6 +4,8 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -13,7 +15,6 @@ public class PropertyChangeCommand implements Command{
 	Node aNode;
 	GraphPanel aGraphPanel;
 	Object aObject;
-	String aPropName; 
 	Object aPrevPropValue; 
 	Object aNewPropValue;
 	int aIndex;
@@ -21,11 +22,10 @@ public class PropertyChangeCommand implements Command{
 	/**
 	 * Creates the command and sets the values.
 	 */
-	public PropertyChangeCommand(GraphPanel pGraphPanel, Object pObject, String pPropName, Object pPrevPropValue, Object pNewPropValue, int pIndex)
+	public PropertyChangeCommand(GraphPanel pGraphPanel, Object pObject, Object pPrevPropValue, Object pNewPropValue, int pIndex)
 	{
 		aGraphPanel = pGraphPanel;
 		aObject = pObject; 
-		aPropName = pPropName;
 		aPrevPropValue = pPrevPropValue;
 		aNewPropValue = pNewPropValue;
 		aIndex = pIndex;
@@ -38,14 +38,21 @@ public class PropertyChangeCommand implements Command{
 	public void undo() 
 	{
 		BeanInfo info;
-		try
+		try 
 		{
 			info = Introspector.getBeanInfo(aObject.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors();
-			descriptors[aIndex].setValue(aPropName, aPrevPropValue);
+			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+			final Method setter = descriptors[aIndex].getWriteMethod();
+			setter.invoke(aObject, new Object[] {aPrevPropValue});
 		}
-		catch(IntrospectionException e)
+		catch (IntrospectionException e) 
 		{
+			e.printStackTrace();
+			return;
+		}
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			e.printStackTrace();
 			return;
 		}
 		aGraphPanel.repaint();
@@ -57,14 +64,21 @@ public class PropertyChangeCommand implements Command{
 	public void execute() 
 	{
 		BeanInfo info;
-		try
+		try 
 		{
 			info = Introspector.getBeanInfo(aObject.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors();
-			descriptors[aIndex].setValue(aPropName, aNewPropValue);
+			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+			final Method setter = descriptors[aIndex].getWriteMethod();
+			setter.invoke(aObject, new Object[] {aNewPropValue});
 		}
-		catch(IntrospectionException e)
+		catch (IntrospectionException e) 
 		{
+			e.printStackTrace();
+			return;
+		}
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			e.printStackTrace();
 			return;
 		}
 		aGraphPanel.repaint();
