@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -36,9 +37,12 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -74,6 +78,8 @@ public class GraphPanel extends JPanel
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
 	private DragMode aDragMode;
+	private UndoManager aUndo = new UndoManager(this);
+	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
 	
 	/**
 	 * Constructs a graph.
@@ -84,7 +90,7 @@ public class GraphPanel extends JPanel
 		aZoom = 1;
 		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
-		addMouseListener(new GraphPanelMouseListener());
+		addMouseListener(new GraphPanelMouseListener(this));
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
 
@@ -98,6 +104,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
+		aModListener.trackPropertyChange(this, edited);
 		PropertySheet sheet = new PropertySheet(edited);
 		sheet.addChangeListener(new ChangeListener()
 		{
@@ -110,6 +117,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showInternalMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
+		aModListener.finishPropertyChange(this, edited);
 		setModified(true);
 	}
 
@@ -118,15 +126,104 @@ public class GraphPanel extends JPanel
 	 */
 	public void removeSelected()
 	{
+		aUndo.startTracking();
+		Stack<Node> nodes = new Stack<Node>();
 		for( GraphElement element : aSelectedElements )
 		{
-			aGraph.removeElement(element);
+			if (element instanceof Node)
+			{
+				for(Edge e : aGraph.getNodeEdges((Node) element))
+				{
+					removeEdge(e);
+				}
+				nodes.add((Node) element);
+			}
+			else if(element instanceof Edge)
+			{
+				removeEdge((Edge) element);
+			}
 		}
+		while(!nodes.empty())
+		{
+			removeNode(nodes.pop());
+		}
+		aUndo.endTracking();
 		if(aSelectedElements.size() > 0)
 		{
 			setModified(true);
 		}
 		repaint();
+	}
+	
+	/**
+	 * Removes the node from aGraph.
+	 * @param pNode the node to be deleted
+	 */
+	public void removeNode(Node pNode)
+	{
+		aGraph.removeNode(pNode);
+		aModListener.nodeRemoved(this, pNode);
+	}
+	
+	/**
+	 * Removes the edge from aGraph.
+	 * @param pEdge the edge to be deleted
+	 */
+	public void removeEdge(Edge pEdge)
+	{
+		aGraph.removeEdge(pEdge);
+		aModListener.edgeRemoved(this, pEdge);
+	}
+	
+	/**
+	 * Adds the node to aGraph.
+	 * @param pNode the node to be added
+	 */
+	public void addNode(Node pNode, Point.Double pPoint)
+	{
+		aGraph.addNode(pNode, pPoint);
+		aModListener.nodeAdded(this, pNode);
+	}
+	
+	/**
+	 * Adds the edge to aGraph.
+	 * @param pEdge the node to be added
+	 */
+	public void addEdge(Edge pEdge, Point.Double pPoint1, Point.Double pPoint2)
+	{
+		aGraph.connect(pEdge, pPoint1, pPoint2);
+		aModListener.edgeAdded(this, pEdge);
+	}
+	
+	/**
+	 * Moves the node in aGraph by DX and DY.
+	 * @param pNode the node to be moved
+	 * @param pDX the amount to move in the x direction
+	 * @param pDY the amounnt to move in the y direction
+	 */
+	public void moveNode(Node pNode, double pDX, double pDY) 
+	{
+		pNode.translate(pDX, pDY);
+	}
+	
+	/**
+	 * Undoes the most recent command.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
+	 */
+	public void undo()
+	{
+		aUndo.undoCommand();
+	}
+	
+	/**
+	 * Removes the last undone action and performs it.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
+	 */
+	public void redo()
+	{
+		aUndo.redoCommand();
 	}
 
 	/**
@@ -140,6 +237,7 @@ public class GraphPanel extends JPanel
 		revalidate();
 		repaint();
 	}
+
 
 	@Override
 	public void paintComponent(Graphics pGraphics)
@@ -340,6 +438,13 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{
+		private GraphPanel aGraphPanel;
+		public GraphPanelMouseListener(GraphPanel pGraphPanel)
+		{
+			super();
+			aGraphPanel  = pGraphPanel;
+		}
+		
 		@Override
 		public void mousePressed(MouseEvent pEvent)
 		{
@@ -368,6 +473,7 @@ public class GraphPanel extends JPanel
                     {
                        public void actionPerformed(ActionEvent pEvent)
                        {
+                    	   
                     	   Object tool = aToolBar.getSelectedTool();
                     	   if(tool instanceof Node)
                     	   {
@@ -376,6 +482,7 @@ public class GraphPanel extends JPanel
                     		   boolean added = aGraph.add(newNode, mousePoint);
                     		   if(added)
                     		   {
+                    			   aModListener.nodeAdded(aGraphPanel, newNode);
                     			   setModified(true);
                     			   aSelectedElements.set(newNode);
                     		   }
@@ -401,6 +508,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 				else
 				{
@@ -418,9 +526,11 @@ public class GraphPanel extends JPanel
 				boolean added = aGraph.add(newNode, mousePoint);
 				if(added)
 				{
+					aModListener.nodeAdded(aGraphPanel, newNode);
 					setModified(true);
 					aSelectedElements.set(newNode);
 					aDragMode = DragMode.DRAG_MOVE;
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 				else if(n != null)
 				{
@@ -433,6 +543,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
+					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
 				}
 			}
 			else if(tool instanceof Edge)
@@ -458,6 +569,7 @@ public class GraphPanel extends JPanel
 				Edge newEdge = (Edge) prototype.clone();
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
 				{
+					aModListener.edgeAdded(aGraphPanel, newEdge);
 					setModified(true);
 					aSelectedElements.set(newEdge);
 				}
@@ -466,6 +578,7 @@ public class GraphPanel extends JPanel
 			{
 				aGraph.layout();
 				setModified(true);
+				aModListener.endTrackingMove(aGraphPanel, aSelectedElements);
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
@@ -481,12 +594,12 @@ public class GraphPanel extends JPanel
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
-			{               
+			{        
 				Node lastNode = (Node) aSelectedElements.getLastSelected();
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
-                        
+                   
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
@@ -500,7 +613,7 @@ public class GraphPanel extends JPanel
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-           
+            
 				for( GraphElement selected : aSelectedElements )
 				{
 					if(selected instanceof Node)
@@ -514,7 +627,7 @@ public class GraphPanel extends JPanel
 				}
 				// we don't want continuous layout any more because of multiple selection
 				// graph.layout();
-			}            
+			}
 			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
 				double x1 = aMouseDownPoint.getX();

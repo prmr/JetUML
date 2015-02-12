@@ -31,7 +31,9 @@ import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.framework.UndoManager;
 
 /**
  *  A graph consisting of selectable nodes and edges.
@@ -171,6 +173,25 @@ public abstract class Graph
 	}
    
 	/**
+	 * Returns all edges connected to the given node
+	 * @param pNode
+	 * @return
+	 */
+	public ArrayList<Edge> getNodeEdges(Node pNode)
+	{
+		ArrayList<Edge> toRet = new ArrayList<Edge>();
+		for(int i = 0; i < aEdges.size(); i++)
+		{
+			Edge e = aEdges.get(i);
+			if((e.getStart() == pNode || e.getEnd() == pNode) && !aEdgesToBeRemoved.contains(e))
+			{
+				toRet.add(e);
+			}
+		}
+		return toRet;
+	}
+	
+	/**
      * Draws the graph.
      * @param pGraphics2D the graphics context
      * @param pGrid The grid
@@ -203,7 +224,6 @@ public abstract class Graph
 			return;
 		}
 		aNodesToBeRemoved.add(pNode);
-      
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
@@ -238,6 +258,7 @@ public abstract class Graph
 		}
 		else if(pElement instanceof Edge)
 		{
+			
 			removeEdge((Edge) pElement);
 		}
 	}
