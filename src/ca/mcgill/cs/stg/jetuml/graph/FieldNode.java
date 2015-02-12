@@ -47,6 +47,7 @@ public class FieldNode extends RectangularNode
 	private boolean aBoxedValue;
 	private double aBoxWidth;
 
+	private ObjectNode aObjectNode;	
 	/**
 	 * A default field node.
 	 */
@@ -110,6 +111,24 @@ public class FieldNode extends RectangularNode
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		return pNode instanceof PointNode;
+	}
+	
+	/**
+     * Gets the ObjectNode of this Field Node.
+     * @return aObjectNode the ObjectNode which holds this FieldNode.
+	 */
+	public ObjectNode getObjectNode()
+	{
+		return aObjectNode;
+	}
+
+	/**
+     * Sets the Object Node that contains this Field Node.
+     * @param pObjectNode the Object node that will contain this Field Node
+	 */
+	public void setObjectNode(ObjectNode pObjectNode)
+	{
+		aObjectNode = pObjectNode;
 	}
 
 	@Override
