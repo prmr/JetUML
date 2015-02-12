@@ -4,7 +4,8 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class MoveCommand implements Command{
+public class MoveCommand implements Command
+{
 	Node aNode;
 	GraphPanel aGraphPanel;
 	double aDX;
@@ -18,7 +19,8 @@ public class MoveCommand implements Command{
 		aDY = pDY;
 	}
 	
-	public void undo() {
+	public void undo() 
+	{
 		aGraphPanel.moveNode(aNode, -aDX, -aDY);
 		aGraphPanel.repaint();
 	}
@@ -26,7 +28,8 @@ public class MoveCommand implements Command{
 	/**
 	 * Performs the command and moves the node
 	 */
-	public void execute() {
+	public void execute() 
+	{
 		aGraphPanel.moveNode(aNode, aDX, aDY);
 		aGraphPanel.repaint();
 	}

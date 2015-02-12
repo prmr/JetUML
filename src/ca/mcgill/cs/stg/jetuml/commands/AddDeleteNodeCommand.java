@@ -8,7 +8,8 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class AddDeleteNodeCommand implements Command{
+public class AddDeleteNodeCommand implements Command
+{
 	Node aNode;
 	GraphPanel aGraphPanel;
 	double aX;

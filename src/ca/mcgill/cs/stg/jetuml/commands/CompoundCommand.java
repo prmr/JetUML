@@ -2,7 +2,8 @@ package ca.mcgill.cs.stg.jetuml.commands;
 
 import java.util.Stack;
 
-public class CompoundCommand implements Command{
+public class CompoundCommand implements Command
+{
 	private Stack<Command> aCommands;
 	private int aSize;
 

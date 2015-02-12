@@ -81,10 +81,6 @@ public abstract class AbstractNode implements Node
 	@Override
 	public void translate(double pDeltaX, double pDeltaY)
 	{
-		for(Node node : aChildren)
-		{	
-			node.translate(pDeltaX, pDeltaY);
-		}
 	}
 
 	@Override

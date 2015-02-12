@@ -22,14 +22,19 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.awt.geom.Point2D;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
@@ -65,6 +70,37 @@ public class ObjectDiagramGraph extends Graph
 	    association.setBentStyle(BentStyle.STRAIGHT);
 	    EDGE_PROTOTYPES[1] = association;
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
+	}
+	
+	@Override
+	public boolean add(Node pNode, Point2D pPoint)
+	{
+		
+		if(pNode instanceof FieldNode) // must be inside an Object Node.
+		{
+			Collection<Node> nodes = getNodes();
+			boolean inside = false;
+			Iterator<Node> iter = nodes.iterator();
+			while(!inside && iter.hasNext())
+			{
+				Node n2 = (Node)iter.next();
+				if(n2 instanceof ObjectNode && n2.contains(pPoint)) 
+				{
+					inside = true;
+					((FieldNode)pNode).setObjectNode((ObjectNode)n2);
+				}
+			}
+			if (!inside)
+			{
+				return false;
+			}
+		}
+		
+		if(!super.add(pNode, pPoint)) 
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	@Override

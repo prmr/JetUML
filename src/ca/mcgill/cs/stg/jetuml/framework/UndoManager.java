@@ -5,7 +5,8 @@ import java.util.Stack;
 import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 
-public class UndoManager {
+public class UndoManager 
+{
 	private Stack<Command> aPastCommands; //the commands that haev been inputted and can be undone
 	private Stack<Command> aUndoneCommands; //the commands that have been undone and can be redone
 	private CompoundCommand aTrackingCommand; //used for many commands coming at once

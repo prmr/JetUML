@@ -9,7 +9,8 @@ import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class AddDeleteEdgeCommand implements Command{
+public class AddDeleteEdgeCommand implements Command
+{
 	Edge aEdge;
 	GraphPanel aGraphPanel;
 	Node aP1;

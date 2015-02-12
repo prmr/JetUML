@@ -275,7 +275,8 @@ public class PropertySheet extends JPanel
 	        if (Character.isSpaceChar(c)) 
 	        {
 	            nextTitleCase = true;
-	        } else if (nextTitleCase) 
+	        } 
+	        else if (nextTitleCase) 
 	        {
 	            c = Character.toTitleCase(c);
 	            nextTitleCase = false;

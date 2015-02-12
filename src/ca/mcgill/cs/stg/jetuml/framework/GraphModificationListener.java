@@ -18,7 +18,8 @@ import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 
-public class GraphModificationListener {
+public class GraphModificationListener 
+{
 	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
 	private Node[] aSelectionNodes;
