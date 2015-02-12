@@ -31,7 +31,6 @@ import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 public final class Clipboard 
 {
 	//private Class<? extends Graph> aDiagramType; // We can use the diagram class to tag the type of nodes and edges.
-	private SelectionList aSelected;
 	private List<Node> aNodes;
 	private List<Edge> aEdges;
 	
@@ -40,22 +39,6 @@ public final class Clipboard
 	 */
 	public Clipboard() 
 	{
-	}
-	
-	/**
-	 * @param pSelected Sets the contents of the clipboard.
-	 */
-	public void setContents(SelectionList pSelected) 
-	{
-		aSelected = pSelected;
-	}
-	
-	/**
-	 * @return Gets the contents of the Clipboard, which is a SelectionList.
-	 */
-	public SelectionList getContents() 
-	{
-		return aSelected;
 	}
 	
 	/**
@@ -113,11 +96,6 @@ public final class Clipboard
 	            }
    			}
    		}
-   		if(pSelection.size()>0)
-   		{
-   			setContents(newSelection);
-   		}
-   		
 	}
 
 	/**
@@ -147,6 +125,9 @@ public final class Clipboard
 						Node newNode = curNode.clone();
 						originalAndClonedNodes.put(curNode, newNode);
 						copyNodes.add(newNode);
+						if(curNode.getChildren().size()>0){
+							System.out.println(curNode.getChildren().size());
+						}
 						if(bounds ==null)
 						{
 		   					bounds = curNode.getBounds();
