@@ -285,21 +285,7 @@ public class GraphPanel extends JPanel
 		}
 		if(aFrame != null)
 		{
-			String title = aFrame.getFileName();
-			if(title != null)
-			{
-				if(aModified)
-				{
-					if(!aFrame.getTitle().endsWith("*"))
-					{
-						aFrame.setTitle(title + "*");
-					}
-				}
-				else
-				{
-					aFrame.setTitle(title);
-				}
-			}
+			aFrame.setTitle(aModified);
 		}
 	}
    
