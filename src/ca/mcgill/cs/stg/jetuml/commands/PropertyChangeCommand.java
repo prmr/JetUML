@@ -11,7 +11,8 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class PropertyChangeCommand implements Command{
+public class PropertyChangeCommand implements Command
+{
 	Node aNode;
 	GraphPanel aGraphPanel;
 	Object aObject;

@@ -7,7 +7,8 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class AttachDetachChildCommand implements Command{
+public class AttachDetachChildCommand implements Command
+{
 	Node aNode1;
 	Node aNode2;
 	GraphPanel aGraphPanel;
