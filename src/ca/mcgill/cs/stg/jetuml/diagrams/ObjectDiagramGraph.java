@@ -87,7 +87,7 @@ public class ObjectDiagramGraph extends Graph
 				if(n2 instanceof ObjectNode && n2.contains(pPoint)) 
 				{
 					inside = true;
-					((FieldNode)pNode).setObjectNode((ObjectNode)n2);
+					((FieldNode)pNode).setParent((ObjectNode)n2);
 				}
 			}
 			if (!inside)

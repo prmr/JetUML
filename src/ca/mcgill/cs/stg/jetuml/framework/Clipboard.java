@@ -55,14 +55,6 @@ public final class Clipboard
    			if(element instanceof Node)
    			{
    				Node curNode = (Node) element;
-   				//Remove all nodes who are dangling (that have no Parent in the selection).
-   				if(curNode.getParent()!=null)
-   				{
-   					if(!pSelection.contains(curNode.getParent()))
-   					{
-   						continue;
-   					}
-   				}
    				Node cloneNode = curNode.clone();
    				newSelection.add(cloneNode);
    				originalAndClonedNodes.put(curNode, cloneNode);
@@ -125,9 +117,7 @@ public final class Clipboard
 						Node newNode = curNode.clone();
 						originalAndClonedNodes.put(curNode, newNode);
 						copyNodes.add(newNode);
-						if(curNode.getChildren().size()>0){
-							System.out.println(curNode.getChildren().size());
-						}
+
 						if(bounds ==null)
 						{
 		   					bounds = curNode.getBounds();
