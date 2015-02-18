@@ -189,6 +189,7 @@ public final class Clipboard
 			for(Edge cloneEdge: copyEdges)
 			{
 				pGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+				updatedSelectionList.add(cloneEdge);
 			}
 			return updatedSelectionList;
 	}

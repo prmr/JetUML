@@ -480,9 +480,9 @@ public class GraphPanel extends JPanel
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
+			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
-				Node lastNode = (Node) aSelectedElements.getLastSelected();
+				Node lastNode = (Node) aSelectedElements.getLastNode();
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
