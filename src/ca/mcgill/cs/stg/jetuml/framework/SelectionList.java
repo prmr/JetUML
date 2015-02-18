@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * Manages a set of graph element selections. The list does
@@ -52,6 +53,23 @@ public class SelectionList implements Iterable<GraphElement>
 		{
 			return null;
 		}
+	}
+	
+	public Node getLastNode()
+	{
+		if( aSelected.size() > 0 )
+		{
+			Iterator<GraphElement> iter = iterator();
+			while(iter.hasNext())
+			{
+				GraphElement cur = iter.next();
+				if(cur instanceof Node)
+				{
+					return (Node)cur;
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**

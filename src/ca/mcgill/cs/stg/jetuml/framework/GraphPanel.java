@@ -593,9 +593,15 @@ public class GraphPanel extends JPanel
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
+<<<<<<< HEAD
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastSelected() instanceof Node)
 			{        
 				Node lastNode = (Node) aSelectedElements.getLastSelected();
+=======
+			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
+			{               
+				Node lastNode = (Node) aSelectedElements.getLastNode();
+>>>>>>> Issue0012-AddCopyAndPasteFeature
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
