@@ -1,21 +1,28 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import java.awt.Component;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
+/**
+ * Stores the addition/removal of a node from the graph.
+ * @author EJBQ
+ */
 public class AddDeleteNodeCommand implements Command
 {
-	Node aNode;
-	GraphPanel aGraphPanel;
-	double aX;
-	double aY;
-	boolean aAdding; //true for adding, false for deleting
+	private Node aNode;
+	private GraphPanel aGraphPanel;
+	private double aX;
+	private double aY;
+	private boolean aAdding; //true for adding, false for deleting
 	
+	/**
+	 * Creates the command.
+	 * @param pGraphPanel The panel to add/delete the node
+	 * @param pNode The node to be added/deleted
+	 * @param pAdding True when adding, false when deleting
+	 */
 	public AddDeleteNodeCommand(GraphPanel pGraphPanel, Node pNode, boolean pAdding)
 	{
 		aGraphPanel = pGraphPanel;
@@ -25,6 +32,9 @@ public class AddDeleteNodeCommand implements Command
 		aAdding = pAdding;
 	}
 	
+	/**
+	 * Undoes the command and adds/deletes the node.
+	 */
 	public void undo() 
 	{
 		if(aAdding)
@@ -38,7 +48,7 @@ public class AddDeleteNodeCommand implements Command
 	}
 
 	/**
-	 * Performs the command and adds the node
+	 * Performs the command and adds/deletes the node.
 	 */
 	public void execute() 
 	{
@@ -52,12 +62,18 @@ public class AddDeleteNodeCommand implements Command
 		}
 	}
 
+	/**
+	 * Removes the node from the graph.
+	 */
 	private void delete() 
 	{
 		aGraphPanel.removeNode(aNode);
 		aGraphPanel.repaint();
 	}
 	
+	/**
+	 * Adds the edge to the graph at the point in its properties.
+	 */
 	private void add() 
 	{
 		Point.Double point = new Point.Double(aX, aY);

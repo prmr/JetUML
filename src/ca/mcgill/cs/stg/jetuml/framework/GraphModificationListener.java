@@ -18,49 +18,89 @@ import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 
+/**
+ * @author EJBQ
+ *
+ */
 public class GraphModificationListener 
 {
-	private CompoundCommand aCurCommand; //used for collecting commands being entered
 	private UndoManager aUndoManager;
 	private Node[] aSelectionNodes;
 	private Rectangle2D[] aSelectionBounds;
 	private Object[] aPropertyValues;
 
+	/**
+	 * Creates a new GraphModificationListener with an UndoManager.
+	 * @param pUndo the UndoManager to be accessed
+	 */
 	public GraphModificationListener(UndoManager pUndo)
 	{
 		aUndoManager = pUndo;
 	}
 
+	/**
+	 * Keeps track of the addition of a node.
+	 * @param pGraphPanel The Panel to add the node to
+	 * @param pNode The node to be added
+	 */
 	public void nodeAdded(GraphPanel pGraphPanel, Node pNode)
 	{
 		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraphPanel, pNode, true);
 		aUndoManager.add(ac);
 	}
 
+	/**
+	 * Keeps track of the removal of a node.
+	 * @param pGraphPanel The Panel to remove the node from
+	 * @param pNode The node to be removed
+	 */
 	public void nodeRemoved(GraphPanel pGraphPanel, Node pNode)
 	{
 		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraphPanel, pNode, false);
 		aUndoManager.add(dc);
 	}
 
-	public void nodeMoved(GraphPanel pGraphPanel, Node pNode, double dx, double dy)
+	/**
+	 * Keeps track of the moving of a node.
+	 * @param pGraphPanel The panel that the nodes were moved on
+	 * @param pNode The node that was moved
+	 * @param pDX The amount moved in the horizontal direction
+	 * @param pDY The amount moved in the vertical direction
+	 */
+	public void nodeMoved(GraphPanel pGraphPanel, Node pNode, double pDX, double pDY)
 	{
-		MoveCommand mc = new MoveCommand(pGraphPanel, pNode, dx, dy);
+		MoveCommand mc = new MoveCommand(pGraphPanel, pNode, pDX, pDY);
 		aUndoManager.add(mc);
 	}
 
-	public void childAttached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
+	/**
+	 * Keeps track of the addition of a child.
+	 * @param pGraphPanel The panel the child was added in
+	 * @param pIndex The index of the parent node that the child was added in
+	 * @param pParent The parent node
+	 * @param pChild The child node
+	 */
+	public void childAttached(GraphPanel pGraphPanel, int pIndex, Node pParent, Node pChild)
 	{
 
 	}
 
-	public void childDetached(GraphPanel pGraphPanel, int index, Node pNode1, Node pNode2)
+	/**
+	 * Keeps track of the removal of a child.
+	 * @param pGraphPanel The panel the child was added in
+	 * @param pIndex The index of the parent node that the child was added in
+	 * @param pParent The parent node
+	 * @param pChild The child node
+	 */
+	public void childDetached(GraphPanel pGraphPanel, int pIndex, Node pParent, Node pChild)
 	{
 
 	}
 
 	/**
 	 * Tracks the elements in pSelectedElements and records their positions.
+	 * @param pGraphPanel The panel to be moved on
+	 * @param pSelectedElements The elements that are being moved
 	 */
 	public void startTrackingMove(GraphPanel pGraphPanel, SelectionList pSelectedElements)
 	{
@@ -80,6 +120,8 @@ public class GraphModificationListener
 
 	/**
 	 * Creates a compound command with each node move and adds it to the stack.
+	 * @param pGraphPanel The panel to be moved on
+	 * @param pSelectedElements The elements that are being moved
 	 */
 	public void endTrackingMove(GraphPanel pGraphPanel, SelectionList pSelectedElements)
 	{
@@ -109,18 +151,23 @@ public class GraphModificationListener
 		}
 	}
 
-	public void trackPropertyChange(GraphPanel aGraphPanel, Object edited)
+	/**
+	 * Stores the properties of the edited object until the change is finished.
+	 * @param pGraphPanel The panel of the object being edited
+	 * @param pEdited The object to be edited
+	 */
+	public void trackPropertyChange(GraphPanel pGraphPanel, Object pEdited)
 	{
 		BeanInfo info;
 		try 
 		{
-			info = Introspector.getBeanInfo(edited.getClass());
+			info = Introspector.getBeanInfo(pEdited.getClass());
 			PropertyDescriptor[] oldDescriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
 			aPropertyValues = new Object[oldDescriptors.length];
 			for(int i = 0; i< aPropertyValues.length; i++)
 			{
 				final Method getter = oldDescriptors[i].getReadMethod();
-				aPropertyValues[i] = getter.invoke(edited, new Object[] {});
+				aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
 				if(aPropertyValues[i] instanceof MultiLineString)
 				{
 					MultiLineString temp = (MultiLineString) aPropertyValues[i];
@@ -141,18 +188,23 @@ public class GraphModificationListener
 
 	}
 
-	public void finishPropertyChange(GraphPanel aGraphPanel, Object edited)
+	/**
+	 * Compares the properties of the edited object and creates a command if needed.
+	 * @param pGraphPanel The panel of the object being edited
+	 * @param pEdited The object to be edited
+	 */
+	public void finishPropertyChange(GraphPanel pGraphPanel, Object pEdited)
 	{
 		BeanInfo info;
 		CompoundCommand cc = new CompoundCommand();
 		try 
 		{
-			info = Introspector.getBeanInfo(edited.getClass());
+			info = Introspector.getBeanInfo(pEdited.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
 			for(int i = 0; i<descriptors.length; i++)
 			{
 				final Method getter = descriptors[i].getReadMethod();
-				Object propVal = getter.invoke(edited, new Object[] {});
+				Object propVal = getter.invoke(pEdited, new Object[] {});
 				if (!propVal.equals(aPropertyValues[i]))
 				{
 					Object oldPropValue = aPropertyValues[i];
@@ -166,7 +218,7 @@ public class GraphModificationListener
 					{
 						propValue = propVal;
 					}
-					cc.add(new PropertyChangeCommand(aGraphPanel, edited, oldPropValue, propValue, i));
+					cc.add(new PropertyChangeCommand(pGraphPanel, pEdited, oldPropValue, propValue, i));
 				}
 			}
 		}
@@ -189,12 +241,22 @@ public class GraphModificationListener
 		}
 	}
 
+	/**
+	 * Tracks the addition of an edge to the graph.
+	 * @param pGraphPanel The panel to be edited
+	 * @param pEdge The edge being added
+	 */
 	public void edgeAdded(GraphPanel pGraphPanel, Edge pEdge)
 	{
 		AddDeleteEdgeCommand ac = new AddDeleteEdgeCommand(pGraphPanel, pEdge, true);
 		aUndoManager.add(ac);
 	}
 
+	/**
+	 * Tracks the removal of an edge to the graph.
+	 * @param pGraphPanel The panel to be edited
+	 * @param pEdge The edge being removed
+	 */
 	public void edgeRemoved(GraphPanel pGraphPanel, Edge pEdge)
 	{
 		AddDeleteEdgeCommand dc = new AddDeleteEdgeCommand(pGraphPanel, pEdge, false);
