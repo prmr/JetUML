@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -167,12 +166,9 @@ public class GraphModificationListener
 			for(int i = 0; i< aPropertyValues.length; i++)
 			{
 				final Method getter = oldDescriptors[i].getReadMethod();
+				System.out.println(getter.getName());
 				aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
-				if(aPropertyValues[i] instanceof MultiLineString)
-				{
-					MultiLineString temp = (MultiLineString) aPropertyValues[i];
-					aPropertyValues[i] = temp.clone();
-				}
+				aPropertyValues[i] = propertyClone(aPropertyValues[i]);
 			}
 		} 
 		catch (IntrospectionException e) 
@@ -204,20 +200,13 @@ public class GraphModificationListener
 			for(int i = 0; i<descriptors.length; i++)
 			{
 				final Method getter = descriptors[i].getReadMethod();
+				System.out.println(getter.getName());
 				Object propVal = getter.invoke(pEdited, new Object[] {});
 				if (!propVal.equals(aPropertyValues[i]))
 				{
 					Object oldPropValue = aPropertyValues[i];
 					Object propValue;
-					if(aPropertyValues[i] instanceof MultiLineString)
-					{
-						MultiLineString temp = (MultiLineString) propVal;
-						propValue = temp.clone();
-					}
-					else
-					{
-						propValue = propVal;
-					}
+					propValue = propertyClone(propVal);
 					cc.add(new PropertyChangeCommand(pGraphPanel, pEdited, oldPropValue, propValue, i));
 				}
 			}
@@ -263,9 +252,37 @@ public class GraphModificationListener
 		aUndoManager.add(dc);
 	}
 
-	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
+	/**
+	 * Clones an undefined object.
+	 * This should only be done in cases where the original object is edited, not the reference
+	 * TODO: Make this a cleaner idea
+	 * @param pObject The object to be cloned
+	 * @return The new object if it is an unrecognized type and the same object otherwise.
+	 */
+	private Object propertyClone(Object pObject)
 	{
-
+		Object temp = null;
+		if (pObject instanceof MultiLineString)
+		{
+			temp = (MultiLineString) ((MultiLineString) pObject).clone();
+		}
+		
+		//Node is purposely not cloned
+		
+		if(temp != null)
+		{
+			System.out.println(temp.equals(pObject));
+			return temp;
+		}
+		else
+		{
+			return pObject;
+		}
 	}
+	
+//	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
+//	{
+//
+//	}
 
 }
