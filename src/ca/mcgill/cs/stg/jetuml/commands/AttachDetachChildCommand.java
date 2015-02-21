@@ -1,37 +1,40 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
+/**
+ * Stores the attachment between a child and parent node.
+ * @author EJBQ
+ *
+ */
 public class AttachDetachChildCommand implements Command
 {
-	Node aNode1;
-	Node aNode2;
-	GraphPanel aGraphPanel;
-	double aX;
-	double aY;
-	boolean aAdding; //true for adding, false for deleting
+	private Node aParent;
+	private Node aChild;
+	private GraphPanel aGraphPanel;
+	private double aX;
+	private double aY;
+	private boolean aAdding; //true for adding, false for deleting
 	
 	/**
-	 * Gives us the pieces we need and sets up the command
-	 * Here pNode2 is the child of pNode1, whether attaching or detaching
-	 * @param pGraph
-	 * @param pNode1
-	 * @param pNode2
-	 * @param pAdding
+	 * Gives us the pieces we need and sets up the command.
+	 * @param pGraphPanel The panel that we are changing the children of
+	 * @param pParent The parent node
+	 * @param pChild The child node
+	 * @param pAdding True when adding, false when removing
 	 */
-	public AttachDetachChildCommand(GraphPanel pGraphPanel, Node pNode1, Node pNode2, boolean pAdding)
+	public AttachDetachChildCommand(GraphPanel pGraphPanel, Node pParent, Node pChild, boolean pAdding)
 	{
 		aGraphPanel = pGraphPanel;
-		aNode1 = pNode1;
-		aNode2 = pNode2;
+		aParent = pParent;
+		aChild = pChild;
 		aAdding = pAdding;
 	}
 	
+	/**
+	 * Undoes the command and adds/deletes the attachment.
+	 */
 	public void undo() 
 	{
 		if(aAdding)
@@ -45,7 +48,7 @@ public class AttachDetachChildCommand implements Command
 	}
 
 	/**
-	 * Performs the command and adds the node
+	 * Performs the command and adds/deletes the attachment.
 	 */
 	public void execute() 
 	{
@@ -59,6 +62,9 @@ public class AttachDetachChildCommand implements Command
 		}
 	}
 
+	/**
+	 * TODO : Delete the child attachment.
+	 */
 	private void delete() 
 	{
 		
@@ -66,6 +72,9 @@ public class AttachDetachChildCommand implements Command
 
 	}
 	
+	/**
+	 * TODO : Add the child attachment.
+	 */
 	private void add() 
 	{
 		

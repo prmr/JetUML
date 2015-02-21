@@ -37,8 +37,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
