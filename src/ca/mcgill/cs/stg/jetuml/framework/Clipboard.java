@@ -33,14 +33,14 @@ public final class Clipboard
 	//private Class<? extends Graph> aDiagramType; // We can use the diagram class to tag the type of nodes and edges.
 	private List<Node> aNodes;
 	private List<Edge> aEdges;
-	
+
 	/**
 	 * A constructor for a Clipboard object.
 	 */
 	public Clipboard() 
 	{
 	}
-	
+
 	/**
 	 * @param pSelection The currently selected elements to add to the Clipboard.
 	 */
@@ -49,141 +49,156 @@ public final class Clipboard
 		SelectionList newSelection = new SelectionList();
 		aNodes = new ArrayList<Node>();
 		aEdges = new ArrayList<Edge>();
-   		Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
-   		for(GraphElement element: pSelection)
-   		{
-   			if(element instanceof Node)
-   			{
-   				Node curNode = (Node) element;
-   				Node cloneNode = curNode.clone();
-   				newSelection.add(cloneNode);
-   				originalAndClonedNodes.put(curNode, cloneNode);
-   				aNodes.add(cloneNode);
-   				//Add children to the Selection if they are not in the current Selection.
-   				for(Node childNode:curNode.getChildren())
-   				{
-   					if(!(pSelection.contains(childNode)))
-   					{
-   						Node clonedChildNode = childNode.clone();
-   						newSelection.add(cloneNode);
-   						originalAndClonedNodes.put(childNode, clonedChildNode);
-   						aNodes.add(clonedChildNode);
-   					}
-   				}
-   			}
-   		}
-   		for(GraphElement element: pSelection)
-   		{
-   			if(element instanceof Edge)
-   			{
-   				Edge curEdge = (Edge) element;
-   				Node start = originalAndClonedNodes.get(curEdge.getStart());
-	            Node end = originalAndClonedNodes.get(curEdge.getEnd());  
-	            if (start != null && end != null)
-	            {
-	                Edge cloneEdge = (Edge) curEdge.clone();
-	                cloneEdge.connect(start, end);
-	                newSelection.add(cloneEdge);
-	                aEdges.add(cloneEdge);
-	            }
-   			}
-   		}
+		Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
+		for(GraphElement element: pSelection)
+		{
+			if(element instanceof Node)
+			{
+				Node curNode = (Node) element;
+				Node cloneNode = curNode.clone();
+				newSelection.add(cloneNode);
+				originalAndClonedNodes.put(curNode, cloneNode);
+				aNodes.add(cloneNode);
+				//Add children to the Selection if they are not in the current Selection.
+				for(Node childNode:curNode.getChildren())
+				{
+					if(!(pSelection.contains(childNode)))
+					{
+						Node clonedChildNode = childNode.clone();
+						newSelection.add(cloneNode);
+						originalAndClonedNodes.put(childNode, clonedChildNode);
+						aNodes.add(clonedChildNode);
+					}
+				}
+			}
+		}
+		for(GraphElement element: pSelection)
+		{
+			if(element instanceof Edge)
+			{
+				Edge curEdge = (Edge) element;
+				Node start = originalAndClonedNodes.get(curEdge.getStart());
+				Node end = originalAndClonedNodes.get(curEdge.getEnd());  
+				if (start != null && end != null)
+				{
+					Edge cloneEdge = (Edge) curEdge.clone();
+					cloneEdge.connect(start, end);
+					newSelection.add(cloneEdge);
+					aEdges.add(cloneEdge);
+				}
+			}
+		}
 	}
 
 	/**
+	 * A wrapper method for the pasteInto method without the pOriginalPositions parameter.
 	 * @param pGraph The current Graph to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
 	public SelectionList pasteInto(Graph pGraph)
 	{
+		return pasteInto(pGraph, false);
+	}
+
+	/**
+	 * @param pGraph The current Graph to paste contents to.
+	 * @param pOriginalPositions Whether to paste in the original position or not.
+	 * @return The elements to paste as a selectionList.
+	 */
+	public SelectionList pasteInto(Graph pGraph, boolean pOriginalPositions)
+	{
 		Rectangle2D bounds = null;
 		Node[]currentProtoTypes = pGraph.getNodePrototypes();
-   		Edge[]currentEdgeTypes = pGraph.getEdgePrototypes();
+		Edge[]currentEdgeTypes = pGraph.getEdgePrototypes();
 		ArrayList<Node> copyNodes = new ArrayList<Node>();
-			/*
-         * Clone all nodes and remember the original-cloned correspondence
-         */
-        Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
-        /*
-         * First clone all of the nodes and link them with the previous nodes. All the nodes will be iterated over in
-         * the pastSelection SelectionList
-         */
-			for(Node curNode: aNodes)
+		/*
+		 * Clone all nodes and remember the original-cloned correspondence
+		 */
+		Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
+		/*
+		 * First clone all of the nodes and link them with the previous nodes. All the nodes will be iterated over in
+		 * the pastSelection SelectionList
+		 */
+		for(Node curNode: aNodes)
+		{
+			for(Node n: currentProtoTypes)
 			{
-				for(Node n: currentProtoTypes)
+				if(curNode.getClass() == n.getClass())
 				{
-					if(curNode.getClass() == n.getClass())
-					{
-						Node newNode = curNode.clone();
-						originalAndClonedNodes.put(curNode, newNode);
-						copyNodes.add(newNode);
+					Node newNode = curNode.clone();
+					originalAndClonedNodes.put(curNode, newNode);
+					copyNodes.add(newNode);
 
-						if(bounds ==null)
-						{
-		   					bounds = curNode.getBounds();
-		   				}
-		   				else
-		   				{
-		   					bounds.add(curNode.getBounds());
-		   				}
+					if(bounds ==null)
+					{
+						bounds = curNode.getBounds();
+					}
+					else
+					{
+						bounds.add(curNode.getBounds());
 					}
 				}
-					
 			}
-			/*
-			 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
-			 * The edges will be iterated over in the pastSelection SelectionList.
-			 */
-			ArrayList<Edge> copyEdges = new ArrayList<Edge>();
-			for( Edge curEdge: aEdges)
+
+		}
+		/*
+		 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
+		 * The edges will be iterated over in the pastSelection SelectionList.
+		 */
+		ArrayList<Edge> copyEdges = new ArrayList<Edge>();
+		for( Edge curEdge: aEdges)
+		{
+			for(Edge e: currentEdgeTypes)
 			{
-				for(Edge e: currentEdgeTypes)
+				/*
+				 * Clone all edges that join copied nodes
+				 */
+				Node start = originalAndClonedNodes.get(curEdge.getStart());
+				Node end = originalAndClonedNodes.get(curEdge.getEnd());  
+				if(checkEdgeEquality(curEdge, e, pGraph) &&start != null && end != null)
 				{
-					if(checkEdgeEquality(curEdge, e, pGraph))
-					{ 
-				        /*
-				         * Clone all edges that join copied nodes
-				         */
-			            Node start = originalAndClonedNodes.get(curEdge.getStart());
-			            Node end = originalAndClonedNodes.get(curEdge.getEnd());  
-				        if (start != null && end != null)
-				        {
-				        	Edge e2 = (Edge) e.clone();
-				        	e2.connect(start, end);
-				        	copyEdges.add(e2);
-				        }
-					}
+						Edge e2 = (Edge) e.clone();
+						e2.connect(start, end);
+						copyEdges.add(e2);
 				}
-			}	
-			/*
-			 * updatedSelectionList is the selectionList to return.
-			 */
-			SelectionList updatedSelectionList = new SelectionList();
-			for(Node cloneNode: copyNodes)
+			}
+		}	
+		/*
+		 * updatedSelectionList is the selectionList to return.
+		 */
+		SelectionList updatedSelectionList = new SelectionList();
+		for(Node cloneNode: copyNodes)
+		{
+			double x = cloneNode.getBounds().getX();
+			double y = cloneNode.getBounds().getY();
+			if(!pOriginalPositions)
 			{
-				double x = cloneNode.getBounds().getX();
-				double y = cloneNode.getBounds().getY();
 				/*
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
 				pGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
-				/*
-				 * Don't add any Children to the SelectionList
-				 */
-				if(cloneNode.getParent()==null)
-				{
-					updatedSelectionList.add(cloneNode);
-				}	
 			}
-			for(Edge cloneEdge: copyEdges)
+			else
 			{
-				pGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
-				updatedSelectionList.add(cloneEdge);
+				pGraph.add(cloneNode, new Point2D.Double(x, y));
 			}
-			return updatedSelectionList;
+			/*
+			 * Don't add any Children to the SelectionList
+			 */
+			if(cloneNode.getParent()==null)
+			{
+				updatedSelectionList.add(cloneNode);
+			}
+		}
+		for(Edge cloneEdge: copyEdges)
+		{
+			pGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+			updatedSelectionList.add(cloneEdge);
+		}
+		return updatedSelectionList;
 	}
-	
+
 	/**
 	 * @param pEdge1 The copied or cut edge whose actual type needs to be determined.
 	 * @param pEdge2 The edge from the list of edge types in the pGraph.
@@ -225,7 +240,7 @@ public final class Clipboard
 		}
 		return equal;
 	}
-	
+
 	/**
 	 * @param pEdge1 The copied or cut Edge whose actual type needs to be determined.
 	 * @param pEdge2 The edge from the list of ClassRelationshipEdges in the pGraph.
@@ -253,8 +268,8 @@ public final class Clipboard
 		return false;
 	}
 }
-	
 
-	
-	
-		
+
+
+
+
