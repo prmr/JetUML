@@ -63,6 +63,7 @@ public class PropertyChangeCommand implements Command
 			e.printStackTrace();
 			return;
 		}
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 
@@ -89,6 +90,7 @@ public class PropertyChangeCommand implements Command
 			e.printStackTrace();
 			return;
 		}
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 

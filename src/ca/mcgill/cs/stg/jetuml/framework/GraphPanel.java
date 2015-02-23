@@ -154,6 +154,14 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
+	 * Resets the layout of the graph if there was a change made.
+	 */
+	public void layoutGraph()
+	{
+		aGraph.layout();
+	}
+	
+	/**
 	 * Removes the node from aGraph.
 	 * @param pNode the node to be deleted
 	 */

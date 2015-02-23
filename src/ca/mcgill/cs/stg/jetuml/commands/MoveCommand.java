@@ -35,6 +35,7 @@ public class MoveCommand implements Command
 	public void undo() 
 	{
 		aGraphPanel.moveNode(aNode, -aDX, -aDY);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 
@@ -44,6 +45,7 @@ public class MoveCommand implements Command
 	public void execute() 
 	{
 		aGraphPanel.moveNode(aNode, aDX, aDY);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 

@@ -68,6 +68,7 @@ public class AddDeleteNodeCommand implements Command
 	private void delete() 
 	{
 		aGraphPanel.removeNode(aNode);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 	
@@ -78,6 +79,7 @@ public class AddDeleteNodeCommand implements Command
 	{
 		Point.Double point = new Point.Double(aX, aY);
 		aGraphPanel.addNode(aNode, point);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 	

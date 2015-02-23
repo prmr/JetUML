@@ -67,7 +67,7 @@ public class AttachDetachChildCommand implements Command
 	 */
 	private void delete() 
 	{
-		
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 
 	}
@@ -77,7 +77,7 @@ public class AttachDetachChildCommand implements Command
 	 */
 	private void add() 
 	{
-		
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 	

@@ -71,6 +71,7 @@ public class AddDeleteEdgeCommand implements Command
 	private void delete() 
 	{
 		aGraphPanel.removeEdge(aEdge);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 	
@@ -84,6 +85,7 @@ public class AddDeleteEdgeCommand implements Command
 		Point.Double n2Point = new Point.Double();
 		n2Point.setLocation(aP2.getBounds().getX() + 1, aP2.getBounds().getY() + 1);
 		aGraphPanel.addEdge(aEdge, n1Point, n2Point);
+		aGraphPanel.layoutGraph();
 		aGraphPanel.repaint();
 	}
 	
