@@ -166,7 +166,6 @@ public class GraphModificationListener
 			for(int i = 0; i< aPropertyValues.length; i++)
 			{
 				final Method getter = oldDescriptors[i].getReadMethod();
-				System.out.println(getter.getName());
 				aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
 				aPropertyValues[i] = propertyClone(aPropertyValues[i]);
 			}
@@ -200,9 +199,8 @@ public class GraphModificationListener
 			for(int i = 0; i<descriptors.length; i++)
 			{
 				final Method getter = descriptors[i].getReadMethod();
-				System.out.println(getter.getName());
 				Object propVal = getter.invoke(pEdited, new Object[] {});
-				if (!propVal.equals(aPropertyValues[i]))
+				if (!propertyEquals(propVal, aPropertyValues[i]))
 				{
 					Object oldPropValue = aPropertyValues[i];
 					Object propValue;
@@ -271,12 +269,38 @@ public class GraphModificationListener
 		
 		if(temp != null)
 		{
-			System.out.println(temp.equals(pObject));
 			return temp;
 		}
 		else
 		{
 			return pObject;
+		}
+	}
+	
+	/**
+	 * Tests if two objects are equal, allowing for special cases like MultiLineString.	 
+	 * TODO: Make this a cleaner idea
+	 * @param pObject1 The first object to test
+	 * @param pObject2 The second object to test
+	 * @return The new object if it is an unrecognized type and the same object otherwise.
+	 */
+	private boolean propertyEquals(Object pObject1, Object pObject2)
+	{
+		if(pObject1 == null || pObject1 == null)
+		{
+			return false;
+		}
+		if (pObject1 instanceof MultiLineString && pObject2 instanceof MultiLineString)
+		{
+			return ((MultiLineString) pObject1).equalProperties((MultiLineString) pObject2);
+		}
+		if (pObject1 instanceof String && pObject2 instanceof String)
+		{
+			return ((String) pObject1).equals((String) pObject2);
+		}
+		else
+		{
+			return pObject1.equals(pObject2);
 		}
 	}
 	
