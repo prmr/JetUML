@@ -158,7 +158,7 @@ public class GraphModificationListener
 		{
 			double dY = selectionBounds2[i].getY() - aSelectionBounds[i].getY();
 			double dX = selectionBounds2[i].getX() - aSelectionBounds[i].getX();
-			if (dX > 0 || dY > 0)
+			if (dX != 0 || dY != 0)
 			{
 				cc.add(new MoveCommand(pGraphPanel, aSelectionNodes[i], dX, dY));
 			}
