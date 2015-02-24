@@ -13,6 +13,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AttachDetachChildCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
@@ -45,6 +46,14 @@ public class GraphModificationListener
 	public void nodeAdded(GraphPanel pGraphPanel, Node pNode)
 	{
 		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraphPanel, pNode, true);
+		if(pNode.getParent() != null)
+		{
+			aUndoManager.startTracking();
+			childAttached(pGraphPanel, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
+			aUndoManager.add(ac);
+			aUndoManager.endTracking();
+			return;
+		}
 		aUndoManager.add(ac);
 	}
 
@@ -56,6 +65,14 @@ public class GraphModificationListener
 	public void nodeRemoved(GraphPanel pGraphPanel, Node pNode)
 	{
 		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraphPanel, pNode, false);
+		if(pNode.getParent() != null)
+		{
+			aUndoManager.startTracking();
+			childDetached(pGraphPanel, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
+			aUndoManager.add(dc);
+			aUndoManager.endTracking();
+			return;
+		}
 		aUndoManager.add(dc);
 	}
 
@@ -81,7 +98,8 @@ public class GraphModificationListener
 	 */
 	public void childAttached(GraphPanel pGraphPanel, int pIndex, Node pParent, Node pChild)
 	{
-
+		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraphPanel, pIndex, pParent, pChild, true);
+		aUndoManager.add(adc);
 	}
 
 	/**
@@ -93,7 +111,8 @@ public class GraphModificationListener
 	 */
 	public void childDetached(GraphPanel pGraphPanel, int pIndex, Node pParent, Node pChild)
 	{
-
+		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraphPanel, pIndex, pParent, pChild, false);
+		aUndoManager.add(adc);
 	}
 
 	/**
@@ -166,8 +185,11 @@ public class GraphModificationListener
 			for(int i = 0; i< aPropertyValues.length; i++)
 			{
 				final Method getter = oldDescriptors[i].getReadMethod();
-				aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
-				aPropertyValues[i] = propertyClone(aPropertyValues[i]);
+				if (getter != null)
+				{
+					aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
+					aPropertyValues[i] = propertyClone(aPropertyValues[i]);
+				}
 			}
 		} 
 		catch (IntrospectionException e) 
@@ -199,13 +221,16 @@ public class GraphModificationListener
 			for(int i = 0; i<descriptors.length; i++)
 			{
 				final Method getter = descriptors[i].getReadMethod();
-				Object propVal = getter.invoke(pEdited, new Object[] {});
-				if (!propertyEquals(propVal, aPropertyValues[i]))
+				if(getter != null)
 				{
-					Object oldPropValue = aPropertyValues[i];
-					Object propValue;
-					propValue = propertyClone(propVal);
-					cc.add(new PropertyChangeCommand(pGraphPanel, pEdited, oldPropValue, propValue, i));
+					Object propVal = getter.invoke(pEdited, new Object[] {});
+					if (!propertyEquals(propVal, aPropertyValues[i]))
+					{
+						Object oldPropValue = aPropertyValues[i];
+						Object propValue;
+						propValue = propertyClone(propVal);
+						cc.add(new PropertyChangeCommand(pGraphPanel, pEdited, oldPropValue, propValue, i));
+					}
 				}
 			}
 		}
@@ -264,9 +289,9 @@ public class GraphModificationListener
 		{
 			temp = (MultiLineString) ((MultiLineString) pObject).clone();
 		}
-		
+
 		//Node is purposely not cloned
-		
+
 		if(temp != null)
 		{
 			return temp;
@@ -276,7 +301,7 @@ public class GraphModificationListener
 			return pObject;
 		}
 	}
-	
+
 	/**
 	 * Tests if two objects are equal, allowing for special cases like MultiLineString.	 
 	 * TODO: Make this a cleaner idea
@@ -303,10 +328,10 @@ public class GraphModificationListener
 			return pObject1.equals(pObject2);
 		}
 	}
-	
-//	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
-//	{
-//
-//	}
+
+	//	void propertyChangedOnNodeOrEdge(GraphPanel pGraphPanel, PropertyChangeEvent pEvent)
+	//	{
+	//
+	//	}
 
 }

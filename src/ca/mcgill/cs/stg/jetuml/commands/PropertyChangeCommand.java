@@ -39,7 +39,7 @@ public class PropertyChangeCommand implements Command
 		aIndex = pIndex;
 	}
 
-	
+
 	/**
 	 * Undoes the command and changes the property of the Object to the old value.
 	 */
@@ -51,7 +51,10 @@ public class PropertyChangeCommand implements Command
 			info = Introspector.getBeanInfo(aObject.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
 			final Method setter = descriptors[aIndex].getWriteMethod();
-			setter.invoke(aObject, new Object[] {aPrevPropValue});
+			if (setter != null)
+			{
+				setter.invoke(aObject, new Object[] {aPrevPropValue});
+			}
 		}
 		catch (IntrospectionException e) 
 		{
@@ -78,7 +81,10 @@ public class PropertyChangeCommand implements Command
 			info = Introspector.getBeanInfo(aObject.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
 			final Method setter = descriptors[aIndex].getWriteMethod();
-			setter.invoke(aObject, new Object[] {aNewPropValue});
+			if(setter!= null)
+			{
+				setter.invoke(aObject, new Object[] {aNewPropValue});
+			}
 		}
 		catch (IntrospectionException e) 
 		{

@@ -184,6 +184,7 @@ public class GraphPanel extends JPanel
 	/**
 	 * Adds the node to aGraph.
 	 * @param pNode the node to be added
+	 * @param pPoint The location to add the node
 	 */
 	public void addNode(Node pNode, Point.Double pPoint)
 	{
@@ -194,11 +195,37 @@ public class GraphPanel extends JPanel
 	/**
 	 * Adds the edge to aGraph.
 	 * @param pEdge the node to be added
+	 * @param pPoint1 The start point
+	 * @param pPoint2 The end point
 	 */
 	public void addEdge(Edge pEdge, Point.Double pPoint1, Point.Double pPoint2)
 	{
 		aGraph.connect(pEdge, pPoint1, pPoint2);
 		aModListener.edgeAdded(this, pEdge);
+	}
+	
+	/**
+	 * Adds the child node to the parent as a child.
+	 * @param pParent The parent node to be added to
+	 * @param pChild The child node to be added
+	 * @param pIndex The index of the parent at which  to add the child
+	 */
+	public void addChild(int pIndex, Node pParent, Node pChild)
+	{
+		pParent.removeChild(pChild);
+		aModListener.childDetached(this, pIndex, pParent, pChild);
+	}
+	
+	/**
+	 * Removes the child node from the parent.
+	 * @param pParent The parent node to be removed from
+	 * @param pChild The child node to be remove
+	 * @param pIndex The index of the parent from which to remove the child
+	 */
+	public void removeChild(int pIndex, Node pParent, Node pChild)
+	{
+		pParent.addChild(pIndex, pChild);
+		aModListener.childAttached(this, pIndex, pParent, pChild);
 	}
 	
 	/**
