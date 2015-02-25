@@ -565,7 +565,7 @@ public class EditorFrame extends JFrame
 			if(frames[i] instanceof GraphFrame)
 			{
 				GraphFrame frame = (GraphFrame)frames[i];
-				if(frame.getFileName() != null && new File(frame.getFileName()).getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				if(frame.getFileName() != null && frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
 					try
 					{
@@ -584,7 +584,7 @@ public class EditorFrame extends JFrame
 			Graph graph = read(new FileInputStream(pName));
 			GraphFrame frame = new GraphFrame(graph);
 			addInternalFrame(frame);
-			frame.setFileName(new File(pName).getName());    
+			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
 			setTitle();
 		}
@@ -648,14 +648,14 @@ public class EditorFrame extends JFrame
    		else
    		{
    			GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-   			String fileName = frame.getFileName();
-   			if( fileName == null )
+   			File file = frame.getFileName();
+   			if( file == null )
    			{
    				setTitle(appName);
    			}
    			else
    			{
-   				setTitle(appName + " - " + fileName);
+   				setTitle(appName + " - " + file.getAbsolutePath());
    			}
    		}
    }
@@ -864,14 +864,15 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		String fileName = frame.getFileName(); 
-   		if(fileName == null) 
-   		{	saveAs(); 
+   		File file = frame.getFileName(); 
+   		if(file == null) 
+   		{	
+   			saveAs(); 
    			return; 
    		}
    		try
    		{
-   			saveFile(frame.getGraph(), new FileOutputStream(fileName));
+   			saveFile(frame.getGraph(), new FileOutputStream(file));
    			frame.getGraphPanel().setModified(false);
    		}        
    		catch(Exception exception)
@@ -902,7 +903,7 @@ public class EditorFrame extends JFrame
    			
    			if(frame.getFileName() != null)
    			{           
-   				fileChooser.setSelectedFile(new File(frame.getFileName()));
+   				fileChooser.setSelectedFile(frame.getFileName());
    			}
    			else 
    			{
@@ -945,7 +946,7 @@ public class EditorFrame extends JFrame
    					out.close();
    				}
    				addRecentFile(result.getAbsolutePath());
-   				frame.setFileName(result.getName());
+   				frame.setFile(result);
    				setTitle();
    				frame.getGraphPanel().setModified(false);
    			}
@@ -1044,7 +1045,7 @@ public class EditorFrame extends JFrame
 		fileChooser.setCurrentDirectory(new File("."));
 		if(frame.getFileName() != null)
 		{
-			File f = new File(replaceExtension(frame.getFileName(), aAppResources.getString("files.extension"), ""));                  
+			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));                  
 			fileChooser.setSelectedFile(f);
 		}
 		else    			

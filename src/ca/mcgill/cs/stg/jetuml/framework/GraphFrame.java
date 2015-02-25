@@ -27,6 +27,7 @@ import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JInternalFrame;
@@ -44,7 +45,7 @@ public class GraphFrame extends JInternalFrame
 	private Graph aGraph;
 	private GraphPanel aPanel;
 	private ToolBar aToolBar;
-	private String aFileName;
+	private File aFile; // The file associated with this graph
 	
 	/**
      * Constructs a graph frame with an empty tool bar.
@@ -104,23 +105,49 @@ public class GraphFrame extends JInternalFrame
    	{
 		return aPanel;
    	}
-
+	
 	/**
-     * Gets the fileName property.
-     * @return the file name
+	 * Sets the title of the frame as the file name if there
+	 * is a file name. 
+	 * 
+	 * @param pModified If the file is in modified (unsaved) state,
+	 * appends an asterisk to the frame title.
 	 */
-	public String getFileName()
+	public void setTitle(boolean pModified)
 	{
-		return aFileName;
+		if(aFile != null)
+		{
+			String title = aFile.getName();
+			if(pModified)
+			{
+				if(!getTitle().endsWith("*"))
+				{
+					setTitle(title + "*");
+				}
+			}
+			else
+			{
+				setTitle(title);
+			}
+		}
 	}
 
 	/**
-     * Sets the fileName property.
-     * @param pNewValue the file name
+     * Gets the file property.
+     * @return the file associated with this graph
 	 */
-	public void setFileName(String pNewValue)
+	public File getFileName()
 	{
-		aFileName = pNewValue;
-		setTitle(pNewValue);
+		return aFile;
+	}
+
+	/**
+     * Sets the file property.
+     * @param pFile The file associated with this graph
+	 */
+	public void setFile(File pFile)
+	{
+		aFile = pFile;
+		setTitle(aFile.getName());
 	}
 }
