@@ -214,7 +214,8 @@ public final class Clipboard
 		{
 			if(pEdge1 instanceof ClassRelationshipEdge && pEdge2 instanceof ClassRelationshipEdge)
 			{
-				equal = classDiagramEdgeEqual((ClassRelationshipEdge)pEdge1, (ClassRelationshipEdge)pEdge2, (ClassDiagramGraph)pGraph);
+				equal = classDiagramEdgeEqual((ClassRelationshipEdge)pEdge1, (ClassRelationshipEdge)pEdge2, pGraph);
+
 			}
 		}
 		else if(pGraph instanceof ObjectDiagramGraph)
@@ -248,7 +249,7 @@ public final class Clipboard
 	 * @param pGraph The current ClassDiagramGraph in the GraphPanel
 	 * @return true if the two edges have the same type, false otherwise.
 	 */
-	public boolean classDiagramEdgeEqual(ClassRelationshipEdge pEdge1, ClassRelationshipEdge pEdge2, ClassDiagramGraph pGraph)
+	public boolean classDiagramEdgeEqual(ClassRelationshipEdge pEdge1, ClassRelationshipEdge pEdge2, Graph pGraph)
 	{
 		if(pEdge1.getLineStyle() == pEdge2.getLineStyle())
 		{
@@ -268,6 +269,7 @@ public final class Clipboard
 		}
 		return false;
 	}
+
 }
 
 
