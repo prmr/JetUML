@@ -95,9 +95,9 @@ public final class Clipboard
 	 * @param pGraph The current Graph to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
-	public SelectionList pasteInto(Graph pGraph)
+	public SelectionList pasteInto(GraphPanel pGraphPanel)
 	{
-		return pasteInto(pGraph, false);
+		return pasteInto(pGraphPanel, false);
 	}
 
 	/**
@@ -105,11 +105,12 @@ public final class Clipboard
 	 * @param pOriginalPositions Whether to paste in the original position or not.
 	 * @return The elements to paste as a selectionList.
 	 */
-	public SelectionList pasteInto(Graph pGraph, boolean pOriginalPositions)
+	public SelectionList pasteInto(GraphPanel pGraphPanel, boolean pOriginalPositions)
 	{
 		Rectangle2D bounds = null;
-		Node[]currentProtoTypes = pGraph.getNodePrototypes();
-		Edge[]currentEdgeTypes = pGraph.getEdgePrototypes();
+		Graph aGraph = pGraphPanel.getGraph();
+		Node[]currentProtoTypes = aGraph.getNodePrototypes();
+		Edge[]currentEdgeTypes = aGraph.getEdgePrototypes();
 		ArrayList<Node> copyNodes = new ArrayList<Node>();
 		/*
 		 * Clone all nodes and remember the original-cloned correspondence
@@ -155,7 +156,7 @@ public final class Clipboard
 				 */
 				Node start = originalAndClonedNodes.get(curEdge.getStart());
 				Node end = originalAndClonedNodes.get(curEdge.getEnd());  
-				if(checkEdgeEquality(curEdge, e, pGraph) &&start != null && end != null)
+				if(checkEdgeEquality(curEdge, e, aGraph) &&start != null && end != null)
 				{
 						Edge e2 = (Edge) e.clone();
 						e2.connect(start, end);
@@ -177,11 +178,11 @@ public final class Clipboard
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
-				pGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
+				pGraphPanel.addNode(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
 			}
 			else
 			{
-				pGraph.add(cloneNode, new Point2D.Double(x, y));
+				pGraphPanel.addNode(cloneNode, new Point2D.Double(x, y));
 			}
 			/*
 			 * Don't add any Children to the SelectionList
@@ -193,7 +194,7 @@ public final class Clipboard
 		}
 		for(Edge cloneEdge: copyEdges)
 		{
-			pGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+			pGraphPanel.addEdge(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
 			updatedSelectionList.add(cloneEdge);
 		}
 		return updatedSelectionList;

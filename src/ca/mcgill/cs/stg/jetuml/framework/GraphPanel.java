@@ -162,6 +162,14 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
+	 * Returns the graph in this panel.
+	 */
+	public Graph getGraph()
+	{
+		return aGraph;
+	}
+	
+	/**
 	 * Removes the node from aGraph.
 	 * @param pNode the node to be deleted
 	 */
@@ -201,6 +209,18 @@ public class GraphPanel extends JPanel
 	public void addEdge(Edge pEdge, Point.Double pPoint1, Point.Double pPoint2)
 	{
 		aGraph.connect(pEdge, pPoint1, pPoint2);
+		aModListener.edgeAdded(this, pEdge);
+	}
+	
+	/**
+	 * Adds the edge to aGraph.
+	 * @param pEdge the node to be added
+	 * @param pNode1 The start point
+	 * @param pNode2 The end point
+	 */
+	public void addEdge(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		aGraph.connect(pEdge, pNode1, pNode2);
 		aModListener.edgeAdded(this, pEdge);
 	}
 	

@@ -802,7 +802,7 @@ public class EditorFrame extends JFrame
    		try
    		{
    			//This method call handles all the paste logic on the current GraphPanel.
-   			SelectionList updatedSelectionList = aClipboard.pasteInto(curGraph);
+   			SelectionList updatedSelectionList = aClipboard.pasteInto(panel);
    			panel.setSelectionList(updatedSelectionList);
    			panel.repaint();
    		}
