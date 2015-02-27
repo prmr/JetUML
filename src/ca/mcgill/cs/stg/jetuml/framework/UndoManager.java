@@ -14,7 +14,7 @@ public class UndoManager
 {
 	private Stack<Command> aPastCommands; //the commands that have been input and can be undone
 	private Stack<Command> aUndoneCommands; //the commands that have been undone and can be redone
-	private CompoundCommand aTrackingCommand; //used for many commands coming at once
+	private Stack<CompoundCommand> aTrackingCommands; //used for many commands coming at once
 	private boolean aTracking; //turned on to allow many things to be changed in one command
 	private boolean aHoldChanges = false; //turned on while undoing or redoing to prevent duplication
 	private GraphPanel aGraphPanel;
@@ -30,6 +30,8 @@ public class UndoManager
 		aGraphPanel = pPanel;
 		aPastCommands = new Stack<Command>();
 		aUndoneCommands = new Stack<Command>();
+		aTrackingCommands = new Stack<CompoundCommand>();
+		aTracking = false;
 	}
 
 	/**
@@ -47,9 +49,9 @@ public class UndoManager
 			{
 				aUndoneCommands.clear();
 			}
-			if(aTracking)
+			if(aTracking && !aTrackingCommands.empty())
 			{
-				aTrackingCommand.add(pCommand);
+				aTrackingCommands.peek().add(pCommand);
 			}
 			else
 			{
@@ -103,7 +105,7 @@ public class UndoManager
 	public void startTracking()
 	{
 		aTracking = true;
-		aTrackingCommand = new CompoundCommand();
+		aTrackingCommands.push(new CompoundCommand());
 	}
 
 	/**
@@ -111,10 +113,17 @@ public class UndoManager
 	 */
 	public void endTracking()
 	{
-		aTracking = false;
-		if(aTrackingCommand.size() > 0)
+		if(!aTrackingCommands.empty())
 		{
-			add(aTrackingCommand);
+			CompoundCommand cc = aTrackingCommands.pop(); 
+			if(cc.size() > 0)
+			{
+				add(cc);
+			}
+		}
+		if(!aTrackingCommands.empty())
+		{
+			aTracking = false;
 		}
 	}
 

@@ -168,6 +168,7 @@ public final class Clipboard
 		 * updatedSelectionList is the selectionList to return.
 		 */
 		SelectionList updatedSelectionList = new SelectionList();
+		pGraphPanel.startCompoundListening();
 		for(Node cloneNode: copyNodes)
 		{
 			double x = cloneNode.getBounds().getX();
@@ -197,6 +198,7 @@ public final class Clipboard
 			pGraphPanel.addEdge(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
 			updatedSelectionList.add(cloneEdge);
 		}
+		pGraphPanel.endCompoundListening();
 		return updatedSelectionList;
 	}
 

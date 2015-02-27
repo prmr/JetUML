@@ -252,11 +252,27 @@ public class GraphPanel extends JPanel
 	 * Moves the node in aGraph by DX and DY.
 	 * @param pNode the node to be moved
 	 * @param pDX the amount to move in the x direction
-	 * @param pDY the amounnt to move in the y direction
+	 * @param pDY the amount to move in the y direction
 	 */
 	public void moveNode(Node pNode, double pDX, double pDY) 
 	{
 		pNode.translate(pDX, pDY);
+	}
+	
+	/**
+	 * Collects all coming calls into single undo - redo command
+	 */
+	public void startCompoundListening() 
+	{
+		aUndo.startTracking();
+	}
+	
+	/**
+	 * Ends collecting all coming calls into single undo - redo command
+	 */
+	public void endCompoundListening() 
+	{
+		aUndo.endTracking();
 	}
 	
 	/**
