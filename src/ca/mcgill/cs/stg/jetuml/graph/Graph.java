@@ -46,6 +46,7 @@ public abstract class Graph
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
+	private GraphModificationListener aModListener;
 	
 	/**
      * Constructs a graph with no nodes or edges.
@@ -57,6 +58,14 @@ public abstract class Graph
 		aNodesToBeRemoved = new ArrayList<>();
 		aEdgesToBeRemoved = new ArrayList<>();
 		aNeedsLayout = true;
+	}
+	
+	/**
+	 * Adds the modification listener.
+	 */
+	public void addModificationListener(GraphModificationListener pModListener)
+	{
+		aModListener = pModListener;
 	}
 	
 	/**
@@ -90,6 +99,7 @@ public abstract class Graph
 			if(n1.addEdge(pEdge, pPoint1, pPoint2) && pEdge.getEnd() != null)
 			{
 				aEdges.add(pEdge);
+				aModListener.edgeAdded(this, pEdge);
 				if(!aNodes.contains(pEdge.getEnd()))
 				{
 					aNodes.add(pEdge.getEnd());
@@ -112,9 +122,11 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-
+		
 		boolean accepted = false;
 		boolean insideANode = false;
+		aModListener.startCompoundListening();
+		aModListener.nodeAdded(this, pNode);
 		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
 		{
 			Node parent = aNodes.get(i);
@@ -123,6 +135,7 @@ public abstract class Graph
 				insideANode = true;
 				if (parent.addNode(pNode, pPoint))
 				{
+					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, pNode);
 					accepted = true;
 				}
 			}	
@@ -131,6 +144,7 @@ public abstract class Graph
 		{
 			return false;
 		}
+		aModListener.endCompoundListening();
 		aNodes.add(pNode);
 		aNeedsLayout = true;
 		return true;
@@ -223,11 +237,17 @@ public abstract class Graph
 		{
 			return;
 		}
+		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
+		aModListener.nodeRemoved(this, pNode);
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
+			if(n2.getParent()!= null && n2.getParent().equals(this))
+			{
+				aModListener.childDetached(this, pNode.getChildren().indexOf(n2), pNode, n2);
+			}
 			n2.removeNode(this, pNode);
 		}
 		for(int i = 0; i < aEdges.size(); i++)
@@ -243,6 +263,7 @@ public abstract class Graph
 		{
 			removeNode(childNode);
 		}
+		aModListener.endCompoundListening();
 		aNeedsLayout = true;
 	}
 	
@@ -291,6 +312,7 @@ public abstract class Graph
 			return;
 		}
 		aEdgesToBeRemoved.add(pEdge);
+		aModListener.edgeRemoved(this, pEdge);
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
@@ -446,6 +468,7 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
+		aModListener.nodeAdded(this, pNode);
 		aNodes.add(pNode); 
 	}
 
@@ -459,11 +482,8 @@ public abstract class Graph
 	public void connect(Edge pEdge, Node pStart, Node pEnd)
 	{
      	pEdge.connect(pStart, pEnd);
+     	aModListener.edgeAdded(this, pEdge);
      	aEdges.add(pEdge);
 	}
 }
-
-
-
-
 

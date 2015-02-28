@@ -2,7 +2,7 @@ package ca.mcgill.cs.stg.jetuml.commands;
 
 import java.awt.Point;
 
-import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -12,20 +12,20 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class AddDeleteNodeCommand implements Command
 {
 	private Node aNode;
-	private GraphPanel aGraphPanel;
+	private Graph aGraph;
 	private double aX;
 	private double aY;
 	private boolean aAdding; //true for adding, false for deleting
 	
 	/**
 	 * Creates the command.
-	 * @param pGraphPanel The panel to add/delete the node
+	 * @param pGraph The panel to add/delete the node
 	 * @param pNode The node to be added/deleted
 	 * @param pAdding True when adding, false when deleting
 	 */
-	public AddDeleteNodeCommand(GraphPanel pGraphPanel, Node pNode, boolean pAdding)
+	public AddDeleteNodeCommand(Graph pGraph, Node pNode, boolean pAdding)
 	{
-		aGraphPanel = pGraphPanel;
+		aGraph = pGraph;
 		aNode = pNode;
 		aX = aNode.getBounds().getMinX();
 		aY = aNode.getBounds().getMinY();
@@ -67,9 +67,8 @@ public class AddDeleteNodeCommand implements Command
 	 */
 	private void delete() 
 	{
-		aGraphPanel.removeNode(aNode);
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.removeNode(aNode);
+		aGraph.layout();
 	}
 	
 	/**
@@ -78,9 +77,8 @@ public class AddDeleteNodeCommand implements Command
 	private void add() 
 	{
 		Point.Double point = new Point.Double(aX, aY);
-		aGraphPanel.addNode(aNode, point);
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.add(aNode, point);
+		aGraph.layout();
 	}
 	
 }

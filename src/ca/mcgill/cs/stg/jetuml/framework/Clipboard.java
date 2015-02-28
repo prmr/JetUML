@@ -179,11 +179,11 @@ public final class Clipboard
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
-				pGraphPanel.addNode(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
+				aGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
 			}
 			else
 			{
-				pGraphPanel.addNode(cloneNode, new Point2D.Double(x, y));
+				aGraph.addNode(cloneNode, new Point2D.Double(x, y));
 			}
 			/*
 			 * Don't add any Children to the SelectionList
@@ -195,7 +195,7 @@ public final class Clipboard
 		}
 		for(Edge cloneEdge: copyEdges)
 		{
-			pGraphPanel.addEdge(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+			aGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
 			updatedSelectionList.add(cloneEdge);
 		}
 		pGraphPanel.endCompoundListening();

@@ -1,6 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
@@ -15,22 +15,22 @@ public class AttachDetachChildCommand implements Command
 {
 	private Node aParent;
 	private Node aChild;
-	private GraphPanel aGraphPanel;
+	private Graph aGraph;
 	private boolean aAdding; //true for adding, false for deleting
 	private int aIndex;
 	
 	/**
 	 * Gives us the pieces we need and sets up the command.
 	 * @param pIndex The index of the parent the child belongs to
-	 * @param pGraphPanel The panel that we are changing the children of
+	 * @param pGraph The panel that we are changing the children of
 	 * @param pParent The parent node
 	 * @param pChild The child node
 	 * @param pAdding True when adding, false when removing
 	 */
-	public AttachDetachChildCommand(GraphPanel pGraphPanel, int pIndex, Node pParent, Node pChild, boolean pAdding)
+	public AttachDetachChildCommand(Graph pGraph, int pIndex, Node pParent, Node pChild, boolean pAdding)
 	{
 		aIndex = pIndex;
-		aGraphPanel = pGraphPanel;
+		aGraph = pGraph;
 		aParent = pParent;
 		aChild = pChild;
 		aAdding = pAdding;
@@ -83,8 +83,7 @@ public class AttachDetachChildCommand implements Command
 		{
 			((ActorNode) aParent).removeChild(aChild);
 		}
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.layout();
 	}
 	
 	/**
@@ -104,8 +103,7 @@ public class AttachDetachChildCommand implements Command
 		{
 			((ActorNode) aParent).addChild(aIndex, aChild);
 		}
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.layout();
 	}
 	
 }
