@@ -796,7 +796,6 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		Graph curGraph = frame.getGraph();
    		
    		GraphPanel panel = frame.getGraphPanel();
    		try

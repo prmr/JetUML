@@ -124,26 +124,26 @@ public abstract class Graph
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
 		
 		boolean accepted = false;
-		boolean insideANode = false;
+		/* A variable commented out during testing. @JoelChev */
+		//boolean insideANode = false;
 		aModListener.startCompoundListening();
 		aModListener.nodeAdded(this, pNode);
 		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
 		{
 			Node parent = aNodes.get(i);
-			if (parent.contains(pPoint)) 
+
+			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
 			{
-				insideANode = true;
-				if (parent.addNode(pNode, pPoint))
-				{
-					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, pNode);
-					accepted = true;
-				}
+				//insideANode = true;
+				aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, pNode);
+				accepted = true;
 			}	
-			}
-		if(insideANode && !accepted)
-		{
-			return false;
 		}
+//		if(insideANode && !accepted)
+//		{
+//			System.out.println("FALSE!");
+//			return false;
+//		}
 		aModListener.endCompoundListening();
 		aNodes.add(pNode);
 		aNeedsLayout = true;
