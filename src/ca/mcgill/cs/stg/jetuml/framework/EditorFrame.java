@@ -72,6 +72,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -105,7 +106,7 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aAppResources;
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
-	private JDesktopPane aDesktop;
+	private JTabbedPane aTabbedPane;
 	private JMenu aNewMenu;
 	private Clipboard aClipboard = new Clipboard();
 	
@@ -149,16 +150,16 @@ public class EditorFrame extends JFrame
             }
 		});
 
-		aDesktop = new JDesktopPane();
-		setContentPane(aDesktop);
+		aTabbedPane = new JTabbedPane();
+		setContentPane(aTabbedPane);
 
      	setJMenuBar(new JMenuBar());
      	
 		createFileMenu(factory);
 		createEditMenu(factory);
 		createViewMenu(factory);
-    	createWindowMenu(factory);
      	createHelpMenu(factory);
+
 	}
 	
 	private void createFileMenu(MenuFactory pFactory)
@@ -204,7 +205,7 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
-               final GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -218,7 +219,7 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
-               final GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -232,7 +233,7 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
-               final GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -251,7 +252,7 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -273,7 +274,7 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -287,7 +288,7 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -301,7 +302,7 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
-     			GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
      			if(frame == null)
 				{
 					return;
@@ -319,7 +320,7 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
-     			GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
      			if(frame == null)
 				{
 					return;
@@ -335,7 +336,7 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
                if(frame == null)
                {
             	   return;
@@ -351,7 +352,7 @@ public class EditorFrame extends JFrame
      	{
      		public void menuSelected(MenuEvent pEvent)
             {
-     			GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
                 if(frame == null)
 				{
 					return;
@@ -366,120 +367,6 @@ public class EditorFrame extends JFrame
      	});
 	}
 	
-	private void createWindowMenu(MenuFactory pFactory)
-	{
-		JMenuBar menuBar = getJMenuBar();
-		JMenu windowMenu = pFactory.createMenu("window");
-		menuBar.add(windowMenu);
-
-		windowMenu.add(pFactory.createMenuItem("window.next", new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				JInternalFrame[] frames = aDesktop.getAllFrames();
-				for (int i = 0; i < frames.length; i++)
-				{
-					if(frames[i] == aDesktop.getSelectedFrame())
-					{
-						i++; 
-						if(i == frames.length)
-						{
-							i = 0;
-						}
-						try
-						{
-							frames[i].toFront();
-							frames[i].setSelected(true); 
-						}
-						catch (PropertyVetoException exception)
-						{}
-						return;
-					}
-				}
-			}
-		}));
-
-	      windowMenu.add(pFactory.createMenuItem("window.previous", new ActionListener()
-	      {
-	    	  public void actionPerformed(ActionEvent pEvent)
-	    	  {
-	    		  JInternalFrame[] frames = aDesktop.getAllFrames();
-	    		  for(int i = 0; i < frames.length; i++)
-	    		  {
-	    			  if(frames[i] == aDesktop.getSelectedFrame())
-	                  {
-	                     if (i == 0)
-	                     {
-							i = frames.length;
-	                     }	
-	                     i--; 
-	                     try
-	                     {
-	                        frames[i].toFront();
-	                        frames[i].setSelected(true); 
-	                     }
-	                     catch (PropertyVetoException exception)
-	                     {}
-	                     return;
-	                  }
-	    		  }
-	    	  }
-	      }));
-
-	      windowMenu.add(pFactory.createMenuItem("window.maximize", new ActionListener()
-	      {
-	    	  public void actionPerformed(ActionEvent pEvent)
-	    	  {
-	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-	    		  if(frame == null)
-	    		  {
-	    			  return;
-	    		  }
-	              try
-	              {
-	            	  frame.setMaximum(true);
-	              }
-	              catch(PropertyVetoException exception)
-	              {}
-	    	  }
-	      }));
-
-	      windowMenu.add(pFactory.createMenuItem("window.restore", new ActionListener()
-	      {
-	    	  public void actionPerformed(ActionEvent pEvent)
-	    	  {
-	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-	    		  if(frame == null)
-	    		  {
-	    			  return;
-	    		  }
-	    		  try
-	              {
-	    			  frame.setMaximum(false);
-	              }
-	    		  catch (PropertyVetoException exception) 
-	    		  {}
-	    	  }
-	      }));
-
-	      windowMenu.add(pFactory.createMenuItem("window.close", new ActionListener()
-	      {
-	    	  public void actionPerformed(ActionEvent pEvent)
-	          {
-	    		  GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
-	              if(frame == null)
-	              {
-	            	  return;
-	              }
-	              try
-	              {
-	            	  frame.setClosed(true);
-	              }
-	              catch(PropertyVetoException exception)
-	              {}
-	          }
-	      }));
-	}
 	
 	private void createHelpMenu(MenuFactory pFactory)
 	{
@@ -504,7 +391,7 @@ public class EditorFrame extends JFrame
 					}   
 					text.setCaretPosition(0);
 					text.setEditable(false);
-					JOptionPane.showInternalMessageDialog(aDesktop, new JScrollPane(text), 
+					JOptionPane.showInternalMessageDialog(aTabbedPane, new JScrollPane(text), 
 							aEditorResources.getString("dialog.license.title"), JOptionPane.PLAIN_MESSAGE);
 				}
 				catch(IOException exception) 
@@ -559,12 +446,11 @@ public class EditorFrame extends JFrame
     */
 	private void open(String pName)
 	{	
-		JInternalFrame[] frames = aDesktop.getAllFrames();
-		for(int i = 0; i < frames.length; i++)
+		for(int i = 0; i < aTabbedPane.getComponentCount(); i++)
 		{
-			if(frames[i] instanceof GraphFrame)
+			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
 			{
-				GraphFrame frame = (GraphFrame)frames[i];
+				GraphFrame frame = (GraphFrame)aTabbedPane.getComponentAt(i);
 				if(frame.getFileName() != null && frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
 					try
@@ -590,12 +476,12 @@ public class EditorFrame extends JFrame
 		}
 		catch(IOException exception)
 		{
-			JOptionPane.showInternalMessageDialog(aDesktop, exception.getMessage(), 
+			JOptionPane.showInternalMessageDialog(aTabbedPane, exception.getMessage(), 
     			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
 		}      
 	}   
 
-   	/*
+	/*
      * Creates an internal frame on the desktop.
      * @param c the component to display in the internal frame
      * @param t the title of the internal frame.
@@ -606,12 +492,12 @@ public class EditorFrame extends JFrame
 	   pInternalFrame.setClosable(true);
 	   pInternalFrame.setMaximizable(true);
 	   pInternalFrame.setIconifiable(true);
-	   int frameCount = aDesktop.getAllFrames().length;      
-	   aDesktop.add(pInternalFrame);
+	   int frameCount = aTabbedPane.getComponentCount();     
+	   aTabbedPane.add(pInternalFrame);
 	   // position frame
 	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
-	   int width = Math.max(aDesktop.getWidth() / 2, aDesktop.getWidth() - emptySpace);            
-	   int height = Math.max(aDesktop.getHeight() / 2, aDesktop.getHeight() - emptySpace);
+	   int width = Math.max(aTabbedPane.getWidth() / 2, aTabbedPane.getWidth() - emptySpace);            
+	   int height = Math.max(aTabbedPane.getHeight() / 2, aTabbedPane.getHeight() - emptySpace);
 
 	   pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
 	   pInternalFrame.show();
@@ -641,13 +527,13 @@ public class EditorFrame extends JFrame
    	private void setTitle()
    	{
    		String appName = aAppResources.getString("app.name");
-   		if(aDesktop.getSelectedFrame() == null || !(aDesktop.getSelectedFrame() instanceof GraphFrame ))
+   		if(aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame ))
    		{
    			setTitle(appName);
    		}
    		else
    		{
-   			GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   			GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    			File file = frame.getFileName();
    			if( file == null )
    			{
@@ -736,7 +622,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void cut()
    	{
-   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		if(frame == null)
    		{
    			return;
@@ -771,7 +657,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void copy()
    	{
-   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		if(frame == null)
    		{
    			return;
@@ -791,7 +677,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void paste()
    	{
-   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		if(frame == null)
    		{
    			return;
@@ -816,7 +702,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void copyToClipboard()
    	{
-   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		if( frame == null )
    		{
    			return;
@@ -849,7 +735,7 @@ public class EditorFrame extends JFrame
 		        }
 			}
 		}, null);
-   		JOptionPane.showInternalMessageDialog(aDesktop, aEditorResources.getString("dialog.to_clipboard.message"), 
+   		JOptionPane.showInternalMessageDialog(aTabbedPane, aEditorResources.getString("dialog.to_clipboard.message"), 
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
 
@@ -859,7 +745,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void save()
    	{
-   		GraphFrame frame = (GraphFrame) aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		if(frame == null)
    		{
    			return;
@@ -877,7 +763,7 @@ public class EditorFrame extends JFrame
    		}        
    		catch(Exception exception)
    		{
-   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
    		}        
    	}
    
@@ -886,7 +772,7 @@ public class EditorFrame extends JFrame
    	 */
    	public void saveAs()
    	{
-   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    		if(frame == null) 
    		{
    			return;
@@ -953,7 +839,7 @@ public class EditorFrame extends JFrame
    		}
    		catch(IOException exception)
    		{
-   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
    		}
    	}
 
@@ -984,7 +870,7 @@ public class EditorFrame extends JFrame
    	 */	
    	public void exportImage()
    	{
-   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    		if(frame == null) 
    		{
    			return;
@@ -1005,14 +891,14 @@ public class EditorFrame extends JFrame
    			if(!ImageIO.getImageWritersByFormatName(format).hasNext())
    			{
    				MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
-   				JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { format }));
+   				JOptionPane.showInternalMessageDialog(aTabbedPane, formatter.format(new Object[] { format }));
    				return;
    			}
    			ImageIO.write(getImage(frame.getGraph()), format, out);
    		}
    		catch(IOException exception)
    		{
-   			JOptionPane.showInternalMessageDialog(aDesktop, exception);
+   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
    		}      
    	}
 
@@ -1021,7 +907,7 @@ public class EditorFrame extends JFrame
    	 */
    	private File chooseFileToExportTo()
    	{
-   		GraphFrame frame = (GraphFrame)aDesktop.getSelectedFrame();
+   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    		assert frame != null;
    		File file = null;
 	   	JFileChooser fileChooser = new JFileChooser();
@@ -1176,7 +1062,7 @@ public class EditorFrame extends JFrame
    	public void showAboutDialog()
    	{
    		MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
-   		JOptionPane.showInternalMessageDialog(aDesktop, formatter.format(new Object[] { 
+   		JOptionPane.showInternalMessageDialog(aTabbedPane, formatter.format(new Object[] { 
                aAppResources.getString("app.name"),
                aVersionResources.getString("version.number"),
                aVersionResources.getString("version.date"),
@@ -1195,12 +1081,11 @@ public class EditorFrame extends JFrame
    	public void exit()
    	{
    		int modcount = 0;
-   		JInternalFrame[] frames = aDesktop.getAllFrames();
-   		for(int i = 0; i < frames.length; i++)
+   		for(int i = 0; i < aTabbedPane.getComponentCount(); i++)
    		{
-   			if(frames[i] instanceof GraphFrame)
+   			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
    			{
-   				GraphFrame frame = (GraphFrame)frames[i];
+   				GraphFrame frame = (GraphFrame)aTabbedPane.getComponent(i);
    				if(frame.getGraphPanel().isModified()) 
    				{
    					modcount++;
@@ -1210,7 +1095,7 @@ public class EditorFrame extends JFrame
    		if(modcount > 0)
    		{
    			// ask user if it is ok to close
-   			int result = JOptionPane.showInternalConfirmDialog(aDesktop, MessageFormat.format(aEditorResources.getString("dialog.exit.ok"),
+   			int result = JOptionPane.showInternalConfirmDialog(aTabbedPane, MessageFormat.format(aEditorResources.getString("dialog.exit.ok"),
                      new Object[] { new Integer(modcount) }), null, JOptionPane.YES_NO_OPTION);
          
    			// if the user doesn't agree, veto the close
