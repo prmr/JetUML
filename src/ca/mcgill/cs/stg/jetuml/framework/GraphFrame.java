@@ -59,32 +59,6 @@ public class GraphFrame extends JInternalFrame
 		Container contentPane = getContentPane();
 		contentPane.add(aToolBar, BorderLayout.NORTH);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
-      
-		// add listener to confirm frame closing
-		addVetoableChangeListener(new VetoableChangeListener()
-		{
-			public void vetoableChange(PropertyChangeEvent pEvent) throws PropertyVetoException
-            {  
-				String name = pEvent.getPropertyName();
-				Object value = pEvent.getNewValue();
-
-				// we only want to check attempts to close a frame
-				if(name.equals("closed") && value.equals(Boolean.TRUE) && aPanel.isModified())
-				{  
-					ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");                  
-                  
-					// ask user if it is ok to close
-					int result = JOptionPane.showInternalConfirmDialog(GraphFrame.this, 
-							editorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION);
-
-					// if the user doesn't agree, veto the close
-					if(result != JOptionPane.YES_OPTION) 
-					{
-						throw new PropertyVetoException("User canceled close", pEvent);
-					}
-				}
-            }           
-		});
 		aPanel.setGraph(aGraph);
 	}
 

@@ -23,6 +23,7 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -41,6 +42,7 @@ import java.beans.Encoder;
 import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.Statement;
 import java.beans.XMLDecoder;
@@ -56,6 +58,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -79,8 +82,13 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.stg.jetuml.UMLEditor;
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -107,6 +115,7 @@ public class EditorFrame extends JFrame
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
 	private JTabbedPane aTabbedPane;
+	private ArrayList<JInternalFrame> tabs = new ArrayList<>();
 	private JMenu aNewMenu;
 	private Clipboard aClipboard = new Clipboard();
 	
@@ -177,6 +186,9 @@ public class EditorFrame extends JFrame
      	aRecentFilesMenu = pFactory.createMenu("file.recent");
      	buildRecentFilesMenu();
      	fileMenu.add(aRecentFilesMenu);
+     	
+     	JMenuItem closeFileItem = pFactory.createMenuItem("file.close", this, "close");
+     	fileMenu.add(closeFileItem);
       
      	JMenuItem fileSaveItem = pFactory.createMenuItem("file.save", this, "save"); 
      	fileMenu.add(fileSaveItem);
@@ -414,7 +426,7 @@ public class EditorFrame extends JFrame
                try
                {
                   GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance());
-                  addInternalFrame(frame);
+                  addTab(frame);
                }
                catch (Exception exception)
                {
@@ -437,7 +449,8 @@ public class EditorFrame extends JFrame
 			   open(argument);
 		   }
 	   } 
-	   setTitle();
+	   /*@JoelChev may be needed later*/
+	   //setTitle();
    	}
    
    /*
@@ -469,83 +482,105 @@ public class EditorFrame extends JFrame
 		{	              
 			Graph graph = read(new FileInputStream(pName));
 			GraphFrame frame = new GraphFrame(graph);
-			addInternalFrame(frame);
 			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
-			setTitle();
+			addTab(frame);
 		}
 		catch(IOException exception)
 		{
-			JOptionPane.showInternalMessageDialog(aTabbedPane, exception.getMessage(), 
+			JOptionPane.showMessageDialog(aTabbedPane, exception.getMessage(), 
     			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
 		}      
 	}   
 
 	/*
-     * Creates an internal frame on the desktop.
+     * Adds an InternalFrame to the list of Tabs.
      * @param c the component to display in the internal frame
      * @param t the title of the internal frame.
     */
-   private void addInternalFrame(final JInternalFrame pInternalFrame)
+   private void addTab(final JInternalFrame pInternalFrame)
    {  
-	   pInternalFrame.setResizable(true);
-	   pInternalFrame.setClosable(true);
-	   pInternalFrame.setMaximizable(true);
-	   pInternalFrame.setIconifiable(true);
-	   int frameCount = aTabbedPane.getComponentCount();     
-	   aTabbedPane.add(pInternalFrame);
+	   int frameCount = aTabbedPane.getComponentCount();   
+	   BasicInternalFrameUI ui = (BasicInternalFrameUI)pInternalFrame.getUI();
+	   Container north = (Container)ui.getNorthPane();
+	   north.remove(0);
+	   north.validate();
+	   north.repaint();
+	   aTabbedPane.add(setTitle(pInternalFrame),pInternalFrame);
+	   tabs.add(pInternalFrame);
 	   // position frame
 	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
 	   int width = Math.max(aTabbedPane.getWidth() / 2, aTabbedPane.getWidth() - emptySpace);            
 	   int height = Math.max(aTabbedPane.getHeight() / 2, aTabbedPane.getHeight() - emptySpace);
 
 	   pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
-	   pInternalFrame.show();
+	   pInternalFrame.show(); 
+	   int last = tabs.size();
+	   aTabbedPane.setSelectedIndex(last-1);
 
-	   pInternalFrame.addInternalFrameListener(new InternalFrameAdapter()
-       {
-		   public void internalFrameActivated(InternalFrameEvent pEvent)
-		   {
-               setTitle();
-		   }
-            
-		   public void internalFrameDeactivated(InternalFrameEvent pEvent)
-		   {
-               setTitle();
-		   }
-       });
-
-	   // select the frame--might be vetoed
-	   try
-	   {  
-		   pInternalFrame.setSelected(true);
-	   }
-	   catch(PropertyVetoException e)
-	   {}
    	}
 
-   	private void setTitle()
+   	/**
+   	 * @param pInternalFrame The current frame to give a Title in its tab.
+   	 * @return The title of a given tab.
+   	 */
+   	private String setTitle(JInternalFrame pInternalFrame)
    	{
    		String appName = aAppResources.getString("app.name");
-   		if(aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame ))
+   		
+   		if(pInternalFrame == null || !(pInternalFrame instanceof GraphFrame ))
    		{
-   			setTitle(appName);
+   			return appName;
    		}
    		else
    		{
-   			GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
+   			GraphFrame frame = (GraphFrame)pInternalFrame;
    			File file = frame.getFileName();
    			if( file == null )
    			{
-   				setTitle(appName);
+   				Graph graphType = frame.getGraph();
+   				if(graphType instanceof ClassDiagramGraph){
+   					return "Class Diagram";
+   				}
+   				else if(graphType instanceof ObjectDiagramGraph){
+   					return "Object Diagram";
+   				}
+   				else if(graphType instanceof UseCaseDiagramGraph){
+   					return "Use Case Diagram";
+   				}
+   				else if(graphType instanceof StateDiagramGraph){
+   					return "State Diagram";
+   				}
+   					return "Sequence Diagram";
    			}
    			else
    			{
-   				setTitle(appName + " - " + file.getAbsolutePath());
+   				return file.getName();
    			}
    		}
    }
    
+   	
+   	/**
+   	 * @param pInternalFrame The JInternalFrame to remove.
+   	 * Calling this metod will remove a given JInternalFrame.
+   	 */
+   	public void removeTab(final JInternalFrame pInternalFrame)
+    {
+        if (!tabs.contains(pInternalFrame))
+        {
+            return;
+        }
+        JTabbedPane tp = aTabbedPane;
+        int pos = tabs.indexOf(pInternalFrame);
+        tp.remove(pos);
+        tabs.remove(pInternalFrame);
+//        if (tp.getTabCount() == 0)
+//        {
+//            replaceTabbedPaneByWelcomePanel();
+//        }
+    }
+   	
    	/*
    	 * Adds a file name to the "recent files" list and rebuilds the "recent files" menu. 
    	 * @param pNewFile the file name to add
@@ -738,7 +773,38 @@ public class EditorFrame extends JFrame
    		JOptionPane.showInternalMessageDialog(aTabbedPane, aEditorResources.getString("dialog.to_clipboard.message"), 
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
-
+   	
+   	/**
+   	 * If a user confirms that they want to close their modified graph, this method will
+   	 * remove it from the current list of tabs.
+   	 */
+   	public void close()
+   	{
+        JInternalFrame curFrame = (JInternalFrame)aTabbedPane.getSelectedComponent();
+        if (curFrame != null)
+        {
+        	GraphFrame openFrame = (GraphFrame) curFrame;
+        	// we only want to check attempts to close a frame
+			if(openFrame.getGraphPanel().isModified())
+			{  
+				JOptionPane optionPane = new JOptionPane();
+                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);
+				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");                  
+              
+				// ask user if it is ok to close
+				if(optionPane.showConfirmDialog(openFrame, 
+						editorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+				{
+					removeTab((JInternalFrame) curFrame);
+				}
+				else{
+					remove(optionPane);
+				}
+				return;
+			}
+			removeTab((JInternalFrame) curFrame);
+        }
+    }
    	
    	/**
    	 * Save a file. Called by reflection. 
@@ -833,7 +899,7 @@ public class EditorFrame extends JFrame
    				}
    				addRecentFile(result.getAbsolutePath());
    				frame.setFile(result);
-   				setTitle();
+   				aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
    				frame.getGraphPanel().setModified(false);
    			}
    		}

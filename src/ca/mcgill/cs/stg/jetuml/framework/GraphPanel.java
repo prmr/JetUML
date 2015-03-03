@@ -112,7 +112,7 @@ public class GraphPanel extends JPanel
 				repaint();
 			}
 		});
-		JOptionPane.showInternalMessageDialog(this, sheet, 
+		JOptionPane.showMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
 		aModListener.finishPropertyChange(this, edited);
