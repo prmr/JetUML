@@ -42,7 +42,6 @@ import java.beans.Encoder;
 import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.Statement;
 import java.beans.XMLDecoder;
@@ -66,7 +65,6 @@ import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -77,8 +75,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
@@ -717,7 +713,6 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		Graph curGraph = frame.getGraph();
    		
    		GraphPanel panel = frame.getGraphPanel();
    		try

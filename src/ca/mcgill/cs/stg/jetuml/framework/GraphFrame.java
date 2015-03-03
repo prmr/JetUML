@@ -24,14 +24,9 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.io.File;
-import java.util.ResourceBundle;
 
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
