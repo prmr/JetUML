@@ -47,14 +47,14 @@ public class GraphModificationListener
 	public void nodeAdded(Graph pGraph, Node pNode)
 	{
 		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraph, pNode, true);
-		if(pNode.getParent() != null)
-		{
-			aUndoManager.startTracking();
-			childAttached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
-			aUndoManager.add(ac);
-			aUndoManager.endTracking();
-			return;
-		}
+//		if(pNode.getParent() != null)
+//		{
+//			aUndoManager.startTracking();
+//			childAttached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
+//			aUndoManager.add(ac);
+//			aUndoManager.endTracking();
+//			return;
+//		}
 		aUndoManager.add(ac);
 	}
 
@@ -66,14 +66,14 @@ public class GraphModificationListener
 	public void nodeRemoved(Graph pGraph, Node pNode)
 	{
 		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraph, pNode, false);
-		if(pNode.getParent() != null)
-		{
-			aUndoManager.startTracking();
-			childDetached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
-			aUndoManager.add(dc);
-			aUndoManager.endTracking();
-			return;
-		}
+//		if(pNode.getParent() != null)
+//		{
+//			aUndoManager.startTracking();
+//			childDetached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
+//			aUndoManager.add(dc);
+//			aUndoManager.endTracking();
+//			return;
+//		}
 		aUndoManager.add(dc);
 	}
 

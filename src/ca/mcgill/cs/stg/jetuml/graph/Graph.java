@@ -46,7 +46,7 @@ public abstract class Graph
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
-	private GraphModificationListener aModListener;
+	protected GraphModificationListener aModListener;
 	
 	/**
      * Constructs a graph with no nodes or edges.
@@ -126,8 +126,6 @@ public abstract class Graph
 		boolean accepted = false;
 		/* A variable commented out during testing. @JoelChev */
 		//boolean insideANode = false;
-		aModListener.startCompoundListening();
-		aModListener.nodeAdded(this, pNode);
 		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
 		{
 			Node parent = aNodes.get(i);
@@ -144,7 +142,7 @@ public abstract class Graph
 //			System.out.println("FALSE!");
 //			return false;
 //		}
-		aModListener.endCompoundListening();
+		aModListener.nodeAdded(this, pNode);
 		aNodes.add(pNode);
 		aNeedsLayout = true;
 		return true;
@@ -239,7 +237,6 @@ public abstract class Graph
 		}
 		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
-		aModListener.nodeRemoved(this, pNode);
 		// notify nodes of removals
 		for(int i = 0; i < aNodes.size(); i++)
 		{
@@ -263,6 +260,7 @@ public abstract class Graph
 		{
 			removeNode(childNode);
 		}
+		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
 	}
