@@ -42,7 +42,6 @@ import java.beans.Encoder;
 import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.Statement;
 import java.beans.XMLDecoder;
@@ -66,7 +65,6 @@ import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -77,8 +75,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
@@ -121,6 +117,8 @@ public class EditorFrame extends JFrame
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
+	
+	private WelcomeTab aWelcomeTab;
 
 	/**
 	 * Constructs a blank frame with a desktop pane
@@ -168,6 +166,9 @@ public class EditorFrame extends JFrame
 		createEditMenu(factory);
 		createViewMenu(factory);
      	createHelpMenu(factory);
+     	aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
+     	aTabbedPane.add("Welcome", aWelcomeTab);
+     	tabs.add(aWelcomeTab);
 
 	}
 	
@@ -364,13 +365,17 @@ public class EditorFrame extends JFrame
      	{
      		public void menuSelected(MenuEvent pEvent)
             {
+	     		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
+	     		{
+	     			return;
+	     		}	
      			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
                 if(frame == null)
 				{
 					return;
 				}
                 GraphPanel panel = frame.getGraphPanel();
-                hideGridItem.setSelected(panel.getHideGrid());
+                hideGridItem.setSelected(panel.getHideGrid());  
             }
      		public void menuDeselected(MenuEvent pEvent)
             {}
@@ -517,6 +522,10 @@ public class EditorFrame extends JFrame
 	   pInternalFrame.show(); 
 	   int last = tabs.size();
 	   aTabbedPane.setSelectedIndex(last-1);
+	   if(aTabbedPane.getComponentAt(0) instanceof WelcomeTab)
+	   {
+		   removeWelcomeTab();
+	   }
 
    	}
 
@@ -561,6 +570,14 @@ public class EditorFrame extends JFrame
    }
    
    	
+   	public void removeWelcomeTab()
+   	{
+   		if(aWelcomeTab !=null){
+   			aTabbedPane.remove(0);
+   			tabs.remove(0);
+   		}
+   	}
+   	
    	/**
    	 * @param pInternalFrame The JInternalFrame to remove.
    	 * Calling this metod will remove a given JInternalFrame.
@@ -575,10 +592,11 @@ public class EditorFrame extends JFrame
         int pos = tabs.indexOf(pInternalFrame);
         tp.remove(pos);
         tabs.remove(pInternalFrame);
-//        if (tp.getTabCount() == 0)
-//        {
-//            replaceTabbedPaneByWelcomePanel();
-//        }
+        if(tabs.size() == 0){
+        	aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
+        	aTabbedPane.add("Welcome",aWelcomeTab);
+        	tabs.add(aWelcomeTab);
+        }
     }
    	
    	/*
@@ -717,7 +735,6 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		Graph curGraph = frame.getGraph();
    		
    		GraphPanel panel = frame.getGraphPanel();
    		try
@@ -780,6 +797,10 @@ public class EditorFrame extends JFrame
    	 */
    	public void close()
    	{
+   		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
+   		{
+   			return;
+   		}
         JInternalFrame curFrame = (JInternalFrame)aTabbedPane.getSelectedComponent();
         if (curFrame != null)
         {
@@ -802,7 +823,9 @@ public class EditorFrame extends JFrame
 				}
 				return;
 			}
-			removeTab((JInternalFrame) curFrame);
+			else{	
+				removeTab((JInternalFrame) curFrame);
+			}
         }
     }
    	
