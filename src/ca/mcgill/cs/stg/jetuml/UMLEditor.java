@@ -78,6 +78,7 @@ public final class UMLEditor
 			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
 				frame.setVisible(true);
 				frame.readArgs(arguments);
+				frame.addWelcomeTab();
 			}
 		});
    }

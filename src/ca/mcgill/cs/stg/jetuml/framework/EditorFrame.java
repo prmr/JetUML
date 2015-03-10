@@ -166,9 +166,6 @@ public class EditorFrame extends JFrame
 		createEditMenu(factory);
 		createViewMenu(factory);
      	createHelpMenu(factory);
-     	aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
-     	aTabbedPane.add("Welcome", aWelcomeTab);
-     	tabs.add(aWelcomeTab);
 
 	}
 	
@@ -568,6 +565,13 @@ public class EditorFrame extends JFrame
    			}
    		}
    }
+   	
+   	public void addWelcomeTab()
+   	{
+   		aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
+     	aTabbedPane.add("Welcome", aWelcomeTab);
+     	tabs.add(aWelcomeTab);
+   	}
    
    	
    	public void removeWelcomeTab()
