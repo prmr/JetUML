@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,71 +23,65 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 @SuppressWarnings("serial")
 public class WelcomeTab extends JInternalFrame{
 	
+	private ResourceBundle aWelcomeResources;
     private JPanel footTextPanel;;
-
     private JPanel rightTitlePanel;
-
     private JPanel leftTitlePanel;
-
     private JPanel leftPanel;
-
     private JPanel rightPanel;
-
     private JMenu aNewFileMenu;
-    
     private JMenu aRecentFileMenu;
 
-//    @ResourceBundleBean(key="welcomepanel.new_diagram.icon")
     private ImageIcon leftPanelIcon;
-//
-//    @ResourceBundleBean(key="welcomepanel.recent_files.icon")
     private ImageIcon rightPanelIcon;
 //
-//    @ResourceBundleBean(key="welcomepanel.foot_text")
+
     private String footText;
 	
 	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)
 	{
-	       
-	        setOpaque(false);
-	        setLayout(new BorderLayout());
-	        
-	        BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
-	 	   Container north = (Container)ui.getNorthPane();
-	 	   north.remove(0);
-	 	   north.validate();
-	 	   north.repaint();
-
-	        aNewFileMenu = pNewFileMenu;
-	        aRecentFileMenu = pRecentFileMenu;
-	        JPanel panel = new JPanel();
-	        panel.setLayout(new GridBagLayout());
-	        panel.setOpaque(false);
-
-	        JPanel shortcutPanel = new JPanel();
-	        shortcutPanel.setOpaque(false);
-	        shortcutPanel.setLayout(new GridLayout(2, 2));
-	        shortcutPanel.add(getLeftTitlePanel());
-	        shortcutPanel.add(getRightTitlePanel());
-	        shortcutPanel.add(getLeftPanel());
-	        shortcutPanel.add(getRightPanel());
-	        GridBagConstraints c = new GridBagConstraints();
-	        c.anchor = GridBagConstraints.NORTH;
-	        c.weightx = 1;
-	        c.gridx = 0;
-	        c.gridy = 1;
-	        panel.add(shortcutPanel, c);
-
-	        add(panel, BorderLayout.NORTH);
-	        add(getFootTextPanel(), BorderLayout.SOUTH);
-
-	    }
+		
+		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+		leftPanelIcon = new ImageIcon(aWelcomeResources.getString("welcome.create.icon"));
+		rightPanelIcon = new ImageIcon(aWelcomeResources.getString("welcome.open.icon")); 
+	    setOpaque(false);
+	    setLayout(new BorderLayout());
+	    
+	    BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
+	    Container north = (Container)ui.getNorthPane();
+	    north.remove(0);
+	    north.validate();
+	    north.repaint();
+	
+	    aNewFileMenu = pNewFileMenu;
+	    aRecentFileMenu = pRecentFileMenu;
+	    JPanel panel = new JPanel();
+	    panel.setLayout(new GridBagLayout());
+	    panel.setOpaque(false);
+	
+	    JPanel shortcutPanel = new JPanel();
+	    shortcutPanel.setOpaque(false);
+	    shortcutPanel.setLayout(new GridLayout(2, 2));
+	    shortcutPanel.add(getLeftTitlePanel());
+	    shortcutPanel.add(getRightTitlePanel());
+	    shortcutPanel.add(getLeftPanel());
+	    shortcutPanel.add(getRightPanel());
+	    GridBagConstraints c = new GridBagConstraints();
+	    c.anchor = GridBagConstraints.NORTH;
+	    c.weightx = 1;
+	    c.gridx = 0;
+	    c.gridy = 1;
+	    panel.add(shortcutPanel, c);
+	
+	    add(panel, BorderLayout.NORTH);
+	    add(getFootTextPanel(), BorderLayout.SOUTH);
+	
+	}
 
 	    public void paint(Graphics g)
 	    {
@@ -130,7 +125,7 @@ public class WelcomeTab extends JInternalFrame{
 	                final JMenuItem item = aNewFileMenu.getItem(i);
 	                String label = item.getText();
 	                JButton newDiagramShortcut = new JButton(label.toLowerCase());
-	                newDiagramShortcut.setUI(new BasicButtonUI());
+	                newDiagramShortcut.setUI(new WelcomeButtonUI());
 	                newDiagramShortcut.setAlignmentX(Component.RIGHT_ALIGNMENT);
 	                newDiagramShortcut.addActionListener(new ActionListener()
 	                {
@@ -160,7 +155,7 @@ public class WelcomeTab extends JInternalFrame{
 	                final JMenuItem item = aRecentFileMenu.getItem(i);
 	                String label = item.getText();
 	                JButton fileShortcut = new JButton(label.toLowerCase());
-	                fileShortcut.setUI(new BasicButtonUI());
+	                fileShortcut.setUI(new WelcomeButtonUI());
 	                fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
 	                fileShortcut.addActionListener(new ActionListener()
 	                {
@@ -237,6 +232,7 @@ public class WelcomeTab extends JInternalFrame{
 	    {
 	        if (this.footTextPanel == null)
 	        {
+	        	this.footText=aWelcomeResources.getString("welcome.copyright");
 	            this.footTextPanel = new JPanel();
 	            this.footTextPanel.setOpaque(false);
 	            this.footTextPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -244,9 +240,6 @@ public class WelcomeTab extends JInternalFrame{
 	            this.footTextPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 	            JLabel text = new JLabel(this.footText);
-//	            ITheme cLAF = ThemeManager.getInstance().getTheme();
-//	            text.setFont(cLAF.getWelcomeSmallFont());
-//	            text.setForeground(cLAF.getWelcomeBigForegroundColor());
 	            text.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 	            this.footTextPanel.add(text);

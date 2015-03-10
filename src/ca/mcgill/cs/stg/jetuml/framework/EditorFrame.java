@@ -813,12 +813,11 @@ public class EditorFrame extends JFrame
 			if(openFrame.getGraphPanel().isModified())
 			{  
 				JOptionPane optionPane = new JOptionPane();
-                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);
-				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");                  
+                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);                  
               
 				// ask user if it is ok to close
 				if(optionPane.showConfirmDialog(openFrame, 
-						editorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
 				{
 					removeTab((JInternalFrame) curFrame);
 				}
