@@ -1,9 +1,10 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Graphics;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -19,9 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -40,6 +38,9 @@ public class WelcomeTab extends JInternalFrame{
     private ImageIcon rightPanelIcon;
     private String footText;
 	
+    private static final Color lightBackground = new Color(72,118,255);
+    private static final Color darkBackground = new Color(67,110,238);
+    
 	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)
 	{
 		
@@ -79,34 +80,18 @@ public class WelcomeTab extends JInternalFrame{
 	    add(getFootTextPanel(), BorderLayout.SOUTH);
 	
 	}
-
-	    public void paint(Graphics g)
-	    {
-	        //Graphics2D g2 = (Graphics2D) g;
-	        //Paint currentPaint = g2.getPaint();
-	        ///ITheme cLAF = ThemeManager.getInstance().getTheme();
-	        try
-			{
-				for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) 
-				{
-					if("Nimbus".equals(info.getName())) 
-					{
-			            UIManager.setLookAndFeel(info.getClassName());
-			            break;
-			        }
-			    }
-			} 
-			catch(UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException e) 
-			{
-			    // Nothing: We revert to the default LAF
-			}
-//	        GradientPaint paint = new GradientPaint(getWidth() / 2, -getHeight() / 4, cLAF.getWelcomeBackgroundStartColor(),
-//	                getWidth() / 2, getHeight() + getHeight() / 4, cLAF.getWelcomeBackgroundEndColor());
+//		@Override
+//	    public void paint(Graphics g)
+//	    {
+//	    	super.paint(g);
+//	        Graphics2D g2 = (Graphics2D) g;
+//	        Paint currentPaint = g2.getPaint();
+//	        GradientPaint paint = new GradientPaint(getWidth() / 2, -getHeight() / 4, lightBackground,
+//	                getWidth() / 2, getHeight() + getHeight() / 4, darkBackground);
 //	        g2.setPaint(paint);
 //	        g2.fillRect(0, 0, getWidth(), getHeight());
 //	        g2.setPaint(currentPaint);
-	        super.paint(g);
-	    }
+//	    }
 
 	    private JPanel getLeftPanel()
 	    {
@@ -150,7 +135,7 @@ public class WelcomeTab extends JInternalFrame{
 	            for (int i = 0; i < aRecentFileMenu.getItemCount(); i++)
 	            {
 	                final JMenuItem item = aRecentFileMenu.getItem(i);
-	                String label = item.getText();
+	                String label = item.getText().substring(2);
 	                JButton fileShortcut = new JButton(label.toLowerCase());
 	                fileShortcut.setUI(new WelcomeButtonUI());
 	                fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -176,9 +161,7 @@ public class WelcomeTab extends JInternalFrame{
 	            icon.setIcon(this.leftPanelIcon);
 
 	            JLabel title = new JLabel(aNewFileMenu.getText().toLowerCase());
-//	            ITheme cLAF = ThemeManager.getInstance().getTheme();
-//	            title.setFont(cLAF.getWelcomeBigFont());
-//	            title.setForeground(cLAF.getWelcomeBigForegroundColor());
+	            title.setFont(new Font("Arial", Font.PLAIN, 30));
 	            title.setBorder(new EmptyBorder(0, 30, 0, 0));
 
 	            JPanel panel = new JPanel();
@@ -205,9 +188,7 @@ public class WelcomeTab extends JInternalFrame{
 	            icon.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 	            JLabel title = new JLabel(aRecentFileMenu.getText().toLowerCase());
-//	            ITheme cLAF = ThemeManager.getInstance().getTheme();
-//	            title.setFont(cLAF.getWelcomeBigFont());
-//	            title.setForeground(cLAF.getWelcomeBigForegroundColor());
+	            title.setFont(new Font("Arial", Font.PLAIN, 30));
 	            title.setBorder(new EmptyBorder(0, 0, 0, 30));
 
 	            JPanel panel = new JPanel();
