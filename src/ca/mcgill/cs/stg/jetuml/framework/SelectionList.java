@@ -55,6 +55,10 @@ public class SelectionList implements Iterable<GraphElement>
 		}
 	}
 	
+	/**
+	 * @return The last Node that was selected, or null 
+	 * if there are no Nodes selected.
+	 */
 	public Node getLastNode()
 	{
 		if( aSelected.size() > 0 )

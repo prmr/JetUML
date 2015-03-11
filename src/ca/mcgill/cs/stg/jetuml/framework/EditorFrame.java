@@ -427,7 +427,7 @@ public class EditorFrame extends JFrame
             {
                try
                {
-                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance());
+                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
                   addTab(frame);
                }
                catch (Exception exception)
@@ -461,7 +461,7 @@ public class EditorFrame extends JFrame
     */
 	private void open(String pName)
 	{	
-		for(int i = 0; i < aTabbedPane.getComponentCount(); i++)
+		for(int i = 0; i < tabs.size(); i++)
 		{
 			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
 			{
@@ -483,7 +483,7 @@ public class EditorFrame extends JFrame
 		try
 		{	              
 			Graph graph = read(new FileInputStream(pName));
-			GraphFrame frame = new GraphFrame(graph);
+			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
 			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
 			addTab(frame);
@@ -509,6 +509,9 @@ public class EditorFrame extends JFrame
 	   north.validate();
 	   north.repaint();
 	   aTabbedPane.add(setTitle(pInternalFrame),pInternalFrame);
+	   int i = tabs.size();
+	   aTabbedPane.setTabComponentAt(i,
+               new ButtonTabComponent(this, pInternalFrame, aTabbedPane));
 	   tabs.add(pInternalFrame);
 	   // position frame
 	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
@@ -829,6 +832,38 @@ public class EditorFrame extends JFrame
 			else{	
 				removeTab((JInternalFrame) curFrame);
 			}
+        }
+    }
+   	
+   	/**
+   	 * If a user confirms that they want to close their modified graph, this method will
+   	 * remove it from the current list of tabs.
+   	 */
+   	public void close(JInternalFrame aJInternalFrame)
+   	{
+        JInternalFrame curFrame = aJInternalFrame;
+        if (curFrame != null)
+        {
+        	GraphFrame openFrame = (GraphFrame) curFrame;
+        	// we only want to check attempts to close a frame
+			if(openFrame.getGraphPanel().isModified())
+			{  
+				JOptionPane optionPane = new JOptionPane();
+                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);
+				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");                  
+              
+				// ask user if it is ok to close
+				if(optionPane.showConfirmDialog(openFrame, 
+						editorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+				{
+					removeTab((JInternalFrame) curFrame);
+				}
+				else{
+					remove(optionPane);
+				}
+				return;
+			}
+			removeTab((JInternalFrame) curFrame);
         }
     }
    	
@@ -1173,7 +1208,7 @@ public class EditorFrame extends JFrame
    	public void exit()
    	{
    		int modcount = 0;
-   		for(int i = 0; i < aTabbedPane.getComponentCount(); i++)
+   		for(int i = 0; i < tabs.size(); i++)
    		{
    			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
    			{
