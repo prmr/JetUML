@@ -36,11 +36,8 @@ public class WelcomeTab extends JInternalFrame{
     private JPanel rightPanel;
     private JMenu aNewFileMenu;
     private JMenu aRecentFileMenu;
-
     private ImageIcon leftPanelIcon;
     private ImageIcon rightPanelIcon;
-//
-
     private String footText;
 	
 	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)

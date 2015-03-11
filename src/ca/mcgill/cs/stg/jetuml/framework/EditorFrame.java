@@ -427,7 +427,7 @@ public class EditorFrame extends JFrame
             {
                try
                {
-                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance());
                   addTab(frame);
                }
                catch (Exception exception)
@@ -483,7 +483,7 @@ public class EditorFrame extends JFrame
 		try
 		{	              
 			Graph graph = read(new FileInputStream(pName));
-			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
+			GraphFrame frame = new GraphFrame(graph);
 			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
 			addTab(frame);

@@ -1,7 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import javax.swing.*;
-import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import java.awt.*;
@@ -12,6 +11,7 @@ import java.awt.event.*;
  * Contains a JLabel to show the text and 
  * a JButton to close the tab it belongs to 
  */
+@SuppressWarnings("serial")
 public class ButtonTabComponent extends JPanel {
 	private final EditorFrame aEditorFrame;
 	private final JInternalFrame aJInternalFrame;
@@ -35,7 +35,8 @@ public class ButtonTabComponent extends JPanel {
         setOpaque(false);
          
         //make JLabel read titles from JTabbedPane
-        JLabel label = new JLabel() {
+        JLabel label = new JLabel() 
+        {
             public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
