@@ -1,6 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -10,20 +10,20 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class MoveCommand implements Command
 {
 	private Node aNode;
-	private GraphPanel aGraphPanel;
+	private Graph aGraph;
 	private double aDX;
 	private double aDY;
 	
 	/**
 	 * Creates the command.
-	 * @param pGraphPanel The panel being moved on
+	 * @param pGraph The panel being moved on
 	 * @param pNode The node being moved
 	 * @param pDX The amount moved horizontally
 	 * @param pDY The amount moved vertically
 	 */
-	public MoveCommand(GraphPanel pGraphPanel, Node pNode, double pDX, double pDY)
+	public MoveCommand(Graph pGraph, Node pNode, double pDX, double pDY)
 	{
-		aGraphPanel = pGraphPanel;
+		aGraph = pGraph;
 		aNode = pNode;
 		aDX = pDX;
 		aDY = pDY;
@@ -34,9 +34,8 @@ public class MoveCommand implements Command
 	 */
 	public void undo() 
 	{
-		aGraphPanel.moveNode(aNode, -aDX, -aDY);
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aNode.translate(-aDX, -aDY);
+		aGraph.layout();
 	}
 
 	/**
@@ -44,9 +43,8 @@ public class MoveCommand implements Command
 	 */
 	public void execute() 
 	{
-		aGraphPanel.moveNode(aNode, aDX, aDY);
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aNode.translate(aDX, aDY);
+		aGraph.layout();
 	}
 
 }

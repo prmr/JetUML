@@ -46,7 +46,6 @@ public final class Clipboard
 	 */
 	public void addSelection(SelectionList pSelection)
 	{
-		SelectionList newSelection = new SelectionList();
 		aNodes = new ArrayList<Node>();
 		aEdges = new ArrayList<Edge>();
 		Map<Node, Node> originalAndClonedNodes = new LinkedHashMap<Node, Node>();
@@ -56,7 +55,6 @@ public final class Clipboard
 			{
 				Node curNode = (Node) element;
 				Node cloneNode = curNode.clone();
-				newSelection.add(cloneNode);
 				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
@@ -65,7 +63,6 @@ public final class Clipboard
 					if(!(pSelection.contains(childNode)))
 					{
 						Node clonedChildNode = childNode.clone();
-						newSelection.add(cloneNode);
 						originalAndClonedNodes.put(childNode, clonedChildNode);
 						aNodes.add(clonedChildNode);
 					}
@@ -83,7 +80,6 @@ public final class Clipboard
 				{
 					Edge cloneEdge = (Edge) curEdge.clone();
 					cloneEdge.connect(start, end);
-					newSelection.add(cloneEdge);
 					aEdges.add(cloneEdge);
 				}
 			}
@@ -92,7 +88,7 @@ public final class Clipboard
 
 	/**
 	 * A wrapper method for the pasteInto method without the pOriginalPositions parameter.
-	 * @param pGraph The current Graph to paste contents to.
+	 * @param pGraphPanel The current GraphPanel to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
 	public SelectionList pasteInto(GraphPanel pGraphPanel)
@@ -101,7 +97,7 @@ public final class Clipboard
 	}
 
 	/**
-	 * @param pGraph The current Graph to paste contents to.
+	 * @param pGraphPanel The current GraphPanel to paste contents to.
 	 * @param pOriginalPositions Whether to paste in the original position or not.
 	 * @return The elements to paste as a selectionList.
 	 */
@@ -179,11 +175,11 @@ public final class Clipboard
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
-				pGraphPanel.addNode(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
+				aGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
 			}
 			else
 			{
-				pGraphPanel.addNode(cloneNode, new Point2D.Double(x, y));
+				aGraph.addNode(cloneNode, new Point2D.Double(x, y));
 			}
 			/*
 			 * Don't add any Children to the SelectionList
@@ -191,11 +187,12 @@ public final class Clipboard
 			if(cloneNode.getParent()==null)
 			{
 				updatedSelectionList.add(cloneNode);
+				
 			}
 		}
 		for(Edge cloneEdge: copyEdges)
 		{
-			pGraphPanel.addEdge(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+			aGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
 			updatedSelectionList.add(cloneEdge);
 		}
 		pGraphPanel.endCompoundListening();

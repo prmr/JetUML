@@ -7,7 +7,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
 /**
  * Stores the change of properties of an element.
@@ -16,7 +16,7 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
  */
 public class PropertyChangeCommand implements Command
 {
-	private GraphPanel aGraphPanel;
+	private Graph aGraph;
 	private Object aObject;
 	private Object aPrevPropValue; 
 	private Object aNewPropValue;
@@ -24,15 +24,15 @@ public class PropertyChangeCommand implements Command
 
 	/**
 	 * Creates the command and sets the values of the element. These should be clones so they do not get edited.
-	 * @param pGraphPanel The panel of the object being changed.
+	 * @param pGraph The panel of the object being changed.
 	 * @param pObject The graph element being transformed
 	 * @param pPrevPropValue The initial value
 	 * @param pNewPropValue The new value
 	 * @param pIndex Which property of the object this is, so that we can select it
 	 */
-	public PropertyChangeCommand(GraphPanel pGraphPanel, Object pObject, Object pPrevPropValue, Object pNewPropValue, int pIndex)
+	public PropertyChangeCommand(Graph pGraph, Object pObject, Object pPrevPropValue, Object pNewPropValue, int pIndex)
 	{
-		aGraphPanel = pGraphPanel;
+		aGraph = pGraph;
 		aObject = pObject; 
 		aPrevPropValue = pPrevPropValue;
 		aNewPropValue = pNewPropValue;
@@ -66,8 +66,7 @@ public class PropertyChangeCommand implements Command
 			e.printStackTrace();
 			return;
 		}
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.layout();
 	}
 
 	/**
@@ -96,8 +95,7 @@ public class PropertyChangeCommand implements Command
 			e.printStackTrace();
 			return;
 		}
-		aGraphPanel.layoutGraph();
-		aGraphPanel.repaint();
+		aGraph.layout();
 	}
 
 }

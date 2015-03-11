@@ -27,7 +27,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -88,7 +87,7 @@ public class GraphPanel extends JPanel
 		aZoom = 1;
 		aToolBar = pToolBar;
 		setBackground(Color.WHITE);
-		addMouseListener(new GraphPanelMouseListener(this));
+		addMouseListener(new GraphPanelMouseListener());
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
 
@@ -102,7 +101,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		aModListener.trackPropertyChange(this, edited);
+		aModListener.trackPropertyChange(aGraph, edited);
 		PropertySheet sheet = new PropertySheet(edited);
 		sheet.addChangeListener(new ChangeListener()
 		{
@@ -115,7 +114,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showMessageDialog(this, sheet, 
             ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
             JOptionPane.PLAIN_MESSAGE);
-		aModListener.finishPropertyChange(this, edited);
+		aModListener.finishPropertyChange(aGraph, edited);
 		setModified(true);
 	}
 
@@ -132,18 +131,18 @@ public class GraphPanel extends JPanel
 			{
 				for(Edge e : aGraph.getNodeEdges((Node) element))
 				{
-					removeEdge(e);
+					aGraph.removeEdge(e);
 				}
 				nodes.add((Node) element);
 			}
 			else if(element instanceof Edge)
 			{
-				removeEdge((Edge) element);
+				aGraph.removeEdge((Edge) element);
 			}
 		}
 		while(!nodes.empty())
 		{
-			removeNode(nodes.pop());
+			aGraph.removeNode(nodes.pop());
 		}
 		aUndo.endTracking();
 		if(aSelectedElements.size() > 0)
@@ -167,96 +166,6 @@ public class GraphPanel extends JPanel
 	public Graph getGraph()
 	{
 		return aGraph;
-	}
-	
-	/**
-	 * Removes the node from aGraph.
-	 * @param pNode the node to be deleted
-	 */
-	public void removeNode(Node pNode)
-	{
-		aGraph.removeNode(pNode);
-		aModListener.nodeRemoved(this, pNode);
-	}
-	
-	/**
-	 * Removes the edge from aGraph.
-	 * @param pEdge the edge to be deleted
-	 */
-	public void removeEdge(Edge pEdge)
-	{
-		aGraph.removeEdge(pEdge);
-		aModListener.edgeRemoved(this, pEdge);
-	}
-	
-	/**
-	 * Adds the node to aGraph.
-	 * @param pNode the node to be added
-	 * @param pPoint The location to add the node
-	 */
-	public void addNode(Node pNode, Point.Double pPoint)
-	{
-		aGraph.addNode(pNode, pPoint);
-		aModListener.nodeAdded(this, pNode);
-	}
-	
-	/**
-	 * Adds the edge to aGraph.
-	 * @param pEdge the node to be added
-	 * @param pPoint1 The start point
-	 * @param pPoint2 The end point
-	 */
-	public void addEdge(Edge pEdge, Point.Double pPoint1, Point.Double pPoint2)
-	{
-		aGraph.connect(pEdge, pPoint1, pPoint2);
-		aModListener.edgeAdded(this, pEdge);
-	}
-	
-	/**
-	 * Adds the edge to aGraph.
-	 * @param pEdge the node to be added
-	 * @param pNode1 The start point
-	 * @param pNode2 The end point
-	 */
-	public void addEdge(Edge pEdge, Node pNode1, Node pNode2)
-	{
-		aGraph.connect(pEdge, pNode1, pNode2);
-		aModListener.edgeAdded(this, pEdge);
-	}
-	
-	/**
-	 * Adds the child node to the parent as a child.
-	 * @param pParent The parent node to be added to
-	 * @param pChild The child node to be added
-	 * @param pIndex The index of the parent at which  to add the child
-	 */
-	public void addChild(int pIndex, Node pParent, Node pChild)
-	{
-		pParent.removeChild(pChild);
-		aModListener.childDetached(this, pIndex, pParent, pChild);
-	}
-	
-	/**
-	 * Removes the child node from the parent.
-	 * @param pParent The parent node to be removed from
-	 * @param pChild The child node to be remove
-	 * @param pIndex The index of the parent from which to remove the child
-	 */
-	public void removeChild(int pIndex, Node pParent, Node pChild)
-	{
-		pParent.addChild(pIndex, pChild);
-		aModListener.childAttached(this, pIndex, pParent, pChild);
-	}
-	
-	/**
-	 * Moves the node in aGraph by DX and DY.
-	 * @param pNode the node to be moved
-	 * @param pDX the amount to move in the x direction
-	 * @param pDY the amount to move in the y direction
-	 */
-	public void moveNode(Node pNode, double pDX, double pDY) 
-	{
-		pNode.translate(pDX, pDY);
 	}
 	
 	/**
@@ -302,6 +211,7 @@ public class GraphPanel extends JPanel
 	public void setGraph(Graph pGraph)
 	{
 		aGraph = pGraph;
+		aGraph.addModificationListener(aModListener);
 		setModified(false);
 		revalidate();
 		repaint();
@@ -492,14 +402,7 @@ public class GraphPanel extends JPanel
 	}
 	
 	private class GraphPanelMouseListener extends MouseAdapter
-	{
-		private GraphPanel aGraphPanel;
-		public GraphPanelMouseListener(GraphPanel pGraphPanel)
-		{
-			super();
-			aGraphPanel  = pGraphPanel;
-		}
-		
+	{	
 		@Override
 		public void mousePressed(MouseEvent pEvent)
 		{
@@ -537,7 +440,6 @@ public class GraphPanel extends JPanel
                     		   boolean added = aGraph.add(newNode, mousePoint);
                     		   if(added)
                     		   {
-                    			   aModListener.nodeAdded(aGraphPanel, newNode);
                     			   setModified(true);
                     			   aSelectedElements.set(newNode);
                     		   }
@@ -563,7 +465,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
+					aModListener.startTrackingMove(aGraph, aSelectedElements);
 				}
 				else
 				{
@@ -581,11 +483,10 @@ public class GraphPanel extends JPanel
 				boolean added = aGraph.add(newNode, mousePoint);
 				if(added)
 				{
-					aModListener.nodeAdded(aGraphPanel, newNode);
 					setModified(true);
 					aSelectedElements.set(newNode);
 					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
+					aModListener.startTrackingMove(aGraph, aSelectedElements);
 				}
 				else if(n != null)
 				{
@@ -598,7 +499,7 @@ public class GraphPanel extends JPanel
 						aSelectedElements.set(n);
 					}
 					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraphPanel, aSelectedElements);
+					aModListener.startTrackingMove(aGraph, aSelectedElements);
 				}
 			}
 			else if(tool instanceof Edge)
@@ -624,7 +525,6 @@ public class GraphPanel extends JPanel
 				Edge newEdge = (Edge) prototype.clone();
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
 				{
-					aModListener.edgeAdded(aGraphPanel, newEdge);
 					setModified(true);
 					aSelectedElements.set(newEdge);
 				}
@@ -633,7 +533,7 @@ public class GraphPanel extends JPanel
 			{
 				aGraph.layout();
 				setModified(true);
-				aModListener.endTrackingMove(aGraphPanel, aSelectedElements);
+				aModListener.endTrackingMove(aGraph, aSelectedElements);
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
