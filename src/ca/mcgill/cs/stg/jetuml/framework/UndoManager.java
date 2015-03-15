@@ -17,7 +17,6 @@ public class UndoManager
 	private Stack<CompoundCommand> aTrackingCommands; //used for many commands coming at once
 	private boolean aTracking; //turned on to allow many things to be changed in one command
 	private boolean aHoldChanges = false; //turned on while undoing or redoing to prevent duplication
-	private GraphPanel aGraphPanel;
 	private int aMaxUndone = 30;
 	
 	/**
@@ -25,9 +24,8 @@ public class UndoManager
 	 * These should be assigned one per panel.
 	 * @param pPanel The panel that our changes will be made to 
 	 */
-	public UndoManager(GraphPanel pPanel)
+	public UndoManager()
 	{
-		aGraphPanel = pPanel;
 		aPastCommands = new Stack<Command>();
 		aUndoneCommands = new Stack<Command>();
 		aTrackingCommands = new Stack<CompoundCommand>();
@@ -76,7 +74,6 @@ public class UndoManager
 		toUndo.undo();
 		aUndoneCommands.push(toUndo);
 		aHoldChanges = false;
-		aGraphPanel.repaint();
 	}
 
 	/**
@@ -95,7 +92,6 @@ public class UndoManager
 		toRedo.execute();
 		aPastCommands.push(toRedo);
 		aHoldChanges = false;
-		aGraphPanel.repaint();
 	}
 
 	/**

@@ -38,6 +38,14 @@ public class GraphModificationListener
 	{
 		aUndoManager = pUndo;
 	}
+	
+	/**
+	 * Creates a new GraphModificationListener with an UndoManager.
+	 */
+	public GraphModificationListener()
+	{
+		aUndoManager = new UndoManager();
+	}
 
 	/**
 	 * Keeps track of the addition of a node.

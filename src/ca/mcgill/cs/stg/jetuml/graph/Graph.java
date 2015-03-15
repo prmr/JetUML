@@ -57,6 +57,7 @@ public abstract class Graph
 		aEdges = new ArrayList<>();
 		aNodesToBeRemoved = new ArrayList<>();
 		aEdgesToBeRemoved = new ArrayList<>();
+		aModListener = new GraphModificationListener();
 		aNeedsLayout = true;
 	}
 	

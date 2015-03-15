@@ -75,7 +75,7 @@ public class GraphPanel extends JPanel
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
 	private DragMode aDragMode;
-	private UndoManager aUndo = new UndoManager(this);
+	private UndoManager aUndo = new UndoManager();
 	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
 	
 	/**
@@ -192,6 +192,7 @@ public class GraphPanel extends JPanel
 	public void undo()
 	{
 		aUndo.undoCommand();
+		repaint();
 	}
 	
 	/**
@@ -202,6 +203,7 @@ public class GraphPanel extends JPanel
 	public void redo()
 	{
 		aUndo.redoCommand();
+		repaint();
 	}
 
 	/**
