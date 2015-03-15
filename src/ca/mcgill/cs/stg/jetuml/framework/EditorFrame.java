@@ -1210,13 +1210,13 @@ public class EditorFrame extends JFrame
    		int modcount = 0;
    		for(int i = 0; i < tabs.size(); i++)
    		{
-   			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
-   			{
-   				GraphFrame frame = (GraphFrame)aTabbedPane.getComponent(i);
-   				if(frame.getGraphPanel().isModified()) 
-   				{
-   					modcount++;
-   				}
+   			if(tabs.get(i) instanceof GraphFrame)
+   			{	
+				GraphFrame frame = (GraphFrame) tabs.get(i);
+				if(frame.getGraphPanel().isModified()) 
+				{
+					modcount++;
+				}
    			}	
    		}
    		if(modcount > 0)
