@@ -46,9 +46,6 @@
         <string>name</string>
        </void>
       </void>
-      <void property="objectNode">
-       <object idref="ObjectNode0"/>
-      </void>
       <void property="parent">
        <object idref="ObjectNode0"/>
       </void>
@@ -159,9 +156,6 @@
         <string>name2</string>
        </void>
       </void>
-      <void property="objectNode">
-       <object idref="ObjectNode1"/>
-      </void>
       <void property="parent">
        <object idref="ObjectNode1"/>
       </void>
@@ -218,9 +212,6 @@
         <string>name3</string>
        </void>
       </void>
-      <void property="objectNode">
-       <object idref="ObjectNode1"/>
-      </void>
       <void property="parent">
        <object idref="ObjectNode1"/>
       </void>
@@ -273,9 +264,6 @@
        <void property="text">
         <string>name4</string>
        </void>
-      </void>
-      <void property="objectNode">
-       <object idref="ObjectNode1"/>
       </void>
       <void property="parent">
        <object idref="ObjectNode1"/>
