@@ -276,6 +276,32 @@ public final class BentStyle
       	}
 	   return r;
 	}
+	
+	@Override
+	public String toString()
+	{
+		if( this == STRAIGHT )
+		{
+			return "Straight";
+		}
+		else if( this == HV )
+		{
+			return "HV";
+		}
+		else if( this == VH )
+		{
+			return "VH";
+		}
+		else if( this == HVH)
+		{
+			return "HVH";
+		}
+		else if( this == VHV )
+		{
+			return "VHV";
+		}
+		return "Unknown";
+	}
 
 	/*
      * Gets the points at which a line joining two rectangles
