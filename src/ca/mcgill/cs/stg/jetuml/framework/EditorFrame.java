@@ -34,28 +34,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.ExceptionListener;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
 import java.beans.PropertyVetoException;
-import java.beans.Statement;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -85,7 +73,6 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -482,7 +469,7 @@ public class EditorFrame extends JFrame
 		}	      
 		try
 		{	              
-			Graph graph = read(new FileInputStream(pName));
+			Graph graph = PersistenceService.read(new FileInputStream(pName));
 			GraphFrame frame = new GraphFrame(graph);
 			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
@@ -885,7 +872,7 @@ public class EditorFrame extends JFrame
    		}
    		try
    		{
-   			saveFile(frame.getGraph(), new FileOutputStream(file));
+   			PersistenceService.saveFile(frame.getGraph(), new FileOutputStream(file));
    			frame.getGraphPanel().setModified(false);
    		}        
    		catch(Exception exception)
@@ -952,7 +939,7 @@ public class EditorFrame extends JFrame
    				OutputStream out = new FileOutputStream(result);
    				try
    				{
-   					saveFile(graph, out);
+   					PersistenceService.saveFile(graph, out);
    				}
    				finally
    				{
@@ -1091,75 +1078,6 @@ public class EditorFrame extends JFrame
 		return file;
    	}
    
-   /**
-    * Reads a graph file.
-    *  @param pIn the input stream to read
-    *  @return the graph that is read in
-    *  @throws IOException if the graph cannot be read.
-    */
-   	public static Graph read(InputStream pIn) throws IOException
-   	{
-   		XMLDecoder reader = new XMLDecoder(pIn);
-   		Graph graph = (Graph) reader.readObject();
-   		pIn.close();
-   		return graph;
-   	}
-
-   	/**
-     * Saves the current graph in a file. We use long-term
-     * bean persistence to save the program data. 
-     * @param out the stream for saving
-     */
-   	private static void saveFile(Graph pGraph, OutputStream out)
-   {
-      XMLEncoder encoder = new XMLEncoder(out);
-         
-      encoder.setExceptionListener(new 
-         ExceptionListener() 
-         {
-            public void exceptionThrown(Exception ex) 
-            {
-               ex.printStackTrace();
-            }
-         });
-      /*
-      The following does not work due to bug #4741757
-        
-      encoder.setPersistenceDelegate(
-         Point2D.Double.class,
-         new DefaultPersistenceDelegate(
-            new String[]{ "x", "y" }) );
-      */
-      encoder.setPersistenceDelegate(Point2D.Double.class, new
-            DefaultPersistenceDelegate()
-            {
-               protected void initialize(Class type, 
-                  Object oldInstance, Object newInstance, 
-                  Encoder out) 
-               {
-                  super.initialize(type, oldInstance, 
-                     newInstance, out);
-                  Point2D p = (Point2D)oldInstance;
-                  out.writeStatement(
-                        new Statement(oldInstance,
-                           "setLocation", new Object[]{ new Double(p.getX()), new Double(p.getY()) }) );
-               }
-            });
-      
-      encoder.setPersistenceDelegate(BentStyle.class,
-         staticFieldDelegate);
-      encoder.setPersistenceDelegate(LineStyle.class,
-         staticFieldDelegate);
-      encoder.setPersistenceDelegate(ArrowHead.class,
-         staticFieldDelegate);
-      
-      Graph.setPersistenceDelegate(encoder);
-      AbstractNode.setPersistenceDelegate(encoder);
-      
-      encoder.writeObject(pGraph);
-      encoder.close();
-   }
-
    	/*
      * Return the image corresponding to the graph.
      * 
@@ -1234,65 +1152,4 @@ public class EditorFrame extends JFrame
    		Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
    		System.exit(0);
    	}
-
-   	private static PersistenceDelegate staticFieldDelegate = new DefaultPersistenceDelegate()
-    {
-            protected Expression instantiate(Object oldInstance, Encoder out)
-            {
-               try
-               {
-                  Class cl = oldInstance.getClass();
-                  Field[] fields = cl.getFields();
-                  for (int i = 0; i < fields.length; i++)
-                  {
-                     if (Modifier.isStatic(
-                            fields[i].getModifiers()) &&
-                        fields[i].get(null) == oldInstance)
-                     {
-                        return new Expression(fields[i], 
-                           "get",
-                           new Object[] { null });
-                     }
-                  }
-               }
-               catch (IllegalAccessException ex) 
-               {
-                  ex.printStackTrace();
-               }
-               return null;
-            }
-            
-            protected boolean mutatesTo(Object oldInstance, Object newInstance)
-            {
-               return oldInstance == newInstance;
-            }
-         };
-
-   
-   // workaround for bug #4646747 in J2SE SDK 1.4.0
-   private static java.util.HashMap beanInfos;
-   static
-   {
-      beanInfos = new java.util.HashMap();
-      Class[] cls = new Class[]
-         {
-            Point2D.Double.class,
-            BentStyle.class,
-            ArrowHead.class,
-            LineStyle.class,
-            Graph.class,
-            AbstractNode.class,
-         };
-      for (int i = 0; i < cls.length; i++)
-      {
-         try
-         {
-            beanInfos.put(cls[i], 
-               java.beans.Introspector.getBeanInfo(cls[i]));
-         }         
-         catch (java.beans.IntrospectionException ex)
-         {
-         }
-      }
-   }
 }
