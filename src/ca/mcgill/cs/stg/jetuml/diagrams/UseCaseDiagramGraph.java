@@ -29,8 +29,12 @@ import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.CommunicationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.ExtendRelationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.IncludeRelationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
@@ -46,31 +50,13 @@ public class UseCaseDiagramGraph extends Graph
 
 	static
 	{
-		ClassRelationshipEdge communication = new ClassRelationshipEdge();
-		communication.setBentStyle(BentStyle.STRAIGHT);
-		communication.setLineStyle(LineStyle.SOLID);
-		communication.setEndArrowHead(ArrowHead.NONE);
-		EDGE_PROTOTYPES[0] = communication;
+		EDGE_PROTOTYPES[0] = new CommunicationEdge();
 
-		ClassRelationshipEdge extendRel = new ClassRelationshipEdge();
-		extendRel.setBentStyle(BentStyle.STRAIGHT);
-		extendRel.setLineStyle(LineStyle.DOTTED);
-		extendRel.setEndArrowHead(ArrowHead.V);
-		extendRel.setMiddleLabel("\u00ABextend\u00BB");
-		EDGE_PROTOTYPES[1] = extendRel;
-
-		ClassRelationshipEdge includeRel = new ClassRelationshipEdge();
-		includeRel.setBentStyle(BentStyle.STRAIGHT);
-	    includeRel.setLineStyle(LineStyle.DOTTED);
-	    includeRel.setEndArrowHead(ArrowHead.V);
-	    includeRel.setMiddleLabel("\u00ABinclude\u00BB");
-	    EDGE_PROTOTYPES[2] = includeRel;
-	      
-	    ClassRelationshipEdge generalization = new ClassRelationshipEdge();
-	    generalization.setBentStyle(BentStyle.STRAIGHT);
-	    generalization.setLineStyle(LineStyle.SOLID);
-	    generalization.setEndArrowHead(ArrowHead.TRIANGLE);
-	    EDGE_PROTOTYPES[3] = generalization;
+		EDGE_PROTOTYPES[1] = new ExtendRelationEdge();
+		
+		EDGE_PROTOTYPES[2] = new IncludeRelationEdge();;
+	    
+	    EDGE_PROTOTYPES[3] = new GeneralizationEdge();
 
 	    EDGE_PROTOTYPES[4] = new NoteEdge();
 	}

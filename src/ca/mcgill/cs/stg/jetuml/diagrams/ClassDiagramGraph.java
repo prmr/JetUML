@@ -27,10 +27,16 @@ import java.util.ResourceBundle;
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.CompositionEdge;
+import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.InheritanceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.InterfaceInheritanceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
@@ -48,36 +54,18 @@ public class ClassDiagramGraph extends Graph
 	
 	static
 	{
-		ClassRelationshipEdge dependency = new ClassRelationshipEdge();
-		dependency.setLineStyle(LineStyle.DOTTED);
-		dependency.setEndArrowHead(ArrowHead.V);
-		EDGE_PROTOTYPES[0] = dependency;
+		EDGE_PROTOTYPES[0] = new DependencyEdge();
 	      
-		ClassRelationshipEdge inheritance = new ClassRelationshipEdge();
-		inheritance.setBentStyle(BentStyle.VHV);
-		inheritance.setEndArrowHead(ArrowHead.TRIANGLE);
-		EDGE_PROTOTYPES[1] = inheritance;
+		EDGE_PROTOTYPES[1] = new InheritanceEdge();
 
-		ClassRelationshipEdge interfaceInheritance = new ClassRelationshipEdge();
-		interfaceInheritance.setBentStyle(BentStyle.VHV);
-		interfaceInheritance.setLineStyle(LineStyle.DOTTED);
-		interfaceInheritance.setEndArrowHead(ArrowHead.TRIANGLE);
-		EDGE_PROTOTYPES[2] = interfaceInheritance;
+		EDGE_PROTOTYPES[2] = new InterfaceInheritanceEdge();
 
-		ClassRelationshipEdge association = new ClassRelationshipEdge();
-		association.setBentStyle(BentStyle.HVH);
-		association.setEndArrowHead(ArrowHead.V);
-		EDGE_PROTOTYPES[3] = association;
+		EDGE_PROTOTYPES[3] = new AssociationEdge();
 
-		ClassRelationshipEdge aggregation = new ClassRelationshipEdge();
-		aggregation.setBentStyle(BentStyle.HVH);
-		aggregation.setStartArrowHead(ArrowHead.DIAMOND);
-		EDGE_PROTOTYPES[4] = aggregation;
+		EDGE_PROTOTYPES[4] = new AggregationEdge();
 
-		ClassRelationshipEdge composition = new ClassRelationshipEdge();
-		composition.setBentStyle(BentStyle.HVH);
-		composition.setStartArrowHead(ArrowHead.BLACK_DIAMOND);
-		EDGE_PROTOTYPES[5] = composition;
+		EDGE_PROTOTYPES[5] = new CompositionEdge();
+		
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
 	//CSON:
