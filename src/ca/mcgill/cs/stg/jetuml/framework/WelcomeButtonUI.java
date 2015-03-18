@@ -13,37 +13,52 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 
 
+/**
+ * @author JoelChev
+ * This class will be used to build the buttons on the Welcome Tab.
+ * It allows a User to click on the text on the Welcome Tab to launch previous files and to create new diagrams.
+ * It also allows for text to change colour when a user goes over them with their mouse.
+ *
+ */
 public class WelcomeButtonUI extends BasicButtonUI
 {
-	private static Color hoverColor = new Color(255, 210, 90);
+	private static final Color HOVER_COLOR = new Color(255, 210, 90);
+	private static final int FONT_SIZE = 30;
+	
+	    /**
+	     * Constructor for WelcomeButtonUI class.
+	     */
 	    public WelcomeButtonUI()
 	    {
 	        super();
 	    }
 
-	    protected void installDefaults(AbstractButton b)
+
+	    @Override
+	    protected void installDefaults(AbstractButton pButton)
 	    {
-	        super.installDefaults(b);
-	        b.setOpaque(false);
-	        b.setBorderPainted(false);
-	        b.setRolloverEnabled(true);
-	        b.setFont(new Font("Arial", Font.PLAIN, 30));
-	        b.setBorder(new EmptyBorder(4, 0, 0, 4));
+	        super.installDefaults(pButton);
+	        pButton.setOpaque(false);
+	        pButton.setBorderPainted(false);
+	        pButton.setRolloverEnabled(true);
+	        pButton.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
+	        pButton.setBorder(new EmptyBorder(4, 0, 0, 4));
 	    }
 
-	    protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text)
+	    @Override
+	    protected void paintText(Graphics pGraphic, AbstractButton pButton, Rectangle pTextRect, String pText)
 	    {
 
-	        ButtonModel model = b.getModel();
+	        ButtonModel model = pButton.getModel();
 	        if (model.isRollover())
 	        {
-	        	b.setForeground(hoverColor);
-	            b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	        	pButton.setForeground(HOVER_COLOR);
+	            pButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	        }
 	        else
 	        {
-	        	b.setForeground(Color.BLACK);
+	        	pButton.setForeground(Color.BLACK);
 	        }
-	        super.paintText(g, b, textRect, text);
+	        super.paintText(pGraphic, pButton, pTextRect, pText);
 	    }
 }

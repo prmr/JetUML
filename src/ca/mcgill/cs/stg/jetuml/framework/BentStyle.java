@@ -109,198 +109,258 @@ public final class BentStyle
 	 */
 	private static ArrayList<Point2D> getPath(BentStyle pBent, Rectangle2D pStart, Rectangle2D pEnd)
 	{
-	   ArrayList<Point2D> r = new ArrayList<>();
 	   if(pBent == STRAIGHT)
 	   {
-		   Point2D[] a = connectionPoints(pStart);
-		   Point2D[] b = connectionPoints(pEnd);
-		   Point2D p = a[0];
-		   Point2D q = b[0];
-		   double distance = p.distance(q);
-		   if(distance == 0)
-		   {
-			   return null;
-		   }
-		   for(int i = 0; i < a.length; i++) 
-		   {
-			   for(int j = 0; j < b.length; j++)
-			   {
-				   double d = a[i].distance(b[j]);
-				   if(d < distance)
-				   {
-					   p = a[i]; q = b[j];
-					   distance = d;
-				   }
-			   }
-		   }
-		   r.add(p);
-		   r.add(q);
+		   return getPathStraight(pStart, pEnd);
 	   }
-      else if(pBent == HV)
-      {
-    	  double x1;
-    	  double x2 = pEnd.getCenterX();
-    	  double y1 = pStart.getCenterY();
-    	  double y2;
-    	  if(x2 + MIN_SEGMENT <= pStart.getX()) 
-    	  {
-    		  x1 = pStart.getX();
-    	  }
-    	  else if(x2 - MIN_SEGMENT >= pStart.getMaxX()) 
-    	  {
-    		  x1 = pStart.getMaxX();
-    	  }
-    	  else 
-    	  {
-			return null;
-    	  }
-    	  if(y1 + MIN_SEGMENT <= pEnd.getY()) 
-    	  {
-    		  y2 = pEnd.getY();
-    	  } 
-    	  else if(y1 - MIN_SEGMENT >= pEnd.getMaxY()) 
-    	  {
-    		  y2 = pEnd.getMaxY();
-    	  }
-    	  else
-    	  {
-			return null;
-    	  }
-    	  r.add(new Point2D.Double(x1, y1));
-    	  r.add(new Point2D.Double(x2, y1));
-    	  r.add(new Point2D.Double(x2, y2));
+       else if(pBent == HV)
+       {
+    	  return getPathHV(pStart, pEnd);
       	}
       	else if(pBent == VH)
       	{
-      		double x1 = pStart.getCenterX();
-      		double x2;
-      		double y1;
-      		double y2 = pEnd.getCenterY();
-      		if(x1 + MIN_SEGMENT <= pEnd.getX()) 
-      		{
-      			x2 = pEnd.getX();
-      		}
-      		else if(x1 - MIN_SEGMENT >= pEnd.getMaxX()) 
-      		{
-      			x2 = pEnd.getMaxX();
-      		}
-      		else 
-      		{
-      			return null;
-      		}
-      		if(y2 + MIN_SEGMENT <= pStart.getY()) 
-      		{
-				y1 = pStart.getY();
-			}
-      		else if(y2 - MIN_SEGMENT >= pStart.getMaxY()) 
-      		{
-      			y1 = pStart.getMaxY();
-      		} 
-      		else 
-      		{
-      			return null;
-      		}
-      		r.add(new Point2D.Double(x1, y1));
-      		r.add(new Point2D.Double(x1, y2));
-      		r.add(new Point2D.Double(x2, y2));
+      		return getPathVH(pStart, pEnd);
       	}
       	else if(pBent == HVH)
       	{
-      		double x1;
-      		double x2;
-      		double y1 = pStart.getCenterY();
-      		double y2 = pEnd.getCenterY();
-      		if(pStart.getMaxX() + 2 * MIN_SEGMENT <= pEnd.getX())
-      		{
-      			x1 = pStart.getMaxX();
-      			x2 = pEnd.getX();
-      		}
-      		else if(pEnd.getMaxX() + 2 * MIN_SEGMENT <= pStart.getX())
-      		{
-      			x1 = pStart.getX();
-      			x2 = pEnd.getMaxX();
-      		}
-      		else 
-      		{
-				return null;
-			}
-      		if(Math.abs(y1 - y2) <= MIN_SEGMENT)
-      		{
-      			r.add(new Point2D.Double(x1, y2));
-      			r.add(new Point2D.Double(x2, y2));
-      		}
-      		else
-      		{
-      			r.add(new Point2D.Double(x1, y1));
-      			r.add(new Point2D.Double((x1 + x2) / 2, y1));
-      			r.add(new Point2D.Double((x1 + x2) / 2, y2));
-      			r.add(new Point2D.Double(x2, y2));
-      		}
+      		return getPathHVH(pStart, pEnd);
       	}
       	else if(pBent == VHV)
       	{
-      		double x1 = pStart.getCenterX();
-      		double x2 = pEnd.getCenterX();
-      		double y1;
-      		double y2;
-      		if(pStart.getMaxY() + 2 * MIN_SEGMENT <= pEnd.getY())
-      		{
-      			y1 = pStart.getMaxY();
-      			y2 = pEnd.getY();
-      		}
-      		else if(pEnd.getMaxY() + 2 * MIN_SEGMENT <= pStart.getY())
-      		{
-      			y1 = pStart.getY();
-      			y2 = pEnd.getMaxY();
-      		}
-      		else 
-      		{
-				return null;
-			}
-      		if(Math.abs(x1 - x2) <= MIN_SEGMENT)
-      		{
-      			r.add(new Point2D.Double(x2, y1));
-      			r.add(new Point2D.Double(x2, y2));
-      		}
-      		else
-      		{
-      			r.add(new Point2D.Double(x1, y1));
-      			r.add(new Point2D.Double(x1, (y1 + y2) / 2));
-      			r.add(new Point2D.Double(x2, (y1 + y2) / 2));
-      			r.add(new Point2D.Double(x2, y2));
-      		}
+      		return getPathVHV(pStart, pEnd);
       	}
-      	else 
-      	{
-      		return null;
-      	}
+	   	return null;
+	}
+	
+	/**
+	 * @param pStart bounds of starting Node
+	 * @param pEnd bounds of ending Node
+	 * @return An ArrayList of points along the straight path between the nodes.
+	 */
+	public static ArrayList<Point2D> getPathStraight(Rectangle2D pStart, Rectangle2D pEnd)
+	{
+		ArrayList<Point2D> r = new ArrayList<>();
+		Point2D[] a = connectionPoints(pStart);
+	    Point2D[] b = connectionPoints(pEnd);
+	    Point2D p = a[0];
+	    Point2D q = b[0];
+	    double distance = p.distance(q);
+	    if(distance == 0)
+	    {
+		   return null;
+	    }
+	    for(int i = 0; i < a.length; i++) 
+	    {
+		   for(int j = 0; j < b.length; j++)
+		   {
+			   double d = a[i].distance(b[j]);
+			   if(d < distance)
+			   {
+				   p = a[i]; q = b[j];
+				   distance = d;
+			   }
+		   }
+	   }
+	   r.add(p);
+	   r.add(q);
 	   return r;
 	}
+	
+	/**
+	 * @param pStart bounds of starting Node
+	 * @param pEnd bounds of ending Node
+	 * @return An ArrayList of points along the HV path between the nodes.
+	 */
+	public static ArrayList<Point2D> getPathHV(Rectangle2D pStart, Rectangle2D pEnd)
+	{
+		ArrayList<Point2D> r = new ArrayList<>();
+		double x1;
+  	    double x2 = pEnd.getCenterX();
+  	    double y1 = pStart.getCenterY();
+  	    double y2;
+  	    if(x2 + MIN_SEGMENT <= pStart.getX()) 
+  	    {
+  		    x1 = pStart.getX();
+  	    }
+  	    else if(x2 - MIN_SEGMENT >= pStart.getMaxX()) 
+  	    {
+  		    x1 = pStart.getMaxX();
+  	    }
+  	    else 
+  	    {
+		   	return null;
+  	    }
+  	    if(y1 + MIN_SEGMENT <= pEnd.getY()) 
+  	    {
+  		    y2 = pEnd.getY();
+  	    } 
+  	    else if(y1 - MIN_SEGMENT >= pEnd.getMaxY()) 
+  	    {
+  		    y2 = pEnd.getMaxY();
+  	    }
+  	    else
+  	    {
+		 	return null;
+  	    }
+  	    r.add(new Point2D.Double(x1, y1));
+  	    r.add(new Point2D.Double(x2, y1));
+  	    r.add(new Point2D.Double(x2, y2));
+  	    return r;
+	}
+	
+	/**
+	 * @param pStart bounds of starting Node
+	 * @param pEnd bounds of ending Node
+	 * @return An ArrayList of points along the VH path between the nodes.
+	 */
+	public static ArrayList<Point2D> getPathVH(Rectangle2D pStart, Rectangle2D pEnd)
+	{
+		ArrayList<Point2D> r = new ArrayList<>();
+		double x1 = pStart.getCenterX();
+  		double x2;
+  		double y1;
+  		double y2 = pEnd.getCenterY();
+  		if(x1 + MIN_SEGMENT <= pEnd.getX()) 
+  		{
+  			x2 = pEnd.getX();
+  		}
+  		else if(x1 - MIN_SEGMENT >= pEnd.getMaxX()) 
+  		{
+  			x2 = pEnd.getMaxX();
+  		}
+  		else 
+  		{
+  			return null;
+  		}
+  		if(y2 + MIN_SEGMENT <= pStart.getY()) 
+  		{
+			y1 = pStart.getY();
+		}
+  		else if(y2 - MIN_SEGMENT >= pStart.getMaxY()) 
+  		{
+  			y1 = pStart.getMaxY();
+  		} 
+  		else 
+  		{
+  			return null;
+  		}
+  		r.add(new Point2D.Double(x1, y1));
+  		r.add(new Point2D.Double(x1, y2));
+  		r.add(new Point2D.Double(x2, y2));
+  		return r;
+	}
+	
+	/**
+	 * @param pStart bounds of starting Node
+	 * @param pEnd bounds of ending Node
+	 * @return An ArrayList of points along the HVH path between the nodes.
+	 */
+	public static ArrayList<Point2D> getPathHVH(Rectangle2D pStart, Rectangle2D pEnd)
+	{
+		ArrayList<Point2D> r = new ArrayList<>();
+		double x1;
+  		double x2;
+  		double y1 = pStart.getCenterY();
+  		double y2 = pEnd.getCenterY();
+  		if(pStart.getMaxX() + 2 * MIN_SEGMENT <= pEnd.getX())
+  		{
+  			x1 = pStart.getMaxX();
+  			x2 = pEnd.getX();
+  		}
+  		else if(pEnd.getMaxX() + 2 * MIN_SEGMENT <= pStart.getX())
+  		{
+  			x1 = pStart.getX();
+  			x2 = pEnd.getMaxX();
+  		}
+  		else 
+  		{
+			return null;
+		}
+  		if(Math.abs(y1 - y2) <= MIN_SEGMENT)
+  		{
+  			r.add(new Point2D.Double(x1, y2));
+  			r.add(new Point2D.Double(x2, y2));
+  		}
+  		else
+  		{
+  			r.add(new Point2D.Double(x1, y1));
+  			r.add(new Point2D.Double((x1 + x2) / 2, y1));
+  			r.add(new Point2D.Double((x1 + x2) / 2, y2));
+  			r.add(new Point2D.Double(x2, y2));
+  		}
+  		return r;
+	}
+	
+	/**
+	 * @param pStart bounds of starting Node
+	 * @param pEnd bounds of ending Node
+	 * @return An ArrayList of points along the VHV path between the nodes.
+	 */
+	public static ArrayList<Point2D> getPathVHV(Rectangle2D pStart, Rectangle2D pEnd)
+	{
+		ArrayList<Point2D> r = new ArrayList<>();
+		double x1 = pStart.getCenterX();
+  		double x2 = pEnd.getCenterX();
+  		double y1;
+  		double y2;
+  		if(pStart.getMaxY() + 2 * MIN_SEGMENT <= pEnd.getY())
+  		{
+  			y1 = pStart.getMaxY();
+  			y2 = pEnd.getY();
+  		}
+  		else if(pEnd.getMaxY() + 2 * MIN_SEGMENT <= pStart.getY())
+  		{
+  			y1 = pStart.getY();
+  			y2 = pEnd.getMaxY();
+  		}
+  		else 
+  		{
+			return null;
+		}
+  		if(Math.abs(x1 - x2) <= MIN_SEGMENT)
+  		{
+  			r.add(new Point2D.Double(x2, y1));
+  			r.add(new Point2D.Double(x2, y2));
+  		}
+  		else
+  		{
+  			r.add(new Point2D.Double(x1, y1));
+  			r.add(new Point2D.Double(x1, (y1 + y2) / 2));
+  			r.add(new Point2D.Double(x2, (y1 + y2) / 2));
+  			r.add(new Point2D.Double(x2, y2));
+  		}
+  		return r;
+  	}
 	
 	@Override
 	public String toString()
 	{
+		String returnString;
 		if( this == STRAIGHT )
 		{
-			return "Straight";
+			returnString = "Straight";
 		}
 		else if( this == HV )
 		{
-			return "HV";
+			returnString = "HV";
 		}
 		else if( this == VH )
 		{
-			return "VH";
+			returnString = "VH";
 		}
 		else if( this == HVH)
 		{
-			return "HVH";
+			returnString = "HVH";
 		}
 		else if( this == VHV )
 		{
-			return "VHV";
+			returnString = "VHV";
 		}
-		return "Unknown";
+		else
+		{
+			returnString = "Unknown";
+		}
+		return returnString;
 	}
 
 	/*

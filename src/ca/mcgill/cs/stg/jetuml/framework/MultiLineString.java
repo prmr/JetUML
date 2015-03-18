@@ -23,7 +23,6 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
@@ -149,41 +148,7 @@ public class MultiLineString implements Cloneable
 		StringBuffer prefix = new StringBuffer();
 		StringBuffer suffix = new StringBuffer();
 		StringBuffer htmlText = new StringBuffer();
-		prefix.append("&nbsp;");
-		suffix.insert(0, "&nbsp;");
-		if(aUnderlined) 
-		{
-			prefix.append("<u>");
-			suffix.insert(0, "</u>");
-		}
-		if(aSize == LARGE)
-		{
-			prefix.append("<font size=\"+1\">");
-			suffix.insert(0, "</font>");
-		}
-		if(aSize == SMALL)
-		{
-			prefix.append("<font size=\"-1\">");
-			suffix.insert(0, "</font>");
-		}
-		htmlText.append("<html>");
-		StringTokenizer tokenizer = new StringTokenizer(aText, "\n");
-		boolean first = true;
-		while (tokenizer.hasMoreTokens())
-		{
-			if(first) 
-			{
-				first = false;
-			}
-			else 
-			{
-				htmlText.append("<br>");
-			}
-			htmlText.append(prefix);
-			htmlText.append(tokenizer.nextToken());
-			htmlText.append(suffix);
-		}      
-		htmlText.append("</html>");
+		labelTextPreProcessing(prefix, suffix, htmlText);
       
 		// replace any < that are not followed by {u, i, b, tt, font, br} with &lt;
       
@@ -220,6 +185,50 @@ public class MultiLineString implements Cloneable
 		{
 			aLabel.setHorizontalAlignment(JLabel.RIGHT);
 		}
+	}
+	
+	/**
+	 * @param pPrefix The prefix to process.
+	 * @param pSuffix The suffix to process.
+	 * @param pHtmlText The html elements to process.
+	 */
+	public void labelTextPreProcessing(StringBuffer pPrefix, StringBuffer pSuffix, StringBuffer pHtmlText)
+	{
+		pPrefix.append("&nbsp;");
+		pSuffix.insert(0, "&nbsp;");
+		if(aUnderlined) 
+		{
+			pPrefix.append("<u>");
+			pSuffix.insert(0, "</u>");
+		}
+		if(aSize == LARGE)
+		{
+			pPrefix.append("<font size=\"+1\">");
+			pSuffix.insert(0, "</font>");
+		}
+		if(aSize == SMALL)
+		{
+			pPrefix.append("<font size=\"-1\">");
+			pSuffix.insert(0, "</font>");
+		}
+		pHtmlText.append("<html>");
+		StringTokenizer tokenizer = new StringTokenizer(aText, "\n");
+		boolean first = true;
+		while (tokenizer.hasMoreTokens())
+		{
+			if(first) 
+			{
+				first = false;
+			}
+			else 
+			{
+				pHtmlText.append("<br>");
+			}
+			pHtmlText.append(pPrefix);
+			pHtmlText.append(tokenizer.nextToken());
+			pHtmlText.append(pSuffix);
+		}      
+		pHtmlText.append("</html>");
 	}
    
 	/**

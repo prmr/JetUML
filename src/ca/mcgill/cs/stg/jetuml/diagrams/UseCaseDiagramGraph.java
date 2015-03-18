@@ -41,8 +41,9 @@ import ca.mcgill.cs.stg.jetuml.graph.UseCaseNode;
  */
 public class UseCaseDiagramGraph extends Graph
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};	
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[5];
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
+	private static final int EDGE_PROTOTYPE_SIZE = 5;
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[EDGE_PROTOTYPE_SIZE];
 
 	static
 	{

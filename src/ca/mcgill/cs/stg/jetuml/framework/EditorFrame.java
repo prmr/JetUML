@@ -92,13 +92,16 @@ public class EditorFrame extends JFrame
 	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
+	private static final int HELP_MENU_TEXT_WIDTH = 10; //Number of pixels to give to the width of the  text area of the Help Menu.
+	private static final int HELP_MENU_TEXT_HEIGHT = 40; //Number of pixels to give to the height of the text area of the Help Menu.
+	
 	
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
 	private JTabbedPane aTabbedPane;
-	private ArrayList<JInternalFrame> tabs = new ArrayList<>();
+	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	private JMenu aNewMenu;
 	private Clipboard aClipboard = new Clipboard();
 	
@@ -383,7 +386,7 @@ public class EditorFrame extends JFrame
 				try
 				{
 					BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
-					JTextArea text = new JTextArea(10, 40);
+					JTextArea text = new JTextArea(HELP_MENU_TEXT_WIDTH, HELP_MENU_TEXT_HEIGHT);
 					String line;
 					while ((line = reader.readLine()) != null)
 					{
@@ -448,7 +451,7 @@ public class EditorFrame extends JFrame
     */
 	private void open(String pName)
 	{	
-		for(int i = 0; i < tabs.size(); i++)
+		for(int i = 0; i < aTabs.size(); i++)
 		{
 			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
 			{
@@ -495,11 +498,11 @@ public class EditorFrame extends JFrame
 	   north.remove(0);
 	   north.validate();
 	   north.repaint();
-	   aTabbedPane.add(setTitle(pInternalFrame),pInternalFrame);
-	   int i = tabs.size();
+	   aTabbedPane.add(setTitle(pInternalFrame), pInternalFrame);
+	   int i = aTabs.size();
 	   aTabbedPane.setTabComponentAt(i,
                new ButtonTabComponent(this, pInternalFrame, aTabbedPane));
-	   tabs.add(pInternalFrame);
+	   aTabs.add(pInternalFrame);
 	   // position frame
 	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
 	   int width = Math.max(aTabbedPane.getWidth() / 2, aTabbedPane.getWidth() - emptySpace);            
@@ -507,7 +510,7 @@ public class EditorFrame extends JFrame
 
 	   pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
 	   pInternalFrame.show(); 
-	   int last = tabs.size();
+	   int last = aTabs.size();
 	   aTabbedPane.setSelectedIndex(last-1);
 	   if(aTabbedPane.getComponentAt(0) instanceof WelcomeTab)
 	   {
@@ -523,6 +526,7 @@ public class EditorFrame extends JFrame
    	private String setTitle(JInternalFrame pInternalFrame)
    	{
    		String appName = aAppResources.getString("app.name");
+   		String diagramName;
    		
    		if(pInternalFrame == null || !(pInternalFrame instanceof GraphFrame ))
    		{
@@ -535,19 +539,27 @@ public class EditorFrame extends JFrame
    			if( file == null )
    			{
    				Graph graphType = frame.getGraph();
-   				if(graphType instanceof ClassDiagramGraph){
-   					return "Class Diagram";
+   				if(graphType instanceof ClassDiagramGraph)
+   				{
+   					diagramName = "Class Diagram";
    				}
-   				else if(graphType instanceof ObjectDiagramGraph){
-   					return "Object Diagram";
+   				else if(graphType instanceof ObjectDiagramGraph)
+   				{
+   					diagramName = "Object Diagram";
    				}
-   				else if(graphType instanceof UseCaseDiagramGraph){
-   					return "Use Case Diagram";
+   				else if(graphType instanceof UseCaseDiagramGraph)
+   				{
+   					diagramName = "Use Case Diagram";
    				}
-   				else if(graphType instanceof StateDiagramGraph){
-   					return "State Diagram";
+   				else if(graphType instanceof StateDiagramGraph)
+   				{
+   					diagramName = "State Diagram";
    				}
-   					return "Sequence Diagram";
+   				else
+   				{
+   					diagramName =  "Sequence Diagram";
+   				}
+   				return diagramName;
    			}
    			else
    			{
@@ -556,19 +568,26 @@ public class EditorFrame extends JFrame
    		}
    }
    	
+   	/**
+   	 * This adds a WelcomeTab to the tabs. This is only done if all other tabs have been previously closed.
+   	 */
    	public void addWelcomeTab()
    	{
    		aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
      	aTabbedPane.add("Welcome", aWelcomeTab);
-     	tabs.add(aWelcomeTab);
+     	aTabs.add(aWelcomeTab);
    	}
    
    	
+   	/**
+   	 * This method removes the WelcomeTab after a file has been opened or a diagram starts being created.
+   	 */
    	public void removeWelcomeTab()
    	{
-   		if(aWelcomeTab !=null){
+   		if(aWelcomeTab !=null)
+   		{
    			aTabbedPane.remove(0);
-   			tabs.remove(0);
+   			aTabs.remove(0);
    		}
    	}
    	
@@ -578,18 +597,19 @@ public class EditorFrame extends JFrame
    	 */
    	public void removeTab(final JInternalFrame pInternalFrame)
     {
-        if (!tabs.contains(pInternalFrame))
+        if (!aTabs.contains(pInternalFrame))
         {
             return;
         }
         JTabbedPane tp = aTabbedPane;
-        int pos = tabs.indexOf(pInternalFrame);
+        int pos = aTabs.indexOf(pInternalFrame);
         tp.remove(pos);
-        tabs.remove(pInternalFrame);
-        if(tabs.size() == 0){
+        aTabs.remove(pInternalFrame);
+        if(aTabs.size() == 0)
+        {
         	aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
-        	aTabbedPane.add("Welcome",aWelcomeTab);
-        	tabs.add(aWelcomeTab);
+        	aTabbedPane.add("Welcome", aWelcomeTab);
+        	aTabs.add(aWelcomeTab);
         }
     }
    	
@@ -801,22 +821,17 @@ public class EditorFrame extends JFrame
         	GraphFrame openFrame = (GraphFrame) curFrame;
         	// we only want to check attempts to close a frame
 			if(openFrame.getGraphPanel().isModified())
-			{  
-				JOptionPane optionPane = new JOptionPane();
-                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);                  
-              
+			{                   
 				// ask user if it is ok to close
-				if(optionPane.showConfirmDialog(openFrame, 
+				if(JOptionPane.showConfirmDialog(openFrame, 
 						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
 				{
 					removeTab((JInternalFrame) curFrame);
 				}
-				else{
-					remove(optionPane);
-				}
 				return;
 			}
-			else{	
+			else
+			{
 				removeTab((JInternalFrame) curFrame);
 			}
         }
@@ -825,28 +840,21 @@ public class EditorFrame extends JFrame
    	/**
    	 * If a user confirms that they want to close their modified graph, this method will
    	 * remove it from the current list of tabs.
+   	 * @param pJInternalFrame  The current JInternalFrame that one wishes to close.
    	 */
-   	public void close(JInternalFrame aJInternalFrame)
+   	public void close(JInternalFrame pJInternalFrame)
    	{
-        JInternalFrame curFrame = aJInternalFrame;
+        JInternalFrame curFrame = pJInternalFrame;
         if (curFrame != null)
         {
         	GraphFrame openFrame = (GraphFrame) curFrame;
         	// we only want to check attempts to close a frame
 			if(openFrame.getGraphPanel().isModified())
-			{  
-				JOptionPane optionPane = new JOptionPane();
-                optionPane.setOptionType(JOptionPane.YES_NO_CANCEL_OPTION);
-				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");                  
-              
-				// ask user if it is ok to close
-				if(optionPane.showConfirmDialog(openFrame, 
-						editorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+			{              
+				if(JOptionPane.showConfirmDialog(openFrame, 
+						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
 				{
 					removeTab((JInternalFrame) curFrame);
-				}
-				else{
-					remove(optionPane);
 				}
 				return;
 			}
@@ -1045,7 +1053,8 @@ public class EditorFrame extends JFrame
 		fileChooser.setCurrentDirectory(new File("."));
 		if(frame.getFileName() != null)
 		{
-			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));                  
+			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), 
+					aAppResources.getString("files.extension"), ""));                  
 			fileChooser.setSelectedFile(f);
 		}
 		else    			
@@ -1126,11 +1135,11 @@ public class EditorFrame extends JFrame
    	public void exit()
    	{
    		int modcount = 0;
-   		for(int i = 0; i < tabs.size(); i++)
+   		for(int i = 0; i < aTabs.size(); i++)
    		{
-   			if(tabs.get(i) instanceof GraphFrame)
+   			if(aTabs.get(i) instanceof GraphFrame)
    			{	
-				GraphFrame frame = (GraphFrame) tabs.get(i);
+				GraphFrame frame = (GraphFrame) aTabs.get(i);
 				if(frame.getGraphPanel().isModified()) 
 				{
 					modcount++;

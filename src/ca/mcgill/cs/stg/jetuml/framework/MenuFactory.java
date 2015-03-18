@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
 import java.beans.EventHandler;
 import java.util.ResourceBundle;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -136,7 +135,6 @@ class MenuFactory
 		}
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
-			Icon icon = new ImageIcon(aBundle.getString(pPrefix + ".icon"));
 			menu.setIcon(new ImageIcon(aBundle.getString(pPrefix + ".icon")));
 		}
 		

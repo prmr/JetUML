@@ -73,9 +73,6 @@ public class PropertySheet extends JPanel
      * properties of a given object.
      * @param pBean the object whose properties are being edited
 	 */
-	/**
-	 * @param pBean
-	 */
 	public PropertySheet(Object pBean)
 	{
 		try
@@ -262,15 +259,15 @@ public class PropertySheet extends JPanel
 	
 	//An addition by JoelChev to format Strings into a TitleCase.
 	/**
-	 * @param input is a String to format into a Title
+	 * @param pInput is a String to format into a Title
 	 * @return is a String that is in Title Format.
 	 */
-	public static String toTitleCase(String input) 
+	public static String toTitleCase(String pInput) 
 	{
 	    StringBuilder titleCase = new StringBuilder();
 	    boolean nextTitleCase = true;
 
-	    for (char c : input.toCharArray()) 
+	    for (char c : pInput.toCharArray()) 
 	    {
 	        if (Character.isSpaceChar(c)) 
 	        {
@@ -278,8 +275,11 @@ public class PropertySheet extends JPanel
 	        } 
 	        else if (nextTitleCase) 
 	        {
-	            c = Character.toTitleCase(c);
+	            Character d = new Character(c);
+	            d = Character.toTitleCase(d);
 	            nextTitleCase = false;
+	            titleCase.append(d);
+	            continue;
 	        }
 
 	        titleCase.append(c);

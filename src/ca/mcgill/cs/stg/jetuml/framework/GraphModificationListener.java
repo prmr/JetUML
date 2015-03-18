@@ -339,7 +339,7 @@ public class GraphModificationListener
 	}
 	
 	/**
-	 * Collects all coming calls into single undo - redo command
+	 * Collects all coming calls into single undo - redo command.
 	 */
 	public void startCompoundListening() 
 	{
@@ -347,7 +347,7 @@ public class GraphModificationListener
 	}
 	
 	/**
-	 * Ends collecting all coming calls into single undo - redo command
+	 * Ends collecting all coming calls into single undo - redo command.
 	 */
 	public void endCompoundListening() 
 	{

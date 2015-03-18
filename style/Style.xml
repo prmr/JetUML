@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Violetta
+    Checkstyle-Configuration: JetUML
     Description: none
 -->
 <module name="Checker">

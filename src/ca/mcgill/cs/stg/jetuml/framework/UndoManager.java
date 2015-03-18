@@ -17,12 +17,10 @@ public class UndoManager
 	private Stack<CompoundCommand> aTrackingCommands; //used for many commands coming at once
 	private boolean aTracking; //turned on to allow many things to be changed in one command
 	private boolean aHoldChanges = false; //turned on while undoing or redoing to prevent duplication
-	private int aMaxUndone = 30;
 	
 	/**
 	 * Creates a new UndoManager with the GraphPanel.
 	 * These should be assigned one per panel.
-	 * @param pPanel The panel that our changes will be made to 
 	 */
 	public UndoManager()
 	{

@@ -33,20 +33,19 @@ import java.util.Collection;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
-import ca.mcgill.cs.stg.jetuml.framework.UndoManager;
 
 /**
  *  A graph consisting of selectable nodes and edges.
  */
 public abstract class Graph
 {
+	protected GraphModificationListener aModListener;
 	private ArrayList<Node> aNodes;
 	private ArrayList<Edge> aEdges;
 	private transient ArrayList<Node> aNodesToBeRemoved;
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
-	protected GraphModificationListener aModListener;
 	
 	/**
      * Constructs a graph with no nodes or edges.
@@ -63,6 +62,7 @@ public abstract class Graph
 	
 	/**
 	 * Adds the modification listener.
+	 * @param pModListener the GraphModificationListener for this Graph.
 	 */
 	public void addModificationListener(GraphModificationListener pModListener)
 	{
@@ -186,9 +186,9 @@ public abstract class Graph
 	}
    
 	/**
-	 * Returns all edges connected to the given node
-	 * @param pNode
-	 * @return
+	 * Returns all edges connected to the given node.
+	 * @param pNode The Node to query for Edges.
+	 * @return an ArrayList of Edges from the Node pNode.
 	 */
 	public ArrayList<Edge> getNodeEdges(Node pNode)
 	{
