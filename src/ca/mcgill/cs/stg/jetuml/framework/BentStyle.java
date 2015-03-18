@@ -109,32 +109,37 @@ public final class BentStyle
 	 */
 	private static ArrayList<Point2D> getPath(BentStyle pBent, Rectangle2D pStart, Rectangle2D pEnd)
 	{
+	   ArrayList<Point2D> r = null;
 	   if(pBent == STRAIGHT)
 	   {
-		   return getPathStraight(pStart, pEnd);
+		   r = getPathStraight(pStart, pEnd);
 	   }
        else if(pBent == HV)
        {
-    	  return getPathHV(pStart, pEnd);
+    	  r = getPathHV(pStart, pEnd);
       	}
       	else if(pBent == VH)
       	{
-      		return getPathVH(pStart, pEnd);
+      		r = getPathVH(pStart, pEnd);
       	}
       	else if(pBent == HVH)
       	{
-      		return getPathHVH(pStart, pEnd);
+      		r = getPathHVH(pStart, pEnd);
       	}
       	else if(pBent == VHV)
       	{
-      		return getPathVHV(pStart, pEnd);
+      		r = getPathVHV(pStart, pEnd);
       	}
+	   if(r != null)
+	   {
+		   return r;
+	   }
 	   	return null;
 	}
 	
 	/**
 	 * @param pStart bounds of starting Node
-	 * @param pEnd bounds of ending Node
+	 * @param pEnd bounds of endiArrayList<Point2D> r = new ArrayList<>();ng Node
 	 * @return An ArrayList of points along the straight path between the nodes.
 	 */
 	public static ArrayList<Point2D> getPathStraight(Rectangle2D pStart, Rectangle2D pEnd)
