@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -156,7 +157,6 @@ public class EditorFrame extends JFrame
 		createEditMenu(factory);
 		createViewMenu(factory);
      	createHelpMenu(factory);
-
 	}
 	
 	private void createFileMenu(MenuFactory pFactory)
@@ -427,6 +427,24 @@ public class EditorFrame extends JFrame
             }
          }));
 	}
+	
+	/**
+	 * Sets the TaskBar icon for the JetUML application.
+	 */
+	public void setIcon()
+    {
+    	try
+		{
+			java.net.URL url = getClass().getResource(aAppResources.getString("app.icon"));
+			Toolkit kit = Toolkit.getDefaultToolkit();
+			Image img = kit.createImage(url);
+			setIconImage(img);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+    }
 
    	/**
      * Reads the command line arguments.
@@ -1109,7 +1127,7 @@ public class EditorFrame extends JFrame
         pGraph.draw(g2, null);
         return image;
     }
-   
+    
    	/**
      * Displays the About dialog box.
    	 */
