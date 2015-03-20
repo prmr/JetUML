@@ -30,9 +30,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 @SuppressWarnings("serial")
 public class WelcomeTab extends JInternalFrame
 {
-//	private static final Color lightBackground = new Color(72,118,255);
-//    private static final Color darkBackground = new Color(67,110,238);
-    
 	private static final int BORDER_MARGIN = 45;
 	private static final int ALTERNATIVE_BORDER_MARGIN = 30;
 	private static final int FOOT_BORDER_MARGIN = 10;
@@ -57,8 +54,8 @@ public class WelcomeTab extends JInternalFrame
 	{
 		
 		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-		aLeftPanelIcon = new ImageIcon(aWelcomeResources.getString("welcome.create.icon"));
-		aRightPanelIcon = new ImageIcon(aWelcomeResources.getString("welcome.open.icon")); 
+		aLeftPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.create.icon")));
+		aRightPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.open.icon"))); 
 	    setOpaque(false);
 	    setLayout(new BorderLayout());
 	    

@@ -107,7 +107,7 @@ class MenuFactory
 		}
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
-			pMenuItem.setIcon(new ImageIcon(aBundle.getString(pPrefix + ".icon")));
+			pMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource(aBundle.getString(pPrefix + ".icon"))));
 		}
 		return pMenuItem;
 	}
@@ -135,7 +135,7 @@ class MenuFactory
 		}
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
-			menu.setIcon(new ImageIcon(aBundle.getString(pPrefix + ".icon")));
+			menu.setIcon(new ImageIcon(getClass().getClassLoader().getResource(aBundle.getString(pPrefix + ".icon"))));
 		}
 		
       	return menu;
