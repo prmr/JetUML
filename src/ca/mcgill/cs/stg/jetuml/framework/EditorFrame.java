@@ -1143,7 +1143,8 @@ public class EditorFrame extends JFrame
                new MessageFormat(aEditorResources.getString("dialog.about.title")).format(new Object[] { 
                        aAppResources.getString("app.name")}),
                JOptionPane.INFORMATION_MESSAGE,
-               new ImageIcon(getClass().getResource(aAppResources.getString("app.icon"))));  
+               new ImageIcon(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")))); 
+   		
    	}
 
    	/**
