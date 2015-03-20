@@ -103,6 +103,10 @@ public class GraphPanel extends JPanel
 		}
 		aModListener.trackPropertyChange(aGraph, edited);
 		PropertySheet sheet = new PropertySheet(edited);
+		if(sheet.isEmpty())
+		{
+			return;
+		}
 		sheet.addChangeListener(new ChangeListener()
 		{
 			public void stateChanged(ChangeEvent pEvent)
