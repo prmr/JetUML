@@ -435,7 +435,7 @@ public class EditorFrame extends JFrame
     {
     	try
 		{
-			java.net.URL url = getClass().getResource(aAppResources.getString("app.icon"));
+			java.net.URL url = getClass().getClassLoader().getResource(aAppResources.getString("app.icon"));
 			Toolkit kit = Toolkit.getDefaultToolkit();
 			Image img = kit.createImage(url);
 			setIconImage(img);
