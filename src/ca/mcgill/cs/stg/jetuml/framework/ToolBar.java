@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
@@ -73,6 +74,8 @@ public class ToolBar extends JPanel
 	 */
 	public ToolBar(Graph pGraph)
 	{
+		BoxLayout bl = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(bl);
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
 

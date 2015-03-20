@@ -53,7 +53,7 @@ public class GraphFrame extends JInternalFrame
 		aToolBar = new ToolBar(aGraph);
 		aPanel = new GraphPanel(aToolBar);
 		Container contentPane = getContentPane();
-		contentPane.add(aToolBar, BorderLayout.NORTH);
+		contentPane.add(aToolBar, BorderLayout.EAST);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
 		aPanel.setGraph(aGraph);
 	}
