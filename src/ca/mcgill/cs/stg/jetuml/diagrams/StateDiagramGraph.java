@@ -22,6 +22,7 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.awt.geom.Point2D;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.graph.CircularStateNode;
@@ -69,6 +70,35 @@ public class StateDiagramGraph extends Graph
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("state.name");
 	}
+	
+	@Override
+	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{	
+		Node n1 = findNode(pPoint1);
+		Node n2 = findNode(pPoint2);
+		if(n1 != null)
+		{
+			//This checks to see if first node is an end note. Cannot have edges coming from final node.
+			if(n1 instanceof CircularStateNode)
+			{
+				CircularStateNode end = (CircularStateNode) n1;
+				if(end.isFinal())
+				{
+					return false;
+				}
+			}
+			//This checks to see if second node is a beginning node. Cannot return to start state.
+			else if (n2 instanceof CircularStateNode)
+			{
+				CircularStateNode begin = (CircularStateNode) n2;
+				if(!begin.isFinal())
+				{
+					return false;
+				}
+			}
+		}
+		return super.connect(pEdge, pPoint1, pPoint2);
+	}	
 }
 
 
