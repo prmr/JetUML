@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,8 +75,7 @@ public class ToolBar extends JPanel
 	 */
 	public ToolBar(Graph pGraph)
 	{
-		BoxLayout bl = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(bl);
+		setLayout(new GridLayout(0, 1));
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
 
@@ -97,10 +97,11 @@ public class ToolBar extends JPanel
 				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + BUTTON_SIZE - offset);
             }
 		};
-		final JToggleButton button = new JToggleButton(icon);
 		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		String tip = editorResources.getString("grabber.tooltip");
+		final JToggleButton button = new JToggleButton(tip, icon);
 		button.setToolTipText(tip);
+		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);      
 		add(button);
 		button.setSelected(true);
@@ -200,7 +201,8 @@ public class ToolBar extends JPanel
             }
 		};
 
-		final JToggleButton button = new JToggleButton(icon);
+		final JToggleButton button = new JToggleButton(pTip, icon);
+		button.setAlignmentX(CENTER_ALIGNMENT);
 		button.setToolTipText(pTip);
 		aGroup.add(button);      
 		add(button);
@@ -278,7 +280,8 @@ public class ToolBar extends JPanel
             	g2.setTransform(oldTransform);
             }
          };
-         final JToggleButton button = new JToggleButton(icon);               
+         final JToggleButton button = new JToggleButton(pTip, icon); 
+         button.setAlignmentX(CENTER_ALIGNMENT);
          button.setToolTipText(pTip);
          aGroup.add(button);
          add(button);      
