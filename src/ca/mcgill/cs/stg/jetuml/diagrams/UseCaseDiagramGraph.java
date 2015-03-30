@@ -24,17 +24,10 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
-import ca.mcgill.cs.stg.jetuml.graph.CommunicationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.ExtendRelationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.IncludeRelationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
@@ -50,13 +43,13 @@ public class UseCaseDiagramGraph extends Graph
 
 	static
 	{
-		EDGE_PROTOTYPES[0] = new CommunicationEdge();
+		EDGE_PROTOTYPES[0] = ClassRelationshipEdge.createCommunicationEdge();
 
-		EDGE_PROTOTYPES[1] = new ExtendRelationEdge();
+		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createExtendRelationEdge();
 		
-		EDGE_PROTOTYPES[2] = new IncludeRelationEdge();;
+		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createIncludeRelationEdge();;
 	    
-	    EDGE_PROTOTYPES[3] = new GeneralizationEdge();
+	    EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createGeneralizationEdge();
 
 	    EDGE_PROTOTYPES[4] = new NoteEdge();
 	}

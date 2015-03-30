@@ -24,19 +24,10 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
-import ca.mcgill.cs.stg.jetuml.graph.CompositionEdge;
-import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.InheritanceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.InterfaceInheritanceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
@@ -54,17 +45,17 @@ public class ClassDiagramGraph extends Graph
 	
 	static
 	{
-		EDGE_PROTOTYPES[0] = new DependencyEdge();
+		EDGE_PROTOTYPES[0] = ClassRelationshipEdge.createDependencyEdge();
 	      
-		EDGE_PROTOTYPES[1] = new InheritanceEdge();
+		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createInheritanceEdge();
 
-		EDGE_PROTOTYPES[2] = new InterfaceInheritanceEdge();
+		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createInterfaceInheritanceEdge();
 
-		EDGE_PROTOTYPES[3] = new AssociationEdge();
+		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
 
-		EDGE_PROTOTYPES[4] = new AggregationEdge();
+		EDGE_PROTOTYPES[4] = ClassRelationshipEdge.createAggregationEdge();
 
-		EDGE_PROTOTYPES[5] = new CompositionEdge();
+		EDGE_PROTOTYPES[5] = ClassRelationshipEdge.createCompositionEdge();
 		
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
