@@ -69,7 +69,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
     *  Sets the line style property.
     *  @param pNewValue the new value
     */
-   public void setLineStyle(LineStyle pNewValue) 
+	protected void setLineStyle(LineStyle pNewValue) 
    { aLineStyle = pNewValue; }
 
    /**
@@ -83,7 +83,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
     *  Sets the start arrow head property.
     *  @param pNewValue the new value
     */
-   	public void setStartArrowHead(ArrowHead pNewValue) 
+   	protected void setStartArrowHead(ArrowHead pNewValue) 
    	{ aStartArrowHead = pNewValue; }
 
    	/**
@@ -97,7 +97,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
      *  Sets the end arrow head property.
      * @param pNewValue the new value
      */
-   	public void setEndArrowHead(ArrowHead pNewValue) 
+   	protected void setEndArrowHead(ArrowHead pNewValue) 
 	{ aEndArrowHead = pNewValue; }
 
    	/**

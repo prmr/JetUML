@@ -65,7 +65,6 @@ public class ObjectDiagramGraph extends Graph
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
 	    
 	    ClassRelationshipEdge association = new ClassRelationshipEdge();
-	    association.setBentStyle(BentStyle.STRAIGHT);
 	    EDGE_PROTOTYPES[1] = association;
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
 	}

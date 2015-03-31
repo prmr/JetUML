@@ -24,9 +24,6 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
@@ -48,36 +45,18 @@ public class ClassDiagramGraph extends Graph
 	
 	static
 	{
-		ClassRelationshipEdge dependency = new ClassRelationshipEdge();
-		dependency.setLineStyle(LineStyle.DOTTED);
-		dependency.setEndArrowHead(ArrowHead.V);
-		EDGE_PROTOTYPES[0] = dependency;
+		EDGE_PROTOTYPES[0] = ClassRelationshipEdge.createDependencyEdge();
 	      
-		ClassRelationshipEdge inheritance = new ClassRelationshipEdge();
-		inheritance.setBentStyle(BentStyle.VHV);
-		inheritance.setEndArrowHead(ArrowHead.TRIANGLE);
-		EDGE_PROTOTYPES[1] = inheritance;
+		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createInheritanceEdge();
 
-		ClassRelationshipEdge interfaceInheritance = new ClassRelationshipEdge();
-		interfaceInheritance.setBentStyle(BentStyle.VHV);
-		interfaceInheritance.setLineStyle(LineStyle.DOTTED);
-		interfaceInheritance.setEndArrowHead(ArrowHead.TRIANGLE);
-		EDGE_PROTOTYPES[2] = interfaceInheritance;
+		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createInterfaceInheritanceEdge();
 
-		ClassRelationshipEdge association = new ClassRelationshipEdge();
-		association.setBentStyle(BentStyle.HVH);
-		association.setEndArrowHead(ArrowHead.V);
-		EDGE_PROTOTYPES[3] = association;
+		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
 
-		ClassRelationshipEdge aggregation = new ClassRelationshipEdge();
-		aggregation.setBentStyle(BentStyle.HVH);
-		aggregation.setStartArrowHead(ArrowHead.DIAMOND);
-		EDGE_PROTOTYPES[4] = aggregation;
+		EDGE_PROTOTYPES[4] = ClassRelationshipEdge.createAggregationEdge();
 
-		ClassRelationshipEdge composition = new ClassRelationshipEdge();
-		composition.setBentStyle(BentStyle.HVH);
-		composition.setStartArrowHead(ArrowHead.BLACK_DIAMOND);
-		EDGE_PROTOTYPES[5] = composition;
+		EDGE_PROTOTYPES[5] = ClassRelationshipEdge.createCompositionEdge();
+		
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
 	//CSON:
