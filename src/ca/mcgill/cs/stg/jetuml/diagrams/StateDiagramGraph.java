@@ -88,7 +88,7 @@ public class StateDiagramGraph extends Graph
 				}
 			}
 			//This checks to see if second node is a beginning node. Cannot return to start state.
-			else if (n2 instanceof CircularStateNode)
+			if (n2 instanceof CircularStateNode)
 			{
 				CircularStateNode begin = (CircularStateNode) n2;
 				if(!begin.isFinal())
