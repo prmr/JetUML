@@ -46,9 +46,9 @@ public abstract class Graph
 	private transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	private transient Rectangle2D aMinBounds;
-	
+
 	/**
-     * Constructs a graph with no nodes or edges.
+	 * Constructs a graph with no nodes or edges.
 	 */
 	public Graph()
 	{
@@ -59,7 +59,7 @@ public abstract class Graph
 		aModListener = new GraphModificationListener();
 		aNeedsLayout = true;
 	}
-	
+
 	/**
 	 * Adds the modification listener.
 	 * @param pModListener the GraphModificationListener for this Graph.
@@ -68,13 +68,13 @@ public abstract class Graph
 	{
 		aModListener = pModListener;
 	}
-	
+
 	/**
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */
 	public abstract String getFileExtension();
-	
+
 	/**
 	 * @return A short description of this diagram, usually
 	 * ending in "Diagram", e.g., "State Diagram".
@@ -82,13 +82,13 @@ public abstract class Graph
 	public abstract String getDescription();
 
 	/**
-     * Adds an edge to the graph that joins the nodes containing
-     * the given points. If the points aren't both inside nodes,
-     * then no edge is added.
-     * @param pEdge the edge to add
-     * @param pPoint1 a point in the starting node
-     * @param pPoint2 a point in the ending node
-     * @return true if the edge was connected
+	 * Adds an edge to the graph that joins the nodes containing
+	 * the given points. If the points aren't both inside nodes,
+	 * then no edge is added.
+	 * @param pEdge the edge to add
+	 * @param pPoint1 a point in the starting node
+	 * @param pPoint2 a point in the ending node
+	 * @return true if the edge was connected
 	 */
 	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{	
@@ -96,6 +96,11 @@ public abstract class Graph
 		Node n2 = findNode(pPoint2);
 		if(n1 != null)
 		{
+			if(!noteEdgeCheck(pEdge, n1, n2))
+			{
+				return false;
+			}
+
 			pEdge.connect(n1, n2);
 			if(n1.addEdge(pEdge, pPoint1, pPoint2) && pEdge.getEnd() != null)
 			{
@@ -113,17 +118,17 @@ public abstract class Graph
 	}
 
 	/**
-     * Adds a node to the graph so that the top left corner of
-     * the bounding rectangle is at the given point.
-     * @param pNode the node to add
-     * @param pPoint the desired location
-     * @return True if the node was added.
+	 * Adds a node to the graph so that the top left corner of
+	 * the bounding rectangle is at the given point.
+	 * @param pNode the node to add
+	 * @param pPoint the desired location
+	 * @return True if the node was added.
 	 */
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-		
+
 		boolean accepted = false;
 		/* A variable commented out during testing. @JoelChev */
 		//boolean insideANode = false;
@@ -138,11 +143,11 @@ public abstract class Graph
 				accepted = true;
 			}	
 		}
-//		if(insideANode && !accepted)
-//		{
-//			System.out.println("FALSE!");
-//			return false;
-//		}
+		//		if(insideANode && !accepted)
+		//		{
+		//			System.out.println("FALSE!");
+		//			return false;
+		//		}
 		aModListener.nodeAdded(this, pNode);
 		aNodes.add(pNode);
 		aNeedsLayout = true;
@@ -168,9 +173,9 @@ public abstract class Graph
 	}
 
 	/**
-     * Finds an edge containing the given point.
-     * @param pPoint a point
-     * @return an edge containing p or null if no edges contain p
+	 * Finds an edge containing the given point.
+	 * @param pPoint a point
+	 * @return an edge containing p or null if no edges contain p
 	 */
 	public Edge findEdge(Point2D pPoint)
 	{
@@ -184,7 +189,7 @@ public abstract class Graph
 		}
 		return null;
 	}
-   
+
 	/**
 	 * Returns all edges connected to the given node.
 	 * @param pNode The Node to query for Edges.
@@ -203,11 +208,11 @@ public abstract class Graph
 		}
 		return toRet;
 	}
-	
+
 	/**
-     * Draws the graph.
-     * @param pGraphics2D the graphics context
-     * @param pGrid The grid
+	 * Draws the graph.
+	 * @param pGraphics2D the graphics context
+	 * @param pGrid The grid
 	 */
 	public void draw(Graphics2D pGraphics2D, Grid pGrid)
 	{
@@ -225,10 +230,10 @@ public abstract class Graph
 			e.draw(pGraphics2D);
 		}
 	}
-   
+
 	/**
-     * Removes a node and all edges that start or end with that node.
-     * @param pNode the node to remove
+	 * Removes a node and all edges that start or end with that node.
+	 * @param pNode the node to remove
 	 */
 	public void removeNode(Node pNode)
 	{
@@ -265,7 +270,7 @@ public abstract class Graph
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
 	}
-	
+
 	/**
 	 * Removes pElement from the graph.
 	 * @param pElement The element to remove.
@@ -278,11 +283,11 @@ public abstract class Graph
 		}
 		else if(pElement instanceof Edge)
 		{
-			
+
 			removeEdge((Edge) pElement);
 		}
 	}
-	
+
 	/**
 	 * @param pElement The element we want to check is in the grapgh.
 	 * @return True if pElement is a node or edge in this graph.
@@ -301,8 +306,8 @@ public abstract class Graph
 	}
 
 	/**
-     * Removes an edge from the graph.
-     * @param pEdge the edge to remove
+	 * Removes an edge from the graph.
+	 * @param pEdge the edge to remove
 	 */
 	public void removeEdge(Edge pEdge)
 	{
@@ -321,20 +326,20 @@ public abstract class Graph
 	}
 
 	/**
-     * Causes the layout of the graph to be recomputed.
+	 * Causes the layout of the graph to be recomputed.
 	 */
 	public void layout()
 	{
 		aNeedsLayout = true;
 	}
 
-  	/**
-     * Computes the layout of the graph.
-     * If you override this method, you must first call 
-     * <code>super.layout</code>.
-     * @param pGraphics2D the graphics context
-     * @param pGrid the grid to snap to
-  	 */
+	/**
+	 * Computes the layout of the graph.
+	 * If you override this method, you must first call 
+	 * <code>super.layout</code>.
+	 * @param pGraphics2D the graphics context
+	 * @param pGrid the grid to snap to
+	 */
 	protected void layout(Graphics2D pGraphics2D, Grid pGrid)
 	{
 		if(!aNeedsLayout)
@@ -355,8 +360,8 @@ public abstract class Graph
 	}
 
 	/**
-     * Gets the smallest rectangle enclosing the graph.
-     * @return the bounding rectangle
+	 * Gets the smallest rectangle enclosing the graph.
+	 * @return the bounding rectangle
 	 */
 	public Rectangle2D getBounds()
 	{
@@ -388,13 +393,13 @@ public abstract class Graph
 			return new Rectangle2D.Double(r.getX(), r.getY(), r.getWidth() + AbstractNode.SHADOW_GAP, r.getHeight() + AbstractNode.SHADOW_GAP);
 		}
 	}
-   
+
 	/**
 	 * @return The minimum bounds property
 	 */
 	public Rectangle2D getMinBounds() 
 	{ return aMinBounds; }
-   
+
 	/**
 	 * @param pMinBounds The minimum bounds property
 	 */
@@ -402,66 +407,66 @@ public abstract class Graph
 	{ aMinBounds = pMinBounds; }
 
 	/**
-     * Gets the node types of a particular graph type.
-     * @return an array of node prototypes
+	 * Gets the node types of a particular graph type.
+	 * @return an array of node prototypes
 	 */   
 	public abstract Node[] getNodePrototypes();
 
 	/**
-     * Gets the edge types of a particular graph type.
-     * @return an array of edge prototypes
+	 * Gets the edge types of a particular graph type.
+	 * @return an array of edge prototypes
 	 */   
 	public abstract Edge[] getEdgePrototypes();
- 
+
 	/**
-     * Adds a persistence delegate to a given encoder that
-     * encodes the child nodes of this node.
-     * @param pEncoder the encoder to which to add the delegate
+	 * Adds a persistence delegate to a given encoder that
+	 * encodes the child nodes of this node.
+	 * @param pEncoder the encoder to which to add the delegate
 	 */
 	public static void setPersistenceDelegate(Encoder pEncoder)
 	{
 		pEncoder.setPersistenceDelegate(Graph.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
-            	protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-            	{
-            		super.initialize(pType, pOldInstance, pNewInstance, pOut);
-            		Graph g = (Graph)pOldInstance;
-         
-            		for(int i = 0; i < g.aNodes.size(); i++)
-            		{
-            			Node n = g.aNodes.get(i);
-            			Rectangle2D bounds = n.getBounds();
-            			Point2D p = new Point2D.Double(bounds.getX(), bounds.getY());
-            			pOut.writeStatement( new Statement(pOldInstance, "addNode", new Object[]{ n, p }) );
-            		}
-            		for(int i = 0; i < g.aEdges.size(); i++)
-            		{
-            			Edge e = g.aEdges.get(i);
-            			pOut.writeStatement( new Statement(pOldInstance, "connect", new Object[]{ e, e.getStart(), e.getEnd() }) );            
-            		}
-            	}
-			});
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				Graph g = (Graph)pOldInstance;
+
+				for(int i = 0; i < g.aNodes.size(); i++)
+				{
+					Node n = g.aNodes.get(i);
+					Rectangle2D bounds = n.getBounds();
+					Point2D p = new Point2D.Double(bounds.getX(), bounds.getY());
+					pOut.writeStatement( new Statement(pOldInstance, "addNode", new Object[]{ n, p }) );
+				}
+				for(int i = 0; i < g.aEdges.size(); i++)
+				{
+					Edge e = g.aEdges.get(i);
+					pOut.writeStatement( new Statement(pOldInstance, "connect", new Object[]{ e, e.getStart(), e.getEnd() }) );            
+				}
+			}
+		});
 	}
 
 	/**
-     * Gets the nodes of this graph.
-     * @return an unmodifiable collection of the nodes
+	 * Gets the nodes of this graph.
+	 * @return an unmodifiable collection of the nodes
 	 */
 	public Collection<Node> getNodes()
 	{ return aNodes; }
 
 	/**
-     * Gets the edges of this graph.
-     * @return an unmodifiable collection of the edges
+	 * Gets the edges of this graph.
+	 * @return an unmodifiable collection of the edges
 	 */
 	public Collection<Edge> getEdges() 
 	{ return aEdges; }
 
 	/**
-     * Adds a node to this graph. This method should
-     * only be called by a decoder when reading a data file.
-     * @param pNode the node to add
-     * @param pPoint the desired location
+	 * Adds a node to this graph. This method should
+	 * only be called by a decoder when reading a data file.
+	 * @param pNode the node to add
+	 * @param pPoint the desired location
 	 */
 	public void addNode(Node pNode, Point2D pPoint)
 	{
@@ -472,17 +477,38 @@ public abstract class Graph
 	}
 
 	/**
-     * Adds an edge to this graph. This method should
-     * only be called by a decoder when reading a data file.
-     * @param pEdge the edge to add
-     * @param pStart the start node of the edge
-     * @param pEnd the end node of the edge
+	 * Adds an edge to this graph. This method should
+	 * only be called by a decoder when reading a data file.
+	 * @param pEdge the edge to add
+	 * @param pStart the start node of the edge
+	 * @param pEnd the end node of the edge
 	 */
 	public void connect(Edge pEdge, Node pStart, Node pEnd)
 	{
-     	pEdge.connect(pStart, pEnd);
-     	aModListener.edgeAdded(this, pEdge);
-     	aEdges.add(pEdge);
+		pEdge.connect(pStart, pEnd);
+		aModListener.edgeAdded(this, pEdge);
+		aEdges.add(pEdge);
+	}
+
+	/**
+	 * Checks whether edges related to note nodes are acceptable.
+	 * @param pEdge The edge to be added
+	 * @param pNode1 The first node
+	 * @param pNode2 The second node
+	 * @return True if the edge is acceptable
+	 */
+	public boolean noteEdgeCheck(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		if(pNode1 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		{
+			return false;
+		}
+		if(pNode2!=null && pNode2 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		{
+			return false;
+		}
+		return true;
 	}
 }
+
 
