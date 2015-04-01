@@ -62,6 +62,8 @@ public class PropertySheet extends JPanel
 
 	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
 	
+	private boolean aEmpty = true;
+	
 	static
 	{  
 	      editors = new HashMap<>();
@@ -78,7 +80,7 @@ public class PropertySheet extends JPanel
 		try
 		{
 			BeanInfo info = Introspector.getBeanInfo(pBean.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();      
+			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
 			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
 					{
 						public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
@@ -106,9 +108,9 @@ public class PropertySheet extends JPanel
 				PropertyEditor editor = getEditor(pBean, descriptors[i]);
 				if(editor != null)
 				{
-					
 					add(new JLabel(toTitleCase(descriptors[i].getName())));
 					add(getEditorComponent(editor));
+					aEmpty = false;
 				}
 			}		
 		}
@@ -286,6 +288,14 @@ public class PropertySheet extends JPanel
 	    }
 
 	    return titleCase.toString();
+	}
+	
+	/**
+	 * @return aEmpty whether this PropertySheet has fields to edit or not.
+	 */
+	public boolean isEmpty()
+	{
+		return aEmpty;
 	}
 }
 
