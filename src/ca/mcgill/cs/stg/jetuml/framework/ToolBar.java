@@ -42,6 +42,7 @@ import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -65,6 +66,7 @@ public class ToolBar extends JPanel
 	private static final int OFFSET = 4;
 	
 	private ButtonGroup aGroup;
+	private ArrayList<JToggleButton> aButtons;
 	private ArrayList<GraphElement> aTools;
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 	private ActionListener aPopupListener;
@@ -75,9 +77,10 @@ public class ToolBar extends JPanel
 	 */
 	public ToolBar(Graph pGraph)
 	{
-		setLayout(new GridLayout(0, 1));
+		setLayout(new GridLayout(0, 2));
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
+		aButtons = new ArrayList<>();
 
 		Icon icon = new Icon()
 		{
@@ -99,11 +102,13 @@ public class ToolBar extends JPanel
 		};
 		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		String tip = editorResources.getString("grabber.tooltip");
-		final JToggleButton button = new JToggleButton(tip, icon);
+		final JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(tip);
 		button.setAlignmentX(CENTER_ALIGNMENT);
-		aGroup.add(button);      
+		aGroup.add(button);
+		aButtons.add(button);
 		add(button);
+		add(new JLabel(tip));
 		button.setSelected(true);
 		aTools.add(null);
       
@@ -158,7 +163,7 @@ public class ToolBar extends JPanel
 	{
 		for(int i = 0; i < aTools.size(); i++)
 		{
-			JToggleButton button = (JToggleButton)getComponent(i);
+			JToggleButton button = aButtons.get(i);
 			if (button.isSelected())
 			{
 				return aTools.get(i);
@@ -201,11 +206,13 @@ public class ToolBar extends JPanel
             }
 		};
 
-		final JToggleButton button = new JToggleButton(pTip, icon);
+		final JToggleButton button = new JToggleButton(icon);
 		button.setAlignmentX(CENTER_ALIGNMENT);
 		button.setToolTipText(pTip);
-		aGroup.add(button);      
+		aGroup.add(button);   
+		aButtons.add(button);
 		add(button);
+		add(new JLabel(pTip));
 		aTools.add(pNode);
       
 		JMenuItem item = new JMenuItem(pTip, icon);
@@ -280,11 +287,13 @@ public class ToolBar extends JPanel
             	g2.setTransform(oldTransform);
             }
          };
-         final JToggleButton button = new JToggleButton(pTip, icon); 
+         final JToggleButton button = new JToggleButton(icon); 
          button.setAlignmentX(CENTER_ALIGNMENT);
          button.setToolTipText(pTip);
          aGroup.add(button);
-         add(button);      
+         aButtons.add(button);
+         add(button);
+         add(new JLabel(pTip));
          aTools.add(pEdge);
 
          JMenuItem item = new JMenuItem(pTip, icon);
