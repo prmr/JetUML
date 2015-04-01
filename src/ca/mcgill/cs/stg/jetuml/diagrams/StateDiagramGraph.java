@@ -91,7 +91,7 @@ public class StateDiagramGraph extends Graph
 			if (n2 instanceof CircularStateNode)
 			{
 				CircularStateNode begin = (CircularStateNode) n2;
-				if(!begin.isFinal())
+				if(!begin.isFinal() && !(pEdge instanceof NoteEdge))
 				{
 					return false;
 				}
