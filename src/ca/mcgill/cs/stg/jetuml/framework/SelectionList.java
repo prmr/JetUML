@@ -1,8 +1,10 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.awt.geom.Line2D;
 import java.util.Iterator;
 import java.util.Stack;
 
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
@@ -93,6 +95,21 @@ public class SelectionList implements Iterable<GraphElement>
 	public void remove(GraphElement pElement)
 	{
 		assert pElement != null;
+		
+		if(pElement instanceof Node) //TODO : Fix when fixing whether edges are visible from nodes
+		{
+			Stack<GraphElement> copy = (Stack<GraphElement>) aSelected.clone();
+			for(GraphElement e : copy)
+			{
+				if(e instanceof Edge)
+				{
+					if(((Edge) e).getEnd() == pElement || ((Edge) e).getStart() == pElement)
+					{
+						aSelected.remove(e);
+					}
+				}
+			}
+		}
 		aSelected.remove(pElement);
 	}
 	

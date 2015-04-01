@@ -458,9 +458,13 @@ public class GraphPanel extends JPanel
 				}
 				else if(n != null)
 				{
-					if(isCtrl) 
+					if(isCtrl && !aSelectedElements.contains(n)) 
 					{
 						aSelectedElements.add(n);
+					}
+					else if(isCtrl && aSelectedElements.contains(n)) 
+					{
+						aSelectedElements.remove(n);
 					}
 					else if(!aSelectedElements.contains(n)) 
 					{
