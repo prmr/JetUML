@@ -35,8 +35,8 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
  */
 public class CircularStateNode extends RectangularNode
 {
-	private static final int DEFAULT_DIAMETER = 30;
-	private static final int DEFAULT_GAP = 4;   
+	private static final int DEFAULT_DIAMETER = 14;
+	private static final int DEFAULT_GAP = 3;   
 	
 	private boolean aFinalState; 
 	   
