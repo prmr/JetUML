@@ -643,7 +643,7 @@ public class TestPersistenceService
 		assertEquals("S3", s3.getName().toString());
 		assertNull(s3.getParent());
 		
-		assertEquals(new Rectangle2D.Double(150, 70, 20, 20), start.getBounds());
+		assertEquals(new Rectangle2D.Double(150, 70, 14, 14), start.getBounds());
 		assertTrue(start.getChildren().isEmpty());
 		assertNull(start.getParent());
 		assertFalse(start.isFinal());
@@ -678,7 +678,7 @@ public class TestPersistenceService
 		assertEquals(note, ne.getStart());
 		assertEquals(point, ne.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(189, 81, 62, 32), fromStart.getBounds());
+		assertEquals(new Rectangle2D.Double(163, 71, 87, 39), fromStart.getBounds());
 		assertEquals(start, fromStart.getStart());
 		assertEquals(s1, fromStart.getEnd());
 		assertEquals("start", fromStart.getLabel().toString());
@@ -698,7 +698,7 @@ public class TestPersistenceService
 		assertEquals(s2, self.getEnd());
 		assertEquals("self", self.getLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(587, 260, 57, 50), toEnd.getBounds());
+		assertEquals(new Rectangle2D.Double(582, 246, 61, 64), toEnd.getBounds());
 		assertEquals(s3, toEnd.getStart());
 		assertEquals(end, toEnd.getEnd());
 		assertEquals("", toEnd.getLabel().toString());
