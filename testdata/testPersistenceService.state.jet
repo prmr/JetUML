@@ -162,20 +162,6 @@
        <double>70.0</double>
       </void>
      </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>width</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double3"/>
-       <double>40.0</double>
-      </void>
-     </void>
-     <void class="java.awt.geom.Rectangle2D$Double" method="getField">
-      <string>height</string>
-      <void method="set">
-       <object idref="Rectangle2D$Double3"/>
-       <double>40.0</double>
-      </void>
-     </void>
     </void>
     <void property="bounds">
      <object idref="Rectangle2D$Double3"/>

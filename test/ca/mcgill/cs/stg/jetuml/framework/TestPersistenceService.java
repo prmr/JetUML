@@ -643,12 +643,12 @@ public class TestPersistenceService
 		assertEquals("S3", s3.getName().toString());
 		assertNull(s3.getParent());
 		
-		assertEquals(new Rectangle2D.Double(150, 70, 40, 40), start.getBounds());
+		assertEquals(new Rectangle2D.Double(150, 70, 20, 20), start.getBounds());
 		assertTrue(start.getChildren().isEmpty());
 		assertNull(start.getParent());
 		assertFalse(start.isFinal());
 		
-		assertEquals(new Rectangle2D.Double(640, 230, 38, 38), end.getBounds());
+		assertEquals(new Rectangle2D.Double(640, 230, 20, 20), end.getBounds());
 		assertTrue(end.getChildren().isEmpty());
 		assertNull(end.getParent());
 		assertTrue(end.isFinal());
