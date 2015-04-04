@@ -82,7 +82,7 @@ public class GraphPanel extends JPanel
 	
 	/**
 	 * Constructs a graph.
-	 * @param pToolBar the tool bar with the node and edge tools
+	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
 	 */
 	public GraphPanel(SideBar pSideBar)
 	{

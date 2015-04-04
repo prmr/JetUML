@@ -15,43 +15,56 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
+
+
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
+/**
+ * The component used for extended functionality in the SideBar. For now, this only includes copying to the clipboard.
+ * 
+ * @author JoelChev
+ *
+ */
+@SuppressWarnings("serial")
 public class OptionalToolBar extends JPanel
 {
-	private ResourceBundle aToolBarResources;
-	private ImageIcon copyToClipBoardIcon;
-	private GraphFrame aGraphFrame;
+	private static final int COMPONENT_WIDTH = 55;
+	private static final int COMPONENT_HEIGHT = 50;
+	private static final int BUTTON_WIDTH = 25;
+	private static final int BUTTON_HEIGHT = 35;
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
+	private ResourceBundle aToolBarResources;
+	private ImageIcon aCopyToClipBoardIcon;
+	private GraphFrame aGraphFrame;
 
+	/**
+	 * Constructs an OptionalToolBar.
+	 * @param pGraphFrame the GraphFrame associated with this OptionalToolBar
+	 */
 	public OptionalToolBar(GraphFrame pGraphFrame)
 	{
 		aGraphFrame = pGraphFrame;
-		setLayout(new GridLayout(0,1));
+		setLayout(new GridLayout(0, 1));
 		aToolBarResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-		copyToClipBoardIcon = new ImageIcon(getClass().getClassLoader().getResource(aToolBarResources.getString("toolbar.copyToClipBoard")));
+		aCopyToClipBoardIcon = new ImageIcon(getClass().getClassLoader().getResource(aToolBarResources.getString("toolbar.copyToClipBoard")));
         addCopyToClipboard("Copy To Clipboard");
-        setMaximumSize(new Dimension(55,50));
-        setMinimumSize(new Dimension(55,50));
+        setMaximumSize(new Dimension(COMPONENT_WIDTH, COMPONENT_HEIGHT));
+        setMinimumSize(new Dimension(COMPONENT_WIDTH, COMPONENT_HEIGHT));
 	}	
 	
 	/**
-     * Adds the CopyToClipboard button
+     * Adds the CopyToClipboard button.
      * @param pTip the tool tip
 	 */
 	public void addCopyToClipboard(String pTip)
 	{
-         final JButton button = new JButton(copyToClipBoardIcon);
-         button.setPreferredSize(new Dimension(25,35));
+         final JButton button = new JButton(aCopyToClipBoardIcon);
+         button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
          button.setToolTipText(pTip);
          button.setAlignmentX(CENTER_ALIGNMENT);
          add(button);

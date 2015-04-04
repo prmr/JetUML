@@ -47,6 +47,7 @@ public class GraphFrame extends JInternalFrame
 	/**
      * Constructs a graph frame with an empty tool bar.
      * @param pGraph the initial graph
+     * @param pTabbedPane the JTabbedPane associated with this GraphFrame.
 	 */
 	public GraphFrame(Graph pGraph, JTabbedPane pTabbedPane)
 	{
@@ -78,6 +79,11 @@ public class GraphFrame extends JInternalFrame
 		return aPanel;
    	}
 	
+	/**
+	 * This association and getter method are needed to display messages using the copy to clipboard
+	 * functionality of the Optional ToolBar.
+	 * @return aTabbedPane the JTabbedPane associated with this GraphFrame.
+	 */
 	public JTabbedPane getJTabbedPane()
 	{
 		return aTabbedPane;

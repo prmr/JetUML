@@ -4,7 +4,6 @@ import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -19,19 +18,13 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -48,7 +41,7 @@ public class ToolBar extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 4;
-	private JPanel northPanel;
+	private JPanel aNorthPanel;
 	private ButtonGroup aGroup;
 	private ArrayList<JToggleButton> aButtons;
 	private ArrayList<GraphElement> aTools;
@@ -62,7 +55,7 @@ public class ToolBar extends JPanel
 	public ToolBar(Graph pGraph)
 	{
 		
-		northPanel=new JPanel(new GridLayout(0,1));
+		aNorthPanel = new JPanel(new GridLayout(0, 1));
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
 		aButtons = new ArrayList<>();
@@ -92,7 +85,7 @@ public class ToolBar extends JPanel
 		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);
 		aButtons.add(button);
-		northPanel.add(button);
+		aNorthPanel.add(button);
 		button.setSelected(true);
 		aTools.add(null);
       
@@ -135,7 +128,7 @@ public class ToolBar extends JPanel
 		newKeys.addAll(oldKeys);
 		newKeys.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys); 
-		add(northPanel, BorderLayout.NORTH);
+		add(aNorthPanel, BorderLayout.NORTH);
 	}
 
 	/**
@@ -195,7 +188,7 @@ public class ToolBar extends JPanel
 		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);   
 		aButtons.add(button);
-		northPanel.add(button);
+		aNorthPanel.add(button);
 		aTools.add(pNode);
       
 		JMenuItem item = new JMenuItem(pTip, icon);
@@ -275,7 +268,7 @@ public class ToolBar extends JPanel
          button.setAlignmentX(CENTER_ALIGNMENT);
          aGroup.add(button);
          aButtons.add(button);
-         northPanel.add(button);
+         aNorthPanel.add(button);
          aTools.add(pEdge);
 
          JMenuItem item = new JMenuItem(pTip, icon);
@@ -293,6 +286,10 @@ public class ToolBar extends JPanel
          aPopupMenu.add(item);
 	}
 	
+	/**
+	 * The following is a helper method during tool bar expansion and contraction.
+	 * @return the index of the currently selected button
+	 */
 	public int getSelectedButtonIndex()
 	{
 		for(int i = 0; i<aButtons.size(); i++)
@@ -305,8 +302,12 @@ public class ToolBar extends JPanel
 		return -1;
 	}
 	
-	public void setButtonSelected(int i)
+	/**
+	 * This method is another helper method used during tool bar expansion and contraction.
+	 * @param pIndex the int specifying which button to select.
+	 */
+	public void setButtonSelected(int pIndex)
 	{
-		aButtons.get(i).setSelected(true);	
+		aButtons.get(pIndex).setSelected(true);	
 	}
 }
