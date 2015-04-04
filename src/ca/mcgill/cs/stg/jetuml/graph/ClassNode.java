@@ -49,8 +49,7 @@ public class ClassNode extends RectangularNode
 	 */
 	public ClassNode()
    	{
-	   aName = new MultiLineString();
-	   aName.setSize(MultiLineString.LARGE);
+	   aName = new MultiLineString(true);
 	   aAttributes = new MultiLineString();
 	   aAttributes.setJustification(MultiLineString.LEFT);
 	   aMethods = new MultiLineString();

@@ -49,8 +49,7 @@ public class InterfaceNode extends RectangularNode
 	 */
 	public InterfaceNode()
 	{
-		aName = new MultiLineString();
-		aName.setSize(MultiLineString.LARGE);
+		aName = new MultiLineString(true);
 		aName.setText("\u00ABinterface\u00BB");
 		aMethods = new MultiLineString();
 		aMethods.setJustification(MultiLineString.LEFT);

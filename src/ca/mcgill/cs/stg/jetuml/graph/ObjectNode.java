@@ -49,9 +49,8 @@ public class ObjectNode extends RectangularNode
 	 */
 	public ObjectNode()
 	{
-		aName = new MultiLineString();
+		aName = new MultiLineString(true);
 		aName.setUnderlined(true);
-		aName.setSize(MultiLineString.LARGE);
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 

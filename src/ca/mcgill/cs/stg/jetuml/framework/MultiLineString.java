@@ -44,21 +44,33 @@ public class MultiLineString implements Cloneable
 
 	private String aText;
 	private int aJustification;
-	private int aSize;
+	private boolean aBold = false;
 	private boolean aUnderlined;
 	private JLabel aLabel = new JLabel();
 	
 	/**
      * Constructs an empty, centered, normal size multiline
-     * string that is not underlined.
+     * string that is not underlined and not bold.
 	 */
 	public MultiLineString() 
 	{ 
 		aText = ""; 
 		aJustification = CENTER;
-		aSize = NORMAL;
 		aUnderlined = false;    
 	}
+	
+	/**
+     * Constructs an empty, centered, normal size multiline
+     * string that is not underlined. pBold determines if it is bold.
+     * @param pBold True if the string should be bold.
+	 */
+	public MultiLineString(boolean pBold) 
+	{ 
+		this();
+		aBold = pBold;
+	}
+	
+	
 	
 	/**
      * Sets the value of the text property.
@@ -115,25 +127,6 @@ public class MultiLineString implements Cloneable
 	{ 
 		aUnderlined = pUnderlined; 
 		setLabelText(); 
-	}
-   
-	/**
-     * Sets the value of the size property.
-     * @param pSize the size, one of SMALL, NORMAL, LARGE
-	 */
-	public void setSize(int pSize) 
-	{ 
-		aSize = pSize; 
-		setLabelText(); 
-	}
-  
-	/**
-     * Gets the value of the size property.
-     * @return the size, one of SMALL, NORMAL, LARGE
-	 */
-	public int getSize() 
-	{ 
-		return aSize; 
 	}
    
 	@Override
@@ -200,7 +193,7 @@ public class MultiLineString implements Cloneable
 			pPrefix.append("<u>");
 			pSuffix.insert(0, "</u>");
 		}
-		if(aSize == LARGE)
+		if(aBold)
 		{
 			pPrefix.append("<b>");
 			pSuffix.insert(0, "</b>");
@@ -273,7 +266,7 @@ public class MultiLineString implements Cloneable
 		{
 			return false;
 		}
-		if(!(aSize == pString.getSize()))
+		if(!(aBold == pString.aBold))
 		{
 			return false;
 		}
