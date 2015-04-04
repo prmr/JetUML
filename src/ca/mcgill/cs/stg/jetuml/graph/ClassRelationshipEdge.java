@@ -177,7 +177,7 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
      *  Sets the bentStyle property.
      * @param pNewValue the bent style
      */
-	protected void setBentStyle(BentStyle pNewValue)
+	public void setBentStyle(BentStyle pNewValue)
 	{ aBentStyle = pNewValue; }
    
 	/**

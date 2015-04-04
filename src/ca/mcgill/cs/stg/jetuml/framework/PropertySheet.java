@@ -51,6 +51,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+
 /**
  *  A component filled with editors for all editable properties 
  *  of an object.
@@ -63,6 +65,14 @@ public class PropertySheet extends JPanel
 	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
 	
 	private boolean aEmpty = true;
+	
+	private ArrayList<String> aBlackList = new ArrayList<String>() {
+		{
+			add("startArrowHead"); 
+			add("endArrowHead"); 
+            add("bentStyle");       
+            add("lineStyle");
+	}};
 	
 	static
 	{  
@@ -106,7 +116,7 @@ public class PropertySheet extends JPanel
 			for(int i = 0; i < descriptors.length; i++)
 			{
 				PropertyEditor editor = getEditor(pBean, descriptors[i]);
-				if(editor != null)
+				if(editor != null && !aBlackList.contains(descriptors[i].getName()))
 				{
 					add(new JLabel(toTitleCase(descriptors[i].getName())));
 					add(getEditorComponent(editor));

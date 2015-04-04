@@ -38,13 +38,13 @@ public class ClassRelationshipEdgeBeanInfo extends SimpleBeanInfo
 		try
 		{
 			descriptors = new PropertyDescriptor[] {
-	            //new PropertyDescriptor("startArrowHead", ClassRelationshipEdge.class),         
+	            new PropertyDescriptor("startArrowHead", ClassRelationshipEdge.class),         
 	            new PropertyDescriptor("startLabel", ClassRelationshipEdge.class),        
 	            new PropertyDescriptor("middleLabel", ClassRelationshipEdge.class),         
 	            new PropertyDescriptor("endLabel", ClassRelationshipEdge.class),     
-	            //new PropertyDescriptor("endArrowHead", ClassRelationshipEdge.class),         
-	            //new PropertyDescriptor("bentStyle", ClassRelationshipEdge.class),         
-	            //new PropertyDescriptor("lineStyle", ClassRelationshipEdge.class),         
+	            new PropertyDescriptor("endArrowHead", ClassRelationshipEdge.class),         
+	            new PropertyDescriptor("bentStyle", ClassRelationshipEdge.class),         
+	            new PropertyDescriptor("lineStyle", ClassRelationshipEdge.class),         
 	         };
 	         
 			for (int i = 0; i < descriptors.length; i++)
