@@ -41,7 +41,6 @@ public class MultiLineString implements Cloneable
 	public static final int RIGHT = 2;
 	public static final int LARGE = 3;
 	public static final int NORMAL = 4;
-	public static final int SMALL = 5;
 
 	private String aText;
 	private int aJustification;
@@ -203,14 +202,10 @@ public class MultiLineString implements Cloneable
 		}
 		if(aSize == LARGE)
 		{
-			pPrefix.append("<font size=\"+1\">");
-			pSuffix.insert(0, "</font>");
+			pPrefix.append("<b>");
+			pSuffix.insert(0, "</b>");
 		}
-		if(aSize == SMALL)
-		{
-			pPrefix.append("<font size=\"-1\">");
-			pSuffix.insert(0, "</font>");
-		}
+
 		pHtmlText.append("<html>");
 		StringTokenizer tokenizer = new StringTokenizer(aText, "\n");
 		boolean first = true;
