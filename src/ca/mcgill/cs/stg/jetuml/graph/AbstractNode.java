@@ -46,6 +46,7 @@ public abstract class AbstractNode implements Node
 	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
 	
 	private ArrayList<Node> aChildren;
+	private transient ArrayList<Edge> aEdges;
 	private Node aParent;
 	
 	/**
@@ -54,6 +55,7 @@ public abstract class AbstractNode implements Node
 	public AbstractNode()
 	{
 		aChildren = new ArrayList<>();
+		aEdges = new ArrayList<>();
 		aParent = null;
 	}
 
@@ -80,12 +82,15 @@ public abstract class AbstractNode implements Node
 	@Override
 	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
+		aEdges.add(pEdge);
 		return pEdge.getEnd() != null;
 	}
 
 	@Override
 	public void removeEdge(Graph pGraph, Edge pEdge)
-	{}
+	{
+		aEdges.remove(pEdge);
+	}
 
 	@Override
 	public void removeNode(Graph pGraph, Node pNode)
@@ -121,6 +126,12 @@ public abstract class AbstractNode implements Node
 	@Override
 	public List<Node> getChildren() 
 	{ return aChildren; }
+	
+	@Override
+	public List<Edge> getEdges()
+	{
+		return aEdges;
+	}
 
 	@Override
 	public void addChild(int pIndex, Node pNode) 

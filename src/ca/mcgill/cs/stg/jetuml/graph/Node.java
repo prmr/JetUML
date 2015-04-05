@@ -129,6 +129,13 @@ public interface Node extends GraphElement
      * @return an unmodifiable list of the children
 	 */
 	List<Node> getChildren();
+	
+	
+	/**
+	 * Gets the Edges of this node.
+	 * @return an unmodifiable list of the Edges of this Node.
+	 */
+	List<Edge> getEdges();
 
 	/**
      * Adds a child node.
