@@ -51,8 +51,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
-
 /**
  *  A component filled with editors for all editable properties 
  *  of an object.

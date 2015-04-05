@@ -48,7 +48,7 @@ public class UseCaseDiagramGraph extends Graph
 
 		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createExtendRelationEdge();
 		
-		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createIncludeRelationEdge();;
+		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createIncludeRelationEdge();
 	    
 	    EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createGeneralizationEdge();
 

@@ -1,6 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.awt.geom.Line2D;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -92,6 +91,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * or does nothing if pElement is not selected.
 	 * @param pElement The element to remove. Cannot be null.
 	 */
+	@SuppressWarnings("unchecked")
 	public void remove(GraphElement pElement)
 	{
 		assert pElement != null;
