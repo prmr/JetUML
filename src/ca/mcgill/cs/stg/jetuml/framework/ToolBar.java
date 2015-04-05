@@ -1,32 +1,12 @@
-/*******************************************************************************
- * JetUML - A desktop application for fast UML diagramming.
- *
- * Copyright (C) 2015 Cay S. Horstmann and the contributors of the 
- * JetUML project.
- *
- * See: https://github.com/prmr/JetUML
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************/
-
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.AWTKeyStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,8 +41,9 @@ public class ToolBar extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 4;
-	
+	private JPanel aNorthPanel;
 	private ButtonGroup aGroup;
+	private ArrayList<JToggleButton> aButtons;
 	private ArrayList<GraphElement> aTools;
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 	private ActionListener aPopupListener;
@@ -73,8 +54,11 @@ public class ToolBar extends JPanel
 	 */
 	public ToolBar(Graph pGraph)
 	{
+		
+		aNorthPanel = new JPanel(new GridLayout(0, 1));
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
+		aButtons = new ArrayList<>();
 
 		Icon icon = new Icon()
 		{
@@ -94,12 +78,14 @@ public class ToolBar extends JPanel
 				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + BUTTON_SIZE - offset);
             }
 		};
-		final JToggleButton button = new JToggleButton(icon);
 		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		String tip = editorResources.getString("grabber.tooltip");
+		final JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(tip);
-		aGroup.add(button);      
-		add(button);
+		button.setAlignmentX(CENTER_ALIGNMENT);
+		aGroup.add(button);
+		aButtons.add(button);
+		aNorthPanel.add(button);
 		button.setSelected(true);
 		aTools.add(null);
       
@@ -131,7 +117,6 @@ public class ToolBar extends JPanel
 			tip = graphResources.getString("edge" + (i + 1) + ".tooltip");
 			add(edgeTypes[i], tip);
 		}
-         
 		// free up ctrl TAB for cycling windows
 		Set<AWTKeyStroke> oldKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
 		HashSet<AWTKeyStroke> newKeys = new HashSet<>();
@@ -142,7 +127,8 @@ public class ToolBar extends JPanel
 		newKeys = new HashSet<>();
 		newKeys.addAll(oldKeys);
 		newKeys.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
-		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys);          
+		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys); 
+		add(aNorthPanel, BorderLayout.NORTH);
 	}
 
 	/**
@@ -154,7 +140,7 @@ public class ToolBar extends JPanel
 	{
 		for(int i = 0; i < aTools.size(); i++)
 		{
-			JToggleButton button = (JToggleButton)getComponent(i);
+			JToggleButton button = aButtons.get(i);
 			if (button.isSelected())
 			{
 				return aTools.get(i);
@@ -199,8 +185,10 @@ public class ToolBar extends JPanel
 
 		final JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(pTip);
-		aGroup.add(button);      
-		add(button);
+		button.setAlignmentX(CENTER_ALIGNMENT);
+		aGroup.add(button);   
+		aButtons.add(button);
+		aNorthPanel.add(button);
 		aTools.add(pNode);
       
 		JMenuItem item = new JMenuItem(pTip, icon);
@@ -275,10 +263,12 @@ public class ToolBar extends JPanel
             	g2.setTransform(oldTransform);
             }
          };
-         final JToggleButton button = new JToggleButton(icon);               
+         final JToggleButton button = new JToggleButton(icon);
          button.setToolTipText(pTip);
+         button.setAlignmentX(CENTER_ALIGNMENT);
          aGroup.add(button);
-         add(button);      
+         aButtons.add(button);
+         aNorthPanel.add(button);
          aTools.add(pEdge);
 
          JMenuItem item = new JMenuItem(pTip, icon);
@@ -294,5 +284,30 @@ public class ToolBar extends JPanel
         	 }
          });
          aPopupMenu.add(item);
+	}
+	
+	/**
+	 * The following is a helper method during tool bar expansion and contraction.
+	 * @return the index of the currently selected button
+	 */
+	public int getSelectedButtonIndex()
+	{
+		for(int i = 0; i<aButtons.size(); i++)
+		{
+			if(aButtons.get(i).isSelected())
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * This method is another helper method used during tool bar expansion and contraction.
+	 * @param pIndex the int specifying which button to select.
+	 */
+	public void setButtonSelected(int pIndex)
+	{
+		aButtons.get(pIndex).setSelected(true);	
 	}
 }

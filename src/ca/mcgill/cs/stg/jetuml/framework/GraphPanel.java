@@ -67,7 +67,9 @@ public class GraphPanel extends JPanel
 	
 	private Graph aGraph;
 	private GraphFrame aFrame;
+	private SideBar aSideBar;
 	private ToolBar aToolBar;
+	private ExtendedToolBar aExtendedToolBar;
 	private double aZoom;	
 	private boolean aHideGrid;
 	private boolean aModified;
@@ -80,12 +82,14 @@ public class GraphPanel extends JPanel
 	
 	/**
 	 * Constructs a graph.
-	 * @param pToolBar the tool bar with the node and edge tools
+	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
 	 */
-	public GraphPanel(ToolBar pToolBar)
+	public GraphPanel(SideBar pSideBar)
 	{
 		aZoom = 1;
-		aToolBar = pToolBar;
+		aSideBar = pSideBar;
+		aToolBar = aSideBar.getToolBar();
+		aExtendedToolBar = pSideBar.getExtendedToolBar();
 		setBackground(Color.WHITE);
 		addMouseListener(new GraphPanelMouseListener());
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
@@ -417,7 +421,15 @@ public class GraphPanel extends JPanel
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 			Node n = aGraph.findNode(mousePoint);
 			Edge e = aGraph.findEdge(mousePoint);
-			Object tool = aToolBar.getSelectedTool();
+			Object tool;
+			if(aSideBar.isExtended())
+			{
+				tool = aExtendedToolBar.getSelectedTool();
+			}
+			else
+			{
+				tool = aToolBar.getSelectedTool();
+			}	
 			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
 			{  
 				// double/right-click
@@ -433,25 +445,50 @@ public class GraphPanel extends JPanel
 				}
 				else
 				{
-					aToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
-                    {
-                       public void actionPerformed(ActionEvent pEvent)
-                       {
-                    	   
-                    	   Object tool = aToolBar.getSelectedTool();
-                    	   if(tool instanceof Node)
-                    	   {
-                    		   Node prototype = (Node) tool;
-                    		   Node newNode = (Node) prototype.clone();
-                    		   boolean added = aGraph.add(newNode, mousePoint);
-                    		   if(added)
-                    		   {
-                    			   setModified(true);
-                    			   aSelectedElements.set(newNode);
-                    		   }
-                    	   }
-                       	}
-                    });
+					if(aSideBar.isExtended())
+					{
+						aExtendedToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
+	                    {
+	                       public void actionPerformed(ActionEvent pEvent)
+	                       {
+	                    	   
+	                    	   Object tool = aToolBar.getSelectedTool();
+	                    	   if(tool instanceof Node)
+	                    	   {
+	                    		   Node prototype = (Node) tool;
+	                    		   Node newNode = (Node) prototype.clone();
+	                    		   boolean added = aGraph.add(newNode, mousePoint);
+	                    		   if(added)
+	                    		   {
+	                    			   setModified(true);
+	                    			   aSelectedElements.set(newNode);
+	                    		   }
+	                    	   }
+	                       	}
+	                    });
+					}
+					else
+					{
+						aToolBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
+	                    {
+	                       public void actionPerformed(ActionEvent pEvent)
+	                       {
+	                    	   
+	                    	   Object tool = aToolBar.getSelectedTool();
+	                    	   if(tool instanceof Node)
+	                    	   {
+	                    		   Node prototype = (Node) tool;
+	                    		   Node newNode = (Node) prototype.clone();
+	                    		   boolean added = aGraph.add(newNode, mousePoint);
+	                    		   if(added)
+	                    		   {
+	                    			   setModified(true);
+	                    			   aSelectedElements.set(newNode);
+	                    		   }
+	                    	   }
+	                       	}
+	                    });
+					}	
 				}
 			}
 			else if(tool == null) // select
@@ -528,7 +565,15 @@ public class GraphPanel extends JPanel
 		public void mouseReleased(MouseEvent pEvent)
 		{
 			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
-			Object tool = aToolBar.getSelectedTool();
+			Object tool;
+			if(aSideBar.isExtended())
+			{
+				tool = aExtendedToolBar.getSelectedTool();
+			}
+			else
+			{
+				tool = aToolBar.getSelectedTool();
+			}	
 			if(aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
 				Edge prototype = (Edge) tool;

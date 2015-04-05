@@ -24,11 +24,11 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-
 import java.io.File;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
@@ -38,22 +38,25 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 @SuppressWarnings("serial")
 public class GraphFrame extends JInternalFrame
 {
+	private JTabbedPane aTabbedPane;
 	private Graph aGraph;
 	private GraphPanel aPanel;
-	private ToolBar aToolBar;
+	private SideBar aSideBar;
 	private File aFile; // The file associated with this graph
 	
 	/**
      * Constructs a graph frame with an empty tool bar.
      * @param pGraph the initial graph
+     * @param pTabbedPane the JTabbedPane associated with this GraphFrame.
 	 */
-	public GraphFrame(Graph pGraph)
+	public GraphFrame(Graph pGraph, JTabbedPane pTabbedPane)
 	{
 		aGraph = pGraph;
-		aToolBar = new ToolBar(aGraph);
-		aPanel = new GraphPanel(aToolBar);
+		aTabbedPane = pTabbedPane;
+		aSideBar = new SideBar(this);
+		aPanel = new GraphPanel(aSideBar);
 		Container contentPane = getContentPane();
-		contentPane.add(aToolBar, BorderLayout.NORTH);
+		contentPane.add(aSideBar, BorderLayout.EAST);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
 		aPanel.setGraph(aGraph);
 	}
@@ -75,6 +78,16 @@ public class GraphFrame extends JInternalFrame
    	{
 		return aPanel;
    	}
+	
+	/**
+	 * This association and getter method are needed to display messages using the copy to clipboard
+	 * functionality of the Optional ToolBar.
+	 * @return aTabbedPane the JTabbedPane associated with this GraphFrame.
+	 */
+	public JTabbedPane getJTabbedPane()
+	{
+		return aTabbedPane;
+	}
 	
 	/**
 	 * Sets the title of the frame as the file name if there
