@@ -22,6 +22,8 @@
 
 package ca.mcgill.cs.stg.jetuml;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -79,6 +81,7 @@ public final class UMLEditor
 				frame.setVisible(true);
 				frame.readArgs(arguments);
 				frame.addWelcomeTab();
+				frame.setIcon();
 			}
 		});
    }
