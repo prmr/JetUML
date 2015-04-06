@@ -58,8 +58,8 @@ public class CallNode extends RectangularNode
     */
 	public CallNode()
 	{
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aCalls = new ArrayList<Node>();
+		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
 	@Override
@@ -336,19 +336,34 @@ public class CallNode extends RectangularNode
      * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setSignaled(boolean pNewValue)
-	{ aSignaled = pNewValue; }
+	{ 
+		aSignaled = pNewValue; 
+	}
 
 	/**
      * Gets the openBottom property.
      * @return true if this node is the target of a signal edge
 	 */
 	public boolean isOpenBottom() 
-	{ return aOpenBottom; }
+	{ 
+		return aOpenBottom; 
+	}
 
 	/**
      * Sets the openBottom property.
      * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setOpenBottom(boolean pNewValue)
-	{ aOpenBottom = pNewValue; }
+	{ 
+		aOpenBottom = pNewValue; 
+	}
+	
+	@SuppressWarnings("unchecked") //For cloning aCalls
+	@Override
+	public CallNode clone()
+	{
+		CallNode cloned = (CallNode) super.clone();
+		cloned.aCalls = (ArrayList<Node>) aCalls.clone();
+		return cloned;
+	}
 }
