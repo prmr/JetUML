@@ -102,7 +102,18 @@ public abstract class Graph
 			}
 
 			pEdge.connect(n1, n2);
-			if(n1.addEdge(pEdge, pPoint1, pPoint2) && pEdge.getEnd() != null)
+			boolean edgeAdded;
+			if (n1 instanceof FieldNode)
+			{
+				aModListener.startCompoundListening();
+				aModListener.trackPropertyChange(this, n1);
+			}
+			edgeAdded = n1.addEdge(pEdge, pPoint1, pPoint2);
+			if (n1 instanceof FieldNode)
+			{
+				aModListener.finishPropertyChange(this,  n1);
+			}
+			if(edgeAdded && pEdge.getEnd() != null)
 			{
 				aEdges.add(pEdge);
 				aModListener.edgeAdded(this, pEdge);
@@ -111,7 +122,15 @@ public abstract class Graph
 					aNodes.add(pEdge.getEnd());
 				}
 				aNeedsLayout = true;
+				if (n1 instanceof FieldNode)
+				{
+					aModListener.endCompoundListening();
+				}
 				return true;
+			}
+			else if (n1 instanceof FieldNode)
+			{
+				aModListener.endCompoundListening();
 			}
 		}
 		return false;

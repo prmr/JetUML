@@ -45,7 +45,7 @@ public class UndoManager
 			{
 				aUndoneCommands.clear();
 			}
-			if(aTracking && !aTrackingCommands.empty())
+			if(!aTrackingCommands.empty())
 			{
 				aTrackingCommands.peek().add(pCommand);
 			}
@@ -98,7 +98,6 @@ public class UndoManager
 	 */
 	public void startTracking()
 	{
-		aTracking = true;
 		aTrackingCommands.push(new CompoundCommand());
 	}
 
@@ -114,10 +113,6 @@ public class UndoManager
 			{
 				add(cc);
 			}
-		}
-		if(!aTrackingCommands.empty())
-		{
-			aTracking = false;
 		}
 	}
 
