@@ -13,10 +13,12 @@ import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
@@ -55,7 +57,7 @@ public final class Clipboard
 			{
 				Node curNode = (Node) element;
 				Node cloneNode = curNode.clone();
-				originalAndClonedNodes.put(curNode, cloneNode);
+ 				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
 				for(Node childNode:curNode.getChildren())
@@ -66,6 +68,36 @@ public final class Clipboard
 						originalAndClonedNodes.put(childNode, clonedChildNode);
 						aNodes.add(clonedChildNode);
 					}
+				}
+			}
+		}
+		for(GraphElement element: pSelection) //loop through and fix the parent/child relationships for all the clone children
+		{
+			if(element instanceof Node)
+			{
+				Node curNode = (Node) element;
+				if(!curNode.getChildren().isEmpty())
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode);
+					List<Node> cloneChildren = cloneNode.getChildren();
+					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
+					{
+						Node removed = cloneChildren.remove(i);
+						Node replacement = originalAndClonedNodes.get(removed);
+						cloneChildren.add(i, replacement);
+					}
+				}
+				if(curNode.getParent() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(curNode.getParent());
+					cloneNode.setParent(cloneParent);
+				}
+				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
+					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
 				}
 			}
 		}
@@ -179,6 +211,9 @@ public final class Clipboard
 			}
 			else
 			{
+				/*
+				 * If we care about the original positions we just put them back there
+				 */
 				aGraph.addNode(cloneNode, new Point2D.Double(x, y));
 			}
 			/*

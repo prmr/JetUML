@@ -325,6 +325,22 @@ public class CallNode extends RectangularNode
 		pNode.setParent(null);
 	}
 	
+	/**
+	 * Adds a node at the end of the list.
+	 * @param pNode The node to add.
+	 */
+	@Override
+	public void addChild(Node pNode)
+	{
+		addChild(aCalls.size(), pNode);
+	}
+	
+	@Override
+	public List<Node> getChildren()
+	{
+		return aCalls;
+	}
+	
 	@Override
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
