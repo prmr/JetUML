@@ -136,7 +136,6 @@ public final class Clipboard
 					}
 				}
 			}
-
 		}
 		/*
 		 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
@@ -155,7 +154,7 @@ public final class Clipboard
 				if(checkEdgeEquality(curEdge, e, aGraph) &&start != null && end != null)
 				{
 						Edge e2 = (Edge) e.clone();
-						e2.connect(start, end);
+						aGraph.connect(e2, start, end);
 						copyEdges.add(e2);
 				}
 			}
@@ -179,7 +178,7 @@ public final class Clipboard
 			}
 			else
 			{
-				aGraph.addNode(cloneNode, new Point2D.Double(x, y));
+				aGraph.add(cloneNode, new Point2D.Double(x, y));
 			}
 			/*
 			 * Don't add any Children to the SelectionList
@@ -187,12 +186,13 @@ public final class Clipboard
 			if(cloneNode.getParent()==null)
 			{
 				updatedSelectionList.add(cloneNode);
-				
 			}
 		}
 		for(Edge cloneEdge: copyEdges)
 		{
-			aGraph.connect(cloneEdge, cloneEdge.getStart(), cloneEdge.getEnd());
+			Point2D startCenter = new Point2D.Double(cloneEdge.getStart().getBounds().getCenterX(), cloneEdge.getStart().getBounds().getCenterY());
+			Point2D endCenter = new Point2D.Double(cloneEdge.getEnd().getBounds().getCenterX(), cloneEdge.getEnd().getBounds().getCenterY());
+			aGraph.connect(cloneEdge, startCenter, endCenter);
 			updatedSelectionList.add(cloneEdge);
 		}
 		pGraphPanel.endCompoundListening();

@@ -51,10 +51,7 @@ public class CompoundCommand implements Command
 			c.undo();
 			temp.push(c);
 		}
-		while(!temp.empty())
-		{
-			aCommands.push(temp.pop());
-		}
+		aCommands = temp;
 	}
 
 	/**
@@ -70,9 +67,6 @@ public class CompoundCommand implements Command
 			c.execute();
 			temp.push(c);
 		}
-		while(!temp.empty())
-		{
-			aCommands.push(temp.pop());
-		}
+		aCommands = temp;
 	}
 }

@@ -91,7 +91,7 @@ public abstract class Graph
 	 * @return true if the edge was connected
 	 */
 	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{	
+	{
 		Node n1 = findNode(pPoint1);
 		Node n2 = findNode(pPoint2);
 		if(n1 != null)
@@ -472,7 +472,6 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-		aModListener.nodeAdded(this, pNode);
 		aNodes.add(pNode); 
 	}
 
@@ -486,7 +485,6 @@ public abstract class Graph
 	public void connect(Edge pEdge, Node pStart, Node pEnd)
 	{
 		pEdge.connect(pStart, pEnd);
-		aModListener.edgeAdded(this, pEdge);
 		aEdges.add(pEdge);
 	}
 
