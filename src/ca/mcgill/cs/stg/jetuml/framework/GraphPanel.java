@@ -50,6 +50,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A panel to draw a graph.
@@ -627,9 +628,9 @@ public class GraphPanel extends JPanel
             
 				for( GraphElement selected : aSelectedElements )
 				{
-					if(selected instanceof Node)
+					if(selected instanceof ParentNode)
 					{
-						Node n = (Node) selected;
+						ParentNode n = (ParentNode) selected;
 						if (!aSelectedElements.contains(n.getParent())) // parents are responsible for translating their children
 						{
 							n.translate(dx, dy); 

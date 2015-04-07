@@ -40,6 +40,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A UML sequence diagram.
@@ -83,7 +84,7 @@ public class SequenceDiagramGraph extends Graph
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && pEdge.getEnd().getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && ((ParentNode)pEdge.getEnd()).getChildren().size() == 0) 
 		{
 			removeNode(pEdge.getEnd());
 		}		
@@ -102,7 +103,7 @@ public class SequenceDiagramGraph extends Graph
 		{
 			Node n = (Node)iter.next();
          
-			if(n instanceof CallNode && n.getParent() == null)
+			if(n instanceof CallNode && ((CallNode)n).getParent() == null)
 			{
 				topLevelCalls.add(n);
 			} 

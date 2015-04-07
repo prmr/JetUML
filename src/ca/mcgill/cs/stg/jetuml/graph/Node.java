@@ -113,37 +113,6 @@ public interface Node extends GraphElement
 	void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid);
 
 	/**
-     * Gets the parent of this node.
-     * @return the parent node, or null if the node has no parent
-	 */
-	Node getParent();
-
-	/**
-     * Sets the parent of this node.
-     * @param pNode the parent node, or null if the node has no parent
-	 */
-	void setParent(Node pNode);
-
-	/**
-     * Gets the children of this node.
-     * @return an unmodifiable list of the children
-	 */
-	List<Node> getChildren();
-
-	/**
-     * Adds a child node.
-     * @param pIndex the position at which to add the child
-     * @param pNode the child node to add
-	 */
-	void addChild(int pIndex, Node pNode);
-
-	/**
-     * Removes a child node.
-     * @param pNode the child to remove.
-	 */
-	void removeChild(Node pNode);
-
-	/**
 	 * @return A clone of the node.
 	 */
 	Node clone();

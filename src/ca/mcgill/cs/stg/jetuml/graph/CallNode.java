@@ -39,7 +39,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-public class CallNode extends RectangularNode
+public class CallNode extends ParentNode
 {
 	public static final int CALL_YGAP = 20;
 	
@@ -145,13 +145,13 @@ public class CallNode extends RectangularNode
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			Node parent = this; 
+			ParentNode parent = this; 
 			while(parent != null && end != parent)
 			{
 				parent = parent.getParent();
 			}
          
-			if(end.getParent() == null && end != parent)
+			if(((CallNode)end).getParent() == null && end != parent)
 			{
 				n = end;
 			}
@@ -184,12 +184,12 @@ public class CallNode extends RectangularNode
 		}
 
 		int i = 0;
-		List<Node> calls = getChildren();
+		List<ParentNode> calls = getChildren();
 		while(i < calls.size() && calls.get(i).getBounds().getY() <= pPoint1.getY())
 		{
 			i++;
 		}
-		addChild(i, n);
+		addChild(i, (ParentNode)n);
 		return true;
 	}
 
@@ -198,7 +198,7 @@ public class CallNode extends RectangularNode
 	{
 		if(pEdge.getStart() == this)
 		{
-			removeChild(pEdge.getEnd());
+			removeChild((ParentNode)pEdge.getEnd());
 		}
 	}
 
@@ -246,7 +246,7 @@ public class CallNode extends RectangularNode
 		translate(xmid - getBounds().getCenterX(), 0);
 		double ytop = getBounds().getY() + CALL_YGAP;
 
-		List<Node> calls = getChildren();
+		List<ParentNode> calls = getChildren();
 		for(int i = 0; i < calls.size(); i++)
 		{
 			Node n = calls.get(i);

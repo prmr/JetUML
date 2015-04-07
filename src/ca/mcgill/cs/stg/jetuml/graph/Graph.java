@@ -139,7 +139,12 @@ public abstract class Graph
 			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
 			{
 				//insideANode = true;
-				aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, pNode);
+				if(pNode instanceof ParentNode && parent instanceof ParentNode)
+				{
+					ParentNode curNode = (ParentNode) pNode;
+					ParentNode parentParent = (ParentNode) parent;
+					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
+				}
 				accepted = true;
 			}	
 		}
@@ -247,9 +252,14 @@ public abstract class Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			if(n2.getParent()!= null && n2.getParent().equals(this))
+			if(n2 instanceof ParentNode && pNode instanceof ParentNode)
 			{
-				aModListener.childDetached(this, pNode.getChildren().indexOf(n2), pNode, n2);
+				ParentNode curNode = (ParentNode) n2;
+				ParentNode parentParent = (ParentNode) pNode;
+				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
+				{
+					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
+				}
 			}
 			n2.removeNode(this, pNode);
 		}
@@ -262,9 +272,12 @@ public abstract class Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		for(Node childNode: pNode.getChildren())
+		if(pNode instanceof ParentNode)
 		{
-			removeNode(childNode);
+			for(Node childNode: ((ParentNode)pNode).getChildren())
+			{
+				removeNode(childNode);
+			}
 		}
 		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();

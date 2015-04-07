@@ -19,6 +19,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 
@@ -58,13 +59,16 @@ public final class Clipboard
 				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
-				for(Node childNode:curNode.getChildren())
+				if(curNode instanceof ParentNode)
 				{
-					if(!(pSelection.contains(childNode)))
+					for(Node childNode:((ParentNode)curNode).getChildren())
 					{
-						Node clonedChildNode = childNode.clone();
-						originalAndClonedNodes.put(childNode, clonedChildNode);
-						aNodes.add(clonedChildNode);
+						if(!(pSelection.contains(childNode)))
+						{
+							Node clonedChildNode = childNode.clone();
+							originalAndClonedNodes.put(childNode, clonedChildNode);
+							aNodes.add(clonedChildNode);
+						}
 					}
 				}
 			}
@@ -184,10 +188,9 @@ public final class Clipboard
 			/*
 			 * Don't add any Children to the SelectionList
 			 */
-			if(cloneNode.getParent()==null)
+			if(!(cloneNode instanceof ParentNode && ((ParentNode)cloneNode).getParent()!=null))
 			{
 				updatedSelectionList.add(cloneNode);
-				
 			}
 		}
 		for(Edge cloneEdge: copyEdges)

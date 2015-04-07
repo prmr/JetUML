@@ -32,7 +32,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * An interface node in a class diagram.
  */
-public class InterfaceNode extends RectangularNode
+public class InterfaceNode extends ParentNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
