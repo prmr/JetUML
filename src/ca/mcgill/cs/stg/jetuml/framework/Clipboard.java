@@ -170,6 +170,36 @@ public final class Clipboard
 			}
 
 		}
+		for(GraphElement element: aNodes) //loop through and fix the parent/child relationships for all the clone children
+		{
+			if(element instanceof Node)
+			{
+				Node curNode = (Node) element;
+				if(!curNode.getChildren().isEmpty())
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode);
+					List<Node> cloneChildren = cloneNode.getChildren();
+					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
+					{
+						Node removed = cloneChildren.remove(i);
+						Node replacement = originalAndClonedNodes.get(removed);
+						cloneChildren.add(i, replacement);
+					}
+				}
+				if(curNode.getParent() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(curNode.getParent());
+					cloneNode.setParent(cloneParent);
+				}
+				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
+					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
+				}
+			}
+		}
 		/*
 		 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
 		 * The edges will be iterated over in the pastSelection SelectionList.
