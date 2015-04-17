@@ -70,6 +70,13 @@ public interface Node extends GraphElement
      * @return the bounding rectangle
 	 */
 	Rectangle2D getBounds();
+	
+	
+	/**
+	 * Adds an edge that terminates at this node.
+	 * @param pEdge the edge to add.
+	 */
+	void addEndEdge(Edge pEdge);
 
 	/**
      * Adds an edge that originates at this node.
@@ -89,13 +96,27 @@ public interface Node extends GraphElement
      * @return true if this node accepts the given node as a child
 	 */
 	boolean addNode(Node pNode, Point2D pPoint);
-
+	
 	/**
      * Notifies this node that an edge is being removed.
      * @param pGraph the ambient graph
      * @param pEdge the edge to be removed
 	 */
 	void removeEdge(Graph pGraph, Edge pEdge);
+
+	/**
+     * Notifies this node that an origin edge is being removed.
+     * @param pGraph the ambient graph
+     * @param pEdge the origin edge to be removed
+	 */
+	void removeOriginEdge(Graph pGraph, Edge pEdge);
+	
+	/**
+	 * Notifies this node that a terminal edge is being removed.
+	 * @param pGraph the ambient graph
+	 * @param pEdge the terminal edge to remove.
+	 */
+	void removeTerminalEdge(Graph pGraph, Edge pEdge);
 
 	/**
      * Notifies this node that a node is being removed.
@@ -132,10 +153,16 @@ public interface Node extends GraphElement
 	
 	
 	/**
-	 * Gets the Edges of this node.
-	 * @return an unmodifiable list of the Edges of this Node.
+	 * Gets the origin Edges of this node.
+	 * @return an unmodifiable list of the origin Edges of this Node.
 	 */
-	List<Edge> getEdges();
+	List<Edge> getOriginEdges();
+	
+	/**
+	 * Gets the origin Edges of this node.
+	 * @return an unmodifiable list of the terminal Edges of this Node.
+	 */
+	List<Edge> getTerminalEdges();
 
 	/**
      * Adds a child node.
