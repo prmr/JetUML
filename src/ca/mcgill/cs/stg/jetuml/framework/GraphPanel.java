@@ -119,9 +119,10 @@ public class GraphPanel extends JPanel
 				repaint();
 			}
 		});
-		JOptionPane.showMessageDialog(this, sheet, 
-            ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),            
-            JOptionPane.PLAIN_MESSAGE);
+		 String[] options = {"OK"};
+		 JOptionPane.showOptionDialog(this, sheet, 
+		            ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),
+		            		JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 		aModListener.finishPropertyChange(aGraph, edited);
 		setModified(true);
 	}
