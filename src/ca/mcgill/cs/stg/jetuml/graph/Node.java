@@ -101,8 +101,9 @@ public interface Node extends GraphElement
      * Notifies this node that an edge is being removed.
      * @param pGraph the ambient graph
      * @param pEdge the edge to be removed
+     * @return true if the Edge was successfully removed. False otherwise.
 	 */
-	void removeEdge(Graph pGraph, Edge pEdge);
+	boolean removeEdge(Graph pGraph, Edge pEdge);
 
 	/**
      * Notifies this node that an origin edge is being removed.

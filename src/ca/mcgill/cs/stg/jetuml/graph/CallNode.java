@@ -194,12 +194,13 @@ public class CallNode extends RectangularNode
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
+	public boolean removeEdge(Graph pGraph, Edge pEdge)
 	{
 		if(pEdge.getStart() == this)
 		{
 			removeChild(pEdge.getEnd());
 		}
+		return super.removeEdge(pGraph, pEdge);
 	}
 
 	@Override
