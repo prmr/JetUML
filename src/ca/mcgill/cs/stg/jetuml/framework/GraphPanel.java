@@ -49,7 +49,10 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
+import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 /**
  * A panel to draw a graph.
@@ -412,6 +415,19 @@ public class GraphPanel extends JPanel
 		aSelectedElements = pSelectionList;
 	}
 	
+	/**
+	 * @param pNode the currently selected Node
+	 * @return whether or not there is a problem with switching to the selection tool.
+	 */
+	public boolean switchToSelectException(Node pNode)
+	{
+		if(pNode instanceof PackageNode || pNode instanceof ImplicitParameterNode || pNode instanceof ObjectNode)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{	
 		@Override
@@ -430,6 +446,25 @@ public class GraphPanel extends JPanel
 			else
 			{
 				tool = aToolBar.getSelectedTool();
+			}
+			if(tool !=null)
+			{
+				//Set it to be the selection tool if you have a Node tool selected.
+				if(n!=null && !(tool instanceof Edge))
+				{
+					if(!switchToSelectException(n))
+					{
+						if(aSideBar.isExtended())
+						{
+							aExtendedToolBar.setToolToBeSelect();
+						}
+						else
+						{
+							aToolBar.setToolToBeSelect();
+						}
+					tool = null;
+					}
+				}
 			}	
 			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
 			{  

@@ -46,7 +46,7 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A segmented edge with a diamond arrowhead representing the aggregation of a class
+	 * A segmented edge with a diamond arrowhead representing the aggregation of a class.
 	 * @return a new aggregation-styled edge
 	 */
 	public static ClassRelationshipEdge createAggregationEdge()
@@ -58,7 +58,7 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A segmented edge with a v arrowhead representing an association between classes
+	 * A segmented edge with a v arrowhead representing an association between classes.
 	 * @return a new association-styled edge
 	 */
 	public static ClassRelationshipEdge createAssociationEdge()

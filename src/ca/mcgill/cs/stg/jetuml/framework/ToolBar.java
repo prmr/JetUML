@@ -148,6 +148,22 @@ public class ToolBar extends JPanel
 		}
 		return null;
 	}
+	
+	/**
+	 * Overrides the currently selected tool to be the grabber tool instead.
+	 */
+	public void setToolToBeSelect()
+	{
+		for(int i = 0; i < aTools.size(); i++)
+		{
+			JToggleButton button = aButtons.get(i);
+			if (button.isSelected())
+			{
+				button.setSelected(false);
+			}
+		}
+		aButtons.get(0).setSelected(true);
+	}
 
 	/**
      * Adds a node to the tool bar.
