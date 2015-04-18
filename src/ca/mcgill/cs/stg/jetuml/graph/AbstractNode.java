@@ -100,6 +100,8 @@ public abstract class AbstractNode implements Node
 	@Override
 	public void removeEdge(Graph pGraph, Edge pEdge)
 	{
+		pEdge.getStart().removeOriginEdge(pGraph, pEdge);
+		pEdge.getEnd().removeTerminalEdge(pGraph, pEdge);
 	}
 
 	@Override
