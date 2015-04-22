@@ -67,12 +67,13 @@ public class NoteNode extends RectangularNode
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
+	public boolean removeEdge(Graph pGraph, Edge pEdge)
 	{
 		if(pEdge.getStart() == this)
 		{
 			pGraph.removeNode(pEdge.getEnd());
 		}
+		return super.removeEdge(pGraph, pEdge);
 	}
 
 	@Override

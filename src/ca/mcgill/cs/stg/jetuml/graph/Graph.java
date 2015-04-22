@@ -339,7 +339,10 @@ public abstract class Graph
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
-			n.removeEdge(this, pEdge);
+			if(n.removeEdge(this, pEdge))
+			{
+				break;
+			}
 		}
 		aNeedsLayout = true;
 	}

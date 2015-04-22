@@ -46,6 +46,8 @@ public abstract class AbstractNode implements Node
 	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
 	
 	private ArrayList<Node> aChildren;
+	private transient ArrayList<Edge> aOriginEdges;
+	private transient ArrayList<Edge> aTerminalEdges;
 	private Node aParent;
 	
 	/**
@@ -54,6 +56,8 @@ public abstract class AbstractNode implements Node
 	public AbstractNode()
 	{
 		aChildren = new ArrayList<>();
+		aOriginEdges = new ArrayList<>();
+		aTerminalEdges = new ArrayList<>();
 		aParent = null;
 	}
 
@@ -78,14 +82,45 @@ public abstract class AbstractNode implements Node
 	}
 
 	@Override
+	public void addEndEdge(Edge pEdge)
+	{
+		aTerminalEdges.add(pEdge);
+	}
+	@Override
 	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
+		aOriginEdges.add(pEdge);
+		if(pEdge.getEnd() != null)
+		{
+			pEdge.getEnd().addEndEdge(pEdge);
+		}
 		return pEdge.getEnd() != null;
+	}
+	
+	@Override
+	public boolean removeEdge(Graph pGraph, Edge pEdge)
+	{
+		pEdge.getStart().removeOriginEdge(pGraph, pEdge);
+		pEdge.getEnd().removeTerminalEdge(pGraph, pEdge);
+		if(!aOriginEdges.contains(pEdge))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
-	{}
+	public void removeOriginEdge(Graph pGraph, Edge pEdge)
+	{
+		aOriginEdges.remove(pEdge);
+		pEdge.getEnd().removeTerminalEdge(pGraph, pEdge);
+	}
+	
+	@Override
+	public void removeTerminalEdge(Graph pGraph, Edge pEdge)
+	{
+		aTerminalEdges.remove(pEdge);
+	}
 
 	@Override
 	public void removeNode(Graph pGraph, Node pNode)
@@ -121,6 +156,19 @@ public abstract class AbstractNode implements Node
 	@Override
 	public List<Node> getChildren() 
 	{ return aChildren; }
+	
+	@Override
+	public List<Edge> getOriginEdges()
+	{
+		return aOriginEdges;
+	}
+	
+	@Override
+	public List<Edge> getTerminalEdges()
+	{
+		return aTerminalEdges;
+	}
+
 
 	@Override
 	public void addChild(int pIndex, Node pNode) 
