@@ -82,7 +82,6 @@ public class ToolBar extends JPanel
 		String tip = editorResources.getString("grabber.tooltip");
 		final JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(tip);
-		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);
 		aButtons.add(button);
 		aNorthPanel.add(button);
@@ -201,7 +200,6 @@ public class ToolBar extends JPanel
 
 		final JToggleButton button = new JToggleButton(icon);
 		button.setToolTipText(pTip);
-		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);   
 		aButtons.add(button);
 		aNorthPanel.add(button);
@@ -281,7 +279,6 @@ public class ToolBar extends JPanel
          };
          final JToggleButton button = new JToggleButton(icon);
          button.setToolTipText(pTip);
-         button.setAlignmentX(CENTER_ALIGNMENT);
          aGroup.add(button);
          aButtons.add(button);
          aNorthPanel.add(button);

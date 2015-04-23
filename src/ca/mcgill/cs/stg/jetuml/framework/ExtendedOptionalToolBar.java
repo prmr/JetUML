@@ -1,7 +1,8 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -21,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
@@ -34,14 +34,12 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 public class ExtendedOptionalToolBar extends JPanel
 {
 	private static final int FONT_SIZE = 15;
+	private static final int HORIZONTAL_SPACING = 10;
 	private static final Color FONT_COLOR = new Color(77, 115, 153);
-	private static final int COMPONENT_WIDTH = 430;
-	private static final int COMPONENT_HEIGHT = 50;
-	private static final int BUTTON_WIDTH = 25;
-	private static final int BUTTON_HEIGHT = 35;
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
 	private ResourceBundle aToolBarResources;
 	private ImageIcon aCopyToClipBoardIcon;
+	private JPanel aNorthPanel;
 	private GraphFrame aGraphFrame;
 	
 
@@ -52,12 +50,11 @@ public class ExtendedOptionalToolBar extends JPanel
 	public ExtendedOptionalToolBar(GraphFrame pGraphFrame)
 	{
 		aGraphFrame = pGraphFrame;
-		setLayout(new GridLayout(1, 2));
+		aNorthPanel = new JPanel(new GridLayout(1, 1));
 		aToolBarResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		aCopyToClipBoardIcon = new ImageIcon(getClass().getClassLoader().getResource(aToolBarResources.getString("toolbar.copyToClipBoard")));
-        addCopyToClipboard("Copy To Clipboard");
-        setMaximumSize(new Dimension(COMPONENT_WIDTH, COMPONENT_HEIGHT));
-        setMinimumSize(new Dimension(COMPONENT_WIDTH, COMPONENT_HEIGHT));
+        addCopyToClipboard("Clipboard  Copy");
+        add(aNorthPanel, BorderLayout.NORTH);
 	}	
 	
 	/**
@@ -66,10 +63,10 @@ public class ExtendedOptionalToolBar extends JPanel
 	 */
 	public void addCopyToClipboard(String pTip)
 	{
+		 JPanel innerPanel = new JPanel();
+		 innerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, HORIZONTAL_SPACING, 0));
          final JButton button = new JButton(aCopyToClipBoardIcon);
-         button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-         button.setAlignmentX(CENTER_ALIGNMENT);
-         add(button);
+         innerPanel.add(button);
          button.addActionListener(new ActionListener()
          {
         	 public void actionPerformed(ActionEvent pEvent)
@@ -77,12 +74,13 @@ public class ExtendedOptionalToolBar extends JPanel
         		copyToClipboard();
         	 }
          });
-         JLabel aLabel = new JLabel(pTip, SwingConstants.CENTER);
+         JLabel aLabel = new JLabel(pTip);
          Font font = aLabel.getFont();
  		 Font boldFont = new Font(font.getFontName(), Font.BOLD, FONT_SIZE);
  		 aLabel.setFont(boldFont);
  		 aLabel.setForeground(FONT_COLOR);
-         add(aLabel);
+         innerPanel.add(aLabel);
+         aNorthPanel.add(innerPanel);
 	}
 	
 	/*

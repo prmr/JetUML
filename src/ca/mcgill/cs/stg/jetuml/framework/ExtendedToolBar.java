@@ -26,6 +26,7 @@ import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -49,7 +50,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -70,6 +70,7 @@ public class ExtendedToolBar extends JPanel
 	private static final int BUTTON_SIZE = 25;
 	private static final int FONT_SIZE = 15;
 	private static final int OFFSET = 4;
+	private static final int HORIZONTAL_SPACING = 10;
 	private static final Color FONT_COLOR = new Color(77, 115, 153);
 	private JPanel aNorthPanel;
 	private ButtonGroup aGroup;
@@ -85,7 +86,7 @@ public class ExtendedToolBar extends JPanel
 	public ExtendedToolBar(Graph pGraph)
 	{
 		
-		aNorthPanel = new JPanel(new GridLayout(0, 2));
+		aNorthPanel = new JPanel(new GridLayout(0, 1));
 		aGroup = new ButtonGroup();
 		aTools = new ArrayList<>();
 		aButtons = new ArrayList<>();
@@ -110,17 +111,19 @@ public class ExtendedToolBar extends JPanel
 		};
 		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		String tip = editorResources.getString("grabber.tooltip");
+		JPanel innerPanel = new JPanel();
+		innerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, HORIZONTAL_SPACING, 0));
 		final JToggleButton button = new JToggleButton(icon);
-		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);
 		aButtons.add(button);
-		aNorthPanel.add(button);
-		JLabel aLabel = new JLabel(tip, SwingConstants.CENTER);
+		innerPanel.add(button);
+		JLabel aLabel = new JLabel(tip);
 		Font font = aLabel.getFont();
 		Font boldFont = new Font(font.getFontName(), Font.BOLD, FONT_SIZE);
 		aLabel.setForeground(FONT_COLOR);
 		aLabel.setFont(boldFont);
-		aNorthPanel.add(aLabel);
+		innerPanel.add(aLabel);
+		aNorthPanel.add(innerPanel);
 		button.setSelected(true);
 		aTools.add(null);
       
@@ -233,18 +236,19 @@ public class ExtendedToolBar extends JPanel
                	g2.setTransform(oldTransform);
             }
 		};
-
+		JPanel innerPanel = new JPanel();
+		innerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, HORIZONTAL_SPACING, 0));
 		final JToggleButton button = new JToggleButton(icon);
-		button.setAlignmentX(CENTER_ALIGNMENT);
 		aGroup.add(button);   
 		aButtons.add(button);
-		aNorthPanel.add(button);
-		JLabel aLabel = new JLabel(pTip, SwingConstants.CENTER);
+		innerPanel.add(button);
+		JLabel aLabel = new JLabel(pTip);
 		Font font = aLabel.getFont();
 		Font boldFont = new Font(font.getFontName(), Font.BOLD, FONT_SIZE);
 		aLabel.setFont(boldFont);
 		aLabel.setForeground(FONT_COLOR);
-        aNorthPanel.add(aLabel);
+        innerPanel.add(aLabel);
+        aNorthPanel.add(innerPanel);
 		aTools.add(pNode);
       
 		JMenuItem item = new JMenuItem(pTip, icon);
@@ -319,17 +323,19 @@ public class ExtendedToolBar extends JPanel
             	g2.setTransform(oldTransform);
             }
          };
+         JPanel innerPanel = new JPanel();
+     	 innerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, HORIZONTAL_SPACING, 0));
          final JToggleButton button = new JToggleButton(icon);
-         button.setAlignmentX(CENTER_ALIGNMENT);
          aGroup.add(button);
          aButtons.add(button);
-         aNorthPanel.add(button);
-         JLabel aLabel = new JLabel(pTip, SwingConstants.CENTER);
+         innerPanel.add(button);
+         JLabel aLabel = new JLabel(pTip);
          Font font = aLabel.getFont();
  		 Font boldFont = new Font(font.getFontName(), Font.BOLD, FONT_SIZE);
  		 aLabel.setFont(boldFont);
  		 aLabel.setForeground(FONT_COLOR);
-         aNorthPanel.add(aLabel);
+         innerPanel.add(aLabel);
+         aNorthPanel.add(innerPanel);
          aTools.add(pEdge);
 
          JMenuItem item = new JMenuItem(pTip, icon);
