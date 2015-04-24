@@ -61,10 +61,12 @@ public abstract class ParentGraph extends Graph
 		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
 		{
 			Node parent = aNodes.get(i);
-
+			if (parent == pNode)
+			{
+				continue;
+			}
 			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
 			{
-				//insideANode = true;
 				if(pNode instanceof ParentNode && parent instanceof ParentNode)
 				{
 					ParentNode curNode = (ParentNode) pNode;
@@ -72,7 +74,7 @@ public abstract class ParentGraph extends Graph
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
 				accepted = true;
-			}	
+			}
 		}
 		aModListener.endCompoundListening();
 		return true;
