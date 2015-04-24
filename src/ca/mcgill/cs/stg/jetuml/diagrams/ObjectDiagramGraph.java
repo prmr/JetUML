@@ -37,11 +37,12 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
 
 /**
  *   An UML-style object diagram that shows object references.
  */
-public class ObjectDiagramGraph extends Graph
+public class ObjectDiagramGraph extends ParentGraph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];

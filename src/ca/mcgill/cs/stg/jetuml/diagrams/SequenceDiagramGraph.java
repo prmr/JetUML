@@ -39,13 +39,14 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagramGraph extends Graph
+public class SequenceDiagramGraph extends ParentGraph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
