@@ -22,17 +22,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
 /**
  *  A graph consisting of selectable nodes and edges.

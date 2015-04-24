@@ -125,8 +125,7 @@ public abstract class AbstractNode implements Node
 	{ return null; }   
    
 	/**
-     *  Adds a persistence delegate to a given encoder that
-     * encodes the child nodes of this node.
+     *  Adds a persistence delegate to a given encoder.
      * @param pEncoder the encoder to which to add the delegate
      */
 	public static void setPersistenceDelegate(Encoder pEncoder)

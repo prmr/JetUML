@@ -131,7 +131,7 @@ public abstract class ParentNode extends RectangularNode
      */
 	public static void setPersistenceDelegate(Encoder pEncoder)
 	{
-      pEncoder.setPersistenceDelegate(AbstractNode.class, new DefaultPersistenceDelegate()
+      pEncoder.setPersistenceDelegate(ParentNode.class, new DefaultPersistenceDelegate()
          {
             protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
             {
