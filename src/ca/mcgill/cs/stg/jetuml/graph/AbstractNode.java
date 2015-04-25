@@ -27,9 +27,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
-import java.beans.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 

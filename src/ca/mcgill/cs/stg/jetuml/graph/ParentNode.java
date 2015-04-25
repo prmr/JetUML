@@ -1,6 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -14,10 +13,6 @@ import java.util.List;
  */
 public abstract class ParentNode extends RectangularNode
 {
-	public static final int SHADOW_GAP = 4;
-	
-	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
-	
 	private ArrayList<ParentNode> aChildren;
 	private ParentNode aParent;
 	
