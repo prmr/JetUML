@@ -32,6 +32,7 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateNode;
@@ -128,19 +129,13 @@ public class TestPersistenceService
 		ActorNode a3 = (ActorNode) nIt.next();
 		
 		assertEquals(new Rectangle2D.Double(440, 40, 120, 40), u1.getBounds());
-		assertEquals(0, u1.getChildren().size());
 		assertEquals("Use case 1", u1.getName().toString());
-		assertNull(u1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(460, 130, 120, 40), u2.getBounds());
-		assertEquals(0, u2.getChildren().size());
 		assertEquals("Use case 2", u2.getName().toString());
-		assertNull(u2.getParent());
 		
 		assertEquals(new Rectangle2D.Double(460, 230, 120, 40), u3.getBounds());
-		assertEquals(0, u3.getChildren().size());
 		assertEquals("Use case 3", u3.getName().toString());
-		assertNull(u3.getParent());
 		
 		assertEquals(new Rectangle2D.Double(270, 50, 60, 80), a1.getBounds());
 		assertEquals(0, a1.getChildren().size());
@@ -152,19 +147,13 @@ public class TestPersistenceService
 		assertEquals("Actor2", a2.getName().toString());
 		assertNull(a2.getParent());
 		
-		assertTrue(n1.getChildren().isEmpty());
 		assertEquals("A note", n1.getText().getText());
-		assertNull(n1.getParent());
 		assertEquals(new Rectangle2D.Double(700, 50, 60, 40), n1.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(567, 56, 0, 0), p1.getBounds());
-		assertTrue(p1.getChildren().isEmpty());
-		assertNull(p1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(650, 150, 120, 40), u4.getBounds());
-		assertEquals(0, u4.getChildren().size());
 		assertEquals("Use case 4", u4.getName().toString());
-		assertNull(u4.getParent());
 		
 		assertEquals(new Rectangle2D.Double(190, 140, 60, 80), a3.getBounds());
 		assertEquals(0, a3.getChildren().size());
@@ -304,7 +293,7 @@ public class TestPersistenceService
 		InterfaceNode i1 = (InterfaceNode) nIterator.next();
 		ClassNode c2 = (ClassNode) nIterator.next();
 		
-		List<Node> children = p1.getChildren();
+		List<ParentNode> children = p1.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(c1));
 		assertEquals(p1, c1.getParent());
@@ -312,7 +301,6 @@ public class TestPersistenceService
 		
 		children = p2.getChildren();
 		assertEquals(0, children.size());
-		assertNull(n1.getParent());
 		
 		children = p3.getChildren();
 		assertEquals(2, children.size());
@@ -370,12 +358,10 @@ public class TestPersistenceService
 		assertNull(node4.getParent());
 		assertEquals(new Rectangle2D.Double(660, 180, 100, 60), node4.getBounds());
 		
-		assertTrue(node5.getChildren().isEmpty());
 		assertEquals("A note", node5.getText().getText());
-		assertNull(node5.getParent());
 		assertEquals(new Rectangle2D.Double(770, 310, 60, 40), node5.getBounds());
 		
-		List<Node> children = node6.getChildren();
+		List<ParentNode> children = node6.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node7));
 		assertEquals("", node6.getContents().getText());
@@ -391,8 +377,6 @@ public class TestPersistenceService
 		assertEquals(new Rectangle2D.Double(260, 160, 100, 60), node7.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(708, 229, 0, 0), node8.getBounds());
-		assertTrue(node8.getChildren().isEmpty());
-		assertNull(node8.getParent());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -498,7 +482,7 @@ public class TestPersistenceService
 		assertNull(node1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(252, 73, 16, 30), node2.getBounds());
-		List<Node> children = node2.getChildren();
+		List<ParentNode> children = node2.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node3));
 		assertEquals(node1, node2.getImplicitParameter());
@@ -536,14 +520,10 @@ public class TestPersistenceService
 		assertEquals(node6, node7.getImplicitParameter());
 		assertEquals(node5, node7.getParent());
 		
-		assertTrue(node8.getChildren().isEmpty());
 		assertEquals("A note", node8.getText().getText());
-		assertNull(node8.getParent());
 		assertEquals(new Rectangle2D.Double(610, 210, 60, 40), node8.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(538, 169, 0, 0), node9.getBounds());
-		assertTrue(node9.getChildren().isEmpty());
-		assertNull(node9.getParent());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -629,38 +609,24 @@ public class TestPersistenceService
 		PointNode point = (PointNode) nIterator.next();
 		
 		assertEquals(new Rectangle2D.Double(250, 100, 80, 60), s1.getBounds());
-		assertTrue(s1.getChildren().isEmpty());
 		assertEquals("S1", s1.getName().toString());
-		assertNull(s1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(510, 100, 80, 60), s2.getBounds());
-		assertTrue(s2.getChildren().isEmpty());
 		assertEquals("S2", s2.getName().toString());
-		assertNull(s2.getParent());
 		
 		assertEquals(new Rectangle2D.Double(520, 310, 80, 60), s3.getBounds());
-		assertTrue(s3.getChildren().isEmpty());
 		assertEquals("S3", s3.getName().toString());
-		assertNull(s3.getParent());
 		
 		assertEquals(new Rectangle2D.Double(150, 70, 14, 14), start.getBounds());
-		assertTrue(start.getChildren().isEmpty());
-		assertNull(start.getParent());
 		assertFalse(start.isFinal());
 		
 		assertEquals(new Rectangle2D.Double(640, 230, 20, 20), end.getBounds());
-		assertTrue(end.getChildren().isEmpty());
-		assertNull(end.getParent());
 		assertTrue(end.isFinal());
 		
-		assertTrue(note.getChildren().isEmpty());
 		assertEquals("A note\non two lines", note.getText().getText());
-		assertNull(note.getParent());
 		assertEquals(new Rectangle2D.Double(690, 320, 80, 40), note.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(576, 339, 0, 0), point.getBounds());
-		assertTrue(point.getChildren().isEmpty());
-		assertNull(point.getParent());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(7, edges.size());
@@ -734,7 +700,7 @@ public class TestPersistenceService
 		assertNull(type1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(370, 170, 160, 140), blank.getBounds());
-		List<Node> children = blank.getChildren();
+		List<ParentNode> children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertTrue(children.contains(name2));
 		assertTrue(children.contains(name3));
@@ -790,18 +756,12 @@ public class TestPersistenceService
 		assertEquals("", name4.getValue().toString());
 		assertFalse(name4.isBoxedValue());
 		
-		assertTrue(note.getChildren().isEmpty());
 		assertEquals("A note", note.getText().getText());
-		assertNull(note.getParent());
 		assertEquals(new Rectangle2D.Double(220, 220, 60, 40), note.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(388, 225, 0, 0), p1.getBounds());
-		assertTrue(p1.getChildren().isEmpty());
-		assertNull(p1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(249, 162, 0, 0), p2.getBounds());
-		assertTrue(p2.getChildren().isEmpty());
-		assertNull(p2.getParent());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());

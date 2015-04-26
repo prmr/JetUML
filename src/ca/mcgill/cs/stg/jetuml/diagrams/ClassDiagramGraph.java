@@ -33,11 +33,12 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
 
 /**
  *   A UML class diagram.
  */
-public class ClassDiagramGraph extends Graph
+public class ClassDiagramGraph extends ParentGraph
 {
 	//CSOFF:
 	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()};

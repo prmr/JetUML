@@ -29,6 +29,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-public class CallNode extends RectangularNode
+public class CallNode extends ParentNode
 {
 	public static final int CALL_YGAP = 20;
 	
@@ -49,12 +50,15 @@ public class CallNode extends RectangularNode
 	private ImplicitParameterNode aImplicitParameter;
 	private boolean aSignaled;
 	private boolean aOpenBottom;
-	   
+	
+	private ArrayList<ParentNode> aCalls;
+	
    /**
     *  Construct a call node with a default size.
     */
 	public CallNode()
 	{
+		aCalls = new ArrayList<ParentNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -145,13 +149,13 @@ public class CallNode extends RectangularNode
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			Node parent = this; 
+			ParentNode parent = this; 
 			while(parent != null && end != parent)
 			{
 				parent = parent.getParent();
 			}
          
-			if(end.getParent() == null && end != parent)
+			if(((CallNode)end).getParent() == null && end != parent)
 			{
 				n = end;
 			}
@@ -184,12 +188,11 @@ public class CallNode extends RectangularNode
 		}
 
 		int i = 0;
-		List<Node> calls = getChildren();
-		while(i < calls.size() && calls.get(i).getBounds().getY() <= pPoint1.getY())
+		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint1.getY())
 		{
 			i++;
 		}
-		addChild(i, n);
+		addChild(i, (ParentNode)n);
 		return true;
 	}
 
@@ -198,7 +201,7 @@ public class CallNode extends RectangularNode
 	{
 		if(pEdge.getStart() == this)
 		{
-			removeChild(pEdge.getEnd());
+			removeChild((ParentNode)pEdge.getEnd());
 		}
 		return super.removeEdge(pGraph, pEdge);
 	}
@@ -247,10 +250,9 @@ public class CallNode extends RectangularNode
 		translate(xmid - getBounds().getCenterX(), 0);
 		double ytop = getBounds().getY() + CALL_YGAP;
 
-		List<Node> calls = getChildren();
-		for(int i = 0; i < calls.size(); i++)
+		for(int i = 0; i < aCalls.size(); i++)
 		{
-			Node n = calls.get(i);
+			Node n = aCalls.get(i);
 			if(n instanceof ImplicitParameterNode) // <<create>>
 			{
 				n.translate(0, ytop - ((ImplicitParameterNode) n).getTopRectangle().getCenterY());
@@ -295,6 +297,49 @@ public class CallNode extends RectangularNode
 	}
 
 	@Override
+	public void addChild(int pIndex, ParentNode pNode) 
+	{
+		if (pNode == null || pIndex < 0) //base cases to not deal with
+		{
+			return;
+		}
+		ParentNode oldParent = pNode.getParent();
+		if (oldParent != null)
+		{
+			oldParent.removeChild(pNode);
+		}
+		aCalls.add(pIndex, pNode);
+		pNode.setParent(this);
+	}
+	
+	@Override
+	public void removeChild(ParentNode pNode)
+	{
+		if (pNode.getParent() != this)
+		{
+			return;
+		}
+		aCalls.remove(pNode);
+		pNode.setParent(null);
+	}
+	
+	/**
+	 * Adds a node at the end of the list.
+	 * @param pNode The node to add.
+	 */
+	@Override
+	public void addChild(ParentNode pNode)
+	{
+		addChild(aCalls.size(), pNode);
+	}
+	
+	@Override
+	public List<ParentNode> getChildren()
+	{
+		return aCalls;
+	}
+	
+	@Override
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		return pNode instanceof PointNode;
@@ -305,19 +350,34 @@ public class CallNode extends RectangularNode
      * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setSignaled(boolean pNewValue)
-	{ aSignaled = pNewValue; }
+	{ 
+		aSignaled = pNewValue; 
+	}
 
 	/**
      * Gets the openBottom property.
      * @return true if this node is the target of a signal edge
 	 */
 	public boolean isOpenBottom() 
-	{ return aOpenBottom; }
+	{ 
+		return aOpenBottom; 
+	}
 
 	/**
      * Sets the openBottom property.
      * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setOpenBottom(boolean pNewValue)
-	{ aOpenBottom = pNewValue; }
+	{ 
+		aOpenBottom = pNewValue; 
+	}
+	
+	@SuppressWarnings("unchecked") //For cloning aCalls
+	@Override
+	public CallNode clone()
+	{
+		CallNode cloned = (CallNode) super.clone();
+		cloned.aCalls = (ArrayList<ParentNode>) aCalls.clone();
+		return cloned;
+	}
 }

@@ -13,12 +13,15 @@ import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 
@@ -55,17 +58,50 @@ public final class Clipboard
 			{
 				Node curNode = (Node) element;
 				Node cloneNode = curNode.clone();
-				originalAndClonedNodes.put(curNode, cloneNode);
+ 				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
-				for(Node childNode:curNode.getChildren())
+				if(curNode instanceof ParentNode)
 				{
-					if(!(pSelection.contains(childNode)))
+					for(Node childNode:((ParentNode)curNode).getChildren())
 					{
-						Node clonedChildNode = childNode.clone();
-						originalAndClonedNodes.put(childNode, clonedChildNode);
-						aNodes.add(clonedChildNode);
+						if(!(pSelection.contains(childNode)))
+						{
+							Node clonedChildNode = childNode.clone();
+							originalAndClonedNodes.put(childNode, clonedChildNode);
+							aNodes.add(clonedChildNode);
+						}
 					}
+				}
+			}
+		}
+		for(GraphElement element: pSelection) //loop through and fix the parent/child relationships for all the clone children
+		{
+			if(element instanceof ParentNode)
+			{
+				ParentNode curNode = (ParentNode) element;
+				if(!curNode.getChildren().isEmpty())
+				{
+					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode);
+					List<ParentNode> cloneChildren = cloneNode.getChildren();
+					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
+					{
+						ParentNode removed = cloneChildren.remove(i);
+						ParentNode replacement = (ParentNode)originalAndClonedNodes.get(removed);
+						cloneChildren.add(i, replacement);
+					}
+				}
+				if(curNode.getParent() != null)
+				{
+					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode); //replace parent with its clone
+					ParentNode cloneParent = (ParentNode)originalAndClonedNodes.get(curNode.getParent());
+					cloneNode.setParent(cloneParent);
+				}
+				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
+					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
 				}
 			}
 		}
@@ -137,6 +173,36 @@ public final class Clipboard
 				}
 			}
 		}
+		for(GraphElement element: aNodes) //loop through and fix the parent/child relationships for all the clone children
+		{
+			if(element instanceof ParentNode)
+			{
+				ParentNode curNode = (ParentNode) element;
+				if(!curNode.getChildren().isEmpty())
+				{
+					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode);
+					List<ParentNode> cloneChildren = cloneNode.getChildren();
+					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
+					{
+						ParentNode removed = cloneChildren.remove(i);
+						ParentNode replacement = (ParentNode)originalAndClonedNodes.get(removed);
+						cloneChildren.add(i, replacement);
+					}
+				}
+				if(curNode.getParent() != null)
+				{
+					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode); //replace parent with its clone
+					ParentNode cloneParent = (ParentNode)originalAndClonedNodes.get(curNode.getParent());
+					cloneNode.setParent(cloneParent);
+				}
+				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
+				{
+					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
+					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
+					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
+				}
+			}
+		}
 		/*
 		 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
 		 * The edges will be iterated over in the pastSelection SelectionList.
@@ -183,7 +249,7 @@ public final class Clipboard
 			/*
 			 * Don't add any Children to the SelectionList
 			 */
-			if(cloneNode.getParent()==null)
+			if(!(cloneNode instanceof ParentNode && ((ParentNode)cloneNode).getParent()!=null))
 			{
 				updatedSelectionList.add(cloneNode);
 			}

@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends RectangularNode
+public class FieldNode extends ParentNode
 {
 	public static final int DEFAULT_WIDTH = 60;
 	public static final int DEFAULT_HEIGHT = 20;

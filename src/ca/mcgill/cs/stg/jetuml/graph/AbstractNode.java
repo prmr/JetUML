@@ -21,14 +21,12 @@
  *******************************************************************************/
 
 package ca.mcgill.cs.stg.jetuml.graph;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
-import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,20 +43,16 @@ public abstract class AbstractNode implements Node
 	
 	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
 	
-	private ArrayList<Node> aChildren;
 	private transient ArrayList<Edge> aOriginEdges;
 	private transient ArrayList<Edge> aTerminalEdges;
-	private Node aParent;
-	
+
 	/**
-     * Constructs a node with no parents or children.
+     * Constructs a node.
 	 */
 	public AbstractNode()
 	{
-		aChildren = new ArrayList<>();
 		aOriginEdges = new ArrayList<>();
 		aTerminalEdges = new ArrayList<>();
-		aParent = null;
 	}
 
 	@Override
@@ -67,7 +61,6 @@ public abstract class AbstractNode implements Node
 		try
 		{
 			AbstractNode cloned = (AbstractNode) super.clone();
-			cloned.aChildren = new ArrayList<Node>();
 			return cloned;
 		}
 		catch(CloneNotSupportedException exception)
@@ -125,14 +118,6 @@ public abstract class AbstractNode implements Node
 	@Override
 	public void removeNode(Graph pGraph, Node pNode)
 	{
-		if(pNode == aParent)
-		{
-			aParent = null;
-		}	 
-		if(pNode.getParent() == this)
-		{
-			aChildren.remove(pNode);
-		}
 	}
 	
 	@Override
@@ -146,18 +131,6 @@ public abstract class AbstractNode implements Node
 	}
 
 	@Override
-	public Node getParent() 
-   	{ return aParent; }
-
-	@Override
-	public void setParent(Node pNode) 
-	{ aParent = pNode; }
-
-	@Override
-	public List<Node> getChildren() 
-	{ return aChildren; }
-	
-	@Override
 	public List<Edge> getOriginEdges()
 	{
 		return aOriginEdges;
@@ -167,39 +140,6 @@ public abstract class AbstractNode implements Node
 	public List<Edge> getTerminalEdges()
 	{
 		return aTerminalEdges;
-	}
-
-
-	@Override
-	public void addChild(int pIndex, Node pNode) 
-	{
-		Node oldParent = pNode.getParent();
-		if (oldParent != null)
-		{
-			oldParent.removeChild(pNode);
-		}
-		aChildren.add(pIndex, pNode);
-		pNode.setParent(this);
-	}
-
-	/**
-	 * Adds a node at the end of the list.
-	 * @param pNode The node to add.
-	 */
-	public void addChild(Node pNode)
-	{
-		addChild(aChildren.size(), pNode);
-	}
-
-	@Override
-	public void removeChild(Node pNode)
-	{
-		if (pNode.getParent() != this)
-		{
-			return;
-		}
-		aChildren.remove(pNode);
-		pNode.setParent(null);
 	}
 
 	@Override
@@ -232,8 +172,7 @@ public abstract class AbstractNode implements Node
 	{ return null; }   
    
 	/**
-     *  Adds a persistence delegate to a given encoder that
-     * encodes the child nodes of this node.
+     *  Adds a persistence delegate to a given encoder.
      * @param pEncoder the encoder to which to add the delegate
      */
 	public static void setPersistenceDelegate(Encoder pEncoder)
@@ -243,10 +182,6 @@ public abstract class AbstractNode implements Node
             protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
             {
             	super.initialize(pType, pOldInstance, pNewInstance, pOut);
-            	for(Node node : ((Node) pOldInstance).getChildren())
-            	{
-            		pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
-               }
             }
          });
    }

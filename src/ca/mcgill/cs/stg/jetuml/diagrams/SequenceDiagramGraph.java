@@ -39,12 +39,14 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagramGraph extends Graph
+public class SequenceDiagramGraph extends ParentGraph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
@@ -83,7 +85,7 @@ public class SequenceDiagramGraph extends Graph
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && pEdge.getEnd().getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && ((ParentNode)pEdge.getEnd()).getChildren().size() == 0) 
 		{
 			removeNode(pEdge.getEnd());
 		}		
@@ -102,7 +104,7 @@ public class SequenceDiagramGraph extends Graph
 		{
 			Node n = (Node)iter.next();
          
-			if(n instanceof CallNode && n.getParent() == null)
+			if(n instanceof CallNode && ((CallNode)n).getParent() == null)
 			{
 				topLevelCalls.add(n);
 			} 

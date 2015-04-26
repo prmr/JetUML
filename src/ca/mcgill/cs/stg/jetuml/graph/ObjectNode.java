@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends RectangularNode
+public class ObjectNode extends ParentNode
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -112,7 +112,7 @@ public class ObjectNode extends RectangularNode
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		double leftWidth = 0;
 		double rightWidth = 0;
-		List<Node> fields = getChildren();
+		List<ParentNode> fields = getChildren();
 		double height = 0;
 		if( fields.size() != 0 )
 		{
@@ -176,7 +176,7 @@ public class ObjectNode extends RectangularNode
 	@Override
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
-		List<Node> fields = getChildren();
+		List<ParentNode> fields = getChildren();
 		if(pNode instanceof PointNode)
 		{
 			return true;
@@ -185,7 +185,8 @@ public class ObjectNode extends RectangularNode
 		{
 			return false;
 		}
-		if(fields.contains(pNode))
+		FieldNode fNode = (FieldNode) pNode;
+		if(fields.contains(fNode))
 		{
 			return true;
 		}
@@ -194,7 +195,7 @@ public class ObjectNode extends RectangularNode
 		{
 			i++;
 		}
-		addChild(i, pNode);
+		addChild(i, fNode);
 		return true;
 	}
    
@@ -203,7 +204,7 @@ public class ObjectNode extends RectangularNode
      * be read back in correctly. 
      */
 	@Override
-   public void addChild(Node pNode)
+   public void addChild(ParentNode pNode)
    {
 		super.addChild(pNode);
 		Rectangle2D b = getBounds();

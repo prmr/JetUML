@@ -32,7 +32,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   An actor node in a use case diagram.
  */
-public class ActorNode extends RectangularNode
+public class ActorNode extends ParentNode
 {
 	// Bounding rectangle
 	private static final int DEFAULT_WIDTH  = 48;

@@ -57,6 +57,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A panel to draw a graph.
@@ -694,13 +695,18 @@ public class GraphPanel extends JPanel
             
 				for( GraphElement selected : aSelectedElements )
 				{
-					if(selected instanceof Node)
+					if(selected instanceof ParentNode)
 					{
-						Node n = (Node) selected;
+						ParentNode n = (ParentNode) selected;
 						if (!aSelectedElements.contains(n.getParent())) // parents are responsible for translating their children
 						{
 							n.translate(dx, dy); 
 						}	
+					}
+					else if(selected instanceof Node)
+					{
+						Node n = (Node) selected;
+						n.translate(dx, dy); 
 					}
 				}
 				// we don't want continuous layout any more because of multiple selection

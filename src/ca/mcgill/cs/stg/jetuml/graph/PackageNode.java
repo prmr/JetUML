@@ -38,7 +38,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends RectangularNode
+public class PackageNode extends ParentNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
@@ -118,7 +118,7 @@ public class PackageNode extends RectangularNode
      	double width = Math.max(aTop.getWidth() + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, aBottom.getWidth());
      	double height = aTop.getHeight() + aBottom.getHeight();
 
-     	List<Node> children = getChildren();
+     	List<ParentNode> children = getChildren();
      	if(children.size() > 0)
      	{
      		Rectangle2D childBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 0, 0);
@@ -190,7 +190,8 @@ public class PackageNode extends RectangularNode
 	{
 		if(pNode instanceof ClassNode || pNode instanceof InterfaceNode || pNode instanceof PackageNode)
 		{
-			addChild(pNode);
+			ParentNode child = (ParentNode) pNode;
+			addChild(child);
 			return true;
 		}
 		else
