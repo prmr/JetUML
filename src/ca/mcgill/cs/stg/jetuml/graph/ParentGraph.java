@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
  *******************************************************************************/
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
  *  A graph consisting of selectable nodes and edges.
@@ -97,17 +98,17 @@ public abstract class ParentGraph extends Graph
 				}
 			}
 		}
-		
-		super.removeNode(pNode);
-		
 		/*Remove the children too @JoelChev*/
 		if(pNode instanceof ParentNode)
 		{
-			for(Node childNode: ((ParentNode)pNode).getChildren())
+			ArrayList<ParentNode> children = new ArrayList<ParentNode>(((ParentNode) pNode).getChildren());
+			//We create a shallow clone so deleting children does not affect the loop
+			for(Node childNode: children)
 			{
 				removeNode(childNode);
 			}
 		}
+		super.removeNode(pNode);
 		aModListener.endCompoundListening();
 		return true;
 	}
