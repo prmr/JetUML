@@ -15,7 +15,6 @@ public class UndoManager
 	private Stack<Command> aPastCommands; //the commands that have been input and can be undone
 	private Stack<Command> aUndoneCommands; //the commands that have been undone and can be redone
 	private Stack<CompoundCommand> aTrackingCommands; //used for many commands coming at once
-	private boolean aTracking; //turned on to allow many things to be changed in one command
 	private boolean aHoldChanges = false; //turned on while undoing or redoing to prevent duplication
 	
 	/**
@@ -27,7 +26,6 @@ public class UndoManager
 		aPastCommands = new Stack<Command>();
 		aUndoneCommands = new Stack<Command>();
 		aTrackingCommands = new Stack<CompoundCommand>();
-		aTracking = false;
 	}
 
 	/**
@@ -45,7 +43,7 @@ public class UndoManager
 			{
 				aUndoneCommands.clear();
 			}
-			if(aTracking && !aTrackingCommands.empty())
+			if(!aTrackingCommands.empty())
 			{
 				aTrackingCommands.peek().add(pCommand);
 			}
@@ -98,7 +96,6 @@ public class UndoManager
 	 */
 	public void startTracking()
 	{
-		aTracking = true;
 		aTrackingCommands.push(new CompoundCommand());
 	}
 
@@ -114,10 +111,6 @@ public class UndoManager
 			{
 				add(cc);
 			}
-		}
-		if(!aTrackingCommands.empty())
-		{
-			aTracking = false;
 		}
 	}
 
