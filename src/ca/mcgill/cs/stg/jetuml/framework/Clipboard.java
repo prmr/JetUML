@@ -77,34 +77,8 @@ public final class Clipboard
 		}
 		for(GraphElement element: pSelection) //loop through and fix the parent/child relationships for all the clone children
 		{
-			if(element instanceof ParentNode)
-			{
-				ParentNode curNode = (ParentNode) element;
-				if(!curNode.getChildren().isEmpty())
-				{
-					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode);
-					List<ParentNode> cloneChildren = cloneNode.getChildren();
-					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
-					{
-						ParentNode removed = cloneChildren.remove(i);
-						ParentNode replacement = (ParentNode)originalAndClonedNodes.get(removed);
-						cloneChildren.add(i, replacement);
-					}
-				}
-				if(curNode.getParent() != null)
-				{
-					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode); //replace parent with its clone
-					ParentNode cloneParent = (ParentNode)originalAndClonedNodes.get(curNode.getParent());
-					cloneNode.setParent(cloneParent);
-				}
-				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
-				{
-					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
-					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
-					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
-				}
-			}
-		}
+			fixParentChildRelationShips(element, originalAndClonedNodes);
+		}	
 		for(GraphElement element: pSelection)
 		{
 			if(element instanceof Edge)
@@ -118,6 +92,42 @@ public final class Clipboard
 					cloneEdge.connect(start, end);
 					aEdges.add(cloneEdge);
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Fixes the parent child relationships of the cloned children nodes. 
+	 * @param pElement the current GraphElement being considered.
+	 * @param pOriginalAndClonedNodes the LinkedHasMap of original and cloned nodes.
+	 */
+	public void fixParentChildRelationShips(GraphElement pElement, Map<Node, Node> pOriginalAndClonedNodes)
+	{
+		if(pElement instanceof ParentNode)
+		{
+			ParentNode curNode = (ParentNode) pElement;
+			if(!curNode.getChildren().isEmpty())
+			{
+				ParentNode cloneNode = (ParentNode)pOriginalAndClonedNodes.get(curNode);
+				List<ParentNode> cloneChildren = cloneNode.getChildren();
+				for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
+				{
+					ParentNode removed = cloneChildren.remove(i);
+					ParentNode replacement = (ParentNode)pOriginalAndClonedNodes.get(removed);
+					cloneChildren.add(i, replacement);
+				}
+			}
+			if(curNode.getParent() != null)
+			{
+				ParentNode cloneNode = (ParentNode)pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
+				ParentNode cloneParent = (ParentNode)pOriginalAndClonedNodes.get(curNode.getParent());
+				cloneNode.setParent(cloneParent);
+			}
+			if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
+			{
+				Node cloneNode = pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
+				Node cloneParent = pOriginalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
+				((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
 			}
 		}
 	}
@@ -175,33 +185,7 @@ public final class Clipboard
 		}
 		for(GraphElement element: aNodes) //loop through and fix the parent/child relationships for all the clone children
 		{
-			if(element instanceof ParentNode)
-			{
-				ParentNode curNode = (ParentNode) element;
-				if(!curNode.getChildren().isEmpty())
-				{
-					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode);
-					List<ParentNode> cloneChildren = cloneNode.getChildren();
-					for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
-					{
-						ParentNode removed = cloneChildren.remove(i);
-						ParentNode replacement = (ParentNode)originalAndClonedNodes.get(removed);
-						cloneChildren.add(i, replacement);
-					}
-				}
-				if(curNode.getParent() != null)
-				{
-					ParentNode cloneNode = (ParentNode)originalAndClonedNodes.get(curNode); //replace parent with its clone
-					ParentNode cloneParent = (ParentNode)originalAndClonedNodes.get(curNode.getParent());
-					cloneNode.setParent(cloneParent);
-				}
-				if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
-				{
-					Node cloneNode = originalAndClonedNodes.get(curNode); //replace parent with its clone
-					Node cloneParent = originalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
-					((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
-				}
-			}
+			fixParentChildRelationShips(element, originalAndClonedNodes);
 		}
 		/*
 		 * Now the edges can be cloned as all the nodes have been cloned successfully at this point.
@@ -225,12 +209,29 @@ public final class Clipboard
 				}
 			}
 		}	
+		return constructNewSelectionList(pGraphPanel, copyNodes, copyEdges, pOriginalPositions, bounds);
+	}
+
+	/**
+	 * A helper method to construct the new SelectionList in the graph.
+	 * 
+	 * @param pGraphPanel the current GraphPanel.
+	 * @param pCopyNodes the list of copied Nodes in the paste operation.
+	 * @param pCopyEdges the list of copied Edges int the paste operation.
+	 * @param pOriginalPositions the parameter specifying if the new elements are translated or not.
+	 * @param pBounds the bounds to translate the elements.
+	 * @return a new SelectionList with the pasted elements.
+	 */
+	public SelectionList constructNewSelectionList(GraphPanel pGraphPanel, ArrayList<Node> pCopyNodes, ArrayList<Edge> pCopyEdges, 
+			boolean pOriginalPositions, Rectangle2D pBounds)
+	{
 		/*
 		 * updatedSelectionList is the selectionList to return.
 		 */
+		Graph aGraph = pGraphPanel.getGraph();
 		SelectionList updatedSelectionList = new SelectionList();
 		pGraphPanel.startCompoundListening();
-		for(Node cloneNode: copyNodes)
+		for(Node cloneNode: pCopyNodes)
 		{
 			double x = cloneNode.getBounds().getX();
 			double y = cloneNode.getBounds().getY();
@@ -240,7 +241,7 @@ public final class Clipboard
 				 * This translates all the new nodes and their respective edges over to the top left corner of the 
 				 * GraphPanel.
 				 */
-				aGraph.add(cloneNode, new Point2D.Double(x-bounds.getX(), y-bounds.getY()));
+				aGraph.add(cloneNode, new Point2D.Double(x-pBounds.getX(), y-pBounds.getY()));
 			}
 			else
 			{
@@ -254,17 +255,25 @@ public final class Clipboard
 				updatedSelectionList.add(cloneNode);
 			}
 		}
-		for(Edge cloneEdge: copyEdges)
+		for(Edge cloneEdge: pCopyEdges)
 		{
-			Point2D startCenter = new Point2D.Double(cloneEdge.getStart().getBounds().getCenterX(), cloneEdge.getStart().getBounds().getCenterY());
-			Point2D endCenter = new Point2D.Double(cloneEdge.getEnd().getBounds().getCenterX(), cloneEdge.getEnd().getBounds().getCenterY());
-			aGraph.connect(cloneEdge, startCenter, endCenter);
+			/*
+			 * If the start and end nodes of a given edge are both CallNodes, then the Graph connection
+			 * is skipped. Otherwise duplicate Call Nodes are produced. This is due to nodes now internally
+			 * storing their origin and terminal edges.
+			 */
+			if(!(cloneEdge.getStart() instanceof CallNode && cloneEdge.getEnd() instanceof CallNode))
+			{
+				Point2D startCenter = new Point2D.Double(cloneEdge.getStart().getBounds().getCenterX(), 
+						cloneEdge.getStart().getBounds().getCenterY());
+				Point2D endCenter = new Point2D.Double(cloneEdge.getEnd().getBounds().getCenterX(), cloneEdge.getEnd().getBounds().getCenterY());
+				aGraph.connect(cloneEdge, startCenter, endCenter);
+			}	
 			updatedSelectionList.add(cloneEdge);
 		}
 		pGraphPanel.endCompoundListening();
 		return updatedSelectionList;
 	}
-
 	/**
 	 * @param pEdge1 The copied or cut edge whose actual type needs to be determined.
 	 * @param pEdge2 The edge from the list of edge types in the pGraph.
