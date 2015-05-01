@@ -70,13 +70,6 @@ public interface Node extends GraphElement
      * @return the bounding rectangle
 	 */
 	Rectangle2D getBounds();
-	
-	
-	/**
-	 * Adds an edge that terminates at this node.
-	 * @param pEdge the edge to add.
-	 */
-	void addEndEdge(Edge pEdge);
 
 	/**
      * Adds an edge that originates at this node.
@@ -101,23 +94,8 @@ public interface Node extends GraphElement
      * Notifies this node that an edge is being removed.
      * @param pGraph the ambient graph
      * @param pEdge the edge to be removed
-     * @return true if the Edge was successfully removed. False otherwise.
 	 */
-	boolean removeEdge(Graph pGraph, Edge pEdge);
-
-	/**
-     * Notifies this node that an origin edge is being removed.
-     * @param pGraph the ambient graph
-     * @param pEdge the origin edge to be removed
-	 */
-	void removeOriginEdge(Graph pGraph, Edge pEdge);
-	
-	/**
-	 * Notifies this node that a terminal edge is being removed.
-	 * @param pGraph the ambient graph
-	 * @param pEdge the terminal edge to remove.
-	 */
-	void removeTerminalEdge(Graph pGraph, Edge pEdge);
+	void removeEdge(Graph pGraph, Edge pEdge);
 
 	/**
      * Notifies this node that a node is being removed.
@@ -133,18 +111,6 @@ public interface Node extends GraphElement
      * @param pGrid the grid to snap to
 	 */
 	void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid);
-	
-	/**
-	 * Gets the origin Edges of this node.
-	 * @return an unmodifiable list of the origin Edges of this Node.
-	 */
-	List<Edge> getOriginEdges();
-	
-	/**
-	 * Gets the origin Edges of this node.
-	 * @return an unmodifiable list of the terminal Edges of this Node.
-	 */
-	List<Edge> getTerminalEdges();
 
 	/**
 	 * @return A clone of the node.

@@ -197,13 +197,12 @@ public class CallNode extends ParentNode
 	}
 
 	@Override
-	public boolean removeEdge(Graph pGraph, Edge pEdge)
+	public void removeEdge(Graph pGraph, Edge pEdge)
 	{
 		if(pEdge.getStart() == this)
 		{
 			removeChild((ParentNode)pEdge.getEnd());
 		}
-		return super.removeEdge(pGraph, pEdge);
 	}
 
 	@Override

@@ -313,10 +313,7 @@ public abstract class Graph
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
-			if(n.removeEdge(this, pEdge))
-			{
-				break;
-			}
+			n.removeEdge(this, pEdge);
 		}
 		aNeedsLayout = true;
 	}
