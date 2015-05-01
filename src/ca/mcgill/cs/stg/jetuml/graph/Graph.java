@@ -92,6 +92,20 @@ public abstract class Graph
 	 */
 	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{}
+
+	private PointNode createPointNodeIfAllowed(Node pNode1, Node pNode2, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			PointNode lReturn = new PointNode();
+			lReturn.translate(pPoint2.getX(), pPoint2.getY());
+			return lReturn;
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 	/**
 	 * Adds an edge to the graph that joins the nodes containing
@@ -104,58 +118,55 @@ public abstract class Graph
 	 */
 	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
-		Node n1 = findNode(pPoint1);
-		Node n2 = findNode(pPoint2);
-		if(n1 != null)
+		Node node1 = findNode(pPoint1);
+		if( node1 == null )
 		{
-			if(!noteEdgeCheck(pEdge, n1, n2))
-			{
-				return false;
-			}
-			
-			if( n1 instanceof NoteNode )
-			{
-				n2 = new PointNode();
-				n2.translate(pPoint2.getX(), pPoint2.getY());
-			}
-
-			pEdge.connect(n1, n2);
-			
-			if (n1 instanceof FieldNode)
-			{
-				aModListener.startCompoundListening();
-				aModListener.trackPropertyChange(this, n1);
-			}
-			
-			if( n1.canAddEdge(pEdge))
-			{
-				addEdge(n1, pEdge, pPoint1, pPoint2);
-			}
-			if (n1 instanceof FieldNode)
-			{
-				aModListener.finishPropertyChange(this,  n1);
-			}
-			if(n1.canAddEdge(pEdge))
-			{
-				aEdges.add(pEdge);
-				aModListener.edgeAdded(this, pEdge);
-				if(!aNodes.contains(pEdge.getEnd()))
-				{
-					aNodes.add(pEdge.getEnd());
-				}
-				aNeedsLayout = true;
-				if (n1 instanceof FieldNode)
-				{
-					aModListener.endCompoundListening();
-				}
-				return true;
-			}
-			else if (n1 instanceof FieldNode)
-			{
-				aModListener.endCompoundListening();
-			}
+			return false;
 		}
-		return false;
+		
+		Node node2 = findNode(pPoint2);
+		if( node2 == null )
+		{
+			node2 = createPointNodeIfAllowed(node1, node2, pEdge, pPoint1, pPoint2);
+		}
+		
+		if(!canConnect(pEdge, node1, node2))
+		{
+			return false;
+		}
+
+		pEdge.connect(node1, node2);
+			
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.startCompoundListening();
+			aModListener.trackPropertyChange(this, node1);
+		}
+			
+		addEdge(node1, pEdge, pPoint1, pPoint2);
+		
+		if( node1 instanceof FieldNode)
+		{
+			aModListener.finishPropertyChange(this,  node1);
+		}
+		
+		aEdges.add(pEdge);
+		aModListener.edgeAdded(this, pEdge);
+		if(!aNodes.contains(pEdge.getEnd()))
+		{
+			aNodes.add(pEdge.getEnd());
+		}
+		aNeedsLayout = true;
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.endCompoundListening();
+		}
+		
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.endCompoundListening();
+		}
+		return true;
 	}
 
 	/**
@@ -504,19 +515,22 @@ public abstract class Graph
 	}
 
 	/**
-	 * Checks whether edges related to note nodes are acceptable.
+	 * Checks whether it is legal to connect pNode1 to pNode2 through
+	 * pEdge based strictly on the type of nodes and edges. 
+	 * This implementation only provides the logic valid across
+	 * all diagram types. Override for diagram-specific rules.
 	 * @param pEdge The edge to be added
 	 * @param pNode1 The first node
 	 * @param pNode2 The second node
-	 * @return True if the edge is acceptable
+	 * @return True if the edge can legally connect node1 to node2
 	 */
-	public boolean noteEdgeCheck(Edge pEdge, Node pNode1, Node pNode2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
 	{
-		if(pNode1 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		if( pNode2 == null )
 		{
 			return false;
 		}
-		if(pNode2!=null && pNode2 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		if(pNode2 instanceof NoteNode && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}

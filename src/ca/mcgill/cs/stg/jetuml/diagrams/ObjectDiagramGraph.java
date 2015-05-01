@@ -69,6 +69,25 @@ public class ObjectDiagramGraph extends HierarchicalGraph
 	}
 	
 	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		{
+			return false;
+		}
+		if( pNode1 instanceof ObjectNode )
+		{
+			return (pEdge instanceof ClassRelationshipEdge && pNode2 instanceof ObjectNode) ||
+					(pEdge instanceof NoteEdge && pNode2 instanceof NoteNode);
+		}
+		if( pNode1 instanceof FieldNode )
+		{
+			return pEdge instanceof ObjectReferenceEdge && pNode2 instanceof ObjectNode;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		

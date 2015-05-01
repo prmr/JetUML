@@ -71,12 +71,6 @@ public interface Node extends GraphElement
 	Rectangle2D getBounds();
 
 	/**
-	 * @param pEdge The edge to test.
-	 * @return True if pEdge can be added to this node.
-	 */
-	boolean canAddEdge(Edge pEdge);
-
-	/**
      * Adds a node as a child node to this node.
      * @param pNode the child node
      * @param pPoint the point at which the node is being added

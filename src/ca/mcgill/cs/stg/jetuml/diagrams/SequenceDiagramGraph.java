@@ -34,13 +34,13 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 
 /**
  * A UML sequence diagram.
@@ -74,6 +74,32 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 		}
 
 		if(!super.add(pNode, pPoint)) 
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		{
+			return false;
+		}
+		if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
+		{
+			return pNode2 == ((CallNode)pNode1).getParent();
+		}
+		if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
+		{
+			return false;
+		}
+		if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
+		{
+			return false;
+		}
+		if(pNode1 instanceof ImplicitParameterNode )
 		{
 			return false;
 		}

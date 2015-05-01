@@ -27,8 +27,6 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
@@ -69,12 +67,6 @@ public abstract class AbstractNode implements Node
 	{
 	}
 
-	@Override
-	public boolean canAddEdge(Edge pEdge)
-	{
-		return pEdge.getEnd() != null;
-	}
-	
 	@Override
 	public void removeEdge(Graph pGraph, Edge pEdge)
 	{

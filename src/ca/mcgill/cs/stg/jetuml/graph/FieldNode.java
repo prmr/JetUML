@@ -96,12 +96,6 @@ public class FieldNode extends HierarchicalNode
 	}
 	
 	@Override
-	public boolean canAddEdge(Edge pEdge)
-	{
-		return pEdge instanceof ObjectReferenceEdge && pEdge.getEnd() instanceof ObjectNode;
-	}
-
-	@Override
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		return pNode instanceof PointNode;

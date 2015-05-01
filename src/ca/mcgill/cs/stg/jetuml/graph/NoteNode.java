@@ -56,12 +56,6 @@ public class NoteNode extends RectangularNode
 	}
 
 	@Override
-	public boolean canAddEdge(Edge pEdge) 
-	{
-		return true;
-	};
-
-	@Override
 	public void removeEdge(Graph pGraph, Edge pEdge)
 	{
 		if(pEdge.getStart() == this)

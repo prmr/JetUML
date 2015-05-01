@@ -126,28 +126,6 @@ public class CallNode extends HierarchicalNode
 		}
 	}
 	
-	@Override
-	public boolean canAddEdge(Edge pEdge)
-	{
-		if(!super.canAddEdge(pEdge))
-		{
-			return false;
-		}
-		if(pEdge instanceof ReturnEdge)
-		{
-			return pEdge.getEnd() == getParent();
-		}
-		if(!(pEdge instanceof CallEdge))
-		{
-			return false;
-		}
-		if( !(pEdge.getEnd() instanceof CallNode) && !(pEdge.getEnd() instanceof ImplicitParameterNode ))
-		{
-			return false;
-		}
-		return true;
-	}
-
 	/**
 	 * Add pChild to the right place in the list of callees, given it's coordinate.
 	 * @param pChild The node to add
