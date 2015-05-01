@@ -32,12 +32,12 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
 
 /**
  *   A UML class diagram.
  */
-public class ClassDiagramGraph extends ParentGraph
+public class ClassDiagramGraph extends HierarchicalGraph
 {
 	//CSOFF:
 	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()};

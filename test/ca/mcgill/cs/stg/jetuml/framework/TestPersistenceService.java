@@ -32,7 +32,7 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateNode;
@@ -293,7 +293,7 @@ public class TestPersistenceService
 		InterfaceNode i1 = (InterfaceNode) nIterator.next();
 		ClassNode c2 = (ClassNode) nIterator.next();
 		
-		List<ParentNode> children = p1.getChildren();
+		List<HierarchicalNode> children = p1.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(c1));
 		assertEquals(p1, c1.getParent());
@@ -361,7 +361,7 @@ public class TestPersistenceService
 		assertEquals("A note", node5.getText().getText());
 		assertEquals(new Rectangle2D.Double(770, 310, 60, 40), node5.getBounds());
 		
-		List<ParentNode> children = node6.getChildren();
+		List<HierarchicalNode> children = node6.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node7));
 		assertEquals("", node6.getContents().getText());
@@ -482,7 +482,7 @@ public class TestPersistenceService
 		assertNull(node1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(252, 73, 16, 30), node2.getBounds());
-		List<ParentNode> children = node2.getChildren();
+		List<HierarchicalNode> children = node2.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node3));
 		assertEquals(node1, node2.getImplicitParameter());
@@ -700,7 +700,7 @@ public class TestPersistenceService
 		assertNull(type1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(370, 170, 160, 140), blank.getBounds());
-		List<ParentNode> children = blank.getChildren();
+		List<HierarchicalNode> children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertTrue(children.contains(name2));
 		assertTrue(children.contains(name3));

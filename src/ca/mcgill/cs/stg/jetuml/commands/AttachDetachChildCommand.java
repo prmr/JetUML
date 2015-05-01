@@ -5,7 +5,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 
 /**
  * Stores the attachment between a child and parent node.
@@ -14,8 +14,8 @@ import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
  */
 public class AttachDetachChildCommand implements Command
 {
-	private ParentNode aParent;
-	private ParentNode aChild;
+	private HierarchicalNode aParent;
+	private HierarchicalNode aChild;
 	private Graph aGraph;
 	private boolean aAdding; //true for adding, false for deleting
 	private int aIndex;
@@ -28,7 +28,7 @@ public class AttachDetachChildCommand implements Command
 	 * @param pChild The child node
 	 * @param pAdding True when adding, false when removing
 	 */
-	public AttachDetachChildCommand(Graph pGraph, int pIndex, ParentNode pParent, ParentNode pChild, boolean pAdding)
+	public AttachDetachChildCommand(Graph pGraph, int pIndex, HierarchicalNode pParent, HierarchicalNode pChild, boolean pAdding)
 	{
 		aIndex = pIndex;
 		aGraph = pGraph;

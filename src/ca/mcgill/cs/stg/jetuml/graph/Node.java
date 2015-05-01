@@ -25,7 +25,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;

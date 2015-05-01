@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-public class CallNode extends ParentNode
+public class CallNode extends HierarchicalNode
 {
 	public static final int CALL_YGAP = 20;
 	
@@ -51,14 +51,14 @@ public class CallNode extends ParentNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 	
-	private ArrayList<ParentNode> aCalls;
+	private ArrayList<HierarchicalNode> aCalls;
 	
    /**
     *  Construct a call node with a default size.
     */
 	public CallNode()
 	{
-		aCalls = new ArrayList<ParentNode>();
+		aCalls = new ArrayList<HierarchicalNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -149,7 +149,7 @@ public class CallNode extends ParentNode
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			ParentNode parent = this; 
+			HierarchicalNode parent = this; 
 			while(parent != null && end != parent)
 			{
 				parent = parent.getParent();
@@ -192,7 +192,7 @@ public class CallNode extends ParentNode
 		{
 			i++;
 		}
-		addChild(i, (ParentNode)n);
+		addChild(i, (HierarchicalNode)n);
 		return true;
 	}
 
@@ -201,7 +201,7 @@ public class CallNode extends ParentNode
 	{
 		if(pEdge.getStart() == this)
 		{
-			removeChild((ParentNode)pEdge.getEnd());
+			removeChild((HierarchicalNode)pEdge.getEnd());
 		}
 	}
 
@@ -296,13 +296,13 @@ public class CallNode extends ParentNode
 	}
 
 	@Override
-	public void addChild(int pIndex, ParentNode pNode) 
+	public void addChild(int pIndex, HierarchicalNode pNode) 
 	{
 		if (pNode == null || pIndex < 0) //base cases to not deal with
 		{
 			return;
 		}
-		ParentNode oldParent = pNode.getParent();
+		HierarchicalNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -312,7 +312,7 @@ public class CallNode extends ParentNode
 	}
 	
 	@Override
-	public void removeChild(ParentNode pNode)
+	public void removeChild(HierarchicalNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -327,13 +327,13 @@ public class CallNode extends ParentNode
 	 * @param pNode The node to add.
 	 */
 	@Override
-	public void addChild(ParentNode pNode)
+	public void addChild(HierarchicalNode pNode)
 	{
 		addChild(aCalls.size(), pNode);
 	}
 	
 	@Override
-	public List<ParentNode> getChildren()
+	public List<HierarchicalNode> getChildren()
 	{
 		return aCalls;
 	}
@@ -376,7 +376,7 @@ public class CallNode extends ParentNode
 	public CallNode clone()
 	{
 		CallNode cloned = (CallNode) super.clone();
-		cloned.aCalls = (ArrayList<ParentNode>) aCalls.clone();
+		cloned.aCalls = (ArrayList<HierarchicalNode>) aCalls.clone();
 		return cloned;
 	}
 }

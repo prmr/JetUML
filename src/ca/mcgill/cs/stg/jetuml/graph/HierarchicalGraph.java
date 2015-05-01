@@ -26,9 +26,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- *  A graph consisting of selectable nodes and edges.
+ * Graphs that supports hierarchical parent-child relations
+ * between its nodes.
  */
-public abstract class ParentGraph extends Graph
+public abstract class HierarchicalGraph extends Graph
 {
 
 	/**
@@ -58,10 +59,10 @@ public abstract class ParentGraph extends Graph
 			}
 			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
 			{
-				if(pNode instanceof ParentNode && parent instanceof ParentNode)
+				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
 				{
-					ParentNode curNode = (ParentNode) pNode;
-					ParentNode parentParent = (ParentNode) parent;
+					HierarchicalNode curNode = (HierarchicalNode) pNode;
+					HierarchicalNode parentParent = (HierarchicalNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
 				accepted = true;
@@ -88,10 +89,10 @@ public abstract class ParentGraph extends Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			if(n2 instanceof ParentNode && pNode instanceof ParentNode)
+			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
 			{
-				ParentNode curNode = (ParentNode) n2;
-				ParentNode parentParent = (ParentNode) pNode;
+				HierarchicalNode curNode = (HierarchicalNode) n2;
+				HierarchicalNode parentParent = (HierarchicalNode) pNode;
 				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
 				{
 					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
@@ -99,9 +100,9 @@ public abstract class ParentGraph extends Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentNode)
+		if(pNode instanceof HierarchicalNode)
 		{
-			ArrayList<ParentNode> children = new ArrayList<ParentNode>(((ParentNode) pNode).getChildren());
+			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

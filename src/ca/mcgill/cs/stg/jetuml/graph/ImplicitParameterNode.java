@@ -37,7 +37,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * An object node in a scenario diagram.
  */
-public class ImplicitParameterNode extends ParentNode
+public class ImplicitParameterNode extends HierarchicalNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
