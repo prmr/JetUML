@@ -346,7 +346,20 @@ public abstract class Graph
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
-			n.removeEdge(this, pEdge);
+			if( n instanceof NoteEdge )
+			{
+				if(pEdge.getStart() == n)
+				{
+					removeNode(pEdge.getEnd());
+				}
+			}
+			else if( n instanceof CallNode )
+			{
+				if(pEdge.getStart() == n)
+				{
+					((CallNode)n).removeChild((HierarchicalNode)pEdge.getEnd());
+				}
+			}
 		}
 		aNeedsLayout = true;
 	}

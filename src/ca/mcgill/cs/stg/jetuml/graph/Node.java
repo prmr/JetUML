@@ -79,13 +79,6 @@ public interface Node extends GraphElement
 	boolean addNode(Node pNode, Point2D pPoint);
 	
 	/**
-     * Notifies this node that an edge is being removed.
-     * @param pGraph the ambient graph
-     * @param pEdge the edge to be removed
-	 */
-	void removeEdge(Graph pGraph, Edge pEdge);
-
-	/**
      * Notifies this node that a node is being removed.
      * @param pGraph the ambient graph
      * @param pNode the node to be removed

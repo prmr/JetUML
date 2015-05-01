@@ -68,12 +68,6 @@ public abstract class AbstractNode implements Node
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
-	{
-
-	}
-
-	@Override
 	public void removeNode(Graph pGraph, Node pNode)
 	{
 	}

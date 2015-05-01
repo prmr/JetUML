@@ -56,15 +56,6 @@ public class NoteNode extends RectangularNode
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
-	{
-		if(pEdge.getStart() == this)
-		{
-			pGraph.removeNode(pEdge.getEnd());
-		}
-	}
-
-	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		Rectangle2D b = aText.getBounds(pGraphics2D); // getMultiLineBounds(name, g2);

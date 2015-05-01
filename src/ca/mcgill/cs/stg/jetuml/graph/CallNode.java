@@ -142,15 +142,6 @@ public class CallNode extends HierarchicalNode
 	}
 
 	@Override
-	public void removeEdge(Graph pGraph, Edge pEdge)
-	{
-		if(pEdge.getStart() == this)
-		{
-			removeChild((HierarchicalNode)pEdge.getEnd());
-		}
-	}
-
-	@Override
 	public void removeNode(Graph pGraph, Node pNode)
 	{
       if(pNode == getParent() || pNode == aImplicitParameter)
