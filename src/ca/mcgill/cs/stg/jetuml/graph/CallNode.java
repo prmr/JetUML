@@ -125,75 +125,42 @@ public class CallNode extends HierarchicalNode
 			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
 		}
 	}
-
+	
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public boolean canAddEdge(Edge pEdge)
 	{
-		Node end = pEdge.getEnd();
-		if(end == null)
+		if(!super.canAddEdge(pEdge))
 		{
 			return false;
 		}
-
 		if(pEdge instanceof ReturnEdge)
 		{
-			return end == getParent();
+			return pEdge.getEnd() == getParent();
 		}
-         
 		if(!(pEdge instanceof CallEdge))
 		{
 			return false;
 		}
-      
-		Node n = null;
-		if(end instanceof CallNode) 
-		{
-			// check for cycles
-			HierarchicalNode parent = this; 
-			while(parent != null && end != parent)
-			{
-				parent = parent.getParent();
-			}
-         
-			if(((CallNode)end).getParent() == null && end != parent)
-			{
-				n = end;
-			}
-			else
-			{
-				CallNode c = new CallNode();
-				c.aImplicitParameter = ((CallNode)end).aImplicitParameter;
-				pEdge.connect(this, c);
-				n = c;
-			}
-		}
-		else if(end instanceof ImplicitParameterNode)
-		{
-			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
-			{
-				n = end;
-				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
-			}
-			else
-			{
-				CallNode c = new CallNode();
-				c.aImplicitParameter = (ImplicitParameterNode)end;
-				pEdge.connect(this, c);
-				n = c;
-			}
-		}
-		else
+		if( !(pEdge.getEnd() instanceof CallNode) && !(pEdge.getEnd() instanceof ImplicitParameterNode ))
 		{
 			return false;
 		}
+		return true;
+	}
 
+	/**
+	 * Add pChild to the right place in the list of callees, given it's coordinate.
+	 * @param pChild The node to add
+	 * @param pPoint The point to compare against.
+	 */
+	public void addChild(HierarchicalNode pChild, Point2D pPoint)
+	{
 		int i = 0;
-		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint1.getY())
+		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
 		{
 			i++;
 		}
-		addChild(i, (HierarchicalNode)n);
-		return true;
+		addChild(i, pChild);
 	}
 
 	@Override

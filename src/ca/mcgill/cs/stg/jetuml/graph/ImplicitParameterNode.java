@@ -94,12 +94,12 @@ public class ImplicitParameterNode extends HierarchicalNode
 	public Shape getShape()
 	{ return getTopRectangle(); }
    
-	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	@Override 
+	public boolean canAddEdge(Edge pEdge)
 	{
 		return false;
 	}
-
+	
 	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{

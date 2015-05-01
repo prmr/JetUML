@@ -69,9 +69,8 @@ public abstract class AbstractNode implements Node
 	{
 	}
 
-
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public boolean canAddEdge(Edge pEdge)
 	{
 		return pEdge.getEnd() != null;
 	}

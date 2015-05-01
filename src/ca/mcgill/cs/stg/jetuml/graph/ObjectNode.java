@@ -87,11 +87,11 @@ public class ObjectNode extends HierarchicalNode
 	}
 
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public boolean canAddEdge(Edge pEdge)
 	{
 		return pEdge instanceof ClassRelationshipEdge && pEdge.getEnd() != null;
 	}
-
+	
 	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{

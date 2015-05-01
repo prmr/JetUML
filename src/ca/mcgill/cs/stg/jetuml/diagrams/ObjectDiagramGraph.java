@@ -100,6 +100,15 @@ public class ObjectDiagramGraph extends HierarchicalGraph
 	}
 	
 	@Override
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if( pOrigin instanceof FieldNode )
+		{
+			((FieldNode)pOrigin).getValue().setText("");
+		}
+	}
+	
+	@Override
 	public Node[] getNodePrototypes()
 	{
 		return NODE_PROTOTYPES;

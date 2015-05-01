@@ -80,7 +80,19 @@ public abstract class Graph
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
 	public abstract String getDescription();
-
+	
+	/**
+	 * If certain types of diagrams require additional behavior
+	 * following the addition of an edge to a graph, they can
+	 * override this method to perform that behavior.
+	 * @param pOrigin The origin node 
+	 * @param pEdge The edge to add
+	 * @param pPoint1 a point in the starting node
+	 * @param pPoint2 a point in the end node.
+	 */
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{}
+	
 	/**
 	 * Adds an edge to the graph that joins the nodes containing
 	 * the given points. If the points aren't both inside nodes,
@@ -100,20 +112,30 @@ public abstract class Graph
 			{
 				return false;
 			}
+			
+			if( n1 instanceof NoteNode )
+			{
+				n2 = new PointNode();
+				n2.translate(pPoint2.getX(), pPoint2.getY());
+			}
 
 			pEdge.connect(n1, n2);
-			boolean edgeAdded;
+			
 			if (n1 instanceof FieldNode)
 			{
 				aModListener.startCompoundListening();
 				aModListener.trackPropertyChange(this, n1);
 			}
-			edgeAdded = n1.addEdge(pEdge, pPoint1, pPoint2);
+			
+			if( n1.canAddEdge(pEdge))
+			{
+				addEdge(n1, pEdge, pPoint1, pPoint2);
+			}
 			if (n1 instanceof FieldNode)
 			{
 				aModListener.finishPropertyChange(this,  n1);
 			}
-			if(edgeAdded && pEdge.getEnd() != null)
+			if(n1.canAddEdge(pEdge))
 			{
 				aEdges.add(pEdge);
 				aModListener.edgeAdded(this, pEdge);

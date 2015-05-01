@@ -94,16 +94,11 @@ public class FieldNode extends HierarchicalNode
 			pGraphics2D.draw(aValueBounds);
 		}
 	}
-
+	
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public boolean canAddEdge(Edge pEdge)
 	{
-		if (pEdge instanceof ObjectReferenceEdge && pEdge.getEnd() instanceof ObjectNode)
-		{
-			aValue.setText("");
-			return true;
-		}
-		return false;
+		return pEdge instanceof ObjectReferenceEdge && pEdge.getEnd() instanceof ObjectNode;
 	}
 
 	@Override

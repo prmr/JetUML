@@ -71,15 +71,10 @@ public interface Node extends GraphElement
 	Rectangle2D getBounds();
 
 	/**
-     * Adds an edge that originates at this node.
-     * @param pPoint1 the point that the user selected as
-     * the starting point. This may be used as a hint if 
-     * edges are ordered.
-     * @param pPoint2 the end point.
-     * @param pEdge the edge to add
-     * @return true if the edge was added
+	 * @param pEdge The edge to test.
+	 * @return True if pEdge can be added to this node.
 	 */
-	boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2);
+	boolean canAddEdge(Edge pEdge);
 
 	/**
      * Adds a node as a child node to this node.

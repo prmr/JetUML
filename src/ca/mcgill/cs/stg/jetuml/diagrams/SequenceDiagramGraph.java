@@ -79,6 +79,55 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 		}
 		return true;
 	}
+	
+	@Override
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if( !(pOrigin instanceof CallNode) )
+		{
+			return;
+		}
+		Node end = pEdge.getEnd();
+		Node n = null;
+		if(end instanceof CallNode) 
+		{
+			// check for cycles
+			HierarchicalNode parent = (CallNode)pOrigin; 
+			while(parent != null && end != parent)
+			{
+				parent = parent.getParent();
+			}
+         
+			if(((CallNode)end).getParent() == null && end != parent)
+			{
+				n = end;
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.setImplicitParameter(((CallNode)end).getImplicitParameter());
+				pEdge.connect(pOrigin, c);
+				n = c;
+			}
+		}
+		else if(end instanceof ImplicitParameterNode)
+		{
+			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
+			{
+				n = end;
+				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.setImplicitParameter((ImplicitParameterNode) end);
+				pEdge.connect(pOrigin, c);
+				n = c;
+			}
+		}
+		
+		((CallNode)pOrigin).addChild((HierarchicalNode)n, pPoint1);
+	}
 
 	@Override
 	public void removeEdge(Edge pEdge)

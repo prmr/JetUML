@@ -44,7 +44,6 @@ public class NoteNode extends RectangularNode
 	private static final int FOLD_Y = 8;
 	
 	private MultiLineString aText;
-//	private Color aColor;
 
    /**
     *  Construct a note node with a default size and color.
@@ -54,17 +53,13 @@ public class NoteNode extends RectangularNode
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aText = new MultiLineString();
 		aText.setJustification(MultiLineString.LEFT);
-//		aColor = DEFAULT_COLOR;
 	}
 
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public boolean canAddEdge(Edge pEdge) 
 	{
-		PointNode end = new PointNode();
-		end.translate(pPoint2.getX(), pPoint2.getY());
-		pEdge.connect(this, end);
-		return super.addEdge(pEdge, pPoint1, pPoint2);
-	}
+		return true;
+	};
 
 	@Override
 	public void removeEdge(Graph pGraph, Edge pEdge)
