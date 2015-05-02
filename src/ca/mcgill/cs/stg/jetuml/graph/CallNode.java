@@ -274,12 +274,6 @@ public class CallNode extends HierarchicalNode
 		return aCalls;
 	}
 	
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof PointNode;
-	}
-
 	/**
      * Sets the signaled property.
      * @param pNewValue true if this node is the target of a signal edge

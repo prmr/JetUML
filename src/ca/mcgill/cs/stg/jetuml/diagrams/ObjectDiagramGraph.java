@@ -25,18 +25,24 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  *   An UML-style object diagram that shows object references.
@@ -149,6 +155,46 @@ public class ObjectDiagramGraph extends HierarchicalGraph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("object.name");
+	}
+	
+	@Override
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof FieldNode )
+		{
+			return pPotentialChild instanceof PointNode;
+		}
+		else if( pParent instanceof ObjectNode )
+		{
+			if(pPotentialChild instanceof PointNode)
+			{
+				return true;
+			}
+			if(!(pPotentialChild instanceof FieldNode))
+			{
+				return false;
+			}
+			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			FieldNode fNode = (FieldNode) pPotentialChild;
+			return !fields.contains(fNode);
+		}
+		return false;
+	}
+	
+	@Override
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{
+		if( pParent instanceof ObjectNode )
+		{
+			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			FieldNode fNode = (FieldNode) pChild;
+			int i = 0;
+			while(i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
+			{
+				i++;
+			}
+			((ObjectNode)pParent).addChild(i, fNode);
+		}
 	}
 }
 

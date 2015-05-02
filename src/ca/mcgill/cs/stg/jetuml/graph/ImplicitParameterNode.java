@@ -143,10 +143,4 @@ public class ImplicitParameterNode extends HierarchicalNode
 		cloned.aName = (MultiLineString) aName.clone();
 		return cloned;
 	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof CallNode || pNode instanceof PointNode;
-	}
 }

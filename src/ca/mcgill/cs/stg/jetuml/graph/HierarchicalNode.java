@@ -1,6 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -44,12 +43,6 @@ public abstract class HierarchicalNode extends RectangularNode
 		{
 			aChildren.remove(pNode);
 		}
-	}
-	
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return false;
 	}
 
 	/**

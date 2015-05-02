@@ -71,14 +71,6 @@ public interface Node extends GraphElement
 	Rectangle2D getBounds();
 
 	/**
-     * Adds a node as a child node to this node.
-     * @param pNode the child node
-     * @param pPoint the point at which the node is being added
-     * @return true if this node accepts the given node as a child
-	 */
-	boolean addNode(Node pNode, Point2D pPoint);
-	
-	/**
      * Notifies this node that a node is being removed.
      * @param pGraph the ambient graph
      * @param pNode the node to be removed

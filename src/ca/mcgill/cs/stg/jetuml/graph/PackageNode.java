@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -184,19 +183,4 @@ public class PackageNode extends HierarchicalNode
 		cloned.aContents = (MultiLineString)aContents.clone();
 		return cloned;
 	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		if(pNode instanceof ClassNode || pNode instanceof InterfaceNode || pNode instanceof PackageNode)
-		{
-			HierarchicalNode child = (HierarchicalNode) pNode;
-			addChild(child);
-			return true;
-		}
-		else
-		{
-			return pNode instanceof NoteNode;
-		}
-   }
 }

@@ -167,32 +167,6 @@ public class ObjectNode extends HierarchicalNode
 		return cloned;
 	}
 
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		List<HierarchicalNode> fields = getChildren();
-		if(pNode instanceof PointNode)
-		{
-			return true;
-		}
-		if(!(pNode instanceof FieldNode))
-		{
-			return false;
-		}
-		FieldNode fNode = (FieldNode) pNode;
-		if(fields.contains(fNode))
-		{
-			return true;
-		}
-		int i = 0;
-		while (i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
-		{
-			i++;
-		}
-		addChild(i, fNode);
-		return true;
-	}
-   
 	/*
      *  This is a patch to ensure that object diagrams can
      * be read back in correctly. 

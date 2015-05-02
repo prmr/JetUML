@@ -40,6 +40,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 
 /**
@@ -78,6 +79,20 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof CallNode )
+		{
+			return pPotentialChild instanceof PointNode;
+		}
+		else if( pParent instanceof ImplicitParameterNode )
+		{
+			return pPotentialChild instanceof CallNode || pPotentialChild instanceof PointNode;
+		}
+		return false;
 	}
 	
 	@Override

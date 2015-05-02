@@ -22,17 +22,22 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.awt.geom.Point2D;
 import java.util.ResourceBundle;
 
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  *   A UML class diagram.
@@ -83,6 +88,30 @@ public class ClassDiagramGraph extends HierarchicalGraph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("class.name");
+	}
+	
+	@Override
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof ClassNode || pParent instanceof InterfaceNode )
+		{
+			return pPotentialChild instanceof PointNode;
+		}
+		else if( pParent instanceof PackageNode )
+		{
+			return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
+					pPotentialChild instanceof PackageNode || pPotentialChild instanceof NoteNode;
+		}
+		return false;
+	}
+	
+	@Override
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{
+		if( pParent instanceof PackageNode )
+		{
+			((PackageNode)pParent).addChild((HierarchicalNode)pChild);
+		}
 	}
 }
 

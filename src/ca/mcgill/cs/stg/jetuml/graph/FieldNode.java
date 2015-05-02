@@ -96,12 +96,6 @@ public class FieldNode extends HierarchicalNode
 	}
 	
 	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof PointNode;
-	}
-
-	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{
 		Rectangle2D b = getBounds();

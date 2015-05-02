@@ -57,8 +57,9 @@ public abstract class HierarchicalGraph extends Graph
 			{
 				continue;
 			}
-			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
+			if (parent.contains(pPoint) && canAddNode(parent, pNode))
 			{
+				addNode(parent, pNode, pPoint);
 				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
 				{
 					HierarchicalNode curNode = (HierarchicalNode) pNode;
@@ -71,6 +72,26 @@ public abstract class HierarchicalGraph extends Graph
 		aModListener.endCompoundListening();
 		return true;
 	}
+	
+	/**
+	 * Determines if it's legal to add pPotentialChild as a child of pParent.
+	 * @param pParent The potential parent.
+	 * @param pPotentialChild The potential child node.
+	 * @return True if it's legal to add pPotentialChild to pParent.
+	 */
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		return false;
+	}
+	
+	/**
+	 * Diagram-specific behavior taking place before the addition of a node.
+	 * @param pParent The parent node.
+	 * @param pChild The child about the be added to the parent. 
+	 * @param pPoint The point of the node to add the child.
+	 */
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{}
 
 
 	/**

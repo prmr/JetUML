@@ -24,7 +24,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 
@@ -75,12 +74,6 @@ public abstract class AbstractNode implements Node
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return false;
-	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
