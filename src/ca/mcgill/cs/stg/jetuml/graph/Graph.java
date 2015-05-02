@@ -125,7 +125,7 @@ public abstract class Graph
 		}
 		
 		Node node2 = findNode(pPoint2);
-		if( node2 == null )
+		if( node1 instanceof NoteNode )
 		{
 			node2 = createPointNodeIfAllowed(node1, node2, pEdge, pPoint1, pPoint2);
 		}
@@ -543,7 +543,7 @@ public abstract class Graph
 		{
 			return false;
 		}
-		if(pNode2 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
