@@ -128,6 +128,10 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 		{
 			return;
 		}
+		if( pEdge instanceof ReturnEdge )
+		{
+			return;
+		}
 		Node end = pEdge.getEnd();
 		Node n = null;
 		if(end instanceof CallNode) 
