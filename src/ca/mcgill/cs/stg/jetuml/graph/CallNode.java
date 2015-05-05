@@ -141,15 +141,6 @@ public class CallNode extends HierarchicalNode
 		addChild(i, pChild);
 	}
 
-	@Override
-	public void removeNode(Graph pGraph, Node pNode)
-	{
-      if(pNode == getParent() || pNode == aImplicitParameter)
-      {
-    	  pGraph.removeNode(this);
-      }
-	}
-   
 	private static Edge findEdge(Graph pGraph, Node pStart, Node pEnd)
 	{
 		Collection<Edge> edges = pGraph.getEdges();

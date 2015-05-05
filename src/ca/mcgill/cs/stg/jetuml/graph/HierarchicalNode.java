@@ -32,19 +32,6 @@ public abstract class HierarchicalNode extends RectangularNode
 		return cloned;
 	}
 
-	@Override
-	public void removeNode(Graph pGraph, Node pNode)
-	{
-		if(pNode == aParent)
-		{
-			aParent = null;
-		}
-		if(pNode instanceof HierarchicalNode && ((HierarchicalNode)pNode).getParent() == this)
-		{
-			aChildren.remove(pNode);
-		}
-	}
-
 	/**
      * Gets the parent of this node.
      * @return the parent node, or null if the node has no parent

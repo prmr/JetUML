@@ -281,7 +281,8 @@ public abstract class Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			n2.removeNode(this, pNode);
+			processNodeRemoval(n2, pNode);
+//			n2.  n2.removeNode(this, pNode);
 		}
 		for(int i = 0; i < aEdges.size(); i++)
 		{
@@ -295,6 +296,35 @@ public abstract class Graph
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
 		return true;
+	}
+	
+	/**
+	 * Specialized node removal behavior.
+	 * @param pParent The node to remove a child node from.
+	 * @param pChild The node to remove from the parent.
+	 */
+	protected void processNodeRemoval(Node pParent, Node pChild)
+	{
+		if( pParent instanceof HierarchicalNode )
+		{
+			HierarchicalNode parent = (HierarchicalNode) pParent;
+			if( pChild == parent.getParent() )
+			{
+				parent.setParent(null);
+			}
+			if( pChild instanceof HierarchicalNode && ((HierarchicalNode)pChild).getParent() == parent)
+			{
+				parent.getChildren().remove(pChild);
+			}
+		}
+		else if( pParent instanceof CallNode )
+		{
+			CallNode parent = (CallNode) pParent;
+			if( pChild == parent.getParent() || pChild == parent.getImplicitParameter())
+			{
+				removeNode(parent);
+			}
+		}
 	}
 
 	/**

@@ -65,11 +65,6 @@ public abstract class AbstractNode implements Node
 	public void translate(double pDeltaX, double pDeltaY)
 	{
 	}
-
-	@Override
-	public void removeNode(Graph pGraph, Node pNode)
-	{
-	}
 	
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)

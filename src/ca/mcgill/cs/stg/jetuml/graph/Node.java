@@ -71,13 +71,6 @@ public interface Node extends GraphElement
 	Rectangle2D getBounds();
 
 	/**
-     * Notifies this node that a node is being removed.
-     * @param pGraph the ambient graph
-     * @param pNode the node to be removed
-	 */
-	void removeNode(Graph pGraph, Node pNode);
-
-	/**
      * Lays out the node and its children.
      * @param pGraph the ambient graph
      * @param pGraphics2D the graphics context

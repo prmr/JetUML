@@ -29,19 +29,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
 import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
-import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
-import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**

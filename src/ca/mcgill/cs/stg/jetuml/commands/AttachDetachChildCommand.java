@@ -1,11 +1,10 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 
 /**
  * Stores the attachment between a child and parent node.
