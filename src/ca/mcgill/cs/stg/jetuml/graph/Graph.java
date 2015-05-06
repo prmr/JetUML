@@ -277,19 +277,19 @@ public abstract class Graph
 		}
 		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
-		// notify nodes of removals
-		for(int i = 0; i < aNodes.size(); i++)
+
+		// Notify all nodes that pNode is being removed.
+		for(Node node : aNodes)
 		{
-			Node n2 = aNodes.get(i);
-			processNodeRemoval(n2, pNode);
-//			n2.  n2.removeNode(this, pNode);
+			processNodeRemoval(node, pNode);
 		}
-		for(int i = 0; i < aEdges.size(); i++)
+		
+		// Notify all edges that pNode is being removed.
+		for(Edge edge : aEdges)
 		{
-			Edge e = aEdges.get(i);
-			if(e.getStart() == pNode || e.getEnd() == pNode)
+			if(edge.getStart() == pNode || edge.getEnd() == pNode)
 			{
-				removeEdge(e);
+				removeEdge(edge);
 			}
 		}
 		aModListener.nodeRemoved(this, pNode);
@@ -305,7 +305,15 @@ public abstract class Graph
 	 */
 	protected void processNodeRemoval(Node pParent, Node pChild)
 	{
-		if( pParent instanceof HierarchicalNode )
+		if( pParent instanceof CallNode )
+		{
+			CallNode parent = (CallNode) pParent;
+			if( pChild == parent.getParent() || pChild == parent.getImplicitParameter())
+			{
+				removeNode(parent);
+			}
+		}
+		else if( pParent instanceof HierarchicalNode )
 		{
 			HierarchicalNode parent = (HierarchicalNode) pParent;
 			if( pChild == parent.getParent() )
@@ -316,15 +324,7 @@ public abstract class Graph
 			{
 				parent.getChildren().remove(pChild);
 			}
-		}
-		else if( pParent instanceof CallNode )
-		{
-			CallNode parent = (CallNode) pParent;
-			if( pChild == parent.getParent() || pChild == parent.getImplicitParameter())
-			{
-				removeNode(parent);
-			}
-		}
+		} 
 	}
 
 	/**
