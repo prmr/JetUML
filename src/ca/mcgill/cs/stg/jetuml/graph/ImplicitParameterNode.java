@@ -37,7 +37,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * An object node in a scenario diagram.
  */
-public class ImplicitParameterNode extends ParentNode
+public class ImplicitParameterNode extends HierarchicalNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
@@ -95,12 +95,6 @@ public class ImplicitParameterNode extends ParentNode
 	{ return getTopRectangle(); }
    
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{
-		return false;
-	}
-
-	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{
 		if(pDirection.getX() > 0)
@@ -148,11 +142,5 @@ public class ImplicitParameterNode extends ParentNode
 		ImplicitParameterNode cloned = (ImplicitParameterNode) super.clone();
 		cloned.aName = (MultiLineString) aName.clone();
 		return cloned;
-	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof CallNode || pNode instanceof PointNode;
 	}
 }

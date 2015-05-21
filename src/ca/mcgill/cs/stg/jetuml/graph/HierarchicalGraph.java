@@ -26,9 +26,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- *  A graph consisting of selectable nodes and edges.
+ * Graphs that supports hierarchical parent-child relations
+ * between its nodes.
  */
-public abstract class ParentGraph extends Graph
+public abstract class HierarchicalGraph extends Graph
 {
 
 	/**
@@ -56,12 +57,13 @@ public abstract class ParentGraph extends Graph
 			{
 				continue;
 			}
-			if (parent.contains(pPoint) && parent.addNode(pNode, pPoint))
+			if (parent.contains(pPoint) && canAddNode(parent, pNode))
 			{
-				if(pNode instanceof ParentNode && parent instanceof ParentNode)
+				addNode(parent, pNode, pPoint);
+				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
 				{
-					ParentNode curNode = (ParentNode) pNode;
-					ParentNode parentParent = (ParentNode) parent;
+					HierarchicalNode curNode = (HierarchicalNode) pNode;
+					HierarchicalNode parentParent = (HierarchicalNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
 				accepted = true;
@@ -70,6 +72,26 @@ public abstract class ParentGraph extends Graph
 		aModListener.endCompoundListening();
 		return true;
 	}
+	
+	/**
+	 * Determines if it's legal to add pPotentialChild as a child of pParent.
+	 * @param pParent The potential parent.
+	 * @param pPotentialChild The potential child node.
+	 * @return True if it's legal to add pPotentialChild to pParent.
+	 */
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		return false;
+	}
+	
+	/**
+	 * Diagram-specific behavior taking place before the addition of a node.
+	 * @param pParent The parent node.
+	 * @param pChild The child about the be added to the parent. 
+	 * @param pPoint The point of the node to add the child.
+	 */
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{}
 
 
 	/**
@@ -88,10 +110,10 @@ public abstract class ParentGraph extends Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			if(n2 instanceof ParentNode && pNode instanceof ParentNode)
+			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
 			{
-				ParentNode curNode = (ParentNode) n2;
-				ParentNode parentParent = (ParentNode) pNode;
+				HierarchicalNode curNode = (HierarchicalNode) n2;
+				HierarchicalNode parentParent = (HierarchicalNode) pNode;
 				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
 				{
 					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
@@ -99,9 +121,9 @@ public abstract class ParentGraph extends Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentNode)
+		if(pNode instanceof HierarchicalNode)
 		{
-			ArrayList<ParentNode> children = new ArrayList<ParentNode>(((ParentNode) pNode).getChildren());
+			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

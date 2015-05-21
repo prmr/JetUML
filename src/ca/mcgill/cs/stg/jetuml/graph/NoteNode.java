@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -44,7 +43,6 @@ public class NoteNode extends RectangularNode
 	private static final int FOLD_Y = 8;
 	
 	private MultiLineString aText;
-//	private Color aColor;
 
    /**
     *  Construct a note node with a default size and color.
@@ -54,26 +52,6 @@ public class NoteNode extends RectangularNode
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aText = new MultiLineString();
 		aText.setJustification(MultiLineString.LEFT);
-//		aColor = DEFAULT_COLOR;
-	}
-
-	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{
-		PointNode end = new PointNode();
-		end.translate(pPoint2.getX(), pPoint2.getY());
-		pEdge.connect(this, end);
-		return super.addEdge(pEdge, pPoint1, pPoint2);
-	}
-
-	@Override
-	public boolean removeEdge(Graph pGraph, Edge pEdge)
-	{
-		if(pEdge.getStart() == this)
-		{
-			pGraph.removeNode(pEdge.getEnd());
-		}
-		return super.removeEdge(pGraph, pEdge);
 	}
 
 	@Override

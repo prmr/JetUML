@@ -25,7 +25,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -70,61 +69,6 @@ public interface Node extends GraphElement
      * @return the bounding rectangle
 	 */
 	Rectangle2D getBounds();
-	
-	
-	/**
-	 * Adds an edge that terminates at this node.
-	 * @param pEdge the edge to add.
-	 */
-	void addEndEdge(Edge pEdge);
-
-	/**
-     * Adds an edge that originates at this node.
-     * @param pPoint1 the point that the user selected as
-     * the starting point. This may be used as a hint if 
-     * edges are ordered.
-     * @param pPoint2 the end point.
-     * @param pEdge the edge to add
-     * @return true if the edge was added
-	 */
-	boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2);
-
-	/**
-     * Adds a node as a child node to this node.
-     * @param pNode the child node
-     * @param pPoint the point at which the node is being added
-     * @return true if this node accepts the given node as a child
-	 */
-	boolean addNode(Node pNode, Point2D pPoint);
-	
-	/**
-     * Notifies this node that an edge is being removed.
-     * @param pGraph the ambient graph
-     * @param pEdge the edge to be removed
-     * @return true if the Edge was successfully removed. False otherwise.
-	 */
-	boolean removeEdge(Graph pGraph, Edge pEdge);
-
-	/**
-     * Notifies this node that an origin edge is being removed.
-     * @param pGraph the ambient graph
-     * @param pEdge the origin edge to be removed
-	 */
-	void removeOriginEdge(Graph pGraph, Edge pEdge);
-	
-	/**
-	 * Notifies this node that a terminal edge is being removed.
-	 * @param pGraph the ambient graph
-	 * @param pEdge the terminal edge to remove.
-	 */
-	void removeTerminalEdge(Graph pGraph, Edge pEdge);
-
-	/**
-     * Notifies this node that a node is being removed.
-     * @param pGraph the ambient graph
-     * @param pNode the node to be removed
-	 */
-	void removeNode(Graph pGraph, Node pNode);
 
 	/**
      * Lays out the node and its children.
@@ -133,18 +77,6 @@ public interface Node extends GraphElement
      * @param pGrid the grid to snap to
 	 */
 	void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid);
-	
-	/**
-	 * Gets the origin Edges of this node.
-	 * @return an unmodifiable list of the origin Edges of this Node.
-	 */
-	List<Edge> getOriginEdges();
-	
-	/**
-	 * Gets the origin Edges of this node.
-	 * @return an unmodifiable list of the terminal Edges of this Node.
-	 */
-	List<Edge> getTerminalEdges();
 
 	/**
 	 * @return A clone of the node.

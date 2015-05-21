@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-public class CallNode extends ParentNode
+public class CallNode extends HierarchicalNode
 {
 	public static final int CALL_YGAP = 20;
 	
@@ -51,14 +51,14 @@ public class CallNode extends ParentNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 	
-	private ArrayList<ParentNode> aCalls;
+	private ArrayList<HierarchicalNode> aCalls;
 	
    /**
     *  Construct a call node with a default size.
     */
 	public CallNode()
 	{
-		aCalls = new ArrayList<ParentNode>();
+		aCalls = new ArrayList<HierarchicalNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -125,96 +125,22 @@ public class CallNode extends ParentNode
 			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
 		}
 	}
-
-	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	
+	/**
+	 * Add pChild to the right place in the list of callees, given it's coordinate.
+	 * @param pChild The node to add
+	 * @param pPoint The point to compare against.
+	 */
+	public void addChild(HierarchicalNode pChild, Point2D pPoint)
 	{
-		Node end = pEdge.getEnd();
-		if(end == null)
-		{
-			return false;
-		}
-
-		if(pEdge instanceof ReturnEdge)
-		{
-			return end == getParent();
-		}
-         
-		if(!(pEdge instanceof CallEdge))
-		{
-			return false;
-		}
-      
-		Node n = null;
-		if(end instanceof CallNode) 
-		{
-			// check for cycles
-			ParentNode parent = this; 
-			while(parent != null && end != parent)
-			{
-				parent = parent.getParent();
-			}
-         
-			if(((CallNode)end).getParent() == null && end != parent)
-			{
-				n = end;
-			}
-			else
-			{
-				CallNode c = new CallNode();
-				c.aImplicitParameter = ((CallNode)end).aImplicitParameter;
-				pEdge.connect(this, c);
-				n = c;
-			}
-		}
-		else if(end instanceof ImplicitParameterNode)
-		{
-			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
-			{
-				n = end;
-				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
-			}
-			else
-			{
-				CallNode c = new CallNode();
-				c.aImplicitParameter = (ImplicitParameterNode)end;
-				pEdge.connect(this, c);
-				n = c;
-			}
-		}
-		else
-		{
-			return false;
-		}
-
 		int i = 0;
-		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint1.getY())
+		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
 		{
 			i++;
 		}
-		addChild(i, (ParentNode)n);
-		return true;
+		addChild(i, pChild);
 	}
 
-	@Override
-	public boolean removeEdge(Graph pGraph, Edge pEdge)
-	{
-		if(pEdge.getStart() == this)
-		{
-			removeChild((ParentNode)pEdge.getEnd());
-		}
-		return super.removeEdge(pGraph, pEdge);
-	}
-
-	@Override
-	public void removeNode(Graph pGraph, Node pNode)
-	{
-      if(pNode == getParent() || pNode == aImplicitParameter)
-      {
-    	  pGraph.removeNode(this);
-      }
-	}
-   
 	private static Edge findEdge(Graph pGraph, Node pStart, Node pEnd)
 	{
 		Collection<Edge> edges = pGraph.getEdges();
@@ -297,13 +223,13 @@ public class CallNode extends ParentNode
 	}
 
 	@Override
-	public void addChild(int pIndex, ParentNode pNode) 
+	public void addChild(int pIndex, HierarchicalNode pNode) 
 	{
 		if (pNode == null || pIndex < 0) //base cases to not deal with
 		{
 			return;
 		}
-		ParentNode oldParent = pNode.getParent();
+		HierarchicalNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -313,7 +239,7 @@ public class CallNode extends ParentNode
 	}
 	
 	@Override
-	public void removeChild(ParentNode pNode)
+	public void removeChild(HierarchicalNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -328,23 +254,17 @@ public class CallNode extends ParentNode
 	 * @param pNode The node to add.
 	 */
 	@Override
-	public void addChild(ParentNode pNode)
+	public void addChild(HierarchicalNode pNode)
 	{
 		addChild(aCalls.size(), pNode);
 	}
 	
 	@Override
-	public List<ParentNode> getChildren()
+	public List<HierarchicalNode> getChildren()
 	{
 		return aCalls;
 	}
 	
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof PointNode;
-	}
-
 	/**
      * Sets the signaled property.
      * @param pNewValue true if this node is the target of a signal edge
@@ -377,7 +297,7 @@ public class CallNode extends ParentNode
 	public CallNode clone()
 	{
 		CallNode cloned = (CallNode) super.clone();
-		cloned.aCalls = (ArrayList<ParentNode>) aCalls.clone();
+		cloned.aCalls = (ArrayList<HierarchicalNode>) aCalls.clone();
 		return cloned;
 	}
 }

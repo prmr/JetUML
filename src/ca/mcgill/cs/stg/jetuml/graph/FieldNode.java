@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends ParentNode
+public class FieldNode extends HierarchicalNode
 {
 	public static final int DEFAULT_WIDTH = 60;
 	public static final int DEFAULT_HEIGHT = 20;
@@ -94,24 +94,7 @@ public class FieldNode extends ParentNode
 			pGraphics2D.draw(aValueBounds);
 		}
 	}
-
-	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{
-		if (pEdge instanceof ObjectReferenceEdge && pEdge.getEnd() instanceof ObjectNode)
-		{
-			aValue.setText("");
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof PointNode;
-	}
-
+	
 	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{

@@ -80,7 +80,33 @@ public abstract class Graph
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
 	public abstract String getDescription();
+	
+	/**
+	 * If certain types of diagrams require additional behavior
+	 * following the addition of an edge to a graph, they can
+	 * override this method to perform that behavior.
+	 * @param pOrigin The origin node 
+	 * @param pEdge The edge to add
+	 * @param pPoint1 a point in the starting node
+	 * @param pPoint2 a point in the end node.
+	 */
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{}
 
+	private PointNode createPointNodeIfAllowed(Node pNode1, Node pNode2, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			PointNode lReturn = new PointNode();
+			lReturn.translate(pPoint2.getX(), pPoint2.getY());
+			return lReturn;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 	/**
 	 * Adds an edge to the graph that joins the nodes containing
 	 * the given points. If the points aren't both inside nodes,
@@ -92,48 +118,55 @@ public abstract class Graph
 	 */
 	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
-		Node n1 = findNode(pPoint1);
-		Node n2 = findNode(pPoint2);
-		if(n1 != null)
+		Node node1 = findNode(pPoint1);
+		if( node1 == null )
 		{
-			if(!noteEdgeCheck(pEdge, n1, n2))
-			{
-				return false;
-			}
-
-			pEdge.connect(n1, n2);
-			boolean edgeAdded;
-			if (n1 instanceof FieldNode)
-			{
-				aModListener.startCompoundListening();
-				aModListener.trackPropertyChange(this, n1);
-			}
-			edgeAdded = n1.addEdge(pEdge, pPoint1, pPoint2);
-			if (n1 instanceof FieldNode)
-			{
-				aModListener.finishPropertyChange(this,  n1);
-			}
-			if(edgeAdded && pEdge.getEnd() != null)
-			{
-				aEdges.add(pEdge);
-				aModListener.edgeAdded(this, pEdge);
-				if(!aNodes.contains(pEdge.getEnd()))
-				{
-					aNodes.add(pEdge.getEnd());
-				}
-				aNeedsLayout = true;
-				if (n1 instanceof FieldNode)
-				{
-					aModListener.endCompoundListening();
-				}
-				return true;
-			}
-			else if (n1 instanceof FieldNode)
-			{
-				aModListener.endCompoundListening();
-			}
+			return false;
 		}
-		return false;
+		
+		Node node2 = findNode(pPoint2);
+		if( node1 instanceof NoteNode )
+		{
+			node2 = createPointNodeIfAllowed(node1, node2, pEdge, pPoint1, pPoint2);
+		}
+		
+		if(!canConnect(pEdge, node1, node2))
+		{
+			return false;
+		}
+
+		pEdge.connect(node1, node2);
+			
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.startCompoundListening();
+			aModListener.trackPropertyChange(this, node1);
+		}
+			
+		addEdge(node1, pEdge, pPoint1, pPoint2);
+		
+		if( node1 instanceof FieldNode)
+		{
+			aModListener.finishPropertyChange(this,  node1);
+		}
+		
+		aEdges.add(pEdge);
+		aModListener.edgeAdded(this, pEdge);
+		if(!aNodes.contains(pEdge.getEnd()))
+		{
+			aNodes.add(pEdge.getEnd());
+		}
+		aNeedsLayout = true;
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.endCompoundListening();
+		}
+		
+		if (node1 instanceof FieldNode)
+		{
+			aModListener.endCompoundListening();
+		}
+		return true;
 	}
 
 	/**
@@ -244,24 +277,54 @@ public abstract class Graph
 		}
 		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
-		// notify nodes of removals
-		for(int i = 0; i < aNodes.size(); i++)
+
+		// Notify all nodes that pNode is being removed.
+		for(Node node : aNodes)
 		{
-			Node n2 = aNodes.get(i);
-			n2.removeNode(this, pNode);
+			processNodeRemoval(node, pNode);
 		}
-		for(int i = 0; i < aEdges.size(); i++)
+		
+		// Notify all edges that pNode is being removed.
+		for(Edge edge : aEdges)
 		{
-			Edge e = aEdges.get(i);
-			if(e.getStart() == pNode || e.getEnd() == pNode)
+			if(edge.getStart() == pNode || edge.getEnd() == pNode)
 			{
-				removeEdge(e);
+				removeEdge(edge);
 			}
 		}
 		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
 		return true;
+	}
+	
+	/**
+	 * Specialized node removal behavior.
+	 * @param pParent The node to remove a child node from.
+	 * @param pChild The node to remove from the parent.
+	 */
+	protected void processNodeRemoval(Node pParent, Node pChild)
+	{
+		if( pParent instanceof CallNode )
+		{
+			CallNode parent = (CallNode) pParent;
+			if( pChild == parent.getParent() || pChild == parent.getImplicitParameter())
+			{
+				removeNode(parent);
+			}
+		}
+		else if( pParent instanceof HierarchicalNode )
+		{
+			HierarchicalNode parent = (HierarchicalNode) pParent;
+			if( pChild == parent.getParent() )
+			{
+				parent.setParent(null);
+			}
+			if( pChild instanceof HierarchicalNode && ((HierarchicalNode)pChild).getParent() == parent)
+			{
+				parent.getChildren().remove(pChild);
+			}
+		} 
 	}
 
 	/**
@@ -313,9 +376,19 @@ public abstract class Graph
 		for(int i = aNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aNodes.get(i);
-			if(n.removeEdge(this, pEdge))
+			if( n instanceof NoteEdge )
 			{
-				break;
+				if(pEdge.getStart() == n)
+				{
+					removeNode(pEdge.getEnd());
+				}
+			}
+			else if( n instanceof CallNode )
+			{
+				if(pEdge.getStart() == n)
+				{
+					((CallNode)n).removeChild((HierarchicalNode)pEdge.getEnd());
+				}
 			}
 		}
 		aNeedsLayout = true;
@@ -485,19 +558,22 @@ public abstract class Graph
 	}
 
 	/**
-	 * Checks whether edges related to note nodes are acceptable.
+	 * Checks whether it is legal to connect pNode1 to pNode2 through
+	 * pEdge based strictly on the type of nodes and edges. 
+	 * This implementation only provides the logic valid across
+	 * all diagram types. Override for diagram-specific rules.
 	 * @param pEdge The edge to be added
 	 * @param pNode1 The first node
 	 * @param pNode2 The second node
-	 * @return True if the edge is acceptable
+	 * @return True if the edge can legally connect node1 to node2
 	 */
-	public boolean noteEdgeCheck(Edge pEdge, Node pNode1, Node pNode2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
 	{
-		if(pNode1 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		if( pNode2 == null )
 		{
 			return false;
 		}
-		if(pNode2!=null && pNode2 instanceof NoteNode && !(pEdge instanceof NoteEdge))
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}

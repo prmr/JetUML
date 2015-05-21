@@ -34,18 +34,19 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagramGraph extends ParentGraph
+public class SequenceDiagramGraph extends HierarchicalGraph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
@@ -79,12 +80,105 @@ public class SequenceDiagramGraph extends ParentGraph
 		}
 		return true;
 	}
+	
+	@Override
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof CallNode )
+		{
+			return pPotentialChild instanceof PointNode;
+		}
+		else if( pParent instanceof ImplicitParameterNode )
+		{
+			return pPotentialChild instanceof CallNode || pPotentialChild instanceof PointNode;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		{
+			return false;
+		}
+		if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
+		{
+			return pNode2 == ((CallNode)pNode1).getParent();
+		}
+		if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
+		{
+			return false;
+		}
+		if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
+		{
+			return false;
+		}
+		if(pNode1 instanceof ImplicitParameterNode )
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if( !(pOrigin instanceof CallNode) )
+		{
+			return;
+		}
+		if( pEdge instanceof ReturnEdge )
+		{
+			return;
+		}
+		Node end = pEdge.getEnd();
+		Node n = null;
+		if(end instanceof CallNode) 
+		{
+			// check for cycles
+			HierarchicalNode parent = (CallNode)pOrigin; 
+			while(parent != null && end != parent)
+			{
+				parent = parent.getParent();
+			}
+         
+			if(((CallNode)end).getParent() == null && end != parent)
+			{
+				n = end;
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.setImplicitParameter(((CallNode)end).getImplicitParameter());
+				pEdge.connect(pOrigin, c);
+				n = c;
+			}
+		}
+		else if(end instanceof ImplicitParameterNode)
+		{
+			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
+			{
+				n = end;
+				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
+			}
+			else
+			{
+				CallNode c = new CallNode();
+				c.setImplicitParameter((ImplicitParameterNode) end);
+				pEdge.connect(pOrigin, c);
+				n = c;
+			}
+		}
+		
+		((CallNode)pOrigin).addChild((HierarchicalNode)n, pPoint1);
+	}
 
 	@Override
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && ((ParentNode)pEdge.getEnd()).getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && ((HierarchicalNode)pEdge.getEnd()).getChildren().size() == 0) 
 		{
 			removeNode(pEdge.getEnd());
 		}		

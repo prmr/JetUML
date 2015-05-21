@@ -24,11 +24,8 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
@@ -42,17 +39,12 @@ public abstract class AbstractNode implements Node
 	public static final int SHADOW_GAP = 4;
 	
 	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
-	
-	private transient ArrayList<Edge> aOriginEdges;
-	private transient ArrayList<Edge> aTerminalEdges;
 
 	/**
      * Constructs a node.
 	 */
 	public AbstractNode()
 	{
-		aOriginEdges = new ArrayList<>();
-		aTerminalEdges = new ArrayList<>();
 	}
 
 	@Override
@@ -73,74 +65,10 @@ public abstract class AbstractNode implements Node
 	public void translate(double pDeltaX, double pDeltaY)
 	{
 	}
-
-	@Override
-	public void addEndEdge(Edge pEdge)
-	{
-		aTerminalEdges.add(pEdge);
-	}
-	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{
-		aOriginEdges.add(pEdge);
-		if(pEdge.getEnd() != null)
-		{
-			pEdge.getEnd().addEndEdge(pEdge);
-		}
-		return pEdge.getEnd() != null;
-	}
-	
-	@Override
-	public boolean removeEdge(Graph pGraph, Edge pEdge)
-	{
-		pEdge.getStart().removeOriginEdge(pGraph, pEdge);
-		pEdge.getEnd().removeTerminalEdge(pGraph, pEdge);
-		if(!aOriginEdges.contains(pEdge))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void removeOriginEdge(Graph pGraph, Edge pEdge)
-	{
-		aOriginEdges.remove(pEdge);
-		pEdge.getEnd().removeTerminalEdge(pGraph, pEdge);
-	}
-	
-	@Override
-	public void removeTerminalEdge(Graph pGraph, Edge pEdge)
-	{
-		aTerminalEdges.remove(pEdge);
-	}
-
-	@Override
-	public void removeNode(Graph pGraph, Node pNode)
-	{
-	}
 	
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return false;
-	}
-
-	@Override
-	public List<Edge> getOriginEdges()
-	{
-		return aOriginEdges;
-	}
-	
-	@Override
-	public List<Edge> getTerminalEdges()
-	{
-		return aTerminalEdges;
-	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)

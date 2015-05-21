@@ -25,23 +25,26 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ParentGraph;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  *   An UML-style object diagram that shows object references.
  */
-public class ObjectDiagramGraph extends ParentGraph
+public class ObjectDiagramGraph extends HierarchicalGraph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
@@ -66,6 +69,25 @@ public class ObjectDiagramGraph extends ParentGraph
 	    ClassRelationshipEdge association = new ClassRelationshipEdge();
 	    EDGE_PROTOTYPES[1] = association;
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
+	}
+	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		{
+			return false;
+		}
+		if( pNode1 instanceof ObjectNode )
+		{
+			return (pEdge instanceof ClassRelationshipEdge && pNode2 instanceof ObjectNode) ||
+					(pEdge instanceof NoteEdge && pNode2 instanceof NoteNode);
+		}
+		if( pNode1 instanceof FieldNode )
+		{
+			return pEdge instanceof ObjectReferenceEdge && pNode2 instanceof ObjectNode;
+		}
+		return true;
 	}
 	
 	@Override
@@ -100,6 +122,15 @@ public class ObjectDiagramGraph extends ParentGraph
 	}
 	
 	@Override
+	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	{
+		if( pOrigin instanceof FieldNode )
+		{
+			((FieldNode)pOrigin).getValue().setText("");
+		}
+	}
+	
+	@Override
 	public Node[] getNodePrototypes()
 	{
 		return NODE_PROTOTYPES;
@@ -121,6 +152,46 @@ public class ObjectDiagramGraph extends ParentGraph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("object.name");
+	}
+	
+	@Override
+	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof FieldNode )
+		{
+			return pPotentialChild instanceof PointNode;
+		}
+		else if( pParent instanceof ObjectNode )
+		{
+			if(pPotentialChild instanceof PointNode)
+			{
+				return true;
+			}
+			if(!(pPotentialChild instanceof FieldNode))
+			{
+				return false;
+			}
+			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			FieldNode fNode = (FieldNode) pPotentialChild;
+			return !fields.contains(fNode);
+		}
+		return false;
+	}
+	
+	@Override
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{
+		if( pParent instanceof ObjectNode )
+		{
+			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			FieldNode fNode = (FieldNode) pChild;
+			int i = 0;
+			while(i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
+			{
+				i++;
+			}
+			((ObjectNode)pParent).addChild(i, fNode);
+		}
 	}
 }
 

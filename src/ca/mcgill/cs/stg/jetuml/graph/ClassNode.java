@@ -23,7 +23,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -32,7 +31,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ParentNode
+public class ClassNode extends HierarchicalNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
@@ -103,12 +102,6 @@ public class ClassNode extends ParentNode
 				top.getHeight() + aMidHeight + aBottomHeight);
 		pGrid.snap(b);
 		setBounds(b);
-	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		return pNode instanceof PointNode;
 	}
 
 	/**

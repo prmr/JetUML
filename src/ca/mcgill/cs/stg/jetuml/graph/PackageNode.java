@@ -26,7 +26,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -38,7 +37,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends ParentNode
+public class PackageNode extends HierarchicalNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
@@ -118,7 +117,7 @@ public class PackageNode extends ParentNode
      	double width = Math.max(aTop.getWidth() + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, aBottom.getWidth());
      	double height = aTop.getHeight() + aBottom.getHeight();
 
-     	List<ParentNode> children = getChildren();
+     	List<HierarchicalNode> children = getChildren();
      	if(children.size() > 0)
      	{
      		Rectangle2D childBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 0, 0);
@@ -184,19 +183,4 @@ public class PackageNode extends ParentNode
 		cloned.aContents = (MultiLineString)aContents.clone();
 		return cloned;
 	}
-
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		if(pNode instanceof ClassNode || pNode instanceof InterfaceNode || pNode instanceof PackageNode)
-		{
-			ParentNode child = (ParentNode) pNode;
-			addChild(child);
-			return true;
-		}
-		else
-		{
-			return pNode instanceof NoteNode;
-		}
-   }
 }

@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends ParentNode
+public class ObjectNode extends HierarchicalNode
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -87,12 +87,6 @@ public class ObjectNode extends ParentNode
 	}
 
 	@Override
-	public boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{
-		return pEdge instanceof ClassRelationshipEdge && pEdge.getEnd() != null;
-	}
-
-	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{
 		if(pDirection.getX() > 0)
@@ -112,7 +106,7 @@ public class ObjectNode extends ParentNode
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		double leftWidth = 0;
 		double rightWidth = 0;
-		List<ParentNode> fields = getChildren();
+		List<HierarchicalNode> fields = getChildren();
 		double height = 0;
 		if( fields.size() != 0 )
 		{
@@ -173,38 +167,12 @@ public class ObjectNode extends ParentNode
 		return cloned;
 	}
 
-	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
-	{
-		List<ParentNode> fields = getChildren();
-		if(pNode instanceof PointNode)
-		{
-			return true;
-		}
-		if(!(pNode instanceof FieldNode))
-		{
-			return false;
-		}
-		FieldNode fNode = (FieldNode) pNode;
-		if(fields.contains(fNode))
-		{
-			return true;
-		}
-		int i = 0;
-		while (i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
-		{
-			i++;
-		}
-		addChild(i, fNode);
-		return true;
-	}
-   
 	/*
      *  This is a patch to ensure that object diagrams can
      * be read back in correctly. 
      */
 	@Override
-   public void addChild(ParentNode pNode)
+   public void addChild(HierarchicalNode pNode)
    {
 		super.addChild(pNode);
 		Rectangle2D b = getBounds();
