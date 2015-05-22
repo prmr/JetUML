@@ -577,6 +577,10 @@ public abstract class Graph
 		{
 			return false;
 		}
+		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
+		{
+			return false;
+		}
 		return true;
 	}
 }
