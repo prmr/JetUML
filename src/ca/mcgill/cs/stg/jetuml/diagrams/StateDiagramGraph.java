@@ -78,11 +78,13 @@ public class StateDiagramGraph extends Graph
 		Node n2 = findNode(pPoint2);
 		if(n1 != null)
 		{
-			//This checks to see if first node is an end note. Cannot have edges coming from final node.
+			//This checks to see if first node is an end note. 
+			// Cannot have edges coming from final node 
+			// except for note edges
 			if(n1 instanceof CircularStateNode)
 			{
 				CircularStateNode end = (CircularStateNode) n1;
-				if(end.isFinal())
+				if(end.isFinal() && !(pEdge instanceof NoteEdge))
 				{
 					return false;
 				}
