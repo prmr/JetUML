@@ -166,6 +166,14 @@ public class PackageNode extends HierarchicalNode
 	{
 		aContents = pContents;
 	}
+	
+	@Override
+	public void translate(double pDeltaX, double pDeltaY)
+	{
+		super.translate(pDeltaX, pDeltaY);
+		aTop.setFrame(aTop.getX() + pDeltaX, aTop.getY() + pDeltaY, aTop.getWidth(), aTop.getHeight());
+		aBottom.setFrame(aBottom.getX() + pDeltaX, aBottom.getY() + pDeltaY, aBottom.getWidth(), aBottom.getHeight());
+	}
 
 	/**
      * Gets the contents property value.
