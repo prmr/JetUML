@@ -171,8 +171,14 @@ public class PackageNode extends HierarchicalNode
 	public void translate(double pDeltaX, double pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
+		aTop = (Rectangle2D)aTop.clone();
+		aBottom = (Rectangle2D)aBottom.clone();
 		aTop.setFrame(aTop.getX() + pDeltaX, aTop.getY() + pDeltaY, aTop.getWidth(), aTop.getHeight());
 		aBottom.setFrame(aBottom.getX() + pDeltaX, aBottom.getY() + pDeltaY, aBottom.getWidth(), aBottom.getHeight());
+		for(Node childNode : getChildren())
+        {
+        	childNode.translate(pDeltaX, pDeltaY);
+        }   
 	}
 
 	/**
