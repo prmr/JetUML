@@ -131,14 +131,16 @@ public class PackageNode extends HierarchicalNode
      		height = Math.max(height, childBounds.getHeight() + YGAP);
      	}
      	Rectangle2D b = new Rectangle2D.Double(bounds.getX(), bounds.getY(), width, height);
-     	pGrid.snap(b);
+     	
+     	// MPR We don't snap the packages because this cases an annoying jitter effect
+//     	pGrid.snap(b);
      	setBounds(b);
       
      	aTop = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
      			Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH), Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT));
       
      	aBottom = new Rectangle2D.Double(bounds.getX(), bounds.getY() + aTop.getHeight(), bounds.getWidth(), bounds.getHeight() - aTop.getHeight());
-     }
+	}
 
 	/**
      * Sets the name property value.
