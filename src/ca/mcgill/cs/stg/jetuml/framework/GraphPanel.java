@@ -709,8 +709,7 @@ public class GraphPanel extends JPanel
 						n.translate(dx, dy); 
 					}
 				}
-				// we don't want continuous layout any more because of multiple selection
-				// graph.layout();
+				 aGraph.layout();
 			}
 			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
