@@ -693,6 +693,7 @@ public class GraphPanel extends JPanel
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
             
+				boolean shouldLayout = false;
 				for( GraphElement selected : aSelectedElements )
 				{
 					if(selected instanceof HierarchicalNode)
@@ -702,6 +703,10 @@ public class GraphPanel extends JPanel
 						{
 							n.translate(dx, dy); 
 						}	
+						if( n.getParent() instanceof PackageNode )
+						{
+							shouldLayout = true;
+						}
 					}
 					else if(selected instanceof Node)
 					{
@@ -709,7 +714,11 @@ public class GraphPanel extends JPanel
 						n.translate(dx, dy); 
 					}
 				}
-				 aGraph.layout();
+				System.out.println(shouldLayout);
+				if( shouldLayout )
+				{
+					aGraph.layout();
+				}
 			}
 			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
