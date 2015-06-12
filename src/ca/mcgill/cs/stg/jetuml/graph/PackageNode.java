@@ -102,45 +102,58 @@ public class PackageNode extends HierarchicalNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
-		Rectangle2D bounds = getBounds();
-
 		label.setText("<html>" + aName + "</html>");
 		label.setFont(pGraphics2D.getFont());
 		Dimension d = label.getPreferredSize();
-      
-		aTop = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
-				Math.max(d.getWidth(), DEFAULT_TOP_WIDTH), Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT));
-
-		aBottom = aContents.getBounds(pGraphics2D);
-		Rectangle2D min = new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
-     	aBottom.add(min);
-     	double width = Math.max(aTop.getWidth() + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, aBottom.getWidth());
-     	double height = aTop.getHeight() + aBottom.getHeight();
-
-     	List<HierarchicalNode> children = getChildren();
-     	if(children.size() > 0)
-     	{
-     		Rectangle2D childBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 0, 0);
-     		for(int i = 0; i < children.size(); i++)
-     		{
-     			Node child = children.get(i);
-     			child.layout(pGraph, pGraphics2D, pGrid);
-     			childBounds.add(child.getBounds());
-     		}
-     		width = Math.max(width, childBounds.getWidth() + XGAP);
-     		height = Math.max(height, childBounds.getHeight() + YGAP);
-     	}
-     	Rectangle2D b = new Rectangle2D.Double(bounds.getX(), bounds.getY(), width, height);
-     	
-     	// MPR We don't snap the packages because this cases an annoying jitter effect
-//     	pGrid.snap(b);
-     	setBounds(b);
-      
-     	aTop = new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
-     			Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH), Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT));
-      
-     	aBottom = new Rectangle2D.Double(bounds.getX(), bounds.getY() + aTop.getHeight(), bounds.getWidth(), bounds.getHeight() - aTop.getHeight());
+		double topWidth = Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		double topHeight = Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
+		
+		Rectangle2D childBounds = null;
+		List<HierarchicalNode> children = getChildren();
+		for( HierarchicalNode child : children )
+		{
+			child.layout(pGraph, pGraphics2D, pGrid);
+			if( childBounds == null )
+			{
+				childBounds = child.getBounds();
+			}
+			else
+			{
+				childBounds.add(child.getBounds());
+			}
+		}
+		
+		Rectangle2D contentsBounds = aContents.getBounds(pGraphics2D);
+		
+		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
+		{
+			snapBounds( pGrid, Math.max(topWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, Math.max(DEFAULT_WIDTH, contentsBounds.getWidth())),
+					topHeight + Math.max(DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, contentsBounds.getHeight()));
+		}
+		else
+		{
+			setBounds( new Rectangle2D.Double(childBounds.getX() - XGAP, childBounds.getY() - topHeight - YGAP, 
+					Math.max(topWidth, childBounds.getWidth() + 2 * XGAP), topHeight + childBounds.getHeight() + 2 * YGAP));
+		}
+		
+		Rectangle2D b = getBounds();
+		aTop = new Rectangle2D.Double(b.getX(), b.getY(), topWidth, topHeight);
+		aBottom = new Rectangle2D.Double(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
 	}
+	
+	/**
+     * Snaps the bounds of this rectangular node so that it has the node position as top left corner and the desired width and
+     * height, snapped to the given grid.
+     * 
+     * @param pGrid the grid to snap to
+     * @param pWidth the desired width
+     * @param pHeight the desired height
+     */
+    public void snapBounds(Grid pGrid, double pWidth, double pHeight)
+    {
+        getBounds().setFrame(getBounds().getX(), getBounds().getY(), pWidth, pHeight);
+        pGrid.snap(getBounds());
+    }
 
 	/**
      * Sets the name property value.
