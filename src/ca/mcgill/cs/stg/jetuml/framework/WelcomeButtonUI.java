@@ -22,8 +22,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class WelcomeButtonUI extends BasicButtonUI
 {
-	private static final Color HOVER_COLOR = new Color(255, 210, 90);
-	private static final int FONT_SIZE = 30;
+	private static final Color HOVER_COLOR = new Color(255, 255, 255);
+	private static final int FONT_SIZE = 25;
 	
 	    /**
 	     * Constructor for WelcomeButtonUI class.

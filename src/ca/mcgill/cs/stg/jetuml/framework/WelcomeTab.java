@@ -1,6 +1,7 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
@@ -33,7 +34,7 @@ public class WelcomeTab extends JInternalFrame
 	private static final int BORDER_MARGIN = 45;
 	private static final int ALTERNATIVE_BORDER_MARGIN = 30;
 	private static final int FOOT_BORDER_MARGIN = 10;
-	private static final int FONT_SIZE = 30;
+	private static final int FONT_SIZE = 25;
 	private ResourceBundle aWelcomeResources;
     private JPanel aFootTextPanel;;
     private JPanel aRightTitlePanel;
@@ -52,7 +53,6 @@ public class WelcomeTab extends JInternalFrame
 	 */
 	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)
 	{
-		
 		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
 		aLeftPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.create.icon")));
 		aRightPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.open.icon"))); 
@@ -87,153 +87,140 @@ public class WelcomeTab extends JInternalFrame
 	
 	    add(panel, BorderLayout.NORTH);
 	    add(getFootTextPanel(), BorderLayout.SOUTH);
-	
 	}
 	
-//		@Override
-//	    public void paint(Graphics g)
-//	    {
-//	    	super.paint(g);
-//	        Graphics2D g2 = (Graphics2D) g;
-//	        Paint currentPaint = g2.getPaint();
-//	        GradientPaint paint = new GradientPaint(getWidth() / 2, -getHeight() / 4, lightBackground,
-//	                getWidth() / 2, getHeight() + getHeight() / 4, darkBackground);
-//	        g2.setPaint(paint);
-//	        g2.fillRect(0, 0, getWidth(), getHeight());
-//	        g2.setPaint(currentPaint);
-//	    }
+	private JPanel getLeftPanel()
+	{
+		if(aLeftPanel == null)
+		{
+			aLeftPanel = new JPanel();
+			aLeftPanel.setOpaque(false);
+			aLeftPanel.setLayout(new BoxLayout(aLeftPanel, BoxLayout.Y_AXIS));
+			aLeftPanel.setBorder(new EmptyBorder(0, 0, 0, BORDER_MARGIN));
 
-	    private JPanel getLeftPanel()
-	    {
-	        if (this.aLeftPanel == null)
-	        {
-	            aLeftPanel = new JPanel();
-	            aLeftPanel.setOpaque(false);
-	            aLeftPanel.setLayout(new BoxLayout(aLeftPanel, BoxLayout.Y_AXIS));
-	            aLeftPanel.setBorder(new EmptyBorder(0, 0, 0, BORDER_MARGIN));
+			for(int i = 0; i < aNewFileMenu.getItemCount(); i++)
+			{
+				final JMenuItem item = aNewFileMenu.getItem(i);
+				String label = item.getText();
+				JButton newDiagramShortcut = new JButton(label.toLowerCase());
+				newDiagramShortcut.setUI(new WelcomeButtonUI());
+				newDiagramShortcut.setAlignmentX(Component.RIGHT_ALIGNMENT);
+				newDiagramShortcut.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent pEvent)
+					{
+						item.doClick();
+					}
+				});
+				aLeftPanel.add(newDiagramShortcut);
+			}
+		}
+		return aLeftPanel;
+	}
 
-	            for (int i = 0; i < aNewFileMenu.getItemCount(); i++)
-	            {
-	                final JMenuItem item = aNewFileMenu.getItem(i);
-	                String label = item.getText();
-	                JButton newDiagramShortcut = new JButton(label.toLowerCase());
-	                newDiagramShortcut.setUI(new WelcomeButtonUI());
-	                newDiagramShortcut.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	                newDiagramShortcut.addActionListener(new ActionListener()
-	                {
-	                    public void actionPerformed(ActionEvent pEvent)
-	                    {
-	                        item.doClick();
-	                    }
-	                });
-	                aLeftPanel.add(newDiagramShortcut);
-	            }
+	private JPanel getRightPanel()
+	{
+		if(aRightPanel == null)
+		{
+			aRightPanel = new JPanel();
+			aRightPanel.setOpaque(false);
+			aRightPanel.setLayout(new BoxLayout(aRightPanel, BoxLayout.Y_AXIS));
+			aRightPanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, 0, BORDER_MARGIN));
 
-	        }
-	        return this.aLeftPanel;
-	    }
+			for(int i = 0; i < aRecentFileMenu.getItemCount(); i++)
+			{
+				final JMenuItem item = aRecentFileMenu.getItem(i);
+				String label = item.getText().substring(2);
+				JButton fileShortcut = new JButton(label.toLowerCase());
+				fileShortcut.setUI(new WelcomeButtonUI());
+				fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
+				fileShortcut.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent pEvent)
+					{
+						item.doClick();
+					}
+				});
+				aRightPanel.add(fileShortcut);
+			}
 
-	    private JPanel getRightPanel()
-	    {
-	        if (this.aRightPanel == null)
-	        {
-	            this.aRightPanel = new JPanel();
-	            this.aRightPanel.setOpaque(false);
-	            this.aRightPanel.setLayout(new BoxLayout(aRightPanel, BoxLayout.Y_AXIS));
-	            this.aRightPanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, 0, BORDER_MARGIN));
+		}
+		return this.aRightPanel;
+	}
 
-	            for (int i = 0; i < aRecentFileMenu.getItemCount(); i++)
-	            {
-	                final JMenuItem item = aRecentFileMenu.getItem(i);
-	                String label = item.getText().substring(2);
-	                JButton fileShortcut = new JButton(label.toLowerCase());
-	                fileShortcut.setUI(new WelcomeButtonUI());
-	                fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
-	                fileShortcut.addActionListener(new ActionListener()
-	                {
-	                    public void actionPerformed(ActionEvent pEvent)
-	                    {
-	                        item.doClick();
-	                    }
-	                });
-	                aRightPanel.add(fileShortcut);
-	            }
+	private JPanel getLeftTitlePanel()
+	{
+		if(aLeftTitlePanel == null)
+		{
+			JLabel icon = new JLabel();
+			icon.setIcon(this.aLeftPanelIcon);
 
-	        }
-	        return this.aRightPanel;
-	    }
+			JLabel title = new JLabel(aNewFileMenu.getText().toLowerCase());
+			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
+			title.setForeground(Color.DARK_GRAY);
+			title.setBorder(new EmptyBorder(0, ALTERNATIVE_BORDER_MARGIN, 0, 0));
 
-	    private JPanel getLeftTitlePanel()
-	    {
-	        if (this.aLeftTitlePanel == null)
-	        {
-	            JLabel icon = new JLabel();
-	            icon.setIcon(this.aLeftPanelIcon);
+			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+			panel.add(icon);
+			panel.add(title);
+			panel.setOpaque(false);
 
-	            JLabel title = new JLabel(aNewFileMenu.getText().toLowerCase());
-	            title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-	            title.setBorder(new EmptyBorder(0, ALTERNATIVE_BORDER_MARGIN, 0, 0));
+			aLeftTitlePanel = new JPanel();
+			aLeftTitlePanel.setOpaque(false);
+			aLeftTitlePanel.setLayout(new BorderLayout());
+			aLeftTitlePanel.add(panel, BorderLayout.EAST);
+			aLeftTitlePanel.setBorder(new EmptyBorder(0, 0, ALTERNATIVE_BORDER_MARGIN, BORDER_MARGIN));
+		}
+		return aLeftTitlePanel;
+	}
 
-	            JPanel panel = new JPanel();
-	            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-	            panel.add(icon);
-	            panel.add(title);
-	            panel.setOpaque(false);
+	private JPanel getRightTitlePanel()
+	{
+		if(aRightTitlePanel == null)
+		{
+			JLabel icon = new JLabel();
+			icon.setIcon(this.aRightPanelIcon);
+			icon.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	            this.aLeftTitlePanel = new JPanel();
-	            this.aLeftTitlePanel.setOpaque(false);
-	            this.aLeftTitlePanel.setLayout(new BorderLayout());
-	            this.aLeftTitlePanel.add(panel, BorderLayout.EAST);
-	            this.aLeftTitlePanel.setBorder(new EmptyBorder(0, 0, ALTERNATIVE_BORDER_MARGIN, BORDER_MARGIN));
-	        }
-	        return this.aLeftTitlePanel;
-	    }
+			JLabel title = new JLabel(aRecentFileMenu.getText().toLowerCase());
+			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
+			title.setForeground(Color.DARK_GRAY);
+			title.setBorder(new EmptyBorder(0, 0, 0, ALTERNATIVE_BORDER_MARGIN));
 
-	    private JPanel getRightTitlePanel()
-	    {
-	        if (this.aRightTitlePanel == null)
-	        {
-	            JLabel icon = new JLabel();
-	            icon.setIcon(this.aRightPanelIcon);
-	            icon.setAlignmentX(Component.LEFT_ALIGNMENT);
+			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+			panel.add(title);
+			panel.add(icon);
+			panel.setOpaque(false);
 
-	            JLabel title = new JLabel(aRecentFileMenu.getText().toLowerCase());
-	            title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-	            title.setBorder(new EmptyBorder(0, 0, 0, ALTERNATIVE_BORDER_MARGIN));
+			aRightTitlePanel = new JPanel();
+			aRightTitlePanel.setOpaque(false);
+			aRightTitlePanel.setLayout(new BorderLayout());
+			aRightTitlePanel.add(panel, BorderLayout.WEST);
+			aRightTitlePanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, ALTERNATIVE_BORDER_MARGIN, 0));
+		}
+		return aRightTitlePanel;
+	}
 
-	            JPanel panel = new JPanel();
-	            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-	            panel.add(title);
-	            panel.add(icon);
-	            panel.setOpaque(false);
+	private JPanel getFootTextPanel()
+	{
+		if(aFootTextPanel == null)
+		{
+			aFootText = aWelcomeResources.getString("welcome.copyright");
+			aFootTextPanel = new JPanel();
+			aFootTextPanel.setOpaque(false);
+			aFootTextPanel.setBorder(new EmptyBorder(0, 0, FOOT_BORDER_MARGIN, 0));
+			aFootTextPanel.setLayout(new BoxLayout(this.aFootTextPanel, BoxLayout.Y_AXIS));
+			aFootTextPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	            this.aRightTitlePanel = new JPanel();
-	            this.aRightTitlePanel.setOpaque(false);
-	            this.aRightTitlePanel.setLayout(new BorderLayout());
-	            this.aRightTitlePanel.add(panel, BorderLayout.WEST);
-	            this.aRightTitlePanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, ALTERNATIVE_BORDER_MARGIN, 0));
-	        }
-	        return this.aRightTitlePanel;
-	    }
+			JLabel text = new JLabel(this.aFootText);
+			text.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	    private JPanel getFootTextPanel()
-	    {
-	        if (this.aFootTextPanel == null)
-	        {
-	        	this.aFootText = aWelcomeResources.getString("welcome.copyright");
-	            this.aFootTextPanel = new JPanel();
-	            this.aFootTextPanel.setOpaque(false);
-	            this.aFootTextPanel.setBorder(new EmptyBorder(0, 0, FOOT_BORDER_MARGIN, 0));
-	            this.aFootTextPanel.setLayout(new BoxLayout(this.aFootTextPanel, BoxLayout.Y_AXIS));
-	            this.aFootTextPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			aFootTextPanel.add(text);
+		}
 
-	            JLabel text = new JLabel(this.aFootText);
-	            text.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-	            this.aFootTextPanel.add(text);
-	        }
-
-	        return this.aFootTextPanel;
-	    }
+		return aFootTextPanel;
+	}
 
 }	
