@@ -34,17 +34,21 @@ import javax.swing.JLabel;
  */
 public class MultiLineString implements Cloneable
 {
+	private enum Align
+	{ LEFT, CENTER, RIGHT };
+	
+	// Eventually these should be ported to the enum as well
+	// For the moment they are kept as ints to preserve the 
+	// backward compatibility with the serialized version of 
+	// the test graphs.
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	public static final int RIGHT = 2;
-	public static final int LARGE = 3;
-	public static final int NORMAL = 4;
-
+	
 	private String aText = "";
-	private int aJustification = CENTER;
+	private Align aJustification = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
-	private JLabel aLabel = new JLabel();
 	
 	/**
      * Constructs an empty, centered, normal size multi-line
@@ -70,7 +74,7 @@ public class MultiLineString implements Cloneable
 	public void setText(String pText)
 	{ 
 		aText = pText; 
-		setLabelText(); 
+		getLabel(); 
 	}
    
 	/**
@@ -88,8 +92,8 @@ public class MultiLineString implements Cloneable
 	 */
 	public void setJustification(int pJustification) 
 	{ 
-		aJustification = pJustification; 
-		setLabelText(); 
+		assert pJustification >= 0 && pJustification < Align.values().length;
+		aJustification = Align.values()[pJustification]; 
 	}
    
 	/**
@@ -98,7 +102,7 @@ public class MultiLineString implements Cloneable
 	 */
 	public int getJustification() 
 	{ 
-		return aJustification;
+		return aJustification.ordinal();
 	}
    
 	/**
@@ -125,7 +129,6 @@ public class MultiLineString implements Cloneable
 	public void setUnderlined(boolean pUnderlined) 
 	{ 
 		aUnderlined = pUnderlined; 
-		setLabelText(); 
 	}
    
 	@Override
@@ -134,23 +137,23 @@ public class MultiLineString implements Cloneable
 		return aText.replace('\n', '|');
 	}
 
-	private void setLabelText()
+	private JLabel getLabel()
 	{
-		StringBuffer htmlText = convertToHtml();
-      
-		aLabel.setText(htmlText.toString());
-		if(aJustification == LEFT)
+		JLabel label = new JLabel(convertToHtml().toString());
+		
+		if(aJustification == Align.LEFT)
 		{
-			aLabel.setHorizontalAlignment(JLabel.LEFT);
+			label.setHorizontalAlignment(JLabel.LEFT);
 		}
-		else if(aJustification == CENTER)
+		else if(aJustification == Align.CENTER)
 		{
-			aLabel.setHorizontalAlignment(JLabel.CENTER);
+			label.setHorizontalAlignment(JLabel.CENTER);
 		}
-		else if(aJustification == RIGHT) 
+		else if(aJustification == Align.RIGHT) 
 		{
-			aLabel.setHorizontalAlignment(JLabel.RIGHT);
+			label.setHorizontalAlignment(JLabel.RIGHT);
 		}
+		return label;
 	}
 
 	/*
@@ -212,23 +215,22 @@ public class MultiLineString implements Cloneable
 		{
 			return new Rectangle2D.Double();
 		}
-		// setLabelText();
-		Dimension dim = aLabel.getPreferredSize();       
+		Dimension dim = getLabel().getPreferredSize();       
 		return new Rectangle2D.Double(0, 0, dim.getWidth(), dim.getHeight());
 	}
 
 	/**
-     * Draws this multiline string inside a given rectangle.
+     * Draws this multi-line string inside a given rectangle.
      * @param pGraphics2D the graphics context
-     * @param pRectangle the rectangle into which to place this multiline string
+     * @param pRectangle the rectangle into which to place this multi-line string
 	 */
 	public void draw(Graphics2D pGraphics2D, Rectangle2D pRectangle)
 	{
-		// setLabelText();
-		aLabel.setFont(pGraphics2D.getFont());
-		aLabel.setBounds(0, 0, (int) pRectangle.getWidth(), (int) pRectangle.getHeight());
+		JLabel label = getLabel();
+		label.setFont(pGraphics2D.getFont());
+		label.setBounds(0, 0, (int) pRectangle.getWidth(), (int) pRectangle.getHeight());
 		pGraphics2D.translate(pRectangle.getX(), pRectangle.getY());
-		aLabel.paint(pGraphics2D);
+		label.paint(pGraphics2D);
 		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        
 	}
 	
@@ -244,15 +246,15 @@ public class MultiLineString implements Cloneable
 		{
 			return false;
 		}
-		if(!(aJustification == pString.getJustification()))
+		if(aJustification.ordinal() != pString.getJustification())
 		{
 			return false;
 		}
-		if(!(aBold == pString.aBold))
+		if(aBold != pString.aBold)
 		{
 			return false;
 		}
-		if(!(aUnderlined == pString.isUnderlined()))
+		if(aUnderlined != pString.isUnderlined())
 		{
 			return false;
 		}
@@ -260,14 +262,11 @@ public class MultiLineString implements Cloneable
 	}
 	
 	@Override
-	public Object clone()
+	public MultiLineString clone()
 	{
 		try
 		{
-			MultiLineString cloned = (MultiLineString) super.clone();
-			cloned.aLabel = new JLabel();
-			cloned.setLabelText();
-			return cloned;
+			return (MultiLineString) super.clone();
 		}
 		catch (CloneNotSupportedException exception)
 		{

@@ -1,8 +1,10 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class TestMultiLineString
 {
@@ -69,5 +71,47 @@ public class TestMultiLineString
 		MultiLineString string = new MultiLineString();
 		string.setText("«interface»\n<b>Foo</b>");
 		assertEquals("<html>&nbsp;«interface»&nbsp;<br>&nbsp;&lt;b&gt;Foo&lt;/b&gt;&nbsp;</html>", string.convertToHtml().toString());
+	}
+	
+	@Test
+	public void testSetJustification()
+	{
+		for( int i = 0; i < 3; i++ )
+		{
+			MultiLineString string = new MultiLineString();
+			string.setJustification(i);
+			assertEquals(i, string.getJustification());
+		}
+	}
+	
+	@Test
+	public void testEqualsProperties()
+	{
+		MultiLineString string1 = new MultiLineString();
+		MultiLineString string2 = new MultiLineString();
+		assertTrue(string1.equalProperties(string2));
+		assertTrue(string2.equalProperties(string1));
+		
+		string2.setText("Foo");
+		assertFalse(string1.equalProperties(string2));
+		assertFalse(string2.equalProperties(string1));
+		
+		string2 = new MultiLineString();
+		string2.setJustification(2);
+		assertFalse(string1.equalProperties(string2));
+		assertFalse(string2.equalProperties(string1));
+		
+		string2 = new MultiLineString(true);
+		assertFalse(string1.equalProperties(string2));
+		assertFalse(string2.equalProperties(string1));
+		
+		string2 = new MultiLineString();
+		string2.setUnderlined(true);
+		assertFalse(string1.equalProperties(string2));
+		assertFalse(string2.equalProperties(string1));
+		
+		string1.setUnderlined(true);
+		assertTrue(string1.equalProperties(string2));
+		assertTrue(string2.equalProperties(string1));
 	}
 }
