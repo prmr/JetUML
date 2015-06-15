@@ -25,14 +25,12 @@ package ca.mcgill.cs.stg.jetuml.framework;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
 
 /**
- *   A string that can extend over multiple lines.
+ *  A string that can extend over multiple lines.
  */
 public class MultiLineString implements Cloneable
 {
@@ -42,35 +40,28 @@ public class MultiLineString implements Cloneable
 	public static final int LARGE = 3;
 	public static final int NORMAL = 4;
 
-	private String aText;
-	private int aJustification;
+	private String aText = "";
+	private int aJustification = CENTER;
 	private boolean aBold = false;
-	private boolean aUnderlined;
+	private boolean aUnderlined = false;
 	private JLabel aLabel = new JLabel();
 	
 	/**
-     * Constructs an empty, centered, normal size multiline
+     * Constructs an empty, centered, normal size multi-line
      * string that is not underlined and not bold.
 	 */
 	public MultiLineString() 
-	{ 
-		aText = ""; 
-		aJustification = CENTER;
-		aUnderlined = false;    
-	}
+	{}
 	
 	/**
-     * Constructs an empty, centered, normal size multiline
+     * Constructs an empty, centered, normal size multi-line
      * string that is not underlined. pBold determines if it is bold.
      * @param pBold True if the string should be bold.
 	 */
 	public MultiLineString(boolean pBold) 
 	{ 
-		this();
 		aBold = pBold;
 	}
-	
-	
 	
 	/**
      * Sets the value of the text property.
@@ -84,7 +75,7 @@ public class MultiLineString implements Cloneable
    
 	/**
      * Gets the value of the text property.
-     * @return the text of the multiline string
+     * @return the text of the multi-line string
 	 */
 	public String getText() 
 	{ 
@@ -118,6 +109,14 @@ public class MultiLineString implements Cloneable
 	{ 
 		return aUnderlined;
 	}
+	
+	/**
+	 * @return The value of the bold property.
+	 */
+	public boolean isBold()
+	{
+		return aBold;
+	}
   
 	/**
      * Sets the value of the underlined property.
@@ -137,33 +136,8 @@ public class MultiLineString implements Cloneable
 
 	private void setLabelText()
 	{
-		StringBuffer prefix = new StringBuffer();
-		StringBuffer suffix = new StringBuffer();
-		StringBuffer htmlText = new StringBuffer();
-		labelTextPreProcessing(prefix, suffix, htmlText);
+		StringBuffer htmlText = convertToHtml();
       
-		// replace any < that are not followed by {u, i, b, tt, font, br} with &lt;
-      
-		List<String> dontReplace = Arrays.asList(new String[] { "u", "i", "b", "tt", "font", "br" });
-      
-		int ltpos = 0;
-		while(ltpos != -1)
-		{	
-			ltpos = htmlText.indexOf("<", ltpos + 1);
-			if(ltpos != -1 && !(ltpos + 1 < htmlText.length() && htmlText.charAt(ltpos + 1) == '/'))
-			{
-				int end = ltpos + 1;
-				while(end < htmlText.length() && Character.isLetter(htmlText.charAt(end))) 
-				{
-					end++;
-				}
-				if(!dontReplace.contains(htmlText.substring(ltpos + 1, end)))
-				{
-					htmlText.replace(ltpos, ltpos+1, "&lt;");
-				}
-			}
-		}
-            
 		aLabel.setText(htmlText.toString());
 		if(aJustification == LEFT)
 		{
@@ -178,31 +152,35 @@ public class MultiLineString implements Cloneable
 			aLabel.setHorizontalAlignment(JLabel.RIGHT);
 		}
 	}
-	
-	/**
-	 * @param pPrefix The prefix to process.
-	 * @param pSuffix The suffix to process.
-	 * @param pHtmlText The html elements to process.
+
+	/*
+	 * @return an HTML version of the text of the string,
+	 * taking into account the properties (underline, bold, etc.)
 	 */
-	public void labelTextPreProcessing(StringBuffer pPrefix, StringBuffer pSuffix, StringBuffer pHtmlText)
+	StringBuffer convertToHtml()
 	{
-		pPrefix.append("&nbsp;");
-		pSuffix.insert(0, "&nbsp;");
+		StringBuffer prefix = new StringBuffer();
+		StringBuffer suffix = new StringBuffer();
+		StringBuffer htmlText = new StringBuffer();
+		
+		// Add some spacing before and after the text.
+		prefix.append("&nbsp;");
+		suffix.insert(0, "&nbsp;");
 		if(aUnderlined) 
 		{
-			pPrefix.append("<u>");
-			pSuffix.insert(0, "</u>");
+			prefix.append("<u>");
+			suffix.insert(0, "</u>");
 		}
 		if(aBold)
 		{
-			pPrefix.append("<b>");
-			pSuffix.insert(0, "</b>");
+			prefix.append("<b>");
+			suffix.insert(0, "</b>");
 		}
 
-		pHtmlText.append("<html>");
+		htmlText.append("<html>");
 		StringTokenizer tokenizer = new StringTokenizer(aText, "\n");
 		boolean first = true;
-		while (tokenizer.hasMoreTokens())
+		while(tokenizer.hasMoreTokens())
 		{
 			if(first) 
 			{
@@ -210,13 +188,17 @@ public class MultiLineString implements Cloneable
 			}
 			else 
 			{
-				pHtmlText.append("<br>");
+				htmlText.append("<br>");
 			}
-			pHtmlText.append(pPrefix);
-			pHtmlText.append(tokenizer.nextToken());
-			pHtmlText.append(pSuffix);
+			htmlText.append(prefix);
+			String next = tokenizer.nextToken();
+			String next1 = next.replaceAll("<", "&lt;");
+			String next2 = next1.replaceAll(">", "&gt;");
+			htmlText.append(next2);
+			htmlText.append(suffix);
 		}      
-		pHtmlText.append("</html>");
+		htmlText.append("</html>");
+		return htmlText;
 	}
    
 	/**
