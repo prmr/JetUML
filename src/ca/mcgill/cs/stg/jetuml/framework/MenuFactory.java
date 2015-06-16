@@ -39,7 +39,8 @@ import javax.swing.KeyStroke;
 class MenuFactory
 {
 	private ResourceBundle aBundle;
-
+	private final String aSystem; 
+	
 	/**
 	 * @param pBundle The bundle to use to fetch
 	 * resources.
@@ -47,6 +48,7 @@ class MenuFactory
 	public MenuFactory(ResourceBundle pBundle)
 	{
 		aBundle = pBundle;
+		aSystem = System.getProperty("os.name").toLowerCase();
 	}
 
 	/**
@@ -91,15 +93,23 @@ class MenuFactory
 	 * Configures the menu with text, mnemonic, accelerator, etc
 	 */
 	private JMenuItem configure(JMenuItem pMenuItem, String pPrefix, ActionListener pListener)
-	{      
+	{
 		pMenuItem.addActionListener(pListener);
 		if( aBundle.containsKey(pPrefix + ".mnemonic"))
 		{
 			pMenuItem.setMnemonic(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
 		}
-		if( aBundle.containsKey(pPrefix + ".accelerator"))
+		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
 		{
-			pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator")));
+			if(aSystem.indexOf("mac") >= 0)
+			{
+				pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.mac")));	
+			}
+			else
+			{
+				pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.win")));
+			}
+			
 		}
 		if( aBundle.containsKey(pPrefix + ".tooltip"))
 		{
@@ -129,15 +139,22 @@ class MenuFactory
       	{
       		menu.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
       	}
-		if( aBundle.containsKey(pPrefix + ".accelerator"))
+		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
 		{
-			menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator")));
+			if(aSystem.indexOf("mac") >= 0)
+			{
+				menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.mac")));	
+			}
+			else
+			{
+				menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.win")));
+			}
 		}
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
 			menu.setIcon(new ImageIcon(getClass().getClassLoader().getResource(aBundle.getString(pPrefix + ".icon"))));
 		}
-		
-      	return menu;
+
+		return menu;
 	}
 }
