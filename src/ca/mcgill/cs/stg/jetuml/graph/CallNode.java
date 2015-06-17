@@ -46,6 +46,7 @@ public class CallNode extends HierarchicalNode
 	
 	private static final int DEFAULT_WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
+	private static final int MIN_YGAP = 10;
 	
 	private ImplicitParameterNode aImplicitParameter;
 	private boolean aSignaled;
@@ -61,6 +62,17 @@ public class CallNode extends HierarchicalNode
 		aCalls = new ArrayList<HierarchicalNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
+	
+//	/* 
+//	 * Ensures that call nodes cannot be moved above the ImplicitParameterNode
+//	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
+//	 */
+//	@Override
+//	public void translate(double pDeltaX, double pDeltaY)
+//	{
+//		System.out.println(pDeltaX);
+//		super.translate(pDeltaX, pDeltaY);
+//	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
@@ -156,61 +168,33 @@ public class CallNode extends HierarchicalNode
 		return null;
    }
 
+	/* (non-Javadoc)
+	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
+	 */
+	@Override
+	public void translate(double pDeltaX, double pDeltaY)
+	{
+		super.translate(pDeltaX, pDeltaY);
+		// Prevent going about the ImplicitParameterNode
+		if( getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
+		{
+			setBounds(new Rectangle2D.Double(getBounds().getX(), aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP, 
+					getBounds().getWidth(), getBounds().getHeight()));
+		}
+	}
+
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
-		if(aImplicitParameter == null)
-		{
-			return;
-		}
-		double xmid = aImplicitParameter.getBounds().getCenterX();
-
-		for(CallNode c = (CallNode)getParent(); c != null; c = (CallNode)c.getParent())
-		{
-			if (c.aImplicitParameter == aImplicitParameter)
-			{
-				xmid += getBounds().getWidth() / 2;
-			}
-		}
-
-		translate(xmid - getBounds().getCenterX(), 0);
-		double ytop = getBounds().getY() + CALL_YGAP;
-
-		for(int i = 0; i < aCalls.size(); i++)
-		{
-			Node n = aCalls.get(i);
-			if(n instanceof ImplicitParameterNode) // <<create>>
-			{
-				n.translate(0, ytop - ((ImplicitParameterNode) n).getTopRectangle().getCenterY());
-				ytop += ((ImplicitParameterNode)n).getTopRectangle().getHeight() / 2 + CALL_YGAP;
-			}
-			else if(n instanceof CallNode)
-			{  
-				Edge callEdge = findEdge(pGraph, this, n);
-				// compute height of call edge
-				if(callEdge != null)
-				{
-					Rectangle2D edgeBounds = callEdge.getBounds();
-					ytop += edgeBounds.getHeight() - CALL_YGAP;
-				}
-            
-				n.translate(0, ytop - n.getBounds().getY());
-				n.layout(pGraph, pGraphics2D, pGrid);
-				if(((CallNode) n).aSignaled)
-				{
-					ytop += CALL_YGAP;
-				}
-				else
-				{
-					ytop += n.getBounds().getHeight() + CALL_YGAP;
-				}
-			}
-		}
-		if(aOpenBottom)
-		{
-			ytop += 2 * CALL_YGAP;
-		}
-		Rectangle2D b = getBounds();
+		assert aImplicitParameter != null;
+		
+		// Shift the node to its proper place on the X axis.
+		translate(computeMidX() - getBounds().getCenterX(), 0);
+		
+		// Compute the Y coordinate of the bottom of the node
+		double bottomY = computeBottomY(pGraph, pGraphics2D, pGrid);
+		
+		Rectangle2D bounds = getBounds();
       
 		double minHeight = DEFAULT_HEIGHT;
 		Edge returnEdge = findEdge(pGraph, this, getParent());
@@ -219,9 +203,72 @@ public class CallNode extends HierarchicalNode
 			Rectangle2D edgeBounds = returnEdge.getBounds();
 			minHeight = Math.max(minHeight, edgeBounds.getHeight());         
 		}
-		setBounds(new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), Math.max(minHeight, ytop - b.getY())));
+		setBounds(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
 	}
+	
+	/*
+	 * @return The X coordinate that should be the middle
+	 * of this call node. Takes into account nested calls.
+	 */
+	private double computeMidX()
+	{
+		double xmid = aImplicitParameter.getBounds().getCenterX();
 
+		// Calculate a shift for each parent (=caller) with the same implicit parameter
+		for(CallNode node = (CallNode)getParent(); node != null; node = (CallNode)node.getParent())
+		{
+			if (node.aImplicitParameter == aImplicitParameter)
+			{
+				xmid += getBounds().getWidth() / 2;
+			}
+		}
+		return xmid;
+	}
+	
+	/*
+	 * Compute the Y coordinate of the bottom of the CallNode. This 
+	 * triggers the layout of all callee nodes.
+	 */
+	private double computeBottomY(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		// Compute the Y coordinate of the bottom of the node
+		double bottomY = getBounds().getY() + CALL_YGAP;
+
+		for(HierarchicalNode node : aCalls)
+		{
+			if(node instanceof ImplicitParameterNode) // <<create>>
+			{
+				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle().getCenterY());
+				bottomY += ((ImplicitParameterNode)node).getTopRectangle().getHeight() / 2 + CALL_YGAP;
+			}
+			else if(node instanceof CallNode)
+			{  
+				Edge callEdge = findEdge(pGraph, this, node);
+				// compute height of call edge
+				if(callEdge != null)
+				{
+					bottomY += callEdge.getBounds().getHeight() - CALL_YGAP;
+				}
+
+				node.translate(0, bottomY - node.getBounds().getY());
+				node.layout(pGraph, pGraphics2D, pGrid);
+				if(((CallNode) node).aSignaled)
+				{
+					bottomY += CALL_YGAP;
+				}
+				else
+				{
+					bottomY += node.getBounds().getHeight() + CALL_YGAP;
+				}
+			}
+		}
+		if(aOpenBottom)
+		{
+			bottomY += 2 * CALL_YGAP;
+		}
+		return bottomY;
+	}
+	
 	@Override
 	public void addChild(int pIndex, HierarchicalNode pNode) 
 	{

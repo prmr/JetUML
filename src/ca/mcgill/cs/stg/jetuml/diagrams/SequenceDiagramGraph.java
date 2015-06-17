@@ -51,34 +51,43 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
+	private static final int CALL_NODE_YGAP = 5;
+	
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		if(pNode instanceof CallNode) // must be inside an object
 		{
-			Collection<Node> nodes = getNodes();
-			boolean inside = false;
-			Iterator<Node> iter = nodes.iterator();
-			while(!inside && iter.hasNext())
-			{
-				Node n2 = (Node)iter.next();
-				if(n2 instanceof ImplicitParameterNode && n2.contains(pPoint)) 
-				{
-					inside = true;
-					((CallNode)pNode).setImplicitParameter((ImplicitParameterNode)n2);
-				}
-			}
-			if (!inside)
+			ImplicitParameterNode target = insideTargetArea(pPoint);
+			if( target == null )
 			{
 				return false;
 			}
+			else
+			{
+				((CallNode)pNode).setImplicitParameter(target);
+			}
 		}
-
-		if(!super.add(pNode, pPoint)) 
+		return super.add(pNode, pPoint);
+	}
+	
+	/*
+	 * If pPoint is inside an ImplicitParameterNode but below its top
+	 * rectangle, returns that node. Otherwise, returns null.
+	 */
+	private ImplicitParameterNode insideTargetArea(Point2D pPoint)
+	{
+		for( Node node : getNodes() )
 		{
-			return false;
+			if(node instanceof ImplicitParameterNode && node.contains(pPoint))
+			{
+				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
+				{
+					return (ImplicitParameterNode) node;
+				}
+			}
 		}
-		return true;
+		return null;
 	}
 	
 	@Override
