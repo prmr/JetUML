@@ -334,8 +334,6 @@ public class SequenceDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
 	}
 	
-	// -- 
-	
 	/**
 	 * Adds a node to the graph so that the top left corner of
 	 * the bounding rectangle is at the given point.
@@ -347,16 +345,10 @@ public class SequenceDiagramGraph extends Graph
 	{
 		aModListener.startCompoundListening();
 
-		if(!super.add(pNode, pPoint))
+		super.add(pNode, pPoint);
+				
+		for(Node parent : aNodes)
 		{
-			aModListener.endCompoundListening();
-			return false;
-		}
-		
-		boolean accepted = false;
-		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
-		{
-			Node parent = aNodes.get(i);
 			if (parent == pNode)
 			{
 				continue;
@@ -370,7 +362,7 @@ public class SequenceDiagramGraph extends Graph
 					HierarchicalNode parentParent = (HierarchicalNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
-				accepted = true;
+				break;
 			}
 		}
 		aModListener.endCompoundListening();

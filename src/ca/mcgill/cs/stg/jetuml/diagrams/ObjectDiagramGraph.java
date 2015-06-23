@@ -115,11 +115,7 @@ public class ObjectDiagramGraph extends Graph
 			}
 		}
 		
-		if(!superadd(pNode, pPoint)) 
-		{
-			return false;
-		}
-		return true;
+		return superadd(pNode, pPoint); 
 	}
 	
 	@Override
@@ -204,16 +200,10 @@ public class ObjectDiagramGraph extends Graph
 	{
 		aModListener.startCompoundListening();
 
-		if(!super.add(pNode, pPoint))
+		super.add(pNode, pPoint);
+				
+		for(Node parent : aNodes)
 		{
-			aModListener.endCompoundListening();
-			return false;
-		}
-		
-		boolean accepted = false;
-		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
-		{
-			Node parent = aNodes.get(i);
 			if (parent == pNode)
 			{
 				continue;
@@ -227,7 +217,7 @@ public class ObjectDiagramGraph extends Graph
 					HierarchicalNode parentParent = (HierarchicalNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
-				accepted = true;
+				break;
 			}
 		}
 		aModListener.endCompoundListening();

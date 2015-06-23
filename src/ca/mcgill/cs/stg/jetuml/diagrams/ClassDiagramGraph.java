@@ -118,20 +118,15 @@ public class ClassDiagramGraph extends Graph
 	 * @param pPoint the desired location
 	 * @return True if the node was added.
 	 */
+	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		aModListener.startCompoundListening();
 
-		if(!super.add(pNode, pPoint))
+		super.add(pNode, pPoint);
+				
+		for(Node parent : aNodes)
 		{
-			aModListener.endCompoundListening();
-			return false;
-		}
-		
-		boolean accepted = false;
-		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
-		{
-			Node parent = aNodes.get(i);
 			if (parent == pNode)
 			{
 				continue;
@@ -145,7 +140,7 @@ public class ClassDiagramGraph extends Graph
 					HierarchicalNode parentParent = (HierarchicalNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
-				accepted = true;
+				break;
 			}
 		}
 		aModListener.endCompoundListening();
@@ -165,9 +160,8 @@ public class ClassDiagramGraph extends Graph
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
-		for(int i = 0; i < aNodes.size(); i++)
+		for(Node n2 : aNodes)
 		{
-			Node n2 = aNodes.get(i);
 			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
 			{
 				HierarchicalNode curNode = (HierarchicalNode) n2;
