@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalGraph;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -46,7 +46,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagramGraph extends HierarchicalGraph
+public class SequenceDiagramGraph extends Graph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
@@ -68,7 +68,7 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 				((CallNode)pNode).setImplicitParameter(target);
 			}
 		}
-		return super.add(pNode, pPoint);
+		return superadd(pNode, pPoint);
 	}
 	
 	/*
@@ -90,8 +90,7 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 		return null;
 	}
 	
-	@Override
-	protected boolean canAddNode(Node pParent, Node pPotentialChild)
+	private boolean canAddNode(Node pParent, Node pPotentialChild)
 	{
 		if( pParent instanceof CallNode )
 		{
@@ -104,7 +103,6 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 		return false;
 	}
 	
-	@Override
 	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2) )
@@ -334,6 +332,100 @@ public class SequenceDiagramGraph extends HierarchicalGraph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
+	}
+	
+	// -- 
+	
+	/**
+	 * Adds a node to the graph so that the top left corner of
+	 * the bounding rectangle is at the given point.
+	 * @param pNode the node to add
+	 * @param pPoint the desired location
+	 * @return True if the node was added.
+	 */
+	private boolean superadd(Node pNode, Point2D pPoint)
+	{
+		aModListener.startCompoundListening();
+
+		if(!super.add(pNode, pPoint))
+		{
+			aModListener.endCompoundListening();
+			return false;
+		}
+		
+		boolean accepted = false;
+		for(int i = aNodes.size() - 1; i >= 0 && !accepted; i--)
+		{
+			Node parent = aNodes.get(i);
+			if (parent == pNode)
+			{
+				continue;
+			}
+			if (parent.contains(pPoint) && canAddNode(parent, pNode))
+			{
+				addNode(parent, pNode, pPoint);
+				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
+				{
+					HierarchicalNode curNode = (HierarchicalNode) pNode;
+					HierarchicalNode parentParent = (HierarchicalNode) parent;
+					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
+				}
+				accepted = true;
+			}
+		}
+		aModListener.endCompoundListening();
+		return true;
+	}
+	
+	/**
+	 * Diagram-specific behavior taking place before the addition of a node.
+	 * @param pParent The parent node.
+	 * @param pChild The child about the be added to the parent. 
+	 * @param pPoint The point of the node to add the child.
+	 */
+	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
+	{}
+
+
+	/**
+	 * Removes a node and all edges that start or end with that node.
+	 * @param pNode the node to remove
+	 * @return false if node was already deleted, true if deleted properly
+	 */
+	public boolean removeNode(Node pNode)
+	{
+		if(aNodesToBeRemoved.contains(pNode))
+		{
+			return false;
+		}
+		aModListener.startCompoundListening();
+		// notify nodes of removals
+		for(int i = 0; i < aNodes.size(); i++)
+		{
+			Node n2 = aNodes.get(i);
+			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
+			{
+				HierarchicalNode curNode = (HierarchicalNode) n2;
+				HierarchicalNode parentParent = (HierarchicalNode) pNode;
+				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
+				{
+					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
+				}
+			}
+		}
+		/*Remove the children too @JoelChev*/
+		if(pNode instanceof HierarchicalNode)
+		{
+			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
+			//We create a shallow clone so deleting children does not affect the loop
+			for(Node childNode: children)
+			{
+				removeNode(childNode);
+			}
+		}
+		super.removeNode(pNode);
+		aModListener.endCompoundListening();
+		return true;
 	}
 }
 
