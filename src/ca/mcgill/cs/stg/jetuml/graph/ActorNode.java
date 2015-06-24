@@ -32,14 +32,13 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   An actor node in a use case diagram.
  */
-public class ActorNode extends HierarchicalNode
+public class ActorNode extends RectangularNode
 {
 	// Bounding rectangle
 	private static final int DEFAULT_WIDTH  = 48;
 	private static final int DEFAULT_HEIGHT = 64;
 	
 	// Stick man
-	// Height = HEAD_SIZE + BODY_SIZE + LEG_SIZE/sqrt(2)
 	// CSOFF:
 	private static final int GAP_ABOVE = 4;
 	private static final int HEAD_SIZE = DEFAULT_WIDTH*4/12;

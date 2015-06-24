@@ -79,10 +79,6 @@ public class AttachDetachChildCommand implements Command
 		{
 			((PackageNode) aParent).removeChild(aChild);
 		}
-		else if (aParent instanceof ActorNode)
-		{
-			((ActorNode) aParent).removeChild(aChild);
-		}
 		aGraph.layout();
 	}
 	
@@ -98,10 +94,6 @@ public class AttachDetachChildCommand implements Command
 		else if (aParent instanceof PackageNode)
 		{
 			((PackageNode) aParent).addChild(aIndex, aChild);
-		}
-		else if (aParent instanceof ActorNode)
-		{
-			((ActorNode) aParent).addChild(aIndex, aChild);
 		}
 		aGraph.layout();
 	}

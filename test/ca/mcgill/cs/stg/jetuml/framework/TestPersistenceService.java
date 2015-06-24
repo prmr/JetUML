@@ -138,14 +138,10 @@ public class TestPersistenceService
 		assertEquals("Use case 3", u3.getName().toString());
 		
 		assertEquals(new Rectangle2D.Double(270, 50, 60, 80), a1.getBounds());
-		assertEquals(0, a1.getChildren().size());
 		assertEquals("Actor", a1.getName().toString());
-		assertNull(a1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(280, 230, 60, 80), a2.getBounds());
-		assertEquals(0, a2.getChildren().size());
 		assertEquals("Actor2", a2.getName().toString());
-		assertNull(a2.getParent());
 		
 		assertEquals("A note", n1.getText().getText());
 		assertEquals(new Rectangle2D.Double(700, 50, 60, 40), n1.getBounds());
@@ -156,9 +152,7 @@ public class TestPersistenceService
 		assertEquals("Use case 4", u4.getName().toString());
 		
 		assertEquals(new Rectangle2D.Double(190, 140, 60, 80), a3.getBounds());
-		assertEquals(0, a3.getChildren().size());
 		assertEquals("Actor3", a3.getName().toString());
-		assertNull(a3.getParent());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(10, edges.size());
