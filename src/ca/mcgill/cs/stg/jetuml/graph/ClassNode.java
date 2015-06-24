@@ -24,6 +24,8 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
@@ -31,7 +33,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends HNode
+public class ClassNode extends RectangularNode implements HierarchicalNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
@@ -42,6 +44,7 @@ public class ClassNode extends HNode
 	private MultiLineString aName;
 	private MultiLineString aAttributes;
 	private MultiLineString aMethods;
+	private HierarchicalNode aParent;
 
 	/**
      * Construct a class node with a default size.
@@ -166,5 +169,43 @@ public class ClassNode extends HNode
 		cloned.aMethods = (MultiLineString)aMethods.clone();
 		cloned.aAttributes = (MultiLineString)aAttributes.clone();
 		return cloned;
+	}
+
+	@Override
+	public HierarchicalNode getParent()
+	{
+		return aParent;
+	}
+
+	@Override
+	public void setParent(HierarchicalNode pNode)
+	{
+		assert pNode instanceof PackageNode;
+		aParent = (PackageNode) pNode;
+	}
+
+	@Override
+	public List<HierarchicalNode> getChildren()
+	{
+		assert false;
+		return new ArrayList<HierarchicalNode>();
+	}
+
+	@Override
+	public void addChild(int pIndex, HierarchicalNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void addChild(HierarchicalNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void removeChild(HierarchicalNode pNode)
+	{
+		assert false;		
 	}
 }
