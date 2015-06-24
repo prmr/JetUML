@@ -224,16 +224,12 @@ public class ObjectDiagramGraph extends Graph
 		return true;
 	}
 	
-	/**
-	 * Removes a node and all edges that start or end with that node.
-	 * @param pNode the node to remove
-	 * @return false if node was already deleted, true if deleted properly
-	 */
-	public boolean removeNode(Node pNode)
+	@Override
+	public void removeNode(Node pNode)
 	{
 		if(aNodesToBeRemoved.contains(pNode))
 		{
-			return false;
+			return;
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
@@ -262,7 +258,6 @@ public class ObjectDiagramGraph extends Graph
 		}
 		super.removeNode(pNode);
 		aModListener.endCompoundListening();
-		return true;
 	}
 }
 

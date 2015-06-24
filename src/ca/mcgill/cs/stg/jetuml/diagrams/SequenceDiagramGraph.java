@@ -230,51 +230,51 @@ public class SequenceDiagramGraph extends Graph
 		heightObjectLayout(topLevelCalls, objects, pGraphics2D, pGrid);
 	}
 	
-	/**
+	/*
 	 * @param pTopLevelCalls an ArrayList of Nodes in the topLevel of Calls.
 	 * @param pObjects an ArrayList of Nodes to work with.
 	 * @param pGraphics2D Graphics2D from layout call.
 	 * @param pGrid Grid from layout call.
 	 */
-	public void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D, Grid pGrid)
+	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		// find the max of the heights of the objects
-				Collection<Node>nodes = getNodes();
-				Iterator<Node> iter;
-				double top = 0;
-				for(int i = 0; i < pObjects.size(); i++)
-				{
-					ImplicitParameterNode n = (ImplicitParameterNode)pObjects.get(i);
-					n.translate(0, -n.getBounds().getY());
-					top = Math.max(top, n.getTopRectangle().getHeight());
-				}
+		Collection<Node>nodes = getNodes();
+		Iterator<Node> iter;
+		double top = 0;
+		for(int i = 0; i < pObjects.size(); i++)
+		{
+			ImplicitParameterNode n = (ImplicitParameterNode)pObjects.get(i);
+			n.translate(0, -n.getBounds().getY());
+			top = Math.max(top, n.getTopRectangle().getHeight());
+		}
 
-				for (int i = 0; i < pTopLevelCalls.size(); i++)
-				{
-					CallNode call = (CallNode) pTopLevelCalls.get(i);
-					call.layout(this, pGraphics2D, pGrid);
-				}
+		for (int i = 0; i < pTopLevelCalls.size(); i++)
+		{
+			CallNode call = (CallNode) pTopLevelCalls.get(i);
+			call.layout(this, pGraphics2D, pGrid);
+		}
 
-				iter = nodes.iterator();
-				while(iter.hasNext())
-				{
-					Node n = (Node)iter.next();
-					if(n instanceof CallNode) 
-					{
-						top = Math.max(top, n.getBounds().getY() + n.getBounds().getHeight());
-					}
-				}
+		iter = nodes.iterator();
+		while(iter.hasNext())
+		{
+			Node n = (Node)iter.next();
+			if(n instanceof CallNode) 
+			{
+				top = Math.max(top, n.getBounds().getY() + n.getBounds().getHeight());
+			}
+		}
 
-				top += CallNode.CALL_YGAP;
+		top += CallNode.CALL_YGAP;
 
-				for(int i = 0; i < pObjects.size(); i++)
-				{
-					ImplicitParameterNode n = (ImplicitParameterNode) pObjects.get(i);
-					Rectangle2D b = n.getBounds();
-					n.setBounds(new Rectangle2D.Double(
-		            b.getX(), b.getY(), 
-		            b.getWidth(), top - b.getY()));         
-				}
+		for(int i = 0; i < pObjects.size(); i++)
+		{
+			ImplicitParameterNode n = (ImplicitParameterNode) pObjects.get(i);
+			Rectangle2D b = n.getBounds();
+			n.setBounds(new Rectangle2D.Double(
+					b.getX(), b.getY(), 
+					b.getWidth(), top - b.getY()));         
+		}
 	}
 
 	@Override
@@ -382,13 +382,12 @@ public class SequenceDiagramGraph extends Graph
 	/**
 	 * Removes a node and all edges that start or end with that node.
 	 * @param pNode the node to remove
-	 * @return false if node was already deleted, true if deleted properly
 	 */
-	public boolean removeNode(Node pNode)
+	public void removeNode(Node pNode)
 	{
 		if(aNodesToBeRemoved.contains(pNode))
 		{
-			return false;
+			return;
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
@@ -417,7 +416,6 @@ public class SequenceDiagramGraph extends Graph
 		}
 		super.removeNode(pNode);
 		aModListener.endCompoundListening();
-		return true;
 	}
 }
 

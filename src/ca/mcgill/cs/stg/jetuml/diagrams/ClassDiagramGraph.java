@@ -46,25 +46,19 @@ public class ClassDiagramGraph extends Graph
 	//CSOFF:
 	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[7];
-	
+
 	static
 	{
 		EDGE_PROTOTYPES[0] = ClassRelationshipEdge.createDependencyEdge();
-	      
 		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createInheritanceEdge();
-
 		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createInterfaceInheritanceEdge();
-
 		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
-
 		EDGE_PROTOTYPES[4] = ClassRelationshipEdge.createAggregationEdge();
-
 		EDGE_PROTOTYPES[5] = ClassRelationshipEdge.createCompositionEdge();
-		
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
 	//CSON:
-	
+
 	@Override
 	public Node[] getNodePrototypes()
 	{
@@ -88,7 +82,7 @@ public class ClassDiagramGraph extends Graph
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("class.name");
 	}
-	
+
 	private boolean canAddNode(Node pParent, Node pPotentialChild)
 	{
 		if( pParent instanceof ClassNode || pParent instanceof InterfaceNode )
@@ -102,38 +96,25 @@ public class ClassDiagramGraph extends Graph
 		}
 		return false;
 	}
-	
-	private void addNode(Node pParent, Node pChild, Point2D pPoint)
-	{
-		if( pParent instanceof PackageNode )
-		{
-			((PackageNode)pParent).addChild((HierarchicalNode)pChild);
-		}
-	}
-	
-	/**
-	 * Adds a node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point.
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @return True if the node was added.
-	 */
+
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		aModListener.startCompoundListening();
-
 		super.add(pNode, pPoint);
-				
+
 		for(Node parent : aNodes)
 		{
-			if (parent == pNode)
+			if(parent == pNode)
 			{
 				continue;
 			}
-			if (parent.contains(pPoint) && canAddNode(parent, pNode))
+			if(parent.contains(pPoint) && canAddNode(parent, pNode))
 			{
-				addNode(parent, pNode, pPoint);
+				if( parent instanceof PackageNode )
+				{
+					((PackageNode)parent).addChild((HierarchicalNode)pNode);
+				}
 				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
 				{
 					HierarchicalNode curNode = (HierarchicalNode) pNode;
@@ -146,17 +127,13 @@ public class ClassDiagramGraph extends Graph
 		aModListener.endCompoundListening();
 		return true;
 	}
-	
-	/**
-	 * Removes a node and all edges that start or end with that node.
-	 * @param pNode the node to remove
-	 * @return false if node was already deleted, true if deleted properly
-	 */
-	public boolean removeNode(Node pNode)
+
+	@Override
+	public void removeNode(Node pNode)
 	{
 		if(aNodesToBeRemoved.contains(pNode))
 		{
-			return false;
+			return;
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
@@ -184,7 +161,6 @@ public class ClassDiagramGraph extends Graph
 		}
 		super.removeNode(pNode);
 		aModListener.endCompoundListening();
-		return true;
 	}
 }
 

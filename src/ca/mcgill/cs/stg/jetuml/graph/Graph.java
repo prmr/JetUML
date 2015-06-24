@@ -267,13 +267,12 @@ public abstract class Graph
 	/**
 	 * Removes a node and all edges that start or end with that node.
 	 * @param pNode the node to remove
-	 * @return false if node was already deleted, true if deleted properly
 	 */
-	public boolean removeNode(Node pNode)
+	public void removeNode(Node pNode)
 	{
 		if(aNodesToBeRemoved.contains(pNode))
 		{
-			return false;
+			return;
 		}
 		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
@@ -295,7 +294,6 @@ public abstract class Graph
 		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
-		return true;
 	}
 	
 	/**
