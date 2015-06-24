@@ -31,7 +31,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * An interface node in a class diagram.
  */
-public class InterfaceNode extends HierarchicalNode
+public class InterfaceNode extends HNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;

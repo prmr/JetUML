@@ -14,7 +14,7 @@ import java.lang.reflect.Modifier;
 
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.HNode;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).
@@ -92,7 +92,7 @@ public final class PersistenceService
       
 		Graph.setPersistenceDelegate(encoder);
 		AbstractNode.setPersistenceDelegate(encoder);
-		HierarchicalNode.setPersistenceDelegate(encoder);
+		HNode.setPersistenceDelegate(encoder);
 		
 		encoder.writeObject(pGraph);
 		encoder.close();

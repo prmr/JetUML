@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 /**
  * A method call node in a scenario diagram.
 */
-public class CallNode extends HierarchicalNode
+public class CallNode extends HNode
 {
 	public static final int CALL_YGAP = 20;
 	

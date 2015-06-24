@@ -31,7 +31,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends HierarchicalNode
+public class ClassNode extends HNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
