@@ -36,7 +36,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  *  A UML class diagram.
@@ -83,51 +82,75 @@ public class ClassDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("class.name");
 	}
 
-	private boolean canAddNode(Node pParent, Node pPotentialChild)
+	private static boolean canAddNodeAsChild(Node pParent, Node pPotentialChild)
 	{
-		if( pParent instanceof ClassNode || pParent instanceof InterfaceNode )
-		{
-			return pPotentialChild instanceof PointNode;
-		}
-		else if( pParent instanceof PackageNode )
+		if( pParent instanceof PackageNode )
 		{
 			return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
-					pPotentialChild instanceof PackageNode || pPotentialChild instanceof NoteNode;
+					pPotentialChild instanceof PackageNode ;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/* Find if the node to be added should be added to a package. Returns null if not */
+	private PackageNode findContainer(Node pNode, Point2D pPoint)
+	{
+		ArrayList<PackageNode> candidates = new ArrayList<>();
+		for( Node node : aNodes )
+		{
+			if( node == pNode )
+			{
+				continue;
+			}
+			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
+			{
+				candidates.add((PackageNode)node); // canAddNodeAsChild ensures the downcast is valid
+			}
+		}
+		// There should be only one node without a child (the top package)
+		for( PackageNode node : candidates )
+		{
+			if(!hasChild(candidates, node))
+			{
+				return node;
+			}
+		}
+		return null;
+	}
+
+	/*
+	 * returns true if pNode has a child among pPackages
+	 */
+	private static boolean hasChild(ArrayList<PackageNode> pPackages, PackageNode pNode)
+	{
+		for( PackageNode node : pPackages )
+		{
+			if( pNode.getChildren().contains(node) )
+			{
+				return true;
+			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
 		aModListener.startCompoundListening();
 		super.add(pNode, pPoint);
-
-		for(Node parent : aNodes)
+		PackageNode container = findContainer(pNode, pPoint);
+		if( container != null )
 		{
-			if(parent == pNode)
-			{
-				continue;
-			}
-			if(parent.contains(pPoint) && canAddNode(parent, pNode))
-			{
-				if( parent instanceof PackageNode )
-				{
-					((PackageNode)parent).addChild((HierarchicalNode)pNode);
-				}
-				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
-				{
-					HierarchicalNode curNode = (HierarchicalNode) pNode;
-					HierarchicalNode parentParent = (HierarchicalNode) parent;
-					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
-				}
-				break;
-			}
+			container.addChild((HierarchicalNode)pNode);
+			aModListener.childAttached(this, container.getChildren().indexOf(pNode), container, (HierarchicalNode) pNode);
 		}
 		aModListener.endCompoundListening();
 		return true;
 	}
-
+	
 	@Override
 	public void removeNode(Node pNode)
 	{

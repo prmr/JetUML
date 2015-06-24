@@ -27,6 +27,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -37,7 +42,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends HNode
+public class PackageNode extends RectangularNode implements HierarchicalNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
@@ -53,6 +58,8 @@ public class PackageNode extends HNode
 	private MultiLineString aContents;
 	private Rectangle2D aTop;
 	private Rectangle2D aBottom;
+	private ArrayList<HierarchicalNode> aContainedNodes;
+	private HierarchicalNode aContainer;
 	   
 	/**
      * Construct a package node with a default size.
@@ -64,6 +71,7 @@ public class PackageNode extends HNode
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aTop = new Rectangle2D.Double(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
 		aBottom = new Rectangle2D.Double(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
+		aContainedNodes = new ArrayList<>();
 	}
 
 	@Override
@@ -206,11 +214,81 @@ public class PackageNode extends HNode
 		return aContents;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public PackageNode clone()
 	{
 		PackageNode cloned = (PackageNode)super.clone();
 		cloned.aContents = (MultiLineString)aContents.clone();
+		cloned.aContainedNodes = (ArrayList<HierarchicalNode>)aContainedNodes.clone();
 		return cloned;
+	}
+	
+	@Override
+	public HierarchicalNode getParent()
+	{
+		return aContainer;
+	}
+
+	@Override
+	public void setParent(HierarchicalNode pNode)
+	{
+		assert pNode instanceof PackageNode;
+		aContainer = (PackageNode) pNode;
+	}
+
+	@Override
+	public List<HierarchicalNode> getChildren()
+	{
+		return aContainedNodes; // TODO there should be a remove operation on PackageNode
+	}
+
+	@Override
+	public void addChild(int pIndex, HierarchicalNode pNode)
+	{
+		HierarchicalNode oldParent = pNode.getParent();
+		if (oldParent != null)
+		{
+			oldParent.removeChild(pNode);
+		}
+		aContainedNodes.add(pIndex, pNode);
+		pNode.setParent(this);
+	}
+
+	@Override
+	public void addChild(HierarchicalNode pNode)
+	{
+		addChild(aContainedNodes.size(), pNode);
+	}
+
+	@Override
+	public void removeChild(HierarchicalNode pNode)
+	{
+		if (pNode.getParent() != this)
+		{
+			return;
+		}
+		aContainedNodes.remove(pNode);
+		pNode.setParent(null);
+	}
+	
+	/**
+	 *  Adds a persistence delegate to a given encoder that
+	 * encodes the child nodes of this node.
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(PackageNode.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				{
+					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
+				}
+			}
+		});
 	}
 }

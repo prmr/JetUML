@@ -44,7 +44,7 @@ public class ClassNode extends RectangularNode implements HierarchicalNode
 	private MultiLineString aName;
 	private MultiLineString aAttributes;
 	private MultiLineString aMethods;
-	private HierarchicalNode aParent;
+	private HierarchicalNode aContainer;
 
 	/**
      * Construct a class node with a default size.
@@ -174,20 +174,19 @@ public class ClassNode extends RectangularNode implements HierarchicalNode
 	@Override
 	public HierarchicalNode getParent()
 	{
-		return aParent;
+		return aContainer;
 	}
 
 	@Override
 	public void setParent(HierarchicalNode pNode)
 	{
 		assert pNode instanceof PackageNode;
-		aParent = (PackageNode) pNode;
+		aContainer = (PackageNode) pNode;
 	}
 
 	@Override
 	public List<HierarchicalNode> getChildren()
 	{
-		assert false;
 		return new ArrayList<HierarchicalNode>();
 	}
 
