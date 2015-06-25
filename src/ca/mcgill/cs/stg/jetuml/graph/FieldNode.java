@@ -26,6 +26,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -34,7 +36,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends HNode
+public class FieldNode extends RectangularNode implements HierarchicalNode
 {
 	public static final int DEFAULT_WIDTH = 60;
 	public static final int DEFAULT_HEIGHT = 20;
@@ -46,6 +48,7 @@ public class FieldNode extends HNode
 	private Rectangle2D aValueBounds;
 	private boolean aBoxedValue;
 	private double aBoxWidth;
+	private ObjectNode aObject; // The object defining this field
 
 	/**
 	 * A default field node.
@@ -221,6 +224,40 @@ public class FieldNode extends HNode
 		{
 			return null;
 		}
+	}
+
+	@Override
+	public HierarchicalNode getParent()
+	{
+		return aObject;
+	}
+
+	@Override
+	public void setParent(HierarchicalNode pNode)
+	{
+		assert pNode == null || pNode instanceof ObjectNode;
+		aObject = (ObjectNode) pNode;		
+	}
+
+	@Override
+	public List<HierarchicalNode> getChildren()
+	{
+		return new ArrayList<HierarchicalNode>();
+	}
+
+	@Override
+	public void addChild(int pIndex, HierarchicalNode pNode)
+	{
+	}
+
+	@Override
+	public void addChild(HierarchicalNode pNode)
+	{
+	}
+
+	@Override
+	public void removeChild(HierarchicalNode pNode)
+	{
 	}
 }
 
