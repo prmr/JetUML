@@ -25,6 +25,10 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
@@ -34,24 +38,26 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends HNode
+public class ObjectNode extends RectangularNode implements HierarchicalNode
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	
+
 	private double aTopHeight;
 	private MultiLineString aName;
+	private ArrayList<HierarchicalNode> aFields;
 
 	/**
-     * Construct an object node with a default size.
+	 * Construct an object node with a default size.
 	 */
 	public ObjectNode()
 	{
 		aName = new MultiLineString(true);
 		aName.setUnderlined(true);
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		aFields = new ArrayList<>();
 	}
 
 	@Override
@@ -63,23 +69,23 @@ public class ObjectNode extends HNode
 		pGraphics2D.draw(getBounds());
 		aName.draw(pGraphics2D, top);
 	}
-	
+
 	/* 
 	 * Object Nodes are now responsible for translating their Field Node children.
 	 */
 	@Override
-    public void translate(double pDeltaX, double pDeltaY)
-    {
-        super.translate(pDeltaX, pDeltaY);
-        for (Node childNode : getChildren())
-        {
-        	childNode.translate(pDeltaX, pDeltaY);
-        }   
-    }    
+	public void translate(double pDeltaX, double pDeltaY)
+	{
+		super.translate(pDeltaX, pDeltaY);
+		for (Node childNode : getChildren())
+		{
+			childNode.translate(pDeltaX, pDeltaY);
+		}   
+	}    
 
 	/**
-     * Returns the rectangle at the top of the object node.
-     * @return the top rectangle
+	 * Returns the rectangle at the top of the object node.
+	 * @return the top rectangle
 	 */
 	public Rectangle2D getTopRectangle()
 	{
@@ -142,8 +148,8 @@ public class ObjectNode extends HNode
 	}
 
 	/**
-     * Sets the name property value.
-     * @param pName the new object name
+	 * Sets the name property value.
+	 * @param pName the new object name
 	 */
 	public void setName(MultiLineString pName)
 	{
@@ -151,32 +157,91 @@ public class ObjectNode extends HNode
 	}
 
 	/**
-     * Gets the name property value.
-     * @return the object name
+	 * Gets the name property value.
+	 * @return the object name
 	 */
 	public MultiLineString getName()
 	{
 		return aName;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ObjectNode clone()
 	{
 		ObjectNode cloned = (ObjectNode)super.clone();
 		cloned.aName = (MultiLineString)aName.clone();
+		cloned.aFields = (ArrayList<HierarchicalNode>)aFields.clone();
 		return cloned;
 	}
 
-	/*
-     *  This is a patch to ensure that object diagrams can
-     * be read back in correctly. 
-     */
 	@Override
-   public void addChild(HierarchicalNode pNode)
-   {
-		super.addChild(pNode);
-		Rectangle2D b = getBounds();
-		b.add(new Rectangle2D.Double(b.getX(), b.getY() + b.getHeight(), FieldNode.DEFAULT_WIDTH, FieldNode.DEFAULT_HEIGHT));
-      setBounds(b);
-   }
+	public void addChild(HierarchicalNode pNode)
+	{
+		addChild(aFields.size(), pNode);
+	}
+	
+	@Override
+	public void addChild(int pIndex, HierarchicalNode pNode)
+	{
+		HierarchicalNode oldParent = pNode.getParent();
+		if (oldParent != null)
+		{
+			oldParent.removeChild(pNode);
+		}
+		aFields.add(pIndex, pNode);
+		pNode.setParent(this);
+		// prmr unclear why we need this
+//		Rectangle2D b = getBounds();
+//		b.add(new Rectangle2D.Double(b.getX(), b.getY() + b.getHeight(), FieldNode.DEFAULT_WIDTH, FieldNode.DEFAULT_HEIGHT));
+//		setBounds(b);
+	}
+
+	@Override
+	public HierarchicalNode getParent()
+	{
+		return null;
+	}
+
+	@Override
+	public void setParent(HierarchicalNode pNode)
+	{
+	}
+
+	@Override
+	public List<HierarchicalNode> getChildren()
+	{
+		return aFields; // TODO there should be a remove operation on ObjectNode
+	}
+
+	@Override
+	public void removeChild(HierarchicalNode pNode)
+	{
+		if (pNode.getParent() != this)
+		{
+			return;
+		}
+		aFields.remove(pNode);
+		pNode.setParent(null);
+	}
+	
+	/**
+	 *  Adds a persistence delegate to a given encoder that
+	 * encodes the child nodes of this node.
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(ObjectNode.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				{
+					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
+				}
+			}
+		});
+	}
 }
