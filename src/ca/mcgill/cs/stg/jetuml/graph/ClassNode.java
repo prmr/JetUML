@@ -44,7 +44,7 @@ public class ClassNode extends RectangularNode implements HierarchicalNode
 	private MultiLineString aName;
 	private MultiLineString aAttributes;
 	private MultiLineString aMethods;
-	private HierarchicalNode aContainer;
+	private PackageNode aContainer;
 
 	/**
      * Construct a class node with a default size.

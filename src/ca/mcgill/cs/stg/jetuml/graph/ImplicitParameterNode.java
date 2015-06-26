@@ -29,15 +29,22 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
 /**
- * An object node in a scenario diagram.
+ * An implicit parameter node in a sequence diagram. The 
+ * visual portion of this node includes the top rectangle (object) and
+ * its vertical life line. The ImplicitParamterNode's creator is the
+ * CallNode that is the source of a <<creates>> edge that leads to 
+ * this node, or null if this node is node created as part of the 
+ * sequence.
  */
-public class ImplicitParameterNode extends HNode
+public class ImplicitParameterNode extends RectangularNode implements HierarchicalNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
@@ -45,6 +52,7 @@ public class ImplicitParameterNode extends HNode
 	
 	private double aTopHeight;
 	private MultiLineString aName;
+	private CallNode aCreator;
 
 	/**
      * Construct an object node with a default size.
@@ -142,5 +150,42 @@ public class ImplicitParameterNode extends HNode
 		ImplicitParameterNode cloned = (ImplicitParameterNode) super.clone();
 		cloned.aName = (MultiLineString) aName.clone();
 		return cloned;
+	}
+	
+	@Override
+	public HierarchicalNode getParent()
+	{
+		return aCreator;
+	}
+
+	@Override
+	public void setParent(HierarchicalNode pNode)
+	{
+		assert pNode instanceof CallNode;
+		aCreator = (CallNode) pNode;
+	}
+
+	@Override
+	public List<HierarchicalNode> getChildren()
+	{
+		return new ArrayList<HierarchicalNode>();
+	}
+
+	@Override
+	public void addChild(int pIndex, HierarchicalNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void addChild(HierarchicalNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void removeChild(HierarchicalNode pNode)
+	{
+		assert false;		
 	}
 }
