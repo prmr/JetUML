@@ -13,8 +13,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
+import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.HNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
@@ -94,9 +94,9 @@ public final class PersistenceService
       
 		Graph.setPersistenceDelegate(encoder);
 		AbstractNode.setPersistenceDelegate(encoder);
-		HNode.setPersistenceDelegate(encoder);
 		PackageNode.setPersistenceDelegate(encoder);
 		ObjectNode.setPersistenceDelegate(encoder);
+		CallNode.setPersistenceDelegate(encoder);
 		
 		encoder.writeObject(pGraph);
 		encoder.close();

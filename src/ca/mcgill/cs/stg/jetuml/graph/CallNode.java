@@ -29,6 +29,9 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,41 +41,32 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
 /**
- * A method call node in a scenario diagram.
+ * A method call node in a sequence diagram. In addition to edges,
+ * the node is linked to it callee and callers.
 */
-public class CallNode extends HNode
+public class CallNode extends RectangularNode implements HierarchicalNode
 {
 	public static final int CALL_YGAP = 20;
-	
+
 	private static final int DEFAULT_WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
 	private static final int MIN_YGAP = 10;
-	
+
 	private ImplicitParameterNode aImplicitParameter;
 	private boolean aSignaled;
 	private boolean aOpenBottom;
-	
+
 	private ArrayList<HierarchicalNode> aCalls;
-	
-   /**
-    *  Construct a call node with a default size.
-    */
+	private CallNode aCaller;
+
+	/**
+	 *  Construct a call node with a default size.
+	 */
 	public CallNode()
 	{
 		aCalls = new ArrayList<HierarchicalNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
-	
-//	/* 
-//	 * Ensures that call nodes cannot be moved above the ImplicitParameterNode
-//	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
-//	 */
-//	@Override
-//	public void translate(double pDeltaX, double pDeltaY)
-//	{
-//		System.out.println(pDeltaX);
-//		super.translate(pDeltaX, pDeltaY);
-//	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
@@ -108,8 +102,8 @@ public class CallNode extends HNode
 	}
 
 	/**
-     * Gets the implicit parameter of this call.
-     * @return the implicit parameter node
+	 * Gets the implicit parameter of this call.
+	 * @return the implicit parameter node
 	 */
 	public ImplicitParameterNode getImplicitParameter()
 	{
@@ -117,8 +111,8 @@ public class CallNode extends HNode
 	}
 
 	/**
-     * Sets the implicit parameter of this call.
-     * @param pNewValue the implicit parameter node
+	 * Sets the implicit parameter of this call.
+	 * @param pNewValue the implicit parameter node
 	 */
 	public void setImplicitParameter(ImplicitParameterNode pNewValue)
 	{
@@ -137,7 +131,7 @@ public class CallNode extends HNode
 			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
 		}
 	}
-	
+
 	/**
 	 * Add pChild to the right place in the list of callees, given it's coordinate.
 	 * @param pChild The node to add
@@ -166,7 +160,7 @@ public class CallNode extends HNode
 			}
 		}
 		return null;
-   }
+	}
 
 	/* (non-Javadoc)
 	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
@@ -187,15 +181,15 @@ public class CallNode extends HNode
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		assert aImplicitParameter != null;
-		
+
 		// Shift the node to its proper place on the X axis.
 		translate(computeMidX() - getBounds().getCenterX(), 0);
-		
+
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = computeBottomY(pGraph, pGraphics2D, pGrid);
-		
+
 		Rectangle2D bounds = getBounds();
-      
+
 		double minHeight = DEFAULT_HEIGHT;
 		Edge returnEdge = findEdge(pGraph, this, getParent());
 		if(returnEdge != null)
@@ -205,7 +199,7 @@ public class CallNode extends HNode
 		}
 		setBounds(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
 	}
-	
+
 	/*
 	 * @return The X coordinate that should be the middle
 	 * of this call node. Takes into account nested calls.
@@ -224,7 +218,7 @@ public class CallNode extends HNode
 		}
 		return xmid;
 	}
-	
+
 	/*
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
@@ -268,7 +262,7 @@ public class CallNode extends HNode
 		}
 		return bottomY;
 	}
-	
+
 	@Override
 	public void addChild(int pIndex, HierarchicalNode pNode) 
 	{
@@ -284,7 +278,7 @@ public class CallNode extends HNode
 		aCalls.add(pIndex, pNode);
 		pNode.setParent(this);
 	}
-	
+
 	@Override
 	public void removeChild(HierarchicalNode pNode)
 	{
@@ -295,7 +289,7 @@ public class CallNode extends HNode
 		aCalls.remove(pNode);
 		pNode.setParent(null);
 	}
-	
+
 	/**
 	 * Adds a node at the end of the list.
 	 * @param pNode The node to add.
@@ -305,16 +299,16 @@ public class CallNode extends HNode
 	{
 		addChild(aCalls.size(), pNode);
 	}
-	
+
 	@Override
 	public List<HierarchicalNode> getChildren()
 	{
 		return aCalls;
 	}
-	
+
 	/**
-     * Sets the signaled property.
-     * @param pNewValue true if this node is the target of a signal edge
+	 * Sets the signaled property.
+	 * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setSignaled(boolean pNewValue)
 	{ 
@@ -322,8 +316,8 @@ public class CallNode extends HNode
 	}
 
 	/**
-     * Gets the openBottom property.
-     * @return true if this node is the target of a signal edge
+	 * Gets the openBottom property.
+	 * @return true if this node is the target of a signal edge
 	 */
 	public boolean isOpenBottom() 
 	{ 
@@ -331,14 +325,14 @@ public class CallNode extends HNode
 	}
 
 	/**
-     * Sets the openBottom property.
-     * @param pNewValue true if this node is the target of a signal edge
+	 * Sets the openBottom property.
+	 * @param pNewValue true if this node is the target of a signal edge
 	 */      
 	public void setOpenBottom(boolean pNewValue)
 	{ 
 		aOpenBottom = pNewValue; 
 	}
-	
+
 	@SuppressWarnings("unchecked") //For cloning aCalls
 	@Override
 	public CallNode clone()
@@ -346,5 +340,44 @@ public class CallNode extends HNode
 		CallNode cloned = (CallNode) super.clone();
 		cloned.aCalls = (ArrayList<HierarchicalNode>) aCalls.clone();
 		return cloned;
+	}
+	
+	/**
+     * Gets the parent of this node.
+     * @return the parent node, or null if the node has no parent
+	 */
+	public HierarchicalNode getParent() 
+   	{ 
+		return aCaller; 
+	}
+
+	/**
+     * Sets the parent of this node.
+     * @param pNode the parent node, or null if the node has no parent
+	 */
+	public void setParent(HierarchicalNode pNode) 
+	{
+		assert pNode instanceof CallNode;
+		aCaller = (CallNode) pNode;
+	}
+	
+	/**
+	 *  Adds a persistence delegate to a given encoder that
+	 * encodes the child nodes of this node.
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(CallNode.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				{
+					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
+				}
+			}
+		});
 	}
 }
