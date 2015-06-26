@@ -30,7 +30,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
@@ -144,8 +144,8 @@ public class ClassDiagramGraph extends Graph
 		PackageNode container = findContainer(pNode, pPoint);
 		if( container != null )
 		{
-			container.addChild((HierarchicalNode)pNode);
-			aModListener.childAttached(this, container.getChildren().indexOf(pNode), container, (HierarchicalNode) pNode);
+			container.addChild((ParentChildNode)pNode);
+			aModListener.childAttached(this, container.getChildren().indexOf(pNode), container, (ParentChildNode) pNode);
 		}
 		aModListener.endCompoundListening();
 		return true;
@@ -162,10 +162,10 @@ public class ClassDiagramGraph extends Graph
 		// notify nodes of removals
 		for(Node n2 : aNodes)
 		{
-			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
+			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
 			{
-				HierarchicalNode curNode = (HierarchicalNode) n2;
-				HierarchicalNode parentParent = (HierarchicalNode) pNode;
+				ParentChildNode curNode = (ParentChildNode) n2;
+				ParentChildNode parentParent = (ParentChildNode) pNode;
 				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
 				{
 					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
@@ -173,9 +173,9 @@ public class ClassDiagramGraph extends Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof HierarchicalNode)
+		if(pNode instanceof ParentChildNode)
 		{
-			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
+			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

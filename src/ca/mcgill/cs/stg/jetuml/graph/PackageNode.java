@@ -42,7 +42,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends RectangularNode implements HierarchicalNode
+public class PackageNode extends RectangularNode implements ParentChildNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
@@ -58,8 +58,8 @@ public class PackageNode extends RectangularNode implements HierarchicalNode
 	private MultiLineString aContents;
 	private Rectangle2D aTop;
 	private Rectangle2D aBottom;
-	private ArrayList<HierarchicalNode> aContainedNodes;
-	private HierarchicalNode aContainer;
+	private ArrayList<ParentChildNode> aContainedNodes;
+	private ParentChildNode aContainer;
 	   
 	/**
      * Construct a package node with a default size.
@@ -117,8 +117,8 @@ public class PackageNode extends RectangularNode implements HierarchicalNode
 		double topHeight = Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
 		
 		Rectangle2D childBounds = null;
-		List<HierarchicalNode> children = getChildren();
-		for( HierarchicalNode child : children )
+		List<ParentChildNode> children = getChildren();
+		for( ParentChildNode child : children )
 		{
 			child.layout(pGraph, pGraphics2D, pGrid);
 			if( childBounds == null )
@@ -220,33 +220,33 @@ public class PackageNode extends RectangularNode implements HierarchicalNode
 	{
 		PackageNode cloned = (PackageNode)super.clone();
 		cloned.aContents = (MultiLineString)aContents.clone();
-		cloned.aContainedNodes = (ArrayList<HierarchicalNode>)aContainedNodes.clone();
+		cloned.aContainedNodes = (ArrayList<ParentChildNode>)aContainedNodes.clone();
 		return cloned;
 	}
 	
 	@Override
-	public HierarchicalNode getParent()
+	public ParentChildNode getParent()
 	{
 		return aContainer;
 	}
 
 	@Override
-	public void setParent(HierarchicalNode pNode)
+	public void setParent(ParentChildNode pNode)
 	{
 		assert pNode instanceof PackageNode;
 		aContainer = (PackageNode) pNode;
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
 		return aContainedNodes; // TODO there should be a remove operation on PackageNode
 	}
 
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode)
+	public void addChild(int pIndex, ParentChildNode pNode)
 	{
-		HierarchicalNode oldParent = pNode.getParent();
+		ParentChildNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -256,13 +256,13 @@ public class PackageNode extends RectangularNode implements HierarchicalNode
 	}
 
 	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
 	{
 		addChild(aContainedNodes.size(), pNode);
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void removeChild(ParentChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -284,7 +284,7 @@ public class PackageNode extends RectangularNode implements HierarchicalNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

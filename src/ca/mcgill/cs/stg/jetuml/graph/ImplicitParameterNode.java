@@ -44,7 +44,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends RectangularNode implements HierarchicalNode
+public class ImplicitParameterNode extends RectangularNode implements ParentChildNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
@@ -153,38 +153,38 @@ public class ImplicitParameterNode extends RectangularNode implements Hierarchic
 	}
 	
 	@Override
-	public HierarchicalNode getParent()
+	public ParentChildNode getParent()
 	{
 		return aCreator;
 	}
 
 	@Override
-	public void setParent(HierarchicalNode pNode)
+	public void setParent(ParentChildNode pNode)
 	{
 		assert pNode instanceof CallNode;
 		aCreator = (CallNode) pNode;
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
-		return new ArrayList<HierarchicalNode>();
+		return new ArrayList<ParentChildNode>();
 	}
 
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(int pIndex, ParentChildNode pNode)
 	{
 		assert false;
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void removeChild(ParentChildNode pNode)
 	{
 		assert false;		
 	}

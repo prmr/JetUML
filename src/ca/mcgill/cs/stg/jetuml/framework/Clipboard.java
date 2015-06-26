@@ -21,7 +21,7 @@ import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 
@@ -61,9 +61,9 @@ public final class Clipboard
  				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
-				if(curNode instanceof HierarchicalNode)
+				if(curNode instanceof ParentChildNode)
 				{
-					for(Node childNode:((HierarchicalNode)curNode).getChildren())
+					for(Node childNode:((ParentChildNode)curNode).getChildren())
 					{
 						if(!(pSelection.contains(childNode)))
 						{
@@ -103,24 +103,24 @@ public final class Clipboard
 	 */
 	public void fixParentChildRelationShips(GraphElement pElement, Map<Node, Node> pOriginalAndClonedNodes)
 	{
-		if(pElement instanceof HierarchicalNode)
+		if(pElement instanceof ParentChildNode)
 		{
-			HierarchicalNode curNode = (HierarchicalNode) pElement;
+			ParentChildNode curNode = (ParentChildNode) pElement;
 			if(!curNode.getChildren().isEmpty())
 			{
-				HierarchicalNode cloneNode = (HierarchicalNode)pOriginalAndClonedNodes.get(curNode);
-				List<HierarchicalNode> cloneChildren = cloneNode.getChildren();
+				ParentChildNode cloneNode = (ParentChildNode)pOriginalAndClonedNodes.get(curNode);
+				List<ParentChildNode> cloneChildren = cloneNode.getChildren();
 				for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
 				{
-					HierarchicalNode removed = cloneChildren.remove(i);
-					HierarchicalNode replacement = (HierarchicalNode)pOriginalAndClonedNodes.get(removed);
+					ParentChildNode removed = cloneChildren.remove(i);
+					ParentChildNode replacement = (ParentChildNode)pOriginalAndClonedNodes.get(removed);
 					cloneChildren.add(i, replacement);
 				}
 			}
 			if(curNode.getParent() != null)
 			{
-				HierarchicalNode cloneNode = (HierarchicalNode)pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
-				HierarchicalNode cloneParent = (HierarchicalNode)pOriginalAndClonedNodes.get(curNode.getParent());
+				ParentChildNode cloneNode = (ParentChildNode)pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
+				ParentChildNode cloneParent = (ParentChildNode)pOriginalAndClonedNodes.get(curNode.getParent());
 				cloneNode.setParent(cloneParent);
 			}
 			if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
@@ -250,7 +250,7 @@ public final class Clipboard
 			/*
 			 * Don't add any Children to the SelectionList
 			 */
-			if(!(cloneNode instanceof HierarchicalNode && ((HierarchicalNode)cloneNode).getParent()!=null))
+			if(!(cloneNode instanceof ParentChildNode && ((ParentChildNode)cloneNode).getParent()!=null))
 			{
 				updatedSelectionList.add(cloneNode);
 			}

@@ -35,7 +35,7 @@ import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
@@ -144,7 +144,7 @@ public class SequenceDiagramGraph extends Graph
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			HierarchicalNode parent = (CallNode)pOrigin; 
+			ParentChildNode parent = (CallNode)pOrigin; 
 			while(parent != null && end != parent)
 			{
 				parent = parent.getParent();
@@ -178,14 +178,14 @@ public class SequenceDiagramGraph extends Graph
 			}
 		}
 		
-		((CallNode)pOrigin).addChild((HierarchicalNode)n, pPoint1);
+		((CallNode)pOrigin).addChild((ParentChildNode)n, pPoint1);
 	}
 
 	@Override
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && ((HierarchicalNode)pEdge.getEnd()).getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && ((ParentChildNode)pEdge.getEnd()).getChildren().size() == 0) 
 		{
 			removeNode(pEdge.getEnd());
 		}		
@@ -356,10 +356,10 @@ public class SequenceDiagramGraph extends Graph
 			if (parent.contains(pPoint) && canAddNode(parent, pNode))
 			{
 				addNode(parent, pNode, pPoint);
-				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
+				if(pNode instanceof ParentChildNode && parent instanceof ParentChildNode)
 				{
-					HierarchicalNode curNode = (HierarchicalNode) pNode;
-					HierarchicalNode parentParent = (HierarchicalNode) parent;
+					ParentChildNode curNode = (ParentChildNode) pNode;
+					ParentChildNode parentParent = (ParentChildNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
 				break;
@@ -394,10 +394,10 @@ public class SequenceDiagramGraph extends Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
+			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
 			{
-				HierarchicalNode curNode = (HierarchicalNode) n2;
-				HierarchicalNode parentParent = (HierarchicalNode) pNode;
+				ParentChildNode curNode = (ParentChildNode) n2;
+				ParentChildNode parentParent = (ParentChildNode) pNode;
 				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
 				{
 					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
@@ -405,9 +405,9 @@ public class SequenceDiagramGraph extends Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof HierarchicalNode)
+		if(pNode instanceof ParentChildNode)
 		{
-			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
+			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

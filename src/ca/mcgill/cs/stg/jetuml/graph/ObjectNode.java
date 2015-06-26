@@ -38,7 +38,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends RectangularNode implements HierarchicalNode
+public class ObjectNode extends RectangularNode implements ParentChildNode
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -47,7 +47,7 @@ public class ObjectNode extends RectangularNode implements HierarchicalNode
 
 	private double aTopHeight;
 	private MultiLineString aName;
-	private ArrayList<HierarchicalNode> aFields;
+	private ArrayList<ParentChildNode> aFields;
 
 	/**
 	 * Construct an object node with a default size.
@@ -112,7 +112,7 @@ public class ObjectNode extends RectangularNode implements HierarchicalNode
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		double leftWidth = 0;
 		double rightWidth = 0;
-		List<HierarchicalNode> fields = getChildren();
+		List<ParentChildNode> fields = getChildren();
 		double height = 0;
 		if( fields.size() != 0 )
 		{
@@ -171,20 +171,20 @@ public class ObjectNode extends RectangularNode implements HierarchicalNode
 	{
 		ObjectNode cloned = (ObjectNode)super.clone();
 		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aFields = (ArrayList<HierarchicalNode>)aFields.clone();
+		cloned.aFields = (ArrayList<ParentChildNode>)aFields.clone();
 		return cloned;
 	}
 
 	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
 	{
 		addChild(aFields.size(), pNode);
 	}
 	
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode)
+	public void addChild(int pIndex, ParentChildNode pNode)
 	{
-		HierarchicalNode oldParent = pNode.getParent();
+		ParentChildNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -198,24 +198,24 @@ public class ObjectNode extends RectangularNode implements HierarchicalNode
 	}
 
 	@Override
-	public HierarchicalNode getParent()
+	public ParentChildNode getParent()
 	{
 		return null;
 	}
 
 	@Override
-	public void setParent(HierarchicalNode pNode)
+	public void setParent(ParentChildNode pNode)
 	{
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
 		return aFields; // TODO there should be a remove operation on ObjectNode
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void removeChild(ParentChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -237,7 +237,7 @@ public class ObjectNode extends RectangularNode implements HierarchicalNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

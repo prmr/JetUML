@@ -57,7 +57,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 
 /**
  * A panel to draw a graph.
@@ -695,9 +695,9 @@ public class GraphPanel extends JPanel
             
 				for( GraphElement selected : aSelectedElements )
 				{
-					if(selected instanceof HierarchicalNode)
+					if(selected instanceof ParentChildNode)
 					{
-						HierarchicalNode n = (HierarchicalNode) selected;
+						ParentChildNode n = (ParentChildNode) selected;
 						if (!aSelectedElements.contains(n.getParent())) // parents are responsible for translating their children
 						{
 							n.translate(dx, dy); 

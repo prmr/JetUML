@@ -36,7 +36,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends RectangularNode implements HierarchicalNode
+public class FieldNode extends RectangularNode implements ParentChildNode
 {
 	public static final int DEFAULT_WIDTH = 60;
 	public static final int DEFAULT_HEIGHT = 20;
@@ -227,36 +227,36 @@ public class FieldNode extends RectangularNode implements HierarchicalNode
 	}
 
 	@Override
-	public HierarchicalNode getParent()
+	public ParentChildNode getParent()
 	{
 		return aObject;
 	}
 
 	@Override
-	public void setParent(HierarchicalNode pNode)
+	public void setParent(ParentChildNode pNode)
 	{
 		assert pNode == null || pNode instanceof ObjectNode;
 		aObject = (ObjectNode) pNode;		
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
-		return new ArrayList<HierarchicalNode>();
+		return new ArrayList<ParentChildNode>();
 	}
 
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode)
-	{
-	}
-
-	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(int pIndex, ParentChildNode pNode)
 	{
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
+	{
+	}
+
+	@Override
+	public void removeChild(ParentChildNode pNode)
 	{
 	}
 }

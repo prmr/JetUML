@@ -44,7 +44,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
  * A method call node in a sequence diagram. In addition to edges,
  * the node is linked to it callee and callers.
 */
-public class CallNode extends RectangularNode implements HierarchicalNode
+public class CallNode extends RectangularNode implements ParentChildNode
 {
 	public static final int CALL_YGAP = 20;
 
@@ -56,7 +56,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 
-	private ArrayList<HierarchicalNode> aCalls;
+	private ArrayList<ParentChildNode> aCalls;
 	private CallNode aCaller;
 
 	/**
@@ -64,7 +64,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	 */
 	public CallNode()
 	{
-		aCalls = new ArrayList<HierarchicalNode>();
+		aCalls = new ArrayList<ParentChildNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -137,7 +137,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	 * @param pChild The node to add
 	 * @param pPoint The point to compare against.
 	 */
-	public void addChild(HierarchicalNode pChild, Point2D pPoint)
+	public void addChild(ParentChildNode pChild, Point2D pPoint)
 	{
 		int i = 0;
 		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
@@ -228,7 +228,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = getBounds().getY() + CALL_YGAP;
 
-		for(HierarchicalNode node : aCalls)
+		for(ParentChildNode node : aCalls)
 		{
 			if(node instanceof ImplicitParameterNode) // <<create>>
 			{
@@ -264,13 +264,13 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	}
 
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode) 
+	public void addChild(int pIndex, ParentChildNode pNode) 
 	{
 		if (pNode == null || pIndex < 0) //base cases to not deal with
 		{
 			return;
 		}
-		HierarchicalNode oldParent = pNode.getParent();
+		ParentChildNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -280,7 +280,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void removeChild(ParentChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -295,13 +295,13 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	 * @param pNode The node to add.
 	 */
 	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
 	{
 		addChild(aCalls.size(), pNode);
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
 		return aCalls;
 	}
@@ -338,7 +338,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 	public CallNode clone()
 	{
 		CallNode cloned = (CallNode) super.clone();
-		cloned.aCalls = (ArrayList<HierarchicalNode>) aCalls.clone();
+		cloned.aCalls = (ArrayList<ParentChildNode>) aCalls.clone();
 		return cloned;
 	}
 	
@@ -346,7 +346,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
      * Gets the parent of this node.
      * @return the parent node, or null if the node has no parent
 	 */
-	public HierarchicalNode getParent() 
+	public ParentChildNode getParent() 
    	{ 
 		return aCaller; 
 	}
@@ -355,7 +355,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
      * Sets the parent of this node.
      * @param pNode the parent node, or null if the node has no parent
 	 */
-	public void setParent(HierarchicalNode pNode) 
+	public void setParent(ParentChildNode pNode) 
 	{
 		assert pNode instanceof CallNode;
 		aCaller = (CallNode) pNode;
@@ -373,7 +373,7 @@ public class CallNode extends RectangularNode implements HierarchicalNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(HierarchicalNode node : ((HierarchicalNode) pOldInstance).getChildren())
+				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

@@ -33,7 +33,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * An interface node in a class diagram.
  */
-public class InterfaceNode extends RectangularNode implements HierarchicalNode
+public class InterfaceNode extends RectangularNode implements ParentChildNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
@@ -43,7 +43,7 @@ public class InterfaceNode extends RectangularNode implements HierarchicalNode
 	private double aBotHeight;
 	private MultiLineString aName;
 	private MultiLineString aMethods;   
-	private HierarchicalNode aContainer;
+	private ParentChildNode aContainer;
 	
 	/**
      * Construct an interface node with a default size and
@@ -148,38 +148,38 @@ public class InterfaceNode extends RectangularNode implements HierarchicalNode
 	}
 	
 	@Override
-	public HierarchicalNode getParent()
+	public ParentChildNode getParent()
 	{
 		return aContainer;
 	}
 
 	@Override
-	public void setParent(HierarchicalNode pNode)
+	public void setParent(ParentChildNode pNode)
 	{
 		assert pNode instanceof PackageNode;
 		aContainer = (PackageNode) pNode;
 	}
 
 	@Override
-	public List<HierarchicalNode> getChildren()
+	public List<ParentChildNode> getChildren()
 	{
-		return new ArrayList<HierarchicalNode>();
+		return new ArrayList<ParentChildNode>();
 	}
 
 	@Override
-	public void addChild(int pIndex, HierarchicalNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void addChild(HierarchicalNode pNode)
+	public void addChild(int pIndex, ParentChildNode pNode)
 	{
 		assert false;
 	}
 
 	@Override
-	public void removeChild(HierarchicalNode pNode)
+	public void addChild(ParentChildNode pNode)
+	{
+		assert false;
+	}
+
+	@Override
+	public void removeChild(ParentChildNode pNode)
 	{
 		assert false;		
 	}

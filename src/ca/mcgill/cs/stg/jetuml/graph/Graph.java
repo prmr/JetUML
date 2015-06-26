@@ -311,14 +311,14 @@ public abstract class Graph
 				removeNode(parent);
 			}
 		}
-		else if( pParent instanceof HierarchicalNode )
+		else if( pParent instanceof ParentChildNode )
 		{
-			HierarchicalNode parent = (HierarchicalNode) pParent;
+			ParentChildNode parent = (ParentChildNode) pParent;
 			if( pChild == parent.getParent() )
 			{
 				parent.setParent(null);
 			}
-			if( pChild instanceof HierarchicalNode && ((HierarchicalNode)pChild).getParent() == parent)
+			if( pChild instanceof ParentChildNode && ((ParentChildNode)pChild).getParent() == parent)
 			{
 				parent.getChildren().remove(pChild);
 			}
@@ -385,7 +385,7 @@ public abstract class Graph
 			{
 				if(pEdge.getStart() == n)
 				{
-					((CallNode)n).removeChild((HierarchicalNode)pEdge.getEnd());
+					((CallNode)n).removeChild((ParentChildNode)pEdge.getEnd());
 				}
 			}
 		}

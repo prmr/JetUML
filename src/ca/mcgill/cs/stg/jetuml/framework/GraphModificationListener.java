@@ -12,7 +12,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AttachDetachChildCommand;
@@ -106,7 +106,7 @@ public class GraphModificationListener
 	 * @param pParent The parent node
 	 * @param pChild The child node
 	 */
-	public void childAttached(Graph pGraph, int pIndex, HierarchicalNode pParent, HierarchicalNode pChild)
+	public void childAttached(Graph pGraph, int pIndex, ParentChildNode pParent, ParentChildNode pChild)
 	{
 		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, true);
 		aUndoManager.add(adc);
@@ -119,7 +119,7 @@ public class GraphModificationListener
 	 * @param pParent The parent node
 	 * @param pChild The child node
 	 */
-	public void childDetached(Graph pGraph, int pIndex, HierarchicalNode pParent, HierarchicalNode pChild)
+	public void childDetached(Graph pGraph, int pIndex, ParentChildNode pParent, ParentChildNode pChild)
 	{
 		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, false);
 		aUndoManager.add(adc);

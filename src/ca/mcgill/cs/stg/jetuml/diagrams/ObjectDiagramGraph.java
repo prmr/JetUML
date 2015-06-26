@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.HierarchicalNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
@@ -167,7 +167,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				return false;
 			}
-			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			List<ParentChildNode> fields = ((ObjectNode)pParent).getChildren();
 			FieldNode fNode = (FieldNode) pPotentialChild;
 			return !fields.contains(fNode);
 		}
@@ -178,7 +178,7 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pParent instanceof ObjectNode )
 		{
-			List<HierarchicalNode> fields = ((ObjectNode)pParent).getChildren();
+			List<ParentChildNode> fields = ((ObjectNode)pParent).getChildren();
 			FieldNode fNode = (FieldNode) pChild;
 			int i = 0;
 			while(i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
@@ -211,10 +211,10 @@ public class ObjectDiagramGraph extends Graph
 			if (parent.contains(pPoint) && canAddNode(parent, pNode))
 			{
 				addNode(parent, pNode, pPoint);
-				if(pNode instanceof HierarchicalNode && parent instanceof HierarchicalNode)
+				if(pNode instanceof ParentChildNode && parent instanceof ParentChildNode)
 				{
-					HierarchicalNode curNode = (HierarchicalNode) pNode;
-					HierarchicalNode parentParent = (HierarchicalNode) parent;
+					ParentChildNode curNode = (ParentChildNode) pNode;
+					ParentChildNode parentParent = (ParentChildNode) parent;
 					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
 				}
 				break;
@@ -236,10 +236,10 @@ public class ObjectDiagramGraph extends Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n2 = aNodes.get(i);
-			if(n2 instanceof HierarchicalNode && pNode instanceof HierarchicalNode)
+			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
 			{
-				HierarchicalNode curNode = (HierarchicalNode) n2;
-				HierarchicalNode parentParent = (HierarchicalNode) pNode;
+				ParentChildNode curNode = (ParentChildNode) n2;
+				ParentChildNode parentParent = (ParentChildNode) pNode;
 				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
 				{
 					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
@@ -247,9 +247,9 @@ public class ObjectDiagramGraph extends Graph
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof HierarchicalNode)
+		if(pNode instanceof ParentChildNode)
 		{
-			ArrayList<HierarchicalNode> children = new ArrayList<HierarchicalNode>(((HierarchicalNode) pNode).getChildren());
+			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{
