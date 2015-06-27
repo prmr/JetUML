@@ -231,7 +231,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	@Override
 	public void setParent(ParentNode pNode)
 	{
-		assert pNode instanceof PackageNode;
+		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = (PackageNode) pNode;
 	}
 
