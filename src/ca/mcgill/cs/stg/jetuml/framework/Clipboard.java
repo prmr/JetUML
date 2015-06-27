@@ -14,6 +14,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -21,7 +22,7 @@ import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge;
 
@@ -61,9 +62,9 @@ public final class Clipboard
  				originalAndClonedNodes.put(curNode, cloneNode);
 				aNodes.add(cloneNode);
 				//Add children to the Selection if they are not in the current Selection.
-				if(curNode instanceof ParentChildNode)
+				if(curNode instanceof ParentNode)
 				{
-					for(Node childNode:((ParentChildNode)curNode).getChildren())
+					for(Node childNode:((ParentNode)curNode).getChildren())
 					{
 						if(!(pSelection.contains(childNode)))
 						{
@@ -103,32 +104,33 @@ public final class Clipboard
 	 */
 	public void fixParentChildRelationShips(GraphElement pElement, Map<Node, Node> pOriginalAndClonedNodes)
 	{
-		if(pElement instanceof ParentChildNode)
+		if(pElement instanceof ParentNode)
 		{
-			ParentChildNode curNode = (ParentChildNode) pElement;
-			if(!curNode.getChildren().isEmpty())
+			ParentNode curNode = (ParentNode) pElement;
+			ParentNode cloneNode = (ParentNode)pOriginalAndClonedNodes.get(curNode);
+			List<ChildNode> cloneChildren = cloneNode.getChildren();
+			for(int i = 0; i < cloneChildren.size(); i++) 
 			{
-				ParentChildNode cloneNode = (ParentChildNode)pOriginalAndClonedNodes.get(curNode);
-				List<ParentChildNode> cloneChildren = cloneNode.getChildren();
-				for(int i = 0; i < cloneChildren.size(); i++) //Repalce all children with their clones
-				{
-					ParentChildNode removed = cloneChildren.remove(i);
-					ParentChildNode replacement = (ParentChildNode)pOriginalAndClonedNodes.get(removed);
-					cloneChildren.add(i, replacement);
-				}
+				ChildNode removed = cloneChildren.remove(i);
+				ChildNode replacement = (ChildNode)pOriginalAndClonedNodes.get(removed);
+				cloneChildren.add(i, replacement);
 			}
+			
+		}
+		if(pElement instanceof ChildNode)
+		{	
+			ChildNode curNode = (ChildNode) pElement;
 			if(curNode.getParent() != null)
 			{
-				ParentChildNode cloneNode = (ParentChildNode)pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
-				ParentChildNode cloneParent = (ParentChildNode)pOriginalAndClonedNodes.get(curNode.getParent());
-				cloneNode.setParent(cloneParent);
+				ChildNode cloneNode = (ChildNode)pOriginalAndClonedNodes.get(curNode); 
+				cloneNode.setParent((ParentNode)pOriginalAndClonedNodes.get(curNode.getParent()));
 			}
-			if(curNode instanceof CallNode && ((CallNode)curNode).getImplicitParameter() != null)
-			{
-				Node cloneNode = pOriginalAndClonedNodes.get(curNode); //replace parent with its clone
-				Node cloneParent = pOriginalAndClonedNodes.get(((CallNode)curNode).getImplicitParameter());
-				((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
-			}
+		}
+		if(pElement instanceof CallNode && ((CallNode)pElement).getImplicitParameter() != null)
+		{
+			Node cloneNode = pOriginalAndClonedNodes.get(pElement); 
+			Node cloneParent = pOriginalAndClonedNodes.get(((CallNode)pElement).getImplicitParameter());
+			((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
 		}
 	}
 
@@ -250,7 +252,7 @@ public final class Clipboard
 			/*
 			 * Don't add any Children to the SelectionList
 			 */
-			if(!(cloneNode instanceof ParentChildNode && ((ParentChildNode)cloneNode).getParent()!=null))
+			if(!(cloneNode instanceof ChildNode && ((ChildNode)cloneNode).getParent()!=null))
 			{
 				updatedSelectionList.add(cloneNode);
 			}

@@ -50,6 +50,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -57,7 +58,6 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 
 /**
  * A panel to draw a graph.
@@ -695,9 +695,9 @@ public class GraphPanel extends JPanel
             
 				for( GraphElement selected : aSelectedElements )
 				{
-					if(selected instanceof ParentChildNode)
+					if(selected instanceof ChildNode)
 					{
-						ParentChildNode n = (ParentChildNode) selected;
+						ChildNode n = (ChildNode) selected;
 						if (!aSelectedElements.contains(n.getParent())) // parents are responsible for translating their children
 						{
 							n.translate(dx, dy); 

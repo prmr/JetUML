@@ -29,8 +29,6 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -44,7 +42,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends RectangularNode implements ParentChildNode
+public class ImplicitParameterNode extends RectangularNode implements ChildNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
@@ -153,39 +151,15 @@ public class ImplicitParameterNode extends RectangularNode implements ParentChil
 	}
 	
 	@Override
-	public ParentChildNode getParent()
+	public ParentNode getParent()
 	{
 		return aCreator;
 	}
 
 	@Override
-	public void setParent(ParentChildNode pNode)
+	public void setParent(ParentNode pNode)
 	{
 		assert pNode instanceof CallNode;
 		aCreator = (CallNode) pNode;
-	}
-
-	@Override
-	public List<ParentChildNode> getChildren()
-	{
-		return new ArrayList<ParentChildNode>();
-	}
-
-	@Override
-	public void addChild(int pIndex, ParentChildNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void addChild(ParentChildNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void removeChild(ParentChildNode pNode)
-	{
-		assert false;		
 	}
 }

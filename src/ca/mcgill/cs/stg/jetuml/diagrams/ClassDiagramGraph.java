@@ -26,16 +26,17 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  *  A UML class diagram.
@@ -144,8 +145,8 @@ public class ClassDiagramGraph extends Graph
 		PackageNode container = findContainer(pNode, pPoint);
 		if( container != null )
 		{
-			container.addChild((ParentChildNode)pNode);
-			aModListener.childAttached(this, container.getChildren().indexOf(pNode), container, (ParentChildNode) pNode);
+			container.addChild((ChildNode)pNode);
+			aModListener.childAttached(this, container.getChildren().indexOf(pNode), container, (ChildNode) pNode);
 		}
 		aModListener.endCompoundListening();
 		return true;
@@ -160,22 +161,22 @@ public class ClassDiagramGraph extends Graph
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
-		for(Node n2 : aNodes)
+		for(Node node : aNodes)
 		{
-			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
+			if(node instanceof ChildNode && pNode instanceof ParentNode)
 			{
-				ParentChildNode curNode = (ParentChildNode) n2;
-				ParentChildNode parentParent = (ParentChildNode) pNode;
-				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
+				ChildNode child = (ChildNode) node;
+				ParentNode parent = (ParentNode) pNode;
+				if(child.getParent()!= null && child.getParent().equals(pNode))
 				{
-					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
+					aModListener.childDetached(this, parent.getChildren().indexOf(child), parent, child);
 				}
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentChildNode)
+		if(pNode instanceof ParentNode)
 		{
-			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
+			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

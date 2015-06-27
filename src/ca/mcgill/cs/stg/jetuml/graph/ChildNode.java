@@ -13,7 +13,7 @@ public interface ChildNode extends Node
 	/**
 	 * @return The node that is the parent of this node.
 	 */
-	ParentChildNode getParent();
+	ParentNode getParent();
 	
 	/**
 	 * Sets the parent of this node. This operation does 
@@ -21,5 +21,5 @@ public interface ChildNode extends Node
 	 * 
 	 * @param pParentNode The node to set as parent of this node.
 	 */
-	void setParent(ParentChildNode pParentNode);
+	void setParent(ParentNode pParentNode);
 }

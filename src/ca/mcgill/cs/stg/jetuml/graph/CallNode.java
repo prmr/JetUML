@@ -44,7 +44,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
  * A method call node in a sequence diagram. In addition to edges,
  * the node is linked to it callee and callers.
 */
-public class CallNode extends RectangularNode implements ParentChildNode
+public class CallNode extends RectangularNode implements ParentNode, ChildNode
 {
 	public static final int CALL_YGAP = 20;
 
@@ -56,7 +56,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 
-	private ArrayList<ParentChildNode> aCalls;
+	private ArrayList<ChildNode> aCalls;
 	private CallNode aCaller;
 
 	/**
@@ -64,7 +64,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	 */
 	public CallNode()
 	{
-		aCalls = new ArrayList<ParentChildNode>();
+		aCalls = new ArrayList<ChildNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -137,7 +137,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	 * @param pChild The node to add
 	 * @param pPoint The point to compare against.
 	 */
-	public void addChild(ParentChildNode pChild, Point2D pPoint)
+	public void addChild(ChildNode pChild, Point2D pPoint)
 	{
 		int i = 0;
 		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
@@ -228,7 +228,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = getBounds().getY() + CALL_YGAP;
 
-		for(ParentChildNode node : aCalls)
+		for(ChildNode node : aCalls)
 		{
 			if(node instanceof ImplicitParameterNode) // <<create>>
 			{
@@ -264,13 +264,13 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public void addChild(int pIndex, ParentChildNode pNode) 
+	public void addChild(int pIndex, ChildNode pNode) 
 	{
 		if (pNode == null || pIndex < 0) //base cases to not deal with
 		{
 			return;
 		}
-		ParentChildNode oldParent = pNode.getParent();
+		ParentNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -280,7 +280,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public void removeChild(ParentChildNode pNode)
+	public void removeChild(ChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -295,13 +295,13 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	 * @param pNode The node to add.
 	 */
 	@Override
-	public void addChild(ParentChildNode pNode)
+	public void addChild(ChildNode pNode)
 	{
 		addChild(aCalls.size(), pNode);
 	}
 
 	@Override
-	public List<ParentChildNode> getChildren()
+	public List<ChildNode> getChildren()
 	{
 		return aCalls;
 	}
@@ -338,7 +338,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 	public CallNode clone()
 	{
 		CallNode cloned = (CallNode) super.clone();
-		cloned.aCalls = (ArrayList<ParentChildNode>) aCalls.clone();
+		cloned.aCalls = (ArrayList<ChildNode>) aCalls.clone();
 		return cloned;
 	}
 	
@@ -346,7 +346,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
      * Gets the parent of this node.
      * @return the parent node, or null if the node has no parent
 	 */
-	public ParentChildNode getParent() 
+	public ParentNode getParent() 
    	{ 
 		return aCaller; 
 	}
@@ -355,7 +355,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
      * Sets the parent of this node.
      * @param pNode the parent node, or null if the node has no parent
 	 */
-	public void setParent(ParentChildNode pNode) 
+	public void setParent(ParentNode pNode) 
 	{
 		assert pNode instanceof CallNode;
 		aCaller = (CallNode) pNode;
@@ -373,7 +373,7 @@ public class CallNode extends RectangularNode implements ParentChildNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
+				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

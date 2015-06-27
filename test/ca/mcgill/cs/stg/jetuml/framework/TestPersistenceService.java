@@ -18,6 +18,7 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.CircularStateNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
@@ -32,7 +33,6 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 import ca.mcgill.cs.stg.jetuml.graph.StateNode;
@@ -287,11 +287,10 @@ public class TestPersistenceService
 		InterfaceNode i1 = (InterfaceNode) nIterator.next();
 		ClassNode c2 = (ClassNode) nIterator.next();
 		
-		List<ParentChildNode> children = p1.getChildren();
+		List<ChildNode> children = p1.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(c1));
 		assertEquals(p1, c1.getParent());
-		assertEquals(0, c1.getChildren().size());
 		
 		children = p2.getChildren();
 		assertEquals(0, children.size());
@@ -326,27 +325,23 @@ public class TestPersistenceService
 		PointNode node8 = (PointNode) nIterator.next();
 		
 		assertEquals("", node1.getAttributes().getText());
-		assertTrue(node1.getChildren().isEmpty());
 		assertEquals("", node1.getMethods().getText());
 		assertEquals("Class1", node1.getName().getText());
 		assertNull(node1.getParent());
 		assertEquals(new Rectangle2D.Double(470, 180, 100, 60), node1.getBounds());
 		
-		assertTrue(node2.getChildren().isEmpty());
 		assertEquals("", node2.getMethods().getText());
 		assertEquals("«interface»", node2.getName().getText());
 		assertNull(node2.getParent());
 		assertEquals(new Rectangle2D.Double(470, 70, 100, 60), node2.getBounds());
 		
 		assertEquals("foo", node3.getAttributes().getText());
-		assertTrue(node3.getChildren().isEmpty());
 		assertEquals("bar", node3.getMethods().getText());
 		assertEquals("Class2", node3.getName().getText());
 		assertNull(node3.getParent());
 		assertEquals(new Rectangle2D.Double(470, 310, 100, 60), node3.getBounds());
 		
 		assertEquals("", node4.getAttributes().getText());
-		assertTrue(node4.getChildren().isEmpty());
 		assertEquals("", node4.getMethods().getText());
 		assertEquals("Class3", node4.getName().getText());
 		assertNull(node4.getParent());
@@ -355,7 +350,7 @@ public class TestPersistenceService
 		assertEquals("A note", node5.getText().getText());
 		assertEquals(new Rectangle2D.Double(770, 310, 60, 40), node5.getBounds());
 		
-		List<ParentChildNode> children = node6.getChildren();
+		List<ChildNode> children = node6.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node7));
 		assertEquals("", node6.getContents().getText());
@@ -364,7 +359,6 @@ public class TestPersistenceService
 		assertEquals(new Rectangle2D.Double(220, 110, 160, 120), node6.getBounds());
 
 		assertEquals("", node7.getAttributes().getText());
-		assertTrue(node7.getChildren().isEmpty());
 		assertEquals("", node7.getMethods().getText());
 		assertEquals("Class", node7.getName().getText());
 		assertEquals(node6,node7.getParent());
@@ -471,12 +465,11 @@ public class TestPersistenceService
 		PointNode node9 = (PointNode) nIterator.next();
 		
 		assertEquals(new Rectangle2D.Double(210, 0, 100, 215), node1.getBounds());
-		assertEquals(0, node1.getChildren().size());
 		assertEquals("object1:Type1", node1.getName().toString());
 		assertNull(node1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(252, 73, 16, 30), node2.getBounds());
-		List<ParentChildNode> children = node2.getChildren();
+		List<ChildNode> children = node2.getChildren();
 		assertEquals(1, children.size());
 		assertTrue(children.contains(node3));
 		assertEquals(node1, node2.getImplicitParameter());
@@ -492,7 +485,6 @@ public class TestPersistenceService
 		assertEquals(node2, node3.getParent());
 		
 		assertEquals(new Rectangle2D.Double(500, 0, 80, 215), node4.getBounds());
-		assertEquals(0, node4.getChildren().size());
 		assertEquals(":Type2", node4.getName().toString());
 		assertNull(node4.getParent());
 		
@@ -504,7 +496,6 @@ public class TestPersistenceService
 		assertEquals(node3, node5.getParent());
 		
 		assertEquals(new Rectangle2D.Double(640, 0, 80, 215), node6.getBounds());
-		assertEquals(0, node6.getChildren().size());
 		assertEquals("object3:", node6.getName().toString());
 		assertNull(node6.getParent());
 		
@@ -691,20 +682,16 @@ public class TestPersistenceService
 		assertEquals(1, type1.getChildren().size());
 		assertTrue(type1.getChildren().contains(name));
 		assertEquals(":Type1", type1.getName().toString());
-		assertNull(type1.getParent());
 		
 		assertEquals(new Rectangle2D.Double(370, 170, 160, 140), blank.getBounds());
-		List<ParentChildNode> children = blank.getChildren();
+		List<ChildNode> children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertTrue(children.contains(name2));
 		assertTrue(children.contains(name3));
 		assertTrue(children.contains(name4));
 		assertEquals("", blank.getName().toString());
-		assertNull(blank.getParent());
 		
 		assertEquals(new Rectangle2D.Double(222.5, 149, 87, 16), name.getBounds());
-		children = name.getChildren();
-		assertEquals(0, children.size());
 		assertEquals(0,name.getAxisX(),0.000001);
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
@@ -715,11 +702,8 @@ public class TestPersistenceService
 		children = object2.getChildren();
 		assertEquals(0, children.size());
 		assertEquals("object2:", object2.getName().toString());
-		assertNull(object2.getParent());
 		
 		assertEquals(new Rectangle2D.Double(395.5, 247, 122, 16), name2.getBounds());
-		children = name2.getChildren();
-		assertEquals(0, children.size());
 		assertEquals(0,name2.getAxisX(),0.000001);
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
@@ -730,11 +714,8 @@ public class TestPersistenceService
 		children = type3.getChildren();
 		assertEquals(0, children.size());
 		assertEquals(":Type3", type3.getName().toString());
-		assertNull(type3.getParent());
 		
 		assertEquals(new Rectangle2D.Double(395.5, 268, 122, 16), name3.getBounds());
-		children = name3.getChildren();
-		assertEquals(0, children.size());
 		assertEquals(0,name3.getAxisX(),0.000001);
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
@@ -742,8 +723,6 @@ public class TestPersistenceService
 		assertTrue(name3.isBoxedValue());
 		
 		assertEquals(new Rectangle2D.Double(395.5, 289, 122, 16), name4.getBounds());
-		children = name4.getChildren();
-		assertEquals(0, children.size());
 		assertEquals(0,name4.getAxisX(),0.000001);
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());

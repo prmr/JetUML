@@ -26,8 +26,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -36,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends RectangularNode implements ParentChildNode
+public class FieldNode extends RectangularNode implements ChildNode
 {
 	public static final int DEFAULT_WIDTH = 60;
 	public static final int DEFAULT_HEIGHT = 20;
@@ -227,37 +225,16 @@ public class FieldNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public ParentChildNode getParent()
+	public ParentNode getParent()
 	{
 		return aObject;
 	}
 
 	@Override
-	public void setParent(ParentChildNode pNode)
+	public void setParent(ParentNode pNode)
 	{
 		assert pNode == null || pNode instanceof ObjectNode;
 		aObject = (ObjectNode) pNode;		
-	}
-
-	@Override
-	public List<ParentChildNode> getChildren()
-	{
-		return new ArrayList<ParentChildNode>();
-	}
-
-	@Override
-	public void addChild(int pIndex, ParentChildNode pNode)
-	{
-	}
-
-	@Override
-	public void addChild(ParentChildNode pNode)
-	{
-	}
-
-	@Override
-	public void removeChild(ParentChildNode pNode)
-	{
 	}
 }
 

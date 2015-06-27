@@ -24,8 +24,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
@@ -33,7 +31,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends RectangularNode implements ParentChildNode
+public class ClassNode extends RectangularNode implements ChildNode
 {
 	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final int DEFAULT_WIDTH = 100;
@@ -172,39 +170,15 @@ public class ClassNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public ParentChildNode getParent()
+	public ParentNode getParent()
 	{
 		return aContainer;
 	}
 
 	@Override
-	public void setParent(ParentChildNode pNode)
+	public void setParent(ParentNode pNode)
 	{
-		assert pNode instanceof PackageNode;
+		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = (PackageNode) pNode;
-	}
-
-	@Override
-	public List<ParentChildNode> getChildren()
-	{
-		return new ArrayList<ParentChildNode>();
-	}
-
-	@Override
-	public void addChild(int pIndex, ParentChildNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void addChild(ParentChildNode pNode)
-	{
-		assert false;
-	}
-
-	@Override
-	public void removeChild(ParentChildNode pNode)
-	{
-		assert false;		
 	}
 }

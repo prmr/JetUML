@@ -8,17 +8,18 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AttachDetachChildCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * @author EJBQ
@@ -106,7 +107,7 @@ public class GraphModificationListener
 	 * @param pParent The parent node
 	 * @param pChild The child node
 	 */
-	public void childAttached(Graph pGraph, int pIndex, ParentChildNode pParent, ParentChildNode pChild)
+	public void childAttached(Graph pGraph, int pIndex, ParentNode pParent, ChildNode pChild)
 	{
 		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, true);
 		aUndoManager.add(adc);
@@ -119,7 +120,7 @@ public class GraphModificationListener
 	 * @param pParent The parent node
 	 * @param pChild The child node
 	 */
-	public void childDetached(Graph pGraph, int pIndex, ParentChildNode pParent, ParentChildNode pChild)
+	public void childDetached(Graph pGraph, int pIndex, ParentNode pParent, ChildNode pChild)
 	{
 		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, false);
 		aUndoManager.add(adc);

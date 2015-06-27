@@ -38,7 +38,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends RectangularNode implements ParentChildNode
+public class ObjectNode extends RectangularNode implements ParentNode
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -47,7 +47,7 @@ public class ObjectNode extends RectangularNode implements ParentChildNode
 
 	private double aTopHeight;
 	private MultiLineString aName;
-	private ArrayList<ParentChildNode> aFields;
+	private ArrayList<ChildNode> aFields;
 
 	/**
 	 * Construct an object node with a default size.
@@ -112,7 +112,7 @@ public class ObjectNode extends RectangularNode implements ParentChildNode
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		double leftWidth = 0;
 		double rightWidth = 0;
-		List<ParentChildNode> fields = getChildren();
+		List<ChildNode> fields = getChildren();
 		double height = 0;
 		if( fields.size() != 0 )
 		{
@@ -171,20 +171,20 @@ public class ObjectNode extends RectangularNode implements ParentChildNode
 	{
 		ObjectNode cloned = (ObjectNode)super.clone();
 		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aFields = (ArrayList<ParentChildNode>)aFields.clone();
+		cloned.aFields = (ArrayList<ChildNode>)aFields.clone();
 		return cloned;
 	}
 
 	@Override
-	public void addChild(ParentChildNode pNode)
+	public void addChild(ChildNode pNode)
 	{
 		addChild(aFields.size(), pNode);
 	}
 	
 	@Override
-	public void addChild(int pIndex, ParentChildNode pNode)
+	public void addChild(int pIndex, ChildNode pNode)
 	{
-		ParentChildNode oldParent = pNode.getParent();
+		ParentNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -198,24 +198,13 @@ public class ObjectNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public ParentChildNode getParent()
-	{
-		return null;
-	}
-
-	@Override
-	public void setParent(ParentChildNode pNode)
-	{
-	}
-
-	@Override
-	public List<ParentChildNode> getChildren()
+	public List<ChildNode> getChildren()
 	{
 		return aFields; // TODO there should be a remove operation on ObjectNode
 	}
 
 	@Override
-	public void removeChild(ParentChildNode pNode)
+	public void removeChild(ChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -237,7 +226,7 @@ public class ObjectNode extends RectangularNode implements ParentChildNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
+				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

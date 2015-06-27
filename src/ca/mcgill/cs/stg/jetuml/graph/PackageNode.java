@@ -31,7 +31,6 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -42,7 +41,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends RectangularNode implements ParentChildNode
+public class PackageNode extends RectangularNode implements ParentNode, ChildNode
 {
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
@@ -58,8 +57,8 @@ public class PackageNode extends RectangularNode implements ParentChildNode
 	private MultiLineString aContents;
 	private Rectangle2D aTop;
 	private Rectangle2D aBottom;
-	private ArrayList<ParentChildNode> aContainedNodes;
-	private ParentChildNode aContainer;
+	private ArrayList<ChildNode> aContainedNodes;
+	private ParentNode aContainer;
 	   
 	/**
      * Construct a package node with a default size.
@@ -117,8 +116,7 @@ public class PackageNode extends RectangularNode implements ParentChildNode
 		double topHeight = Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
 		
 		Rectangle2D childBounds = null;
-		List<ParentChildNode> children = getChildren();
-		for( ParentChildNode child : children )
+		for( ChildNode child : getChildren() )
 		{
 			child.layout(pGraph, pGraphics2D, pGrid);
 			if( childBounds == null )
@@ -220,33 +218,33 @@ public class PackageNode extends RectangularNode implements ParentChildNode
 	{
 		PackageNode cloned = (PackageNode)super.clone();
 		cloned.aContents = (MultiLineString)aContents.clone();
-		cloned.aContainedNodes = (ArrayList<ParentChildNode>)aContainedNodes.clone();
+		cloned.aContainedNodes = (ArrayList<ChildNode>)aContainedNodes.clone();
 		return cloned;
 	}
 	
 	@Override
-	public ParentChildNode getParent()
+	public ParentNode getParent()
 	{
 		return aContainer;
 	}
 
 	@Override
-	public void setParent(ParentChildNode pNode)
+	public void setParent(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode;
 		aContainer = (PackageNode) pNode;
 	}
 
 	@Override
-	public List<ParentChildNode> getChildren()
+	public List<ChildNode> getChildren()
 	{
 		return aContainedNodes; // TODO there should be a remove operation on PackageNode
 	}
 
 	@Override
-	public void addChild(int pIndex, ParentChildNode pNode)
+	public void addChild(int pIndex, ChildNode pNode)
 	{
-		ParentChildNode oldParent = pNode.getParent();
+		ParentNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
@@ -256,13 +254,13 @@ public class PackageNode extends RectangularNode implements ParentChildNode
 	}
 
 	@Override
-	public void addChild(ParentChildNode pNode)
+	public void addChild(ChildNode pNode)
 	{
 		addChild(aContainedNodes.size(), pNode);
 	}
 
 	@Override
-	public void removeChild(ParentChildNode pNode)
+	public void removeChild(ChildNode pNode)
 	{
 		if (pNode.getParent() != this)
 		{
@@ -284,7 +282,7 @@ public class PackageNode extends RectangularNode implements ParentChildNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(ParentChildNode node : ((ParentChildNode) pOldInstance).getChildren())
+				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
 				}

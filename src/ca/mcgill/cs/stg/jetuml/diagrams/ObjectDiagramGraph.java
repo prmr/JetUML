@@ -30,16 +30,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
@@ -167,7 +168,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				return false;
 			}
-			List<ParentChildNode> fields = ((ObjectNode)pParent).getChildren();
+			List<ChildNode> fields = ((ObjectNode)pParent).getChildren();
 			FieldNode fNode = (FieldNode) pPotentialChild;
 			return !fields.contains(fNode);
 		}
@@ -178,7 +179,7 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pParent instanceof ObjectNode )
 		{
-			List<ParentChildNode> fields = ((ObjectNode)pParent).getChildren();
+			List<ChildNode> fields = ((ObjectNode)pParent).getChildren();
 			FieldNode fNode = (FieldNode) pChild;
 			int i = 0;
 			while(i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
@@ -202,20 +203,20 @@ public class ObjectDiagramGraph extends Graph
 
 		super.add(pNode, pPoint);
 				
-		for(Node parent : aNodes)
+		for(Node node : aNodes)
 		{
-			if (parent == pNode)
+			if(node == pNode)
 			{
 				continue;
 			}
-			if (parent.contains(pPoint) && canAddNode(parent, pNode))
+			if(node.contains(pPoint) && canAddNode(node, pNode))
 			{
-				addNode(parent, pNode, pPoint);
-				if(pNode instanceof ParentChildNode && parent instanceof ParentChildNode)
+				addNode(node, pNode, pPoint);
+				if(pNode instanceof ChildNode && node instanceof ParentNode)
 				{
-					ParentChildNode curNode = (ParentChildNode) pNode;
-					ParentChildNode parentParent = (ParentChildNode) parent;
-					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
+					ChildNode child = (ChildNode) pNode;
+					ParentNode parent = (ParentNode) node;
+					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, child);
 				}
 				break;
 			}
@@ -233,23 +234,22 @@ public class ObjectDiagramGraph extends Graph
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
-		for(int i = 0; i < aNodes.size(); i++)
+		for(Node node : aNodes)
 		{
-			Node n2 = aNodes.get(i);
-			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
+			if(node instanceof ChildNode && pNode instanceof ParentNode)
 			{
-				ParentChildNode curNode = (ParentChildNode) n2;
-				ParentChildNode parentParent = (ParentChildNode) pNode;
-				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
+				ChildNode child = (ChildNode) node;
+				ParentNode parent = (ParentNode) pNode;
+				if(child.getParent()!= null && child.getParent().equals(pNode))
 				{
-					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
+					aModListener.childDetached(this, parent.getChildren().indexOf(child), parent, child);
 				}
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentChildNode)
+		if(pNode instanceof ParentNode)
 		{
-			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
+			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{

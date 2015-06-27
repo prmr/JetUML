@@ -33,13 +33,14 @@ import java.util.ResourceBundle;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.ParentChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 
@@ -144,10 +145,10 @@ public class SequenceDiagramGraph extends Graph
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			ParentChildNode parent = (CallNode)pOrigin; 
-			while(parent != null && end != parent)
+			ParentNode parent = (CallNode)pOrigin; 
+			while(parent != null && end != parent && parent instanceof ChildNode)
 			{
-				parent = parent.getParent();
+				parent = ((ChildNode)parent).getParent();
 			}
          
 			if(((CallNode)end).getParent() == null && end != parent)
@@ -178,14 +179,14 @@ public class SequenceDiagramGraph extends Graph
 			}
 		}
 		
-		((CallNode)pOrigin).addChild((ParentChildNode)n, pPoint1);
+		((CallNode)pOrigin).addChild((ChildNode)n, pPoint1);
 	}
 
 	@Override
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && ((ParentChildNode)pEdge.getEnd()).getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && ((ParentNode)pEdge.getEnd()).getChildren().size() == 0) 
 		{
 			removeNode(pEdge.getEnd());
 		}		
@@ -347,20 +348,20 @@ public class SequenceDiagramGraph extends Graph
 
 		super.add(pNode, pPoint);
 				
-		for(Node parent : aNodes)
+		for(Node node : aNodes)
 		{
-			if (parent == pNode)
+			if(node == pNode)
 			{
 				continue;
 			}
-			if (parent.contains(pPoint) && canAddNode(parent, pNode))
+			if(node.contains(pPoint) && canAddNode(node, pNode))
 			{
-				addNode(parent, pNode, pPoint);
-				if(pNode instanceof ParentChildNode && parent instanceof ParentChildNode)
+				addNode(node, pNode, pPoint);
+				if(pNode instanceof ChildNode && node instanceof ParentNode)
 				{
-					ParentChildNode curNode = (ParentChildNode) pNode;
-					ParentChildNode parentParent = (ParentChildNode) parent;
-					aModListener.childAttached(this, parentParent.getChildren().indexOf(pNode), parentParent, curNode);
+					ChildNode child = (ChildNode) pNode;
+					ParentNode parent = (ParentNode) node;
+					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, child);
 				}
 				break;
 			}
@@ -391,23 +392,22 @@ public class SequenceDiagramGraph extends Graph
 		}
 		aModListener.startCompoundListening();
 		// notify nodes of removals
-		for(int i = 0; i < aNodes.size(); i++)
+		for(Node node : aNodes)
 		{
-			Node n2 = aNodes.get(i);
-			if(n2 instanceof ParentChildNode && pNode instanceof ParentChildNode)
+			if(node instanceof ChildNode && pNode instanceof ParentNode)
 			{
-				ParentChildNode curNode = (ParentChildNode) n2;
-				ParentChildNode parentParent = (ParentChildNode) pNode;
-				if(curNode.getParent()!= null && curNode.getParent().equals(pNode))
+				ChildNode child = (ChildNode) node;
+				ParentNode parent = (ParentNode) pNode;
+				if(child.getParent()!= null && child.getParent().equals(pNode))
 				{
-					aModListener.childDetached(this, parentParent.getChildren().indexOf(curNode), parentParent, curNode);
+					aModListener.childDetached(this, parent.getChildren().indexOf(child), parent, child);
 				}
 			}
 		}
 		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentChildNode)
+		if(pNode instanceof ParentNode)
 		{
-			ArrayList<ParentChildNode> children = new ArrayList<ParentChildNode>(((ParentChildNode) pNode).getChildren());
+			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
 			for(Node childNode: children)
 			{
