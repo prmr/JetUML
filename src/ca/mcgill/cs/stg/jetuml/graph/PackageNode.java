@@ -212,13 +212,12 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		return aContents;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public PackageNode clone()
 	{
 		PackageNode cloned = (PackageNode)super.clone();
 		cloned.aContents = (MultiLineString)aContents.clone();
-		cloned.aContainedNodes = (ArrayList<ChildNode>)aContainedNodes.clone();
+		cloned.aContainedNodes = new ArrayList<>();
 		return cloned;
 	}
 	
