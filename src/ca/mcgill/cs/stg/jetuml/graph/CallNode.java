@@ -357,7 +357,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 */
 	public void setParent(ParentNode pNode) 
 	{
-		assert pNode instanceof CallNode;
+		assert pNode instanceof CallNode || pNode == null;
 		aCaller = (CallNode) pNode;
 	}
 	
