@@ -311,16 +311,12 @@ public abstract class Graph
 				removeNode(parent);
 			}
 		}
-		else if( pParent instanceof ChildNode )
+		else if( pParent instanceof ParentNode && pChild instanceof ChildNode )
 		{
-			ChildNode parent = (ChildNode) pParent;
-			if( pChild == parent.getParent() )
+			if( pChild instanceof ChildNode && ((ChildNode)pChild).getParent() == pParent )
 			{
-				parent.setParent(null);
-			}
-			if( pChild instanceof ChildNode && ((ChildNode)pChild).getParent() == parent && parent instanceof ParentNode)
-			{
-				((ParentNode)parent).getChildren().remove(pChild);
+				((ParentNode)pParent).getChildren().remove(pChild);
+				((ChildNode)pChild).setParent(null);
 			}
 		} 
 	}
