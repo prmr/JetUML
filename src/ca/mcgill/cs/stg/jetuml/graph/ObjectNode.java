@@ -165,13 +165,12 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		return aName;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ObjectNode clone()
 	{
 		ObjectNode cloned = (ObjectNode)super.clone();
 		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aFields = (ArrayList<ChildNode>)aFields.clone();
+		cloned.aFields = new ArrayList<>();
 		return cloned;
 	}
 
