@@ -276,11 +276,36 @@ public abstract class Graph
 		}
 		aModListener.startCompoundListening();
 		aNodesToBeRemoved.add(pNode);
+		
+		if(pNode instanceof ParentNode)
+		{
+			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
+			//We create a shallow clone so deleting children does not affect the loop
+			for(Node childNode: children)
+			{
+				removeNode(childNode);
+			}
+		}
 
 		// Notify all nodes that pNode is being removed.
 		for(Node node : aNodes)
 		{
-			processNodeRemoval(node, pNode);
+			if( node instanceof CallNode )
+			{
+				CallNode parent = (CallNode) node;
+				if( pNode == parent.getParent() || pNode == parent.getImplicitParameter())
+				{
+					removeNode(parent);
+				}
+			}
+			else if( node instanceof ParentNode && pNode instanceof ChildNode )
+			{
+				if( ((ChildNode)pNode).getParent() == node )
+				{
+					((ParentNode)node).getChildren().remove(pNode);
+					((ChildNode)pNode).setParent(null);
+				}
+			}
 		}
 		
 		// Notify all edges that pNode is being removed.
@@ -294,31 +319,6 @@ public abstract class Graph
 		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
-	}
-	
-	/**
-	 * Specialized node removal behavior.
-	 * @param pParent The node to remove a child node from.
-	 * @param pChild The node to remove from the parent.
-	 */
-	protected void processNodeRemoval(Node pParent, Node pChild)
-	{
-		if( pParent instanceof CallNode )
-		{
-			CallNode parent = (CallNode) pParent;
-			if( pChild == parent.getParent() || pChild == parent.getImplicitParameter())
-			{
-				removeNode(parent);
-			}
-		}
-		else if( pParent instanceof ParentNode && pChild instanceof ChildNode )
-		{
-			if( pChild instanceof ChildNode && ((ChildNode)pChild).getParent() == pParent )
-			{
-				((ParentNode)pParent).getChildren().remove(pChild);
-				((ChildNode)pChild).setParent(null);
-			}
-		} 
 	}
 
 	/**

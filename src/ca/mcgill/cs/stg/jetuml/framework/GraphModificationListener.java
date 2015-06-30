@@ -10,16 +10,13 @@ import java.lang.reflect.Method;
 
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
-import ca.mcgill.cs.stg.jetuml.commands.AttachDetachChildCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
-import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * @author EJBQ
@@ -57,14 +54,6 @@ public class GraphModificationListener
 	public void nodeAdded(Graph pGraph, Node pNode)
 	{
 		AddDeleteNodeCommand ac = new AddDeleteNodeCommand(pGraph, pNode, true);
-//		if(pNode.getParent() != null)
-//		{
-//			aUndoManager.startTracking();
-//			childAttached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
-//			aUndoManager.add(ac);
-//			aUndoManager.endTracking();
-//			return;
-//		}
 		aUndoManager.add(ac);
 	}
 
@@ -76,14 +65,6 @@ public class GraphModificationListener
 	public void nodeRemoved(Graph pGraph, Node pNode)
 	{
 		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraph, pNode, false);
-//		if(pNode.getParent() != null)
-//		{
-//			aUndoManager.startTracking();
-//			childDetached(pGraph, pNode.getParent().getChildren().indexOf(pNode), pNode.getParent(), pNode);
-//			aUndoManager.add(dc);
-//			aUndoManager.endTracking();
-//			return;
-//		}
 		aUndoManager.add(dc);
 	}
 
@@ -98,32 +79,6 @@ public class GraphModificationListener
 	{
 		MoveCommand mc = new MoveCommand(pGraph, pNode, pDX, pDY);
 		aUndoManager.add(mc);
-	}
-
-	/**
-	 * Keeps track of the addition of a child.
-	 * @param pGraph The panel the child was added in
-	 * @param pIndex The index of the parent node that the child was added in
-	 * @param pParent The parent node
-	 * @param pChild The child node
-	 */
-	public void childAttached(Graph pGraph, int pIndex, ParentNode pParent, ChildNode pChild)
-	{
-		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, true);
-		aUndoManager.add(adc);
-	}
-
-	/**
-	 * Keeps track of the removal of a child.
-	 * @param pGraph The panel the child was added in
-	 * @param pIndex The index of the parent node that the child was added in
-	 * @param pParent The parent node
-	 * @param pChild The child node
-	 */
-	public void childDetached(Graph pGraph, int pIndex, ParentNode pParent, ChildNode pChild)
-	{
-		AttachDetachChildCommand adc = new AttachDetachChildCommand(pGraph, pIndex, pParent, pChild, false);
-		aUndoManager.add(adc);
 	}
 
 	/**

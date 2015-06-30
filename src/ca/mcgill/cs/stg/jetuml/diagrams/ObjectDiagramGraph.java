@@ -23,7 +23,6 @@
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +39,6 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
@@ -212,52 +210,11 @@ public class ObjectDiagramGraph extends Graph
 			if(node.contains(pPoint) && canAddNode(node, pNode))
 			{
 				addNode(node, pNode, pPoint);
-				if(pNode instanceof ChildNode && node instanceof ParentNode)
-				{
-					ChildNode child = (ChildNode) pNode;
-					ParentNode parent = (ParentNode) node;
-					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, child);
-				}
 				break;
 			}
 		}
 		aModListener.endCompoundListening();
 		return true;
-	}
-	
-	@Override
-	public void removeNode(Node pNode)
-	{
-		if(aNodesToBeRemoved.contains(pNode))
-		{
-			return;
-		}
-		aModListener.startCompoundListening();
-		// notify nodes of removals
-		for(Node node : aNodes)
-		{
-			if(node instanceof ChildNode && pNode instanceof ParentNode)
-			{
-				ChildNode child = (ChildNode) node;
-				ParentNode parent = (ParentNode) pNode;
-				if(child.getParent()!= null && child.getParent().equals(pNode))
-				{
-					aModListener.childDetached(this, parent.getChildren().indexOf(child), parent, child);
-				}
-			}
-		}
-		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentNode)
-		{
-			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
-			//We create a shallow clone so deleting children does not affect the loop
-			for(Node childNode: children)
-			{
-				removeNode(childNode);
-			}
-		}
-		super.removeNode(pNode);
-		aModListener.endCompoundListening();
 	}
 }
 

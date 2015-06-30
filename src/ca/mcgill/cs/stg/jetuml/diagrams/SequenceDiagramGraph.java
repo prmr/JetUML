@@ -357,12 +357,6 @@ public class SequenceDiagramGraph extends Graph
 			if(node.contains(pPoint) && canAddNode(node, pNode))
 			{
 				addNode(node, pNode, pPoint);
-				if(pNode instanceof ChildNode && node instanceof ParentNode)
-				{
-					ChildNode child = (ChildNode) pNode;
-					ParentNode parent = (ParentNode) node;
-					aModListener.childAttached(this, parent.getChildren().indexOf(pNode), parent, child);
-				}
 				break;
 			}
 		}
@@ -378,45 +372,6 @@ public class SequenceDiagramGraph extends Graph
 	 */
 	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
 	{}
-
-
-	/**
-	 * Removes a node and all edges that start or end with that node.
-	 * @param pNode the node to remove
-	 */
-	public void removeNode(Node pNode)
-	{
-		if(aNodesToBeRemoved.contains(pNode))
-		{
-			return;
-		}
-		aModListener.startCompoundListening();
-		// notify nodes of removals
-		for(Node node : aNodes)
-		{
-			if(node instanceof ChildNode && pNode instanceof ParentNode)
-			{
-				ChildNode child = (ChildNode) node;
-				ParentNode parent = (ParentNode) pNode;
-				if(child.getParent()!= null && child.getParent().equals(pNode))
-				{
-					aModListener.childDetached(this, parent.getChildren().indexOf(child), parent, child);
-				}
-			}
-		}
-		/*Remove the children too @JoelChev*/
-		if(pNode instanceof ParentNode)
-		{
-			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
-			//We create a shallow clone so deleting children does not affect the loop
-			for(Node childNode: children)
-			{
-				removeNode(childNode);
-			}
-		}
-		super.removeNode(pNode);
-		aModListener.endCompoundListening();
-	}
 }
 
 
