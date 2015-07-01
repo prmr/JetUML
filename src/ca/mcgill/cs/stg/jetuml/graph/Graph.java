@@ -303,7 +303,8 @@ public abstract class Graph
 				if( ((ChildNode)pNode).getParent() == node )
 				{
 					((ParentNode)node).getChildren().remove(pNode);
-					((ChildNode)pNode).setParent(null);
+					// We don't reassing the parent of the child to null in case the operation
+					// is undone, at which point we'll need to know who the parent was.
 				}
 			}
 		}

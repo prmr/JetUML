@@ -23,9 +23,7 @@
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.geom.Point2D;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
@@ -39,7 +37,6 @@ import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
-import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  *   An UML-style object diagram that shows object references.
@@ -90,31 +87,69 @@ public class ObjectDiagramGraph extends Graph
 		return true;
 	}
 	
+	/* 
+	 * Adds the node, ensuring that field nodes can only be added if the
+	 * point is inside an object node.
+	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
+	 */
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		
-		if(pNode instanceof FieldNode) // must be inside an Object Node.
+		aModListener.startCompoundListening();
+		super.add(pNode, pPoint);
+		ObjectNode object = findObject(pNode, pPoint);
+		if( object != null )
 		{
-			Collection<Node> nodes = getNodes();
-			boolean inside = false;
-			Iterator<Node> iter = nodes.iterator();
-			while(!inside && iter.hasNext())
+			object.addChild((ChildNode)pNode);
+		}
+		aModListener.endCompoundListening();
+		return true;
+	}
+	
+	/* Find if the node to be added can be added to an object. Returns null if not. 
+	 * If a node is already the parent of the field (from a previously undone operation),
+	 * return this node. Otherwise, find if a node is at the point
+	 */
+	private ObjectNode findObject(Node pNode, Point2D pPoint)
+	{
+		ArrayList<ObjectNode> candidates = new ArrayList<>();
+		for( Node node : aNodes )
+		{
+			if( node == pNode )
 			{
-				Node n2 = (Node)iter.next();
-				if(n2 instanceof ObjectNode && n2.contains(pPoint)) 
-				{
-					inside = true;
-					((FieldNode)pNode).setParent((ObjectNode)n2);
-				}
+				continue;
 			}
-			if (!inside)
+			else if( pNode instanceof FieldNode && ((FieldNode)pNode).getParent() == node )
 			{
-				return false;
+				return (ObjectNode)node;
+			}
+			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
+			{
+				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}
 		}
-		
-		return superadd(pNode, pPoint); 
+		// Pick the last node in the list as some inexact but simple
+		// heuristic for choosing the top node. We'll need a z-coordinate to do better.
+		if( candidates.size() > 0 )
+		{
+			return candidates.get(candidates.size()-1);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	private static boolean canAddNodeAsChild(Node pParent, Node pPotentialChild)
+	{
+		if( pParent instanceof ObjectNode )
+		{
+			return pPotentialChild instanceof FieldNode;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	@Override
@@ -148,73 +183,6 @@ public class ObjectDiagramGraph extends Graph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("object.name");
-	}
-	
-	private boolean canAddNode(Node pParent, Node pPotentialChild)
-	{
-		if( pParent instanceof FieldNode )
-		{
-			return pPotentialChild instanceof PointNode;
-		}
-		else if( pParent instanceof ObjectNode )
-		{
-			if(pPotentialChild instanceof PointNode)
-			{
-				return true;
-			}
-			if(!(pPotentialChild instanceof FieldNode))
-			{
-				return false;
-			}
-			List<ChildNode> fields = ((ObjectNode)pParent).getChildren();
-			FieldNode fNode = (FieldNode) pPotentialChild;
-			return !fields.contains(fNode);
-		}
-		return false;
-	}
-	
-	private void addNode(Node pParent, Node pChild, Point2D pPoint)
-	{
-		if( pParent instanceof ObjectNode )
-		{
-			List<ChildNode> fields = ((ObjectNode)pParent).getChildren();
-			FieldNode fNode = (FieldNode) pChild;
-			int i = 0;
-			while(i < fields.size() && ((Node)fields.get(i)).getBounds().getY() < pPoint.getY())
-			{
-				i++;
-			}
-			((ObjectNode)pParent).addChild(i, fNode);
-		}
-	}
-	
-	/**
-	 * Adds a node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point.
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @return True if the node was added.
-	 */
-	private boolean superadd(Node pNode, Point2D pPoint)
-	{
-		aModListener.startCompoundListening();
-
-		super.add(pNode, pPoint);
-				
-		for(Node node : aNodes)
-		{
-			if(node == pNode)
-			{
-				continue;
-			}
-			if(node.contains(pPoint) && canAddNode(node, pNode))
-			{
-				addNode(node, pNode, pPoint);
-				break;
-			}
-		}
-		aModListener.endCompoundListening();
-		return true;
 	}
 }
 
