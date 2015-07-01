@@ -72,6 +72,35 @@ public class SequenceDiagramGraph extends Graph
 		return superadd(pNode, pPoint);
 	}
 	
+	/**
+	 * Adds a node to the graph so that the top left corner of
+	 * the bounding rectangle is at the given point.
+	 * @param pNode the node to add
+	 * @param pPoint the desired location
+	 * @return True if the node was added.
+	 */
+	private boolean superadd(Node pNode, Point2D pPoint)
+	{
+		aModListener.startCompoundListening();
+
+		super.add(pNode, pPoint);
+				
+		for(Node node : aNodes)
+		{
+			if(node == pNode)
+			{
+				continue;
+			}
+			if(node.contains(pPoint) && canAddNode(node, pNode))
+			{
+				addNode(node, pNode, pPoint);
+				break;
+			}
+		}
+		aModListener.endCompoundListening();
+		return true;
+	}
+	
 	/*
 	 * If pPoint is inside an ImplicitParameterNode but below its top
 	 * rectangle, returns that node. Otherwise, returns null.
@@ -335,34 +364,7 @@ public class SequenceDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
 	}
 	
-	/**
-	 * Adds a node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point.
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @return True if the node was added.
-	 */
-	private boolean superadd(Node pNode, Point2D pPoint)
-	{
-		aModListener.startCompoundListening();
-
-		super.add(pNode, pPoint);
-				
-		for(Node node : aNodes)
-		{
-			if(node == pNode)
-			{
-				continue;
-			}
-			if(node.contains(pPoint) && canAddNode(node, pNode))
-			{
-				addNode(node, pNode, pPoint);
-				break;
-			}
-		}
-		aModListener.endCompoundListening();
-		return true;
-	}
+	
 	
 	/**
 	 * Diagram-specific behavior taking place before the addition of a node.

@@ -600,8 +600,10 @@ public class GraphPanel extends JPanel
 				{
 					setModified(true);
 					aSelectedElements.set(newNode);
-					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraph, aSelectedElements);
+					// @prmr Disabled the option to "slide" an object on creation to greatly
+					// simplify the node creation logic. For now.
+					//aDragMode = DragMode.DRAG_MOVE;
+					//aModListener.startTrackingMove(aGraph, aSelectedElements);
 				}
 				else if(n != null)
 				{

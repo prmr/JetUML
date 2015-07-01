@@ -90,27 +90,40 @@ public class ObjectDiagramGraph extends Graph
 	/* 
 	 * Adds the node, ensuring that field nodes can only be added if the
 	 * point is inside an object node.
+	 * The compound tracking is necessary because there is often a small 
+	 * "slip" (move) done when a node is dropped, which needs to be aggregated
+	 * with the add command.
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		aModListener.startCompoundListening();
-		super.add(pNode, pPoint);
-		ObjectNode object = findObject(pNode, pPoint);
-		if( object != null )
+		if( pNode instanceof FieldNode )
 		{
-			object.addChild((ChildNode)pNode);
+			ObjectNode object = findObject((FieldNode)pNode, pPoint);
+			if( object != null )
+			{
+				super.add(pNode, pPoint);
+				object.addChild((ChildNode)pNode);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		aModListener.endCompoundListening();
-		return true;
+		else
+		{
+			super.add(pNode, pPoint);
+			return true;
+		}
 	}
 	
 	/* Find if the node to be added can be added to an object. Returns null if not. 
 	 * If a node is already the parent of the field (from a previously undone operation),
 	 * return this node. Otherwise, find if a node is at the point
 	 */
-	private ObjectNode findObject(Node pNode, Point2D pPoint)
+	private ObjectNode findObject(FieldNode pNode, Point2D pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
 		for( Node node : aNodes )
@@ -119,7 +132,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				continue;
 			}
-			else if( pNode instanceof FieldNode && ((FieldNode)pNode).getParent() == node )
+			else if( pNode.getParent() == node )
 			{
 				return (ObjectNode)node;
 			}
