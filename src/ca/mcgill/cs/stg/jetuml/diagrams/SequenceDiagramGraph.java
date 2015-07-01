@@ -41,7 +41,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
-import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 
 /**
@@ -54,51 +53,34 @@ public class SequenceDiagramGraph extends Graph
 	
 	private static final int CALL_NODE_YGAP = 5;
 	
+	/* 
+	 * Adds the node, ensuring that call nodes can only be added if the
+	 * point is inside the space of the related ImplicitParameterNode
+	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
+	 */
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		if(pNode instanceof CallNode) // must be inside an object
+		if(pNode instanceof CallNode) 
 		{
 			ImplicitParameterNode target = insideTargetArea(pPoint);
-			if( target == null )
+			if( target != null )
 			{
-				return false;
+//				target.addChild((ChildNode)pNode);
+				((CallNode)pNode).setImplicitParameter(target); // Will be superseded by the call to addchild when this is done.
+				super.add(pNode, pPoint);
+				return true;
 			}
 			else
 			{
-				((CallNode)pNode).setImplicitParameter(target);
+				return false;
 			}
 		}
-		return superadd(pNode, pPoint);
-	}
-	
-	/**
-	 * Adds a node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point.
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @return True if the node was added.
-	 */
-	private boolean superadd(Node pNode, Point2D pPoint)
-	{
-		aModListener.startCompoundListening();
-
-		super.add(pNode, pPoint);
-				
-		for(Node node : aNodes)
+		else
 		{
-			if(node == pNode)
-			{
-				continue;
-			}
-			if(node.contains(pPoint) && canAddNode(node, pNode))
-			{
-				addNode(node, pNode, pPoint);
-				break;
-			}
+			super.add( pNode, pPoint );
+			return true;
 		}
-		aModListener.endCompoundListening();
-		return true;
 	}
 	
 	/*
@@ -118,19 +100,6 @@ public class SequenceDiagramGraph extends Graph
 			}
 		}
 		return null;
-	}
-	
-	private boolean canAddNode(Node pParent, Node pPotentialChild)
-	{
-		if( pParent instanceof CallNode )
-		{
-			return pPotentialChild instanceof PointNode;
-		}
-		else if( pParent instanceof ImplicitParameterNode )
-		{
-			return pPotentialChild instanceof CallNode || pPotentialChild instanceof PointNode;
-		}
-		return false;
 	}
 	
 	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
@@ -363,17 +332,6 @@ public class SequenceDiagramGraph extends Graph
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
 	}
-	
-	
-	
-	/**
-	 * Diagram-specific behavior taking place before the addition of a node.
-	 * @param pParent The parent node.
-	 * @param pChild The child about the be added to the parent. 
-	 * @param pPoint The point of the node to add the child.
-	 */
-	protected void addNode(Node pParent, Node pChild, Point2D pPoint)
-	{}
 }
 
 

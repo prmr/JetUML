@@ -90,9 +90,6 @@ public class ObjectDiagramGraph extends Graph
 	/* 
 	 * Adds the node, ensuring that field nodes can only be added if the
 	 * point is inside an object node.
-	 * The compound tracking is necessary because there is often a small 
-	 * "slip" (move) done when a node is dropped, which needs to be aggregated
-	 * with the add command.
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
