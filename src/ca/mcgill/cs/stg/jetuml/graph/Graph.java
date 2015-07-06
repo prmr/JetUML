@@ -267,6 +267,8 @@ public abstract class Graph
 	/**
 	 * Removes a node and all edges that start or end with that node.
 	 * @param pNode the node to remove
+	 * TODO: prmr the child handling stuff can be removed? It's all handled 
+	 * in the specific diagrams.
 	 */
 	public void removeNode(Node pNode)
 	{

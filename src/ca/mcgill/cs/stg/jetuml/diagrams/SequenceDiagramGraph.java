@@ -184,10 +184,32 @@ public class SequenceDiagramGraph extends Graph
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && ((ParentNode)pEdge.getEnd()).getChildren().size() == 0) 
+		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
 		{
 			removeNode(pEdge.getEnd());
 		}		
+	}
+	
+	/**
+	 * @param pNode The node to check
+	 * @return True if pNode is a call node that does not have any outgoing
+	 * call edge.
+	 */
+	private boolean hasNoCallees(Node pNode)
+	{
+		if( !(pNode instanceof CallNode ))
+		{
+			return false;
+		}
+		assert pNode instanceof CallNode;
+		for( Edge edge : aEdges )
+		{
+			if( edge.getStart() == pNode )
+			{
+				return false;
+			}
+		}
+		return true;
 	}
  
 	@Override
