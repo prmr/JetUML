@@ -199,6 +199,24 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		}
 		setBounds(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
 	}
+	
+	/*
+	 * @param pGraph
+	 * @return All the nodes (CallNodes or ImplicitParameterNodes) that have a calledge
+	 * originating at this CallNode
+	 */
+	private List<Node> getCallees(Graph pGraph)
+	{
+		List<Node> callees = new ArrayList<>();
+		for( Edge edge : pGraph.getEdges())
+		{
+			if( edge.getStart() == this )
+			{
+				callees.add(edge.getEnd());
+			}
+		}
+		return callees;
+	}
 
 	/*
 	 * @return The X coordinate that should be the middle
@@ -228,7 +246,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = getBounds().getY() + CALL_YGAP;
 
-		for(ChildNode node : aCalls)
+		for(Node node : getCallees(pGraph))
 		{
 			if(node instanceof ImplicitParameterNode) // <<create>>
 			{
