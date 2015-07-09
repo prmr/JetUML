@@ -110,7 +110,7 @@ public class SequenceDiagramGraph extends Graph
 		}
 		if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
 		{
-			return pNode2 == ((CallNode)pNode1).getParent();
+			return pNode2 == getCaller(pNode1);
 		}
 		if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
 		{
@@ -143,13 +143,13 @@ public class SequenceDiagramGraph extends Graph
 		if(end instanceof CallNode) 
 		{
 			// check for cycles
-			ParentNode parent = (CallNode)pOrigin; 
-			while(parent != null && end != parent && parent instanceof ChildNode)
+			CallNode caller = (CallNode)pOrigin; 
+			while(caller != null && end != caller)
 			{
-				parent = ((ChildNode)parent).getParent();
+				caller = getCaller(caller);
 			}
          
-			if(((CallNode)end).getParent() == null && end != parent)
+			if( getCaller(end) == null && end != caller)
 			{
 				n = end;
 			}
@@ -211,6 +211,41 @@ public class SequenceDiagramGraph extends Graph
 		}
 		return true;
 	}
+	
+	/**
+	 * @param pNode The node to obtain the caller for.
+	 * @return The CallNode that has a outgoing edge terminated
+	 * at pNode, or null if there are none.
+	 */
+	public CallNode getCaller(Node pNode)
+	{
+		for( Edge edge : aEdges )
+		{
+			if( edge.getEnd() == pNode  && edge instanceof CallEdge )
+			{
+				return (CallNode) edge.getStart();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * @param pStart The starting node.
+	 * @param pEnd The end node.
+	 * @return The edge that starts at node pStart and ends at node pEnd, or null if there is no 
+	 * such edge.
+	 */
+	public Edge findEdge(Node pStart, Node pEnd)
+	{
+		for( Edge edge : aEdges )
+		{
+			if(edge.getStart() == pStart && edge.getEnd() == pEnd)
+			{
+				return edge;
+			}
+		}
+		return null;
+	}
  
 	@Override
 	public void layout(Graphics2D pGraphics2D, Grid pGrid)
@@ -225,7 +260,7 @@ public class SequenceDiagramGraph extends Graph
 		{
 			Node n = (Node)iter.next();
          
-			if(n instanceof CallNode && ((CallNode)n).getParent() == null)
+			if(n instanceof CallNode && getCaller(n) == null)
 			{
 				topLevelCalls.add(n);
 			} 

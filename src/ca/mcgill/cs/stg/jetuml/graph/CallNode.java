@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
@@ -147,21 +148,6 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		addChild(i, pChild);
 	}
 
-	private static Edge findEdge(Graph pGraph, Node pStart, Node pEnd)
-	{
-		Collection<Edge> edges = pGraph.getEdges();
-		Iterator<Edge> iter = edges.iterator(); 
-		while(iter.hasNext())
-		{
-			Edge e = iter.next();
-			if(e.getStart() == pStart && e.getEnd() == pEnd)
-			{
-				return e;
-			}
-		}
-		return null;
-	}
-
 	/* (non-Javadoc)
 	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
 	 */
@@ -181,17 +167,19 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		assert aImplicitParameter != null;
+		assert pGraph instanceof SequenceDiagramGraph;
+		SequenceDiagramGraph graph = (SequenceDiagramGraph) pGraph;
 
 		// Shift the node to its proper place on the X axis.
-		translate(computeMidX() - getBounds().getCenterX(), 0);
+		translate(computeMidX(pGraph) - getBounds().getCenterX(), 0);
 
 		// Compute the Y coordinate of the bottom of the node
-		double bottomY = computeBottomY(pGraph, pGraphics2D, pGrid);
+		double bottomY = computeBottomY(graph, pGraphics2D, pGrid);
 
 		Rectangle2D bounds = getBounds();
 
 		double minHeight = DEFAULT_HEIGHT;
-		Edge returnEdge = findEdge(pGraph, this, getParent());
+		Edge returnEdge = graph.findEdge(this, graph.getCaller(this));
 		if(returnEdge != null)
 		{
 			Rectangle2D edgeBounds = returnEdge.getBounds();
@@ -210,7 +198,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		List<Node> callees = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges())
 		{
-			if( edge.getStart() == this )
+			if( edge.getStart() == this && edge instanceof CallEdge )
 			{
 				callees.add(edge.getEnd());
 			}
@@ -222,12 +210,12 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 * @return The X coordinate that should be the middle
 	 * of this call node. Takes into account nested calls.
 	 */
-	private double computeMidX()
+	private double computeMidX(Graph pGraph)
 	{
 		double xmid = aImplicitParameter.getBounds().getCenterX();
 
 		// Calculate a shift for each parent (=caller) with the same implicit parameter
-		for(CallNode node = (CallNode)getParent(); node != null; node = (CallNode)node.getParent())
+		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(this); node != null; node = ((SequenceDiagramGraph)pGraph).getCaller(node))
 		{
 			if (node.aImplicitParameter == aImplicitParameter)
 			{
@@ -241,7 +229,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
 	 */
-	private double computeBottomY(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	private double computeBottomY(SequenceDiagramGraph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = getBounds().getY() + CALL_YGAP;
@@ -255,7 +243,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 			}
 			else if(node instanceof CallNode)
 			{  
-				Edge callEdge = findEdge(pGraph, this, node);
+				Edge callEdge = pGraph.findEdge(this, node);
 				// compute height of call edge
 				if(callEdge != null)
 				{
