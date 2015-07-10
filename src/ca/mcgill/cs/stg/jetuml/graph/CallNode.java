@@ -52,15 +52,11 @@ public class CallNode extends RectangularNode implements ChildNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 
-//	private ArrayList<ChildNode> aCalls;
-//	private CallNode aCaller;
-
 	/**
 	 *  Construct a call node with a default size.
 	 */
 	public CallNode()
 	{
-//		aCalls = new ArrayList<ChildNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -109,21 +105,6 @@ public class CallNode extends RectangularNode implements ChildNode
 			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
 		}
 	}
-
-	/**
-	 * Add pChild to the right place in the list of callees, given it's coordinate.
-	 * @param pChild The node to add
-	 * @param pPoint The point to compare against.
-	 */
-//	public void addChild(ChildNode pChild, Point2D pPoint)
-//	{
-//		int i = 0;
-//		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
-//		{
-//			i++;
-//		}
-//		addChild(i, pChild);
-//	}
 
 	/* (non-Javadoc)
 	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)

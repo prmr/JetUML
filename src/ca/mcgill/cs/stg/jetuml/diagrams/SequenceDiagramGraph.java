@@ -171,45 +171,6 @@ public class SequenceDiagramGraph extends Graph
 				pEdge.connect(pOrigin, newCallNode);
 			}
 		}
-		
-//		Node n = null;
-//		if(end instanceof CallNode) 
-//		{
-//			// check for cycles
-//			CallNode caller = (CallNode)pOrigin; 
-//			while(caller != null && end != caller)
-//			{
-//				caller = getCaller(caller);
-//			}
-//         
-//			if( getCaller(end) == null && end != caller)
-//			{
-//				n = end;
-//			}
-//			else
-//			{
-//				CallNode c = new CallNode();
-//				
-//				c.setParent(((CallNode)end).getParent());
-//				pEdge.connect(pOrigin, c);
-//				n = c;
-//			}
-//		}
-//		else if(end instanceof ImplicitParameterNode)
-//		{
-//			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
-//			{
-//				n = end;
-//				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
-//			}
-//			else
-//			{
-//				CallNode c = new CallNode();
-//				c.setParent((ImplicitParameterNode) end);
-//				pEdge.connect(pOrigin, c);
-//				n = c;
-//			}
-//		}
 	}
 
 	@Override

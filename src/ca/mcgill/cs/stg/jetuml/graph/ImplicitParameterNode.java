@@ -55,7 +55,6 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	
 	private double aTopHeight;
 	private MultiLineString aName;
-//	private CallNode aCreator;
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 
 	/**
@@ -218,7 +217,6 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				List<ChildNode> children = ((ParentNode) pOldInstance).getChildren();
 				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
 				{
 					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            

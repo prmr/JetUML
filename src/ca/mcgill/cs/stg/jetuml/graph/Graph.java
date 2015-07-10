@@ -380,13 +380,6 @@ public abstract class Graph
 					removeNode(pEdge.getEnd());
 				}
 			}
-//			else if( n instanceof CallNode )
-//			{
-//				if(pEdge.getStart() == n)
-//				{
-//					((CallNode)n).removeChild((ChildNode)pEdge.getEnd());
-//				}
-//			}
 		}
 		aNeedsLayout = true;
 	}
