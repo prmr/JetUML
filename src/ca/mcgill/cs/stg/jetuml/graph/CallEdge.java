@@ -76,7 +76,7 @@ public class CallEdge extends SegmentedLineEdge
 		Rectangle2D start = getStart().getBounds();
 		Rectangle2D end = endNode.getBounds();
       
-		if(endNode instanceof CallNode && ((CallNode)endNode).getImplicitParameter() == ((CallNode)getStart()).getImplicitParameter())
+		if(endNode instanceof CallNode && ((CallNode)endNode).getParent() == ((CallNode)getStart()).getParent())
 		{
 			Point2D p = new Point2D.Double(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
 			Point2D q = new Point2D.Double(end.getMaxX(), end.getY());

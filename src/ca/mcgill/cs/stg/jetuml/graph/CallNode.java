@@ -29,12 +29,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
@@ -45,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
  * A method call node in a sequence diagram. In addition to edges,
  * the node is linked to it callee and callers.
 */
-public class CallNode extends RectangularNode implements ParentNode, ChildNode
+public class CallNode extends RectangularNode implements ChildNode
 {
 	public static final int CALL_YGAP = 20;
 
@@ -57,15 +52,15 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	private boolean aSignaled;
 	private boolean aOpenBottom;
 
-	private ArrayList<ChildNode> aCalls;
-	private CallNode aCaller;
+//	private ArrayList<ChildNode> aCalls;
+//	private CallNode aCaller;
 
 	/**
 	 *  Construct a call node with a default size.
 	 */
 	public CallNode()
 	{
-		aCalls = new ArrayList<ChildNode>();
+//		aCalls = new ArrayList<ChildNode>();
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
@@ -102,24 +97,6 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		}
 	}
 
-	/**
-	 * Gets the implicit parameter of this call.
-	 * @return the implicit parameter node
-	 */
-	public ImplicitParameterNode getImplicitParameter()
-	{
-		return aImplicitParameter;
-	}
-
-	/**
-	 * Sets the implicit parameter of this call.
-	 * @param pNewValue the implicit parameter node
-	 */
-	public void setImplicitParameter(ImplicitParameterNode pNewValue)
-	{
-		aImplicitParameter = pNewValue;
-	}
-
 	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{
@@ -138,15 +115,15 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 * @param pChild The node to add
 	 * @param pPoint The point to compare against.
 	 */
-	public void addChild(ChildNode pChild, Point2D pPoint)
-	{
-		int i = 0;
-		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
-		{
-			i++;
-		}
-		addChild(i, pChild);
-	}
+//	public void addChild(ChildNode pChild, Point2D pPoint)
+//	{
+//		int i = 0;
+//		while(i < aCalls.size() && aCalls.get(i).getBounds().getY() <= pPoint.getY())
+//		{
+//			i++;
+//		}
+//		addChild(i, pChild);
+//	}
 
 	/* (non-Javadoc)
 	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
@@ -269,49 +246,6 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		return bottomY;
 	}
 
-	@Override
-	public void addChild(int pIndex, ChildNode pNode) 
-	{
-		if (pNode == null || pIndex < 0) //base cases to not deal with
-		{
-			return;
-		}
-		ParentNode oldParent = pNode.getParent();
-		if (oldParent != null)
-		{
-			oldParent.removeChild(pNode);
-		}
-		aCalls.add(pIndex, pNode);
-		pNode.setParent(this);
-	}
-
-	@Override
-	public void removeChild(ChildNode pNode)
-	{
-		if (pNode.getParent() != this)
-		{
-			return;
-		}
-		aCalls.remove(pNode);
-		pNode.setParent(null);
-	}
-
-	/**
-	 * Adds a node at the end of the list.
-	 * @param pNode The node to add.
-	 */
-	@Override
-	public void addChild(ChildNode pNode)
-	{
-		addChild(aCalls.size(), pNode);
-	}
-
-	@Override
-	public List<ChildNode> getChildren()
-	{
-		return aCalls;
-	}
-
 	/**
 	 * Sets the signaled property.
 	 * @param pNewValue true if this node is the target of a signal edge
@@ -339,12 +273,10 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 		aOpenBottom = pNewValue; 
 	}
 
-	@SuppressWarnings("unchecked") //For cloning aCalls
 	@Override
 	public CallNode clone()
 	{
 		CallNode cloned = (CallNode) super.clone();
-		cloned.aCalls = (ArrayList<ChildNode>) aCalls.clone();
 		return cloned;
 	}
 	
@@ -354,7 +286,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 */
 	public ParentNode getParent() 
    	{ 
-		return aCaller; 
+		return aImplicitParameter; 
 	}
 
 	/**
@@ -363,27 +295,7 @@ public class CallNode extends RectangularNode implements ParentNode, ChildNode
 	 */
 	public void setParent(ParentNode pNode) 
 	{
-		assert pNode instanceof CallNode || pNode == null;
-		aCaller = (CallNode) pNode;
-	}
-	
-	/**
-	 *  Adds a persistence delegate to a given encoder that
-	 * encodes the child nodes of this node.
-	 * @param pEncoder the encoder to which to add the delegate
-	 */
-	public static void setPersistenceDelegate(Encoder pEncoder)
-	{
-		pEncoder.setPersistenceDelegate(CallNode.class, new DefaultPersistenceDelegate()
-		{
-			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-			{
-				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
-				{
-					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
-				}
-			}
-		});
+		assert pNode instanceof ImplicitParameterNode || pNode == null;
+		aImplicitParameter = (ImplicitParameterNode) pNode;
 	}
 }

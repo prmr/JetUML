@@ -29,6 +29,11 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -42,7 +47,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends RectangularNode implements ChildNode
+public class ImplicitParameterNode extends RectangularNode implements ParentNode//implements ChildNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;
@@ -50,7 +55,8 @@ public class ImplicitParameterNode extends RectangularNode implements ChildNode
 	
 	private double aTopHeight;
 	private MultiLineString aName;
-	private CallNode aCreator;
+//	private CallNode aCreator;
+	private List<ChildNode> aCallNodes = new ArrayList<>();
 
 	/**
      * Construct an object node with a default size.
@@ -149,17 +155,75 @@ public class ImplicitParameterNode extends RectangularNode implements ChildNode
 		cloned.aName = (MultiLineString) aName.clone();
 		return cloned;
 	}
-	
+
 	@Override
-	public ParentNode getParent()
+	public List<ChildNode> getChildren()
 	{
-		return aCreator;
+		return aCallNodes;
 	}
 
 	@Override
-	public void setParent(ParentNode pNode)
+	public void addChild(int pIndex, ChildNode pNode)
 	{
-		assert pNode instanceof CallNode || pNode == null;
-		aCreator = (CallNode) pNode;
+		ParentNode oldParent = pNode.getParent();
+		if (oldParent != null)
+		{
+			oldParent.removeChild(pNode);
+		}
+		aCallNodes.add(pIndex, pNode);
+		pNode.setParent(this);
+	}
+	
+	/**
+	 * Adds a child in the right sequence in the list of calls.
+	 * @param pChild The child to add
+	 * @param pPoint The point selected.
+	 */
+	public void addChild(ChildNode pChild, Point2D pPoint)
+	{
+		int i = 0;
+		while(i < aCallNodes.size() && aCallNodes.get(i).getBounds().getY() <= pPoint.getY())
+		{
+			i++;
+		}
+		addChild(i, pChild);
+	}
+
+	@Override
+	public void addChild(ChildNode pNode)
+	{
+		addChild(aCallNodes.size(), pNode);
+	}
+
+	@Override
+	public void removeChild(ChildNode pNode)
+	{
+		if (pNode.getParent() != this)
+		{
+			return;
+		}
+		aCallNodes.remove(pNode);
+		pNode.setParent(null);
+	}
+	
+	/**
+	 *  Adds a persistence delegate to a given encoder that
+	 * encodes the child nodes of this node.
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(ImplicitParameterNode.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				List<ChildNode> children = ((ParentNode) pOldInstance).getChildren();
+				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
+				{
+					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
+				}
+			}
+		});
 	}
 }

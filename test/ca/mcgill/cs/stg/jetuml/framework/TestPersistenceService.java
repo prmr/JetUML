@@ -454,129 +454,124 @@ public class TestPersistenceService
 		Collection<Node> nodes = pGraph.getNodes();
 		assertEquals(9, nodes.size());
 		Iterator<Node> nIterator = nodes.iterator();
-		ImplicitParameterNode node1 = (ImplicitParameterNode) nIterator.next();
-		CallNode node2 = (CallNode) nIterator.next();
-		CallNode node3 = (CallNode) nIterator.next();
-		ImplicitParameterNode node4 = (ImplicitParameterNode) nIterator.next();
-		CallNode node5 = (CallNode) nIterator.next();
-		ImplicitParameterNode node6 = (ImplicitParameterNode) nIterator.next();
-		CallNode node7 = (CallNode) nIterator.next();
-		NoteNode node8 = (NoteNode) nIterator.next();
-		PointNode node9 = (PointNode) nIterator.next();
 		
-		assertEquals(new Rectangle2D.Double(210, 0, 100, 215), node1.getBounds());
-		assertEquals("object1:Type1", node1.getName().toString());
-		assertNull(node1.getParent());
+		ImplicitParameterNode object1 = (ImplicitParameterNode) nIterator.next();
+		ImplicitParameterNode object2 = (ImplicitParameterNode) nIterator.next();
+		ImplicitParameterNode object3 = (ImplicitParameterNode) nIterator.next();
+		CallNode init = (CallNode) nIterator.next();
+		CallNode selfCall = (CallNode) nIterator.next();
+		CallNode o2Call = (CallNode) nIterator.next();
+		CallNode o3Call = (CallNode) nIterator.next();
+		NoteNode note = (NoteNode) nIterator.next();
+		PointNode point = (PointNode) nIterator.next();
 		
-		assertEquals(new Rectangle2D.Double(252, 73, 16, 30), node2.getBounds());
-		List<ChildNode> children = node2.getChildren();
-		assertEquals(1, children.size());
-		assertTrue(children.contains(node3));
-		assertEquals(node1, node2.getImplicitParameter());
-		assertNull(node2.getParent());
+		assertEquals(new Rectangle2D.Double(280,0,100,216), object1.getBounds());
+		List<ChildNode> o1children = object1.getChildren();
+		assertEquals(2, o1children.size());
+		assertTrue(o1children.contains(init));
+		assertTrue(o1children.contains(selfCall));
+		assertEquals("object1:Type1", object1.getName().toString());
 		
-		// In sequence diagram call nodes have a children the call
-		// nodes they call
-		assertEquals(new Rectangle2D.Double(260, 102, 16, 30), node3.getBounds());
-		children = node3.getChildren();
-		assertEquals(1, children.size());
-		assertTrue(children.contains(node5));
-		assertEquals(node1, node3.getImplicitParameter());
-		assertEquals(node2, node3.getParent());
+		assertEquals(new Rectangle2D.Double(510,0,80,216), object2.getBounds());
+		List<ChildNode> o2children = object2.getChildren();
+		assertEquals(1, o2children.size());
+		assertTrue(o2children.contains(o2Call));
+		assertEquals(":Type2", object2.getName().toString());
 		
-		assertEquals(new Rectangle2D.Double(500, 0, 80, 215), node4.getBounds());
-		assertEquals(":Type2", node4.getName().toString());
-		assertNull(node4.getParent());
+		assertEquals(new Rectangle2D.Double(680,0,80,216), object3.getBounds());
+		List<ChildNode> o3children = object3.getChildren();
+		assertEquals(1, o3children.size());
+		assertTrue(o3children.contains(o3Call));
+		assertEquals("object3:", object3.getName().toString());
 		
-		assertEquals(new Rectangle2D.Double(532, 121, 16, 30), node5.getBounds());
-		children = node5.getChildren();
-		assertEquals(1, children.size());
-		assertTrue(children.contains(node7));
-		assertEquals(node4, node5.getImplicitParameter());
-		assertEquals(node3, node5.getParent());
+		assertEquals(new Rectangle2D.Double(322,74,16,88), init.getBounds());
+		assertEquals(object1, init.getParent());
+		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(640, 0, 80, 215), node6.getBounds());
-		assertEquals("object3:", node6.getName().toString());
-		assertNull(node6.getParent());
+		assertEquals(new Rectangle2D.Double(330,103,16,39), selfCall.getBounds());
+		assertEquals(object1, selfCall.getParent());
+		assertFalse(selfCall.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(672, 145, 16, 30), node7.getBounds());
-		children = node7.getChildren();
-		assertEquals(0, children.size());
-		assertEquals(node6, node7.getImplicitParameter());
-		assertEquals(node5, node7.getParent());
+		assertEquals(new Rectangle2D.Double(542,122,16,74), o2Call.getBounds());
+		assertEquals(object2, o2Call.getParent());
+		assertFalse(o2Call.isOpenBottom());
 		
-		assertEquals("A note", node8.getText().getText());
-		assertEquals(new Rectangle2D.Double(610, 210, 60, 40), node8.getBounds());
+		assertEquals(new Rectangle2D.Double(712,146,16,30), o3Call.getBounds());
+		assertEquals(object3, o3Call.getParent());
+		assertFalse(o3Call.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(538, 169, 0, 0), node9.getBounds());
+		assertEquals(new Rectangle2D.Double(580,190,60,40), note.getBounds());
+		assertEquals("A note", note.getText().toString());
 		
+		assertEquals(new Rectangle2D.Double(551,174,0,0), point.getBounds());
+	
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
 		Iterator<Edge> eIterator = edges.iterator();
 		
 		CallEdge self = (CallEdge) eIterator.next(); 
 		CallEdge signal = (CallEdge) eIterator.next(); 
-		ReturnEdge retS = (ReturnEdge) eIterator.next(); 
 		CallEdge call1 = (CallEdge) eIterator.next(); 
+		ReturnEdge ret1 = (ReturnEdge) eIterator.next(); 
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
-		NoteEdge note = (NoteEdge) eIterator.next(); 
+		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle2D.Double(268, 78, 77, 29), self.getBounds());
-		assertEquals(node3, self.getEnd());
+		assertEquals(new Rectangle2D.Double(338, 79, 77, 29), self.getBounds());
+		assertEquals(selfCall, self.getEnd());
 		assertEquals("V", self.getEndArrowHead().toString());
 		assertEquals("", self.getEndLabel());
 		assertEquals("SOLID", self.getLineStyle().toString());
 		assertEquals("selfCall()", self.getMiddleLabel());
-		assertEquals(node2, self.getStart());
+		assertEquals(init, self.getStart());
 		assertEquals("NONE", self.getStartArrowHead().toString());
 		assertEquals("", self.getStartLabel());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(276, 102, 256, 19), signal.getBounds());
-		assertEquals(node5, signal.getEnd());
+		assertEquals(new Rectangle2D.Double(346, 103, 196, 19), signal.getBounds());
+		assertEquals(o2Call, signal.getEnd());
 		assertEquals("HALF_V", signal.getEndArrowHead().toString());
-		assertTrue(signal.isSignal());
 		assertEquals("", signal.getEndLabel());
 		assertEquals("SOLID", signal.getLineStyle().toString());
 		assertEquals("signal", signal.getMiddleLabel());
-		assertEquals(node3, signal.getStart());
+		assertEquals(selfCall, signal.getStart());
 		assertEquals("NONE", signal.getStartArrowHead().toString());
 		assertEquals("", signal.getStartLabel());
+		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(276, 146, 256, 10), retS.getBounds());
-		assertEquals(node3, retS.getEnd());
-		assertEquals("V", retS.getEndArrowHead().toString());
-		assertEquals("", retS.getEndLabel());
-		assertEquals("DOTTED", retS.getLineStyle().toString());
-		assertEquals("", retS.getMiddleLabel());
-		assertEquals(node5, retS.getStart());
-		assertEquals("NONE", retS.getStartArrowHead().toString());
-		assertEquals("", retS.getStartLabel());
-		
-		assertEquals(new Rectangle2D.Double(548, 126, 124, 24), call1.getBounds());
-		assertEquals(node7, call1.getEnd());
+		assertEquals(new Rectangle2D.Double(558, 127, 154, 24), call1.getBounds());
+		assertEquals(o3Call, call1.getEnd());
 		assertEquals("V", call1.getEndArrowHead().toString());
 		assertEquals("", call1.getEndLabel());
 		assertEquals("SOLID", call1.getLineStyle().toString());
-		assertEquals("call1", call1.getMiddleLabel());
-		assertEquals(node5, call1.getStart());
+		assertEquals("call1()", call1.getMiddleLabel());
+		assertEquals(o2Call, call1.getStart());
 		assertEquals("NONE", call1.getStartArrowHead().toString());
 		assertEquals("", call1.getStartLabel());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(548, 156, 124, 24), retC.getBounds());
-		assertEquals(node5, retC.getEnd());
+		assertEquals(new Rectangle2D.Double(558, 157, 154, 24), ret1.getBounds());
+		assertEquals(o2Call, ret1.getEnd());
+		assertEquals("V", ret1.getEndArrowHead().toString());
+		assertEquals("", ret1.getEndLabel());
+		assertEquals("DOTTED", ret1.getLineStyle().toString());
+		assertEquals("r1", ret1.getMiddleLabel());
+		assertEquals(o3Call, ret1.getStart());
+		assertEquals("NONE", ret1.getStartArrowHead().toString());
+		assertEquals("", ret1.getStartLabel());
+		
+		assertEquals(new Rectangle2D.Double(346, 191, 196, 10), retC.getBounds());
+		assertEquals(selfCall, retC.getEnd());
 		assertEquals("V", retC.getEndArrowHead().toString());
 		assertEquals("", retC.getEndLabel());
 		assertEquals("DOTTED", retC.getLineStyle().toString());
-		assertEquals("r1", retC.getMiddleLabel());
-		assertEquals(node7, retC.getStart());
+		assertEquals("", retC.getMiddleLabel());
+		assertEquals(o2Call, retC.getStart());
 		assertEquals("NONE", retC.getStartArrowHead().toString());
 		assertEquals("", retC.getStartLabel());
 		
-		assertEquals(new Rectangle2D.Double(538, 169, 72, 44), note.getBounds());
-		assertEquals(node8, note.getStart());
-		assertEquals(node9, note.getEnd());
+		assertEquals(new Rectangle2D.Double(551, 174, 29, 18), nedge.getBounds());
+		assertEquals(point, nedge.getEnd());
+		assertEquals(note, nedge.getStart());
 	}
 	
 	private void verifyStateDiagram(Graph pGraph)

@@ -40,7 +40,6 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
 
 /**
@@ -66,8 +65,7 @@ public class SequenceDiagramGraph extends Graph
 			ImplicitParameterNode target = insideTargetArea(pPoint);
 			if( target != null )
 			{
-//				target.addChild((ChildNode)pNode);
-				((CallNode)pNode).setImplicitParameter(target); // Will be superseded by the call to addchild when this is done.
+				target.addChild((ChildNode)pNode);
 				super.add(pNode, pPoint);
 				return true;
 			}
@@ -134,50 +132,84 @@ public class SequenceDiagramGraph extends Graph
 		{
 			return;
 		}
+		CallNode origin = (CallNode) pOrigin;
 		if( pEdge instanceof ReturnEdge )
 		{
 			return;
 		}
 		Node end = pEdge.getEnd();
-		Node n = null;
-		if(end instanceof CallNode) 
+		
+		// Case 1 End is on the same implicit parameter -> create a self call
+		// Case 2 End is on an existing call node on a different implicit parameter -> connect
+		// Case 3 End is on a different implicit parameter -> create a new call
+		// Case 4 End is on an implicit parameter top node -> creates node
+		if( end instanceof CallNode )
 		{
-			// check for cycles
-			CallNode caller = (CallNode)pOrigin; 
-			while(caller != null && end != caller)
+			CallNode endAsCallNode = (CallNode) end;
+			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
 			{
-				caller = getCaller(caller);
+				CallNode newCallNode = new CallNode();
+				((ImplicitParameterNode)origin.getParent()).addChild(newCallNode, pPoint1);
+				pEdge.connect(origin, newCallNode);
 			}
-         
-			if( getCaller(end) == null && end != caller)
+			else // Case 2
 			{
-				n = end;
-			}
-			else
-			{
-				CallNode c = new CallNode();
-				c.setImplicitParameter(((CallNode)end).getImplicitParameter());
-				pEdge.connect(pOrigin, c);
-				n = c;
+				// Simple connect
 			}
 		}
-		else if(end instanceof ImplicitParameterNode)
+		else if( end instanceof ImplicitParameterNode )
 		{
-			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
+			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
+			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
 			{
-				n = end;
 				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
 			}
-			else
+			else // Case 3
 			{
-				CallNode c = new CallNode();
-				c.setImplicitParameter((ImplicitParameterNode) end);
-				pEdge.connect(pOrigin, c);
-				n = c;
+				CallNode newCallNode = new CallNode();
+				endAsImplicitParameterNode.addChild(newCallNode, pPoint1);
+				pEdge.connect(pOrigin, newCallNode);
 			}
 		}
 		
-		((CallNode)pOrigin).addChild((ChildNode)n, pPoint1);
+//		Node n = null;
+//		if(end instanceof CallNode) 
+//		{
+//			// check for cycles
+//			CallNode caller = (CallNode)pOrigin; 
+//			while(caller != null && end != caller)
+//			{
+//				caller = getCaller(caller);
+//			}
+//         
+//			if( getCaller(end) == null && end != caller)
+//			{
+//				n = end;
+//			}
+//			else
+//			{
+//				CallNode c = new CallNode();
+//				
+//				c.setParent(((CallNode)end).getParent());
+//				pEdge.connect(pOrigin, c);
+//				n = c;
+//			}
+//		}
+//		else if(end instanceof ImplicitParameterNode)
+//		{
+//			if(((ImplicitParameterNode)end).getTopRectangle().contains(pPoint2))
+//			{
+//				n = end;
+//				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
+//			}
+//			else
+//			{
+//				CallNode c = new CallNode();
+//				c.setParent((ImplicitParameterNode) end);
+//				pEdge.connect(pOrigin, c);
+//				n = c;
+//			}
+//		}
 	}
 
 	@Override

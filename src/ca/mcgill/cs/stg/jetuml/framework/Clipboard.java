@@ -19,7 +19,6 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
@@ -126,12 +125,12 @@ public final class Clipboard
 				cloneNode.setParent((ParentNode)pOriginalAndClonedNodes.get(curNode.getParent()));
 			}
 		}
-		if(pElement instanceof CallNode && ((CallNode)pElement).getImplicitParameter() != null)
-		{
-			Node cloneNode = pOriginalAndClonedNodes.get(pElement); 
-			Node cloneParent = pOriginalAndClonedNodes.get(((CallNode)pElement).getImplicitParameter());
-			((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
-		}
+//		if(pElement instanceof CallNode && ((CallNode)pElement).getImplicitParameter() != null)
+//		{
+//			Node cloneNode = pOriginalAndClonedNodes.get(pElement); 
+//			Node cloneParent = pOriginalAndClonedNodes.get(((CallNode)pElement).getImplicitParameter());
+//			((CallNode)cloneNode).setImplicitParameter((ImplicitParameterNode)cloneParent);
+//		}
 	}
 
 	/**

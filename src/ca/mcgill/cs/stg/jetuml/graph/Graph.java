@@ -295,7 +295,7 @@ public abstract class Graph
 			if( node instanceof CallNode )
 			{
 				CallNode parent = (CallNode) node;
-				if( pNode == parent.getParent() || pNode == parent.getImplicitParameter())
+				if( pNode == parent.getParent() || pNode == parent.getParent())
 				{
 					removeNode(parent);
 				}
@@ -380,13 +380,13 @@ public abstract class Graph
 					removeNode(pEdge.getEnd());
 				}
 			}
-			else if( n instanceof CallNode )
-			{
-				if(pEdge.getStart() == n)
-				{
-					((CallNode)n).removeChild((ChildNode)pEdge.getEnd());
-				}
-			}
+//			else if( n instanceof CallNode )
+//			{
+//				if(pEdge.getStart() == n)
+//				{
+//					((CallNode)n).removeChild((ChildNode)pEdge.getEnd());
+//				}
+//			}
 		}
 		aNeedsLayout = true;
 	}
