@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -139,6 +140,21 @@ public class SequenceDiagramGraph extends Graph
 		return true;
 	}
 	
+	/*
+	 * Returns true if pCalle is in the control-flow of pPotentialCaller
+	 */
+	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
+	{
+		for( CallNode caller = getCaller(pCallee); caller != null; caller = getCaller(caller))
+		{
+			if( caller == pPotentialCaller )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
@@ -157,6 +173,7 @@ public class SequenceDiagramGraph extends Graph
 		// Case 2 End is on an existing call node on a different implicit parameter -> connect
 		// Case 3 End is on a different implicit parameter -> create a new call
 		// Case 4 End is on an implicit parameter top node -> creates node
+		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
 		if( end instanceof CallNode )
 		{
 			CallNode endAsCallNode = (CallNode) end;
@@ -168,6 +185,12 @@ public class SequenceDiagramGraph extends Graph
 			}
 			else // Case 2
 			{
+				if( isCallDominator(endAsCallNode, origin))
+				{
+					CallNode newCallNode = new CallNode();
+					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
+					pEdge.connect(origin, newCallNode);
+				}
 				// Simple connect
 			}
 		}

@@ -172,10 +172,11 @@ public class CallNode extends RectangularNode implements ChildNode
 	{
 		double xmid = aImplicitParameter.getBounds().getCenterX();
 
-		// Calculate a shift for each parent (=caller) with the same implicit parameter
-		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(this); node != null; node = ((SequenceDiagramGraph)pGraph).getCaller(node))
+		// Calculate a shift for each caller with the same implicit parameter
+		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(this); node != null && node != this; 
+				node = ((SequenceDiagramGraph)pGraph).getCaller(node))
 		{
-			if (node.aImplicitParameter == aImplicitParameter)
+			if(node.aImplicitParameter == aImplicitParameter)
 			{
 				xmid += getBounds().getWidth() / 2;
 			}
