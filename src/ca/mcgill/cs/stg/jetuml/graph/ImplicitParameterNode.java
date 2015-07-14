@@ -47,7 +47,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends RectangularNode implements ParentNode//implements ChildNode
+public class ImplicitParameterNode extends RectangularNode implements ParentNode
 {
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final int DEFAULT_WIDTH = 80;

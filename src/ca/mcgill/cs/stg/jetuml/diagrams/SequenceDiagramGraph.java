@@ -62,6 +62,20 @@ public class SequenceDiagramGraph extends Graph
 	{
 		if(pNode instanceof CallNode) 
 		{
+			// We need this case because of the difference between cut and delete when the 
+			// selection contains both a parent and its children. The issue should go away
+			// when we make it impossible to select both a parent and its children.
+			ImplicitParameterNode parent = (ImplicitParameterNode)((CallNode) pNode).getParent();
+			if( parent != null )
+			{
+				if( !parent.getChildren().contains(pNode))
+				{
+					parent.addChild((ChildNode)pNode);
+				}
+				super.add(pNode, pPoint);
+				return true;
+			}
+			// End of hack
 			ImplicitParameterNode target = insideTargetArea(pPoint);
 			if( target != null )
 			{
