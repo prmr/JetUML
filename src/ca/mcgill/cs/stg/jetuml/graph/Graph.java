@@ -152,6 +152,8 @@ public abstract class Graph
 		
 		aEdges.add(pEdge);
 		aModListener.edgeAdded(this, pEdge);
+		
+		// TODO Check this condition
 		if(!aNodes.contains(pEdge.getEnd()))
 		{
 			aNodes.add(pEdge.getEnd());
@@ -182,27 +184,56 @@ public abstract class Graph
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
 		
 		aModListener.nodeAdded(this, pNode);
-		aNodes.add(pNode);
+		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
+		{
+			// Only add root nodes
+			aNodes.add(pNode);
+		}
 		aNeedsLayout = true;
 		return true;
 	}
 
 	/**
-      Finds a node containing the given point.
-      @param pPoint a point
-      @return a node containing p or null if no nodes contain p
-	 */
+      * Finds a node containing the given point. Always returns
+      * the deepest child.
+      * @param pPoint a point
+      * @return a node containing pPoint or null if no nodes contain pPoint
+      */
 	public Node findNode(Point2D pPoint)
 	{
-		for(int i = aNodes.size() - 1; i >= 0; i--)
+		for( Node node : aNodes )
 		{
-			Node n = aNodes.get(i);
-			if(n.contains(pPoint))
+			Node result = deepFindNode(node, pPoint);
+			if( result != null )
 			{
-				return n;
+				return result;
 			}
 		}
 		return null;
+	}
+	
+	private Node deepFindNode( Node pNode, Point2D pPoint )
+	{
+		Node node = null;
+		if( pNode instanceof ParentNode )
+		{
+			for( Node child : ((ParentNode) pNode).getChildren())
+			{
+				node = deepFindNode(child, pPoint);
+				if( node != null )
+				{
+					return node;
+				}
+			}
+		}
+		if( pNode.contains(pPoint))
+		{
+			return pNode;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -254,13 +285,25 @@ public abstract class Graph
 		for(int i = 0; i < aNodes.size(); i++)
 		{
 			Node n = aNodes.get(i);
-			n.draw(pGraphics2D);
+			drawNode(n, pGraphics2D);
 		}
 
 		for(int i = 0; i < aEdges.size(); i++)
 		{
 			Edge e = aEdges.get(i);
 			e.draw(pGraphics2D);
+		}
+	}
+	
+	private void drawNode(Node pNode, Graphics2D pGraphics2D)
+	{
+		pNode.draw(pGraphics2D);
+		if( pNode instanceof ParentNode )
+		{
+			for( Node node : ((ParentNode) pNode).getChildren())
+			{
+				drawNode(node, pGraphics2D);
+			}
 		}
 	}
 
@@ -346,14 +389,36 @@ public abstract class Graph
 	 * @return True if pElement is a node or edge in this graph.
 	 */
 	public boolean contains( GraphElement pElement )
-	{
-		if( aNodes.contains(pElement))
-		{
-			return true;
-		}
+	{	
 		if( aEdges.contains( pElement ))
 		{
 			return true;
+		}
+		for( Node node : aNodes )
+		{
+			if( containsNode( node, pElement))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean containsNode(Node pTest, GraphElement pTarget)
+	{
+		if( pTest == pTarget )
+		{
+			return true;
+		}
+		else if( pTest instanceof ParentNode )
+		{
+			for( Node node : ((ParentNode) pTest).getChildren())
+			{
+				if( containsNode(node, pTarget))
+				{
+					return true;
+				}
+			}
 		}
 		return false;
 	}

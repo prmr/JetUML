@@ -97,11 +97,18 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pNode instanceof FieldNode )
 		{
-			ObjectNode object = findObject((FieldNode)pNode, pPoint);
+			// We first see if the node is being undeleted or pasted.
+			ObjectNode object = (ObjectNode) ((FieldNode) pNode).getParent();
+			
+			// If not we see if we find a legal parent.
+			if( object == null ) 
+			{
+				object = findObject((FieldNode)pNode, pPoint);
+			}
 			if( object != null )
 			{
+				object.addChild((ChildNode)pNode); // Must be called before super.add so that the node's parent isn't null
 				super.add(pNode, pPoint);
-				object.addChild((ChildNode)pNode);
 				return true;
 			}
 			else
