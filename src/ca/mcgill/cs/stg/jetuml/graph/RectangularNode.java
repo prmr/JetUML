@@ -35,7 +35,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
  */
 public abstract class RectangularNode extends AbstractNode
 {
-	private transient Rectangle2D aBounds;
+	private Rectangle2D aBounds;
 
 	@Override
 	public RectangularNode clone()

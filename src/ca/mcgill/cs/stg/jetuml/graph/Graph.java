@@ -153,8 +153,7 @@ public abstract class Graph
 		aEdges.add(pEdge);
 		aModListener.edgeAdded(this, pEdge);
 		
-		// TODO Check this condition
-		if(!aRootNodes.contains(pEdge.getEnd()))
+		if(!aRootNodes.contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode )
 		{
 			aRootNodes.add(pEdge.getEnd());
 		}
