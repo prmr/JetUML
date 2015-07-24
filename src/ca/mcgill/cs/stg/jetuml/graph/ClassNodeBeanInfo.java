@@ -31,28 +31,30 @@ import java.beans.SimpleBeanInfo;
  */
 public class ClassNodeBeanInfo extends SimpleBeanInfo
 {
-	@Override
-	public PropertyDescriptor[] getPropertyDescriptors()
-	{
-		try
-		{
-			PropertyDescriptor nameDescriptor = new PropertyDescriptor("name", ClassNode.class);
-			nameDescriptor.setValue("priority", new Integer(1));
-			PropertyDescriptor attributesDescriptor = new PropertyDescriptor("attributes", ClassNode.class);
-			attributesDescriptor.setValue("priority", new Integer(2));
-			PropertyDescriptor methodsDescriptor = new PropertyDescriptor("methods", ClassNode.class);
-			methodsDescriptor.setValue("priority", new Integer(3));
-			return new PropertyDescriptor[]
-            {
-               nameDescriptor,
-               attributesDescriptor,
-               methodsDescriptor
-            };
-      }
-      catch (IntrospectionException exception)
-      {
-         return null;
-      }
-   }
+	// prmr we should not use these to alter the presentation
+	// of properties as it's also used by the serializer
+//	@Override
+//	public PropertyDescriptor[] getPropertyDescriptors()
+//	{
+//		try
+//		{
+//			PropertyDescriptor nameDescriptor = new PropertyDescriptor("name", ClassNode.class);
+//			nameDescriptor.setValue("priority", new Integer(1));
+//			PropertyDescriptor attributesDescriptor = new PropertyDescriptor("attributes", ClassNode.class);
+//			attributesDescriptor.setValue("priority", new Integer(2));
+//			PropertyDescriptor methodsDescriptor = new PropertyDescriptor("methods", ClassNode.class);
+//			methodsDescriptor.setValue("priority", new Integer(3));
+//			return new PropertyDescriptor[]
+//            {
+//               nameDescriptor,
+//               attributesDescriptor,
+//               methodsDescriptor
+//            };
+//      }
+//      catch (IntrospectionException exception)
+//      {
+//         return null;
+//      }
+//   }
 }
 

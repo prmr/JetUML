@@ -139,12 +139,12 @@ public class ClassDiagramGraph extends Graph
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		super.add(pNode, pPoint);
 		PackageNode container = findContainer(pNode, pPoint);
 		if( container != null )
 		{
 			container.addChild((ChildNode)pNode);
 		}
+		super.add(pNode, pPoint);
 		return true;
 	}
 }
