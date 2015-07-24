@@ -99,7 +99,7 @@ public class ClassDiagramGraph extends Graph
 	private PackageNode findContainer(Node pNode, Point2D pPoint)
 	{
 		ArrayList<PackageNode> candidates = new ArrayList<>();
-		for( Node node : aNodes )
+		for( Node node : aRootNodes )
 		{
 			if( node == pNode )
 			{

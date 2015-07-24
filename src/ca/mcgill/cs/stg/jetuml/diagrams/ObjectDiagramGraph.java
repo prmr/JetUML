@@ -130,7 +130,7 @@ public class ObjectDiagramGraph extends Graph
 	private ObjectNode findObject(FieldNode pNode, Point2D pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
-		for( Node node : aNodes )
+		for( Node node : aRootNodes )
 		{
 			if( node == pNode )
 			{

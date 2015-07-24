@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 public abstract class Graph
 {
 	protected GraphModificationListener aModListener;
-	protected ArrayList<Node> aNodes;
+	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
 	protected ArrayList<Edge> aEdges;
 	protected transient ArrayList<Node> aNodesToBeRemoved;
 	protected transient ArrayList<Edge> aEdgesToBeRemoved;
@@ -52,7 +52,7 @@ public abstract class Graph
 	 */
 	public Graph()
 	{
-		aNodes = new ArrayList<>();
+		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
 		aNodesToBeRemoved = new ArrayList<>();
 		aEdgesToBeRemoved = new ArrayList<>();
@@ -154,9 +154,9 @@ public abstract class Graph
 		aModListener.edgeAdded(this, pEdge);
 		
 		// TODO Check this condition
-		if(!aNodes.contains(pEdge.getEnd()))
+		if(!aRootNodes.contains(pEdge.getEnd()))
 		{
-			aNodes.add(pEdge.getEnd());
+			aRootNodes.add(pEdge.getEnd());
 		}
 		aNeedsLayout = true;
 		if (node1 instanceof FieldNode)
@@ -187,7 +187,7 @@ public abstract class Graph
 		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
 		{
 			// Only add root nodes
-			aNodes.add(pNode);
+			aRootNodes.add(pNode);
 		}
 		aNeedsLayout = true;
 		return true;
@@ -201,7 +201,7 @@ public abstract class Graph
       */
 	public Node findNode(Point2D pPoint)
 	{
-		for( Node node : aNodes )
+		for( Node node : aRootNodes )
 		{
 			Node result = deepFindNode(node, pPoint);
 			if( result != null )
@@ -282,9 +282,9 @@ public abstract class Graph
 	{
 		layout(pGraphics2D, pGrid);
 
-		for(int i = 0; i < aNodes.size(); i++)
+		for(int i = 0; i < aRootNodes.size(); i++)
 		{
-			Node n = aNodes.get(i);
+			Node n = aRootNodes.get(i);
 			drawNode(n, pGraphics2D);
 		}
 
@@ -333,7 +333,7 @@ public abstract class Graph
 		}
 
 		// Notify all nodes that pNode is being removed.
-		for(Node node : aNodes)
+		for(Node node : aRootNodes)
 		{
 			if( node instanceof CallNode )
 			{
@@ -394,7 +394,7 @@ public abstract class Graph
 		{
 			return true;
 		}
-		for( Node node : aNodes )
+		for( Node node : aRootNodes )
 		{
 			if( containsNode( node, pElement))
 			{
@@ -435,9 +435,9 @@ public abstract class Graph
 		}
 		aEdgesToBeRemoved.add(pEdge);
 		aModListener.edgeRemoved(this, pEdge);
-		for(int i = aNodes.size() - 1; i >= 0; i--)
+		for(int i = aRootNodes.size() - 1; i >= 0; i--)
 		{
-			Node n = aNodes.get(i);
+			Node n = aRootNodes.get(i);
 			if( n instanceof NoteEdge )
 			{
 				if(pEdge.getStart() == n)
@@ -470,14 +470,14 @@ public abstract class Graph
 		{
 			return;
 		}
-		aNodes.removeAll(aNodesToBeRemoved);
+		aRootNodes.removeAll(aNodesToBeRemoved);
 		aEdges.removeAll(aEdgesToBeRemoved);
 		aNodesToBeRemoved.clear();
 		aEdgesToBeRemoved.clear();
 
-		for(int i = 0; i < aNodes.size(); i++)
+		for(int i = 0; i < aRootNodes.size(); i++)
 		{
-			Node n = aNodes.get(i);
+			Node n = aRootNodes.get(i);
 			n.layout(this, pGraphics2D, pGrid);
 		}
 		aNeedsLayout = false;
@@ -490,9 +490,9 @@ public abstract class Graph
 	public Rectangle2D getBounds()
 	{
 		Rectangle2D r = aMinBounds;
-		for(int i = 0; i < aNodes.size(); i++)
+		for(int i = 0; i < aRootNodes.size(); i++)
 		{
-			Node n = aNodes.get(i);
+			Node n = aRootNodes.get(i);
 			Rectangle2D b = n.getBounds();
 			if(r == null)
 			{
@@ -556,9 +556,9 @@ public abstract class Graph
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
 				Graph g = (Graph)pOldInstance;
 
-				for(int i = 0; i < g.aNodes.size(); i++)
+				for(int i = 0; i < g.aRootNodes.size(); i++)
 				{
-					Node n = g.aNodes.get(i);
+					Node n = g.aRootNodes.get(i);
 					Rectangle2D bounds = n.getBounds();
 					Point2D p = new Point2D.Double(bounds.getX(), bounds.getY());
 					pOut.writeStatement( new Statement(pOldInstance, "addNode", new Object[]{ n, p }) );
@@ -577,7 +577,7 @@ public abstract class Graph
 	 * @return an unmodifiable collection of the nodes
 	 */
 	public Collection<Node> getNodes()
-	{ return aNodes; }
+	{ return aRootNodes; }
 
 	/**
 	 * Gets the edges of this graph.
@@ -596,7 +596,7 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-		aNodes.add(pNode); 
+		aRootNodes.add(pNode); 
 	}
 
 	/**
