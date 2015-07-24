@@ -26,9 +26,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -284,32 +281,30 @@ public class SequenceDiagramGraph extends Graph
 
 		ArrayList<Node> topLevelCalls = new ArrayList<>();
 		ArrayList<Node> objects = new ArrayList<>();
-		Collection<Node> nodes = getNodes();
-		Iterator<Node> iter = nodes.iterator();
-		while(iter.hasNext())
+		
+		for( Node rootNode : aRootNodes )
 		{
-			Node n = (Node)iter.next();
-         
-			if(n instanceof CallNode && getCaller(n) == null)
+			if( rootNode instanceof ImplicitParameterNode )
 			{
-				topLevelCalls.add(n);
-			} 
-			else if(n instanceof ImplicitParameterNode)
-			{	
-				objects.add(n);
-			}      
+				objects.add(rootNode);
+				for( Node callNode : ((ImplicitParameterNode) rootNode).getChildren())
+				{
+					if( getCaller(callNode) == null )
+					{
+						topLevelCalls.add(callNode);
+					}
+				}
+			}
 		}
-		Collection<Edge> edges = getEdges();
-		Iterator<Edge> iter2 = edges.iterator();
-		while(iter2.hasNext())
+		
+		for( Edge edge : aEdges )
 		{
-			Edge e = (Edge)iter2.next();
-			if(e instanceof CallEdge)
+			if(edge instanceof CallEdge)
 			{
-				Node end = e.getEnd();
+				Node end = edge.getEnd();
 				if(end instanceof CallNode)
 				{
-					((CallNode)end).setSignaled(((CallEdge)e).isSignal());
+					((CallNode)end).setSignaled(((CallEdge)edge).isSignal());
 				}
 			}
 		}
@@ -317,6 +312,7 @@ public class SequenceDiagramGraph extends Graph
 	}
 	
 	/*
+	 * Find the max of the heights of the objects
 	 * @param pTopLevelCalls an ArrayList of Nodes in the topLevel of Calls.
 	 * @param pObjects an ArrayList of Nodes to work with.
 	 * @param pGraphics2D Graphics2D from layout call.
@@ -324,42 +320,36 @@ public class SequenceDiagramGraph extends Graph
 	 */
 	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D, Grid pGrid)
 	{
-		// find the max of the heights of the objects
-		Collection<Node>nodes = getNodes();
-		Iterator<Node> iter;
 		double top = 0;
-		for(int i = 0; i < pObjects.size(); i++)
+		for(Node node : pObjects)
 		{
-			ImplicitParameterNode n = (ImplicitParameterNode)pObjects.get(i);
-			n.translate(0, -n.getBounds().getY());
-			top = Math.max(top, n.getTopRectangle().getHeight());
+			node.translate(0, -node.getBounds().getY());
+			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
 		}
 
-		for (int i = 0; i < pTopLevelCalls.size(); i++)
+		for(Node node : pTopLevelCalls )
 		{
-			CallNode call = (CallNode) pTopLevelCalls.get(i);
-			call.layout(this, pGraphics2D, pGrid);
+			node.layout(this, pGraphics2D, pGrid);
 		}
 
-		iter = nodes.iterator();
-		while(iter.hasNext())
+		for(Node node : aRootNodes )
 		{
-			Node n = (Node)iter.next();
-			if(n instanceof CallNode) 
+			if( node instanceof ImplicitParameterNode )
 			{
-				top = Math.max(top, n.getBounds().getY() + n.getBounds().getHeight());
+				for( Node callNode : ((ImplicitParameterNode) node).getChildren())
+				{
+					top = Math.max(top, callNode.getBounds().getY() + callNode.getBounds().getHeight());
+				}
 			}
 		}
 
 		top += CallNode.CALL_YGAP;
 
-		for(int i = 0; i < pObjects.size(); i++)
+		for( Node node : pObjects )
 		{
-			ImplicitParameterNode n = (ImplicitParameterNode) pObjects.get(i);
-			Rectangle2D b = n.getBounds();
-			n.setBounds(new Rectangle2D.Double(
-					b.getX(), b.getY(), 
-					b.getWidth(), top - b.getY()));         
+			Rectangle2D bounds = node.getBounds();
+			((ImplicitParameterNode)node).setBounds(new Rectangle2D.Double(bounds.getX(), 
+					bounds.getY(), bounds.getWidth(), top - bounds.getY()));         
 		}
 	}
 
@@ -367,33 +357,7 @@ public class SequenceDiagramGraph extends Graph
 	public void draw(Graphics2D pGraphics2D, Grid pGrid)
 	{
 		layout(pGraphics2D, pGrid);
-		Collection<Node> nodes = getNodes();
-		Iterator<Node> iter = nodes.iterator();
-		while (iter.hasNext())
-		{
-			Node n = (Node) iter.next();
-			if(!(n instanceof CallNode)) 
-			{
-				n.draw(pGraphics2D);
-			}
-		}
-
-		iter = nodes.iterator();
-		while(iter.hasNext())
-		{
-			Node n = (Node) iter.next();
-			if(n instanceof CallNode) 
-			{
-				n.draw(pGraphics2D);
-			}
-		}
-		Collection<Edge> edges = getEdges();
-		Iterator<Edge> iter2 = edges.iterator();
-		while(iter2.hasNext())
-		{
-			Edge e = (Edge) iter2.next();
-			e.draw(pGraphics2D);
-		}
+		super.draw(pGraphics2D, pGrid);
 	}
 
 	@Override
