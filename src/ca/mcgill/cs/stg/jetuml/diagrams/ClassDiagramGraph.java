@@ -24,6 +24,7 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
@@ -82,67 +83,60 @@ public class ClassDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("class.name");
 	}
 
-	private static boolean canAddNodeAsChild(Node pParent, Node pPotentialChild)
+	private static boolean canAddNodeAsChild(Node pPotentialChild)
 	{
-		if( pParent instanceof PackageNode )
-		{
-			return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
+		return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
 					pPotentialChild instanceof PackageNode ;
+	}
+	
+	/* Find if the node to be added should be added to a package. Returns null if not. 
+	 * If packages overlap, select the last one added, which by default should be on
+	 * top. This could be fixed if we ever add a z coordinate to the graph.
+	 */
+	private PackageNode findContainer( List<Node> pNodes, Point2D pPoint)
+	{
+		PackageNode container = null;
+		for( Node node : pNodes )
+		{
+			if( node instanceof PackageNode && node.contains(pPoint) )
+			{
+				container = (PackageNode) node;
+			}
+		}
+		if( container == null )
+		{
+			return null;
+		}
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		List<Node> children = new ArrayList(((PackageNode)container).getChildren());
+		if( children.size() == 0 )
+		{
+			return container;
 		}
 		else
 		{
-			return false;
-		}
-	}
-	
-	/* Find if the node to be added should be added to a package. Returns null if not */
-	private PackageNode findContainer(Node pNode, Point2D pPoint)
-	{
-		ArrayList<PackageNode> candidates = new ArrayList<>();
-		for( Node node : aRootNodes )
-		{
-			if( node == pNode )
+			PackageNode deeperContainer = findContainer( children, pPoint );
+			if( deeperContainer == null )
 			{
-				continue;
+				return container;
 			}
-			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
+			else
 			{
-				candidates.add((PackageNode)node); // canAddNodeAsChild ensures the downcast is valid
+				return deeperContainer;
 			}
 		}
-		// There should be only one node without a child (the top package)
-		for( PackageNode node : candidates )
-		{
-			if(!hasChild(candidates, node))
-			{
-				return node;
-			}
-		}
-		return null;
-	}
-
-	/*
-	 * returns true if pNode has a child among pPackages
-	 */
-	private static boolean hasChild(ArrayList<PackageNode> pPackages, PackageNode pNode)
-	{
-		for( PackageNode node : pPackages )
-		{
-			if( pNode.getChildren().contains(node) )
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		PackageNode container = findContainer(pNode, pPoint);
-		if( container != null )
+		if( canAddNodeAsChild(pNode))
 		{
-			container.addChild((ChildNode)pNode);
+			PackageNode container = findContainer(aRootNodes, pPoint);
+			if( container != null )
+			{
+				container.addChild((ChildNode)pNode);
+			}
 		}
 		super.add(pNode, pPoint);
 		return true;
