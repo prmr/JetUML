@@ -194,21 +194,22 @@ public abstract class Graph
 
 	/**
       * Finds a node containing the given point. Always returns
-      * the deepest child.
+      * the deepest child and the last one in a list.
       * @param pPoint a point
       * @return a node containing pPoint or null if no nodes contain pPoint
       */
 	public Node findNode(Point2D pPoint)
 	{
+		Node result = null;
 		for( Node node : aRootNodes )
 		{
-			Node result = deepFindNode(node, pPoint);
-			if( result != null )
+			Node temp = deepFindNode(node, pPoint);
+			if( temp != null )
 			{
-				return result;
+				result = temp;
 			}
 		}
-		return null;
+		return result;
 	}
 	
 	private Node deepFindNode( Node pNode, Point2D pPoint )
