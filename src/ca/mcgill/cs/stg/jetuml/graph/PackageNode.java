@@ -243,6 +243,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	@Override
 	public void addChild(int pIndex, ChildNode pNode)
 	{
+		assert pNode != null;
+		assert pIndex >=0 && pIndex <= aContainedNodes.size();
 		ParentNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
@@ -255,16 +257,14 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	@Override
 	public void addChild(ChildNode pNode)
 	{
+		assert pNode != null;
 		addChild(aContainedNodes.size(), pNode);
 	}
 
 	@Override
 	public void removeChild(ChildNode pNode)
 	{
-		if (pNode.getParent() != this)
-		{
-			return;
-		}
+		assert pNode.getParent() == this && aContainedNodes.contains(pNode);
 		aContainedNodes.remove(pNode);
 		pNode.setParent(null);
 	}
