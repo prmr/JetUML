@@ -477,58 +477,54 @@ public class TestPersistenceService
 	private void verifySequenceDiagram(Graph pGraph)
 	{
 		Collection<Node> nodes = pGraph.getNodes();
-		assertEquals(9, nodes.size());
+		assertEquals(5, nodes.size());
 		Iterator<Node> nIterator = nodes.iterator();
 		
 		ImplicitParameterNode object1 = (ImplicitParameterNode) nIterator.next();
 		ImplicitParameterNode object2 = (ImplicitParameterNode) nIterator.next();
 		ImplicitParameterNode object3 = (ImplicitParameterNode) nIterator.next();
-		CallNode init = (CallNode) nIterator.next();
-		CallNode selfCall = (CallNode) nIterator.next();
-		CallNode o2Call = (CallNode) nIterator.next();
-		CallNode o3Call = (CallNode) nIterator.next();
 		NoteNode note = (NoteNode) nIterator.next();
 		PointNode point = (PointNode) nIterator.next();
 		
-		assertEquals(new Rectangle2D.Double(280,0,100,216), object1.getBounds());
+		assertEquals(new Rectangle2D.Double(160,0,100,219), object1.getBounds());
 		List<ChildNode> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
-		assertTrue(o1children.contains(init));
-		assertTrue(o1children.contains(selfCall));
 		assertEquals("object1:Type1", object1.getName().toString());
+		CallNode init = (CallNode) o1children.get(0);
+		CallNode selfCall = (CallNode) o1children.get(1);
 		
-		assertEquals(new Rectangle2D.Double(510,0,80,216), object2.getBounds());
+		assertEquals(new Rectangle2D.Double(370,0,80,219), object2.getBounds());
 		List<ChildNode> o2children = object2.getChildren();
 		assertEquals(1, o2children.size());
-		assertTrue(o2children.contains(o2Call));
 		assertEquals(":Type2", object2.getName().toString());
+		CallNode o2Call = (CallNode) o2children.get(0);
 		
-		assertEquals(new Rectangle2D.Double(680,0,80,216), object3.getBounds());
+		assertEquals(new Rectangle2D.Double(590,0,80,219), object3.getBounds());
 		List<ChildNode> o3children = object3.getChildren();
 		assertEquals(1, o3children.size());
-		assertTrue(o3children.contains(o3Call));
 		assertEquals("object3:", object3.getName().toString());
+		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle2D.Double(322,74,16,88), init.getBounds());
+		assertEquals(new Rectangle2D.Double(202,77,16,88), init.getBounds());
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(330,103,16,39), selfCall.getBounds());
+		assertEquals(new Rectangle2D.Double(210,106,16,39), selfCall.getBounds());
 		assertEquals(object1, selfCall.getParent());
 		assertFalse(selfCall.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(542,122,16,74), o2Call.getBounds());
+		assertEquals(new Rectangle2D.Double(402,125,16,74), o2Call.getBounds());
 		assertEquals(object2, o2Call.getParent());
 		assertFalse(o2Call.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(712,146,16,30), o3Call.getBounds());
+		assertEquals(new Rectangle2D.Double(622,149,16,30), o3Call.getBounds());
 		assertEquals(object3, o3Call.getParent());
 		assertFalse(o3Call.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(580,190,60,40), note.getBounds());
+		assertEquals(new Rectangle2D.Double(440,200,60,40), note.getBounds());
 		assertEquals("A note", note.getText().toString());
 		
-		assertEquals(new Rectangle2D.Double(551,174,0,0), point.getBounds());
+		assertEquals(new Rectangle2D.Double(409,189,0,0), point.getBounds());
 	
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -541,7 +537,7 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle2D.Double(338, 79, 77, 29), self.getBounds());
+		assertEquals(new Rectangle2D.Double(218, 82, 77, 29), self.getBounds());
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("V", self.getEndArrowHead().toString());
 		assertEquals("", self.getEndLabel());
@@ -552,7 +548,7 @@ public class TestPersistenceService
 		assertEquals("", self.getStartLabel());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(346, 103, 196, 19), signal.getBounds());
+		assertEquals(new Rectangle2D.Double(226, 106, 176, 19), signal.getBounds());
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("HALF_V", signal.getEndArrowHead().toString());
 		assertEquals("", signal.getEndLabel());
@@ -563,7 +559,7 @@ public class TestPersistenceService
 		assertEquals("", signal.getStartLabel());
 		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(558, 127, 154, 24), call1.getBounds());
+		assertEquals(new Rectangle2D.Double(418, 130, 204, 24), call1.getBounds());
 		assertEquals(o3Call, call1.getEnd());
 		assertEquals("V", call1.getEndArrowHead().toString());
 		assertEquals("", call1.getEndLabel());
@@ -574,7 +570,7 @@ public class TestPersistenceService
 		assertEquals("", call1.getStartLabel());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(558, 157, 154, 24), ret1.getBounds());
+		assertEquals(new Rectangle2D.Double(418, 160, 204, 24), ret1.getBounds());
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("V", ret1.getEndArrowHead().toString());
 		assertEquals("", ret1.getEndLabel());
@@ -584,7 +580,7 @@ public class TestPersistenceService
 		assertEquals("NONE", ret1.getStartArrowHead().toString());
 		assertEquals("", ret1.getStartLabel());
 		
-		assertEquals(new Rectangle2D.Double(346, 191, 196, 10), retC.getBounds());
+		assertEquals(new Rectangle2D.Double(226, 194, 176, 10), retC.getBounds());
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("V", retC.getEndArrowHead().toString());
 		assertEquals("", retC.getEndLabel());
@@ -594,7 +590,7 @@ public class TestPersistenceService
 		assertEquals("NONE", retC.getStartArrowHead().toString());
 		assertEquals("", retC.getStartLabel());
 		
-		assertEquals(new Rectangle2D.Double(551, 174, 29, 18), nedge.getBounds());
+		assertEquals(new Rectangle2D.Double(409, 189, 31, 16), nedge.getBounds());
 		assertEquals(point, nedge.getEnd());
 		assertEquals(note, nedge.getStart());
 	}
