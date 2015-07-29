@@ -1,15 +1,24 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
- * Manages a set of graph element selections. The list does
- * not accept duplicate graph elements.
+ * Manages a set of graph element selections. Conceptually containing a nodes
+ * assumes that all its children are implicitly "contained", even though they are
+ * not explicitly tracked. The list maintains the following invariants:
+ * 
+ * 1. There are no duplicate nodes or edges.
+ * 2. A child node and its parent are never in the selection list together. During
+ *    the add operation, if a child node is added and its parent is present, it is 
+ *    transparently not added. If a parent node is added that transitively contains 
+ *    some of the nodes in the selection, these are removed from the selection.
  * 
  * @author Martin P. Robillard
  *
@@ -20,7 +29,10 @@ public class SelectionList implements Iterable<GraphElement>
 	
 	/**
 	 * Adds an element to the selection set and sets
-	 * it as the last selected element.
+	 * it as the last selected element. If the element 
+	 * is already in the list, it is added to the end 
+	 * of the list. If the node is transitively a child of 
+	 * any node in the list, it is not added.
 	 * 
 	 * @param pElement The element to add to the list.
 	 * Cannot be null.
@@ -28,8 +40,56 @@ public class SelectionList implements Iterable<GraphElement>
 	public void add(GraphElement pElement)
 	{
 		assert pElement != null;
-		aSelected.remove(pElement);
-		aSelected.push(pElement);
+		if( !parentContained( pElement ))
+		{
+			aSelected.remove(pElement);
+			aSelected.push(pElement);
+			
+			// Remove children in case a parent was added.
+			ArrayList<GraphElement> toRemove = new ArrayList<>();
+			for( GraphElement element : aSelected )
+			{
+				if( parentContained(element) )
+				{
+					toRemove.add(element);
+				}
+			}
+			for( GraphElement element : toRemove )
+			{
+				remove(element);
+			}
+		}
+	}
+	
+	/**
+	 * Returns true if any of the parents of pElement is contained
+	 * (transitively).
+	 * @param pElement The element to test
+	 * @return true if any of the parents of pElement are included in the 
+	 * selection.
+	 */
+	public boolean parentContained(GraphElement pElement)
+	{
+		if( pElement instanceof ChildNode )
+		{
+			ParentNode parent = ((ChildNode) pElement).getParent();
+			if( parent == null )
+			{
+				return false;
+			}
+			else if( aSelected.contains(parent))
+			{
+				return true;
+			}
+			else
+			{
+				return parentContained(parent);
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	/**
@@ -62,16 +122,11 @@ public class SelectionList implements Iterable<GraphElement>
 	 */
 	public Node getLastNode()
 	{
-		if( aSelected.size() > 0 )
+		for( int i = aSelected.size()-1; i >=0; i--)
 		{
-			Iterator<GraphElement> iter = iterator();
-			while(iter.hasNext())
+			if( aSelected.get(i) instanceof Node )
 			{
-				GraphElement cur = iter.next();
-				if(cur instanceof Node)
-				{
-					return (Node)cur;
-				}
+				return (Node) aSelected.get(i);
 			}
 		}
 		return null;
@@ -91,25 +146,9 @@ public class SelectionList implements Iterable<GraphElement>
 	 * or does nothing if pElement is not selected.
 	 * @param pElement The element to remove. Cannot be null.
 	 */
-	@SuppressWarnings("unchecked")
 	public void remove(GraphElement pElement)
 	{
 		assert pElement != null;
-		
-		if(pElement instanceof Node) //TODO : Fix when fixing whether edges are visible from nodes
-		{
-			Stack<GraphElement> copy = (Stack<GraphElement>) aSelected.clone();
-			for(GraphElement e : copy)
-			{
-				if(e instanceof Edge)
-				{
-					if(((Edge) e).getEnd() == pElement || ((Edge) e).getStart() == pElement)
-					{
-						aSelected.remove(e);
-					}
-				}
-			}
-		}
 		aSelected.remove(pElement);
 	}
 	

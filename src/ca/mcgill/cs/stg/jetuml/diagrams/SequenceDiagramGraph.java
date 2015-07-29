@@ -99,7 +99,7 @@ public class SequenceDiagramGraph extends Graph
 	 */
 	private ImplicitParameterNode insideTargetArea(Point2D pPoint)
 	{
-		for( Node node : getNodes() )
+		for( Node node : getRootNodes() )
 		{
 			if(node instanceof ImplicitParameterNode && node.contains(pPoint))
 			{

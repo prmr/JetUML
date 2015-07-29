@@ -576,7 +576,7 @@ public abstract class Graph
 	 * Gets the nodes of this graph.
 	 * @return an unmodifiable collection of the nodes
 	 */
-	public Collection<Node> getNodes()
+	public Collection<Node> getRootNodes()
 	{ return aRootNodes; }
 
 	/**

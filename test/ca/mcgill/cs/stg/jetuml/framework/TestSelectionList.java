@@ -2,8 +2,8 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
@@ -14,14 +14,19 @@ import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
+import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 public class TestSelectionList
 {
 	private Edge aEdge1; 
 	private Edge aEdge2; 
-	private Node aNode1;
+	private ClassNode aNode1;
+	private ClassNode aNode2;
+	private ClassNode aNode3;
+	private PackageNode aPackage1; 
+	private PackageNode aPackage2; 
+	private PackageNode aPackage3;
 	private SelectionList aList;
 	
 	@Before
@@ -30,6 +35,11 @@ public class TestSelectionList
 		aEdge1 = new CallEdge();
 		aEdge2 = new NoteEdge();
 		aNode1 = new ClassNode();
+		aNode2 = new ClassNode();
+		aNode3 = new ClassNode();
+		aPackage1 = new PackageNode();
+		aPackage2 = new PackageNode();
+		aPackage3 = new PackageNode();
 		aList = new SelectionList();
 	}
 	
@@ -69,6 +79,64 @@ public class TestSelectionList
 	}
 	
 	@Test
+	public void testAddParentContained()
+	{
+		aList.add(aEdge1);
+		aPackage1.addChild(aNode1);
+		aList.add(aPackage1);
+		aList.add(aNode1);
+		assertEquals(2, aList.size());
+		assertTrue(aList.contains(aEdge1));
+		assertTrue(aList.contains(aPackage1));
+	}
+	
+	@Test
+	public void testAddChildrenContained()
+	{
+		aPackage1.addChild(aPackage2);
+		aPackage2.addChild(aNode1);
+		aPackage2.addChild(aNode2);
+		aList.add(aNode1);
+		aList.add(aNode2);
+		assertEquals(2, aList.size());
+		assertTrue(aList.contains(aNode1));
+		assertTrue(aList.contains(aNode2));
+		aList.add(aPackage1);
+		assertEquals(1, aList.size());
+		assertTrue(aList.contains(aPackage1));
+	}
+	
+	@Test
+	public void testGetLastSelected()
+	{
+		assertNull(aList.getLastSelected());
+		aList.add(aEdge1);
+		assertEquals(aEdge1, aList.getLastSelected());
+		aList.add(aEdge2);
+		assertEquals(aEdge2, aList.getLastSelected());
+		aList.add(aEdge1);
+		assertEquals(aEdge1, aList.getLastSelected());
+	}
+	
+	@Test
+	public void testGetLastNode()
+	{
+		assertNull(aList.getLastNode());
+		aList.add(aEdge1);
+		assertNull(aList.getLastNode());
+		aList.add(aEdge2);
+		assertNull(aList.getLastNode());
+		aList.add(aNode1);
+		assertEquals(aNode1, aList.getLastNode());
+		aList.add(aNode2);
+		assertEquals(aNode2, aList.getLastNode());
+		aList.add(aEdge1);
+		assertEquals(aNode2, aList.getLastNode());
+		aList.add(aNode2);
+		assertEquals(aNode2, aList.getLastNode());
+	}
+	
+	@Test
 	public void testClearSelection()
 	{
 		aList.add(aEdge1);
@@ -91,6 +159,34 @@ public class TestSelectionList
 		assertEquals(aEdge2, iterator.next());
 		assertEquals(aNode1, iterator.next());
 		assertEquals(aNode1, aList.getLastSelected());
+	}
+	
+	@Test
+	public void testParentContained()
+	{
+		assertFalse(aList.parentContained(aEdge1));
+		assertFalse(aList.parentContained(aNode1));
+		aList.add(aEdge1);
+		assertFalse(aList.parentContained(aEdge1));
+		aList.add(aNode1);
+		assertFalse(aList.parentContained(aEdge1));
+		assertFalse(aList.parentContained(aNode1));
+
+		aPackage1.addChild(aNode1);
+		assertFalse(aList.parentContained(aNode1));
+		
+		aList.add(aPackage1);
+		assertTrue(aList.parentContained(aNode1));
+		aPackage1.addChild(aPackage2);
+		aPackage2.addChild(aNode2);
+		aPackage2.addChild(aPackage3);
+		aPackage3.addChild(aNode3);
+
+		assertFalse(aList.parentContained(aPackage1));
+		assertTrue(aList.parentContained(aNode2));
+		assertTrue(aList.parentContained(aPackage2));
+		assertTrue(aList.parentContained(aPackage3));
+		assertTrue(aList.parentContained(aNode3));
 	}
 	
 	@Test

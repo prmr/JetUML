@@ -58,6 +58,7 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
 
 /**
  * A panel to draw a graph.
@@ -700,7 +701,7 @@ public class GraphPanel extends JPanel
 					if(selected instanceof ChildNode)
 					{
 						ChildNode n = (ChildNode) selected;
-						if (!aSelectedElements.contains(n.getParent())) // parents are responsible for translating their children
+						if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
 						{
 							n.translate(dx, dy); 
 						}	
@@ -719,16 +720,9 @@ public class GraphPanel extends JPanel
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
 				Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
-				for( Node node : aGraph.getNodes() )
+				for( Node node : aGraph.getRootNodes() )
 				{
-					if(!isCtrl && !lasso.contains(node.getBounds())) 
-					{
-						aSelectedElements.remove(node);
-					}
-					else if(lasso.contains(node.getBounds())) 
-					{
-						aSelectedElements.add(node);
-					}
+					selectNode(isCtrl, node, lasso);
 				}
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
 				for (Edge edge: aGraph.getEdges())
@@ -748,6 +742,25 @@ public class GraphPanel extends JPanel
 			}
 			aLastMousePoint = mousePoint;
 			repaint();
+		}
+		
+		private void selectNode( boolean pCtrl, Node pNode, Rectangle2D.Double pLasso )
+		{
+			if(!pCtrl && !pLasso.contains(pNode.getBounds())) 
+			{
+				aSelectedElements.remove(pNode);
+			}
+			else if(pLasso.contains(pNode.getBounds())) 
+			{
+				aSelectedElements.add(pNode);
+			}
+			if( pNode instanceof ParentNode )
+			{
+				for( ChildNode child : ((ParentNode) pNode).getChildren() )
+				{
+					selectNode(pCtrl, child, pLasso);
+				}
+			}
 		}
 	}
 }

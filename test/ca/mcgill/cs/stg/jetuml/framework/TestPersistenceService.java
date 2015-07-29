@@ -115,7 +115,7 @@ public class TestPersistenceService
 	
 	private void verifyUseCaseDiagram( Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(9, nodes.size());
 		Iterator<Node> nIt = nodes.iterator();
 		UseCaseNode u1 = (UseCaseNode) nIt.next();
@@ -275,7 +275,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram2(Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(4, nodes.size());
 		Iterator<Node> nIterator = nodes.iterator();
 		PackageNode p1 = (PackageNode) nIterator.next();
@@ -335,7 +335,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram(Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		
 		assertEquals(7, nodes.size());
 		Iterator<Node> nIterator = nodes.iterator();
@@ -476,7 +476,7 @@ public class TestPersistenceService
 	
 	private void verifySequenceDiagram(Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(5, nodes.size());
 		Iterator<Node> nIterator = nodes.iterator();
 		
@@ -597,7 +597,7 @@ public class TestPersistenceService
 	
 	private void verifyStateDiagram(Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());
 		
 		Iterator<Node> nIterator = nodes.iterator();
@@ -678,7 +678,7 @@ public class TestPersistenceService
 	
 	private void verifyObjectDiagram(Graph pGraph)
 	{
-		Collection<Node> nodes = pGraph.getNodes();
+		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());
 		
 		Iterator<Node> nIt = nodes.iterator(); 
