@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
@@ -139,6 +140,16 @@ public class SelectionList implements Iterable<GraphElement>
 	public boolean contains(GraphElement pElement)
 	{
 		return aSelected.contains(pElement);
+	}
+	
+	/**
+	 * @param pEdge The edge to test.
+	 * @return true iif the selection contains both end-points of pEdge, or their parent.
+	 */
+	public boolean capturesEdge(Edge pEdge)
+	{
+		return (contains(pEdge.getStart()) || parentContained(pEdge.getStart())) &&
+				(contains(pEdge.getEnd()) || parentContained(pEdge.getEnd()));
 	}
 	
 	/**

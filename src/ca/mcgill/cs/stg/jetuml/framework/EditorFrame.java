@@ -717,7 +717,7 @@ public class EditorFrame extends JFrame
    		if(panel.getSelectionList().size()>0)
    		{
    			SelectionList currentSelection = panel.getSelectionList();
-   			aClipboard.addSelection(currentSelection);	
+   			aClipboard.copy(currentSelection);	
    			Iterator<GraphElement> iter = currentSelection.iterator();
    			while(iter.hasNext())
    			{
@@ -751,7 +751,7 @@ public class EditorFrame extends JFrame
    		if(panel.getSelectionList().size()>0)
    		{
    			SelectionList currentSelection = panel.getSelectionList();
-   			aClipboard.addSelection(currentSelection);
+   			aClipboard.copy(currentSelection);
    		}	
    	}
    	
@@ -772,7 +772,7 @@ public class EditorFrame extends JFrame
    		try
    		{
    			//This method call handles all the paste logic on the current GraphPanel.
-   			SelectionList updatedSelectionList = aClipboard.pasteInto(panel);
+   			SelectionList updatedSelectionList = aClipboard.paste(panel);
    			panel.setSelectionList(updatedSelectionList);
    			panel.repaint();
    		}

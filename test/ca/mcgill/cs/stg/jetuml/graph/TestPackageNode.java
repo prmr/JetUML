@@ -1,6 +1,7 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import java.awt.geom.Point2D;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
 public class TestPackageNode
 {
@@ -103,5 +105,46 @@ public class TestPackageNode
 		aPackage1.removeChild(aClass2);
 		assertEquals( 0, aPackage1.getChildren().size());
 		assertNull( aClass2.getParent());
+	}
+	
+	@Test 
+	public void testClone()
+	{
+		aPackage1.setName("Package");
+		PackageNode clone = aPackage1.clone();
+		assertEquals(new Rectangle2D.Double(0, 0, 100, 80), clone.getBounds());
+		assertEquals(0,clone.getChildren().size());
+		assertEquals(new Point2D.Double(100,40), clone.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point2D.Double(0,40), clone.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point2D.Double(50,0), clone.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point2D.Double(50,80), clone.getConnectionPoint(Direction.SOUTH));
+		assertEquals("", clone.getContents().toString());
+		assertEquals("Package", clone.getName().toString());
+		assertNull(clone.getParent());
+		assertEquals(new Rectangle2D.Double(0, 0, 100, 80), clone.getShape().getBounds());
+		
+		aPackage2.setName("p2");
+		MultiLineString c1 = new MultiLineString();
+		c1.setText("c1");
+		aClass1.setName(c1);
+		MultiLineString c2 = new MultiLineString();
+		c2.setText("c2");
+		aClass2.setName(c2);
+		aPackage1.addChild(aPackage2);
+		aPackage2.addChild(aClass1);
+		aPackage2.addChild(aClass2);
+		
+		clone = aPackage1.clone();
+		assertEquals(1, clone.getChildren().size());
+		PackageNode p2Clone = (PackageNode) clone.getChildren().get(0);
+		assertFalse( p2Clone == aPackage2 );
+		assertEquals("p2", p2Clone.getName());
+		assertEquals(2, p2Clone.getChildren().size());
+		ClassNode c1Clone = (ClassNode) p2Clone.getChildren().get(0);
+		assertEquals("c1", c1Clone.getName().toString());
+		assertFalse(c1Clone == aClass1);
+		ClassNode c2Clone = (ClassNode) p2Clone.getChildren().get(1);
+		assertEquals("c2", c2Clone.getName().toString());
+		assertFalse(c2Clone == aClass2);
 	}
 }

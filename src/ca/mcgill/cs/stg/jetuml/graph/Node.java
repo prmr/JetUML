@@ -24,7 +24,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -63,12 +62,6 @@ public interface Node extends GraphElement
      * @return the recommended connection point
 	 */
 	Point2D getConnectionPoint(Direction pDirection);
-
-	/**
-     * Get the bounding rectangle of the shape of this node.
-     * @return the bounding rectangle
-	 */
-	Rectangle2D getBounds();
 
 	/**
      * Lays out the node and its children.

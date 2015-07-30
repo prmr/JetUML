@@ -25,7 +25,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * An edge in a graph.
@@ -70,13 +69,6 @@ public interface Edge extends GraphElement
      * @return a line joining the two connection points
      */
    	Line2D getConnectionPoints();
-
-   	/**
-     * Gets the smallest rectangle that bounds this edge.
-     * The bounding rectangle contains all labels.
-     * @return the bounding rectangle
-   	 */
-   	Rectangle2D getBounds();
 
    	/**
    	 * @return A clone of this edge.
