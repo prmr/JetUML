@@ -132,7 +132,15 @@ public class ClassDiagramGraph extends Graph
 	{
 		if( canAddNodeAsChild(pNode))
 		{
-			PackageNode container = findContainer(aRootNodes, pPoint);
+			PackageNode container = null;
+			if( pNode instanceof ChildNode && ((ChildNode) pNode).getParent() != null )
+			{
+				container = (PackageNode)((ChildNode) pNode).getParent();
+			}
+			else
+			{
+				container = findContainer(aRootNodes, pPoint);
+			}
 			if( container != null )
 			{
 				container.addChild((ChildNode)pNode);

@@ -271,7 +271,6 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	@Override
 	public void removeChild(ChildNode pNode)
 	{
-		assert pNode.getParent() == this && aContainedNodes.contains(pNode);
 		aContainedNodes.remove(pNode);
 		pNode.setParent(null);
 	}
