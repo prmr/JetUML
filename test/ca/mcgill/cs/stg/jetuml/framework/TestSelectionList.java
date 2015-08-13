@@ -91,6 +91,21 @@ public class TestSelectionList
 	}
 	
 	@Test
+	public void testTransitivelyContained()
+	{
+		aList.add(aEdge1);
+		aPackage1.addChild(aNode1);
+		aList.add(aPackage1);
+		aList.add(aNode1);
+		aPackage1.addChild(aNode2);
+		assertEquals(2, aList.size());
+		assertTrue(aList.transitivelyContains(aEdge1));
+		assertTrue(aList.transitivelyContains(aPackage1));
+		assertTrue(aList.transitivelyContains(aNode2));
+		assertTrue(aList.transitivelyContains(aNode1));
+	}
+	
+	@Test
 	public void testAddChildrenContained()
 	{
 		aPackage1.addChild(aPackage2);

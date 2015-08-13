@@ -733,7 +733,7 @@ public class GraphPanel extends JPanel
 					}
 					else if(lasso.contains(edge.getBounds()))
 					{
-						if(aSelectedElements.contains(edge.getStart()) && aSelectedElements.contains(edge.getEnd()))
+						if(aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
 						{
 							aSelectedElements.add(edge);
 						}

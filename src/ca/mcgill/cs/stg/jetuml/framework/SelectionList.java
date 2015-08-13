@@ -94,6 +94,15 @@ public class SelectionList implements Iterable<GraphElement>
 	}
 	
 	/**
+	 * @param pElement The element to test.
+	 * @return True if either this element or one of its parent is contained.
+	 */
+	public boolean transitivelyContains(GraphElement pElement)
+	{
+		return contains(pElement) || parentContained(pElement);
+	}
+	
+	/**
 	 * Removes all selections.
 	 */
 	public void clearSelection()
