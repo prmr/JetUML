@@ -1,9 +1,7 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import java.awt.Point;
-
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -77,11 +75,14 @@ public class AddDeleteEdgeCommand implements Command
 	 */
 	private void add() 
 	{
-		Point.Double n1Point = new Point.Double();
-		n1Point.setLocation(aP1.getBounds().getX() + 1, aP1.getBounds().getY() + 1);
-		Point.Double n2Point = new Point.Double();
-		n2Point.setLocation(aP2.getBounds().getX() + 1, aP2.getBounds().getY() + 1);
-		aGraph.connect(aEdge, n1Point, n2Point);
+		// MPR Uses the decoder version of "connect" because the layout was not done 
+		// at this point, so the strategy for finding nodes based on their coordinates is not robust.
+//		Point.Double n1Point = new Point.Double();
+//		n1Point.setLocation(aP1.getBounds().getX() + 1, aP1.getBounds().getY() + 1);
+//		Point.Double n2Point = new Point.Double();
+//		n2Point.setLocation(aP2.getBounds().getX() + 1, aP2.getBounds().getY() + 1);
+//		aGraph.connect(aEdge, n1Point, n2Point);
+		aGraph.connect(aEdge, aP1, aP2);
 		aGraph.layout();
 	}
 	
