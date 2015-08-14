@@ -332,26 +332,10 @@ public abstract class Graph
 			}
 		}
 
-		// Notify all nodes that pNode is being removed.
+		// Notify all nodes that pNode is being removed. TODO Navigate all nodes, not just root nodes
 		for(Node node : aRootNodes)
 		{
-			if( node instanceof CallNode )
-			{
-				CallNode parent = (CallNode) node;
-				if( pNode == parent.getParent() || pNode == parent.getParent())
-				{
-					removeNode(parent);
-				}
-			}
-			else if( node instanceof ParentNode && pNode instanceof ChildNode )
-			{
-				if( ((ChildNode)pNode).getParent() == node )
-				{
-					((ParentNode)node).getChildren().remove(pNode);
-					// We don't reassing the parent of the child to null in case the operation
-					// is undone, at which point we'll need to know who the parent was.
-				}
-			}
+			removeFromParent( node, pNode );
 		}
 		
 		// Notify all edges that pNode is being removed.
@@ -365,6 +349,23 @@ public abstract class Graph
 		aModListener.nodeRemoved(this, pNode);
 		aModListener.endCompoundListening();
 		aNeedsLayout = true;
+	}
+	
+	private static void removeFromParent(Node pParent, Node pToRemove)
+	{
+		if( pParent instanceof ParentNode )
+		{
+			if( pToRemove instanceof ChildNode && ((ChildNode) pToRemove).getParent() == pParent )
+			{
+				((ParentNode) pParent).getChildren().remove(pToRemove);
+				// We don't reassing the parent of the child to null in case the operation
+				// is undone, at which point we'll need to know who the parent was.
+			}
+			for( Node child : ((ParentNode) pParent).getChildren() )
+			{
+				removeFromParent(child, pToRemove );
+			}
+		}
 	}
 
 	/**
