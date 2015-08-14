@@ -22,8 +22,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
 /**
