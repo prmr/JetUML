@@ -220,7 +220,25 @@ public class SequenceDiagramGraph extends Graph
 		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
 		{
 			removeNode(pEdge.getEnd());
-		}		
+		}
+		
+		// Also delete the return edge, if it exists
+		if( pEdge instanceof CallEdge )
+		{
+			Edge returnEdge = null;
+			for( Edge edge : aEdges )
+			{
+				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
+				{
+					returnEdge = edge;
+					break;
+				}
+			}
+			if( returnEdge != null )
+			{
+				removeEdge(returnEdge);
+			}
+		}
 	}
 	
 	/**
