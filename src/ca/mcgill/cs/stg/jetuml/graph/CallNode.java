@@ -149,7 +149,8 @@ public class CallNode extends RectangularNode implements ChildNode
 	/*
 	 * @param pGraph
 	 * @return All the nodes (CallNodes or ImplicitParameterNodes) that have a calledge
-	 * originating at this CallNode
+	 * originating at this CallNode. If an ImplicitParameterNode is in the list, it's always
+	 * returned first.
 	 */
 	private List<Node> getCallees(Graph pGraph)
 	{
@@ -158,7 +159,14 @@ public class CallNode extends RectangularNode implements ChildNode
 		{
 			if( edge.getStart() == this && edge instanceof CallEdge )
 			{
-				callees.add(edge.getEnd());
+				if( edge.getEnd() instanceof ImplicitParameterNode )
+				{
+					callees.add(0, edge.getEnd());
+				}
+				else
+				{
+					callees.add(edge.getEnd());
+				}
 			}
 		}
 		return callees;

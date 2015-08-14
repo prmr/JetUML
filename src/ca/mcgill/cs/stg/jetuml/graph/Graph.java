@@ -130,7 +130,7 @@ public abstract class Graph
 			node2 = createPointNodeIfAllowed(node1, node2, pEdge, pPoint1, pPoint2);
 		}
 		
-		if(!canConnect(pEdge, node1, node2))
+		if(!canConnect(pEdge, node1, node2, pPoint2))
 		{
 			return false;
 		}
@@ -621,9 +621,10 @@ public abstract class Graph
 	 * @param pEdge The edge to be added
 	 * @param pNode1 The first node
 	 * @param pNode2 The second node
+	 * @param pPoint2 The point where the edge is supposed to be terminated
 	 * @return True if the edge can legally connect node1 to node2
 	 */
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
 	{
 		if( pNode2 == null )
 		{

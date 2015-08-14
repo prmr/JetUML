@@ -69,9 +69,9 @@ public class ObjectDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
 	{
-		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
 			return false;
 		}

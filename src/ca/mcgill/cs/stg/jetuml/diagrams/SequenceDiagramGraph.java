@@ -112,29 +112,35 @@ public class SequenceDiagramGraph extends Graph
 		return null;
 	}
 	
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2)
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
 	{
-		if( !super.canConnect(pEdge, pNode1, pNode2) )
+		boolean lReturn = true;
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
-			return false;
+			lReturn = false;
 		}
-		if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
+		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
 		{
-			return pNode2 == getCaller(pNode1);
+			lReturn = pNode2 == getCaller(pNode1);
 		}
-		if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
+		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
 		{
-			return false;
+			lReturn = false;
 		}
-		if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
+		else if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
 		{
-			return false;
+			lReturn = false;
 		}
-		if(pNode1 instanceof ImplicitParameterNode )
+		else if(pNode1 instanceof ImplicitParameterNode )
 		{
-			return false;
+			lReturn = false;
 		}
-		return true;
+		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && getCaller(pNode2) != null)
+		{
+			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
+		}
+		return lReturn;
 	}
 	
 	/*
