@@ -3,7 +3,10 @@ package ca.mcgill.cs.stg.jetuml.graph;
 /**
  * Node that potentially has a parent node 
  * according to a diagram type-specific parent-child
- * relation.
+ * relation. A child node is defined as a child that
+ * cannot exist without its parent according to the rules
+ * of UML. Child nodes are controlled by their parent nodes.
+ * See ParentNode for details.
  * 
  * @author Martin P. Robillard
  *

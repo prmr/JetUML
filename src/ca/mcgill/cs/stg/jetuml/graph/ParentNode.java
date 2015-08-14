@@ -5,7 +5,12 @@ import java.util.List;
 /**
  * Node that potentially has children nodes
  * according to a diagram type-specific parent-child
- * relation.
+ * relation. Parent nodes control their child nodes.
+ * If a ChildNode has a parent, only the parent node
+ * is tracked by the graph object. If a parent node is 
+ * removed from the graph, all its children are also removed. 
+ * Cloning a parent node clones all the children, and similarly
+ * with all other operations, including copying, translating, etc.
  * 
  * @author Martin P. Robillard
  *
