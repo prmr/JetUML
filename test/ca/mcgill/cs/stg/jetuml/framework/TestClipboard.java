@@ -2,17 +2,21 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
@@ -26,6 +30,7 @@ public class TestClipboard
 	private ClassRelationshipEdge aEdge1;
 	private ClassRelationshipEdge aEdge2;
 	private SelectionList aSelectionList;
+	private ClassDiagramGraph aClassDiagramGraph;
 	
 	@Before
 	public void setup()
@@ -47,6 +52,8 @@ public class TestClipboard
 		
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
+		
+		aClassDiagramGraph = new ClassDiagramGraph();
 	}
 	
 	@Test
@@ -131,5 +138,30 @@ public class TestClipboard
 		assertEquals(cc2, clonedE1.getEnd());
 		assertEquals(cc2, clonedE2.getStart());
 		assertEquals(cc1, clonedE2.getEnd());
+	}
+	
+	@Test
+	public void testPasteSingleNode()
+	{
+		aSelectionList.add(aClass1);
+		aClipboard.copy(aSelectionList);
+		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(1, rootNodes.size());
+		ClassNode node = (ClassNode)rootNodes.iterator().next();
+		assertEquals("c1", node.getName().toString());
+		assertEquals(1, list.size());
+		assertTrue(list.iterator().next() == node);
+	}
+	
+	@Test
+	public void testInvalidPaste()
+	{
+		aSelectionList.add(new ImplicitParameterNode());
+		aClipboard.copy(aSelectionList);
+		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(0, rootNodes.size());
+		assertEquals(0, list.size());
 	}
 }

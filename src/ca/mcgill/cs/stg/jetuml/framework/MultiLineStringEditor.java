@@ -46,33 +46,33 @@ public class MultiLineStringEditor extends PropertyEditorSupport
 {
 	private static final int ROWS = 5;
 	private static final int COLUMNS = 30;
-	   
+
 	private static Set<AWTKeyStroke> tab = new HashSet<>(1);
 	private static Set<AWTKeyStroke> shiftTab = new HashSet<>(1);
-	
+
 	// The actions
-	   private static Action nextFocusAction = new AbstractAction("Move Focus Forward") 
-	   {
-	      public void actionPerformed(ActionEvent pEvent) 
-	      {
-	         ((Component)pEvent.getSource()).transferFocus();
-	      }
-	   };
-	   
-	   private static Action prevFocusAction = new AbstractAction("Move Focus Backwards") 
-	   {
-	      public void actionPerformed(ActionEvent pEvent) 
-	      {
-	         ((Component)pEvent.getSource()).transferFocusBackward();
-	      }
-	   };
-	
+	private static Action nextFocusAction = new AbstractAction("Move Focus Forward") 
+	{
+		public void actionPerformed(ActionEvent pEvent) 
+		{
+			((Component)pEvent.getSource()).transferFocus();
+		}
+	};
+
+	private static Action prevFocusAction = new AbstractAction("Move Focus Backwards") 
+	{
+		public void actionPerformed(ActionEvent pEvent) 
+		{
+			((Component)pEvent.getSource()).transferFocusBackward();
+		}
+	};
+
 	static 
 	{
 		tab.add(KeyStroke.getKeyStroke("TAB" ));
 		shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
 	} 
-	
+
 	@Override
 	public boolean supportsCustomEditor()
 	{
@@ -87,26 +87,26 @@ public class MultiLineStringEditor extends PropertyEditorSupport
 
 		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
 		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
-      
+
 		textArea.setText(value.getText());
 		textArea.getDocument().addDocumentListener(new DocumentListener()
 		{
-            public void insertUpdate(DocumentEvent pEvent) 
-            {
-               value.setText(textArea.getText());
-               firePropertyChange();
-            }
-            public void removeUpdate(DocumentEvent pEvent) 
-            {
-               value.setText(textArea.getText());
-               firePropertyChange();
-            }
-            public void changedUpdate(DocumentEvent pEvent) 
-            {}
-         });
-      return new JScrollPane(textArea);
-   }
-   
-   
- 
+			public void insertUpdate(DocumentEvent pEvent) 
+			{
+				value.setText(textArea.getText());
+				firePropertyChange();
+			}
+			public void removeUpdate(DocumentEvent pEvent) 
+			{
+				value.setText(textArea.getText());
+				firePropertyChange();
+			}
+			public void changedUpdate(DocumentEvent pEvent) 
+			{}
+		});
+		return new JScrollPane(textArea);
+	}
+
+
+
 }
