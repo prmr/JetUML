@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -40,7 +41,7 @@ import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 public class ToolBar extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
-	private static final int OFFSET = 4;
+	private static final int OFFSET = 3;
 	private JPanel aNorthPanel;
 	private ButtonGroup aGroup;
 	private ArrayList<JToggleButton> aButtons;
@@ -70,7 +71,7 @@ public class ToolBar extends JPanel
             
 			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
             {
-				int offset = OFFSET+2;
+				int offset = OFFSET+3;
 				Graphics2D g2 = (Graphics2D)pGraphics;
 				GraphPanel.drawGrabber(g2, pX + offset, pY + offset);
 				GraphPanel.drawGrabber(g2, pX + offset, pY + BUTTON_SIZE - offset);
@@ -184,6 +185,7 @@ public class ToolBar extends JPanel
             	double width = pNode.getBounds().getWidth();
             	double height = pNode.getBounds().getHeight();
                	Graphics2D g2 = (Graphics2D)pGraphic;
+               	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
                	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
                	double scale = Math.min(scaleX, scaleY);
@@ -191,6 +193,7 @@ public class ToolBar extends JPanel
                	AffineTransform oldTransform = g2.getTransform();
                	g2.translate(pX, pY);
                	g2.scale(scale, scale);
+               	
                	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
                	g2.setColor(Color.black);
                	pNode.draw(g2);
@@ -250,6 +253,8 @@ public class ToolBar extends JPanel
             public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
             {
             	Graphics2D g2 = (Graphics2D)pGraphics;
+            	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            	
             	PointNode p = new PointNode();
             	p.translate(OFFSET, OFFSET);
             	PointNode q = new PointNode();

@@ -62,20 +62,15 @@ public class CircularStateNode extends RectangularNode
 	public void setFinal(boolean pFinalState)
 	{
 		aFinalState = pFinalState;
-		Rectangle2D bounds = getBounds();
-		double x = bounds.getX();
-		double y = bounds.getY();
-      
-		if (aFinalState)
+		if(aFinalState)
 		{
-			setBounds(new Rectangle2D.Double(x - DEFAULT_GAP, y - DEFAULT_GAP,
-               DEFAULT_DIAMETER + 2 * DEFAULT_GAP, 
-               DEFAULT_DIAMETER + 2 * DEFAULT_GAP));
+			setBounds(new Rectangle2D.Double(getBounds().getX(), getBounds().getY(),
+		               DEFAULT_DIAMETER + 2 * DEFAULT_GAP, DEFAULT_DIAMETER + 2 * DEFAULT_GAP));
 		}
 		else
 		{
-			setBounds(new Rectangle2D.Double(x + DEFAULT_GAP, y + DEFAULT_GAP,
-               DEFAULT_DIAMETER, DEFAULT_DIAMETER));
+			setBounds(new Rectangle2D.Double(getBounds().getX(), getBounds().getY(),
+		               DEFAULT_DIAMETER, DEFAULT_DIAMETER));
 		}
 	}
    
