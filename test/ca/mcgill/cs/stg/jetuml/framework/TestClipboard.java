@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
@@ -155,10 +156,73 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testInvalidPaste()
+	public void testPasteNodeAndEdgesNoContainment()
+	{
+		aEdge1.connect(aClass1, aClass2);
+		aSelectionList.add(aClass1);
+		aSelectionList.add(aClass2);
+		aSelectionList.add(aEdge1);
+		aClipboard.copy(aSelectionList);
+		assertEquals(2, aClipboard.getNodes().size());
+		assertEquals(1, aClipboard.getEdges().size());
+		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(2, rootNodes.size());
+		ClassNode node = (ClassNode)rootNodes.iterator().next();
+		assertEquals("c1", node.getName().toString());
+		assertEquals(3, list.size());
+		Collection<Edge> edges = aClassDiagramGraph.getEdges();
+		assertEquals(1, edges.size());
+		assertEquals("e1", ((ClassRelationshipEdge)edges.iterator().next()).getMiddleLabel());
+	}
+	
+	@Test
+	public void testPasteNodeAndEdgesWithContainment()
+	{
+		aEdge1.connect(aClass1, aClass2);
+		aPackage1.addChild(aClass1);
+		aPackage1.addChild(aClass2);
+		aSelectionList.add(aPackage1);
+		aSelectionList.add(aEdge1);
+		aClipboard.copy(aSelectionList);
+		assertEquals(1, aClipboard.getNodes().size());
+		assertEquals(1, aClipboard.getEdges().size());
+		aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(1, rootNodes.size());
+		PackageNode packageNode = (PackageNode)rootNodes.iterator().next();
+		ClassNode class1Clone = (ClassNode)packageNode.getChildren().get(0);
+		assertEquals("c1", class1Clone.getName().toString());
+		ClassNode class2Clone = (ClassNode)packageNode.getChildren().get(1);
+		assertEquals("c2", class2Clone.getName().toString());
+		Collection<Edge> edges = aClassDiagramGraph.getEdges();
+		ClassRelationshipEdge edge1Clone = (ClassRelationshipEdge)edges.iterator().next();
+		assertEquals(class1Clone, edge1Clone.getStart());
+		assertEquals(class2Clone, edge1Clone.getEnd());
+	}
+	
+	@Test
+	public void testInvalidPasteWithNodes()
 	{
 		aSelectionList.add(new ImplicitParameterNode());
 		aClipboard.copy(aSelectionList);
+		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(0, rootNodes.size());
+		assertEquals(0, list.size());
+	}
+	
+	@Test
+	public void testInvalidPasteWithEdges()
+	{
+		aSelectionList.add(aClass1);
+		aSelectionList.add(aClass2);
+		CallEdge edge = new CallEdge();
+		edge.connect(aClass1, aClass2);
+		aSelectionList.add(edge);
+		aClipboard.copy(aSelectionList);
+		assertEquals(1,aClipboard.getEdges().size());
+		assertEquals(2,aClipboard.getNodes().size());
 		SelectionList list = aClipboard.paste(aClassDiagramGraph);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(0, rootNodes.size());
