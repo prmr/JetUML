@@ -47,6 +47,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -1010,36 +1012,73 @@ public class EditorFrame extends JFrame
    	 */	
    	public void exportImage()
    	{
+   		// Validate the frame
    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    		if(frame == null) 
    		{
    			return;
    		}
+   		
+   		// Obtain the file
    		File file = chooseFileToExportTo();
    		if( file == null )
    		{
    			return;
    		}
+   		
+   		// Validate the file format
+   		String fileName = file.getPath();
+		String format  = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if(!ImageIO.getImageWritersByFormatName(format).hasNext())
+		{
+			JOptionPane.showInternalMessageDialog(aTabbedPane, aEditorResources.getString("error.unsupported_image"),
+					aEditorResources.getString("error.unsupported_image.title"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		confirmFileOverwrite(file);
+   		
    		try( OutputStream out = new FileOutputStream(file))
    		{
-   			String format = "png";
-   			String fileName = file.getPath();
-   			if(fileName != null)
-   			{
-   				format = fileName.substring(fileName.lastIndexOf(".") + 1);
-			}
-   			if(!ImageIO.getImageWritersByFormatName(format).hasNext())
-   			{
-   				MessageFormat formatter = new MessageFormat(aEditorResources.getString("error.unsupported_image"));
-   				JOptionPane.showInternalMessageDialog(aTabbedPane, formatter.format(new Object[] { format }));
-   				return;
-   			}
    			ImageIO.write(getImage(frame.getGraph()), format, out);
    		}
    		catch(IOException exception)
    		{
    			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
    		}      
+   	}
+   	
+   	private static String[] getAllSupportedImageWriterFormats()
+   	{
+   		String[] names = ImageIO.getWriterFormatNames();
+   		HashSet<String> formats = new HashSet<String>();
+   		for( String name : names )
+   		{
+   			formats.add(name.toLowerCase());
+   		}
+   		String[] lReturn = (String[])formats.toArray(new String[formats.size()]);
+   		Arrays.sort(lReturn);
+   		return lReturn;
+   	}
+   	
+   	/* Creates a file filter for pFomat, where pFormat is in all-lowercases */
+   	private FileFilter createFileFilter(final String pFormat)
+   	{
+   		return new FileFilter()
+		{
+			@Override
+			public String getDescription()
+			{
+				return pFormat.toUpperCase() + " " + aEditorResources.getString("files.image.name");
+			}
+			
+			@Override
+			public boolean accept(File pFile)
+			{
+				return !pFile.isDirectory() && (pFile.getName().endsWith("." +pFormat.toLowerCase()) || 
+						pFile.getName().endsWith("." +pFormat.toUpperCase()));
+			}
+		};
    	}
 
    	/*
@@ -1049,61 +1088,59 @@ public class EditorFrame extends JFrame
    	{
    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
    		assert frame != null;
-   		File file = null;
+ 
+   		// Initialize the file chooser widget
 	   	JFileChooser fileChooser = new JFileChooser();
-	   	FileFilter imageFilter = new FileFilter()
-		{
-			@Override
-			public String getDescription()
-			{
-				return aEditorResources.getString("files.image.name");
-			}
-			
-			@Override
-			public boolean accept(File pFile)
-			{
-				return !pFile.isDirectory() && (pFile.getName().endsWith(".png") ||
-						pFile.getName().endsWith(".jpg") || pFile.getName().endsWith(".jpeg"));
-			}
-		};
-	   	fileChooser.setFileFilter(imageFilter);
-	   	
+	   	for( String format : getAllSupportedImageWriterFormats() )
+	   	{
+	   		fileChooser.addChoosableFileFilter(createFileFilter(format));
+	   	}
 		fileChooser.setCurrentDirectory(new File("."));
+		
+		// If the file was previously saved, use that to suggest a file name root.
 		if(frame.getFileName() != null)
 		{
 			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), 
 					aAppResources.getString("files.extension"), ""));                  
 			fileChooser.setSelectedFile(f);
 		}
-		else    			
+		
+		File file = null;
+		if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
 		{
-			fileChooser.setSelectedFile(new File(""));
-		}
-		int response = fileChooser.showSaveDialog(this);
-		if(response == JFileChooser.APPROVE_OPTION)
-		{
-			File f = fileChooser.getSelectedFile();	
-			if( !imageFilter.accept(f))
+			file = fileChooser.getSelectedFile();	
+			FileFilter selectedFilter = fileChooser.getFileFilter();
+			
+			if( !selectedFilter.accept(file) && selectedFilter != fileChooser.getAcceptAllFileFilter())
 			{
-				f = new File(f.getPath() + ".png");
-			}
-
-			if(!f.exists()) 
-			{
-				file = f;
-			}
-			else
-			{
-				ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-				int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-				if(result == JOptionPane.YES_OPTION) 
-				{
-					file = f;
-				}	     
+				file = new File(file.getPath() + "." + selectedFilter.getDescription().substring(0, 3).toLowerCase());
 			}
 		}
 		return file;
    	}
+   	
+   	/* Checks if pFile would be overwritten and, if yes, asks for a confirmation.
+   	 * If the confirmation is denied, returns null.
+   	 */
+   	private File confirmFileOverwrite(File pFile)
+   	{
+   		if(!pFile.exists()) 
+		{
+			return pFile;
+		}
+		
+		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
+		int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+		if(result == JOptionPane.YES_OPTION) 
+		{
+			return pFile;	     
+		}
+		else
+		{
+			return null;
+		}
+   	}
+
    
    	/*
      * Return the image corresponding to the graph.
