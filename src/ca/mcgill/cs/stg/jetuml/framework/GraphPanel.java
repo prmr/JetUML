@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -42,11 +41,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.swing.AbstractAction;
-import javax.swing.InputMap;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -102,33 +98,6 @@ public class GraphPanel extends JPanel
 		setBackground(Color.WHITE);
 		addMouseListener(new GraphPanelMouseListener());
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
-		
-		//The following maps the command CTRL-G to the select grabber.
-        getActionMap().put("switch_to_select", new AbstractAction() {
-                public void actionPerformed(ActionEvent pEvent)
-                {
-                	Object tool;
-    				if(aSideBar.isExtended())
-    				{
-    					tool = aExtendedToolBar.getSelectedTool();
-    					if(tool !=null)
-    					{
-    						aExtendedToolBar.setToolToBeSelect();
-    					}
-    				}
-    				else
-    				{
-    					tool = aToolBar.getSelectedTool();
-    					if(tool!=null)
-    					{
-    						aToolBar.setToolToBeSelect();
-    					}
-    				}
-                }
-            });
-		
-		InputMap inputMap = getInputMap();
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_MASK), "switch_to_select");
 	}
 
 	/**

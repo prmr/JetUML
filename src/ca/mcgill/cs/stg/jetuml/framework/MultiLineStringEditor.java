@@ -25,13 +25,10 @@ package ca.mcgill.cs.stg.jetuml.framework;
 import java.awt.AWTKeyStroke;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
 import java.beans.PropertyEditorSupport;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -41,7 +38,6 @@ import javax.swing.event.DocumentListener;
 /**
  *  A property editor for the MultiLineString type.
  */
-@SuppressWarnings("serial")
 public class MultiLineStringEditor extends PropertyEditorSupport
 {
 	private static final int ROWS = 5;
@@ -49,23 +45,6 @@ public class MultiLineStringEditor extends PropertyEditorSupport
 
 	private static Set<AWTKeyStroke> tab = new HashSet<>(1);
 	private static Set<AWTKeyStroke> shiftTab = new HashSet<>(1);
-
-	// The actions
-	private static Action nextFocusAction = new AbstractAction("Move Focus Forward") 
-	{
-		public void actionPerformed(ActionEvent pEvent) 
-		{
-			((Component)pEvent.getSource()).transferFocus();
-		}
-	};
-
-	private static Action prevFocusAction = new AbstractAction("Move Focus Backwards") 
-	{
-		public void actionPerformed(ActionEvent pEvent) 
-		{
-			((Component)pEvent.getSource()).transferFocusBackward();
-		}
-	};
 
 	static 
 	{
@@ -106,7 +85,4 @@ public class MultiLineStringEditor extends PropertyEditorSupport
 		});
 		return new JScrollPane(textArea);
 	}
-
-
-
 }
