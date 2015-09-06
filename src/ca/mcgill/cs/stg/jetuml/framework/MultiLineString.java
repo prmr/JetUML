@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  *  A string that can extend over multiple lines.
@@ -143,15 +144,15 @@ public class MultiLineString implements Cloneable
 		
 		if(aJustification == Align.LEFT)
 		{
-			label.setHorizontalAlignment(JLabel.LEFT);
+			label.setHorizontalAlignment(SwingConstants.LEFT);
 		}
 		else if(aJustification == Align.CENTER)
 		{
-			label.setHorizontalAlignment(JLabel.CENTER);
+			label.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		else if(aJustification == Align.RIGHT) 
 		{
-			label.setHorizontalAlignment(JLabel.RIGHT);
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		return label;
 	}
