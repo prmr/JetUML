@@ -67,7 +67,7 @@ public class PropertySheet extends JPanel
 	private ArrayList<String> aBlackList = new ArrayList<String>() {
 		{
 			add("startArrowHead"); 
-			add("endArrowHead"); 
+			//add("endArrowHead"); 
             add("bentStyle");       
             add("lineStyle");
 	}};
