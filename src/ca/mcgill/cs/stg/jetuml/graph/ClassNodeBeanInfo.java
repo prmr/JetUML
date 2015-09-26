@@ -22,6 +22,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
 /**
@@ -29,30 +31,36 @@ import java.beans.SimpleBeanInfo;
  */
 public class ClassNodeBeanInfo extends SimpleBeanInfo
 {
-	// prmr we should not use these to alter the presentation
-	// of properties as it's also used by the serializer
-//	@Override
-//	public PropertyDescriptor[] getPropertyDescriptors()
-//	{
-//		try
-//		{
-//			PropertyDescriptor nameDescriptor = new PropertyDescriptor("name", ClassNode.class);
-//			nameDescriptor.setValue("priority", new Integer(1));
-//			PropertyDescriptor attributesDescriptor = new PropertyDescriptor("attributes", ClassNode.class);
-//			attributesDescriptor.setValue("priority", new Integer(2));
-//			PropertyDescriptor methodsDescriptor = new PropertyDescriptor("methods", ClassNode.class);
-//			methodsDescriptor.setValue("priority", new Integer(3));
-//			return new PropertyDescriptor[]
-//            {
-//               nameDescriptor,
-//               attributesDescriptor,
-//               methodsDescriptor
-//            };
-//      }
-//      catch (IntrospectionException exception)
-//      {
-//         return null;
-//      }
-//   }
+	@Override
+	public PropertyDescriptor[] getPropertyDescriptors()
+	{
+		try
+		{
+			// The first three properties have a priority value so they 
+			// can be ordered in a property sheet.
+			PropertyDescriptor nameDescriptor = new PropertyDescriptor("name", ClassNode.class);
+			nameDescriptor.setValue("priority", new Integer(1));
+			PropertyDescriptor attributesDescriptor = new PropertyDescriptor("attributes", ClassNode.class);
+			attributesDescriptor.setValue("priority", new Integer(2));
+			PropertyDescriptor methodsDescriptor = new PropertyDescriptor("methods", ClassNode.class);
+			methodsDescriptor.setValue("priority", new Integer(3));
+			
+			return new PropertyDescriptor[]
+            {
+               nameDescriptor,
+               attributesDescriptor,
+               methodsDescriptor,
+               // The last two properties are simply to capture all the important
+               // object information that would be there by default if we did not
+               // have this BeanInfo class definition
+               new PropertyDescriptor("bounds", ClassNode.class),
+               new PropertyDescriptor("parent", ClassNode.class)
+            };
+      }
+      catch (IntrospectionException exception)
+      {
+         return null;
+      }
+   }
 }
 

@@ -282,31 +282,39 @@ public class TestPersistenceService
 		PackageNode p2 = (PackageNode) nIterator.next();
 		PackageNode p3 = (PackageNode) nIterator.next();
 		
-		
+		assertEquals(new Rectangle2D.Double(315, 235, 110, 90), p1.getBounds());
 		assertEquals("p1", p1.getName().toString());
+		
 		List<ChildNode> children = p1.getChildren();
 		assertEquals(1, children.size());
 		ClassNode c1 = (ClassNode) children.get(0);
+		assertEquals(new Rectangle2D.Double(320, 260, 100, 60), c1.getBounds());
 		assertEquals(p1, c1.getParent());
 		assertEquals("C1", c1.getName().toString());
 
 		assertEquals("p2", p2.getName().toString());
+		assertEquals(new Rectangle2D.Double(477, 130, 100, 80), p2.getBounds());
 		children = p2.getChildren();
 		assertEquals(0, children.size());
 
 		assertEquals("p3", p3.getName().toString());
+		assertEquals(new Rectangle2D.Double(630, 280, 290, 120), p3.getBounds());
 		children = p3.getChildren();
 		assertEquals(1,children.size());
 		PackageNode p4 = (PackageNode) children.get(0);
 		assertEquals("p4", p4.getName().toString());
+		assertEquals(new Rectangle2D.Double(635, 305, 280, 90), p4.getBounds());
 		
 		children = p4.getChildren();
 		assertEquals(2,children.size());
 		InterfaceNode i1 = (InterfaceNode) children.get(0);
+		assertEquals(new Rectangle2D.Double(640, 330, 100, 60), i1.getBounds());
 		ClassNode c2 = (ClassNode) children.get(1);
+		assertEquals(new Rectangle2D.Double(810, 330, 100, 60), c2.getBounds());
 		assertEquals("C2", c2.getName().toString());
 		
 		NoteNode n1 = (NoteNode) nIterator.next();
+		assertEquals(new Rectangle2D.Double(490, 160, 60, 40), n1.getBounds());
 		assertEquals("n1", n1.getText().toString());
 
 		Collection<Edge> edges = pGraph.getEdges();
