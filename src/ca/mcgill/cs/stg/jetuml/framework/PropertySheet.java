@@ -89,23 +89,6 @@ public class PropertySheet extends JPanel
 		{
 			BeanInfo info = Introspector.getBeanInfo(pBean.getClass());
 			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
-			// prmr Hack - until we have time to properly refactor the property management.
-			for( PropertyDescriptor descriptor : descriptors )
-			{
-				if( descriptor.getName().equals("name"))
-				{
-					descriptor.setValue("priority", 1);
-				}
-				else if( descriptor.getName().equals("attributes") )
-				{
-					descriptor.setValue("priority", 2);
-				}
-				else if( descriptor.getName().equals("methods") )
-				{
-					descriptor.setValue("priority", 3);
-				}
-			}
-			// prmr End Hack 
 			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
 					{
 						public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
