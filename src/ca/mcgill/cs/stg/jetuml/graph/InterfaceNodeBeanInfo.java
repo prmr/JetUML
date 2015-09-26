@@ -45,8 +45,8 @@ public class InterfaceNodeBeanInfo extends SimpleBeanInfo
                nameDescriptor,
                methodsDescriptor,
                // See ClassBoundBeanInfo
-               new PropertyDescriptor("bounds", ClassNode.class),
-               new PropertyDescriptor("parent", ClassNode.class)
+               new PropertyDescriptor("bounds", InterfaceNode.class),
+               new PropertyDescriptor("parent", InterfaceNode.class)
           };
       }
       catch (IntrospectionException exception)
