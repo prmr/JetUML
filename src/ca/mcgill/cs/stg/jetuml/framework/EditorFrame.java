@@ -1078,6 +1078,16 @@ public class EditorFrame extends JFrame
 				return !pFile.isDirectory() && (pFile.getName().endsWith("." +pFormat.toLowerCase()) || 
 						pFile.getName().endsWith("." +pFormat.toUpperCase()));
 			}
+			
+			/*
+			 * It is important that toString returns exactly the format string
+			 * because the chooseFileToExportTo method relies on this convention. 
+			 */
+			@Override
+			public String toString()
+			{
+				return pFormat;
+			}
 		};
    	}
 
@@ -1113,7 +1123,8 @@ public class EditorFrame extends JFrame
 			
 			if( !selectedFilter.accept(file) && selectedFilter != fileChooser.getAcceptAllFileFilter())
 			{
-				file = new File(file.getPath() + "." + selectedFilter.getDescription().substring(0, 3).toLowerCase());
+				file = new File(file.getPath() + "." + 
+						selectedFilter.getDescription().substring(0, selectedFilter.toString().length()).toLowerCase());
 			}
 		}
 		return file;
