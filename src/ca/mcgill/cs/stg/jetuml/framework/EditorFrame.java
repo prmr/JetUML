@@ -721,6 +721,7 @@ public class EditorFrame extends JFrame
    			SelectionList currentSelection = panel.getSelectionList();
    			aClipboard.copy(currentSelection);	
    			Iterator<GraphElement> iter = currentSelection.iterator();
+   			panel.startCompoundListening();
    			while(iter.hasNext())
    			{
    				GraphElement element = iter.next();
@@ -734,6 +735,7 @@ public class EditorFrame extends JFrame
    				}
    				iter.remove();
    			}
+   			panel.endCompoundListening();
    		}	
    		panel.repaint();
    	}
