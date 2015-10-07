@@ -106,10 +106,10 @@ public class UndoManager
 	{
 		if(!aTrackingCommands.empty())
 		{
-			CompoundCommand cc = aTrackingCommands.pop(); 
-			if(cc.size() > 0)
+			CompoundCommand compoundCommand = aTrackingCommands.pop(); 
+			if(compoundCommand.size() > 0)
 			{
-				add(cc);
+				add(compoundCommand);
 			}
 		}
 	}
