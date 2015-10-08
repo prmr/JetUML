@@ -133,13 +133,15 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{
-			snapBounds( pGrid, Math.max(topWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, Math.max(DEFAULT_WIDTH, contentsBounds.getWidth())),
-					topHeight + Math.max(DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, contentsBounds.getHeight()));
+			setBounds( new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+					computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
+					computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
 		}
 		else
 		{
 			setBounds( new Rectangle2D.Double(childBounds.getX() - XGAP, childBounds.getY() - topHeight - YGAP, 
-					Math.max(topWidth, childBounds.getWidth() + 2 * XGAP), topHeight + childBounds.getHeight() + 2 * YGAP));
+					computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
+					computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
 		}
 		
 		Rectangle2D b = getBounds();
@@ -147,20 +149,32 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		aBottom = new Rectangle2D.Double(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
 	}
 	
-	/**
-     * Snaps the bounds of this rectangular node so that it has the node position as top left corner and the desired width and
-     * height, snapped to the given grid.
-     * 
-     * @param pGrid the grid to snap to
-     * @param pWidth the desired width
-     * @param pHeight the desired height
-     */
-    public void snapBounds(Grid pGrid, double pWidth, double pHeight)
-    {
-        getBounds().setFrame(getBounds().getX(), getBounds().getY(), pWidth, pHeight);
-        pGrid.snap(getBounds());
-    }
-
+	private double computeWidth(double pTopWidth, double pContentWidth, double pChildrenWidth)
+	{
+		return max( DEFAULT_WIDTH, pTopWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, pContentWidth, pChildrenWidth);
+	}
+	
+	private double computeHeight(double pTopHeight, double pContentHeight, double pChildrenHeight)
+	{
+		return pTopHeight + max( DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, pContentHeight, pChildrenHeight);
+	}
+	
+	/*
+	 * I can't believe I had to implement this.
+	 */
+	private static double max(double ... pNumbers)
+	{
+		double maximum = Double.MIN_VALUE;
+		for(double number : pNumbers)
+		{
+			if(number > maximum)
+			{
+				maximum = number;
+			}
+		}
+		return maximum;
+	}
+	
 	/**
      * Sets the name property value.
      * @param pName the class name
