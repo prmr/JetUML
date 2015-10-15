@@ -2,7 +2,7 @@
 
 ## Introduction
 
-JetUML is a simple UML editor developed exclusively as a pure-Java desktop application. It's main goal is to make the creation of simple UML diagrams as fast as possible, for classroom or professional use.
+JetUML is a simple UML editor developed exclusively as a pure-Java desktop application. Its main goal is to make the creation of simple UML diagrams as fast as possible, for classroom or professional use.
 
 This project is originally based on the [Violet Project](http://www.horstmann.com/violet/). However, it was evolved from the original project prior to the [2.0 Release](http://alexdp.free.fr/violetumleditor/page.php) to retain the focus on the minimalist approach. The new name, JetUML, reflects the focus on the primary concern of the project: to support fast diagramming.
 
@@ -30,7 +30,7 @@ The following principles guide the development of JetUML:
 ## Functional View
 The functional view is split by functional concern.
 
- * [Frame management](design/frameManagement.md)
+ * [Frame management](functional/frameManagement.md)
  
 ## Glossary
 The glossary is limited to terms that are unique to JetUML or have a speific meaning in the context of the JetUML project.
