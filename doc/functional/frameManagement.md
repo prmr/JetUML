@@ -1,4 +1,10 @@
-# Design: Frame Management
+# Frame Management
+
+## Scope
+
+The frame management feature concerns how internal frames are created, activated, de-activated, and closed by either the application or the user.
+
+## Design
 
 At runtime the application is controlled by an instance of `EditorFrame`. The `EditorFrame` object aggregates a `WelcomeTab` instance and any number of `GraphFrame` instances through Java Swing's [tabbed pane mechanism](http://docs.oracle.com/javase/7/docs/api/javax/swing/JTabbedPane.html). Within the methods of `EditorFrame`, the currently selected frame can be obtained through a call to `aTabbedPane.getSelectedComponent()`.
 
