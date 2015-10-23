@@ -40,7 +40,6 @@ public class GraphFrame extends JInternalFrame
 	private JTabbedPane aTabbedPane;
 	private Graph aGraph;
 	private GraphPanel aPanel;
-	private SideBar aSideBar;
 	private File aFile; // The file associated with this graph
 	
 	/**
@@ -52,10 +51,10 @@ public class GraphFrame extends JInternalFrame
 	{
 		aGraph = pGraph;
 		aTabbedPane = pTabbedPane;
-		aSideBar = new SideBar(this);
-		aPanel = new GraphPanel(aSideBar);
+		SideBar sideBar = new SideBar(this);
+		aPanel = new GraphPanel(sideBar);
 		Container contentPane = getContentPane();
-		contentPane.add(aSideBar, BorderLayout.EAST);
+		contentPane.add(sideBar, BorderLayout.EAST);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
 		aPanel.setGraph(aGraph);
 	}
