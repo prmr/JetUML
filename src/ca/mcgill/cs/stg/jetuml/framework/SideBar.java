@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -137,5 +138,54 @@ public class SideBar extends JPanel
 		return false;
 	}
 	
+	/**
+     * Gets the node or edge prototype that is associated with
+     * the currently selected button.
+     * @return a Node or Edge prototype
+	 */
+	public Object getSelectedTool()
+	{
+		if(isExtended())
+		{
+			return aExtendedToolBar.getSelectedTool();
+		}
+		else
+		{
+			return aToolBar.getSelectedTool();
+		}
+	}
+	
+	/**
+	 * Overrides the currently selected tool to be the grabber tool instead.
+	 */
+	public void setToolToBeSelect()
+	{
+		if(isExtended())
+		{
+			aExtendedToolBar.setToolToBeSelect();
+		}
+		else
+		{
+			aToolBar.setToolToBeSelect();
+		}
+	}
+	
+	/**
+	 * Show the popup menu corresponding to this toolbar.
+	 * @param pPanel The panel associated with this menu.
+	 * @param pPoint The point where to show the menu.
+	 * @param pListener The listener for the menu selection.
+	 */
+	public void showPopup(GraphPanel pPanel, Point2D pPoint, ActionListener pListener) 
+	{
+		if(isExtended())
+		{
+			aExtendedToolBar.showPopup(pPanel, pPoint, pListener);
+		}
+		else
+		{
+			aToolBar.showPopup(pPanel, pPoint, pListener);
+		}
+	}
 	
 }
