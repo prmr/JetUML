@@ -70,7 +70,6 @@ public class GraphPanel extends JPanel
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
 	private Graph aGraph;
-	private GraphFrame aFrame;
 	private SideBar aSideBar;
 	private double aZoom;	
 	private boolean aHideGrid;
@@ -358,23 +357,25 @@ public class GraphPanel extends JPanel
 	{
 		aModified = pModified;
 
-		if(aFrame == null)
+		GraphFrame graphFrame = getFrame();
+		if(graphFrame != null)
 		{
-			Component parent = this;
-			do
-			{
-				parent = parent.getParent();
-			}
-			while (parent != null && !(parent instanceof GraphFrame));
-			if(parent != null)
-			{
-				aFrame = (GraphFrame) parent;
-			}
+			graphFrame.setTitle(aModified);
 		}
-		if(aFrame != null)
+	}
+	
+	/* 
+	 * Obtains the parent frame of this panel through the component hierarchy.
+	 */
+	private GraphFrame getFrame()
+	{
+		Component parent = this;
+		do
 		{
-			aFrame.setTitle(aModified);
+			parent = parent.getParent();
 		}
+		while(parent != null && !(parent instanceof GraphFrame));
+		return (GraphFrame) parent;
 	}
    
 	/**
