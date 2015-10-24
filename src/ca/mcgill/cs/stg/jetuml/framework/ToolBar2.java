@@ -80,8 +80,6 @@ public class ToolBar2 extends JPanel
 	private static final String EXPAND = "<<";
 	private static final String COLLAPSE = ">>";
 	
-	private ButtonGroup aGroup = new ButtonGroup();
-	private ButtonGroup aGroupEx = new ButtonGroup();
 	private ArrayList<JToggleButton> aButtons = new ArrayList<>();
 	private ArrayList<JToggleButton> aButtonsEx = new ArrayList<>();
 	private JPanel aToolPanel = new JPanel(new GridLayout(0, 1));
@@ -96,9 +94,11 @@ public class ToolBar2 extends JPanel
 	 */
 	public ToolBar2(Graph pGraph)
 	{
+		ButtonGroup group = new ButtonGroup();
+		ButtonGroup groupEx = new ButtonGroup();
 		setLayout(new BorderLayout());
-		createSelectionTool();
-		createNodesAndEdgesTools(pGraph);
+		createSelectionTool(group, groupEx);
+		createNodesAndEdgesTools(pGraph, group, groupEx);
 		addCopyToClipboard();
 		createExpandButton();
 		freeCtrlTab();
@@ -203,11 +203,11 @@ public class ToolBar2 extends JPanel
         };
 	}
 	
-	private void createSelectionTool()
+	private void createSelectionTool(ButtonGroup pGroup, ButtonGroup pGroupEx)
 	{
 		installTool(createSelectionIcon(), 
 				ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("grabber.tooltip"), 
-				null, true);
+				null, true, pGroup, pGroupEx);
 	}
 	
 	/*
@@ -217,11 +217,11 @@ public class ToolBar2 extends JPanel
 	 * @param pTool the object representing the tool
 	 * @param pIsSelected true if the tool is initially selected.
 	 */
-	private void installTool( Icon pIcon, String pToolTip, GraphElement pTool, boolean pIsSelected )
+	private void installTool( Icon pIcon, String pToolTip, GraphElement pTool, boolean pIsSelected, ButtonGroup pCollapsed, ButtonGroup pExpanded )
 	{
 		final JToggleButton button = new JToggleButton(pIcon);
 		button.setToolTipText(pToolTip);
-		aGroup.add(button);
+		pCollapsed.add(button);
 		aButtons.add(button);
 		aToolPanel.add(button);
 		button.setSelected(pIsSelected);
@@ -230,7 +230,7 @@ public class ToolBar2 extends JPanel
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		final JToggleButton buttonEx = new JToggleButton(pIcon);
 		buttonEx.setToolTipText(pToolTip);
-		aGroupEx.add(buttonEx);
+		pExpanded.add(buttonEx);
 		aButtonsEx.add(buttonEx);
 		linePanel.add(buttonEx);
 		JLabel label = new JLabel(pToolTip);
@@ -255,20 +255,22 @@ public class ToolBar2 extends JPanel
 		aPopupMenu.add(item);
 	}
 	
-	private void createNodesAndEdgesTools(Graph pGraph)
+	private void createNodesAndEdgesTools(Graph pGraph, ButtonGroup pGroup, ButtonGroup pGroupEx)
 	{
 		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
 
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			installTool(createNodeIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false);
+			installTool(createNodeIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), 
+					nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			installTool(createEdgeIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), edgeTypes[i], false);
+			installTool(createEdgeIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), 
+					edgeTypes[i], false, pGroup, pGroupEx);
 		}
 	}
 	
@@ -462,7 +464,7 @@ public class ToolBar2 extends JPanel
 	}
 	
 	/**
-	 * Show the popup menu corresponding to this toolbar.
+	 * Show the pop-up menu corresponding to this toolbar.
 	 * @param pPanel The panel associated with this menu.
 	 * @param pPoint The point where to show the menu.
 	 * @param pListener The listener for the menu selection.
