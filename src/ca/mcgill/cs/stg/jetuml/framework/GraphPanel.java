@@ -70,7 +70,7 @@ public class GraphPanel extends JPanel
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
 	private Graph aGraph;
-	private SideBar aSideBar;
+	private ToolBar2 aSideBar;
 	private double aZoom;	
 	private boolean aHideGrid;
 	private boolean aModified;
@@ -85,7 +85,7 @@ public class GraphPanel extends JPanel
 	 * Constructs a graph.
 	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
 	 */
-	public GraphPanel(SideBar pSideBar)
+	public GraphPanel(ToolBar2 pSideBar)
 	{
 		aZoom = 1;
 		aSideBar = pSideBar;
