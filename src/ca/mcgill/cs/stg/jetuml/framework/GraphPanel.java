@@ -436,7 +436,7 @@ public class GraphPanel extends JPanel
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 			Node n = aGraph.findNode(mousePoint);
 			Edge e = aGraph.findEdge(mousePoint);
-			Object tool = aSideBar.getSelectedTool();
+			GraphElement tool = aSideBar.getSelectedTool();
 			
 			if(tool !=null)
 			{

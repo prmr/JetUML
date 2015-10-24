@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -62,14 +63,23 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
- *  A tool bar that contains node and edge prototype icons.
- *  Exactly one icon is selected at any time.
+ *  A collapsible tool bar than contains various tools and optional
+ *  command shortcut buttons. Only one tool can be selected at the time.
+ *  The tool bar also controls a pop-up menu with the same tools as 
+ *  the tool bar.
+ *  
+ *  @author Martin P. Robillard
  */
 @SuppressWarnings("serial")
 public class ToolBar2 extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
+	private static final int H_PADDING = 5;
+	private static final int VERTICAL_COMMAND_SEPARATOR = 15;
+	private static final String EXPAND = "<<";
+	private static final String COLLAPSE = ">>";
+	
 	private ButtonGroup aGroup = new ButtonGroup();
 	private ButtonGroup aGroupEx = new ButtonGroup();
 	private ArrayList<JToggleButton> aButtons = new ArrayList<>();
@@ -87,32 +97,11 @@ public class ToolBar2 extends JPanel
 	public ToolBar2(Graph pGraph)
 	{
 		setLayout(new BorderLayout());
-		
 		createSelectionTool();
-      
-		ResourceBundle graphResources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
-
-		Node[] nodeTypes = pGraph.getNodePrototypes();
-		for(int i = 0; i < nodeTypes.length; i++)
-		{
-			String tip = graphResources.getString("node" + (i + 1) + ".tooltip");
-			add(nodeTypes[i], tip);
-		}
-		Edge[] edgeTypes = pGraph.getEdgePrototypes();
-		for(int i = 0; i < edgeTypes.length; i++)
-		{
-			String tip = graphResources.getString("edge" + (i + 1) + ".tooltip");
-			add(aToolPanel, edgeTypes[i], tip);
-		}
-		
-		insertSpace();
-
+		createNodesAndEdgesTools(pGraph);
 		addCopyToClipboard();
-		
 		createExpandButton();
-		
 		freeCtrlTab();
-		
 		add(aToolPanel, BorderLayout.NORTH);
 	}
 	
@@ -137,37 +126,120 @@ public class ToolBar2 extends JPanel
             }
 		};
 	}
+	
+	private static Icon createNodeIcon( final Node pNode )
+	{
+		return new Icon()
+		{
+            public int getIconHeight() 
+            { return BUTTON_SIZE; }
+            
+            public int getIconWidth() 
+            { return BUTTON_SIZE; }
+            
+            public void paintIcon(Component pComponent, Graphics pGraphic, int pX, int pY)
+            {
+            	double width = pNode.getBounds().getWidth();
+            	double height = pNode.getBounds().getHeight();
+               	Graphics2D g2 = (Graphics2D)pGraphic;
+               	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+               	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
+               	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
+               	double scale = Math.min(scaleX, scaleY);
 
-	/*
-	 * Create the selection tool button and pop-up menu item.
-	 * @param pPanel The panel to add the tool to
-	 */
+               	AffineTransform oldTransform = g2.getTransform();
+               	g2.translate(pX, pY);
+               	g2.scale(scale, scale);
+               	
+               	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+               	g2.setColor(Color.black);
+               	pNode.draw(g2);
+               	g2.setTransform(oldTransform);
+            }
+		};
+	}
+
+	private static Icon createEdgeIcon( final Edge pEdge )
+	{
+		return new Icon()
+        {
+           public int getIconHeight() 
+           { return BUTTON_SIZE; }
+           
+           public int getIconWidth() 
+           { return BUTTON_SIZE; }
+           
+           public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
+           {
+           	Graphics2D g2 = (Graphics2D)pGraphics;
+           	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+           	
+           	PointNode p = new PointNode();
+           	p.translate(OFFSET, OFFSET);
+           	PointNode q = new PointNode();
+           	q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
+           	pEdge.connect(p, q);
+              
+           	Rectangle2D bounds = new Rectangle2D.Double();
+           	bounds.add(p.getBounds());
+           	bounds.add(q.getBounds());
+           	bounds.add(pEdge.getBounds());
+              
+           	double width = bounds.getWidth();
+           	double height = bounds.getHeight();
+           	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
+           	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
+           	double scale = Math.min(scaleX, scaleY);
+
+           	AffineTransform oldTransform = g2.getTransform();
+           	g2.translate(pX, pY);
+           	g2.scale(scale, scale);
+           	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+                             
+           	g2.setColor(Color.black);
+           	pEdge.draw(g2);
+           	g2.setTransform(oldTransform);
+           }
+        };
+	}
+	
 	private void createSelectionTool()
 	{
-		Icon icon = createSelectionIcon();
-		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings");
-		String tip = editorResources.getString("grabber.tooltip");
-		final JToggleButton button = new JToggleButton(icon);
-		button.setToolTipText(tip);
+		installTool(createSelectionIcon(), 
+				ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("grabber.tooltip"), 
+				null, true);
+	}
+	
+	/*
+	 * Adds a tool to the tool bars and menus.
+	 * @param pIcon The icon for the tool
+	 * @param pToolTip the tool's tool tip
+	 * @param pTool the object representing the tool
+	 * @param pIsSelected true if the tool is initially selected.
+	 */
+	private void installTool( Icon pIcon, String pToolTip, GraphElement pTool, boolean pIsSelected )
+	{
+		final JToggleButton button = new JToggleButton(pIcon);
+		button.setToolTipText(pToolTip);
 		aGroup.add(button);
 		aButtons.add(button);
 		aToolPanel.add(button);
-		button.setSelected(true);
-		aTools.add(null);
+		button.setSelected(pIsSelected);
+		aTools.add(pTool);
 		
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		final JToggleButton buttonEx = new JToggleButton(icon);
-		buttonEx.setToolTipText(tip);
+		final JToggleButton buttonEx = new JToggleButton(pIcon);
+		buttonEx.setToolTipText(pToolTip);
 		aGroupEx.add(buttonEx);
 		aButtonsEx.add(buttonEx);
 		linePanel.add(buttonEx);
-		JLabel label = new JLabel("Selection Tool");
-		label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		JLabel label = new JLabel(pToolTip);
+		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
 		linePanel.add(label);
 		aToolPanelEx.add(linePanel);
-		buttonEx.setSelected(true);
+		buttonEx.setSelected(pIsSelected);
       
-		JMenuItem item = new JMenuItem(tip, icon);
+		JMenuItem item = new JMenuItem(pToolTip, pIcon);
 		item.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent pEvent)
@@ -183,13 +255,21 @@ public class ToolBar2 extends JPanel
 		aPopupMenu.add(item);
 	}
 	
-	/*
-	 * Insert space equivalent to one button.
-	 */
-	private void insertSpace()
+	private void createNodesAndEdgesTools(Graph pGraph)
 	{
-		aToolPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-		aToolPanelEx.add(Box.createRigidArea(new Dimension(0, 15)));
+		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
+
+		Node[] nodeTypes = pGraph.getNodePrototypes();
+		for(int i = 0; i < nodeTypes.length; i++)
+		{
+			installTool(createNodeIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false);
+		}
+		
+		Edge[] edgeTypes = pGraph.getEdgePrototypes();
+		for(int i = 0; i < edgeTypes.length; i++)
+		{
+			installTool(createEdgeIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), edgeTypes[i], false);
+		}
 	}
 	
 	/*
@@ -214,12 +294,18 @@ public class ToolBar2 extends JPanel
      * the currently selected button.
      * @return a Node or Edge prototype
 	 */
-	public Object getSelectedTool()
+	public GraphElement getSelectedTool()
 	{
+		ArrayList<JToggleButton> activeButtons = aButtons;
+		if( isExpanded() )
+		{
+			activeButtons = aButtonsEx;
+		}
+		
 		for(int i = 0; i < aTools.size(); i++)
 		{
-			JToggleButton button = aButtons.get(i);
-			if (button.isSelected())
+			JToggleButton button = activeButtons.get(i);
+			if(button.isSelected())
 			{
 				return aTools.get(i);
 			}
@@ -232,32 +318,43 @@ public class ToolBar2 extends JPanel
 	 */
 	public void setToolToBeSelect()
 	{
-		for(int i = 0; i < aTools.size(); i++)
+		for( JToggleButton button : aButtons )
 		{
-			JToggleButton button = aButtons.get(i);
-			if (button.isSelected())
-			{
-				button.setSelected(false);
-			}
+			button.setSelected(false);
+		}
+		for( JToggleButton button : aButtonsEx )
+		{
+			button.setSelected(false);
 		}
 		aButtons.get(0).setSelected(true);
+		aButtonsEx.get(0).setSelected(true);
 	}
 
-	public void addCopyToClipboard()
+	private void addCopyToClipboard()
 	{
-		final JButton button = new JButton(new ImageIcon(getClass().getClassLoader().getResource(ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("toolbar.copyToClipBoard"))));
-		button.setToolTipText("Tool tip");
-		aToolPanel.add(button);
+		// Insert a space to distinguish commands from tools
+		aToolPanel.add(Box.createRigidArea(new Dimension(0, VERTICAL_COMMAND_SEPARATOR)));
+		aToolPanelEx.add(Box.createRigidArea(new Dimension(0, VERTICAL_COMMAND_SEPARATOR)));
+
+		URL imageLocation = getClass().getClassLoader().
+				getResource(ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").
+						getString("toolbar.copyToClipBoard"));
+		String toolTip = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("file.copy_to_clipboard.text");
 		
+		final JButton button = new JButton(new ImageIcon(imageLocation));
+		button.setToolTipText(toolTip);
+		aToolPanel.add(button);
+
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		final JButton buttonEx = new JButton(new ImageIcon(getClass().getClassLoader().getResource(ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("toolbar.copyToClipBoard"))));
-		buttonEx.setToolTipText("Tool tip");
+		final JButton buttonEx = new JButton(new ImageIcon(imageLocation));
+		
+		buttonEx.setToolTipText(toolTip);
 		linePanel.add(buttonEx);
-		JLabel label = new JLabel("Selection Tool");
-		label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		JLabel label = new JLabel(toolTip);
+		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
 		linePanel.add(label);
 		aToolPanelEx.add(linePanel);
-		
+
 		button.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent pEvent)
@@ -265,7 +362,7 @@ public class ToolBar2 extends JPanel
 				copyToClipboard();
 			}
 		});
-		
+
 		buttonEx.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent pEvent)
@@ -286,34 +383,36 @@ public class ToolBar2 extends JPanel
 		((EditorFrame)parent).copyToClipboard();
 	}
 		
-	public void createExpandButton()
+	private void createExpandButton()
 	{
-		final JButton expandButton = new JButton("<<");
+		final JButton expandButton = new JButton(EXPAND);
 		expandButton.setAlignmentX(CENTER_ALIGNMENT);
-		expandButton.setToolTipText("Expand");
+		final String expandString = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("toolbar.expand");
+		final String collapseString = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("toolbar.collapse");
+		expandButton.setToolTipText(expandString);
 		expandButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 		expandButton.addActionListener(new ActionListener()
-        {
-       	 public void actionPerformed(ActionEvent pEvent)
-       	 {
-       		if(expandButton.getText().equals("<<"))
-       		{
-       			synchronizeToolSelection();
-       			expandButton.setText(">>");
-       			expandButton.setToolTipText("Collapse");
-       			remove(aToolPanel);
-       			add(aToolPanelEx, BorderLayout.NORTH);
-       		}
-       		else
-       		{
-       			synchronizeToolSelection();
-       			expandButton.setText("<<");
-       			expandButton.setToolTipText("Expand");
-       			remove(aToolPanelEx);
-       			add(aToolPanel, BorderLayout.NORTH);
-       		}
-       	 }
-        });
+		{
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				if(expandButton.getText().equals(EXPAND))
+				{
+					synchronizeToolSelection();
+					expandButton.setText(COLLAPSE);
+					expandButton.setToolTipText(collapseString);
+					remove(aToolPanel);
+					add(aToolPanelEx, BorderLayout.NORTH);
+				}
+				else
+				{
+					synchronizeToolSelection();
+					expandButton.setText(EXPAND);
+					expandButton.setToolTipText(expandString);
+					remove(aToolPanelEx);
+					add(aToolPanel, BorderLayout.NORTH);
+				}
+			}
+		});
 		add(expandButton, BorderLayout.SOUTH);
 	}
 	
@@ -362,77 +461,6 @@ public class ToolBar2 extends JPanel
 		return false;
 	}
 	
-	/*
-     * Adds a node to the tool bar.
-     * @param pNode the node to add
-     * @param pTip the tool tip
-     * @param pPanel the panel to add the tool to
-	 */
-	private void add(final Node pNode, String pTip)
-	{
-		Icon icon = new Icon()
-		{
-            public int getIconHeight() 
-            { return BUTTON_SIZE; }
-            
-            public int getIconWidth() 
-            { return BUTTON_SIZE; }
-            
-            public void paintIcon(Component pComponent, Graphics pGraphic, int pX, int pY)
-            {
-            	double width = pNode.getBounds().getWidth();
-            	double height = pNode.getBounds().getHeight();
-               	Graphics2D g2 = (Graphics2D)pGraphic;
-               	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-               	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-               	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-               	double scale = Math.min(scaleX, scaleY);
-
-               	AffineTransform oldTransform = g2.getTransform();
-               	g2.translate(pX, pY);
-               	g2.scale(scale, scale);
-               	
-               	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-               	g2.setColor(Color.black);
-               	pNode.draw(g2);
-               	g2.setTransform(oldTransform);
-            }
-		};
-
-		final JToggleButton button = new JToggleButton(icon);
-		button.setToolTipText(pTip);
-		aGroup.add(button);   
-		aButtons.add(button);
-		aToolPanel.add(button);
-		aTools.add(pNode);
-		
-		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		final JToggleButton buttonEx = new JToggleButton(icon);
-		buttonEx.setToolTipText(pTip);
-		aGroupEx.add(buttonEx);   
-		aButtonsEx.add(buttonEx);
-		linePanel.add(buttonEx);
-		JLabel label = new JLabel("Node Tool");
-		label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		linePanel.add(label);
-		aToolPanelEx.add(linePanel);
-      
-		JMenuItem item = new JMenuItem(pTip, icon);
-		item.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-            {
-				button.setSelected(true);
-				buttonEx.setSelected(true);
-				if(aPopupListener != null)
-				{
-					aPopupListener.actionPerformed(pEvent);
-				}
-            }
-		});
-		aPopupMenu.add(item);
-	}
-
 	/**
 	 * Show the popup menu corresponding to this toolbar.
 	 * @param pPanel The panel associated with this menu.
@@ -443,87 +471,5 @@ public class ToolBar2 extends JPanel
 	{
 		aPopupListener = pListener;
 		aPopupMenu.show(pPanel, (int) pPoint.getX(), (int) pPoint.getY());
-	}
-   
-	/*
-     * Adds an edge to the tool bar.
-     * @param pEdge the edge to add
-     * @param pTip the tool tip
-     * @param pPanel the Panel to add the edge tool to
-	 */
-	private void add(JPanel pPanel, final Edge pEdge, String pTip)
-	{
-		Icon icon = new Icon()
-         {
-            public int getIconHeight() 
-            { return BUTTON_SIZE; }
-            
-            public int getIconWidth() 
-            { return BUTTON_SIZE; }
-            
-            public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
-            {
-            	Graphics2D g2 = (Graphics2D)pGraphics;
-            	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            	
-            	PointNode p = new PointNode();
-            	p.translate(OFFSET, OFFSET);
-            	PointNode q = new PointNode();
-            	q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-            	pEdge.connect(p, q);
-               
-            	Rectangle2D bounds = new Rectangle2D.Double();
-            	bounds.add(p.getBounds());
-            	bounds.add(q.getBounds());
-            	bounds.add(pEdge.getBounds());
-               
-            	double width = bounds.getWidth();
-            	double height = bounds.getHeight();
-            	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-            	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-            	double scale = Math.min(scaleX, scaleY);
-
-            	AffineTransform oldTransform = g2.getTransform();
-            	g2.translate(pX, pY);
-            	g2.scale(scale, scale);
-            	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-                              
-            	g2.setColor(Color.black);
-            	pEdge.draw(g2);
-            	g2.setTransform(oldTransform);
-            }
-         };
-         final JToggleButton button = new JToggleButton(icon);
-         button.setToolTipText(pTip);
-         aGroup.add(button);
-         aButtons.add(button);
-         aToolPanel.add(button);
-         aTools.add(pEdge);
-         
- 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-         final JToggleButton buttonEx = new JToggleButton(icon);
-         buttonEx.setToolTipText(pTip);
-         aGroupEx.add(buttonEx);
-         aButtonsEx.add(buttonEx);
-         linePanel.add(buttonEx);
-         JLabel label = new JLabel("Edge Tool");
- 		label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
- 		linePanel.add(label);
-         aToolPanelEx.add(linePanel);
-
-         JMenuItem item = new JMenuItem(pTip, icon);
-         item.addActionListener(new ActionListener()
-         {
-        	 public void actionPerformed(ActionEvent pEvent)
-        	 {
-        		 button.setSelected(true);
-        		 buttonEx.setSelected(true);
-        		 if(aPopupListener != null)
-        		 {
-        			 aPopupListener.actionPerformed(pEvent);
-        		 }
-        	 }
-         });
-         aPopupMenu.add(item);
 	}
 }
