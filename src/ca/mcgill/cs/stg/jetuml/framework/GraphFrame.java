@@ -57,6 +57,7 @@ public class GraphFrame extends JInternalFrame
 		contentPane.add(sideBar, BorderLayout.EAST);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
 		aPanel.setGraph(aGraph);
+		setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
 	}
 
 	/**

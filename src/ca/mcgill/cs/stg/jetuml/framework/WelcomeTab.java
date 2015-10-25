@@ -107,6 +107,7 @@ public class WelcomeTab extends JInternalFrame
 	
 	    add(panel, BorderLayout.NORTH);
 	    add(getFootTextPanel(), BorderLayout.SOUTH);
+	    setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
 	}
 	
 	private JPanel getLeftPanel()
