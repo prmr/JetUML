@@ -49,6 +49,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -227,16 +228,12 @@ public class ToolBar2 extends JPanel
 		button.setSelected(pIsSelected);
 		aTools.add(pTool);
 		
-		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		final JToggleButton buttonEx = new JToggleButton(pIcon);
 		buttonEx.setToolTipText(pToolTip);
 		pExpanded.add(buttonEx);
 		aButtonsEx.add(buttonEx);
-		linePanel.add(buttonEx);
-		JLabel label = new JLabel(pToolTip);
-		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
-		linePanel.add(label);
-		aToolPanelEx.add(linePanel);
+		
+		aToolPanelEx.add(createExpandedRowElement(buttonEx, pToolTip));
 		buttonEx.setSelected(pIsSelected);
       
 		JMenuItem item = new JMenuItem(pToolTip, pIcon);
@@ -253,6 +250,19 @@ public class ToolBar2 extends JPanel
 			}
 		});
 		aPopupMenu.add(item);
+	}
+	
+	/*
+	 * Returns a panel with a button on the left and a label on the right
+	 */
+	private JPanel createExpandedRowElement(JComponent pButton, String pToolTip)
+	{
+		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		linePanel.add(pButton);
+		JLabel label = new JLabel(pToolTip);
+		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
+		linePanel.add(label);
+		return linePanel;
 	}
 	
 	private void createNodesAndEdgesTools(Graph pGraph, ButtonGroup pGroup, ButtonGroup pGroupEx)
@@ -347,15 +357,10 @@ public class ToolBar2 extends JPanel
 		button.setToolTipText(toolTip);
 		aToolPanel.add(button);
 
-		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		final JButton buttonEx = new JButton(new ImageIcon(imageLocation));
 		
+		final JButton buttonEx = new JButton(new ImageIcon(imageLocation));
 		buttonEx.setToolTipText(toolTip);
-		linePanel.add(buttonEx);
-		JLabel label = new JLabel(toolTip);
-		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
-		linePanel.add(label);
-		aToolPanelEx.add(linePanel);
+		aToolPanelEx.add(createExpandedRowElement(buttonEx, toolTip));
 
 		button.addActionListener(new ActionListener()
 		{
