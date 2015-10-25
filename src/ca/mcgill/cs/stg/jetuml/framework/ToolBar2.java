@@ -255,7 +255,7 @@ public class ToolBar2 extends JPanel
 	}
 	
 	/*
-	 * Returns a panel with a button on the left and a label on the right
+	 * Return a panel with a button on the left and a label on the right
 	 */
 	private JPanel createExpandedRowElement(JComponent pButton, String pToolTip)
 	{
@@ -312,21 +312,7 @@ public class ToolBar2 extends JPanel
 	 */
 	public GraphElement getSelectedTool()
 	{
-		ArrayList<JToggleButton> activeButtons = aButtons;
-		if( isExpanded() )
-		{
-			activeButtons = aButtonsEx;
-		}
-		
-		for(int i = 0; i < aTools.size(); i++)
-		{
-			JToggleButton button = activeButtons.get(i);
-			if(button.isSelected())
-			{
-				return aTools.get(i);
-			}
-		}
-		return null;
+		return aTools.get(getSelectedButtonIndex());
 	}
 	
 	/**
@@ -429,25 +415,23 @@ public class ToolBar2 extends JPanel
 	
 	private void synchronizeToolSelection()
 	{
-		if( isExpanded() )
-		{
-			int index = getSelectedButtonIndex(aButtonsEx);
-			assert index >= 0;
-			aButtons.get(index).setSelected(true);
-		}
-		else
-		{
-			int index = getSelectedButtonIndex(aButtons);
-			assert index >= 0;
-			aButtonsEx.get(index).setSelected(true);
-		}
+		int index = getSelectedButtonIndex();
+		assert index >= 0;
+		aButtons.get(index).setSelected(true);
+		aButtonsEx.get(index).setSelected(true);
 	}
 	
-	private int getSelectedButtonIndex(ArrayList<JToggleButton> pGroup)
+	private int getSelectedButtonIndex()
 	{
-		for(int i = 0; i < aButtons.size(); i++)
+		ArrayList<JToggleButton> activeButtons = aButtons;
+		if( isExpanded() )
 		{
-			JToggleButton button = aButtons.get(i);
+			activeButtons = aButtonsEx;
+		}
+		
+		for(int i = 0; i < activeButtons.size(); i++)
+		{
+			JToggleButton button = activeButtons.get(i);
 			if(button.isSelected())
 			{
 				return i;
