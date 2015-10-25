@@ -131,7 +131,7 @@ public class ButtonTabComponent extends JPanel
  
     private class TabButton extends JButton implements ActionListener 
     {
-        public TabButton() 
+        TabButton() 
         {
             int size = TAB_SIZE;
             setPreferredSize(new Dimension(size, size));

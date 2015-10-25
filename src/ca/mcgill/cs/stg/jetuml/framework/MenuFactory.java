@@ -44,7 +44,7 @@ class MenuFactory
 	 * @param pBundle The bundle to use to fetch
 	 * resources.
 	 */
-	public MenuFactory(ResourceBundle pBundle)
+	MenuFactory(ResourceBundle pBundle)
 	{
 		aBundle = pBundle;
 		aSystem = System.getProperty("os.name").toLowerCase();
