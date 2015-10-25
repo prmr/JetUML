@@ -73,7 +73,7 @@ import ca.mcgill.cs.stg.jetuml.graph.PointNode;
  *  @author Martin P. Robillard
  */
 @SuppressWarnings("serial")
-public class ToolBar2 extends JPanel
+public class ToolBar extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
@@ -95,7 +95,7 @@ public class ToolBar2 extends JPanel
      * Constructs the tool bar.
      * @param pGraph The graph associated with this tool bar.
 	 */
-	public ToolBar2(Graph pGraph)
+	public ToolBar(Graph pGraph)
 	{
 		ButtonGroup group = new ButtonGroup();
 		ButtonGroup groupEx = new ButtonGroup();

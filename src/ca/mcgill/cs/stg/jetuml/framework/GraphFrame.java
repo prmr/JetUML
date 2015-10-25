@@ -51,7 +51,7 @@ public class GraphFrame extends JInternalFrame
 	{
 		aGraph = pGraph;
 		aTabbedPane = pTabbedPane;
-		ToolBar2 sideBar = new ToolBar2(pGraph);
+		ToolBar sideBar = new ToolBar(pGraph);
 		aPanel = new GraphPanel(sideBar);
 		Container contentPane = getContentPane();
 		contentPane.add(sideBar, BorderLayout.EAST);
