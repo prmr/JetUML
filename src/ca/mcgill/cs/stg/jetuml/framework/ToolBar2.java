@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -78,6 +79,7 @@ public class ToolBar2 extends JPanel
 	private static final int OFFSET = 3;
 	private static final int H_PADDING = 5;
 	private static final int VERTICAL_COMMAND_SEPARATOR = 15;
+	private static final int FONT_SIZE = 14;
 	private static final String EXPAND = "<<";
 	private static final String COLLAPSE = ">>";
 	
@@ -260,6 +262,8 @@ public class ToolBar2 extends JPanel
 		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		linePanel.add(pButton);
 		JLabel label = new JLabel(pToolTip);
+		Font font = new Font(label.getFont().getFontName(), Font.PLAIN, FONT_SIZE);
+		label.setFont(font);
 		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
 		linePanel.add(label);
 		return linePanel;
