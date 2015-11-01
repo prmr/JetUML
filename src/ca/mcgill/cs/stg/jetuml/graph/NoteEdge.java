@@ -45,7 +45,7 @@ public class NoteEdge extends AbstractEdge
 	{
 		Stroke oldStroke = pGraphics2D.getStroke();
 		pGraphics2D.setStroke(DOTTED_STROKE);
-		pGraphics2D.draw(getConnectionPoints());
+		pGraphics2D.draw(getShape());
 		pGraphics2D.setStroke(oldStroke);
 	}
 
@@ -54,8 +54,8 @@ public class NoteEdge extends AbstractEdge
 	{
 		Rectangle2D start = getStart().getBounds();
 		Rectangle2D end = getEnd().getBounds();
-		Direction d = new Direction(end.getCenterX() - start.getCenterX(), end.getCenterY() - start.getCenterY());
-		return new Line2D.Double(getStart().getConnectionPoint(d), getEnd().getConnectionPoint(d.turn(DEGREES_180)));
+		Direction direction = new Direction(end.getCenterX() - start.getCenterX(), end.getCenterY() - start.getCenterY());
+		return new Line2D.Double(getStart().getConnectionPoint(direction), getEnd().getConnectionPoint(direction.turn(DEGREES_180)));
   	}
 
 	@Override

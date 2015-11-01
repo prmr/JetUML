@@ -33,11 +33,7 @@ public class TestExtensionFilter
 	@Test
 	public void testBasicConstructor()
 	{
-		ExtensionFilter filter = new ExtensionFilter("", "");
-		assertEquals("", filter.getDescription());
-		assertEquals("", filter.getExtension());
-		
-		filter = new ExtensionFilter("Tar files", ".tar");
+		ExtensionFilter filter = new ExtensionFilter("Tar files", ".tar");
 		assertEquals("Tar files", filter.getDescription());
 		assertEquals(".tar", filter.getExtension());
 	}
@@ -61,7 +57,7 @@ public class TestExtensionFilter
 	@Test 
 	public void testAccept()
 	{
-		ExtensionFilter filter = new ExtensionFilter("", "");
+		ExtensionFilter filter = new ExtensionFilter("Tar files", ".tar");
 		assertTrue(filter.accept(new File("test")));
 		filter = new ExtensionFilter("Test files", ".txt");
 		assertFalse(filter.accept(new File("README.md")));

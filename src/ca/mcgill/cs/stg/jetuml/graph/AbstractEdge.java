@@ -92,6 +92,7 @@ abstract class AbstractEdge implements Edge
 	@Override
 	public void connect(Node pStart, Node pEnd)
 	{  
+		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
 	}
@@ -107,15 +108,6 @@ abstract class AbstractEdge implements Edge
 	{
 		return aEnd;
 	}
-
-//	@Override
-//	public Rectangle2D getBounds()
-//	{
-//		Line2D conn = getConnectionPoints();      
-//		Rectangle2D rectangle = new Rectangle2D.Double();
-//		rectangle.setFrameFromDiagonal(conn.getX1(), conn.getY1(), conn.getX2(), conn.getY2());
-//		return rectangle;
-//	}
 
 	@Override
 	public Line2D getConnectionPoints()

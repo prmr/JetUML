@@ -70,7 +70,9 @@ public interface Edge extends GraphElement
    	Line2D getConnectionPoints();
 
    	/**
-   	 * @return A clone of this edge.
+   	 * @return A clone of this edge, with shallow cloning
+   	 * of the start and end nodes (i.e., the start and end 
+   	 * nodes are not cloned).
    	 */
    	Object clone();
 }
