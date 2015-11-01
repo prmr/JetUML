@@ -31,15 +31,51 @@ import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 /**
  *  An edge that joins two call nodes.
  */
-public class ReturnEdge extends SegmentedLineEdge
+public class ReturnEdge extends SegmentedLabeledEdge
 {
+	private String aMiddleLabel;
+	
 	/**
 	 * Constructs a standard return edge.
 	 */
 	public ReturnEdge()
 	{
-		setEndArrowHead(ArrowHead.V);
-		setLineStyle(LineStyle.DOTTED);
+		aMiddleLabel = "";
+	}
+	
+	/**
+	 * Set the value of the middle label.
+	 * @param pLabel The value to appear in the middle of the return edge.
+	 */
+	public void setMiddleLabel(String pLabel)
+	{
+		aMiddleLabel = pLabel;
+	}
+	
+	/**
+	 * @return The value that appears in the middle of the return edge.
+	 */
+	public String getMiddleLabel()
+	{
+		return aMiddleLabel;
+	}
+	
+	@Override
+	protected String obtainMiddleLabel()
+	{
+		return getMiddleLabel();
+	}
+	
+	@Override
+	protected LineStyle obtainLineStyle()
+	{
+		return LineStyle.DOTTED;
+	}
+	
+	@Override
+	protected ArrowHead obtainEndArrowHead()
+	{
+		return ArrowHead.V;
 	}
 
 	@Override

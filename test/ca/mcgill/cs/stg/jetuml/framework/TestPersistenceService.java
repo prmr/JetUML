@@ -600,23 +600,13 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle2D.Double(418, 160, 204, 24), ret1.getBounds());
 		assertEquals(o2Call, ret1.getEnd());
-		assertEquals("V", ret1.getEndArrowHead().toString());
-		assertEquals("", ret1.getEndLabel());
-		assertEquals("DOTTED", ret1.getLineStyle().toString());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
-		assertEquals("NONE", ret1.getStartArrowHead().toString());
-		assertEquals("", ret1.getStartLabel());
 		
 		assertEquals(new Rectangle2D.Double(226, 194, 176, 10), retC.getBounds());
 		assertEquals(selfCall, retC.getEnd());
-		assertEquals("V", retC.getEndArrowHead().toString());
-		assertEquals("", retC.getEndLabel());
-		assertEquals("DOTTED", retC.getLineStyle().toString());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());
-		assertEquals("NONE", retC.getStartArrowHead().toString());
-		assertEquals("", retC.getStartLabel());
 		
 		assertEquals(new Rectangle2D.Double(409, 189, 31, 16), nedge.getBounds());
 		assertEquals(point, nedge.getEnd());
