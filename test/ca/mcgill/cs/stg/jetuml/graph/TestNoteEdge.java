@@ -3,6 +3,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import org.junit.Before;
@@ -56,13 +57,37 @@ public class TestNoteEdge
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode);
 		assertEquals(new Rectangle2D.Double(60,20,40,0), aNoteEdge.getBounds());
+		
+		Line2D connectionPoints = aNoteEdge.getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1(), 0.01 );
+		assertEquals( 20, connectionPoints.getY1(), 0.01 );
+		assertEquals( 100, connectionPoints.getX2(), 0.01 );
+		assertEquals( 20, connectionPoints.getY2(), 0.01 );
+		
+		
 		aPointNode.translate(20, 0);
 		assertEquals(new Rectangle2D.Double(60,20,60,0), aNoteEdge.getBounds());
+		
+		connectionPoints = aNoteEdge.getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1(), 0.01 );
+		assertEquals( 20, connectionPoints.getY1(), 0.01 );
+		assertEquals( 120, connectionPoints.getX2(), 0.01 );
+		assertEquals( 20, connectionPoints.getY2(), 0.01 );
+		
+		
 		aPointNode.translate(0, 20); // Now at x=120, y = 40
 		
 		// The edge should intersect the note edge at x=26, y=60
 		// (basic correspondence of proportions between triangles)
 		// yielding bounds of [x=60,y=26,width=60,height=14]
 		assertEquals(new Rectangle2D.Double(60,26,60,14), aNoteEdge.getBounds());
+		
+		connectionPoints = aNoteEdge.getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1(), 1 );
+		assertEquals( 26, connectionPoints.getY1(), 1 );
+		assertEquals( 120, connectionPoints.getX2(), 1 );
+		assertEquals( 40, connectionPoints.getY2(), 1 );
 	}
+	
+	
 }
