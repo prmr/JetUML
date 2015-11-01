@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
+import java.awt.BasicStroke;
+import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -28,14 +30,51 @@ import java.awt.geom.Rectangle2D;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 
 /**
- *  A class that supplies convenience implementations for 
- *  a number of methods in the Edge interface.
+ *  Supplies convenience implementations for a number of methods
+ *  in the Edge interface. In particular, the class implements
+ *  support for "containment testing" of edges, i.e., testing
+ *  whether a point falls on a edge. This is done by obtaining 
+ *  the shape of the edge and stroking it with a fat stroke.
+ *  NOTE: Ideally, you should be able to draw the same shape that
+ *  is used for containment testing. However, in JDK 1.4, 
+ *  BasicStroke.createStrokedShape returned shitty-looking shapes,
+ *  so drawing the stroked shapes should be visually tested for 
+ *  each edge type.
  */
 abstract class AbstractEdge implements Edge
 {  
 	private static final int DEGREES_180 = 180;
+	private static final double MAX_DISTANCE = 3.0;
 	private Node aStart;
 	private Node aEnd;
+	
+	/**
+     * Returns the path that should be stroked to
+     * draw this edge. The path does not include
+     * arrow tips or labels.
+     * @return a path along the edge
+	 */
+	protected abstract Shape getShape();
+	
+	@Override
+	public Rectangle2D getBounds()
+	{
+		return getShape().getBounds();
+	}
+
+	@Override
+	public boolean contains(Point2D pPoint)
+	{
+		// The end points may contain small nodes, so don't match them
+		Line2D conn = getConnectionPoints();
+		if(pPoint.distance(conn.getP1()) <= MAX_DISTANCE || pPoint.distance(conn.getP2()) <= MAX_DISTANCE)
+		{
+			return false;
+		}
+
+		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
+		return fatPath.contains(pPoint);
+	}
 	
 	@Override
 	public Object clone()
@@ -69,14 +108,14 @@ abstract class AbstractEdge implements Edge
 		return aEnd;
 	}
 
-	@Override
-	public Rectangle2D getBounds()
-	{
-		Line2D conn = getConnectionPoints();      
-		Rectangle2D rectangle = new Rectangle2D.Double();
-		rectangle.setFrameFromDiagonal(conn.getX1(), conn.getY1(), conn.getX2(), conn.getY2());
-		return rectangle;
-	}
+//	@Override
+//	public Rectangle2D getBounds()
+//	{
+//		Line2D conn = getConnectionPoints();      
+//		Rectangle2D rectangle = new Rectangle2D.Double();
+//		rectangle.setFrameFromDiagonal(conn.getX1(), conn.getY1(), conn.getX2(), conn.getY2());
+//		return rectangle;
+//	}
 
 	@Override
 	public Line2D getConnectionPoints()

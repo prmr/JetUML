@@ -37,7 +37,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 /**
  *  A curved edge for a state transition in a state diagram.
  */
-public class StateTransitionEdge extends ShapeEdge
+public class StateTransitionEdge extends AbstractEdge
 {
 	private static final int DEGREES_5 = 5;
 	private static final int DEGREES_10 = 10;
@@ -144,7 +144,7 @@ public class StateTransitionEdge extends ShapeEdge
 	}
    
 	@Override
-	public Shape getShape()
+	protected Shape getShape()
 	{
 		Line2D line = getConnectionPoints();
 		Point2D control = getControlPoint();

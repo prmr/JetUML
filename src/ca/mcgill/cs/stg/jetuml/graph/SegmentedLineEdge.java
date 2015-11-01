@@ -39,7 +39,7 @@ import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 /**
  *  An edge that is composed of multiple line segments.
  */
-public abstract class SegmentedLineEdge extends ShapeEdge
+public abstract class SegmentedLineEdge extends AbstractEdge
 {
 	private static JLabel label = new JLabel();
 
@@ -286,7 +286,7 @@ public abstract class SegmentedLineEdge extends ShapeEdge
 	}
 
 	@Override
-	public Shape getShape()
+	protected Shape getShape()
 	{
 		GeneralPath path = getSegmentPath();
 		ArrayList<Point2D> points = getPoints();

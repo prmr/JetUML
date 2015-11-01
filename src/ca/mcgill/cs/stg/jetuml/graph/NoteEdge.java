@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 /**
  *  A dotted line that connects a note to its attachment.
  */
-public class NoteEdge extends ShapeEdge
+public class NoteEdge extends AbstractEdge
 {
 	private static final int DEGREES_180 = 180;
 	private static final Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, 
@@ -59,7 +59,7 @@ public class NoteEdge extends ShapeEdge
   	}
 
 	@Override
-	public Shape getShape()
+	protected Shape getShape()
 	{
 		GeneralPath path = new GeneralPath();
 		Line2D conn = getConnectionPoints();

@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 /**
  * An S- or C-shaped edge with an arrowhead.
  */
-public class ObjectReferenceEdge extends ShapeEdge
+public class ObjectReferenceEdge extends AbstractEdge
 {
 	private static final int ENDSIZE = 10;
 
@@ -58,7 +58,7 @@ public class ObjectReferenceEdge extends ShapeEdge
 	}
 
 	@Override
-	public Shape getShape()
+	protected Shape getShape()
 	{
 		Line2D line = getConnectionPoints();
 
