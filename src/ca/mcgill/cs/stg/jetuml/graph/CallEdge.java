@@ -31,9 +31,10 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 /**
  *   An edge that joins two call nodes.
  */
-public class CallEdge extends SegmentedLineEdge
+public class CallEdge extends SegmentedLabeledEdge
 {
 	private boolean aSignal;
+	private String aMiddleLabel;
 	
 	/**
 	 * Creates a non-signal edge.
@@ -41,6 +42,45 @@ public class CallEdge extends SegmentedLineEdge
 	public CallEdge()
 	{
 		setSignal(false);
+	}
+	
+	/**
+	 * Set the value of the middle label.
+	 * @param pLabel The value to appear in the middle of the return edge.
+	 */
+	public void setMiddleLabel(String pLabel)
+	{
+		aMiddleLabel = pLabel;
+	}
+	
+	/**
+	 * @return The value that appears in the middle of the return edge.
+	 */
+	public String getMiddleLabel()
+	{
+		return aMiddleLabel;
+	}
+	
+	@Override
+	protected String obtainMiddleLabel()
+	{
+		return getMiddleLabel();
+	}
+	
+	/**
+	 * @return The end arrow head for the edge. By default
+	 * there is no arrow head.
+	 */
+	protected ArrowHead obtainEndArrowHead()
+	{
+		if(aSignal)
+		{
+			return ArrowHead.HALF_V;
+		}
+		else
+		{
+			return ArrowHead.V;
+		}
 	}
 
 	/**
@@ -57,14 +97,6 @@ public class CallEdge extends SegmentedLineEdge
 	public void setSignal(boolean pNewValue) 
 	{ 
 		aSignal = pNewValue; 
-		if(aSignal)
-		{
-			setEndArrowHead(ArrowHead.HALF_V);
-		}
-		else
-		{
-			setEndArrowHead(ArrowHead.V);
-		}
 	}
 
 	@Override

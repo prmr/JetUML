@@ -567,35 +567,20 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle2D.Double(218, 82, 77, 29), self.getBounds());
 		assertEquals(selfCall, self.getEnd());
-		assertEquals("V", self.getEndArrowHead().toString());
-		assertEquals("", self.getEndLabel());
-		assertEquals("SOLID", self.getLineStyle().toString());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
-		assertEquals("NONE", self.getStartArrowHead().toString());
-		assertEquals("", self.getStartLabel());
 		assertFalse(self.isSignal());
 		
 		assertEquals(new Rectangle2D.Double(226, 106, 176, 19), signal.getBounds());
 		assertEquals(o2Call, signal.getEnd());
-		assertEquals("HALF_V", signal.getEndArrowHead().toString());
-		assertEquals("", signal.getEndLabel());
-		assertEquals("SOLID", signal.getLineStyle().toString());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
-		assertEquals("NONE", signal.getStartArrowHead().toString());
-		assertEquals("", signal.getStartLabel());
 		assertTrue(signal.isSignal());
 		
 		assertEquals(new Rectangle2D.Double(418, 130, 204, 24), call1.getBounds());
 		assertEquals(o3Call, call1.getEnd());
-		assertEquals("V", call1.getEndArrowHead().toString());
-		assertEquals("", call1.getEndLabel());
-		assertEquals("SOLID", call1.getLineStyle().toString());
 		assertEquals("call1()", call1.getMiddleLabel());
 		assertEquals(o2Call, call1.getStart());
-		assertEquals("NONE", call1.getStartArrowHead().toString());
-		assertEquals("", call1.getStartLabel());
 		assertFalse(call1.isSignal());
 		
 		assertEquals(new Rectangle2D.Double(418, 160, 204, 24), ret1.getBounds());
