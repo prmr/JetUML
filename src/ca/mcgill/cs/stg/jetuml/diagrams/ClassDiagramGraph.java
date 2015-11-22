@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
@@ -52,7 +53,7 @@ public class ClassDiagramGraph extends Graph
 		EDGE_PROTOTYPES[1] = ClassRelationshipEdge.createInheritanceEdge();
 		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createInterfaceInheritanceEdge();
 		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
-		EDGE_PROTOTYPES[4] = ClassRelationshipEdge.createAggregationEdge();
+		EDGE_PROTOTYPES[4] = new AggregationEdge();
 		EDGE_PROTOTYPES[5] = ClassRelationshipEdge.createCompositionEdge();
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
