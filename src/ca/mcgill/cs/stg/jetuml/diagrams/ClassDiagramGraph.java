@@ -54,7 +54,7 @@ public class ClassDiagramGraph extends Graph
 		EDGE_PROTOTYPES[2] = ClassRelationshipEdge.createInterfaceInheritanceEdge();
 		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
 		EDGE_PROTOTYPES[4] = new AggregationEdge();
-		EDGE_PROTOTYPES[5] = ClassRelationshipEdge.createCompositionEdge();
+		EDGE_PROTOTYPES[5] = new AggregationEdge(true);
 		EDGE_PROTOTYPES[6] = new NoteEdge();	
 	}
 	//CSON:

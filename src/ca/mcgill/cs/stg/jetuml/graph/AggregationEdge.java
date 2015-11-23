@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+/**
+ * @author Martin P. Robillard
+ */
+
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
@@ -28,12 +32,30 @@ import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 
 /**
- *  An edge that that represents a UML aggregation, with
- *  optional labels and directionality.
+ *  An edge that that represents a UML aggregation or 
+ *  composition, with optional labels and directionality.
  */
 public class AggregationEdge extends ClassRelationshipEdge2
 {
 	private boolean aDirected = false;
+	private boolean aComposition = false;
+	
+	/**
+	 * Creates an aggregation edge by specifying if it 
+	 * can be a composition edge.
+	 * 
+	 * @param pComposition True if this represents a composition
+	 */
+	public AggregationEdge( boolean pComposition )
+	{
+		aComposition = pComposition;
+	}
+	
+	/**
+	 * Creates an aggregation edge.
+	 */
+	public AggregationEdge()
+	{}
 	
 	public boolean isDirected()
 	{
@@ -43,6 +65,16 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	public void setDirected(boolean pDirected)
 	{
 		aDirected = pDirected;
+	}
+	
+	public boolean isComposition()
+	{
+		return aComposition;
+	}
+	
+	public void setComposition(boolean pComposition)
+	{
+		aComposition = pComposition;
 	}
 	
 	@Override
@@ -61,7 +93,14 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	@Override
 	protected ArrowHead obtainStartArrowHead()
 	{
-		return ArrowHead.DIAMOND;
+		if( aComposition )
+		{
+			return ArrowHead.BLACK_DIAMOND;
+		}
+		else
+		{
+			return ArrowHead.DIAMOND;
+		}
 	}
 	
 	@Override

@@ -45,18 +45,6 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A segmented edge with a diamond arrowhead representing the aggregation of a class.
-	 * @return a new aggregation-styled edge
-	 */
-	public static ClassRelationshipEdge createAggregationEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.HVH);
-		cre.setStartArrowHead(ArrowHead.DIAMOND);
-		return cre;
-	}
-	
-	/**
 	 * A segmented edge with a v arrowhead representing an association between classes.
 	 * @return a new association-styled edge
 	 */
@@ -65,18 +53,6 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
 		cre.setBentStyle(BentStyle.HVH);
 		cre.setEndArrowHead(ArrowHead.V);
-		return cre;
-	}
-	
-	/**
-	 * A segmented edge with a black diamond arrowhead representing a composition of the class.
-	 * @return a new composition-styled edge
-	 */
-	public static ClassRelationshipEdge createCompositionEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.HVH);
-		cre.setStartArrowHead(ArrowHead.BLACK_DIAMOND);
 		return cre;
 	}
 	
