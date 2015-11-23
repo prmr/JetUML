@@ -37,7 +37,6 @@ import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
  */
 public class AggregationEdge extends ClassRelationshipEdge2
 {
-	private boolean aDirected = false;
 	private boolean aComposition = false;
 	
 	/**
@@ -57,16 +56,6 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	public AggregationEdge()
 	{}
 	
-	public boolean isDirected()
-	{
-		return aDirected;
-	}
-	
-	public void setDirected(boolean pDirected)
-	{
-		aDirected = pDirected;
-	}
-	
 	public boolean isComposition()
 	{
 		return aComposition;
@@ -75,19 +64,6 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	public void setComposition(boolean pComposition)
 	{
 		aComposition = pComposition;
-	}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
-	{
-		if( aDirected )
-		{
-			return ArrowHead.V;
-		}
-		else
-		{
-			return ArrowHead.NONE;
-		}
 	}
 	
 	@Override
