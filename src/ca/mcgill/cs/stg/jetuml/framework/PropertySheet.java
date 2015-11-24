@@ -24,7 +24,6 @@ package ca.mcgill.cs.stg.jetuml.framework;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyChangeEvent;
@@ -50,9 +49,17 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
+
 /**
- *  A component filled with editors for all editable properties 
- *  of an object.
+ *  A GUI component that can present the properties of an 
+ *  object detected through the JavaBeans framework and 
+ *  allow editing them.
+ *  
+ *  @author Cay Horstmann - initial version
+ *  @author Martin P. Robillard - property sequencing
+ *  @author Joel Cheverie - string handling
+ *  @author Eric Quinn - change listening
  */
 @SuppressWarnings("serial")
 public class PropertySheet extends JPanel
@@ -60,16 +67,6 @@ public class PropertySheet extends JPanel
 	private static Map<Class<?>, Class<?>> editors;
 
 	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
-	
-	private boolean aEmpty = true;
-	
-	private ArrayList<String> aBlackList = new ArrayList<String>() {
-		{
-			add("startArrowHead"); 
-			//add("endArrowHead"); 
-            add("bentStyle");       
-            add("lineStyle");
-	}};
 	
 	static
 	{  
@@ -82,48 +79,42 @@ public class PropertySheet extends JPanel
      * properties of a given object.
      * @param pBean the object whose properties are being edited
 	 */
-	public PropertySheet(Object pBean)
+	public PropertySheet(final Object pBean)
 	{
+		setLayout(new FormLayout());
 		try
 		{
-			BeanInfo info = Introspector.getBeanInfo(pBean.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
+			PropertyDescriptor[] descriptors = (PropertyDescriptor[])Introspector.getBeanInfo(pBean.getClass()).getPropertyDescriptors().clone();
 			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
-					{
-						public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
-						{
-							Integer p1 = (Integer)pDescriptor1.getValue("priority");
-							Integer p2 = (Integer)pDescriptor2.getValue("priority");
-							if(p1 == null && p2 == null)
-							{
-								return 0;
-							}
-							if(p1 == null)
-							{
-								return 1;
-							}
-							if(p2 == null)
-							{
-								return -1;
-							}
-							return p1.intValue() - p2.intValue();
-						}
-					});
-			setLayout(new FormLayout());
-			for(int i = 0; i < descriptors.length; i++)
 			{
-				PropertyEditor editor = getEditor(pBean, descriptors[i]);
-				if(editor != null && !aBlackList.contains(descriptors[i].getName()))
+				public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
 				{
-					add(new JLabel(toTitleCase(descriptors[i].getName())));
+					int index1 = PropertyOrder.getInstance().getIndex(pBean.getClass(), pDescriptor1.getName());
+					int index2 = PropertyOrder.getInstance().getIndex(pBean.getClass(), pDescriptor2.getName());
+					if( index1 == index2 )
+					{
+						return pDescriptor1.getName().compareTo(pDescriptor2.getName());
+					}
+					else
+					{
+						return index1 - index2;
+					}
+				}
+			});
+			
+			for(PropertyDescriptor descriptor : descriptors)
+			{
+				PropertyEditor editor = getEditor(pBean, descriptor);
+				if(editor != null )
+				{
+					add(new JLabel(toTitleCase(descriptor.getName())));
 					add(getEditorComponent(editor));
-					aEmpty = false;
 				}
 			}		
 		}
 		catch (IntrospectionException exception)
 		{
-			exception.printStackTrace();
+			// Do nothing
 		}
 	}
 
@@ -169,25 +160,24 @@ public class PropertySheet extends JPanel
 			Object value = getter.invoke(pBean, new Object[] {});
 			editor.setValue(value);
 			editor.addPropertyChangeListener(new PropertyChangeListener()
-            	{
-					public void propertyChange(PropertyChangeEvent pEvent)
-					{
-						try
-						{	
-							setter.invoke(pBean, new Object[] { editor.getValue() });
-							fireStateChanged(null);
-						}
-						catch(IllegalAccessException | InvocationTargetException exception)
-						{
-							exception.printStackTrace();
-						}
+			{
+				public void propertyChange(PropertyChangeEvent pEvent)
+				{
+					try
+					{	
+						setter.invoke(pBean, new Object[] { editor.getValue() });
+						fireStateChanged(null);
 					}
-            	});
+					catch(IllegalAccessException | InvocationTargetException exception)
+					{
+						exception.printStackTrace();
+					}
+				}
+			});
 			return editor;
 		}
 		catch(InstantiationException | IllegalAccessException | InvocationTargetException exception)
 		{
-			exception.printStackTrace();
 			return null;
 		}
 	}
@@ -265,8 +255,6 @@ public class PropertySheet extends JPanel
 		}
 	}
 
-	
-	//An addition by JoelChev to format Strings into a TitleCase.
 	/**
 	 * @param pInput is a String to format into a Title
 	 * @return is a String that is in Title Format.
@@ -276,9 +264,9 @@ public class PropertySheet extends JPanel
 	    StringBuilder titleCase = new StringBuilder();
 	    boolean nextTitleCase = true;
 
-	    for (char c : pInput.toCharArray()) 
+	    for(char c : pInput.toCharArray()) 
 	    {
-	        if (Character.isSpaceChar(c)) 
+	        if(Character.isSpaceChar(c)) 
 	        {
 	            nextTitleCase = true;
 	        } 
@@ -302,7 +290,7 @@ public class PropertySheet extends JPanel
 	 */
 	public boolean isEmpty()
 	{
-		return aEmpty;
+		return getComponentCount() == 0;
 	}
 }
 
