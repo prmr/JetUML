@@ -32,50 +32,55 @@ import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 
 /**
- *  An edge that that represents a UML aggregation or 
- *  composition, with optional labels.
+ *  An edge that that represents a UML association, with optional 
+ *  labels and directionality.
  */
-public class AggregationEdge extends ClassRelationshipEdge2
+public class AssociationEdge extends ClassRelationshipEdge2
 {
-	private boolean aComposition = false;
+	public enum Directionality {None, Start, End, Both}
+	
+	private Directionality aDirectionality = Directionality.None;
 	
 	/**
-	 * Creates an aggregation edge by specifying if it 
-	 * can be a composition edge.
-	 * 
-	 * @param pComposition True if this represents a composition
+	 * Creates an association edge with no labels
+	 * and no directionality
 	 */
-	public AggregationEdge( boolean pComposition )
-	{
-		aComposition = pComposition;
-	}
-	
-	/**
-	 * Creates an aggregation edge.
-	 */
-	public AggregationEdge()
+	public AssociationEdge()
 	{}
 	
-	public boolean isComposition()
+	public void setDirectionality( Directionality pDirectionality )
 	{
-		return aComposition;
+		aDirectionality = pDirectionality;
 	}
 	
-	public void setComposition(boolean pComposition)
+	public Directionality getDirectionality()
 	{
-		aComposition = pComposition;
+		return aDirectionality;
 	}
 	
 	@Override
 	protected ArrowHead obtainStartArrowHead()
 	{
-		if( aComposition )
+		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
 		{
-			return ArrowHead.BLACK_DIAMOND;
+			return ArrowHead.V;
 		}
 		else
 		{
-			return ArrowHead.DIAMOND;
+			return ArrowHead.NONE;
+		}
+	}
+	
+	@Override
+	protected ArrowHead obtainEndArrowHead()
+	{
+		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
+		{
+			return ArrowHead.V;
+		}
+		else
+		{
+			return ArrowHead.NONE;
 		}
 	}
 	

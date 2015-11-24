@@ -45,18 +45,6 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A segmented edge with a v arrowhead representing an association between classes.
-	 * @return a new association-styled edge
-	 */
-	public static ClassRelationshipEdge createAssociationEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.HVH);
-		cre.setEndArrowHead(ArrowHead.V);
-		return cre;
-	}
-	
-	/**
 	 * A straight edge representing communication between two classes.
 	 * @return a new communication-styled edge
 	 */
