@@ -70,19 +70,6 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A straight dotted edge with a v arrowhead representing dependency between classes.
-	 * @return a new dependency-styled edge
-	 */
-	public static ClassRelationshipEdge createDependencyEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.STRAIGHT);
-		cre.setLineStyle(LineStyle.DOTTED);
-		cre.setEndArrowHead(ArrowHead.V);
-		return cre;
-	}
-	
-	/**
 	 * A straight dotted edge with a v arrowhead and proper middle label representing extending the relation between two classes.
 	 * @return a new extending-relationship-style edge
 	 */

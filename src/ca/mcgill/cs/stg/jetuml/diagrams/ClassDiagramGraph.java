@@ -30,6 +30,7 @@ import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -50,7 +51,7 @@ public class ClassDiagramGraph extends Graph
 
 	static
 	{
-		EDGE_PROTOTYPES[0] = ClassRelationshipEdge.createDependencyEdge();
+		EDGE_PROTOTYPES[0] = new DependencyEdge();
 		EDGE_PROTOTYPES[1] = new GeneralizationEdge();
 		EDGE_PROTOTYPES[2] = new GeneralizationEdge(true);
 		EDGE_PROTOTYPES[3] = ClassRelationshipEdge.createAssociationEdge();
