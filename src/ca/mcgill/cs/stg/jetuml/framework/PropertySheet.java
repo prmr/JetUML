@@ -49,6 +49,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
+
 /**
  *  A GUI component that can present the properties of an 
  *  object detected through the JavaBeans framework and 

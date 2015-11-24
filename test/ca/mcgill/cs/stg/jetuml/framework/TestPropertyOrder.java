@@ -31,6 +31,7 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
 import ca.mcgill.cs.stg.jetuml.graph.SegmentedLabeledEdge;
 
 public class TestPropertyOrder

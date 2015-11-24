@@ -1,9 +1,6 @@
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.util.HashMap;
-
-import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 
 /**
  * Singleton object that can return the presentation
@@ -23,6 +20,13 @@ public final class PropertyOrder
 		INSTANCE.addIndex(ClassRelationshipEdge.class, "middleLabel", 2);
 		INSTANCE.addIndex(ClassRelationshipEdge.class, "endLabel", 3);
 		INSTANCE.addIndex(CallEdge.class, "middleLabel", 1);
+		INSTANCE.addIndex(ClassNode.class, "name", 1);
+		INSTANCE.addIndex(ClassNode.class, "attributes", 2);
+		INSTANCE.addIndex(ClassNode.class, "methods", 3);
+		INSTANCE.addIndex(InterfaceNode.class, "name", 1);
+		INSTANCE.addIndex(InterfaceNode.class, "methods", 2);
+		INSTANCE.addIndex(PackageNode.class, "name", 1);
+		INSTANCE.addIndex(PackageNode.class, "contents", 2);
 	}
 	
 	private HashMap<Class<?>, HashMap<String, Integer>> aProperties = new HashMap<>();
