@@ -27,13 +27,13 @@ import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.ObjectCollaborationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge;
 
@@ -62,8 +62,7 @@ public class ObjectDiagramGraph extends Graph
 	    
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
 	    
-	    ClassRelationshipEdge association = new ClassRelationshipEdge();
-	    EDGE_PROTOTYPES[1] = association;
+	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
 	}
 	
@@ -76,7 +75,7 @@ public class ObjectDiagramGraph extends Graph
 		}
 		if( pNode1 instanceof ObjectNode )
 		{
-			return (pEdge instanceof ClassRelationshipEdge && pNode2 instanceof ObjectNode) ||
+			return (pEdge instanceof ObjectCollaborationEdge && pNode2 instanceof ObjectNode) ||
 					(pEdge instanceof NoteEdge && pNode2 instanceof NoteNode);
 		}
 		if( pNode1 instanceof FieldNode )

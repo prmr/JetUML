@@ -28,33 +28,19 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 
 /**
- *  An edge that that represents a UML dependency
- *  with optional labels.
+ *  An edge that that represents a dynamic collaboration between
+ *  two objects in an object diagram, with optional labels.
  */
-public class DependencyEdge extends ClassRelationshipEdge
+public class ObjectCollaborationEdge extends ClassRelationshipEdge
 {
 	/**
-	 * Creates a dependency edge with no labels.
+	 * Creates an association edge.
 	 */
-	public DependencyEdge()
+	public ObjectCollaborationEdge()
 	{}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
-	{
-		return ArrowHead.V;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		return LineStyle.DOTTED;
-	}
 	
 	@Override
 	public ArrayList<Point2D> getPoints()

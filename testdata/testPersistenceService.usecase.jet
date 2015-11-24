@@ -50,10 +50,6 @@
       <double>40.0</double>
      </void>
     </void>
-    <void method="setLocation">
-     <double>440.0</double>
-     <double>40.0</double>
-    </void>
    </object>
   </void>
   <void method="addNode">
@@ -105,10 +101,6 @@
       <double>130.0</double>
      </void>
     </void>
-    <void method="setLocation">
-     <double>460.0</double>
-     <double>130.0</double>
-    </void>
    </object>
   </void>
   <void method="addNode">
@@ -159,10 +151,6 @@
       <object idref="Point2D$Double2"/>
       <double>230.0</double>
      </void>
-    </void>
-    <void method="setLocation">
-     <double>460.0</double>
-     <double>230.0</double>
     </void>
    </object>
   </void>
@@ -216,10 +204,6 @@
       <object idref="Point2D$Double3"/>
       <double>50.0</double>
      </void>
-    </void>
-    <void method="setLocation">
-     <double>270.0</double>
-     <double>50.0</double>
     </void>
    </object>
   </void>
@@ -279,10 +263,6 @@
       <double>230.0</double>
      </void>
     </void>
-    <void method="setLocation">
-     <double>280.0</double>
-     <double>230.0</double>
-    </void>
    </object>
   </void>
   <void method="addNode">
@@ -327,10 +307,6 @@
       <double>50.0</double>
      </void>
     </void>
-    <void method="setLocation">
-     <double>700.0</double>
-     <double>50.0</double>
-    </void>
    </object>
   </void>
   <void method="addNode">
@@ -349,10 +325,6 @@
       <object idref="Point2D$Double6"/>
       <double>56.0</double>
      </void>
-    </void>
-    <void method="setLocation">
-     <double>567.0</double>
-     <double>56.0</double>
     </void>
    </object>
   </void>
@@ -404,10 +376,6 @@
       <object idref="Point2D$Double7"/>
       <double>150.0</double>
      </void>
-    </void>
-    <void method="setLocation">
-     <double>650.0</double>
-     <double>150.0</double>
     </void>
    </object>
   </void>
@@ -467,44 +435,7 @@
       <double>140.0</double>
      </void>
     </void>
-    <void method="setLocation">
-     <double>190.0</double>
-     <double>140.0</double>
-    </void>
    </object>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endLabel">
-     <string>end</string>
-    </void>
-    <void property="middleLabel">
-     <string>mid</string>
-    </void>
-    <void property="startLabel">
-     <string>start</string>
-    </void>
-   </object>
-   <object idref="ActorNode0"/>
-   <object idref="UseCaseNode0"/>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="middleLabel">
-     <string>e2</string>
-    </void>
-   </object>
-   <object idref="ActorNode1"/>
-   <object idref="UseCaseNode1"/>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="middleLabel">
-     <string>e3</string>
-    </void>
-   </object>
-   <object idref="ActorNode1"/>
-   <object idref="UseCaseNode2"/>
   </void>
   <void method="connect">
    <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
@@ -512,81 +443,66 @@
    <object idref="PointNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
-    </void>
-    <void property="middleLabel">
-     <string>e4</string>
-    </void>
-   </object>
-   <object idref="UseCaseNode1"/>
-   <object idref="UseCaseNode0"/>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
-    <void property="middleLabel">
-     <string>«include» e5</string>
-    </void>
-   </object>
-   <object idref="UseCaseNode1"/>
-   <object idref="UseCaseNode2"/>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="middleLabel">
-     <string>e7</string>
-    </void>
-   </object>
-   <object idref="UseCaseNode0"/>
-   <object idref="UseCaseNode3"/>
-  </void>
-  <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
-    </void>
-    <void property="middleLabel">
-     <string>g</string>
-    </void>
-   </object>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseGeneralizationEdge"/>
    <object idref="ActorNode2"/>
    <object idref="ActorNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
-    <void property="middleLabel">
-     <string>«extend»</string>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
+    <void property="type">
+     <object class="java.lang.Enum" id="UseCaseDependencyEdge$Type0" method="valueOf">
+      <class>ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge$Type</class>
+      <string>Extend</string>
+     </object>
     </void>
    </object>
    <object idref="ActorNode2"/>
    <object idref="ActorNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
-    <void property="middleLabel">
-     <string>«extend»</string>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
+   <object idref="ActorNode0"/>
+   <object idref="UseCaseNode0"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
+   <object idref="ActorNode1"/>
+   <object idref="UseCaseNode1"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
+   <object idref="ActorNode1"/>
+   <object idref="UseCaseNode2"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseGeneralizationEdge"/>
+   <object idref="UseCaseNode1"/>
+   <object idref="UseCaseNode0"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
+    <void property="type">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge$Type</class>
+      <string>Include</string>
+     </object>
     </void>
    </object>
    <object idref="UseCaseNode1"/>
+   <object idref="UseCaseNode2"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
+    <void property="type">
+     <object idref="UseCaseDependencyEdge$Type0"/>
+    </void>
+   </object>
+   <object idref="UseCaseNode1"/>
+   <object idref="UseCaseNode3"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
+   <object idref="UseCaseNode0"/>
    <object idref="UseCaseNode3"/>
   </void>
  </object>

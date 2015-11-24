@@ -35,7 +35,7 @@ import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
  */
-public class AggregationEdge extends ClassRelationshipEdge2
+public class AggregationEdge extends ClassRelationshipEdge
 {
 	/**
 	 * Type of aggregation relation.

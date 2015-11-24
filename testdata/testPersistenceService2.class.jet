@@ -337,13 +337,7 @@ I1</string>
    </object>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -352,13 +346,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
     <void property="middleLabel">
      <string>e2</string>
     </void>
@@ -367,13 +355,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>

@@ -62,7 +62,7 @@
         <string>width</string>
         <void method="set">
          <object idref="Rectangle2D$Double1"/>
-         <double>92.0</double>
+         <double>87.0</double>
         </void>
        </void>
        <void class="java.awt.geom.Rectangle2D$Double" method="getField">
@@ -488,15 +488,6 @@
    </object>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="middleLabel">
-     <string>e1</string>
-    </void>
-   </object>
-   <object idref="ObjectNode1"/>
-   <object idref="ObjectNode2"/>
-  </void>
-  <void method="connect">
    <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge"/>
    <object idref="FieldNode0"/>
    <object idref="ObjectNode0"/>
@@ -520,6 +511,15 @@
    <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode1"/>
+  </void>
+  <void method="connect">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectCollaborationEdge">
+    <void property="middleLabel">
+     <string>e1</string>
+    </void>
+   </object>
+   <object idref="ObjectNode1"/>
+   <object idref="ObjectNode2"/>
   </void>
  </object>
 </java>

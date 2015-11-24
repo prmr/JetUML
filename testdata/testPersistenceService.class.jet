@@ -338,13 +338,7 @@
    <object idref="PointNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="V"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -353,31 +347,22 @@
    <object idref="ClassNode3"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="VHV"/>
-    </void>
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
-    </void>
-    <void property="lineStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.LineStyle" field="DOTTED"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
     <void property="middleLabel">
      <string>e2</string>
+    </void>
+    <void property="type">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge$Type</class>
+      <string>Implementation</string>
+     </object>
     </void>
    </object>
    <object idref="ClassNode0"/>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="VHV"/>
-    </void>
-    <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>
@@ -386,18 +371,12 @@
    <object idref="ClassNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="HVH"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
     <void property="endLabel">
      <string>*</string>
     </void>
     <void property="middleLabel">
      <string>e4</string>
-    </void>
-    <void property="startArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="DIAMOND"/>
     </void>
     <void property="startLabel">
      <string>1</string>
@@ -407,15 +386,15 @@
    <object idref="ClassNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
-    <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="HVH"/>
-    </void>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
     <void property="middleLabel">
      <string>e5</string>
     </void>
-    <void property="startArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="BLACK_DIAMOND"/>
+    <void property="type">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>ca.mcgill.cs.stg.jetuml.graph.AggregationEdge$Type</class>
+      <string>Composition</string>
+     </object>
     </void>
    </object>
    <object idref="ClassNode2"/>
