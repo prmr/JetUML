@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+/**
+ * @author Martin P. Robillard
+ */
+
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
@@ -27,38 +31,20 @@ import java.util.ArrayList;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 
 /**
- *  An edge that is shaped like a line with up to 
- *  three segments with an arrowhead.
+ *  An edge that that represents a association between use cases.
+ *  Does not support labels or multiplicities.
  */
-public class ClassRelationshipEdge extends SegmentedLineEdge
+public class UseCaseAssociationEdge extends SegmentedLabeledEdge
 {
-	private BentStyle aBentStyle;
+	/**
+	 * Creates an association edge.
+	 */
+	public UseCaseAssociationEdge()
+	{}
 	
-	/**
-     *  Constructs a straight edge.
-     */
-	public ClassRelationshipEdge()
-	{
-		aBentStyle = BentStyle.STRAIGHT;
-	}
-	
-	/**
-     *  Sets the bentStyle property.
-     * @param pNewValue the bent style
-     */
-	public void setBentStyle(BentStyle pNewValue)
-	{ aBentStyle = pNewValue; }
-   
-	/**
-     * Gets the bentStyle property.
-     * @return the bent style
-     */
-	public BentStyle getBentStyle() 
-	{ return aBentStyle; }
-   
 	@Override
 	public ArrayList<Point2D> getPoints()
 	{
-		return aBentStyle.getPath(getStart().getBounds(), getEnd().getBounds());
+		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
    }
 }
