@@ -45,21 +45,18 @@ import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
  */
 public class ClassDiagramGraph extends Graph
 {
-	//CSOFF:
-	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()};
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[7];
-
-	static
-	{
-		EDGE_PROTOTYPES[0] = new DependencyEdge();
-		EDGE_PROTOTYPES[1] = new GeneralizationEdge();
-		EDGE_PROTOTYPES[2] = new GeneralizationEdge(true);
-		EDGE_PROTOTYPES[3] = new AssociationEdge();
-		EDGE_PROTOTYPES[4] = new AggregationEdge();
-		EDGE_PROTOTYPES[5] = new AggregationEdge(true);
-		EDGE_PROTOTYPES[6] = new NoteEdge();	
-	}
-	//CSON:
+	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), 
+															  new InterfaceNode(), 
+															  new PackageNode(), 
+															  new NoteNode()};
+	
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[] {new DependencyEdge(), 
+															  new GeneralizationEdge(), 
+															  new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
+															  new AssociationEdge(),
+															  new AggregationEdge(),
+															  new AggregationEdge(AggregationEdge.Type.Composition),
+															  new NoteEdge()};
 
 	@Override
 	public Node[] getNodePrototypes()

@@ -37,22 +37,32 @@ import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
  */
 public class AssociationEdge extends ClassRelationshipEdge2
 {
-	public enum Directionality {None, Start, End, Both}
+	/**
+	 * Possible directionalities for an association.
+	 */
+	public enum Directionality 
+	{None, Start, End, Both}
 	
 	private Directionality aDirectionality = Directionality.None;
 	
 	/**
-	 * Creates an association edge with no labels
+	 * Creates an association edge with no labels.
 	 * and no directionality
 	 */
 	public AssociationEdge()
 	{}
 	
+	/**
+	 * @param pDirectionality The desired directionality.
+	 */
 	public void setDirectionality( Directionality pDirectionality )
 	{
 		aDirectionality = pDirectionality;
 	}
 	
+	/**
+	 * @return The directionality of this association.
+	 */
 	public Directionality getDirectionality()
 	{
 		return aDirectionality;

@@ -38,17 +38,22 @@ import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
  */
 public class GeneralizationEdge extends ClassRelationshipEdge2
 {
-	private boolean aImplementation = false;
+	/**
+	 * Type of UML generalization relation.
+	 */
+	public enum Type 
+	{Inheritance, Implementation}
+	
+	private Type aType = Type.Inheritance;
 	
 	/**
-	 * Creates a generalization edge by specifying if it 
-	 * is an implementation edge.
+	 * Creates a generalization edge by specifying its type.
 	 * 
-	 * @param pImplementation True if this represents interface implementation
+	 * @param pType the type of generalization
 	 */
-	public GeneralizationEdge( boolean pImplementation )
+	public GeneralizationEdge( Type pType )
 	{
-		aImplementation = pImplementation;
+		aType = pType;
 	}
 	
 	/**
@@ -57,14 +62,21 @@ public class GeneralizationEdge extends ClassRelationshipEdge2
 	public GeneralizationEdge()
 	{}
 	
-	public boolean isImplementation()
+	/**
+	 * @return The type of generalization.
+	 */
+	public Type getType()
 	{
-		return aImplementation;
+		return aType;
 	}
 	
-	public void setImplementation(boolean pImplementation)
+	/**
+	 * Sets the type of generalization.
+	 * @param pType The desired type of generalization
+	 */
+	public void setType(Type pType)
 	{
-		aImplementation = pImplementation;
+		aType = pType;
 	}
 	
 	@Override
@@ -76,7 +88,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge2
 	@Override
 	protected LineStyle obtainLineStyle()
 	{
-		if( aImplementation )
+		if( aType == Type.Implementation )
 		{
 			return LineStyle.DOTTED;
 		}

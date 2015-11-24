@@ -37,17 +37,22 @@ import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
  */
 public class AggregationEdge extends ClassRelationshipEdge2
 {
-	private boolean aComposition = false;
+	/**
+	 * Type of aggregation relation.
+	 */
+	public enum Type 
+	{Aggregation, Composition}
+	
+	private Type aType = Type.Aggregation;
 	
 	/**
-	 * Creates an aggregation edge by specifying if it 
-	 * can be a composition edge.
+	 * Creates an aggregation edge by specifying its type.
 	 * 
-	 * @param pComposition True if this represents a composition
+	 * @param pType the type of aggregation
 	 */
-	public AggregationEdge( boolean pComposition )
+	public AggregationEdge( Type pType )
 	{
-		aComposition = pComposition;
+		aType = pType;
 	}
 	
 	/**
@@ -56,20 +61,26 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	public AggregationEdge()
 	{}
 	
-	public boolean isComposition()
+	/**
+	 * @return The type of aggregation relation.
+	 */
+	public Type getType()
 	{
-		return aComposition;
+		return aType;
 	}
 	
-	public void setComposition(boolean pComposition)
+	/**
+	 * @param pType The type of aggregation relation.
+	 */
+	public void setType(Type pType)
 	{
-		aComposition = pComposition;
+		aType = pType;
 	}
 	
 	@Override
 	protected ArrowHead obtainStartArrowHead()
 	{
-		if( aComposition )
+		if( aType == Type.Composition )
 		{
 			return ArrowHead.BLACK_DIAMOND;
 		}

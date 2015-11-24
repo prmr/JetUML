@@ -35,7 +35,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -48,8 +48,8 @@ public class TestClipboard
 	private PackageNode aPackage2;
 	private ClassNode aClass1;
 	private ClassNode aClass2;
-	private ClassRelationshipEdge aEdge1;
-	private ClassRelationshipEdge aEdge2;
+	private DependencyEdge aEdge1;
+	private DependencyEdge aEdge2;
 	private SelectionList aSelectionList;
 	private ClassDiagramGraph aClassDiagramGraph;
 	
@@ -66,9 +66,9 @@ public class TestClipboard
 		MultiLineString c2 = new MultiLineString();
 		c2.setText("c2");
 		aClass2.setName(c2);
-		aEdge1 = new ClassRelationshipEdge();
+		aEdge1 = new DependencyEdge();
 		aEdge1.setMiddleLabel("e1");
-		aEdge2 = new ClassRelationshipEdge();
+		aEdge2 = new DependencyEdge();
 		aEdge2.setMiddleLabel("e2");
 		
 		aPackage1 = new PackageNode();
@@ -120,7 +120,7 @@ public class TestClipboard
 		Iterator<Node> nodes = aClipboard.getNodes().iterator(); nodes.next();
 		assertEquals("c2", ((ClassNode)nodes.next()).getName().toString());
 		assertEquals(1, aClipboard.getEdges().size());
-		assertEquals("e1", ((ClassRelationshipEdge)aClipboard.getEdges().iterator().next()).getMiddleLabel());
+		assertEquals("e1", ((DependencyEdge)aClipboard.getEdges().iterator().next()).getMiddleLabel());
 		assertFalse( aEdge1 == aClipboard.getEdges().iterator().next());
 	}
 	
@@ -151,8 +151,8 @@ public class TestClipboard
 		assertEquals("c2", cc2.getName().toString());
 		assertEquals(2, aClipboard.getEdges().size());
 		Iterator<Edge> edgesIt = aClipboard.getEdges().iterator();
-		ClassRelationshipEdge clonedE1 = (ClassRelationshipEdge)edgesIt.next();
-		ClassRelationshipEdge clonedE2 = (ClassRelationshipEdge)edgesIt.next();
+		DependencyEdge clonedE1 = (DependencyEdge)edgesIt.next();
+		DependencyEdge clonedE2 = (DependencyEdge)edgesIt.next();
 		assertEquals("e1", clonedE1.getMiddleLabel());
 		assertEquals("e2", clonedE2.getMiddleLabel());
 		assertEquals(cc1, clonedE1.getStart());
@@ -193,7 +193,7 @@ public class TestClipboard
 		assertEquals(3, list.size());
 		Collection<Edge> edges = aClassDiagramGraph.getEdges();
 		assertEquals(1, edges.size());
-		assertEquals("e1", ((ClassRelationshipEdge)edges.iterator().next()).getMiddleLabel());
+		assertEquals("e1", ((DependencyEdge)edges.iterator().next()).getMiddleLabel());
 	}
 	
 	@Test
@@ -216,7 +216,7 @@ public class TestClipboard
 		ClassNode class2Clone = (ClassNode)packageNode.getChildren().get(1);
 		assertEquals("c2", class2Clone.getName().toString());
 		Collection<Edge> edges = aClassDiagramGraph.getEdges();
-		ClassRelationshipEdge edge1Clone = (ClassRelationshipEdge)edges.iterator().next();
+		DependencyEdge edge1Clone = (DependencyEdge)edges.iterator().next();
 		assertEquals(class1Clone, edge1Clone.getStart());
 		assertEquals(class2Clone, edge1Clone.getEnd());
 	}
