@@ -83,31 +83,6 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
 	}
 	
 	/**
-	 * A segmented solid edge with a triangle arrowhead representing inheritance from a class.
-	 * @return a new inheritance-styled edge
-	 */
-	public static ClassRelationshipEdge createInheritanceEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.VHV);
-		cre.setEndArrowHead(ArrowHead.TRIANGLE);
-		return cre;
-	}
-	
-	/**
-	 * A segmented dotted edge with a triangle arrowhead representing implementation of an interface.
-	 * @return a new interface-styled edge
-	 */
-	public static ClassRelationshipEdge createInterfaceInheritanceEdge()
-	{
-		ClassRelationshipEdge cre =  new ClassRelationshipEdge();
-		cre.setBentStyle(BentStyle.VHV);
-		cre.setLineStyle(LineStyle.DOTTED);
-		cre.setEndArrowHead(ArrowHead.TRIANGLE);
-		return cre;
-	}
-	
-	/**
 	 * A straight dotted edge with a v arrowhead and proper middle label representing extending the relation between two classes.
 	 * @return a new extending-relationship-style edge
 	 */
