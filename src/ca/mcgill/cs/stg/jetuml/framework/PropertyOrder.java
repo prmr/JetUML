@@ -1,6 +1,9 @@
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.util.HashMap;
+
+import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 
 /**
  * Singleton object that can return the presentation
@@ -10,7 +13,7 @@ import java.util.HashMap;
  * @author Martin P. Robillard
  *
  */
-public class PropertyOrder
+public final class PropertyOrder
 {
 	private static final PropertyOrder INSTANCE = new PropertyOrder();
 	
@@ -23,6 +26,9 @@ public class PropertyOrder
 	}
 	
 	private HashMap<Class<?>, HashMap<String, Integer>> aProperties = new HashMap<>();
+	
+	private PropertyOrder()
+	{}
 	
 	/**
 	 * @return The singleton instance of PropertyOrder
