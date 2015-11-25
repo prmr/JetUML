@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -57,14 +58,14 @@ import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
  *  allow editing them.
  *  
  *  @author Cay Horstmann - initial version
- *  @author Martin P. Robillard - property sequencing
- *  @author Joel Cheverie - string handling
+ *  @author Martin P. Robillard - property name sequencing and externalization
  *  @author Eric Quinn - change listening
  */
 @SuppressWarnings("serial")
 public class PropertySheet extends JPanel
 {
 	private static Map<Class<?>, Class<?>> editors;
+	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.graph.GraphElementProperties");
 
 	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
 	
@@ -107,7 +108,7 @@ public class PropertySheet extends JPanel
 				PropertyEditor editor = getEditor(pBean, descriptor);
 				if(editor != null )
 				{
-					add(new JLabel(toTitleCase(descriptor.getName())));
+					add(new JLabel(getPropertyName(pBean.getClass(), descriptor.getName())));
 					add(getEditorComponent(editor));
 				}
 			}		
@@ -256,41 +257,34 @@ public class PropertySheet extends JPanel
 	}
 
 	/**
-	 * @param pInput is a String to format into a Title
-	 * @return is a String that is in Title Format.
-	 */
-	public static String toTitleCase(String pInput) 
-	{
-	    StringBuilder titleCase = new StringBuilder();
-	    boolean nextTitleCase = true;
-
-	    for(char c : pInput.toCharArray()) 
-	    {
-	        if(Character.isSpaceChar(c)) 
-	        {
-	            nextTitleCase = true;
-	        } 
-	        else if (nextTitleCase) 
-	        {
-	            Character d = new Character(c);
-	            d = Character.toTitleCase(d);
-	            nextTitleCase = false;
-	            titleCase.append(d);
-	            continue;
-	        }
-
-	        titleCase.append(c);
-	    }
-
-	    return titleCase.toString();
-	}
-	
-	/**
 	 * @return aEmpty whether this PropertySheet has fields to edit or not.
 	 */
 	public boolean isEmpty()
 	{
 		return getComponentCount() == 0;
+	}
+	
+	/*
+	 * Obtains the externalized name of a property and takes account
+	 * of property inheritance: if a property is not found on a class,
+	 * looks for the property name is superclasses.
+	 */
+	private static String getPropertyName(Class<?> pClass, String pProperty)
+	{
+		assert pProperty != null;
+		if( pClass == null )
+		{
+			return pProperty;
+		}
+		String key = pClass.getSimpleName() + "." + pProperty;
+		if( !aPropertyNames.containsKey(key) )
+		{
+			return getPropertyName(pClass.getSuperclass(), pProperty);
+		}
+		else
+		{
+			return aPropertyNames.getString(key);
+		}
 	}
 }
 
