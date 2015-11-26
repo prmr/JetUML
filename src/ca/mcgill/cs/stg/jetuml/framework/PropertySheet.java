@@ -57,13 +57,20 @@ import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
  *  object detected through the JavaBeans framework and 
  *  allow editing them.
  *  
+ *  All writable properties of an object will be presented
+ *  in the property sheet unless a) there is no corresponding
+ *  editor detected for them, or b) their name (specified in
+ *  GraphElementProperties.properties) is the same as the 
+ *  string INVISIBLE_PROPERTY_MARKER
+ *  
  *  @author Cay Horstmann - initial version
- *  @author Martin P. Robillard - property name sequencing and externalization
+ *  @author Martin P. Robillard - property name sequencing and externalization, visibility
  *  @author Eric Quinn - change listening
  */
 @SuppressWarnings("serial")
 public class PropertySheet extends JPanel
 {
+	private static final String INVISIBLE_PROPERTY_MARKER = "**INVISIBLE**";
 	private static Map<Class<?>, Class<?>> editors;
 	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.graph.GraphElementProperties");
 
@@ -106,9 +113,10 @@ public class PropertySheet extends JPanel
 			for(PropertyDescriptor descriptor : descriptors)
 			{
 				PropertyEditor editor = getEditor(pBean, descriptor);
-				if(editor != null )
+				String propertyName = getPropertyName(pBean.getClass(), descriptor.getName());
+				if(editor != null && !propertyName.equals(INVISIBLE_PROPERTY_MARKER))
 				{
-					add(new JLabel(getPropertyName(pBean.getClass(), descriptor.getName())));
+					add(new JLabel(propertyName));
 					add(getEditorComponent(editor));
 				}
 			}		
