@@ -57,22 +57,24 @@ public class SequenceDiagramGraph extends Graph
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		if(pNode instanceof CallNode) 
+		if( pNode instanceof ImplicitParameterNode && getRootNodes().isEmpty())
 		{
-			// We need this case because of the difference between cut and delete when the 
-			// selection contains both a parent and its children. The issue should go away
-			// when we make it impossible to select both a parent and its children.
-			ImplicitParameterNode parent = (ImplicitParameterNode)((CallNode) pNode).getParent();
-			if( parent != null )
-			{
-				if( !parent.getChildren().contains(pNode))
-				{
-					parent.addChild((ChildNode)pNode);
-				}
-				super.add(pNode, pPoint);
-				return true;
-			}
-			// End of hack
+			// Special case, if this is the first implicit parameter node in the graph, 
+			// we give it a default call node.
+			super.add(pNode, pPoint);
+			CallNode callNode = new CallNode();
+			ImplicitParameterNode node = (ImplicitParameterNode)pNode;
+			node.addChild(callNode);
+			super.add(callNode, pPoint);
+			// Because at this point the layout was not done for either nodes, the 
+			// Y coordinate calculations are wrong, and we have to move the node
+			// back up to a default position.
+			callNode.setBounds(new Rectangle2D.Double(callNode.getBounds().getX(), node.getTopRectangle().getHeight(), 
+					callNode.getBounds().getWidth(), callNode.getBounds().getHeight()));
+			return true;
+		}
+		else if(pNode instanceof CallNode) 
+		{
 			ImplicitParameterNode target = insideTargetArea(pPoint);
 			if( target != null )
 			{
