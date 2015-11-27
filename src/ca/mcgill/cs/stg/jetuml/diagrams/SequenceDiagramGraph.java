@@ -121,9 +121,11 @@ public class SequenceDiagramGraph extends Graph
 		{
 			lReturn = false;
 		}
-		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge)
+		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2 instanceof CallNode)
 		{
-			lReturn = pNode2 == getCaller(pNode1);
+			// The end node has to be the caller, and adding a return edge on the same object is not allowed.
+			lReturn = pNode2 == getCaller(pNode1) && 
+					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2).getParent());
 		}
 		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
 		{
