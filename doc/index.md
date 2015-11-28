@@ -26,11 +26,14 @@ The following principles guide the development of JetUML:
 
 * **No dependencies:** The application depends on no external libraries. This decision is to minimize the development and evolution cost, minimize the risk of having to do effort-intensive library adaptations, and lower entry barriers for contributors.
 * **Minimalist feature set:** The application only supports core UML diagramming features. 
+* **Violate Encapsulation for Testing:** To goal for the design is to support the highest possible level of encapsulation, and this implies the most restrictive access modifiers. When necessary, the 
+classes in the `test` source folders can use reflection to get around accessibility restrictions.
 
 ## Functional View
 The functional view is split by functional concern.
 
  * [Frame management](functional/frameManagement.md)
+ * [Edge hierarchy](functional/EdgeHierarchy.md)
  
 ## Glossary
 The glossary is limited to terms that are unique to JetUML or have a speific meaning in the context of the JetUML project.
