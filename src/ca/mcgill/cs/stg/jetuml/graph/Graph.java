@@ -271,6 +271,29 @@ public abstract class Graph
 		}
 		return toRet;
 	}
+	
+	/**
+	 * Returns true iif there exists an edge of type pType between
+	 * nodes pStart and pEnd. The direction matter, and the type
+	 * testing is for the exact type pType, without using polymorphism.
+	 * @param pType The type of edge to check for.
+	 * @param pStart The start node.
+	 * @param pEnd The end node.
+	 * @return True if and only if there is an edge of type pType that
+	 * starts at node pStart and ends at node pEnd.
+	 */
+	public boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	{
+		assert pType !=null && pStart != null && pEnd != null;
+		for( Edge edge : getEdges() )
+		{
+			if( edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Draws the graph.
@@ -601,7 +624,8 @@ public abstract class Graph
 
 	/**
 	 * Adds an edge to this graph. This method should
-	 * only be called by a decoder when reading a data file.
+	 * only be called by a decoder when reading a data file or
+	 * by testing code.
 	 * @param pEdge the edge to add
 	 * @param pStart the start node of the edge
 	 * @param pEnd the end node of the edge

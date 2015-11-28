@@ -9,8 +9,6 @@ import java.awt.geom.Rectangle2D;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 public class TestNoteEdge
 {
 	private NoteNode aNoteNode;

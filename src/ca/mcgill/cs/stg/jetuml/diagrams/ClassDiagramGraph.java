@@ -88,6 +88,21 @@ public class ClassDiagramGraph extends Graph
 					pPotentialChild instanceof PackageNode ;
 	}
 	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
+		{
+			return false;
+		}
+		if( existsEdge(pEdge.getClass(), pNode1, pNode2))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	/* Find if the node to be added should be added to a package. Returns null if not. 
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the graph.
