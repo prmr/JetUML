@@ -42,6 +42,7 @@ public class CallEdge extends SegmentedLabeledEdge
 	public CallEdge()
 	{
 		setSignal(false);
+		aMiddleLabel = "";
 	}
 	
 	/**
