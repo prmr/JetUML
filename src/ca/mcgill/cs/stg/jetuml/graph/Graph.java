@@ -653,6 +653,10 @@ public abstract class Graph
 		{
 			return false;
 		}
+		if( existsEdge(pEdge.getClass(), pNode1, pNode2))
+		{
+			return false;
+		}
 		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;

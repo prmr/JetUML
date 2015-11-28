@@ -95,10 +95,6 @@ public class ClassDiagramGraph extends Graph
 		{
 			return false;
 		}
-		if( existsEdge(pEdge.getClass(), pNode1, pNode2))
-		{
-			return false;
-		}
 		
 		return true;
 	}
