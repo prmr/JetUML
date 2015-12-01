@@ -29,7 +29,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
@@ -106,18 +105,18 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-		ArrayList<Point2D> points = getPoints();
+		Point2D[] points = getPoints();
 
 		Stroke oldStroke = pGraphics2D.getStroke();
 		pGraphics2D.setStroke(obtainLineStyle().getStroke());
 		pGraphics2D.draw(getSegmentPath());
 		pGraphics2D.setStroke(oldStroke);
-		obtainStartArrowHead().draw(pGraphics2D, points.get(1), points.get(0));
-		obtainEndArrowHead().draw(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1));
+		obtainStartArrowHead().draw(pGraphics2D, points[1], points[0]);
+		obtainEndArrowHead().draw(pGraphics2D, points[points.length - 2], points[points.length - 1]);
 
-		drawString(pGraphics2D, points.get(1), points.get(0), obtainStartArrowHead(), obtainStartLabel(), false);
-		drawString(pGraphics2D, points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, obtainMiddleLabel(), true);
-		drawString(pGraphics2D, points.get(points.size() - 2), points.get(points.size() - 1), obtainEndArrowHead(), obtainEndLabel(), false);
+		drawString(pGraphics2D, points[1], points[0], obtainStartArrowHead(), obtainStartLabel(), false);
+		drawString(pGraphics2D, points[points.length / 2 - 1], points[points.length / 2], null, obtainMiddleLabel(), true);
+		drawString(pGraphics2D, points[points.length - 2], points[points.length - 1], obtainEndArrowHead(), obtainEndLabel(), false);
 	}
 
 	/**
@@ -233,11 +232,11 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	@Override
 	public Rectangle2D getBounds()
 	{
-		ArrayList<Point2D> points = getPoints();
+		Point2D[] points = getPoints();
 		Rectangle2D bounds = super.getBounds();
-		bounds.add(getStringBounds(points.get(1), points.get(0), obtainStartArrowHead(), obtainStartLabel(), false));
-		bounds.add(getStringBounds(points.get(points.size() / 2 - 1), points.get(points.size() / 2), null, obtainMiddleLabel(), true));
-		bounds.add(getStringBounds(points.get(points.size() - 2), points.get(points.size() - 1), obtainEndArrowHead(), obtainEndLabel(), false));
+		bounds.add(getStringBounds(points[1], points[0], obtainStartArrowHead(), obtainStartLabel(), false));
+		bounds.add(getStringBounds(points[points.length / 2 - 1], points[points.length / 2], null, obtainMiddleLabel(), true));
+		bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], obtainEndArrowHead(), obtainEndLabel(), false));
 		return bounds;
 	}
 
@@ -245,21 +244,21 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	protected Shape getShape()
 	{
 		GeneralPath path = getSegmentPath();
-		ArrayList<Point2D> points = getPoints();
-		path.append(obtainStartArrowHead().getPath(points.get(1), points.get(0)), false);
-		path.append(obtainEndArrowHead().getPath(points.get(points.size() - 2), points.get(points.size() - 1)), false);
+		Point2D[] points = getPoints();
+		path.append(obtainStartArrowHead().getPath(points[1], points[0]), false);
+		path.append(obtainEndArrowHead().getPath(points[points.length - 2], points[points.length - 1]), false);
 		return path;
 	}
 
 	private GeneralPath getSegmentPath()
 	{
-		ArrayList<Point2D> points = getPoints();
+		Point2D[] points = getPoints();
 		GeneralPath path = new GeneralPath();
-		Point2D p = points.get(points.size() - 1);
+		Point2D p = points[points.length - 1];
 		path.moveTo((float) p.getX(), (float) p.getY());
-		for(int i = points.size() - 2; i >= 0; i--)
+		for(int i = points.length - 2; i >= 0; i--)
 		{
-			p = points.get(i);
+			p = points[i];
 			path.lineTo((float) p.getX(), (float) p.getY());
 		}
 		return path;
@@ -268,8 +267,8 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	@Override
 	public Line2D getConnectionPoints()
 	{
-		ArrayList<Point2D> points = getPoints();
-		return new Line2D.Double(points.get(0), points.get(points.size() - 1));
+		Point2D[] points = getPoints();
+		return new Line2D.Double(points[0], points[points.length - 1]);
 	}
 
 	/**
@@ -277,5 +276,5 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	 * @return an array list of Point2D objects, containing
 	 * the corner points
 	 */
-	protected abstract ArrayList<Point2D> getPoints();
+	protected abstract Point2D[] getPoints();
 }

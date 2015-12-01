@@ -79,7 +79,7 @@ public class ReturnEdge extends SegmentedLabeledEdge
 	}
 
 	@Override
-	protected ArrayList<Point2D> getPoints()
+	protected Point2D[] getPoints()
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
 		Node endNode = getEnd();
@@ -100,6 +100,6 @@ public class ReturnEdge extends SegmentedLabeledEdge
 			lReturn.add(new Point2D.Double(start.getX(), start.getMaxY()));
 			lReturn.add(new Point2D.Double(end.getMaxX(), start.getMaxY()));
 		}
-		return lReturn;
+		return (Point2D[])lReturn.toArray(new Point2D[lReturn.size()]);
 	}
 }

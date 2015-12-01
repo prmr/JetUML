@@ -22,9 +22,9 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 /**
  * A strategy for drawing a segmented line between two nodes.
@@ -42,44 +42,43 @@ public interface SegmentationStyle
      * @return an array list of points at which to bend the
      * segmented line joining the two nodes
 	 */
-	ArrayList<Point2D> getPath(Node pStart, Node pEnd);
-	
-	
+	Point2D[] getPath(Node pStart, Node pEnd);
 	
 	/**
-	 * Creates a straight (unsegmented) line (except
-	 * in the case of self-paths).
+	 * Creates a straight (unsegmented) line by choosing
+	 * the connection points that induce the shortest path
+	 * between two nodes (except in the case of self-paths). 
 	 */
 	class Straight implements SegmentationStyle
 	{
 		@Override
-		public ArrayList<Point2D> getPath(Node pStart, Node pEnd)
+		public Point2D[] getPath(Node pStart, Node pEnd)
 		{
-			ArrayList<Point2D> r = new ArrayList<>();
-			Point2D[] a = Utilities.connectionPoints(pStart);
-		    Point2D[] b = Utilities.connectionPoints(pEnd);
-		    Point2D p = a[0];
-		    Point2D q = b[0];
-		    double distance = p.distance(q);
-		    if(distance == 0)
+			if( pStart == pEnd )
+			{
+				return Utilities.createSelfPath(pStart);
+			}
+			Point2D[] startConnectionPoints = Utilities.connectionPoints(pStart);
+		    Point2D[] endConnectionPoints = Utilities.connectionPoints(pEnd);
+		    Point2D start = startConnectionPoints[0];
+		    Point2D end = endConnectionPoints[0];
+		    double distance = start.distance(end);
+		    
+		    for( Point2D startPoint : startConnectionPoints)
 		    {
-			   return null;
+		    	for( Point2D endPoint : endConnectionPoints )
+		    	{
+		    		double newDistance = startPoint.distance(endPoint);
+		    		if( newDistance < distance )
+		    		{
+		    			start = startPoint;
+		    			end = endPoint;
+		    			distance = newDistance;
+		    		}
+		    	}
 		    }
-		    for(int i = 0; i < a.length; i++) 
-		    {
-			   for(int j = 0; j < b.length; j++)
-			   {
-				   double d = a[i].distance(b[j]);
-				   if(d < distance)
-				   {
-					   p = a[i]; q = b[j];
-					   distance = d;
-				   }
-			   }
-		   }
-		   r.add(p);
-		   r.add(q);
-		   return r;
+
+		    return new Point2D[] {start, end};
 		}
 		
 	}
@@ -90,6 +89,8 @@ public interface SegmentationStyle
  */
 final class Utilities
 {
+	private static final int MARGIN = 20;
+	
 	private Utilities(){}
 	
 	static Point2D[] connectionPoints(Node pNode)
@@ -98,5 +99,47 @@ final class Utilities
 							   pNode.getConnectionPoint(Direction.NORTH),
 							   pNode.getConnectionPoint(Direction.EAST),
 							   pNode.getConnectionPoint(Direction.SOUTH)};
+	}
+	
+	/*
+	 * The idea for creating a self path is to find the top left corner of 
+	 * the actual figure and walk back N pixels away from it.
+	 * Assumes that pNode is composed of rectangles with sides at least
+	 * N wide.
+	 */
+	static Point2D[] createSelfPath(Node pNode)
+	{
+		Point2D topRight = findTopRightCorner(pNode);
+		double x1 = topRight.getX() - MARGIN;
+		double y1 = topRight.getY();
+		double x2 = x1;
+		double y2 = y1 - MARGIN;
+		double x3 = x2 + MARGIN * 2;
+		double y3 = y2;
+		double x4 = x3;
+		double y4 = topRight.getY() + MARGIN;
+		double x5 = topRight.getX();
+		double y5 = y4;
+		
+		return new Point2D[] {new Point2D.Double(x1, y1), new Point2D.Double(x2, y2),
+							  new Point2D.Double(x3, y3), new Point2D.Double(x4, y4), new Point2D.Double(x5, y5)};
+	}
+	
+	/*
+	 * This solution is very complex if we can't assume any knowledge
+	 * of Node types and only rely on getConnectionPoints, but it can
+	 * be made quite optimal in exchange for an unpretty dependency to
+	 * specific node types.
+	 */
+	private static Point2D findTopRightCorner(Node pNode)
+	{
+		if( pNode instanceof PackageNode )
+		{
+			return ((PackageNode)pNode).getTopRightCorner();
+		}
+		else
+		{
+			return new Point2D.Double(pNode.getBounds().getMaxX(), pNode.getBounds().getMinY());
+		}
 	}
 }

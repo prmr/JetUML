@@ -101,7 +101,7 @@ public class CallEdge extends SegmentedLabeledEdge
 	}
 
 	@Override
-	protected ArrayList<Point2D> getPoints()
+	protected Point2D[] getPoints()
 	{
 		ArrayList<Point2D> a = new ArrayList<>();
 		Node endNode = getEnd();
@@ -139,7 +139,7 @@ public class CallEdge extends SegmentedLabeledEdge
 			}
 			a.add(endPoint);
 		}
-		return a;
+		return (Point2D[])a.toArray(new Point2D[a.size()]);
 	}
 }
 

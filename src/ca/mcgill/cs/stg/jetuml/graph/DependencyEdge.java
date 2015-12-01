@@ -26,10 +26,8 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 
@@ -58,9 +56,8 @@ public class DependencyEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public ArrayList<Point2D> getPoints()
+	public Point2D[] getPoints()
 	{
-//		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
-		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
+		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
    }
 }

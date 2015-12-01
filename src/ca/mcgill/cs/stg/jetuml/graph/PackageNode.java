@@ -107,6 +107,15 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		return path;
 	}
 	
+	/**
+	 * @return The point that corresponds to the actual top right
+	 * corner of the figure (as opposed to bounds).
+	 */
+	public Point2D getTopRightCorner()
+	{
+		return new Point2D.Double(aBottom.getMaxX(), aBottom.getMinY());
+	}
+	
 	@Override
 	public Point2D getConnectionPoint(Direction pDirection)
 	{

@@ -26,7 +26,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
@@ -110,7 +109,7 @@ public class UseCaseDependencyEdge extends SegmentedLabeledEdge
 	}
 	
 	@Override
-	public ArrayList<Point2D> getPoints()
+	public Point2D[] getPoints()
 	{
 		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
    }

@@ -26,7 +26,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 
@@ -43,7 +42,7 @@ public class ObjectCollaborationEdge extends ClassRelationshipEdge
 	{}
 	
 	@Override
-	public ArrayList<Point2D> getPoints()
+	public Point2D[] getPoints()
 	{
 		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
    }

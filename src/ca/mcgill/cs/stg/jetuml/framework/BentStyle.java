@@ -51,12 +51,12 @@ public final class BentStyle
      * @return an array list of points at which to bend the
      * segmented line joining the two rectangles
 	 */
-	public ArrayList<Point2D> getPath(Rectangle2D pStart, Rectangle2D pEnd)
+	public Point2D[] getPath(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = getPath(this, pStart, pEnd);
 		if(r != null) 
 		{
-			return r;
+			return (Point2D[])r.toArray(new Point2D[r.size()]);
 		}
       
 		if(pStart.equals(pEnd)) 
@@ -81,9 +81,10 @@ public final class BentStyle
 		}
 		if (r != null) 
 		{
-			return r;
+			return (Point2D[])r.toArray(new Point2D[r.size()]);
 		}
-		return getPath(STRAIGHT, pStart, pEnd);
+		ArrayList<Point2D> list = getPath(STRAIGHT, pStart, pEnd);
+		return (Point2D[])list.toArray(new Point2D[list.size()]);
    }
 
 	/*
