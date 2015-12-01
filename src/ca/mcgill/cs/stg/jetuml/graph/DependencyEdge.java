@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 
 /**
  *  An edge that that represents a UML dependency
@@ -59,6 +60,7 @@ public class DependencyEdge extends ClassRelationshipEdge
 	@Override
 	public ArrayList<Point2D> getPoints()
 	{
+//		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
 		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
    }
 }

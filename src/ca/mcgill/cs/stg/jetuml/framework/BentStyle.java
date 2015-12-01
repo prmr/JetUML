@@ -141,7 +141,7 @@ public final class BentStyle
 	 * @param pEnd bounds of endiArrayList<Point2D> r = new ArrayList<>();ng Node
 	 * @return An ArrayList of points along the straight path between the nodes.
 	 */
-	public static ArrayList<Point2D> getPathStraight(Rectangle2D pStart, Rectangle2D pEnd)
+	private static ArrayList<Point2D> getPathStraight(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = new ArrayList<>();
 		Point2D[] a = connectionPoints(pStart);
@@ -175,7 +175,7 @@ public final class BentStyle
 	 * @param pEnd bounds of ending Node
 	 * @return An ArrayList of points along the HV path between the nodes.
 	 */
-	public static ArrayList<Point2D> getPathHV(Rectangle2D pStart, Rectangle2D pEnd)
+	private static ArrayList<Point2D> getPathHV(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = new ArrayList<>();
 		double x1;
@@ -217,7 +217,7 @@ public final class BentStyle
 	 * @param pEnd bounds of ending Node
 	 * @return An ArrayList of points along the VH path between the nodes.
 	 */
-	public static ArrayList<Point2D> getPathVH(Rectangle2D pStart, Rectangle2D pEnd)
+	private static ArrayList<Point2D> getPathVH(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = new ArrayList<>();
 		double x1 = pStart.getCenterX();
@@ -259,7 +259,7 @@ public final class BentStyle
 	 * @param pEnd bounds of ending Node
 	 * @return An ArrayList of points along the HVH path between the nodes.
 	 */
-	public static ArrayList<Point2D> getPathHVH(Rectangle2D pStart, Rectangle2D pEnd)
+	private static ArrayList<Point2D> getPathHVH(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = new ArrayList<>();
 		double x1;
@@ -300,7 +300,7 @@ public final class BentStyle
 	 * @param pEnd bounds of ending Node
 	 * @return An ArrayList of points along the VHV path between the nodes.
 	 */
-	public static ArrayList<Point2D> getPathVHV(Rectangle2D pStart, Rectangle2D pEnd)
+	private static ArrayList<Point2D> getPathVHV(Rectangle2D pStart, Rectangle2D pEnd)
 	{
 		ArrayList<Point2D> r = new ArrayList<>();
 		double x1 = pStart.getCenterX();
