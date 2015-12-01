@@ -28,7 +28,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
  *  An edge that that represents a UML association, with optional 
@@ -96,6 +96,6 @@ public class AssociationEdge extends ClassRelationshipEdge
 	@Override
 	public Point2D[] getPoints()
 	{
-		return BentStyle.HVH.getPath(getStart().getBounds(), getEnd().getBounds());
+		return SegmentationStyleFactory.createHVHStrategy().getPath(getStart(), getEnd());
    }
 }

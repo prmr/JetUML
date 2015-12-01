@@ -28,8 +28,8 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
@@ -100,6 +100,6 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	@Override
 	public Point2D[] getPoints()
 	{
-		return BentStyle.VHV.getPath(getStart().getBounds(), getEnd().getBounds());
+		return SegmentationStyleFactory.createVHVStrategy().getPath(getStart(), getEnd());
    }
 }

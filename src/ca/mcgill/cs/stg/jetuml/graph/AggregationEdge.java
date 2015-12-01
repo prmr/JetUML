@@ -28,7 +28,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
  *  An edge that that represents a UML aggregation or 
@@ -41,9 +41,9 @@ public class AggregationEdge extends ClassRelationshipEdge
 	 */
 	public enum Type 
 	{Aggregation, Composition}
-	
+
 	private Type aType = Type.Aggregation;
-	
+
 	/**
 	 * Creates an aggregation edge by specifying its type.
 	 * 
@@ -53,13 +53,13 @@ public class AggregationEdge extends ClassRelationshipEdge
 	{
 		aType = pType;
 	}
-	
+
 	/**
 	 * Creates an aggregation edge.
 	 */
 	public AggregationEdge()
 	{}
-	
+
 	/**
 	 * @return The type of aggregation relation.
 	 */
@@ -67,7 +67,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	{
 		return aType;
 	}
-	
+
 	/**
 	 * @param pType The type of aggregation relation.
 	 */
@@ -75,7 +75,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	{
 		aType = pType;
 	}
-	
+
 	@Override
 	protected ArrowHead obtainStartArrowHead()
 	{
@@ -88,10 +88,10 @@ public class AggregationEdge extends ClassRelationshipEdge
 			return ArrowHead.DIAMOND;
 		}
 	}
-	
+
 	@Override
 	public Point2D[] getPoints()
 	{
-		return BentStyle.HVH.getPath(getStart().getBounds(), getEnd().getBounds());
-   }
+		return SegmentationStyleFactory.createHVHStrategy().getPath(getStart(), getEnd());
+	}
 }
