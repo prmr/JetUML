@@ -50,6 +50,6 @@ public class UseCaseGeneralizationEdge extends SegmentedLabeledEdge
 	@Override
 	protected Point2D[] getPoints()
 	{
-		return SegmentationStyleFactory.createStraightStyle().getPath(getStart(), getEnd());
+		return SegmentationStyleFactory.createStraightStrategy().getPath(getStart(), getEnd());
 	}
 }
