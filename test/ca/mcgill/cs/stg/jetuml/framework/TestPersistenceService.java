@@ -198,7 +198,7 @@ public class TestPersistenceService
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
-		assertEquals(new Rectangle2D.Double(250,130,50,50),cr2.getBounds());
+		assertEquals(new Rectangle2D.Double(220,90,50,50),cr2.getBounds());
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
@@ -697,7 +697,7 @@ public class TestPersistenceService
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(500, 210, 80, 80), cr1.getBounds());
+		assertEquals(new Rectangle2D.Double(540, 150, 27, 140), cr1.getBounds());
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("", cr1.getEndLabel());
 		assertEquals("e1", cr1.getMiddleLabel().toString());

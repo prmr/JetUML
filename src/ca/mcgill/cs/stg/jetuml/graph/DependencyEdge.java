@@ -56,7 +56,7 @@ public class DependencyEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public Point2D[] getPoints()
+	protected Point2D[] getPoints()
 	{
 		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
    }

@@ -27,7 +27,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.BentStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 
 /**
  *  An edge that that represents a association between use cases.
@@ -42,8 +42,8 @@ public class UseCaseAssociationEdge extends SegmentedLabeledEdge
 	{}
 	
 	@Override
-	public Point2D[] getPoints()
+	protected Point2D[] getPoints()
 	{
-		return BentStyle.STRAIGHT.getPath(getStart().getBounds(), getEnd().getBounds());
-   }
+		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
+	}
 }

@@ -130,11 +130,7 @@ public final class BentStyle
       	{
       		r = getPathVHV(pStart, pEnd);
       	}
-	   if(r != null)
-	   {
-		   return r;
-	   }
-	   	return null;
+	   	return r;
 	}
 	
 	/**
