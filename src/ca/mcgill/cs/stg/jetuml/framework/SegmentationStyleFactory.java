@@ -39,6 +39,12 @@ public final class SegmentationStyleFactory
 	
 	private SegmentationStyleFactory(){}
 	
+	/*
+     * Creates the cascading structure between strategies. 1. Always check for a self-edge.
+     * Otherwise, implement the main strategy. If it does not work (returns null),
+     * check the alternate strategy. If that fails too, return a straight line
+     * (this should never return null).
+	 */
 	private static SegmentationStyle genericCreateStrategy( final SegmentationStyle pMain, final SegmentationStyle pAlternate)
 	{
 		return new SegmentationStyle()
@@ -159,10 +165,6 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd)
 		{
-			if( pStart == pEnd )
-			{
-				return createSelfPath(pStart);
-			}
 			Point2D[] startConnectionPoints = connectionPoints(pStart);
 		    Point2D[] endConnectionPoints = connectionPoints(pEnd);
 		    Point2D start = startConnectionPoints[0];
@@ -191,36 +193,32 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd)
 		{
-			if( pStart == pEnd )
-			{
-				return createSelfPath(pStart);
+			Point2D start = pStart.getConnectionPoint(Direction.EAST);
+			Point2D end = pEnd.getConnectionPoint(Direction.WEST);
+			
+			if( start.getX() + 2* MIN_SEGMENT <= end.getX() )
+			{ 	// There is enough space to create the segment, we keep this order
 			}
-			double x1;
-	  		double x2;
-	  		double y1 = pStart.getBounds().getCenterY();
-	  		double y2 = pEnd.getBounds().getCenterY();
-	  		if(pStart.getBounds().getMaxX() + 2 * MIN_SEGMENT <= pEnd.getBounds().getX())
-	  		{
-	  			x1 = pStart.getBounds().getMaxX();
-	  			x2 = pEnd.getBounds().getX();
-	  		}
-	  		else if(pEnd.getBounds().getMaxX() + 2 * MIN_SEGMENT <= pStart.getBounds().getX())
-	  		{
-	  			x1 = pStart.getBounds().getX();
-	  			x2 = pEnd.getBounds().getMaxX();
-	  		}
-	  		else 
-	  		{
+			else if( pEnd.getConnectionPoint(Direction.EAST).getX() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.WEST).getX() )
+			{ 	// The segment goes in the other direction
+				start = pStart.getConnectionPoint(Direction.WEST);
+				end = pEnd.getConnectionPoint(Direction.EAST);
+			}
+			else
+			{	// There is not enough space for either direction, return null.
 				return null;
 			}
-	  		if(Math.abs(y1 - y2) <= MIN_SEGMENT)
+			
+	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
 	  		{
-	  			return new Point2D[] {new Point2D.Double(x1, y2), new Point2D.Double(x2, y2) };
+	  			return new Point2D[] {new Point2D.Double(start.getX(), end.getY()), new Point2D.Double(end.getX(), end.getY()) };
 	  		}
 	  		else
 	  		{
-	  			return new Point2D[] { new Point2D.Double(x1, y1), new Point2D.Double((x1 + x2) / 2, y1),
-	  				new Point2D.Double((x1 + x2) / 2, y2), new Point2D.Double(x2, y2)};
+	  			return new Point2D[] { new Point2D.Double(start.getX(), start.getY()), 
+	  								   new Point2D.Double((start.getX() + end.getX()) / 2, start.getY()),
+	  								   new Point2D.Double((start.getX() + end.getX()) / 2, end.getY()), 
+	  								   new Point2D.Double(end.getX(), end.getY())};
 	  		}
 		}
 	}
@@ -230,36 +228,32 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd)
 		{
-			if( pStart == pEnd )
-			{
-				return createSelfPath(pStart);
+			Point2D start = pStart.getConnectionPoint(Direction.SOUTH);
+			Point2D end = pEnd.getConnectionPoint(Direction.NORTH);
+			
+			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )
+			{ 	// There is enough space to create the segment, we keep this order
 			}
-			double x1 = pStart.getBounds().getCenterX();
-	  		double x2 = pEnd.getBounds().getCenterX();
-	  		double y1;
-	  		double y2;
-	  		if(pStart.getBounds().getMaxY() + 2 * MIN_SEGMENT <= pEnd.getBounds().getY())
-	  		{
-	  			y1 = pStart.getBounds().getMaxY();
-	  			y2 = pEnd.getBounds().getY();
-	  		}
-	  		else if(pEnd.getBounds().getMaxY() + 2 * MIN_SEGMENT <= pStart.getBounds().getY())
-	  		{
-	  			y1 = pStart.getBounds().getY();
-	  			y2 = pEnd.getBounds().getMaxY();
-	  		}
-	  		else 
-	  		{
+			else if( pEnd.getConnectionPoint(Direction.SOUTH).getY() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.NORTH).getY() )
+			{ 	// The segment goes in the other direction
+				start = pStart.getConnectionPoint(Direction.NORTH);
+				end = pEnd.getConnectionPoint(Direction.SOUTH);
+			}
+			else
+			{	// There is not enough space for either direction, return null.
 				return null;
 			}
-	  		if(Math.abs(x1 - x2) <= MIN_SEGMENT)
+			
+	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
 	  		{
-	  			return new Point2D[] {new Point2D.Double(x2, y1), new Point2D.Double(x2, y2)};
+	  			return new Point2D[] {new Point2D.Double(end.getX(), start.getY()), new Point2D.Double(end.getX(), end.getY())};
 	  		}
 	  		else
 	  		{
-	  			return new Point2D[] {new Point2D.Double(x1, y1), new Point2D.Double(x1, (y1 + y2) / 2), 
-	  					new Point2D.Double(x2, (y1 + y2) / 2), new Point2D.Double(x2, y2)};
+	  			return new Point2D[] {new Point2D.Double(start.getX(), start.getY()), 
+	  								  new Point2D.Double(start.getX(), (start.getY() + end.getY()) / 2), 
+	  								  new Point2D.Double(end.getX(), (start.getY() + end.getY()) / 2), 
+	  								  new Point2D.Double(end.getX(), end.getY())};
 	  		}
 		}
 	}
