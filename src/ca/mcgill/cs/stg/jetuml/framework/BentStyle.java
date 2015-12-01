@@ -32,8 +32,6 @@ import java.util.ArrayList;
 public final class BentStyle
 {
 	public static final BentStyle STRAIGHT = new BentStyle();
-	public static final BentStyle HV = new BentStyle();
-	public static final BentStyle VH = new BentStyle();
 	public static final BentStyle HVH = new BentStyle();
 	public static final BentStyle VHV = new BentStyle();
 	
@@ -71,14 +69,6 @@ public final class BentStyle
 		{
 			r = getPath(HVH, pStart, pEnd);
 		}
-		else if (this == HV) 
-		{
-		r = getPath(VH, pStart, pEnd);
-		} 
-		else if (this == VH) 
-		{
-			r = getPath(HV, pStart, pEnd);
-		}
 		if (r != null) 
 		{
 			return (Point2D[])r.toArray(new Point2D[r.size()]);
@@ -114,14 +104,6 @@ public final class BentStyle
 	   {
 		   r = getPathStraight(pStart, pEnd);
 	   }
-       else if(pBent == HV)
-       {
-    	  r = getPathHV(pStart, pEnd);
-      	}
-      	else if(pBent == VH)
-      	{
-      		r = getPathVH(pStart, pEnd);
-      	}
       	else if(pBent == HVH)
       	{
       		r = getPathHVH(pStart, pEnd);
@@ -165,90 +147,6 @@ public final class BentStyle
 	   r.add(p);
 	   r.add(q);
 	   return r;
-	}
-	
-	/**
-	 * @param pStart bounds of starting Node
-	 * @param pEnd bounds of ending Node
-	 * @return An ArrayList of points along the HV path between the nodes.
-	 */
-	private static ArrayList<Point2D> getPathHV(Rectangle2D pStart, Rectangle2D pEnd)
-	{
-		ArrayList<Point2D> r = new ArrayList<>();
-		double x1;
-  	    double x2 = pEnd.getCenterX();
-  	    double y1 = pStart.getCenterY();
-  	    double y2;
-  	    if(x2 + MIN_SEGMENT <= pStart.getX()) 
-  	    {
-  		    x1 = pStart.getX();
-  	    }
-  	    else if(x2 - MIN_SEGMENT >= pStart.getMaxX()) 
-  	    {
-  		    x1 = pStart.getMaxX();
-  	    }
-  	    else 
-  	    {
-		   	return null;
-  	    }
-  	    if(y1 + MIN_SEGMENT <= pEnd.getY()) 
-  	    {
-  		    y2 = pEnd.getY();
-  	    } 
-  	    else if(y1 - MIN_SEGMENT >= pEnd.getMaxY()) 
-  	    {
-  		    y2 = pEnd.getMaxY();
-  	    }
-  	    else
-  	    {
-		 	return null;
-  	    }
-  	    r.add(new Point2D.Double(x1, y1));
-  	    r.add(new Point2D.Double(x2, y1));
-  	    r.add(new Point2D.Double(x2, y2));
-  	    return r;
-	}
-	
-	/**
-	 * @param pStart bounds of starting Node
-	 * @param pEnd bounds of ending Node
-	 * @return An ArrayList of points along the VH path between the nodes.
-	 */
-	private static ArrayList<Point2D> getPathVH(Rectangle2D pStart, Rectangle2D pEnd)
-	{
-		ArrayList<Point2D> r = new ArrayList<>();
-		double x1 = pStart.getCenterX();
-  		double x2;
-  		double y1;
-  		double y2 = pEnd.getCenterY();
-  		if(x1 + MIN_SEGMENT <= pEnd.getX()) 
-  		{
-  			x2 = pEnd.getX();
-  		}
-  		else if(x1 - MIN_SEGMENT >= pEnd.getMaxX()) 
-  		{
-  			x2 = pEnd.getMaxX();
-  		}
-  		else 
-  		{
-  			return null;
-  		}
-  		if(y2 + MIN_SEGMENT <= pStart.getY()) 
-  		{
-			y1 = pStart.getY();
-		}
-  		else if(y2 - MIN_SEGMENT >= pStart.getMaxY()) 
-  		{
-  			y1 = pStart.getMaxY();
-  		} 
-  		else 
-  		{
-  			return null;
-  		}
-  		r.add(new Point2D.Double(x1, y1));
-  		r.add(new Point2D.Double(x1, y2));
-  		r.add(new Point2D.Double(x2, y2));
-  		return r;
 	}
 	
 	/**
@@ -341,14 +239,14 @@ public final class BentStyle
 		{
 			returnString = "Straight";
 		}
-		else if( this == HV )
-		{
-			returnString = "HV";
-		}
-		else if( this == VH )
-		{
-			returnString = "VH";
-		}
+//		else if( this == HV )
+//		{
+//			returnString = "HV";
+//		}
+//		else if( this == VH )
+//		{
+//			returnString = "VH";
+//		}
 		else if( this == HVH)
 		{
 			returnString = "HVH";

@@ -28,7 +28,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
  *  An edge that that represents a generalization of a use case.
@@ -50,6 +50,6 @@ public class UseCaseGeneralizationEdge extends SegmentedLabeledEdge
 	@Override
 	protected Point2D[] getPoints()
 	{
-		return new SegmentationStyle.Straight().getPath(getStart(), getEnd());
+		return SegmentationStyleFactory.createStraightStyle().getPath(getStart(), getEnd());
 	}
 }
