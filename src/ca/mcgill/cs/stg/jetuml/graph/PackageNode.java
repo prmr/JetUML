@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
+import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
@@ -103,6 +105,29 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		path.append(aTop, false);
 		path.append(aBottom, false);
 		return path;
+	}
+	
+	@Override
+	public Point2D getConnectionPoint(Direction pDirection)
+	{
+		Point2D connectionPoint = super.getConnectionPoint(pDirection);
+		if( connectionPoint.getY() < aBottom.getMinY() && aTop.getMaxX() < connectionPoint.getX() )
+		{
+			// The connection point falls in the empty top-right corner, re-compute it so
+			// it intersects the top of the bottom rectangle (basic triangle proportions)
+			double delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenterX()) * 2 / 
+					getBounds().getHeight();
+			double newX = connectionPoint.getX() - delta;
+			if( newX < aTop.getMaxX() )
+			{
+				newX = aTop.getMaxX() + 1;
+			}
+			return new Point2D.Double(newX, aBottom.getMinY());	
+		}
+		else
+		{
+			return connectionPoint;
+		}
 	}
 
 	@Override
