@@ -95,6 +95,10 @@ public class ClassDiagramGraph extends Graph
 		{
 			return false;
 		}
+		if( pEdge instanceof GeneralizationEdge && pNode1 == pNode2 )
+		{
+			return false;
+		}
 		
 		return true;
 	}
@@ -118,7 +122,7 @@ public class ClassDiagramGraph extends Graph
 			return null;
 		}
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<Node> children = new ArrayList(((PackageNode)container).getChildren());
+		List<Node> children = new ArrayList(container.getChildren());
 		if( children.size() == 0 )
 		{
 			return container;
