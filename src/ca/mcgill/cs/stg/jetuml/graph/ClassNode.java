@@ -162,9 +162,9 @@ public class ClassNode extends RectangularNode implements ChildNode
 	public ClassNode clone()
 	{
 		ClassNode cloned = (ClassNode)super.clone();
-		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aMethods = (MultiLineString)aMethods.clone();
-		cloned.aAttributes = (MultiLineString)aAttributes.clone();
+		cloned.aName = aName.clone();
+		cloned.aMethods = aMethods.clone();
+		cloned.aAttributes = aAttributes.clone();
 		return cloned;
 	}
 

@@ -92,7 +92,7 @@ public class PropertySheet extends JPanel
 		setLayout(new FormLayout());
 		try
 		{
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])Introspector.getBeanInfo(pBean.getClass()).getPropertyDescriptors().clone();
+			PropertyDescriptor[] descriptors = Introspector.getBeanInfo(pBean.getClass()).getPropertyDescriptors().clone();
 			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
 			{
 				public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
@@ -151,7 +151,7 @@ public class PropertySheet extends JPanel
 			Class<?> editorClass = pDescriptor.getPropertyEditorClass();
 			if(editorClass == null && editors.containsKey(type))
 			{
-				editorClass = (Class<?>) editors.get(type);
+				editorClass = editors.get(type);
 			}
 			if(editorClass != null)
 			{

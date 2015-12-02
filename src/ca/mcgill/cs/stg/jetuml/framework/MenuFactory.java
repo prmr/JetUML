@@ -59,7 +59,7 @@ class MenuFactory
 	 */
 	public JMenuItem createMenuItem(String pPrefix, Object pTarget, String pMethodName)
 	{
-		return createMenuItem(pPrefix, (ActionListener) EventHandler.create(ActionListener.class, pTarget, pMethodName));
+		return createMenuItem(pPrefix, EventHandler.create(ActionListener.class, pTarget, pMethodName));
 	}
 
 	/**

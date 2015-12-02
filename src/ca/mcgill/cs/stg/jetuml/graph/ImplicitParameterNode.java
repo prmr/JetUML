@@ -150,7 +150,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	public ImplicitParameterNode clone()
 	{
 		ImplicitParameterNode cloned = (ImplicitParameterNode) super.clone();
-		cloned.aName = (MultiLineString) aName.clone();
+		cloned.aName = aName.clone();
 		cloned.aCallNodes = new ArrayList<>();
 		for( ChildNode child : aCallNodes )
 		{

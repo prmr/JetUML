@@ -195,8 +195,8 @@ public class FieldNode extends RectangularNode implements ChildNode
 	public FieldNode clone()
 	{
 		FieldNode cloned = (FieldNode)super.clone();
-		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aValue = (MultiLineString)aValue.clone();
+		cloned.aName = aName.clone();
+		cloned.aValue = aValue.clone();
 		return cloned;
 	}
 

@@ -100,6 +100,6 @@ public class ReturnEdge extends SegmentedLabeledEdge
 			lReturn.add(new Point2D.Double(start.getX(), start.getMaxY()));
 			lReturn.add(new Point2D.Double(end.getMaxX(), start.getMaxY()));
 		}
-		return (Point2D[])lReturn.toArray(new Point2D[lReturn.size()]);
+		return lReturn.toArray(new Point2D[lReturn.size()]);
 	}
 }

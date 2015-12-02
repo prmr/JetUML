@@ -56,7 +56,7 @@ public class WelcomeTab extends JInternalFrame
 	private static final int FOOT_BORDER_MARGIN = 10;
 	private static final int FONT_SIZE = 25;
 	private ResourceBundle aWelcomeResources;
-    private JPanel aFootTextPanel;;
+    private JPanel aFootTextPanel;
     private JPanel aRightTitlePanel;
     private JPanel aLeftTitlePanel;
     private JPanel aLeftPanel;
@@ -80,7 +80,7 @@ public class WelcomeTab extends JInternalFrame
 	    setLayout(new BorderLayout());
 	    
 	    BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
-	    Container north = (Container)ui.getNorthPane();
+	    Container north = ui.getNorthPane();
 	    north.remove(0);
 	    north.validate();
 	    north.repaint();

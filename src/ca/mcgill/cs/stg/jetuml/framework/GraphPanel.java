@@ -473,7 +473,7 @@ public class GraphPanel extends JPanel
 							if(tool instanceof Node)
 							{
 								Node prototype = (Node) tool;
-								Node newNode = (Node) prototype.clone();
+								Node newNode = prototype.clone();
 								boolean added = aGraph.add(newNode, mousePoint);
 								if(added)
 								{
@@ -520,7 +520,7 @@ public class GraphPanel extends JPanel
 			else if(tool instanceof Node)
 			{
 				Node prototype = (Node) tool;
-				Node newNode = (Node) prototype.clone();
+				Node newNode = prototype.clone();
 				boolean added = aGraph.add(newNode, mousePoint);
 				if(added)
 				{
@@ -594,7 +594,7 @@ public class GraphPanel extends JPanel
 
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
-				Node lastNode = (Node) aSelectedElements.getLastNode();
+				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle2D bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();

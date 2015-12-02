@@ -513,7 +513,7 @@ public class EditorFrame extends JFrame
    {  
 	   int frameCount = aTabbedPane.getComponentCount();   
 	   BasicInternalFrameUI ui = (BasicInternalFrameUI)pInternalFrame.getUI();
-	   Container north = (Container)ui.getNorthPane();
+	   Container north = ui.getNorthPane();
 	   north.remove(0);
 	   north.validate();
 	   north.repaint();
@@ -658,7 +658,7 @@ public class EditorFrame extends JFrame
    			String name = i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
    			JMenuItem item = new JMenuItem(name);
-   			item.setMnemonic((char)'0'+i);
+   			item.setMnemonic('0'+i);
    			aRecentFilesMenu.add(item);
             item.addActionListener(new ActionListener()
             {
@@ -837,7 +837,7 @@ public class EditorFrame extends JFrame
    			return;
    		}
         JInternalFrame curFrame = (JInternalFrame)aTabbedPane.getSelectedComponent();
-        if (curFrame != null)
+        if(curFrame != null)
         {
         	GraphFrame openFrame = (GraphFrame) curFrame;
         	// we only want to check attempts to close a frame
@@ -847,13 +847,13 @@ public class EditorFrame extends JFrame
 				if(JOptionPane.showConfirmDialog(openFrame, 
 						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
 				{
-					removeTab((JInternalFrame) curFrame);
+					removeTab(curFrame);
 				}
 				return;
 			}
 			else
 			{
-				removeTab((JInternalFrame) curFrame);
+				removeTab(curFrame);
 			}
         }
     }
@@ -875,11 +875,11 @@ public class EditorFrame extends JFrame
 				if(JOptionPane.showConfirmDialog(openFrame, 
 						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
 				{
-					removeTab((JInternalFrame) curFrame);
+					removeTab(curFrame);
 				}
 				return;
 			}
-			removeTab((JInternalFrame) curFrame);
+			removeTab(curFrame);
         }
     }
    	
@@ -1057,7 +1057,7 @@ public class EditorFrame extends JFrame
    		{
    			formats.add(name.toLowerCase());
    		}
-   		String[] lReturn = (String[])formats.toArray(new String[formats.size()]);
+   		String[] lReturn = formats.toArray(new String[formats.size()]);
    		Arrays.sort(lReturn);
    		return lReturn;
    	}

@@ -132,7 +132,7 @@ public class ActorNode extends RectangularNode
 	public ActorNode clone()
 	{
 		ActorNode cloned = (ActorNode) super.clone();
-		cloned.aName = (MultiLineString) aName.clone();
+		cloned.aName = aName.clone();
 		return cloned;
 	} 
 }

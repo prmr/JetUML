@@ -139,8 +139,8 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	public InterfaceNode clone()
 	{
 		InterfaceNode cloned = (InterfaceNode)super.clone();
-		cloned.aName = (MultiLineString)aName.clone();
-		cloned.aMethods = (MultiLineString)aMethods.clone();
+		cloned.aName = aName.clone();
+		cloned.aMethods = aMethods.clone();
 		return cloned;
 	}
 	
@@ -154,6 +154,6 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	public void setParent(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = (PackageNode) pNode;
+		aContainer = pNode;
 	}
 }

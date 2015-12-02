@@ -92,7 +92,7 @@ public abstract class Graph
 	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{}
 
-	private PointNode createPointNodeIfAllowed(Node pNode1, Node pNode2, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point2D pPoint2)
 	{
 		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -126,7 +126,7 @@ public abstract class Graph
 		Node node2 = findNode(pPoint2);
 		if( node1 instanceof NoteNode )
 		{
-			node2 = createPointNodeIfAllowed(node1, node2, pEdge, pPoint1, pPoint2);
+			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
 		}
 		
 		if(!canConnect(pEdge, node1, node2, pPoint2))

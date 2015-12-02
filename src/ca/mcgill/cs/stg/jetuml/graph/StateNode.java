@@ -96,7 +96,7 @@ public class StateNode extends RectangularNode
 	public StateNode clone()
 	{
 		StateNode cloned = (StateNode)super.clone();
-		cloned.aName = (MultiLineString)aName.clone();
+		cloned.aName = aName.clone();
 		return cloned;
 	}
 }

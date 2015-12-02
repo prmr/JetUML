@@ -126,7 +126,7 @@ public class NoteNode extends RectangularNode
 	public NoteNode clone()
 	{
 		NoteNode cloned = (NoteNode)super.clone();
-		cloned.aText = (MultiLineString) aText.clone();
+		cloned.aText = aText.clone();
 		return cloned;
 	}
 }

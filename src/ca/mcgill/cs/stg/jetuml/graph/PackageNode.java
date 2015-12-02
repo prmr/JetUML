@@ -263,7 +263,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	public PackageNode clone()
 	{
 		PackageNode cloned = (PackageNode)super.clone();
-		cloned.aContents = (MultiLineString)aContents.clone();
+		cloned.aContents = aContents.clone();
 		cloned.aContainedNodes = new ArrayList<>();
 		for( ChildNode child : aContainedNodes )
 		{
@@ -285,7 +285,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	public void setParent(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = (PackageNode) pNode;
+		aContainer = pNode;
 	}
 
 	@Override

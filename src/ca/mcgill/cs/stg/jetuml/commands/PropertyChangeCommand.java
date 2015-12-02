@@ -69,7 +69,7 @@ public class PropertyChangeCommand implements Command
 		try 
 		{
 			info = Introspector.getBeanInfo(aObject.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+			PropertyDescriptor[] descriptors = info.getPropertyDescriptors().clone();  
 			final Method setter = descriptors[aIndex].getWriteMethod();
 			if (setter != null)
 			{
@@ -98,7 +98,7 @@ public class PropertyChangeCommand implements Command
 		try 
 		{
 			info = Introspector.getBeanInfo(aObject.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+			PropertyDescriptor[] descriptors = info.getPropertyDescriptors().clone();  
 			final Method setter = descriptors[aIndex].getWriteMethod();
 			if(setter!= null)
 			{

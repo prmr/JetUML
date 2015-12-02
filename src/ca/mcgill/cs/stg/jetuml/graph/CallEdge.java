@@ -139,7 +139,7 @@ public class CallEdge extends SegmentedLabeledEdge
 			}
 			a.add(endPoint);
 		}
-		return (Point2D[])a.toArray(new Point2D[a.size()]);
+		return a.toArray(new Point2D[a.size()]);
 	}
 }
 

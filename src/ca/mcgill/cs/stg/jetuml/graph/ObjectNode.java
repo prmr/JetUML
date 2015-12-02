@@ -168,7 +168,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	public ObjectNode clone()
 	{
 		ObjectNode cloned = (ObjectNode)super.clone();
-		cloned.aName = (MultiLineString)aName.clone();
+		cloned.aName = aName.clone();
 		cloned.aFields = new ArrayList<>();
 		
 		for( ChildNode child : aFields )

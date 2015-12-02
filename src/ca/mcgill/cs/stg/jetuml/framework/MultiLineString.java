@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 public class MultiLineString implements Cloneable
 {
 	private enum Align
-	{ LEFT, CENTER, RIGHT };
+	{ LEFT, CENTER, RIGHT }
 	
 	// Eventually these should be ported to the enum as well
 	// For the moment they are kept as ints to preserve the 

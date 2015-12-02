@@ -166,7 +166,7 @@ public class GraphModificationListener
 		try 
 		{
 			info = Introspector.getBeanInfo(pEdited.getClass());
-			PropertyDescriptor[] oldDescriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();
+			PropertyDescriptor[] oldDescriptors = info.getPropertyDescriptors().clone();
 			aPropertyValues = new Object[oldDescriptors.length];
 			for(int i = 0; i< aPropertyValues.length; i++)
 			{
@@ -203,7 +203,7 @@ public class GraphModificationListener
 		try 
 		{
 			info = Introspector.getBeanInfo(pEdited.getClass());
-			PropertyDescriptor[] descriptors = (PropertyDescriptor[])info.getPropertyDescriptors().clone();  
+			PropertyDescriptor[] descriptors = info.getPropertyDescriptors().clone();  
 			for(int i = 0; i<descriptors.length; i++)
 			{
 				final Method getter = descriptors[i].getReadMethod();
@@ -271,9 +271,9 @@ public class GraphModificationListener
 	private Object propertyClone(Object pObject)
 	{
 		Object temp = null;
-		if (pObject instanceof MultiLineString)
+		if(pObject instanceof MultiLineString)
 		{
-			temp = (MultiLineString) ((MultiLineString) pObject).clone();
+			temp = ((MultiLineString) pObject).clone();
 		}
 
 		//Node is purposely not cloned
@@ -307,7 +307,7 @@ public class GraphModificationListener
 		}
 		if (pObject1 instanceof String && pObject2 instanceof String)
 		{
-			return ((String) pObject1).equals((String) pObject2);
+			return pObject1.equals(pObject2);
 		}
 		else
 		{
