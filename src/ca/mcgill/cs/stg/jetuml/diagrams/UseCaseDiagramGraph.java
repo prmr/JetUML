@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
+import java.awt.geom.Point2D;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
@@ -68,6 +69,21 @@ public class UseCaseDiagramGraph extends Graph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("usecase.name");
+	}
+	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
+		{
+			return false;
+		}
+		if( pNode1 == pNode2 )
+		{	// Self-edges are not allowed in use case diagrams
+			return false;
+		}
+		
+		return true;
 	}
 }
 
