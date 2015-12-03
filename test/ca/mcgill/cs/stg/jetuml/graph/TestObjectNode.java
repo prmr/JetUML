@@ -53,10 +53,10 @@ public class TestObjectNode
 	{
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), aObject1.getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point2D.Double(80,0), aObject1.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,0), aObject1.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(0,0), aObject1.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(0,0), aObject1.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point2D.Double(80,30), aObject1.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point2D.Double(40,0), aObject1.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point2D.Double(40,60), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), aObject1.getShape().getBounds());
 	}
@@ -107,10 +107,10 @@ public class TestObjectNode
 		ObjectNode clone = aObject1.clone();
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), clone.getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point2D.Double(80,0), clone.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,0), clone.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(0,0), clone.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(0,0), clone.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point2D.Double(80,30), clone.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point2D.Double(0,30), clone.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point2D.Double(40,0), clone.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point2D.Double(40,60), clone.getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), clone.getShape().getBounds());
 		
