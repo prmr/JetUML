@@ -689,22 +689,22 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle2D.Double(296, 130, 84, 87), o1.getBounds());
+		assertEquals(new Rectangle2D.Double(296, 180, 84, 37), o1.getBounds());
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(296, 217, 144, 73), o2.getBounds());
+		assertEquals(new Rectangle2D.Double(296, 217, 144, 143), o2.getBounds());
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(540, 150, 27, 140), cr1.getBounds());
+		assertEquals(new Rectangle2D.Double(500, 210, 80, 80), cr1.getBounds());
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("", cr1.getEndLabel());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
 		assertEquals("", cr1.getStartLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(495, 300, 115, 117), o3.getBounds());
+		assertEquals(new Rectangle2D.Double(495, 330, 115, 87), o3.getBounds());
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		

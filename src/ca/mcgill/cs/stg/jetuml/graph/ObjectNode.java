@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -30,7 +29,6 @@ import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
@@ -89,19 +87,6 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	public Rectangle2D getTopRectangle()
 	{
 		return new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
-	}
-
-	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
-	{
-		if(pDirection.getX() > 0)
-		{
-			return new Point2D.Double(getBounds().getMaxX(), getBounds().getMinY() + aTopHeight / 2);
-		}
-		else
-		{
-			return new Point2D.Double(getBounds().getX(), getBounds().getMinY() + aTopHeight / 2);
-		}
 	}
 
 	@Override
