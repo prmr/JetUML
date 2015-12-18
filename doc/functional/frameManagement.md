@@ -10,7 +10,7 @@ At runtime the application is controlled by an instance of `EditorFrame`. The `E
 
 ![JetUML Class Diagram](frames.jpg)
 
-Part of this structure is created at application launch time, and part at diagram creation time. A singleton `EditorFrame` is created, upon which it can be requested to add graph types. However, the `addGraphType` method does not immediately create and add a `GraphFrame` to the application. Rather, it adds a menu item to the `EditorFrame` with a callback that creates the frame when the `new` menu is called. In contrast, the `WelcomeTab` is created a application launch time.
+Part of this structure is created at application launch time, and part at diagram creation time. A singleton `EditorFrame` is created, upon which it can be requested to add graph types. However, the `addGraphType` method does not immediately create and add a `GraphFrame` to the application. Rather, it adds a menu item to the `EditorFrame` with a callback that creates the frame when the `new` menu is called. In contrast, the `WelcomeTab` is created at application launch time.
 
 ![JetUML Class Diagram](frames.sequence.jpg)
 
