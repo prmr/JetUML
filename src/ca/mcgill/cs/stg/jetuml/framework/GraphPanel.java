@@ -571,8 +571,6 @@ public class GraphPanel extends JPanel
 		@Override
 		public void mousePressed(MouseEvent pEvent)
 		{
-			requestFocus();
-			
 			GraphElement tool = getTool(pEvent);
 
 			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0) // double/right click
