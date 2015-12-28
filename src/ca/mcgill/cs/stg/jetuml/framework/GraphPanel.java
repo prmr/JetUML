@@ -428,132 +428,171 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{	
-		@Override
-		public void mousePressed(MouseEvent pEvent)
+		private boolean isCtrl(MouseEvent pEvent)
 		{
-			requestFocus();
-			final Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
-			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
-			Node n = aGraph.findNode(mousePoint);
-			Edge e = aGraph.findEdge(mousePoint);
-			GraphElement tool = aSideBar.getSelectedTool();
-			
-			if(tool !=null)
+			return (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
+		}
+		
+		private Point2D getMousePoint(MouseEvent pEvent)
+		{
+			return new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+		}
+		
+		/*
+		 * Will return null if nothing is selected.
+		 */
+		private GraphElement getSelectedElement(MouseEvent pEvent)
+		{
+			Point2D mousePoint = getMousePoint(pEvent);
+			GraphElement element = aGraph.findNode(mousePoint);
+			if( element == null )
 			{
-				//Set it to be the selection tool if you have a Node tool selected.
-				if(n!=null && !(tool instanceof Edge))
+				element = aGraph.findEdge(mousePoint);
+			}
+			return element;
+		}
+		
+		private void handleSelection(MouseEvent pEvent)
+		{
+			GraphElement element = getSelectedElement(pEvent);
+			if(element != null) // Something is selected
+			{
+				if( isCtrl(pEvent) )
 				{
-					if(!switchToSelectException(n))
+					if(!aSelectedElements.contains(element))
+					{
+						aSelectedElements.add(element);
+					}
+					else
+					{
+						aSelectedElements.remove(element);
+					}
+				}
+				else 
+				{
+					aSelectedElements.set(element);
+				}
+				aDragMode = DragMode.DRAG_MOVE;
+				aModListener.startTrackingMove(aGraph, aSelectedElements);
+			}
+			else // Nothing is selected
+			{
+				if(!isCtrl(pEvent)) 
+				{
+					aSelectedElements.clearSelection();
+				}
+				aDragMode = DragMode.DRAG_LASSO;
+			}
+		}
+		
+		private void handleDoubleClick(MouseEvent pEvent)
+		{
+			GraphElement element = getSelectedElement(pEvent);
+			if( element != null )
+			{
+				aSelectedElements.set(element);
+				editSelected();
+			}
+			else
+			{
+				final Point2D mousePoint = getMousePoint(pEvent);
+				aSideBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
+				{
+					public void actionPerformed(ActionEvent pEvent)
+					{
+						Object tool = aSideBar.getSelectedTool();
+						if(tool instanceof Node)
+						{
+							Node prototype = (Node) tool;
+							Node newNode = prototype.clone();
+							boolean added = aGraph.add(newNode, mousePoint);
+							if(added)
+							{
+								setModified(true);
+								aSelectedElements.set(newNode);
+							}
+						}
+					}
+				});
+			}
+		}
+		
+		private void handleNodeCreation(MouseEvent pEvent)
+		{
+			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
+			boolean added = aGraph.add(newNode, getMousePoint(pEvent));
+			if(added)
+			{
+				setModified(true);
+				aSelectedElements.set(newNode);
+			}
+			else // Special behavior, if we can't add a node, we select any element at the point
+			{
+				handleSelection(pEvent);
+			}
+		}
+		
+		private void handleEdgeStart(MouseEvent pEvent)
+		{
+			GraphElement element = getSelectedElement(pEvent);
+			if(element != null && element instanceof Node ) 
+			{
+				aDragMode = DragMode.DRAG_RUBBERBAND;
+			}
+		}
+		
+		/*
+	     * Implements a convenience feature. Normally returns 
+	     * aSideBar.getSelectedTool(), except if the mouse points
+	     * to an existing node, in which case defaults to select
+	     * mode because it's likely the user wanted to select the node
+	     * and forgot to switch tool. The only exception is when adding
+	     * children nodes, where the parent node obviously has to be selected.
+		 */
+		private GraphElement getTool(MouseEvent pEvent)
+		{
+			GraphElement tool = aSideBar.getSelectedTool();
+			GraphElement selected = getSelectedElement(pEvent);
+			
+			if(tool !=null && tool instanceof Node)
+			{
+				if( selected != null && selected instanceof Node )
+				{
+					if(!(tool instanceof ChildNode && selected instanceof ParentNode ))
 					{
 						aSideBar.setToolToBeSelect();
 						tool = null;
 					}
 				}
 			}	
-			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
+			return tool;
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent pEvent)
+		{
+			requestFocus();
+			
+			GraphElement tool = getTool(pEvent);
+
+			if(pEvent.getClickCount() > 1 || (pEvent.getModifiers() & InputEvent.BUTTON1_MASK) == 0) // double/right click
 			{  
-				// double/right-click
-				if(e != null)
-				{
-					aSelectedElements.set(e);
-					editSelected();
-				}
-				else if(n != null)
-				{
-					aSelectedElements.set(n);
-					editSelected();
-				}
-				else
-				{
-					aSideBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
-					{
-						public void actionPerformed(ActionEvent pEvent)
-						{
-							Object tool = aSideBar.getSelectedTool();
-							if(tool instanceof Node)
-							{
-								Node prototype = (Node) tool;
-								Node newNode = prototype.clone();
-								boolean added = aGraph.add(newNode, mousePoint);
-								if(added)
-								{
-									setModified(true);
-									aSelectedElements.set(newNode);
-								}
-							}
-						}
-					});
-				}
+				handleDoubleClick(pEvent);
 			}
-			else if(tool == null) // select
+			else if(tool == null)
 			{
-				if(e != null)
-				{
-					aSelectedElements.set(e);
-				}
-				else if(n != null)
-				{
-					if(isCtrl && !aSelectedElements.contains(n)) 
-					{
-						aSelectedElements.add(n);
-					}
-					else if(isCtrl && aSelectedElements.contains(n)) 
-					{
-						aSelectedElements.remove(n);
-					}
-					else if(!aSelectedElements.contains(n)) 
-					{
-						aSelectedElements.set(n);
-					}
-					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraph, aSelectedElements);
-				}
-				else
-				{
-					if(!isCtrl) 
-					{
-						aSelectedElements.clearSelection();
-					}
-					aDragMode = DragMode.DRAG_LASSO;
-				}
+				handleSelection(pEvent);
 			}
 			else if(tool instanceof Node)
 			{
-				Node prototype = (Node) tool;
-				Node newNode = prototype.clone();
-				boolean added = aGraph.add(newNode, mousePoint);
-				if(added)
-				{
-					setModified(true);
-					aSelectedElements.set(newNode);
-					// @prmr Disabled the option to "slide" an object on creation to greatly
-					// simplify the node creation logic. For now.
-					//aDragMode = DragMode.DRAG_MOVE;
-					//aModListener.startTrackingMove(aGraph, aSelectedElements);
-				}
-				else if(n != null)
-				{
-					if(isCtrl) 
-					{
-						aSelectedElements.add(n);
-					}
-					else if( !aSelectedElements.contains(n) )
-					{
-						aSelectedElements.set(n);
-					}
-					aDragMode = DragMode.DRAG_MOVE;
-					aModListener.startTrackingMove(aGraph, aSelectedElements);
-				}
+				handleNodeCreation(pEvent);
 			}
 			else if(tool instanceof Edge)
 			{
-				if(n != null) 
-				{
-					aDragMode = DragMode.DRAG_RUBBERBAND;
-				}
+				handleEdgeStart(pEvent);
 			}
-			aLastMousePoint = mousePoint;
-			aMouseDownPoint = mousePoint;
+			aLastMousePoint = getMousePoint(pEvent);
+			aMouseDownPoint = aLastMousePoint;
 			repaint();
 		}
 
