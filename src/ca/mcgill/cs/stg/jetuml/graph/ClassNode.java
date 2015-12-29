@@ -24,104 +24,37 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends RectangularNode implements ChildNode
+public class ClassNode extends InterfaceNode
 {
-	private static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
-	private static final int DEFAULT_WIDTH = 100;
-	private static final int DEFAULT_HEIGHT = 60;
-	
-	private double aMidHeight;
-	private double aBottomHeight;
-	private MultiLineString aName;
 	private MultiLineString aAttributes;
-	private MultiLineString aMethods;
-	private PackageNode aContainer;
 
 	/**
      * Construct a class node with a default size.
 	 */
 	public ClassNode()
-   	{
-	   aName = new MultiLineString(true);
-	   aAttributes = new MultiLineString();
-	   aAttributes.setJustification(MultiLineString.LEFT);
-	   aMethods = new MultiLineString();
-	   aMethods.setJustification(MultiLineString.LEFT);
-	   setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-	   aMidHeight = DEFAULT_COMPARTMENT_HEIGHT;
-	   aBottomHeight = DEFAULT_COMPARTMENT_HEIGHT;
-   }
+	{
+		aAttributes = new MultiLineString();
+		aAttributes.setJustification(MultiLineString.LEFT);
+		aName.setText("");
+	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics2D); 
+		double midHeight = computeMiddle(pGraphics2D).getHeight();
+		double bottomHeight = computeBottom(pGraphics2D).getHeight();
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - aMidHeight - aBottomHeight);
-		pGraphics2D.draw(top);
-		aName.draw(pGraphics2D, top);
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), aMidHeight);
-		pGraphics2D.draw(mid);
+				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
+		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), midHeight);
 		aAttributes.draw(pGraphics2D, mid);
-		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), aBottomHeight);
-		pGraphics2D.draw(bot);
-		aMethods.draw(pGraphics2D, bot);
    }
-
-	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
-	{
-		Rectangle2D min = new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT);
-		Rectangle2D top = aName.getBounds(pGraphics2D); 
-		top.add(min);
-		Rectangle2D mid = aAttributes.getBounds(pGraphics2D);
-		Rectangle2D bot = aMethods.getBounds(pGraphics2D);
-
-		aMidHeight = mid.getHeight();
-		aBottomHeight = bot.getHeight();
-		if(aMidHeight == 0 && aBottomHeight == 0)
-		{
-			top.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		}
-		else
-		{
-			mid.add(min);
-			bot.add(min);
-			aMidHeight = mid.getHeight();
-			aBottomHeight = bot.getHeight();
-		}
-
-		Rectangle2D b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				Math.max(top.getWidth(), Math.max(mid.getWidth(), bot.getWidth())), 
-				top.getHeight() + aMidHeight + aBottomHeight);
-		pGrid.snap(b);
-		setBounds(b);
-	}
-
-	/**
-     * Sets the name property value.
-     * @param pName the class name
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the class name
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
-	}
-
+	
 	/**
      * Sets the attributes property value.
      * @param pNewValue the attributes of this class
@@ -139,45 +72,39 @@ public class ClassNode extends RectangularNode implements ChildNode
 	{
 		return aAttributes;
 	}
-
+	
 	/**
-     * Sets the methods property value.
-     * @param pNewValue the methods of this class
+	 * @return True if the node requires a bottom compartment.
 	 */
-	public void setMethods(MultiLineString pNewValue)
+	@Override
+	protected boolean needsMiddleCompartment()
 	{
-		aMethods = pNewValue;
+		return !aAttributes.getText().isEmpty();
 	}
-
+	
 	/**
-     * Gets the methods property value.
-     * @return the methods of this class
+	 * @param pGraphics2D The graphics context
+	 * @return The area of the middle compartment. The x and y values
+	 * are meaningless.
 	 */
-	public MultiLineString getMethods()
+	@Override
+	protected Rectangle2D computeMiddle(Graphics2D pGraphics2D)
 	{
-		return aMethods;
+		if( !needsMiddleCompartment() )
+		{
+			return new Rectangle2D.Double(0, 0, 0, 0);
+		}
+			
+		Rectangle2D attributes = aAttributes.getBounds(pGraphics2D);
+		attributes.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
+		return attributes;
 	}
 
 	@Override
 	public ClassNode clone()
 	{
 		ClassNode cloned = (ClassNode)super.clone();
-		cloned.aName = aName.clone();
-		cloned.aMethods = aMethods.clone();
 		cloned.aAttributes = aAttributes.clone();
 		return cloned;
-	}
-
-	@Override
-	public ParentNode getParent()
-	{
-		return aContainer;
-	}
-
-	@Override
-	public void setParent(ParentNode pNode)
-	{
-		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = (PackageNode) pNode;
 	}
 }
