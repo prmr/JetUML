@@ -33,18 +33,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
 public class TestInterfaceNode
 {
 	private InterfaceNode aNode1;
 	private Graphics2D aGraphics;
+	private ClassDiagramGraph aGraph;
+	private Grid aGrid;
 	
 	@Before
 	public void setup()
 	{
 		aNode1 = new InterfaceNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
+		aGraph= new ClassDiagramGraph();
+		aGrid = new Grid();
 	}
 	
 	@After
@@ -178,4 +184,33 @@ public class TestInterfaceNode
 		assertEquals(new Rectangle2D.Double(0,0,100,64), aNode1.computeTop(aGraphics));
 	}
 	
+	@Test
+	public void testLayout()
+	{
+		// Test layout with no snapping (grid size is 10)
+		aNode1.translate(10, 10);
+		aNode1.layout(aGraph, aGraphics, aGrid);
+		assertEquals(new Rectangle2D.Double(10,10,100,60), aNode1.getBounds());
+		
+		MultiLineString name = new MultiLineString();
+		name.setText("X\nX\nX\nX");
+		aNode1.setName(name);
+		aNode1.layout(aGraph, aGraphics, aGrid);
+		assertEquals(new Rectangle2D.Double(10,10,100,80), aNode1.getBounds());
+		
+		MultiLineString methods = new MultiLineString();
+		methods.setText("X\nX");
+		aNode1.setMethods(methods);
+		aNode1.layout(aGraph, aGraphics, aGrid);
+		assertEquals(new Rectangle2D.Double(10,10,100,100), aNode1.getBounds());
+		
+		name.setText("X");
+		aNode1.layout(aGraph, aGraphics, aGrid);
+		assertEquals(new Rectangle2D.Double(10,10,100,80), aNode1.getBounds());
+		
+		// Test layout with snapping
+		aNode1.translate(-4, -4);
+		aNode1.layout(aGraph, aGraphics, aGrid);
+		assertEquals(new Rectangle2D.Double(10,10,100,80), aNode1.getBounds());
+	}
 }
