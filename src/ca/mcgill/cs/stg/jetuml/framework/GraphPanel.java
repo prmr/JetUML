@@ -444,10 +444,10 @@ public class GraphPanel extends JPanel
 		private GraphElement getSelectedElement(MouseEvent pEvent)
 		{
 			Point2D mousePoint = getMousePoint(pEvent);
-			GraphElement element = aGraph.findNode(mousePoint);
+			GraphElement element = aGraph.findEdge(mousePoint);
 			if( element == null )
 			{
-				element = aGraph.findEdge(mousePoint);
+				element = aGraph.findNode(mousePoint);
 			}
 			return element;
 		}
