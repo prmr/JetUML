@@ -180,7 +180,7 @@ public class MultiLineString implements Cloneable
 			suffix.insert(0, "</b>");
 		}
 
-		htmlText.append("<html>");
+		htmlText.append("<html><p align=\"" + aJustification.toString().toLowerCase() + "\">");
 		StringTokenizer tokenizer = new StringTokenizer(aText, "\n");
 		boolean first = true;
 		while(tokenizer.hasMoreTokens())
@@ -200,7 +200,7 @@ public class MultiLineString implements Cloneable
 			htmlText.append(next2);
 			htmlText.append(suffix);
 		}      
-		htmlText.append("</html>");
+		htmlText.append("</p></html>");
 		return htmlText;
 	}
    

@@ -48,7 +48,7 @@ public class TestMultiLineString
 	public void testConvertToHtml1() // empty text
 	{
 		MultiLineString string = new MultiLineString();
-		assertEquals("<html></html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\"></p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class TestMultiLineString
 	{
 		MultiLineString string = new MultiLineString();
 		string.setText("«interface»");
-		assertEquals("<html>&nbsp;«interface»&nbsp;</html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\">&nbsp;«interface»&nbsp;</p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class TestMultiLineString
 	{
 		MultiLineString string = new MultiLineString(true);
 		string.setText("«interface»");
-		assertEquals("<html>&nbsp;<b>«interface»</b>&nbsp;</html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\">&nbsp;<b>«interface»</b>&nbsp;</p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class TestMultiLineString
 		MultiLineString string = new MultiLineString(true);
 		string.setText("«interface»");
 		string.setUnderlined(true);
-		assertEquals("<html>&nbsp;<u><b>«interface»</b></u>&nbsp;</html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\">&nbsp;<u><b>«interface»</b></u>&nbsp;</p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class TestMultiLineString
 		MultiLineString string = new MultiLineString(true);
 		string.setText("«interface»\nFoo");
 		string.setUnderlined(true);
-		assertEquals("<html>&nbsp;<u><b>«interface»</b></u>&nbsp;<br>&nbsp;<u><b>Foo</b></u>&nbsp;</html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\">&nbsp;<u><b>«interface»</b></u>&nbsp;<br>&nbsp;<u><b>Foo</b></u>&nbsp;</p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class TestMultiLineString
 	{
 		MultiLineString string = new MultiLineString();
 		string.setText("«interface»\n<b>Foo</b>");
-		assertEquals("<html>&nbsp;«interface»&nbsp;<br>&nbsp;&lt;b&gt;Foo&lt;/b&gt;&nbsp;</html>", string.convertToHtml().toString());
+		assertEquals("<html><p align=\"center\">&nbsp;«interface»&nbsp;<br>&nbsp;&lt;b&gt;Foo&lt;/b&gt;&nbsp;</p></html>", string.convertToHtml().toString());
 	}
 	
 	@Test

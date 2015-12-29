@@ -51,7 +51,8 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	public InterfaceNode()
 	{
 		aName = new MultiLineString(true);
-		aName.setText("\u00ABinterface\u00BB");
+		aName.setText("\u00ABinterface\u00BB\n");
+		aName.setJustification(MultiLineString.CENTER);
 		aMethods = new MultiLineString();
 		aMethods.setJustification(MultiLineString.LEFT);
 		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -173,7 +174,7 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	{
 		return aName;
 	}
-
+	
 	/**
      * Sets the methods property value.
      * @param pMethods the methods of this interface

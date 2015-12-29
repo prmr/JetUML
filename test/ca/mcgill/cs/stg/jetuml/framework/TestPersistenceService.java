@@ -328,7 +328,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle2D.Double(460, 370, 100, 60), node1.getBounds());
 		
 		assertEquals("", node2.getMethods().getText());
-		assertEquals("«interface»", node2.getName().getText());
+		assertEquals("«interface»\n", node2.getName().getText());
 		assertNull(node2.getParent());
 		assertEquals(new Rectangle2D.Double(460, 250, 100, 60), node2.getBounds());
 		
