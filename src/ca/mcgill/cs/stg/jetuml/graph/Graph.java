@@ -136,19 +136,10 @@ public abstract class Graph
 
 		pEdge.connect(node1, node2);
 			
-		if (node1 instanceof FieldNode)
-		{
-			aModListener.startCompoundListening();
-			aModListener.trackPropertyChange(this, node1);
-		}
-			
+		// In case the down-call to addEdge introduces additional 
+		// operations that should be compounded with the edge addition
+		aModListener.startCompoundListening();
 		addEdge(node1, pEdge, pPoint1, pPoint2);
-		
-		if( node1 instanceof FieldNode)
-		{
-			aModListener.finishPropertyChange(this,  node1);
-		}
-		
 		aEdges.add(pEdge);
 		aModListener.edgeAdded(this, pEdge);
 		
@@ -157,15 +148,7 @@ public abstract class Graph
 			aRootNodes.add(pEdge.getEnd());
 		}
 		aNeedsLayout = true;
-		if (node1 instanceof FieldNode)
-		{
-			aModListener.endCompoundListening();
-		}
-		
-		if (node1 instanceof FieldNode)
-		{
-			aModListener.endCompoundListening();
-		}
+		aModListener.endCompoundListening();
 		return true;
 	}
 

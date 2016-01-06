@@ -30,6 +30,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 
 /**
@@ -78,5 +79,24 @@ public class TestGraph
 		assertFalse(aGraph.existsEdge(GeneralizationEdge.class, aNode1, aNode2));
 		assertFalse(aGraph.existsEdge(DependencyEdge.class, aNode1, aNode3));
 		assertFalse(aGraph.existsEdge(DependencyEdge.class, aNode3, aNode1));
+	}
+	
+	@Test
+	public void testBasicConnect()
+	{
+		aNode1.translate(150, 0);
+		aNode2.translate(150, 200);
+		
+		// A failed connection between two points, the second not in a node
+		assertFalse(aGraph.connect(aEdge1, new Point2D.Double(50, 30), new Point2D.Double(1000, 1000)));
+		assertFalse(aGraph.contains(aEdge1));
+		assertNull(aEdge1.getStart());
+		assertNull(aEdge1.getEnd());
+		
+		// A correct connection between two points
+		assertTrue(aGraph.connect(aEdge1, new Point2D.Double(200, 30), new Point2D.Double(200, 200)));
+		assertTrue(aGraph.contains(aEdge1));
+		assertTrue(aEdge1.getStart() == aNode1);
+		assertTrue(aEdge1.getEnd() == aNode2);
 	}
 }

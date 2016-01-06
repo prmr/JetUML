@@ -172,7 +172,9 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pOrigin instanceof FieldNode )
 		{
+			aModListener.trackPropertyChange(this, pOrigin);
 			((FieldNode)pOrigin).getValue().setText("");
+			aModListener.finishPropertyChange(this,  pOrigin);
 		}
 	}
 	
