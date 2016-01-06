@@ -428,6 +428,64 @@ public class GraphPanel extends JPanel
 	
 	private class GraphPanelMouseListener extends MouseAdapter
 	{	
+		/**
+		 * Also adds the inner edges of parent nodes to the selection list.
+		 * @param pElement
+		 */
+		private void setSelection(GraphElement pElement)
+		{
+			aSelectedElements.set(pElement);
+			for( Edge edge : aGraph.getEdges() )
+			{
+				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
+				{
+					aSelectedElements.add(edge);
+				}
+			}
+			aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
+		}
+		
+		/**
+		 * Also adds the inner edges of parent nodes to the selection list.
+		 * @param pElement
+		 */
+		private void addToSelection(GraphElement pElement)
+		{
+			aSelectedElements.add(pElement);
+			for( Edge edge : aGraph.getEdges() )
+			{
+				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
+				{
+					aSelectedElements.add(edge);
+				}
+			}
+			aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
+		}
+		
+		/**
+		 * @param pNode a Node to check.
+		 * @return True if pNode or any of its parent is selected
+		 */
+		private boolean hasSelectedParent(Node pNode)
+		{
+			if( pNode == null )
+			{
+				return false;
+			}
+			else if( aSelectedElements.contains(pNode) )
+			{
+				return true;
+			}
+			else if( pNode instanceof ChildNode )
+			{
+				return hasSelectedParent( ((ChildNode)pNode).getParent() );
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
 		private boolean isCtrl(MouseEvent pEvent)
 		{
 			return (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
@@ -461,7 +519,7 @@ public class GraphPanel extends JPanel
 				{
 					if(!aSelectedElements.contains(element))
 					{
-						aSelectedElements.add(element);
+						addToSelection(element);
 					}
 					else
 					{
@@ -470,7 +528,7 @@ public class GraphPanel extends JPanel
 				}
 				else 
 				{
-					aSelectedElements.set(element);
+					setSelection(element);
 				}
 				aDragMode = DragMode.DRAG_MOVE;
 				aModListener.startTrackingMove(aGraph, aSelectedElements);
@@ -490,7 +548,7 @@ public class GraphPanel extends JPanel
 			GraphElement element = getSelectedElement(pEvent);
 			if( element != null )
 			{
-				aSelectedElements.set(element);
+				setSelection(element);
 				editSelected();
 			}
 			else
@@ -524,7 +582,7 @@ public class GraphPanel extends JPanel
 			if(added)
 			{
 				setModified(true);
-				aSelectedElements.set(newNode);
+				setSelection(newNode);
 			}
 			else // Special behavior, if we can't add a node, we select any element at the point
 			{
@@ -606,7 +664,7 @@ public class GraphPanel extends JPanel
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
-					aSelectedElements.set(newEdge);
+					setSelection(newEdge);
 				}
 			}
 			else if(aDragMode == DragMode.DRAG_MOVE)
