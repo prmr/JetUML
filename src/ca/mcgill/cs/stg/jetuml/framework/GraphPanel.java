@@ -670,7 +670,6 @@ public class GraphPanel extends JPanel
 			}
 			else if(aDragMode == DragMode.DRAG_MOVE)
 			{
-				System.out.println(mousePoint);
 				aGraph.layout();
 				setModified(true);
 				aModListener.endTrackingMove(aGraph, aSelectedElements);
