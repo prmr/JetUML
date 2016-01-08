@@ -526,8 +526,9 @@ public class GraphPanel extends JPanel
 						aSelectedElements.remove(element);
 					}
 				}
-				else 
+				else if( !aSelectedElements.contains(element))
 				{
+					// The test is necessary to ensure we don't undo multiple selections
 					setSelection(element);
 				}
 				aDragMode = DragMode.DRAG_MOVE;
@@ -669,6 +670,7 @@ public class GraphPanel extends JPanel
 			}
 			else if(aDragMode == DragMode.DRAG_MOVE)
 			{
+				System.out.println(mousePoint);
 				aGraph.layout();
 				setModified(true);
 				aModListener.endTrackingMove(aGraph, aSelectedElements);
