@@ -58,6 +58,24 @@ public abstract class Graph
 		aModListener = new GraphModificationListener();
 		aNeedsLayout = true;
 	}
+	
+	/**
+	 * Starts tracking all undoable actions to the graph
+	 * and aggregates them into one for the purpose of undoing.
+	 */
+	public void startCompoundAction()
+	{
+		aModListener.startCompoundListening();
+	}
+	
+	/**
+	 * Stops tracking undoable actions to the graph
+	 * and aggregates them into one for the purpose of undoing.
+	 */
+	public void endCompoundAction()
+	{
+		aModListener.endCompoundListening();
+	}
 
 	/**
 	 * Adds the modification listener.

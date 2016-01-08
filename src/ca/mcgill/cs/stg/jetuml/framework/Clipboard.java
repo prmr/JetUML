@@ -131,6 +131,7 @@ public final class Clipboard
 			return new SelectionList();
 		}
 		
+		pGraph.startCompoundAction();
 		Rectangle2D bounds = null;
 		List<Edge> clonedEdges = new ArrayList<>();
 		for( Edge edge : aEdges )
@@ -158,6 +159,8 @@ public final class Clipboard
 		{
 			pGraph.connect(edge, edge.getStart(), edge.getEnd());
 		}
+		
+		pGraph.endCompoundAction();
 		
 		SelectionList selectionList  = new SelectionList();
 		for( Edge edge : clonedEdges )
