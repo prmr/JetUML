@@ -89,7 +89,6 @@ public class ToolBar extends JPanel
 	private JPanel aToolPanelEx = new JPanel(new GridLayout(0, 1));
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
 	private JPopupMenu aPopupMenu = new JPopupMenu();
-	private ActionListener aPopupListener;
 
 	/**
      * Constructs the tool bar.
@@ -245,10 +244,6 @@ public class ToolBar extends JPanel
 			{
 				button.setSelected(true);
 				buttonEx.setSelected(true);
-				if(aPopupListener != null)
-				{
-					aPopupListener.actionPerformed(pEvent);
-				}
 			}
 		});
 		aPopupMenu.add(item);
@@ -460,11 +455,9 @@ public class ToolBar extends JPanel
 	 * Show the pop-up menu corresponding to this toolbar.
 	 * @param pPanel The panel associated with this menu.
 	 * @param pPoint The point where to show the menu.
-	 * @param pListener The listener for the menu selection.
 	 */
-	public void showPopup(GraphPanel pPanel, Point2D pPoint, ActionListener pListener) 
+	public void showPopup(GraphPanel pPanel, Point2D pPoint) 
 	{
-		aPopupListener = pListener;
 		aPopupMenu.show(pPanel, (int) pPoint.getX(), (int) pPoint.getY());
 	}
 }

@@ -26,8 +26,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -555,24 +553,7 @@ public class GraphPanel extends JPanel
 			else
 			{
 				final Point2D mousePoint = getMousePoint(pEvent);
-				aSideBar.showPopup(GraphPanel.this, mousePoint, new ActionListener()
-				{
-					public void actionPerformed(ActionEvent pEvent)
-					{
-						Object tool = aSideBar.getSelectedTool();
-						if(tool instanceof Node)
-						{
-							Node prototype = (Node) tool;
-							Node newNode = prototype.clone();
-							boolean added = aGraph.add(newNode, mousePoint);
-							if(added)
-							{
-								setModified(true);
-								aSelectedElements.set(newNode);
-							}
-						}
-					}
-				});
+				aSideBar.showPopup(GraphPanel.this, mousePoint);
 			}
 		}
 		
