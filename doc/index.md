@@ -34,6 +34,7 @@ The functional view is split by functional concern.
 
  * [Frame management](functional/frameManagement.md)
  * [Edge hierarchy](functional/EdgeHierarchy.md)
+ * [Tool bar](functional/toolbar.md)
  
 ## Glossary
 The glossary is limited to terms that are unique to JetUML or have a speific meaning in the context of the JetUML project.
@@ -43,6 +44,8 @@ The glossary is limited to terms that are unique to JetUML or have a speific mea
 **Graph Frame** An internal frame that contains a UML diagram of any kind.
 
 **Internal Frame** Generally a GUI window frame that is controlled by and within the boundaries of the main application window. In JetUML this means either the *Welcome Tab* or a *Graph Frame*.
+
+**Tool Bar** The GUI component in charge of displaying a list of drawing tools and commands.
 
 **Welcome Tab** The tab that comes up by default when JetUML is launched. It contains diagram creation shortcuts and shortcuts to open recently opened files.
 
