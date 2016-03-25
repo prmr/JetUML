@@ -241,9 +241,7 @@ public class TestClipboard
 		assertEquals("c1", class1Clone.getName().toString());
 		assertEquals("c2", class2Clone.getName().toString());
 		Collection<Edge> edges = aClassDiagramGraph.getEdges();
-		DependencyEdge edge1Clone = (DependencyEdge)edges.iterator().next();
-		assertEquals(class1Clone, edge1Clone.getStart());
-		assertEquals(class2Clone, edge1Clone.getEnd());
+		assertEquals(0, edges.size());
 	}
 		
 	@Test

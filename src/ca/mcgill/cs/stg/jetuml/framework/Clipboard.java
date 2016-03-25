@@ -150,6 +150,8 @@ public final class Clipboard
 
 		}
 		
+		removeDanglingReferencesToParents(clonedRootNodes);
+		
 		for( Node node : clonedRootNodes )
 		{
 			pGraph.add(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
@@ -172,6 +174,22 @@ public final class Clipboard
 			selectionList.add(node);
 		}
 		return selectionList;
+	}
+	
+	// Goes through pNodes and removes the reference to the parent
+	// of any node who does not have a parent in the pNodes list
+	private static void removeDanglingReferencesToParents(List<Node> pNodes)
+	{
+		for( Node node : pNodes )
+		{
+			if( node instanceof ChildNode && ((ChildNode)node).getParent() != null )
+			{
+				if( !pNodes.contains(((ChildNode)node).getParent()))
+				{
+					((ChildNode)node).getParent().removeChild((ChildNode)node);
+				}
+			}
+		}
 	}
 	
 	private static Rectangle2D updateBounds(Rectangle2D pBounds, GraphElement pElement)
