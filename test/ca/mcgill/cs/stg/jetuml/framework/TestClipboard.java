@@ -222,6 +222,31 @@ public class TestClipboard
 	}
 	
 	@Test
+	public void testPasteNodeWithMissingParent()
+	{
+		aEdge1.connect(aClass1, aClass2);
+		aPackage1.addChild(aClass1);
+		aPackage1.addChild(aClass2);
+		aSelectionList.add(aClass1);
+		aSelectionList.add(aClass2);
+		aClipboard.copy(aSelectionList);
+		assertEquals(2, aClipboard.getNodes().size());
+		assertEquals(0, aClipboard.getEdges().size());
+		aClipboard.paste(aClassDiagramGraph);
+		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
+		assertEquals(2, rootNodes.size());
+		Iterator<Node> it = rootNodes.iterator();
+		ClassNode class1Clone = ((ClassNode)it.next());
+		ClassNode class2Clone = ((ClassNode)it.next());
+		assertEquals("c1", class1Clone.getName().toString());
+		assertEquals("c2", class2Clone.getName().toString());
+		Collection<Edge> edges = aClassDiagramGraph.getEdges();
+		DependencyEdge edge1Clone = (DependencyEdge)edges.iterator().next();
+		assertEquals(class1Clone, edge1Clone.getStart());
+		assertEquals(class2Clone, edge1Clone.getEnd());
+	}
+		
+	@Test
 	public void testInvalidPasteWithNodes()
 	{
 		aSelectionList.add(new ImplicitParameterNode());
