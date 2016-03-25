@@ -327,7 +327,7 @@ public class EditorFrame extends JFrame
 					return;
 				}
                 Graph g = frame.getGraph();
-                g.setMinBounds(null); 
+                g.setMinBounds(new Rectangle2D.Double()); 
                 frame.getGraphPanel().revalidate();
                 frame.repaint();
      		}
