@@ -409,7 +409,7 @@ public abstract class Graph
 	}
 
 	/**
-	 * @param pElement The element we want to check is in the grapgh.
+	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
 	 */
 	public boolean contains( GraphElement pElement )
@@ -629,8 +629,9 @@ public abstract class Graph
 
 	/**
 	 * Adds an edge to this graph. This method should
-	 * only be called by a decoder when reading a data file or
-	 * by testing code.
+	 * only be called for re-constructing already created
+	 * graphs (e.g., through reading from a file, or pasting),
+	 * because it does not do any validation.
 	 * @param pEdge the edge to add
 	 * @param pStart the start node of the edge
 	 * @param pEnd the end node of the edge

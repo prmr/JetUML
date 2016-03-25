@@ -44,10 +44,16 @@ import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
  */
 public class SequenceDiagramGraph extends Graph
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new CallNode(), new NoteNode()};
+	private static final ImplicitParameterNode IMPLICIT_PARAMETER_NODE = new ImplicitParameterNode();
+	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
 	private static final int CALL_NODE_YGAP = 5;
+	
+	static 
+	{
+		IMPLICIT_PARAMETER_NODE.addChild(new CallNode());
+	}
 	
 	/* 
 	 * Adds the node, ensuring that call nodes can only be added if the
@@ -57,23 +63,7 @@ public class SequenceDiagramGraph extends Graph
 	@Override
 	public boolean add(Node pNode, Point2D pPoint)
 	{
-		if( pNode instanceof ImplicitParameterNode && getRootNodes().isEmpty())
-		{
-			// Special case, if this is the first implicit parameter node in the graph, 
-			// we give it a default call node.
-			super.add(pNode, pPoint);
-			CallNode callNode = new CallNode();
-			ImplicitParameterNode node = (ImplicitParameterNode)pNode;
-			node.addChild(callNode);
-			super.add(callNode, pPoint);
-			// Because at this point the layout was not done for either nodes, the 
-			// Y coordinate calculations are wrong, and we have to move the node
-			// back up to a default position.
-			callNode.setBounds(new Rectangle2D.Double(callNode.getBounds().getX(), node.getTopRectangle().getHeight(), 
-					callNode.getBounds().getWidth(), callNode.getBounds().getHeight()));
-			return true;
-		}
-		else if(pNode instanceof CallNode) 
+		if(pNode instanceof CallNode) 
 		{
 			ImplicitParameterNode target = insideTargetArea(pPoint);
 			if( target != null )

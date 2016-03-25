@@ -159,7 +159,14 @@ public final class Clipboard
 		}
 		for( Edge edge : clonedEdges )
 		{
-			pGraph.connect(edge, edge.getStart(), edge.getEnd());
+			// Verify that the nodes were correctly added.
+			// It is possible that some nodes could not be 
+			// pasted (e.g., children nodes without their parent)
+			// so some edges might no longer be relevant.
+			if( pGraph.contains( edge.getStart() ) && pGraph.contains(edge.getEnd()))
+			{
+				pGraph.connect(edge, edge.getStart(), edge.getEnd());
+			}
 		}
 		
 		pGraph.endCompoundAction();
