@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -206,41 +205,36 @@ public class EditorFrame extends JFrame
      	editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
-            {
-               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.undo();
-            }
-         }));
+     		{
+     			if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().undo();
+     		}
+     	}));
      	
      	editMenu.add(pFactory.createMenuItem("edit.redo", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
-            {
-               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.redo();
-            }
-         }));
+     		{
+     			if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().redo();
+     		}
+     	}));
      	
      	editMenu.add(pFactory.createMenuItem("edit.selectall", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
-               final Component frame = aTabbedPane.getSelectedComponent();
-               if(frame == null || !(frame instanceof GraphFrame))
-               {
-            	   return;
-               }
-               ((GraphFrame)frame).getGraphPanel().selectAll();
+     			if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().selectAll();
             }
          }));
      	
@@ -248,13 +242,11 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
             {
-               final GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.editSelected();
+     			if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().editSelected();
             }
          }));
      	
@@ -267,13 +259,11 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.removeSelected();
+            	if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().removeSelected();
             }
      	}));
 	}
@@ -287,41 +277,37 @@ public class EditorFrame extends JFrame
 
      	viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
      	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.changeZoom(-1);
-            }
+     		public void actionPerformed(ActionEvent pEvent)
+     		{
+     			if( noCurrentGraphFrame() )
+     			{
+     				return;
+     			}
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(-1);
+     		}
          }));
 
      	viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               panel.changeZoom(1);
+            	if( noCurrentGraphFrame() )
+            	{
+            		return;
+            	}
+            	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(1);
             }
-         }));
+     	}));
       
      	viewMenu.add(pFactory.createMenuItem("view.grow_drawing_area", new ActionListener()
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
+     			if( noCurrentGraphFrame() )
+            	{
+            		return;
+            	}
      			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-     			if(frame == null)
-				{
-					return;
-				}
      			Graph g = frame.getGraph();
      			Rectangle2D bounds = g.getBounds();
      			bounds.add(frame.getGraphPanel().getBounds());
@@ -335,11 +321,11 @@ public class EditorFrame extends JFrame
      	{
      		public void actionPerformed(ActionEvent pEvent)
      		{
+     			if( noCurrentGraphFrame() )
+            	{
+            		return;
+            	}
      			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-     			if(frame == null)
-				{
-					return;
-				}
                 Graph g = frame.getGraph();
                 g.setMinBounds(new Rectangle2D.Double()); 
                 frame.getGraphPanel().revalidate();
@@ -351,14 +337,14 @@ public class EditorFrame extends JFrame
      	{
             public void actionPerformed(ActionEvent pEvent)
             {
-               GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-               if(frame == null)
-               {
-            	   return;
-               }
-               GraphPanel panel = frame.getGraphPanel();
-               JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) pEvent.getSource();               
-               panel.setHideGrid(menuItem.isSelected());
+            	if( noCurrentGraphFrame() )
+            	{
+            		return;
+            	}
+            	GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
+            	GraphPanel panel = frame.getGraphPanel();
+            	JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) pEvent.getSource();               
+            	panel.setHideGrid(menuItem.isSelected());
             }
         });
      	viewMenu.add(hideGridItem);
@@ -722,11 +708,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void cut()
    	{
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		if(frame == null)
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		GraphPanel panel = frame.getGraphPanel();
    		Graph curGraph = frame.getGraph();
    		if(panel.getSelectionList().size()>0)
@@ -759,11 +745,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void copy()
    	{
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		if(frame == null)
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		GraphPanel panel = frame.getGraphPanel();
    		if(panel.getSelectionList().size()>0)
    		{
@@ -779,11 +765,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void paste()
    	{
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		if(frame == null)
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		
    		GraphPanel panel = frame.getGraphPanel();
    		try
@@ -803,11 +789,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void copyToClipboard()
    	{
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		if( frame == null )
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		final BufferedImage image = getImage(frame.getGraph());
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable()
 		{
@@ -840,13 +826,18 @@ public class EditorFrame extends JFrame
    				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
    	}
    	
+   	private boolean noCurrentGraphFrame()
+   	{
+   		return aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame);
+   	}
+   	
    	/**
    	 * If a user confirms that they want to close their modified graph, this method will
    	 * remove it from the current list of tabs.
    	 */
    	public void close()
    	{
-   		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
+   		if(noCurrentGraphFrame())
    		{
    			return;
    		}
@@ -902,11 +893,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void save()
    	{
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		if(frame == null)
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		File file = frame.getFileName(); 
    		if(file == null) 
    		{	
@@ -929,11 +920,11 @@ public class EditorFrame extends JFrame
    	 */
    	public void saveAs()
    	{
-   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-   		if(frame == null) 
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		Graph graph = frame.getGraph();    
    		try
    		{
@@ -1027,14 +1018,12 @@ public class EditorFrame extends JFrame
    	 */	
    	public void exportImage()
    	{
-   		// Validate the frame
-   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-   		if(frame == null) 
+   		if( noCurrentGraphFrame() )
    		{
    			return;
    		}
+   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		
-   		// Obtain the file
    		File file = chooseFileToExportTo();
    		if( file == null )
    		{
