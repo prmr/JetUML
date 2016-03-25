@@ -211,6 +211,25 @@ public class GraphPanel extends JPanel
 		aUndo.redoCommand();
 		repaint();
 	}
+	
+	/**
+	 * Clears the selection list and adds all the root nodes and edges to 
+	 * it. Makes the selection tool the active tool.
+	 */
+	public void selectAll()
+	{
+		aSelectedElements.clearSelection();
+		for( Node node : aGraph.getRootNodes() )
+		{
+			aSelectedElements.add(node);
+		}
+		for( Edge edge : aGraph.getEdges() )
+		{
+			aSelectedElements.add(edge);
+		}
+		aSideBar.setToolToBeSelect();
+		repaint();
+	}
 
 	/**
 	 * Set the graph in the panel.

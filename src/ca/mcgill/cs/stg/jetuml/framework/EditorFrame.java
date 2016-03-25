@@ -22,6 +22,7 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -227,6 +228,19 @@ public class EditorFrame extends JFrame
                }
                GraphPanel panel = frame.getGraphPanel();
                panel.redo();
+            }
+         }));
+     	
+     	editMenu.add(pFactory.createMenuItem("edit.selectall", new ActionListener()
+     	{
+     		public void actionPerformed(ActionEvent pEvent)
+            {
+               final Component frame = aTabbedPane.getSelectedComponent();
+               if(frame == null || !(frame instanceof GraphFrame))
+               {
+            	   return;
+               }
+               ((GraphFrame)frame).getGraphPanel().selectAll();
             }
          }));
      	
