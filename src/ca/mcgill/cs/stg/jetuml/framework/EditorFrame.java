@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -65,6 +66,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
@@ -82,8 +85,9 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * This desktop frame contains panes that show graphs.
+ * 
  * @author Cay S. Horstmann - Original code
- * @author Martin P. Robillard - Refactorings, file handling.
+ * @author Martin P. Robillard - Refactorings, file handling, menu management.
  */
 @SuppressWarnings("serial")
 public class EditorFrame extends JFrame
@@ -96,7 +100,6 @@ public class EditorFrame extends JFrame
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
 	private static final int HELP_MENU_TEXT_WIDTH = 10; //Number of pixels to give to the width of the  text area of the Help Menu.
 	private static final int HELP_MENU_TEXT_HEIGHT = 40; //Number of pixels to give to the height of the text area of the Help Menu.
-	
 	
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -111,6 +114,9 @@ public class EditorFrame extends JFrame
 	private JMenu aRecentFilesMenu;
 	
 	private WelcomeTab aWelcomeTab;
+	
+	// Menus or menu items that must be disabled if there is no current diagram.
+	private final List<JMenuItem> aDiagramRelevantMenus = new ArrayList<>();
 
 	/**
 	 * Constructs a blank frame with a desktop pane
@@ -150,6 +156,18 @@ public class EditorFrame extends JFrame
 		});
 
 		aTabbedPane = new JTabbedPane();
+		aTabbedPane.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent pEven)
+			{
+				boolean noGraphFrame = noCurrentGraphFrame();
+				for( JMenuItem menuItem : aDiagramRelevantMenus )
+				{
+					menuItem.setEnabled(!noGraphFrame);
+				}
+			}
+		});
 		setContentPane(aTabbedPane);
 
      	setJMenuBar(new JMenuBar());
@@ -170,7 +188,7 @@ public class EditorFrame extends JFrame
      	fileMenu.add(aNewMenu);
 
      	JMenuItem fileOpenItem = pFactory.createMenuItem("file.open", this, "openFile"); 
-     	fileMenu.add(fileOpenItem);      
+     	fileMenu.add(fileOpenItem); 
 
      	aRecentFilesMenu = pFactory.createMenu("file.recent");
      	buildRecentFilesMenu();
@@ -178,17 +196,28 @@ public class EditorFrame extends JFrame
      	
      	JMenuItem closeFileItem = pFactory.createMenuItem("file.close", this, "close");
      	fileMenu.add(closeFileItem);
+     	aDiagramRelevantMenus.add(closeFileItem);
+     	closeFileItem.setEnabled(!noCurrentGraphFrame());
       
      	JMenuItem fileSaveItem = pFactory.createMenuItem("file.save", this, "save"); 
      	fileMenu.add(fileSaveItem);
+     	aDiagramRelevantMenus.add(fileSaveItem);
+     	fileSaveItem.setEnabled(!noCurrentGraphFrame());
+     	
      	JMenuItem fileSaveAsItem = pFactory.createMenuItem("file.save_as", this, "saveAs");
      	fileMenu.add(fileSaveAsItem);
+     	aDiagramRelevantMenus.add(fileSaveAsItem);
+     	fileSaveAsItem.setEnabled(!noCurrentGraphFrame());
 
      	JMenuItem fileExportItem = pFactory.createMenuItem("file.export_image", this, "exportImage"); 
      	fileMenu.add(fileExportItem);
+     	aDiagramRelevantMenus.add(fileExportItem);
+     	fileExportItem.setEnabled(!noCurrentGraphFrame());
      	
      	JMenuItem fileCopyToClipboard = pFactory.createMenuItem("file.copy_to_clipboard", this, "copyToClipboard"); 
      	fileMenu.add(fileCopyToClipboard);
+     	aDiagramRelevantMenus.add(fileCopyToClipboard);
+     	fileCopyToClipboard.setEnabled(!noCurrentGraphFrame());
      	
      	fileMenu.addSeparator();
 
@@ -201,6 +230,8 @@ public class EditorFrame extends JFrame
 		JMenuBar menuBar = getJMenuBar();
 		JMenu editMenu = pFactory.createMenu("edit");
      	menuBar.add(editMenu);
+     	aDiagramRelevantMenus.add(editMenu);
+     	editMenu.setEnabled(!noCurrentGraphFrame());
      	
      	editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener()
      	{
@@ -274,6 +305,8 @@ public class EditorFrame extends JFrame
 		
 		JMenu viewMenu = pFactory.createMenu("view");
      	menuBar.add(viewMenu);
+     	aDiagramRelevantMenus.add(viewMenu);
+     	viewMenu.setEnabled(!noCurrentGraphFrame());
 
      	viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
      	{
