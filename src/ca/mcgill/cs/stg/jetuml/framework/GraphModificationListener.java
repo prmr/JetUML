@@ -231,7 +231,7 @@ public class GraphModificationListener
 		}
 		if (pObject1 instanceof MultiLineString && pObject2 instanceof MultiLineString)
 		{
-			return ((MultiLineString) pObject1).equalProperties((MultiLineString) pObject2);
+			return ((MultiLineString) pObject1).equals(pObject2);
 		}
 		if (pObject1 instanceof String && pObject2 instanceof String)
 		{

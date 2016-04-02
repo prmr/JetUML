@@ -234,31 +234,30 @@ public class MultiLineString implements Cloneable
 		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        
 	}
 	
-	/**
-	 * Returns true if the two have the same properties.
-	 * Returns false otherwise
-	 * @param pString The MultiLineString to check against
-	 * @return true or false if the values are equal
-	 */
-	public boolean equalProperties(MultiLineString pString)
+	@Override
+	public boolean equals(Object pObject)
 	{
-		if(!aText.equals(pString.getText()))
+		if( this == pObject )
+		{
+			return true;
+		}
+		if( pObject == null )
 		{
 			return false;
 		}
-		if(aJustification.ordinal() != pString.getJustification())
+		if( pObject.getClass() != getClass() )
 		{
 			return false;
 		}
-		if(aBold != pString.aBold)
-		{
-			return false;
-		}
-		if(aUnderlined != pString.isUnderlined())
-		{
-			return false;
-		}
-		return true;
+		MultiLineString theString = (MultiLineString)pObject;
+		return aText.equals(theString.aText) && aJustification == theString.aJustification &&
+				aBold == theString.aBold && aUnderlined == theString.aUnderlined;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return convertToHtml().toString().hashCode();
 	}
 	
 	@Override

@@ -105,33 +105,38 @@ public class TestMultiLineString
 	}
 	
 	@Test
-	public void testEqualsProperties()
+	public void testEquals()
 	{
 		MultiLineString string1 = new MultiLineString();
 		MultiLineString string2 = new MultiLineString();
-		assertTrue(string1.equalProperties(string2));
-		assertTrue(string2.equalProperties(string1));
+		
+		assertTrue(string1.equals(string1));
+		assertFalse(string1.equals(null));
+		assertFalse(string1.equals("Foo"));
+		
+		assertTrue(string1.equals(string2));
+		assertTrue(string2.equals(string1));
 		
 		string2.setText("Foo");
-		assertFalse(string1.equalProperties(string2));
-		assertFalse(string2.equalProperties(string1));
+		assertFalse(string1.equals(string2));
+		assertFalse(string2.equals(string1));
 		
 		string2 = new MultiLineString();
 		string2.setJustification(2);
-		assertFalse(string1.equalProperties(string2));
-		assertFalse(string2.equalProperties(string1));
+		assertFalse(string1.equals(string2));
+		assertFalse(string2.equals(string1));
 		
 		string2 = new MultiLineString(true);
-		assertFalse(string1.equalProperties(string2));
-		assertFalse(string2.equalProperties(string1));
+		assertFalse(string1.equals(string2));
+		assertFalse(string2.equals(string1));
 		
 		string2 = new MultiLineString();
 		string2.setUnderlined(true);
-		assertFalse(string1.equalProperties(string2));
-		assertFalse(string2.equalProperties(string1));
+		assertFalse(string1.equals(string2));
+		assertFalse(string2.equals(string1));
 		
 		string1.setUnderlined(true);
-		assertTrue(string1.equalProperties(string2));
-		assertTrue(string2.equalProperties(string1));
+		assertTrue(string1.equals(string2));
+		assertTrue(string2.equals(string1));
 	}
 }
