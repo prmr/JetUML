@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.awt.geom.Rectangle2D;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -31,11 +30,9 @@ import java.lang.reflect.Method;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -45,8 +42,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class GraphModificationListener 
 {
 	private UndoManager aUndoManager;
-	private Node[] aSelectionNodes;
-	private Rectangle2D[] aSelectionBounds;
 	private Object[] aPropertyValues;
 
 	/**
@@ -86,73 +81,6 @@ public class GraphModificationListener
 	{
 		AddDeleteNodeCommand dc = new AddDeleteNodeCommand(pGraph, pNode, false);
 		aUndoManager.add(dc);
-	}
-
-	/**
-	 * Keeps track of the moving of a node.
-	 * @param pGraph The panel that the nodes were moved on
-	 * @param pNode The node that was moved
-	 * @param pDX The amount moved in the horizontal direction
-	 * @param pDY The amount moved in the vertical direction
-	 */
-	public void nodeMoved(Graph pGraph, Node pNode, double pDX, double pDY)
-	{
-		MoveCommand mc = new MoveCommand(pGraph, pNode, pDX, pDY);
-		aUndoManager.add(mc);
-	}
-
-	/**
-	 * Tracks the elements in pSelectedElements and records their positions.
-	 * @param pGraph The panel to be moved on
-	 * @param pSelectedElements The elements that are being moved
-	 */
-	public void startTrackingMove(Graph pGraph, SelectionList pSelectedElements)
-	{
-		aSelectionNodes = new Node[pSelectedElements.size()];
-		aSelectionBounds = new Rectangle2D[pSelectedElements.size()];
-		int i = 0;
-		for(GraphElement e : pSelectedElements)
-		{
-			if(e instanceof Node)
-			{
-				aSelectionNodes[i] = (Node) e;
-				aSelectionBounds[i] = aSelectionNodes[i].getBounds();
-				i++;
-			}
-		}
-	}
-
-	/**
-	 * Creates a compound command with each node move and adds it to the stack.
-	 * @param pGraph The panel to be moved on
-	 * @param pSelectedElements The elements that are being moved
-	 */
-	public void endTrackingMove(Graph pGraph, SelectionList pSelectedElements)
-	{
-		CompoundCommand cc = new CompoundCommand();
-		Rectangle2D[] selectionBounds2 = new Rectangle2D[pSelectedElements.size()];
-		int i = 0;
-		for(GraphElement e : pSelectedElements)
-		{
-			if(e instanceof Node)
-			{
-				selectionBounds2[i] = ((Node) e).getBounds();
-				i++;
-			}
-		}
-		for(i = 0; i<aSelectionNodes.length && aSelectionNodes[i] != null; i++)
-		{
-			double dY = selectionBounds2[i].getY() - aSelectionBounds[i].getY();
-			double dX = selectionBounds2[i].getX() - aSelectionBounds[i].getX();
-			if (dX != 0 || dY != 0)
-			{
-				cc.add(new MoveCommand(pGraph, aSelectionNodes[i], dX, dY));
-			}
-		}
-		if (cc.size() > 0) 
-		{
-			aUndoManager.add(cc);
-		}
 	}
 
 	/**
@@ -330,5 +258,4 @@ public class GraphModificationListener
 	{
 		aUndoManager.endTracking();
 	}
-
 }

@@ -43,6 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -78,6 +79,7 @@ public class GraphPanel extends JPanel
 	private DragMode aDragMode;
 	private UndoManager aUndo = new UndoManager();
 	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
+	private final MoveTracker aMoveTracker = new MoveTracker();
 	
 	/**
 	 * Constructs a graph.
@@ -549,7 +551,7 @@ public class GraphPanel extends JPanel
 					setSelection(element);
 				}
 				aDragMode = DragMode.DRAG_MOVE;
-				aModListener.startTrackingMove(aGraph, aSelectedElements);
+				aMoveTracker.startTrackingMove(aSelectedElements);
 			}
 			else // Nothing is selected
 			{
@@ -672,7 +674,11 @@ public class GraphPanel extends JPanel
 			{
 				aGraph.layout();
 				setModified(true);
-				aModListener.endTrackingMove(aGraph, aSelectedElements);
+				CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
+				if( command.size() > 0 )
+				{
+					aUndo.add(command);
+				}
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			revalidate();
