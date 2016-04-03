@@ -123,7 +123,7 @@ public class PropertyChangeTracker
 			for(int i = 0; i < descriptors.length; i++)
 			{
 				Object propVal = getPropertyValue(descriptors[i]);
-				if (!propVal.equals(aPropertyValues[i]))
+				if(!equals(propVal, aPropertyValues[i]))
 				{
 					command.add(new PropertyChangeCommand(pGraph, aEdited, aPropertyValues[i], copyIfNecessary(propVal), i));
 				}
@@ -135,6 +135,21 @@ public class PropertyChangeTracker
 		{
 			assert false;
 			return null;
+		}
+	}
+	
+	/*
+	 * Equality taking null equality into account.
+	 */
+	private static boolean equals(Object pObject1, Object pObject2)
+	{
+		if( pObject1 == null )
+		{
+			return pObject2 == null;
+		}
+		else
+		{
+			return pObject1.equals(pObject2);
 		}
 	}
 }
