@@ -107,24 +107,6 @@ public abstract class Graph
 	}
 	
 	/**
-	 * Starts tracking all undoable actions to the graph
-	 * and aggregates them into one for the purpose of undoing.
-	 */
-	public void startCompoundAction()
-	{
-		notifyStartingCompoundOperation();
-	}
-	
-	/**
-	 * Stops tracking undoable actions to the graph
-	 * and aggregates them into one for the purpose of undoing.
-	 */
-	public void endCompoundAction()
-	{
-		notifyEndingCompoundOperation();
-	}
-
-	/**
 	 * Sets the modification listener.
 	 * @param pListener the single GraphModificationListener for this Graph.
 	 */

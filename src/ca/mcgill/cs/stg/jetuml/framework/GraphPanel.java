@@ -169,6 +169,26 @@ public class GraphPanel extends JPanel
 	}
 	
 	/**
+	 * Indicate to the GraphPanel that is should 
+	 * consider all following operations on the graph
+	 * to be part of a single conceptual one.
+	 */
+	public void startCompoundGraphOperation()
+	{
+		aUndoManager.startTracking();
+	}
+	
+	/**
+	 * Indicate to the GraphPanel that is should 
+	 * stop considering all following operations on the graph
+	 * to be part of a single conceptual one.
+	 */
+	public void finishCompoundGraphOperation()
+	{
+		aUndoManager.endTracking();
+	}
+	
+	/**
 	 * Resets the layout of the graph if there was a change made.
 	 */
 	public void layoutGraph()

@@ -121,17 +121,17 @@ public final class Clipboard
 	
 	/**
 	 * Pastes the current selection into the pGraphPanel.
-	 * @param pGraph The current Graph to paste contents to.
+	 * @param pPanel The current Graph to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
-	public SelectionList paste(Graph pGraph)
+	public SelectionList paste(GraphPanel pPanel)
 	{
-		if( !validPaste(pGraph))
+		if( !validPaste(pPanel.getGraph()))
 		{
 			return new SelectionList();
 		}
 		
-		pGraph.startCompoundAction();
+		pPanel.startCompoundGraphOperation();
 		Rectangle2D bounds = null;
 		List<Edge> clonedEdges = new ArrayList<>();
 		for( Edge edge : aEdges )
@@ -154,7 +154,7 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			pGraph.add(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
+			pPanel.getGraph().add(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
 					node.getBounds().getY() - bounds.getY()));
 		}
 		for( Edge edge : clonedEdges )
@@ -163,13 +163,13 @@ public final class Clipboard
 			// It is possible that some nodes could not be 
 			// pasted (e.g., children nodes without their parent)
 			// so some edges might no longer be relevant.
-			if( pGraph.contains( edge.getStart() ) && pGraph.contains(edge.getEnd()))
+			if( pPanel.getGraph().contains( edge.getStart() ) && pPanel.getGraph().contains(edge.getEnd()))
 			{
-				pGraph.connect(edge, edge.getStart(), edge.getEnd());
+				pPanel.getGraph().connect(edge, edge.getStart(), edge.getEnd());
 			}
 		}
 		
-		pGraph.endCompoundAction();
+		pPanel.finishCompoundGraphOperation();
 		
 		SelectionList selectionList  = new SelectionList();
 		for( Edge edge : clonedEdges )

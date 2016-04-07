@@ -52,6 +52,7 @@ public class TestClipboard
 	private DependencyEdge aEdge2;
 	private SelectionList aSelectionList;
 	private ClassDiagramGraph aClassDiagramGraph;
+	private GraphPanel aPanel;
 	
 	@Before
 	public void setup()
@@ -75,6 +76,8 @@ public class TestClipboard
 		aPackage2 = new PackageNode();
 		
 		aClassDiagramGraph = new ClassDiagramGraph();
+		aPanel = new GraphPanel(new ToolBar(aClassDiagramGraph));
+		aPanel.setGraph(aClassDiagramGraph);
 	}
 	
 	@Test
@@ -166,7 +169,7 @@ public class TestClipboard
 	{
 		aSelectionList.add(aClass1);
 		aClipboard.copy(aSelectionList);
-		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		SelectionList list = aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(1, rootNodes.size());
 		ClassNode node = (ClassNode)rootNodes.iterator().next();
@@ -185,7 +188,7 @@ public class TestClipboard
 		aClipboard.copy(aSelectionList);
 		assertEquals(2, aClipboard.getNodes().size());
 		assertEquals(1, aClipboard.getEdges().size());
-		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		SelectionList list = aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(2, rootNodes.size());
 		ClassNode node = (ClassNode)rootNodes.iterator().next();
@@ -207,7 +210,7 @@ public class TestClipboard
 		aClipboard.copy(aSelectionList);
 		assertEquals(1, aClipboard.getNodes().size());
 		assertEquals(1, aClipboard.getEdges().size());
-		aClipboard.paste(aClassDiagramGraph);
+		aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(1, rootNodes.size());
 		PackageNode packageNode = (PackageNode)rootNodes.iterator().next();
@@ -232,7 +235,7 @@ public class TestClipboard
 		aClipboard.copy(aSelectionList);
 		assertEquals(2, aClipboard.getNodes().size());
 		assertEquals(0, aClipboard.getEdges().size());
-		aClipboard.paste(aClassDiagramGraph);
+		aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(2, rootNodes.size());
 		Iterator<Node> it = rootNodes.iterator();
@@ -249,7 +252,7 @@ public class TestClipboard
 	{
 		aSelectionList.add(new ImplicitParameterNode());
 		aClipboard.copy(aSelectionList);
-		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		SelectionList list = aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(0, rootNodes.size());
 		assertEquals(0, list.size());
@@ -266,7 +269,7 @@ public class TestClipboard
 		aClipboard.copy(aSelectionList);
 		assertEquals(1,aClipboard.getEdges().size());
 		assertEquals(2,aClipboard.getNodes().size());
-		SelectionList list = aClipboard.paste(aClassDiagramGraph);
+		SelectionList list = aClipboard.paste(aPanel);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(0, rootNodes.size());
 		assertEquals(0, list.size());
