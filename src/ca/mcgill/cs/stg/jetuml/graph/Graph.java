@@ -38,7 +38,7 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
  */
 public abstract class Graph
 {
-	protected GraphModificationListener aModListener;
+	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
 	protected ArrayList<Edge> aEdges;
 	protected transient ArrayList<Node> aNodesToBeRemoved;
@@ -55,8 +55,55 @@ public abstract class Graph
 		aEdges = new ArrayList<>();
 		aNodesToBeRemoved = new ArrayList<>();
 		aEdgesToBeRemoved = new ArrayList<>();
-		aModListener = new GraphModificationListener();
 		aNeedsLayout = true;
+	}
+	
+	private void notifyNodeAdded(Node pNode)
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.nodeAdded(this, pNode);
+		}
+	}
+	
+	private void notifyNodeRemoved(Node pNode)
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.nodeRemoved(this, pNode);
+		}
+	}
+	
+	private void notifyEdgeAdded(Edge pEdge)
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.edgeAdded(this, pEdge);
+		}
+	}
+	
+	private void notifyEdgeRemoved(Edge pEdge)
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.edgeRemoved(this, pEdge);
+		}
+	}
+	
+	private void notifyStartingCompoundOperation()
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.startingCompoundOperation();
+		}
+	}
+	
+	private void notifyEndingCompoundOperation()
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.finishingCompoundOperation();
+		}
 	}
 	
 	/**
@@ -65,7 +112,7 @@ public abstract class Graph
 	 */
 	public void startCompoundAction()
 	{
-		aModListener.startCompoundListening();
+		notifyStartingCompoundOperation();
 	}
 	
 	/**
@@ -74,16 +121,16 @@ public abstract class Graph
 	 */
 	public void endCompoundAction()
 	{
-		aModListener.endCompoundListening();
+		notifyEndingCompoundOperation();
 	}
 
 	/**
-	 * Adds the modification listener.
-	 * @param pModListener the GraphModificationListener for this Graph.
+	 * Sets the modification listener.
+	 * @param pListener the single GraphModificationListener for this Graph.
 	 */
-	public void addModificationListener(GraphModificationListener pModListener)
+	public void setGraphModificationListener(GraphModificationListener pListener)
 	{
-		aModListener = pModListener;
+		aModificationListener = pListener;
 	}
 
 	/**
@@ -156,17 +203,17 @@ public abstract class Graph
 			
 		// In case the down-call to addEdge introduces additional 
 		// operations that should be compounded with the edge addition
-		aModListener.startCompoundListening();
+		notifyStartingCompoundOperation();
 		addEdge(node1, pEdge, pPoint1, pPoint2);
 		aEdges.add(pEdge);
-		aModListener.edgeAdded(this, pEdge);
+		notifyEdgeAdded(pEdge);
 		
 		if(!aRootNodes.contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode )
 		{
 			aRootNodes.add(pEdge.getEnd());
 		}
 		aNeedsLayout = true;
-		aModListener.endCompoundListening();
+		notifyEndingCompoundOperation();
 		return true;
 	}
 
@@ -182,7 +229,7 @@ public abstract class Graph
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
 		
-		aModListener.nodeAdded(this, pNode);
+		notifyNodeAdded( pNode );
 		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
 		{
 			// Only add root nodes
@@ -342,7 +389,7 @@ public abstract class Graph
 		{
 			return;
 		}
-		aModListener.startCompoundListening();
+		notifyStartingCompoundOperation();
 		aNodesToBeRemoved.add(pNode);
 		
 		if(pNode instanceof ParentNode)
@@ -369,8 +416,8 @@ public abstract class Graph
 				removeEdge(edge);
 			}
 		}
-		aModListener.nodeRemoved(this, pNode);
-		aModListener.endCompoundListening();
+		notifyNodeRemoved(pNode);
+		notifyEndingCompoundOperation();
 		aNeedsLayout = true;
 	}
 	
@@ -458,7 +505,7 @@ public abstract class Graph
 			return;
 		}
 		aEdgesToBeRemoved.add(pEdge);
-		aModListener.edgeRemoved(this, pEdge);
+		notifyEdgeRemoved(pEdge);
 		for(int i = aRootNodes.size() - 1; i >= 0; i--)
 		{
 			Node n = aRootNodes.get(i);

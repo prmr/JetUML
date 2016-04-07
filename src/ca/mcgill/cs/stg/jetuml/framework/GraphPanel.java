@@ -43,6 +43,8 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
@@ -77,8 +79,7 @@ public class GraphPanel extends JPanel
 	private Point2D aLastMousePoint;
 	private Point2D aMouseDownPoint;   
 	private DragMode aDragMode;
-	private UndoManager aUndo = new UndoManager();
-	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
+	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
@@ -126,7 +127,7 @@ public class GraphPanel extends JPanel
 		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
 		if(command.size() > 0)
 		{
-			aUndo.add(command);
+			aUndoManager.add(command);
 		}
 		setModified(true);
 	}
@@ -136,7 +137,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void removeSelected()
 	{
-		aUndo.startTracking();
+		aUndoManager.startTracking();
 		Stack<Node> nodes = new Stack<Node>();
 		for( GraphElement element : aSelectedElements )
 		{
@@ -157,7 +158,7 @@ public class GraphPanel extends JPanel
 		{
 			aGraph.removeNode(nodes.pop());
 		}
-		aUndo.endTracking();
+		aUndoManager.endTracking();
 		if(aSelectedElements.size() > 0)
 		{
 			setModified(true);
@@ -186,7 +187,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void startCompoundListening() 
 	{
-		aUndo.startTracking();
+		aUndoManager.startTracking();
 	}
 	
 	/**
@@ -194,7 +195,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void endCompoundListening() 
 	{
-		aUndo.endTracking();
+		aUndoManager.endTracking();
 	}
 	
 	/**
@@ -204,7 +205,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void undo()
 	{
-		aUndo.undoCommand();
+		aUndoManager.undoCommand();
 		repaint();
 	}
 	
@@ -215,7 +216,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void redo()
 	{
-		aUndo.redoCommand();
+		aUndoManager.redoCommand();
 		repaint();
 	}
 	
@@ -245,7 +246,44 @@ public class GraphPanel extends JPanel
 	public void setGraph(Graph pGraph)
 	{
 		aGraph = pGraph;
-		aGraph.addModificationListener(aModListener);
+		aGraph.setGraphModificationListener(new GraphModificationListener()
+		{
+			@Override
+			public void startingCompoundOperation() 
+			{
+				aUndoManager.startTracking();
+			}
+			
+			@Override
+			public void finishingCompoundOperation()
+			{
+				aUndoManager.endTracking();
+			}
+			
+			@Override
+			public void nodeAdded(Graph pGraph, Node pNode)
+			{
+				aUndoManager.add(new AddDeleteNodeCommand(pGraph, pNode, true));
+			}
+			
+			@Override
+			public void nodeRemoved(Graph pGraph, Node pNode)
+			{
+				aUndoManager.add(new AddDeleteNodeCommand(pGraph, pNode, false));
+			}
+			
+			@Override
+			public void edgeAdded(Graph pGraph, Edge pEdge)
+			{
+				aUndoManager.add(new AddDeleteEdgeCommand(pGraph, pEdge, true));
+			}
+			
+			@Override
+			public void edgeRemoved(Graph pGraph, Edge pEdge)
+			{
+				aUndoManager.add(new AddDeleteEdgeCommand(pGraph, pEdge, false));
+			}
+		});
 		setModified(false);
 		revalidate();
 		repaint();
@@ -682,7 +720,7 @@ public class GraphPanel extends JPanel
 				CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
 				if( command.size() > 0 )
 				{
-					aUndo.add(command);
+					aUndoManager.add(command);
 				}
 			}
 			aDragMode = DragMode.DRAG_NONE;
