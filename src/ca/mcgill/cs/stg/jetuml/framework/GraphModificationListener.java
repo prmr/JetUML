@@ -20,17 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
-import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -42,7 +33,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class GraphModificationListener 
 {
 	private UndoManager aUndoManager;
-	private Object[] aPropertyValues;
 
 	/**
 	 * Creates a new GraphModificationListener with an UndoManager.
@@ -84,90 +74,6 @@ public class GraphModificationListener
 	}
 
 	/**
-	 * Stores the properties of the edited object until the change is finished.
-	 * @param pGraph The panel of the object being edited
-	 * @param pEdited The object to be edited
-	 */
-	public void trackPropertyChange(Graph pGraph, Object pEdited)
-	{
-		BeanInfo info;
-		try 
-		{
-			info = Introspector.getBeanInfo(pEdited.getClass());
-			PropertyDescriptor[] oldDescriptors = info.getPropertyDescriptors().clone();
-			aPropertyValues = new Object[oldDescriptors.length];
-			for(int i = 0; i< aPropertyValues.length; i++)
-			{
-				final Method getter = oldDescriptors[i].getReadMethod();
-				if (getter != null)
-				{
-					aPropertyValues[i] = getter.invoke(pEdited, new Object[] {});
-					aPropertyValues[i] = propertyClone(aPropertyValues[i]);
-				}
-			}
-		} 
-		catch (IntrospectionException e) 
-		{
-			e.printStackTrace();
-			return;
-		} 
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
-		{
-			e.printStackTrace();
-			return;
-		}
-
-	}
-
-	/**
-	 * Compares the properties of the edited object and creates a command if needed.
-	 * @param pGraph The panel of the object being edited
-	 * @param pEdited The object to be edited
-	 */
-	public void finishPropertyChange(Graph pGraph, Object pEdited)
-	{
-		BeanInfo info;
-		CompoundCommand cc = new CompoundCommand();
-		try 
-		{
-			info = Introspector.getBeanInfo(pEdited.getClass());
-			PropertyDescriptor[] descriptors = info.getPropertyDescriptors().clone();  
-			for(int i = 0; i<descriptors.length; i++)
-			{
-				final Method getter = descriptors[i].getReadMethod();
-				if(getter != null)
-				{
-					Object propVal = getter.invoke(pEdited, new Object[] {});
-					if (!propertyEquals(propVal, aPropertyValues[i]))
-					{
-						Object oldPropValue = aPropertyValues[i];
-						Object propValue;
-						propValue = propertyClone(propVal);
-						cc.add(new PropertyChangeCommand(pGraph, pEdited, oldPropValue, propValue, i));
-					}
-				}
-			}
-		}
-		catch (IntrospectionException e) 
-		{
-			e.printStackTrace();
-			return;
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
-		{
-			e.printStackTrace();
-			return;
-		}
-		finally
-		{
-			if (cc.size() > 0)
-			{
-				aUndoManager.add(cc);
-			}
-		}
-	}
-
-	/**
 	 * Tracks the addition of an edge to the graph.
 	 * @param pGraph The panel to be edited
 	 * @param pEdge The edge being added
@@ -189,60 +95,6 @@ public class GraphModificationListener
 		aUndoManager.add(dc);
 	}
 
-	/**
-	 * Clones an undefined object.
-	 * This should only be done in cases where the original object is edited, not the reference
-	 * TODO: Make this a cleaner idea
-	 * @param pObject The object to be cloned
-	 * @return The new object if it is an unrecognized type and the same object otherwise.
-	 */
-	private Object propertyClone(Object pObject)
-	{
-		Object temp = null;
-		if(pObject instanceof MultiLineString)
-		{
-			temp = ((MultiLineString) pObject).clone();
-		}
-
-		//Node is purposely not cloned
-
-		if(temp != null)
-		{
-			return temp;
-		}
-		else
-		{
-			return pObject;
-		}
-	}
-
-	/**
-	 * Tests if two objects are equal, allowing for special cases like MultiLineString.	 
-	 * TODO: Make this a cleaner idea
-	 * @param pObject1 The first object to test
-	 * @param pObject2 The second object to test
-	 * @return The new object if it is an unrecognized type and the same object otherwise.
-	 */
-	private boolean propertyEquals(Object pObject1, Object pObject2)
-	{
-		if(pObject1 == null || pObject1 == null)
-		{
-			return false;
-		}
-		if (pObject1 instanceof MultiLineString && pObject2 instanceof MultiLineString)
-		{
-			return ((MultiLineString) pObject1).equals(pObject2);
-		}
-		if (pObject1 instanceof String && pObject2 instanceof String)
-		{
-			return pObject1.equals(pObject2);
-		}
-		else
-		{
-			return pObject1.equals(pObject2);
-		}
-	}
-	
 	/**
 	 * Collects all coming calls into single undo - redo command.
 	 */

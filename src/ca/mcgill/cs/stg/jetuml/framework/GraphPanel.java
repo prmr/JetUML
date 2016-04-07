@@ -80,6 +80,7 @@ public class GraphPanel extends JPanel
 	private UndoManager aUndo = new UndoManager();
 	private GraphModificationListener aModListener = new GraphModificationListener(aUndo);
 	private final MoveTracker aMoveTracker = new MoveTracker();
+	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
 	/**
 	 * Constructs a graph.
@@ -104,7 +105,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		aModListener.trackPropertyChange(aGraph, edited);
+		aPropertyChangeTracker.startTrackingPropertyChange(edited);
 		PropertySheet sheet = new PropertySheet(edited);
 		if(sheet.isEmpty())
 		{
@@ -122,7 +123,11 @@ public class GraphPanel extends JPanel
 		 JOptionPane.showOptionDialog(this, sheet, 
 		            ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("dialog.properties"),
 		            		JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
-		aModListener.finishPropertyChange(aGraph, edited);
+		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
+		if(command.size() > 0)
+		{
+			aUndo.add(command);
+		}
 		setModified(true);
 	}
 

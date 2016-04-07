@@ -170,12 +170,13 @@ public class ObjectDiagramGraph extends Graph
 	@Override
 	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
-		if( pOrigin instanceof FieldNode )
-		{
-			aModListener.trackPropertyChange(this, pOrigin);
-			((FieldNode)pOrigin).getValue().setText("");
-			aModListener.finishPropertyChange(this,  pOrigin);
-		}
+		// TODO Issue #154 Re-inject this behavior with a cleaner design.
+//		if( pOrigin instanceof FieldNode )
+//		{
+//			aModListener.trackPropertyChange(this, pOrigin);
+//			((FieldNode)pOrigin).getValue().setText("");
+//			aModListener.finishPropertyChange(this,  pOrigin);
+//		}
 	}
 	
 	@Override
