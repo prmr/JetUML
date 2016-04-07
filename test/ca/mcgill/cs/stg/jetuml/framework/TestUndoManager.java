@@ -20,8 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
@@ -30,7 +30,7 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
@@ -39,11 +39,11 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 public class TestUndoManager
 {
 	private UndoManager aUndoManager;
-	private AddDeleteNodeCommand aCommand1;
-	private AddDeleteNodeCommand aCommand2;
-	private AddDeleteNodeCommand aCommand3;
-	private AddDeleteNodeCommand aCommand4;
-	private AddDeleteNodeCommand aCommand5;
+	private AddNodeCommand aCommand1;
+	private AddNodeCommand aCommand2;
+	private AddNodeCommand aCommand3;
+	private AddNodeCommand aCommand4;
+	private AddNodeCommand aCommand5;
 	private Field aPastCommands;
 	private Field aUndoneCommands;
 	private Field aTrackingCommands;
@@ -52,11 +52,11 @@ public class TestUndoManager
 	public void setup() throws Exception
 	{
 		aUndoManager = new UndoManager();
-		aCommand1 = new AddDeleteNodeCommand(new ClassDiagramGraph(), new ClassNode(), true);
-		aCommand2 = new AddDeleteNodeCommand(new ClassDiagramGraph(), new ClassNode(), true);
-		aCommand3 = new AddDeleteNodeCommand(new ClassDiagramGraph(), new ClassNode(), true);
-		aCommand4 = new AddDeleteNodeCommand(new ClassDiagramGraph(), new ClassNode(), true);
-		aCommand5 = new AddDeleteNodeCommand(new ClassDiagramGraph(), new ClassNode(), true);
+		aCommand1 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
+		aCommand2 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
+		aCommand3 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
+		aCommand4 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
+		aCommand5 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
 		aPastCommands = UndoManager.class.getDeclaredField("aPastCommands");
 		aPastCommands.setAccessible(true);
 		aUndoneCommands = UndoManager.class.getDeclaredField("aUndoneCommands");

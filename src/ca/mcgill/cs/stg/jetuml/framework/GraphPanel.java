@@ -43,9 +43,11 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ca.mcgill.cs.stg.jetuml.commands.AddDeleteEdgeCommand;
-import ca.mcgill.cs.stg.jetuml.commands.AddDeleteNodeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AddEdgeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
+import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
+import ca.mcgill.cs.stg.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -263,25 +265,25 @@ public class GraphPanel extends JPanel
 			@Override
 			public void nodeAdded(Graph pGraph, Node pNode)
 			{
-				aUndoManager.add(new AddDeleteNodeCommand(pGraph, pNode, true));
+				aUndoManager.add(new AddNodeCommand(pGraph, pNode));
 			}
 			
 			@Override
 			public void nodeRemoved(Graph pGraph, Node pNode)
 			{
-				aUndoManager.add(new AddDeleteNodeCommand(pGraph, pNode, false));
+				aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
 			}
 			
 			@Override
 			public void edgeAdded(Graph pGraph, Edge pEdge)
 			{
-				aUndoManager.add(new AddDeleteEdgeCommand(pGraph, pEdge, true));
+				aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
 			}
 			
 			@Override
 			public void edgeRemoved(Graph pGraph, Edge pEdge)
 			{
-				aUndoManager.add(new AddDeleteEdgeCommand(pGraph, pEdge, false));
+				aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
 			}
 		});
 		setModified(false);
