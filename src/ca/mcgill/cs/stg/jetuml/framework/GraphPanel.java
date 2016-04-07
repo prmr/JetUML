@@ -248,44 +248,7 @@ public class GraphPanel extends JPanel
 	public void setGraph(Graph pGraph)
 	{
 		aGraph = pGraph;
-		aGraph.setGraphModificationListener(new GraphModificationListener()
-		{
-			@Override
-			public void startingCompoundOperation() 
-			{
-				aUndoManager.startTracking();
-			}
-			
-			@Override
-			public void finishingCompoundOperation()
-			{
-				aUndoManager.endTracking();
-			}
-			
-			@Override
-			public void nodeAdded(Graph pGraph, Node pNode)
-			{
-				aUndoManager.add(new AddNodeCommand(pGraph, pNode));
-			}
-			
-			@Override
-			public void nodeRemoved(Graph pGraph, Node pNode)
-			{
-				aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
-			}
-			
-			@Override
-			public void edgeAdded(Graph pGraph, Edge pEdge)
-			{
-				aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
-			}
-			
-			@Override
-			public void edgeRemoved(Graph pGraph, Edge pEdge)
-			{
-				aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
-			}
-		});
+		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		setModified(false);
 		revalidate();
 		repaint();
@@ -825,6 +788,45 @@ public class GraphPanel extends JPanel
 					selectNode(pCtrl, child, pLasso);
 				}
 			}
+		}
+	}
+	
+	private class PanelGraphModificationListener implements GraphModificationListener
+	{
+		@Override
+		public void startingCompoundOperation() 
+		{
+			aUndoManager.startTracking();
+		}
+		
+		@Override
+		public void finishingCompoundOperation()
+		{
+			aUndoManager.endTracking();
+		}
+		
+		@Override
+		public void nodeAdded(Graph pGraph, Node pNode)
+		{
+			aUndoManager.add(new AddNodeCommand(pGraph, pNode));
+		}
+		
+		@Override
+		public void nodeRemoved(Graph pGraph, Node pNode)
+		{
+			aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
+		}
+		
+		@Override
+		public void edgeAdded(Graph pGraph, Edge pEdge)
+		{
+			aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
+		}
+		
+		@Override
+		public void edgeRemoved(Graph pGraph, Edge pEdge)
+		{
+			aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
 		}
 	}
 }

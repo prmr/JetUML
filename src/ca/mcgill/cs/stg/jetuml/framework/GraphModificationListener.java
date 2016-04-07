@@ -21,7 +21,7 @@ public interface GraphModificationListener
 	 * @param pNode The node added.
 	 */
 	void nodeAdded(Graph pGraph, Node pNode);
-
+	
 	/**
 	 * Called whenever a node is removed from a graph.
 	 * @param pGraph The target graph.
