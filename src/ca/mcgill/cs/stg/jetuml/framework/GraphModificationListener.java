@@ -2,12 +2,13 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * Specifies a list of callback methods for any object
  * interested in modifications to a graph. Maps to the 
- * Observer interface in the Observer design pattner.
+ * Observer interface in the Observer design pattern.
  * 
  * @author EJBQ - Initial code
  * @author Martin P. Robillard Observer inteface refactoring.
@@ -54,4 +55,16 @@ public interface GraphModificationListener
 	 * completed. 
 	 */
 	void finishingCompoundOperation();
+	
+	/**
+	 * Notifies implementers that a property of a graph element has
+	 * a new value.
+	 * 
+	 * @param pGraph The target graph.
+	 * @param pElement The element whose property changed.
+	 * @param pProperty The name of the changed property.
+	 * @param pOldValue The value of the property before the change.
+	 * @param pNewValue The value of the property after the change.
+	 */
+	void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue);
 }

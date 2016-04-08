@@ -839,5 +839,11 @@ public class GraphPanel extends JPanel
 		{
 			aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
 		}
+
+		@Override
+		public void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue)
+		{
+			aUndoManager.add(PropertyChangeTracker.createPropertyChangeCommand(pGraph, pElement, pProperty, pOldValue, pNewValue));
+		}
 	}
 }

@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 
 /**
  * Tacks the modification of GraphElement properties.
@@ -82,7 +83,7 @@ public class PropertyChangeTracker
 			{
 				return copyIfNecessary(getter.invoke( aEdited ));
 			}
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+			catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 			{
 				return null;
 			}
@@ -104,6 +105,36 @@ public class PropertyChangeTracker
 		{
 			return pObject;
 		}
+	}
+	
+	/**
+	 * Creates a PropertyChangeCommand from the component data. Returns null if there is any problem.
+	 * @param pGraph the graph containing the edited node.
+	 * @param pElement The element whose property changed.
+	 * @param pProperty The name of the changed property.
+	 * @param pOldValue The value of the property before the change.
+	 * @param pNewValue The value of the property after the change.
+	 * @return The new command object.
+	 */
+	public static PropertyChangeCommand createPropertyChangeCommand(Graph pGraph, GraphElement pElement, 
+			String pProperty, Object pOldValue, Object pNewValue)
+	{
+		try
+		{
+			PropertyDescriptor[] descriptors = Introspector.getBeanInfo(pElement.getClass()).getPropertyDescriptors();
+			for(int i = 0; i < descriptors.length; i++)
+			{
+				if( descriptors[i].getName().equals(pProperty))
+				{
+					return new PropertyChangeCommand(pGraph, pElement, copyIfNecessary(pOldValue), copyIfNecessary(pNewValue), i);
+				}
+			}
+			return null;
+		}
+		catch(IntrospectionException e)
+		{
+			return null;
+		}  
 	}
 
 	/**

@@ -58,6 +58,23 @@ public abstract class Graph
 		aNeedsLayout = true;
 	}
 	
+	/**
+	 * Notifies the listener, if applicable, of a change to a property
+	 * of one of the graph's elements.
+	 * 
+	 * @param pElement The element whose property changed.
+	 * @param pProperty The name of the changed property.
+	 * @param pOldValue The value of the property before the change.
+	 * @param pNewValue The value of the property after the change.
+	 */
+	protected void notifyPropertyChanged(GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue)
+	{
+		if( aModificationListener != null )
+		{
+			aModificationListener.propertyChanged(this, pElement, pProperty, pOldValue, pNewValue);
+		}
+	}
+	
 	private void notifyNodeAdded(Node pNode)
 	{
 		if( aModificationListener != null )
