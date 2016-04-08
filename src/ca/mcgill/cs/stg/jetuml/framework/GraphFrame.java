@@ -38,7 +38,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 public class GraphFrame extends JInternalFrame
 {
 	private JTabbedPane aTabbedPane;
-	private Graph aGraph;
 	private GraphPanel aPanel;
 	private File aFile; // The file associated with this graph
 	
@@ -49,14 +48,12 @@ public class GraphFrame extends JInternalFrame
 	 */
 	public GraphFrame(Graph pGraph, JTabbedPane pTabbedPane)
 	{
-		aGraph = pGraph;
 		aTabbedPane = pTabbedPane;
 		ToolBar sideBar = new ToolBar(pGraph);
-		aPanel = new GraphPanel(sideBar);
+		aPanel = new GraphPanel(pGraph, sideBar);
 		Container contentPane = getContentPane();
 		contentPane.add(sideBar, BorderLayout.EAST);
 		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
-		aPanel.setGraph(aGraph);
 		setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
 	}
 
@@ -66,7 +63,7 @@ public class GraphFrame extends JInternalFrame
 	 */
 	public Graph getGraph()
 	{
-		return aGraph;
+		return aPanel.getGraph();
 	}
 
 	/**

@@ -86,11 +86,16 @@ public class GraphPanel extends JPanel
 	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
 	/**
-	 * Constructs a graph.
+	 * Constructs the panel, assigns the graph to it, and registers
+	 * the panel as a listener for the graph.
+	 * 
+	 * @param pGraph The graph managed by this panel.
 	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
 	 */
-	public GraphPanel(ToolBar pSideBar)
+	public GraphPanel(Graph pGraph, ToolBar pSideBar)
 	{
+		aGraph = pGraph;
+		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aZoom = 1;
 		aSideBar = pSideBar;
 		setBackground(Color.WHITE);
@@ -260,20 +265,6 @@ public class GraphPanel extends JPanel
 		aSideBar.setToolToBeSelect();
 		repaint();
 	}
-
-	/**
-	 * Set the graph in the panel.
-	 * @param pGraph the graph to be displayed and edited
-	 */
-	public void setGraph(Graph pGraph)
-	{
-		aGraph = pGraph;
-		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
-		setModified(false);
-		revalidate();
-		repaint();
-	}
-
 
 	@Override
 	public void paintComponent(Graphics pGraphics)
