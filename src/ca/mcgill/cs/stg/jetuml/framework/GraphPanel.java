@@ -108,7 +108,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void editSelected()
 	{
-		Object edited = aSelectedElements.getLastSelected();
+		GraphElement edited = aSelectedElements.getLastSelected();
 		if( edited == null )
 		{
 			return;

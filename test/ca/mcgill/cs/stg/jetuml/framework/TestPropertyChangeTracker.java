@@ -4,6 +4,7 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.beans.Introspector;
@@ -16,9 +17,9 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.framework.PropertyChangeTracker.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
@@ -147,6 +148,58 @@ public class TestPropertyChangeTracker
 		assertEquals(edge, getFieldValue(aObjectField, pcc));
 		assertEquals("", getFieldValue(aOldValueField, pcc));
 		assertEquals("end", getFieldValue(aNewValueField, pcc));
+	}
+	
+	@Test
+	public void testCreatePropertyChangeCommandInvalid()
+	{
+		assertNull(PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
+				new ClassNode(), "foo", "fakeOld", "fakeNew"));
+	}
+	
+	@Test
+	public void testCreatePropertyChangeCommandValid()
+	{
+		MultiLineString old = new MultiLineString();
+		old.setText("old");
+		MultiLineString newValue = new MultiLineString();
+		old.setText("new");
+		ClassNode node = new ClassNode();
+		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
+				node, "name", old, newValue);
+		assertEquals("name", getPropertyName(command, node));
+		assertEquals(node, getFieldValue(aObjectField, command));
+		assertEquals(old, getFieldValue(aOldValueField, command));
+		assertEquals(newValue, getFieldValue(aNewValueField, command));
+	}
+	
+	@Test
+	public void testPropertyChangeCommandExecute()
+	{
+		MultiLineString old = new MultiLineString();
+		old.setText("old");
+		MultiLineString newValue = new MultiLineString();
+		old.setText("new");
+		ClassNode node = new ClassNode();
+		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
+				node, "name", old, newValue);
+		command.execute();
+		assertEquals(newValue, node.getName());
+	}
+	
+	@Test
+	public void testPropertyChangeCommandUndo()
+	{
+		MultiLineString old = new MultiLineString();
+		old.setText("old");
+		MultiLineString newValue = new MultiLineString();
+		old.setText("new");
+		ClassNode node = new ClassNode();
+		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
+				node, "name", old, newValue);
+		command.execute();
+		command.undo();
+		assertEquals(old, node.getName());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -26,8 +26,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.stg.jetuml.commands.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 
@@ -39,7 +39,7 @@ import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 public class PropertyChangeTracker 
 {
 	private Object[] aPropertyValues;
-	private Object aEdited;
+	private GraphElement aEdited;
 
 	/**
 	 * Records the value of the properties of pEdited.
@@ -47,7 +47,7 @@ public class PropertyChangeTracker
 	 * @param pEdited The object being edited.
 	 * 
 	 */
-	public void startTrackingPropertyChange(Object pEdited)
+	public void startTrackingPropertyChange(GraphElement pEdited)
 	{
 		try 
 		{
@@ -181,6 +181,84 @@ public class PropertyChangeTracker
 		else
 		{
 			return pObject1.equals(pObject2);
+		}
+	}
+	
+	/**
+	 * Stores the change in value of the property of a
+	 * graph element.
+	 * 
+	 * @author EJBQ
+	 * @author Martin P. Robillard
+	 */
+	static class PropertyChangeCommand implements Command
+	{
+		private Graph aGraph;
+		private GraphElement aObject;
+		private Object aPrevPropValue; 
+		private Object aNewPropValue;
+		private int aIndex; // The index of the changed property in BeanInfo.getPropertyDescriptors
+
+		/**
+		 * Creates the command and sets the values of the element. The values should be clones so they do not get edited.
+		 * 
+		 * @param pGraph The graph of the object being changed.
+		 * @param pObject The graph element being transformed
+		 * @param pPrevPropValue The initial value
+		 * @param pNewPropValue The new value
+		 * @param pIndex Which property of the object this is, so that we can select it
+		 */
+		PropertyChangeCommand(Graph pGraph, GraphElement pObject, Object pPrevPropValue, Object pNewPropValue, int pIndex)
+		{
+			aGraph = pGraph;
+			aObject = pObject; 
+			aPrevPropValue = pPrevPropValue;
+			aNewPropValue = pNewPropValue;
+			aIndex = pIndex;
+		}
+
+		/**
+		 * Changes the property of the Object to the old value.
+		 */
+		public void undo() 
+		{
+			try 
+			{
+				PropertyDescriptor[] descriptors = Introspector.getBeanInfo(aObject.getClass()).getPropertyDescriptors().clone();  
+				final Method setter = descriptors[aIndex].getWriteMethod();
+				if(setter != null)
+				{
+					setter.invoke(aObject, new Object[] {aPrevPropValue});
+				}
+			}
+			catch(IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) 
+			{
+				assert false;
+				return;
+			}
+			aGraph.layout();
+		}
+
+		/**
+		 * Changes the property of the Object.
+		 */
+		public void execute() 
+		{
+			try 
+			{
+				PropertyDescriptor[] descriptors = Introspector.getBeanInfo(aObject.getClass()).getPropertyDescriptors().clone();  
+				final Method setter = descriptors[aIndex].getWriteMethod();
+				if(setter!= null)
+				{
+					setter.invoke(aObject, aNewPropValue);
+				}
+			}
+			catch(IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) 
+			{
+				assert false;
+				return;
+			}
+			aGraph.layout();
 		}
 	}
 }
