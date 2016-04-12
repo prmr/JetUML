@@ -95,7 +95,6 @@ public class EditorFrame extends JFrame
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
 	private static final int MAX_RECENT_FILES = 8;
-	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
 	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
 	private static final int HELP_MENU_TEXT_WIDTH = 10; //Number of pixels to give to the width of the  text area of the Help Menu.
@@ -332,40 +331,6 @@ public class EditorFrame extends JFrame
             }
      	}));
       
-     	viewMenu.add(pFactory.createMenuItem("view.grow_drawing_area", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-     		{
-     			if( noCurrentGraphFrame() )
-            	{
-            		return;
-            	}
-     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-     			Graph g = frame.getGraph();
-     			Rectangle2D bounds = g.getBounds();
-     			bounds.add(frame.getGraphPanel().getBounds());
-     			g.setMinBounds(new Rectangle2D.Double(0, 0, GROW_SCALE_FACTOR * bounds.getWidth(), GROW_SCALE_FACTOR * bounds.getHeight()));
-                frame.getGraphPanel().revalidate();
-                frame.repaint();
-     		}
-     	}));
-      
-     	viewMenu.add(pFactory.createMenuItem("view.clip_drawing_area", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-     		{
-     			if( noCurrentGraphFrame() )
-            	{
-            		return;
-            	}
-     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-                Graph g = frame.getGraph();
-                g.setMinBounds(new Rectangle2D.Double()); 
-                frame.getGraphPanel().revalidate();
-                frame.repaint();
-     		}
-     	}));
-
      	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
      	{
             public void actionPerformed(ActionEvent pEvent)

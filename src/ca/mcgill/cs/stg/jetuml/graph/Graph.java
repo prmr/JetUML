@@ -44,7 +44,6 @@ public abstract class Graph
 	protected transient ArrayList<Node> aNodesToBeRemoved;
 	protected transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
-	private transient Rectangle2D aMinBounds = new Rectangle2D.Double();
 
 	/**
 	 * Constructs a graph with no nodes or edges.
@@ -585,22 +584,6 @@ public abstract class Graph
 			return new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
 					bounds.getWidth() + AbstractNode.SHADOW_GAP, bounds.getHeight() + AbstractNode.SHADOW_GAP);
 		}
-	}
-
-	/**
-	 * @return The minimum bounds property
-	 */
-	public Rectangle2D getMinBounds() 
-	{ return aMinBounds; }
-
-	/**
-	 * @param pMinBounds The minimum bounds property
-	 * @pre pMinBounds != null
-	 */
-	public void setMinBounds(Rectangle2D pMinBounds)
-	{ 
-		assert pMinBounds != null;
-		aMinBounds = pMinBounds; 
 	}
 
 	/**
