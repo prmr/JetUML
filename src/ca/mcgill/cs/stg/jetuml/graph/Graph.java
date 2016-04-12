@@ -555,36 +555,35 @@ public abstract class Graph
 
 	/**
 	 * Gets the smallest rectangle enclosing the graph.
+	 * 
 	 * @return the bounding rectangle
 	 */
 	public Rectangle2D getBounds()
 	{
-		Rectangle2D r = aMinBounds;
-		for(int i = 0; i < aRootNodes.size(); i++)
+		Rectangle2D bounds = null;
+		for(Node node : aRootNodes )
 		{
-			Node n = aRootNodes.get(i);
-			Rectangle2D b = n.getBounds();
-			if(r == null)
+			if(bounds == null)
 			{
-				r = b;
+				bounds = node.getBounds();
 			}
 			else
 			{
-				r.add(b);
+				bounds.add(node.getBounds());
 			}
 		}
-		for(int i = 0; i < aEdges.size(); i++)
+		for(Edge edge : aEdges)
 		{
-			Edge e = aEdges.get(i);
-			r.add(e.getBounds());
+			bounds.add(edge.getBounds());
 		}
-		if(r == null )
+		if(bounds == null )
 		{
 			return new Rectangle2D.Double();
 		}
 		else
 		{
-			return new Rectangle2D.Double(r.getX(), r.getY(), r.getWidth() + AbstractNode.SHADOW_GAP, r.getHeight() + AbstractNode.SHADOW_GAP);
+			return new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
+					bounds.getWidth() + AbstractNode.SHADOW_GAP, bounds.getHeight() + AbstractNode.SHADOW_GAP);
 		}
 	}
 
