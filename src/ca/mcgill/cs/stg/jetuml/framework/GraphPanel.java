@@ -233,6 +233,7 @@ public class GraphPanel extends JPanel
 	public void undo()
 	{
 		aUndoManager.undoCommand();
+		revalidate();
 		repaint();
 	}
 	
@@ -244,6 +245,7 @@ public class GraphPanel extends JPanel
 	public void redo()
 	{
 		aUndoManager.redoCommand();
+		revalidate();
 		repaint();
 	}
 	
