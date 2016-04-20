@@ -148,12 +148,9 @@ public class GraphPanel extends JPanel
 		Stack<Node> nodes = new Stack<Node>();
 		for( GraphElement element : aSelectedElements )
 		{
-			if (element instanceof Node)
+			if(element instanceof Node)
 			{
-				for(Edge e : aGraph.getNodeEdges((Node) element))
-				{
-					aGraph.removeEdge(e);
-				}
+				aGraph.removeAllEdgesConnectedTo((Node)element);
 				nodes.add((Node) element);
 			}
 			else if(element instanceof Edge)

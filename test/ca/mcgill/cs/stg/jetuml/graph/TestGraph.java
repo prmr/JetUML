@@ -21,13 +21,16 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -45,6 +48,8 @@ import static org.junit.Assert.assertEquals;
 public class TestGraph
 {
 	private Graph aGraph;
+	private Grid aGrid;
+	private Graphics2D aGraphics;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private ClassNode aNode3;
@@ -56,6 +61,8 @@ public class TestGraph
 	public void setup()
 	{
 		aGraph = new ClassDiagramGraph();
+		aGrid = new Grid();
+		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNode3 = new ClassNode();
@@ -100,6 +107,61 @@ public class TestGraph
 		assertTrue(aGraph.contains(aEdge1));
 		assertTrue(aEdge1.getStart() == aNode1);
 		assertTrue(aEdge1.getEnd() == aNode2);
+	}
+	
+	@Test
+	public void testRemoveAllEdgesConnectedToNoConnection()
+	{
+		aGraph.removeAllEdgesConnectedTo(aNode1);
+		assertTrue( aGraph.contains(aNode1 ));
+	}
+	
+	@Test
+	public void testRemoveAllEdgesConnectedToSingleConnection()
+	{
+		aGraph.connect(aEdge1, aNode1, aNode2);
+		assertTrue( aGraph.contains(aEdge1 ));
+		aGraph.removeAllEdgesConnectedTo(aNode1);
+		// No layout
+		assertTrue( aGraph.contains(aNode1 ));
+		assertTrue( aGraph.contains(aNode2 ));
+		assertTrue( aGraph.contains(aEdge1 ));
+		aGraph.layout();
+		aGraph.layout(aGraphics, aGrid);
+		assertTrue( aGraph.contains(aNode1 ));
+		assertTrue( aGraph.contains(aNode2 ));
+		assertFalse( aGraph.contains(aEdge1 ));
+	}
+	
+	@Test
+	public void testRemoveAllEdgesConnectedToMultipleConnections()
+	{
+		aGraph.connect(aEdge1, aNode1, aNode2);
+		aGraph.connect(aEdge2, aNode1, aNode3);
+		aGraph.connect(aEdge3, aNode3, aNode3);
+		assertTrue( aGraph.contains(aEdge1 ));
+		aGraph.removeAllEdgesConnectedTo(aNode1);
+		aGraph.layout();
+		aGraph.layout(aGraphics, aGrid);
+		assertTrue( aGraph.contains(aNode1 ));
+		assertTrue( aGraph.contains(aNode2 ));
+		assertFalse( aGraph.contains(aEdge1 ));
+		assertFalse( aGraph.contains(aEdge2 ));
+	}
+	
+	@Test
+	public void testRemoveAllEdgesConnectedToNoLayout1()
+	{
+		aGraph.connect(aEdge1, aNode1, aNode2);
+		aGraph.connect(aEdge2, aNode1, aNode3);
+		aGraph.removeEdge(aEdge1);
+		aGraph.removeAllEdgesConnectedTo(aNode1);
+		aGraph.layout();
+		aGraph.layout(aGraphics, aGrid);
+		assertTrue( aGraph.contains(aNode1 ));
+		assertTrue( aGraph.contains(aNode2 ));
+		assertFalse( aGraph.contains(aEdge1 ));
+		assertFalse( aGraph.contains(aEdge2 ));
 	}
 	
 	@Test

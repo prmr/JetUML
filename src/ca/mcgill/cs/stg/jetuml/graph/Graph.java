@@ -283,6 +283,7 @@ public abstract class Graph
 
 	/**
 	 * Finds an edge containing the given point.
+	 * 
 	 * @param pPoint a point
 	 * @return an edge containing p or null if no edges contain p
 	 */
@@ -298,24 +299,29 @@ public abstract class Graph
 		}
 		return null;
 	}
-
+	
 	/**
-	 * Returns all edges connected to the given node.
-	 * @param pNode The Node to query for Edges.
-	 * @return an ArrayList of Edges from the Node pNode.
+	 * Removes all edges in the graph that have pNode as a start
+	 * or end node. Note that layout() needs to be called before
+	 * the change has effect.
+	 * 
+	 * @param pNode The target node.
 	 */
-	public ArrayList<Edge> getNodeEdges(Node pNode)
+	public void removeAllEdgesConnectedTo(Node pNode)
 	{
-		ArrayList<Edge> toRet = new ArrayList<Edge>();
-		for(int i = 0; i < aEdges.size(); i++)
+		assert pNode != null;
+		ArrayList<Edge> toRemove = new ArrayList<Edge>();
+		for(Edge edge : aEdges)
 		{
-			Edge e = aEdges.get(i);
-			if((e.getStart() == pNode || e.getEnd() == pNode) && !aEdgesToBeRemoved.contains(e))
+			if((edge.getStart() == pNode || edge.getEnd() == pNode) && !aEdgesToBeRemoved.contains(edge))
 			{
-				toRet.add(e);
+				toRemove.add(edge);
 			}
 		}
-		return toRet;
+		for(Edge edge : toRemove )
+		{
+			removeEdge(edge);
+		}
 	}
 	
 	/**
@@ -328,7 +334,7 @@ public abstract class Graph
 	 * @return True if and only if there is an edge of type pType that
 	 * starts at node pStart and ends at node pEnd.
 	 */
-	public boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	protected boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
 		for( Edge edge : getEdges() )
@@ -349,17 +355,15 @@ public abstract class Graph
 	public void draw(Graphics2D pGraphics2D, Grid pGrid)
 	{
 		layout(pGraphics2D, pGrid);
-
-		for(int i = 0; i < aRootNodes.size(); i++)
+		
+		for( Node node : aRootNodes )
 		{
-			Node n = aRootNodes.get(i);
-			drawNode(n, pGraphics2D);
+			drawNode(node, pGraphics2D);
 		}
-
-		for(int i = 0; i < aEdges.size(); i++)
+		
+		for( Edge edge : aEdges )
 		{
-			Edge e = aEdges.get(i);
-			e.draw(pGraphics2D);
+			edge.draw(pGraphics2D);
 		}
 	}
 	
@@ -681,7 +685,7 @@ public abstract class Graph
 	 * @param pPoint2 The point where the edge is supposed to be terminated
 	 * @return True if the edge can legally connect node1 to node2
 	 */
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
 	{
 		if( pNode2 == null )
 		{
