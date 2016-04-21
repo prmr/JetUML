@@ -216,11 +216,14 @@ public abstract class Graph
 	}
 
 	/**
-	 * Adds a new node to the graph so that the top left corner of
+	 * Adds a newly created node to the graph so that the top left corner of
 	 * the bounding rectangle is at the given point. This method
 	 * is intended to be used to add nodes that were never part
-	 * of the graph, from the GUI. To add node recovered from
-	 * deserialization, undoing, or pasting, use restoreNode(Node)
+	 * of the graph, from the GUI. To add nodes recovered from
+	 * deserialization, use restoreNode. To add nodes recovered
+	 * from in-application operations such as undoing and pasting,
+	 * use insertNode. This method assumes the node does not
+	 * have a parent of a child.
 	 * 
 	 * @param pNode the node to add
 	 * @param pPoint the desired location
@@ -230,13 +233,8 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-		
+		aRootNodes.add(pNode);
 		notifyNodeAdded( pNode );
-		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
-		{
-			// Only add root nodes
-			aRootNodes.add(pNode);
-		}
 		aNeedsLayout = true;
 		return true;
 	}

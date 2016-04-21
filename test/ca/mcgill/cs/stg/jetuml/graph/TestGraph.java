@@ -69,9 +69,9 @@ public class TestGraph
 		aEdge1 = new DependencyEdge();
 		aEdge2 = new AggregationEdge();
 		aEdge3 = new AggregationEdge(AggregationEdge.Type.Composition);
-		aGraph.addNode(aNode1, new Point2D.Double(0,0));
-		aGraph.addNode(aNode2, new Point2D.Double(0,0));
-		aGraph.addNode(aNode3, new Point2D.Double(0,0));
+		aGraph.insertNode(aNode1);
+		aGraph.insertNode(aNode2);
+		aGraph.insertNode(aNode3);
 	}
 	
 	@Test

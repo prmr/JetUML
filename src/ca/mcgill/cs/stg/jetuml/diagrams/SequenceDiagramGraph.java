@@ -69,19 +69,14 @@ public class SequenceDiagramGraph extends Graph
 			if( target != null )
 			{
 				target.addChild((ChildNode)pNode);
-				super.addNode(pNode, pPoint);
-				return true;
 			}
 			else
 			{
 				return false;
 			}
 		}
-		else
-		{
-			super.addNode( pNode, pPoint );
-			return true;
-		}
+		super.addNode( pNode, pPoint );
+		return true;
 	}
 	
 	/*

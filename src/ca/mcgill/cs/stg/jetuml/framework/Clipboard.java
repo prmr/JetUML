@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,8 +153,8 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			pPanel.getGraph().addNode(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
-					node.getBounds().getY() - bounds.getY()));
+			node.translate(-bounds.getX(), -bounds.getY());
+			pPanel.getGraph().insertNode(node);
 		}
 		for( Edge edge : clonedEdges )
 		{

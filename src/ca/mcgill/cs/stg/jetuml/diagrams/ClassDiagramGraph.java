@@ -141,20 +141,18 @@ public class ClassDiagramGraph extends Graph
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * See if, given its position, the node should be added as a child of
+	 * a PackageNode.
+	 * 
+	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#addNode(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
+	 */
 	@Override
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		if( canAddNodeAsChild(pNode))
 		{
-			PackageNode container = null;
-			if( pNode instanceof ChildNode && ((ChildNode) pNode).getParent() != null )
-			{
-				container = (PackageNode)((ChildNode) pNode).getParent();
-			}
-			else
-			{
-				container = findContainer(aRootNodes, pPoint);
-			}
+			PackageNode container = findContainer(aRootNodes, pPoint);
 			if( container != null )
 			{
 				container.addChild((ChildNode)pNode);

@@ -112,7 +112,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	public void translate(double pDeltaX, double pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		// Prevent going about the ImplicitParameterNode
+		// Prevent going above the ImplicitParameterNode
 		if( getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
 		{
 			setBounds(new Rectangle2D.Double(getBounds().getX(), aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP, 

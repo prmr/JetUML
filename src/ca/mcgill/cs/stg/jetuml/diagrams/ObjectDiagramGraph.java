@@ -86,8 +86,9 @@ public class ObjectDiagramGraph extends Graph
 	}
 	
 	/* 
-	 * Adds the node, ensuring that field nodes can only be added if the
-	 * point is inside an object node.
+	 * See if, given its position, the node should be added as a child of
+	 * an ObjectNode.
+
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
@@ -95,30 +96,19 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pNode instanceof FieldNode )
 		{
-			// We first see if the node is being undeleted or pasted.
-			ObjectNode object = (ObjectNode) ((FieldNode) pNode).getParent();
+			ObjectNode object = findObject((FieldNode)pNode, pPoint);
 			
-			// If not we see if we find a legal parent.
-			if( object == null ) 
-			{
-				object = findObject((FieldNode)pNode, pPoint);
-			}
 			if( object != null )
 			{
 				object.addChild((ChildNode)pNode); // Must be called before super.add so that the node's parent isn't null
-				super.addNode(pNode, pPoint);
-				return true;
 			}
 			else
 			{
 				return false;
 			}
 		}
-		else
-		{
-			super.addNode(pNode, pPoint);
-			return true;
-		}
+		super.addNode(pNode, pPoint);
+		return true;
 	}
 	
 	/* Find if the node to be added can be added to an object. Returns null if not. 
