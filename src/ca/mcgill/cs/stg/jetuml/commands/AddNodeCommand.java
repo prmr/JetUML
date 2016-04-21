@@ -28,7 +28,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
  * 
  * @author Martin P. Robillard
  */
-public class AddNodeCommand extends NodeRelatedCommand
+public class AddNodeCommand extends GraphElementRelatedCommand
 {
 	/**
 	 * Creates the command.
@@ -45,7 +45,8 @@ public class AddNodeCommand extends NodeRelatedCommand
 	 */
 	public void undo() 
 	{
-		aGraph.removeNode(getNode());
+		assert aElement instanceof Node;
+		aGraph.removeNode((Node)aElement);
 		aGraph.layout();
 	}
 
@@ -53,8 +54,9 @@ public class AddNodeCommand extends NodeRelatedCommand
 	 * Performs the command and adds/deletes the node.
 	 */
 	public void execute() 
-	{
-		aGraph.addNode(getNode(), aPosition);
+	{ 
+		assert aElement instanceof Node;
+		aGraph.insertNode((Node)aElement);
 		aGraph.layout();
 	}
 }

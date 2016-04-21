@@ -240,6 +240,29 @@ public abstract class Graph
 		aNeedsLayout = true;
 		return true;
 	}
+	
+	/**
+	 * Inserts a previously-created node back into a diagram.
+	 * The node is expected to have a position and possibly a parent. 
+	 * Node insertion is intended to support operations such as undo/redo
+	 * and copy and paste. Calling this method results in a node
+	 * addition notification.
+	 * 
+	 * @param pNode The node to insert into the graph.
+	 */
+	public final void insertNode(Node pNode)
+	{	
+		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
+		{	// The node does not have a parent, insert it as a root node
+			aRootNodes.add(pNode);
+		}
+		else
+		{	// Re-insert the node as a child of its parent
+			((ChildNode)pNode).getParent().addChild((ChildNode)pNode);
+		}
+		aNeedsLayout = true;
+		notifyNodeAdded( pNode );
+	}
 
 	/**
       * Finds a node containing the given point. Always returns

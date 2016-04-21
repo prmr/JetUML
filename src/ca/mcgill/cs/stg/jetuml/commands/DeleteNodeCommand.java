@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import java.awt.Point;
-
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
@@ -32,9 +30,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
  */
 public class DeleteNodeCommand extends GraphElementRelatedCommand
 {
-	private double aX;
-	private double aY;
-	
 	/**
 	 * Creates the command.
 	 * @param pGraph The graph the node was removed from.
@@ -43,8 +38,6 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	public DeleteNodeCommand(Graph pGraph, Node pNode)
 	{
 		super( pGraph, pNode );
-		aX = pNode.getBounds().getMinX();
-		aY = pNode.getBounds().getMinY();
 	}
 	
 	/**
@@ -52,7 +45,7 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	 */
 	public void undo() 
 	{
-		aGraph.addNode((Node)aElement, new Point.Double(aX, aY));
+		aGraph.insertNode((Node)aElement);
 		aGraph.layout();
 	}
 
