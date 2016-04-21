@@ -193,7 +193,7 @@ public class TestGraph
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
 		ClassNode node = new ClassNode();
-		graph.restoreNode(node, false);
+		graph.restoreRootNode(node);
 		node.translate(50, 50);
 		assertEquals(new Rectangle2D.Double(50,50,104,64), graph.getBounds());
 		node.translate(-50, -50);

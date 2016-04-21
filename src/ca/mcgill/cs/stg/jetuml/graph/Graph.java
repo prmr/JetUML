@@ -647,18 +647,6 @@ public abstract class Graph
 	{ return aEdges; }
 
 	/**
-	 * Restores a node to this graph. It is assume that
-	 * restoring the node is a valid operation, and that the 
-	 * node properties store its proper position. 
-	 * @param pNode The node to restore
-	 * @param pNotify True if the graph listeners should be notified of the addition
-	 */
-	public void restoreNode(Node pNode, boolean pNotify)
-	{
-		aRootNodes.add(pNode); 
-	}
-	
-	/**
 	 * Restores a root node to this graph. It is assume that
 	 * restoring the node is a valid operation, and that the 
 	 * node properties store its proper position. The root node
