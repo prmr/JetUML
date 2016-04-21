@@ -116,7 +116,7 @@ public class TestPersistenceService
 	{
 		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.state.jet"));
 		verifyStateDiagram(graph);
-		
+
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
@@ -130,7 +130,7 @@ public class TestPersistenceService
 	{
 		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.object.jet"));
 		verifyObjectDiagram(graph);
-		
+
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
@@ -144,7 +144,7 @@ public class TestPersistenceService
 	{
 		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.usecase.jet"));
 		verifyUseCaseDiagram(graph);
-		
+
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.saveFile(graph, new FileOutputStream(tmp));

@@ -71,35 +71,33 @@ public class StateDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
-	{	
-		Node n1 = findNode(pPoint1);
-		Node n2 = findNode(pPoint2);
-		if(n1 != null)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
-			//This checks to see if first node is an end note. 
-			// Cannot have edges coming from final node 
-			// except for note edges
-			if(n1 instanceof CircularStateNode)
+			return false;
+		}
+		if(pNode1 != null)
+		{
+			if(pNode1 instanceof CircularStateNode)
 			{
-				CircularStateNode end = (CircularStateNode) n1;
+				CircularStateNode end = (CircularStateNode) pNode1;
 				if(end.isFinal() && !(pEdge instanceof NoteEdge))
 				{
 					return false;
 				}
 			}
-			//This checks to see if second node is a beginning node. Cannot return to start state.
-			if (n2 instanceof CircularStateNode)
+		}
+		if(pNode2 instanceof CircularStateNode)
+		{
+			CircularStateNode begin = (CircularStateNode) pNode2;
+			if(!begin.isFinal() && !(pEdge instanceof NoteEdge))
 			{
-				CircularStateNode begin = (CircularStateNode) n2;
-				if(!begin.isFinal() && !(pEdge instanceof NoteEdge))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
-		return super.connect(pEdge, pPoint1, pPoint2);
-	}	
+		return true;
+	}
 }
 
 

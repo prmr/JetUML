@@ -192,12 +192,12 @@ on two lines</string>
     </void>
    </object>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>start</string>
@@ -206,7 +206,7 @@ on two lines</string>
    <object idref="CircularStateNode0"/>
    <object idref="StateNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>e1</string>
@@ -215,7 +215,7 @@ on two lines</string>
    <object idref="StateNode0"/>
    <object idref="StateNode1"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>e2</string>
@@ -224,7 +224,7 @@ on two lines</string>
    <object idref="StateNode1"/>
    <object idref="StateNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>self</string>
@@ -233,12 +233,12 @@ on two lines</string>
    <object idref="StateNode1"/>
    <object idref="StateNode1"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge"/>
    <object idref="StateNode2"/>
    <object idref="CircularStateNode1"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge"/>
    <object idref="StateNode1"/>
    <object idref="StateNode2"/>

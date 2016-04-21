@@ -225,12 +225,12 @@
     </void>
    </object>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
@@ -239,7 +239,7 @@
    <object idref="ClassNode0"/>
    <object idref="ClassNode3"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
     <void property="middleLabel">
      <string>e2</string>
@@ -254,7 +254,7 @@
    <object idref="ClassNode0"/>
    <object idref="InterfaceNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
     <void property="middleLabel">
      <string>e3</string>
@@ -263,7 +263,7 @@
    <object idref="ClassNode1"/>
    <object idref="ClassNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
     <void property="endLabel">
      <string>*</string>
@@ -278,7 +278,7 @@
    <object idref="ClassNode0"/>
    <object idref="ClassNode2"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
     <void property="middleLabel">
      <string>e5</string>

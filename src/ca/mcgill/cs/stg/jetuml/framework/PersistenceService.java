@@ -109,7 +109,6 @@ public final class PersistenceService
 	public static void saveFile(Graph pGraph, OutputStream pOut)
 	{
 		XMLEncoder encoder = new XMLEncoder(pOut);
-//		encoder.setPersistenceDelegate(BentStyle.class, staticFieldDelegate);
 		encoder.setPersistenceDelegate(LineStyle.class, staticFieldDelegate);
 		encoder.setPersistenceDelegate(ArrowHead.class, staticFieldDelegate);
       

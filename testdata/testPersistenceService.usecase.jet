@@ -298,17 +298,17 @@
     </void>
    </object>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseGeneralizationEdge"/>
    <object idref="ActorNode2"/>
    <object idref="ActorNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
     <void property="type">
      <object class="java.lang.Enum" id="UseCaseDependencyEdge$Type0" method="valueOf">
@@ -320,27 +320,27 @@
    <object idref="ActorNode2"/>
    <object idref="ActorNode1"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
    <object idref="ActorNode0"/>
    <object idref="UseCaseNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
    <object idref="ActorNode1"/>
    <object idref="UseCaseNode1"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
    <object idref="ActorNode1"/>
    <object idref="UseCaseNode2"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseGeneralizationEdge"/>
    <object idref="UseCaseNode1"/>
    <object idref="UseCaseNode0"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
     <void property="type">
      <object class="java.lang.Enum" method="valueOf">
@@ -352,7 +352,7 @@
    <object idref="UseCaseNode1"/>
    <object idref="UseCaseNode2"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseDependencyEdge">
     <void property="type">
      <object idref="UseCaseDependencyEdge$Type0"/>
@@ -361,7 +361,7 @@
    <object idref="UseCaseNode1"/>
    <object idref="UseCaseNode3"/>
   </void>
-  <void method="connect">
+  <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.UseCaseAssociationEdge"/>
    <object idref="UseCaseNode0"/>
    <object idref="UseCaseNode3"/>

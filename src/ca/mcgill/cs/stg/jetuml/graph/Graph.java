@@ -35,6 +35,20 @@ import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
 /**
  *  A graph consisting of nodes and edges.
+ *  
+ *  There are three modes for creating a graph:
+ *  
+ *  - Restoring nodes or edges. This mode is used for loading serialized elements
+ *    and does not trigger any notifications. It is intended to be used for deserialization
+ *    only. See methods restore{Node|Edge}
+ *    
+ *  - Inserting nodes or edges. This mode is used for inserting elements that had been
+ *    previously created by were temporarily removed from a diagram. This is indented to be used
+ *    for functionality such as undoing and copy/pasting. See methods insert{Node|Edge},
+ *    which trigger notifications.
+ *    
+ *  - Adding nodes or edges. This mode is used for adding completely new elements, typically
+ *    through UI actions. See methods add{Node|Edge}, which trigger notifications.
  */
 public abstract class Graph
 {
@@ -178,7 +192,7 @@ public abstract class Graph
 	 * @param pPoint2 a point in the ending node
 	 * @return true if the edge was connected
 	 */
-	public boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public final boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
 		Node node1 = findNode(pPoint1);
 		if( node1 == null )
@@ -407,8 +421,6 @@ public abstract class Graph
 	/**
 	 * Removes a node and all edges that start or end with that node.
 	 * @param pNode the node to remove
-	 * TODO: prmr the child handling stuff can be removed? It's all handled 
-	 * in the specific diagrams.
 	 */
 	public void removeNode(Node pNode)
 	{
@@ -429,7 +441,7 @@ public abstract class Graph
 			}
 		}
 
-		// Notify all nodes that pNode is being removed. TODO Navigate all nodes, not just root nodes
+		// Notify all nodes that pNode is being removed.
 		for(Node node : aRootNodes)
 		{
 			removeFromParent( node, pNode );
@@ -462,23 +474,6 @@ public abstract class Graph
 			{
 				removeFromParent(child, pToRemove );
 			}
-		}
-	}
-
-	/**
-	 * Removes pElement from the graph.
-	 * @param pElement The element to remove.
-	 */
-	public void removeElement(GraphElement pElement)
-	{
-		if(pElement instanceof Node)
-		{
-			removeNode((Node) pElement);
-		}
-		else if(pElement instanceof Edge)
-		{
-
-			removeEdge((Edge) pElement);
 		}
 	}
 
@@ -643,11 +638,13 @@ public abstract class Graph
 
 				for(Node node : graph.aRootNodes)
 				{
-					pOut.writeStatement( new Statement(pOldInstance, "restoreRootNode", new Object[]{ node }) );
+					pOut.writeStatement( new Statement(pOldInstance, "restoreRootNode", 
+							new Object[]{ node }) );
 				}
 				for(Edge edge : graph.aEdges)
 				{
-					pOut.writeStatement( new Statement(pOldInstance, "connect", new Object[]{ edge, edge.getStart(), edge.getEnd() }) );            
+					pOut.writeStatement( new Statement(pOldInstance, "restoreEdge", 
+							new Object[]{ edge, edge.getStart(), edge.getEnd() }) );            
 				}
 			}
 		});
@@ -692,6 +689,23 @@ public abstract class Graph
 	 * @param pEnd the end node of the edge
 	 */
 	public void connect(Edge pEdge, Node pStart, Node pEnd)
+	{
+		pEdge.connect(pStart, pEnd);
+		aEdges.add(pEdge);
+	}
+	
+	/**
+	 * Restores an edge to this graph. It is assume that
+	 * restoring the edge is a valid operation. This operation does not 
+	 * trigger any notifications. Note that we pass the edge's
+	 * two endpoint because these values are not serializable
+	 * due to the absence of set methods for them in the Edge interface.
+	 * 
+	 * @param pEdge The edge to restore
+	 * @param pStart The starting node for the edge
+	 * @param pEnd Then end 
+	 */
+	public void restoreEdge(Edge pEdge, Node pStart, Node pEnd)
 	{
 		pEdge.connect(pStart, pEnd);
 		aEdges.add(pEdge);
