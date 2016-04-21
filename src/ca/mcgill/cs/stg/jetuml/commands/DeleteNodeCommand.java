@@ -52,7 +52,7 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	 */
 	public void undo() 
 	{
-		aGraph.add((Node)aElement, new Point.Double(aX, aY));
+		aGraph.addNode((Node)aElement, new Point.Double(aX, aY));
 		aGraph.layout();
 	}
 

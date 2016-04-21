@@ -24,6 +24,9 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 
@@ -71,5 +74,24 @@ public class PointNode extends AbstractNode
 	public Point2D getConnectionPoint(Direction pDirection)
 	{
 		return aPoint;
+	}
+	
+	/**
+	 * The persistence delegate recovers the position of the point.
+	 * 
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(PointNode.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				Double x = ((PointNode)pOldInstance).aPoint.getX();
+				Double y = ((PointNode)pOldInstance).aPoint.getY();
+				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
+			}
+		});
 	}
 }

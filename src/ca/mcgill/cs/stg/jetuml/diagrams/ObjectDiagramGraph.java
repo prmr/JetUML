@@ -91,7 +91,7 @@ public class ObjectDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean add(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		if( pNode instanceof FieldNode )
 		{
@@ -106,7 +106,7 @@ public class ObjectDiagramGraph extends Graph
 			if( object != null )
 			{
 				object.addChild((ChildNode)pNode); // Must be called before super.add so that the node's parent isn't null
-				super.add(pNode, pPoint);
+				super.addNode(pNode, pPoint);
 				return true;
 			}
 			else
@@ -116,7 +116,7 @@ public class ObjectDiagramGraph extends Graph
 		}
 		else
 		{
-			super.add(pNode, pPoint);
+			super.addNode(pNode, pPoint);
 			return true;
 		}
 	}

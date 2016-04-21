@@ -599,7 +599,7 @@ public class GraphPanel extends JPanel
 		private void handleNodeCreation(MouseEvent pEvent)
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
-			boolean added = aGraph.add(newNode, getMousePoint(pEvent));
+			boolean added = aGraph.addNode(newNode, getMousePoint(pEvent));
 			if(added)
 			{
 				setModified(true);

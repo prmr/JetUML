@@ -142,7 +142,7 @@ public class ClassDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean add(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		if( canAddNodeAsChild(pNode))
 		{
@@ -160,7 +160,7 @@ public class ClassDiagramGraph extends Graph
 				container.addChild((ChildNode)pNode);
 			}
 		}
-		super.add(pNode, pPoint);
+		super.addNode(pNode, pPoint);
 		return true;
 	}
 }

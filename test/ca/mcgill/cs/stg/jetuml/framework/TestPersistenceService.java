@@ -77,6 +77,7 @@ public class TestPersistenceService
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
+		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
 		graph = PersistenceService.read(new FileInputStream(tmp));
 		verifyClassDiagram(graph);
 		tmp.delete();
@@ -93,6 +94,20 @@ public class TestPersistenceService
 		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
 		graph = PersistenceService.read(new FileInputStream(tmp));
 		verifyClassDiagram2(graph);
+		tmp.delete();
+	}
+	
+	@Test
+	public void testSequenceDiagram() throws Exception
+	{
+		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.sequence.jet"));
+		verifySequenceDiagram(graph);
+		
+		File tmp = new File(TEST_FILE_NAME);
+		tmp.delete();
+		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
+		graph = PersistenceService.read(new FileInputStream(tmp));
+		verifySequenceDiagram(graph);
 		tmp.delete();
 	}
 	
@@ -411,20 +426,6 @@ public class TestPersistenceService
 		assertEquals("e5", edge4.getMiddleLabel());
 		assertEquals(node4, edge4.getStart());
 		assertEquals("", edge4.getStartLabel());
-	}
-	
-	@Test
-	public void testSequenceDiagram() throws Exception
-	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.sequence.jet"));
-		verifySequenceDiagram(graph);
-		
-		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
-		verifySequenceDiagram(graph);
-		tmp.delete();
 	}
 	
 	private void verifySequenceDiagram(Graph pGraph)

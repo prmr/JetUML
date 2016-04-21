@@ -69,9 +69,9 @@ public class TestGraph
 		aEdge1 = new DependencyEdge();
 		aEdge2 = new AggregationEdge();
 		aEdge3 = new AggregationEdge(AggregationEdge.Type.Composition);
-		aGraph.add(aNode1, new Point2D.Double(0,0));
-		aGraph.add(aNode2, new Point2D.Double(0,0));
-		aGraph.add(aNode3, new Point2D.Double(0,0));
+		aGraph.addNode(aNode1, new Point2D.Double(0,0));
+		aGraph.addNode(aNode2, new Point2D.Double(0,0));
+		aGraph.addNode(aNode3, new Point2D.Double(0,0));
 	}
 	
 	@Test
@@ -174,7 +174,7 @@ public class TestGraph
 	public void testGetBoundsSingleNode()
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
-		graph.add(aNode1, new Point2D.Double(0,0));
+		graph.addNode(aNode1, new Point2D.Double(0,0));
 		assertEquals(new Rectangle2D.Double(0,0,104,64), graph.getBounds());
 	}
 	
@@ -193,7 +193,7 @@ public class TestGraph
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
 		ClassNode node = new ClassNode();
-		graph.addNode(node, new Point2D.Double(0,0));
+		graph.restoreNode(node, false);
 		node.translate(50, 50);
 		assertEquals(new Rectangle2D.Double(50,50,104,64), graph.getBounds());
 		node.translate(-50, -50);

@@ -54,7 +54,7 @@ public class AddNodeCommand extends NodeRelatedCommand
 	 */
 	public void execute() 
 	{
-		aGraph.add(getNode(), aPosition);
+		aGraph.addNode(getNode(), aPosition);
 		aGraph.layout();
 	}
 }

@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 
 /**
- *  A graph consisting of selectable nodes and edges.
+ *  A graph consisting of nodes and edges.
  */
 public abstract class Graph
 {
@@ -216,13 +216,17 @@ public abstract class Graph
 	}
 
 	/**
-	 * Adds a node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point.
+	 * Adds a new node to the graph so that the top left corner of
+	 * the bounding rectangle is at the given point. This method
+	 * is intended to be used to add nodes that were never part
+	 * of the graph, from the GUI. To add node recovered from
+	 * deserialization, undoing, or pasting, use restoreNode(Node)
+	 * 
 	 * @param pNode the node to add
 	 * @param pPoint the desired location
 	 * @return True if the node was added.
 	 */
-	public boolean add(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
@@ -614,19 +618,15 @@ public abstract class Graph
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				Graph g = (Graph)pOldInstance;
+				Graph graph = (Graph) pOldInstance;
 
-				for(int i = 0; i < g.aRootNodes.size(); i++)
+				for(Node node : graph.aRootNodes)
 				{
-					Node n = g.aRootNodes.get(i);
-					Rectangle2D bounds = n.getBounds();
-					Point2D p = new Point2D.Double(bounds.getX(), bounds.getY());
-					pOut.writeStatement( new Statement(pOldInstance, "addNode", new Object[]{ n, p }) );
+					pOut.writeStatement( new Statement(pOldInstance, "restoreRootNode", new Object[]{ node }) );
 				}
-				for(int i = 0; i < g.aEdges.size(); i++)
+				for(Edge edge : graph.aEdges)
 				{
-					Edge e = g.aEdges.get(i);
-					pOut.writeStatement( new Statement(pOldInstance, "connect", new Object[]{ e, e.getStart(), e.getEnd() }) );            
+					pOut.writeStatement( new Statement(pOldInstance, "connect", new Object[]{ edge, edge.getStart(), edge.getEnd() }) );            
 				}
 			}
 		});
@@ -647,18 +647,32 @@ public abstract class Graph
 	{ return aEdges; }
 
 	/**
-	 * Adds a node to this graph. This method should
-	 * only be called by a decoder when reading a data file.
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
+	 * Restores a node to this graph. It is assume that
+	 * restoring the node is a valid operation, and that the 
+	 * node properties store its proper position. 
+	 * @param pNode The node to restore
+	 * @param pNotify True if the graph listeners should be notified of the addition
 	 */
-	public void addNode(Node pNode, Point2D pPoint)
+	public void restoreNode(Node pNode, boolean pNotify)
 	{
-		Rectangle2D bounds = pNode.getBounds();
-		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
 		aRootNodes.add(pNode); 
 	}
-
+	
+	/**
+	 * Restores a root node to this graph. It is assume that
+	 * restoring the node is a valid operation, and that the 
+	 * node properties store its proper position. The root node
+	 * restored should be already linked to all its children (for
+	 * instance by a deserializer). This operation does not 
+	 * trigger any notifications.
+	 * 
+	 * @param pNode The node to restore
+	 */
+	public void restoreRootNode(Node pNode)
+	{
+		aRootNodes.add(pNode); 
+	}
+	
 	/**
 	 * Adds an edge to this graph. This method should
 	 * only be called for re-constructing already created

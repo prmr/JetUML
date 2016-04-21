@@ -61,7 +61,7 @@ public class SequenceDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean add(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		if(pNode instanceof CallNode) 
 		{
@@ -69,7 +69,7 @@ public class SequenceDiagramGraph extends Graph
 			if( target != null )
 			{
 				target.addChild((ChildNode)pNode);
-				super.add(pNode, pPoint);
+				super.addNode(pNode, pPoint);
 				return true;
 			}
 			else
@@ -79,7 +79,7 @@ public class SequenceDiagramGraph extends Graph
 		}
 		else
 		{
-			super.add( pNode, pPoint );
+			super.addNode( pNode, pPoint );
 			return true;
 		}
 	}

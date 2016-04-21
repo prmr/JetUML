@@ -37,6 +37,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.PointNode;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).
@@ -115,6 +116,7 @@ public final class PersistenceService
 		Graph.setPersistenceDelegate(encoder);
 		AbstractNode.setPersistenceDelegate(encoder);
 		PackageNode.setPersistenceDelegate(encoder);
+		PointNode.setPersistenceDelegate(encoder);
 		ObjectNode.setPersistenceDelegate(encoder);
 		ImplicitParameterNode.setPersistenceDelegate(encoder);
 		

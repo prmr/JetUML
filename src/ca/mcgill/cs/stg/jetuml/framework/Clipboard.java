@@ -154,7 +154,7 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			pPanel.getGraph().add(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
+			pPanel.getGraph().addNode(node, new Point2D.Double(node.getBounds().getX()-bounds.getX(),
 					node.getBounds().getY() - bounds.getY()));
 		}
 		for( Edge edge : clonedEdges )
