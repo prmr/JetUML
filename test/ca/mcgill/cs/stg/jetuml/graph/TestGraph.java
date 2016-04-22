@@ -110,6 +110,36 @@ public class TestGraph
 	}
 	
 	@Test
+	public void testInsertNodeChildNodeNullParent()
+	{
+		ClassNode classNode = new ClassNode();
+		aGraph.insertNode(classNode);
+		assertTrue(aGraph.contains(classNode));
+		assertTrue(aGraph.getRootNodes().contains(classNode));
+	}
+	
+	@Test
+	public void testInsertNodeChildNodeNonNullParent()
+	{
+		PackageNode packageNode = new PackageNode();
+		aGraph.restoreRootNode(packageNode);
+		ClassNode classNode = new ClassNode();
+		classNode.setParent(packageNode);
+		aGraph.insertNode(classNode);
+		assertTrue(aGraph.contains(classNode));
+		assertFalse(aGraph.getRootNodes().contains(classNode));
+	}
+	
+	@Test
+	public void testInsertNodeNotChildNode()
+	{
+		NoteNode note = new NoteNode();
+		aGraph.insertNode(note);
+		assertTrue(aGraph.contains(note));
+		assertTrue(aGraph.getRootNodes().contains(note));
+	}
+	
+	@Test
 	public void testRemoveAllEdgesConnectedToNoConnection()
 	{
 		aGraph.removeAllEdgesConnectedTo(aNode1);
@@ -186,6 +216,33 @@ public class TestGraph
 		aNode3.translate(20, 20);
 		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
 		assertEquals(new Rectangle2D.Double(10,10,244,254), aGraph.getBounds());
+	}
+	
+	@Test
+	public void testAddEdgeNode1Null()
+	{
+		aGraph.addEdge(aEdge1, new Point2D.Double(500, 500), new Point2D.Double(10, 10));
+		assertFalse(aGraph.getEdges().contains(aEdge1));
+	}
+	
+	@Test
+	public void testAddEdgeNode2Null()
+	{
+		aGraph.addEdge(aEdge1, new Point2D.Double(10, 10), new Point2D.Double(500, 500));
+		assertFalse(aGraph.getEdges().contains(aEdge1));
+	}
+	
+	@Test
+	public void testAddEdgeNode1NoteNode()
+	{
+		NoteNode note = new NoteNode();
+		note.translate(50, 50);
+		aGraph.restoreRootNode(note);
+		NoteEdge edge = new NoteEdge();
+		aGraph.addEdge(edge, new Point2D.Double(60, 60), new Point2D.Double(150, 150));
+		assertTrue(aGraph.getEdges().contains(edge));
+		assertEquals(note, edge.getStart());
+		assertTrue(edge.getEnd() instanceof PointNode);
 	}
 	
 	@Test
