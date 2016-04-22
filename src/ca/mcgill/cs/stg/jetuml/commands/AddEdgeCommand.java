@@ -28,7 +28,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
  * 
  * @author Martin P. Robillard
  */
-public class AddEdgeCommand extends EdgeRelatedCommand
+public class AddEdgeCommand extends GraphElementRelatedCommand
 {
 	/**
 	 * Creates the command.
@@ -45,7 +45,8 @@ public class AddEdgeCommand extends EdgeRelatedCommand
 	 */
 	public void undo() 
 	{
-		aGraph.removeEdge(getEdge());
+		assert aElement instanceof Edge;
+		aGraph.removeEdge((Edge)aElement);
 		aGraph.layout();
 	}
 
@@ -54,7 +55,8 @@ public class AddEdgeCommand extends EdgeRelatedCommand
 	 */
 	public void execute() 
 	{
-		aGraph.connect(getEdge(), aStart, aEnd);
+		assert aElement instanceof Edge;
+		aGraph.insertEdge((Edge)aElement);
 		aGraph.layout();	
 	}
 }

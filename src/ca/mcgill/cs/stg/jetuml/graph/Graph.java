@@ -680,18 +680,15 @@ public abstract class Graph
 	}
 	
 	/**
-	 * Adds an edge to this graph. This method should
-	 * only be called for re-constructing already created
-	 * graphs (e.g., through reading from a file, or pasting),
-	 * because it does not do any validation.
-	 * @param pEdge the edge to add
-	 * @param pStart the start node of the edge
-	 * @param pEnd the end node of the edge
+	 * Adds an edge to this graph. This method does no validation,
+	 * but triggers a notification.
+	 * 
+	 * @param pEdge the edge to insert.
 	 */
-	public void connect(Edge pEdge, Node pStart, Node pEnd)
+	public void insertEdge(Edge pEdge)
 	{
-		pEdge.connect(pStart, pEnd);
 		aEdges.add(pEdge);
+		notifyEdgeAdded(pEdge);
 	}
 	
 	/**

@@ -43,7 +43,7 @@ public class TestMoveTracker
 		aNode2 = new ClassNode();
 		aNode2.translate(400, 400);
 		aEdge1 = new DependencyEdge();
-		aGraph.connect(aEdge1, aNode1, aNode1);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode1);
 		aCommandsField = CompoundCommand.class.getDeclaredField("aCommands");
 		aCommandsField.setAccessible(true);
 		aDxField = MoveCommand.class.getDeclaredField("aDX");

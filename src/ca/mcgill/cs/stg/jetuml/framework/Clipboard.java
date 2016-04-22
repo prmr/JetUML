@@ -164,7 +164,7 @@ public final class Clipboard
 			// so some edges might no longer be relevant.
 			if( pPanel.getGraph().contains( edge.getStart() ) && pPanel.getGraph().contains(edge.getEnd()))
 			{
-				pPanel.getGraph().connect(edge, edge.getStart(), edge.getEnd());
+				pPanel.getGraph().insertEdge(edge);
 			}
 		}
 		

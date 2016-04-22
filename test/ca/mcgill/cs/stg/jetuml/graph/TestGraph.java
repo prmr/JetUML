@@ -77,9 +77,9 @@ public class TestGraph
 	@Test
 	public void testExistsEdge()
 	{
-		aGraph.connect(aEdge1, aNode1, aNode2);
-		aGraph.connect(aEdge2, aNode1, aNode2);
-		aGraph.connect(aEdge3, aNode2, aNode1);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge2, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge3, aNode2, aNode1);
 		
 		assertTrue(aGraph.existsEdge(DependencyEdge.class, aNode1, aNode2));
 		assertTrue(aGraph.existsEdge(AggregationEdge.class, aNode1, aNode2));
@@ -119,7 +119,7 @@ public class TestGraph
 	@Test
 	public void testRemoveAllEdgesConnectedToSingleConnection()
 	{
-		aGraph.connect(aEdge1, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
 		assertTrue( aGraph.contains(aEdge1 ));
 		aGraph.removeAllEdgesConnectedTo(aNode1);
 		// No layout
@@ -136,9 +136,9 @@ public class TestGraph
 	@Test
 	public void testRemoveAllEdgesConnectedToMultipleConnections()
 	{
-		aGraph.connect(aEdge1, aNode1, aNode2);
-		aGraph.connect(aEdge2, aNode1, aNode3);
-		aGraph.connect(aEdge3, aNode3, aNode3);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge2, aNode1, aNode3);
+		aGraph.restoreEdge(aEdge3, aNode3, aNode3);
 		assertTrue( aGraph.contains(aEdge1 ));
 		aGraph.removeAllEdgesConnectedTo(aNode1);
 		aGraph.layout();
@@ -152,8 +152,8 @@ public class TestGraph
 	@Test
 	public void testRemoveAllEdgesConnectedToNoLayout1()
 	{
-		aGraph.connect(aEdge1, aNode1, aNode2);
-		aGraph.connect(aEdge2, aNode1, aNode3);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge2, aNode1, aNode3);
 		aGraph.removeEdge(aEdge1);
 		aGraph.removeAllEdgesConnectedTo(aNode1);
 		aGraph.layout();
@@ -184,7 +184,7 @@ public class TestGraph
 		aNode1.translate(10, 10);
 		aNode2.translate(150, 200);
 		aNode3.translate(20, 20);
-		aGraph.connect(aEdge1, aNode1, aNode2);
+		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
 		assertEquals(new Rectangle2D.Double(10,10,244,254), aGraph.getBounds());
 	}
 	
