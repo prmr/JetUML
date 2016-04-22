@@ -682,7 +682,7 @@ public class GraphPanel extends JPanel
 			{
 				Edge prototype = (Edge) tool;
 				Edge newEdge = (Edge) prototype.clone();
-				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.connect(newEdge, aMouseDownPoint, mousePoint))
+				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
 					setSelection(newEdge);

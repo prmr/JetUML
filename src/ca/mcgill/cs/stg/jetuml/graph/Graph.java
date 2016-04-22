@@ -166,7 +166,7 @@ public abstract class Graph
 	 * @param pPoint1 a point in the starting node
 	 * @param pPoint2 a point in the end node.
 	 */
-	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{}
 
 	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point2D pPoint2)
@@ -192,7 +192,7 @@ public abstract class Graph
 	 * @param pPoint2 a point in the ending node
 	 * @return true if the edge was connected
 	 */
-	public final boolean connect(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public final boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
 		Node node1 = findNode(pPoint1);
 		if( node1 == null )
@@ -216,7 +216,7 @@ public abstract class Graph
 		// In case the down-call to addEdge introduces additional 
 		// operations that should be compounded with the edge addition
 		notifyStartingCompoundOperation();
-		addEdge(node1, pEdge, pPoint1, pPoint2);
+		completeEdgeAddition(node1, pEdge, pPoint1, pPoint2);
 		aEdges.add(pEdge);
 		notifyEdgeAdded(pEdge);
 		

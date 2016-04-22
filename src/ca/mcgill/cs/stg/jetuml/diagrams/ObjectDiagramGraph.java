@@ -158,7 +158,7 @@ public class ObjectDiagramGraph extends Graph
 	}
 	
 	@Override
-	protected void addEdge(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
 	{
 		if( pOrigin instanceof FieldNode )
 		{
