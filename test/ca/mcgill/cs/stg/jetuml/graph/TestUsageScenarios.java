@@ -19,7 +19,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 public class TestUsageScenarios
 {
 	@Test
-	public void testStateDiagramCreate() throws Exception
+	public void testStateDiagramCreate()
 	{
 		// Create a state diagram with two state nodes, one start node, one end node
 		StateDiagramGraph diagram = new StateDiagramGraph();
@@ -93,5 +93,40 @@ public class TestUsageScenarios
 		assertEquals("Edge 4", edge4.getLabel());
 		assertEquals(node2, edge4.getStart());
 		assertEquals(end, edge4.getEnd());
+	}
+	
+	@Test
+	public void testStateDiagramCreateNotes() throws Exception
+	{
+		// Create a state diagram with two state nodes, one start node, one end node
+		StateDiagramGraph diagram = new StateDiagramGraph();
+		StateNode node1 = new StateNode();
+		node1.getName().setText("Node 1");
+		diagram.addNode(node1, new Point2D.Double(30,30));
+		NoteNode note = new NoteNode();
+		diagram.addNode(note, new Point2D.Double(130,130));
+		assertEquals(2, diagram.getRootNodes().size());
+		// Note edge with a point node not overlapping any nodes
+		NoteEdge edge1 = new NoteEdge();
+		diagram.addEdge(edge1, new Point2D.Double(135,135), new Point2D.Double(300,300));
+		assertEquals(3, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
+		assertEquals(1, diagram.getEdges().size());
+		
+		// Note edge with a point node overlapping any nodes
+		NoteEdge edge2 = new NoteEdge();
+		diagram.addEdge(edge2, new Point2D.Double(135,135), new Point2D.Double(40,40));
+		assertEquals(4, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(2, diagram.getEdges().size());
+		
+		// Note edge with a starting point on a node
+		NoteEdge edge3 = new NoteEdge();
+		diagram.addEdge(edge3, new Point2D.Double(35,35), new Point2D.Double(135,135));
+		assertEquals(4, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(3, diagram.getEdges().size());
+		assertEquals(node1, edge3.getStart());
+		assertEquals(note, edge3.getEnd());
 	}
 }

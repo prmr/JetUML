@@ -106,6 +106,4 @@ public class TestNoteEdge
 		assertEquals( 120, connectionPoints.getX2(), 1 );
 		assertEquals( 40, connectionPoints.getY2(), 1 );
 	}
-	
-	
 }
