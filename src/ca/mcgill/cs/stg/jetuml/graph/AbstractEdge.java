@@ -59,7 +59,7 @@ abstract class AbstractEdge implements Edge
 	@Override
 	public Rectangle2D getBounds()
 	{
-		return getShape().getBounds();
+		return getShape().getBounds(); // Note that this returns an integer rectangle
 	}
 
 	@Override

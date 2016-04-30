@@ -186,7 +186,7 @@ public class TestPersistenceService
 		assertEquals("A note", n1.getText().getText());
 		assertEquals(new Rectangle2D.Double(700, 50, 60, 40), n1.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(567, 56, 0, 0), p1.getBounds());
+		assertEquals(new Rectangle2D.Double(567, 56, 0.01, 0.01), p1.getBounds());
 		
 		assertEquals(new Rectangle2D.Double(650, 150, 120, 40), u4.getBounds());
 		assertEquals("Use case 4", u4.getName().toString());
@@ -376,7 +376,7 @@ public class TestPersistenceService
 		assertEquals(node6,node7.getParent());
 		assertEquals(new Rectangle2D.Double(280, 370, 100, 60), node7.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(694, 409, 0, 0), node8.getBounds());
+		assertEquals(new Rectangle2D.Double(694, 409, 0.01, 0.01), node8.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -478,7 +478,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle2D.Double(440,200,60,40), note.getBounds());
 		assertEquals("A note", note.getText().toString());
 		
-		assertEquals(new Rectangle2D.Double(409,189,0,0), point.getBounds());
+		assertEquals(new Rectangle2D.Double(409,189,0.01,0.01), point.getBounds());
 	
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -556,7 +556,7 @@ public class TestPersistenceService
 		assertEquals("A note\non two lines", note.getText().getText());
 		assertEquals(new Rectangle2D.Double(690, 320, 80, 40), note.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(576, 339, 0, 0), point.getBounds());
+		assertEquals(new Rectangle2D.Double(576, 339, 0.01, 0.01), point.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(7, edges.size());
@@ -675,9 +675,9 @@ public class TestPersistenceService
 		assertEquals("A note", note.getText().getText());
 		assertEquals(new Rectangle2D.Double(280, 330, 60, 40), note.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(281, 216, 0, 0), p1.getBounds());
+		assertEquals(new Rectangle2D.Double(281, 216, 0.01, 0.01), p1.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(474, 339, 0, 0), p2.getBounds());
+		assertEquals(new Rectangle2D.Double(474, 339, 0.01, 0.01), p2.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());

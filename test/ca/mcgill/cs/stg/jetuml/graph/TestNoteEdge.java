@@ -74,7 +74,7 @@ public class TestNoteEdge
 	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode);
-		assertEquals(new Rectangle2D.Double(60,20,40,0), aNoteEdge.getBounds());
+		assertEquals(new Rectangle2D.Double(60,20,40,1), aNoteEdge.getBounds());
 		
 		Line2D connectionPoints = aNoteEdge.getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1(), 0.01 );
@@ -84,7 +84,7 @@ public class TestNoteEdge
 		
 		
 		aPointNode.translate(20, 0);
-		assertEquals(new Rectangle2D.Double(60,20,60,0), aNoteEdge.getBounds());
+		assertEquals(new Rectangle2D.Double(60,20,60,1), aNoteEdge.getBounds());
 		
 		connectionPoints = aNoteEdge.getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1(), 0.01 );

@@ -37,6 +37,8 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
  */
 public class PointNode extends AbstractNode
 {
+	private static final double EPSILON = 0.01;
+	
 	private Point2D aPoint;
 
 	/**
@@ -67,7 +69,7 @@ public class PointNode extends AbstractNode
 	@Override
 	public Rectangle2D getBounds()
 	{
-		return new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), 0, 0);
+		return new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), EPSILON, EPSILON);
 	}
 
 	@Override
