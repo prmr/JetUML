@@ -235,5 +235,11 @@ public class FieldNode extends RectangularNode implements ChildNode
 		assert pNode == null || pNode instanceof ObjectNode;
 		aObject = (ObjectNode) pNode;		
 	}
+	
+	@Override
+	public boolean requiresParent()
+	{
+		return true;
+	}
 }
 

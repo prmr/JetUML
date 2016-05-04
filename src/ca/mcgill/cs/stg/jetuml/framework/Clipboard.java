@@ -87,11 +87,61 @@ public final class Clipboard
 		{
 			if( element instanceof Node )
 			{
+				if( missingParent( (Node)element ))
+				{
+					continue;
+				}
 				Node cloned = ((Node) element).clone();
 				aNodes.add(cloned);
 				reassignEdges(aEdges, (Node)element, cloned);
 			}
 		}
+		
+		// Delete any edge whose parent is not in aNodes
+		List<Edge> toDelete = new ArrayList<>();
+		for( Edge edge : aEdges )
+		{
+			if( !recursivelyContains(edge.getStart()) || !recursivelyContains(edge.getEnd()))
+			{
+				toDelete.add(edge);
+			}
+		}
+		for( Edge edge : toDelete )
+		{
+			aEdges.remove(edge);
+		}
+	}
+	
+	private boolean recursivelyContains(Node pNode)
+	{
+		for( Node node : aNodes )
+		{
+			if( node == pNode )
+			{
+				return true;
+			}
+			else if( node instanceof ParentNode )
+			{
+				return recursivelyContains( pNode, ((ParentNode)node).getChildren());
+			}
+		}
+		return false;
+	}
+	
+	private boolean recursivelyContains(Node pNode, List<ChildNode> pNodes)
+	{
+		for( Node node : pNodes )
+		{
+			if( node == pNode )
+			{
+				return true;
+			}
+			else if( node instanceof ParentNode )
+			{
+				return recursivelyContains( pNode, ((ParentNode)node).getChildren());
+			}
+		}
+		return false;
 	}
 	
 	private void reassignEdges(List<Edge> pEdges, Node pOld, Node pNew)
@@ -116,6 +166,15 @@ public final class Clipboard
 				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
 			}
 		}
+	}
+	
+	/*
+	 * Returns true of pNode needs a parent that isn't in 
+	 * the clipboard.
+	 */
+	private boolean missingParent(Node pNode)
+	{
+		return pNode instanceof ChildNode && ((ChildNode)pNode).requiresParent() && !aNodes.contains(((ChildNode)pNode).getParent()) ;
 	}
 	
 	/**

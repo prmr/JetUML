@@ -214,4 +214,10 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = pNode;
 	}
+	
+	@Override
+	public boolean requiresParent()
+	{
+		return false;
+	}
 }

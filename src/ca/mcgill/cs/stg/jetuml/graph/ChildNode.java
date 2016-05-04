@@ -34,6 +34,13 @@ package ca.mcgill.cs.stg.jetuml.graph;
 public interface ChildNode extends Node
 {
 	/**
+	 * @return True if this node type absolutely
+	 * needs a parent to exist, and false if it can
+	 * exist as a root node.
+	 */
+	boolean requiresParent();	
+	
+	/**
 	 * @return The node that is the parent of this node.
 	 */
 	ParentNode getParent();

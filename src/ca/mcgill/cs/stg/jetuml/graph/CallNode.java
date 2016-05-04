@@ -287,4 +287,10 @@ public class CallNode extends RectangularNode implements ChildNode
 		assert pNode instanceof ImplicitParameterNode || pNode == null;
 		aImplicitParameter = (ImplicitParameterNode) pNode;
 	}
+
+	@Override
+	public boolean requiresParent()
+	{
+		return true;
+	}
 }

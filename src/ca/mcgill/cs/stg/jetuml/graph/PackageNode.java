@@ -322,6 +322,12 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		pNode.setParent(null);
 	}
 	
+	@Override
+	public boolean requiresParent()
+	{
+		return false;
+	}
+	
 	/**
 	 *  Adds a persistence delegate to a given encoder that
 	 * encodes the child nodes of this node.
