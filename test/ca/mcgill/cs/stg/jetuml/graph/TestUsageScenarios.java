@@ -9,7 +9,11 @@ import java.awt.geom.Rectangle2D;
 
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
+import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 
 /**
  * Tests various interactions normally triggered from the 
@@ -18,6 +22,38 @@ import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
  */
 public class TestUsageScenarios
 {
+	@Test
+	public void testClassDiagramCopyNodesAndEdgesInsidePackageNode()
+	{
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		PackageNode p1 = new PackageNode();
+		ClassNode c1 = new ClassNode();
+		ClassNode c2 = new ClassNode();
+		diagram.addNode(p1, new Point2D.Double(20, 20));
+		diagram.addNode(c1, new Point2D.Double(25, 25));
+		diagram.addNode(c2, new Point2D.Double(30, 30));
+		c2.translate(100, 0);
+		DependencyEdge edge = new DependencyEdge();
+		diagram.addEdge(edge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(2, p1.getChildren().size());
+		assertEquals(c1, edge.getStart());
+		assertEquals(c2, edge.getEnd());
+		
+		SelectionList selection = new SelectionList();
+		selection.add(c1);
+		selection.add(c2);
+		selection.add(edge);
+		
+		Clipboard clipboard = new Clipboard();
+		clipboard.copy(selection);
+		
+		clipboard.paste(new GraphPanel(diagram, null));
+		
+		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+	}
+	
 	@Test
 	public void testStateDiagramCreate()
 	{

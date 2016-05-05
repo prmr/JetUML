@@ -247,7 +247,10 @@ public abstract class Graph
 	{
 		Rectangle2D bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
-		aRootNodes.add(pNode);
+		if( !(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null )
+		{
+			aRootNodes.add(pNode);
+		}
 		notifyNodeAdded( pNode );
 		aNeedsLayout = true;
 		return true;
