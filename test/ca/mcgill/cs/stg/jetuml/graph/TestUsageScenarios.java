@@ -23,7 +23,7 @@ import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 public class TestUsageScenarios
 {
 	@Test
-	public void testClassDiagramCopyNodesAndEdgesInsidePackageNode()
+	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{
 		ClassDiagramGraph diagram = new ClassDiagramGraph();
 		PackageNode p1 = new PackageNode();
@@ -51,6 +51,38 @@ public class TestUsageScenarios
 		clipboard.paste(new GraphPanel(diagram, null));
 		
 		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+	}
+	
+	@Test
+	public void testClassDiagramCopyPackageNodesAndEdgesInsidePackageNode()
+	{
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		PackageNode p1 = new PackageNode();
+		PackageNode c1 = new PackageNode();
+		PackageNode c2 = new PackageNode();
+		diagram.addNode(p1, new Point2D.Double(20, 20));
+		diagram.addNode(c1, new Point2D.Double(30, 30));
+		diagram.addNode(c2, new Point2D.Double(25, 25));
+		c2.translate(100, 0);
+		DependencyEdge edge = new DependencyEdge();
+		diagram.addEdge(edge, new Point2D.Double(31, 31), new Point2D.Double(130, 26));
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(2, p1.getChildren().size());
+		assertEquals(1, diagram.getEdges().size());
+		assertEquals(c1, edge.getStart());
+		assertEquals(c2, edge.getEnd());
+		
+		SelectionList selection = new SelectionList();
+		selection.add(p1);
+		selection.add(edge);
+
+		Clipboard clipboard = new Clipboard();
+		clipboard.copy(selection);
+		
+		clipboard.paste(new GraphPanel(diagram, null));
+		
+		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
 	}
 	

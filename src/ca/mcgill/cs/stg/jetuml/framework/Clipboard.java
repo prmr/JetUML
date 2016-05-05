@@ -122,7 +122,10 @@ public final class Clipboard
 			}
 			else if( node instanceof ParentNode )
 			{
-				return recursivelyContains( pNode, ((ParentNode)node).getChildren());
+				if( recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -138,7 +141,10 @@ public final class Clipboard
 			}
 			else if( node instanceof ParentNode )
 			{
-				return recursivelyContains( pNode, ((ParentNode)node).getChildren());
+				if(  recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
+				{
+					return true;
+				}
 			}
 		}
 		return false;
