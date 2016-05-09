@@ -4,10 +4,12 @@
   <local-check-config name="Violetta" location="style/Style.xml" type="project" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="all" enabled="true" check-config-name="Violetta" local="true">
+  <local-check-config name="style" location="internal_config_1462815155088.xml" type="internal" description=""/>
+  <fileset name="all" enabled="true" check-config-name="style" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
   <filter name="FilesFromPackage" enabled="true">
     <filter-data value="test"/>
+    <filter-data value="automate_testing"/>
   </filter>
 </fileset-config>
