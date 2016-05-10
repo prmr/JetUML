@@ -4,18 +4,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.UMLEditor;
+import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
+import ca.mcgill.cs.stg.jetuml.framework.EditorFrame;
+import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
+import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.graph.*;
-
 
 /**
  * This class is to test the class Diagram.
@@ -26,8 +34,6 @@ import ca.mcgill.cs.stg.jetuml.graph.*;
 
 public class TestingClassDiagram 
 {
-	
-
 	
 	/**
 	 * Basic Nodes and Edge Creation.
@@ -239,6 +245,80 @@ public class TestingClassDiagram
 		assertFalse(old_x_edge3 == edge3.getBounds().getX());
 		assertFalse(old_y_edge3 == edge3.getBounds().getY());
 	}
+	
+	/**
+	 * Deletion and Undo.
+	 */
+	@Test
+	public void TestDeletionAndUndo()
+	{
+		
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		ClassNode aClassNode = new ClassNode();
+		InterfaceNode aInterfaceNode = new InterfaceNode();
+		PackageNode aPackageNode = new PackageNode();
+		NoteNode aNoteNode = new NoteNode();
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
+		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
+		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
+		
+		DeleteNodeCommand deletionCommand1 = new DeleteNodeCommand(diagram, aClassNode);
+		DeleteNodeCommand deletionCommand2 = new DeleteNodeCommand(diagram, aNoteNode);
+		
+		Rectangle2D old_bound_classNode = aClassNode.getBounds();
+		Rectangle2D old_bound_noteNode = aNoteNode.getBounds();
+		
+		// deletion command
+		deletionCommand1.execute();
+//		deletionCommand2.execute();
+//		System.out.println(diagram.getRootNodes().size());
+//
+//		assertTrue(2 == diagram.getRootNodes().size());
+		// undo them
+		deletionCommand1.undo();
+		deletionCommand2.undo();
+		System.out.println(diagram.getRootNodes().size());
+
+		assertEquals(4+2, diagram.getRootNodes().size());
+		for(Node aNode: diagram.getRootNodes())
+		{
+			if(aNode instanceof ClassNode)
+			{
+				assertEquals(old_bound_classNode, ((ClassNode) aNode).getBounds());
+			}
+		}		
+	}
+	
+	@Test
+	public void TestCopyAndPaste()
+	{
+		// set up
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		ClassNode aClassNode = new ClassNode();
+//		InterfaceNode aInterfaceNode = new InterfaceNode();
+//		PackageNode aPackageNode = new PackageNode();
+//		NoteNode aNoteNode = new NoteNode();
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+//		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
+//		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
+//		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
+		
+		// 4.1 Copy a signle node
+		Clipboard clipboard = new Clipboard();
+		SelectionList aList = new SelectionList();
+		aList.add(aClassNode);
+		clipboard.copy(aList);
+		clipboard.paste(new GraphPanel(diagram, null));
+		assertEquals(2, diagram.getRootNodes().size());
+		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[1]).getBounds().getX());
+		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[1]).getBounds().getY());
+		
+		
+		
+	}
+	
+	
 	
 		
 		
