@@ -4,25 +4,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.stg.jetuml.UMLEditor;
-import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
-import ca.mcgill.cs.stg.jetuml.framework.EditorFrame;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
-import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 
