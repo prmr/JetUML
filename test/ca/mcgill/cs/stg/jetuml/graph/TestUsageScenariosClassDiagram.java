@@ -27,7 +27,8 @@ import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 
 /**
- * This class is to test the class Diagram.
+ * Tests various interactions with Class Diagram normally triggered from the 
+ * GUI. Here we use the API to simulate GUI Operation for Class Diagram.
  * 
  * @author Jiajun Chen
  *
@@ -72,7 +73,7 @@ public class TestUsageScenariosClassDiagram
 	}
 	
 	@Test
-	public void testBasicNodeEdgeCreation()
+	public void testBasicNode()
 	{
 		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
@@ -97,8 +98,19 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(aPackageNode.getName(), "object");
 		assertEquals(aPackageNode.getContents().getText(), "some stuff");
 		assertEquals(aNoteNode.getText().getText(), "some text...");
+	}
+	
+	@Test
+	public void testEdgeCreation()
+	{
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
+		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
+		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
 		
+		// both start and end points are invalid
 		diagram.addEdge(aggrEdge, new Point2D.Double(70, 70), new Point2D.Double(170, 170));
+		// one point is invalid
 		diagram.addEdge(aggrEdge, new Point2D.Double(6, 7), new Point2D.Double(170, 170));
 		assertEquals(0, diagram.getEdges().size());
 		
@@ -106,53 +118,54 @@ public class TestUsageScenariosClassDiagram
 		diagram.addEdge(assoEdge, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
 		diagram.addEdge(depeEdge, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
 		assertEquals(3, diagram.getEdges().size());
+		
 		diagram.addEdge(new AssociationEdge(), new Point2D.Double(47, 49), new Point2D.Double(50, 49));
 		assertEquals(4, diagram.getEdges().size());
+		
+		// not every edge is a valid to be self-edge
 		diagram.addEdge(geneEdge, new Point2D.Double(47, 49), new Point2D.Double(50, 49));
 		assertEquals(4, diagram.getEdges().size());
-
-		// 1.2.2 now testing for adding edge to NoteNode
-		NoteEdge noteEdge1 = new NoteEdge();
-		NoteEdge noteEdge2 = new NoteEdge();
-
-		// 1.2.2.1 from node to noteNode
-		diagram.addEdge(noteEdge1, new Point2D.Double(9, 9), new Point2D.Double(209,162));
-		assertEquals(4, diagram.getEdges().size());
-		diagram.addEdge(noteEdge1, new Point2D.Double(9, 9), new Point2D.Double(139,142));
-		assertEquals(noteEdge1.getStart(), aClassNode);
-		assertEquals(noteEdge1.getEnd(), aNoteNode);
-		assertEquals(5, diagram.getEdges().size());
-
-		// 1.2.2.2 from noteNode to Node
-		diagram.addEdge(noteEdge2, new Point2D.Double(138, 140), new Point2D.Double(9,9));
-		assertEquals(noteEdge2.getStart(), aNoteNode);
-		assertEquals(noteEdge2.getEnd().getClass(), new PointNode().getClass());
-		assertEquals(6, diagram.getEdges().size());
-
 	}
 	
-	/**
-	 * Node Movement
-	 */
 	@Test
-	public void testNodeMovement()
+	public void testNoteEdgeCreation()
 	{
-		// setting up, this could be done with @before
-		ClassDiagramGraph diagram = new ClassDiagramGraph();
-		ClassNode aClassNode = new ClassNode();
-		InterfaceNode aInterfaceNode = new InterfaceNode();
-		PackageNode aPackageNode = new PackageNode();
-		NoteNode aNoteNode = new NoteNode();
 		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
 		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
-		ClassRelationshipEdge edge1 = new AggregationEdge();
-		ClassRelationshipEdge edge2 = new AssociationEdge();
-		ClassRelationshipEdge edge3 = new DependencyEdge();
-		ClassRelationshipEdge edge4 = new GeneralizationEdge();
 		
-		// 2.1 testing moving an individual node of any type
+		NoteEdge noteEdge1 = new NoteEdge();
+		NoteEdge noteEdge2 = new NoteEdge();
+		
+		// if begin with a non-NoteNode type, both point needs to be valid
+		diagram.addEdge(noteEdge1, new Point2D.Double(9, 9), new Point2D.Double(209,162));
+		assertEquals(0, diagram.getEdges().size());
+		diagram.addEdge(noteEdge1, new Point2D.Double(9, 9), new Point2D.Double(139,142));
+		assertEquals(1, diagram.getEdges().size());
+		assertEquals(noteEdge1.getStart(), aClassNode);
+		assertEquals(noteEdge1.getEnd(), aNoteNode);
+		
+		// if begin with a NoteNode, the end point can be anywhere
+		diagram.addEdge(noteEdge2, new Point2D.Double(138, 140), new Point2D.Double(9,9));
+		assertEquals(noteEdge2.getStart(), aNoteNode);
+		assertEquals(noteEdge2.getEnd().getClass(), new PointNode().getClass());
+		assertEquals(2, diagram.getEdges().size());
+
+	}
+	
+	/**
+	 * Testing Single Node Movement
+	 */
+	@Test
+	public void testSignelNodeMovement()
+	{
+		
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
+		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
+		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
+		
 		aClassNode.translate(5, 5);
 		aInterfaceNode.translate(11, 19);
 		aPackageNode.translate(32, -42);
@@ -166,21 +179,29 @@ public class TestUsageScenariosClassDiagram
 		assertTrue((87-42) == aPackageNode.getBounds().getY());
 		assertTrue(129 == aNoteNode.getBounds().getX());
 		assertTrue(151 == aNoteNode.getBounds().getY());
+	}
+	
+	/**
+	 * Testing move a selection of nodes and edges,
+	 * edges will be redraw automatically.
+	 */
+	@Test
+	public void testSelectionNodeAndEdges()
+	{
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
+		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
+		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
 		
-		// 2.2.1 testing moving a selection of nodes and edges 
-		aClassNode.translate(-5, -5);
-		aInterfaceNode.translate(-11, -19);
-		aPackageNode.translate(-32, 42);
-		aNoteNode.translate(5, -19);
-		diagram.addEdge(edge1, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
-		diagram.addEdge(edge2, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
-		diagram.addEdge(edge3, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
+		diagram.addEdge(aggrEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
+		diagram.addEdge(assoEdge, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
+		diagram.addEdge(depeEdge, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
 		
 		SelectionList aList = new SelectionList();
 		aList.add(aClassNode);
-		aList.add(edge1);
+		aList.add(aggrEdge);
 		aList.add(aInterfaceNode);
-		Rectangle2D edge1_old_bonds = edge1.getBounds();
+		Rectangle2D edge1_old_bonds = aggrEdge.getBounds();
 		for(GraphElement element: aList)
 		{
 			if(element instanceof Node)
@@ -199,23 +220,23 @@ public class TestUsageScenariosClassDiagram
 		assertTrue(15 == aClassNode.getBounds().getY());
 		assertTrue(54 == aInterfaceNode.getBounds().getX());
 		assertTrue(54 == aInterfaceNode.getBounds().getY());
-		assertFalse(edge1_old_bonds.getY() == edge1.getBounds().getY());
-		assertTrue(aClassNode == edge1.getStart());
-		assertTrue(aInterfaceNode == edge1.getEnd());
-		
-		// 2.2.2 testing a node + self edge
-		aList.clearSelection();
-		assertEquals(0, aList.size());
-		diagram = new ClassDiagramGraph();
-		aClassNode = new ClassNode();
-		edge1 = new AggregationEdge();
+		assertFalse(edge1_old_bonds.getY() == aggrEdge.getBounds().getY());
+		assertTrue(aClassNode == aggrEdge.getStart());
+		assertTrue(aInterfaceNode == aggrEdge.getEnd());
+	}
+	
+	/**
+	 * Testing move a node with self-edge
+	 * edges will be redraw automatically.
+	 */
+	@Test
+	public void testMoveNodeWithSelfEdge()
+	{
 		diagram.addNode(aClassNode, new Point2D.Double(5, 7));
-		diagram.addEdge(edge1, new Point2D.Double(8, 10), new Point2D.Double(12, 9));
-		assertEquals(1, diagram.getEdges().size());
-		double old_y = edge1.getBounds().getY();
-		double old_x = edge1.getBounds().getX();
+		diagram.addEdge(aggrEdge, new Point2D.Double(8, 10), new Point2D.Double(12, 9));
+		double old_y = aggrEdge.getBounds().getY();
+		double old_x = aggrEdge.getBounds().getX();
 		aList.add(aClassNode);
-		aList.add(edge1);
 		for(GraphElement element: aList)
 		{
 			if(element instanceof Node)
@@ -225,46 +246,47 @@ public class TestUsageScenariosClassDiagram
 		}
 		assertTrue(15 == aClassNode.getBounds().getX());
 		assertTrue(17 == aClassNode.getBounds().getY());
-		assertEquals(aClassNode, edge1.getStart());
-		assertEquals(aClassNode, edge1.getEnd());
-		assertTrue((10+old_x) == edge1.getBounds().getX());
-		assertTrue((10+old_y) == edge1.getBounds().getY());
-		
-		// 2.3 move a node connected to another node
-		diagram = new ClassDiagramGraph();
-		aClassNode = new ClassNode();
-		aInterfaceNode = new InterfaceNode();
-		aPackageNode = new PackageNode();
-		aNoteNode = new NoteNode();
+		assertEquals(aClassNode, aggrEdge.getStart());
+		assertEquals(aClassNode, aggrEdge.getEnd());
+		assertTrue((10+old_x) == aggrEdge.getBounds().getX());
+		assertTrue((10+old_y) == aggrEdge.getBounds().getY());
+	}
+	
+	/**
+	 * Testing move a node connect with another node.
+	 * Edge will be redraw automatically. The unselected note will remain unmoved.
+	 */
+	public void testMoveNodeConnectWithAnotherNode()
+	{
+	
 		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
-		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
+		diagram.addEdge(aggrEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
+		diagram.addEdge(assoEdge, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
+		diagram.addEdge(depeEdge, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
 		
-		edge1 = new AggregationEdge();
-		edge2 = new AssociationEdge();
-		edge3 = new DependencyEdge();
-		edge4 = new GeneralizationEdge();
-		diagram.addEdge(edge1, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
-		diagram.addEdge(edge2, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
-		diagram.addEdge(edge3, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
-		
-		double old_x_edge1 = edge1.getBounds().getX();
-		double old_y_edge1 = edge1.getBounds().getY();
-		double old_x_edge3 = edge1.getBounds().getX();
-		double old_y_edge3 = edge1.getBounds().getY();
-		
+		double old_x_edge1 = aggrEdge.getBounds().getX();
+		double old_y_edge1 = aggrEdge.getBounds().getY();
+		double old_x_edge3 = aggrEdge.getBounds().getX();
+		double old_y_edge3 = aggrEdge.getBounds().getY();
+		Rectangle2D packageNodeBonds = aPackageNode.getBounds();
+		Rectangle2D interFaceNodeBonds = aInterfaceNode.getBounds();
+
 		aClassNode.translate(20, 20);
-		assertEquals(aClassNode, edge1.getStart());
-		assertEquals(aInterfaceNode, edge1.getEnd());
-		assertFalse(old_x_edge1 == edge1.getBounds().getX());
-		assertFalse(old_y_edge1 == edge1.getBounds().getY());
+		assertEquals(aClassNode, aggrEdge.getStart());
+		assertEquals(aInterfaceNode, aggrEdge.getEnd());
+		assertFalse(old_x_edge1 == aggrEdge.getBounds().getX());
+		assertFalse(old_y_edge1 == aggrEdge.getBounds().getY());
+		assertEquals(interFaceNodeBonds, aInterfaceNode.getBounds());
+
 		
 		aInterfaceNode.translate(-19, 45);
-		assertEquals(aPackageNode, edge3.getStart());
-		assertEquals(aInterfaceNode, edge3.getEnd());
-		assertFalse(old_x_edge3 == edge3.getBounds().getX());
-		assertFalse(old_y_edge3 == edge3.getBounds().getY());
+		assertEquals(aPackageNode, depeEdge.getStart());
+		assertEquals(aInterfaceNode, depeEdge.getEnd());
+		assertFalse(old_x_edge3 == depeEdge.getBounds().getX());
+		assertFalse(old_y_edge3 == depeEdge.getBounds().getY());
+		assertEquals(packageNodeBonds, aPackageNode.getBounds());
 	}
 	
 	/**
@@ -359,7 +381,6 @@ public class TestUsageScenariosClassDiagram
 	/**
 	 * Testing delete an edge and node combination, selecting all
 	 */
-	
 	@Test 
 	public void testDeleteNodeEdgeCombination2()
 	{
@@ -373,12 +394,9 @@ public class TestUsageScenariosClassDiagram
 
 		aPanel.selectAll();
 		aPanel.removeSelected();
-		aList.clearSelection();
 		diagram.draw(aGraphics, new Grid());
-		
 		assertEquals(0, diagram.getRootNodes().size());
 		assertEquals(0, diagram.getEdges().size());
-
 		aPanel.undo();
 		assertEquals(1, diagram.getEdges().size());
 		assertEquals(2, diagram.getRootNodes().size());
@@ -407,13 +425,12 @@ public class TestUsageScenariosClassDiagram
 		diagram.addNode(aPackageNode, new Point2D.Double(5, 5));
 		diagram.addNode(node1, new Point2D.Double(6, 8));
 		diagram.addNode(node2, new Point2D.Double(11, 12));
-		
 		aList.set(node2);
 		aPanel.setSelectionList(aList);
+		
 		aPanel.removeSelected();
 		diagram.draw(aGraphics, aGrid);
 		assertEquals(1, aPackageNode.getChildren().size());
-		
 		aPanel.undo();
 		assertEquals(2, aPackageNode.getChildren().size());
 	}
@@ -432,49 +449,251 @@ public class TestUsageScenariosClassDiagram
 		diagram.addNode(innerNode, new Point2D.Double(10, 10));
 		diagram.addNode(node1, new Point2D.Double(10, 13));
 		diagram.addNode(node2, new Point2D.Double(11, 12));
-		
 		aList.set(node2);
 		aPanel.setSelectionList(aList);
+		
 		aPanel.removeSelected();
 		diagram.draw(aGraphics, aGrid);
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(1, innerNode.getChildren().size());
-		
 		aPanel.undo();
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(2, innerNode.getChildren().size());
 	}
 	
-	
-	
+	/**
+	 * Testing copy and paste single node
+	 */
 	@Test
-	public void TestCopyAndPaste()
+	public void testCopyPasteSingleNode()
 	{
-		// set up
-		
-		ClassDiagramGraph diagram = new ClassDiagramGraph();
-		ClassNode aClassNode = new ClassNode();
-//		InterfaceNode aInterfaceNode = new InterfaceNode();
-//		PackageNode aPackageNode = new PackageNode();
-//		NoteNode aNoteNode = new NoteNode();
 		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
-//		diagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
-//		diagram.addNode(aPackageNode, new Point2D.Double(87, 87));
-//		diagram.addNode(aNoteNode, new Point2D.Double(134, 132));
-		
-		// 4.1 Copy a signle node
-		Clipboard clipboard = new Clipboard();
-		SelectionList aList = new SelectionList();
-		aList.add(aClassNode);
+		aList.set(aClassNode);
 		clipboard.copy(aList);
-		clipboard.paste(new GraphPanel(diagram, null));
+		clipboard.paste(aPanel);
+		
 		assertEquals(2, diagram.getRootNodes().size());
-		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[1]).getBounds().getX());
 		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[1]).getBounds().getY());
+		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[1]).getBounds().getX());
+	}
+	
+	/**
+	 * Testing cut and paste single node
+	 */
+	@Test
+	public void testCutPasteSingleNode()
+	{
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		aList.set(aClassNode);
+		clipboard.copy(aList);
+		aPanel.setSelectionList(aList);
 		
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+		clipboard.paste(aPanel);
+		assertEquals(1, diagram.getRootNodes().size());
+		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[0]).getBounds().getY());
+		assertTrue(0 == ((Node) diagram.getRootNodes().toArray()[0]).getBounds().getX());
+	}
+	
+	/**
+	 * Testing copy and paste a combination of nodes and edge
+	 */
+	@Test
+	public void testCopyPasteCombinationNodeAndEdge()
+	{
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(45, 45));
+		diagram.addEdge(aggrEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
+		diagram.draw(aGraphics, new Grid());
 		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, new Grid());
+		assertEquals(4, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+		
+		Object[] nodes = diagram.getRootNodes().toArray();
+		boolean trigger1 = false;
+		boolean trigger2 = false;
+		for(int i = 2; i < nodes.length; i++)
+		{
+			if(nodes[i] instanceof ClassNode)
+			{
+				trigger1 = true;
+				assertTrue(0 == ((Node) nodes[i]).getBounds().getX());
+				assertTrue(0 == ((Node) nodes[i]).getBounds().getY());
+			}
+			else
+			{
+				trigger2 = true;
+			}
+		}
+		assertTrue(trigger1 && trigger2);
+		
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
 		
 	}
+	
+	/**
+	 * Testing cut and paste a combination of nodes and edge
+	 */
+	@Test
+	public void testCutPasteCombinationNodeAndEdge()
+	{
+		diagram.addNode(aClassNode, new Point2D.Double(5, 5));
+		diagram.addNode(aInterfaceNode, new Point2D.Double(45, 45));
+		diagram.addEdge(aggrEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
+		diagram.draw(aGraphics, new Grid());
+		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, new Grid());
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+		
+		Object[] nodes = diagram.getRootNodes().toArray();
+		boolean trigger1 = false;
+		boolean trigger2 = false;
+		for(int i = 0; i < nodes.length; i++)
+		{
+			if(nodes[i] instanceof ClassNode)
+			{
+				trigger1 = true;
+				assertTrue(0 == ((Node) nodes[i]).getBounds().getX());
+				assertTrue(0 == ((Node) nodes[i]).getBounds().getY());
+			}
+			else
+			{
+				trigger2 = true;
+			}
+		}
+		assertTrue(trigger1 && trigger2);
+		
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+		assertEquals(0, diagram.getEdges().size());
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+	}
+	
+	/** 
+	 * Testing Connect the inner nodes with edges.
+	 */
+	@Test
+	public void testAddNodesToPackageNode()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		PackageNode innerNode = new PackageNode();
+		diagram.addNode(aPackageNode, new Point2D.Double(20, 20));
+		diagram.addNode(node1, new Point2D.Double(25, 25));
+		diagram.addNode(node2, new Point2D.Double(30, 30));
+		diagram.addNode(innerNode, new Point2D.Double(35, 45));
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(3, aPackageNode.getChildren().size());
+	}
+	
+	/** 
+	 * Testing add classNode to the inner PackageNode.
+	 */
+	@Test
+	public void testAddNodeToInnerPackageNode()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		PackageNode innerNode = new PackageNode();
+		diagram.addNode(aPackageNode, new Point2D.Double(20, 20));
+		diagram.addNode(innerNode, new Point2D.Double(25, 25));
+		diagram.addNode(node1, new Point2D.Double(26, 29));
+		diagram.addNode(node2, new Point2D.Double(30, 31));
+	
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(1, aPackageNode.getChildren().size());
+		assertEquals(2, innerNode.getChildren().size());
+	}
+	
+	/** 
+	 * Testing Connect the inner nodes with edges.
+	 */
+	@Test
+	public void testConnectInnerNodeWithEdges()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		diagram.addNode(aPackageNode, new Point2D.Double(20, 20));
+		diagram.addNode(node1, new Point2D.Double(25, 25));
+		diagram.addNode(node2, new Point2D.Double(30, 30));
+		node2.translate(100, 0);
+		diagram.addEdge(depeEdge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
+	
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+	}
+	
+	/** 
+	 * Testing cut and paste PackageNode
+	 */
+	@Test
+	public void testCutNodesAndEdgesInsidePackageNode()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		diagram.addNode(aPackageNode, new Point2D.Double(20, 20));
+		diagram.addNode(node1, new Point2D.Double(25, 25));
+		diagram.addNode(node2, new Point2D.Double(30, 30));
+		node2.translate(100, 0);
+		diagram.addEdge(depeEdge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
+		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+		assertEquals(0, diagram.getEdges().size());
+		
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+		assertTrue(5.0 >= (((Node) diagram.getRootNodes().toArray()[0]).getBounds().getX()));
+		assertTrue(5.0 >= (((Node) diagram.getRootNodes().toArray()[0]).getBounds().getY()));
+	}
+
+	@Test
+	public void testCopyNodesAndEdgesInsidePackageNode()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		diagram.addNode(aPackageNode, new Point2D.Double(20, 20));
+		diagram.addNode(node1, new Point2D.Double(25, 25));
+		diagram.addNode(node2, new Point2D.Double(30, 30));
+		node2.translate(100, 0);
+		diagram.addEdge(depeEdge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
+		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+		assertTrue(5.0 >= (((Node) diagram.getRootNodes().toArray()[1]).getBounds().getX()));
+		assertTrue(5.0 >= (((Node) diagram.getRootNodes().toArray()[1]).getBounds().getY()));
+	}
+	
 	
 	
 	
