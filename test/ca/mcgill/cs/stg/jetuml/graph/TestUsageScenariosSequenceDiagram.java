@@ -1,7 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
@@ -13,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
-import org.junit.Before;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
@@ -70,7 +67,6 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testCreateAndLinkParameterNode()
 	{
-		
 		paraNode1.getName().setText("client");
 		paraNode2.getName().setText("platform");
 		diagram.addNode(paraNode1, new Point2D.Double(5, 0));
@@ -188,7 +184,6 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testNoteNode()
 	{
-	
 		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
 		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
 		diagram.addNode(callNode1, new Point2D.Double(15, 75));
@@ -342,7 +337,6 @@ public class TestUsageScenariosSequenceDiagram
 		assertTrue(callNode2_y == callNode2.getBounds().getY());
 	}
 	
-	
 	/**
 	 * Testing moving entire graph with a <<create>> CallEdge
 	 */
@@ -355,8 +349,6 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addEdge(callEdge1, new Point2D.Double(15, 80), new Point2D.Double(116,0));
 		diagram.draw(aGraphics, aGrid);
 		
-		
-
 		double callNode1_x = callNode1.getBounds().getX();
 		double callNode1_y = callNode1.getBounds().getY();
 		double paraNode2_x = paraNode2.getBounds().getX();
@@ -400,10 +392,15 @@ public class TestUsageScenariosSequenceDiagram
 	}
 	
 	/**
+	 * Below are methods testing the deletion and undo feature
+	 * for sequence diagram. Currently no testing for edge deletion.
+	 *
+	 *
+	 *
 	 * Testing delete single ParameterNode
 	 */
 	@Test
-	public void testSignleParameterNodeDeletionUndo()
+	public void testDeleteSignleParameterNode()
 	{
 		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
 		Rectangle2D paraNode1Bond = paraNode1.getBounds();
@@ -421,7 +418,7 @@ public class TestUsageScenariosSequenceDiagram
 	 * Testing delete single CallNode 
 	 */
 	@Test
-	public void testSignleCallNodeDeletionUndo()
+	public void testDeleteSignleCallNode()
 	{
 		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
 		diagram.addNode(callNode1, new Point2D.Double(15, 75));
@@ -440,8 +437,11 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(callNode1Bond, (((CallNode) (paraNode1.getChildren().toArray()[0])).getBounds()));
 	}
 	
+	/**
+	 * Testing delete a ParameterNode in call sequence
+	 */
 	@Test
-	public void testDeletionParameterNodeInCallSequence()
+	public void testDeleteParameterNodeInCallSequence()
 	{
 		// sepcific test case set up 
 		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
@@ -449,12 +449,7 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
 		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
 		diagram.addNode(callNode1, new Point2D.Double(15, 75));
-		
-		assertEquals(0, paraNode2.getChildren().size());
-		
 		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
-		assertEquals(1, paraNode2.getChildren().size());
-
 		diagram.draw(aGraphics, aGrid);
 		ReturnEdge reEdge1 = new ReturnEdge();
 		diagram.addEdge(reEdge1, new Point2D.Double(145,90), new Point2D.Double(45, 90));		
@@ -482,8 +477,227 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(3, diagram.getEdges().size());
 	}
 	
+	/**
+	 * Testing delete a call node in the middle Parameter Node in call sequence
+	 */
+	@Test
+	public void testDeleteMiddleCallNode()
+	{
+		// sepcific test case set up 
+		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
+		CallNode midNode = new CallNode();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(midNode, new Point2D.Double(115, 75));
+		diagram.addNode(new CallNode(), new Point2D.Double(215, 75));
+		
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(215,75));
+		diagram.addEdge(new ReturnEdge(), new Point2D.Double(118, 75), new Point2D.Double(18,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
+		
+		aPanel.getSelectionList().add(midNode);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, paraNode1.getChildren().size()); 
+		assertEquals(0, paraNode2.getChildren().size()); 
+		assertEquals(0, newParaNode.getChildren().size()); 
+		assertEquals(0, diagram.getEdges().size());
+		
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(1, paraNode1.getChildren().size()); 
+		assertEquals(1, paraNode2.getChildren().size()); 
+		assertEquals(2, newParaNode.getChildren().size()); 
+		assertEquals(4, diagram.getEdges().size());
+	}
 	
+	/**
+	 * Testing delete a return edge
+	 */
+	@Test
+	public void testDeleteReturnEdge()
+	{
+		CallNode midNode = new CallNode();
+		ReturnEdge returnEdge = new ReturnEdge();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(midNode, new Point2D.Double(115, 75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(18, 75), new Point2D.Double(115,75));
+		diagram.addEdge(returnEdge, new Point2D.Double(118, 75), new Point2D.Double(18,75));
+		
+		aPanel.getSelectionList().add(returnEdge);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(1, paraNode1.getChildren().size()); 
+		assertEquals(1, paraNode2.getChildren().size()); 
+		assertEquals(1, diagram.getEdges().size());
+		
+		aPanel.undo();
+		assertEquals(2, diagram.getEdges().size());
+	}
 	
+	/**
+	 * Testing delete a CallNode with both incoming and return edge
+	 */
+	@Test
+	public void testDeleteCallNodeWithIncomingAndReturnEdge()
+	{
+		CallNode midNode = new CallNode();
+		ReturnEdge returnEdge = new ReturnEdge();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(midNode, new Point2D.Double(115, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(118, 75), new Point2D.Double(215,75));
+		diagram.addEdge(returnEdge, new Point2D.Double(118, 75), new Point2D.Double(18,75));
+		
+		aPanel.getSelectionList().add(returnEdge);
+		aPanel.getSelectionList().add(callEdge1);
+		aPanel.getSelectionList().add(midNode);
+
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(1, paraNode1.getChildren().size()); 
+		assertEquals(0, paraNode2.getChildren().size()); 
+		assertEquals(0, diagram.getEdges().size());
+		
+		aPanel.undo();
+		assertEquals(1, paraNode2.getChildren().size()); 
+		assertEquals(2, diagram.getEdges().size());
+	}
+	
+	/**
+	 * Below are methods testing the copy and paste feature
+	 * for sequence diagram
+	 * 
+	 * 
+	 * Testing copy and paste signle Parameter Node
+	 */
+	@Test
+	public void testCopyPasteParameterNode()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		aPanel.getSelectionList().add(paraNode1);
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(2, diagram.getRootNodes().size());
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[1])).getBounds().getX()));
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[1])).getBounds().getY()));
+	}
+	
+	/**
+	 * Testing cut and paste single Parameter Node
+	 */
+	@Test
+	public void testCutPasteParameterNode()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		aPanel.getSelectionList().add(paraNode1);
+		clipboard.copy(aPanel.getSelectionList());
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[0])).getBounds().getX()));
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[0])).getBounds().getY()));
+	}
+	
+	/**
+	 * Testing copy and paste Parameter Node with Call Node
+	 */
+	@Test
+	public void testCopyPasteParameterNodeWithCallNode()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		aPanel.getSelectionList().add(paraNode1);
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(2, diagram.getRootNodes().size());
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[1])).getBounds().getX()));
+		assertTrue(0 == (((Node)(diagram.getRootNodes().toArray()[1])).getBounds().getX()));
+		assertTrue(1 == (((ImplicitParameterNode)(diagram.getRootNodes().toArray()[1])).getChildren().size()));
+	}
+	
+	/**
+	 * Testing copy and paste a whole diagram
+	 */
+	@Test
+	public void testCopyPasteSequenceDiagram()
+	{
+		// sepcific test case set up 
+		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
+		CallNode midNode = new CallNode();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(midNode, new Point2D.Double(115, 75));
+		diagram.addNode(new CallNode(), new Point2D.Double(215, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(215,75));
+		diagram.addEdge(new ReturnEdge(), new Point2D.Double(118, 75), new Point2D.Double(18,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
+		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(6, diagram.getRootNodes().size());
+		assertEquals(8, diagram.getEdges().size());
+	}
+	
+	/**
+	 * Testing copy and paste a whole diagram
+	 */
+	@Test
+	public void testCopyPartialGraph()
+	{
+		// sepcific test case set up 
+		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
+		CallNode midNode = new CallNode();
+		CallNode endNode = new CallNode();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(midNode, new Point2D.Double(115, 75));
+		diagram.addNode(endNode, new Point2D.Double(215, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(215,75));
+		diagram.addEdge(new ReturnEdge(), new Point2D.Double(118, 75), new Point2D.Double(18,75));
+		diagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
+		
+		aList.add(callNode1);
+		aList.add(midNode);
+		aList.add(endNode);
+		for(Edge edge: diagram.getEdges())
+		{
+			aList.add(edge);
+		}
+		clipboard.copy(aList);
+		SequenceDiagramGraph tempDiagram = new SequenceDiagramGraph();
+		GraphPanel tempPanel = new GraphPanel(tempDiagram, new ToolBar(diagram));
+		clipboard.paste(tempPanel);
+		tempDiagram.draw(aGraphics, aGrid);
+		
+		assertEquals(0, tempDiagram.getRootNodes().size());
+		assertEquals(0, tempDiagram.getEdges().size());
+	}
 	
 	
 	
