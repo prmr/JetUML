@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
