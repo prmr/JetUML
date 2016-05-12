@@ -42,7 +42,12 @@ public class TestUsageScenariosSequenceDiagram
 	private ImplicitParameterNode paraNode1;
 	private ImplicitParameterNode paraNode2;
 	private CallNode callNode1;
+	private CallNode callNode2;
+	private CallEdge callEdge1;
 	
+	/**
+	 * General setup.
+	 */
 	@Before
 	public void setup()
 	{
@@ -55,6 +60,8 @@ public class TestUsageScenariosSequenceDiagram
 		paraNode1 = new ImplicitParameterNode();
 		paraNode2 = new ImplicitParameterNode();
 		callNode1 = new CallNode();
+		callNode2 = new CallNode();
+		callEdge1 = new CallEdge();
 	}
 	
 	/**
@@ -115,8 +122,7 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addNode(paraNode2, new Point2D.Double(25, 0));
 		diagram.addNode(callNode1, new Point2D.Double(7, 75));
 		
-		CallEdge callEdge = new CallEdge();
-		diagram.addEdge(callEdge, new Point2D.Double(7, 75), new Point2D.Double(25,75));
+		diagram.addEdge(callEdge1, new Point2D.Double(7, 75), new Point2D.Double(25,75));
 		assertEquals(1, diagram.getEdges().size());
 		assertEquals(1, paraNode2.getChildren().size());
 		diagram.draw(aGraphics, aGrid);
@@ -136,8 +142,7 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addNode(paraNode1, new Point2D.Double(5, 0));
 		diagram.addNode(paraNode2, new Point2D.Double(105, 0));
 		diagram.addNode(callNode1, new Point2D.Double(7, 75));
-		CallEdge callEdge = new CallEdge();
-		diagram.addEdge(callEdge, new  Point2D.Double(7, 75), new Point2D.Double(8,85));
+		diagram.addEdge(callEdge1, new  Point2D.Double(7, 75), new Point2D.Double(8,85));
 		diagram.draw(aGraphics, aGrid);
 
 		diagram.addEdge(new CallEdge(), new Point2D.Double(59, 110), new Point2D.Double(116,0));
@@ -157,7 +162,6 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
 		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
 		diagram.addNode(callNode1, new Point2D.Double(15, 75));
-		CallEdge callEdge1 = new CallEdge();
 		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
 		diagram.draw(aGraphics, aGrid);
 		
@@ -184,8 +188,7 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testNoteNode()
 	{
-		CallNode callNode2 = new CallNode();
-		CallEdge callEdge1 = new CallEdge();
+	
 		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
 		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
 		diagram.addNode(callNode1, new Point2D.Double(15, 75));
@@ -215,4 +218,281 @@ public class TestUsageScenariosSequenceDiagram
 		diagram.addEdge(new NoteEdge(), new Point2D.Double(10, 10), new Point2D.Double(62, 68));
 		assertEquals(8, diagram.getRootNodes().size());
 	}
+	
+	/**
+	 * Testing Node movement for individual node. 
+	 * Note edge could not be moved individually.
+	 */
+	@Test
+	public void testIndividualNodeMoveMent()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(callNode2, new Point2D.Double(115, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(120,75));
+		diagram.draw(aGraphics, aGrid);
+		
+		// testing moving ParameterNode
+		paraNode1.translate(5, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(15 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		paraNode1.translate(25, 0);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(40 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		paraNode2.translate(105, 25);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(215 == paraNode2.getBounds().getX());
+		assertTrue(0 == paraNode2.getBounds().getY());
+		paraNode2.translate(0, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(215 == paraNode2.getBounds().getX());
+		assertTrue(0 == paraNode2.getBounds().getY());
+		
+		// testing moving left call node
+		double callNode1_x = callNode1.getBounds().getX();
+		double callNode1_y = callNode1.getBounds().getY();
+		callNode1.translate(5, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode1_x == callNode1.getBounds().getX());
+		assertTrue(callNode1_y + 15 == callNode1.getBounds().getY());
+		callNode1.translate(0, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode1_x == callNode1.getBounds().getX());
+		assertTrue(callNode1_y + 15 + 15 == callNode1.getBounds().getY());
+		callNode1.translate(20, 0);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode1_x == callNode1.getBounds().getX());
+		assertTrue(callNode1_y + 15 + 15 == callNode1.getBounds().getY());
+		
+		// testing moving right call node
+		double callNode2_x = callNode2.getBounds().getX();
+		double callNode2_y = callNode2.getBounds().getY();
+		callNode2.translate(5, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode2_x == callNode2.getBounds().getX());
+		assertTrue(callNode2_y == callNode2.getBounds().getY());
+		callNode2.translate(0, 15);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode2_x == callNode2.getBounds().getX());
+		assertTrue(callNode2_y == callNode2.getBounds().getY());
+		callNode2.translate(20, 0);
+		diagram.draw(aGraphics, aGrid);
+		assertTrue(callNode2_x == callNode2.getBounds().getX());
+		assertTrue(callNode2_y == callNode2.getBounds().getY());
+	}
+	
+	/**
+	 * Testing moving entire graph.
+	 */
+	@Test
+	public void testMoveEntireGraph()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addNode(callNode2, new Point2D.Double(115, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(120,75));
+		diagram.draw(aGraphics, aGrid);
+		double callNode1_x = callNode1.getBounds().getX();
+		double callNode1_y = callNode1.getBounds().getY();
+		double callNode2_x = callNode2.getBounds().getX();
+		double callNode2_y = callNode2.getBounds().getY();
+		
+		aPanel.selectAll();
+		for(GraphElement element: aPanel.getSelectionList())
+		{
+			if(element instanceof Node)
+			{
+				((Node) element).translate(15, 0);
+			}
+		}
+		aPanel.getSelectionList().clearSelection();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertTrue(25 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		assertTrue(125 == paraNode2.getBounds().getX());
+		assertTrue(0 == paraNode2.getBounds().getY());
+		assertTrue(callNode1_x + 15 == callNode1.getBounds().getX());
+		assertTrue(callNode1_y == callNode1.getBounds().getY());
+		assertTrue(callNode2_x + 15 == callNode2.getBounds().getX());
+		assertTrue(callNode2_y == callNode2.getBounds().getY());
+		
+		aPanel.selectAll();
+		for(GraphElement element: aPanel.getSelectionList())
+		{
+			if(element instanceof Node)
+			{
+				((Node) element).translate(-25, 0);
+			}
+		}
+		aPanel.getSelectionList().clearSelection();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertTrue(0 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		assertTrue(100 == paraNode2.getBounds().getX());
+		assertTrue(0 == paraNode2.getBounds().getY());
+		assertTrue(callNode1_x + 15 - 25 == callNode1.getBounds().getX());
+		assertTrue(callNode1_y == callNode1.getBounds().getY());
+		assertTrue(callNode2_x + 15 - 25 == callNode2.getBounds().getX());
+		assertTrue(callNode2_y == callNode2.getBounds().getY());
+	}
+	
+	
+	/**
+	 * Testing moving entire graph with a <<create>> CallEdge
+	 */
+	@Test
+	public void testMoveEntireGraphWithCallEdge()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.addEdge(callEdge1, new Point2D.Double(15, 80), new Point2D.Double(116,0));
+		diagram.draw(aGraphics, aGrid);
+		
+		
+
+		double callNode1_x = callNode1.getBounds().getX();
+		double callNode1_y = callNode1.getBounds().getY();
+		double paraNode2_x = paraNode2.getBounds().getX();
+		double paraNode2_y = paraNode2.getBounds().getY();
+		
+		aPanel.selectAll();
+		for(GraphElement element: aPanel.getSelectionList())
+		{
+			if(element instanceof Node)
+			{
+				((Node) element).translate(15, 0);
+			}
+		}
+		aPanel.getSelectionList().clearSelection();
+		diagram.draw(aGraphics, aGrid);
+	
+		assertTrue(25 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		assertTrue(paraNode2_x + 15 == paraNode2.getBounds().getX());
+		assertTrue(paraNode2_y == paraNode2.getBounds().getY());
+		assertTrue(callNode1_x + 15 == callNode1.getBounds().getX());
+		assertTrue(callNode1_y == callNode1.getBounds().getY());
+		
+		aPanel.selectAll();
+		for(GraphElement element: aPanel.getSelectionList())
+		{
+			if(element instanceof Node)
+			{
+				((Node) element).translate(-25, 0);
+			}
+		}
+		aPanel.getSelectionList().clearSelection();
+		diagram.draw(aGraphics, aGrid);
+	
+		assertTrue(0 == paraNode1.getBounds().getX());
+		assertTrue(0 == paraNode1.getBounds().getY());
+		assertTrue(paraNode2_x + 15 - 25 == paraNode2.getBounds().getX());
+		assertTrue(paraNode2_y == paraNode2.getBounds().getY());
+		assertTrue(callNode1_x + 15 - 25 == callNode1.getBounds().getX());
+		assertTrue(callNode1_y == callNode1.getBounds().getY());
+	}
+	
+	/**
+	 * Testing delete single ParameterNode
+	 */
+	@Test
+	public void testSignleParameterNodeDeletionUndo()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		Rectangle2D paraNode1Bond = paraNode1.getBounds();
+		aPanel.getSelectionList().add(paraNode1);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(0, diagram.getRootNodes().size());
+		aPanel.undo();
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(paraNode1Bond, (((ImplicitParameterNode) (diagram.getRootNodes().toArray()[0])).getBounds()));
+	}
+	
+	/**
+	 * Testing delete single CallNode 
+	 */
+	@Test
+	public void testSignleCallNodeDeletionUndo()
+	{
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		diagram.draw(aGraphics, aGrid);
+
+		Rectangle2D callNode1Bond = callNode1.getBounds();
+		aPanel.getSelectionList().add(callNode1);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(0, paraNode1.getChildren().size());
+		
+		aPanel.undo();
+		assertEquals(1, paraNode1.getChildren().size());
+		assertEquals(callNode1Bond, (((CallNode) (paraNode1.getChildren().toArray()[0])).getBounds()));
+	}
+	
+	@Test
+	public void testDeletionParameterNodeInCallSequence()
+	{
+		// sepcific test case set up 
+		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
+		diagram.addNode(paraNode1, new Point2D.Double(10, 0));
+		diagram.addNode(paraNode2, new Point2D.Double(110, 0));
+		diagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		diagram.addNode(callNode1, new Point2D.Double(15, 75));
+		
+		assertEquals(0, paraNode2.getChildren().size());
+		
+		diagram.addEdge(callEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
+		assertEquals(1, paraNode2.getChildren().size());
+
+		diagram.draw(aGraphics, aGrid);
+		ReturnEdge reEdge1 = new ReturnEdge();
+		diagram.addEdge(reEdge1, new Point2D.Double(145,90), new Point2D.Double(45, 90));		
+		CallEdge callEdge2 = new CallEdge();
+		diagram.addEdge(callEdge2, new Point2D.Double(45, 75), new Point2D.Double(210,75));
+		diagram.draw(aGraphics, aGrid);
+		
+		aPanel.getSelectionList().add(paraNode1);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(0, newParaNode.getChildren().size());
+		/*
+		 *  since a return edge is added, the call node will still remain there
+		 *  however the edges are still removed
+		 */
+		assertEquals(1, paraNode2.getChildren().size()); 
+		assertEquals(0, diagram.getEdges().size());
+		
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(1, newParaNode.getChildren().size());
+		assertEquals(1, paraNode2.getChildren().size()); 
+		assertEquals(3, diagram.getEdges().size());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
