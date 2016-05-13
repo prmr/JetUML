@@ -695,16 +695,5 @@ public class TestUsageScenariosSequenceDiagram
 		
 		assertEquals(0, tempDiagram.getRootNodes().size());
 		assertEquals(0, tempDiagram.getEdges().size());
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 }

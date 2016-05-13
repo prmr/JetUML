@@ -16,7 +16,6 @@ import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
-import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 
 /**
@@ -34,7 +33,6 @@ public class TestUsageScenariosStateDiagram
 	private GraphPanel aPanel;
 	private Grid aGrid;
 	private Clipboard clipboard;
-	private SelectionList aList;
 	private StateNode stateNode1;
 	private StateNode stateNode2;
 	private CircularStateNode initialNode;
@@ -57,7 +55,6 @@ public class TestUsageScenariosStateDiagram
 		aPanel = new GraphPanel(diagram, new ToolBar(diagram));
 		aGrid = new Grid();
 		clipboard = new Clipboard();
-		aList = new SelectionList();
 		stateNode1 = new StateNode();
 		stateNode2 = new StateNode();
 		initialNode = new CircularStateNode();
@@ -302,6 +299,178 @@ public class TestUsageScenariosStateDiagram
 		 *  the edge should have the same bond
 		 */
 		assertEquals(edge3_bond, edge3.getBounds());
+	}
+	
+	/**
+	 * Below are methods testing deletion and undo feature for state diagragm.
+	 * 
+	 * 
+	 * Testing delete a start node with an attached edge
+	 */
+	@Test
+	public void testRemoveStartNode()
+	{
+		diagram.addNode(initialNode, new Point2D.Double(20, 20));
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.addEdge(edge1, new Point2D.Double(25, 25), new Point2D.Double(55, 25));
+		aPanel.getSelectionList().add(initialNode);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(0, diagram.getEdges().size());
+
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+	}
+	
+	/**
+	 * Testing delete a end node with an attached edge
+	 */
+	@Test
+	public void testRemoveEndNode()
+	{
+		diagram.addNode(stateNode2, new Point2D.Double(150, 20));
+		diagram.addNode(finalNode, new Point2D.Double(250, 20));
+		diagram.addEdge(edge3, new Point2D.Double(155, 25), new Point2D.Double(255, 25));
+		aPanel.getSelectionList().add(finalNode);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(0, diagram.getEdges().size());
+
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+	}
+	
+	/**
+	 * Testing delete a end node with an attached edge
+	 */
+	@Test
+	public void testRemoveStateNode()
+	{
+		diagram.addNode(initialNode, new Point2D.Double(20, 20));
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.addNode(stateNode2, new Point2D.Double(150, 20));
+		diagram.addNode(finalNode, new Point2D.Double(250, 20));
+		diagram.draw(aGraphics, aGrid);
+		diagram.addEdge(edge1, new Point2D.Double(25, 25), new Point2D.Double(55, 25));
+		diagram.addEdge(edge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
+		diagram.addEdge(edge3, new Point2D.Double(155, 25), new Point2D.Double(255, 25));
+		diagram.addEdge(edge4, new Point2D.Double(155, 25), new Point2D.Double(55, 25));
+		diagram.addEdge(edge5, new Point2D.Double(25, 25), new Point2D.Double(255, 25));
+		aPanel.getSelectionList().add(stateNode2);
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+
+		aPanel.undo();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(4, diagram.getRootNodes().size());
+		assertEquals(5, diagram.getEdges().size());
+	}
+	
+	/**
+	 * Below are methods testing copy and paste feature for state diagram
+	 * 
+	 * 
+	 * 
+	 * Testing copy a State Node
+	 */
+	@Test
+	public void testCopyStateNode()
+	{
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.draw(aGraphics, aGrid);
+		aPanel.getSelectionList().add(stateNode1);
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(2, diagram.getRootNodes().size());
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[1]).getBounds().getX()));
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[1]).getBounds().getY()));
+	}
+	
+	/**
+	 * 
+	 * Testing cut a State Node
+	 */
+	@Test
+	public void testCutStateNode()
+	{
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.draw(aGraphics, aGrid);
+		aPanel.getSelectionList().add(stateNode1);
+		clipboard.copy(aPanel.getSelectionList());
+		
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+
+		
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, diagram.getRootNodes().size());
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[0]).getBounds().getX()));
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[0]).getBounds().getY()));
+	}
+	
+	/**
+	 * 
+	 * Testing copy two Node with an edge
+	 */
+	@Test
+	public void testCopyNodesWithEdge()
+	{
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.addNode(stateNode2, new Point2D.Double(150, 20));
+		diagram.draw(aGraphics, aGrid);
+		diagram.addEdge(edge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		clipboard.paste(aPanel);
+
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(4, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[2]).getBounds().getX()));
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[2]).getBounds().getY()));
+	}
+	
+	/**
+	 * 
+	 * Testing copy two Node with an edge
+	 */
+	@Test
+	public void testCutNodesWithEdge()
+	{
+		diagram.addNode(stateNode1, new Point2D.Double(50, 20));
+		diagram.addNode(stateNode2, new Point2D.Double(150, 20));
+		diagram.draw(aGraphics, aGrid);
+		diagram.addEdge(edge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
+		
+		aPanel.selectAll();
+		clipboard.copy(aPanel.getSelectionList());
+		aPanel.removeSelected();
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(0, diagram.getRootNodes().size());
+		assertEquals(0, diagram.getEdges().size());
+
+		clipboard.paste(aPanel);
+		diagram.draw(aGraphics, aGrid);
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(1, diagram.getEdges().size());
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[0]).getBounds().getX()));
+		assertTrue(0 == (((StateNode) diagram.getRootNodes().toArray()[0]).getBounds().getY()));
 	}
 	
 	
