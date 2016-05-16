@@ -29,18 +29,18 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 
 public class TestUsageScenariosUsageDiagram 
 {
-	private ObjectDiagramGraph diagram;
+	private ObjectDiagramGraph aDiagram;
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard clipboard;
-	private ActorNode actor1;
-	private ActorNode actor2;
-	private UseCaseNode useNode1;
-	private UseCaseNode useNode2;
-	private UseCaseAssociationEdge assoEdge;
-	private UseCaseDependencyEdge depeEdge;
-	private UseCaseGeneralizationEdge geneEdge;
+	private Clipboard aClipboard;
+	private ActorNode aActorNode1;
+	private ActorNode aActorNode2;
+	private UseCaseNode aUseCaseNode1;
+	private UseCaseNode aUseCaseNode2;
+	private UseCaseAssociationEdge aAssocaitionEdge;
+	private UseCaseDependencyEdge aDependencyEdge;
+	private UseCaseGeneralizationEdge aGeneralEdge;
 
 	
 	/**
@@ -49,18 +49,18 @@ public class TestUsageScenariosUsageDiagram
 	@Before
 	public void setup()
 	{
-		diagram = new ObjectDiagramGraph();
+		aDiagram = new ObjectDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(diagram, new ToolBar(diagram));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		clipboard = new Clipboard();
-		actor1 = new ActorNode();
-		actor2 = new ActorNode();
-		useNode1 = new UseCaseNode();
-		useNode2 = new UseCaseNode();
-		assoEdge = new UseCaseAssociationEdge();
-		depeEdge = new UseCaseDependencyEdge();
-		geneEdge = new UseCaseGeneralizationEdge();
+		aClipboard = new Clipboard();
+		aActorNode1 = new ActorNode();
+		aActorNode2 = new ActorNode();
+		aUseCaseNode1 = new UseCaseNode();
+		aUseCaseNode2 = new UseCaseNode();
+		aAssocaitionEdge = new UseCaseAssociationEdge();
+		aDependencyEdge = new UseCaseDependencyEdge();
+		aGeneralEdge = new UseCaseGeneralizationEdge();
 	}
 	
 	/**
@@ -68,35 +68,35 @@ public class TestUsageScenariosUsageDiagram
 	 * for a object diagram
 	 * 
 	 * 
-	 * test create a object diagram
+	 * Testing create a object diagram
 	 */
 	@Test
 	public void testCreateUsageDiagram()
 	{
-		// create an object node
-		diagram.addNode(actor1, new Point2D.Double(20, 20));
-		diagram.draw(aGraphics, aGrid);
+		// create an ActorNode
+		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.draw(aGraphics, aGrid);
 		MultiLineString name = new MultiLineString();
 		name.setText("Car");
-		actor1.setName(name);
-		assertEquals(1, diagram.getRootNodes().size());
-		assertEquals("Car", actor1.getName().getText());
+		aActorNode1.setName(name);
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals("Car", aActorNode1.getName().getText());
 		
-		// create field node outside an object node.(not allowed)
-		diagram.addNode(useNode1, new Point2D.Double(120, 80));
+		// create some UseCaseNode
+		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(120, 80));
 		name = new MultiLineString();
 		name.setText("driving");
-		useNode1.setName(name);
-		assertEquals(2, diagram.getRootNodes().size());
-		assertEquals("driving", useNode1.getName().getText());
+		aUseCaseNode1.setName(name);
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals("driving", aUseCaseNode1.getName().getText());
 
-		// create field nodes insdie object node
+		// create field nodes inside ObjectNode
 		NoteNode noteNode = new NoteNode();
-		diagram.addNode(noteNode, new Point2D.Double(50, 50));
+		aDiagram.addNode(noteNode, new Point2D.Double(50, 50));
 		name = new MultiLineString();
 		name.setText("something...\nsomething");
 		noteNode.setText(name);
-		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals("something...\nsomething", noteNode.getText().getText());
 	}
 	
@@ -106,21 +106,21 @@ public class TestUsageScenariosUsageDiagram
 	@Test
 	public void testGeneralEdgeCreation()
 	{
-		diagram.addNode(actor1, new Point2D.Double(20, 20));
-		diagram.addNode(actor2, new Point2D.Double(200, 20));
-		diagram.addNode(useNode1, new Point2D.Double(80, 20));
-		diagram.addNode(useNode2, new Point2D.Double(140, 20));
+		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aActorNode2, new Point2D.Double(200, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
 		
-		diagram.addEdge(assoEdge,  new Point2D.Double(20, 20), new Point2D.Double(200, 20));
-		diagram.addEdge(depeEdge,  new Point2D.Double(80, 20), new Point2D.Double(200, 20));
-		diagram.addEdge(geneEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
-		assertEquals(3, diagram.getEdges().size());
+		aDiagram.addEdge(aAssocaitionEdge,  new Point2D.Double(20, 20), new Point2D.Double(200, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(200, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
+		assertEquals(3, aDiagram.getEdges().size());
 		
-		// creating more edges
-		diagram.addEdge(new UseCaseAssociationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
-		diagram.addEdge(new UseCaseDependencyEdge(),  new Point2D.Double(20, 20), new Point2D.Double(200, 20));
-		diagram.addEdge(new UseCaseGeneralizationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
-		assertEquals(6, diagram.getEdges().size());
+		// create more edges
+		aDiagram.addEdge(new UseCaseAssociationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
+		aDiagram.addEdge(new UseCaseDependencyEdge(),  new Point2D.Double(20, 20), new Point2D.Double(200, 20));
+		aDiagram.addEdge(new UseCaseGeneralizationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
+		assertEquals(6, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -129,11 +129,11 @@ public class TestUsageScenariosUsageDiagram
 	public void testNoteEdgeCreation()
 	{
 		NoteNode noteNode = new NoteNode();
-		diagram.addNode(actor1, new Point2D.Double(20, 20));
-		diagram.addNode(actor2, new Point2D.Double(200, 20));
-		diagram.addNode(useNode1, new Point2D.Double(80, 20));
-		diagram.addNode(useNode2, new Point2D.Double(140, 20));
-		diagram.addNode(noteNode, new Point2D.Double(100, 100));
+		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aActorNode2, new Point2D.Double(200, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
+		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
 		
 		NoteEdge edge1 = new NoteEdge();
 		NoteEdge edge2 = new NoteEdge();
