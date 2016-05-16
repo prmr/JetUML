@@ -26,7 +26,6 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  *
  */
 
-
 public class TestUsageScenariosStateDiagram 
 {
 	private StateDiagramGraph aDiagram;
@@ -70,10 +69,11 @@ public class TestUsageScenariosStateDiagram
 	
 	/**
 	 * Below are methods testing basic nodes and edge creation
-	 * for a state diagram
+	 * for a state diagram.
 	 * 
 	 * 
-	 * test create a state diagram
+	 * 
+	 * Testing create a state diagram.
 	 */
 	@Test
 	public void testCreateStateDiagram()
@@ -144,7 +144,7 @@ public class TestUsageScenariosStateDiagram
 	}
 	
 	/**
-	 * Testing connect any NoteNode with NoteEdge (not allowed).
+	 * Testing connect NoteNode with NoteEdge.
 	 */
 	@Test
 	public void testConnectNoteNodeWithNoteEdge()
@@ -171,7 +171,7 @@ public class TestUsageScenariosStateDiagram
 	}
 	
 	/**
-	 * Testing connect any NoteNode with NoteEdge (not allowed).
+	 * Testing connect any StateNode with NoteNode
 	 */
 	@Test
 	public void testConnectStateNodeWithNoteNode()
@@ -193,7 +193,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge1, new Point2D.Double(20, 20), new Point2D.Double(50, 200));
 		aDiagram.addEdge(noteEdge2, new Point2D.Double(50, 20), new Point2D.Double(50, 200));
 		aDiagram.addEdge(noteEdge3, new Point2D.Double(250, 20), new Point2D.Double(50, 200));
-		// invalid operations
+		assertEquals(3, aDiagram.getEdges().size());
+		// invalid operations, cannot connecte any StateNode with NoteEdges
 		aDiagram.addEdge(noteEdge4, new Point2D.Double(20, 20), new Point2D.Double(-20, 200));
 		aDiagram.addEdge(noteEdge5, new Point2D.Double(150, 20), new Point2D.Double(-50, 200));
 		aDiagram.addEdge(new NoteEdge(), new Point2D.Double(20, 20), new Point2D.Double(50, 49));
@@ -210,30 +211,21 @@ public class TestUsageScenariosStateDiagram
 	@Test
 	public void testIndividualNodeMovement()
 	{
-		// test creation of nodes
 		aDiagram.addNode(aInitialNode, new Point2D.Double(20, 20));
 		aDiagram.addNode(aStateNode1, new Point2D.Double(50, 20));
 		aDiagram.addNode(aStateNode2, new Point2D.Double(150, 20));
 		aDiagram.addNode(aFinalNode, new Point2D.Double(250, 20));
 		aDiagram.draw(aGraphics, aGrid);
-	
-		Rectangle2D initialNodeBond = aInitialNode.getBounds();
-		Rectangle2D stateNode1Bond = aStateNode1.getBounds();
-		Rectangle2D stateNode2Bond = aStateNode2.getBounds();
-		Rectangle2D finalNodeBond = aFinalNode.getBounds();
+
 		aInitialNode.translate(3, 12);
 		aStateNode1.translate(-5, 80);
 		aStateNode2.translate(15, -30);
 		aFinalNode.translate(40, 20);
 		
-		assertTrue(initialNodeBond.getX() + 3 == aInitialNode.getBounds().getX());
-		assertTrue(initialNodeBond.getY() + 12 == aInitialNode.getBounds().getY());
-		assertTrue(stateNode1Bond.getX() - 5 == aStateNode1.getBounds().getX());
-		assertTrue(stateNode1Bond.getY() + 80 == aStateNode1.getBounds().getY());
-		assertTrue(stateNode2Bond.getX() + 15 == aStateNode2.getBounds().getX());
-		assertTrue(stateNode2Bond.getY() - 30 == aStateNode2.getBounds().getY());
-		assertTrue(finalNodeBond.getX() + 40 == aFinalNode.getBounds().getX());
-		assertTrue(finalNodeBond.getY() + 20 == aFinalNode.getBounds().getY());
+		assertEquals(new Rectangle2D.Double(23, 32, 20, 20), aInitialNode.getBounds());
+		assertEquals(new Rectangle2D.Double(45, 100, 80, 60), aStateNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(165, -10, 80, 60), aStateNode2.getBounds());
+		assertEquals(new Rectangle2D.Double(290, 40, 20, 20), aFinalNode.getBounds());
 	}
 	
 	/**
@@ -242,7 +234,6 @@ public class TestUsageScenariosStateDiagram
 	@Test
 	public void testNodesAndEdgesMovement()
 	{
-		// test creation of nodes
 		aDiagram.addNode(aInitialNode, new Point2D.Double(20, 20));
 		aDiagram.addNode(aStateNode1, new Point2D.Double(50, 20));
 		aDiagram.addNode(aStateNode2, new Point2D.Double(150, 20));
@@ -260,10 +251,6 @@ public class TestUsageScenariosStateDiagram
 		aPanel.getSelectionList().add(aTransitionEdge2);
 		aPanel.getSelectionList().add(aTransitionEdge3);
 
-		Rectangle2D initialNodeBond = aInitialNode.getBounds();
-		Rectangle2D stateNode1Bond = aStateNode1.getBounds();
-		Rectangle2D stateNode2Bond = aStateNode2.getBounds();	
-		Rectangle2D finalNodeBond = aFinalNode.getBounds();
 		Rectangle2D aTransitionEdge1Bond = aTransitionEdge1.getBounds();
 		Rectangle2D aTransitionEdge2Bond = aTransitionEdge2.getBounds();
 		Rectangle2D aTransitionEdge3Bond = aTransitionEdge3.getBounds();
@@ -275,14 +262,10 @@ public class TestUsageScenariosStateDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		
-		assertTrue(initialNodeBond.getX() + 26 == aInitialNode.getBounds().getX());
-		assertTrue(initialNodeBond.getY() + 37 == aInitialNode.getBounds().getY());
-		assertTrue(stateNode1Bond.getX() + 26 == aStateNode1.getBounds().getX());
-		assertTrue(stateNode1Bond.getY() + 37 == aStateNode1.getBounds().getY());
-		assertEquals(stateNode2Bond, aStateNode2.getBounds());
-		assertTrue(finalNodeBond.getX() == aFinalNode.getBounds().getX());
-		assertTrue(finalNodeBond.getY() == aFinalNode.getBounds().getY());
+		assertEquals(new Rectangle2D.Double(46, 57, 20, 20), aInitialNode.getBounds());
+		assertEquals(new Rectangle2D.Double(76, 57, 80, 60), aStateNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(150, 20, 80, 60), aStateNode2.getBounds());
+		assertEquals(new Rectangle2D.Double(250, 20, 20, 20), aFinalNode.getBounds());
 		assertEquals(aInitialNode, aTransitionEdge1.getStart());
 		assertEquals(aStateNode1, aTransitionEdge1.getEnd());
 		assertEquals(aStateNode1, aTransitionEdge2.getStart());
@@ -301,7 +284,7 @@ public class TestUsageScenariosStateDiagram
 	}
 	
 	/**
-	 * Below are methods testing deletion and undo feature for state diagragm.
+	 * Below are methods testing deletion and undo feature for state diagram.
 	 * 
 	 * 
 	 * Testing delete a start node with an attached edge.
@@ -394,8 +377,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[1]).getBounds().getX()));
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[1]).getBounds().getY()));
+		assertEquals(new Rectangle2D.Double(0, 0, 80, 60),
+				(((StateNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
 	}
 	
 	/**
@@ -418,8 +401,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds().getX()));
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds().getY()));
+		assertEquals(new Rectangle2D.Double(0, 0, 80, 60),
+				(((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds()));
 	}
 	
 	/**
@@ -440,8 +423,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[2]).getBounds().getX()));
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[2]).getBounds().getY()));
+		assertEquals(new Rectangle2D.Double(0, 0, 80, 60),
+				(((StateNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
 	}
 	
 	/**
@@ -467,7 +450,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds().getX()));
-		assertTrue(0 == (((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds().getY()));
+		assertEquals(new Rectangle2D.Double(0, 0, 80, 60),
+				(((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds()));
 	}
 }
