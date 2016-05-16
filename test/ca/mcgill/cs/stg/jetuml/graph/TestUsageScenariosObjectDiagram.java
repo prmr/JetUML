@@ -39,11 +39,8 @@ public class TestUsageScenariosObjectDiagram
 	private FieldNode fieldNode1;
 	private FieldNode fieldNode2;
 	private FieldNode fieldNode3;
-
 	private ObjectReferenceEdge edge1;
 	private ObjectReferenceEdge edge2;
-
-	
 	
 	/**
 	 * General setup.
@@ -61,7 +58,6 @@ public class TestUsageScenariosObjectDiagram
 		fieldNode1 = new FieldNode();
 		fieldNode2 = new FieldNode();
 		fieldNode3 = new FieldNode();
-
 		
 		edge1 = new ObjectReferenceEdge();
 		edge2 = new ObjectReferenceEdge();
@@ -72,7 +68,7 @@ public class TestUsageScenariosObjectDiagram
 	 * for a object diagram
 	 * 
 	 * 
-	 * test create a object diagram
+	 * Testing create a object diagram.
 	 */
 	@Test
 	public void testCreateStateDiagram()
@@ -93,7 +89,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, diagram.getRootNodes().size());
 		assertEquals(0, objNode1.getChildren().size());
 		
-		// create field nodes insdie object node
+		// create field nodes inside object node
 		diagram.addNode(fieldNode1, new Point2D.Double(20, 40));
 		diagram.addNode(fieldNode2, new Point2D.Double(30, 40));
 		diagram.addNode(fieldNode3, new Point2D.Double(40, 30));
@@ -102,7 +98,7 @@ public class TestUsageScenariosObjectDiagram
 	}
 	
 	/**
-	 * Testing connect NoteNode with Nodes in obejct diagram.
+	 * Testing connect NoteNode with Nodes in object diagram.
 	 */
 	@Test
 	public void testNoteNodeWithNoteEdges()
@@ -114,7 +110,7 @@ public class TestUsageScenariosObjectDiagram
 		diagram.addNode(fieldNode1, new Point2D.Double(20, 40));
 		diagram.addNode(fieldNode2, new Point2D.Double(30, 40));
 		diagram.addNode(fieldNode3, new Point2D.Double(40, 30));
-		diagram.addNode(noteNode, new Point2D.Double(75, 75));
+		diagram.addNode(noteNode, new Point2D.Double(80, 80));
 		diagram.draw(aGraphics, aGrid);		
 		assertEquals(3, diagram.getRootNodes().size());
 		
@@ -147,7 +143,7 @@ public class TestUsageScenariosObjectDiagram
 	}
 	
 	/**
-	 * Testing general edge creations in Object Diagram
+	 * Testing general edge creations in object diagram.
 	 */
 	@Test
 	public void testGeneralEdgeCreation()
@@ -158,7 +154,7 @@ public class TestUsageScenariosObjectDiagram
 		diagram.addNode(fieldNode1, new Point2D.Double(20, 40));
 		diagram.addNode(fieldNode2, new Point2D.Double(30, 40));
 		diagram.addNode(fieldNode3, new Point2D.Double(40, 30));
-		diagram.addNode(noteNode, new Point2D.Double(75, 75));
+		diagram.addNode(noteNode, new Point2D.Double(80, 80));
 		diagram.draw(aGraphics, aGrid);	
 		
 		// create an association edge between two ObjectNode
@@ -195,14 +191,13 @@ public class TestUsageScenariosObjectDiagram
 		fieldNode3.setName(name);
 		assertEquals("Car", fieldNode3.getName().getText());
 	}
-
 	
 	/**
-	 * Below are methods testing nodes movement
+	 * Below are methods testing nodes movement.
 	 * 
 	 * 
 	 * 
-	 * Testing individual node movement
+	 * Testing individual node movement.
 	 */
 	@Test
 	public void testIndividualNodeMovement()
@@ -210,32 +205,20 @@ public class TestUsageScenariosObjectDiagram
 		NoteNode noteNode = new NoteNode();
 		diagram.addNode(objNode1, new Point2D.Double(20, 20));
 		diagram.addNode(fieldNode1, new Point2D.Double(20, 40));
-		diagram.addNode(noteNode, new Point2D.Double(75, 75));
+		diagram.addNode(noteNode, new Point2D.Double(80, 80));
 		diagram.draw(aGraphics, aGrid);	
 	
-		Rectangle2D objNode1_bond = objNode1.getBounds();
-		Rectangle2D fieldNode1_bond = fieldNode1.getBounds();
-		Rectangle2D noteNode_bond = noteNode.getBounds();
 		objNode1.translate(3, 12);
 		noteNode.translate(40, 20);
+		assertEquals(new Rectangle2D.Double(23, 32, 100, 100), objNode1.getBounds());
 		// field node should also be moved accordingly
-		assertTrue(objNode1_bond.getX() + 3 == objNode1.getBounds().getX());
-		assertTrue(objNode1_bond.getY() + 12 == objNode1.getBounds().getY());
-		assertTrue(fieldNode1_bond.getX() + 3 == fieldNode1.getBounds().getX());
-		assertTrue(fieldNode1_bond.getY() + 12 == fieldNode1.getBounds().getY());
-		assertTrue(noteNode_bond.getX() + 40 == noteNode.getBounds().getX());
-		assertTrue(noteNode_bond.getY() + 20 == noteNode.getBounds().getY());
-		
-//		// move a FieldNode suppoesed to not be allowed 
-//		fieldNode1_bond = fieldNode1.getBounds();
-//		System.out.println(fieldNode1.getBounds());
-//		fieldNode1.translate(-5, 80);
-//		diagram.draw(aGraphics, aGrid);
-//		System.out.println(fieldNode1.getBounds());
-//		System.out.println(fieldNode1.getParent().getClass().getSimpleName());
-//		assertEquals(fieldNode1_bond, fieldNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(60, 111, 56, 16), fieldNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(120, 100, 60, 40), noteNode.getBounds());
 	}
 	
+	/**
+	 * Testing nodes and edges movement.
+	 */
 	@Test
 	public void testNodesAndEdgesMovement()
 	{
@@ -244,22 +227,21 @@ public class TestUsageScenariosObjectDiagram
 		diagram.addNode(objNode2, new Point2D.Double(150, 20));
 		diagram.addNode(fieldNode1, new Point2D.Double(20, 40));
 		diagram.addNode(fieldNode2, new Point2D.Double(30, 40));
-		diagram.addNode(noteNode, new Point2D.Double(75, 75));
+		diagram.addNode(noteNode, new Point2D.Double(80, 80));
 		diagram.draw(aGraphics, aGrid);	
-		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
-		diagram.addEdge(assoEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		diagram.addEdge(edge1, new Point2D.Double(60, 80), new Point2D.Double(20, 20));
-		diagram.addEdge(edge2, new Point2D.Double(60, 110), new Point2D.Double(150, 20));
+		System.out.println(fieldNode1.getBounds());
+		System.out.println(fieldNode2.getBounds());
 
+		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
+		diagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
+		diagram.addEdge(edge1, new Point2D.Double(60, 100), new Point2D.Double(20, 20));
+		diagram.addEdge(edge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
+		System.out.println(diagram.getEdges().size());
 		aPanel.selectAll();
 
-		Rectangle2D objNode1_bond = objNode1.getBounds();
-		Rectangle2D objNode2_bond = objNode2.getBounds();
-		Rectangle2D fieldNode1_bond = fieldNode1.getBounds();
-		Rectangle2D noteNode_bond = noteNode.getBounds();
 		Rectangle2D edge1_bond = edge1.getBounds();
 		Rectangle2D edge2_bond = edge2.getBounds();
-		Rectangle2D assoEdge_bond = assoEdge1.getBounds();
+		Rectangle2D collaborationEdge1Bond = collaborationEdge1.getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -268,21 +250,19 @@ public class TestUsageScenariosObjectDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertTrue(objNode1_bond.getX() + 26 == objNode1.getBounds().getX());
-		assertTrue(objNode2_bond.getY() + 37 == objNode2.getBounds().getY());
-		assertTrue(fieldNode1_bond.getX() + 26 == fieldNode1.getBounds().getX());
-		assertTrue(fieldNode1_bond.getY() + 37 == fieldNode1.getBounds().getY());
-		assertTrue(noteNode_bond.getX() + 26 == noteNode.getBounds().getX());
-		assertTrue(noteNode_bond.getY() + 37 == noteNode.getBounds().getY());
+		assertEquals(new Rectangle2D.Double(46, 57, 100, 120), objNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(83, 135, 56, 16), fieldNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(106, 117, 60, 40), noteNode.getBounds());
+		// edges are redrawn accordingly
 		assertEquals(fieldNode1, edge1.getStart());
 		assertEquals(objNode1, edge1.getEnd());
 		assertEquals(fieldNode2, edge2.getStart());
 		assertEquals(objNode2, edge2.getEnd());
-		assertEquals(objNode1, assoEdge1.getStart());
-		assertEquals(objNode2, assoEdge1.getEnd());
+		assertEquals(objNode1, collaborationEdge1.getStart());
+		assertEquals(objNode2, collaborationEdge1.getEnd());
 		assertFalse(edge1_bond == edge1.getBounds());
 		assertFalse(edge2_bond == edge2.getBounds());
-		assertFalse(assoEdge_bond == assoEdge1.getBounds());
+		assertFalse(collaborationEdge1Bond == collaborationEdge1.getBounds());
 		
 		edge1_bond = edge1.getBounds();
 		edge2_bond = edge2.getBounds();
@@ -293,6 +273,7 @@ public class TestUsageScenariosObjectDiagram
 	
 	/**
 	 * Below are methods testing deletion and undo feature for object diagragm.
+	 * 
 	 * 
 	 * 
 	 * Testing delete an ObjectNode and NoteNode
