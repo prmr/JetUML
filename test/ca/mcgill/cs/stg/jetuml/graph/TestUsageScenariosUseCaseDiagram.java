@@ -72,7 +72,7 @@ public class TestUsageScenariosUseCaseDiagram
 	 * Testing create a Use Case diagram.
 	 */
 	@Test
-	public void testCreateUsageDiagram()
+	public void testCreateUseCaseDiagram()
 	{
 		// create an ActorNode
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
@@ -359,7 +359,7 @@ public class TestUsageScenariosUseCaseDiagram
 	}
 	
 	/**
-	 * Below are methods testing copy and paste feature for Use Case Diagram
+	 * Below are methods testing copy and paste feature for Use Case Diagram.
 	 * 
 	 * 
 	 * 
@@ -382,7 +382,7 @@ public class TestUsageScenariosUseCaseDiagram
 	
 	/**
 	 * 
-	 * Testing cut a State Node
+	 * Testing cut a Node.
 	 */
 	@Test
 	public void testCutNode()
