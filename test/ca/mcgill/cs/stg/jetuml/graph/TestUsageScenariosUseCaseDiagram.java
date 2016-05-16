@@ -2,7 +2,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -12,7 +11,6 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
@@ -72,7 +70,7 @@ public class TestUsageScenariosUseCaseDiagram
 	 * Testing create a Use Case diagram.
 	 */
 	@Test
-	public void testCreateUsageDiagram()
+	public void testCreateUseCaseDiagram()
 	{
 		// create an ActorNode
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
@@ -359,7 +357,7 @@ public class TestUsageScenariosUseCaseDiagram
 	}
 	
 	/**
-	 * Below are methods testing copy and paste feature for Use Case Diagram
+	 * Below are methods testing copy and paste feature for Use Case Diagram.
 	 * 
 	 * 
 	 * 
@@ -382,7 +380,7 @@ public class TestUsageScenariosUseCaseDiagram
 	
 	/**
 	 * 
-	 * Testing cut a State Node
+	 * Testing cut a Node.
 	 */
 	@Test
 	public void testCutNode()
