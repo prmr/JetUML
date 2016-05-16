@@ -190,17 +190,17 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		
 		NoteNode noteNode = new NoteNode();
-		NoteEdge edge1 = new NoteEdge();
-		NoteEdge edge2 = new NoteEdge();
-		NoteEdge edge3 = new NoteEdge();
-		NoteEdge edge4 = new NoteEdge();
-		NoteEdge edge5 = new NoteEdge();
+		NoteEdge noteEdge1 = new NoteEdge();
+		NoteEdge noteEdge2 = new NoteEdge();
+		NoteEdge noteEdge3 = new NoteEdge();
+		NoteEdge noteEdge4 = new NoteEdge();
+		NoteEdge noteEdge5 = new NoteEdge();
 		aDiagram.addNode(noteNode, new Point2D.Double(55, 55));
-		aDiagram.addEdge(edge1, new Point2D.Double(60, 60), new Point2D.Double(87,65));
-		aDiagram.addEdge(edge2, new Point2D.Double(62, 68), new Point2D.Double(47,75));
-		aDiagram.addEdge(edge3, new Point2D.Double(63, 69), new Point2D.Double(47,35));
-		aDiagram.addEdge(edge4, new Point2D.Double(64, 70), new Point2D.Double(17,5));
-		aDiagram.addEdge(edge5, new Point2D.Double(65, 60), new Point2D.Double(67,265));
+		aDiagram.addEdge(noteEdge1, new Point2D.Double(60, 60), new Point2D.Double(87,65));
+		aDiagram.addEdge(noteEdge2, new Point2D.Double(62, 68), new Point2D.Double(47,75));
+		aDiagram.addEdge(noteEdge3, new Point2D.Double(63, 69), new Point2D.Double(47,35));
+		aDiagram.addEdge(noteEdge4, new Point2D.Double(64, 70), new Point2D.Double(17,5));
+		aDiagram.addEdge(noteEdge5, new Point2D.Double(65, 60), new Point2D.Double(67,265));
 		
 		assertEquals(6, aDiagram.getEdges().size());
 		assertEquals(8, aDiagram.getRootNodes().size());
@@ -361,7 +361,7 @@ public class TestUsageScenariosSequenceDiagram
 	public void testDeleteSignleParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
-		Rectangle2D paraNode1Bond = aParameterNode1.getBounds();
+		Rectangle2D parameterNode1Bond = aParameterNode1.getBounds();
 		aPanel.getSelectionList().add(aParameterNode1);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
@@ -369,7 +369,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(0, aDiagram.getRootNodes().size());
 		aPanel.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(paraNode1Bond, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).getBounds());
+		assertEquals(parameterNode1Bond, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).getBounds());
 	}
 	
 	/**
@@ -402,15 +402,15 @@ public class TestUsageScenariosSequenceDiagram
 	public void testDeleteParameterNodeInCallSequence()
 	{
 		// set up 
-		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
+		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
-		aDiagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		aDiagram.addNode(newParameterNode, new Point2D.Double(210, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
 		aDiagram.addEdge(aCallEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
 		aDiagram.draw(aGraphics, aGrid);
-		ReturnEdge reEdge1 = new ReturnEdge();
-		aDiagram.addEdge(reEdge1, new Point2D.Double(145,90), new Point2D.Double(45, 90));		
+		ReturnEdge returnEdge1 = new ReturnEdge();
+		aDiagram.addEdge(returnEdge1, new Point2D.Double(145,90), new Point2D.Double(45, 90));		
 		CallEdge callEdge2 = new CallEdge();
 		aDiagram.addEdge(callEdge2, new Point2D.Double(45, 75), new Point2D.Double(210,75));
 		aDiagram.draw(aGraphics, aGrid);
@@ -419,7 +419,7 @@ public class TestUsageScenariosSequenceDiagram
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(0, newParaNode.getChildren().size());
+		assertEquals(0, newParameterNode.getChildren().size());
 		/*
 		 *  since a return edge is added, the call node will still remain there
 		 *  however the edges are still removed
@@ -430,7 +430,7 @@ public class TestUsageScenariosSequenceDiagram
 		aPanel.undo();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals(1, newParaNode.getChildren().size());
+		assertEquals(1, newParameterNode.getChildren().size());
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(3, aDiagram.getEdges().size());
 	}
@@ -442,13 +442,13 @@ public class TestUsageScenariosSequenceDiagram
 	public void testDeleteMiddleCallNode()
 	{
 		// set up 
-		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
-		CallNode midNode = new CallNode();
+		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
+		CallNode middleCallNode = new CallNode();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
-		aDiagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		aDiagram.addNode(newParameterNode, new Point2D.Double(210, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
-		aDiagram.addNode(midNode, new Point2D.Double(115, 75));
+		aDiagram.addNode(middleCallNode, new Point2D.Double(115, 75));
 		aDiagram.addNode(new CallNode(), new Point2D.Double(215, 75));
 		
 		aDiagram.addEdge(aCallEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
@@ -456,20 +456,20 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new ReturnEdge(), new Point2D.Double(118, 75), new Point2D.Double(18,75));
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
 		
-		aPanel.getSelectionList().add(midNode);
+		aPanel.getSelectionList().add(middleCallNode);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(0, aParameterNode2.getChildren().size()); 
-		assertEquals(0, newParaNode.getChildren().size()); 
+		assertEquals(0, newParameterNode.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		aPanel.undo();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(1, aParameterNode2.getChildren().size()); 
-		assertEquals(2, newParaNode.getChildren().size()); 
+		assertEquals(2, newParameterNode.getChildren().size()); 
 		assertEquals(4, aDiagram.getEdges().size());
 	}
 	
@@ -479,12 +479,12 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testDeleteReturnEdge()
 	{
-		CallNode midNode = new CallNode();
+		CallNode middleCallNode = new CallNode();
 		ReturnEdge returnEdge = new ReturnEdge();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
-		aDiagram.addNode(midNode, new Point2D.Double(115, 75));
+		aDiagram.addNode(middleCallNode, new Point2D.Double(115, 75));
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(18, 75), new Point2D.Double(115,75));
 		aDiagram.addEdge(returnEdge, new Point2D.Double(118, 75), new Point2D.Double(18,75));
 		
@@ -505,18 +505,18 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testDeleteCallNodeWithIncomingAndReturnEdge()
 	{
-		CallNode midNode = new CallNode();
+		CallNode middleCallNode = new CallNode();
 		ReturnEdge returnEdge = new ReturnEdge();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
-		aDiagram.addNode(midNode, new Point2D.Double(115, 75));
+		aDiagram.addNode(middleCallNode, new Point2D.Double(115, 75));
 		aDiagram.addEdge(aCallEdge1, new Point2D.Double(118, 75), new Point2D.Double(215,75));
 		aDiagram.addEdge(returnEdge, new Point2D.Double(118, 75), new Point2D.Double(18,75));
 		
 		aPanel.getSelectionList().add(returnEdge);
 		aPanel.getSelectionList().add(aCallEdge1);
-		aPanel.getSelectionList().add(midNode);
+		aPanel.getSelectionList().add(middleCallNode);
 
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
@@ -597,13 +597,13 @@ public class TestUsageScenariosSequenceDiagram
 	public void testCopyPasteSequenceDiagram()
 	{
 		// test case set up 
-		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
-		CallNode midNode = new CallNode();
+		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
+		CallNode middleCallNode = new CallNode();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
-		aDiagram.addNode(newParaNode, new Point2D.Double(210, 0));
+		aDiagram.addNode(newParameterNode, new Point2D.Double(210, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
-		aDiagram.addNode(midNode, new Point2D.Double(115, 75));
+		aDiagram.addNode(middleCallNode, new Point2D.Double(115, 75));
 		aDiagram.addNode(new CallNode(), new Point2D.Double(215, 75));
 		aDiagram.addEdge(aCallEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(215,75));
@@ -627,22 +627,22 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		// set up 
 		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
-		CallNode midNode = new CallNode();
-		CallNode endNode = new CallNode();
+		CallNode middleCallNode = new CallNode();
+		CallNode endCallNode = new CallNode();
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aParameterNode2, new Point2D.Double(110, 0));
 		aDiagram.addNode(newParaNode, new Point2D.Double(210, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
-		aDiagram.addNode(midNode, new Point2D.Double(115, 75));
-		aDiagram.addNode(endNode, new Point2D.Double(215, 75));
+		aDiagram.addNode(middleCallNode, new Point2D.Double(115, 75));
+		aDiagram.addNode(endCallNode, new Point2D.Double(215, 75));
 		aDiagram.addEdge(aCallEdge1, new Point2D.Double(18, 75), new Point2D.Double(115,75));
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(215,75));
 		aDiagram.addEdge(new ReturnEdge(), new Point2D.Double(118, 75), new Point2D.Double(18,75));
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
 		
 		aList.add(aCallNode1);
-		aList.add(midNode);
-		aList.add(endNode);
+		aList.add(middleCallNode);
+		aList.add(endCallNode);
 		for(Edge edge: aDiagram.getEdges())
 		{
 			aList.add(edge);
