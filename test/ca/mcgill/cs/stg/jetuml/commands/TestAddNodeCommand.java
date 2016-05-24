@@ -19,7 +19,7 @@ public class TestAddNodeCommand {
     private Field aNeedsLayout;
     private Node aNode;
     private ArrayList<Node> aRootNodes;
-    private DeleteNodeCommand aDeleteNodeCommand;
+    private AddNodeCommand aAddNodeCommand;
     private boolean hasExecuted = false;
 
     @Before
@@ -30,15 +30,14 @@ public class TestAddNodeCommand {
         aGraph.addNode(aNode , new Point2D.Double());
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
-        aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aNode);  
+        aAddNodeCommand = new AddNodeCommand(aGraph, aNode);  
     }
 
     @Test
     public void testExecute() {
-        aDeleteNodeCommand.execute();
-        hasExecuted = true;
         int numOfNodes = aRootNodes.size();
-        aDeleteNodeCommand.undo();
+        aAddNodeCommand.execute();
+        hasExecuted = true;
         assertEquals(numOfNodes+1, aRootNodes.size());
         try {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
@@ -53,8 +52,9 @@ public class TestAddNodeCommand {
     public void testUndo() {
         if (!hasExecuted)
         {
-            aDeleteNodeCommand.execute();
+            aAddNodeCommand.execute();
         }
+        aAddNodeCommand.undo();
         assertTrue(aGraph.contains(aNode));
         try {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
