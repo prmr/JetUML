@@ -17,6 +17,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class TestAddNodeCommand {
     private Graph aGraph;
     private Field aNeedsLayout;
+    private Field aNodesToBeRemoved;
     private Node aNode;
     private ArrayList<Node> aRootNodes;
     private AddNodeCommand aAddNodeCommand;
@@ -30,6 +31,8 @@ public class TestAddNodeCommand {
         aGraph.addNode(aNode , new Point2D.Double());
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
+        aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
+        aNodesToBeRemoved.setAccessible(true);
         aAddNodeCommand = new AddNodeCommand(aGraph, aNode);  
     }
 
@@ -55,7 +58,14 @@ public class TestAddNodeCommand {
             aAddNodeCommand.execute();
         }
         aAddNodeCommand.undo();
-        assertTrue(aGraph.contains(aNode));
+        try {
+            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>)(aNodesToBeRemoved.get(aGraph));
+            assertTrue(aListNodesToBeRemoved.contains((Node)aNode));
+        } catch (IllegalArgumentException e1) {
+            e1.printStackTrace();
+        } catch (IllegalAccessException e1) {
+            e1.printStackTrace();
+        }
         try {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
         } catch (IllegalArgumentException e) {
