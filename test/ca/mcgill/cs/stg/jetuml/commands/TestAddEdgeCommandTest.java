@@ -48,6 +48,7 @@ public class TestAddEdgeCommandTest {
         }
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testUndo(){
         if (!hasExecuted)
