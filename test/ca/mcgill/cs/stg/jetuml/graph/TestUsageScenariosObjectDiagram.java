@@ -2,7 +2,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -236,9 +235,9 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
 		aPanel.selectAll();
 
-		Rectangle2D referenceEdge1Bond = aReferenceEdge1.getBounds();
-		Rectangle2D referenceEdge2Bond = aReferenceEdge2.getBounds();
-		Rectangle2D collaborationEdge1Bond = collaborationEdge1.getBounds();
+		Rectangle2D referenceEdge1Bounds = aReferenceEdge1.getBounds();
+		Rectangle2D referenceEdge2Bounds = aReferenceEdge2.getBounds();
+		Rectangle2D collaborationEdge1Bounds = collaborationEdge1.getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -257,15 +256,15 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		assertEquals(aObjectNode1, collaborationEdge1.getStart());
 		assertEquals(aObjectNode2, collaborationEdge1.getEnd());
-		assertFalse(referenceEdge1Bond == aReferenceEdge1.getBounds());
-		assertFalse(referenceEdge2Bond == aReferenceEdge2.getBounds());
-		assertFalse(collaborationEdge1Bond == collaborationEdge1.getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.getBounds());
+		assertFalse(collaborationEdge1Bounds == collaborationEdge1.getBounds());
 		
-		referenceEdge1Bond = aReferenceEdge1.getBounds();
-		referenceEdge2Bond = aReferenceEdge2.getBounds();
+		referenceEdge1Bounds = aReferenceEdge1.getBounds();
+		referenceEdge2Bounds = aReferenceEdge2.getBounds();
 		aObjectNode1.translate(-5, -5);
-		assertFalse(referenceEdge1Bond == aReferenceEdge1.getBounds());
-		assertFalse(referenceEdge2Bond == aReferenceEdge2.getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.getBounds());
 	}
 	
 	/**
@@ -514,7 +513,4 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getBounds());
 	}
-	
-	
-	
 }
