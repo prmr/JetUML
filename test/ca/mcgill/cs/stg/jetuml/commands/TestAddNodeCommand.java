@@ -14,17 +14,16 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class TestDeleteNodeCommand {
+public class TestAddNodeCommand {
     private Graph aGraph;
     private Field aNeedsLayout;
     private Node aNode;
     private ArrayList<Node> aRootNodes;
     private DeleteNodeCommand aDeleteNodeCommand;
     private boolean hasExecuted = false;
-    
+
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         aGraph = new ClassDiagramGraph();
         aRootNodes = (ArrayList<Node>) aGraph.getRootNodes();
         aNode = new ClassNode();
@@ -32,29 +31,12 @@ public class TestDeleteNodeCommand {
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
         aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aNode);  
-        
     }
-    
+
     @Test
     public void testExecute() {
         aDeleteNodeCommand.execute();
         hasExecuted = true;
-        assertTrue(aGraph.contains(aNode));
-        try {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } 
-    }
-    
-    @Test
-    public void testUndo() {
-        if (!hasExecuted)
-        {
-            aDeleteNodeCommand.execute();
-        }
         int numOfNodes = aRootNodes.size();
         aDeleteNodeCommand.undo();
         assertEquals(numOfNodes+1, aRootNodes.size());
@@ -66,4 +48,21 @@ public class TestDeleteNodeCommand {
             e.printStackTrace();
         }
     }
+    
+    @Test
+    public void testUndo() {
+        if (!hasExecuted)
+        {
+            aDeleteNodeCommand.execute();
+        }
+        assertTrue(aGraph.contains(aNode));
+        try {
+            assertTrue((boolean)aNeedsLayout.get(aGraph));
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } 
+    }
+
 }
