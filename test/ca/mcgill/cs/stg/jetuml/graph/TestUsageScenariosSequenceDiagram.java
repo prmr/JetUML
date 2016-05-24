@@ -25,7 +25,6 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  *
  */
 
-
 public class TestUsageScenariosSequenceDiagram 
 {
 	private SequenceDiagramGraph aDiagram;
@@ -361,7 +360,7 @@ public class TestUsageScenariosSequenceDiagram
 	public void testDeleteSignleParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
-		Rectangle2D parameterNode1Bond = aParameterNode1.getBounds();
+		Rectangle2D parameterNode1Bounds = aParameterNode1.getBounds();
 		aPanel.getSelectionList().add(aParameterNode1);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
@@ -369,7 +368,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(0, aDiagram.getRootNodes().size());
 		aPanel.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(parameterNode1Bond, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).getBounds());
+		assertEquals(parameterNode1Bounds, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).getBounds());
 	}
 	
 	/**
@@ -382,7 +381,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
 		aDiagram.draw(aGraphics, aGrid);
 
-		Rectangle2D callNode1Bond = aCallNode1.getBounds();
+		Rectangle2D callNode1Bounds = aCallNode1.getBounds();
 		aPanel.getSelectionList().add(aCallNode1);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics, aGrid);
@@ -392,7 +391,7 @@ public class TestUsageScenariosSequenceDiagram
 		
 		aPanel.undo();
 		assertEquals(1, aParameterNode1.getChildren().size());
-		assertEquals(callNode1Bond, ((CallNode) (aParameterNode1.getChildren().toArray()[0])).getBounds());
+		assertEquals(callNode1Bounds, ((CallNode) (aParameterNode1.getChildren().toArray()[0])).getBounds());
 	}
 	
 	/**
