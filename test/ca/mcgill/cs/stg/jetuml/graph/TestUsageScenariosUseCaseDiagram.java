@@ -219,9 +219,9 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(new Rectangle2D.Double(126, 137, 60, 40), noteNode.getBounds());
 		
 		// move a node connect to another node, edge should redraw accordingly,
-		Rectangle2D associationEdgeBond = aAssociationEdge.getBounds();
+		Rectangle2D associationEdgeBounds = aAssociationEdge.getBounds();
 		aActorNode1.translate(10, 20);
-		assertFalse(associationEdgeBond == aAssociationEdge.getBounds());
+		assertFalse(associationEdgeBounds == aAssociationEdge.getBounds());
 		assertEquals(aActorNode1, aAssociationEdge.getStart());
 		assertEquals(aActorNode2, aAssociationEdge.getEnd());
 	}
