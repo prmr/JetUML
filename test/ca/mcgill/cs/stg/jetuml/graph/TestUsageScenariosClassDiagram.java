@@ -177,7 +177,7 @@ public class TestUsageScenariosClassDiagram
 	 * Testing Single Node Movement.
 	 */
 	@Test
-	public void testSignelNodeMovement()
+	public void testSingleNodeMovement()
 	{
 		
 		aDiagram.addNode(aClassNode, new Point2D.Double(5, 5));
@@ -215,7 +215,7 @@ public class TestUsageScenariosClassDiagram
 		aList.add(aClassNode);
 		aList.add(aAggregationEdge);
 		aList.add(aInterfaceNode);
-		Rectangle2D aggregationEdgeBond = aAggregationEdge.getBounds();
+		Rectangle2D aggregationEdgeBounds = aAggregationEdge.getBounds();
 		for(GraphElement element: aList)
 		{
 			if(element instanceof Node)
@@ -224,8 +224,8 @@ public class TestUsageScenariosClassDiagram
 			}
 		}
 		assertEquals(new Rectangle2D.Double(15, 15, 100, 60), aClassNode.getBounds());
-		assertTrue(54 == aInterfaceNode.getBounds().getY());
-		assertFalse(aggregationEdgeBond == aAggregationEdge.getBounds());
+		assertEquals(new Rectangle2D.Double(54, 54, 100, 60), aInterfaceNode.getBounds());
+		assertFalse(aggregationEdgeBounds == aAggregationEdge.getBounds());
 		assertTrue(aClassNode == aAggregationEdge.getStart());
 		assertTrue(aInterfaceNode == aAggregationEdge.getEnd());
 	}
@@ -239,7 +239,7 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram.addNode(aClassNode, new Point2D.Double(5, 7));
 		aDiagram.addEdge(aAggregationEdge, new Point2D.Double(8, 10), new Point2D.Double(12, 9));
-		Rectangle2D oldAggregationEdgeBond = aAggregationEdge.getBounds();
+		Rectangle2D oldAggregationEdgeBounds = aAggregationEdge.getBounds();
 		aList.add(aClassNode);
 		for(GraphElement element: aList)
 		{
@@ -251,7 +251,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(new Rectangle2D.Double(15, 17, 100, 60), aClassNode.getBounds());
 		assertEquals(aClassNode, aAggregationEdge.getStart());
 		assertEquals(aClassNode, aAggregationEdge.getEnd());
-		assertFalse(oldAggregationEdgeBond == aAggregationEdge.getBounds());
+		assertFalse(oldAggregationEdgeBounds == aAggregationEdge.getBounds());
 	}
 	
 	/**
@@ -268,23 +268,22 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aAssociationEdge, new Point2D.Double(47, 49), new Point2D.Double(9, 17));
 		aDiagram.addEdge(aDependencyEdge, new Point2D.Double(90, 93), new Point2D.Double(44, 49));
 		
-		Rectangle2D edge1Bond = aAggregationEdge.getBounds();
-		Rectangle2D edge3Bond = aDependencyEdge.getBounds();
-		Rectangle2D packageNodeBonds = aPackageNode.getBounds();
-		Rectangle2D interFaceNodeBonds = aInterfaceNode.getBounds();
+		Rectangle2D edge1Bounds = aAggregationEdge.getBounds();
+		Rectangle2D edge3Bounds = aDependencyEdge.getBounds();
+		Rectangle2D packageNodeBounds = aPackageNode.getBounds();
+		Rectangle2D interFaceNodeBounds = aInterfaceNode.getBounds();
 
 		aClassNode.translate(20, 20);
 		assertEquals(aClassNode, aAggregationEdge.getStart());
 		assertEquals(aInterfaceNode, aAggregationEdge.getEnd());
-		assertFalse(edge1Bond == aAggregationEdge.getBounds());
-		assertEquals(interFaceNodeBonds, aInterfaceNode.getBounds());
-
+		assertFalse(edge1Bounds == aAggregationEdge.getBounds());
+		assertEquals(interFaceNodeBounds, aInterfaceNode.getBounds());
 		
 		aInterfaceNode.translate(-19, 45);
 		assertEquals(aPackageNode, aDependencyEdge.getStart());
 		assertEquals(aInterfaceNode, aDependencyEdge.getEnd());
-		assertFalse(edge3Bond == aDependencyEdge.getBounds());
-		assertEquals(packageNodeBonds, aPackageNode.getBounds());
+		assertFalse(edge3Bounds == aDependencyEdge.getBounds());
+		assertEquals(packageNodeBounds, aPackageNode.getBounds());
 	}
 	
 	/**
@@ -296,8 +295,8 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		aDiagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		aDiagram.draw(aGraphics, new Grid());
-		Rectangle2D classNodeBound = aClassNode.getBounds();
-		Rectangle2D interfaceNodeBound = aInterfaceNode.getBounds();
+		Rectangle2D classNodeBounds = aClassNode.getBounds();
+		Rectangle2D interfaceNodeBounds = aInterfaceNode.getBounds();
 		
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
@@ -315,10 +314,10 @@ public class TestUsageScenariosClassDiagram
 		
 		aPanel.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(interfaceNodeBound, ((Node) (aDiagram.getRootNodes().toArray()[0])).getBounds());
+		assertEquals(interfaceNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[0])).getBounds());
 		aPanel.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(classNodeBound, ((Node) (aDiagram.getRootNodes().toArray()[1])).getBounds());
+		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).getBounds());
 	}
 	
 	/**
@@ -331,7 +330,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		aDiagram.addEdge(aAggregationEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
 		aDiagram.draw(aGraphics, new Grid());
-		Rectangle2D edgeBond = aAggregationEdge.getBounds();
+		Rectangle2D edgeBounds = aAggregationEdge.getBounds();
 		
 		// test deletion
 		aList.set(aAggregationEdge);
@@ -344,7 +343,7 @@ public class TestUsageScenariosClassDiagram
 		// test undo
 		aPanel.undo();
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(edgeBond, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
+		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
 	}
 	
 	/**
@@ -357,8 +356,8 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		aDiagram.addEdge(aAggregationEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
 		aDiagram.draw(aGraphics, new Grid());
-		Rectangle2D edgeBond = aAggregationEdge.getBounds();
-		Rectangle2D classNodeBond = aClassNode.getBounds();
+		Rectangle2D edgeBounds = aAggregationEdge.getBounds();
+		Rectangle2D classNodeBounds = aClassNode.getBounds();
 		
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
@@ -372,8 +371,8 @@ public class TestUsageScenariosClassDiagram
 		aPanel.undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(edgeBond, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
-		assertEquals(classNodeBond, ((Node) (aDiagram.getRootNodes().toArray()[1])).getBounds());
+		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
+		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).getBounds());
 	}
 	
 	/**
@@ -386,9 +385,9 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aInterfaceNode, new Point2D.Double(44, 44));
 		aDiagram.addEdge(aAggregationEdge, new Point2D.Double(8, 10), new Point2D.Double(45, 48));
 		aDiagram.draw(aGraphics, new Grid());
-		Rectangle2D edgeBond = aAggregationEdge.getBounds();
-		Rectangle2D classNodeBond = aClassNode.getBounds();
-		Rectangle2D interfaceNodeBond = aInterfaceNode.getBounds();
+		Rectangle2D edgeBounds = aAggregationEdge.getBounds();
+		Rectangle2D classNodeBounds = aClassNode.getBounds();
+		Rectangle2D interfaceNodeBounds = aInterfaceNode.getBounds();
 
 		aPanel.selectAll();
 		aPanel.removeSelected();
@@ -398,16 +397,16 @@ public class TestUsageScenariosClassDiagram
 		aPanel.undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(edgeBond, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
+		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).getBounds());
 		for(Node node: aDiagram.getRootNodes())
 		{
 			if(node instanceof ClassNode)
 			{
-				assertEquals(classNodeBond,node.getBounds());
+				assertEquals(classNodeBounds,node.getBounds());
 			}
 			else
 			{
-				assertEquals(interfaceNodeBond,node.getBounds());
+				assertEquals(interfaceNodeBounds,node.getBounds());
 			}
 		}
 	}
@@ -670,7 +669,10 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(new Rectangle2D.Double(5, -15, 210, 90), 
 				((Node) aDiagram.getRootNodes().toArray()[0]).getBounds());
 	}
-
+	
+	/**
+	 * Testing copy and paste inside PackageNode
+	 */
 	@Test
 	public void testCopyNodesAndEdgesInsidePackageNode()
 	{
@@ -688,13 +690,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		System.out.println(((Node) aDiagram.getRootNodes().toArray()[1]).getBounds());
 		assertEquals(new Rectangle2D.Double(5, -15, 210, 90), 
 				((Node) aDiagram.getRootNodes().toArray()[1]).getBounds());
-	}
-	
-	
-	
-	
-		
+	}	
 }
