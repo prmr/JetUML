@@ -193,7 +193,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge2, new Point2D.Double(50, 20), new Point2D.Double(50, 200));
 		aDiagram.addEdge(noteEdge3, new Point2D.Double(250, 20), new Point2D.Double(50, 200));
 		assertEquals(3, aDiagram.getEdges().size());
-		// invalid operations, cannot connecte any StateNode with NoteEdges
+		// invalid operations, cannot connect any StateNode with NoteEdges
 		aDiagram.addEdge(noteEdge4, new Point2D.Double(20, 20), new Point2D.Double(-20, 200));
 		aDiagram.addEdge(noteEdge5, new Point2D.Double(150, 20), new Point2D.Double(-50, 200));
 		aDiagram.addEdge(new NoteEdge(), new Point2D.Double(20, 20), new Point2D.Double(50, 49));
@@ -250,9 +250,9 @@ public class TestUsageScenariosStateDiagram
 		aPanel.getSelectionList().add(aTransitionEdge2);
 		aPanel.getSelectionList().add(aTransitionEdge3);
 
-		Rectangle2D aTransitionEdge1Bond = aTransitionEdge1.getBounds();
-		Rectangle2D aTransitionEdge2Bond = aTransitionEdge2.getBounds();
-		Rectangle2D aTransitionEdge3Bond = aTransitionEdge3.getBounds();
+		Rectangle2D aTransitionEdge1Bounds = aTransitionEdge1.getBounds();
+		Rectangle2D aTransitionEdge2Bounds = aTransitionEdge2.getBounds();
+		Rectangle2D aTransitionEdge3Bounds = aTransitionEdge3.getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -271,15 +271,15 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(aStateNode2, aTransitionEdge2.getEnd());
 		/*
 		 *  if either start or end node is moved,
-		 *  the edge bond would be changed
+		 *  the edge bounds would be changed
 		 */
-		assertFalse(aTransitionEdge1Bond == aTransitionEdge1.getBounds());
-		assertFalse(aTransitionEdge2Bond == aTransitionEdge2.getBounds());
+		assertFalse(aTransitionEdge1Bounds == aTransitionEdge1.getBounds());
+		assertFalse(aTransitionEdge2Bounds == aTransitionEdge2.getBounds());
 		/*
 		 *  if both the start and end node are not moved,
-		 *  the edge should have the same bond
+		 *  the edge should have the same bounds
 		 */
-		assertEquals(aTransitionEdge3Bond, aTransitionEdge3.getBounds());
+		assertEquals(aTransitionEdge3Bounds, aTransitionEdge3.getBounds());
 	}
 	
 	/**
