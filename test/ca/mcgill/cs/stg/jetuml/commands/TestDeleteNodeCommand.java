@@ -14,6 +14,10 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
+/*
+ * Note that there is code duplication between removeNode(), insertNode() and layout(). 
+ * The code sets aNeedsLayout to be true twice.
+ */
 public class TestDeleteNodeCommand {
     private Graph aGraph;
     private Field aNeedsLayout;
