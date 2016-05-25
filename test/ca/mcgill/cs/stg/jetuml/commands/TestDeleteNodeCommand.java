@@ -40,12 +40,13 @@ public class TestDeleteNodeCommand
     public void testExecute() 
     {
         aDeleteNodeCommand.execute();
+        ArrayList<Node> aListNodesToBeRemoved;
         try 
         {
-            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
             assertTrue(aListNodesToBeRemoved.contains((Node) aNode));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
         {
             fail();
         }
@@ -53,7 +54,7 @@ public class TestDeleteNodeCommand
         {
             assertTrue((boolean) aNeedsLayout.get(aGraph));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
         }
@@ -63,14 +64,22 @@ public class TestDeleteNodeCommand
     public void testUndo() 
     {
         aDeleteNodeCommand.execute();
-        int numOfNodes = aGraph.getRootNodes().size();
+        try 
+        {
+            aNeedsLayout.set(aGraph, false);
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
+        assertEquals(1, aGraph.getRootNodes().size());
         aDeleteNodeCommand.undo();
-        assertEquals(numOfNodes + 1, aGraph.getRootNodes().size());
+        assertEquals(2, aGraph.getRootNodes().size());
         try 
         {
             assertTrue((boolean) aNeedsLayout.get(aGraph));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
         }
