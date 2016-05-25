@@ -3,6 +3,7 @@ package ca.mcgill.cs.stg.jetuml.commands;
 import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -19,75 +20,101 @@ import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class TestComponudCommand {
+public class TestComponudCommand 
+{
 
     private Graph aGraph;
-    private ArrayList<Node> aRootNodes;
     private Field aNeedsLayout;
-    private CompoundCommand aCompoundCommand;
-    private Node aNodeA;
-    private Node aNodeB;
-    private Edge aEdgeA;
-    private Edge aEdgeB;
+    private Node aNode;
+    private Edge aEdge;
+    private Field aNodesToBeRemoved;
+    private Field aEdgesToBeRemoved;
     private AddNodeCommand aAddNodeCommand;
-    private DeleteNodeCommand aDeleteNodeCommand;
-    private boolean hasExecuted = false;
+    private AddEdgeCommand aAddEdgeCommand;
+    private MoveCommand aMoveCommand;
+    private CompoundCommand aCompoundCommand;
     
     @Before
     public void setUp() throws Exception
     {
         aGraph = new ClassDiagramGraph();
-         
-        aNodeA = new ClassNode();
-//        aNodeB = new ActorNode();
-        aEdgeA = new CallEdge();
-        aEdgeB = new AggregationEdge();
-        aAddNodeCommand = new AddNodeCommand(aGraph, aNodeA);
-        aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aNodeA);  
-        
-        
-        
-        aRootNodes = (ArrayList<Node>) aGraph.getRootNodes();
+        aNode = new ClassNode();
+        aEdge = new CallEdge();
+        aAddNodeCommand = new AddNodeCommand(aGraph, aNode);
+        aAddEdgeCommand = new AddEdgeCommand(aGraph, aEdge);
+        aMoveCommand = new MoveCommand(aGraph, aNode, 5, 5);
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
+        aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
+        aNodesToBeRemoved.setAccessible(true);
+        aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
+        aEdgesToBeRemoved.setAccessible(true);
         aCompoundCommand = new CompoundCommand();
-        
-
-        aGraph.addNode(aNodeA , new Point2D.Double());
-        aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aNodeA);  
-        
-        aCompoundCommand.add(aDeleteNodeCommand);
+        aCompoundCommand.add(aAddNodeCommand);
+        aCompoundCommand.add(aAddEdgeCommand);
+        aCompoundCommand.add(aMoveCommand);
     }
 
     @Test
-    public void testExecute() {
-        aCompoundCommand.execute();
-        hasExecuted = true;
-        assertTrue(aGraph.contains(aNodeA));
-        try {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+    public void testExecute() 
+    {
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        aCompoundCommand.execute();        
+        assertTrue(aGraph.getRootNodes().contains(aNode));
+        assertTrue(aGraph.getEdges().contains(aEdge));
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        try 
+        {
+            assertTrue((boolean) aNeedsLayout.get(aGraph));
         } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
+        }
     }
     
+    @SuppressWarnings("unchecked")
     @Test
-    public void testUndo() {
-        if (!hasExecuted)
+    public void testUndo() 
+    {
+
+        aCompoundCommand.execute();
+        try 
         {
-            aCompoundCommand.execute();
+            aNeedsLayout.set(aGraph, false);
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
         }
-        int numOfNodes = aRootNodes.size();
         aCompoundCommand.undo();
-        assertEquals(numOfNodes+1, aRootNodes.size());
-        try {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        ArrayList<Node> aListNodesToBeRemoved;
+        try 
+        {
+            aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertTrue(aListNodesToBeRemoved.contains((Node) aNode));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
+        try 
+        {
+            ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
+            assertTrue(aListEdgesToBeRemoved.contains(aEdge));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
+        try 
+        {
+            assertTrue((boolean) aNeedsLayout.get(aGraph));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
         }
     }
 }
