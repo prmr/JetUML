@@ -17,15 +17,13 @@ public class TestAddEdgeCommandTest {
     private Graph aGraph;
     private Field aNeedsLayout;
     private Field aEdgesToBeRemoved;
-    Edge aEdge;
-    private ArrayList<Edge> aEdges;
+    private Edge aEdge;
     private AddEdgeCommand aAddEdgeCommand;
-    private boolean hasExecuted = false;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception 
+    {
         aGraph = new ClassDiagramGraph();
-        aEdges = (ArrayList<Edge>) aGraph.getEdges();
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
@@ -35,41 +33,50 @@ public class TestAddEdgeCommandTest {
     }
 
     @Test
-    public void testExecute() {
+    public void testExecute() 
+    {
         aAddEdgeCommand.execute();
-        hasExecuted = true;
-        assertTrue(aEdges.contains(aEdge));
-        try {
+        assertTrue(aGraph.getEdges().contains(aEdge));
+        try 
+        {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
         }
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void testUndo(){
-        if (!hasExecuted)
+
+        aAddEdgeCommand.execute();
+        try 
         {
-            aAddEdgeCommand.execute();
+            aNeedsLayout.set(aGraph, false);
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e2) 
+        {
+            fail();
         }
         aAddEdgeCommand.undo();
-        try {
+        try 
+        {
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aEdge));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
         }
-        try {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        try 
+        {
+            assertTrue((boolean) aNeedsLayout.get(aGraph));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
         }
     }
 }
