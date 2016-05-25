@@ -7,7 +7,7 @@
   <fileset name="all" enabled="true" check-config-name="Violetta" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
-  <filter name="FilesFromPackage" enabled="false">
+  <filter name="FilesFromPackage" enabled="true">
     <filter-data value="test"/>
   </filter>
 </fileset-config>
