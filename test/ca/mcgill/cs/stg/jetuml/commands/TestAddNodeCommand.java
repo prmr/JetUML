@@ -2,7 +2,6 @@ package ca.mcgill.cs.stg.jetuml.commands;
 
 import static org.junit.Assert.*;
 
-import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -14,19 +13,18 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class TestAddNodeCommand {
+public class TestAddNodeCommand 
+{
     private Graph aGraph;
     private Field aNeedsLayout;
     private Field aNodesToBeRemoved;
     private Node aNode;
-    private ArrayList<Node> aRootNodes;
     private AddNodeCommand aAddNodeCommand;
-    private boolean hasExecuted = false;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception 
+    {
         aGraph = new ClassDiagramGraph();
-        aRootNodes = (ArrayList<Node>) aGraph.getRootNodes();
         aNode = new ClassNode();
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
@@ -36,41 +34,43 @@ public class TestAddNodeCommand {
     }
 
     @Test
-    public void testExecute() {
-        int numOfNodes = aRootNodes.size();
+    public void testExecute() 
+    {
+        int numOfNodes = aGraph.getRootNodes().size();
         aAddNodeCommand.execute();
-        hasExecuted = true;
-        assertEquals(numOfNodes+1, aRootNodes.size());
-        try {
+        assertEquals(numOfNodes+1, aGraph.getRootNodes().size());
+        try 
+        {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (Exception e) 
+        {
+            fail();
         }
     }
     
+    @SuppressWarnings("unchecked")
     @Test
-    public void testUndo() {
-        if (!hasExecuted)
-        {
-            aAddNodeCommand.execute();
-        }
+    public void testUndo() 
+    {
+        aAddNodeCommand.execute();
         aAddNodeCommand.undo();
-        try {
+        try 
+        {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>)(aNodesToBeRemoved.get(aGraph));
             assertTrue(aListNodesToBeRemoved.contains((Node)aNode));
-        } catch (IllegalArgumentException e1) {
-            e1.printStackTrace();
-        } catch (IllegalAccessException e1) {
-            e1.printStackTrace();
+        } 
+        catch (Exception e) 
+        {
+           fail();
         }
-        try {
+        try 
+        {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (Exception e) 
+        {
+            fail();
         } 
     }
 }
