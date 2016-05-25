@@ -27,7 +27,6 @@ public class TestDeleteNodeCommand
     {
         aGraph = new ClassDiagramGraph();
         aNode = new ClassNode();
-        aGraph.addNode(aNode, new Point2D.Double());
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
@@ -72,9 +71,9 @@ public class TestDeleteNodeCommand
         {
             fail();
         }
-        assertEquals(1, aGraph.getRootNodes().size());
+        assertEquals(0, aGraph.getRootNodes().size());
         aDeleteNodeCommand.undo();
-        assertEquals(2, aGraph.getRootNodes().size());
+        assertEquals(1, aGraph.getRootNodes().size());
         try 
         {
             assertTrue((boolean) aNeedsLayout.get(aGraph));
