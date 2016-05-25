@@ -3,6 +3,7 @@ package ca.mcgill.cs.stg.jetuml.commands;
 import static org.junit.Assert.*;
 
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +19,13 @@ public class TestMoveCommand {
     private Graph aGraph;
     private Node aNode;
     boolean hasExecuted = false;
+    private Field aNeedsLayout;
     
     @Before
     public void setUp() throws Exception {
         aGraph = new ClassDiagramGraph();
+        aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
+        aNeedsLayout.setAccessible(true);
         aNode = new ClassNode();
         aMoveCommand = new MoveCommand(aGraph, aNode, 5.0, 5.0);
     }
@@ -32,6 +36,13 @@ public class TestMoveCommand {
         aMoveCommand.execute();
         hasExecuted = true;
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(aBounds.getX()+5.0, aBounds.getY()+5.0, aBounds.getWidth(), aBounds.getHeight()));
+        try {
+            assertTrue((boolean)aNeedsLayout.get(aGraph));
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -43,5 +54,12 @@ public class TestMoveCommand {
         Rectangle2D aBounds = aNode.getBounds();
         aMoveCommand.undo();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(aBounds.getX()-5.0, aBounds.getY()-5.0, aBounds.getWidth(), aBounds.getHeight()));
-    }
+        try {
+            assertTrue((boolean)aNeedsLayout.get(aGraph));
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    } 
 }
