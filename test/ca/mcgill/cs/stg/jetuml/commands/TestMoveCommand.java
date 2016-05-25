@@ -13,53 +13,60 @@ import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class TestMoveCommand {
+public class TestMoveCommand 
+{
 
     private MoveCommand aMoveCommand;
     private Graph aGraph;
     private Node aNode;
-    boolean hasExecuted = false;
     private Field aNeedsLayout;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception 
+    {
         aGraph = new ClassDiagramGraph();
         aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
         aNeedsLayout.setAccessible(true);
         aNode = new ClassNode();
-        aMoveCommand = new MoveCommand(aGraph, aNode, 5.0, 5.0);
+        aMoveCommand = new MoveCommand(aGraph, aNode, 5, 5);
     }
 
     @Test
-    public void testExecute() {
-        Rectangle2D aBounds = aNode.getBounds();
+    public void testExecute() 
+    {
         aMoveCommand.execute();
-        hasExecuted = true;
-        assertEquals(aNode.getBounds(), new Rectangle2D.Double(aBounds.getX()+5.0, aBounds.getY()+5.0, aBounds.getWidth(), aBounds.getHeight()));
-        try {
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        try 
+        {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
         }
     }
 
     @Test
-    public void testUndo() {
-        if (!hasExecuted)
+    public void testUndo() 
+    {
+        aMoveCommand.execute();
+        try 
         {
-            aMoveCommand.execute();
+            aNeedsLayout.set(aGraph, false);
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
         }
-        Rectangle2D aBounds = aNode.getBounds();
         aMoveCommand.undo();
-        assertEquals(aNode.getBounds(), new Rectangle2D.Double(aBounds.getX()-5.0, aBounds.getY()-5.0, aBounds.getWidth(), aBounds.getHeight()));
-        try {
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        try 
+        {
             assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e) 
+        {
+            fail();
         }
     } 
 }
