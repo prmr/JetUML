@@ -41,9 +41,9 @@ public class TestAddNodeCommand
         assertEquals(numOfNodes+1, aGraph.getRootNodes().size());
         try 
         {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
+            assertTrue((boolean) aNeedsLayout.get(aGraph));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
         }
@@ -54,23 +54,31 @@ public class TestAddNodeCommand
     public void testUndo() 
     {
         aAddNodeCommand.execute();
+        try 
+        {
+            aNeedsLayout.set(aGraph, false);
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e2) 
+        {
+            fail();
+        }
         aAddNodeCommand.undo();
         try 
         {
-            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>)(aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node)aNode));
+            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertTrue(aListNodesToBeRemoved.contains((Node) aNode));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
         {
-           fail();
+            fail();
         }
         try 
         {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
+            assertTrue((boolean) aNeedsLayout.get(aGraph));
         } 
-        catch (Exception e) 
+        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
-        } 
+        }
     }
 }
