@@ -34,6 +34,7 @@ public class TestMoveCommand
     @Test
     public void testExecute() 
     {
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.execute();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         try 
@@ -58,6 +59,7 @@ public class TestMoveCommand
         {
             fail();
         }
+        assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.undo();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         try 
