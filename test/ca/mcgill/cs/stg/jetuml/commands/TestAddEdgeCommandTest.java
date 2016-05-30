@@ -15,7 +15,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
 public class TestAddEdgeCommandTest {
     private Graph aGraph;
-    private Field aNeedsLayout;
     private Field aEdgesToBeRemoved;
     private Edge aEdge;
     private AddEdgeCommand aAddEdgeCommand;
