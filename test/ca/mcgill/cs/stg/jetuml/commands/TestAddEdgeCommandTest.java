@@ -24,8 +24,6 @@ public class TestAddEdgeCommandTest {
     public void setUp() throws Exception 
     {
         aGraph = new ClassDiagramGraph();
-        aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
-        aNeedsLayout.setAccessible(true);
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
         aEdgesToBeRemoved.setAccessible(true);
         aEdge = new CallEdge();
@@ -37,14 +35,6 @@ public class TestAddEdgeCommandTest {
     {
         aAddEdgeCommand.execute();
         assertTrue(aGraph.getEdges().contains(aEdge));
-        try 
-        {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
     }
     
     @SuppressWarnings("unchecked")
@@ -52,14 +42,6 @@ public class TestAddEdgeCommandTest {
     public void testUndo(){
 
         aAddEdgeCommand.execute();
-        try 
-        {
-            aNeedsLayout.set(aGraph, false);
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e2) 
-        {
-            fail();
-        }
         aAddEdgeCommand.undo();
         try 
         {
@@ -67,14 +49,6 @@ public class TestAddEdgeCommandTest {
             assertTrue(aListEdgesToBeRemoved.contains(aEdge));
         } 
         catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
-        try 
-        {
-            assertTrue((boolean) aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
         }
