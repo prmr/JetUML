@@ -26,8 +26,6 @@ public class TestAddNodeCommand
     {
         aGraph = new ClassDiagramGraph();
         aNode = new ClassNode();
-        aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
-        aNeedsLayout.setAccessible(true);
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
         aNodesToBeRemoved.setAccessible(true);
         aAddNodeCommand = new AddNodeCommand(aGraph, aNode);  
@@ -39,14 +37,6 @@ public class TestAddNodeCommand
         int numOfNodes = aGraph.getRootNodes().size();
         aAddNodeCommand.execute();
         assertEquals(numOfNodes+1, aGraph.getRootNodes().size());
-        try 
-        {
-            assertTrue((boolean) aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
     }
     
     @SuppressWarnings("unchecked")
@@ -54,14 +44,6 @@ public class TestAddNodeCommand
     public void testUndo() 
     {
         aAddNodeCommand.execute();
-        try 
-        {
-            aNeedsLayout.set(aGraph, false);
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e2) 
-        {
-            fail();
-        }
         aAddNodeCommand.undo();
         try 
         {
@@ -69,14 +51,6 @@ public class TestAddNodeCommand
             assertTrue(aListNodesToBeRemoved.contains((Node) aNode));
         } 
         catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
-        try 
-        {
-            assertTrue((boolean) aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
         {
             fail();
         }
