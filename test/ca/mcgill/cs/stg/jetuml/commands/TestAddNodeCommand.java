@@ -16,7 +16,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Node;
 public class TestAddNodeCommand 
 {
     private Graph aGraph;
-    private Field aNeedsLayout;
     private Field aNodesToBeRemoved;
     private Node aNode;
     private AddNodeCommand aAddNodeCommand;
