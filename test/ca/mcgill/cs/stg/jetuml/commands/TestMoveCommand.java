@@ -19,14 +19,11 @@ public class TestMoveCommand
     private MoveCommand aMoveCommand;
     private Graph aGraph;
     private Node aNode;
-    private Field aNeedsLayout;
     
     @Before
     public void setUp() throws Exception 
     {
         aGraph = new ClassDiagramGraph();
-        aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
-        aNeedsLayout.setAccessible(true);
         aNode = new ClassNode();
         aMoveCommand = new MoveCommand(aGraph, aNode, 5, 5);
     }
@@ -37,38 +34,14 @@ public class TestMoveCommand
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.execute();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
-        try 
-        {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
     }
 
     @Test
     public void testUndo() 
     {
         aMoveCommand.execute();
-        try 
-        {
-            aNeedsLayout.set(aGraph, false);
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.undo();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
-        try 
-        {
-            assertTrue((boolean)aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
     } 
 }
