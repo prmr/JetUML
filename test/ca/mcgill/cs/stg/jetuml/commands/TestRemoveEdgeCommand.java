@@ -16,7 +16,6 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 public class TestRemoveEdgeCommand 
 {
     private Graph aGraph;
-    private Field aNeedsLayout;
     private Field aEdgesToBeRemoved;
     private Edge aEdge;
     private RemoveEdgeCommand aRemoveEdgeCommand;
@@ -26,8 +25,6 @@ public class TestRemoveEdgeCommand
     {
         aGraph = new ClassDiagramGraph();
         aEdge = new CallEdge();
-        aNeedsLayout = aGraph.getClass().getSuperclass().getDeclaredField("aNeedsLayout");
-        aNeedsLayout.setAccessible(true);
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
         aEdgesToBeRemoved.setAccessible(true);
         aRemoveEdgeCommand = new RemoveEdgeCommand(aGraph, aEdge);
@@ -48,39 +45,14 @@ public class TestRemoveEdgeCommand
         {
             fail();
         }
-        try 
-        {
-            assertTrue((boolean) aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
-
     }
 
     @Test
     public void testUndo() 
     {
         aRemoveEdgeCommand.execute();
-        try 
-        {
-            aNeedsLayout.set(aGraph, false);
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
         aRemoveEdgeCommand.undo();
         assertTrue(aGraph.getEdges().contains(aEdge));
-        try 
-        {
-            assertTrue((boolean) aNeedsLayout.get(aGraph));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e) 
-        {
-            fail();
-        }
     }
 
 }
