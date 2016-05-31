@@ -47,7 +47,7 @@ public class TestAddNodeCommand
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aNode));
+            assertTrue(aListNodesToBeRemoved.contains(aNode));
         } 
         catch (IllegalArgumentException | IllegalAccessException e1) 
         {
