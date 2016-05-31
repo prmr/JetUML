@@ -1,9 +1,8 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Field;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class TestMoveCommand
     @Test
     public void testExecute() 
     {
-        assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+    	assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.execute();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
     }
@@ -39,7 +38,7 @@ public class TestMoveCommand
     @Test
     public void testUndo() 
     {
-        aMoveCommand.execute();
+    	aMoveCommand.execute();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
         aMoveCommand.undo();
         assertEquals(aNode.getBounds(), new Rectangle2D.Double(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));

@@ -38,8 +38,8 @@ public class TestAddEdgeCommandTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testUndo(){
-
+    public void testUndo()
+    {
         aAddEdgeCommand.execute();
         aAddEdgeCommand.undo();
         try 
