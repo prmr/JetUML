@@ -1,4 +1,4 @@
-package cs.mcgill.cs.stg.jetuml.commands;
+package ca.mcgill.cs.stg.jetuml.commands;
 
 import static org.junit.Assert.*;
 

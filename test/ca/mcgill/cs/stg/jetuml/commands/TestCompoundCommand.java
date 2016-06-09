@@ -1,6 +1,8 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
@@ -10,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
@@ -19,7 +19,7 @@ import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
-public class TestComponudCommand 
+public class TestCompoundCommand 
 {
     private Graph aGraph;
     private Node aClassNode;
@@ -102,7 +102,7 @@ public class TestComponudCommand
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
+            assertTrue(aListNodesToBeRemoved.contains(aClassNode));
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
@@ -134,8 +134,8 @@ public class TestComponudCommand
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aActorNode));
+            assertTrue(aListNodesToBeRemoved.contains(aClassNode));
+            assertTrue(aListNodesToBeRemoved.contains(aActorNode));
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
@@ -156,7 +156,7 @@ public class TestComponudCommand
         try 
         {
 			ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
+            assertTrue(aListNodesToBeRemoved.contains(aClassNode));
         } 
         catch (IllegalArgumentException | IllegalAccessException e1) 
         {
@@ -185,7 +185,7 @@ public class TestComponudCommand
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
+            assertTrue(aListNodesToBeRemoved.contains(aClassNode));
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
