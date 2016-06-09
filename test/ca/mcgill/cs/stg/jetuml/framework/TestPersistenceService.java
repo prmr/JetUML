@@ -217,7 +217,7 @@ public class TestPersistenceService
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(new Rectangle2D.Double(250,180,86,50),cr3.getBounds());
+		assertEquals(new Rectangle2D.Double(250,180,83,50),cr3.getBounds());
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.getType() == UseCaseDependencyEdge.Type.Extend);
@@ -238,12 +238,12 @@ public class TestPersistenceService
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertEquals(new Rectangle2D.Double(515,170,63,60),cr8.getBounds());
+		assertEquals(new Rectangle2D.Double(515,170,62,60),cr8.getBounds());
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertEquals(new Rectangle2D.Double(580,141,91,32),cr9.getBounds());
+		assertEquals(new Rectangle2D.Double(580,141,88,32),cr9.getBounds());
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.getType() == UseCaseDependencyEdge.Type.Extend);
