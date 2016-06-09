@@ -89,7 +89,9 @@ public class TestComponudCommand
     	assertFalse(aGraph.getRootNodes().contains(aClassNode));
         assertFalse(aGraph.getEdges().contains(aCallEdge));
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+       
         aCompoundCommand1.execute();        
+        
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(5, 5, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
@@ -101,19 +103,25 @@ public class TestComponudCommand
     {
         aCompoundCommand1.execute();
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(5, 5, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
-        aCompoundCommand1.undo();
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
-            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
+            assertFalse(aListNodesToBeRemoved.contains((Node) aClassNode));
+            ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
+            assertFalse(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
         catch (IllegalArgumentException | IllegalAccessException e1) 
         {
             fail();
         }
+        
+        aCompoundCommand1.undo();
+        
+        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         try 
         {
+            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
@@ -131,7 +139,9 @@ public class TestComponudCommand
         assertFalse(aGraph.getRootNodes().contains(aActorNode));
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         assertEquals(aActorNode.getBounds(), new Rectangle2D.Double(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        
         aCompoundCommand3.execute();        
+        
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
         assertTrue(aGraph.getRootNodes().contains(aActorNode));
@@ -144,9 +154,24 @@ public class TestComponudCommand
     public void testUndo_ContainsCompoundCommands() 
     {
         aCompoundCommand3.execute();
+        
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         assertEquals(aActorNode.getBounds(), new Rectangle2D.Double(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        try 
+        {
+            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertFalse(aListNodesToBeRemoved.contains((Node) aClassNode));
+            assertFalse(aListNodesToBeRemoved.contains((Node) aActorNode));
+            ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
+            assertFalse(aListEdgesToBeRemoved.contains(aCallEdge));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
+        
         aCompoundCommand3.undo();
+        
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         assertEquals(aActorNode.getBounds(), new Rectangle2D.Double(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
         try 
@@ -154,13 +179,6 @@ public class TestComponudCommand
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
             assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
             assertTrue(aListNodesToBeRemoved.contains((Node) aActorNode));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
-        try 
-        {
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
@@ -177,6 +195,15 @@ public class TestComponudCommand
     	assertFalse(aGraph.getRootNodes().contains(aClassNode));
         assertFalse(aGraph.getEdges().contains(aCallEdge));
         assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        try 
+        {
+			ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertFalse(aListNodesToBeRemoved.contains((Node) aClassNode));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
        
         aCompoundCommand4.execute();      
 
@@ -199,6 +226,7 @@ public class TestComponudCommand
     public void testUndo_ContainsBothCommands() 
     {
         aCompoundCommand4.execute();
+        
         try
 		{
 			assertTrue((boolean)aNeedsLayout.get(aGraph));
@@ -209,7 +237,21 @@ public class TestComponudCommand
 		{
 			fail();
 		}
-
+       
+        assertFalse(aGraph.getRootNodes().contains(aClassNode));
+        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        try 
+        {
+            ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
+            assertFalse(aListNodesToBeRemoved.contains((Node) aClassNode));
+            ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
+            assertFalse(aListEdgesToBeRemoved.contains(aCallEdge));
+        } 
+        catch (IllegalArgumentException | IllegalAccessException e1) 
+        {
+            fail();
+        }
+        
         aCompoundCommand4.undo();
         
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
@@ -218,13 +260,6 @@ public class TestComponudCommand
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
             assertTrue(aListNodesToBeRemoved.contains((Node) aClassNode));
-        } 
-        catch (IllegalArgumentException | IllegalAccessException e1) 
-        {
-            fail();
-        }
-        try 
-        {
             ArrayList<Edge> aListEdgesToBeRemoved = (ArrayList<Edge>) aEdgesToBeRemoved.get(aGraph);
             assertTrue(aListEdgesToBeRemoved.contains(aCallEdge));
         } 
