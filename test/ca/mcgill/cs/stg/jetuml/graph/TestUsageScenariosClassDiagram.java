@@ -257,6 +257,7 @@ public class TestUsageScenariosClassDiagram
 	/**
 	 * Testing move a node connect with another node.
 	 * Edge will be redraw automatically. The unselected note will remain unmoved.
+	 *
 	 */
 	@Test
 	public void testMoveNodeConnectWithAnotherNode()
