@@ -46,7 +46,6 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	public void undo() 
 	{
 		aGraph.insertNode((Node)aElement);
-		aGraph.layout();
 	}
 
 	/**
@@ -55,6 +54,5 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	public void execute() 
 	{
 		aGraph.removeNode((Node)aElement);
-		aGraph.layout();
 	}
 }
