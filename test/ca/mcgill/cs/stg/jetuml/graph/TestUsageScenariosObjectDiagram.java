@@ -174,12 +174,12 @@ public class TestUsageScenariosObjectDiagram
 		 * "value" text in field node will be erased and edge will be added.
 		 */
 		aReferenceEdge1 = new ObjectReferenceEdge();
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(60, 100), new Point2D.Double(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 100), new Point2D.Double(20, 20));
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals("", aFieldNode1.getName().getText());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
@@ -211,7 +211,7 @@ public class TestUsageScenariosObjectDiagram
 		noteNode.translate(40, 20);
 		assertEquals(new Rectangle2D.Double(23, 32, 100, 100), aObjectNode1.getBounds());
 		// field node should also be moved accordingly
-		assertEquals(new Rectangle2D.Double(60, 111, 56, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(63.5, 111, 49, 16), aFieldNode1.getBounds());
 		assertEquals(new Rectangle2D.Double(120, 100, 60, 40), noteNode.getBounds());
 	}
 	
@@ -231,8 +231,8 @@ public class TestUsageScenariosObjectDiagram
 
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(60, 100), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 100), new Point2D.Double(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
 		aPanel.selectAll();
 
 		Rectangle2D referenceEdge1Bounds = aReferenceEdge1.getBounds();
@@ -247,7 +247,7 @@ public class TestUsageScenariosObjectDiagram
 			}
 		}
 		assertEquals(new Rectangle2D.Double(46, 57, 100, 120), aObjectNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(83, 135, 56, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle2D.Double(86.5, 135, 49, 16), aFieldNode1.getBounds());
 		assertEquals(new Rectangle2D.Double(106, 117, 60, 40), noteNode.getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
@@ -332,8 +332,8 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics, aGrid);	
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(60, 110), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 110), new Point2D.Double(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
 
 		// delete aReferenceEdge2 and collaborationEdge1
 		aPanel.getSelectionList().add(aReferenceEdge2);
@@ -364,10 +364,11 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
 		aDiagram.draw(aGraphics, aGrid);	
+		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(assoEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(60, 110), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(60, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 110), new Point2D.Double(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
 		aPanel.getSelectionList().add(aObjectNode1);
