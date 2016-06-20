@@ -141,7 +141,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(59, 110), new Point2D.Double(116,0));
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals("«create»", ((CallEdge) aDiagram.getEdges().toArray()[1]).getMiddleLabel());
+		assertEquals("Â«createÂ»", ((CallEdge) aDiagram.getEdges().toArray()[1]).getMiddleLabel());
 	}
 	
 	/**
