@@ -53,7 +53,8 @@ public class ButtonTabComponent extends JPanel
 	private static final int TAB_SIZE = 17;
     private static final int LABEL_BORDER = 5;
     private static final int DELTA = 6;
-    private static final MouseListener BUTTON_MOUSE_LISTENER = new MouseAdapter() {
+    private static final MouseListener BUTTON_MOUSE_LISTENER = new MouseAdapter() 
+    {
   	   public void mouseEntered(MouseEvent pEvent) 
          {
              Component component = pEvent.getComponent();
