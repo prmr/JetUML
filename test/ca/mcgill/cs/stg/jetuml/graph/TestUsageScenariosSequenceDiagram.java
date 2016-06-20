@@ -357,7 +357,7 @@ public class TestUsageScenariosSequenceDiagram
 	 * Testing delete single ParameterNode
 	 */
 	@Test
-	public void testDeleteSignleParameterNode()
+	public void testDeleteSingleParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		Rectangle2D parameterNode1Bounds = aParameterNode1.getBounds();
@@ -375,7 +375,7 @@ public class TestUsageScenariosSequenceDiagram
 	 * Testing delete single CallNode.
 	 */
 	@Test
-	public void testDeleteSignleCallNode()
+	public void testDeleteSingleCallNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
