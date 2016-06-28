@@ -30,7 +30,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -78,15 +76,14 @@ public class ToolBar extends JPanel
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
 	private static final int H_PADDING = 5;
-	private static final int VERTICAL_COMMAND_SEPARATOR = 15;
 	private static final int FONT_SIZE = 14;
 	private static final String EXPAND = "<<";
 	private static final String COLLAPSE = ">>";
 	
 	private ArrayList<JToggleButton> aButtons = new ArrayList<>();
 	private ArrayList<JToggleButton> aButtonsEx = new ArrayList<>();
-	private JPanel aToolPanel = new JPanel(new GridLayout(0, 1));
-	private JPanel aToolPanelEx = new JPanel(new GridLayout(0, 1));
+	private JPanel aToolPanel = new JPanel(new VerticalLayout());
+	private JPanel aToolPanelEx = new JPanel(new VerticalLayout());
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 
@@ -104,7 +101,7 @@ public class ToolBar extends JPanel
 		addCopyToClipboard();
 		createExpandButton();
 		freeCtrlTab();
-		add(aToolPanel, BorderLayout.NORTH);
+		add(aToolPanel, BorderLayout.CENTER);
 	}
 	
 	private static Icon createSelectionIcon()
@@ -329,10 +326,6 @@ public class ToolBar extends JPanel
 
 	private void addCopyToClipboard()
 	{
-		// Insert a space to distinguish commands from tools
-		aToolPanel.add(Box.createRigidArea(new Dimension(0, VERTICAL_COMMAND_SEPARATOR)));
-		aToolPanelEx.add(Box.createRigidArea(new Dimension(0, VERTICAL_COMMAND_SEPARATOR)));
-
 		URL imageLocation = getClass().getClassLoader().
 				getResource(ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").
 						getString("toolbar.copyToClipBoard"));
@@ -340,12 +333,22 @@ public class ToolBar extends JPanel
 		
 		final JButton button = new JButton(new ImageIcon(imageLocation));
 		button.setToolTipText(toolTip);
+		if( aButtons.size() > 0 )
+		{
+			button.setPreferredSize(aButtons.get(0).getPreferredSize());
+		}
 		aToolPanel.add(button);
 
 		
 		final JButton buttonEx = new JButton(new ImageIcon(imageLocation));
 		buttonEx.setToolTipText(toolTip);
 		aToolPanelEx.add(createExpandedRowElement(buttonEx, toolTip));
+		
+		if( aButtons.size() > 0 )
+		{
+			button.setPreferredSize(aButtons.get(0).getPreferredSize());
+			buttonEx.setPreferredSize(aButtons.get(0).getPreferredSize());
+		}
 
 		button.addActionListener(new ActionListener()
 		{
@@ -392,16 +395,18 @@ public class ToolBar extends JPanel
 					synchronizeToolSelection();
 					expandButton.setText(COLLAPSE);
 					expandButton.setToolTipText(collapseString);
+					aToolPanelEx.setBounds(aToolPanel.getBounds());
 					remove(aToolPanel);
-					add(aToolPanelEx, BorderLayout.NORTH);
+					add(aToolPanelEx, BorderLayout.CENTER);
 				}
 				else
 				{
 					synchronizeToolSelection();
 					expandButton.setText(EXPAND);
 					expandButton.setToolTipText(expandString);
+					aToolPanel.setBounds(aToolPanelEx.getBounds());
 					remove(aToolPanelEx);
-					add(aToolPanel, BorderLayout.NORTH);
+					add(aToolPanel, BorderLayout.CENTER);
 				}
 			}
 		});
