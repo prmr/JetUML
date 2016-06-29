@@ -47,6 +47,7 @@ public class AddEdgeCommand extends GraphElementRelatedCommand
 	{
 		assert aElement instanceof Edge;
 		aGraph.removeEdge((Edge)aElement);
+		aGraph.layout();
 	}
 
 	/**
@@ -56,5 +57,6 @@ public class AddEdgeCommand extends GraphElementRelatedCommand
 	{
 		assert aElement instanceof Edge;
 		aGraph.insertEdge((Edge)aElement);
+		aGraph.layout();	
 	}
 }
