@@ -166,26 +166,8 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
-			Point2D[] startConnectionPoints = connectionPoints(pStart);
-		    Point2D[] endConnectionPoints = connectionPoints(pEnd);
-		    Point2D start = startConnectionPoints[0];
-		    Point2D end = endConnectionPoints[0];
-		    double distance = start.distance(end);
-		    
-		    for( Point2D startPoint : startConnectionPoints)
-		    {
-		    	for( Point2D endPoint : endConnectionPoints )
-		    	{
-		    		double newDistance = startPoint.distance(endPoint);
-		    		if( newDistance < distance )
-		    		{
-		    			start = startPoint;
-		    			end = endPoint;
-		    			distance = newDistance;
-		    		}
-		    	}
-		    }
-		    return new Point2D[] {start, end};
+		    return new Point2D[] {pStart.getConnectionPoint(computeDirection(pStart, pEnd)), 
+		    		pEnd.getConnectionPoint(computeDirection(pEnd, pStart))};
 		}		
 	}
 	
@@ -270,30 +252,24 @@ public final class SegmentationStyleFactory
 	 */
 	private static Direction computeDirection(Node pStart, Node pEnd)
 	{
-		double deltaX = Math.abs(pEnd.getBounds().getCenterX() - pStart.getBounds().getCenterX());
-		double deltaY = Math.abs(pEnd.getBounds().getCenterY() - pStart.getBounds().getCenterY());
-		if( (pStart.getBounds().getWidth()/2) * deltaY / deltaX < pStart.getBounds().getHeight()/2 )
-		{	// Intersect side
-			if( pStart.getBounds().getCenterX() < pEnd.getBounds().getCenterX())
-			{
-				return Direction.EAST;
-			}
-			else
-			{
-				return Direction.WEST;
-			}
-		}
-		else // Intersect top/bottom
+		Direction[] allDirections = {Direction.WEST, Direction.NORTH, Direction.EAST, Direction.SOUTH};
+		Direction bestDirection = Direction.WEST; // Placeholder
+		double shortestDistance = Double.MAX_VALUE;
+		for( Direction direction : allDirections )
 		{
-			if( pStart.getBounds().getCenterY() < pEnd.getBounds().getCenterY())
+			Point2D start = pStart.getConnectionPoint(direction);
+			for( Direction inner : allDirections )
 			{
-				return Direction.SOUTH;
-			}
-			else
-			{
-				return Direction.NORTH;
+				Point2D end = pEnd.getConnectionPoint(inner);
+				double distance = start.distance(end);
+				if( distance < shortestDistance )
+				{
+					shortestDistance = distance;
+					bestDirection = direction;
+				}
 			}
 		}
+		return bestDirection;
 	}
 }
 

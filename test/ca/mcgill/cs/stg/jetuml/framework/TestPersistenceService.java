@@ -217,7 +217,10 @@ public class TestPersistenceService
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(new Rectangle2D.Double(250,180,83,50),cr3.getBounds());
+		assertEquals(250,cr3.getBounds().getX(),0.1);
+		assertEquals(180,cr3.getBounds().getY(),0.1);
+		assertEquals(71,cr3.getBounds().getWidth(),3.0);
+		assertEquals(90,cr3.getBounds().getHeight(),0.1);
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.getType() == UseCaseDependencyEdge.Type.Extend);
