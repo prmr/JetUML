@@ -100,6 +100,6 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	@Override
 	public Point2D[] getPoints()
 	{
-		return SegmentationStyleFactory.createVHVStrategy().getPath(getStart(), getEnd());
+		return SegmentationStyleFactory.createVHVStrategy().getPath(getStart(), getEnd(), getGraph());
    }
 }

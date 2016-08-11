@@ -44,6 +44,6 @@ public class ObjectCollaborationEdge extends ClassRelationshipEdge
 	@Override
 	protected Point2D[] getPoints()
 	{
-		return SegmentationStyleFactory.createStraightStrategy().getPath(getStart(), getEnd());
+		return SegmentationStyleFactory.createStraightStrategy().getPath(getStart(), getEnd(), getGraph());
    }
 }

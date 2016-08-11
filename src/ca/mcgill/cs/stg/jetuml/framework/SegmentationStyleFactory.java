@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.geom.Point2D;
 
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
@@ -50,16 +51,16 @@ public final class SegmentationStyleFactory
 		return new SegmentationStyle()
 		{
 			@Override
-			public Point2D[] getPath(Node pStart, Node pEnd)
+			public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 			{
 				if( pStart == pEnd )
 				{
 					return createSelfPath(pStart);
 				}
-				Point2D[] path = pMain.getPath(pStart, pEnd);
+				Point2D[] path = pMain.getPath(pStart, pEnd, pGraph);
 				if( path == null && pAlternate != null )
 				{
-					path = pAlternate.getPath(pStart, pEnd);
+					path = pAlternate.getPath(pStart, pEnd, pGraph);
 				}
 				if( path != null )
 				{
@@ -67,7 +68,7 @@ public final class SegmentationStyleFactory
 				}
 				else
 				{
-					path = new Straight().getPath(pStart, pEnd);
+					path = new Straight().getPath(pStart, pEnd, pGraph);
 					assert path != null;
 					return path;
 				}
@@ -163,7 +164,7 @@ public final class SegmentationStyleFactory
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd)
+		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
 			Point2D[] startConnectionPoints = connectionPoints(pStart);
 		    Point2D[] endConnectionPoints = connectionPoints(pEnd);
@@ -191,7 +192,7 @@ public final class SegmentationStyleFactory
 	private static class HVH implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd)
+		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
 			Point2D start = pStart.getConnectionPoint(Direction.EAST);
 			Point2D end = pEnd.getConnectionPoint(Direction.WEST);
@@ -226,7 +227,7 @@ public final class SegmentationStyleFactory
 	private static class VHV implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd)
+		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
 			Point2D start = pStart.getConnectionPoint(Direction.SOUTH);
 			Point2D end = pEnd.getConnectionPoint(Direction.NORTH);

@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.geom.Point2D;
 
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
@@ -38,8 +39,9 @@ public interface SegmentationStyle
      * is bent according to this strategy.
      * @param pStart the starting node
      * @param pEnd the ending node
+     * @param pGraph the graph holding the nodes
      * @return an array list of points at which to bend the
      * segmented line joining the two nodes
 	 */
-	Point2D[] getPath(Node pStart, Node pEnd);
+	Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph);
 }
