@@ -117,6 +117,15 @@ abstract class AbstractEdge implements Edge
 		return aEnd;
 	}
 
+	/* 
+	 * The default behavior implemented by this method
+	 * is to find the connection point that each start/end
+	 * node provides for a direction that is oriented
+	 * following a straight line connecting the center
+	 * of the rectangular bounds for each node.
+
+	 * @see ca.mcgill.cs.stg.jetuml.graph.Edge#getConnectionPoints()
+	 */
 	@Override
 	public Line2D getConnectionPoints()
 	{
