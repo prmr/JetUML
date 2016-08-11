@@ -177,7 +177,7 @@ public class ToolBar extends JPanel
            	p.translate(OFFSET, OFFSET);
            	PointNode q = new PointNode();
            	q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-           	pEdge.connect(p, q);
+           	pEdge.connect(p, q, null);
               
            	Rectangle2D bounds = new Rectangle2D.Double();
            	bounds.add(p.getBounds());

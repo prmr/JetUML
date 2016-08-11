@@ -47,8 +47,10 @@ public interface Edge extends GraphElement
      * Connect this edge to two nodes.
      * @param pStart the starting node
      * @param pEnd the ending node
+     * @param pGraph the graph where the two connected nodes 
+     * exists. Can be null.
    	 */
-   void connect(Node pStart, Node pEnd);
+   void connect(Node pStart, Node pEnd, Graph pGraph);
 
    	/**
      * Gets the starting node.
@@ -61,6 +63,11 @@ public interface Edge extends GraphElement
      * @return the ending node
    	 */
    	Node getEnd();
+   	
+   	/**
+   	 * @return The graph that contains this edge.
+   	 */
+   	Graph getGraph();
 
    	/**
      * Gets the points at which this edge is connected to

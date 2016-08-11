@@ -100,7 +100,7 @@ public class TestClipboard
 	@Test
 	public void testCopyDanglingEdge()
 	{
-		aEdge1.connect(aClass1, aClass2);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aEdge1);
 		aClipboard.copy(aSelectionList);
@@ -112,7 +112,7 @@ public class TestClipboard
 	@Test
 	public void testCopyCapturedEdgeTopLevel()
 	{
-		aEdge1.connect(aClass1, aClass2);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aEdge1);
 		aSelectionList.add(aClass2);
@@ -132,8 +132,8 @@ public class TestClipboard
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aClass1);
 		aPackage2.addChild(aClass2);
-		aEdge1.connect(aClass1, aClass2);
-		aEdge2.connect(aClass2, aClass1);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge2.connect(aClass2, aClass1, aClassDiagramGraph);
 		aSelectionList.add(aPackage1);
 		aSelectionList.add(aEdge1);
 		aSelectionList.add(aEdge2);
@@ -180,7 +180,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeAndEdgesNoContainment()
 	{
-		aEdge1.connect(aClass1, aClass2);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aClass2);
 		aSelectionList.add(aEdge1);
@@ -201,7 +201,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeAndEdgesWithContainment()
 	{
-		aEdge1.connect(aClass1, aClass2);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
 		aPackage1.addChild(aClass1);
 		aPackage1.addChild(aClass2);
 		aSelectionList.add(aPackage1);
@@ -226,7 +226,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeWithMissingParent()
 	{
-		aEdge1.connect(aClass1, aClass2);
+		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
 		aPackage1.addChild(aClass1);
 		aPackage1.addChild(aClass2);
 		aSelectionList.add(aClass1);
@@ -263,7 +263,7 @@ public class TestClipboard
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aClass2);
 		CallEdge edge = new CallEdge();
-		edge.connect(aClass1, aClass2);
+		edge.connect(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(edge);
 		aClipboard.copy(aSelectionList);
 		assertEquals(1,aClipboard.getEdges().size());

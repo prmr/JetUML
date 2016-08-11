@@ -211,7 +211,7 @@ public abstract class Graph
 			return false;
 		}
 
-		pEdge.connect(node1, node2);
+		pEdge.connect(node1, node2, this);
 			
 		// In case the down-call to addEdge introduces additional 
 		// operations that should be compounded with the edge addition
@@ -707,7 +707,7 @@ public abstract class Graph
 	 */
 	public void restoreEdge(Edge pEdge, Node pStart, Node pEnd)
 	{
-		pEdge.connect(pStart, pEnd);
+		pEdge.connect(pStart, pEnd, this);
 		aEdges.add(pEdge);
 	}
 

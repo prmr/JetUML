@@ -172,7 +172,7 @@ public class SequenceDiagramGraph extends Graph
 			{
 				CallNode newCallNode = new CallNode();
 				((ImplicitParameterNode)origin.getParent()).addChild(newCallNode, pPoint1);
-				pEdge.connect(origin, newCallNode);
+				pEdge.connect(origin, newCallNode, this);
 			}
 			else // Case 2
 			{
@@ -180,7 +180,7 @@ public class SequenceDiagramGraph extends Graph
 				{
 					CallNode newCallNode = new CallNode();
 					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
-					pEdge.connect(origin, newCallNode);
+					pEdge.connect(origin, newCallNode, this);
 				}
 				// Simple connect
 			}
@@ -196,7 +196,7 @@ public class SequenceDiagramGraph extends Graph
 			{
 				CallNode newCallNode = new CallNode();
 				endAsImplicitParameterNode.addChild(newCallNode, pPoint1);
-				pEdge.connect(pOrigin, newCallNode);
+				pEdge.connect(pOrigin, newCallNode, this);
 			}
 		}
 	}

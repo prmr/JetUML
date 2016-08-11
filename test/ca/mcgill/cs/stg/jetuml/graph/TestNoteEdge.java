@@ -29,11 +29,14 @@ import java.awt.geom.Rectangle2D;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+
 public class TestNoteEdge
 {
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
+	private ClassDiagramGraph aGraph;
 	
 	@Before
 	public void setup()
@@ -45,15 +48,17 @@ public class TestNoteEdge
 		aPointNode = new PointNode(); 
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
+		
+		aGraph = new ClassDiagramGraph();
 	}
 	
 	@Test
 	public void testBasicConnection()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode);
+		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
 		assertTrue( aNoteEdge.getStart() == aNoteNode );
 		assertTrue( aNoteEdge.getEnd() == aPointNode );
-		aNoteEdge.connect(aPointNode, aNoteNode);
+		aNoteEdge.connect(aPointNode, aNoteNode, aGraph);
 		assertTrue( aNoteEdge.getStart() == aPointNode );
 		assertTrue( aNoteEdge.getEnd() == aNoteNode );
 	}
@@ -61,7 +66,7 @@ public class TestNoteEdge
 	@Test
 	public void testClone()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode);
+		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
 		NoteEdge clonedEdge = (NoteEdge) aNoteEdge.clone();
 		
 		// Test that the start and end nodes are the same object
@@ -73,7 +78,7 @@ public class TestNoteEdge
 	@Test
 	public void testBoundsCalculation()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode);
+		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
 		assertEquals(new Rectangle2D.Double(60,20,40,1), aNoteEdge.getBounds());
 		
 		Line2D connectionPoints = aNoteEdge.getConnectionPoints();

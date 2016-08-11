@@ -47,6 +47,7 @@ abstract class AbstractEdge implements Edge
 	private static final double MAX_DISTANCE = 3.0;
 	private Node aStart;
 	private Node aEnd;
+	private Graph aGraph;
 	
 	/**
      * Returns the path that should be stroked to
@@ -90,11 +91,18 @@ abstract class AbstractEdge implements Edge
 	}
 
 	@Override
-	public void connect(Node pStart, Node pEnd)
+	public void connect(Node pStart, Node pEnd, Graph pGraph)
 	{  
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
+		aGraph = pGraph;
+	}
+	
+	@Override
+	public Graph getGraph()
+	{
+		return aGraph;
 	}
 
 	@Override
