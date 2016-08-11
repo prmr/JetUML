@@ -666,6 +666,25 @@ public abstract class Graph
 	 */
 	public Collection<Edge> getEdges() 
 	{ return aEdges; }
+	
+	/**
+	 * @param pNode the node to test for
+	 * @return All the edges connected to pNode
+	 * pNode not null
+	 */
+	public Collection<Edge> getEdges(Node pNode)
+	{
+		assert pNode != null;
+		Collection<Edge> lReturn = new ArrayList<>();
+		for( Edge edge : aEdges )
+		{
+			if( edge.getStart() == pNode || edge.getEnd() == pNode )
+			{
+				lReturn.add(edge);
+			}
+		}
+		return lReturn;
+	}
 
 	/**
 	 * Restores a root node to this graph. It is assume that

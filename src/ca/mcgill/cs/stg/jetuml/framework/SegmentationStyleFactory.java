@@ -258,5 +258,42 @@ public final class SegmentationStyleFactory
 	  		}
 		}
 	}
+	
+	/*
+	 * Computes which side of pStart should contain the connection
+	 * point given a link to pEnd. 
+	 * 
+	 * @param pStart The start node
+	 * @param pEnd The end node
+	 * @return The direction pointing to the side of pStart that
+	 * should be connected.
+	 */
+	private static Direction computeDirection(Node pStart, Node pEnd)
+	{
+		double deltaX = Math.abs(pEnd.getBounds().getCenterX() - pStart.getBounds().getCenterX());
+		double deltaY = Math.abs(pEnd.getBounds().getCenterY() - pStart.getBounds().getCenterY());
+		if( (pStart.getBounds().getWidth()/2) * deltaY / deltaX < pStart.getBounds().getHeight()/2 )
+		{	// Intersect side
+			if( pStart.getBounds().getCenterX() < pEnd.getBounds().getCenterX())
+			{
+				return Direction.EAST;
+			}
+			else
+			{
+				return Direction.WEST;
+			}
+		}
+		else // Intersect top/bottom
+		{
+			if( pStart.getBounds().getCenterY() < pEnd.getBounds().getCenterY())
+			{
+				return Direction.SOUTH;
+			}
+			else
+			{
+				return Direction.NORTH;
+			}
+		}
+	}
 }
 
