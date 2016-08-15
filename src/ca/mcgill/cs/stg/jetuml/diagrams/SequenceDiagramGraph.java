@@ -269,6 +269,23 @@ public class SequenceDiagramGraph extends Graph
 	}
 	
 	/**
+	 * @param pNode The node to obtain the callee for.
+	 * @return The CallNode pointed to by an outgoing edge starting
+	 * at pNode, or null if there are none.
+	 */
+	private CallNode getCallee(Node pNode)
+	{
+		for (Edge edge : aEdges )
+		{
+			if ( edge.getStart() == pNode && edge instanceof CallEdge )
+			{
+				return (CallNode) edge.getEnd();
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * @param pStart The starting node.
 	 * @param pEnd The end node.
 	 * @return The edge that starts at node pStart and ends at node pEnd, or null if there is no 
@@ -394,6 +411,24 @@ public class SequenceDiagramGraph extends Graph
 	public String getDescription() 
 	{
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
+	}
+
+	@Override
+	protected Node deepFindNode( Node pNode, Point2D pPoint )
+	{	
+		if ( pNode instanceof CallNode )
+		{
+			Node child = getCallee(pNode);
+			if ( child != null )
+			{
+				Node node = deepFindNode(child, pPoint);
+				if ( node != null )
+				{
+					return node;
+				}
+			}
+		}
+		return super.deepFindNode(pNode, pPoint);
 	}
 }
 

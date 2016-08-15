@@ -299,7 +299,17 @@ public abstract class Graph
 		return result;
 	}
 	
-	private Node deepFindNode( Node pNode, Point2D pPoint )
+	/**
+	 * Find the "deepest" child that contains pPoint,
+	 * where depth in measure in terms of distance from
+	 * pNode along the parent-child relation.
+	 * @param pNode The starting node for the search.
+	 * @param pPoint The point to test for.
+	 * @return The deepest child containing pPoint,
+	 * or null if pPoint is not contained by pNode or 
+	 * any of its children.
+	 */
+	protected Node deepFindNode( Node pNode, Point2D pPoint )
 	{
 		Node node = null;
 		if( pNode instanceof ParentNode )
