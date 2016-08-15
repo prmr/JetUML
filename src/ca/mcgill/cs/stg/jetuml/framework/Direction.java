@@ -39,6 +39,8 @@ public class Direction
 	private double aX;
 	private double aY;   
 	
+	// TODO implement equals and hashcode
+	
 	/**
      * Constructs a direction (normalized to length 1).
      * @param pX the x-value of the direction

@@ -22,7 +22,11 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
@@ -37,6 +41,7 @@ public final class SegmentationStyleFactory
 {
 	private static final int MARGIN = 20;
 	private static final int MIN_SEGMENT = 10;
+	private static final int NUDGE_VALUE = 8;
 	
 	private SegmentationStyleFactory(){}
 	
@@ -166,9 +171,125 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
-		    return new Point2D[] {pStart.getConnectionPoint(computeDirection(pStart, pEnd)), 
+			Point2D start = pStart.getConnectionPoint(computeDirection(pStart, pEnd));
+			if( pGraph != null )
+			{
+				Direction direction = computeDirection(pStart, pEnd);
+				Position position = computePosition(pStart, direction, pGraph, pEnd);
+				// Compute nudge
+				int nudge = 0;
+				if( position.getTotal() % 2 == 1 ) // Odd
+				{
+					nudge = position.getIndex() / 2 * NUDGE_VALUE;
+				}
+				else
+				{
+					nudge = (position.getIndex() - 1) * NUDGE_VALUE + NUDGE_VALUE/2; 
+				}
+				if( position.getIndex() < position.getIndex() / 2 )
+				{
+					nudge = -nudge;
+				}
+				if( direction == Direction.EAST || direction == Direction.WEST )
+				{
+					start = new Point2D.Double( start.getX(), start.getY()+ nudge);
+				}
+				else
+				{
+					start = new Point2D.Double( start.getX()+nudge, start.getY());
+				}
+			}
+		    return new Point2D[] {start, 
 		    		pEnd.getConnectionPoint(computeDirection(pEnd, pStart))};
 		}		
+	}
+	
+	/** 
+	 * Indicates the total number of connection points
+	 * on the side of a rectangular node, and the index
+	 * of a node.
+	 */
+	private static class Position
+	{
+		private int aIndex;
+		private int aTotal;
+		
+		Position( int pIndex, int pTotal)
+		{
+			aIndex = pIndex;
+			aTotal = pTotal;
+		}
+		
+		int getIndex()
+		{
+			return aIndex;
+		}
+		
+		int getTotal()
+		{
+			return aTotal;
+		}
+		
+		public String toString()
+		{
+			return aIndex + " of " + aTotal;
+		}
+	}
+	
+	/**
+	 * The position is given in terms of top-bottom for sides, and left-to-right
+	 * for top and bottom.
+	 * @param pNode The node for which a connection is being calculated
+	 * @param pGraph The graph storing the node.
+	 * @return The position on the side of the node where the edge should be connected.
+	 */
+	private static Position computePosition(Node pNode, Direction pDirection, Graph pGraph, Node pEnd)
+	{
+		// Get all outgoing edges for this side of the node
+		List<Edge> outgoingEdges = new ArrayList<>();
+		for( Edge edge : pGraph.getEdges(pNode))
+		{
+			if( computeDirection(pNode, otherNode(edge, pNode)).equals(pDirection))
+			{
+				outgoingEdges.add(edge);
+			}
+		}
+		// Sort in terms of the position of the other node
+		Collections.sort(outgoingEdges, (pEdge1, pEdge2) ->
+		{
+			if( pDirection.equals(Direction.EAST) || pDirection.equals(Direction.NORTH))
+			{
+				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterY() - otherNode(pEdge2, pNode).getBounds().getCenterY());
+			}
+			else
+			{
+				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterX() - otherNode(pEdge2, pNode).getBounds().getCenterX());
+			}
+		});
+		
+		// Find index
+		int index = 0;
+		for( Edge edge : outgoingEdges )
+		{
+			if( edge.getStart() == pNode && edge.getEnd() == pEnd )
+			{
+				break;
+			}
+			index++;
+		}
+		return new Position(index + 1, outgoingEdges.size());
+	}
+	
+	private static Node otherNode(Edge pEdge, Node pNode)
+	{
+		if( pEdge.getStart() == pNode)
+		{
+			return pEdge.getEnd();
+		}
+		else
+		{
+			return pEdge.getStart();
+		}
 	}
 	
 	private static class HVH implements SegmentationStyle
