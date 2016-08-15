@@ -299,7 +299,7 @@ public abstract class Graph
 		return result;
 	}
 	
-	private Node deepFindNode( Node pNode, Point2D pPoint )
+	protected Node deepFindNode( Node pNode, Point2D pPoint )
 	{
 		Node node = null;
 		if( pNode instanceof ParentNode )
