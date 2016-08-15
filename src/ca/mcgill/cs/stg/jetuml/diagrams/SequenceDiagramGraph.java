@@ -413,11 +413,12 @@ public class SequenceDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("sequence.name");
 	}
 
+	@Override
 	protected Node deepFindNode( Node pNode, Point2D pPoint )
 	{	
 		if ( pNode instanceof CallNode )
 		{
-			Node child = this.getCallee(pNode);
+			Node child = getCallee(pNode);
 			if ( child != null )
 			{
 				Node node = deepFindNode(child, pPoint);
@@ -427,7 +428,6 @@ public class SequenceDiagramGraph extends Graph
 				}
 			}
 		}
-		
 		return super.deepFindNode(pNode, pPoint);
 	}
 }
