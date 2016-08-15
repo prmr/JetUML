@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -269,20 +270,21 @@ public class SequenceDiagramGraph extends Graph
 	}
 	
 	/**
-	 * @param pNode The node to obtain the callee for.
-	 * @return The CallNode pointed to by an outgoing edge starting
+	 * @param pNode The node to obtain the callees for.
+	 * @return All CallNodes pointed to by an outgoing edge starting
 	 * at pNode, or null if there are none.
 	 */
-	private CallNode getCallee(Node pNode)
+	private List<CallNode> getCallees(Node pNode)
 	{
+		List<CallNode> callees = new ArrayList<CallNode>();
 		for (Edge edge : aEdges )
 		{
 			if ( edge.getStart() == pNode && edge instanceof CallEdge )
 			{
-				return (CallNode) edge.getEnd();
+				callees.add((CallNode) edge.getEnd());
 			}
 		}
-		return null;
+		return callees;
 	}
 	
 	/**
@@ -415,16 +417,19 @@ public class SequenceDiagramGraph extends Graph
 
 	@Override
 	protected Node deepFindNode( Node pNode, Point2D pPoint )
-	{	
+	{		
 		if ( pNode instanceof CallNode )
 		{
-			Node child = getCallee(pNode);
-			if ( child != null )
+			for (Node child : getCallees(pNode))
 			{
-				Node node = deepFindNode(child, pPoint);
-				if ( node != null )
+			
+				if ( child != null )
 				{
-					return node;
+					Node node = deepFindNode(child, pPoint);
+					if ( node != null )
+					{
+						return node;
+					}
 				}
 			}
 		}
