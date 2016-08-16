@@ -108,7 +108,7 @@ public class TestSequenceDiagramGraph
 		 * node (node) to a new call node also on itself, that is, a self-call
 		 * (node3).
 		 * 
-		 * This exact setup is illustrated at http://cs.mcgill.ca/~gcormi5/test1.jpg
+		 * This exact setup is illustrated at https://github.com/prmr/JetUML/pull/184
 		 */
 	
 		ImplicitParameterNode param = new ImplicitParameterNode();
