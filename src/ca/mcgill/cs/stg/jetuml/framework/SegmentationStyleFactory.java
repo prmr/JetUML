@@ -41,7 +41,7 @@ public final class SegmentationStyleFactory
 {
 	private static final int MARGIN = 20;
 	private static final int MIN_SEGMENT = 10;
-	private static final int NUDGE_VALUE = 8;
+	private static final int MAX_NUDGE = 8;
 	
 	private SegmentationStyleFactory(){}
 	
@@ -166,6 +166,7 @@ public final class SegmentationStyleFactory
 							   pNode.getConnectionPoint(Direction.SOUTH)};
 	}
 	
+	// TODO A bookmark
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
@@ -176,64 +177,20 @@ public final class SegmentationStyleFactory
 			{
 				Direction direction = computeDirection(pStart, pEnd);
 				Position position = computePosition(pStart, direction, pGraph, pEnd);
-				// Compute nudge
-				int nudge = 0;
-				if( position.getTotal() % 2 == 1 ) // Odd
-				{
-					nudge = position.getIndex() / 2 * NUDGE_VALUE;
-				}
-				else
-				{
-					nudge = (position.getIndex() - 1) * NUDGE_VALUE + NUDGE_VALUE/2; 
-				}
-				if( position.getIndex() < position.getIndex() / 2 )
-				{
-					nudge = -nudge;
-				}
+				
 				if( direction == Direction.EAST || direction == Direction.WEST )
 				{
-					start = new Point2D.Double( start.getX(), start.getY()+ nudge);
+					start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pStart.getBounds().getHeight()));
 				}
 				else
 				{
-					start = new Point2D.Double( start.getX()+nudge, start.getY());
+					start = new Point2D.Double( start.getX()+ position.computeNudge(pStart.getBounds().getWidth()), start.getY());
 				}
 			}
+			
 		    return new Point2D[] {start, 
 		    		pEnd.getConnectionPoint(computeDirection(pEnd, pStart))};
 		}		
-	}
-	
-	/** 
-	 * Indicates the total number of connection points
-	 * on the side of a rectangular node, and the index
-	 * of a node.
-	 */
-	private static class Position
-	{
-		private int aIndex;
-		private int aTotal;
-		
-		Position( int pIndex, int pTotal)
-		{
-			aIndex = pIndex;
-			aTotal = pTotal;
-		}
-		
-		int getIndex()
-		{
-			return aIndex;
-		}
-		
-		int getTotal()
-		{
-			return aTotal;
-		}
-		
-		public String toString()
-		{
-			return aIndex + " of " + aTotal;
-		}
 	}
 	
 	/**
@@ -241,23 +198,25 @@ public final class SegmentationStyleFactory
 	 * for top and bottom.
 	 * @param pNode The node for which a connection is being calculated
 	 * @param pGraph The graph storing the node.
+	 * @param pOther The other node to which the edge is attached.
 	 * @return The position on the side of the node where the edge should be connected.
 	 */
-	private static Position computePosition(Node pNode, Direction pDirection, Graph pGraph, Node pEnd)
+	private static Position computePosition(Node pNode, Direction pDirection, Graph pGraph, Node pOther)
 	{
-		// Get all outgoing edges for this side of the node
-		List<Edge> outgoingEdges = new ArrayList<>();
+		// Get all edges for this side of the node
+		List<Edge> edgesOnSelectedSide = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges(pNode))
 		{
 			if( computeDirection(pNode, otherNode(edge, pNode)).equals(pDirection))
 			{
-				outgoingEdges.add(edge);
+				edgesOnSelectedSide.add(edge);
 			}
 		}
+		
 		// Sort in terms of the position of the other node
-		Collections.sort(outgoingEdges, (pEdge1, pEdge2) ->
+		Collections.sort(edgesOnSelectedSide, (pEdge1, pEdge2) ->
 		{
-			if( pDirection.equals(Direction.EAST) || pDirection.equals(Direction.NORTH))
+			if( pDirection.equals(Direction.EAST) || pDirection.equals(Direction.WEST))
 			{
 				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterY() - otherNode(pEdge2, pNode).getBounds().getCenterY());
 			}
@@ -269,15 +228,15 @@ public final class SegmentationStyleFactory
 		
 		// Find index
 		int index = 0;
-		for( Edge edge : outgoingEdges )
+		for( Edge edge : edgesOnSelectedSide )
 		{
-			if( edge.getStart() == pNode && edge.getEnd() == pEnd )
+			if( edge.getStart() == pNode && edge.getEnd() == pOther )
 			{
 				break;
 			}
 			index++;
 		}
-		return new Position(index + 1, outgoingEdges.size());
+		return new Position(index + 1, edgesOnSelectedSide.size());
 	}
 	
 	private static Node otherNode(Edge pEdge, Node pNode)
@@ -364,7 +323,10 @@ public final class SegmentationStyleFactory
 	
 	/*
 	 * Computes which side of pStart should contain the connection
-	 * point given a link to pEnd. 
+	 * point given a link to pEnd. This method works independently
+	 * of the actual directionality of the edge, so it does not matter
+	 * if pStart is actually the start or end node of the edge, or 
+	 * vice versa.
 	 * 
 	 * @param pStart The start node
 	 * @param pEnd The end node
@@ -391,6 +353,51 @@ public final class SegmentationStyleFactory
 			}
 		}
 		return bestDirection;
+	}
+	
+	/** 
+	 * Indicates the total number of connection points
+	 * on the side of a rectangular node, and the index
+	 * of a node. Immutable. The index starts at 1.
+	 */
+	private static class Position
+	{
+		private int aIndex;
+		private int aTotal;
+		
+		Position( int pIndex, int pTotal)
+		{
+			aIndex = pIndex;
+			aTotal = pTotal;
+		}
+		
+		int getIndex()
+		{
+			return aIndex;
+		}
+		
+		/* Returns the index in the middle of the series */
+		private double getMiddle()
+		{
+			return ((double)aTotal +1 )/2.0;
+		}
+		
+		/* Returns the nudge value for a position */
+		double computeNudge(double pMaxWidth)
+		{
+			double increment = MAX_NUDGE;
+			double availableSpace = pMaxWidth - (2 * MAX_NUDGE  );
+			if( (aTotal - 2) * MAX_NUDGE > availableSpace )
+			{
+				increment = availableSpace / (aTotal - 1);
+			}
+			return -(getMiddle()-getIndex()) * increment;
+		}
+		
+		public String toString()
+		{
+			return aIndex + " of " + aTotal;
+		}
 	}
 }
 
