@@ -271,17 +271,17 @@ public class SequenceDiagramGraph extends Graph
 	
 	/**
 	 * @param pNode The node to obtain the callees for.
-	 * @return All CallNodes pointed to by an outgoing edge starting
+	 * @return All Nodes pointed to by an outgoing edge starting
 	 * at pNode, or null if there are none.
 	 */
-	private List<CallNode> getCallees(Node pNode)
+	private List<Node> getCallees(Node pNode)
 	{
-		List<CallNode> callees = new ArrayList<CallNode>();
+		List<Node> callees = new ArrayList<Node>();
 		for (Edge edge : aEdges )
 		{
 			if ( edge.getStart() == pNode && edge instanceof CallEdge )
 			{
-				callees.add((CallNode) edge.getEnd());
+				callees.add(edge.getEnd());
 			}
 		}
 		return callees;

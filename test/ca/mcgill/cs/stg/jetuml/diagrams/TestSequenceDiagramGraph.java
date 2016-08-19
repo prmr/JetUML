@@ -153,4 +153,52 @@ public class TestSequenceDiagramGraph
 		// Point inside both caller and self-call callee
 		assertTrue(aGraph.deepFindNode(node, new Point2D.Double(161, 139)) == node3);
 	}
+	
+	@Test
+	public void testDeepFindNodeCreateNode()
+	{
+		ImplicitParameterNode param = new ImplicitParameterNode();
+		aGraph.addNode(param, new Point2D.Double(118, 0));
+		aGraph.layout(aGraphics, aGrid);
+	
+		CallNode node = new CallNode();
+		aGraph.addNode(node, new Point2D.Double(152, 70));
+		aGraph.layout(aGraphics, aGrid);		
+
+		ImplicitParameterNode param2 = new ImplicitParameterNode();
+		aGraph.addNode(param2, new Point2D.Double(347, 0));
+		aGraph.layout(aGraphics, aGrid);
+		
+		Edge callEdge = new CallEdge();
+		aGraph.insertEdge(callEdge);
+		callEdge.connect(node, param2);
+		aGraph.layout(aGraphics, aGrid);
+		
+		CallNode node2 = new CallNode();
+		aGraph.addNode(node2, new Point2D.Double(160, 90));
+		aGraph.layout(aGraphics, aGrid);		
+
+		Edge callEdge2 = new CallEdge();
+		aGraph.insertEdge(callEdge2);
+		callEdge2.connect(node, node2);
+		aGraph.layout(aGraphics, aGrid);
+		
+		// Point outside the bounds
+		assertNull(aGraph.deepFindNode(node, new Point2D.Double(50, 50)));
+		
+		// Point inside the bounds of the caller but not the self-call callee
+		assertTrue(aGraph.deepFindNode(node, new Point2D.Double(155, 80)) == node);
+		
+		// Point inside both caller and self-call callee
+		assertTrue(aGraph.deepFindNode(node, new Point2D.Double(165, 140)) == node2);
+		
+		// Point inside the bounds of the first param
+		assertTrue(aGraph.deepFindNode(param, new Point2D.Double(125, 10)) == param);
+		
+		// Point inside the bounds of the second param
+		// Note that this assert passes because containment for ImplicitParameterNode
+		// only check whether the point is in the column induced by the right and left sides 
+		// of the rectangular node.
+		assertTrue(aGraph.deepFindNode(param2, new Point2D.Double(355, 10)) == param2);
+	}
 }
