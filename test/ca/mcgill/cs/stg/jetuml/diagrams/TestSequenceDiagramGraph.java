@@ -171,7 +171,7 @@ public class TestSequenceDiagramGraph
 		
 		Edge callEdge = new CallEdge();
 		aGraph.insertEdge(callEdge);
-		callEdge.connect(node, param2);
+		callEdge.connect(node, param2, aGraph);
 		aGraph.layout(aGraphics, aGrid);
 		
 		CallNode node2 = new CallNode();
@@ -180,7 +180,7 @@ public class TestSequenceDiagramGraph
 
 		Edge callEdge2 = new CallEdge();
 		aGraph.insertEdge(callEdge2);
-		callEdge2.connect(node, node2);
+		callEdge2.connect(node, node2, aGraph);
 		aGraph.layout(aGraphics, aGrid);
 		
 		// Point outside the bounds
