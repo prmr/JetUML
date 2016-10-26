@@ -1,5 +1,6 @@
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -13,12 +14,34 @@ import static org.junit.Assert.assertEquals;
 public class TestSegmentationStyleFactory
 {
 	private Method aMethod;
+	private Object aSideWest;
+	private Object aSideNorth;
+	private Object aSideEast;
+	private Object aSideSouth;
 	
 	@Before
 	public void setup() throws Exception
 	{
-		aMethod = SegmentationStyleFactory.class.getDeclaredMethod("computeDirection", Node.class, Node.class);
+		aMethod = SegmentationStyleFactory.class.getDeclaredMethod("computeSide", Node.class, Node.class);
 		aMethod.setAccessible(true);
+		for( Class<?> clazz : SegmentationStyleFactory.class.getDeclaredClasses())
+		{
+			if( clazz.getSimpleName().equals("Side"))
+			{
+				Field theField = clazz.getDeclaredField("WEST");
+				theField.setAccessible(true);
+				aSideWest = theField.get(null);
+				theField = clazz.getDeclaredField("NORTH");
+				theField.setAccessible(true);
+				aSideNorth = theField.get(null);
+				theField = clazz.getDeclaredField("EAST");
+				theField.setAccessible(true);
+				aSideEast = theField.get(null);
+				theField = clazz.getDeclaredField("SOUTH");
+				theField.setAccessible(true);
+				aSideSouth = theField.get(null);
+			}
+		}
 	}
 	
 	@Test
@@ -28,7 +51,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(200, 100);
-		assertEquals(Direction.EAST, aMethod.invoke(null, start, end));
+		assertEquals(aSideEast, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -38,7 +61,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(200, 125);
-		assertEquals(Direction.EAST, aMethod.invoke(null, start, end));
+		assertEquals(aSideEast, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -48,7 +71,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(200, 75);
-		assertEquals(Direction.EAST, aMethod.invoke(null, start, end));
+		assertEquals(aSideEast, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -58,7 +81,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(200, 100);
 		end.translate(0, 100);
-		assertEquals(Direction.WEST, aMethod.invoke(null, start, end));
+		assertEquals(aSideWest, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -68,7 +91,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(200, 100);
 		end.translate(0, 125);
-		assertEquals(Direction.WEST, aMethod.invoke(null, start, end));
+		assertEquals(aSideWest, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -78,7 +101,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(200, 100);
 		end.translate(0, 75);
-		assertEquals(Direction.WEST, aMethod.invoke(null, start, end));
+		assertEquals(aSideWest, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -88,7 +111,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 200);
 		end.translate(100, 100);
-		assertEquals(Direction.NORTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideNorth, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -98,7 +121,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 200);
 		end.translate(75, 100);
-		assertEquals(Direction.NORTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideNorth, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -108,7 +131,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 200);
 		end.translate(125, 100);
-		assertEquals(Direction.NORTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideNorth, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -118,7 +141,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(100, 200);
-		assertEquals(Direction.SOUTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideSouth, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -128,7 +151,7 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(75, 200);
-		assertEquals(Direction.SOUTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideSouth, aMethod.invoke(null, start, end));
 	}
 	
 	@Test
@@ -138,6 +161,6 @@ public class TestSegmentationStyleFactory
 		Node end = new ClassNode();
 		start.translate(100, 100);
 		end.translate(125, 200);
-		assertEquals(Direction.SOUTH, aMethod.invoke(null, start, end));
+		assertEquals(aSideSouth, aMethod.invoke(null, start, end));
 	}
 }

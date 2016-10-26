@@ -43,6 +43,36 @@ public final class SegmentationStyleFactory
 	private static final int MIN_SEGMENT = 10;
 	private static final int MAX_NUDGE = 8;
 	
+	/**
+	 * The side of a rectangle.
+	 * This seems to be redundant with Direction, but to 
+	 * overload Direction to mean both a side and a direction is
+	 * confusing.
+	 */
+	private enum Side
+	{WEST, NORTH, EAST, SOUTH;
+		
+		boolean isEastWest() 
+		{ return this == WEST || this == EAST; }
+		
+		Direction getDirection()
+		{
+			switch(this)
+			{
+			case WEST:
+				return Direction.WEST;
+			case NORTH:
+				return Direction.NORTH;
+			case EAST:
+				return Direction.EAST;
+			case SOUTH:
+				return Direction.SOUTH;
+			default:
+				return null;
+			}
+		}
+	}
+	
 	private SegmentationStyleFactory(){}
 	
 	/*
@@ -166,19 +196,18 @@ public final class SegmentationStyleFactory
 							   pNode.getConnectionPoint(Direction.SOUTH)};
 	}
 	
-	// TODO A bookmark
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
 		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
 		{
-			Point2D start = pStart.getConnectionPoint(computeDirection(pStart, pEnd));
+			Side startSide = computeSide(pStart, pEnd);
+			Point2D start = pStart.getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
-				Direction direction = computeDirection(pStart, pEnd);
-				Position position = computePosition(pStart, direction, pGraph, pEnd);
+				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
 				
-				if( direction == Direction.EAST || direction == Direction.WEST )
+				if( startSide.isEastWest() )
 				{
 					start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pStart.getBounds().getHeight()));
 				}
@@ -188,8 +217,23 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-		    return new Point2D[] {start, 
-		    		pEnd.getConnectionPoint(computeDirection(pEnd, pStart))};
+			Side endSide = computeSide(pEnd, pStart);
+			Point2D end = pEnd.getConnectionPoint(endSide.getDirection());
+			if( pGraph != null )
+			{
+				Position position = computePosition(pEnd, endSide, pGraph, pStart, false);
+				
+				if( endSide.isEastWest() )
+				{
+					end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEnd.getBounds().getHeight()));
+				}
+				else
+				{
+					end = new Point2D.Double( end.getX()+ position.computeNudge(pEnd.getBounds().getWidth()), end.getY());
+				}
+			}
+			
+		    return new Point2D[] {start, end };
 		}		
 	}
 	
@@ -197,17 +241,19 @@ public final class SegmentationStyleFactory
 	 * The position is given in terms of top-bottom for sides, and left-to-right
 	 * for top and bottom.
 	 * @param pNode The node for which a connection is being calculated
+	 * @param pSide The side of the node for which a connection is being calculated
 	 * @param pGraph The graph storing the node.
 	 * @param pOther The other node to which the edge is attached.
+	 * @param pForward true if pNode is the start node.
 	 * @return The position on the side of the node where the edge should be connected.
 	 */
-	private static Position computePosition(Node pNode, Direction pDirection, Graph pGraph, Node pOther)
+	private static Position computePosition(Node pNode, Side pSide, Graph pGraph, Node pOther, boolean pForward)
 	{
 		// Get all edges for this side of the node
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges(pNode))
 		{
-			if( computeDirection(pNode, otherNode(edge, pNode)).equals(pDirection))
+			if( computeSide(pNode, otherNode(edge, pNode)) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}
@@ -216,7 +262,7 @@ public final class SegmentationStyleFactory
 		// Sort in terms of the position of the other node
 		Collections.sort(edgesOnSelectedSide, (pEdge1, pEdge2) ->
 		{
-			if( pDirection.equals(Direction.EAST) || pDirection.equals(Direction.WEST))
+			if( pSide.isEastWest() )
 			{
 				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterY() - otherNode(pEdge2, pNode).getBounds().getCenterY());
 			}
@@ -230,13 +276,31 @@ public final class SegmentationStyleFactory
 		int index = 0;
 		for( Edge edge : edgesOnSelectedSide )
 		{
-			if( edge.getStart() == pNode && edge.getEnd() == pOther )
+			if( sameEdge(edge, pNode, pOther, pForward))
 			{
 				break;
 			}
 			index++;
 		}
 		return new Position(index + 1, edgesOnSelectedSide.size());
+	}
+	
+	/**
+	 * Tests whether pEdge can be assumed to be the same edge
+	 * as the one with pStart as one node and pEnd as the other node,
+	 * given that the edge is directed from pStart to pEnd if pForward is
+	 * true, and in the reverse direction if pForward is false.
+	 */
+	private static boolean sameEdge(Edge pEdge, Node pStart, Node pEnd, boolean pForward)
+	{
+		if( pForward )
+		{
+			return pEdge.getStart() == pStart && pEdge.getEnd() == pEnd;
+		}
+		else
+		{
+			return pEdge.getStart() == pEnd && pEdge.getEnd() == pStart;
+		}
 	}
 	
 	private static Node otherNode(Edge pEdge, Node pNode)
@@ -328,31 +392,29 @@ public final class SegmentationStyleFactory
 	 * if pStart is actually the start or end node of the edge, or 
 	 * vice versa.
 	 * 
-	 * @param pStart The start node
-	 * @param pEnd The end node
-	 * @return The direction pointing to the side of pStart that
-	 * should be connected.
+	 * @param pTarget The target node
+	 * @param pOther The other connected node
+	 * @return The side of pTarget that should be connected.
 	 */
-	private static Direction computeDirection(Node pStart, Node pEnd)
+	private static Side computeSide(Node pTarget, Node pOther)
 	{
-		Direction[] allDirections = {Direction.WEST, Direction.NORTH, Direction.EAST, Direction.SOUTH};
-		Direction bestDirection = Direction.WEST; // Placeholder
+		Side bestSide = Side.WEST; // Placeholder
 		double shortestDistance = Double.MAX_VALUE;
-		for( Direction direction : allDirections )
+		for( Side side : Side.values() )
 		{
-			Point2D start = pStart.getConnectionPoint(direction);
-			for( Direction inner : allDirections )
+			Point2D start = pTarget.getConnectionPoint(side.getDirection());
+			for( Side inner : Side.values() )
 			{
-				Point2D end = pEnd.getConnectionPoint(inner);
+				Point2D end = pOther.getConnectionPoint(inner.getDirection());
 				double distance = start.distance(end);
 				if( distance < shortestDistance )
 				{
 					shortestDistance = distance;
-					bestDirection = direction;
+					bestSide = side;
 				}
 			}
 		}
-		return bestDirection;
+		return bestSide;
 	}
 	
 	/** 
