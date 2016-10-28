@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 public class TestSegmentationStrategies 
@@ -89,20 +91,32 @@ public class TestSegmentationStrategies
 	@Test
 	public void testStraight1()
 	{
+		// Note that path should only work if there's an edge between the two nodes.
+		Edge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2, aGraph);
+		aGraph.insertEdge(edge);
+		
+		edge = new DependencyEdge();
+		edge.connect(aNode2, aNode1, aGraph);
+		aGraph.insertEdge(edge);
+		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(aNode1, aNode2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(200,140), points[1]);
+		assertEquals( new Point2D.Double(130,66), points[0]);
+		assertEquals( new Point2D.Double(200,136), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(aNode2, aNode1, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(130,70), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D.Double(130,74), points[1]);
+		assertEquals( new Point2D.Double(200,144), points[0]);
 	}
 	
 	@Test
 	public void testStraight2()
 	{
+		Edge edge = new DependencyEdge();
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.insertEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(aNode3, aNode4, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(120,50), points[0]);
@@ -130,6 +144,9 @@ public class TestSegmentationStrategies
 	@Test
 	public void testHVH2()
 	{
+		Edge edge = new DependencyEdge();
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.insertEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(aNode3, aNode4, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(120,50), points[0]);
@@ -168,6 +185,9 @@ public class TestSegmentationStrategies
 	@Test
 	public void testVHV2()
 	{
+		Edge edge = new DependencyEdge();
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.insertEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(aNode3, aNode4, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(120,50), points[0]);

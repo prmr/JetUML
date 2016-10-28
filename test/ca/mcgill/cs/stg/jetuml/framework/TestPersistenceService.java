@@ -229,11 +229,11 @@ public class TestPersistenceService
 		assertTrue( cr4.getStart() == a1 );
 		assertTrue( cr4.getEnd() == u1 );
 		
-		assertEquals(new Rectangle2D.Double(340,150,120,120),cr5.getBounds());
+		assertEquals(new Rectangle2D.Double(340,150,120,116),cr5.getBounds());
 		assertTrue( cr5.getStart() == a2 );
 		assertTrue( cr5.getEnd() == u2 );
 		
-		assertEquals(new Rectangle2D.Double(340,250,120,20),cr6.getBounds());
+		assertEquals(new Rectangle2D.Double(340,250,120,24),cr6.getBounds());
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
@@ -241,17 +241,18 @@ public class TestPersistenceService
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertEquals(new Rectangle2D.Double(515,170,62,60),cr8.getBounds());
+		assertTrue(new Rectangle2D.Double(515,170,63,60).equals(cr8.getBounds()) ||
+				new Rectangle2D.Double(515,170,62,60).equals(cr8.getBounds()));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertEquals(new Rectangle2D.Double(580,141,88,32),cr9.getBounds());
+		assertEquals(new Rectangle2D.Double(580,143,88,33),cr9.getBounds());
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.getType() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle2D.Double(560,60,90,110),cr10.getBounds());
+		assertEquals(new Rectangle2D.Double(560,60,90,106),cr10.getBounds());
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
