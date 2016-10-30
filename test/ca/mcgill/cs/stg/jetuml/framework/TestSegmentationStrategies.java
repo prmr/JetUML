@@ -128,17 +128,17 @@ public class TestSegmentationStrategies
 	{
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(aNode1, aNode2, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(165,70), points[1]);
-		assertEquals( new Point2D.Double(165,140), points[2]);
-		assertEquals( new Point2D.Double(200,140), points[3]);
+		assertEquals( new Point2D.Double(130,74), points[0]);
+		assertEquals( new Point2D.Double(165,74), points[1]);
+		assertEquals( new Point2D.Double(165,144), points[2]);
+		assertEquals( new Point2D.Double(200,144), points[3]);
 		
 		points = SegmentationStyleFactory.createHVHStrategy().getPath(aNode2, aNode1, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[3]);
-		assertEquals( new Point2D.Double(165,70), points[2]);
-		assertEquals( new Point2D.Double(165,140), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D.Double(130,74), points[3]);
+		assertEquals( new Point2D.Double(165,74), points[2]);
+		assertEquals( new Point2D.Double(165,144), points[1]);
+		assertEquals( new Point2D.Double(200,144), points[0]);
 	}
 	
 	@Test
@@ -160,8 +160,8 @@ public class TestSegmentationStrategies
 		node.translate(150, 5);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(aNode3, node, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(120,55), points[0]);
-		assertEquals( new Point2D.Double(170,55), points[1]);
+		assertEquals( new Point2D.Double(120,59), points[0]);
+		assertEquals( new Point2D.Double(170,59), points[1]);
 	}
 	
 	@Test
@@ -169,17 +169,17 @@ public class TestSegmentationStrategies
 	{
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(aNode1, aNode2, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(165,70), points[1]);
-		assertEquals( new Point2D.Double(165,140), points[2]);
-		assertEquals( new Point2D.Double(200,140), points[3]);
+		assertEquals( new Point2D.Double(130,74), points[0]);
+		assertEquals( new Point2D.Double(165,74), points[1]);
+		assertEquals( new Point2D.Double(165,144), points[2]);
+		assertEquals( new Point2D.Double(200,144), points[3]);
 		
 		points = SegmentationStyleFactory.createVHVStrategy().getPath(aNode2, aNode1, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[3]);
-		assertEquals( new Point2D.Double(165,70), points[2]);
-		assertEquals( new Point2D.Double(165,140), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D.Double(130,74), points[3]);
+		assertEquals( new Point2D.Double(165,74), points[2]);
+		assertEquals( new Point2D.Double(165,144), points[1]);
+		assertEquals( new Point2D.Double(200,144), points[0]);
 	}
 	
 	@Test
