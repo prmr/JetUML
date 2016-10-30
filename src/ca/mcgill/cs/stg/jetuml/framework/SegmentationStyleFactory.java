@@ -71,6 +71,23 @@ public final class SegmentationStyleFactory
 				return null;
 			}
 		}
+		
+		Side flip()
+		{
+			switch(this)
+			{
+			case WEST:
+				return EAST;
+			case NORTH:
+				return SOUTH;
+			case EAST:
+				return WEST;
+			case SOUTH:
+				return NORTH;
+			default:
+				return null;
+			}
+		}
 	}
 	
 	private SegmentationStyleFactory(){}
@@ -322,18 +339,28 @@ public final class SegmentationStyleFactory
 		{
 			Point2D start = pStart.getConnectionPoint(Direction.EAST);
 			Point2D end = pEnd.getConnectionPoint(Direction.WEST);
+			Side startSide = Side.EAST;
 			
 			if( start.getX() + 2* MIN_SEGMENT <= end.getX() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
 			else if( pEnd.getConnectionPoint(Direction.EAST).getX() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.WEST).getX() )
 			{ 	// The segment goes in the other direction
+				startSide = Side.WEST;	
 				start = pStart.getConnectionPoint(Direction.WEST);
 				end = pEnd.getConnectionPoint(Direction.EAST);
 			}
 			else
 			{	// There is not enough space for either direction, return null.
 				return null;
+			}
+			
+			if( pGraph != null )
+			{
+				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
+				start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pStart.getBounds().getHeight()));
+				position = computePosition(pEnd, startSide.flip(), pGraph, pStart, false);
+				end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEnd.getBounds().getHeight()));
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
