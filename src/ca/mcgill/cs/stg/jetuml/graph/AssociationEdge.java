@@ -96,6 +96,6 @@ public class AssociationEdge extends ClassRelationshipEdge
 	@Override
 	public Point2D[] getPoints()
 	{
-		return SegmentationStyleFactory.createHVHStrategy().getPath(getStart(), getEnd(), getGraph());
+		return SegmentationStyleFactory.createHVHStrategy().getPath(this, getGraph());
    }
 }

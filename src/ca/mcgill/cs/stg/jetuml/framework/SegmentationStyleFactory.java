@@ -103,16 +103,16 @@ public final class SegmentationStyleFactory
 		return new SegmentationStyle()
 		{
 			@Override
-			public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
+			public Point2D[] getPath(Edge pEdge, Graph pGraph)
 			{
-				if( pStart == pEnd )
+				if( pEdge.getStart() == pEdge.getEnd() )
 				{
-					return createSelfPath(pStart);
+					return createSelfPath(pEdge.getStart());
 				}
-				Point2D[] path = pMain.getPath(pStart, pEnd, pGraph);
+				Point2D[] path = pMain.getPath(pEdge, pGraph);
 				if( path == null && pAlternate != null )
 				{
-					path = pAlternate.getPath(pStart, pEnd, pGraph);
+					path = pAlternate.getPath(pEdge, pGraph);
 				}
 				if( path != null )
 				{
@@ -120,7 +120,7 @@ public final class SegmentationStyleFactory
 				}
 				else
 				{
-					path = new Straight().getPath(pStart, pEnd, pGraph);
+					path = new Straight().getPath(pEdge, pGraph);
 					assert path != null;
 					return path;
 				}
@@ -216,37 +216,37 @@ public final class SegmentationStyleFactory
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
-			Side startSide = computeSide(pStart, pEnd);
-			Point2D start = pStart.getConnectionPoint(startSide.getDirection());
+			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
+			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
+				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
 				
 				if( startSide.isEastWest() )
 				{
-					start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pStart.getBounds().getHeight()));
+					start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pEdge.getStart().getBounds().getHeight()));
 				}
 				else
 				{
-					start = new Point2D.Double( start.getX()+ position.computeNudge(pStart.getBounds().getWidth()), start.getY());
+					start = new Point2D.Double( start.getX()+ position.computeNudge(pEdge.getStart().getBounds().getWidth()), start.getY());
 				}
 			}
 			
-			Side endSide = computeSide(pEnd, pStart);
-			Point2D end = pEnd.getConnectionPoint(endSide.getDirection());
+			Side endSide = computeSide(pEdge.getEnd(), pEdge.getStart());
+			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEnd, endSide, pGraph, pStart, false);
+				Position position = computePosition(pEdge.getEnd(), endSide, pGraph, pEdge.getStart(), false);
 				
 				if( endSide.isEastWest() )
 				{
-					end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEnd.getBounds().getHeight()));
+					end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEdge.getEnd().getBounds().getHeight()));
 				}
 				else
 				{
-					end = new Point2D.Double( end.getX()+ position.computeNudge(pEnd.getBounds().getWidth()), end.getY());
+					end = new Point2D.Double( end.getX()+ position.computeNudge(pEdge.getEnd().getBounds().getWidth()), end.getY());
 				}
 			}
 			
@@ -349,20 +349,21 @@ public final class SegmentationStyleFactory
 	private static class HVH implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
-			Point2D start = pStart.getConnectionPoint(Direction.EAST);
-			Point2D end = pEnd.getConnectionPoint(Direction.WEST);
+			Point2D start = pEdge.getStart().getConnectionPoint(Direction.EAST);
+			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
 			Side startSide = Side.EAST;
 			
 			if( start.getX() + 2* MIN_SEGMENT <= end.getX() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( pEnd.getConnectionPoint(Direction.EAST).getX() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.WEST).getX() )
+			else if( pEdge.getEnd().getConnectionPoint(Direction.EAST).getX() + 
+					2 * MIN_SEGMENT <= pEdge.getStart().getConnectionPoint(Direction.WEST).getX() )
 			{ 	// The segment goes in the other direction
 				startSide = Side.WEST;	
-				start = pStart.getConnectionPoint(Direction.WEST);
-				end = pEnd.getConnectionPoint(Direction.EAST);
+				start = pEdge.getStart().getConnectionPoint(Direction.WEST);
+				end = pEdge.getEnd().getConnectionPoint(Direction.EAST);
 			}
 			else
 			{	// There is not enough space for either direction, return null.
@@ -371,10 +372,10 @@ public final class SegmentationStyleFactory
 			
 			if( pGraph != null )
 			{
-				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
-				start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pStart.getBounds().getHeight()));
-				position = computePosition(pEnd, startSide.flip(), pGraph, pStart, false);
-				end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEnd.getBounds().getHeight()));
+				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
+				start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pEdge.getStart().getBounds().getHeight()));
+				position = computePosition(pEdge.getEnd(), startSide.flip(), pGraph, pEdge.getStart(), false);
+				end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEdge.getEnd().getBounds().getHeight()));
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
@@ -394,20 +395,21 @@ public final class SegmentationStyleFactory
 	private static class VHV implements SegmentationStyle
 	{
 		@Override
-		public Point2D[] getPath(Node pStart, Node pEnd, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
-			Point2D start = pStart.getConnectionPoint(Direction.SOUTH);
-			Point2D end = pEnd.getConnectionPoint(Direction.NORTH);
+			Point2D start = pEdge.getStart().getConnectionPoint(Direction.SOUTH);
+			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.NORTH);
 			Side startSide = Side.SOUTH;
 			
 			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( pEnd.getConnectionPoint(Direction.SOUTH).getY() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.NORTH).getY() )
+			else if( pEdge.getEnd().getConnectionPoint(Direction.SOUTH).getY() + 
+					2 * MIN_SEGMENT <= pEdge.getStart().getConnectionPoint(Direction.NORTH).getY() )
 			{ 	// The segment goes in the other direction
 				startSide = Side.NORTH;
-				start = pStart.getConnectionPoint(Direction.NORTH);
-				end = pEnd.getConnectionPoint(Direction.SOUTH);
+				start = pEdge.getStart().getConnectionPoint(Direction.NORTH);
+				end = pEdge.getEnd().getConnectionPoint(Direction.SOUTH);
 			}
 			else
 			{	// There is not enough space for either direction, return null.
@@ -416,10 +418,10 @@ public final class SegmentationStyleFactory
 			
 			if( pGraph != null )
 			{
-				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
-				start = new Point2D.Double( start.getX() + position.computeNudge(pStart.getBounds().getWidth()), start.getY());
-				position = computePosition(pEnd, startSide.flip(), pGraph, pStart, false);
-				end = new Point2D.Double( end.getX()+ position.computeNudge(pEnd.getBounds().getWidth()), end.getY());
+				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
+				start = new Point2D.Double( start.getX() + position.computeNudge(pEdge.getStart().getBounds().getWidth()), start.getY());
+				position = computePosition(pEdge.getEnd(), startSide.flip(), pGraph, pEdge.getStart(), false);
+				end = new Point2D.Double( end.getX()+ position.computeNudge(pEdge.getEnd().getBounds().getWidth()), end.getY());
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
