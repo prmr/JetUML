@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * A strategy for drawing a segmented line between two nodes.
@@ -98,5 +99,13 @@ public interface SegmentationStyle
 	 */
 	Point2D[] getPath(Edge pEdge, Graph pGraph);
 	
-	
+	/**
+	 * Returns which side of the node attached to
+	 * an edge is attached to the edge.
+	 * @param pEdge The edge to check.
+	 * @param pNode The node to check.
+	 * @return The side the edge leaves from.
+	 * @pre pNode == pEdge.getStart() || pNode == pEdge.getEnd()
+	 */
+	Side getAttachedSide(Edge pEdge, Node pNode);
 }

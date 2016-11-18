@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
+import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -134,6 +135,28 @@ public final class SegmentationStyleFactory
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
+		public Side getAttachedSide(Edge pEdge, Node pNode)
+		{
+			Side bestSide = Side.WEST; // Placeholder
+			double shortestDistance = Double.MAX_VALUE;
+			for( Side side : Side.values() )
+			{
+				Point2D start = pNode.getConnectionPoint(side.getDirection());
+				for( Side inner : Side.values() )
+				{
+					Point2D end = otherNode(pEdge, pNode).getConnectionPoint(inner.getDirection());
+					double distance = start.distance(end);
+					if( distance < shortestDistance )
+					{
+						shortestDistance = distance;
+						bestSide = side;
+					}
+				}
+			}
+			return bestSide;
+		}
+		
+		@Override
 		public boolean isPossible(Edge pEdge) 
 		{
 			return true;
@@ -147,7 +170,8 @@ public final class SegmentationStyleFactory
 				return createSelfPath(pEdge.getStart());
 			}
 			
-			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
+//			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
+			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
 			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
@@ -163,7 +187,8 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Side endSide = computeSide(pEdge.getEnd(), pEdge.getStart());
+//			Side endSide = computeSide(pEdge.getEnd(), pEdge.getStart());
+			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
 			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
@@ -207,7 +232,12 @@ public final class SegmentationStyleFactory
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges(target))
 		{
-			if( computeSide(target, otherNode(edge, target)) == pSide )
+			SegmentationStyle style = new Straight(); // Default
+			if( edge instanceof ClassRelationshipEdge )
+			{
+				style = ((ClassRelationshipEdge)edge).obtainSegmentationStyle();
+			}
+			if( style.getAttachedSide(edge, target) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}
@@ -253,11 +283,63 @@ public final class SegmentationStyleFactory
 	
 	private static class HVH implements SegmentationStyle
 	{
+		@Override
+		public Side getAttachedSide(Edge pEdge, Node pNode)
+		{
+			Side lReturn = Side.WEST; // Placeholder
+			if( pEdge.getStart() == pEdge.getEnd() )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					return Side.NORTH;
+				}
+				else
+				{
+					return Side.EAST;
+				}
+			}
+			if( goingEast(pEdge) )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					lReturn = Side.EAST;
+				}
+				else
+				{
+					lReturn = Side.WEST;
+				}
+			}
+			else if( goingWest(pEdge) )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					lReturn = Side.WEST;
+				}
+				else
+				{
+					lReturn = Side.EAST;
+				}
+			}
+			else
+			{
+				SegmentationStyle vhv = new VHV();
+				if( vhv.isPossible(pEdge) )
+				{
+					lReturn = vhv.getAttachedSide(pEdge, pNode);
+				}
+				else
+				{
+					lReturn = new Straight().getAttachedSide(pEdge, pNode);
+				}
+			}
+			return lReturn;
+		}
+		
 		/*
 		 * There is room for at least two segments going right from the start node
 		 * to the end node.
 		 */
-		private static boolean goingRight(Edge pEdge)
+		private static boolean goingEast(Edge pEdge)
 		{
 			return pEdge.getStart().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
 					pEdge.getEnd().getConnectionPoint(Direction.WEST).getX();
@@ -267,7 +349,7 @@ public final class SegmentationStyleFactory
 		 * There is room for at least two segments going left from the start node
 		 * to the end node.
 		 */
-		private static boolean goingLeft(Edge pEdge)
+		private static boolean goingWest(Edge pEdge)
 		{
 			return pEdge.getEnd().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
 					pEdge.getStart().getConnectionPoint(Direction.WEST).getX();
@@ -276,7 +358,7 @@ public final class SegmentationStyleFactory
 		@Override
 		public boolean isPossible(Edge pEdge) 
 		{
-			return goingRight(pEdge) || goingLeft(pEdge);
+			return goingEast(pEdge) || goingWest(pEdge);
 		}
 		
 		@Override
@@ -305,10 +387,10 @@ public final class SegmentationStyleFactory
 			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
 			Side startSide = Side.EAST;
 			
-			if( goingRight(pEdge) )
+			if( goingEast(pEdge) )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( goingLeft(pEdge) )
+			else if( goingWest(pEdge) )
 			{ 	// The segment goes in the other direction
 				startSide = Side.WEST;	
 				start = pEdge.getStart().getConnectionPoint(Direction.WEST);
@@ -339,11 +421,63 @@ public final class SegmentationStyleFactory
 	
 	private static class VHV implements SegmentationStyle
 	{
+		@Override
+		public Side getAttachedSide(Edge pEdge, Node pNode)
+		{
+			Side lReturn = Side.SOUTH; // Placeholder
+			if( pEdge.getStart() == pEdge.getEnd() )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					return Side.NORTH;
+				}
+				else
+				{
+					return Side.EAST;
+				}
+			}
+			if( goingSouth(pEdge) )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					lReturn = Side.SOUTH;
+				}
+				else
+				{
+					lReturn = Side.NORTH;
+				}
+			}
+			else if( goingNorth(pEdge) )
+			{
+				if( pNode == pEdge.getStart() )
+				{
+					lReturn = Side.NORTH;
+				}
+				else
+				{
+					lReturn = Side.SOUTH;
+				}
+			}
+			else
+			{
+				SegmentationStyle hvh = new HVH();
+				if( hvh.isPossible(pEdge) )
+				{
+					lReturn = hvh.getAttachedSide(pEdge, pNode);
+				}
+				else
+				{
+					lReturn = new Straight().getAttachedSide(pEdge, pNode);
+				}
+			}
+			return lReturn;
+		}
+		
 		/*
 		 * There is room for at least two segments going down from the start node
 		 * to the end node.
 		 */
-		private static boolean goingDown(Edge pEdge)
+		private static boolean goingSouth(Edge pEdge)
 		{
 			return pEdge.getStart().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
 					pEdge.getEnd().getConnectionPoint(Direction.NORTH).getY();
@@ -353,7 +487,7 @@ public final class SegmentationStyleFactory
 		 * There is room for at least two segments going up from the start node
 		 * to the end node.
 		 */
-		private static boolean goingUp(Edge pEdge)
+		private static boolean goingNorth(Edge pEdge)
 		{
 			return pEdge.getEnd().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
 					pEdge.getStart().getConnectionPoint(Direction.NORTH).getY();
@@ -362,7 +496,7 @@ public final class SegmentationStyleFactory
 		@Override
 		public boolean isPossible(Edge pEdge)
 		{	
-			return goingDown(pEdge) || goingUp(pEdge);
+			return goingSouth(pEdge) || goingNorth(pEdge);
 		}
 		
 		@Override
@@ -435,26 +569,26 @@ public final class SegmentationStyleFactory
 	 * @param pOther The other connected node
 	 * @return The side of pTarget that should be connected.
 	 */
-	private static Side computeSide(Node pTarget, Node pOther)
-	{
-		Side bestSide = Side.WEST; // Placeholder
-		double shortestDistance = Double.MAX_VALUE;
-		for( Side side : Side.values() )
-		{
-			Point2D start = pTarget.getConnectionPoint(side.getDirection());
-			for( Side inner : Side.values() )
-			{
-				Point2D end = pOther.getConnectionPoint(inner.getDirection());
-				double distance = start.distance(end);
-				if( distance < shortestDistance )
-				{
-					shortestDistance = distance;
-					bestSide = side;
-				}
-			}
-		}
-		return bestSide;
-	}
+//	private static Side computeSide(Node pTarget, Node pOther)
+//	{
+//		Side bestSide = Side.WEST; // Placeholder
+//		double shortestDistance = Double.MAX_VALUE;
+//		for( Side side : Side.values() )
+//		{
+//			Point2D start = pTarget.getConnectionPoint(side.getDirection());
+//			for( Side inner : Side.values() )
+//			{
+//				Point2D end = pOther.getConnectionPoint(inner.getDirection());
+//				double distance = start.distance(end);
+//				if( distance < shortestDistance )
+//				{
+//					shortestDistance = distance;
+//					bestSide = side;
+//				}
+//			}
+//		}
+//		return bestSide;
+//	}
 	
 	/** 
 	 * Indicates the total number of connection points
