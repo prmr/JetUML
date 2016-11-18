@@ -25,10 +25,9 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.geom.Point2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
@@ -98,8 +97,8 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public Point2D[] getPoints()
+	public SegmentationStyle obtainSegmentationStyle()
 	{
-		return SegmentationStyleFactory.createVHVStrategy().getPath(this, getGraph());
-   }
+		return SegmentationStyleFactory.createVHVStrategy();
+	}
 }

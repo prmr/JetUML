@@ -21,6 +21,10 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
+import java.awt.geom.Point2D;
+
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
+
 /**
  *  An edge that is shaped like a line with up to 
  *  three segments and with up to three labels and optional
@@ -97,4 +101,16 @@ public abstract class ClassRelationshipEdge extends SegmentedLabeledEdge
 	{
 		return aEndLabel;
 	}
+	
+	@Override
+	protected Point2D[] getPoints()
+	{
+		return obtainSegmentationStyle().getPath(this, getGraph());
+	}
+	
+	/**
+	 * @return The object that can draw the line corresponding
+	 * to this edge.
+	 */
+	public abstract SegmentationStyle obtainSegmentationStyle();
 }

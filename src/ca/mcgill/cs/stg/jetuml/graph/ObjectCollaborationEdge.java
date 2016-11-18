@@ -25,8 +25,7 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.geom.Point2D;
-
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
@@ -42,8 +41,8 @@ public class ObjectCollaborationEdge extends ClassRelationshipEdge
 	{}
 	
 	@Override
-	protected Point2D[] getPoints()
+	public SegmentationStyle obtainSegmentationStyle()
 	{
-		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
-   }
+		return SegmentationStyleFactory.createStraightStrategy();
+	}
 }
