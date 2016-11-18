@@ -35,12 +35,20 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 public interface SegmentationStyle
 {
 	/**
+	 * Determines if it is possible to use this segmentation style.
+	 * @param pEdge The edge to draw
+	 * @return true if it is possible to use the segmentation style.
+	 */
+	boolean isPossible(Edge pEdge);
+	
+	/**
      * Gets the points at which the line representing an
      * edge is bent according to this strategy.
      * @param pEdge the Edge for which a path is determine
-     * @param pGraph the graph holding the edge
+     * @param pGraph the graph holding the edge. Can be null.
      * @return an array list of points at which to bend the
-     * segmented line representing the edge.
+     * segmented line representing the edge. Never null.
+     * @pre isPossible()
 	 */
 	Point2D[] getPath(Edge pEdge, Graph pGraph);
 }

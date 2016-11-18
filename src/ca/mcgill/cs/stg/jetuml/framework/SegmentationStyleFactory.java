@@ -41,7 +41,7 @@ public final class SegmentationStyleFactory
 {
 	private static final int MARGIN = 20;
 	private static final int MIN_SEGMENT = 10;
-	private static final int MAX_NUDGE = 8;
+	private static final int MAX_NUDGE = 11;
 	
 	/**
 	 * The side of a rectangle.
@@ -103,26 +103,29 @@ public final class SegmentationStyleFactory
 		return new SegmentationStyle()
 		{
 			@Override
+			public boolean isPossible(Edge pEdge) 
+			{
+				return true;
+			}
+			
+			@Override
 			public Point2D[] getPath(Edge pEdge, Graph pGraph)
 			{
 				if( pEdge.getStart() == pEdge.getEnd() )
 				{
 					return createSelfPath(pEdge.getStart());
 				}
-				Point2D[] path = pMain.getPath(pEdge, pGraph);
-				if( path == null && pAlternate != null )
+				if( pMain.isPossible(pEdge))
 				{
-					path = pAlternate.getPath(pEdge, pGraph);
+					return pMain.getPath(pEdge, pGraph);
 				}
-				if( path != null )
+				else if( pAlternate != null && pAlternate.isPossible(pEdge))
 				{
-					return path;
+					return pAlternate.getPath(pEdge, pGraph);
 				}
 				else
 				{
-					path = new Straight().getPath(pEdge, pGraph);
-					assert path != null;
-					return path;
+					return new Straight().getPath(pEdge, pGraph);
 				}
 			}
 		};
@@ -216,13 +219,19 @@ public final class SegmentationStyleFactory
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
+		public boolean isPossible(Edge pEdge) 
+		{
+			return true;
+		}
+		
+		@Override
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
 			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
 			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
+				Position position = computePosition(pEdge, startSide, pGraph, true);
 				
 				if( startSide.isEastWest() )
 				{
@@ -238,7 +247,7 @@ public final class SegmentationStyleFactory
 			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge.getEnd(), endSide, pGraph, pEdge.getStart(), false);
+				Position position = computePosition(pEdge, endSide, pGraph, false);
 				
 				if( endSide.isEastWest() )
 				{
@@ -255,22 +264,30 @@ public final class SegmentationStyleFactory
 	}
 	
 	/**
+	 * Computes the relative attachment position for an edge's node endpoint:
+	 * either the start node (pForward == true) or the end node (pForward == false).
 	 * The position is given in terms of top-bottom for sides, and left-to-right
-	 * for top and bottom.
-	 * @param pNode The node for which a connection is being calculated
+	 * for top and bottom. 
+	 * @param pEdge The edge containing the node for which a connection is being calculated
 	 * @param pSide The side of the node for which a connection is being calculated
 	 * @param pGraph The graph storing the node.
-	 * @param pOther The other node to which the edge is attached.
-	 * @param pForward true if pNode is the start node.
+	 * @param pForward true if this is the calculation for the start node of the edge
 	 * @return The position on the side of the node where the edge should be connected.
 	 */
-	private static Position computePosition(Node pNode, Side pSide, Graph pGraph, Node pOther, boolean pForward)
+	private static Position computePosition(Edge pEdge, Side pSide, Graph pGraph, boolean pForward)
 	{
+		Node tempTarget = pEdge.getStart();
+		if( !pForward )
+		{
+			tempTarget = pEdge.getEnd();
+		}
+		final Node target = tempTarget;
+		
 		// Get all edges for this side of the node
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
-		for( Edge edge : pGraph.getEdges(pNode))
+		for( Edge edge : pGraph.getEdges(target))
 		{
-			if( computeSide(pNode, otherNode(edge, pNode)) == pSide )
+			if( computeSide(target, otherNode(edge, target)) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}
@@ -279,17 +296,13 @@ public final class SegmentationStyleFactory
 		// Sort in terms of the position of the other node
 		Collections.sort(edgesOnSelectedSide, (pEdge1, pEdge2) ->
 		{
-			Node otherNode1 = otherNode(pEdge1, pNode);
-			Node otherNode2 = otherNode(pEdge2, pNode);
+			Node otherNode1 = otherNode(pEdge1, target);
+			Node otherNode2 = otherNode(pEdge2, target);
 			
 			if( otherNode1 == otherNode2)
 			{
 				// Sort by type
 				int direction = pEdge1.getClass().getSimpleName().compareTo(pEdge2.getClass().getSimpleName());
-				if( !pForward )
-				{
-					direction = -1 * direction;
-				}
 				return direction;
 			}
 						
@@ -303,35 +316,7 @@ public final class SegmentationStyleFactory
 			}
 		});
 		
-		// Find index
-		int index = 0;
-		for( Edge edge : edgesOnSelectedSide )
-		{
-			if( sameEdge(edge, pNode, pOther, pForward))
-			{
-				break;
-			}
-			index++;
-		}
-		return new Position(index + 1, edgesOnSelectedSide.size());
-	}
-	
-	/**
-	 * Tests whether pEdge can be assumed to be the same edge
-	 * as the one with pStart as one node and pEnd as the other node,
-	 * given that the edge is directed from pStart to pEnd if pForward is
-	 * true, and in the reverse direction if pForward is false.
-	 */
-	private static boolean sameEdge(Edge pEdge, Node pStart, Node pEnd, boolean pForward)
-	{
-		if( pForward )
-		{
-			return pEdge.getStart() == pStart && pEdge.getEnd() == pEnd;
-		}
-		else
-		{
-			return pEdge.getStart() == pEnd && pEdge.getEnd() == pStart;
-		}
+		return new Position(edgesOnSelectedSide.indexOf(pEdge) + 1, edgesOnSelectedSide.size());
 	}
 	
 	private static Node otherNode(Edge pEdge, Node pNode)
@@ -348,33 +333,57 @@ public final class SegmentationStyleFactory
 	
 	private static class HVH implements SegmentationStyle
 	{
+		/*
+		 * There is room for at least two segments going right from the start node
+		 * to the end node.
+		 */
+		private static boolean goingRight(Edge pEdge)
+		{
+			return pEdge.getStart().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					pEdge.getEnd().getConnectionPoint(Direction.WEST).getX();
+		}
+		
+		/*
+		 * There is room for at least two segments going left from the start node
+		 * to the end node.
+		 */
+		private static boolean goingLeft(Edge pEdge)
+		{
+			return pEdge.getEnd().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					pEdge.getStart().getConnectionPoint(Direction.WEST).getX();
+		}
+		
+		@Override
+		public boolean isPossible(Edge pEdge) 
+		{
+			return goingRight(pEdge) || goingLeft(pEdge);
+		}
+		
 		@Override
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
+			assert pEdge != null;
+			assert isPossible(pEdge);
+			
 			Point2D start = pEdge.getStart().getConnectionPoint(Direction.EAST);
 			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
 			Side startSide = Side.EAST;
 			
-			if( start.getX() + 2* MIN_SEGMENT <= end.getX() )
+			if( goingRight(pEdge) )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( pEdge.getEnd().getConnectionPoint(Direction.EAST).getX() + 
-					2 * MIN_SEGMENT <= pEdge.getStart().getConnectionPoint(Direction.WEST).getX() )
+			else if( goingLeft(pEdge) )
 			{ 	// The segment goes in the other direction
 				startSide = Side.WEST;	
 				start = pEdge.getStart().getConnectionPoint(Direction.WEST);
 				end = pEdge.getEnd().getConnectionPoint(Direction.EAST);
 			}
-			else
-			{	// There is not enough space for either direction, return null.
-				return null;
-			}
-			
+						
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
+				Position position = computePosition(pEdge, startSide, pGraph, true);
 				start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pEdge.getStart().getBounds().getHeight()));
-				position = computePosition(pEdge.getEnd(), startSide.flip(), pGraph, pEdge.getStart(), false);
+				position = computePosition(pEdge, startSide.flip(), pGraph, false);
 				end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEdge.getEnd().getBounds().getHeight()));
 			}
 			
@@ -394,9 +403,38 @@ public final class SegmentationStyleFactory
 	
 	private static class VHV implements SegmentationStyle
 	{
+		/*
+		 * There is room for at least two segments going down from the start node
+		 * to the end node.
+		 */
+		private static boolean goingDown(Edge pEdge)
+		{
+			return pEdge.getStart().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					pEdge.getEnd().getConnectionPoint(Direction.NORTH).getY();
+		}
+		
+		/*
+		 * There is room for at least two segments going up from the start node
+		 * to the end node.
+		 */
+		private static boolean goingUp(Edge pEdge)
+		{
+			return pEdge.getEnd().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					pEdge.getStart().getConnectionPoint(Direction.NORTH).getY();
+		}
+		
+		@Override
+		public boolean isPossible(Edge pEdge)
+		{	
+			return goingDown(pEdge) || goingUp(pEdge);
+		}
+		
 		@Override
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
+			assert pEdge != null;
+			assert isPossible(pEdge);
+			
 			Point2D start = pEdge.getStart().getConnectionPoint(Direction.SOUTH);
 			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.NORTH);
 			Side startSide = Side.SOUTH;
@@ -411,16 +449,12 @@ public final class SegmentationStyleFactory
 				start = pEdge.getStart().getConnectionPoint(Direction.NORTH);
 				end = pEdge.getEnd().getConnectionPoint(Direction.SOUTH);
 			}
-			else
-			{	// There is not enough space for either direction, return null.
-				return null;
-			}
 			
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge.getStart(), startSide, pGraph, pEdge.getEnd(), true);
+				Position position = computePosition(pEdge, startSide, pGraph, true);
 				start = new Point2D.Double( start.getX() + position.computeNudge(pEdge.getStart().getBounds().getWidth()), start.getY());
-				position = computePosition(pEdge.getEnd(), startSide.flip(), pGraph, pEdge.getStart(), false);
+				position = computePosition(pEdge, startSide.flip(), pGraph, false);
 				end = new Point2D.Double( end.getX()+ position.computeNudge(pEdge.getEnd().getBounds().getWidth()), end.getY());
 			}
 			
