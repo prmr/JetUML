@@ -35,6 +35,53 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
 public interface SegmentationStyle
 {
 	/**
+	 * The side of a rectangle.
+	 * This seems to be redundant with Direction, but to 
+	 * overload Direction to mean both a side and a direction is
+	 * confusing.
+	 */
+	enum Side
+	{WEST, NORTH, EAST, SOUTH;
+		
+		boolean isEastWest() 
+		{ return this == WEST || this == EAST; }
+		
+		Direction getDirection()
+		{
+			switch(this)
+			{
+			case WEST:
+				return Direction.WEST;
+			case NORTH:
+				return Direction.NORTH;
+			case EAST:
+				return Direction.EAST;
+			case SOUTH:
+				return Direction.SOUTH;
+			default:
+				return null;
+			}
+		}
+		
+		Side flip()
+		{
+			switch(this)
+			{
+			case WEST:
+				return EAST;
+			case NORTH:
+				return SOUTH;
+			case EAST:
+				return WEST;
+			case SOUTH:
+				return NORTH;
+			default:
+				return null;
+			}
+		}
+	}
+	
+	/**
 	 * Determines if it is possible to use this segmentation style.
 	 * @param pEdge The edge to draw
 	 * @return true if it is possible to use the segmentation style.
@@ -50,4 +97,6 @@ public interface SegmentationStyle
      * segmented line representing the edge. Never null.
 	 */
 	Point2D[] getPath(Edge pEdge, Graph pGraph);
+	
+	
 }

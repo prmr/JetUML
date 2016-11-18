@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -42,54 +43,7 @@ public final class SegmentationStyleFactory
 	private static final int MARGIN = 20;
 	private static final int MIN_SEGMENT = 10;
 	private static final int MAX_NUDGE = 11;
-	
-	/**
-	 * The side of a rectangle.
-	 * This seems to be redundant with Direction, but to 
-	 * overload Direction to mean both a side and a direction is
-	 * confusing.
-	 */
-	private enum Side
-	{WEST, NORTH, EAST, SOUTH;
-		
-		boolean isEastWest() 
-		{ return this == WEST || this == EAST; }
-		
-		Direction getDirection()
-		{
-			switch(this)
-			{
-			case WEST:
-				return Direction.WEST;
-			case NORTH:
-				return Direction.NORTH;
-			case EAST:
-				return Direction.EAST;
-			case SOUTH:
-				return Direction.SOUTH;
-			default:
-				return null;
-			}
-		}
-		
-		Side flip()
-		{
-			switch(this)
-			{
-			case WEST:
-				return EAST;
-			case NORTH:
-				return SOUTH;
-			case EAST:
-				return WEST;
-			case SOUTH:
-				return NORTH;
-			default:
-				return null;
-			}
-		}
-	}
-	
+
 	private SegmentationStyleFactory(){}
 	
 	/**
