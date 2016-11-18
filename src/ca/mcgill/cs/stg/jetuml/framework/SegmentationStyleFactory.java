@@ -279,13 +279,27 @@ public final class SegmentationStyleFactory
 		// Sort in terms of the position of the other node
 		Collections.sort(edgesOnSelectedSide, (pEdge1, pEdge2) ->
 		{
-			if( pSide.isEastWest() )
+			Node otherNode1 = otherNode(pEdge1, pNode);
+			Node otherNode2 = otherNode(pEdge2, pNode);
+			
+			if( otherNode1 == otherNode2)
 			{
-				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterY() - otherNode(pEdge2, pNode).getBounds().getCenterY());
+				// Sort by type
+				int direction = pEdge1.getClass().getSimpleName().compareTo(pEdge2.getClass().getSimpleName());
+				if( !pForward )
+				{
+					direction = -1 * direction;
+				}
+				return direction;
+			}
+						
+			if( pSide.isEastWest() )
+			{		
+				return (int)(otherNode1.getBounds().getCenterY() - otherNode2.getBounds().getCenterY());
 			}
 			else
 			{
-				return (int)(otherNode(pEdge1, pNode).getBounds().getCenterX() - otherNode(pEdge2, pNode).getBounds().getCenterX());
+				return (int)(otherNode1.getBounds().getCenterX() - otherNode2.getBounds().getCenterX());
 			}
 		});
 		
@@ -384,18 +398,28 @@ public final class SegmentationStyleFactory
 		{
 			Point2D start = pStart.getConnectionPoint(Direction.SOUTH);
 			Point2D end = pEnd.getConnectionPoint(Direction.NORTH);
+			Side startSide = Side.SOUTH;
 			
 			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
 			else if( pEnd.getConnectionPoint(Direction.SOUTH).getY() + 2* MIN_SEGMENT <= pStart.getConnectionPoint(Direction.NORTH).getY() )
 			{ 	// The segment goes in the other direction
+				startSide = Side.NORTH;
 				start = pStart.getConnectionPoint(Direction.NORTH);
 				end = pEnd.getConnectionPoint(Direction.SOUTH);
 			}
 			else
 			{	// There is not enough space for either direction, return null.
 				return null;
+			}
+			
+			if( pGraph != null )
+			{
+				Position position = computePosition(pStart, startSide, pGraph, pEnd, true);
+				start = new Point2D.Double( start.getX() + position.computeNudge(pStart.getBounds().getWidth()), start.getY());
+				position = computePosition(pEnd, startSide.flip(), pGraph, pStart, false);
+				end = new Point2D.Double( end.getX()+ position.computeNudge(pEnd.getBounds().getWidth()), end.getY());
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
