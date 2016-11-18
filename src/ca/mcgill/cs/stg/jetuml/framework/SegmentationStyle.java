@@ -48,7 +48,6 @@ public interface SegmentationStyle
      * @param pGraph the graph holding the edge. Can be null.
      * @return an array list of points at which to bend the
      * segmented line representing the edge. Never null.
-     * @pre isPossible()
 	 */
 	Point2D[] getPath(Edge pEdge, Graph pGraph);
 }

@@ -92,45 +92,6 @@ public final class SegmentationStyleFactory
 	
 	private SegmentationStyleFactory(){}
 	
-	/*
-     * Creates the cascading structure between strategies. 1. Always check for a self-edge.
-     * Otherwise, implement the main strategy. If it does not work (returns null),
-     * check the alternate strategy. If that fails too, return a straight line
-     * (this should never return null).
-	 */
-	private static SegmentationStyle genericCreateStrategy( final SegmentationStyle pMain, final SegmentationStyle pAlternate)
-	{
-		return new SegmentationStyle()
-		{
-			@Override
-			public boolean isPossible(Edge pEdge) 
-			{
-				return true;
-			}
-			
-			@Override
-			public Point2D[] getPath(Edge pEdge, Graph pGraph)
-			{
-				if( pEdge.getStart() == pEdge.getEnd() )
-				{
-					return createSelfPath(pEdge.getStart());
-				}
-				if( pMain.isPossible(pEdge))
-				{
-					return pMain.getPath(pEdge, pGraph);
-				}
-				else if( pAlternate != null && pAlternate.isPossible(pEdge))
-				{
-					return pAlternate.getPath(pEdge, pGraph);
-				}
-				else
-				{
-					return new Straight().getPath(pEdge, pGraph);
-				}
-			}
-		};
-	}
-	
 	/**
 	 * Creates a strategy to draw straight (unsegmented) 
 	 * lines by choosing the connection points that induce the 
@@ -139,7 +100,7 @@ public final class SegmentationStyleFactory
 	 */
 	public static SegmentationStyle createStraightStrategy()
 	{
-		return genericCreateStrategy(new Straight(), null);
+		return new Straight();
 	}
 	
 	/**
@@ -151,7 +112,7 @@ public final class SegmentationStyleFactory
 	 */
 	public static SegmentationStyle createHVHStrategy()
 	{
-		return genericCreateStrategy(new HVH(), new VHV());
+		return new HVH();
 	}
 	
 	/**
@@ -163,7 +124,7 @@ public final class SegmentationStyleFactory
 	 */
 	public static SegmentationStyle createVHVStrategy()
 	{
-		return genericCreateStrategy(new VHV(), new HVH());
+		return new VHV();
 	}
 	
 	/*
@@ -227,6 +188,11 @@ public final class SegmentationStyleFactory
 		@Override
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
+			if( pEdge.getStart() == pEdge.getEnd() )
+			{
+				return createSelfPath(pEdge.getStart());
+			}
+			
 			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
 			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
@@ -363,7 +329,23 @@ public final class SegmentationStyleFactory
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
 			assert pEdge != null;
-			assert isPossible(pEdge);
+			
+			if( pEdge.getStart() == pEdge.getEnd() )
+			{
+				return createSelfPath(pEdge.getStart());
+			}
+			if( !isPossible(pEdge) )
+			{
+				SegmentationStyle alternate = new VHV();
+				if( alternate.isPossible(pEdge))
+				{
+					return alternate.getPath(pEdge, pGraph);
+				}
+				else
+				{
+					return new Straight().getPath(pEdge, pGraph);
+				}
+			}
 			
 			Point2D start = pEdge.getStart().getConnectionPoint(Direction.EAST);
 			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
@@ -433,7 +415,23 @@ public final class SegmentationStyleFactory
 		public Point2D[] getPath(Edge pEdge, Graph pGraph)
 		{
 			assert pEdge != null;
-			assert isPossible(pEdge);
+			
+			if( pEdge.getStart() == pEdge.getEnd() )
+			{
+				return createSelfPath(pEdge.getStart());
+			}
+			if( !isPossible(pEdge) )
+			{
+				SegmentationStyle alternate = new HVH();
+				if( alternate.isPossible(pEdge))
+				{
+					return alternate.getPath(pEdge, pGraph);
+				}
+				else
+				{
+					return new Straight().getPath(pEdge, pGraph);
+				}
+			}
 			
 			Point2D start = pEdge.getStart().getConnectionPoint(Direction.SOUTH);
 			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.NORTH);
