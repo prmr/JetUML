@@ -170,42 +170,38 @@ public final class SegmentationStyleFactory
 				return createSelfPath(pEdge.getStart());
 			}
 			
-//			Side startSide = computeSide(pEdge.getStart(), pEdge.getEnd());
 			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
 			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge, startSide, pGraph, true);
-				
-				if( startSide.isEastWest() )
-				{
-					start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pEdge.getStart().getBounds().getHeight()));
-				}
-				else
-				{
-					start = new Point2D.Double( start.getX()+ position.computeNudge(pEdge.getStart().getBounds().getWidth()), start.getY());
-				}
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
 			}
 			
-//			Side endSide = computeSide(pEdge.getEnd(), pEdge.getStart());
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
 			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge, endSide, pGraph, false);
-				
-				if( endSide.isEastWest() )
-				{
-					end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEdge.getEnd().getBounds().getHeight()));
-				}
-				else
-				{
-					end = new Point2D.Double( end.getX()+ position.computeNudge(pEdge.getEnd().getBounds().getWidth()), end.getY());
-				}
+				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false));
 			}
 			
 		    return new Point2D[] {start, end };
 		}		
+	}
+	
+	/*
+	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
+	 */
+	private static Point2D computePointPosition(Node pNode, Side pSide, Position pPosition)
+	{
+		Point2D start = pNode.getConnectionPoint(pSide.getDirection());
+		if( pSide.isEastWest() )
+		{
+			return new Point2D.Double( start.getX(), start.getY()+ pPosition.computeNudge(pNode.getBounds().getHeight()));
+		}
+		else
+		{
+			return new Point2D.Double( start.getX()+ pPosition.computeNudge(pNode.getBounds().getWidth()), start.getY());
+		}
 	}
 	
 	/**
@@ -232,12 +228,15 @@ public final class SegmentationStyleFactory
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges(target))
 		{
-			SegmentationStyle style = new Straight(); // Default
-			if( edge instanceof ClassRelationshipEdge )
+			if( otherNode(edge, target) == target)
 			{
-				style = ((ClassRelationshipEdge)edge).obtainSegmentationStyle();
+				continue; // Do not count self-edges
 			}
-			if( style.getAttachedSide(edge, target) == pSide )
+			if( !(edge instanceof ClassRelationshipEdge))
+			{
+				continue;
+			}
+			if( ((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, target) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}
@@ -399,10 +398,8 @@ public final class SegmentationStyleFactory
 						
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge, startSide, pGraph, true);
-				start = new Point2D.Double( start.getX(), start.getY()+ position.computeNudge(pEdge.getStart().getBounds().getHeight()));
-				position = computePosition(pEdge, startSide.flip(), pGraph, false);
-				end = new Point2D.Double( end.getX(), end.getY()+ position.computeNudge(pEdge.getEnd().getBounds().getHeight()));
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false));
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
@@ -538,10 +535,8 @@ public final class SegmentationStyleFactory
 			
 			if( pGraph != null )
 			{
-				Position position = computePosition(pEdge, startSide, pGraph, true);
-				start = new Point2D.Double( start.getX() + position.computeNudge(pEdge.getStart().getBounds().getWidth()), start.getY());
-				position = computePosition(pEdge, startSide.flip(), pGraph, false);
-				end = new Point2D.Double( end.getX()+ position.computeNudge(pEdge.getEnd().getBounds().getWidth()), end.getY());
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false));
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
@@ -557,38 +552,6 @@ public final class SegmentationStyleFactory
 	  		}
 		}
 	}
-	
-	/*
-	 * Computes which side of pStart should contain the connection
-	 * point given a link to pEnd. This method works independently
-	 * of the actual directionality of the edge, so it does not matter
-	 * if pStart is actually the start or end node of the edge, or 
-	 * vice versa.
-	 * 
-	 * @param pTarget The target node
-	 * @param pOther The other connected node
-	 * @return The side of pTarget that should be connected.
-	 */
-//	private static Side computeSide(Node pTarget, Node pOther)
-//	{
-//		Side bestSide = Side.WEST; // Placeholder
-//		double shortestDistance = Double.MAX_VALUE;
-//		for( Side side : Side.values() )
-//		{
-//			Point2D start = pTarget.getConnectionPoint(side.getDirection());
-//			for( Side inner : Side.values() )
-//			{
-//				Point2D end = pOther.getConnectionPoint(inner.getDirection());
-//				double distance = start.distance(end);
-//				if( distance < shortestDistance )
-//				{
-//					shortestDistance = distance;
-//					bestSide = side;
-//				}
-//			}
-//		}
-//		return bestSide;
-//	}
 	
 	/** 
 	 * Indicates the total number of connection points
