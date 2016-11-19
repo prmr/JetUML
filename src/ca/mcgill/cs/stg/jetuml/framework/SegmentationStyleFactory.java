@@ -174,14 +174,14 @@ public final class SegmentationStyleFactory
 			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
 			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
-				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false));
+				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
 			}
 			
 		    return new Point2D[] {start, end };
@@ -191,17 +191,42 @@ public final class SegmentationStyleFactory
 	/*
 	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
 	 */
-	private static Point2D computePointPosition(Node pNode, Side pSide, Position pPosition)
+	private static Point2D computePointPosition(Node pNode, Side pSide, Position pPosition, Graph pGraph)
 	{
+		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
 		Point2D start = pNode.getConnectionPoint(pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
-			return new Point2D.Double( start.getX(), start.getY()+ pPosition.computeNudge(pNode.getBounds().getHeight()));
+			double yPosition = start.getY()+ pPosition.computeNudge(pNode.getBounds().getHeight()); // Default
+			if( hasSelfEdge(pNode, pGraph) && pSide == Side.EAST )
+			{
+				double increment = (pNode.getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
+				yPosition = pNode.getBounds().getMinY() + MARGIN + pPosition.getIndex() * increment;
+			}
+			return new Point2D.Double( start.getX(), yPosition);	
 		}
 		else
 		{
-			return new Point2D.Double( start.getX()+ pPosition.computeNudge(pNode.getBounds().getWidth()), start.getY());
+			double xPosition = start.getX()+ pPosition.computeNudge(pNode.getBounds().getWidth());
+			if( hasSelfEdge(pNode, pGraph) && pSide == Side.NORTH )
+			{
+				double increment = (pNode.getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
+				xPosition = pNode.getBounds().getMinX() + pPosition.getIndex() * increment;
+			}
+			return new Point2D.Double( xPosition, start.getY());
 		}
+	}
+	
+	private static boolean hasSelfEdge(Node pNode, Graph pGraph)
+	{
+		for( Edge edge : pGraph.getEdges(pNode))
+		{
+			if( edge.getStart() == edge.getEnd())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -217,6 +242,7 @@ public final class SegmentationStyleFactory
 	 */
 	private static Position computePosition(Edge pEdge, Side pSide, Graph pGraph, boolean pForward)
 	{
+		assert pEdge != null && pSide != null && pGraph != null;
 		Node tempTarget = pEdge.getStart();
 		if( !pForward )
 		{
@@ -398,8 +424,8 @@ public final class SegmentationStyleFactory
 						
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
-				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false));
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
@@ -535,8 +561,8 @@ public final class SegmentationStyleFactory
 			
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
-				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false));
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
