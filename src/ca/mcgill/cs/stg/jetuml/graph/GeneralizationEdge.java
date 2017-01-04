@@ -78,7 +78,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	protected ArrowHead obtainEndArrowHead()
+	public ArrowHead obtainEndArrowHead()
 	{
 		return ArrowHead.TRIANGLE;
 	}

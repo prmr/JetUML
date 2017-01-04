@@ -29,6 +29,7 @@ import java.util.List;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
@@ -249,12 +250,59 @@ public final class SegmentationStyleFactory
 			tempTarget = pEdge.getEnd();
 		}
 		final Node target = tempTarget;
+		List<Edge> edgesOnSelectedSide = getAllEdgesForSide(pGraph, target, pSide);
+		sortPositions(edgesOnSelectedSide, target, pSide);
 		
-		// Get all edges for this side of the node
-		List<Edge> edgesOnSelectedSide = new ArrayList<>();
-		for( Edge edge : pGraph.getEdges(target))
+		// Group identical edge ends
+		List<Edge> finalPositions = new ArrayList<>();
+		int index = -1;
+		for( Edge edge : edgesOnSelectedSide )
 		{
-			if( otherNode(edge, target) == target)
+			int aggregated = -1;
+			for( Edge classifiedEdge : finalPositions )
+			{
+				if( canAggregate(edge, classifiedEdge, target))
+				{
+					aggregated = finalPositions.indexOf(classifiedEdge);
+					break;
+				}
+			}
+			if( aggregated < 0 )
+			{
+				finalPositions.add(edge);
+				aggregated = finalPositions.size() - 1;
+			}
+			if( edge == pEdge )
+			{
+				index = aggregated;
+			}
+		}
+		return new Position(index + 1, finalPositions.size());
+	}
+	
+	// CSOFF:
+	private static final boolean canAggregate(Edge pEdge1, Edge pEdge2, Node pTarget)
+	{
+		if( pEdge1.getEnd() == pTarget && pEdge2.getEnd() == pTarget &&
+				pEdge1 instanceof GeneralizationEdge && pEdge2 instanceof GeneralizationEdge &&
+				((GeneralizationEdge)pEdge1).obtainEndArrowHead() == ArrowHead.TRIANGLE && 
+				((GeneralizationEdge)pEdge2).obtainEndArrowHead() == ArrowHead.TRIANGLE  &&
+				((GeneralizationEdge)pEdge1).getType() == ((GeneralizationEdge)pEdge2).getType())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	} // CSON:
+	
+	private static List<Edge> getAllEdgesForSide(Graph pGraph, Node pTarget, Side pSide)
+	{
+		List<Edge> edgesOnSelectedSide = new ArrayList<>();
+		for( Edge edge : pGraph.getEdges(pTarget))
+		{
+			if( otherNode(edge, pTarget) == pTarget)
 			{
 				continue; // Do not count self-edges
 			}
@@ -262,17 +310,21 @@ public final class SegmentationStyleFactory
 			{
 				continue;
 			}
-			if( ((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, target) == pSide )
+			if( ((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}
 		}
-		
-		// Sort in terms of the position of the other node
-		Collections.sort(edgesOnSelectedSide, (pEdge1, pEdge2) ->
+		return edgesOnSelectedSide;
+	}
+	
+	// Sort in terms of the position of the other node
+	private static void sortPositions(List<Edge> pEdges, Node pTarget, Side pSide)
+	{
+		Collections.sort(pEdges, (pEdge1, pEdge2) ->
 		{
-			Node otherNode1 = otherNode(pEdge1, target);
-			Node otherNode2 = otherNode(pEdge2, target);
+			Node otherNode1 = otherNode(pEdge1, pTarget);
+			Node otherNode2 = otherNode(pEdge2, pTarget);
 			
 			if( otherNode1 == otherNode2)
 			{
@@ -290,8 +342,6 @@ public final class SegmentationStyleFactory
 				return (int)(otherNode1.getBounds().getCenterX() - otherNode2.getBounds().getCenterX());
 			}
 		});
-		
-		return new Position(edgesOnSelectedSide.indexOf(pEdge) + 1, edgesOnSelectedSide.size());
 	}
 	
 	private static Node otherNode(Edge pEdge, Node pNode)
