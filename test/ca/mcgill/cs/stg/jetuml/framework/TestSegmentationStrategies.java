@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
@@ -36,6 +37,8 @@ import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 public class TestSegmentationStrategies 
 {
+	private static final int MAX_NUDGE = 11; // Same as in SegmentationStyleFactory
+	
 	private PackageNode aNode1;
 	private PackageNode aNode2;
 	private ClassNode aNode3;
@@ -252,5 +255,76 @@ public class TestSegmentationStrategies
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(250,250), points[0]);
 		assertEquals( new Point2D.Double(250,180), points[1]);
+	}
+	
+	/*
+	 * Two horizontal dependency edges between two nodes, one from A to B and another
+	 * one in the other direction.
+	 */
+	@Test
+	public void testStraightMultipleEdgesHorizontal()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		node2.translate(200, 0);
+		aGraph.insertNode(node1);
+		aGraph.insertNode(node2);
+		DependencyEdge edge1 = new DependencyEdge();
+		DependencyEdge edge2 = new DependencyEdge();
+		aGraph.restoreEdge(edge1, node1, node2);
+		aGraph.restoreEdge(edge2, node2, node1);
+		
+		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(100,30-(MAX_NUDGE/2.0)), points[0]);
+		assertEquals( new Point2D.Double(200,30-(MAX_NUDGE/2.0)), points[1]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(200,30+(MAX_NUDGE/2.0)), points[0]);
+		assertEquals( new Point2D.Double(100,30+(MAX_NUDGE/2.0)), points[1]);
+	}
+	
+	/*
+	 * Four interleaved vertical edges between two nodes, two in each direction, one
+	 * dependency and one association
+	 */
+	@Test
+	public void testStraightMultipleEdgesVertical()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		node2.translate(0, 200);
+		aGraph.insertNode(node1);
+		aGraph.insertNode(node2);
+		DependencyEdge edge1 = new DependencyEdge();
+		DependencyEdge edge2 = new DependencyEdge();
+		AssociationEdge edge3 = new AssociationEdge();
+		AssociationEdge edge4 = new AssociationEdge();
+		aGraph.restoreEdge(edge1, node1, node2);
+		aGraph.restoreEdge(edge2, node2, node1);
+		aGraph.restoreEdge(edge3, node1, node2);
+		aGraph.restoreEdge(edge4, node2, node1);
+		
+		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(50+(MAX_NUDGE/2.0),60), points[0]);
+		assertEquals( new Point2D.Double(50+(MAX_NUDGE/2.0),200), points[1]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(50+(MAX_NUDGE*3/2.0),200), points[0]);
+		assertEquals( new Point2D.Double(50+(MAX_NUDGE*3/2.0),60), points[1]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(50-(MAX_NUDGE*3/2.0),60), points[0]);
+		assertEquals( new Point2D.Double(50-(MAX_NUDGE*3/2.0),200), points[1]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge4, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( new Point2D.Double(50-(MAX_NUDGE/2.0),200), points[0]);
+		assertEquals( new Point2D.Double(50-(MAX_NUDGE/2.0),60), points[1]);
+
 	}
 }

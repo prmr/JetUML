@@ -126,14 +126,6 @@ public final class SegmentationStyleFactory
 		}
 	}
 	
-	static Point2D[] connectionPoints(Node pNode)
-	{
-		return new Point2D[] { pNode.getConnectionPoint(Direction.WEST) ,
-							   pNode.getConnectionPoint(Direction.NORTH),
-							   pNode.getConnectionPoint(Direction.EAST),
-							   pNode.getConnectionPoint(Direction.SOUTH)};
-	}
-	
 	private static class Straight implements SegmentationStyle
 	{
 		@Override
