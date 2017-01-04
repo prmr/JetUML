@@ -72,7 +72,7 @@ public class TestSegmentationStrategies
 	public void testSelfEdge1()
 	{
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode1, aNode1, aGraph);
+		aGraph.restoreEdge(edge, aNode1, aNode1);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 5, points.length );
 		assertEquals( new Point2D.Double(110,50), points[0]);
@@ -86,7 +86,7 @@ public class TestSegmentationStrategies
 	public void testSelfEdge2()
 	{
 		DependencyEdge edge = new DependencyEdge();
-		edge.connect(aNode3, aNode3, aGraph);
+		aGraph.restoreEdge(edge, aNode3, aNode3);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 5, points.length );
 		assertEquals( new Point2D.Double(100,20), points[0]);
@@ -124,8 +124,7 @@ public class TestSegmentationStrategies
 	public void testStraight2()
 	{
 		Edge edge = new DependencyEdge();
-		edge.connect(aNode3, aNode4, aGraph);
-		aGraph.insertEdge(edge);
+		aGraph.restoreEdge(edge, aNode3, aNode4);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(120,50), points[0]);
@@ -213,8 +212,7 @@ public class TestSegmentationStrategies
 	public void testVHV2()
 	{
 		Edge edge = new DependencyEdge();
-		edge.connect(aNode3, aNode4, aGraph);
-		aGraph.insertEdge(edge);
+		aGraph.restoreEdge(edge, aNode3, aNode4);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(120,50), points[0]);
@@ -325,6 +323,96 @@ public class TestSegmentationStrategies
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D.Double(50-(MAX_NUDGE/2.0),200), points[0]);
 		assertEquals( new Point2D.Double(50-(MAX_NUDGE/2.0),60), points[1]);
-
+	}
+	
+	/*
+	 * Two straight dependencies and one self-edge all originating 
+	 * horizontally from the same node.
+	 */
+	@Test
+	public void testStraightHorizontalWithSelfEdge()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		ClassNode node3 = new ClassNode();
+		node2.translate(200, 0);
+		node3.translate(200, 200);
+		aGraph.insertNode(node1);
+		aGraph.insertNode(node2);
+		aGraph.insertNode(node3);
+		DependencyEdge edge1 = new DependencyEdge();
+		DependencyEdge edge2 = new DependencyEdge();
+		DependencyEdge edge3 = new DependencyEdge();
+		aGraph.restoreEdge(edge1, node1, node1);
+		aGraph.restoreEdge(edge2, node1, node2);
+		aGraph.restoreEdge(edge3, node1, node3);
+		
+		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
+		assertEquals( 5, points.length );
+		assertEquals( new Point2D.Double(80,0), points[0]);
+		assertEquals( new Point2D.Double(80,-20), points[1]);
+		assertEquals( new Point2D.Double(120,-20), points[2]);
+		assertEquals( new Point2D.Double(120,20), points[3]);
+		assertEquals( new Point2D.Double(100,20), points[4]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( 100, points[0].getX(), 0.01);
+		assertEquals( 33.33, points[0].getY(), 0.01);
+		assertEquals( 200, points[1].getX(), 0.01);
+		assertEquals( 30, points[1].getY(), 0.01);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( 100, points[0].getX(), 0.01);
+		assertEquals( 46.67, points[0].getY(), 0.01);
+		assertEquals( 200, points[1].getX(), 0.01);
+		assertEquals( 230, points[1].getY(), 0.01);
+	}
+	
+	/*
+	 * Two straight dependencies and one self-edge all originating 
+	 * vertically from the same node.
+	 */
+	@Test
+	public void testStraightVerticalWithSelfEdge()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		ClassNode node3 = new ClassNode();
+		node1.translate(1000, 1000);
+		node2.translate(900, 500);
+		node3.translate(1100, 500);
+		aGraph.insertNode(node1);
+		aGraph.insertNode(node2);
+		aGraph.insertNode(node3);
+		DependencyEdge edge1 = new DependencyEdge();
+		DependencyEdge edge2 = new DependencyEdge();
+		DependencyEdge edge3 = new DependencyEdge();
+		aGraph.restoreEdge(edge1, node1, node1);
+		aGraph.restoreEdge(edge2, node1, node2);
+		aGraph.restoreEdge(edge3, node1, node3);
+		
+		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
+		assertEquals( 5, points.length );
+		assertEquals( new Point2D.Double(1080,1000), points[0]);
+		assertEquals( new Point2D.Double(1080,980), points[1]);
+		assertEquals( new Point2D.Double(1120,980), points[2]);
+		assertEquals( new Point2D.Double(1120,1020), points[3]);
+		assertEquals( new Point2D.Double(1100,1020), points[4]);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( 1026.67, points[0].getX(), 0.01);
+		assertEquals( 1000, points[0].getY(), 0.01);
+		assertEquals( 950, points[1].getX(), 0.01);
+		assertEquals( 560, points[1].getY(), 0.01);
+		
+		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
+		assertEquals( 2, points.length );
+		assertEquals( 1053.33, points[0].getX(), 0.01);
+		assertEquals( 1000, points[0].getY(), 0.01);
+		assertEquals( 1150, points[1].getX(), 0.01);
+		assertEquals( 560, points[1].getY(), 0.01);
 	}
 }
