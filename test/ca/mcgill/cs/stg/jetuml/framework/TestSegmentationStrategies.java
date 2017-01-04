@@ -33,6 +33,7 @@ import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 public class TestSegmentationStrategies 
@@ -414,5 +415,48 @@ public class TestSegmentationStrategies
 		assertEquals( 1000, points[0].getY(), 0.01);
 		assertEquals( 1150, points[1].getX(), 0.01);
 		assertEquals( 560, points[1].getY(), 0.01);
+	}
+	
+	/*
+	 * Two generalization edges vertically oriented, collapsed into a single end point.
+	 */
+	@Test
+	public void testAggregateGeneralizationEdgesOnly()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		ClassNode node3 = new ClassNode();
+		node1.translate(1000, 0);
+		node2.translate(900, 500);
+		node3.translate(1100, 500);
+		aGraph.insertNode(node1);
+		aGraph.insertNode(node2);
+		aGraph.insertNode(node3);
+		GeneralizationEdge edge1 = new GeneralizationEdge();
+		GeneralizationEdge edge2 = new GeneralizationEdge();
+		aGraph.restoreEdge(edge1, node2, node1);
+		aGraph.restoreEdge(edge2, node3, node1);
+		
+		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge1, aGraph);
+		assertEquals( 4, points.length );
+		assertEquals( 950, points[0].getX(), 0.01);
+		assertEquals( 500, points[0].getY(), 0.01);
+		assertEquals( 950, points[1].getX(), 0.01);
+		assertEquals( 280, points[1].getY(), 0.01);
+		assertEquals( 1050, points[2].getX(), 0.01);
+		assertEquals( 280, points[2].getY(), 0.01);
+		assertEquals( 1050, points[3].getX(), 0.01);
+		assertEquals( 60, points[3].getY(), 0.01);
+		
+		points = SegmentationStyleFactory.createVHVStrategy().getPath(edge2, aGraph);
+		assertEquals( 4, points.length );
+		assertEquals( 1150, points[0].getX(), 0.01);
+		assertEquals( 500, points[0].getY(), 0.01);
+		assertEquals( 1150, points[1].getX(), 0.01);
+		assertEquals( 280, points[1].getY(), 0.01);
+		assertEquals( 1050, points[2].getX(), 0.01);
+		assertEquals( 280, points[2].getY(), 0.01);
+		assertEquals( 1050, points[3].getX(), 0.01);
+		assertEquals( 60, points[3].getY(), 0.01);
 	}
 }
