@@ -76,7 +76,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	}
 
 	@Override
-	protected ArrowHead obtainStartArrowHead()
+	public ArrowHead obtainStartArrowHead()
 	{
 		if( aType == Type.Composition )
 		{

@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
+import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
@@ -288,6 +289,20 @@ public final class SegmentationStyleFactory
 				((GeneralizationEdge)pEdge1).obtainEndArrowHead() == ArrowHead.TRIANGLE && 
 				((GeneralizationEdge)pEdge2).obtainEndArrowHead() == ArrowHead.TRIANGLE  &&
 				((GeneralizationEdge)pEdge1).getType() == ((GeneralizationEdge)pEdge2).getType())
+		{
+			return true;
+		}
+		else if( pEdge1.getStart() == pTarget && pEdge2.getStart() == pTarget && 
+				pEdge1 instanceof AggregationEdge && pEdge2 instanceof AggregationEdge &&
+				((AggregationEdge)pEdge1).obtainStartArrowHead() == ArrowHead.DIAMOND &&
+				((AggregationEdge)pEdge2).obtainStartArrowHead() == ArrowHead.DIAMOND)
+		{
+			return true;
+		}
+		else if( pEdge1.getStart() == pTarget && pEdge2.getStart() == pTarget && 
+				pEdge1 instanceof AggregationEdge && pEdge2 instanceof AggregationEdge &&
+				((AggregationEdge)pEdge1).obtainStartArrowHead() == ArrowHead.BLACK_DIAMOND &&
+				((AggregationEdge)pEdge2).obtainStartArrowHead() == ArrowHead.BLACK_DIAMOND)
 		{
 			return true;
 		}
