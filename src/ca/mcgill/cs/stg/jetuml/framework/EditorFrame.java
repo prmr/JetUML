@@ -1072,7 +1072,7 @@ public class EditorFrame extends JFrame
 			@Override
 			public boolean accept(File pFile)
 			{
-				return !pFile.isDirectory() && (pFile.getName().endsWith("." +pFormat.toLowerCase()) || 
+				return pFile.isDirectory() || (pFile.getName().endsWith("." +pFormat.toLowerCase()) || 
 						pFile.getName().endsWith("." +pFormat.toUpperCase()));
 			}
 			
