@@ -48,15 +48,15 @@ abstract class AbstractEdge implements Edge
 	private Node aStart;
 	private Node aEnd;
 	private Graph aGraph;
-	
+
 	/**
-     * Returns the path that should be stroked to
-     * draw this edge. The path does not include
-     * arrow tips or labels.
-     * @return a path along the edge
+	 * Returns the path that should be stroked to
+	 * draw this edge. The path does not include
+	 * arrow tips or labels.
+	 * @return a path along the edge
 	 */
 	protected abstract Shape getShape();
-	
+
 	@Override
 	public Rectangle2D getBounds()
 	{
@@ -76,7 +76,7 @@ abstract class AbstractEdge implements Edge
 		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
 		return fatPath.contains(pPoint);
 	}
-	
+
 	@Override
 	public Object clone()
 	{
@@ -98,7 +98,7 @@ abstract class AbstractEdge implements Edge
 		aEnd = pEnd;
 		aGraph = pGraph;
 	}
-	
+
 	@Override
 	public Graph getGraph()
 	{
@@ -135,5 +135,23 @@ abstract class AbstractEdge implements Edge
 		Point2D endCenter = new Point2D.Double(endBounds.getCenterX(), endBounds.getCenterY());
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line2D.Double(aStart.getConnectionPoint(toEnd), aEnd.getConnectionPoint(toEnd.turn(DEGREES_180)));
-   }
+	}
+
+	/**
+	 * Wrap the string in an html container and 
+	 * escape the angle brackets.
+	 * @param pRawLabel The initial string.
+	 * @pre pRawLabel != null;
+	 * @return The string prepared for rendering as HTML
+	 */
+	protected static String toHtml(String pRawLabel)
+	{
+		assert pRawLabel != null;
+		StringBuilder lReturn = new StringBuilder();
+		lReturn.append("<html>");
+		lReturn.append(pRawLabel.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+		lReturn.append("</html>");
+		return lReturn.toString();
+	}
+	
 }

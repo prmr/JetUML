@@ -195,7 +195,8 @@ public class MultiLineString implements Cloneable
 			}
 			htmlText.append(prefix);
 			String next = tokenizer.nextToken();
-			String next1 = next.replaceAll("<", "&lt;");
+			String next0 = next.replaceAll("&", "&amp;");
+			String next1 = next0.replaceAll("<", "&lt;");
 			String next2 = next1.replaceAll(">", "&gt;");
 			htmlText.append(next2);
 			htmlText.append(suffix);

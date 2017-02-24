@@ -134,7 +134,7 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 		{
 			return;
 		}
-		label.setText("<html>" + pString + "</html>");
+		label.setText(toHtml(pString));
 		label.setFont(pGraphics2D.getFont());
 		Dimension dimensions = label.getPreferredSize();      
 		label.setBounds(0, 0, dimensions.width, dimensions.height);
@@ -223,7 +223,7 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 		{
 			return new Rectangle2D.Double(pEndPoint2.getX(), pEndPoint2.getY(), 0, 0);
 		}
-		label.setText("<html>" + pString + "</html>");
+		label.setText(toHtml(pString));
 		Dimension d = label.getPreferredSize();
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, d, pCenter);
 		return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());

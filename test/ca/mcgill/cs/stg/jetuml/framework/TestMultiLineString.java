@@ -94,6 +94,14 @@ public class TestMultiLineString
 	}
 	
 	@Test
+	public void testConvertToHtml7() // Ampersand escape
+	{
+		MultiLineString string = new MultiLineString();
+		string.setText("<b>Foo&</b>");
+		assertEquals("<html><p align=\"center\">&nbsp;&lt;b&gt;Foo&amp;&lt;/b&gt;&nbsp;</p></html>", string.convertToHtml().toString());
+	}
+	
+	@Test
 	public void testSetJustification()
 	{
 		for( int i = 0; i < 3; i++ )

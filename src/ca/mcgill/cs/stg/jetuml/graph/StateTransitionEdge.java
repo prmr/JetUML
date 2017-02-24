@@ -98,7 +98,7 @@ public class StateTransitionEdge extends AbstractEdge
 		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
-		label.setText("<html>" + aLabelText + "</html>");
+		label.setText(toHtml(aLabelText));
 		Dimension d = label.getPreferredSize();
 		label.setBounds(0, 0, d.width, d.height);
    
