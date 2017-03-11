@@ -44,7 +44,6 @@ public class StateTransitionEdge extends AbstractEdge
 	private static final int DEGREES_30 = 30;
 	private static final int DEGREES_60 = 60;
 	private static JLabel label = new JLabel();
-	private double aAngle;
 	private String aLabelText = "";
 	   
 	/**
@@ -137,7 +136,7 @@ public class StateTransitionEdge extends AbstractEdge
 	private Point2D getControlPoint()
 	{
 		Line2D line = getConnectionPoints();
-		double t = Math.tan(Math.toRadians(aAngle));
+		double t = Math.tan(Math.toRadians(getAngle()));
 		double dx = (line.getX2() - line.getX1()) / 2;
 		double dy = (line.getY2() - line.getY1()) / 2;
 		return new Point2D.Double((line.getX1() + line.getX2()) / 2 + t * dy, (line.getY1() + line.getY2()) / 2 - t * dx);         
@@ -161,6 +160,18 @@ public class StateTransitionEdge extends AbstractEdge
 		r.add(getLabelBounds());
 		return r;
 	}
+	
+	private double getAngle()
+	{
+		if(getStart() == getEnd())
+		{
+			return DEGREES_60;
+		}
+		else
+		{
+			return DEGREES_10;
+		}
+	}
    
 	@Override
 	public Line2D getConnectionPoints()
@@ -170,13 +181,11 @@ public class StateTransitionEdge extends AbstractEdge
 
 		if(getStart() == getEnd())
 		{
-			aAngle = DEGREES_60;
 			d1 = Direction.EAST.turn(-DEGREES_30);
 			d2 = Direction.EAST.turn(DEGREES_30);
 		}
 		else
 		{
-			aAngle = DEGREES_10;
 			Rectangle2D start = getStart().getBounds();
 			Rectangle2D end = getEnd().getBounds();
 			Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
