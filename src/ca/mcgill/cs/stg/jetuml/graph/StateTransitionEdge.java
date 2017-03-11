@@ -102,11 +102,11 @@ public class StateTransitionEdge extends AbstractEdge
 		label.setBounds(0, 0, d.width, d.height);
    
 		final int gap = 3;
-		if (line.getY1() == line.getY2())
+		if( line.getY1() == line.getY2() )
 		{
 			x -= d.getWidth() / 2;
 		}
-		else if (line.getY1() <= line.getY2())
+		else if( line.getY1() <= line.getY2() )
 		{
 			x += gap;
 		}
@@ -114,11 +114,12 @@ public class StateTransitionEdge extends AbstractEdge
 		{
 			x -= d.getWidth() + gap;
 		}
-		if (line.getX1() == line.getX2())
+		
+		if( line.getX1() == line.getX2() )
 		{
 			y += d.getHeight() / 2;
 		}
-		else if (line.getX1() <= line.getX2())
+		else if( line.getX1() <= line.getX2() )
 		{
 			y -= d.getHeight() + gap;
 		}
@@ -156,9 +157,9 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public Rectangle2D getBounds()
 	{
-		Rectangle2D r = super.getBounds();
-		r.add(getLabelBounds());
-		return r;
+		Rectangle2D bounds = super.getBounds();
+		bounds.add(getLabelBounds());
+		return bounds;
 	}
 	
 	private double getAngle()
@@ -176,13 +177,11 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public Line2D getConnectionPoints()
 	{
-		Direction d1;
-		Direction d2;
-
 		if(getStart() == getEnd())
 		{
-			d1 = Direction.EAST.turn(-DEGREES_30);
-			d2 = Direction.EAST.turn(DEGREES_30);
+			Direction d1 = Direction.EAST.turn(-DEGREES_30);
+			Direction d2 = Direction.EAST.turn(DEGREES_30);
+			return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
 		}
 		else
 		{
@@ -190,9 +189,9 @@ public class StateTransitionEdge extends AbstractEdge
 			Rectangle2D end = getEnd().getBounds();
 			Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
 			Point2D endCenter = new Point2D.Double(end.getCenterX(), end.getCenterY());
-			d1 = new Direction(startCenter, endCenter).turn(-DEGREES_5);
-			d2 = new Direction(endCenter, startCenter).turn(DEGREES_5);
+			Direction d1 = new Direction(startCenter, endCenter).turn(-DEGREES_5);
+			Direction d2 = new Direction(endCenter, startCenter).turn(DEGREES_5);
+			return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
 		}
-		return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
 	}
 }
