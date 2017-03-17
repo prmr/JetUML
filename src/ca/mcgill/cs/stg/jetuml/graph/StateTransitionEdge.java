@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -73,9 +74,19 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
+		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		pGraphics2D.draw(getShape());
 		drawLabel(pGraphics2D);
-		ArrowHead.V.draw(pGraphics2D, getControlPoint(), getConnectionPoints().getP2());
+		if( getStart() == getEnd() )
+		{
+			Point2D connectionPoint2 = getConnectionPoints().getP2();
+			ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
+					getConnectionPoints().getP2());
+		}
+		else
+		{
+			ArrowHead.V.draw(pGraphics2D, getControlPoint(), getConnectionPoints().getP2());
+		}
 	}
 	
 	@Override
