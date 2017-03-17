@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -52,7 +51,7 @@ public class StateTransitionEdge extends AbstractEdge
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static JLabel label = new JLabel();
 	private String aLabelText = "";
-	   
+	
 	/**
      * Sets the label property value.
      * @param pNewValue the new value
@@ -74,12 +73,12 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		pGraphics2D.draw(getShape());
 		drawLabel(pGraphics2D);
-		if( getStart() == getEnd() )
+		if( isSelfEdge() )
 		{
-			Point2D connectionPoint2 = getConnectionPoints().getP2();
+			Point2D connectionPoint2 = getSelfEdgeConnectionPoints().getP2();
 			ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
 					getConnectionPoints().getP2());
 		}
@@ -100,35 +99,27 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public Line2D getConnectionPoints()
 	{
-		if(getStart() == getEnd())
+		if(isSelfEdge())
 		{
 			return getSelfEdgeConnectionPoints();
 		}
 		else
 		{
-			Rectangle2D start = getStart().getBounds();
-			Rectangle2D end = getEnd().getBounds();
-			Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
-			Point2D endCenter = new Point2D.Double(end.getCenterX(), end.getCenterY());
-			Direction d1 = new Direction(startCenter, endCenter).turn(-DEGREES_5);
-			Direction d2 = new Direction(endCenter, startCenter).turn(DEGREES_5);
-			return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
+			return getNormalEdgeConnectionsPoints();
 		}
 	}
 	
 	@Override
 	protected Shape getShape()
 	{
-		if( getStart() == getEnd() )
+		if( isSelfEdge() )
 		{
 			return getSelfEdgeShape();
 		}
-		Line2D line = getConnectionPoints();
-		Point2D control = getControlPoint();
-		GeneralPath p = new GeneralPath();
-		p.moveTo((float)line.getX1(), (float)line.getY1());
-		p.quadTo((float)control.getX(), (float)control.getY(), (float)line.getX2(), (float)line.getY2());      
-		return p;
+		else
+		{
+			return getNormalEdgeShape();
+		}
 	}
 	
 
@@ -145,12 +136,24 @@ public class StateTransitionEdge extends AbstractEdge
 		label.paint(pGraphics2D);
 		pGraphics2D.translate(-x, -y);        
 	}
+	
+	private Rectangle2D getLabelBounds()
+	{
+		if( isSelfEdge() )
+		{
+			return getSelfEdgeLabelBounds();
+		}
+		else
+		{
+			return getNormalEdgeLabelBounds();
+		}
+	}
 
 	/*
      *  Gets the bounds of the label text .
      * @return the bounds of the label text
      */
-	private Rectangle2D getLabelBounds()
+	private Rectangle2D getNormalEdgeLabelBounds()
 	{
 		Line2D line = getConnectionPoints();
 		Point2D control = getControlPoint();
@@ -158,13 +161,13 @@ public class StateTransitionEdge extends AbstractEdge
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
 		label.setText(toHtml(aLabelText));
-		Dimension d = label.getPreferredSize();
-		label.setBounds(0, 0, d.width, d.height);
+		Dimension dimension = label.getPreferredSize();
+		label.setBounds(0, 0, dimension.width, dimension.height);
    
 		final int gap = 3;
 		if( line.getY1() == line.getY2() )
 		{
-			x -= d.getWidth() / 2;
+			x -= dimension.getWidth() / 2;
 		}
 		else if( line.getY1() <= line.getY2() )
 		{
@@ -172,22 +175,37 @@ public class StateTransitionEdge extends AbstractEdge
 		}
 		else
 		{
-			x -= d.getWidth() + gap;
+			x -= dimension.getWidth() + gap;
 		}
 		
 		if( line.getX1() == line.getX2() )
 		{
-			y += d.getHeight() / 2;
+			y += dimension.getHeight() / 2;
 		}
 		else if( line.getX1() <= line.getX2() )
 		{
-			y -= d.getHeight() + gap;
+			y -= dimension.getHeight() + gap;
 		}
 		else
 		{
 			y += gap;
 		}
-		return new Rectangle2D.Double(x, y, d.width, d.height);
+		return new Rectangle2D.Double(x, y, dimension.width, dimension.height);
+   }   
+	
+	/*
+     * Positions the label above the self edge, centered
+     * in the middle of it.
+     * @return the bounds of the label text
+     */
+	private Rectangle2D getSelfEdgeLabelBounds()
+	{
+		Line2D line = getConnectionPoints();
+		label.setText(toHtml(aLabelText));
+		Dimension dimension = label.getPreferredSize();
+		label.setBounds(0, 0, dimension.width, dimension.height);
+		return new Rectangle2D.Double(line.getX1() + SELF_EDGE_OFFSET - dimension.width/2,	
+				line.getY1() - SELF_EDGE_OFFSET*2, dimension.width, dimension.height);
    }   
 
 	/**
@@ -208,6 +226,16 @@ public class StateTransitionEdge extends AbstractEdge
 		Line2D line = getSelfEdgeConnectionPoints();
 		return new Arc2D.Double(line.getX1(), line.getY1()-SELF_EDGE_OFFSET, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
 				DEGREES_270, DEGREES_270, Arc2D.OPEN);
+	}
+	
+	private Shape getNormalEdgeShape()
+	{
+		Line2D line = getConnectionPoints();
+		Point2D control = getControlPoint();
+		GeneralPath p = new GeneralPath();
+		p.moveTo((float)line.getX1(), (float)line.getY1());
+		p.quadTo((float)control.getX(), (float)control.getY(), (float)line.getX2(), (float)line.getY2());      
+		return p;
 	}
 	
 	private double getAngle()
@@ -233,5 +261,25 @@ public class StateTransitionEdge extends AbstractEdge
 		Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMaxX(), 
 				getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
 		return new Line2D.Double(point1, point2);
+	}
+	
+	/*
+	 * The connection points are a slight offset from the center.
+	 * @return
+	 */
+	private Line2D getNormalEdgeConnectionsPoints()
+	{
+		Rectangle2D start = getStart().getBounds();
+		Rectangle2D end = getEnd().getBounds();
+		Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
+		Point2D endCenter = new Point2D.Double(end.getCenterX(), end.getCenterY());
+		Direction d1 = new Direction(startCenter, endCenter).turn(-DEGREES_5);
+		Direction d2 = new Direction(endCenter, startCenter).turn(DEGREES_5);
+		return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
+	}
+	
+	private boolean isSelfEdge()
+	{
+		return getStart() == getEnd();
 	}
 }
