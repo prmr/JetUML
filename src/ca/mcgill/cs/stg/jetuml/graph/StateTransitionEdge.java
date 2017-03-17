@@ -22,7 +22,9 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
@@ -44,12 +46,13 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
  */
 public class StateTransitionEdge extends AbstractEdge
 {
+	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_5 = 5;
 	private static final int DEGREES_10 = 10;
-	private static final int DEGREES_60 = 60;
 	private static final int DEGREES_270 = 270;
 	private static final int SELF_EDGE_OFFSET = 15;
-	private static JLabel label = new JLabel();
+	private static final JLabel LABEL = new JLabel();
+	private static final Font FONT_NORMAL = LABEL.getFont();
 	private String aLabelText = "";
 	
 	/**
@@ -73,7 +76,7 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-//		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		pGraphics2D.draw(getShape());
 		drawLabel(pGraphics2D);
 		if( isSelfEdge() )
@@ -133,7 +136,8 @@ public class StateTransitionEdge extends AbstractEdge
 		double x = labelBounds.getX();
 		double y = labelBounds.getY();
 		pGraphics2D.translate(x, y);
-		label.paint(pGraphics2D);
+		adjustLabelFont();
+		LABEL.paint(pGraphics2D);
 		pGraphics2D.translate(-x, -y);        
 	}
 	
@@ -160,9 +164,10 @@ public class StateTransitionEdge extends AbstractEdge
 		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
-		label.setText(toHtml(aLabelText));
-		Dimension dimension = label.getPreferredSize();
-		label.setBounds(0, 0, dimension.width, dimension.height);
+		LABEL.setText(toHtml(aLabelText));
+		adjustLabelFont();
+		Dimension dimension = LABEL.getPreferredSize();
+		LABEL.setBounds(0, 0, dimension.width, dimension.height);
    
 		final int gap = 3;
 		if( line.getY1() == line.getY2() )
@@ -201,12 +206,28 @@ public class StateTransitionEdge extends AbstractEdge
 	private Rectangle2D getSelfEdgeLabelBounds()
 	{
 		Line2D line = getConnectionPoints();
-		label.setText(toHtml(aLabelText));
-		Dimension dimension = label.getPreferredSize();
-		label.setBounds(0, 0, dimension.width, dimension.height);
+		LABEL.setText(toHtml(aLabelText));
+		adjustLabelFont();
+		Dimension dimension = LABEL.getPreferredSize();
+		LABEL.setBounds(0, 0, dimension.width, dimension.height);
 		return new Rectangle2D.Double(line.getX1() + SELF_EDGE_OFFSET - dimension.width/2,	
 				line.getY1() - SELF_EDGE_OFFSET*2, dimension.width, dimension.height);
-   }   
+	}   
+	
+	private void adjustLabelFont()
+	{
+		if(aLabelText.length() > MAX_LENGTH_FOR_NORMAL_FONT)
+		{
+			float difference = aLabelText.length() - MAX_LENGTH_FOR_NORMAL_FONT;
+			difference = difference / (2*aLabelText.length()); // damping
+			float factor = 1 - difference;
+			LABEL.setFont(FONT_NORMAL.deriveFont(FONT_NORMAL.getSize()*factor));
+		}
+		else
+		{
+			LABEL.setFont(FONT_NORMAL);
+		}
+	}
 
 	/**
      *  Gets the control point for the quadratic spline.
@@ -215,7 +236,7 @@ public class StateTransitionEdge extends AbstractEdge
 	private Point2D getControlPoint()
 	{
 		Line2D line = getConnectionPoints();
-		double t = Math.tan(Math.toRadians(getAngle()));
+		double t = Math.tan(Math.toRadians(DEGREES_10));
 		double dx = (line.getX2() - line.getX1()) / 2;
 		double dy = (line.getY2() - line.getY1()) / 2;
 		return new Point2D.Double((line.getX1() + line.getX2()) / 2 + t * dy, (line.getY1() + line.getY2()) / 2 - t * dx);         
@@ -236,18 +257,6 @@ public class StateTransitionEdge extends AbstractEdge
 		p.moveTo((float)line.getX1(), (float)line.getY1());
 		p.quadTo((float)control.getX(), (float)control.getY(), (float)line.getX2(), (float)line.getY2());      
 		return p;
-	}
-	
-	private double getAngle()
-	{
-		if(getStart() == getEnd())
-		{
-			return DEGREES_60; 
-		}
-		else
-		{
-			return DEGREES_10;
-		}
 	}
 	
 	/*
