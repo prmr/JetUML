@@ -594,7 +594,7 @@ public class TestPersistenceService
 		assertEquals(s1, e2.getEnd());
 		assertEquals("e2", e2.getLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(590, 106, 44, 48), self.getBounds());
+		assertEquals(new Rectangle2D.Double(575, 70, 30, 45), self.getBounds());
 		assertEquals(s2, self.getStart());
 		assertEquals(s2, self.getEnd());
 		assertEquals("self", self.getLabel().toString());

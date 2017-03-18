@@ -162,17 +162,17 @@ public class TestUsageScenarios
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());
 		
-		assertEquals(new Rectangle2D.Double(17, 3, 54, 27), edge1.getBounds());
+		assertEquals(new Rectangle2D.Double(10, 3, 39, 27), edge1.getBounds());
 		assertEquals("Edge 1", edge1.getLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(72, 90, 43, 29), edge2.getBounds());
+		assertEquals(new Rectangle2D.Double(54, 90, 39, 29), edge2.getBounds());
 		assertEquals("Edge 2", edge2.getLabel());
 		assertEquals(node1, edge2.getStart());
 		assertEquals(node2, edge2.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(25, 90, 43, 29), edge3.getBounds());
+		assertEquals(new Rectangle2D.Double(47, 90, 39, 29), edge3.getBounds());
 		assertEquals("Edge 3", edge3.getLabel());
 		assertEquals(node2, edge3.getStart());
 		assertEquals(node1, edge3.getEnd());
