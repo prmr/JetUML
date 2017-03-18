@@ -24,12 +24,11 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
@@ -76,19 +75,9 @@ public class StateTransitionEdge extends AbstractEdge
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-		pGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		pGraphics2D.draw(getShape());
 		drawLabel(pGraphics2D);
-		if( isSelfEdge() )
-		{
-			Point2D connectionPoint2 = getSelfEdgeConnectionPoints().getP2();
-			ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
-					getConnectionPoints().getP2());
-		}
-		else
-		{
-			ArrowHead.V.draw(pGraphics2D, getControlPoint(), getConnectionPoints().getP2());
-		}
+		drawArrowHead(pGraphics2D);
 	}
 	
 	@Override
@@ -139,6 +128,20 @@ public class StateTransitionEdge extends AbstractEdge
 		adjustLabelFont();
 		LABEL.paint(pGraphics2D);
 		pGraphics2D.translate(-x, -y);        
+	}
+	
+	private void drawArrowHead(Graphics2D pGraphics2D)
+	{
+		if( isSelfEdge() )
+		{
+			Point2D connectionPoint2 = getSelfEdgeConnectionPoints().getP2();
+			ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
+					getConnectionPoints().getP2());
+		}
+		else
+		{
+			ArrowHead.V.draw(pGraphics2D, getControlPoint(), getConnectionPoints().getP2());
+		}
 	}
 	
 	private Rectangle2D getLabelBounds()
@@ -252,11 +255,9 @@ public class StateTransitionEdge extends AbstractEdge
 	private Shape getNormalEdgeShape()
 	{
 		Line2D line = getConnectionPoints();
-		Point2D control = getControlPoint();
-		GeneralPath p = new GeneralPath();
-		p.moveTo((float)line.getX1(), (float)line.getY1());
-		p.quadTo((float)control.getX(), (float)control.getY(), (float)line.getX2(), (float)line.getY2());      
-		return p;
+		QuadCurve2D curve = new QuadCurve2D.Float();
+		curve.setCurve(line.getP1(), getControlPoint(), line.getP2());
+		return curve;
 	}
 	
 	/*
