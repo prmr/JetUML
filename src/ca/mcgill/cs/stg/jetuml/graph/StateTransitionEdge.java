@@ -46,6 +46,10 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 public class StateTransitionEdge extends AbstractEdge
 {
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
+	
+	// The amount of vertical difference in connection points to tolerate
+	// before centering the edge label on one side instead of in the center.
+	private static final int VERTICAL_TOLERANCE = 20; 
 	private static final int DEGREES_5 = 5;
 	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_270 = 270;
@@ -173,8 +177,10 @@ public class StateTransitionEdge extends AbstractEdge
 		LABEL.setBounds(0, 0, dimension.width, dimension.height);
    
 		final int gap = 3;
-		if( line.getY1() == line.getY2() )
+		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
+				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
 		{
+			// The label is centered if the edge is (mostly) horizontal
 			x -= dimension.getWidth() / 2;
 		}
 		else if( line.getY1() <= line.getY2() )
