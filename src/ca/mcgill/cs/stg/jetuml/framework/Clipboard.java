@@ -63,7 +63,7 @@ public final class Clipboard
 	}
 
 	/**
-	 * Clones the selection and stores it in the clip-board.
+	 * Clones the selection in pPanel and stores it in the clip-board.
 	 * @param pSelection The elements to copy. Cannot be null.
 	 */
 	public void copy(SelectionList pSelection)
@@ -110,6 +110,20 @@ public final class Clipboard
 		{
 			aEdges.remove(edge);
 		}
+	}
+	
+	/**
+	 * Copies the selection list in the panel (as done by the copy method) and removes all
+	 * the nodes in the selection from the graph wrapped by this pPanel.
+	 * 
+	 * @param pPanel The graph containing the elements
+	 */
+	public void cut(GraphPanel pPanel)
+	{
+		assert pPanel != null;
+		assert pPanel.getSelectionList() != null;
+		copy(pPanel.getSelectionList());	
+		pPanel.removeSelected();
 	}
 	
 	private boolean recursivelyContains(Node pNode)

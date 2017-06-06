@@ -48,7 +48,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -78,10 +77,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * This desktop frame contains panes that show graphs.
@@ -710,29 +706,10 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		GraphPanel panel = frame.getGraphPanel();
-   		Graph curGraph = frame.getGraph();
-   		if(panel.getSelectionList().size()>0)
+   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
+   		if(panel.getSelectionList().size() > 0)
    		{
-   			SelectionList currentSelection = panel.getSelectionList();
-   			aClipboard.copy(currentSelection);	
-   			Iterator<GraphElement> iter = currentSelection.iterator();
-   			panel.startCompoundListening();
-   			while(iter.hasNext())
-   			{
-   				GraphElement element = iter.next();
-   				if(element instanceof Edge)
-   				{
-   					curGraph.removeEdge((Edge)element);
-   				}
-   				else
-   				{
-   					curGraph.removeNode((Node)element);
-   				}
-   				iter.remove();
-   			}
-   			panel.endCompoundListening();
+   			aClipboard.cut(panel);	
    		}	
    		panel.repaint();
    	}
@@ -747,12 +724,10 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		GraphPanel panel = frame.getGraphPanel();
-   		if(panel.getSelectionList().size()>0)
+   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
+   		if(panel.getSelectionList().size() > 0)
    		{
-   			SelectionList currentSelection = panel.getSelectionList();
-   			aClipboard.copy(currentSelection);
+   			aClipboard.copy(panel.getSelectionList());
    		}	
    	}
    	
@@ -767,14 +742,10 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		
-   		GraphPanel panel = frame.getGraphPanel();
-   		
+   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
    		SelectionList updatedSelectionList = aClipboard.paste(panel);
    		panel.setSelectionList(updatedSelectionList);
    		panel.repaint();
-   		
    	}
    	
    	/**
