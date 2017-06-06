@@ -73,6 +73,7 @@ public class GraphPanel extends JPanel
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
 	private Graph aGraph;
+	private Clipboard aClipboard = new Clipboard();
 	private ToolBar aSideBar;
 	private double aZoom;	
 	private boolean aHideGrid;
@@ -103,6 +104,37 @@ public class GraphPanel extends JPanel
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
 	}
 
+	/**
+	 * Copy the currently selected elements to the clip board.
+	 */
+	public void copy()
+	{
+		if( aSelectedElements.size() > 0 )
+		{
+			aClipboard.copy(aSelectedElements);
+		}
+	}
+	
+	/**
+	 * Pastes the content of the clip board into the graph managed by this panel.
+	 */
+	public void paste()
+	{
+		aSelectedElements = aClipboard.paste(this);
+	}
+	
+	/**
+	 * Copy the currently selected elements to the clip board and removes them
+	 * from the graph managed by this panel.
+	 */
+	public void cut()
+	{
+		if( aSelectedElements.size() > 0 )
+		{
+			aClipboard.cut(this);
+		}
+	}
+	
 	/**
 	 * Edits the properties of the selected graph element.
 	 */

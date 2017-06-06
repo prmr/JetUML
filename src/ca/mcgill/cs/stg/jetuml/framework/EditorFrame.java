@@ -103,7 +103,6 @@ public class EditorFrame extends JFrame
 	private JTabbedPane aTabbedPane;
 	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	private JMenu aNewMenu;
-	private Clipboard aClipboard = new Clipboard();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
@@ -707,10 +706,7 @@ public class EditorFrame extends JFrame
    			return;
    		}
    		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
-   		if(panel.getSelectionList().size() > 0)
-   		{
-   			aClipboard.cut(panel);	
-   		}	
+   		panel.cut();		
    		panel.repaint();
    	}
    	
@@ -724,11 +720,7 @@ public class EditorFrame extends JFrame
    		{
    			return;
    		}
-   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
-   		if(panel.getSelectionList().size() > 0)
-   		{
-   			aClipboard.copy(panel.getSelectionList());
-   		}	
+   		((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().copy();
    	}
    	
    	/**
@@ -743,8 +735,7 @@ public class EditorFrame extends JFrame
    			return;
    		}
    		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
-   		SelectionList updatedSelectionList = aClipboard.paste(panel);
-   		panel.setSelectionList(updatedSelectionList);
+   		panel.paste();
    		panel.repaint();
    	}
    	
