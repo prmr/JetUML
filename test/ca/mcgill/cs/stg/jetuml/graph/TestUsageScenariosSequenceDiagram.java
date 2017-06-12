@@ -451,6 +451,55 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(3, aDiagram.getEdges().size());
 	}
 	
+	@Test
+	public void testDeleteUndoParameterWithTwoCallNodes()
+	{
+		ImplicitParameterNode newParameterNode1 = new ImplicitParameterNode();
+		ImplicitParameterNode newParameterNode2 = new ImplicitParameterNode();
+		aDiagram.addNode(newParameterNode1, new Point2D.Double(10, 0));
+		aDiagram.addNode(newParameterNode2, new Point2D.Double(100, 0));
+		
+		CallNode caller = new CallNode();
+		aDiagram.addNode(caller, new Point2D.Double(15, 70));
+		aDiagram.draw(aGraphics, aGrid);
+		
+		CallNode callee1 = new CallNode();
+		aDiagram.addNode(callee1, new Point2D.Double(105, 100));
+		aDiagram.draw(aGraphics, aGrid);
+		
+		CallNode callee2 = new CallNode();
+		aDiagram.addNode(callee2, new Point2D.Double(105, 150));
+		aDiagram.draw(aGraphics, aGrid);
+		
+		CallEdge callEdge1 = new CallEdge();
+		aDiagram.addEdge(callEdge1, new Point2D.Double(43, 75), new Point2D.Double(133,105));
+		aDiagram.draw(aGraphics, aGrid);
+		
+		CallEdge callEdge2 = new CallEdge();
+		aDiagram.addEdge(callEdge2, new Point2D.Double(43, 77), new Point2D.Double(133,155));
+		aDiagram.draw(aGraphics, aGrid);
+		
+		Edge[] edges = aDiagram.getEdges(caller).toArray(new Edge[aDiagram.getEdges(caller).size()]);
+		assertEquals(2, edges.length);
+		assertEquals(callEdge1, edges[0]);
+		assertEquals(callEdge2, edges[1]);
+		
+		aPanel.getSelectionList().add(caller);
+		aPanel.removeSelected();
+		aDiagram.draw(aGraphics, aGrid);
+		assertEquals(0, newParameterNode1.getChildren().size());
+		
+		aPanel.undo();
+		aDiagram.draw(aGraphics, aGrid);
+		
+		assertEquals(1, newParameterNode1.getChildren().size());
+		
+		edges = aDiagram.getEdges(caller).toArray(new Edge[aDiagram.getEdges(caller).size()]);
+		assertEquals(2, edges.length);
+		assertEquals(callEdge1, edges[0]);
+		assertEquals(callEdge2, edges[1]);
+	}
+	
 	/**
 	 * Testing delete a call node in the middle Parameter Node in call sequence.
 	 */
