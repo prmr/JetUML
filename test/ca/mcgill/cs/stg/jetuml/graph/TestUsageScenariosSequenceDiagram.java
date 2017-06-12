@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
@@ -42,7 +41,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  * GUI. Here we use the API to simulate GUI Operation for Sequence Diagram.
  * 
  * @author Jiajun Chen
- *
+ * @author Martin P. Robillard - Modifications to Clipboard API
  */
 
 public class TestUsageScenariosSequenceDiagram 
@@ -51,7 +50,6 @@ public class TestUsageScenariosSequenceDiagram
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard aClipboard;
 	private SelectionList aList;
 	private ImplicitParameterNode aParameterNode1;
 	private ImplicitParameterNode aParameterNode2;
@@ -69,7 +67,6 @@ public class TestUsageScenariosSequenceDiagram
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		aClipboard = new Clipboard();
 		aList = new SelectionList();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
@@ -560,8 +557,8 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aPanel.getSelectionList().add(aParameterNode1);
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -577,12 +574,11 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aPanel.getSelectionList().add(aParameterNode1);
-		aClipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
 
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -599,8 +595,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point2D.Double(10, 0));
 		aDiagram.addNode(aCallNode1, new Point2D.Double(15, 75));
 		aPanel.getSelectionList().add(aParameterNode1);
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -630,8 +626,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new CallEdge(), new Point2D.Double(118, 75), new Point2D.Double(210,115));
 		
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(6, aDiagram.getRootNodes().size());
@@ -666,10 +662,10 @@ public class TestUsageScenariosSequenceDiagram
 		{
 			aList.add(edge);
 		}
-		aClipboard.copy(aList);
+		aPanel.setSelectionList(aList);
+		aPanel.copy();
 		SequenceDiagramGraph tempDiagram = new SequenceDiagramGraph();
-		GraphPanel tempPanel = new GraphPanel(tempDiagram, new ToolBar(aDiagram));
-		aClipboard.paste(tempPanel);
+		aPanel.paste();
 		tempDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(0, tempDiagram.getRootNodes().size());

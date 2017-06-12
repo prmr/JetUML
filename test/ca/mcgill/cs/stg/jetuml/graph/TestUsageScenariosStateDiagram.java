@@ -32,7 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
@@ -42,7 +41,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  * GUI. Here we use the API to simulate GUI Operation for State Diagram.
  * 
  * @author Jiajun Chen
- *
+ * @author Martin P. Robillard - Modifications to Clipboard API
  */
 public class TestUsageScenariosStateDiagram 
 {
@@ -50,7 +49,6 @@ public class TestUsageScenariosStateDiagram
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard clipboard;
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
 	private CircularStateNode aInitialNode;
@@ -71,7 +69,6 @@ public class TestUsageScenariosStateDiagram
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		clipboard = new Clipboard();
 		aStateNode1 = new StateNode();
 		aStateNode2 = new StateNode();
 		aInitialNode = new CircularStateNode();
@@ -388,8 +385,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addNode(aStateNode1, new Point2D.Double(50, 20));
 		aDiagram.draw(aGraphics, aGrid);
 		aPanel.getSelectionList().add(aStateNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		clipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -407,13 +404,11 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addNode(aStateNode1, new Point2D.Double(50, 20));
 		aDiagram.draw(aGraphics, aGrid);
 		aPanel.getSelectionList().add(aStateNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
-		clipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -433,8 +428,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		aDiagram.addEdge(aTransitionEdge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		aPanel.selectAll();
-		clipboard.copy(aPanel.getSelectionList());
-		clipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -456,13 +451,12 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		
 		aPanel.selectAll();
-		clipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		clipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

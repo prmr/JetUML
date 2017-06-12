@@ -32,7 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
@@ -43,6 +42,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  * GUI. Here we use the API to simulate GUI Operation for Object Diagram.
  * 
  * @author Jiajun Chen
+ * @author Martin P. Robillard - Modifications to Clipboard API
  *
  */
 
@@ -52,7 +52,6 @@ public class TestUsageScenariosObjectDiagram
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard clipboard;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
 	private FieldNode aFieldNode1;
@@ -71,7 +70,6 @@ public class TestUsageScenariosObjectDiagram
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		clipboard = new Clipboard();
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -432,8 +430,8 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aPanel.getSelectionList().add(aObjectNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		clipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -444,8 +442,8 @@ public class TestUsageScenariosObjectDiagram
 		// paste a FieldNode itself is not allowed
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		clipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
@@ -460,11 +458,10 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aPanel.getSelectionList().add(aObjectNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		
-		clipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
@@ -474,12 +471,11 @@ public class TestUsageScenariosObjectDiagram
 		// a FieldNode will be cut, but will not be pasted
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
-		clipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
-		clipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aDiagram.getRootNodes().size());
 	}
@@ -497,8 +493,8 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		aPanel.selectAll();
-		clipboard.copy(aPanel.getSelectionList());
-		clipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -521,13 +517,12 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		
 		aPanel.selectAll();
-		clipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		clipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

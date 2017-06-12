@@ -32,7 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
@@ -43,6 +42,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  * GUI. Here we use the API to simulate GUI Operation for Use Case Diagram.
  * 
  * @author Jiajun Chen
+ * @author Martin P. Robillard - Modifications to Clipboard API
  *
  */
 
@@ -52,7 +52,6 @@ public class TestUsageScenariosUseCaseDiagram
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard aClipboard;
 	private ActorNode aActorNode1;
 	private ActorNode aActorNode2;
 	private UseCaseNode aUseCaseNode1;
@@ -71,7 +70,6 @@ public class TestUsageScenariosUseCaseDiagram
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		aClipboard = new Clipboard();
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -390,8 +388,8 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
 		aDiagram.draw(aGraphics, aGrid);
 		aPanel.getSelectionList().add(aActorNode1);
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		
 		assertEquals(3, aDiagram.getRootNodes().size());
@@ -410,13 +408,12 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		
 		aPanel.getSelectionList().add(aUseCaseNode1);
-		aClipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aDiagram.getRootNodes().size());
 
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(new Rectangle2D.Double(0, 0, 120, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -433,8 +430,8 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
 		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
@@ -459,15 +456,14 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.getSelectionList().add(aUseCaseNode2);
 		aPanel.getSelectionList().add(aGeneralEdge);
-		aClipboard.copy(aPanel.getSelectionList());
-
-		aPanel.removeSelected();
+		
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		// aAssociationEdge is connected with aAcotrNode, should also be removed
 		assertEquals(1, aDiagram.getEdges().size());
 
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());

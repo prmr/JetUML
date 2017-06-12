@@ -33,7 +33,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
@@ -44,6 +43,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
  * GUI. Here we use the API to simulate GUI Operation for Class Diagram.
  * 
  * @author Jiajun Chen
+ * @author Martin P. Robillard - Modifications to Clipboard API
  *
  */
 
@@ -53,7 +53,6 @@ public class TestUsageScenariosClassDiagram
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
 	private Grid aGrid;
-	private Clipboard aClipboard;
 	private SelectionList aList;
 	private ClassNode aClassNode = new ClassNode();
 	private InterfaceNode aInterfaceNode = new InterfaceNode();
@@ -71,7 +70,6 @@ public class TestUsageScenariosClassDiagram
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
 		aGrid = new Grid();
-		aClipboard = new Clipboard();
 		aList = new SelectionList();
 		aClassNode = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
@@ -487,8 +485,9 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		aList.set(aClassNode);
-		aClipboard.copy(aList);
-		aClipboard.paste(aPanel);
+		aPanel.setSelectionList(aList);
+		aPanel.copy();
+		aPanel.paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle2D.Double(0, 0, 100, 60), 
@@ -503,13 +502,11 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram.addNode(aClassNode, new Point2D.Double(5, 5));
 		aList.set(aClassNode);
-		aClipboard.copy(aList);
 		aPanel.setSelectionList(aList);
-		
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle2D.Double(0, 0, 100, 60), 
 				((Node) aDiagram.getRootNodes().toArray()[0]).getBounds());
@@ -527,8 +524,8 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics, new Grid());
 		
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, new Grid());
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
@@ -570,11 +567,10 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics, new Grid());
 		
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, new Grid());
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -677,13 +673,12 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aDependencyEdge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
 		
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aPanel.removeSelected();
+		aPanel.cut(); 
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aClipboard.paste(aPanel);
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -706,8 +701,8 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aDependencyEdge, new Point2D.Double(26, 26), new Point2D.Double(131, 31));
 		
 		aPanel.selectAll();
-		aClipboard.copy(aPanel.getSelectionList());
-		aClipboard.paste(aPanel);
+		aPanel.copy();
+		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
