@@ -29,6 +29,7 @@ import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -370,6 +371,7 @@ public abstract class Graph
 				toRemove.add(edge);
 			}
 		}
+		Collections.reverse(toRemove);
 		for(Edge edge : toRemove )
 		{
 			removeEdge(edge);
