@@ -355,7 +355,10 @@ public abstract class Graph
 	
 	/**
 	 * Removes all edges in the graph that have pNode as a start
-	 * or end node. Note that layout() needs to be called before
+	 * or end node. The edges are removed in an order that is the 
+	 * reverse of the one in which they were added, so that this
+	 * method can directly support the undo functionality. 
+	 * Note that layout() needs to be called before
 	 * the change has effect.
 	 * 
 	 * @param pNode The target node.
