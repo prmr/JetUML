@@ -45,6 +45,8 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
  */
 public class StateTransitionEdge extends AbstractEdge
 {
+	private static final double HEIGHT_RATIO = 3.5;
+
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	
 	// The amount of vertical difference in connection points to tolerate
@@ -139,8 +141,16 @@ public class StateTransitionEdge extends AbstractEdge
 		if( isSelfEdge() )
 		{
 			Point2D connectionPoint2 = getSelfEdgeConnectionPoints().getP2();
-			ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
-					getConnectionPoints().getP2());
+			if( getPosition() == 1 )
+			{
+				ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), getConnectionPoints().getP2());
+			}
+			else
+			{
+				ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET), getConnectionPoints().getP2());
+			}
 		}
 		else
 		{
@@ -219,8 +229,16 @@ public class StateTransitionEdge extends AbstractEdge
 		adjustLabelFont();
 		Dimension dimension = LABEL.getPreferredSize();
 		LABEL.setBounds(0, 0, dimension.width, dimension.height);
-		return new Rectangle2D.Double(line.getX1() + SELF_EDGE_OFFSET - dimension.width/2,	
-				line.getY1() - SELF_EDGE_OFFSET*2, dimension.width, dimension.height);
+		if( getPosition() == 1 )
+		{
+			return new Rectangle2D.Double(line.getX1() + SELF_EDGE_OFFSET - dimension.width/2,	
+					line.getY1() - SELF_EDGE_OFFSET*2, dimension.width, dimension.height);
+		}
+		else
+		{
+			return new Rectangle2D.Double(line.getX1() - dimension.width/2,	
+					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, dimension.width, dimension.height);
+		}
 	}   
 	
 	private void adjustLabelFont()
@@ -253,9 +271,18 @@ public class StateTransitionEdge extends AbstractEdge
 	
 	private Shape getSelfEdgeShape()
 	{
-		Line2D line = getSelfEdgeConnectionPoints();
-		return new Arc2D.Double(line.getX1(), line.getY1()-SELF_EDGE_OFFSET, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
-				DEGREES_270, DEGREES_270, Arc2D.OPEN);
+		if( getPosition() == 1 )
+		{
+			Line2D line = getSelfEdgeConnectionPoints();
+			return new Arc2D.Double(line.getX1(), line.getY1()-SELF_EDGE_OFFSET, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
+					DEGREES_270, DEGREES_270, Arc2D.OPEN);
+		}
+		else
+		{
+			Line2D line = getSelfEdgeConnectionPoints();
+			return new Arc2D.Double(line.getX1()-SELF_EDGE_OFFSET, line.getY1()-SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
+					 1, DEGREES_270, Arc2D.OPEN);
+		}
 	}
 	
 	private Shape getNormalEdgeShape()
@@ -272,11 +299,22 @@ public class StateTransitionEdge extends AbstractEdge
 	 */
 	private Line2D getSelfEdgeConnectionPoints()
 	{
-		Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
-				getStart().getBounds().getMinY());
-		Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMaxX(), 
-				getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
-		return new Line2D.Double(point1, point2);
+		if( getPosition() == 1 )
+		{
+			Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
+					getStart().getBounds().getMinY());
+			Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMaxX(), 
+					getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
+			return new Line2D.Double(point1, point2);
+		}
+		else
+		{
+			Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getMinX(), 
+					getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
+			Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMinX() + SELF_EDGE_OFFSET, 
+					getStart().getBounds().getMinY());
+			return new Line2D.Double(point1, point2);
+		}
 	}
 	
 	/*
@@ -297,5 +335,27 @@ public class StateTransitionEdge extends AbstractEdge
 	private boolean isSelfEdge()
 	{
 		return getStart() == getEnd();
+	}
+	
+	/** 
+	 * @return An index that represents the position in the list of
+	 * edges between the same start and end nodes. 
+	 */
+	private int getPosition()
+	{
+		int lReturn = 0;
+		for( Edge edge : getGraph().getEdges(getStart()))
+		{
+			if( edge.getStart() == getStart() && edge.getEnd() == getEnd())
+			{
+				lReturn++;
+			}
+			if( edge == this )
+			{
+				return lReturn;
+			}
+		}
+		assert lReturn > 0;
+		return lReturn;
 	}
 }

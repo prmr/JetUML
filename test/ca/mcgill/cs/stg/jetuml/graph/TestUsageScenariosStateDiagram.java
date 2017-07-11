@@ -113,10 +113,11 @@ public class TestUsageScenariosStateDiagram
 		 */
 		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(50, 20), new Point2D.Double(20, 20));
 		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(155, 25), new Point2D.Double(20, 20));
-		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(50, 25), new Point2D.Double(155, 20));
+		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(50, 25), new Point2D.Double(155, 20)); // Second
+		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(50, 25), new Point2D.Double(155, 20)); // Third
 		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(255, 25), new Point2D.Double(155, 20));
 		aDiagram.addEdge(new StateTransitionEdge(), new Point2D.Double(255, 25), new Point2D.Double(25, 25));
-		assertEquals(5, aDiagram.getEdges().size());
+		assertEquals(6, aDiagram.getEdges().size());
 		
 		// test labeling edges
 		aTransitionEdge1.setLabel("start");

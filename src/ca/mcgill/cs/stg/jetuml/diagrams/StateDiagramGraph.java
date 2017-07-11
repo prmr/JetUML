@@ -70,10 +70,23 @@ public class StateDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.UMLEditorStrings").getString("state.name");
 	}
 	
+	// CSOFF:
 	@Override
 	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
 	{
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
+		if( pNode2 == null )
+		{
+			return false;
+		}
+		if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
+		{
+			return false;
+		}
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		{
+			return false;
+		}
+		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
 		{
 			return false;
 		}
@@ -97,6 +110,19 @@ public class StateDiagramGraph extends Graph
 			}
 		}
 		return true;
+	} // CSON:
+	
+	private int numberOfSimilarEdges(Node pNode1, Node pNode2)
+	{
+		int lReturn = 0;
+		for( Edge edge : getEdges() )
+		{
+			if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
+			{
+				lReturn++;
+			}
+		}
+		return lReturn;
 	}
 }
 
