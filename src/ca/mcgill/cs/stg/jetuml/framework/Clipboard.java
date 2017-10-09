@@ -202,6 +202,7 @@ public final class Clipboard
 	 * @param pPanel The current Graph to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
+	// CSOFF: Fix in later release
 	public SelectionList paste(GraphPanel pPanel)
 	{
 		if( !validPaste(pPanel.getGraph()))
@@ -246,6 +247,7 @@ public final class Clipboard
 				pPanel.getGraph().insertEdge(edge);
 			}
 		}
+		// CSON:
 		
 		pPanel.finishCompoundGraphOperation();
 		

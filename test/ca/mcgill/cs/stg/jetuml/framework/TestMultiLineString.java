@@ -112,6 +112,7 @@ public class TestMultiLineString
 		}
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void testEquals()
 	{
