@@ -211,15 +211,15 @@ public final class Clipboard
 		}
 		
 		pPanel.startCompoundGraphOperation();
-		Rectangle2D bounds = null;
 		List<Edge> clonedEdges = new ArrayList<>();
 		for( Edge edge : aEdges )
 		{
 			clonedEdges.add((Edge) edge.clone());
-			bounds = updateBounds(bounds, edge);
 		}
 		
 		List<Node> clonedRootNodes = new ArrayList<>();
+		Rectangle2D bounds = null;
+
 		for( Node node : aNodes )
 		{
 			Node cloned = node.clone();
@@ -233,7 +233,6 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			node.translate(-bounds.getX(), -bounds.getY());
 			pPanel.getGraph().insertNode(node);
 		}
 		for( Edge edge : clonedEdges )
@@ -247,8 +246,17 @@ public final class Clipboard
 				pPanel.getGraph().insertEdge(edge);
 			}
 		}
-		// CSON:
 		
+		// Reposition the graph
+		for( Edge edge : clonedEdges )
+		{
+			bounds = updateBounds(bounds, edge);
+		}
+		for( Node node : clonedRootNodes )
+		{
+			node.translate(-bounds.getX(), -bounds.getY());
+		}
+		// End graph repositioning
 		pPanel.finishCompoundGraphOperation();
 		
 		SelectionList selectionList  = new SelectionList();
@@ -261,7 +269,7 @@ public final class Clipboard
 			selectionList.add(node);
 		}
 		return selectionList;
-	}
+	} // CSON:
 	
 	// Goes through pNodes and removes the reference to the parent
 	// of any node who does not have a parent in the pNodes list

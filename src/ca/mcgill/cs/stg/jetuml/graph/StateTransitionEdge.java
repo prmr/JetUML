@@ -54,6 +54,7 @@ public class StateTransitionEdge extends AbstractEdge
 	private static final int VERTICAL_TOLERANCE = 20; 
 	private static final int DEGREES_5 = 5;
 	private static final int DEGREES_10 = 10;
+	private static final int DEGREES_20 = 20;
 	private static final int DEGREES_270 = 270;
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final JLabel LABEL = new JLabel();
@@ -263,10 +264,14 @@ public class StateTransitionEdge extends AbstractEdge
 	private Point2D getControlPoint()
 	{
 		Line2D line = getConnectionPoints();
-		double t = Math.tan(Math.toRadians(DEGREES_10));
+		double tangent = Math.tan(Math.toRadians(DEGREES_10));
+		if( getGraph() != null && getPosition() > 1 )
+		{
+			tangent = Math.tan(Math.toRadians(DEGREES_20));
+		}
 		double dx = (line.getX2() - line.getX1()) / 2;
 		double dy = (line.getY2() - line.getY1()) / 2;
-		return new Point2D.Double((line.getX1() + line.getX2()) / 2 + t * dy, (line.getY1() + line.getY2()) / 2 - t * dx);         
+		return new Point2D.Double((line.getX1() + line.getX2()) / 2 + tangent * dy, (line.getY1() + line.getY2()) / 2 - tangent * dx);         
 	}
 	
 	private Shape getSelfEdgeShape()
@@ -327,8 +332,13 @@ public class StateTransitionEdge extends AbstractEdge
 		Rectangle2D end = getEnd().getBounds();
 		Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
 		Point2D endCenter = new Point2D.Double(end.getCenterX(), end.getCenterY());
-		Direction d1 = new Direction(startCenter, endCenter).turn(-DEGREES_5);
-		Direction d2 = new Direction(endCenter, startCenter).turn(DEGREES_5);
+		int turn = DEGREES_5;
+		if( getGraph() != null && getPosition() > 1 )
+		{
+			turn = DEGREES_20;
+		}
+		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
+		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
 		return new Line2D.Double(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
 	}
 	
@@ -340,9 +350,11 @@ public class StateTransitionEdge extends AbstractEdge
 	/** 
 	 * @return An index that represents the position in the list of
 	 * edges between the same start and end nodes. 
+	 * @pre getGraph() != null
 	 */
 	private int getPosition()
 	{
+		assert getGraph() != null;
 		int lReturn = 0;
 		for( Edge edge : getGraph().getEdges(getStart()))
 		{
