@@ -45,6 +45,8 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
  */
 public class StateTransitionEdge extends AbstractEdge
 {
+	private static final int RADIANS_TO_PIXELS = 10;
+
 	private static final double HEIGHT_RATIO = 3.5;
 
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
@@ -187,7 +189,7 @@ public class StateTransitionEdge extends AbstractEdge
 		Dimension dimension = LABEL.getPreferredSize();
 		LABEL.setBounds(0, 0, dimension.width, dimension.height);
    
-		final int gap = 3;
+		int gap = 3;
 		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
 				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
 		{
@@ -203,17 +205,28 @@ public class StateTransitionEdge extends AbstractEdge
 			x -= dimension.getWidth() + gap;
 		}
 		
-		if( line.getX1() == line.getX2() )
-		{
-			y += dimension.getHeight() / 2;
-		}
-		else if( line.getX1() <= line.getX2() )
+		if( line.getX1() <= line.getX2() )
 		{
 			y -= dimension.getHeight() + gap;
 		}
 		else
 		{
 			y += gap;
+		}
+		
+		// Additional gap to make sure the labels don't overlap
+		if( getGraph() != null && getPosition() > 1 )
+		{
+			double delta = Math.abs(Math.atan((line.getX2()-line.getX1())/(line.getY2()-line.getY1())));
+			delta = dimension.getHeight() - delta*RADIANS_TO_PIXELS;
+			if( line.getX1() <= line.getX2() )
+			{
+				y -= delta;
+			}
+			else
+			{
+				y += delta;
+			}
 		}
 		return new Rectangle2D.Double(x, y, dimension.width, dimension.height);
    }   
