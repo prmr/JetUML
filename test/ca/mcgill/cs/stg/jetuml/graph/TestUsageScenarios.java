@@ -65,10 +65,8 @@ public class TestUsageScenarios
 		selection.add(c2);
 		selection.add(edge);
 		
-		Clipboard clipboard = new Clipboard();
-		clipboard.copy(selection);
-		
-		clipboard.paste(new GraphPanel(diagram, null));
+		Clipboard.instance().copy(selection);
+		Clipboard.instance().paste(new GraphPanel(diagram, null));
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -97,10 +95,8 @@ public class TestUsageScenarios
 		selection.add(p1);
 		selection.add(edge);
 
-		Clipboard clipboard = new Clipboard();
-		clipboard.copy(selection);
-		
-		clipboard.paste(new GraphPanel(diagram, null));
+		Clipboard.instance().copy(selection);
+		Clipboard.instance().paste(new GraphPanel(diagram, null));
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());

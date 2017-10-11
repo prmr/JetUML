@@ -38,17 +38,30 @@ import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
  * 
  * Stores a graph subset for purpose of pasting. The clip-board does not
  * accept edges unless both end-points are also being copied.
+ * 
+ * The Clipboard is a singleton. This is necessary to allow copying elements
+ * between diagrams of the same type.
  */
 public final class Clipboard 
 {
+	private static final Clipboard INSTANCE = new Clipboard();
+	
 	private List<Node> aNodes = new ArrayList<Node>();
 	private List<Edge> aEdges = new ArrayList<Edge>();
 
 	/**
 	 * Creates an empty clip-board.
 	 */
-	public Clipboard() 
+	private Clipboard() 
 	{}
+	
+	/**
+	 * @return The Singleton instance of the Clipboard.
+	 */
+	public static Clipboard instance()
+	{
+		return INSTANCE;
+	}
 	
 	/* For testing only */
 	Collection<Node> getNodes()

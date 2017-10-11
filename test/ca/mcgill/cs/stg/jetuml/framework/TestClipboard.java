@@ -57,7 +57,7 @@ public class TestClipboard
 	@Before
 	public void setup()
 	{
-		aClipboard = new Clipboard();
+		aClipboard = Clipboard.instance();
 		aSelectionList = new SelectionList();
 		aClass1 = new ClassNode();
 		MultiLineString c1 = new MultiLineString();

@@ -73,7 +73,6 @@ public class GraphPanel extends JPanel
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
 	private Graph aGraph;
-	private Clipboard aClipboard = new Clipboard();
 	private ToolBar aSideBar;
 	private double aZoom;	
 	private boolean aHideGrid;
@@ -111,7 +110,7 @@ public class GraphPanel extends JPanel
 	{
 		if( aSelectedElements.size() > 0 )
 		{
-			aClipboard.copy(aSelectedElements);
+			Clipboard.instance().copy(aSelectedElements);
 		}
 	}
 	
@@ -120,7 +119,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void paste()
 	{
-		aSelectedElements = aClipboard.paste(this);
+		aSelectedElements = Clipboard.instance().paste(this);
 	}
 	
 	/**
@@ -131,7 +130,7 @@ public class GraphPanel extends JPanel
 	{
 		if( aSelectedElements.size() > 0 )
 		{
-			aClipboard.cut(this);
+			Clipboard.instance().cut(this);
 		}
 	}
 	
