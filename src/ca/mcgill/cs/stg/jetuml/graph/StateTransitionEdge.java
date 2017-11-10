@@ -46,10 +46,9 @@ import ca.mcgill.cs.stg.jetuml.framework.Direction;
 public class StateTransitionEdge extends AbstractEdge
 {
 	private static final int RADIANS_TO_PIXELS = 10;
-
 	private static final double HEIGHT_RATIO = 3.5;
-
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
+	private static final int MIN_FONT_SIZE = 9;
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
@@ -261,8 +260,8 @@ public class StateTransitionEdge extends AbstractEdge
 		{
 			float difference = aLabelText.length() - MAX_LENGTH_FOR_NORMAL_FONT;
 			difference = difference / (2*aLabelText.length()); // damping
-			float factor = 1 - difference;
-			LABEL.setFont(FONT_NORMAL.deriveFont(FONT_NORMAL.getSize()*factor));
+			float newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * FONT_NORMAL.getSize());
+			LABEL.setFont(FONT_NORMAL.deriveFont(newFontSize));
 		}
 		else
 		{
