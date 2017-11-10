@@ -64,7 +64,7 @@ abstract class AbstractEdge implements Edge
 	}
 
 	@Override
-	public boolean contains(Point2D pPoint)
+	public final boolean contains(Point2D pPoint)
 	{
 		// The end points may contain small nodes, so don't match them
 		Line2D conn = getConnectionPoints();

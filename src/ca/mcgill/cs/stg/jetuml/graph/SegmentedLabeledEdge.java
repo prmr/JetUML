@@ -103,7 +103,7 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	}
 
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public final void draw(Graphics2D pGraphics2D)
 	{
 		Point2D[] points = getPoints();
 
