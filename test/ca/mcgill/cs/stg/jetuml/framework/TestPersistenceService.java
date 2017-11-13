@@ -213,27 +213,27 @@ public class TestPersistenceService
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
-		assertEquals(new Rectangle2D.Double(214,84,56,56),cr2.getBounds());
+		assertEquals(new Rectangle2D.Double(215,85,55,55),cr2.getBounds());
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
 		assertEquals(250,cr3.getBounds().getX(),0.1);
-		assertEquals(174,cr3.getBounds().getY(),0.1);
+		assertEquals(175,cr3.getBounds().getY(),0.1);
 		assertEquals(71,cr3.getBounds().getWidth(),3.0);
-		assertEquals(91,cr3.getBounds().getHeight(),0.1);
+		assertEquals(90,cr3.getBounds().getHeight(),0.1);
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.getType() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle2D.Double(330,54,110,31),cr4.getBounds());
+		assertEquals(new Rectangle2D.Double(330,55,110,30),cr4.getBounds());
 		assertTrue( cr4.getStart() == a1 );
 		assertTrue( cr4.getEnd() == u1 );
 		
-		assertEquals(new Rectangle2D.Double(340,144,120,121),cr5.getBounds());
+		assertEquals(new Rectangle2D.Double(340,145,120,120),cr5.getBounds());
 		assertTrue( cr5.getStart() == a2 );
 		assertTrue( cr5.getEnd() == u2 );
 		
-		assertEquals(new Rectangle2D.Double(340,244,120,21),cr6.getBounds());
+		assertEquals(new Rectangle2D.Double(340,245,120,20),cr6.getBounds());
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
@@ -241,19 +241,19 @@ public class TestPersistenceService
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertTrue(new Rectangle2D.Double(509,170,63,60).equals(cr8.getBounds()) ||
-				new Rectangle2D.Double(509,170,64,60).equals(cr8.getBounds()));
+		assertTrue(new Rectangle2D.Double(510,170,62,60).equals(cr8.getBounds()) ||
+				new Rectangle2D.Double(510,170,63,60).equals(cr8.getBounds()));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertTrue(new Rectangle2D.Double(580,135,91,32).equals(cr9.getBounds()) ||
-				new Rectangle2D.Double(580,135,88,32).equals(cr9.getBounds()));
+		assertTrue(new Rectangle2D.Double(580,136,91,32).equals(cr9.getBounds()) ||
+				new Rectangle2D.Double(580,136,88,32).equals(cr9.getBounds()));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.getType() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle2D.Double(560,54,90,111),cr10.getBounds());
+		assertEquals(new Rectangle2D.Double(560,55,90,110),cr10.getBounds());
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
@@ -417,7 +417,7 @@ public class TestPersistenceService
 		assertEquals("", edge2.getStartLabel());
 		
 		ClassRelationshipEdge edge3 = (ClassRelationshipEdge) eIterator.next();
-		assertEquals(new Rectangle2D.Double(560, 375, 70, 25), edge3.getBounds());
+		assertEquals(new Rectangle2D.Double(560, 376, 70, 24), edge3.getBounds());
 		assertEquals(node4, edge3.getEnd());
 		assertEquals("*", edge3.getEndLabel());
 		assertEquals("e4", edge3.getMiddleLabel());
@@ -425,7 +425,7 @@ public class TestPersistenceService
 		assertEquals("1", edge3.getStartLabel());
 		
 		ClassRelationshipEdge edge4 = (ClassRelationshipEdge) eIterator.next();
-		assertEquals(new Rectangle2D.Double(560, 400, 70, 150), edge4.getBounds());
+		assertEquals(new Rectangle2D.Double(560, 401, 70, 149), edge4.getBounds());
 		assertEquals(node3, edge4.getEnd());
 		assertEquals("", edge4.getEndLabel());
 		assertEquals("e5", edge4.getMiddleLabel());

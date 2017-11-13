@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.List;
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,
@@ -93,15 +93,15 @@ public class CallNode extends RectangularNode implements ChildNode
 	}
 
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		if(pDirection.getX() > 0)
 		{
-			return new Point2D.Double(getBounds().getMaxX(), getBounds().getMinY());
+			return new Point(getBounds().getMaxX(), getBounds().getMinY());
 		}
 		else
 		{
-			return new Point2D.Double(getBounds().getX(), getBounds().getMinY());
+			return new Point(getBounds().getX(), getBounds().getMinY());
 		}
 	}
 

@@ -23,12 +23,12 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *  A field node in an object diagram.
@@ -96,10 +96,10 @@ public class FieldNode extends RectangularNode implements ChildNode
 	}
 	
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		Rectangle2D b = getBounds();
-		return new Point2D.Double((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenterY());
+		return new Point((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenterY());
 	}
 
 	@Override

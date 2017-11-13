@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
@@ -135,10 +137,10 @@ public final class SegmentationStyleFactory
 			double shortestDistance = Double.MAX_VALUE;
 			for( Side side : Side.values() )
 			{
-				Point2D start = pNode.getConnectionPoint(side.getDirection());
+				Point start = pNode.getConnectionPoint(side.getDirection());
 				for( Side inner : Side.values() )
 				{
-					Point2D end = otherNode(pEdge, pNode).getConnectionPoint(inner.getDirection());
+					Point end = otherNode(pEdge, pNode).getConnectionPoint(inner.getDirection());
 					double distance = start.distance(end);
 					if( distance < shortestDistance )
 					{
@@ -165,30 +167,31 @@ public final class SegmentationStyleFactory
 			}
 			
 			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
-			Point2D start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
+			Point start = pEdge.getStart().getConnectionPoint(startSide.getDirection());
 			if( pGraph != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
-			Point2D end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
+			Point end = pEdge.getEnd().getConnectionPoint(endSide.getDirection());
 			if( pGraph != null )
 			{
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
 			}
 			
-		    return new Point2D[] {start, end };
+		    return new Point2D[] {Conversions.toPoint2D(start), 
+		    		Conversions.toPoint2D(end) };
 		}		
 	}
 	
 	/*
 	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
 	 */
-	private static Point2D computePointPosition(Node pNode, Side pSide, Position pPosition, Graph pGraph)
+	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Graph pGraph)
 	{
 		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
-		Point2D start = pNode.getConnectionPoint(pSide.getDirection());
+		Point start = pNode.getConnectionPoint(pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
 			double yPosition = start.getY()+ pPosition.computeNudge(pNode.getBounds().getHeight()); // Default
@@ -197,7 +200,7 @@ public final class SegmentationStyleFactory
 				double increment = (pNode.getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
 				yPosition = pNode.getBounds().getMinY() + MARGIN + pPosition.getIndex() * increment;
 			}
-			return new Point2D.Double( start.getX(), yPosition);	
+			return new Point( start.getX(), yPosition);	
 		}
 		else
 		{
@@ -207,7 +210,7 @@ public final class SegmentationStyleFactory
 				double increment = (pNode.getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
 				xPosition = pNode.getBounds().getMinX() + pPosition.getIndex() * increment;
 			}
-			return new Point2D.Double( xPosition, start.getY());
+			return new Point( xPosition, start.getY());
 		}
 	}
 	
@@ -465,8 +468,8 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point2D start = pEdge.getStart().getConnectionPoint(Direction.EAST);
-			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
+			Point start = pEdge.getStart().getConnectionPoint(Direction.EAST);
+			Point end = pEdge.getEnd().getConnectionPoint(Direction.WEST);
 			Side startSide = Side.EAST;
 			
 			if( goingEast(pEdge) )
@@ -601,8 +604,8 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point2D start = pEdge.getStart().getConnectionPoint(Direction.SOUTH);
-			Point2D end = pEdge.getEnd().getConnectionPoint(Direction.NORTH);
+			Point start = pEdge.getStart().getConnectionPoint(Direction.SOUTH);
+			Point end = pEdge.getEnd().getConnectionPoint(Direction.NORTH);
 			Side startSide = Side.SOUTH;
 			
 			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )

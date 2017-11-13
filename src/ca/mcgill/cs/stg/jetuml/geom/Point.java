@@ -6,8 +6,10 @@ package ca.mcgill.cs.stg.jetuml.geom;
  * 
  * @author Martin P. Robillard
  */
-public final class Point
+public final class Point implements Cloneable
 {
+	
+
 	private final int aX;
 	private final int aY;
 	
@@ -21,6 +23,19 @@ public final class Point
 	{
 		aX = pX;
 		aY = pY;
+	}
+	
+	/**
+	 * Create a new point by converting the coordinates
+	 * by rounding them to the closest integer value.
+	 * 
+	 * @param pX The x-coordinate of the point.
+	 * @param pY The y-coordinate of the point.
+	 */
+	public Point( double pX, double pY )
+	{
+		aX = (int) Math.round(pX);
+		aY = (int) Math.round(pY);
 	}
 	
 	/**
@@ -51,8 +66,50 @@ public final class Point
 	}
 	
 	@Override
+	public Point clone()
+	{
+		try
+		{
+			return (Point) super.clone();
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return null;
+		}
+	}
+	
+	@Override
 	public String toString()
 	{
 		return String.format("(x=%d,y=%d)", aX, aY);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + aX;
+		result = prime * result + aY;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object pObject)
+	{
+		if(this == pObject)
+		{
+			return true;
+		}
+		if(pObject == null)
+		{
+			return false;
+		}
+		if(getClass() != pObject.getClass())
+		{
+			return false;
+		}
+		Point other = (Point) pObject;
+		return aX == other.aX && aY == other.aY;
 	}
 }

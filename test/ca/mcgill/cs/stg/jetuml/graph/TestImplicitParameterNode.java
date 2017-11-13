@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 public class TestImplicitParameterNode
 {
@@ -53,10 +54,10 @@ public class TestImplicitParameterNode
 	{
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 120), aObject1.getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point2D.Double(80,30), aObject1.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), aObject1.getShape().getBounds());
 	}
@@ -107,10 +108,10 @@ public class TestImplicitParameterNode
 		ImplicitParameterNode clone = aObject1.clone();
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 120), clone.getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point2D.Double(80,30), aObject1.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), clone.getShape().getBounds());
 		

@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * A node that has a rectangular shape.
@@ -78,7 +79,7 @@ public abstract class RectangularNode extends AbstractNode
 	}
 
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		double slope = aBounds.getHeight() / aBounds.getWidth();
 		double ex = pDirection.getX();
@@ -114,7 +115,7 @@ public abstract class RectangularNode extends AbstractNode
 				y = aBounds.getY();
 			}
 		}
-		return new Point2D.Double(x, y);
+		return new Point((int)Math.round(x), (int)Math.round(y));
 	}
 
 	@Override

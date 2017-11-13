@@ -359,8 +359,7 @@ public class StateTransitionEdge extends AbstractEdge
 		}
 		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
-		return new Line(Conversions.toPoint(getStart().getConnectionPoint(d1)), 
-				Conversions.toPoint(getEnd().getConnectionPoint(d2)));
+		return new Line(getStart().getConnectionPoint(d1), getEnd().getConnectionPoint(d2));
 	}
 	
 	private boolean isSelfEdge()

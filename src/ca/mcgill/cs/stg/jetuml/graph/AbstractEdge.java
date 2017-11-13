@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.BasicStroke;
 import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -137,8 +136,7 @@ abstract class AbstractEdge implements Edge
 		Point2D startCenter = new Point2D.Double(startBounds.getCenterX(), startBounds.getCenterY());
 		Point2D endCenter = new Point2D.Double(endBounds.getCenterX(), endBounds.getCenterY());
 		Direction toEnd = new Direction(startCenter, endCenter);
-		return new Line(Conversions.toPoint(aStart.getConnectionPoint(toEnd)), 
-				Conversions.toPoint(aEnd.getConnectionPoint(toEnd.turn(DEGREES_180))));
+		return new Line(aStart.getConnectionPoint(toEnd), aEnd.getConnectionPoint(toEnd.turn(DEGREES_180)));
 	}
 
 	/**

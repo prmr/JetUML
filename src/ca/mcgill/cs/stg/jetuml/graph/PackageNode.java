@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *   A package node in a UML diagram.
@@ -117,9 +118,9 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	}
 	
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
-		Point2D connectionPoint = super.getConnectionPoint(pDirection);
+		Point connectionPoint = super.getConnectionPoint(pDirection);
 		if( connectionPoint.getY() < aBottom.getMinY() && aTop.getMaxX() < connectionPoint.getX() )
 		{
 			// The connection point falls in the empty top-right corner, re-compute it so
@@ -131,7 +132,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 			{
 				newX = aTop.getMaxX() + 1;
 			}
-			return new Point2D.Double(newX, aBottom.getMinY());	
+			return new Point(newX, aBottom.getMinY());	
 		}
 		else
 		{

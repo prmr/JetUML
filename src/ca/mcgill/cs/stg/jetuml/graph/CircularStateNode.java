@@ -23,11 +23,11 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * An initial or final node (bull's eye) in a state or activity diagram.
@@ -74,7 +74,7 @@ public class CircularStateNode extends RectangularNode
 	}
    
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		Rectangle2D bounds = getBounds();
 		double a = bounds.getWidth() / 2;
@@ -87,11 +87,11 @@ public class CircularStateNode extends RectangularNode
 		if(a != 0 && b != 0 && !(x == 0 && y == 0))
 		{
 			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
-			return new Point2D.Double(cx + x / t, cy + y / t);
+			return new Point(cx + x / t, cy + y / t);
 		}
 		else
 		{
-			return new Point2D.Double(cx, cy);
+			return new Point(cx, cy);
 		}
 	}   	 
 

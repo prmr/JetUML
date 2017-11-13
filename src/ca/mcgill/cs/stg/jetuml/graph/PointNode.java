@@ -29,6 +29,8 @@ import java.beans.Encoder;
 import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *  An invisible node that is used in the toolbar to draw an
@@ -39,14 +41,14 @@ public class PointNode extends AbstractNode
 {
 	private static final double EPSILON = 0.01;
 	
-	private Point2D aPoint;
+	private Point aPoint;
 
 	/**
      * Constructs a point node with coordinates (0, 0).
 	 */
 	public PointNode()
 	{
-		aPoint = new Point2D.Double();
+		aPoint = new Point(0, 0);
 	}
 
 	@Override
@@ -56,14 +58,14 @@ public class PointNode extends AbstractNode
 	@Override
 	public void translate(double pDeltaX, double pDeltaY)
 	{
-      aPoint.setLocation(aPoint.getX() + pDeltaX, aPoint.getY() + pDeltaY);
+		aPoint = new Point( aPoint.getX() + pDeltaX, aPoint.getY() + pDeltaY );
 	}
 
 	@Override
 	public boolean contains(Point2D pPoint)
 	{
 		final double threshold = 5;
-		return aPoint.distance(pPoint) < threshold;
+		return aPoint.distance(Conversions.toPoint(pPoint)) < threshold;
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class PointNode extends AbstractNode
 	}
 
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		return aPoint;
 	}
@@ -90,8 +92,8 @@ public class PointNode extends AbstractNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				Double x = ((PointNode)pOldInstance).aPoint.getX();
-				Double y = ((PointNode)pOldInstance).aPoint.getY();
+				Double x = (double)((PointNode)pOldInstance).aPoint.getX();
+				Double y = (double)((PointNode)pOldInstance).aPoint.getY();
 				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
 			}
 		});

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *   An edge that joins two call nodes.
@@ -127,7 +129,7 @@ public class CallEdge extends SegmentedLabeledEdge
 		else     
 		{
 			Direction d = new Direction(start.getX() - end.getX(), 0);
-			Point2D endPoint = getEnd().getConnectionPoint(d);
+			Point endPoint = getEnd().getConnectionPoint(d);
          
 			if(start.getCenterX() < endPoint.getX())
 			{
@@ -137,7 +139,7 @@ public class CallEdge extends SegmentedLabeledEdge
 			{
 				a.add(new Point2D.Double(start.getX(), endPoint.getY()));
 			}
-			a.add(endPoint);
+			a.add(Conversions.toPoint2D(endPoint));
 		}
 		return a.toArray(new Point2D[a.size()]);
 	}

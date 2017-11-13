@@ -5,7 +5,7 @@ package ca.mcgill.cs.stg.jetuml.geom;
  * 
  * @author Martin P. Robillard
  */
-public class Line
+public class Line implements Cloneable
 {
 	private final Point aPoint1;
 	private final Point aPoint2;
@@ -25,6 +25,35 @@ public class Line
 		aPoint2 = pPoint2;
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + aPoint1.hashCode();
+		result = prime * result + aPoint2.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object pObject)
+	{
+		if(this == pObject)
+		{
+			return true;
+		}
+		if(pObject == null)
+		{
+			return false;
+		}
+		if(getClass() != pObject.getClass())
+		{
+			return false;
+		}
+		Line other = (Line) pObject;
+		return aPoint1.equals(other.aPoint1) && aPoint2.equals(other.aPoint2);
+	}
+
 	/**
 	 * @return The first point of the line.
 	 */
@@ -71,5 +100,28 @@ public class Line
 	public Point getPoint2()
 	{
 		return aPoint2;
+	}
+	
+	/* 
+	 * Shallow clone since points are immutable.
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Line clone()
+	{
+		try
+		{
+			return (Line) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[%s, %s]", aPoint1, aPoint2);
 	}
 }

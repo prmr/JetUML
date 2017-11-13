@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 public class TestPackageNode
 {
@@ -57,10 +58,10 @@ public class TestPackageNode
 	{
 		assertEquals(new Rectangle2D.Double(0, 0, 100, 80), aPackage1.getBounds());
 		assertEquals(0,aPackage1.getChildren().size());
-		assertEquals(new Point2D.Double(100,40), aPackage1.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,40), aPackage1.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(50,0), aPackage1.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(50,80), aPackage1.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(100,40), aPackage1.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,40), aPackage1.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(50,0), aPackage1.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(50,80), aPackage1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
 		assertNull(aPackage1.getParent());
@@ -134,10 +135,10 @@ public class TestPackageNode
 		PackageNode clone = aPackage1.clone();
 		assertEquals(new Rectangle2D.Double(0, 0, 100, 80), clone.getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point2D.Double(100,40), clone.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point2D.Double(0,40), clone.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point2D.Double(50,0), clone.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point2D.Double(50,80), clone.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(100,40), clone.getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,40), clone.getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(50,0), clone.getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(50,80), clone.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
 		assertNull(clone.getParent());

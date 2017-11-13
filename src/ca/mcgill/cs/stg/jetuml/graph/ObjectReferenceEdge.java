@@ -29,8 +29,8 @@ import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * An S- or C-shaped edge with an arrowhead.
@@ -95,16 +95,14 @@ public class ObjectReferenceEdge extends AbstractEdge
 	@Override
 	public Line getConnectionPoints()
 	{
-		Point2D point = getStart().getConnectionPoint(Direction.EAST);
+		Point point = getStart().getConnectionPoint(Direction.EAST);
 		if (isSShaped())
 		{
-			return new Line(Conversions.toPoint(point), 
-					Conversions.toPoint(getEnd().getConnectionPoint(Direction.WEST)));
+			return new Line(point, getEnd().getConnectionPoint(Direction.WEST));
 		}
 		else
 		{
-			return new Line(Conversions.toPoint(point), 
-					Conversions.toPoint(getEnd().getConnectionPoint(Direction.EAST)));
+			return new Line(point, getEnd().getConnectionPoint(Direction.EAST));
 		}
    }
 
@@ -115,7 +113,7 @@ public class ObjectReferenceEdge extends AbstractEdge
 	private boolean isSShaped()
 	{
 		Rectangle2D b = getEnd().getBounds();
-		Point2D p = getStart().getConnectionPoint(Direction.EAST);
+		Point p = getStart().getConnectionPoint(Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 }

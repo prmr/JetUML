@@ -37,6 +37,7 @@ import java.util.List;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * An implicit parameter node in a sequence diagram. The 
@@ -105,15 +106,15 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	{ return getTopRectangle(); }
    
 	@Override
-	public Point2D getConnectionPoint(Direction pDirection)
+	public Point getConnectionPoint(Direction pDirection)
 	{
 		if(pDirection.getX() > 0)
 		{
-			return new Point2D.Double(getBounds().getMaxX(), getBounds().getMinY() + aTopHeight / 2);
+			return new Point(getBounds().getMaxX(), getBounds().getMinY() + aTopHeight / 2);
 		}
 		else
 		{
-			return new Point2D.Double(getBounds().getX(), getBounds().getMinY() + aTopHeight / 2);
+			return new Point(getBounds().getX(), getBounds().getMinY() + aTopHeight / 2);
 		}
 	}
 

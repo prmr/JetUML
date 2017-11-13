@@ -26,6 +26,7 @@ import java.awt.geom.Point2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
   * A node in a graph.
@@ -60,7 +61,7 @@ public interface Node extends GraphElement
      * of the bounding rectangle towards the boundary 
      * @return the recommended connection point
 	 */
-	Point2D getConnectionPoint(Direction pDirection);
+	Point getConnectionPoint(Direction pDirection);
 
 	/**
      * Lays out the node and its children.
