@@ -8,8 +8,6 @@ package ca.mcgill.cs.stg.jetuml.geom;
  */
 public final class Point implements Cloneable
 {
-	
-
 	private final int aX;
 	private final int aY;
 	

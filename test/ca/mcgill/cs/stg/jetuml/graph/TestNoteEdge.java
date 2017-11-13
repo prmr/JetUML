@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import org.junit.Before;

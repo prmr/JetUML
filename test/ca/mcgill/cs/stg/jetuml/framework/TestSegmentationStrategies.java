@@ -20,12 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import static org.junit.Assert.assertEquals;
+
 import java.awt.geom.Point2D;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
@@ -39,8 +39,6 @@ import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
 
 public class TestSegmentationStrategies 
 {
-	private static final int MAX_NUDGE = 11; // Same as in SegmentationStyleFactory
-	
 	private PackageNode aNode1;
 	private PackageNode aNode2;
 	private ClassNode aNode3;
