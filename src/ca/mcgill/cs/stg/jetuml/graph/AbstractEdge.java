@@ -28,6 +28,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *  Supplies convenience implementations for a number of methods
@@ -64,25 +67,25 @@ abstract class AbstractEdge implements Edge
 	}
 
 	@Override
-	public final boolean contains(Point2D pPoint)
+	public final boolean contains(Point pPoint)
 	{
 		// The end points may contain small nodes, so don't match them
-		Line2D conn = getConnectionPoints();
-		if(pPoint.distance(conn.getP1()) <= MAX_DISTANCE || pPoint.distance(conn.getP2()) <= MAX_DISTANCE)
+		Line conn = getConnectionPoints();
+		if(pPoint.distance(conn.getPoint1()) <= MAX_DISTANCE || pPoint.distance(conn.getPoint2()) <= MAX_DISTANCE)
 		{
 			return false;
 		}
 
 		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
-		return fatPath.contains(pPoint);
+		return fatPath.contains(Conversions.toPoint2D(pPoint));
 	}
 
 	@Override
-	public Object clone()
+	public Edge clone()
 	{
 		try
 		{
-			return super.clone();
+			return (Edge) super.clone();
 		}
 		catch (CloneNotSupportedException exception)
 		{
@@ -127,14 +130,15 @@ abstract class AbstractEdge implements Edge
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Edge#getConnectionPoints()
 	 */
 	@Override
-	public Line2D getConnectionPoints()
+	public Line getConnectionPoints()
 	{
 		Rectangle2D startBounds = aStart.getBounds();
 		Rectangle2D endBounds = aEnd.getBounds();
 		Point2D startCenter = new Point2D.Double(startBounds.getCenterX(), startBounds.getCenterY());
 		Point2D endCenter = new Point2D.Double(endBounds.getCenterX(), endBounds.getCenterY());
 		Direction toEnd = new Direction(startCenter, endCenter);
-		return new Line2D.Double(aStart.getConnectionPoint(toEnd), aEnd.getConnectionPoint(toEnd.turn(DEGREES_180)));
+		return new Line(Conversions.toPoint(aStart.getConnectionPoint(toEnd)), 
+				Conversions.toPoint(aEnd.getConnectionPoint(toEnd.turn(DEGREES_180))));
 	}
 
 	/**

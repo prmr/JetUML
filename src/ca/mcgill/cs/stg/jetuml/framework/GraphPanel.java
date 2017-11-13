@@ -48,6 +48,8 @@ import ca.mcgill.cs.stg.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.RemoveEdgeCommand;
+import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -328,7 +330,7 @@ public class GraphPanel extends JPanel
 			}
 			else if(selected instanceof Edge)
 			{
-				Line2D line = ((Edge) selected).getConnectionPoints();
+				Line line = ((Edge) selected).getConnectionPoints();
 				drawGrabber(g2, line.getX1(), line.getY1());
 				drawGrabber(g2, line.getX2(), line.getY2());
 			}
@@ -559,9 +561,9 @@ public class GraphPanel extends JPanel
 			return (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
 		}
 		
-		private Point2D getMousePoint(MouseEvent pEvent)
+		private Point getMousePoint(MouseEvent pEvent)
 		{
-			return new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			return new Point((int)(pEvent.getX() / aZoom), (int)(pEvent.getY() / aZoom));
 		}
 		
 		/*
@@ -569,11 +571,11 @@ public class GraphPanel extends JPanel
 		 */
 		private GraphElement getSelectedElement(MouseEvent pEvent)
 		{
-			Point2D mousePoint = getMousePoint(pEvent);
+			Point mousePoint = getMousePoint(pEvent);
 			GraphElement element = aGraph.findEdge(mousePoint);
 			if( element == null )
 			{
-				element = aGraph.findNode(mousePoint);
+				element = aGraph.findNode(new Point2D.Double(mousePoint.getX(), mousePoint.getY())); // TODO use geom.point API
 			}
 			return element;
 		}
@@ -622,7 +624,8 @@ public class GraphPanel extends JPanel
 			}
 			else
 			{
-				final Point2D mousePoint = getMousePoint(pEvent);
+				Point point = getMousePoint(pEvent);
+				final Point2D mousePoint = new Point2D.Double(point.getX(), point.getY()); // TODO move to geom.Point
 				aSideBar.showPopup(GraphPanel.this, mousePoint);
 			}
 		}
@@ -630,7 +633,8 @@ public class GraphPanel extends JPanel
 		private void handleNodeCreation(MouseEvent pEvent)
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
-			boolean added = aGraph.addNode(newNode, getMousePoint(pEvent));
+			Point point = getMousePoint(pEvent);
+			boolean added = aGraph.addNode(newNode, new Point2D.Double(point.getX(), point.getY())); // TODO move to geom.Point
 			if(added)
 			{
 				setModified(true);
@@ -699,7 +703,8 @@ public class GraphPanel extends JPanel
 			{
 				handleEdgeStart(pEvent);
 			}
-			aLastMousePoint = getMousePoint(pEvent);
+			Point point = getMousePoint(pEvent);
+			aLastMousePoint = new Point2D.Double(point.getX(), point.getY()); // TODO move to geom.point
 			aMouseDownPoint = aLastMousePoint;
 			repaint();
 		}

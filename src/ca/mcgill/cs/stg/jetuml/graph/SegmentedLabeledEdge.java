@@ -26,7 +26,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -34,6 +33,8 @@ import javax.swing.JLabel;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Line;
 
 /**
  *  Adds support for drawing edges as collection of segmented
@@ -265,10 +266,11 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	}
 
 	@Override
-	public Line2D getConnectionPoints()
+	public Line getConnectionPoints()
 	{
 		Point2D[] points = getPoints();
-		return new Line2D.Double(points[0], points[points.length - 1]);
+		return new Line(Conversions.toPoint(points[0]), 
+				Conversions.toPoint(points[points.length - 1]));
 	}
 
 	/**

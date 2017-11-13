@@ -24,12 +24,13 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Line;
 
 /**
  * An S- or C-shaped edge with an arrowhead.
@@ -42,7 +43,7 @@ public class ObjectReferenceEdge extends AbstractEdge
 	public void draw(Graphics2D pGraphics2D)
 	{
 		pGraphics2D.draw(getShape());
-		Line2D line = getConnectionPoints();
+		Line line = getConnectionPoints();
 		double x1;
 		double x2 = line.getX2();
 		double y = line.getY2();
@@ -60,7 +61,7 @@ public class ObjectReferenceEdge extends AbstractEdge
 	@Override
 	protected Shape getShape()
 	{
-		Line2D line = getConnectionPoints();
+		Line line = getConnectionPoints();
 
 		double y1 = line.getY1();
 		double y2 = line.getY2();
@@ -92,16 +93,18 @@ public class ObjectReferenceEdge extends AbstractEdge
 	}
 
 	@Override
-	public Line2D getConnectionPoints()
+	public Line getConnectionPoints()
 	{
-		Point2D p = getStart().getConnectionPoint(Direction.EAST);
+		Point2D point = getStart().getConnectionPoint(Direction.EAST);
 		if (isSShaped())
 		{
-			return new Line2D.Double(p, getEnd().getConnectionPoint(Direction.WEST));
+			return new Line(Conversions.toPoint(point), 
+					Conversions.toPoint(getEnd().getConnectionPoint(Direction.WEST)));
 		}
 		else
 		{
-			return new Line2D.Double(p, getEnd().getConnectionPoint(Direction.EAST));
+			return new Line(Conversions.toPoint(point), 
+					Conversions.toPoint(getEnd().getConnectionPoint(Direction.EAST)));
 		}
    }
 

@@ -209,7 +209,7 @@ public class TestPersistenceService
 		UseCaseDependencyEdge cr9 = (UseCaseDependencyEdge) eIt.next();
 		UseCaseAssociationEdge cr10 = (UseCaseAssociationEdge) eIt.next();	
 		
-		assertEquals(new Rectangle2D.Double(567,56,133,12),cr1.getBounds());
+		assertEquals(new Rectangle2D.Double(567,56,133,11),cr1.getBounds());
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
@@ -579,17 +579,17 @@ public class TestPersistenceService
 		assertEquals(note, ne.getStart());
 		assertEquals(point, ne.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(163, 71, 87, 39), fromStart.getBounds());
+		assertEquals(new Rectangle2D.Double(164, 70, 86, 40), fromStart.getBounds());
 		assertEquals(start, fromStart.getStart());
 		assertEquals(s1, fromStart.getEnd());
 		assertEquals("start", fromStart.getLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(330, 99, 180, 28), e1.getBounds());
+		assertEquals(new Rectangle2D.Double(330, 98, 180, 29), e1.getBounds());
 		assertEquals(s1, e1.getStart());
 		assertEquals(s2, e1.getEnd());
 		assertEquals("e1", e1.getLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(330, 133, 180, 28), e2.getBounds());
+		assertEquals(new Rectangle2D.Double(330, 133, 180, 27), e2.getBounds());
 		assertEquals(s2, e2.getStart());
 		assertEquals(s1, e2.getEnd());
 		assertEquals("e2", e2.getLabel().toString());
@@ -599,7 +599,7 @@ public class TestPersistenceService
 		assertEquals(s2, self.getEnd());
 		assertEquals("self", self.getLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(582, 246, 61, 64), toEnd.getBounds());
+		assertEquals(new Rectangle2D.Double(583, 247, 60, 63), toEnd.getBounds());
 		assertEquals(s3, toEnd.getStart());
 		assertEquals(end, toEnd.getEnd());
 		assertEquals("", toEnd.getLabel().toString());

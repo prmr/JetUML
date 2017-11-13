@@ -22,8 +22,9 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+
+import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  * An edge in a graph.
@@ -41,7 +42,7 @@ public interface Edge extends GraphElement
      * @param pPoint the point to test
      * @return true if this edge contains aPoint
      */
-   	boolean contains(Point2D pPoint);
+   	boolean contains(Point pPoint);
 
    	/**
      * Connect this edge to two nodes.
@@ -74,13 +75,13 @@ public interface Edge extends GraphElement
      * its nodes.
      * @return a line joining the two connection points
      */
-   	Line2D getConnectionPoints();
+   	Line getConnectionPoints();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning
    	 * of the start and end nodes (i.e., the start and end 
    	 * nodes are not cloned).
    	 */
-   	Object clone();
+   	Edge clone();
 }
 

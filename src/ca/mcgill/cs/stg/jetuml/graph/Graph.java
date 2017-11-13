@@ -33,6 +33,7 @@ import java.util.Collections;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
  *  A graph consisting of nodes and edges.
@@ -340,7 +341,7 @@ public abstract class Graph
 	 * @param pPoint a point
 	 * @return an edge containing p or null if no edges contain p
 	 */
-	public Edge findEdge(Point2D pPoint)
+	public Edge findEdge(Point pPoint)
 	{
 		for (int i = aEdges.size() - 1; i >= 0; i--)
 		{

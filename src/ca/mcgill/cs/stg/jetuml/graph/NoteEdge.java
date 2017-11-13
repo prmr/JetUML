@@ -26,7 +26,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
+
+import ca.mcgill.cs.stg.jetuml.geom.Line;
 
 /**
  *  A dotted line that connects a note to its attachment.
@@ -49,7 +50,7 @@ public class NoteEdge extends AbstractEdge
 	protected Shape getShape()
 	{
 		GeneralPath path = new GeneralPath();
-		Line2D conn = getConnectionPoints();
+		Line conn = getConnectionPoints();
 		path.moveTo((float)conn.getX1(), (float)conn.getY1());
 		path.lineTo((float)conn.getX2(), (float)conn.getY2());
 		return path;
