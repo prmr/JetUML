@@ -169,19 +169,19 @@ public class TestPersistenceService
 		UseCaseNode u4 = (UseCaseNode) nIt.next();
 		ActorNode a3 = (ActorNode) nIt.next();
 		
-		assertEquals(new Rectangle(440, 40, 120, 40), u1.getBounds());
+		assertEquals(new Rectangle(440, 40, 110, 40), u1.getBounds());
 		assertEquals("Use case 1", u1.getName().toString());
 		
-		assertEquals(new Rectangle(460, 130, 120, 40), u2.getBounds());
+		assertEquals(new Rectangle(460, 130, 110, 40), u2.getBounds());
 		assertEquals("Use case 2", u2.getName().toString());
 		
-		assertEquals(new Rectangle(460, 230, 120, 40), u3.getBounds());
+		assertEquals(new Rectangle(460, 230, 110, 40), u3.getBounds());
 		assertEquals("Use case 3", u3.getName().toString());
 		
-		assertEquals(new Rectangle(270, 50, 60, 80), a1.getBounds());
+		assertEquals(new Rectangle(270, 50, 48, 64), a1.getBounds());
 		assertEquals("Actor", a1.getName().toString());
 		
-		assertEquals(new Rectangle(280, 230, 60, 80), a2.getBounds());
+		assertEquals(new Rectangle(280, 230, 48, 64), a2.getBounds());
 		assertEquals("Actor2", a2.getName().toString());
 		
 		assertEquals("A note", n1.getText().getText());
@@ -189,10 +189,10 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(567, 56, 1, 1), p1.getBounds());
 		
-		assertEquals(new Rectangle(650, 150, 120, 40), u4.getBounds());
+		assertEquals(new Rectangle(650, 150, 110, 40), u4.getBounds());
 		assertEquals("Use case 4", u4.getName().toString());
 		
-		assertEquals(new Rectangle(190, 140, 60, 80), a3.getBounds());
+		assertEquals(new Rectangle(190, 140, 48, 64), a3.getBounds());
 		assertEquals("Actor3", a3.getName().toString());
 		
 		Collection<Edge> edges = pGraph.getEdges();
@@ -214,47 +214,48 @@ public class TestPersistenceService
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
-		assertEquals(new Rectangle(215,85,55,55),cr2.getBounds());
+		assertEquals(new Rectangle(209,77,61,63),cr2.getBounds());
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(250,cr3.getBounds().getX(),0.1);
-		assertEquals(175,cr3.getBounds().getY(),0.1);
-		assertEquals(71,cr3.getBounds().getWidth(),3.0);
-		assertEquals(90,cr3.getBounds().getHeight(),0.1);
+		assertEquals(238,cr3.getBounds().getX());
+		assertEquals(167,cr3.getBounds().getY());
+		assertTrue(77 == cr3.getBounds().getWidth() || 74 == cr3.getBounds().getWidth() );
+				
+		assertEquals(90,cr3.getBounds().getHeight());
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.getType() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle(330,55,110,30),cr4.getBounds());
+		assertEquals(new Rectangle(318,55,122,22),cr4.getBounds());
 		assertTrue( cr4.getStart() == a1 );
 		assertTrue( cr4.getEnd() == u1 );
 		
-		assertEquals(new Rectangle(340,145,120,120),cr5.getBounds());
+		assertEquals(new Rectangle(328,145,132,112),cr5.getBounds());
 		assertTrue( cr5.getStart() == a2 );
 		assertTrue( cr5.getEnd() == u2 );
 		
-		assertEquals(new Rectangle(340,245,120,20),cr6.getBounds());
+		assertEquals(new Rectangle(328,245,132,12),cr6.getBounds());
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
-		assertEquals(new Rectangle(493,80,22,50),cr7.getBounds());
+		assertEquals(new Rectangle(488,80,22,50),cr7.getBounds());
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertTrue(new Rectangle(510,170,62,60).equals(cr8.getBounds()) ||
-				new Rectangle(510,170,63,60).equals(cr8.getBounds()));
+		assertTrue(new Rectangle(505,170,63,60).equals(cr8.getBounds()) ||
+				new Rectangle(505,170,62,60).equals(cr8.getBounds()));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertTrue(new Rectangle(580,136,91,32).equals(cr9.getBounds()) ||
-				new Rectangle(580,136,88,32).equals(cr9.getBounds()));
+		assertTrue(new Rectangle(570,136,96,32).equals(cr9.getBounds()) ||
+				new Rectangle(570,136,93,32).equals(cr9.getBounds()));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.getType() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle(560,55,90,110),cr10.getBounds());
+		assertEquals(new Rectangle(550,55,100,110),cr10.getBounds());
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
