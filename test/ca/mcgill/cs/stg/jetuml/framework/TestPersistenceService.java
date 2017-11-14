@@ -25,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -447,45 +446,45 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) nIterator.next();
 		PointNode point = (PointNode) nIterator.next();
 		
-		assertEquals(new Rectangle2D.Double(160,0,100,219), object1.getBounds());
+		assertEquals(new Rectangle(160,0,80,120), object1.getBounds());
 		List<ChildNode> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
 		CallNode init = (CallNode) o1children.get(0);
 		CallNode selfCall = (CallNode) o1children.get(1);
 		
-		assertEquals(new Rectangle2D.Double(370,0,80,219), object2.getBounds());
+		assertEquals(new Rectangle(370,0,80,120), object2.getBounds());
 		List<ChildNode> o2children = object2.getChildren();
 		assertEquals(1, o2children.size());
 		assertEquals(":Type2", object2.getName().toString());
 		CallNode o2Call = (CallNode) o2children.get(0);
 		
-		assertEquals(new Rectangle2D.Double(590,0,80,219), object3.getBounds());
+		assertEquals(new Rectangle(590,0,80,120), object3.getBounds());
 		List<ChildNode> o3children = object3.getChildren();
 		assertEquals(1, o3children.size());
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle2D.Double(202,77,16,88), init.getBounds());
+		assertEquals(new Rectangle(202,77,16,30), init.getBounds());
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(210,106,16,39), selfCall.getBounds());
+		assertEquals(new Rectangle(210,106,16,30), selfCall.getBounds());
 		assertEquals(object1, selfCall.getParent());
 		assertFalse(selfCall.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(402,125,16,74), o2Call.getBounds());
+		assertEquals(new Rectangle(402,125,16,30), o2Call.getBounds());
 		assertEquals(object2, o2Call.getParent());
 		assertFalse(o2Call.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(622,149,16,30), o3Call.getBounds());
+		assertEquals(new Rectangle(622,149,16,30), o3Call.getBounds());
 		assertEquals(object3, o3Call.getParent());
 		assertFalse(o3Call.isOpenBottom());
 		
-		assertEquals(new Rectangle2D.Double(440,200,60,40), note.getBounds());
+		assertEquals(new Rectangle(440,200,60,40), note.getBounds());
 		assertEquals("A note", note.getText().toString());
 		
-		assertEquals(new Rectangle2D.Double(409,189,0.01,0.01), point.getBounds());
+		assertEquals(new Rectangle(409,189,1,1), point.getBounds());
 	
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -498,35 +497,35 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle2D.Double(218, 82, 77, 29), self.getBounds());
+		assertEquals(new Rectangle(218, 82, 77, 29), self.getBounds());
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(226, 106, 176, 19), signal.getBounds());
+		assertEquals(new Rectangle(226, 106, 176, 19), signal.getBounds());
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
 		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(418, 130, 204, 24), call1.getBounds());
+		assertEquals(new Rectangle(418, 130, 204, 24), call1.getBounds());
 		assertEquals(o3Call, call1.getEnd());
 		assertEquals("call1()", call1.getMiddleLabel());
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle2D.Double(418, 160, 204, 24), ret1.getBounds());
+		assertEquals(new Rectangle(418, 160, 204, 24), ret1.getBounds());
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
 		
-		assertEquals(new Rectangle2D.Double(226, 194, 176, 10), retC.getBounds());
+		assertEquals(new Rectangle(226, 150, 176, 10), retC.getBounds());
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());
 		
-		assertEquals(new Rectangle2D.Double(409, 189, 31, 16), nedge.getBounds());
+		assertEquals(new Rectangle(409, 189, 31, 15), nedge.getBounds());
 		assertEquals(point, nedge.getEnd());
 		assertEquals(note, nedge.getStart());
 	}
