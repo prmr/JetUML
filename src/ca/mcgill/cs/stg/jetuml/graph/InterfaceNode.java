@@ -147,7 +147,7 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle2D top = computeTop(pGraphics2D);
 		Rectangle2D middle = computeMiddle(pGraphics2D);

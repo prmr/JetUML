@@ -61,7 +61,7 @@ public class ActorNode extends RectangularNode
 	}
    
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Rectangle bot = Conversions.toRectangle(aName.getBounds(pGraphics2D));

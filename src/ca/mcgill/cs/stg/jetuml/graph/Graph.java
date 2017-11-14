@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -410,11 +409,10 @@ public abstract class Graph
 	/**
 	 * Draws the graph.
 	 * @param pGraphics2D the graphics context
-	 * @param pGrid The grid
 	 */
-	public void draw(Graphics2D pGraphics2D, Grid pGrid)
+	public void draw(Graphics2D pGraphics2D)
 	{
-		layout(pGraphics2D, pGrid);
+		layout(pGraphics2D);
 		
 		for( Node node : aRootNodes )
 		{
@@ -576,9 +574,8 @@ public abstract class Graph
 	 * If you override this method, you must first call 
 	 * <code>super.layout</code>.
 	 * @param pGraphics2D the graphics context
-	 * @param pGrid the grid to snap to
 	 */
-	protected void layout(Graphics2D pGraphics2D, Grid pGrid)
+	protected void layout(Graphics2D pGraphics2D)
 	{
 		if(!aNeedsLayout)
 		{
@@ -592,7 +589,7 @@ public abstract class Graph
 		for(int i = 0; i < aRootNodes.size(); i++)
 		{
 			Node n = aRootNodes.get(i);
-			n.layout(this, pGraphics2D, pGrid);
+			n.layout(this, pGraphics2D);
 		}
 		aNeedsLayout = false;
 	}

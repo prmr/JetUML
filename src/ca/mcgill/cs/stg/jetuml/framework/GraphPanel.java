@@ -312,7 +312,7 @@ public class GraphPanel extends JPanel
 			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / aZoom, graphBounds.getMaxX()), 
 				   Math.max(bounds.getMaxY() / aZoom, graphBounds.getMaxY())));
 		}
-		aGraph.draw(g2, new Grid());
+		aGraph.draw(g2);
 
 		Set<GraphElement> toBeRemoved = new HashSet<>();
 		for(GraphElement selected : aSelectedElements)

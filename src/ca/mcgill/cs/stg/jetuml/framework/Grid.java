@@ -38,6 +38,8 @@ public final class Grid
 	private static final Color GRID_COLOR = new Color(220, 220, 220); 
 	private static final double GRID_SIZE = 10;
 	
+	private Grid() {}
+	
 	/**
      * Draws this grid inside a rectangle.
      * @param pGraphics2D the graphics context

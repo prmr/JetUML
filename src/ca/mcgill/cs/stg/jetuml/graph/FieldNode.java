@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
@@ -104,7 +103,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		aNameBounds = aName.getBounds(pGraphics2D); 
 		aValueBounds = aValue.getBounds(pGraphics2D);

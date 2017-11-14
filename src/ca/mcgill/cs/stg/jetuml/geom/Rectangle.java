@@ -14,12 +14,19 @@ public class Rectangle
 	private final int aHeight;
 	
 	/**
-	 * Creates a rectangle with all fields 0. Only here
-	 * temporarily to enable JavaBeans serialization.
+	 * Creates a new rectangle.
+	 * 
+	 * @param pX The X-coordinate of the top-left corner.
+	 * @param pY The Y-coordinate of the top-left corner.
+	 * @param pWidth The width of the rectangle.
+	 * @param pHeight The height of the rectangle.
 	 */
-	public Rectangle()
+	public Rectangle(int pX, int pY, int pWidth, int pHeight)
 	{
-		this(0, 0, 0, 0);
+		aX = pX;
+		aY = pY;
+		aWidth = pWidth;
+		aHeight = pHeight;
 	}
 	
 	/**
@@ -42,22 +49,6 @@ public class Rectangle
 	public void setY(int pY)
 	{
 		aY = pY;
-	}
-	
-	/**
-	 * Creates a new rectangle.
-	 * 
-	 * @param pX The X-coordinate of the top-left corner.
-	 * @param pY The Y-coordinate of the top-left corner.
-	 * @param pWidth The width of the rectangle.
-	 * @param pHeight The height of the rectangle.
-	 */
-	public Rectangle(int pX, int pY, int pWidth, int pHeight)
-	{
-		aX = pX;
-		aY = pY;
-		aWidth = pWidth;
-		aHeight = pHeight;
 	}
 	
 	/**

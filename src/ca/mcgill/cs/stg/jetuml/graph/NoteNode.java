@@ -56,7 +56,7 @@ public class NoteNode extends RectangularNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle2D b = aText.getBounds(pGraphics2D); // getMultiLineBounds(name, g2);
 		Rectangle bounds = getBounds();

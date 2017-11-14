@@ -1131,7 +1131,7 @@ public class EditorFrame extends JFrame
         g2.translate(MARGIN_IMAGE, MARGIN_IMAGE);
         g2.setColor(Color.BLACK);
         g2.setBackground(Color.WHITE);
-        pGraph.draw(g2, null);
+        pGraph.draw(g2);
         return image;
     }
     

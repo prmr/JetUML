@@ -64,7 +64,7 @@ public abstract class RectangularNode extends AbstractNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		aBounds = Grid.snapped(aBounds);
 	}

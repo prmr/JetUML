@@ -92,7 +92,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle2D b = aName.getBounds(pGraphics2D); 
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
@@ -107,7 +107,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		for(int i = 0; i < fields.size(); i++)
 		{
 			FieldNode f = (FieldNode)fields.get(i);
-			f.layout(pGraph, pGraphics2D, pGrid);
+			f.layout(pGraph, pGraphics2D);
 			Rectangle b2 = f.getBounds();
 			height += b2.getHeight() + YGAP;   
 			double axis = f.getAxisX();

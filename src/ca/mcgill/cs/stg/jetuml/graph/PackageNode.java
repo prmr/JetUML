@@ -35,7 +35,6 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
@@ -142,7 +141,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		label.setText("<html>" + aName + "</html>");
 		label.setFont(pGraphics2D.getFont());
@@ -153,7 +152,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		Rectangle childBounds = null;
 		for( ChildNode child : getChildren() )
 		{
-			child.layout(pGraph, pGraphics2D, pGrid);
+			child.layout(pGraph, pGraphics2D);
 			if( childBounds == null )
 			{
 				childBounds = child.getBounds();

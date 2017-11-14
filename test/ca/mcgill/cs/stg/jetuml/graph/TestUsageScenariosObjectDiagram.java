@@ -32,7 +32,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -51,7 +50,6 @@ public class TestUsageScenariosObjectDiagram
 	private ObjectDiagramGraph aDiagram;
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
-	private Grid aGrid;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
 	private FieldNode aFieldNode1;
@@ -69,7 +67,6 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram = new ObjectDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
-		aGrid = new Grid();
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -92,7 +89,7 @@ public class TestUsageScenariosObjectDiagram
 	{
 		// create an object node
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		MultiLineString name = new MultiLineString();
 		name.setText("Car");
 		aObjectNode1.setName(name);
@@ -128,7 +125,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
 		aDiagram.addNode(aFieldNode3, new Point2D.Double(40, 30));
 		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
-		aDiagram.draw(aGraphics, aGrid);		
+		aDiagram.draw(aGraphics);		
 		assertEquals(3, aDiagram.getRootNodes().size());
 		
 		NoteEdge edge1 = new NoteEdge();
@@ -172,7 +169,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
 		aDiagram.addNode(aFieldNode3, new Point2D.Double(40, 30));
 		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
-		aDiagram.draw(aGraphics, aGrid);	
+		aDiagram.draw(aGraphics);	
 		
 		// create an association edge between two ObjectNode
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
@@ -223,7 +220,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
-		aDiagram.draw(aGraphics, aGrid);	
+		aDiagram.draw(aGraphics);	
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
@@ -244,7 +241,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
 		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
-		aDiagram.draw(aGraphics, aGrid);	
+		aDiagram.draw(aGraphics);	
 
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
@@ -299,18 +296,18 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 
 		aPanel.undo();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addNode(noteNode, new Point2D.Double(75, 75));
 		aPanel.getSelectionList().add(noteNode);
 		aPanel.removeSelected();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 
 		aPanel.undo();
@@ -328,11 +325,11 @@ public class TestUsageScenariosObjectDiagram
 
 		aPanel.getSelectionList().add(aFieldNode1);
 		aPanel.removeSelected();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aObjectNode1.getChildren().size());
 
 		aPanel.undo();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aObjectNode1.getChildren().size());
 	}
 	
@@ -346,7 +343,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.draw(aGraphics, aGrid);	
+		aDiagram.draw(aGraphics);	
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
 		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 110), new Point2D.Double(20, 20));
@@ -356,12 +353,12 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		aPanel.getSelectionList().add(collaborationEdge1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		aPanel.undo();
@@ -380,7 +377,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.draw(aGraphics, aGrid);	
+		aDiagram.draw(aGraphics);	
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(assoEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
@@ -394,7 +391,7 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
@@ -407,7 +404,7 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aObjectNode1.getChildren().size());
 		assertEquals(2, aDiagram.getEdges().size());
@@ -431,7 +428,7 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.copy();
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
@@ -443,7 +440,7 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(aFieldNode1);
 		aPanel.copy();
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
 	
@@ -458,10 +455,10 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.cut();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
@@ -471,11 +468,11 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
 		aPanel.cut();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 	}
 	
@@ -489,13 +486,13 @@ public class TestUsageScenariosObjectDiagram
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(50, 20));
 		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		aPanel.selectAll();
 		aPanel.copy();
 		aPanel.paste();
 
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 
@@ -512,17 +509,17 @@ public class TestUsageScenariosObjectDiagram
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addNode(aObjectNode1, new Point2D.Double(50, 20));
 		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
 		
 		aPanel.selectAll();
 		aPanel.cut();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 

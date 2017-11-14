@@ -67,7 +67,7 @@ public class StateNode extends RectangularNode
    }
 
 	@Override	
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle2D b = aName.getBounds(pGraphics2D);
 		b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 

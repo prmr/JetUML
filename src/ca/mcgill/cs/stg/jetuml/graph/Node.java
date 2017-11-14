@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 
@@ -66,9 +65,8 @@ public interface Node extends GraphElement
      * Lays out the node and its children.
      * @param pGraph the ambient graph
      * @param pGraphics2D the graphics context
-     * @param pGrid the grid to snap to
 	 */
-	void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid);
+	void layout(Graph pGraph, Graphics2D pGraphics2D);
 
 	/**
 	 * @return A clone of the node.

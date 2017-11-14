@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
@@ -307,9 +306,9 @@ public class SequenceDiagramGraph extends Graph
 	}
  
 	@Override
-	public void layout(Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graphics2D pGraphics2D)
 	{
-		super.layout(pGraphics2D, pGrid);
+		super.layout(pGraphics2D);
 
 		ArrayList<Node> topLevelCalls = new ArrayList<>();
 		ArrayList<Node> objects = new ArrayList<>();
@@ -340,7 +339,7 @@ public class SequenceDiagramGraph extends Graph
 				}
 			}
 		}
-		heightObjectLayout(topLevelCalls, objects, pGraphics2D, pGrid);
+		heightObjectLayout(topLevelCalls, objects, pGraphics2D);
 	}
 	
 	/*
@@ -350,7 +349,7 @@ public class SequenceDiagramGraph extends Graph
 	 * @param pGraphics2D Graphics2D from layout call.
 	 * @param pGrid Grid from layout call.
 	 */
-	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D, Grid pGrid)
+	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D)
 	{
 		double top = 0;
 		for(Node node : pObjects)
@@ -361,7 +360,7 @@ public class SequenceDiagramGraph extends Graph
 
 		for(Node node : pTopLevelCalls )
 		{
-			node.layout(this, pGraphics2D, pGrid);
+			node.layout(this, pGraphics2D);
 		}
 
 		for(Node node : aRootNodes )
@@ -386,10 +385,10 @@ public class SequenceDiagramGraph extends Graph
 	}
 
 	@Override
-	public void draw(Graphics2D pGraphics2D, Grid pGrid)
+	public void draw(Graphics2D pGraphics2D)
 	{
-		layout(pGraphics2D, pGrid);
-		super.draw(pGraphics2D, pGrid);
+		layout(pGraphics2D);
+		super.draw(pGraphics2D);
 	}
 
 	@Override

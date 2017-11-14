@@ -21,6 +21,11 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -30,14 +35,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -50,7 +49,6 @@ import static org.junit.Assert.assertEquals;
 public class TestGraph
 {
 	private Graph aGraph;
-	private Grid aGrid;
 	private Graphics2D aGraphics;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
@@ -63,7 +61,6 @@ public class TestGraph
 	public void setup()
 	{
 		aGraph = new ClassDiagramGraph();
-		aGrid = new Grid();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
@@ -159,7 +156,7 @@ public class TestGraph
 		assertTrue( aGraph.contains(aNode2 ));
 		assertTrue( aGraph.contains(aEdge1 ));
 		aGraph.layout();
-		aGraph.layout(aGraphics, aGrid);
+		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));
@@ -174,7 +171,7 @@ public class TestGraph
 		assertTrue( aGraph.contains(aEdge1 ));
 		aGraph.removeAllEdgesConnectedTo(aNode1);
 		aGraph.layout();
-		aGraph.layout(aGraphics, aGrid);
+		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));
@@ -189,7 +186,7 @@ public class TestGraph
 		aGraph.removeEdge(aEdge1);
 		aGraph.removeAllEdgesConnectedTo(aNode1);
 		aGraph.layout();
-		aGraph.layout(aGraphics, aGrid);
+		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
@@ -122,7 +121,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		assert aImplicitParameter != null;
 		assert pGraph instanceof SequenceDiagramGraph;
@@ -132,7 +131,7 @@ public class CallNode extends RectangularNode implements ChildNode
 		translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
 
 		// Compute the Y coordinate of the bottom of the node
-		double bottomY = computeBottomY(graph, pGraphics2D, pGrid);
+		double bottomY = computeBottomY(graph, pGraphics2D);
 
 		Rectangle bounds = getBounds();
 
@@ -196,7 +195,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
 	 */
-	private double computeBottomY(SequenceDiagramGraph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	private double computeBottomY(SequenceDiagramGraph pGraph, Graphics2D pGraphics2D)
 	{
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = getBounds().getY() + CALL_YGAP;
@@ -218,7 +217,7 @@ public class CallNode extends RectangularNode implements ChildNode
 				}
 
 				node.translate(0, bottomY - node.getBounds().getY());
-				node.layout(pGraph, pGraphics2D, pGrid);
+				node.layout(pGraph, pGraphics2D);
 				if(((CallNode) node).aSignaled)
 				{
 					bottomY += CALL_YGAP;

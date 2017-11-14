@@ -31,7 +31,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -50,7 +49,6 @@ public class TestUsageScenariosUseCaseDiagram
 	private UseCaseDiagramGraph aDiagram;
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
-	private Grid aGrid;
 	private ActorNode aActorNode1;
 	private ActorNode aActorNode2;
 	private UseCaseNode aUseCaseNode1;
@@ -68,7 +66,6 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram = new UseCaseDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
-		aGrid = new Grid();
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -91,7 +88,7 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		// create an ActorNode
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		MultiLineString name = new MultiLineString();
 		name.setText("Car");
 		aActorNode1.setName(name);
@@ -255,10 +252,10 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		aPanel.undo();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
@@ -266,7 +263,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(noteNode);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		aPanel.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -275,10 +272,10 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aUseCaseNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		aPanel.undo();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 	}
 
@@ -304,12 +301,12 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aAssociationEdge);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getEdges().size());
 		aPanel.getSelectionList().add(aGeneralEdge);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		aPanel.undo();
@@ -345,7 +342,7 @@ public class TestUsageScenariosUseCaseDiagram
 
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
@@ -362,7 +359,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aGeneralEdge);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		
@@ -384,11 +381,11 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
 		aActorNode1.getBounds();
 		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.copy();
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 	
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
@@ -403,16 +400,16 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
 		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		
 		aPanel.getSelectionList().add(aUseCaseNode1);
 		aPanel.cut();
 		aPanel.getSelectionList().clearSelection();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(0, 0, 120, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
@@ -430,7 +427,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.selectAll();
 		aPanel.copy();
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
@@ -456,13 +453,13 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aGeneralEdge);
 		
 		aPanel.cut();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		
 		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.paste();
-		aDiagram.draw(aGraphics, aGrid);
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
