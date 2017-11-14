@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.After;
@@ -153,68 +152,68 @@ public class TestClassNode
 	@Test
 	public void testComputeMiddle()
 	{
-		assertEquals(new Rectangle2D.Double(0,0,0,0), aNode1.computeMiddle(aGraphics));
+		assertEquals(new Rectangle(0,0,0,0), aNode1.computeMiddle());
 		MultiLineString attributes = new MultiLineString();
 		attributes.setText("Foo");
 		aNode1.setAttributes(attributes);
-		assertEquals(new Rectangle2D.Double(0,0,100,20), aNode1.computeMiddle(aGraphics));
+		assertEquals(new Rectangle(0,0,100,20), aNode1.computeMiddle());
 		attributes.setText("Foo\nFoo");
-		assertEquals(new Rectangle2D.Double(0,0,100,32), aNode1.computeMiddle(aGraphics));
+		assertEquals(new Rectangle(0,0,100,32), aNode1.computeMiddle());
 		attributes.setText("Foo");
-		assertEquals(new Rectangle2D.Double(0,0,100,20), aNode1.computeMiddle(aGraphics));
+		assertEquals(new Rectangle(0,0,100,20), aNode1.computeMiddle());
 		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle2D.Double(0,0,350,20), aNode1.computeMiddle(aGraphics));
+		assertEquals(new Rectangle(0,0,350,20), aNode1.computeMiddle());
 	}
 
 	@Test
 	public void testComputeBottom()
 	{
-		assertEquals(new Rectangle2D.Double(0,0,0,0), aNode1.computeBottom(aGraphics));
+		assertEquals(new Rectangle(0,0,0,0), aNode1.computeBottom());
 		MultiLineString methods = new MultiLineString();
 		methods.setText("Foo");
 		aNode1.setMethods(methods);
-		assertEquals(new Rectangle2D.Double(0,0,100,20), aNode1.computeBottom(aGraphics));
+		assertEquals(new Rectangle(0,0,100,20), aNode1.computeBottom());
 		methods.setText("Foo\nFoo");
-		assertEquals(new Rectangle2D.Double(0,0,100,32), aNode1.computeBottom(aGraphics));
+		assertEquals(new Rectangle(0,0,100,32), aNode1.computeBottom());
 		methods.setText("Foo");
-		assertEquals(new Rectangle2D.Double(0,0,100,20), aNode1.computeBottom(aGraphics));
+		assertEquals(new Rectangle(0,0,100,20), aNode1.computeBottom());
 		methods.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle2D.Double(0,0,350,20), aNode1.computeBottom(aGraphics));
+		assertEquals(new Rectangle(0,0,350,20), aNode1.computeBottom());
 	}
 
 	@Test
 	public void testComputeTop()
 	{
-		assertEquals(new Rectangle2D.Double(0,0,100,60), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,60), aNode1.computeTop());
 		MultiLineString name = new MultiLineString();
 		name.setText("X\nX\nX\nX");
 		aNode1.setName(name);
-		assertEquals(new Rectangle2D.Double(0,0,100,64), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,64), aNode1.computeTop());
 		
 		name.setText("");
-		assertEquals(new Rectangle2D.Double(0,0,100,60), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,60), aNode1.computeTop());
 		
 		MultiLineString methods = new MultiLineString();
 		methods.setText("X");
 		aNode1.setMethods(methods);
-		assertEquals(new Rectangle2D.Double(0,0,100,40), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,40), aNode1.computeTop());
 		methods.setText("X\nX\nX");
-		assertEquals(new Rectangle2D.Double(0,0,100,40), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,40), aNode1.computeTop());
 		
 		name.setText("X\nX\nX");
-		assertEquals(new Rectangle2D.Double(0,0,100,48), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,48), aNode1.computeTop());
 		name.setText("X\nX\nX\nX");
-		assertEquals(new Rectangle2D.Double(0,0,100,64), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,64), aNode1.computeTop());
 		
 		name.setText("X");
 		methods.setText("X");
 		MultiLineString attributes = new MultiLineString();
 		attributes.setText("X");
 		aNode1.setAttributes(attributes);
-		assertEquals(new Rectangle2D.Double(0,0,100,20), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,20), aNode1.computeTop());
 		
 		methods.setText("");
-		assertEquals(new Rectangle2D.Double(0,0,100,40), aNode1.computeTop(aGraphics));
+		assertEquals(new Rectangle(0,0,100,40), aNode1.computeTop());
 	}
 	
 	@Test

@@ -22,10 +22,8 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -49,8 +47,8 @@ public class ClassNode extends InterfaceNode
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D); 
-		double midHeight = computeMiddle(pGraphics2D).getHeight();
-		double bottomHeight = computeBottom(pGraphics2D).getHeight();
+		int midHeight = computeMiddle().getHeight();
+		double bottomHeight = computeBottom().getHeight();
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - midHeight - bottomHeight));
 		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(midHeight));
@@ -85,21 +83,20 @@ public class ClassNode extends InterfaceNode
 	}
 	
 	/**
-	 * @param pGraphics2D The graphics context
 	 * @return The area of the middle compartment. The x and y values
 	 * are meaningless.
 	 */
 	@Override
-	protected Rectangle2D computeMiddle(Graphics2D pGraphics2D)
+	protected Rectangle computeMiddle()
 	{
 		if( !needsMiddleCompartment() )
 		{
-			return new Rectangle2D.Double(0, 0, 0, 0);
+			return new Rectangle(0, 0, 0, 0);
 		}
 			
 		Rectangle attributes = aAttributes.getBounds();
 		attributes = attributes.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return Conversions.toRectangle2D(attributes);
+		return attributes;
 	}
 
 	@Override

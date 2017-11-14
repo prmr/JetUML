@@ -64,8 +64,8 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		double midHeight = computeMiddle(pGraphics2D).getHeight();
-		double bottomHeight = computeBottom(pGraphics2D).getHeight();
+		int midHeight = computeMiddle().getHeight();
+		double bottomHeight = computeBottom().getHeight();
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
 		pGraphics2D.draw(top);
@@ -80,10 +80,9 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	/**
 	 * The top is computed to be at least the default
 	 * node size.
-	 * @param pGraphics2D The graphics context
 	 * @return The area of the top compartment
 	 */
-	protected Rectangle2D computeTop(Graphics2D pGraphics2D)
+	protected Rectangle computeTop()
 	{
 		Rectangle top = aName.getBounds(); 
 		
@@ -98,34 +97,32 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 		}
 		top = top.add(new Rectangle(0, 0, DEFAULT_WIDTH, minHeight));
 
-		return Conversions.toRectangle2D(top);
+		return top;
 	}
 	
 	/**
-	 * @param pGraphics2D The graphics context
 	 * @return The area of the middle compartment. The x and y values
 	 * are meaningless.
 	 */
-	protected Rectangle2D computeMiddle(Graphics2D pGraphics2D)
+	protected Rectangle computeMiddle()
 	{
-		return new Rectangle2D.Double(0, 0, 0, 0);
+		return new Rectangle(0, 0, 0, 0);
 	}
 	
 	/**
-	 * @param pGraphics2D The graphics context
 	 * @return The area of the bottom compartment. The x and y values
 	 * are meaningless.
 	 */
-	protected Rectangle2D computeBottom(Graphics2D pGraphics2D)
+	protected Rectangle computeBottom()
 	{
 		if( !needsBottomCompartment() )
 		{
-			return new Rectangle2D.Double(0, 0, 0, 0);
+			return new Rectangle(0, 0, 0, 0);
 		}
 			
 		Rectangle bottom = aMethods.getBounds();
 		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return Conversions.toRectangle2D(bottom);
+		return bottom;
 	}
 	
 
@@ -149,13 +146,13 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
-		Rectangle2D top = computeTop(pGraphics2D);
-		Rectangle2D middle = computeMiddle(pGraphics2D);
-		Rectangle2D bottom = computeBottom(pGraphics2D);
+		Rectangle top = computeTop();
+		Rectangle middle = computeMiddle();
+		Rectangle bottom = computeBottom();
 
-		Rectangle2D bounds = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(Math.max(top.getWidth(), middle.getWidth()), bottom.getWidth()), top.getHeight() + middle.getHeight() + bottom.getHeight());
-		setBounds(Grid.snapped(Conversions.toRectangle(bounds)));
+		setBounds(Grid.snapped(bounds));
 	}
 
 	/**
