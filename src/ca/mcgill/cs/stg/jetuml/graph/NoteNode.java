@@ -29,6 +29,8 @@ import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A note node in a UML diagram.
@@ -48,7 +50,7 @@ public class NoteNode extends RectangularNode
     */
 	public NoteNode()
 	{
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aText = new MultiLineString();
 		aText.setJustification(MultiLineString.LEFT);
 	}
@@ -57,10 +59,9 @@ public class NoteNode extends RectangularNode
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
 		Rectangle2D b = aText.getBounds(pGraphics2D); // getMultiLineBounds(name, g2);
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 		b = new Rectangle2D.Double(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		pGrid.snap(b);
-		setBounds(b);
+		setBounds(Grid.snapped(Conversions.toRectangle(b)));
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class NoteNode extends RectangularNode
 		pGraphics2D.setColor(oldColor);
 		pGraphics2D.draw(path);
 
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 		GeneralPath fold = new GeneralPath();
 		fold.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
 		fold.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
@@ -105,13 +106,13 @@ public class NoteNode extends RectangularNode
 		pGraphics2D.setColor(oldColor);      
 		pGraphics2D.draw(fold);      
       
-		aText.draw(pGraphics2D, getBounds());
+		aText.draw(pGraphics2D, Conversions.toRectangle2D(getBounds()));
 	}
    
 	@Override
 	public Shape getShape()
 	{
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 		GeneralPath path = new GeneralPath();
 		path.moveTo((float)bounds.getX(), (float)bounds.getY());
 		path.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());

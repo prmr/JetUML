@@ -21,11 +21,9 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
@@ -36,6 +34,7 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * Tests various interactions with Use Case Diagram normally triggered from the 
@@ -199,9 +198,9 @@ public class TestUsageScenariosUseCaseDiagram
 		aActorNode1.translate(3, 12);
 		aUseCaseNode1.translate(3, 2);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle2D.Double(23, 32, 48, 64), aActorNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(83, 22, 110, 40), aUseCaseNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(140, 120, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(23, 32, 48, 64), aActorNode1.getBounds());
+		assertEquals(new Rectangle(83, 22, 110, 40), aUseCaseNode1.getBounds());
+		assertEquals(new Rectangle(140, 120, 60, 40), noteNode.getBounds());
 	}
 	
 	/**
@@ -230,18 +229,16 @@ public class TestUsageScenariosUseCaseDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle2D.Double(46, 57, 48, 64), aActorNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(276, 57, 48, 64), aActorNode2.getBounds());
-		assertEquals(new Rectangle2D.Double(106, 57, 110, 40), aUseCaseNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(166, 57, 110, 40), aUseCaseNode2.getBounds());
-		assertEquals(new Rectangle2D.Double(126, 137, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(46, 57, 48, 64), aActorNode1.getBounds());
+		assertEquals(new Rectangle(276, 57, 48, 64), aActorNode2.getBounds());
+		assertEquals(new Rectangle(106, 57, 110, 40), aUseCaseNode1.getBounds());
+		assertEquals(new Rectangle(166, 57, 110, 40), aUseCaseNode2.getBounds());
+		assertEquals(new Rectangle(126, 137, 60, 40), noteNode.getBounds());
 		
 		// move a node connect to another node, edge should redraw accordingly,
-		Rectangle2D associationEdgeBounds = aAssociationEdge.getBounds();
 		aActorNode1.translate(10, 20);
-		assertFalse(associationEdgeBounds == aAssociationEdge.getBounds());
 		assertEquals(aActorNode1, aAssociationEdge.getStart());
-		assertEquals(aActorNode2, aAssociationEdge.getEnd());
+		assertEquals(aUseCaseNode2, aAssociationEdge.getEnd());
 	}
 	
 	/**
@@ -385,15 +382,16 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testCopyNode()
 	{
 		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aActorNode1.getBounds();
 		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
 		aDiagram.draw(aGraphics, aGrid);
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
-		
+	
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
+		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
 	}
 	
 	/**
@@ -415,7 +413,7 @@ public class TestUsageScenariosUseCaseDiagram
 
 		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(0, 0, 120, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
+		assertEquals(new Rectangle(0, 0, 120, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
 	
@@ -435,7 +433,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
+		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
 	}
 
 	/**
@@ -460,13 +458,13 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.cut();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		// aAssociationEdge is connected with aAcotrNode, should also be removed
-		assertEquals(1, aDiagram.getEdges().size());
+		
+		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.paste();
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
-		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
+		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
 	}
 }

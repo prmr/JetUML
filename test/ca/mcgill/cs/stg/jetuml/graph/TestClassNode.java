@@ -36,6 +36,7 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 public class TestClassNode
 {
@@ -77,7 +78,7 @@ public class TestClassNode
 		assertFalse(attributes.isBold());
 		assertFalse(attributes.isUnderlined());
 		assertEquals("", attributes.getText());
-		assertEquals(new Rectangle2D.Double(0,0,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(0,0,100,60), aNode1.getBounds());
 		assertNull(aNode1.getParent());
 	}
 	
@@ -147,8 +148,8 @@ public class TestClassNode
 		assertFalse(attributes.isUnderlined());
 		assertEquals("", attributes.getText());
 		assertFalse(attributes == aNode1.getAttributes() );
-		assertEquals(new Rectangle2D.Double(0,0,100,60), clone.getBounds());
-		assertFalse(clone.getBounds() == aNode1.getBounds());
+		assertEquals(new Rectangle(0,0,100,60), clone.getBounds());
+		assertTrue(clone.getBounds() == aNode1.getBounds());
 		assertTrue(clone.getParent() == aNode1.getParent());
 	}
 	
@@ -225,19 +226,19 @@ public class TestClassNode
 		// Test layout with no snapping (grid size is 10)
 		aNode1.translate(10, 10);
 		aNode1.layout(aGraph, aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(10,10,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
 		
 		MultiLineString name = new MultiLineString();
 		name.setText("X\nX\nX\nX");
 		aNode1.setName(name);
 		aNode1.layout(aGraph, aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(10,10,100,80), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 		
 		MultiLineString methods = new MultiLineString();
 		methods.setText("X\nX");
 		aNode1.setMethods(methods);
 		aNode1.layout(aGraph, aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(10,10,100,100), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,100), aNode1.getBounds());
 		
 		name.setText("X");
 		methods.setText("X");
@@ -245,11 +246,11 @@ public class TestClassNode
 		attributes.setText("X");
 		aNode1.setMethods(attributes);
 		aNode1.layout(aGraph, aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(10,10,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
 		
 		// Test layout with snapping
 		aNode1.translate(-4, -4);
 		aNode1.layout(aGraph, aGraphics, aGrid);
-		assertEquals(new Rectangle2D.Double(10,10,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
 	}
 }

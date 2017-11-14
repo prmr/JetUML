@@ -31,6 +31,8 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -215,7 +217,7 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		aNode3.translate(20, 20);
 		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		assertEquals(new Rectangle2D.Double(10,10,244,254), aGraph.getBounds());
+		assertEquals(Conversions.toRectangle2D(new Rectangle(10,10,244,254)), aGraph.getBounds());
 	}
 	
 	@Test

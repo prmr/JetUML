@@ -23,13 +23,12 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.BasicStroke;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  Supplies convenience implementations for a number of methods
@@ -60,9 +59,9 @@ abstract class AbstractEdge implements Edge
 	protected abstract Shape getShape();
 
 	@Override
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
-		return getShape().getBounds(); // Note that this returns an integer rectangle
+		return Conversions.toRectangle(getShape().getBounds()); 
 	}
 
 	@Override
@@ -131,10 +130,10 @@ abstract class AbstractEdge implements Edge
 	@Override
 	public Line getConnectionPoints()
 	{
-		Rectangle2D startBounds = aStart.getBounds();
-		Rectangle2D endBounds = aEnd.getBounds();
-		Point2D startCenter = new Point2D.Double(startBounds.getCenterX(), startBounds.getCenterY());
-		Point2D endCenter = new Point2D.Double(endBounds.getCenterX(), endBounds.getCenterY());
+		Rectangle startBounds = aStart.getBounds();
+		Rectangle endBounds = aEnd.getBounds();
+		Point startCenter = startBounds.getCenter();
+		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(aStart.getConnectionPoint(toEnd), aEnd.getConnectionPoint(toEnd.turn(DEGREES_180)));
 	}
@@ -155,5 +154,4 @@ abstract class AbstractEdge implements Edge
 		lReturn.append("</html>");
 		return lReturn.toString();
 	}
-	
 }

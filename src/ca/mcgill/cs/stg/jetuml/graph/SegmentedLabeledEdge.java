@@ -35,6 +35,7 @@ import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  Adds support for drawing edges as collection of segmented
@@ -140,7 +141,7 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 		Dimension dimensions = label.getPreferredSize();      
 		label.setBounds(0, 0, dimensions.width, dimensions.height);
 
-		Rectangle2D bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
+		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
 
 		pGraphics2D.translate(bounds.getX(), bounds.getY());
 		label.paint(pGraphics2D);
@@ -217,27 +218,29 @@ public abstract class SegmentedLabeledEdge extends AbstractEdge
 	 * @param center true if the string should be centered along the segment
 	 * @return the rectangle enclosing the string
 	 */
-	private static Rectangle2D getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
+	private static Rectangle getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
 			ArrowHead pArrow, String pString, boolean pCenter)
 	{
 		if (pString == null || pString.equals(""))
 		{
-			return new Rectangle2D.Double(pEndPoint2.getX(), pEndPoint2.getY(), 0, 0);
+			return new Rectangle((int)Math.round(pEndPoint2.getX()), 
+					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		label.setText(toHtml(pString));
 		Dimension d = label.getPreferredSize();
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, d, pCenter);
-		return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());
+		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
+				(int)Math.round(d.getWidth()), (int)Math.round(d.getHeight()));
 	}
 
 	@Override
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
 		Point2D[] points = getPoints();
-		Rectangle2D bounds = super.getBounds();
-		bounds.add(getStringBounds(points[1], points[0], obtainStartArrowHead(), obtainStartLabel(), false));
-		bounds.add(getStringBounds(points[points.length / 2 - 1], points[points.length / 2], null, obtainMiddleLabel(), true));
-		bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], obtainEndArrowHead(), obtainEndLabel(), false));
+		Rectangle bounds = super.getBounds();
+		bounds = bounds.add(getStringBounds(points[1], points[0], obtainStartArrowHead(), obtainStartLabel(), false));
+		bounds = bounds.add(getStringBounds(points[points.length / 2 - 1], points[points.length / 2], null, obtainMiddleLabel(), true));
+		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], obtainEndArrowHead(), obtainEndLabel(), false));
 		return bounds;
 	}
 

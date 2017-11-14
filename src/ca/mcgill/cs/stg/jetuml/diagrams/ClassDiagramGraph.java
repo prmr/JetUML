@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
@@ -112,7 +113,7 @@ public class ClassDiagramGraph extends Graph
 		PackageNode container = null;
 		for( Node node : pNodes )
 		{
-			if( node instanceof PackageNode && node.contains(pPoint) )
+			if( node instanceof PackageNode && node.contains(Conversions.toPoint(pPoint)) )
 			{
 				container = (PackageNode) node;
 			}

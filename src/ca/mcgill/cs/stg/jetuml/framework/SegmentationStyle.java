@@ -23,6 +23,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.geom.Point2D;
 
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;

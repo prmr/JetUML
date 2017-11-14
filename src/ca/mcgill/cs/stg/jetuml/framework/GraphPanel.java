@@ -50,6 +50,7 @@ import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -322,10 +323,10 @@ public class GraphPanel extends JPanel
 			}
 			else if(selected instanceof Node)
 			{
-				Rectangle2D grabberBounds = ((Node) selected).getBounds();
-				drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
-				drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
-				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
+				Rectangle grabberBounds = ((Node) selected).getBounds();
+				drawGrabber(g2, grabberBounds.getX(), grabberBounds.getY());
+				drawGrabber(g2, grabberBounds.getX(), grabberBounds.getMaxY());
+				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getY());
 				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
 			}
 			else if(selected instanceof Edge)
@@ -751,7 +752,7 @@ public class GraphPanel extends JPanel
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
 				Node lastNode = aSelectedElements.getLastNode();
-				Rectangle2D bounds = lastNode.getBounds();
+				Rectangle bounds = lastNode.getBounds();
 				double dx = mousePoint.getX() - aLastMousePoint.getX();
 				double dy = mousePoint.getY() - aLastMousePoint.getY();
                    
@@ -763,7 +764,7 @@ public class GraphPanel extends JPanel
 					if(selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						bounds.add(n.getBounds());
+						bounds = bounds.add(n.getBounds());
 					}
 				}
 				dx = Math.max(dx, -bounds.getX());
@@ -792,7 +793,7 @@ public class GraphPanel extends JPanel
 				double y1 = aMouseDownPoint.getY();
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
-				Rectangle2D.Double lasso = new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
+				Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
 				for( Node node : aGraph.getRootNodes() )
 				{
 					selectNode(isCtrl, node, lasso);
@@ -817,7 +818,7 @@ public class GraphPanel extends JPanel
 			repaint();
 		}
 		
-		private void selectNode( boolean pCtrl, Node pNode, Rectangle2D.Double pLasso )
+		private void selectNode( boolean pCtrl, Node pNode, Rectangle pLasso )
 		{
 			if(!pCtrl && !pLasso.contains(pNode.getBounds())) 
 			{

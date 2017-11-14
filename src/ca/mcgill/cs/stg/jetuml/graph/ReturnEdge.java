@@ -22,11 +22,11 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  An edge that joins two call nodes.
@@ -83,14 +83,14 @@ public class ReturnEdge extends SegmentedLabeledEdge
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
 		Node endNode = getEnd();
-		Rectangle2D start = getStart().getBounds();
-		Rectangle2D end = getEnd().getBounds();
+		Rectangle start = getStart().getBounds();
+		Rectangle end = getEnd().getBounds();
 		if(endNode instanceof PointNode) // show nicely in tool bar
 		{
 			lReturn.add(new Point2D.Double(end.getX(), end.getY()));
 			lReturn.add(new Point2D.Double(start.getMaxX(), end.getY()));
 		}      
-		else if(start.getCenterX() < end.getCenterX())
+		else if(start.getCenter().getX() < end.getCenter().getX())
 		{
 			lReturn.add(new Point2D.Double(start.getMaxX(), start.getMaxY()));
 			lReturn.add(new Point2D.Double(end.getX(), start.getMaxY()));

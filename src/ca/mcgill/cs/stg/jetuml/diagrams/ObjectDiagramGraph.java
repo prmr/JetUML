@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
@@ -128,7 +129,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				return (ObjectNode)node;
 			}
-			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
+			else if( node.contains(Conversions.toPoint(pPoint)) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}

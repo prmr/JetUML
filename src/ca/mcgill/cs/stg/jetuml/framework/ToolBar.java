@@ -36,7 +36,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,6 +55,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -161,45 +161,45 @@ public class ToolBar extends JPanel
 	private static Icon createEdgeIcon( final Edge pEdge )
 	{
 		return new Icon()
-        {
-           public int getIconHeight() 
-           { return BUTTON_SIZE; }
-           
-           public int getIconWidth() 
-           { return BUTTON_SIZE; }
-           
-           public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
-           {
-           	Graphics2D g2 = (Graphics2D)pGraphics;
-           	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-           	
-           	PointNode p = new PointNode();
-           	p.translate(OFFSET, OFFSET);
-           	PointNode q = new PointNode();
-           	q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-           	pEdge.connect(p, q, null);
-              
-           	Rectangle2D bounds = new Rectangle2D.Double();
-           	bounds.add(p.getBounds());
-           	bounds.add(q.getBounds());
-           	bounds.add(pEdge.getBounds());
-              
-           	double width = bounds.getWidth();
-           	double height = bounds.getHeight();
-           	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-           	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-           	double scale = Math.min(scaleX, scaleY);
+		{
+			public int getIconHeight() 
+			{ return BUTTON_SIZE; }
 
-           	AffineTransform oldTransform = g2.getTransform();
-           	g2.translate(pX, pY);
-           	g2.scale(scale, scale);
-           	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-                             
-           	g2.setColor(Color.black);
-           	pEdge.draw(g2);
-           	g2.setTransform(oldTransform);
-           }
-        };
+			public int getIconWidth() 
+			{ return BUTTON_SIZE; }
+
+			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
+			{
+				Graphics2D g2 = (Graphics2D)pGraphics;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				PointNode pointNode = new PointNode();
+				pointNode.translate(OFFSET, OFFSET);
+				PointNode q = new PointNode();
+				q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
+				pEdge.connect(pointNode, q, null);
+
+				Rectangle bounds = new Rectangle(0, 0, 0, 0);
+				bounds = bounds.add(pointNode.getBounds());
+				bounds = bounds.add(q.getBounds());
+				bounds = bounds.add(pEdge.getBounds());
+
+				double width = bounds.getWidth();
+				double height = bounds.getHeight();
+				double scaleX = (BUTTON_SIZE - OFFSET)/ width;
+				double scaleY = (BUTTON_SIZE - OFFSET)/ height;
+				double scale = Math.min(scaleX, scaleY);
+
+				AffineTransform oldTransform = g2.getTransform();
+				g2.translate(pX, pY);
+				g2.scale(scale, scale);
+				g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+
+				g2.setColor(Color.black);
+				pEdge.draw(g2);
+				g2.setTransform(oldTransform);
+			}
+		};
 	}
 	
 	private void createSelectionTool(ButtonGroup pGroup, ButtonGroup pGroupEx)

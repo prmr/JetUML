@@ -26,14 +26,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,
@@ -56,7 +57,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	 */
 	public CallNode()
 	{
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
 	@Override
@@ -65,11 +66,11 @@ public class CallNode extends RectangularNode implements ChildNode
 		super.draw(pGraphics2D);
 		Color oldColor = pGraphics2D.getColor();
 		pGraphics2D.setColor(Color.WHITE);
-		pGraphics2D.fill(getBounds());
+		pGraphics2D.fill(Conversions.toRectangle2D(getBounds()));
 		pGraphics2D.setColor(oldColor);
 		if(aOpenBottom)
 		{
-			Rectangle2D b = getBounds();
+			Rectangle b = getBounds();
 			double x1 = b.getX();
 			double x2 = x1 + b.getWidth();
 			double y1 = b.getY();
@@ -88,7 +89,7 @@ public class CallNode extends RectangularNode implements ChildNode
 		}
 		else
 		{
-			pGraphics2D.draw(getBounds());
+			pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
 		}
 	}
 
@@ -97,11 +98,11 @@ public class CallNode extends RectangularNode implements ChildNode
 	{
 		if(pDirection.getX() > 0)
 		{
-			return new Point(getBounds().getMaxX(), getBounds().getMinY());
+			return new Point(getBounds().getMaxX(), getBounds().getY());
 		}
 		else
 		{
-			return new Point(getBounds().getX(), getBounds().getMinY());
+			return new Point(getBounds().getX(), getBounds().getY());
 		}
 	}
 
@@ -115,7 +116,7 @@ public class CallNode extends RectangularNode implements ChildNode
 		// Prevent going above the ImplicitParameterNode
 		if( getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
 		{
-			setBounds(new Rectangle2D.Double(getBounds().getX(), aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP, 
+			setBounds(new Rectangle(getBounds().getX(), (int) Math.round(aImplicitParameter.getTopRectangle().getMaxY()) + MIN_YGAP, 
 					getBounds().getWidth(), getBounds().getHeight()));
 		}
 	}
@@ -128,21 +129,21 @@ public class CallNode extends RectangularNode implements ChildNode
 		SequenceDiagramGraph graph = (SequenceDiagramGraph) pGraph;
 
 		// Shift the node to its proper place on the X axis.
-		translate(computeMidX(pGraph) - getBounds().getCenterX(), 0);
+		translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
 
 		// Compute the Y coordinate of the bottom of the node
 		double bottomY = computeBottomY(graph, pGraphics2D, pGrid);
 
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 
 		double minHeight = DEFAULT_HEIGHT;
 		Edge returnEdge = graph.findEdge(this, graph.getCaller(this));
 		if(returnEdge != null)
 		{
-			Rectangle2D edgeBounds = returnEdge.getBounds();
+			Rectangle edgeBounds = returnEdge.getBounds();
 			minHeight = Math.max(minHeight, edgeBounds.getHeight());         
 		}
-		setBounds(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
+		setBounds(new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), (int)Math.max(minHeight, bottomY - bounds.getY())));
 	}
 	
 	/*
@@ -177,7 +178,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	 */
 	private double computeMidX(Graph pGraph)
 	{
-		double xmid = aImplicitParameter.getBounds().getCenterX();
+		int xmid = aImplicitParameter.getBounds().getCenter().getX();
 
 		// Calculate a shift for each caller with the same implicit parameter
 		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(this); node != null && node != this; 

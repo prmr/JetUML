@@ -23,12 +23,13 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
@@ -88,7 +89,7 @@ public class SequenceDiagramGraph extends Graph
 	{
 		for( Node node : getRootNodes() )
 		{
-			if(node instanceof ImplicitParameterNode && node.contains(pPoint))
+			if(node instanceof ImplicitParameterNode && node.contains(Conversions.toPoint(pPoint)))
 			{
 				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
 				{
@@ -378,9 +379,9 @@ public class SequenceDiagramGraph extends Graph
 
 		for( Node node : pObjects )
 		{
-			Rectangle2D bounds = node.getBounds();
-			((ImplicitParameterNode)node).setBounds(new Rectangle2D.Double(bounds.getX(), 
-					bounds.getY(), bounds.getWidth(), top - bounds.getY()));         
+			Rectangle bounds = node.getBounds();
+			((ImplicitParameterNode)node).setBounds(new Rectangle(bounds.getX(), 
+					bounds.getY(), bounds.getWidth(), (int)top - bounds.getY()));         
 		}
 	}
 

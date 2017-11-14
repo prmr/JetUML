@@ -20,12 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.framework;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -231,7 +231,7 @@ public final class Clipboard
 		}
 		
 		List<Node> clonedRootNodes = new ArrayList<>();
-		Rectangle2D bounds = null;
+		Rectangle bounds = null;
 
 		for( Node node : aNodes )
 		{
@@ -300,16 +300,16 @@ public final class Clipboard
 		}
 	}
 	
-	private static Rectangle2D updateBounds(Rectangle2D pBounds, GraphElement pElement)
+	private static Rectangle updateBounds(Rectangle pBounds, GraphElement pElement)
 	{
-		Rectangle2D bounds = pBounds;
+		Rectangle bounds = pBounds;
 		if( bounds == null )
 		{
 			bounds = pElement.getBounds();
 		}
 		else
 		{
-			bounds.add( pElement.getBounds());
+			bounds = bounds.add( pElement.getBounds());
 		}
 		return bounds;
 	}

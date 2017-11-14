@@ -33,10 +33,11 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JLabel;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A curved edge for a state transition in a state diagram. The
@@ -91,11 +92,9 @@ public class StateTransitionEdge extends AbstractEdge
 	}
 	
 	@Override
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
-		Rectangle2D bounds = super.getBounds();
-		bounds.add(getLabelBounds());
-		return bounds;
+		return super.getBounds().add(Conversions.toRectangle(getLabelBounds()));
 	}
 	
 	@Override
@@ -325,18 +324,18 @@ public class StateTransitionEdge extends AbstractEdge
 		if( getPosition() == 1 )
 		{
 			Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
-					getStart().getBounds().getMinY());
+					getStart().getBounds().getY());
 			Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMaxX(), 
-					getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
+					getStart().getBounds().getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1),
 					Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getMinX(), 
-					getStart().getBounds().getMinY() + SELF_EDGE_OFFSET);
-			Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getMinX() + SELF_EDGE_OFFSET, 
-					getStart().getBounds().getMinY());
+			Point2D.Double point1 = new Point2D.Double(getStart().getBounds().getX(), 
+					getStart().getBounds().getY() + SELF_EDGE_OFFSET);
+			Point2D.Double point2 = new Point2D.Double(getStart().getBounds().getX() + SELF_EDGE_OFFSET, 
+					getStart().getBounds().getY());
 			return new Line(Conversions.toPoint(point1), 
 					Conversions.toPoint(point2));
 		}
@@ -348,10 +347,10 @@ public class StateTransitionEdge extends AbstractEdge
 	 */
 	private Line getNormalEdgeConnectionsPoints()
 	{
-		Rectangle2D start = getStart().getBounds();
-		Rectangle2D end = getEnd().getBounds();
-		Point2D startCenter = new Point2D.Double(start.getCenterX(), start.getCenterY());
-		Point2D endCenter = new Point2D.Double(end.getCenterX(), end.getCenterY());
+		Rectangle start = getStart().getBounds();
+		Rectangle end = getEnd().getBounds();
+		Point startCenter = start.getCenter();
+		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;
 		if( getGraph() != null && getPosition() > 1 )
 		{

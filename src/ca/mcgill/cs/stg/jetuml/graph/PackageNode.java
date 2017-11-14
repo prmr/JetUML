@@ -35,10 +35,11 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *   A package node in a UML diagram.
@@ -69,7 +70,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	{
 		aName = "";
 		aContents = new MultiLineString();
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aTop = new Rectangle2D.Double(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
 		aBottom = new Rectangle2D.Double(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
 		aContainedNodes = new ArrayList<>();
@@ -79,7 +80,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 
 		label.setText("<html>" + aName + "</html>");
 		label.setFont(pGraphics2D.getFont());
@@ -125,7 +126,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		{
 			// The connection point falls in the empty top-right corner, re-compute it so
 			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			double delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenterX()) * 2 / 
+			double delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenter().getX()) * 2 / 
 					getBounds().getHeight();
 			double newX = connectionPoint.getX() - delta;
 			if( newX < aTop.getMaxX() )
@@ -149,7 +150,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		double topWidth = Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
 		double topHeight = Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
 		
-		Rectangle2D childBounds = null;
+		Rectangle childBounds = null;
 		for( ChildNode child : getChildren() )
 		{
 			child.layout(pGraph, pGraphics2D, pGrid);
@@ -159,7 +160,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 			}
 			else
 			{
-				childBounds.add(child.getBounds());
+				childBounds = childBounds.add(child.getBounds());
 			}
 		}
 		
@@ -167,18 +168,18 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{
-			setBounds( new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-					computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
-					computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
+			setBounds( new Rectangle(getBounds().getX(), getBounds().getY(), 
+					(int)computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
+					(int)computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
 		}
 		else
 		{
-			setBounds( new Rectangle2D.Double(childBounds.getX() - XGAP, childBounds.getY() - topHeight - YGAP, 
-					computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
-					computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
+			setBounds( new Rectangle(childBounds.getX() - XGAP, (int)(childBounds.getY() - topHeight - YGAP), 
+					(int)computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
+					(int)computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
 		}
 		
-		Rectangle2D b = getBounds();
+		Rectangle b = getBounds();
 		aTop = new Rectangle2D.Double(b.getX(), b.getY(), topWidth, topHeight);
 		aBottom = new Rectangle2D.Double(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
 	}

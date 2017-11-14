@@ -22,13 +22,13 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *   An edge that joins two call nodes.
@@ -107,8 +107,8 @@ public class CallEdge extends SegmentedLabeledEdge
 	{
 		ArrayList<Point2D> a = new ArrayList<>();
 		Node endNode = getEnd();
-		Rectangle2D start = getStart().getBounds();
-		Rectangle2D end = endNode.getBounds();
+		Rectangle start = getStart().getBounds();
+		Rectangle end = endNode.getBounds();
       
 		if(endNode instanceof CallNode && ((CallNode)endNode).getParent() == ((CallNode)getStart()).getParent())
 		{
@@ -131,7 +131,7 @@ public class CallEdge extends SegmentedLabeledEdge
 			Direction d = new Direction(start.getX() - end.getX(), 0);
 			Point endPoint = getEnd().getConnectionPoint(d);
          
-			if(start.getCenterX() < endPoint.getX())
+			if(start.getCenter().getX() < endPoint.getX())
 			{
 				a.add(new Point2D.Double(start.getMaxX(), endPoint.getY()));
 			}

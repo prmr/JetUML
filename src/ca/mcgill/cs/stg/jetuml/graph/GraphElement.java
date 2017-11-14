@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.geom.Rectangle2D;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * A type that allows us to tread nodes and edges uniformly.
@@ -34,5 +34,5 @@ public interface GraphElement extends Cloneable
      * The bounding rectangle contains all labels.
      * @return the bounding rectangle
    	 */
-   	Rectangle2D getBounds();
+   	Rectangle getBounds();
 }

@@ -24,10 +24,10 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * An initial or final node (bull's eye) in a state or activity diagram.
@@ -44,7 +44,7 @@ public class CircularStateNode extends RectangularNode
 	 */
 	public CircularStateNode()
 	{     
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_DIAMETER, DEFAULT_DIAMETER));      
+		setBounds(new Rectangle(0, 0, DEFAULT_DIAMETER, DEFAULT_DIAMETER));      
 	}
    
 	/**
@@ -63,12 +63,12 @@ public class CircularStateNode extends RectangularNode
 		aFinalState = pFinalState;
 		if(aFinalState)
 		{
-			setBounds(new Rectangle2D.Double(getBounds().getX(), getBounds().getY(),
+			setBounds(new Rectangle(getBounds().getX(), getBounds().getY(),
 		               DEFAULT_DIAMETER + 2 * DEFAULT_GAP, DEFAULT_DIAMETER + 2 * DEFAULT_GAP));
 		}
 		else
 		{
-			setBounds(new Rectangle2D.Double(getBounds().getX(), getBounds().getY(),
+			setBounds(new Rectangle(getBounds().getX(), getBounds().getY(),
 		               DEFAULT_DIAMETER, DEFAULT_DIAMETER));
 		}
 	}
@@ -76,13 +76,13 @@ public class CircularStateNode extends RectangularNode
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 		double a = bounds.getWidth() / 2;
 		double b = bounds.getHeight() / 2;
 		double x = pDirection.getX();
 		double y = pDirection.getY();
-		double cx = bounds.getCenterX();
-		double cy = bounds.getCenterY();
+		double cx = bounds.getCenter().getX();
+		double cy = bounds.getCenter().getY();
       
 		if(a != 0 && b != 0 && !(x == 0 && y == 0))
 		{
@@ -103,7 +103,7 @@ public class CircularStateNode extends RectangularNode
       
       	if(aFinalState)
       	{
-      		Rectangle2D bounds = getBounds();
+      		Rectangle bounds = getBounds();
       		Ellipse2D inside = new Ellipse2D.Double( bounds.getX() + DEFAULT_GAP, 
       				bounds.getY() + DEFAULT_GAP, bounds.getWidth() - 2 * DEFAULT_GAP, bounds.getHeight() - 2 * DEFAULT_GAP);
       		pGraphics2D.fill(inside);

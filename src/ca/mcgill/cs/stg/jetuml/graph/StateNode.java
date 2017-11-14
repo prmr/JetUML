@@ -28,6 +28,8 @@ import java.awt.geom.RoundRectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
    A node in a state diagram.
@@ -46,7 +48,7 @@ public class StateNode extends RectangularNode
 	public StateNode()
 	{
 		aName = new MultiLineString();
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class StateNode extends RectangularNode
 	{
 		super.draw(pGraphics2D);
 		pGraphics2D.draw(getShape());
-		aName.draw(pGraphics2D, getBounds());
+		aName.draw(pGraphics2D, Conversions.toRectangle2D(getBounds()));
 	}
    
 	@Override
@@ -70,8 +72,7 @@ public class StateNode extends RectangularNode
 		Rectangle2D b = aName.getBounds(pGraphics2D);
 		b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		pGrid.snap(b);
-		setBounds(b);
+		setBounds(Grid.snapped(Conversions.toRectangle(b)));
 	}
 
 	/**

@@ -26,6 +26,8 @@ import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * An interface node in a class diagram that can be composed
@@ -55,7 +57,7 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 		aName.setJustification(MultiLineString.CENTER);
 		aMethods = new MultiLineString();
 		aMethods.setJustification(MultiLineString.LEFT);
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 
 	@Override
@@ -153,8 +155,7 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 
 		Rectangle2D bounds = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				Math.max(Math.max(top.getWidth(), middle.getWidth()), bottom.getWidth()), top.getHeight() + middle.getHeight() + bottom.getHeight());
-		pGrid.snap(bounds);
-		setBounds(bounds);
+		setBounds(Grid.snapped(Conversions.toRectangle(bounds)));
 	}
 
 	/**

@@ -26,8 +26,6 @@ import java.awt.Shape;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
-
 
 /**
  * A class that supplies convenience implementations for 
@@ -59,15 +57,6 @@ public abstract class AbstractNode implements Node
 			return null;
 		}
 	}
-
-	@Override
-	public void translate(double pDeltaX, double pDeltaY)
-	{
-	}
-	
-	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
-	{}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)

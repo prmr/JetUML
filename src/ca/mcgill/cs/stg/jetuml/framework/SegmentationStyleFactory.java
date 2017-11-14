@@ -28,6 +28,7 @@ import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
@@ -124,7 +125,7 @@ public final class SegmentationStyleFactory
 		}
 		else
 		{
-			return new Point2D.Double(pNode.getBounds().getMaxX(), pNode.getBounds().getMinY());
+			return new Point2D.Double(pNode.getBounds().getMaxX(), pNode.getBounds().getY());
 		}
 	}
 	
@@ -198,7 +199,7 @@ public final class SegmentationStyleFactory
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.EAST )
 			{
 				double increment = (pNode.getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
-				yPosition = pNode.getBounds().getMinY() + MARGIN + pPosition.getIndex() * increment;
+				yPosition = pNode.getBounds().getY() + MARGIN + pPosition.getIndex() * increment;
 			}
 			return new Point( start.getX(), yPosition);	
 		}
@@ -208,7 +209,7 @@ public final class SegmentationStyleFactory
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.NORTH )
 			{
 				double increment = (pNode.getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
-				xPosition = pNode.getBounds().getMinX() + pPosition.getIndex() * increment;
+				xPosition = pNode.getBounds().getX() + pPosition.getIndex() * increment;
 			}
 			return new Point( xPosition, start.getY());
 		}
@@ -345,11 +346,11 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return (int)(otherNode1.getBounds().getCenterY() - otherNode2.getBounds().getCenterY());
+				return (int)(otherNode1.getBounds().getCenter().getY() - otherNode2.getBounds().getCenter().getY());
 			}
 			else
 			{
-				return (int)(otherNode1.getBounds().getCenterX() - otherNode2.getBounds().getCenterX());
+				return (int)(otherNode1.getBounds().getCenter().getX() - otherNode2.getBounds().getCenter().getX());
 			}
 		});
 	}

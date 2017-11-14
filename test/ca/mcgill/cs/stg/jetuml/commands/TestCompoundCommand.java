@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -32,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
@@ -109,7 +109,7 @@ public class TestCompoundCommand
         aCompoundCommand1.execute();               
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(5, 5, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(5, 5, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -118,7 +118,7 @@ public class TestCompoundCommand
     {
         aCompoundCommand1.execute();
         aCompoundCommand1.undo();
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -139,8 +139,8 @@ public class TestCompoundCommand
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
         assertTrue(aGraph.getRootNodes().contains(aActorNode));
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
-        assertEquals(aActorNode.getBounds(), new Rectangle2D.Double(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aActorNode.getBounds(), new Rectangle(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -149,8 +149,8 @@ public class TestCompoundCommand
     {
         aCompoundCommand3.execute();
         aCompoundCommand3.undo();
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
-        assertEquals(aActorNode.getBounds(), new Rectangle2D.Double(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aActorNode.getBounds(), new Rectangle(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -172,7 +172,7 @@ public class TestCompoundCommand
         aCompoundCommand4.execute();      
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         try 
         {
 			ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -201,7 +201,7 @@ public class TestCompoundCommand
 		}   
         aCompoundCommand4.undo();
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
-        assertEquals(aClassNode.getBounds(), new Rectangle2D.Double(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));

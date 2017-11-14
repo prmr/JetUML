@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.geom;
 
 import java.awt.geom.Point2D;
 
@@ -64,10 +64,20 @@ public class Direction
      * @param pPoint1 the starting point
      * @param pPoint2 the ending point
 	 */
-	public Direction(Point2D pPoint1, Point2D pPoint2)
+	public Direction(Point2D pPoint1, Point2D pPoint2) // TODO Retire
 	{
 		this(pPoint2.getX() - pPoint1.getX(),
         pPoint2.getY() - pPoint1.getY());
+	}
+	
+	/**
+     * Constructs a direction between two points.
+     * @param pPoint1 the starting point
+     * @param pPoint2 the ending point
+	 */
+	public Direction(Point pPoint1, Point pPoint2) 
+	{
+		this(pPoint2.getX() - pPoint1.getX(), pPoint2.getY() - pPoint1.getY());
 	}
 
 	/**

@@ -23,51 +23,42 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * A node that has a rectangular shape.
  */
 public abstract class RectangularNode extends AbstractNode
 {
-	private Rectangle2D aBounds;
-
-	@Override
-	public RectangularNode clone()
-	{
-		RectangularNode cloned = (RectangularNode) super.clone();
-		cloned.aBounds = (Rectangle2D) aBounds.clone();
-		return cloned;
-	}
+	private Rectangle aBounds;
 
 	@Override
 	public void translate(double pDeltaX, double pDeltaY)
 	{
-      aBounds.setFrame(aBounds.getX() + pDeltaX, aBounds.getY() + pDeltaY, aBounds.getWidth(), aBounds.getHeight());
-      super.translate(pDeltaX, pDeltaY);
+		aBounds = aBounds.translated((int)pDeltaX, (int) pDeltaY); // TODO Remove casts
 	}
 
 	@Override
-	public boolean contains(Point2D pPoint)
+	public boolean contains(Point pPoint)
 	{
 		return aBounds.contains(pPoint);
 	}
 
 	@Override
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
-		return (Rectangle2D) aBounds.clone();
+		return aBounds;
 	}
 
 	/**
 	 * @param pNewBounds The new bounds for this node.
 	 */
-	public void setBounds(Rectangle2D pNewBounds)
+	public void setBounds(Rectangle pNewBounds)
 	{
 		aBounds = pNewBounds;
 	}
@@ -75,17 +66,17 @@ public abstract class RectangularNode extends AbstractNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
-		pGrid.snap(aBounds);
+		aBounds = Grid.snapped(aBounds);
 	}
 
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
-		double slope = aBounds.getHeight() / aBounds.getWidth();
+		double slope = (double)aBounds.getHeight() / (double) aBounds.getWidth();
 		double ex = pDirection.getX();
 		double ey = pDirection.getY();
-		double x = aBounds.getCenterX();
-		double y = aBounds.getCenterY();
+		int x = aBounds.getCenter().getX();
+		int y = aBounds.getCenter().getY();
       
 		if(ex != 0 && -slope <= ey / ex && ey / ex <= slope)
 		{  
@@ -121,6 +112,6 @@ public abstract class RectangularNode extends AbstractNode
 	@Override
 	public Shape getShape()
 	{
-		return aBounds;
+		return Conversions.toRectangle2D(aBounds);
 	}
 }

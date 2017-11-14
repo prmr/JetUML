@@ -365,7 +365,7 @@ public class TestSegmentationStrategies
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
 		assertEquals( 2, points.length );
 		assertEquals( 100, points[0].getX(), 0.01);
-		assertEquals( 47, points[0].getY(), 0.01);
+		assertEquals( 46, points[0].getY(), 0.01);
 		assertEquals( 200, points[1].getX(), 0.01);
 		assertEquals( 230, points[1].getY(), 0.01);
 	}
@@ -403,14 +403,14 @@ public class TestSegmentationStrategies
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( 1027, points[0].getX(), 0.01);
+		assertEquals( 1026, points[0].getX(), 0.01);
 		assertEquals( 1000, points[0].getY(), 0.01);
 		assertEquals( 950, points[1].getX(), 0.01);
 		assertEquals( 560, points[1].getY(), 0.01);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( 1053, points[0].getX(), 0.01);
+		assertEquals( 1052, points[0].getX(), 0.01);
 		assertEquals( 1000, points[0].getY(), 0.01);
 		assertEquals( 1150, points[1].getX(), 0.01);
 		assertEquals( 560, points[1].getY(), 0.01);

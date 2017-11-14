@@ -34,10 +34,12 @@ import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * An implicit parameter node in a sequence diagram. The 
@@ -64,14 +66,14 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	{
 		aName = new MultiLineString();
 		aName.setUnderlined(true);
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aTopHeight = DEFAULT_TOP_HEIGHT;
 	}
 
 	@Override
-	public boolean contains(Point2D pPoint)
+	public boolean contains(Point pPoint)
 	{
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 	}
 
@@ -82,7 +84,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 		Rectangle2D top = getTopRectangle();
 		pGraphics2D.draw(top);
 		aName.draw(pGraphics2D, top);
-		double xmid = getBounds().getCenterX();
+		int xmid = getBounds().getCenter().getX();
 		Line2D line = new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
 		Stroke oldStroke = pGraphics2D.getStroke();
 		// CSOFF:
@@ -110,11 +112,11 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	{
 		if(pDirection.getX() > 0)
 		{
-			return new Point(getBounds().getMaxX(), getBounds().getMinY() + aTopHeight / 2);
+			return new Point(getBounds().getMaxX(), getBounds().getY() + aTopHeight / 2);
 		}
 		else
 		{
-			return new Point(getBounds().getX(), getBounds().getMinY() + aTopHeight / 2);
+			return new Point(getBounds().getX(), getBounds().getY() + aTopHeight / 2);
 		}
 	}
 
@@ -124,8 +126,8 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 		Rectangle2D b = aName.getBounds(pGraphics2D); 
 		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), b.getWidth(), b.getHeight());
-		pGrid.snap(top);
-		setBounds(new Rectangle2D.Double(top.getX(), top.getY(), top.getWidth(), getBounds().getHeight()));
+		Rectangle snappedTop = Grid.snapped(Conversions.toRectangle(top));
+		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
 		aTopHeight = top.getHeight();
 	}
 

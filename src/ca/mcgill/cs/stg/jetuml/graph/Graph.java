@@ -33,7 +33,9 @@ import java.util.Collections;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A graph consisting of nodes and edges.
@@ -247,7 +249,7 @@ public abstract class Graph
 	 */
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
-		Rectangle2D bounds = pNode.getBounds();
+		Rectangle bounds = pNode.getBounds();
 		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
 		if( !(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null )
 		{
@@ -325,7 +327,7 @@ public abstract class Graph
 				}
 			}
 		}
-		if( pNode.contains(pPoint))
+		if( pNode.contains(Conversions.toPoint(pPoint)))
 		{
 			return pNode;
 		}
@@ -602,7 +604,7 @@ public abstract class Graph
 	 */
 	public Rectangle2D getBounds()
 	{
-		Rectangle2D bounds = null;
+		Rectangle bounds = null;
 		for(Node node : aRootNodes )
 		{
 			if(bounds == null)
@@ -611,12 +613,12 @@ public abstract class Graph
 			}
 			else
 			{
-				bounds.add(node.getBounds());
+				bounds = bounds.add(node.getBounds());
 			}
 		}
 		for(Edge edge : aEdges)
 		{
-			bounds.add(edge.getBounds());
+			bounds = bounds.add(edge.getBounds());
 		}
 		if(bounds == null )
 		{

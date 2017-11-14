@@ -25,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
@@ -36,6 +35,7 @@ import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * Tests various interactions with Object Diagram normally triggered from the 
@@ -227,10 +227,9 @@ public class TestUsageScenariosObjectDiagram
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle2D.Double(23, 32, 100, 100), aObjectNode1.getBounds());
-		// field node should also be moved accordingly
-		assertEquals(new Rectangle2D.Double(63.5, 111, 49, 16), aFieldNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(120, 100, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.getBounds());
+		assertEquals(new Rectangle(63, 111, 49, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.getBounds());
 	}
 	
 	/**
@@ -253,9 +252,9 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
 		aPanel.selectAll();
 
-		Rectangle2D referenceEdge1Bounds = aReferenceEdge1.getBounds();
-		Rectangle2D referenceEdge2Bounds = aReferenceEdge2.getBounds();
-		Rectangle2D collaborationEdge1Bounds = collaborationEdge1.getBounds();
+		Rectangle referenceEdge1Bounds = aReferenceEdge1.getBounds();
+		Rectangle referenceEdge2Bounds = aReferenceEdge2.getBounds();
+		Rectangle collaborationEdge1Bounds = collaborationEdge1.getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -264,9 +263,9 @@ public class TestUsageScenariosObjectDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle2D.Double(46, 57, 100, 120), aObjectNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(86.5, 135, 49, 16), aFieldNode1.getBounds());
-		assertEquals(new Rectangle2D.Double(106, 117, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.getBounds());
+		assertEquals(new Rectangle(86, 135, 49, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
 		assertEquals(aObjectNode1, aReferenceEdge1.getEnd());
@@ -436,7 +435,7 @@ public class TestUsageScenariosObjectDiagram
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 100, 100), 
+		assertEquals(new Rectangle(0, 0, 100, 100), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getBounds());
 		
 		// paste a FieldNode itself is not allowed
@@ -465,7 +464,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 100, 100), 
+		assertEquals(new Rectangle(0, 0, 100, 100), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getBounds());
 		
 		// a FieldNode will be cut, but will not be pasted
@@ -499,7 +498,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), 
+		assertEquals(new Rectangle(0, 0, 80, 60), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).getBounds());
 	}
 	
@@ -526,7 +525,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics, aGrid);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), 
+		assertEquals(new Rectangle(0, 0, 80, 60), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getBounds());
 	}
 }

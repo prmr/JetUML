@@ -22,11 +22,13 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *   An actor node in a use case diagram.
@@ -55,24 +57,23 @@ public class ActorNode extends RectangularNode
 	{
 		aName = new MultiLineString();
 		aName.setText("Actor");
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
    
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
 	{
-		Rectangle2D top = new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle2D bot = aName.getBounds(pGraphics2D);
-		Rectangle2D b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(),
+		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		Rectangle bot = Conversions.toRectangle(aName.getBounds(pGraphics2D));
+		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
-		pGrid.snap(b);
-		setBounds(b);
+		setBounds(Grid.snapped(bounds));
 	}
     
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{	
-		Rectangle2D bounds = getBounds();
+		Rectangle bounds = getBounds();
 
 		// Draw stick person
 		GeneralPath path = new GeneralPath();

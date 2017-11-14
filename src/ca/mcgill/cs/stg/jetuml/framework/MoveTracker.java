@@ -26,6 +26,7 @@ import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -59,7 +60,7 @@ public class MoveTracker
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(element.getBounds());
+				aOriginalBounds.add(Conversions.toRectangle2D(element.getBounds()));
 			}
 		}
 	}
@@ -79,7 +80,7 @@ public class MoveTracker
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = node.getBounds();
+			selectionBounds2[i] = Conversions.toRectangle2D(node.getBounds());
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)

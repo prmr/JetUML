@@ -25,10 +25,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A field node in an object diagram.
@@ -55,14 +56,14 @@ public class FieldNode extends RectangularNode implements ChildNode
 		aName = new MultiLineString();
 		aName.setJustification(MultiLineString.RIGHT);
 		aValue = new MultiLineString();
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		Rectangle2D b = getBounds();
+		Rectangle b = getBounds();
 		double leftWidth = aName.getBounds(pGraphics2D).getWidth();
 		MultiLineString equal = new MultiLineString();
 		equal.setText(" = ");
@@ -98,8 +99,8 @@ public class FieldNode extends RectangularNode implements ChildNode
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
-		Rectangle2D b = getBounds();
-		return new Point((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenterY());
+		Rectangle b = getBounds();
+		return new Point((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenter().getY());
 	}
 
 	@Override
@@ -121,11 +122,10 @@ public class FieldNode extends RectangularNode implements ChildNode
 		double width = leftWidth + midWidth + rightWidth;
 		double height = Math.max(aNameBounds.getHeight(), Math.max(aValueBounds.getHeight(), e.getHeight()));
 
-		Rectangle2D b = getBounds();
-		setBounds(new Rectangle2D.Double(b.getX(), b.getY(), width, height));
+		Rectangle bounds = getBounds();
+		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
 		aAxisX = leftWidth + midWidth / 2;
-      
-		aValueBounds.setFrame(b.getMaxX() - rightWidth, b.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
+		aValueBounds.setFrame(bounds.getMaxX() - rightWidth, bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
 	}
 
 	/**

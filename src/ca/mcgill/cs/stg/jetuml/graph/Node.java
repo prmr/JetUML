@@ -22,10 +22,9 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 
 /**
@@ -51,7 +50,7 @@ public interface Node extends GraphElement
      * @param pPoint the point to test
      * @return true if this node contains aPoint
      */
-	boolean contains(Point2D pPoint);
+	boolean contains(Point pPoint);
 
 	/**
      * Get the best connection point to connect this node 

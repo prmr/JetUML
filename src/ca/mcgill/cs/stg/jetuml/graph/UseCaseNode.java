@@ -23,10 +23,11 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A use case node in a use case diagram.
@@ -44,7 +45,7 @@ public class UseCaseNode extends RectangularNode
 	public UseCaseNode()
 	{
 		aName = new MultiLineString();
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class UseCaseNode extends RectangularNode
 	{
 		super.draw(pGraphics2D);      
 		pGraphics2D.draw(getShape());
-		aName.draw(pGraphics2D, getBounds());
+		aName.draw(pGraphics2D, Conversions.toRectangle2D(getBounds()));
 	}
    
 	@Override

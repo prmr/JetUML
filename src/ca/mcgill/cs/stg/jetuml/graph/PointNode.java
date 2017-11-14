@@ -22,15 +22,14 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 
-import ca.mcgill.cs.stg.jetuml.framework.Direction;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  An invisible node that is used in the toolbar to draw an
@@ -39,7 +38,7 @@ import ca.mcgill.cs.stg.jetuml.geom.Point;
  */
 public class PointNode extends AbstractNode
 {
-	private static final double EPSILON = 0.01;
+	private static final int EPSILON = 1;
 	
 	private Point aPoint;
 
@@ -62,16 +61,16 @@ public class PointNode extends AbstractNode
 	}
 
 	@Override
-	public boolean contains(Point2D pPoint)
+	public boolean contains(Point pPoint)
 	{
 		final double threshold = 5;
-		return aPoint.distance(Conversions.toPoint(pPoint)) < threshold;
+		return aPoint.distance(pPoint) < threshold;
 	}
 
 	@Override
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
-		return new Rectangle2D.Double(aPoint.getX(), aPoint.getY(), EPSILON, EPSILON);
+		return new Rectangle(aPoint.getX(), aPoint.getY(), EPSILON, EPSILON);
 	}
 
 	@Override
@@ -97,5 +96,11 @@ public class PointNode extends AbstractNode
 				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
 			}
 		});
+	}
+
+	@Override
+	public void layout(Graph pGraph, Graphics2D pGraphics2D, Grid pGrid)
+	{
+		// Nothing to do.
 	}
 }

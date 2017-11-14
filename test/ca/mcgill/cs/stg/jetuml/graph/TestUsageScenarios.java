@@ -25,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import org.junit.Test;
 
@@ -34,6 +33,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.Clipboard;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * Tests various interactions normally triggered from the 
@@ -146,34 +146,34 @@ public class TestUsageScenarios
 		
 		// VALIDATION NODES
 		assertEquals(4, diagram.getRootNodes().size());
-		assertEquals(new Rectangle2D.Double(30, 30, 80, 60), node1.getBounds());
+		assertEquals(new Rectangle(30, 30, 80, 60), node1.getBounds());
 		assertEquals("Node 1", node1.getName().getText());
-		assertEquals(new Rectangle2D.Double(30, 100, 80, 60), node2.getBounds());
+		assertEquals(new Rectangle(30, 100, 80, 60), node2.getBounds());
 		assertEquals("Node 2", node2.getName().getText());
-		assertEquals(new Rectangle2D.Double(5, 5, 14, 14), start.getBounds());
+		assertEquals(new Rectangle(5, 5, 14, 14), start.getBounds());
 		assertFalse(start.isFinal());
-		assertEquals(new Rectangle2D.Double(30, 200, 20, 20), end.getBounds());
+		assertEquals(new Rectangle(30, 200, 20, 20), end.getBounds());
 		assertTrue(end.isFinal());
 		
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());
 		
-		assertEquals(new Rectangle2D.Double(10, 2, 39, 28), edge1.getBounds());
+		assertEquals(new Rectangle(9, 3, 38, 27), edge1.getBounds());
 		assertEquals("Edge 1", edge1.getLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(53, 75, 39, 25), edge2.getBounds());
+		assertEquals(new Rectangle(53, 76, 38, 24), edge2.getBounds());
 		assertEquals("Edge 2", edge2.getLabel());
 		assertEquals(node1, edge2.getStart());
 		assertEquals(node2, edge2.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(46, 75, 39, 25), edge3.getBounds());
+		assertEquals(new Rectangle(46, 76, 38, 24), edge3.getBounds());
 		assertEquals("Edge 3", edge3.getLabel());
 		assertEquals(node2, edge3.getStart());
 		assertEquals(node1, edge3.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(44, 160, 52, 41), edge4.getBounds());
+		assertEquals(new Rectangle(44, 160, 51, 41), edge4.getBounds());
 		assertEquals("Edge 4", edge4.getLabel());
 		assertEquals(node2, edge4.getStart());
 		assertEquals(end, edge4.getEnd());

@@ -31,6 +31,8 @@ import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  An object node in an object diagram.
@@ -53,7 +55,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	{
 		aName = new MultiLineString(true);
 		aName.setUnderlined(true);
-		setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		aFields = new ArrayList<>();
 	}
 
@@ -63,7 +65,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		super.draw(pGraphics2D);
 		Rectangle2D top = getTopRectangle();
 		pGraphics2D.draw(top);
-		pGraphics2D.draw(getBounds());
+		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
 		aName.draw(pGraphics2D, top);
 	}
 
@@ -106,8 +108,8 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		{
 			FieldNode f = (FieldNode)fields.get(i);
 			f.layout(pGraph, pGraphics2D, pGrid);
-			Rectangle2D b2 = f.getBounds();
-			height += b2.getBounds().getHeight() + YGAP;   
+			Rectangle b2 = f.getBounds();
+			height += b2.getHeight() + YGAP;   
 			double axis = f.getAxisX();
 			leftWidth = Math.max(leftWidth, axis);
 			rightWidth = Math.max(rightWidth, b2.getWidth() - axis);
@@ -116,16 +118,17 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		width = Math.max(width, b.getWidth());
 		width = Math.max(width, DEFAULT_WIDTH);
 		b = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), width, b.getHeight() + height);
-		pGrid.snap(b);
-		setBounds(b);
+		Rectangle snappedBounds = Grid.snapped(Conversions.toRectangle(b));
+		setBounds(snappedBounds);
+		b = Conversions.toRectangle2D(snappedBounds);
 		aTopHeight = b.getHeight() - height;
 		double ytop = b.getY() + aTopHeight + YGAP;
 		double xmid = b.getCenterX();
 		for(int i = 0; i < fields.size(); i++)
 		{
 			FieldNode f = (FieldNode)fields.get(i);
-			Rectangle2D b2 = f.getBounds();
-			f.setBounds(new Rectangle2D.Double(xmid - f.getAxisX(), ytop, f.getAxisX() + rightWidth, b2.getHeight()));
+			Rectangle b2 = f.getBounds();
+			f.setBounds(new Rectangle((int)(xmid - f.getAxisX()), (int)ytop, (int)(f.getAxisX() + rightWidth), b2.getHeight()));
 			f.setBoxWidth(rightWidth);
 			ytop += f.getBounds().getHeight() + YGAP;
 		}
