@@ -23,11 +23,9 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -64,7 +62,7 @@ public class ActorNode extends RectangularNode
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = Conversions.toRectangle(aName.getBounds(pGraphics2D));
+		Rectangle bot = aName.getBounds();
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 		setBounds(Grid.snapped(bounds));
@@ -104,10 +102,10 @@ public class ActorNode extends RectangularNode
 		pGraphics2D.draw(path);
 
 		// Draw name
-		Rectangle2D bot = aName.getBounds(pGraphics2D);
+		Rectangle nameBox = aName.getBounds();
 
-		Rectangle2D namebox = new Rectangle2D.Double(bounds.getX() + (bounds.getWidth() - bot.getWidth()) / 2, 
-				bounds.getY() + DEFAULT_HEIGHT, bot.getWidth(), bot.getHeight());
+		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
+				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
 		aName.draw(pGraphics2D, namebox);
 	}
 

@@ -25,6 +25,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  * A class node in a class diagram.
@@ -49,9 +51,9 @@ public class ClassNode extends InterfaceNode
 		super.draw(pGraphics2D); 
 		double midHeight = computeMiddle(pGraphics2D).getHeight();
 		double bottomHeight = computeBottom(pGraphics2D).getHeight();
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), midHeight);
+		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
+				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - midHeight - bottomHeight));
+		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(midHeight));
 		aAttributes.draw(pGraphics2D, mid);
    }
 	
@@ -95,9 +97,9 @@ public class ClassNode extends InterfaceNode
 			return new Rectangle2D.Double(0, 0, 0, 0);
 		}
 			
-		Rectangle2D attributes = aAttributes.getBounds(pGraphics2D);
-		attributes.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return attributes;
+		Rectangle attributes = aAttributes.getBounds();
+		attributes = attributes.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
+		return Conversions.toRectangle2D(attributes);
 	}
 
 	@Override

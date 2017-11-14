@@ -225,7 +225,7 @@ public class TestUsageScenariosObjectDiagram
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
 		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.getBounds());
-		assertEquals(new Rectangle(63, 111, 49, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.getBounds());
 		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.getBounds());
 	}
 	
@@ -261,7 +261,7 @@ public class TestUsageScenariosObjectDiagram
 			}
 		}
 		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.getBounds());
-		assertEquals(new Rectangle(86, 135, 49, 16), aFieldNode1.getBounds());
+		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.getBounds());
 		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());

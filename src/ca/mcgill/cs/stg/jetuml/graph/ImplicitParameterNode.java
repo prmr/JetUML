@@ -83,7 +83,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 		super.draw(pGraphics2D);
 		Rectangle2D top = getTopRectangle();
 		pGraphics2D.draw(top);
-		aName.draw(pGraphics2D, top);
+		aName.draw(pGraphics2D, Conversions.toRectangle(top));
 		int xmid = getBounds().getCenter().getX();
 		Line2D line = new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
 		Stroke oldStroke = pGraphics2D.getStroke();
@@ -123,8 +123,8 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
-		Rectangle2D b = aName.getBounds(pGraphics2D); 
-		b.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
+		Rectangle b = aName.getBounds(); 
+		b = b.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), b.getWidth(), b.getHeight());
 		Rectangle snappedTop = Grid.snapped(Conversions.toRectangle(top));
 		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));

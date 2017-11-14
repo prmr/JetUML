@@ -25,11 +25,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -58,10 +56,10 @@ public class NoteNode extends RectangularNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
-		Rectangle2D b = aText.getBounds(pGraphics2D); // getMultiLineBounds(name, g2);
+		Rectangle b = aText.getBounds(); // getMultiLineBounds(name, g2);
 		Rectangle bounds = getBounds();
-		b = new Rectangle2D.Double(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(Conversions.toRectangle(b)));
+		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
+		setBounds(Grid.snapped(b));
 	}
 
 	/**
@@ -106,7 +104,7 @@ public class NoteNode extends RectangularNode
 		pGraphics2D.setColor(oldColor);      
 		pGraphics2D.draw(fold);      
       
-		aText.draw(pGraphics2D, Conversions.toRectangle2D(getBounds()));
+		aText.draw(pGraphics2D, getBounds());
 	}
    
 	@Override

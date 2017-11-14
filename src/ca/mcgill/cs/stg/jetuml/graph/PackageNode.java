@@ -36,6 +36,7 @@ import java.util.List;
 import javax.swing.JLabel;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -96,7 +97,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		pGraphics2D.translate(-textX, -textY);        
      
 		pGraphics2D.draw(aBottom);
-		aContents.draw(pGraphics2D, aBottom);
+		aContents.draw(pGraphics2D, Conversions.toRectangle(aBottom));
 	}
    
 	@Override
@@ -163,7 +164,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 			}
 		}
 		
-		Rectangle2D contentsBounds = aContents.getBounds(pGraphics2D);
+		Rectangle contentsBounds = aContents.getBounds();
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{

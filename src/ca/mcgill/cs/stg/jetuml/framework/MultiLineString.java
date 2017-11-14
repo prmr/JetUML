@@ -23,11 +23,12 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
  *  A string that can extend over multiple lines.
@@ -207,17 +208,16 @@ public class MultiLineString implements Cloneable
    
 	/**
      * Gets the bounding rectangle for this multiline string.
-     * @param pGraphics2D the graphics context
      * @return the bounding rectangle (with top left corner (0,0))
 	 */
-	public Rectangle2D getBounds(Graphics2D pGraphics2D)
+	public Rectangle getBounds()
 	{
 		if(aText.length() == 0) 
 		{
-			return new Rectangle2D.Double();
+			return new Rectangle(0, 0, 0, 0);
 		}
-		Dimension dim = getLabel().getPreferredSize();       
-		return new Rectangle2D.Double(0, 0, dim.getWidth(), dim.getHeight());
+		Dimension dimensions = getLabel().getPreferredSize();       
+		return new Rectangle(0, 0, (int) Math.round(dimensions.getWidth()), (int) Math.round(dimensions.getHeight()));
 	}
 
 	/**
@@ -225,11 +225,11 @@ public class MultiLineString implements Cloneable
      * @param pGraphics2D the graphics context
      * @param pRectangle the rectangle into which to place this multi-line string
 	 */
-	public void draw(Graphics2D pGraphics2D, Rectangle2D pRectangle)
+	public void draw(Graphics2D pGraphics2D, Rectangle pRectangle)
 	{
 		JLabel label = getLabel();
 		label.setFont(pGraphics2D.getFont());
-		label.setBounds(0, 0, (int) pRectangle.getWidth(), (int) pRectangle.getHeight());
+		label.setBounds(0, 0, pRectangle.getWidth(), pRectangle.getHeight());
 		pGraphics2D.translate(pRectangle.getX(), pRectangle.getY());
 		label.paint(pGraphics2D);
 		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        

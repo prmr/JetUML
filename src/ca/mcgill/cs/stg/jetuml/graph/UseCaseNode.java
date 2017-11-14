@@ -26,7 +26,6 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -53,7 +52,7 @@ public class UseCaseNode extends RectangularNode
 	{
 		super.draw(pGraphics2D);      
 		pGraphics2D.draw(getShape());
-		aName.draw(pGraphics2D, Conversions.toRectangle2D(getBounds()));
+		aName.draw(pGraphics2D, getBounds());
 	}
    
 	@Override

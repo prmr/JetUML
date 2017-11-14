@@ -69,12 +69,12 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
 		pGraphics2D.draw(top);
-		aName.draw(pGraphics2D, top);
+		aName.draw(pGraphics2D, Conversions.toRectangle(top));
 		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), midHeight);
 		pGraphics2D.draw(mid);
 		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
 		pGraphics2D.draw(bot);
-		aMethods.draw(pGraphics2D, bot);
+		aMethods.draw(pGraphics2D, Conversions.toRectangle(bot));
 	}
 	
 	/**
@@ -85,9 +85,9 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	 */
 	protected Rectangle2D computeTop(Graphics2D pGraphics2D)
 	{
-		Rectangle2D top = aName.getBounds(pGraphics2D); 
+		Rectangle top = aName.getBounds(); 
 		
-		double minHeight = DEFAULT_COMPARTMENT_HEIGHT;
+		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
 		if(!needsMiddleCompartment() && !needsBottomCompartment() )
 		{
 			minHeight = DEFAULT_HEIGHT;
@@ -96,9 +96,9 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 		{
 			minHeight = 2 * DEFAULT_COMPARTMENT_HEIGHT;
 		}
-		top.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, minHeight));
+		top = top.add(new Rectangle(0, 0, DEFAULT_WIDTH, minHeight));
 
-		return top;
+		return Conversions.toRectangle2D(top);
 	}
 	
 	/**
@@ -123,9 +123,9 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 			return new Rectangle2D.Double(0, 0, 0, 0);
 		}
 			
-		Rectangle2D bottom = aMethods.getBounds(pGraphics2D);
-		bottom.add(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return bottom;
+		Rectangle bottom = aMethods.getBounds();
+		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
+		return Conversions.toRectangle2D(bottom);
 	}
 	
 

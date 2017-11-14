@@ -23,9 +23,9 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -41,8 +41,8 @@ public class FieldNode extends RectangularNode implements ChildNode
 	private double aAxisX;
 	private MultiLineString aName;
 	private MultiLineString aValue;
-	private Rectangle2D aNameBounds;
-	private Rectangle2D aValueBounds;
+	private Rectangle aNameBounds;
+	private Rectangle aValueBounds;
 	private boolean aBoxedValue;
 	private double aBoxWidth;
 	private ObjectNode aObject; // The object defining this field
@@ -63,23 +63,23 @@ public class FieldNode extends RectangularNode implements ChildNode
 	{
 		super.draw(pGraphics2D);
 		Rectangle b = getBounds();
-		double leftWidth = aName.getBounds(pGraphics2D).getWidth();
+		int leftWidth = aName.getBounds().getWidth();
 		MultiLineString equal = new MultiLineString();
 		equal.setText(" = ");
-		double midWidth = equal.getBounds(pGraphics2D).getWidth();
+		int midWidth = equal.getBounds().getWidth();
       
-		double rightWidth = aValue.getBounds(pGraphics2D).getWidth();
+		int rightWidth = aValue.getBounds().getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		rightWidth = Math.max(rightWidth, aBoxWidth - midWidth / 2);
+		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
 
-		aNameBounds = new Rectangle2D.Double(b.getX(), b.getY(), leftWidth, b.getHeight());
+		aNameBounds = new Rectangle(b.getX(), b.getY(), leftWidth, b.getHeight());
 		aName.draw(pGraphics2D, aNameBounds);
-		Rectangle2D mid = new Rectangle2D.Double(b.getX() + leftWidth, b.getY(), midWidth, b.getHeight());
+		Rectangle mid = new Rectangle(b.getX() + leftWidth, b.getY(), midWidth, b.getHeight());
 		equal.draw(pGraphics2D, mid);
-		aValueBounds = new Rectangle2D.Double(b.getMaxX() - rightWidth, b.getY(), rightWidth, b.getHeight());
+		aValueBounds = new Rectangle(b.getMaxX() - rightWidth, b.getY(), rightWidth, b.getHeight());
 		if(aBoxedValue)
 		{
 			aValue.setJustification(MultiLineString.CENTER);
@@ -91,7 +91,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 		aValue.draw(pGraphics2D, aValueBounds);
 		if(aBoxedValue)
 		{
-			pGraphics2D.draw(aValueBounds);
+			pGraphics2D.draw(Conversions.toRectangle2D(aValueBounds));
 		}
 	}
 	
@@ -105,26 +105,26 @@ public class FieldNode extends RectangularNode implements ChildNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
-		aNameBounds = aName.getBounds(pGraphics2D); 
-		aValueBounds = aValue.getBounds(pGraphics2D);
+		aNameBounds = aName.getBounds(); 
+		aValueBounds = aValue.getBounds();
 		MultiLineString equal = new MultiLineString();
 		equal.setText(" = ");
-		Rectangle2D e = equal.getBounds(pGraphics2D);
-		double leftWidth = aNameBounds.getWidth();
-		double midWidth = e.getWidth();
-		double rightWidth = aValueBounds.getWidth();
+		Rectangle e = equal.getBounds();
+		int leftWidth = aNameBounds.getWidth();
+		int midWidth = e.getWidth();
+		int rightWidth = aValueBounds.getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		rightWidth = Math.max(rightWidth, aBoxWidth - midWidth / 2);
+		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
 		double width = leftWidth + midWidth + rightWidth;
 		double height = Math.max(aNameBounds.getHeight(), Math.max(aValueBounds.getHeight(), e.getHeight()));
 
 		Rectangle bounds = getBounds();
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
 		aAxisX = leftWidth + midWidth / 2;
-		aValueBounds.setFrame(bounds.getMaxX() - rightWidth, bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
+		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth, bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 	{
 		if(aBoxedValue)
 		{
-			return aValueBounds;
+			return Conversions.toRectangle2D(aValueBounds);
 		}
 		else
 		{
