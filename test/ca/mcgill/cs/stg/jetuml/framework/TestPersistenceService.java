@@ -374,7 +374,7 @@ public class TestPersistenceService
 		assertEquals("", node6.getContents().getText());
 		assertEquals("Package", node6.getName());
 		assertNull(node6.getParent());
-		assertEquals(new Rectangle(275, 345, 110, 90), node6.getBounds());
+		assertEquals(new Rectangle(275, 345, 100, 80), node6.getBounds()); // needs a layout to compute correct size
 
 		assertEquals("", node7.getAttributes().getText());
 		assertEquals("", node7.getMethods().getText());
@@ -389,7 +389,7 @@ public class TestPersistenceService
 		Iterator<Edge> eIterator = edges.iterator();
 		
 		NoteEdge edge5 = (NoteEdge) eIterator.next();
-		assertEquals(new Rectangle(694, 409, 31, 121), edge5.getBounds());
+		assertEquals(new Rectangle(694, 409, 30, 121), edge5.getBounds());
 		assertEquals(node5, edge5.getStart());
 		assertEquals(node8, edge5.getEnd());
 		

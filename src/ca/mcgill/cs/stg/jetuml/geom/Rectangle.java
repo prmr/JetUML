@@ -8,10 +8,41 @@ package ca.mcgill.cs.stg.jetuml.geom;
  */
 public class Rectangle
 {
-	private final int aX;
-	private final int aY;
+	private int aX;
+	private int aY;
 	private final int aWidth;
 	private final int aHeight;
+	
+	/**
+	 * Creates a rectangle with all fields 0. Only here
+	 * temporarily to enable JavaBeans serialization.
+	 */
+	public Rectangle()
+	{
+		this(0, 0, 0, 0);
+	}
+	
+	/**
+	 * Do not use this method. Only here to enable
+	 * JavaBeans deserialization.
+	 * 
+	 * @param pX The new X value.
+	 */
+	public void setX(int pX)
+	{
+		aX = pX;
+	}
+	
+	/**
+	 * Do not use this method. Only here to enable
+	 * JavaBeans deserialization.
+	 * 
+	 * @param pY The new Y value.
+	 */
+	public void setY(int pY)
+	{
+		aY = pY;
+	}
 	
 	/**
 	 * Creates a new rectangle.
