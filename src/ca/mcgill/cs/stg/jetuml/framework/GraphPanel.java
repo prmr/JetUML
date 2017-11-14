@@ -753,8 +753,8 @@ public class GraphPanel extends JPanel
 			{               
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.getBounds();
-				double dx = mousePoint.getX() - aLastMousePoint.getX();
-				double dy = mousePoint.getY() - aLastMousePoint.getY();
+				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
+				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
                    
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 

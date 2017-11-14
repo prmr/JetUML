@@ -54,7 +54,7 @@ public class PointNode extends AbstractNode
 	{}
 
 	@Override
-	public void translate(double pDeltaX, double pDeltaY)
+	public void translate(int pDeltaX, int pDeltaY)
 	{
 		aPoint = new Point( aPoint.getX() + pDeltaX, aPoint.getY() + pDeltaY );
 	}
@@ -90,8 +90,8 @@ public class PointNode extends AbstractNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				Double x = (double)((PointNode)pOldInstance).aPoint.getX();
-				Double y = (double)((PointNode)pOldInstance).aPoint.getY();
+				int x = ((PointNode)pOldInstance).aPoint.getX();
+				int y = ((PointNode)pOldInstance).aPoint.getY();
 				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
 			}
 		});

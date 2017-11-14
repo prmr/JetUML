@@ -177,7 +177,8 @@ public abstract class Graph
 		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			PointNode lReturn = new PointNode();
-			lReturn.translate(pPoint2.getX(), pPoint2.getY());
+			Point point = Conversions.toPoint(pPoint2);
+			lReturn.translate(point.getX(), point.getY());
 			return lReturn;
 		}
 		else
@@ -249,7 +250,7 @@ public abstract class Graph
 	public boolean addNode(Node pNode, Point2D pPoint)
 	{
 		Rectangle bounds = pNode.getBounds();
-		pNode.translate(pPoint.getX() - bounds.getX(), pPoint.getY() - bounds.getY()); 
+		pNode.translate((int)(pPoint.getX() - bounds.getX()), (int)(pPoint.getY() - bounds.getY())); 
 		if( !(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null )
 		{
 			aRootNodes.add(pNode);

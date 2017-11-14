@@ -101,8 +101,8 @@
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode0">
     <void method="translate">
-     <double>567.0</double>
-     <double>56.0</double>
+     <int>567</int>
+     <int>56</int>
     </void>
    </object>
   </void>

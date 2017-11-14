@@ -73,7 +73,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	 * Object Nodes are now responsible for translating their Field Node children.
 	 */
 	@Override
-	public void translate(double pDeltaX, double pDeltaY)
+	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
 		for (Node childNode : getChildren())

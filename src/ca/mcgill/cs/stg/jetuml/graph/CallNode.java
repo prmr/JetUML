@@ -106,10 +106,10 @@ public class CallNode extends RectangularNode implements ChildNode
 	}
 
 	/* (non-Javadoc)
-	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(double, double)
+	 * @see ca.mcgill.cs.stg.jetuml.graph.RectangularNode#translate(int, int)
 	 */
 	@Override
-	public void translate(double pDeltaX, double pDeltaY)
+	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
 		// Prevent going above the ImplicitParameterNode
@@ -175,7 +175,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	 * @return The X coordinate that should be the middle
 	 * of this call node. Takes into account nested calls.
 	 */
-	private double computeMidX(Graph pGraph)
+	private int computeMidX(Graph pGraph)
 	{
 		int xmid = aImplicitParameter.getBounds().getCenter().getX();
 
@@ -198,7 +198,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	private double computeBottomY(SequenceDiagramGraph pGraph, Graphics2D pGraphics2D)
 	{
 		// Compute the Y coordinate of the bottom of the node
-		double bottomY = getBounds().getY() + CALL_YGAP;
+		int bottomY = getBounds().getY() + CALL_YGAP;
 
 		for(Node node : getCallees(pGraph))
 		{

@@ -31,8 +31,8 @@ public class MoveCommand implements Command
 {
 	private Node aNode;
 	private Graph aGraph;
-	private double aDX;
-	private double aDY;
+	private int aDX;
+	private int aDY;
 	
 	/**
 	 * Creates the command.
@@ -41,7 +41,7 @@ public class MoveCommand implements Command
 	 * @param pDX The amount moved horizontally
 	 * @param pDY The amount moved vertically
 	 */
-	public MoveCommand(Graph pGraph, Node pNode, double pDX, double pDY)
+	public MoveCommand(Graph pGraph, Node pNode, int pDX, int pDY)
 	{
 		aGraph = pGraph;
 		aNode = pNode;

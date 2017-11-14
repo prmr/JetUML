@@ -163,11 +163,11 @@ public class TestMoveTracker
 		}
 	}
 	
-	private double getDx(MoveCommand pCommand)
+	private int getDx(MoveCommand pCommand)
 	{
 		try
 		{
-			return (Double)aDxField.get(pCommand);
+			return (int)aDxField.get(pCommand);
 		}
 		catch( Exception pException )
 		{
@@ -176,11 +176,11 @@ public class TestMoveTracker
 		}
 	}
 	
-	private double getDy(MoveCommand pCommand)
+	private int getDy(MoveCommand pCommand)
 	{
 		try
 		{
-			return (Double)aDyField.get(pCommand);
+			return (int)aDyField.get(pCommand);
 		}
 		catch( Exception pException )
 		{

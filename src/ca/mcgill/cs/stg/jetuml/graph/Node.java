@@ -42,7 +42,7 @@ public interface Node extends GraphElement
      * @param pDeltaX the amount to translate in the x-direction
      * @param pDeltaY the amount to translate in the y-direction
 	 */
-	void translate(double pDeltaX, double pDeltaY);
+	void translate(int pDeltaX, int pDeltaY);
 
 	/**
      * Tests whether the node contains a point.

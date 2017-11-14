@@ -85,8 +85,8 @@ public class MoveTracker
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			double dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
-			double dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
+			int dY = (int)(selectionBounds2[i].getY() - aOriginalBounds.get(i).getY());
+			int dX = (int)(selectionBounds2[i].getX() - aOriginalBounds.get(i).getX());
 			if(dX != 0 || dY != 0)
 			{
 				command.add(new MoveCommand(pGraph, aTrackedNodes.get(i), dX, dY));

@@ -238,7 +238,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	}
 	
 	@Override
-	public void translate(double pDeltaX, double pDeltaY)
+	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
 		

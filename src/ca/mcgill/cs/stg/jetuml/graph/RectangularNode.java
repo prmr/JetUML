@@ -38,9 +38,9 @@ public abstract class RectangularNode extends AbstractNode
 	private Rectangle aBounds;
 
 	@Override
-	public void translate(double pDeltaX, double pDeltaY)
+	public void translate(int pDeltaX, int pDeltaY)
 	{
-		aBounds = aBounds.translated((int)pDeltaX, (int) pDeltaY); // TODO Remove casts
+		aBounds = aBounds.translated(pDeltaX, pDeltaY); 
 	}
 
 	@Override

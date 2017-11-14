@@ -100,8 +100,8 @@ on two lines</string>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode0">
     <void method="translate">
-     <double>576.0</double>
-     <double>339.0</double>
+     <int>576</int>
+     <int>339</int>
     </void>
    </object>
   </void>
