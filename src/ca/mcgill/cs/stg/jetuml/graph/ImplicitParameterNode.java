@@ -27,7 +27,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -55,7 +54,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	
-	private double aTopHeight;
+	private int aTopHeight;
 	private MultiLineString aName;
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 
@@ -81,9 +80,9 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		Rectangle2D top = getTopRectangle();
-		pGraphics2D.draw(top);
-		aName.draw(pGraphics2D, Conversions.toRectangle(top));
+		Rectangle top = getTopRectangle();
+		pGraphics2D.draw(Conversions.toRectangle2D(top));
+		aName.draw(pGraphics2D, top);
 		int xmid = getBounds().getCenter().getX();
 		Line2D line = new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
 		Stroke oldStroke = pGraphics2D.getStroke();
@@ -98,14 +97,14 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
      * Returns the rectangle at the top of the object node.
      * @return the top rectangle
 	 */
-	public Rectangle2D getTopRectangle()
+	public Rectangle getTopRectangle()
 	{
-		return new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
 	}
 
 	@Override
 	public Shape getShape()
-	{ return getTopRectangle(); }
+	{ return Conversions.toRectangle2D(getTopRectangle()); }
    
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
@@ -123,10 +122,10 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	@Override
 	public void layout(Graph pGraph, Graphics2D pGraphics2D)
 	{
-		Rectangle b = aName.getBounds(); 
-		b = b.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), b.getWidth(), b.getHeight());
-		Rectangle snappedTop = Grid.snapped(Conversions.toRectangle(top));
+		Rectangle bounds = aName.getBounds(); 
+		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
+		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
+		Rectangle snappedTop = Grid.snapped(top);
 		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
 		aTopHeight = top.getHeight();
 	}

@@ -204,7 +204,7 @@ public class CallNode extends RectangularNode implements ChildNode
 		{
 			if(node instanceof ImplicitParameterNode) // <<create>>
 			{
-				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle().getCenterY());
+				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle().getCenter().getY());
 				bottomY += ((ImplicitParameterNode)node).getTopRectangle().getHeight() / 2 + CALL_YGAP;
 			}
 			else if(node instanceof CallNode)

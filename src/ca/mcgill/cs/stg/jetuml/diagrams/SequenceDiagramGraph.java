@@ -127,7 +127,7 @@ public class SequenceDiagramGraph extends Graph
 		}
 		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && getCaller(pNode2) != null)
 		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
+			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(Conversions.toPoint(pPoint2));
 		}
 		return lReturn;
 	}
@@ -189,7 +189,7 @@ public class SequenceDiagramGraph extends Graph
 		else if( end instanceof ImplicitParameterNode )
 		{
 			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
+			if(endAsImplicitParameterNode.getTopRectangle().contains(Conversions.toPoint(pPoint2))) // Case 4
 			{
 				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
 			}
