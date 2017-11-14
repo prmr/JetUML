@@ -98,7 +98,7 @@ public class PointNode extends AbstractNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
 		// Nothing to do.
 	}

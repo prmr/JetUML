@@ -26,10 +26,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +47,6 @@ import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 public class TestGraph
 {
 	private Graph aGraph;
-	private Graphics2D aGraphics;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private ClassNode aNode3;
@@ -61,7 +58,6 @@ public class TestGraph
 	public void setup()
 	{
 		aGraph = new ClassDiagramGraph();
-		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNode3 = new ClassNode();
@@ -155,8 +151,8 @@ public class TestGraph
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertTrue( aGraph.contains(aEdge1 ));
+		aGraph.requestLayout();
 		aGraph.layout();
-		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));
@@ -170,8 +166,8 @@ public class TestGraph
 		aGraph.restoreEdge(aEdge3, aNode3, aNode3);
 		assertTrue( aGraph.contains(aEdge1 ));
 		aGraph.removeAllEdgesConnectedTo(aNode1);
+		aGraph.requestLayout();
 		aGraph.layout();
-		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));
@@ -185,8 +181,8 @@ public class TestGraph
 		aGraph.restoreEdge(aEdge2, aNode1, aNode3);
 		aGraph.removeEdge(aEdge1);
 		aGraph.removeAllEdgesConnectedTo(aNode1);
+		aGraph.requestLayout();
 		aGraph.layout();
-		aGraph.layout(aGraphics);
 		assertTrue( aGraph.contains(aNode1 ));
 		assertTrue( aGraph.contains(aNode2 ));
 		assertFalse( aGraph.contains(aEdge1 ));

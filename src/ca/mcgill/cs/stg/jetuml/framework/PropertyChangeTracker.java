@@ -236,7 +236,7 @@ public class PropertyChangeTracker
 				assert false;
 				return;
 			}
-			aGraph.layout();
+			aGraph.requestLayout();
 		}
 
 		/**
@@ -258,7 +258,7 @@ public class PropertyChangeTracker
 				assert false;
 				return;
 			}
-			aGraph.layout();
+			aGraph.requestLayout();
 		}
 	}
 }

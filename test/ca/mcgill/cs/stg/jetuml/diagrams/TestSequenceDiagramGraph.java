@@ -24,9 +24,7 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +41,11 @@ import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
 public class TestSequenceDiagramGraph
 {
 	 private SequenceDiagramGraph aGraph;
-	 private Graphics2D aGraphics;
 	 
 	 @Before
 	 public void setup()
 	 {
 		 aGraph = new SequenceDiagramGraph();
-		 aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 	 }
 	 
 	 @Test
@@ -59,7 +55,7 @@ public class TestSequenceDiagramGraph
 		 aGraph.addNode(param, new Point2D.Double(20,0));
 		 CallNode node = new CallNode();
 		 aGraph.addNode(node, new Point2D.Double(40, 90));
-		 aGraph.layout(aGraphics);
+		 aGraph.layout();
 		 
 		 // Point outside the bounds
 		 assertNull(aGraph.deepFindNode(node, new Point2D.Double(50, 0)));
@@ -76,13 +72,13 @@ public class TestSequenceDiagramGraph
 		 aGraph.addNode(param, new Point2D.Double(20,0));
 		 CallNode node = new CallNode();
 		 aGraph.addNode(node, new Point2D.Double(40, 90));
-		 aGraph.layout(aGraphics);
+		 aGraph.layout();
 		 CallNode callee = new CallNode();
 		 param.addChild(callee,new Point2D.Double(60, 100));
 		 Edge callEdge = new CallEdge();
 		 aGraph.insertEdge(callEdge);
 		 callEdge.connect(node,  callee, aGraph);
-		 aGraph.layout(aGraphics);
+		 aGraph.layout();
 	 
 		 // Point outside the bounds
 		 assertNull(aGraph.deepFindNode(node, new Point2D.Double(50, 0)));
@@ -111,33 +107,33 @@ public class TestSequenceDiagramGraph
 	
 		ImplicitParameterNode param = new ImplicitParameterNode();
 		aGraph.addNode(param, new Point2D.Double(118, 0));
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 
 		CallNode node = new CallNode();
 		aGraph.addNode(node, new Point2D.Double(152, 70));
-		aGraph.layout(aGraphics);		
+		aGraph.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
 		aGraph.addNode(param2, new Point2D.Double(347, 0));
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 
 		CallNode node2 = new CallNode();
 		aGraph.addNode(node2, new Point2D.Double(382, 80));
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 
 		Edge callEdge = new CallEdge();
 		aGraph.insertEdge(callEdge);
 		callEdge.connect(node, node2, aGraph);
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 
 		CallNode node3 = new CallNode();
 		aGraph.addNode(node3, new Point2D.Double(160, 125));
-		aGraph.layout(aGraphics);		
+		aGraph.layout();		
 
 		Edge callEdge2 = new CallEdge();
 		aGraph.insertEdge(callEdge2);
 		callEdge2.connect(node, node3, aGraph);
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 
 		// Point outside the bounds
 		assertNull(aGraph.deepFindNode(node, new Point2D.Double(171, 71)));
@@ -157,29 +153,29 @@ public class TestSequenceDiagramGraph
 	{
 		ImplicitParameterNode param = new ImplicitParameterNode();
 		aGraph.addNode(param, new Point2D.Double(118, 0));
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 	
 		CallNode node = new CallNode();
 		aGraph.addNode(node, new Point2D.Double(152, 70));
-		aGraph.layout(aGraphics);		
+		aGraph.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
 		aGraph.addNode(param2, new Point2D.Double(347, 0));
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 		
 		Edge callEdge = new CallEdge();
 		aGraph.insertEdge(callEdge);
 		callEdge.connect(node, param2, aGraph);
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 		
 		CallNode node2 = new CallNode();
 		aGraph.addNode(node2, new Point2D.Double(160, 90));
-		aGraph.layout(aGraphics);		
+		aGraph.layout();		
 
 		Edge callEdge2 = new CallEdge();
 		aGraph.insertEdge(callEdge2);
 		callEdge2.connect(node, node2, aGraph);
-		aGraph.layout(aGraphics);
+		aGraph.layout();
 		
 		// Point outside the bounds
 		assertNull(aGraph.deepFindNode(node, new Point2D.Double(50, 50)));

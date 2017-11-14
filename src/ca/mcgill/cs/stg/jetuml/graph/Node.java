@@ -64,9 +64,8 @@ public interface Node extends GraphElement
 	/**
      * Lays out the node and its children.
      * @param pGraph the ambient graph
-     * @param pGraphics2D the graphics context
 	 */
-	void layout(Graph pGraph, Graphics2D pGraphics2D);
+	void layout(Graph pGraph);
 
 	/**
 	 * @return A clone of the node.

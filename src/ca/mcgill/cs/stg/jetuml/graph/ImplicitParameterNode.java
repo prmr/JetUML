@@ -120,7 +120,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
 		Rectangle bounds = aName.getBounds(); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      

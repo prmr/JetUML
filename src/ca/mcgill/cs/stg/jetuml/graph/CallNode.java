@@ -121,7 +121,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
 		assert aImplicitParameter != null;
 		assert pGraph instanceof SequenceDiagramGraph;
@@ -131,7 +131,7 @@ public class CallNode extends RectangularNode implements ChildNode
 		translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
 
 		// Compute the Y coordinate of the bottom of the node
-		double bottomY = computeBottomY(graph, pGraphics2D);
+		double bottomY = computeBottomY(graph);
 
 		Rectangle bounds = getBounds();
 
@@ -195,7 +195,7 @@ public class CallNode extends RectangularNode implements ChildNode
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
 	 */
-	private double computeBottomY(SequenceDiagramGraph pGraph, Graphics2D pGraphics2D)
+	private double computeBottomY(SequenceDiagramGraph pGraph)
 	{
 		// Compute the Y coordinate of the bottom of the node
 		int bottomY = getBounds().getY() + CALL_YGAP;
@@ -217,7 +217,7 @@ public class CallNode extends RectangularNode implements ChildNode
 				}
 
 				node.translate(0, bottomY - node.getBounds().getY());
-				node.layout(pGraph, pGraphics2D);
+				node.layout(pGraph);
 				if(((CallNode) node).aSignaled)
 				{
 					bottomY += CALL_YGAP;

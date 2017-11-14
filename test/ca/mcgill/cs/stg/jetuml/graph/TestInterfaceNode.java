@@ -186,28 +186,28 @@ public class TestInterfaceNode
 	{
 		// Test layout with no snapping (grid size is 10)
 		aNode1.translate(10, 10);
-		aNode1.layout(aGraph, aGraphics);
+		aNode1.layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
 		
 		MultiLineString name = new MultiLineString();
 		name.setText("X\nX\nX\nX");
 		aNode1.setName(name);
-		aNode1.layout(aGraph, aGraphics);
+		aNode1.layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 		
 		MultiLineString methods = new MultiLineString();
 		methods.setText("X\nX");
 		aNode1.setMethods(methods);
-		aNode1.layout(aGraph, aGraphics);
+		aNode1.layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,100), aNode1.getBounds());
 		
 		name.setText("X");
-		aNode1.layout(aGraph, aGraphics);
+		aNode1.layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 		
 		// Test layout with snapping
 		aNode1.translate(-4, -4);
-		aNode1.layout(aGraph, aGraphics);
+		aNode1.layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 	}
 }

@@ -103,7 +103,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
 		aNameBounds = aName.getBounds(); 
 		aValueBounds = aValue.getBounds();

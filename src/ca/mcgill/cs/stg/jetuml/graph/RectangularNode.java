@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
@@ -64,7 +63,7 @@ public abstract class RectangularNode extends AbstractNode
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
 		aBounds = Grid.snapped(aBounds);
 	}

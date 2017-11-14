@@ -55,7 +55,7 @@ public class MoveCommand implements Command
 	public void undo() 
 	{
 		aNode.translate(-aDX, -aDY);
-		aGraph.layout();
+		aGraph.requestLayout();
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class MoveCommand implements Command
 	public void execute() 
 	{
 		aNode.translate(aDX, aDY);
-		aGraph.layout();
+		aGraph.requestLayout();
 	}
 
 }

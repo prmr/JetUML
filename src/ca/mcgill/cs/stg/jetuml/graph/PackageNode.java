@@ -141,10 +141,9 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	}
 
 	@Override
-	public void layout(Graph pGraph, Graphics2D pGraphics2D)
+	public void layout(Graph pGraph)
 	{
-		label.setText("<html>" + aName + "</html>");
-		label.setFont(pGraphics2D.getFont());
+		label.setText(aName);
 		Dimension d = label.getPreferredSize();
 		int topWidth = (int)Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
 		int topHeight = (int)Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
@@ -152,7 +151,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		Rectangle childBounds = null;
 		for( ChildNode child : getChildren() )
 		{
-			child.layout(pGraph, pGraphics2D);
+			child.layout(pGraph);
 			if( childBounds == null )
 			{
 				childBounds = child.getBounds();

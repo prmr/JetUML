@@ -47,7 +47,7 @@ public class AddNodeCommand extends GraphElementRelatedCommand
 	{
 		assert aElement instanceof Node;
 		aGraph.removeNode((Node)aElement);
-		aGraph.layout();
+		aGraph.requestLayout();
 	}
 
 	/**
@@ -57,6 +57,6 @@ public class AddNodeCommand extends GraphElementRelatedCommand
 	{ 
 		assert aElement instanceof Node;
 		aGraph.insertNode((Node)aElement);
-		aGraph.layout();
+		aGraph.requestLayout();
 	}
 }

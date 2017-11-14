@@ -306,9 +306,9 @@ public class SequenceDiagramGraph extends Graph
 	}
  
 	@Override
-	public void layout(Graphics2D pGraphics2D)
+	public void layout()
 	{
-		super.layout(pGraphics2D);
+		super.layout();
 
 		ArrayList<Node> topLevelCalls = new ArrayList<>();
 		ArrayList<Node> objects = new ArrayList<>();
@@ -339,17 +339,16 @@ public class SequenceDiagramGraph extends Graph
 				}
 			}
 		}
-		heightObjectLayout(topLevelCalls, objects, pGraphics2D);
+		heightObjectLayout(topLevelCalls, objects);
 	}
 	
 	/*
 	 * Find the max of the heights of the objects
 	 * @param pTopLevelCalls an ArrayList of Nodes in the topLevel of Calls.
 	 * @param pObjects an ArrayList of Nodes to work with.
-	 * @param pGraphics2D Graphics2D from layout call.
 	 * @param pGrid Grid from layout call.
 	 */
-	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects, Graphics2D pGraphics2D)
+	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects)
 	{
 		double top = 0;
 		for(Node node : pObjects)
@@ -360,7 +359,7 @@ public class SequenceDiagramGraph extends Graph
 
 		for(Node node : pTopLevelCalls )
 		{
-			node.layout(this, pGraphics2D);
+			node.layout(this);
 		}
 
 		for(Node node : aRootNodes )
@@ -387,7 +386,7 @@ public class SequenceDiagramGraph extends Graph
 	@Override
 	public void draw(Graphics2D pGraphics2D)
 	{
-		layout(pGraphics2D);
+		layout();
 		super.draw(pGraphics2D);
 	}
 

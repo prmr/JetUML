@@ -413,7 +413,7 @@ public abstract class Graph
 	 */
 	public void draw(Graphics2D pGraphics2D)
 	{
-		layout(pGraphics2D);
+		layout();
 		
 		for( Node node : aRootNodes )
 		{
@@ -565,7 +565,7 @@ public abstract class Graph
 	/**
 	 * Causes the layout of the graph to be recomputed.
 	 */
-	public void layout()
+	public void requestLayout()
 	{
 		aNeedsLayout = true;
 	}
@@ -574,9 +574,8 @@ public abstract class Graph
 	 * Computes the layout of the graph.
 	 * If you override this method, you must first call 
 	 * <code>super.layout</code>.
-	 * @param pGraphics2D the graphics context
 	 */
-	protected void layout(Graphics2D pGraphics2D)
+	protected void layout()
 	{
 		if(!aNeedsLayout)
 		{
@@ -587,10 +586,9 @@ public abstract class Graph
 		aNodesToBeRemoved.clear();
 		aEdgesToBeRemoved.clear();
 
-		for(int i = 0; i < aRootNodes.size(); i++)
+		for(Node node : aRootNodes)
 		{
-			Node n = aRootNodes.get(i);
-			n.layout(this, pGraphics2D);
+			node.layout(this);
 		}
 		aNeedsLayout = false;
 	}

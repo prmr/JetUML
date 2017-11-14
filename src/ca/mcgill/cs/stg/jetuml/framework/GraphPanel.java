@@ -157,7 +157,7 @@ public class GraphPanel extends JPanel
 		{
 			public void stateChanged(ChangeEvent pEvent)
 			{
-				aGraph.layout();
+				aGraph.requestLayout();
 				repaint();
 			}
 		});
@@ -229,7 +229,7 @@ public class GraphPanel extends JPanel
 	 */
 	public void layoutGraph()
 	{
-		aGraph.layout();
+		aGraph.requestLayout();
 	}
 	
 	/**
@@ -727,7 +727,7 @@ public class GraphPanel extends JPanel
 			}
 			else if(aDragMode == DragMode.DRAG_MOVE)
 			{
-				aGraph.layout();
+				aGraph.requestLayout();
 				setModified(true);
 				CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
 				if( command.size() > 0 )
