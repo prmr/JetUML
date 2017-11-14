@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -44,7 +43,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
 
-	private double aTopHeight;
+	private int aTopHeight;
 	private MultiLineString aName;
 	private ArrayList<ChildNode> aFields;
 
@@ -63,10 +62,10 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		Rectangle2D top = getTopRectangle();
-		pGraphics2D.draw(top);
+		Rectangle top = getTopRectangle();
+		pGraphics2D.draw(Conversions.toRectangle2D(top));
 		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		aName.draw(pGraphics2D, Conversions.toRectangle(top));
+		aName.draw(pGraphics2D, top);
 	}
 
 	/* 
@@ -86,9 +85,9 @@ public class ObjectNode extends RectangularNode implements ParentNode
 	 * Returns the rectangle at the top of the object node.
 	 * @return the top rectangle
 	 */
-	public Rectangle2D getTopRectangle()
+	public Rectangle getTopRectangle()
 	{
-		return new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
 	}
 
 	@Override
@@ -186,10 +185,6 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		}
 		aFields.add(pIndex, pNode);
 		pNode.setParent(this);
-		// prmr unclear why we need this
-//		Rectangle2D b = getBounds();
-//		b.add(new Rectangle2D.Double(b.getX(), b.getY() + b.getHeight(), FieldNode.DEFAULT_WIDTH, FieldNode.DEFAULT_HEIGHT));
-//		setBounds(b);
 	}
 
 	@Override

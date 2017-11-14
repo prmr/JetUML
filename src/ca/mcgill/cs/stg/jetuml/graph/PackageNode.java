@@ -26,7 +26,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -58,8 +57,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 
 	private String aName;
 	private MultiLineString aContents;
-	private Rectangle2D aTop;
-	private Rectangle2D aBottom;
+	private Rectangle aTop;
+	private Rectangle aBottom;
 	private ArrayList<ChildNode> aContainedNodes;
 	private ParentNode aContainer;
 	   
@@ -71,8 +70,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		aName = "";
 		aContents = new MultiLineString();
 		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		aTop = new Rectangle2D.Double(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
-		aBottom = new Rectangle2D.Double(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
+		aTop = new Rectangle(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
+		aBottom = new Rectangle(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
 		aContainedNodes = new ArrayList<>();
 	}
 
@@ -87,7 +86,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		Dimension d = label.getPreferredSize();
 		label.setBounds(0, 0, d.width, d.height);
 
-		pGraphics2D.draw(aTop);
+		pGraphics2D.draw(Conversions.toRectangle2D(aTop));
 
 		double textX = bounds.getX() + NAME_GAP;
 		double textY = bounds.getY() + (aTop.getHeight() - d.getHeight()) / 2;
@@ -96,16 +95,16 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		label.paint(pGraphics2D);
 		pGraphics2D.translate(-textX, -textY);        
      
-		pGraphics2D.draw(aBottom);
-		aContents.draw(pGraphics2D, Conversions.toRectangle(aBottom));
+		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
+		aContents.draw(pGraphics2D, aBottom);
 	}
    
 	@Override
 	public Shape getShape()
 	{
 		GeneralPath path = new GeneralPath();
-		path.append(aTop, false);
-		path.append(aBottom, false);
+		path.append(Conversions.toRectangle2D(aTop), false);
+		path.append(Conversions.toRectangle2D(aBottom), false);
 		return path;
 	}
 	
@@ -115,25 +114,25 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	 */
 	public Point2D getTopRightCorner()
 	{
-		return new Point2D.Double(aBottom.getMaxX(), aBottom.getMinY());
+		return new Point2D.Double(aBottom.getMaxX(), aBottom.getY());
 	}
 	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		Point connectionPoint = super.getConnectionPoint(pDirection);
-		if( connectionPoint.getY() < aBottom.getMinY() && aTop.getMaxX() < connectionPoint.getX() )
+		if( connectionPoint.getY() < aBottom.getY() && aTop.getMaxX() < connectionPoint.getX() )
 		{
 			// The connection point falls in the empty top-right corner, re-compute it so
 			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			double delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenter().getX()) * 2 / 
+			int delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenter().getX()) * 2 / 
 					getBounds().getHeight();
-			double newX = connectionPoint.getX() - delta;
+			int newX = connectionPoint.getX() - delta;
 			if( newX < aTop.getMaxX() )
 			{
 				newX = aTop.getMaxX() + 1;
 			}
-			return new Point(newX, aBottom.getMinY());	
+			return new Point(newX, aBottom.getY());	
 		}
 		else
 		{
@@ -147,8 +146,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		label.setText("<html>" + aName + "</html>");
 		label.setFont(pGraphics2D.getFont());
 		Dimension d = label.getPreferredSize();
-		double topWidth = Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		double topHeight = Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
+		int topWidth = (int)Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topHeight = (int)Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
 		
 		Rectangle childBounds = null;
 		for( ChildNode child : getChildren() )
@@ -180,8 +179,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 		}
 		
 		Rectangle b = getBounds();
-		aTop = new Rectangle2D.Double(b.getX(), b.getY(), topWidth, topHeight);
-		aBottom = new Rectangle2D.Double(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
+		aTop = new Rectangle(b.getX(), b.getY(), topWidth, topHeight);
+		aBottom = new Rectangle(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
 	}
 	
 	private double computeWidth(double pTopWidth, double pContentWidth, double pChildrenWidth)
@@ -242,10 +241,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	{
 		super.translate(pDeltaX, pDeltaY);
 		
-		aTop = (Rectangle2D)aTop.clone();
-		aBottom = (Rectangle2D)aBottom.clone();
-		aTop.setFrame(aTop.getX() + pDeltaX, aTop.getY() + pDeltaY, aTop.getWidth(), aTop.getHeight());
-		aBottom.setFrame(aBottom.getX() + pDeltaX, aBottom.getY() + pDeltaY, aBottom.getWidth(), aBottom.getHeight());
+		aTop = new Rectangle(aTop.getX() + pDeltaX, aTop.getY() + pDeltaY, aTop.getWidth(), aTop.getHeight());
+		aBottom  = new Rectangle(aBottom.getX() + pDeltaX, aBottom.getY() + pDeltaY, aBottom.getWidth(), aBottom.getHeight());
 		for(Node childNode : getChildren())
         {
         	childNode.translate(pDeltaX, pDeltaY);
