@@ -626,20 +626,20 @@ public class TestPersistenceService
 		PointNode p1 = (PointNode) nIt.next();
 		PointNode p2 = (PointNode) nIt.next();
 		
-		assertEquals(new Rectangle2D.Double(240, 130, 120, 100), type1.getBounds());
+		assertEquals(new Rectangle(240, 130, 80, 60), type1.getBounds());
 		List<ChildNode> children = type1.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(":Type1", type1.getName().toString());
 		
 		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle2D.Double(252.5, 209, 87, 16), name.getBounds());
+		assertEquals(new Rectangle(253, 209, 60, 20), name.getBounds());
 		assertEquals(0,name.getAxisX(),0.000001);
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
 		assertFalse(name.isBoxedValue());
 
-		assertEquals(new Rectangle2D.Double(440, 290, 120, 140), blank.getBounds());
+		assertEquals(new Rectangle(440, 290, 80, 60), blank.getBounds());
 		children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertEquals("", blank.getName().toString());
@@ -647,43 +647,43 @@ public class TestPersistenceService
 		FieldNode name3 = (FieldNode) children.get(1);
 		FieldNode name4 = (FieldNode) children.get(2);
 		
-		assertEquals(new Rectangle2D.Double(445.5, 367, 99, 16), name2.getBounds());
+		assertEquals(new Rectangle(446, 367, 60, 20), name2.getBounds());
 		assertEquals(0,name2.getAxisX(),0.000001);
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		assertFalse(name2.isBoxedValue());
 		
-		assertEquals(new Rectangle2D.Double(445.5, 388, 99, 16), name3.getBounds());
+		assertEquals(new Rectangle(445, 388, 60, 20), name3.getBounds());
 		assertEquals(0,name3.getAxisX(),0.000001);
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		assertTrue(name3.isBoxedValue());
 		
-		assertEquals(new Rectangle2D.Double(445.5, 409, 99, 16), name4.getBounds());
+		assertEquals(new Rectangle(445, 409, 60, 20), name4.getBounds());
 		assertEquals(0,name4.getAxisX(),0.000001);
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
 		assertFalse(name4.isBoxedValue());
 
-		assertEquals(new Rectangle2D.Double(540, 150, 80, 60), object2.getBounds());
+		assertEquals(new Rectangle(540, 150, 80, 60), object2.getBounds());
 		children = object2.getChildren();
 		assertEquals(0, children.size());
 		assertEquals("object2:", object2.getName().toString());
 		
-		assertEquals(new Rectangle2D.Double(610, 300, 80, 60), type3.getBounds());
+		assertEquals(new Rectangle(610, 300, 80, 60), type3.getBounds());
 		children = type3.getChildren();
 		assertEquals(0, children.size());
 		assertEquals(":Type3", type3.getName().toString());
 
 		assertEquals("A note", note.getText().getText());
-		assertEquals(new Rectangle2D.Double(280, 330, 60, 40), note.getBounds());
+		assertEquals(new Rectangle(280, 330, 60, 40), note.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(281, 216, 0.01, 0.01), p1.getBounds());
+		assertEquals(new Rectangle(281, 216, 1, 1), p1.getBounds());
 		
-		assertEquals(new Rectangle2D.Double(474, 339, 0.01, 0.01), p2.getBounds());
+		assertEquals(new Rectangle(474, 339, 1, 1), p2.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -696,30 +696,30 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle2D.Double(296, 180, 84, 37), o1.getBounds());
+		assertEquals(new Rectangle(283, 160, 57, 59), o1.getBounds());
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(296, 217, 144, 143), o2.getBounds());
+		assertEquals(new Rectangle(283, 219, 157, 101), o2.getBounds());
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(500, 210, 80, 80), cr1.getBounds());
+		assertEquals(new Rectangle(480, 180, 60, 110), cr1.getBounds());
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("", cr1.getEndLabel());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
 		assertEquals("", cr1.getStartLabel().toString());
 		
-		assertEquals(new Rectangle2D.Double(495, 330, 115, 87), o3.getBounds());
+		assertEquals(new Rectangle(475, 330, 135, 89), o3.getBounds());
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(281, 216, 25, 114), ne1.getBounds());
+		assertEquals(new Rectangle(281, 216, 24, 114), ne1.getBounds());
 		assertEquals(note, ne1.getStart());
 		assertEquals(p1, ne1.getEnd());
 		
-		assertEquals(new Rectangle2D.Double(340, 339, 134, 9), ne2.getBounds());
+		assertEquals(new Rectangle(340, 339, 134, 8), ne2.getBounds());
 		assertEquals(note, ne2.getStart());
 		assertEquals(p2, ne2.getEnd());
 	}
