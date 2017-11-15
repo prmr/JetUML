@@ -129,7 +129,7 @@
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge">
     <void property="middleLabel">
      <string>selfCall()</string>
     </void>
@@ -138,7 +138,7 @@
    <object idref="CallNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge">
     <void property="middleLabel">
      <string>signal</string>
     </void>
@@ -150,7 +150,7 @@
    <object idref="CallNode2"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge">
     <void property="middleLabel">
      <string>call1()</string>
     </void>
@@ -159,7 +159,7 @@
    <object idref="CallNode3"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ReturnEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ReturnEdge">
     <void property="middleLabel">
      <string>r1</string>
     </void>
@@ -168,12 +168,12 @@
    <object idref="CallNode2"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ReturnEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ReturnEdge"/>
    <object idref="CallNode2"/>
    <object idref="CallNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>

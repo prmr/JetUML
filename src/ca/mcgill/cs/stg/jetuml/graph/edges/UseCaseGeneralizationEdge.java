@@ -23,26 +23,33 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
+import java.awt.geom.Point2D;
+
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
- *  An edge that that represents a dynamic collaboration between
- *  two objects in an object diagram, with optional labels.
+ *  An edge that that represents a generalization of a use case.
  */
-public class ObjectCollaborationEdge extends ClassRelationshipEdge
+public class UseCaseGeneralizationEdge extends SegmentedLabeledEdge
 {
 	/**
 	 * Creates an association edge.
 	 */
-	public ObjectCollaborationEdge()
+	public UseCaseGeneralizationEdge()
 	{}
 	
 	@Override
-	public SegmentationStyle obtainSegmentationStyle()
+	protected ArrowHead obtainEndArrowHead()
 	{
-		return SegmentationStyleFactory.createStraightStrategy();
+		return ArrowHead.TRIANGLE;
+	}
+	
+	@Override
+	protected Point2D[] getPoints()
+	{
+		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
 	}
 }

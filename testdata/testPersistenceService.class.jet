@@ -135,12 +135,12 @@
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -149,13 +149,13 @@
    <object idref="ClassNode3"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge">
     <void property="middleLabel">
      <string>e2</string>
     </void>
     <void property="type">
      <object class="java.lang.Enum" method="valueOf">
-      <class>ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge$Type</class>
+      <class>ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge$Type</class>
       <string>Implementation</string>
      </object>
     </void>
@@ -164,7 +164,7 @@
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>
@@ -173,7 +173,7 @@
    <object idref="ClassNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge">
     <void property="endLabel">
      <string>*</string>
     </void>
@@ -188,13 +188,13 @@
    <object idref="ClassNode2"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.AggregationEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge">
     <void property="middleLabel">
      <string>e5</string>
     </void>
     <void property="type">
      <object class="java.lang.Enum" method="valueOf">
-      <class>ca.mcgill.cs.stg.jetuml.graph.AggregationEdge$Type</class>
+      <class>ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge$Type</class>
       <string>Composition</string>
      </object>
     </void>

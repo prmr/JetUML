@@ -30,11 +30,11 @@ import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 

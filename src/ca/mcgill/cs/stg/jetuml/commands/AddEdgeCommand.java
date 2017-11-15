@@ -20,8 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.commands;
 
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 
 /**
  * Represents the addition of an edge to the graph.

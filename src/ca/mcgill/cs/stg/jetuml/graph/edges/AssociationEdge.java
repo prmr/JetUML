@@ -23,71 +23,75 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
- *  An edge that that represents a UML aggregation or 
- *  composition, with optional labels.
+ *  An edge that that represents a UML association, with optional 
+ *  labels and directionality.
  */
-public class AggregationEdge extends ClassRelationshipEdge
+public class AssociationEdge extends ClassRelationshipEdge
 {
 	/**
-	 * Type of aggregation relation.
+	 * Possible directionalities for an association.
 	 */
-	public enum Type 
-	{Aggregation, Composition}
-
-	private Type aType = Type.Aggregation;
-
+	public enum Directionality 
+	{None, Start, End, Both}
+	
+	private Directionality aDirectionality = Directionality.None;
+	
 	/**
-	 * Creates an aggregation edge by specifying its type.
-	 * 
-	 * @param pType the type of aggregation
+	 * Creates an association edge with no labels.
+	 * and no directionality
 	 */
-	public AggregationEdge( Type pType )
-	{
-		aType = pType;
-	}
-
-	/**
-	 * Creates an aggregation edge.
-	 */
-	public AggregationEdge()
+	public AssociationEdge()
 	{}
-
+	
 	/**
-	 * @return The type of aggregation relation.
+	 * @param pDirectionality The desired directionality.
 	 */
-	public Type getType()
+	public void setDirectionality( Directionality pDirectionality )
 	{
-		return aType;
+		aDirectionality = pDirectionality;
 	}
-
+	
 	/**
-	 * @param pType The type of aggregation relation.
+	 * @return The directionality of this association.
 	 */
-	public void setType(Type pType)
+	public Directionality getDirectionality()
 	{
-		aType = pType;
+		return aDirectionality;
 	}
-
+	
 	@Override
-	public ArrowHead obtainStartArrowHead()
+	protected ArrowHead obtainStartArrowHead()
 	{
-		if( aType == Type.Composition )
+		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
 		{
-			return ArrowHead.BLACK_DIAMOND;
+			return ArrowHead.V;
 		}
 		else
 		{
-			return ArrowHead.DIAMOND;
+			return ArrowHead.NONE;
 		}
 	}
-
+	
+	@Override
+	protected ArrowHead obtainEndArrowHead()
+	{
+		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
+		{
+			return ArrowHead.V;
+		}
+		else
+		{
+			return ArrowHead.NONE;
+		}
+	}
+	
 	@Override
 	public SegmentationStyle obtainSegmentationStyle()
 	{

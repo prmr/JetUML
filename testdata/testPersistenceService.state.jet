@@ -106,12 +106,12 @@ on two lines</string>
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
     <void property="label">
      <string>start</string>
     </void>
@@ -120,7 +120,7 @@ on two lines</string>
    <object idref="StateNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
     <void property="label">
      <string>e1</string>
     </void>
@@ -129,7 +129,7 @@ on two lines</string>
    <object idref="StateNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
     <void property="label">
      <string>e2</string>
     </void>
@@ -138,7 +138,7 @@ on two lines</string>
    <object idref="StateNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
     <void property="label">
      <string>self</string>
     </void>
@@ -147,12 +147,12 @@ on two lines</string>
    <object idref="StateNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge"/>
    <object idref="StateNode2"/>
    <object idref="CircularStateNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge"/>
    <object idref="StateNode1"/>
    <object idref="StateNode2"/>
   </void>

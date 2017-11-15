@@ -35,7 +35,7 @@ import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 

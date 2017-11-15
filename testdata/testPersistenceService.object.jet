@@ -203,32 +203,32 @@
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge"/>
    <object idref="FieldNode0"/>
    <object idref="ObjectNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge"/>
    <object idref="FieldNode0"/>
    <object idref="ObjectNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectReferenceEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge"/>
    <object idref="FieldNode1"/>
    <object idref="ObjectNode3"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode1"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectCollaborationEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.ObjectCollaborationEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>

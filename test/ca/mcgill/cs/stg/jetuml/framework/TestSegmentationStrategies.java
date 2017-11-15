@@ -28,12 +28,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge.Type;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AssociationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge.Type;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 

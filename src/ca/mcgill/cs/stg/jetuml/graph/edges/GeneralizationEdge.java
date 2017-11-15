@@ -23,78 +23,82 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
- *  An edge that that represents a UML association, with optional 
- *  labels and directionality.
+ *  An edge that that represents a UML generalization (inheritance
+ *  or implementation), with optional labels.
  */
-public class AssociationEdge extends ClassRelationshipEdge
+public class GeneralizationEdge extends ClassRelationshipEdge
 {
 	/**
-	 * Possible directionalities for an association.
+	 * Type of UML generalization relation.
 	 */
-	public enum Directionality 
-	{None, Start, End, Both}
+	public enum Type 
+	{Inheritance, Implementation}
 	
-	private Directionality aDirectionality = Directionality.None;
+	private Type aType = Type.Inheritance;
 	
 	/**
-	 * Creates an association edge with no labels.
-	 * and no directionality
+	 * Creates a generalization edge by specifying its type.
+	 * 
+	 * @param pType the type of generalization
 	 */
-	public AssociationEdge()
+	public GeneralizationEdge( Type pType )
+	{
+		aType = pType;
+	}
+	
+	/**
+	 * Creates an inheritance edge.
+	 */
+	public GeneralizationEdge()
 	{}
 	
 	/**
-	 * @param pDirectionality The desired directionality.
+	 * @return The type of generalization.
 	 */
-	public void setDirectionality( Directionality pDirectionality )
+	public Type getType()
 	{
-		aDirectionality = pDirectionality;
+		return aType;
 	}
 	
 	/**
-	 * @return The directionality of this association.
+	 * Sets the type of generalization.
+	 * @param pType The desired type of generalization
 	 */
-	public Directionality getDirectionality()
+	public void setType(Type pType)
 	{
-		return aDirectionality;
+		aType = pType;
 	}
 	
 	@Override
-	protected ArrowHead obtainStartArrowHead()
+	public ArrowHead obtainEndArrowHead()
 	{
-		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
-		{
-			return ArrowHead.V;
-		}
-		else
-		{
-			return ArrowHead.NONE;
-		}
+		return ArrowHead.TRIANGLE;
 	}
 	
 	@Override
-	protected ArrowHead obtainEndArrowHead()
+	protected LineStyle obtainLineStyle()
 	{
-		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
+		if( aType == Type.Implementation )
 		{
-			return ArrowHead.V;
+			return LineStyle.DOTTED;
 		}
 		else
 		{
-			return ArrowHead.NONE;
+			return LineStyle.SOLID;
 		}
 	}
 	
 	@Override
 	public SegmentationStyle obtainSegmentationStyle()
 	{
-		return SegmentationStyleFactory.createHVHStrategy();
+		return SegmentationStyleFactory.createVHVStrategy();
 	}
 }

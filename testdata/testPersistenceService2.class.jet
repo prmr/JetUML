@@ -143,7 +143,7 @@ I1</string>
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -152,7 +152,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e2</string>
     </void>
@@ -161,7 +161,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.DependencyEdge">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>

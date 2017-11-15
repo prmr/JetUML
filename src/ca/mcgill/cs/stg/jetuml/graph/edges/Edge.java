@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import java.awt.Graphics2D;
 
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 /**

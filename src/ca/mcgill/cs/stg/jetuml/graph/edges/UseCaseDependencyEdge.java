@@ -23,7 +23,7 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import java.awt.geom.Point2D;
 

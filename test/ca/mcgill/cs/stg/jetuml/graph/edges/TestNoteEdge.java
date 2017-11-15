@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +29,7 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 

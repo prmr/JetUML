@@ -19,24 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.graph;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-
 /**
  * @author Martin P. Robillard
  */
-public class TestAbstractEdge
+
+package ca.mcgill.cs.stg.jetuml.graph.edges;
+
+import java.awt.geom.Point2D;
+
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+
+/**
+ *  An edge that that represents a association between use cases.
+ *  Does not support labels or multiplicities.
+ */
+public class UseCaseAssociationEdge extends SegmentedLabeledEdge
 {
-	@Test
-	public void testToHtml()
+	/**
+	 * Creates an association edge.
+	 */
+	public UseCaseAssociationEdge()
+	{}
+	
+	@Override
+	protected Point2D[] getPoints()
 	{
-		assertEquals("<html></html>", AbstractEdge.toHtml(""));
-		assertEquals("<html>Foo</html>", AbstractEdge.toHtml("Foo"));
-		assertEquals("<html>&lt;html&gt;</html>", AbstractEdge.toHtml("<html>"));
-		assertEquals("<html>&lt;html&gt;&lt;html&gt;</html>", AbstractEdge.toHtml("<html><html>"));
-		assertEquals("<html>&amp;</html>", AbstractEdge.toHtml("&"));
+		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
 	}
 }

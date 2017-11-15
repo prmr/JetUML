@@ -23,27 +23,40 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import java.awt.geom.Point2D;
-
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
- *  An edge that that represents a association between use cases.
- *  Does not support labels or multiplicities.
+ *  An edge that that represents a UML dependency
+ *  with optional labels.
  */
-public class UseCaseAssociationEdge extends SegmentedLabeledEdge
+public class DependencyEdge extends ClassRelationshipEdge
 {
 	/**
-	 * Creates an association edge.
+	 * Creates a dependency edge with no labels.
 	 */
-	public UseCaseAssociationEdge()
+	public DependencyEdge()
 	{}
 	
 	@Override
-	protected Point2D[] getPoints()
+	protected ArrowHead obtainEndArrowHead()
 	{
-		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
+		return ArrowHead.V;
+	}
+	
+	@Override
+	protected LineStyle obtainLineStyle()
+	{
+		return LineStyle.DOTTED;
+	}
+	
+	@Override
+	public SegmentationStyle obtainSegmentationStyle()
+	{
+		return SegmentationStyleFactory.createStraightStrategy();
 	}
 }

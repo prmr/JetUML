@@ -23,82 +23,74 @@
  * @author Martin P. Robillard
  */
 
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
 
 /**
- *  An edge that that represents a UML generalization (inheritance
- *  or implementation), with optional labels.
+ *  An edge that that represents a UML aggregation or 
+ *  composition, with optional labels.
  */
-public class GeneralizationEdge extends ClassRelationshipEdge
+public class AggregationEdge extends ClassRelationshipEdge
 {
 	/**
-	 * Type of UML generalization relation.
+	 * Type of aggregation relation.
 	 */
 	public enum Type 
-	{Inheritance, Implementation}
-	
-	private Type aType = Type.Inheritance;
-	
+	{Aggregation, Composition}
+
+	private Type aType = Type.Aggregation;
+
 	/**
-	 * Creates a generalization edge by specifying its type.
+	 * Creates an aggregation edge by specifying its type.
 	 * 
-	 * @param pType the type of generalization
+	 * @param pType the type of aggregation
 	 */
-	public GeneralizationEdge( Type pType )
+	public AggregationEdge( Type pType )
 	{
 		aType = pType;
 	}
-	
+
 	/**
-	 * Creates an inheritance edge.
+	 * Creates an aggregation edge.
 	 */
-	public GeneralizationEdge()
+	public AggregationEdge()
 	{}
-	
+
 	/**
-	 * @return The type of generalization.
+	 * @return The type of aggregation relation.
 	 */
 	public Type getType()
 	{
 		return aType;
 	}
-	
+
 	/**
-	 * Sets the type of generalization.
-	 * @param pType The desired type of generalization
+	 * @param pType The type of aggregation relation.
 	 */
 	public void setType(Type pType)
 	{
 		aType = pType;
 	}
-	
+
 	@Override
-	public ArrowHead obtainEndArrowHead()
+	public ArrowHead obtainStartArrowHead()
 	{
-		return ArrowHead.TRIANGLE;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		if( aType == Type.Implementation )
+		if( aType == Type.Composition )
 		{
-			return LineStyle.DOTTED;
+			return ArrowHead.BLACK_DIAMOND;
 		}
 		else
 		{
-			return LineStyle.SOLID;
+			return ArrowHead.DIAMOND;
 		}
 	}
-	
+
 	@Override
 	public SegmentationStyle obtainSegmentationStyle()
 	{
-		return SegmentationStyleFactory.createVHVStrategy();
+		return SegmentationStyleFactory.createHVHStrategy();
 	}
 }

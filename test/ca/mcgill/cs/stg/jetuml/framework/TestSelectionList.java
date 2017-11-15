@@ -30,10 +30,10 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 

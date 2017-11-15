@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.PropertyChangeTracker.PropertyChangeCommand;
-import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
 

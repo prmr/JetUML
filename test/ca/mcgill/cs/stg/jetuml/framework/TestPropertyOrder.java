@@ -28,11 +28,11 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
-import ca.mcgill.cs.stg.jetuml.graph.SegmentedLabeledEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AssociationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.SegmentedLabeledEdge;
 
 public class TestPropertyOrder
 {

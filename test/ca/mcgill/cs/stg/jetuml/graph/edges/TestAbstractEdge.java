@@ -19,44 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+package ca.mcgill.cs.stg.jetuml.graph.edges;
+
+import org.junit.Test;
+
+import ca.mcgill.cs.stg.jetuml.graph.edges.AbstractEdge;
+
+import static org.junit.Assert.*;
+
+
 /**
  * @author Martin P. Robillard
  */
-
-package ca.mcgill.cs.stg.jetuml.graph;
-
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
-
-/**
- *  An edge that that represents a UML dependency
- *  with optional labels.
- */
-public class DependencyEdge extends ClassRelationshipEdge
+public class TestAbstractEdge
 {
-	/**
-	 * Creates a dependency edge with no labels.
-	 */
-	public DependencyEdge()
-	{}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
+	@Test
+	public void testToHtml()
 	{
-		return ArrowHead.V;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		return LineStyle.DOTTED;
-	}
-	
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createStraightStrategy();
+		assertEquals("<html></html>", AbstractEdge.toHtml(""));
+		assertEquals("<html>Foo</html>", AbstractEdge.toHtml("Foo"));
+		assertEquals("<html>&lt;html&gt;</html>", AbstractEdge.toHtml("<html>"));
+		assertEquals("<html>&lt;html&gt;&lt;html&gt;</html>", AbstractEdge.toHtml("<html><html>"));
+		assertEquals("<html>&amp;</html>", AbstractEdge.toHtml("&"));
 	}
 }

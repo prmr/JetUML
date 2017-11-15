@@ -34,9 +34,9 @@ import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,

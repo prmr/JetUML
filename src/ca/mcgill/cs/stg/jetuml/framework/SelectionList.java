@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ParentNode;
