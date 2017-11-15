@@ -25,17 +25,16 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import java.awt.geom.Point2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML dependency
  *  between use cases.
  */
-public class UseCaseDependencyEdge extends SegmentedLabeledEdge
+public class UseCaseDependencyEdge extends AbstractEdge2
 {
 	private static final String LABEL_INCLUDE = "\u00ABinclude\u00BB";
 	private static final String LABEL_EXTEND = "\u00ABextend\u00BB";
@@ -49,18 +48,25 @@ public class UseCaseDependencyEdge extends SegmentedLabeledEdge
 	private Type aType = Type.None;
 	
 	/**
-	 * Creates a default (un-typed) dependency.
-	 */
-	public UseCaseDependencyEdge()
-	{}
-	
-	/**
 	 * Creates a typed dependency.
 	 * @param pType The type of dependency.
 	 */
 	public UseCaseDependencyEdge(Type pType)
 	{
 		aType = pType;
+		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
+				LineStyle.DOTTED, ArrowHead.NONE,  ArrowHead.V,
+				() -> "", () -> obtainMiddleLabel(), () -> "");
+	}
+	
+	/**
+	 * Creates a general dependency.
+	 */
+	public UseCaseDependencyEdge()
+	{
+		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
+				LineStyle.DOTTED, ArrowHead.NONE,  ArrowHead.V,
+				() -> "", () -> obtainMiddleLabel(), () -> "");
 	}
 	
 	/**
@@ -78,21 +84,8 @@ public class UseCaseDependencyEdge extends SegmentedLabeledEdge
 	{
 		aType = pType;
 	}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
-	{
-		return ArrowHead.V;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		return LineStyle.DOTTED;
-	}
-	
-	@Override
-	protected String obtainMiddleLabel()
+
+	private String obtainMiddleLabel()
 	{
 		if( aType == Type.Include )
 		{
@@ -106,11 +99,5 @@ public class UseCaseDependencyEdge extends SegmentedLabeledEdge
 		{
 			return "";
 		}
-	}
-	
-	@Override
-	protected Point2D[] getPoints()
-	{
-		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
 	}
 }

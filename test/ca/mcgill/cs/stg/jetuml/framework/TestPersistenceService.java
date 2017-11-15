@@ -238,17 +238,17 @@ public class TestPersistenceService
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
-		assertEquals(new Rectangle(488,80,22,50),cr7.getBounds());
+		assertEquals(new Rectangle(490,80,20,50),cr7.getBounds());
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertTrue(new Rectangle(505,170,63,60).equals(cr8.getBounds()) ||
+		assertTrue(new Rectangle(510,170,58,60).equals(cr8.getBounds()) ||
 				new Rectangle(505,170,62,60).equals(cr8.getBounds()));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertTrue(new Rectangle(570,136,96,32).equals(cr9.getBounds()) ||
+		assertTrue(new Rectangle(570,136,96,29).equals(cr9.getBounds()) ||
 				new Rectangle(570,136,93,32).equals(cr9.getBounds()));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );

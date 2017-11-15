@@ -25,31 +25,23 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import java.awt.geom.Point2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a generalization of a use case.
  */
-public class UseCaseGeneralizationEdge extends SegmentedLabeledEdge
+public class UseCaseGeneralizationEdge extends AbstractEdge2
 {
 	/**
-	 * Creates an association edge.
+	 * Creates a new UseCaseAssociationEdge.
 	 */
 	public UseCaseGeneralizationEdge()
-	{}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
 	{
-		return ArrowHead.TRIANGLE;
-	}
-	
-	@Override
-	protected Point2D[] getPoints()
-	{
-		return SegmentationStyleFactory.createStraightStrategy().getPath(this, getGraph());
+		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
+				LineStyle.SOLID, ArrowHead.NONE, ArrowHead.TRIANGLE,
+				() -> "", () -> "", () -> "");
 	}
 }
