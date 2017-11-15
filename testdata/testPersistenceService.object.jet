@@ -2,7 +2,7 @@
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
  <object class="ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph">
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectNode" id="ObjectNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode" id="ObjectNode0">
     <void property="bounds">
      <void property="x">
        <int>240</int>
@@ -17,7 +17,7 @@
      </void>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.FieldNode" id="FieldNode0">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode" id="FieldNode0">
       <void property="bounds">
        <void property="x">
          <int>253</int>
@@ -42,7 +42,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectNode" id="ObjectNode1">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode" id="ObjectNode1">
     <void property="bounds">
      <void property="x">
        <int>440</int>
@@ -52,7 +52,7 @@
      </void>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.FieldNode">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode">
       <void property="bounds">
        <void property="x">
          <int>446</int>
@@ -80,7 +80,7 @@
      </object>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.FieldNode">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode">
       <void property="bounds">
        <void property="x">
          <int>445</int>
@@ -111,7 +111,7 @@
      </object>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.FieldNode" id="FieldNode1">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode" id="FieldNode1">
       <void property="bounds">
        <void property="x">
          <int>445</int>
@@ -136,7 +136,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectNode" id="ObjectNode2">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode" id="ObjectNode2">
     <void property="bounds">
      <void property="x">
        <int>540</int>
@@ -153,7 +153,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ObjectNode" id="ObjectNode3">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode" id="ObjectNode3">
     <void property="bounds">
      <void property="x">
        <int>610</int>
@@ -170,7 +170,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode" id="NoteNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode" id="NoteNode0">
     <void property="bounds">
      <void property="x">
        <int>280</int>
@@ -187,7 +187,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode" id="PointNode0">
     <void method="translate">
      <int>281</int>
      <int>216</int>
@@ -195,7 +195,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode1">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode" id="PointNode1">
     <void method="translate">
      <int>474</int>
      <int>339</int>

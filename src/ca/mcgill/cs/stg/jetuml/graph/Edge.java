@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 /**
  * An edge in a graph.

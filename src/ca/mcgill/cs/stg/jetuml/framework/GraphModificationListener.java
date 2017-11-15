@@ -23,7 +23,7 @@ package ca.mcgill.cs.stg.jetuml.framework;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 /**
  * Specifies a list of callback methods for any object

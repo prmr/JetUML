@@ -2,7 +2,7 @@
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
  <object class="ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph">
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PackageNode" id="PackageNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode0">
     <void property="bounds">
      <void property="x">
        <int>315</int>
@@ -15,7 +15,7 @@
      <string>p1</string>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode0">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode0">
       <void property="bounds">
        <void property="x">
          <int>320</int>
@@ -37,7 +37,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PackageNode" id="PackageNode1">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode1">
     <void property="bounds">
      <void property="x">
        <int>477</int>
@@ -52,7 +52,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PackageNode" id="PackageNode2">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode2">
     <void property="bounds">
      <void property="x">
        <int>630</int>
@@ -65,7 +65,7 @@
      <string>p3</string>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.PackageNode" id="PackageNode3">
+     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode3">
       <void property="bounds">
        <void property="x">
          <int>635</int>
@@ -81,7 +81,7 @@
        <object idref="PackageNode2"/>
       </void>
       <void method="addChild">
-       <object class="ca.mcgill.cs.stg.jetuml.graph.InterfaceNode" id="InterfaceNode0">
+       <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
         <void property="bounds">
          <void property="x">
            <int>640</int>
@@ -102,7 +102,7 @@ I1</string>
        </object>
       </void>
       <void method="addChild">
-       <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode1">
+       <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode1">
         <void property="bounds">
          <void property="x">
            <int>810</int>
@@ -126,7 +126,7 @@ I1</string>
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode">
     <void property="bounds">
      <void property="x">
        <int>490</int>

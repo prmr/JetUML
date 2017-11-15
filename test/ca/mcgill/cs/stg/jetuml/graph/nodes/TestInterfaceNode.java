@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.stg.jetuml.graph;
+package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -35,17 +35,19 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 
-public class TestClassNode
+public class TestInterfaceNode
 {
-	private ClassNode aNode1;
+	private InterfaceNode aNode1;
 	private Graphics2D aGraphics;
 	private ClassDiagramGraph aGraph;
 	
 	@Before
 	public void setup()
 	{
-		aNode1 = new ClassNode();
+		aNode1 = new InterfaceNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aGraph= new ClassDiagramGraph();
 	}
@@ -63,17 +65,12 @@ public class TestClassNode
 		assertEquals( MultiLineString.CENTER, name.getJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
+		assertEquals("\u00ABinterface\u00BB\n", name.getText());
 		MultiLineString methods = aNode1.getMethods();
 		assertEquals( MultiLineString.LEFT, methods.getJustification() );
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
-		MultiLineString attributes = aNode1.getAttributes();
-		assertEquals( MultiLineString.LEFT, attributes.getJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
 		assertEquals(new Rectangle(0,0,100,60), aNode1.getBounds());
 		assertNull(aNode1.getParent());
 	}
@@ -82,10 +79,6 @@ public class TestClassNode
 	public void testNeedsMiddle()
 	{
 		assertFalse(aNode1.needsMiddleCompartment());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
-		assertTrue(aNode1.needsMiddleCompartment());
 	}
 	
 	@Test
@@ -125,12 +118,12 @@ public class TestClassNode
 	{
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
-		ClassNode clone = aNode1.clone();
+		InterfaceNode clone = aNode1.clone();
 		MultiLineString name = clone.getName();
 		assertEquals( MultiLineString.CENTER, name.getJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
+		assertEquals("\u00ABinterface\u00BB\n", name.getText());
 		assertFalse(name == aNode1.getName() );
 		MultiLineString methods = clone.getMethods();
 		assertEquals( MultiLineString.LEFT, methods.getJustification() );
@@ -138,12 +131,6 @@ public class TestClassNode
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
 		assertFalse(methods == aNode1.getMethods() );
-		MultiLineString attributes = clone.getAttributes();
-		assertEquals( MultiLineString.LEFT, attributes.getJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
-		assertFalse(attributes == aNode1.getAttributes() );
 		assertEquals(new Rectangle(0,0,100,60), clone.getBounds());
 		assertTrue(clone.getBounds() == aNode1.getBounds());
 		assertTrue(clone.getParent() == aNode1.getParent());
@@ -153,18 +140,8 @@ public class TestClassNode
 	public void testComputeMiddle()
 	{
 		assertEquals(new Rectangle(0,0,0,0), aNode1.computeMiddle());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
-		assertEquals(new Rectangle(0,0,100,20), aNode1.computeMiddle());
-		attributes.setText("Foo\nFoo");
-		assertEquals(new Rectangle(0,0,100,32), aNode1.computeMiddle());
-		attributes.setText("Foo");
-		assertEquals(new Rectangle(0,0,100,20), aNode1.computeMiddle());
-		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,350,20), aNode1.computeMiddle());
 	}
-
+	
 	@Test
 	public void testComputeBottom()
 	{
@@ -204,16 +181,6 @@ public class TestClassNode
 		assertEquals(new Rectangle(0,0,100,48), aNode1.computeTop());
 		name.setText("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), aNode1.computeTop());
-		
-		name.setText("X");
-		methods.setText("X");
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("X");
-		aNode1.setAttributes(attributes);
-		assertEquals(new Rectangle(0,0,100,20), aNode1.computeTop());
-		
-		methods.setText("");
-		assertEquals(new Rectangle(0,0,100,40), aNode1.computeTop());
 	}
 	
 	@Test
@@ -237,16 +204,12 @@ public class TestClassNode
 		assertEquals(new Rectangle(10,10,100,100), aNode1.getBounds());
 		
 		name.setText("X");
-		methods.setText("X");
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("X");
-		aNode1.setMethods(attributes);
 		aNode1.layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 		
 		// Test layout with snapping
 		aNode1.translate(-4, -4);
 		aNode1.layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.getBounds());
+		assertEquals(new Rectangle(10,10,100,80), aNode1.getBounds());
 	}
 }

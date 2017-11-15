@@ -29,6 +29,8 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 public class TestNoteEdge
 {

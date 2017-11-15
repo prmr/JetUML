@@ -34,6 +34,10 @@ import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 
 /**
  * Tests various interactions with Sequence Diagram normally triggered from the 

@@ -52,15 +52,15 @@ import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
-import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
-import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.ParentNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ParentNode;
 
 /**
  * A panel to draw a graph.

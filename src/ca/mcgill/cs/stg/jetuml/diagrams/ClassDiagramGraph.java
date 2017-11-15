@@ -28,17 +28,17 @@ import java.util.ResourceBundle;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
-import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.InterfaceNode;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
-import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
-import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 
 /**
  *  A UML class diagram.

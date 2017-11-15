@@ -21,7 +21,7 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 /**
  * Represents the addition of a node to the graph.

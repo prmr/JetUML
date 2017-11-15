@@ -22,6 +22,10 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.util.HashMap;
 
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+
 /**
  * Singleton object that can return the presentation
  * sequence index number at which an object property should 

@@ -36,6 +36,12 @@ import ca.mcgill.cs.stg.jetuml.framework.SelectionList;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 /**
  * Tests various interactions with Class Diagram normally triggered from the 

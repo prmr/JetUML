@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.Command;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 
 public class TestUndoManager
 {

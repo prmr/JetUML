@@ -29,15 +29,15 @@ import java.util.ResourceBundle;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.CallNode;
-import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.NoteEdge;
-import ca.mcgill.cs.stg.jetuml.graph.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.ReturnEdge;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 
 /**
  * A UML sequence diagram.

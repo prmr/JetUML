@@ -29,9 +29,9 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
 
 /**
  * @author Martin P. Robillard

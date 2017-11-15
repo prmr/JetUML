@@ -32,12 +32,12 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import ca.mcgill.cs.stg.jetuml.graph.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode;
-import ca.mcgill.cs.stg.jetuml.graph.ObjectNode;
-import ca.mcgill.cs.stg.jetuml.graph.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.PointNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.AbstractNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).

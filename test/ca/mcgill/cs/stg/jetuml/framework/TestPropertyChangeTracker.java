@@ -41,8 +41,8 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.PropertyChangeTracker.PropertyChangeCommand;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
 
 /**
  * Note that the logic of the tests in this class relies

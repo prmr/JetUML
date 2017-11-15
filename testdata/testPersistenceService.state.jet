@@ -2,7 +2,7 @@
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
  <object class="ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph">
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.StateNode" id="StateNode0">
     <void property="bounds">
      <void property="x">
        <int>250</int>
@@ -19,7 +19,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode1">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.StateNode" id="StateNode1">
     <void property="bounds">
      <void property="x">
        <int>510</int>
@@ -36,7 +36,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode2">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.StateNode" id="StateNode2">
     <void property="bounds">
      <void property="x">
        <int>520</int>
@@ -53,7 +53,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CircularStateNode" id="CircularStateNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CircularStateNode" id="CircularStateNode0">
     <void property="bounds">
      <void property="x">
        <int>150</int>
@@ -65,7 +65,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CircularStateNode" id="CircularStateNode1">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CircularStateNode" id="CircularStateNode1">
     <void property="bounds">
      <void property="x">
        <int>640</int>
@@ -80,7 +80,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode" id="NoteNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode" id="NoteNode0">
     <void property="bounds">
      <void property="x">
        <int>690</int>
@@ -98,7 +98,7 @@ on two lines</string>
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode0">
+   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode" id="PointNode0">
     <void method="translate">
      <int>576</int>
      <int>339</int>

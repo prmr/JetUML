@@ -26,7 +26,7 @@ import java.awt.geom.Point2D;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 /**
  * A strategy for drawing a segmented line between two nodes.
