@@ -26,13 +26,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Rectangle2D;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
@@ -192,7 +189,7 @@ public class TestGraph
 	@Test
 	public void testGetBoundsEmpty()
 	{
-		assertEquals(new Rectangle2D.Double(), new ClassDiagramGraph().getBounds());
+		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagramGraph().getBounds());
 	}
 	
 	@Test
@@ -200,7 +197,7 @@ public class TestGraph
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
 		graph.addNode(aNode1, new Point(0,0));
-		assertEquals(new Rectangle2D.Double(0,0,104,64), graph.getBounds());
+		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
 	}
 	
 	@Test
@@ -210,7 +207,7 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		aNode3.translate(20, 20);
 		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		assertEquals(Conversions.toRectangle2D(new Rectangle(10,10,244,254)), aGraph.getBounds());
+		assertEquals(new Rectangle(10,10,244,254), aGraph.getBounds());
 	}
 	
 	@Test
@@ -247,8 +244,8 @@ public class TestGraph
 		ClassNode node = new ClassNode();
 		graph.restoreRootNode(node);
 		node.translate(50, 50);
-		assertEquals(new Rectangle2D.Double(50,50,104,64), graph.getBounds());
+		assertEquals(new Rectangle(50,50,104,64), graph.getBounds());
 		node.translate(-50, -50);
-		assertEquals(new Rectangle2D.Double(0,0,104,64), graph.getBounds());
+		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
 	}
 }

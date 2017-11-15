@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -595,7 +594,7 @@ public abstract class Graph
 	 * 
 	 * @return the bounding rectangle
 	 */
-	public Rectangle2D getBounds()
+	public Rectangle getBounds()
 	{
 		Rectangle bounds = null;
 		for(Node node : aRootNodes )
@@ -615,11 +614,11 @@ public abstract class Graph
 		}
 		if(bounds == null )
 		{
-			return new Rectangle2D.Double();
+			return new Rectangle(0, 0, 0, 0);
 		}
 		else
 		{
-			return new Rectangle2D.Double(bounds.getX(), bounds.getY(), 
+			return new Rectangle(bounds.getX(), bounds.getY(), 
 					bounds.getWidth() + AbstractNode.SHADOW_GAP, bounds.getHeight() + AbstractNode.SHADOW_GAP);
 		}
 	}

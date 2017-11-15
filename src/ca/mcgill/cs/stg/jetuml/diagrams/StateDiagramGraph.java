@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
-import java.awt.geom.Point2D;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
