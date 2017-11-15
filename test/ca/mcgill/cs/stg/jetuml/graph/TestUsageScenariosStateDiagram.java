@@ -444,7 +444,7 @@ public class TestUsageScenariosStateDiagram
 	
 	/**
 	 * 
-	 * Testing copy two Node with an edge.
+	 * Testing cut and paste two nodes with an edge.
 	 */
 	@Test
 	public void testCutNodesWithEdge()

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 
 /**
  * An object capable of computing the actual geometry
@@ -13,7 +14,7 @@ import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
  * @author Martin P. Robillard
  *
  */
-public interface EdgeView
+public interface EdgeView extends Cloneable
 {
 	/**
      * Gets the smallest rectangle that bounds this edge.
@@ -41,4 +42,10 @@ public interface EdgeView
      * @return a line joining the two connection points
      */
    	Line getConnectionPoints();
+   	
+   	/**
+   	 * @param pEdge The edge to wrap.
+   	 * @return A copy of this EdgeView that wraps pEdge.
+   	 */
+   	EdgeView copy(Edge pEdge);
 }

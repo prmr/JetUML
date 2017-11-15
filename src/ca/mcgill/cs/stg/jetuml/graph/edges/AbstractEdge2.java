@@ -71,15 +71,18 @@ public class AbstractEdge2 implements Edge
 	{
 		return aView.getConnectionPoints();
 	}
-
+	
 	@Override
-	public Edge clone()
+	public AbstractEdge2 clone()
 	{
+		AbstractEdge2 clone;
 		try
 		{
-			return (Edge) super.clone();
+			clone = (AbstractEdge2) super.clone();
+			clone.aView = aView.copy(clone);
+			return clone;
 		}
-		catch(CloneNotSupportedException exception)
+		catch (CloneNotSupportedException e)
 		{
 			return null;
 		}

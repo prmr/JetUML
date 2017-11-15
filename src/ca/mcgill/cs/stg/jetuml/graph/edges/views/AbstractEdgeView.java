@@ -21,7 +21,7 @@ public abstract class AbstractEdgeView implements EdgeView
 	private static final int MAX_DISTANCE = 3;
 	private static final int DEGREES_180 = 180;
 	
-	private final Edge aEdge;
+	private Edge aEdge;
 	
 	/**
 	 * @param pEdge The edge to wrap.
@@ -79,5 +79,47 @@ public abstract class AbstractEdgeView implements EdgeView
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(edge().getStart().getConnectionPoint(toEnd), edge().getEnd().getConnectionPoint(toEnd.turn(DEGREES_180)));
+	}
+	
+	/**
+	 * Wrap the string in an html container and 
+	 * escape the angle brackets.
+	 * @param pRawLabel The initial string.
+	 * @pre pRawLabel != null;
+	 * @return The string prepared for rendering as HTML
+	 */
+	protected static String toHtml(String pRawLabel)
+	{
+		assert pRawLabel != null;
+		StringBuilder lReturn = new StringBuilder();
+		lReturn.append("<html>");
+		lReturn.append(pRawLabel.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+		lReturn.append("</html>");
+		return lReturn.toString();
+	}
+	
+	/** 
+	 * Creates a clone of this object for internal use.
+	 * @return a shallow clone.
+	 * @see java.lang.Object#clone()
+	 */
+	protected AbstractEdgeView clone()
+	{
+		try
+		{
+			return (AbstractEdgeView) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	public EdgeView copy(Edge pEdge)
+	{
+		AbstractEdgeView copy = clone();
+		copy.aEdge = pEdge;
+		return copy;
 	}
 }
