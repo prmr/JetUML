@@ -26,7 +26,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -187,7 +186,7 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	 * @param pChild The child to add
 	 * @param pPoint The point selected.
 	 */
-	public void addChild(ChildNode pChild, Point2D pPoint)
+	public void addChild(ChildNode pChild, Point pPoint)
 	{
 		int i = 0;
 		while(i < aCallNodes.size() && aCallNodes.get(i).getBounds().getY() <= pPoint.getY())

@@ -26,7 +26,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.junit.Before;
@@ -34,6 +33,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 
@@ -92,13 +92,13 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		
 		// A failed connection between two points, the second not in a node
-		assertFalse(aGraph.addEdge(aEdge1, new Point2D.Double(50, 30), new Point2D.Double(1000, 1000)));
+		assertFalse(aGraph.addEdge(aEdge1, new Point(50, 30), new Point(1000, 1000)));
 		assertFalse(aGraph.contains(aEdge1));
 		assertNull(aEdge1.getStart());
 		assertNull(aEdge1.getEnd());
 		
 		// A correct connection between two points
-		assertTrue(aGraph.addEdge(aEdge1, new Point2D.Double(200, 30), new Point2D.Double(200, 200)));
+		assertTrue(aGraph.addEdge(aEdge1, new Point(200, 30), new Point(200, 200)));
 		assertTrue(aGraph.contains(aEdge1));
 		assertTrue(aEdge1.getStart() == aNode1);
 		assertTrue(aEdge1.getEnd() == aNode2);
@@ -199,7 +199,7 @@ public class TestGraph
 	public void testGetBoundsSingleNode()
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
-		graph.addNode(aNode1, new Point2D.Double(0,0));
+		graph.addNode(aNode1, new Point(0,0));
 		assertEquals(new Rectangle2D.Double(0,0,104,64), graph.getBounds());
 	}
 	
@@ -216,14 +216,14 @@ public class TestGraph
 	@Test
 	public void testAddEdgeNode1Null()
 	{
-		aGraph.addEdge(aEdge1, new Point2D.Double(500, 500), new Point2D.Double(10, 10));
+		aGraph.addEdge(aEdge1, new Point(500, 500), new Point(10, 10));
 		assertFalse(aGraph.getEdges().contains(aEdge1));
 	}
 	
 	@Test
 	public void testAddEdgeNode2Null()
 	{
-		aGraph.addEdge(aEdge1, new Point2D.Double(10, 10), new Point2D.Double(500, 500));
+		aGraph.addEdge(aEdge1, new Point(10, 10), new Point(500, 500));
 		assertFalse(aGraph.getEdges().contains(aEdge1));
 	}
 	
@@ -234,7 +234,7 @@ public class TestGraph
 		note.translate(50, 50);
 		aGraph.restoreRootNode(note);
 		NoteEdge edge = new NoteEdge();
-		aGraph.addEdge(edge, new Point2D.Double(60, 60), new Point2D.Double(150, 150));
+		aGraph.addEdge(edge, new Point(60, 60), new Point(150, 150));
 		assertTrue(aGraph.getEdges().contains(edge));
 		assertEquals(note, edge.getStart());
 		assertTrue(edge.getEnd() instanceof PointNode);

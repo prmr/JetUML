@@ -21,12 +21,11 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.AssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
@@ -90,7 +89,7 @@ public class ClassDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
@@ -108,12 +107,12 @@ public class ClassDiagramGraph extends Graph
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the graph.
 	 */
-	private PackageNode findContainer( List<Node> pNodes, Point2D pPoint)
+	private PackageNode findContainer( List<Node> pNodes, Point pPoint)
 	{
 		PackageNode container = null;
 		for( Node node : pNodes )
 		{
-			if( node instanceof PackageNode && node.contains(Conversions.toPoint(pPoint)) )
+			if( node instanceof PackageNode && node.contains(pPoint) )
 			{
 				container = (PackageNode) node;
 			}
@@ -149,7 +148,7 @@ public class ClassDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#addNode(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point pPoint)
 	{
 		if( canAddNodeAsChild(pNode))
 		{

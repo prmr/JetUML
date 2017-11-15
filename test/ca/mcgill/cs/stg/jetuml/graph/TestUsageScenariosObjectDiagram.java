@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
@@ -34,6 +33,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -88,7 +88,7 @@ public class TestUsageScenariosObjectDiagram
 	public void testCreateStateDiagram()
 	{
 		// create an object node
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
 		aDiagram.draw(aGraphics);
 		MultiLineString name = new MultiLineString();
 		name.setText("Car");
@@ -97,16 +97,16 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals("Car", aObjectNode1.getName().getText());
 		
 		// create field node outside an object node.(not allowed)
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(120, 80));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(230, 40));
-		aDiagram.addNode(aFieldNode3, new Point2D.Double(-20, -20));
+		aDiagram.addNode(aFieldNode1, new Point(120, 80));
+		aDiagram.addNode(aFieldNode2, new Point(230, 40));
+		aDiagram.addNode(aFieldNode3, new Point(-20, -20));
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
 		// create field nodes inside object node
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point2D.Double(40, 30));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(aFieldNode3, new Point(40, 30));
 		assertEquals(3, aObjectNode1.getChildren().size());
 		
 	}
@@ -119,12 +119,12 @@ public class TestUsageScenariosObjectDiagram
 	{
 		// adding one ObjectNode and one NoteNode
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point2D.Double(40, 30));
-		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(aFieldNode3, new Point(40, 30));
+		aDiagram.addNode(noteNode, new Point(80, 80));
 		aDiagram.draw(aGraphics);		
 		assertEquals(3, aDiagram.getRootNodes().size());
 		
@@ -135,24 +135,24 @@ public class TestUsageScenariosObjectDiagram
 		NoteEdge edge5 = new NoteEdge();
 		
 		// link NoteEdge from anywhere to anywhere except to NoteNode (not allowed)
-		aDiagram.addEdge(edge1, new Point2D.Double(25, 25), new Point2D.Double(55, 25));
-		aDiagram.addEdge(edge2, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
-		aDiagram.addEdge(edge3, new Point2D.Double(155, 25), new Point2D.Double(255, 25));
-		aDiagram.addEdge(edge4, new Point2D.Double(155, 25), new Point2D.Double(55, 25));
-		aDiagram.addEdge(edge5, new Point2D.Double(25, 25), new Point2D.Double(255, 25));
+		aDiagram.addEdge(edge1, new Point(25, 25), new Point(55, 25));
+		aDiagram.addEdge(edge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.addEdge(edge3, new Point(155, 25), new Point(255, 25));
+		aDiagram.addEdge(edge4, new Point(155, 25), new Point(55, 25));
+		aDiagram.addEdge(edge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
 		edge1 = new NoteEdge();
 		edge2 = new NoteEdge();
-		aDiagram.addEdge(edge1, new Point2D.Double(80, 80), new Point2D.Double(55, 25));
-		aDiagram.addEdge(edge2, new Point2D.Double(25, 25), new Point2D.Double(80, 80));
+		aDiagram.addEdge(edge1, new Point(80, 80), new Point(55, 25));
+		aDiagram.addEdge(edge2, new Point(25, 25), new Point(80, 80));
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
 		edge1 = new NoteEdge();
 		edge2 = new NoteEdge();
-		aDiagram.addEdge(edge1, new Point2D.Double(60, 80), new Point2D.Double(80, 80));
+		aDiagram.addEdge(edge1, new Point(60, 80), new Point(80, 80));
 		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
@@ -163,38 +163,38 @@ public class TestUsageScenariosObjectDiagram
 	public void testGeneralEdgeCreation()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point2D.Double(40, 30));
-		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(aFieldNode3, new Point(40, 30));
+		aDiagram.addNode(noteNode, new Point(80, 80));
 		aDiagram.draw(aGraphics);	
 		
 		// create an association edge between two ObjectNode
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
+		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		// create an association edge between NoteNode and ObjectNode (not allowed)
 		collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(80, 80));
+		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(80, 80));
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		// create an ObjectRefEdge to a NoteNode. (not allowed)
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(25, 20), new Point2D.Double(80, 80));
+		aDiagram.addEdge(aReferenceEdge1, new Point(25, 20), new Point(80, 80));
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		/* create an ObjectRefEdge to an ObjectNode itself. 
 		 * "value" text in field node will be erased and edge will be added.
 		 */
 		aReferenceEdge1 = new ObjectReferenceEdge();
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 100), new Point2D.Double(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals("", aFieldNode1.getName().getText());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
@@ -217,9 +217,9 @@ public class TestUsageScenariosObjectDiagram
 	public void testIndividualNodeMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(noteNode, new Point(80, 80));
 		aDiagram.draw(aGraphics);	
 	
 		aObjectNode1.translate(3, 12);
@@ -236,17 +236,17 @@ public class TestUsageScenariosObjectDiagram
 	public void testNodesAndEdgesMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
-		aDiagram.addNode(noteNode, new Point2D.Double(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(noteNode, new Point(80, 80));
 		aDiagram.draw(aGraphics);	
 
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 100), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 		aPanel.selectAll();
 
 		Rectangle referenceEdge1Bounds = aReferenceEdge1.getBounds();
@@ -292,7 +292,7 @@ public class TestUsageScenariosObjectDiagram
 	public void testDeleteObjectNodeAndNoteNode()
 	{
 		
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
@@ -304,7 +304,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point2D.Double(75, 75));
+		aDiagram.addNode(noteNode, new Point(75, 75));
 		aPanel.getSelectionList().add(noteNode);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -320,8 +320,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteFieldNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
 
 		aPanel.getSelectionList().add(aFieldNode1);
 		aPanel.removeSelected();
@@ -339,15 +339,15 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteEdge()
 	{
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
 		aDiagram.draw(aGraphics);	
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 110), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aReferenceEdge2 and collaborationEdge1
 		aPanel.getSelectionList().add(aReferenceEdge2);
@@ -373,16 +373,16 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteCombinationNodeAndEdge()
 	{
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point2D.Double(30, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aFieldNode2, new Point(30, 40));
 		aDiagram.draw(aGraphics);	
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(assoEdge1, new Point2D.Double(25, 20), new Point2D.Double(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point2D.Double(65, 110), new Point2D.Double(20, 20));
-		aDiagram.addEdge(aReferenceEdge2, new Point2D.Double(65, 120), new Point2D.Double(150, 20));
+		aDiagram.addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
 		aPanel.getSelectionList().add(aObjectNode1);
@@ -423,8 +423,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testCopyNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.copy();
 		aPanel.paste();
@@ -451,8 +451,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testCutStateNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point2D.Double(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40));
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.cut();
 		aDiagram.draw(aGraphics);
@@ -484,10 +484,10 @@ public class TestUsageScenariosObjectDiagram
 	public void testCopyNodesWithEdge()
 	{
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(50, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
+		aDiagram.addNode(aObjectNode1, new Point(50, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
 		aDiagram.draw(aGraphics);
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
+		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		aPanel.selectAll();
 		aPanel.copy();
 		aPanel.paste();
@@ -507,10 +507,10 @@ public class TestUsageScenariosObjectDiagram
 	public void testCutNodesWithEdge()
 	{
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addNode(aObjectNode1, new Point2D.Double(50, 20));
-		aDiagram.addNode(aObjectNode2, new Point2D.Double(150, 20));
+		aDiagram.addNode(aObjectNode1, new Point(50, 20));
+		aDiagram.addNode(aObjectNode2, new Point(150, 20));
 		aDiagram.draw(aGraphics);
-		aDiagram.addEdge(collaborationEdge1, new Point2D.Double(55, 25), new Point2D.Double(155, 25));
+		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		
 		aPanel.selectAll();
 		aPanel.cut();

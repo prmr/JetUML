@@ -24,6 +24,7 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 import java.awt.geom.Point2D;
 import java.util.ResourceBundle;
 
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.CircularStateNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -72,7 +73,7 @@ public class StateDiagramGraph extends Graph
 	
 	// CSOFF:
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( pNode2 == null )
 		{

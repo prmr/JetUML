@@ -22,12 +22,11 @@
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.CallNode;
@@ -62,7 +61,7 @@ public class SequenceDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point pPoint)
 	{
 		if(pNode instanceof CallNode) 
 		{
@@ -84,11 +83,11 @@ public class SequenceDiagramGraph extends Graph
 	 * If pPoint is inside an ImplicitParameterNode but below its top
 	 * rectangle, returns that node. Otherwise, returns null.
 	 */
-	private ImplicitParameterNode insideTargetArea(Point2D pPoint)
+	private ImplicitParameterNode insideTargetArea(Point pPoint)
 	{
 		for( Node node : getRootNodes() )
 		{
-			if(node instanceof ImplicitParameterNode && node.contains(Conversions.toPoint(pPoint)))
+			if(node instanceof ImplicitParameterNode && node.contains(pPoint))
 			{
 				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
 				{
@@ -100,7 +99,7 @@ public class SequenceDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		boolean lReturn = true;
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
@@ -127,7 +126,7 @@ public class SequenceDiagramGraph extends Graph
 		}
 		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && getCaller(pNode2) != null)
 		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(Conversions.toPoint(pPoint2));
+			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
 		}
 		return lReturn;
 	}
@@ -148,7 +147,7 @@ public class SequenceDiagramGraph extends Graph
 	}
 	
 	@Override
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		if( !(pOrigin instanceof CallNode) )
 		{
@@ -189,7 +188,7 @@ public class SequenceDiagramGraph extends Graph
 		else if( end instanceof ImplicitParameterNode )
 		{
 			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(Conversions.toPoint(pPoint2))) // Case 4
+			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
 			{
 				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
 			}
@@ -415,7 +414,7 @@ public class SequenceDiagramGraph extends Graph
 	}
 
 	@Override
-	protected Node deepFindNode( Node pNode, Point2D pPoint )
+	protected Node deepFindNode( Node pNode, Point pPoint )
 	{		
 		if ( pNode instanceof CallNode )
 		{

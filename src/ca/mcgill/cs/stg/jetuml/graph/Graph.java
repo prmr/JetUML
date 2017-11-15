@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -32,7 +31,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
@@ -169,16 +167,15 @@ public abstract class Graph
 	 * @param pPoint1 a point in the starting node
 	 * @param pPoint2 a point in the end node.
 	 */
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
 	{}
 
-	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point2D pPoint2)
+	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
 	{
 		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			PointNode lReturn = new PointNode();
-			Point point = Conversions.toPoint(pPoint2);
-			lReturn.translate(point.getX(), point.getY());
+			lReturn.translate(pPoint2.getX(), pPoint2.getY());
 			return lReturn;
 		}
 		else
@@ -196,7 +193,7 @@ public abstract class Graph
 	 * @param pPoint2 a point in the ending node
 	 * @return true if the edge was connected
 	 */
-	public final boolean addEdge(Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	public final boolean addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		Node node1 = findNode(pPoint1);
 		if( node1 == null )
@@ -247,7 +244,7 @@ public abstract class Graph
 	 * @param pPoint the desired location
 	 * @return True if the node was added.
 	 */
-	public boolean addNode(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point pPoint)
 	{
 		Rectangle bounds = pNode.getBounds();
 		pNode.translate((int)(pPoint.getX() - bounds.getX()), (int)(pPoint.getY() - bounds.getY())); 
@@ -289,7 +286,7 @@ public abstract class Graph
       * @param pPoint a point
       * @return a node containing pPoint or null if no nodes contain pPoint
       */
-	public Node findNode(Point2D pPoint)
+	public Node findNode(Point pPoint)
 	{
 		Node result = null;
 		for( Node node : aRootNodes )
@@ -313,7 +310,7 @@ public abstract class Graph
 	 * or null if pPoint is not contained by pNode or 
 	 * any of its children.
 	 */
-	protected Node deepFindNode( Node pNode, Point2D pPoint )
+	protected Node deepFindNode( Node pNode, Point pPoint )
 	{
 		Node node = null;
 		if( pNode instanceof ParentNode )
@@ -327,7 +324,7 @@ public abstract class Graph
 				}
 			}
 		}
-		if( pNode.contains(Conversions.toPoint(pPoint)))
+		if( pNode.contains(pPoint))
 		{
 			return pNode;
 		}
@@ -755,7 +752,7 @@ public abstract class Graph
 	 * @param pPoint2 The point where the edge is supposed to be terminated
 	 * @return True if the edge can legally connect node1 to node2
 	 */
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( pNode2 == null )
 		{

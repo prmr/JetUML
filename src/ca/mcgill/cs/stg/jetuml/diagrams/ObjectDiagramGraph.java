@@ -21,12 +21,11 @@
 
 package ca.mcgill.cs.stg.jetuml.diagrams;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.FieldNode;
@@ -68,7 +67,7 @@ public class ObjectDiagramGraph extends Graph
 	}
 	
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point2D pPoint2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
@@ -93,7 +92,7 @@ public class ObjectDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.stg.jetuml.graph.Graph#add(ca.mcgill.cs.stg.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point2D pPoint)
+	public boolean addNode(Node pNode, Point pPoint)
 	{
 		if( pNode instanceof FieldNode )
 		{
@@ -116,7 +115,7 @@ public class ObjectDiagramGraph extends Graph
 	 * If a node is already the parent of the field (from a previously undone operation),
 	 * return this node. Otherwise, find if a node is at the point
 	 */
-	private ObjectNode findObject(FieldNode pNode, Point2D pPoint)
+	private ObjectNode findObject(FieldNode pNode, Point pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
 		for( Node node : aRootNodes )
@@ -129,7 +128,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				return (ObjectNode)node;
 			}
-			else if( node.contains(Conversions.toPoint(pPoint)) && canAddNodeAsChild(node, pNode))
+			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}
@@ -159,7 +158,7 @@ public class ObjectDiagramGraph extends Graph
 	}
 	
 	@Override
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point2D pPoint1, Point2D pPoint2)
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		if( pOrigin instanceof FieldNode )
 		{

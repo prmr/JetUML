@@ -48,6 +48,7 @@ import ca.mcgill.cs.stg.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.commands.RemoveEdgeCommand;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -576,7 +577,7 @@ public class GraphPanel extends JPanel
 			GraphElement element = aGraph.findEdge(mousePoint);
 			if( element == null )
 			{
-				element = aGraph.findNode(new Point2D.Double(mousePoint.getX(), mousePoint.getY())); // TODO use geom.point API
+				element = aGraph.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 			}
 			return element;
 		}
@@ -626,7 +627,7 @@ public class GraphPanel extends JPanel
 			else
 			{
 				Point point = getMousePoint(pEvent);
-				final Point2D mousePoint = new Point2D.Double(point.getX(), point.getY()); // TODO move to geom.Point
+				final Point mousePoint = new Point(point.getX(), point.getY()); 
 				aSideBar.showPopup(GraphPanel.this, mousePoint);
 			}
 		}
@@ -635,7 +636,7 @@ public class GraphPanel extends JPanel
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point2D.Double(point.getX(), point.getY())); // TODO move to geom.Point
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY())); 
 			if(added)
 			{
 				setModified(true);
@@ -719,7 +720,9 @@ public class GraphPanel extends JPanel
 			{
 				Edge prototype = (Edge) tool;
 				Edge newEdge = (Edge) prototype.clone();
-				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
+				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && 
+						aGraph.addEdge(newEdge, Conversions.toPoint(aMouseDownPoint), 
+								Conversions.toPoint(mousePoint)))
 				{
 					setModified(true);
 					setSelection(newEdge);

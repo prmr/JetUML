@@ -23,7 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
@@ -33,6 +32,7 @@ import ca.mcgill.cs.stg.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.framework.ToolBar;
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 
 /**
@@ -87,7 +87,7 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testCreateUseCaseDiagram()
 	{
 		// create an ActorNode
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
 		aDiagram.draw(aGraphics);
 		MultiLineString name = new MultiLineString();
 		name.setText("Car");
@@ -96,7 +96,7 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals("Car", aActorNode1.getName().getText());
 		
 		// create some UseCaseNode
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(120, 80));
+		aDiagram.addNode(aUseCaseNode1, new Point(120, 80));
 		name = new MultiLineString();
 		name.setText("driving");
 		aUseCaseNode1.setName(name);
@@ -105,7 +105,7 @@ public class TestUsageScenariosUseCaseDiagram
 
 		// create field nodes inside ObjectNode
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point2D.Double(50, 50));
+		aDiagram.addNode(noteNode, new Point(50, 50));
 		name = new MultiLineString();
 		name.setText("something...\nsomething");
 		noteNode.setText(name);
@@ -119,25 +119,25 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testGeneralEdgeCreation()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
 		
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		
 		// create more edges
-		aDiagram.addEdge(new UseCaseAssociationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
-		aDiagram.addEdge(new UseCaseDependencyEdge(),  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(new UseCaseGeneralizationEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
+		aDiagram.addEdge(new UseCaseAssociationEdge(),  new Point(80, 20), new Point(140, 20));
+		aDiagram.addEdge(new UseCaseDependencyEdge(),  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(new UseCaseGeneralizationEdge(),  new Point(80, 20), new Point(140, 20));
 		assertEquals(6, aDiagram.getEdges().size());
 		
 		// connect nodes with NoteEdge (not allowed)
-		aDiagram.addEdge(new NoteEdge(),  new Point2D.Double(80, 20), new Point2D.Double(140, 20));
-		aDiagram.addEdge(new NoteEdge(),  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
+		aDiagram.addEdge(new NoteEdge(),  new Point(80, 20), new Point(140, 20));
+		aDiagram.addEdge(new NoteEdge(),  new Point(20, 20), new Point(250, 20));
 		assertEquals(6, aDiagram.getEdges().size());
 	}
 	
@@ -148,30 +148,30 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testNoteEdgeCreation()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
-		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
+		aDiagram.addNode(noteNode, new Point(100, 100));
 		
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
-		aDiagram.addEdge(noteEdge1, new Point2D.Double(9, 9), new Point2D.Double(209, 162));
+		aDiagram.addEdge(noteEdge1, new Point(9, 9), new Point(209, 162));
 		assertEquals(0, aDiagram.getEdges().size());
-		aDiagram.addEdge(noteEdge1, new Point2D.Double(20, 20), new Point2D.Double(100, 100));
+		aDiagram.addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(noteEdge1.getStart(), aActorNode1);
 		assertEquals(noteEdge1.getEnd(), noteNode);
-		aDiagram.addEdge(noteEdge2, new Point2D.Double(85, 25), new Point2D.Double(110, 110));
+		aDiagram.addEdge(noteEdge2, new Point(85, 25), new Point(110, 110));
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(noteEdge2.getStart(), aUseCaseNode1);
 		assertEquals(noteEdge2.getEnd(), noteNode);
 		
 		// if begin with a NoteNode, the end point can be anywhere
-		aDiagram.addEdge(noteEdge3, new Point2D.Double(100, 100), new Point2D.Double(9,9));
+		aDiagram.addEdge(noteEdge3, new Point(100, 100), new Point(9,9));
 		assertEquals(noteEdge3.getStart(), noteNode);
 		assertEquals(noteEdge3.getEnd().getClass(), new PointNode().getClass());
 		assertEquals(3, aDiagram.getEdges().size());
@@ -188,9 +188,9 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testIndividualNodeMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(noteNode, new Point(100, 100));
 
 		aActorNode1.translate(3, 12);
 		aUseCaseNode1.translate(3, 2);
@@ -208,15 +208,15 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
-		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
-		aDiagram.addEdge(noteEdge1, new Point2D.Double(85, 25), new Point2D.Double(110, 110));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
+		aDiagram.addNode(noteNode, new Point(100, 100));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
 		aPanel.selectAll();
 		for(GraphElement element: aPanel.getSelectionList())
@@ -248,7 +248,7 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testDeleteNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
@@ -259,7 +259,7 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point2D.Double(75, 75));
+		aDiagram.addNode(noteNode, new Point(75, 75));
 		aPanel.getSelectionList().add(noteNode);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
@@ -268,7 +268,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(420, 420));
+		aDiagram.addNode(aUseCaseNode1, new Point(420, 420));
 		aPanel.getSelectionList().add(aUseCaseNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
@@ -287,15 +287,15 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
-		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
-		aDiagram.addEdge(noteEdge1, new Point2D.Double(85, 25), new Point2D.Double(110, 110));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
+		aDiagram.addNode(noteNode, new Point(100, 100));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 		
 		// delete aAssociationEdge and aGeneralEdge
 		aPanel.getSelectionList().add(aAssociationEdge);
@@ -323,15 +323,15 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
-		aDiagram.addNode(noteNode, new Point2D.Double(100, 100));
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
-		aDiagram.addEdge(noteEdge1, new Point2D.Double(85, 25), new Point2D.Double(110, 110));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
+		aDiagram.addNode(noteNode, new Point(100, 100));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
 		// delete aActorNode1 and all 4 edges
 		aPanel.getSelectionList().add(aActorNode1);
@@ -378,9 +378,9 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCopyNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
 		aActorNode1.getBounds();
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
 		aDiagram.draw(aGraphics);
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.copy();
@@ -398,8 +398,8 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCutNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
 		aDiagram.draw(aGraphics);
 		
 		aPanel.getSelectionList().add(aUseCaseNode1);
@@ -421,9 +421,9 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCopyNodesWithEdge()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aPanel.selectAll();
 		aPanel.copy();
 		aPanel.paste();
@@ -440,13 +440,13 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCutNodesWithEdge()
 	{
-		aDiagram.addNode(aActorNode1, new Point2D.Double(20, 20));
-		aDiagram.addNode(aActorNode2, new Point2D.Double(250, 20));
-		aDiagram.addNode(aUseCaseNode1, new Point2D.Double(80, 20));
-		aDiagram.addNode(aUseCaseNode2, new Point2D.Double(140, 20));
-		aDiagram.addEdge(aAssociationEdge,  new Point2D.Double(20, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aDependencyEdge,  new Point2D.Double(80, 20), new Point2D.Double(250, 20));
-		aDiagram.addEdge(aGeneralEdge,  new Point2D.Double(20, 20), new Point2D.Double(140, 20));
+		aDiagram.addNode(aActorNode1, new Point(20, 20));
+		aDiagram.addNode(aActorNode2, new Point(250, 20));
+		aDiagram.addNode(aUseCaseNode1, new Point(80, 20));
+		aDiagram.addNode(aUseCaseNode2, new Point(140, 20));
+		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		
 		aPanel.getSelectionList().add(aActorNode1);
 		aPanel.getSelectionList().add(aUseCaseNode2);

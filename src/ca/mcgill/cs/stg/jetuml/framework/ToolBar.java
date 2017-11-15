@@ -35,7 +35,6 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,6 +54,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
+import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -461,8 +461,8 @@ public class ToolBar extends JPanel
 	 * @param pPanel The panel associated with this menu.
 	 * @param pPoint The point where to show the menu.
 	 */
-	public void showPopup(GraphPanel pPanel, Point2D pPoint) 
+	public void showPopup(GraphPanel pPanel, Point pPoint) 
 	{
-		aPopupMenu.show(pPanel, (int) pPoint.getX(), (int) pPoint.getY());
+		aPopupMenu.show(pPanel, pPoint.getX(), pPoint.getY());
 	}
 }
