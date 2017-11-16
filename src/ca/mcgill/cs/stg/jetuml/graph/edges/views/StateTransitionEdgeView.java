@@ -130,7 +130,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
-		LABEL.setText(toHtml(edge().getLabel()));
+		LABEL.setText(toHtml(edge().getMiddleLabel()));
 		adjustLabelFont();
 		Dimension dimension = LABEL.getPreferredSize();
 		LABEL.setBounds(0, 0, dimension.width, dimension.height);
@@ -185,7 +185,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private Rectangle2D getSelfEdgeLabelBounds()
 	{
 		Line line = getConnectionPoints();
-		LABEL.setText(toHtml(edge().getLabel()));
+		LABEL.setText(toHtml(edge().getMiddleLabel()));
 		adjustLabelFont();
 		Dimension dimension = LABEL.getPreferredSize();
 		LABEL.setBounds(0, 0, dimension.width, dimension.height);
@@ -203,10 +203,10 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	
 	private void adjustLabelFont()
 	{
-		if(edge().getLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
+		if(edge().getMiddleLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
 		{
-			float difference = edge().getLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
-			difference = difference / (2*edge().getLabel().length()); // damping
+			float difference = edge().getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
+			difference = difference / (2*edge().getMiddleLabel().length()); // damping
 			float newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * FONT_NORMAL.getSize());
 			LABEL.setFont(FONT_NORMAL.deriveFont(newFontSize));
 		}

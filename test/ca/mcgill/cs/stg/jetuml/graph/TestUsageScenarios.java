@@ -132,19 +132,19 @@ public class TestUsageScenarios
 		
 		// Add edges between all of these, including back-and-forth between two states. 
 		StateTransitionEdge edge1 = new StateTransitionEdge();
-		edge1.setLabel("Edge 1");
+		edge1.setMiddleLabel("Edge 1");
 		diagram.addEdge(edge1, new Point(6, 6), new Point(35, 35));
 		
 		StateTransitionEdge edge2 = new StateTransitionEdge();
-		edge2.setLabel("Edge 2");
+		edge2.setMiddleLabel("Edge 2");
 		diagram.addEdge(edge2, new Point(35, 35), new Point(35, 105));
 		
 		StateTransitionEdge edge3 = new StateTransitionEdge();
-		edge3.setLabel("Edge 3");
+		edge3.setMiddleLabel("Edge 3");
 		diagram.addEdge(edge3, new Point(35, 105), new Point(35, 35));
 		
 		StateTransitionEdge edge4 = new StateTransitionEdge();
-		edge4.setLabel("Edge 4");
+		edge4.setMiddleLabel("Edge 4");
 		diagram.addEdge(edge4, new Point(35, 105), new Point(32, 202));
 		
 		NoteEdge noteEdge = new NoteEdge();
@@ -168,22 +168,22 @@ public class TestUsageScenarios
 		assertEquals(4, diagram.getEdges().size());
 		
 		assertEquals(new Rectangle(9, 3, 38, 27), edge1.getBounds());
-		assertEquals("Edge 1", edge1.getLabel());
+		assertEquals("Edge 1", edge1.getMiddleLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());
 		
 		assertEquals(new Rectangle(53, 76, 38, 24), edge2.getBounds());
-		assertEquals("Edge 2", edge2.getLabel());
+		assertEquals("Edge 2", edge2.getMiddleLabel());
 		assertEquals(node1, edge2.getStart());
 		assertEquals(node2, edge2.getEnd());
 		
 		assertEquals(new Rectangle(46, 76, 38, 24), edge3.getBounds());
-		assertEquals("Edge 3", edge3.getLabel());
+		assertEquals("Edge 3", edge3.getMiddleLabel());
 		assertEquals(node2, edge3.getStart());
 		assertEquals(node1, edge3.getEnd());
 		
 		assertEquals(new Rectangle(44, 160, 51, 41), edge4.getBounds());
-		assertEquals("Edge 4", edge4.getLabel());
+		assertEquals("Edge 4", edge4.getMiddleLabel());
 		assertEquals(node2, edge4.getStart());
 		assertEquals(end, edge4.getEnd());
 	}

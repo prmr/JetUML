@@ -123,16 +123,16 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(6, aDiagram.getEdges().size());
 		
 		// test labeling edges
-		aTransitionEdge1.setLabel("start");
-		aTransitionEdge2.setLabel("forward");
-		aTransitionEdge3.setLabel("finish");
-		aTransitionEdge4.setLabel("reverse");
-		aTransitionEdge5.setLabel("crash");
-		assertEquals("start", aTransitionEdge1.getLabel());
-		assertEquals("forward", aTransitionEdge2.getLabel());
-		assertEquals("finish", aTransitionEdge3.getLabel());
-		assertEquals("reverse", aTransitionEdge4.getLabel());
-		assertEquals("crash", aTransitionEdge5.getLabel());
+		aTransitionEdge1.setMiddleLabel("start");
+		aTransitionEdge2.setMiddleLabel("forward");
+		aTransitionEdge3.setMiddleLabel("finish");
+		aTransitionEdge4.setMiddleLabel("reverse");
+		aTransitionEdge5.setMiddleLabel("crash");
+		assertEquals("start", aTransitionEdge1.getMiddleLabel());
+		assertEquals("forward", aTransitionEdge2.getMiddleLabel());
+		assertEquals("finish", aTransitionEdge3.getMiddleLabel());
+		assertEquals("reverse", aTransitionEdge4.getMiddleLabel());
+		assertEquals("crash", aTransitionEdge5.getMiddleLabel());
 	}
 	
 	/**

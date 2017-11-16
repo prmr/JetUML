@@ -41,7 +41,7 @@ public class UseCaseGeneralizationEdge extends AbstractEdge2
 	public UseCaseGeneralizationEdge()
 	{
 		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.SOLID, ArrowHead.NONE, ArrowHead.TRIANGLE,
+				LineStyle.SOLID, ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
 				() -> "", () -> "", () -> "");
 	}
 }

@@ -238,18 +238,18 @@ public class TestPersistenceService
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
-		assertEquals(new Rectangle(490,80,20,50),cr7.getBounds());
+		assertEquals(new Rectangle(488,80,22,50),cr7.getBounds());
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertTrue(new Rectangle(510,170,58,60).equals(cr8.getBounds()) ||
+		assertTrue(new Rectangle(505,170,63,60).equals(cr8.getBounds()) ||
 				new Rectangle(505,170,62,60).equals(cr8.getBounds()));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.getType() == UseCaseDependencyEdge.Type.Include);
 		
-		assertTrue(new Rectangle(570,136,96,29).equals(cr9.getBounds()) ||
-				new Rectangle(570,136,93,32).equals(cr9.getBounds()));
+		assertTrue(new Rectangle(570,136,93,32).equals(cr9.getBounds()) ||
+				new Rectangle(570,136,96,32).equals(cr9.getBounds()));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.getType() == UseCaseDependencyEdge.Type.Extend);
@@ -583,32 +583,32 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(164, 70, 86, 39), fromStart.getBounds());
 		assertEquals(start, fromStart.getStart());
 		assertEquals(s1, fromStart.getEnd());
-		assertEquals("start", fromStart.getLabel().toString());
+		assertEquals("start", fromStart.getMiddleLabel().toString());
 		
 		assertEquals(new Rectangle(330, 98, 180, 28), e1.getBounds());
 		assertEquals(s1, e1.getStart());
 		assertEquals(s2, e1.getEnd());
-		assertEquals("e1", e1.getLabel().toString());
+		assertEquals("e1", e1.getMiddleLabel().toString());
 		
 		assertEquals(new Rectangle(330, 133, 180, 26), e2.getBounds());
 		assertEquals(s2, e2.getStart());
 		assertEquals(s1, e2.getEnd());
-		assertEquals("e2", e2.getLabel().toString());
+		assertEquals("e2", e2.getMiddleLabel().toString());
 		
 		assertEquals(new Rectangle(575, 70, 30, 45), self.getBounds());
 		assertEquals(s2, self.getStart());
 		assertEquals(s2, self.getEnd());
-		assertEquals("self", self.getLabel().toString());
+		assertEquals("self", self.getMiddleLabel().toString());
 		
 		assertEquals(new Rectangle(582, 247, 61, 63), toEnd.getBounds());
 		assertEquals(s3, toEnd.getStart());
 		assertEquals(end, toEnd.getEnd());
-		assertEquals("", toEnd.getLabel().toString());
+		assertEquals("", toEnd.getMiddleLabel().toString());
 		
 		assertEquals(new Rectangle(554, 160, 17, 150), toS3.getBounds());
 		assertEquals(s2, toS3.getStart());
 		assertEquals(s3, toS3.getEnd());
-		assertEquals("", toS3.getLabel().toString());
+		assertEquals("", toS3.getMiddleLabel().toString());
 	}
 	
 	private void verifyObjectDiagram(Graph pGraph)

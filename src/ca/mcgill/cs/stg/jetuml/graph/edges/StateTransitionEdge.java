@@ -28,35 +28,15 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.StateTransitionEdgeView;
  *  edge has two natures, either a self-edge, or a inter-node 
  *  edge.
  *  
- *  @author Martin P. Robillard New layout algorithms.
+ *  @author Martin P. Robillard
  */
-public class StateTransitionEdge extends AbstractEdge2
+public class StateTransitionEdge extends AbstractSingleLabeledEdge
 {
-	private String aLabelText = "";
-	
 	/**
 	 * Creates a new StateTransitionEdge.
 	 */
 	public StateTransitionEdge()
 	{
 		aView = new StateTransitionEdgeView(this);
-	}
-	
-	/**
-     * Sets the label property value.
-     * @param pNewValue the new value
-	 */
-	public void setLabel(String pNewValue)
-	{
-		aLabelText = pNewValue;
-	}
-
-	/**
-     * Gets the label property value.
-     * @return the current value
-	 */
-	public String getLabel()
-	{
-		return aLabelText;
 	}
 }

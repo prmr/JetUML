@@ -112,7 +112,7 @@ on two lines</string>
   </void>
   <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
-    <void property="label">
+    <void property="middleLabel">
      <string>start</string>
     </void>
    </object>
@@ -121,7 +121,7 @@ on two lines</string>
   </void>
   <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
-    <void property="label">
+    <void property="middleLabel">
      <string>e1</string>
     </void>
    </object>
@@ -130,7 +130,7 @@ on two lines</string>
   </void>
   <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
-    <void property="label">
+    <void property="middleLabel">
      <string>e2</string>
     </void>
    </object>
@@ -139,7 +139,7 @@ on two lines</string>
   </void>
   <void method="restoreEdge">
    <object class="ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge">
-    <void property="label">
+    <void property="middleLabel">
      <string>self</string>
     </void>
    </object>
