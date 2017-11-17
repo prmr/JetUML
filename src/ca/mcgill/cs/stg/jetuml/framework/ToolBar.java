@@ -196,7 +196,7 @@ public class ToolBar extends JPanel
 				g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 
 				g2.setColor(Color.black);
-				pEdge.draw(g2);
+				pEdge.view().draw(g2);
 				g2.setTransform(oldTransform);
 			}
 		};

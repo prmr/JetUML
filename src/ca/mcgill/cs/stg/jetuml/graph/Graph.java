@@ -349,12 +349,11 @@ public abstract class Graph
 	 */
 	public Edge findEdge(Point pPoint)
 	{
-		for (int i = aEdges.size() - 1; i >= 0; i--)
+		for(Edge edge : aEdges)
 		{
-			Edge e = aEdges.get(i);
-			if(e.contains(pPoint))
+			if(edge.view().contains(pPoint))
 			{
-				return e;
+				return edge;
 			}
 		}
 		return null;
@@ -426,7 +425,7 @@ public abstract class Graph
 		
 		for( Edge edge : aEdges )
 		{
-			edge.draw(pGraphics2D);
+			edge.view().draw(pGraphics2D);
 		}
 	}
 	

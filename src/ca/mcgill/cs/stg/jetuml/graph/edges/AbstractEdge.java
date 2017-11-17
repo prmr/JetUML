@@ -1,9 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import java.awt.Graphics2D;
-
-import ca.mcgill.cs.stg.jetuml.geom.Line;
-import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
@@ -36,18 +32,6 @@ public abstract class AbstractEdge implements Edge
 	}
 
 	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		aView.draw(pGraphics2D);
-	}
-
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		return aView.contains(pPoint);
-	}
-
-	@Override
 	public void connect(Node pStart, Node pEnd, Graph pGraph)
 	{
 		assert pStart != null && pEnd != null;
@@ -74,12 +58,6 @@ public abstract class AbstractEdge implements Edge
 		return aGraph;
 	}
 
-	@Override
-	public Line getConnectionPoints()
-	{
-		return aView.getConnectionPoints();
-	}
-	
 	/**
 	 * Generates a view for this edge. Because of cloning, this cannot
 	 * be done in the constructor, because when an edge is clone a new 
@@ -103,5 +81,11 @@ public abstract class AbstractEdge implements Edge
 		{
 			return null;
 		}
+	}
+	
+	@Override
+	public EdgeView view()
+	{
+		return aView;
 	}
 }

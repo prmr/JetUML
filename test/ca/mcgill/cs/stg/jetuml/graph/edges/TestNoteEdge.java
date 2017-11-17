@@ -83,7 +83,7 @@ public class TestNoteEdge
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
 		assertEquals(new Rectangle(60,20,40,0), aNoteEdge.getBounds());
 		
-		Line connectionPoints = aNoteEdge.getConnectionPoints();
+		Line connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 100, connectionPoints.getX2());
@@ -93,7 +93,7 @@ public class TestNoteEdge
 		aPointNode.translate(20, 0);
 		assertEquals(new Rectangle(60,20,60,0), aNoteEdge.getBounds());
 		
-		connectionPoints = aNoteEdge.getConnectionPoints();
+		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());
@@ -107,7 +107,7 @@ public class TestNoteEdge
 		// yielding bounds of [x=60,y=26,width=60,height=14]
 		assertEquals(new Rectangle(60,26,60,14), aNoteEdge.getBounds());
 		
-		connectionPoints = aNoteEdge.getConnectionPoints();
+		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 26, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());

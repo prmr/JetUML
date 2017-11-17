@@ -332,7 +332,7 @@ public class GraphPanel extends JPanel
 			}
 			else if(selected instanceof Edge)
 			{
-				Line line = ((Edge) selected).getConnectionPoints();
+				Line line = ((Edge) selected).view().getConnectionPoints();
 				drawGrabber(g2, line.getX1(), line.getY1());
 				drawGrabber(g2, line.getX2(), line.getY2());
 			}

@@ -21,32 +21,16 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import java.awt.Graphics2D;
-
-import ca.mcgill.cs.stg.jetuml.geom.Line;
-import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
 
 /**
  * An edge in a graph.
  */
 public interface Edge extends GraphElement
 {
-	/**
-     * Draw the edge.
-     * @param pGraphics2D the graphics context
-	 */
-   void draw(Graphics2D pGraphics2D);
-
-   	/**
-     * Tests whether the edge contains a point.
-     * @param pPoint the point to test
-     * @return true if this edge contains aPoint
-     */
-   	boolean contains(Point pPoint);
-
    	/**
      * Connect this edge to two nodes.
      * @param pStart the starting node
@@ -74,17 +58,15 @@ public interface Edge extends GraphElement
    	Graph getGraph();
 
    	/**
-     * Gets the points at which this edge is connected to
-     * its nodes.
-     * @return a line joining the two connection points
-     */
-   	Line getConnectionPoints();
-
-   	/**
    	 * @return A clone of this edge, with shallow cloning
    	 * of the start and end nodes (i.e., the start and end 
    	 * nodes are not cloned).
    	 */
    	Edge clone();
+   	
+   	/**
+   	 * @return The view for this edge.
+   	 */
+   	EdgeView view();
 }
 
