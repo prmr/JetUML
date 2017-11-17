@@ -187,7 +187,7 @@ public class TestPersistenceService
 		assertEquals("A note", n1.getText().getText());
 		assertEquals(new Rectangle(700, 50, 60, 40), n1.getBounds());
 		
-		assertEquals(new Rectangle(567, 56, 1, 1), p1.getBounds());
+		assertEquals(new Rectangle(567, 56, 0, 0), p1.getBounds());
 		
 		assertEquals(new Rectangle(650, 150, 110, 40), u4.getBounds());
 		assertEquals("Use case 4", u4.getName().toString());
@@ -383,7 +383,7 @@ public class TestPersistenceService
 		assertEquals(node6,node7.getParent());
 		assertEquals(new Rectangle(280, 370, 100, 60), node7.getBounds());
 		
-		assertEquals(new Rectangle(694, 409, 1, 1), node8.getBounds());
+		assertEquals(new Rectangle(694, 409, 0, 0), node8.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -485,7 +485,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(440,200,60,40), note.getBounds());
 		assertEquals("A note", note.getText().toString());
 		
-		assertEquals(new Rectangle(409,189,1,1), point.getBounds());
+		assertEquals(new Rectangle(409,189,0,0), point.getBounds());
 	
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());
@@ -563,7 +563,7 @@ public class TestPersistenceService
 		assertEquals("A note\non two lines", note.getText().getText());
 		assertEquals(new Rectangle(690, 320, 60, 40), note.getBounds());
 		
-		assertEquals(new Rectangle(576, 339, 1, 1), point.getBounds());
+		assertEquals(new Rectangle(576, 339, 0, 0), point.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(7, edges.size());
@@ -682,9 +682,9 @@ public class TestPersistenceService
 		assertEquals("A note", note.getText().getText());
 		assertEquals(new Rectangle(280, 330, 60, 40), note.getBounds());
 		
-		assertEquals(new Rectangle(281, 216, 1, 1), p1.getBounds());
+		assertEquals(new Rectangle(281, 216, 0, 0), p1.getBounds());
 		
-		assertEquals(new Rectangle(474, 339, 1, 1), p2.getBounds());
+		assertEquals(new Rectangle(474, 339, 0, 0), p2.getBounds());
 		
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(6, edges.size());

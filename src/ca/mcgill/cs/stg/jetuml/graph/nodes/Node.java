@@ -38,6 +38,15 @@ public interface Node extends GraphElement
      * @param pGraphics2D the graphics context
      */
 	void draw(Graphics2D pGraphics2D);
+	
+	/**
+	 * @return The position of this node. Usually corresponds to the top left corner 
+	 * of its bounding box.
+	 */
+	default Point position()
+	{
+		return new Point(0, 0);
+	}
 
 	/**
      * Translates the node by a given amount.

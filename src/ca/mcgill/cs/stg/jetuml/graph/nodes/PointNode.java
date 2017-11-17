@@ -21,64 +21,26 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
-import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PointNodeView;
 
 /**
  *  An invisible node that is used in the toolbar to draw an
  *  edge, and in notes to serve as an end point of the node
  *  connector.
  */
-public class PointNode extends AbstractNode
+public class PointNode extends AbstractNode2
 {
-	private static final int EPSILON = 1;
-	
-	private Point aPoint;
-
-	/**
-     * Constructs a point node with coordinates (0, 0).
-	 */
-	public PointNode()
+	@Override
+	protected NodeView generateView()
 	{
-		aPoint = new Point(0, 0);
+		return new PointNodeView(this);
 	}
 
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{}
-
-	@Override
-	public void translate(int pDeltaX, int pDeltaY)
-	{
-		aPoint = new Point( aPoint.getX() + pDeltaX, aPoint.getY() + pDeltaY );
-	}
-
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		final double threshold = 5;
-		return aPoint.distance(pPoint) < threshold;
-	}
-
-	@Override
-	public Rectangle getBounds()
-	{
-		return new Rectangle(aPoint.getX(), aPoint.getY(), EPSILON, EPSILON);
-	}
-
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		return aPoint;
-	}
-	
 	/**
 	 * The persistence delegate recovers the position of the point.
 	 * 
@@ -91,16 +53,10 @@ public class PointNode extends AbstractNode
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{
 				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				int x = ((PointNode)pOldInstance).aPoint.getX();
-				int y = ((PointNode)pOldInstance).aPoint.getY();
+				int x = ((PointNode)pOldInstance).position().getX();
+				int y = ((PointNode)pOldInstance).position().getY();
 				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
 			}
 		});
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		// Nothing to do.
 	}
 }
