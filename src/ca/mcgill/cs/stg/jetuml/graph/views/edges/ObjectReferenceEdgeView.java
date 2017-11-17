@@ -1,4 +1,4 @@
-package ca.mcgill.cs.stg.jetuml.graph.edges.views;
+package ca.mcgill.cs.stg.jetuml.graph.views.edges;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;

@@ -6,8 +6,8 @@ import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
 
 /**
  * Abstract edge in the new hierarchy.

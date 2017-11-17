@@ -36,6 +36,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge.Type;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyleFactory;
 
 public class TestSegmentationStrategies 
 {

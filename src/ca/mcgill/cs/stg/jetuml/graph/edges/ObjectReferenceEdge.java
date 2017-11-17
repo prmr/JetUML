@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.ObjectReferenceEdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.ObjectReferenceEdgeView;
 
 /**
  * An S- or C-shaped edge with an arrowhead.

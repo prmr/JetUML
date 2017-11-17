@@ -26,13 +26,13 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyle;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that joins two call nodes.

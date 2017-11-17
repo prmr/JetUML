@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.graph.views.edges;
 
 import java.awt.geom.Point2D;
 

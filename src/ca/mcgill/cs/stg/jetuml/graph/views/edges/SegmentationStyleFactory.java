@@ -19,14 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.graph.views.edges;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle.Side;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
@@ -38,6 +37,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyle.Side;
 
 /**
  * A class for creating line segmentation strategies.

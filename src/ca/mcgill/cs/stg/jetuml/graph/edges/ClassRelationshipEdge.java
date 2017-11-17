@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyle;
 
 /**
  * Needed to support an optimization in SegmentationStyleFactory.

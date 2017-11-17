@@ -1,4 +1,4 @@
-package ca.mcgill.cs.stg.jetuml.graph.edges.views;
+package ca.mcgill.cs.stg.jetuml.graph.views.edges;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;

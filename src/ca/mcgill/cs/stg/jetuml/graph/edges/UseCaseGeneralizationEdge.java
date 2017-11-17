@@ -27,9 +27,9 @@ package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a generalization of a use case.
