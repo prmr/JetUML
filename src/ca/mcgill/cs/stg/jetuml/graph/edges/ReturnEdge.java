@@ -26,68 +26,59 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 /**
  *  An edge that joins two call nodes.
  */
-public class ReturnEdge extends SegmentedLabeledEdge
+public class ReturnEdge extends AbstractSingleLabeledEdge
 {
-	private String aMiddleLabel;
-	
 	/**
 	 * Constructs a standard return edge.
 	 */
 	public ReturnEdge()
 	{
-		aMiddleLabel = "";
+		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.DOTTED,
+				ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
-	/**
-	 * Set the value of the middle label.
-	 * @param pLabel The value to appear in the middle of the return edge.
-	 */
-	public void setMiddleLabel(String pLabel)
+	private SegmentationStyle createSegmentationStyle()
 	{
-		aMiddleLabel = pLabel;
-	}
-	
-	/**
-	 * @return The value that appears in the middle of the return edge.
-	 */
-	public String getMiddleLabel()
-	{
-		return aMiddleLabel;
-	}
-	
-	@Override
-	protected String obtainMiddleLabel()
-	{
-		return getMiddleLabel();
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		return LineStyle.DOTTED;
-	}
-	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
-	{
-		return ArrowHead.V;
-	}
+		return new SegmentationStyle()
+		{
+			@Override
+			public boolean isPossible(Edge pEdge)
+			{
+				assert false; // Should not be called.
+				return false;
+			}
 
-	@Override
-	protected Point2D[] getPoints()
+			@Override
+			public Point2D[] getPath(Edge pEdge, Graph pGraph)
+			{
+				return getPoints(pEdge);
+			}
+
+			@Override
+			public Side getAttachedSide(Edge pEdge, Node pNode)
+			{
+				assert false; // Should not be called
+				return null;
+			}
+		};
+	}
+	
+	private static Point2D[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
-		Node endNode = getEnd();
-		Rectangle start = getStart().getBounds();
-		Rectangle end = getEnd().getBounds();
-		if(endNode instanceof PointNode) // show nicely in tool bar
+		Rectangle start = pEdge.getStart().getBounds();
+		Rectangle end = pEdge.getEnd().getBounds();
+		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{
 			lReturn.add(new Point2D.Double(end.getX(), end.getY()));
 			lReturn.add(new Point2D.Double(start.getMaxX(), end.getY()));

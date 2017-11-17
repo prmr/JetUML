@@ -25,10 +25,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
@@ -36,10 +40,9 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 /**
  *   An edge that joins two call nodes.
  */
-public class CallEdge extends SegmentedLabeledEdge
+public class CallEdge extends AbstractSingleLabeledEdge
 {
 	private boolean aSignal;
-	private String aMiddleLabel;
 	
 	/**
 	 * Creates a non-signal edge.
@@ -47,37 +50,15 @@ public class CallEdge extends SegmentedLabeledEdge
 	public CallEdge()
 	{
 		setSignal(false);
-		aMiddleLabel = "";
-	}
-	
-	/**
-	 * Set the value of the middle label.
-	 * @param pLabel The value to appear in the middle of the return edge.
-	 */
-	public void setMiddleLabel(String pLabel)
-	{
-		aMiddleLabel = pLabel;
-	}
-	
-	/**
-	 * @return The value that appears in the middle of the return edge.
-	 */
-	public String getMiddleLabel()
-	{
-		return aMiddleLabel;
-	}
-	
-	@Override
-	protected String obtainMiddleLabel()
-	{
-		return getMiddleLabel();
+		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.SOLID,
+				ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
 	/**
 	 * @return The end arrow head for the edge. By default
 	 * there is no arrow head.
 	 */
-	protected ArrowHead obtainEndArrowHead()
+	private ArrowHead getEndArrowHead()
 	{
 		if(aSignal)
 		{
@@ -104,47 +85,72 @@ public class CallEdge extends SegmentedLabeledEdge
 	{ 
 		aSignal = pNewValue; 
 	}
-
-	@Override
-	protected Point2D[] getPoints()
+	
+	private SegmentationStyle createSegmentationStyle()
 	{
-		ArrayList<Point2D> a = new ArrayList<>();
-		Node endNode = getEnd();
-		Rectangle start = getStart().getBounds();
-		Rectangle end = endNode.getBounds();
+		return new SegmentationStyle()
+		{
+			@Override
+			public boolean isPossible(Edge pEdge)
+			{
+				assert false; // Should not be called.
+				return false;
+			}
+
+			@Override
+			public Point2D[] getPath(Edge pEdge, Graph pGraph)
+			{
+				return getPoints(pEdge);
+			}
+
+			@Override
+			public Side getAttachedSide(Edge pEdge, Node pNode)
+			{
+				assert false; // Should not be called
+				return null;
+			}
+		};
+	}
+	
+	private static Point2D[] getPoints(Edge pEdge)
+	{
+		ArrayList<Point2D> points = new ArrayList<>();
+		Rectangle start = pEdge.getStart().getBounds();
+		Rectangle end = pEdge.getEnd().getBounds();
       
-		if(endNode instanceof CallNode && ((CallNode)endNode).getParent() == ((CallNode)getStart()).getParent())
+		if(pEdge.getEnd() instanceof CallNode && ((CallNode)pEdge.getEnd()).getParent() == 
+				((CallNode)pEdge.getStart()).getParent())
 		{
 			Point2D p = new Point2D.Double(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
 			Point2D q = new Point2D.Double(end.getMaxX(), end.getY());
 			Point2D s = new Point2D.Double(q.getX() + end.getWidth(), q.getY());
 			Point2D r = new Point2D.Double(s.getX(), p.getY());
-			a.add(p);
-			a.add(r);
-			a.add(s);
-			a.add(q);
+			points.add(p);
+			points.add(r);
+			points.add(s);
+			points.add(q);
 		}
-		else if(endNode instanceof PointNode) // show nicely in tool bar
+		else if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{
-			a.add(new Point2D.Double(start.getMaxX(), start.getY()));
-			a.add(new Point2D.Double(end.getX(), start.getY()));
+			points.add(new Point2D.Double(start.getMaxX(), start.getY()));
+			points.add(new Point2D.Double(end.getX(), start.getY()));
 		}
 		else     
 		{
-			Direction d = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = getEnd().getConnectionPoint(d);
+			Direction direction = new Direction(start.getX() - end.getX(), 0);
+			Point endPoint = pEdge.getEnd().getConnectionPoint(direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{
-				a.add(new Point2D.Double(start.getMaxX(), endPoint.getY()));
+				points.add(new Point2D.Double(start.getMaxX(), endPoint.getY()));
 			}
 			else
 			{
-				a.add(new Point2D.Double(start.getX(), endPoint.getY()));
+				points.add(new Point2D.Double(start.getX(), endPoint.getY()));
 			}
-			a.add(Conversions.toPoint2D(endPoint));
+			points.add(Conversions.toPoint2D(endPoint));
 		}
-		return a.toArray(new Point2D[a.size()]);
+		return points.toArray(new Point2D[points.size()]);
 	}
 }
 
