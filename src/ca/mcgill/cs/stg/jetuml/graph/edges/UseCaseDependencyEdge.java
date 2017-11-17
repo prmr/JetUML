@@ -53,10 +53,8 @@ public class UseCaseDependencyEdge extends AbstractEdge2
 	 */
 	public UseCaseDependencyEdge(Type pType)
 	{
+		this();
 		aType = pType;
-		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.DOTTED, ArrowHead.NONE,  () -> ArrowHead.V,
-				() -> "", () -> obtainMiddleLabel(), () -> "");
 	}
 	
 	/**
@@ -65,7 +63,7 @@ public class UseCaseDependencyEdge extends AbstractEdge2
 	public UseCaseDependencyEdge()
 	{
 		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.DOTTED, ArrowHead.NONE,  () -> ArrowHead.V,
+				LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
 				() -> "", () -> obtainMiddleLabel(), () -> "");
 	}
 	

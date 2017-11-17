@@ -44,7 +44,7 @@ public class ReturnEdge extends SingleLabelEdge
 	public ReturnEdge()
 	{
 		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.DOTTED,
-				ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
+				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
 	private SegmentationStyle createSegmentationStyle()

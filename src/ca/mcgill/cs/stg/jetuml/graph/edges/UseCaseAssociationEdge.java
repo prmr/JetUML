@@ -41,7 +41,7 @@ public class UseCaseAssociationEdge extends AbstractEdge2
 	public UseCaseAssociationEdge()
 	{
 		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.SOLID, ArrowHead.NONE, () -> ArrowHead.NONE,
+				LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.NONE,
 				() -> "", () -> "", () -> "");
 	}
 }

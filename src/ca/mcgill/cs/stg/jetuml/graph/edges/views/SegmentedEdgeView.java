@@ -27,7 +27,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	private static JLabel label = new JLabel();
 	
 	private LineStyle aLineStyle;
-	private ArrowHead aArrowStart;
+	private Supplier<ArrowHead> aArrowStartSupplier;
 	private Supplier<ArrowHead> aArrowEndSupplier;
 	private Supplier<String> aStartLabelSupplier;
 	private Supplier<String> aMiddleLabelSupplier;
@@ -44,13 +44,13 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	 * @param pMiddleLabelSupplier Supplies the middle label.
 	 * @param pEndLabelSupplier Supplies the end label
 	 */
-	public SegmentedEdgeView(Edge pEdge, SegmentationStyle pStyle, LineStyle pLineStyle, ArrowHead pStart, Supplier<ArrowHead> pEnd,
+	public SegmentedEdgeView(Edge pEdge, SegmentationStyle pStyle, LineStyle pLineStyle, Supplier<ArrowHead> pStart, Supplier<ArrowHead> pEnd,
 			 Supplier<String> pStartLabelSupplier, Supplier<String> pMiddleLabelSupplier, Supplier<String> pEndLabelSupplier)
 	{
 		super(pEdge);
 		aStyle = pStyle;
 		aLineStyle = pLineStyle;
-		aArrowStart = pStart;
+		aArrowStartSupplier = pStart;
 		aArrowEndSupplier = pEnd;
 		aStartLabelSupplier = pStartLabelSupplier;
 		aMiddleLabelSupplier = pMiddleLabelSupplier;
@@ -93,10 +93,10 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		pGraphics2D.setStroke(aLineStyle.getStroke());
 		pGraphics2D.draw(getSegmentPath());
 		pGraphics2D.setStroke(oldStroke);
-		aArrowStart.draw(pGraphics2D, points[1], points[0]);
+		aArrowStartSupplier.get().draw(pGraphics2D, points[1], points[0]);
 		aArrowEndSupplier.get().draw(pGraphics2D, points[points.length - 2], points[points.length - 1]);
 
-		drawString(pGraphics2D, points[1], points[0], aArrowStart, aStartLabelSupplier.get(), false);
+		drawString(pGraphics2D, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
 		drawString(pGraphics2D, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
 		drawString(pGraphics2D, points[points.length - 2], points[points.length - 1], aArrowEndSupplier.get(), aEndLabelSupplier.get(), false);
 	}
@@ -181,7 +181,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	{
 		GeneralPath path = getSegmentPath();
 		Point2D[] points = getPoints();
-		path.append(aArrowStart.getPath(points[1], points[0]), false);
+		path.append(aArrowStartSupplier.get().getPath(points[1], points[0]), false);
 		path.append(aArrowEndSupplier.get().getPath(points[points.length - 2], points[points.length - 1]), false);
 		return path;
 	}
@@ -228,7 +228,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	{
 		Point2D[] points = getPoints();
 		Rectangle bounds = super.getBounds();
-		bounds = bounds.add(getStringBounds(points[1], points[0], aArrowStart, aStartLabelSupplier.get(), false));
+		bounds = bounds.add(getStringBounds(points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false));
 		bounds = bounds.add(getStringBounds(points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true));
 		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], 
 				aArrowEndSupplier.get(), aEndLabelSupplier.get(), false));

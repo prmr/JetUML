@@ -51,7 +51,7 @@ public class CallEdge extends SingleLabelEdge
 	{
 		setSignal(false);
 		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.SOLID,
-				ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
+				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
 	/**
