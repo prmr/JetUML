@@ -14,12 +14,20 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
  * 
  * @author Martin P. Robillard
  */
-public class AbstractEdge2 implements Edge
+public abstract class AbstractEdge2 implements Edge
 {
 	protected EdgeView aView;
 	private Node aStart;
 	private Node aEnd;
 	private Graph aGraph;
+	
+	/**
+	 * Calls an abstract delegate to generate the view for this edge.
+	 */
+	protected AbstractEdge2()
+	{
+		aView = generateView();
+	}
 	
 	@Override
 	public Rectangle getBounds()
@@ -72,6 +80,15 @@ public class AbstractEdge2 implements Edge
 		return aView.getConnectionPoints();
 	}
 	
+	/**
+	 * Generates a view for this edge. Because of cloning, this cannot
+	 * be done in the constructor, because when an edge is clone a new 
+	 * wrapper view must be produced for the clone.
+	 * 
+	 * @return The view that wraps this edge.
+	 */
+	protected abstract EdgeView generateView();
+	
 	@Override
 	public AbstractEdge2 clone()
 	{
@@ -79,7 +96,7 @@ public class AbstractEdge2 implements Edge
 		try
 		{
 			clone = (AbstractEdge2) super.clone();
-			clone.aView = aView.copy(clone);
+			clone.aView = clone.generateView();
 			return clone;
 		}
 		catch (CloneNotSupportedException e)

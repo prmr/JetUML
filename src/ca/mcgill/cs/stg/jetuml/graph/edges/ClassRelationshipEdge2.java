@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2017 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,17 +21,17 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.edges.views.ObjectReferenceEdgeView;
+import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 
 /**
- * An S- or C-shaped edge with an arrowhead.
+ * Needed to support an optimization in SegmentationStyleFactory.
+ * Refactor.
  */
-public class ObjectReferenceEdge extends AbstractEdge2
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new ObjectReferenceEdgeView(this);
-	}
+public abstract class ClassRelationshipEdge2 extends ThreeLabelEdge
+{	
+	/**
+	 * @return The object that can draw the line corresponding
+	 * to this edge.
+	 */
+	public abstract SegmentationStyle obtainSegmentationStyle();
 }

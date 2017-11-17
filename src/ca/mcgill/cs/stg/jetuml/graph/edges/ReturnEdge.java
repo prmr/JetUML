@@ -29,6 +29,7 @@ import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
@@ -38,12 +39,11 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
  */
 public class ReturnEdge extends SingleLabelEdge
 {
-	/**
-	 * Constructs a standard return edge.
-	 */
-	public ReturnEdge()
+
+	@Override
+	protected EdgeView generateView()
 	{
-		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.DOTTED,
+		return new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.DOTTED,
 				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	

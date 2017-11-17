@@ -28,6 +28,7 @@ package ca.mcgill.cs.stg.jetuml.graph.edges;
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
@@ -53,7 +54,6 @@ public class UseCaseDependencyEdge extends AbstractEdge2
 	 */
 	public UseCaseDependencyEdge(Type pType)
 	{
-		this();
 		aType = pType;
 	}
 	
@@ -61,8 +61,12 @@ public class UseCaseDependencyEdge extends AbstractEdge2
 	 * Creates a general dependency.
 	 */
 	public UseCaseDependencyEdge()
+	{}
+	
+	@Override
+	protected EdgeView generateView()
 	{
-		aView = new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
+		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
 				LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
 				() -> "", () -> obtainMiddleLabel(), () -> "");
 	}

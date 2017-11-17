@@ -26,14 +26,17 @@
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
  */
-public class AggregationEdge extends ClassRelationshipEdge
+public class AggregationEdge extends ClassRelationshipEdge2
 {
 	/**
 	 * Type of aggregation relation.
@@ -52,12 +55,20 @@ public class AggregationEdge extends ClassRelationshipEdge
 	{
 		aType = pType;
 	}
-
+	
 	/**
-	 * Creates an aggregation edge.
+	 * Creates a plain aggregation.
 	 */
 	public AggregationEdge()
 	{}
+	
+	@Override
+	protected EdgeView generateView()
+	{
+		return new SegmentedEdgeView(this, SegmentationStyleFactory.createHVHStrategy(),
+				LineStyle.SOLID, () -> getStartArrowHead(), () -> ArrowHead.NONE,
+				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
+	}
 
 	/**
 	 * @return The type of aggregation relation.
@@ -75,8 +86,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 		aType = pType;
 	}
 
-	@Override
-	public ArrowHead obtainStartArrowHead()
+	private ArrowHead getStartArrowHead()
 	{
 		if( aType == Type.Composition )
 		{

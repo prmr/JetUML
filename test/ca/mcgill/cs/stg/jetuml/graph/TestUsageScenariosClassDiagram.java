@@ -69,7 +69,7 @@ public class TestUsageScenariosClassDiagram
 	private InterfaceNode aInterfaceNode = new InterfaceNode();
 	private PackageNode aPackageNode = new PackageNode();
 	private NoteNode aNoteNode = new NoteNode();
-	private ClassRelationshipEdge aAggregationEdge = new AggregationEdge();
+	private AggregationEdge aAggregationEdge = new AggregationEdge();
 	private ClassRelationshipEdge aAssociationEdge = new AssociationEdge();
 	private ClassRelationshipEdge aDependencyEdge = new DependencyEdge();
 	private ClassRelationshipEdge aGeneralizationEdge = new GeneralizationEdge();

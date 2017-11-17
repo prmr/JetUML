@@ -32,6 +32,7 @@ import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
@@ -50,7 +51,13 @@ public class CallEdge extends SingleLabelEdge
 	public CallEdge()
 	{
 		setSignal(false);
-		aView = new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.SOLID,
+	}
+	
+
+	@Override
+	protected EdgeView generateView()
+	{
+		return new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.SOLID,
 				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	

@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.edges.views.StateTransitionEdgeView;
 
 /**
@@ -32,11 +33,9 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.StateTransitionEdgeView;
  */
 public class StateTransitionEdge extends SingleLabelEdge
 {
-	/**
-	 * Creates a new StateTransitionEdge.
-	 */
-	public StateTransitionEdge()
+	@Override
+	protected EdgeView generateView()
 	{
-		aView = new StateTransitionEdgeView(this);
+		return new StateTransitionEdgeView(this);
 	}
 }

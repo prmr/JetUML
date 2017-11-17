@@ -32,7 +32,9 @@ import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge.Type;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge2;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
@@ -290,15 +292,15 @@ public final class SegmentationStyleFactory
 		}
 		else if( pEdge1.getStart() == pTarget && pEdge2.getStart() == pTarget && 
 				pEdge1 instanceof AggregationEdge && pEdge2 instanceof AggregationEdge &&
-				((AggregationEdge)pEdge1).obtainStartArrowHead() == ArrowHead.DIAMOND &&
-				((AggregationEdge)pEdge2).obtainStartArrowHead() == ArrowHead.DIAMOND)
+				((AggregationEdge)pEdge1).getType() == Type.Aggregation &&
+				((AggregationEdge)pEdge2).getType() == Type.Aggregation)
 		{
 			return true;
 		}
 		else if( pEdge1.getStart() == pTarget && pEdge2.getStart() == pTarget && 
 				pEdge1 instanceof AggregationEdge && pEdge2 instanceof AggregationEdge &&
-				((AggregationEdge)pEdge1).obtainStartArrowHead() == ArrowHead.BLACK_DIAMOND &&
-				((AggregationEdge)pEdge2).obtainStartArrowHead() == ArrowHead.BLACK_DIAMOND)
+				((AggregationEdge)pEdge1).getType() == Type.Composition &&
+				((AggregationEdge)pEdge2).getType() == Type.Composition)
 		{
 			return true;
 		}
@@ -308,6 +310,7 @@ public final class SegmentationStyleFactory
 		}
 	} // CSON:
 	
+	// TODO Fix this
 	private static List<Edge> getAllEdgesForSide(Graph pGraph, Node pTarget, Side pSide)
 	{
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
@@ -317,11 +320,17 @@ public final class SegmentationStyleFactory
 			{
 				continue; // Do not count self-edges
 			}
-			if( !(edge instanceof ClassRelationshipEdge))
+			if( !(edge instanceof ClassRelationshipEdge) && !(edge instanceof ClassRelationshipEdge2))
 			{
 				continue;
 			}
-			if( ((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
+			if( edge instanceof ClassRelationshipEdge && 
+					((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
+			{
+				edgesOnSelectedSide.add(edge);
+			}
+			if( edge instanceof ClassRelationshipEdge2 && 
+					((ClassRelationshipEdge2)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
 			{
 				edgesOnSelectedSide.add(edge);
 			}

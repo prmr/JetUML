@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
 import ca.mcgill.cs.stg.jetuml.graph.edges.views.NoteEdgeView;
 
 /**
@@ -28,11 +29,9 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.NoteEdgeView;
  */
 public class NoteEdge extends AbstractEdge2
 {
-	/**
-	 * Creates a new NoteEdge.
-	 */
-	public NoteEdge()
+	@Override
+	protected EdgeView generateView()
 	{
-		aView = new NoteEdgeView(this);
+		return new NoteEdgeView(this);
 	}
 }
