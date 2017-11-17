@@ -30,7 +30,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.StateTransitionEdgeView;
  *  
  *  @author Martin P. Robillard
  */
-public class StateTransitionEdge extends AbstractSingleLabeledEdge
+public class StateTransitionEdge extends SingleLabelEdge
 {
 	/**
 	 * Creates a new StateTransitionEdge.

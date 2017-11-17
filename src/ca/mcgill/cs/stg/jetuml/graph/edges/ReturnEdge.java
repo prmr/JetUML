@@ -36,7 +36,7 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 /**
  *  An edge that joins two call nodes.
  */
-public class ReturnEdge extends AbstractSingleLabeledEdge
+public class ReturnEdge extends SingleLabelEdge
 {
 	/**
 	 * Constructs a standard return edge.

@@ -5,7 +5,7 @@ package ca.mcgill.cs.stg.jetuml.graph.edges;
  * 
  * @author Martin P. Robillard
  */
-public abstract class AbstractSingleLabeledEdge extends AbstractEdge2
+public abstract class SingleLabelEdge extends AbstractEdge2
 {
 	private String aLabelText = "";
 	

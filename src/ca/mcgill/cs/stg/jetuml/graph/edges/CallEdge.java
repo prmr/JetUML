@@ -40,7 +40,7 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 /**
  *   An edge that joins two call nodes.
  */
-public class CallEdge extends AbstractSingleLabeledEdge
+public class CallEdge extends SingleLabelEdge
 {
 	private boolean aSignal;
 	
