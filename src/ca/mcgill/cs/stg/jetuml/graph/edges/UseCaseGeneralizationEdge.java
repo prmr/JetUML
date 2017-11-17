@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 /**
  *  An edge that that represents a generalization of a use case.
  */
-public class UseCaseGeneralizationEdge extends AbstractEdge2
+public class UseCaseGeneralizationEdge extends AbstractEdge
 {
 	@Override
 	protected EdgeView generateView()

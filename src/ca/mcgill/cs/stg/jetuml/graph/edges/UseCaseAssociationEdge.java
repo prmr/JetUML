@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 /**
  *  An edge that that represents a association between use cases.
  */
-public class UseCaseAssociationEdge extends AbstractEdge2
+public class UseCaseAssociationEdge extends AbstractEdge
 {
 	@Override
 	protected EdgeView generateView()

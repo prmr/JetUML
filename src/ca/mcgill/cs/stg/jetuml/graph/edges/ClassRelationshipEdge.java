@@ -27,7 +27,7 @@ import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
  * Needed to support an optimization in SegmentationStyleFactory.
  * Refactor.
  */
-public abstract class ClassRelationshipEdge2 extends ThreeLabelEdge
+public abstract class ClassRelationshipEdge extends ThreeLabelEdge
 {	
 	/**
 	 * @return The object that can draw the line corresponding

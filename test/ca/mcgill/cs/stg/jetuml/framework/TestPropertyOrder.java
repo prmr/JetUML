@@ -31,7 +31,7 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.graph.PropertyOrder;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AssociationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge2;
+import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.SingleLabelEdge;
 
 public class TestPropertyOrder
@@ -74,8 +74,8 @@ public class TestPropertyOrder
 	@Test
 	public void testSecondLevelQuery() throws Exception
 	{
-		addIndex(ClassRelationshipEdge2.class, "endLabel", 28);
-		assertEquals( 28, aOrder.getIndex(ClassRelationshipEdge2.class, "endLabel"));
+		addIndex(ClassRelationshipEdge.class, "endLabel", 28);
+		assertEquals( 28, aOrder.getIndex(ClassRelationshipEdge.class, "endLabel"));
 		assertEquals( 28, aOrder.getIndex(AssociationEdge.class, "endLabel"));
 	}
 	
@@ -84,7 +84,7 @@ public class TestPropertyOrder
 	{
 		addIndex(SingleLabelEdge.class, "middleLabel", 28);
 		assertEquals( 28, aOrder.getIndex(SingleLabelEdge.class, "middleLabel"));
-		assertEquals( 28, aOrder.getIndex(ClassRelationshipEdge2.class, "middleLabel"));
+		assertEquals( 28, aOrder.getIndex(ClassRelationshipEdge.class, "middleLabel"));
 		assertEquals( 28, aOrder.getIndex(AssociationEdge.class, "middleLabel"));
 	}
 }
