@@ -66,7 +66,7 @@ public class AggregationEdge extends ClassRelationshipEdge2
 	protected EdgeView generateView()
 	{
 		return new SegmentedEdgeView(this, SegmentationStyleFactory.createHVHStrategy(),
-				LineStyle.SOLID, () -> getStartArrowHead(), () -> ArrowHead.NONE,
+				() -> LineStyle.SOLID, () -> getStartArrowHead(), () -> ArrowHead.NONE,
 				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
 	}
 

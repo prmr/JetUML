@@ -29,29 +29,21 @@ import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML dependency
  *  with optional labels.
  */
-public class DependencyEdge extends ClassRelationshipEdge
+public class DependencyEdge extends ClassRelationshipEdge2
 {
-	/**
-	 * Creates a dependency edge with no labels.
-	 */
-	public DependencyEdge()
-	{}
-	
 	@Override
-	protected ArrowHead obtainEndArrowHead()
+	protected EdgeView generateView()
 	{
-		return ArrowHead.V;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
-	{
-		return LineStyle.DOTTED;
+		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
+				() -> LineStyle.DOTTED, () -> ArrowHead.NONE, () -> ArrowHead.V,
+				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
 	}
 	
 	@Override

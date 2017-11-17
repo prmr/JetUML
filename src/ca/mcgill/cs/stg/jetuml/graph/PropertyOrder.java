@@ -22,8 +22,8 @@ package ca.mcgill.cs.stg.jetuml.graph;
 
 import java.util.HashMap;
 
-import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.SingleLabelEdge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.ThreeLabelEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
@@ -42,10 +42,9 @@ public final class PropertyOrder
 	
 	static
 	{
-		INSTANCE.addIndex(ClassRelationshipEdge.class, "startLabel", 1);
-		INSTANCE.addIndex(ClassRelationshipEdge.class, "middleLabel", 2);
-		INSTANCE.addIndex(ClassRelationshipEdge.class, "endLabel", 3);
-		INSTANCE.addIndex(CallEdge.class, "middleLabel", 1);
+		INSTANCE.addIndex(ThreeLabelEdge.class, "startLabel", 1);
+		INSTANCE.addIndex(ThreeLabelEdge.class, "endLabel", 3);
+		INSTANCE.addIndex(SingleLabelEdge.class, "middleLabel", 2);
 		INSTANCE.addIndex(ClassNode.class, "name", 1);
 		INSTANCE.addIndex(ClassNode.class, "attributes", 2);
 		INSTANCE.addIndex(ClassNode.class, "methods", 3);

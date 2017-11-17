@@ -40,7 +40,7 @@ public class UseCaseGeneralizationEdge extends AbstractEdge2
 	protected EdgeView generateView()
 	{
 		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
+				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
 				() -> "", () -> "", () -> "");
 	}
 }

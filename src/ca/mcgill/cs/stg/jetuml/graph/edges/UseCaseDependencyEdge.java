@@ -67,7 +67,7 @@ public class UseCaseDependencyEdge extends AbstractEdge2
 	protected EdgeView generateView()
 	{
 		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
+				() -> LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
 				() -> "", () -> obtainMiddleLabel(), () -> "");
 	}
 	

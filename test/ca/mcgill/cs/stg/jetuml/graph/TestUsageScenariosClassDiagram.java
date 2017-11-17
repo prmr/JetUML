@@ -38,7 +38,6 @@ import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AssociationEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
@@ -70,9 +69,9 @@ public class TestUsageScenariosClassDiagram
 	private PackageNode aPackageNode = new PackageNode();
 	private NoteNode aNoteNode = new NoteNode();
 	private AggregationEdge aAggregationEdge = new AggregationEdge();
-	private ClassRelationshipEdge aAssociationEdge = new AssociationEdge();
-	private ClassRelationshipEdge aDependencyEdge = new DependencyEdge();
-	private ClassRelationshipEdge aGeneralizationEdge = new GeneralizationEdge();
+	private AssociationEdge aAssociationEdge = new AssociationEdge();
+	private DependencyEdge aDependencyEdge = new DependencyEdge();
+	private GeneralizationEdge aGeneralizationEdge = new GeneralizationEdge();
 	
 	@Before
 	public void setup()

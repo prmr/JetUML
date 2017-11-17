@@ -33,7 +33,6 @@ import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge.Type;
-import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge2;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
@@ -284,8 +283,6 @@ public final class SegmentationStyleFactory
 	{
 		if( pEdge1.getEnd() == pTarget && pEdge2.getEnd() == pTarget &&
 				pEdge1 instanceof GeneralizationEdge && pEdge2 instanceof GeneralizationEdge &&
-				((GeneralizationEdge)pEdge1).obtainEndArrowHead() == ArrowHead.TRIANGLE && 
-				((GeneralizationEdge)pEdge2).obtainEndArrowHead() == ArrowHead.TRIANGLE  &&
 				((GeneralizationEdge)pEdge1).getType() == ((GeneralizationEdge)pEdge2).getType())
 		{
 			return true;
@@ -320,14 +317,9 @@ public final class SegmentationStyleFactory
 			{
 				continue; // Do not count self-edges
 			}
-			if( !(edge instanceof ClassRelationshipEdge) && !(edge instanceof ClassRelationshipEdge2))
+			if( !(edge instanceof ClassRelationshipEdge2))
 			{
 				continue;
-			}
-			if( edge instanceof ClassRelationshipEdge && 
-					((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
-			{
-				edgesOnSelectedSide.add(edge);
 			}
 			if( edge instanceof ClassRelationshipEdge2 && 
 					((ClassRelationshipEdge2)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )

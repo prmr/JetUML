@@ -25,24 +25,32 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
+import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a dynamic collaboration between
  *  two objects in an object diagram, with optional labels.
  */
-public class ObjectCollaborationEdge extends ClassRelationshipEdge
+public class ObjectCollaborationEdge extends ClassRelationshipEdge2
 {
-	/**
-	 * Creates an association edge.
-	 */
-	public ObjectCollaborationEdge()
-	{}
+	@Override
+	protected EdgeView generateView()
+	{
+		return new SegmentedEdgeView(this, obtainSegmentationStyle(),
+				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.NONE,
+				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
+	}
 	
 	@Override
 	public SegmentationStyle obtainSegmentationStyle()
 	{
 		return SegmentationStyleFactory.createStraightStrategy();
 	}
+
+
 }

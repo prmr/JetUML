@@ -29,12 +29,14 @@ import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
  *  or implementation), with optional labels.
  */
-public class GeneralizationEdge extends ClassRelationshipEdge
+public class GeneralizationEdge extends ClassRelationshipEdge2
 {
 	/**
 	 * Type of UML generalization relation.
@@ -60,6 +62,14 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	public GeneralizationEdge()
 	{}
 	
+	@Override
+	protected EdgeView generateView()
+	{
+		return new SegmentedEdgeView(this, obtainSegmentationStyle(),
+				() -> getLineStyle(), () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
+				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
+	}
+	
 	/**
 	 * @return The type of generalization.
 	 */
@@ -77,14 +87,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 		aType = pType;
 	}
 	
-	@Override
-	public ArrowHead obtainEndArrowHead()
-	{
-		return ArrowHead.TRIANGLE;
-	}
-	
-	@Override
-	protected LineStyle obtainLineStyle()
+	private LineStyle getLineStyle()
 	{
 		if( aType == Type.Implementation )
 		{

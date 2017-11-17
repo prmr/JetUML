@@ -38,9 +38,9 @@ import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.ClassRelationshipEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge;
@@ -394,7 +394,7 @@ public class TestPersistenceService
 		assertEquals(node5, edge5.getStart());
 		assertEquals(node8, edge5.getEnd());
 		
-		ClassRelationshipEdge edge6 = (ClassRelationshipEdge) eIterator.next();
+		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
 		assertEquals(new Rectangle(380, 381, 80, 24), edge6.getBounds());
 		assertEquals(node7, edge6.getEnd());
 		assertEquals("", edge6.getEndLabel());
@@ -402,7 +402,7 @@ public class TestPersistenceService
 		assertEquals(node1, edge6.getStart());
 		assertEquals("", edge6.getStartLabel());
 		
-		ClassRelationshipEdge edge1 = (ClassRelationshipEdge) eIterator.next();
+		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
 		assertEquals(new Rectangle(505, 310, 22, 60), edge1.getBounds());
 		assertEquals(node2, edge1.getEnd());
 		assertEquals("", edge1.getEndLabel());
@@ -410,7 +410,7 @@ public class TestPersistenceService
 		assertEquals(node1, edge1.getStart());
 		assertEquals("", edge1.getStartLabel());
 		
-		ClassRelationshipEdge edge2 = (ClassRelationshipEdge) eIterator.next();
+		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
 		assertEquals(new Rectangle(505, 430, 22, 90), edge2.getBounds());
 		assertEquals(node1, edge2.getEnd());
 		assertEquals("", edge2.getEndLabel());

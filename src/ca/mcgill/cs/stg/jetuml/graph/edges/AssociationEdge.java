@@ -26,14 +26,17 @@
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.framework.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.edges.views.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML association, with optional 
  *  labels and directionality.
  */
-public class AssociationEdge extends ClassRelationshipEdge
+public class AssociationEdge extends ClassRelationshipEdge2
 {
 	/**
 	 * Possible directionalities for an association.
@@ -43,12 +46,13 @@ public class AssociationEdge extends ClassRelationshipEdge
 	
 	private Directionality aDirectionality = Directionality.None;
 	
-	/**
-	 * Creates an association edge with no labels.
-	 * and no directionality
-	 */
-	public AssociationEdge()
-	{}
+	@Override
+	protected EdgeView generateView()
+	{
+		return new SegmentedEdgeView(this, SegmentationStyleFactory.createHVHStrategy(),
+				() -> LineStyle.SOLID, () -> getStartArrowHead(), () -> getEndArrowHead(),
+				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
+	}
 	
 	/**
 	 * @param pDirectionality The desired directionality.
@@ -66,8 +70,7 @@ public class AssociationEdge extends ClassRelationshipEdge
 		return aDirectionality;
 	}
 	
-	@Override
-	protected ArrowHead obtainStartArrowHead()
+	private ArrowHead getStartArrowHead()
 	{
 		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
 		{
@@ -79,8 +82,7 @@ public class AssociationEdge extends ClassRelationshipEdge
 		}
 	}
 	
-	@Override
-	protected ArrowHead obtainEndArrowHead()
+	private ArrowHead getEndArrowHead()
 	{
 		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
 		{

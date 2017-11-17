@@ -26,7 +26,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 {
 	private static JLabel label = new JLabel();
 	
-	private LineStyle aLineStyle;
+	private Supplier<LineStyle> aLineStyleSupplier;
 	private Supplier<ArrowHead> aArrowStartSupplier;
 	private Supplier<ArrowHead> aArrowEndSupplier;
 	private Supplier<String> aStartLabelSupplier;
@@ -44,12 +44,12 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	 * @param pMiddleLabelSupplier Supplies the middle label.
 	 * @param pEndLabelSupplier Supplies the end label
 	 */
-	public SegmentedEdgeView(Edge pEdge, SegmentationStyle pStyle, LineStyle pLineStyle, Supplier<ArrowHead> pStart, Supplier<ArrowHead> pEnd,
-			 Supplier<String> pStartLabelSupplier, Supplier<String> pMiddleLabelSupplier, Supplier<String> pEndLabelSupplier)
+	public SegmentedEdgeView(Edge pEdge, SegmentationStyle pStyle, Supplier<LineStyle> pLineStyle, Supplier<ArrowHead> pStart, 
+			Supplier<ArrowHead> pEnd, Supplier<String> pStartLabelSupplier, Supplier<String> pMiddleLabelSupplier, Supplier<String> pEndLabelSupplier)
 	{
 		super(pEdge);
 		aStyle = pStyle;
-		aLineStyle = pLineStyle;
+		aLineStyleSupplier = pLineStyle;
 		aArrowStartSupplier = pStart;
 		aArrowEndSupplier = pEnd;
 		aStartLabelSupplier = pStartLabelSupplier;
@@ -90,7 +90,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		Point2D[] points = getPoints();
 
 		Stroke oldStroke = pGraphics2D.getStroke();
-		pGraphics2D.setStroke(aLineStyle.getStroke());
+		pGraphics2D.setStroke(aLineStyleSupplier.get().getStroke());
 		pGraphics2D.draw(getSegmentPath());
 		pGraphics2D.setStroke(oldStroke);
 		aArrowStartSupplier.get().draw(pGraphics2D, points[1], points[0]);

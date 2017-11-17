@@ -43,7 +43,7 @@ public class ReturnEdge extends SingleLabelEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.DOTTED,
+		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.DOTTED,
 				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	

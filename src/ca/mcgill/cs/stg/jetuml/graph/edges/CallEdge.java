@@ -57,7 +57,7 @@ public class CallEdge extends SingleLabelEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, createSegmentationStyle(), LineStyle.SOLID,
+		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.SOLID,
 				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
