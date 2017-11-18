@@ -42,26 +42,18 @@
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CircularStateNode" id="CircularStateNode0">
-    <void property="bounds">
-     <void property="x">
-       <int>150</int>
+     <void method="translate">
+      <int>150</int>
+      <int>70</int>
      </void>
-     <void property="y">
-       <int>70</int>
-     </void>
-    </void>
    </object>
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CircularStateNode" id="CircularStateNode1">
-    <void property="bounds">
-     <void property="x">
-       <int>640</int>
+     <void method="translate">
+      <int>640</int>
+      <int>230</int>
      </void>
-     <void property="y">
-       <int>230</int>
-     </void>
-    </void>
     <void property="final">
      <boolean>true</boolean>
     </void>

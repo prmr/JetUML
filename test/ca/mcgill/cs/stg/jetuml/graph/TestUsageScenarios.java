@@ -159,7 +159,7 @@ public class TestUsageScenarios
 		assertEquals("Node 1", node1.getName().getText());
 		assertEquals(new Rectangle(30, 100, 80, 60), node2.getBounds());
 		assertEquals("Node 2", node2.getName().getText());
-		assertEquals(new Rectangle(5, 5, 14, 14), start.getBounds());
+		assertEquals(new Rectangle(5, 5, 20, 20), start.getBounds());
 		assertFalse(start.isFinal());
 		assertEquals(new Rectangle(30, 200, 20, 20), end.getBounds());
 		assertTrue(end.isFinal());
@@ -167,7 +167,7 @@ public class TestUsageScenarios
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());
 		
-		assertEquals(new Rectangle(9, 3, 38, 27), edge1.getBounds());
+		assertEquals(new Rectangle(11, 5, 38, 25), edge1.getBounds());
 		assertEquals("Edge 1", edge1.getMiddleLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());

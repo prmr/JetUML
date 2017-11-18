@@ -554,7 +554,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(520, 310, 80, 60), s3.getBounds());
 		assertEquals("S3", s3.getName().toString());
 		
-		assertEquals(new Rectangle(150, 70, 14, 14), start.getBounds());
+		assertEquals(new Rectangle(150, 70, 20, 20), start.getBounds());
 		assertFalse(start.isFinal());
 		
 		assertEquals(new Rectangle(640, 230, 20, 20), end.getBounds());
@@ -581,7 +581,7 @@ public class TestPersistenceService
 		assertEquals(note, ne.getStart());
 		assertEquals(point, ne.getEnd());
 		
-		assertEquals(new Rectangle(164, 70, 86, 39), fromStart.getBounds());
+		assertEquals(new Rectangle(170, 72, 80, 38), fromStart.getBounds());
 		assertEquals(start, fromStart.getStart());
 		assertEquals(s1, fromStart.getEnd());
 		assertEquals("start", fromStart.getMiddleLabel().toString());
