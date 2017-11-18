@@ -34,10 +34,10 @@ import java.lang.reflect.Modifier;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.AbstractNode;
+import ca.mcgill.cs.stg.jetuml.graph.nodes.AbstractNode2;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).
@@ -114,8 +114,8 @@ public final class PersistenceService
       
 		Graph.setPersistenceDelegate(encoder);
 		AbstractNode.setPersistenceDelegate(encoder);
+		AbstractNode2.setPersistenceDelegate(encoder);
 		PackageNode.setPersistenceDelegate(encoder);
-		PointNode.setPersistenceDelegate(encoder);
 		ObjectNode.setPersistenceDelegate(encoder);
 		ImplicitParameterNode.setPersistenceDelegate(encoder);
 		

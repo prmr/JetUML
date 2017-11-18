@@ -47,6 +47,16 @@ public interface Node extends GraphElement
 	{
 		return new Point(0, 0);
 	}
+	
+	/**
+	 * Move the position of the node to pPoint.
+	 * 
+	 * @param pPoint The new position of the node.
+	 */
+	default void moveTo(Point pPoint)
+	{
+		// TODO make non-default once all Node classes are subclasses of AbstractNode2
+	}
 
 	/**
      * Translates the node by a given amount.

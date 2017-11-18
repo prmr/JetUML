@@ -21,30 +21,57 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
+
+import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.StateNodeView;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Graph;
 
 /**
    A node in a state diagram.
 */
-public class StateNode extends AbstractNode2
+public class StateNodeOld extends RectangularNode
 {
+	private static final int ARC_SIZE = 20;
+	private static final int DEFAULT_WIDTH = 80;
+	private static final int DEFAULT_HEIGHT = 60;
 	
 	private MultiLineString aName;
 
 	/**
      * Construct a state node with a default size.
 	 */
-	public StateNode()
+	public StateNodeOld()
 	{
 		aName = new MultiLineString();
+		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
-	
+
 	@Override
-	protected NodeView generateView()
+	public void draw(Graphics2D pGraphics2D)
 	{
-		return new StateNodeView(this);
+		super.draw(pGraphics2D);
+		pGraphics2D.draw(getShape());
+		aName.draw(pGraphics2D, getBounds());
+	}
+   
+	@Override
+	public Shape getShape()
+	{       
+		return new RoundRectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+   }
+
+	@Override	
+	public void layout(Graph pGraph)
+	{
+		Rectangle b = aName.getBounds();
+		b = new Rectangle(getBounds().getX(), getBounds().getY(), 
+				Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
+		setBounds(Grid.snapped(b));
 	}
 
 	/**
@@ -66,9 +93,9 @@ public class StateNode extends AbstractNode2
 	}
 
 	@Override
-	public StateNode clone()
+	public StateNodeOld clone()
 	{
-		StateNode cloned = (StateNode)super.clone();
+		StateNodeOld cloned = (StateNodeOld)super.clone();
 		cloned.aName = aName.clone();
 		return cloned;
 	}

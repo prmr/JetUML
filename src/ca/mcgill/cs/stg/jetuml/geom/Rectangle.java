@@ -186,6 +186,14 @@ public class Rectangle
 				pRectangle.getMaxY() <= aY + aHeight;
 	}
 	
+	/**
+	 * @return The top left corner of the rectangle.
+	 */
+	public Point getOrigin()
+	{
+		return new Point(aX, aY);
+	}
+	
 	@Override
 	public int hashCode()
 	{

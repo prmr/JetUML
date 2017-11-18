@@ -1,6 +1,9 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import java.awt.Graphics2D;
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
@@ -54,6 +57,12 @@ public abstract class AbstractNode2 implements Node
 	{
 		return aPosition;
 	}
+	
+	@Override
+	public void moveTo(Point pPoint)
+	{
+		aPosition = pPoint;
+	}
 
 	@Override
 	public void draw(Graphics2D pGraphics2D)
@@ -92,6 +101,31 @@ public abstract class AbstractNode2 implements Node
 		{
 			return null;
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " " + getBounds();
+	}
+	
+	/**
+	 * The persistence delegate recovers the position of the point.
+	 * 
+	 * @param pEncoder the encoder to which to add the delegate
+	 */
+	public static void setPersistenceDelegate(Encoder pEncoder)
+	{
+		pEncoder.setPersistenceDelegate(AbstractNode2.class, new DefaultPersistenceDelegate()
+		{
+			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
+			{
+				super.initialize(pType, pOldInstance, pNewInstance, pOut);
+				int x = ((Node)pOldInstance).position().getX();
+				int y = ((Node)pOldInstance).position().getY();
+				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
+			}
+		});
 	}
 	
 }

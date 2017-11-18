@@ -21,10 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
-
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PointNodeView;
 
@@ -39,24 +35,5 @@ public class PointNode extends AbstractNode2
 	protected NodeView generateView()
 	{
 		return new PointNodeView(this);
-	}
-
-	/**
-	 * The persistence delegate recovers the position of the point.
-	 * 
-	 * @param pEncoder the encoder to which to add the delegate
-	 */
-	public static void setPersistenceDelegate(Encoder pEncoder)
-	{
-		pEncoder.setPersistenceDelegate(PointNode.class, new DefaultPersistenceDelegate()
-		{
-			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-			{
-				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				int x = ((PointNode)pOldInstance).position().getX();
-				int y = ((PointNode)pOldInstance).position().getY();
-				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
-			}
-		});
 	}
 }
