@@ -45,7 +45,7 @@ public class UseCaseNodeView extends AbstractNodeView
 	@Override
 	public Shape getShape()
 	{
-		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), getBounds().getHeight());
+		return new Ellipse2D.Double(node().position().getX(), node().position().getY(), aWidth, aHeight);
 	}
 	
 	private MultiLineString name()

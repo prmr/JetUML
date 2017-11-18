@@ -21,54 +21,17 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.UseCaseNodeView;
 
 /**
  *  A use case node in a use case diagram.
  */
-public class UseCaseNode extends AbstractNode2
+public class UseCaseNode extends NamedNode
 {
-	private MultiLineString aName;
-
-	/**
-     * Construct a use case node with a default size.
-	 */
-	public UseCaseNode()
-	{
-		aName = new MultiLineString();
-	}
-	
 	@Override
 	protected NodeView generateView()
 	{
 		return new UseCaseNodeView(this);
-	}
-	
-	/**
-     * Sets the name property value.
-     * @param pName the new use case name
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the use case name
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
-	}
-
-	@Override
-	public UseCaseNode clone()
-	{
-		UseCaseNode cloned = (UseCaseNode) super.clone();
-		cloned.aName = aName.clone();
-		return cloned;
 	}
 }

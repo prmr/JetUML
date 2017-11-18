@@ -21,17 +21,38 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.StateNodeView;
+import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 
 /**
-   A state node in a state diagram.
+   A node with a name.
 */
-public class StateNode extends NamedNode
+public abstract class NamedNode extends AbstractNode2
 {
-	@Override
-	protected NodeView generateView()
+	private MultiLineString aName = new MultiLineString();
+
+	/**
+     * Sets the name property value.
+     * @param pName the new state name
+	 */
+	public void setName(MultiLineString pName)
 	{
-		return new StateNodeView(this);
+		aName = pName;
+	}
+
+	/**
+     * Gets the name property value.
+     * @return the state name
+	 */
+	public MultiLineString getName()
+	{
+		return aName;
+	}
+
+	@Override
+	public NamedNode clone()
+	{
+		NamedNode clone = (NamedNode)super.clone();
+		clone.aName = aName.clone();
+		return clone;
 	}
 }
