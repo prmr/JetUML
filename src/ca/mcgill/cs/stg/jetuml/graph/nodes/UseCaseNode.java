@@ -21,21 +21,15 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.UseCaseNodeView;
 
 /**
  *  A use case node in a use case diagram.
  */
-public class UseCaseNode extends RectangularNode
+public class UseCaseNode extends AbstractNode2
 {
-	private static final int DEFAULT_WIDTH = 110;
-	private static final int DEFAULT_HEIGHT = 40;
-	
 	private MultiLineString aName;
 
 	/**
@@ -44,23 +38,14 @@ public class UseCaseNode extends RectangularNode
 	public UseCaseNode()
 	{
 		aName = new MultiLineString();
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	protected NodeView generateView()
 	{
-		super.draw(pGraphics2D);      
-		pGraphics2D.draw(getShape());
-		aName.draw(pGraphics2D, getBounds());
+		return new UseCaseNodeView(this);
 	}
-   
-	@Override
-	public Shape getShape()
-	{
-		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), getBounds().getHeight());
-	}
-   
+	
 	/**
      * Sets the name property value.
      * @param pName the new use case name
