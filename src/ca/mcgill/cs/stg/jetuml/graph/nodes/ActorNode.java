@@ -21,118 +21,27 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.geom.GeneralPath;
-
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
-import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ActorNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
- *   An actor node in a use case diagram.
+ *  An actor node in a use case diagram.
  */
-public class ActorNode extends RectangularNode
+public class ActorNode extends NamedNode
 {
-	// Bounding rectangle
-	private static final int DEFAULT_WIDTH  = 48;
-	private static final int DEFAULT_HEIGHT = 64;
+	private static final String DEFAULT_NAME = "Actor";
 	
-	// Stick man
-	// CSOFF:
-	private static final int GAP_ABOVE = 4;
-	private static final int HEAD_SIZE = DEFAULT_WIDTH*4/12;
-	private static final int BODY_SIZE = DEFAULT_WIDTH*5/12;
-	private static final int LEG_SIZE  = DEFAULT_WIDTH*5/12;
-	private static final int ARMS_SIZE = DEFAULT_WIDTH*6/12; 
-	// CSON:
-	
-	private MultiLineString aName;
-
 	/**
      * Construct an actor node with a default size and name.
 	 */
 	public ActorNode()
 	{
-		aName = new MultiLineString();
-		aName.setText("Actor");
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-	}
-   
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = aName.getBounds();
-		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
-            Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
-		setBounds(Grid.snapped(bounds));
-	}
-    
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{	
-		Rectangle bounds = getBounds();
-
-		// Draw stick person
-		GeneralPath path = new GeneralPath();
-		float neckX = (float) (bounds.getX() + bounds.getWidth() / 2);
-		float neckY = (float) (bounds.getY() + HEAD_SIZE + GAP_ABOVE);
-		// head
-		path.moveTo(neckX, neckY);
-		path.quadTo(neckX + HEAD_SIZE / 2, neckY, neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE / 2);
-		path.quadTo(neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX, neckY - HEAD_SIZE);
-		path.quadTo(neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX-HEAD_SIZE / 2, neckY - HEAD_SIZE / 2);
-		path.quadTo(neckX - HEAD_SIZE / 2, neckY, neckX, neckY);
-		// body
-		float hipX = neckX;
-		float hipY = neckY + BODY_SIZE;
-		path.lineTo(hipX, hipY);
-		// arms
-		path.moveTo(neckX - ARMS_SIZE / 2, neckY + BODY_SIZE / 3);
-		path.lineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3);
-		// legs
-		float dx = (float) (LEG_SIZE / Math.sqrt(2));
-		float feetX1 = hipX - dx;
-		float feetX2 = hipX + dx + 1;
-		float feetY  = hipY + dx + 1;
-		path.moveTo(feetX1, feetY);
-		path.lineTo(hipX, hipY);
-		path.lineTo(feetX2, feetY);
-
-		pGraphics2D.draw(path);
-
-		// Draw name
-		Rectangle nameBox = aName.getBounds();
-
-		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
-				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		aName.draw(pGraphics2D, namebox);
-	}
-
-	/**
-     * Sets the name property value.
-     * @param pNewValue the new actor name
-     */
-	public void setName(MultiLineString pNewValue)
-	{
-		aName = pNewValue;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return The name.
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
+		getName().setText(DEFAULT_NAME);
 	}
 	
 	@Override
-	public ActorNode clone()
+	protected NodeView generateView()
 	{
-		ActorNode cloned = (ActorNode) super.clone();
-		cloned.aName = aName.clone();
-		return cloned;
-	} 
+		return new ActorNodeView(this);
+	}
 }

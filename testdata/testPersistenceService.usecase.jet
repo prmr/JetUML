@@ -42,26 +42,18 @@
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode" id="ActorNode0">
-    <void property="bounds">
-     <void property="x">
-       <int>270</int>
+     <void method="translate">
+      <int>270</int>
+      <int>50</int>
      </void>
-     <void property="y">
-       <int>50</int>
-     </void>
-    </void>
    </object>
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode" id="ActorNode1">
-    <void property="bounds">
-     <void property="x">
-       <int>280</int>
+     <void method="translate">
+      <int>280</int>
+      <int>230</int>
      </void>
-     <void property="y">
-       <int>230</int>
-     </void>
-    </void>
     <void property="name">
      <void property="text">
       <string>Actor2</string>
@@ -109,14 +101,10 @@
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode" id="ActorNode2">
-    <void property="bounds">
-     <void property="x">
-       <int>190</int>
+     <void method="translate">
+      <int>190</int>
+      <int>140</int>
      </void>
-     <void property="y">
-       <int>140</int>
-     </void>
-    </void>
     <void property="name">
      <void property="text">
       <string>Actor3</string>
