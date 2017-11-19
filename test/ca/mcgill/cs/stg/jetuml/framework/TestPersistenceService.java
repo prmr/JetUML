@@ -634,7 +634,7 @@ public class TestPersistenceService
 		
 		FieldNode name = (FieldNode) children.get(0);
 		assertEquals(new Rectangle(253, 209, 60, 20), name.getBounds());
-		assertEquals(0,name.getAxisX(),0.000001);
+		assertEquals(47,name.obtainAxis());
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
@@ -649,21 +649,21 @@ public class TestPersistenceService
 		FieldNode name4 = (FieldNode) children.get(2);
 		
 		assertEquals(new Rectangle(446, 367, 60, 20), name2.getBounds());
-		assertEquals(0,name2.getAxisX(),0.000001);
+		assertEquals(54,name2.obtainAxis());
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		assertFalse(name2.isBoxedValue());
 		
 		assertEquals(new Rectangle(445, 388, 60, 20), name3.getBounds());
-		assertEquals(0,name3.getAxisX(),0.000001);
+		assertEquals(54,name3.obtainAxis());
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		assertTrue(name3.isBoxedValue());
 		
 		assertEquals(new Rectangle(445, 409, 60, 20), name4.getBounds());
-		assertEquals(0,name4.getAxisX(),0.000001);
+		assertEquals(54,name4.obtainAxis());
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
@@ -697,11 +697,11 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle(283, 160, 57, 59), o1.getBounds());
+		assertEquals(new Rectangle(306, 160, 34, 59), o1.getBounds());
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle(283, 219, 157, 101), o2.getBounds());
+		assertEquals(new Rectangle(306, 219, 134, 101), o2.getBounds());
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
@@ -712,7 +712,7 @@ public class TestPersistenceService
 		assertEquals(blank, cr1.getStart());
 		assertEquals("", cr1.getStartLabel().toString());
 		
-		assertEquals(new Rectangle(475, 330, 135, 89), o3.getBounds());
+		assertEquals(new Rectangle(502, 330, 108, 89), o3.getBounds());
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		

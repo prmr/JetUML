@@ -20,13 +20,17 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
  */
 public class FieldNodeView extends RectangleBoundedNodeView
 {
-	public static final int DEFAULT_WIDTH = 60;
-	public static final int DEFAULT_HEIGHT = 20;
+	private static final MultiLineString EQUALS = new MultiLineString();
+	private static final int DEFAULT_WIDTH = 60;
+	private static final int DEFAULT_HEIGHT = 20;
 	
-	private Rectangle aNameBounds;
+	static
+	{
+		EQUALS.setText(" = ");
+	}
+	
 	private Rectangle aValueBounds;
 	private double aBoxWidth;
-	private double aAxisX;
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -64,23 +68,11 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics2D);
 		final Rectangle b = getBounds();
-		int leftWidth = name().getBounds().getWidth();
-		MultiLineString equal = new MultiLineString();
-		equal.setText(" = ");
-		int midWidth = equal.getBounds().getWidth();
-      
-		int rightWidth = value().getBounds().getWidth();
-		if(rightWidth == 0)
-		{
-			rightWidth = DEFAULT_WIDTH / 2;
-		}
-		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
-
-		aNameBounds = new Rectangle(b.getX(), b.getY(), leftWidth, b.getHeight());
-		name().draw(pGraphics2D, aNameBounds);
-		Rectangle mid = new Rectangle(b.getX() + leftWidth, b.getY(), midWidth, b.getHeight());
-		equal.draw(pGraphics2D, mid);
-		aValueBounds = new Rectangle(b.getMaxX() - rightWidth, b.getY(), rightWidth, b.getHeight());
+		
+		name().draw(pGraphics2D, new Rectangle(b.getX(), b.getY(), leftWidth(), b.getHeight()));
+		Rectangle mid = new Rectangle(b.getX() + leftWidth(), b.getY(), midWidth(), b.getHeight());
+		EQUALS.draw(pGraphics2D, mid);
+		aValueBounds = new Rectangle(b.getMaxX() - rightWidth(), b.getY(), rightWidth(), b.getHeight());
 		if(boxedValue())
 		{
 			value().setJustification(MultiLineString.CENTER);
@@ -96,29 +88,37 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		}
 	}
 	
-	@Override
-	public void layout(Graph pGraph)
+	private int leftWidth()
 	{
-		aNameBounds = name().getBounds(); 
-		aValueBounds = value().getBounds();
-		MultiLineString equal = new MultiLineString();
-		equal.setText(" = ");
-		Rectangle e = equal.getBounds();
-		int leftWidth = aNameBounds.getWidth();
-		int midWidth = e.getWidth();
-		int rightWidth = aValueBounds.getWidth();
+		return name().getBounds().getWidth();
+	}
+	
+	private int midWidth()
+	{
+		return EQUALS.getBounds().getWidth();
+	}
+	
+	private int rightWidth()
+	{
+		int rightWidth = value().getBounds().getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
-		double width = leftWidth + midWidth + rightWidth;
-		double height = Math.max(aNameBounds.getHeight(), Math.max(aValueBounds.getHeight(), e.getHeight()));
+		return (int) Math.max(rightWidth, aBoxWidth - midWidth() / 2.0);
+	}
+	
+	@Override
+	public void layout(Graph pGraph)
+	{
+		aValueBounds = value().getBounds();
+		double width = leftWidth() + midWidth() + rightWidth();
+		double height = Math.max(name().getBounds().getHeight(), Math.max(aValueBounds.getHeight(), EQUALS.getBounds().getHeight()));
 
 		Rectangle bounds = getBounds();
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
-		aAxisX = leftWidth + midWidth / 2;
-		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth, bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
+		bounds = getBounds();
+		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
 	}
 	
 	/**
@@ -134,15 +134,15 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		Rectangle b = getBounds();
-		return new Point((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenter().getY());
+		return new Point((b.getMaxX() + b.getX() + getAxis()) / 2, b.getCenter().getY());
 	}
 	
 	/**
 	 * @return The axis.
 	 */
-	public double getAxis()
+	public int getAxis()
 	{
-		return aAxisX;
+		return leftWidth() + midWidth() / 2;
 	}
 	
 	@Override

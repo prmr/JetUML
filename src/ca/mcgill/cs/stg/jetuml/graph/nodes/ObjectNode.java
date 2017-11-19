@@ -110,7 +110,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 			f.layout(pGraph);
 			Rectangle b2 = f.getBounds();
 			height += b2.getHeight() + YGAP;   
-			double axis = f.getAxisX();
+			double axis = f.obtainAxis();
 			leftWidth = Math.max(leftWidth, axis);
 			rightWidth = Math.max(rightWidth, b2.getWidth() - axis);
 		}
@@ -128,7 +128,7 @@ public class ObjectNode extends RectangularNode implements ParentNode
 		{
 			FieldNode f = (FieldNode)fields.get(i);
 			Rectangle b2 = f.getBounds();
-			f.setBounds(new Rectangle((int)(xmid - f.getAxisX()), (int)ytop, (int)(f.getAxisX() + rightWidth), b2.getHeight()));
+			f.setBounds(new Rectangle((int)(xmid - f.obtainAxis()), (int)ytop, (int)(f.obtainAxis() + rightWidth), b2.getHeight()));
 			f.setBoxWidth(rightWidth);
 			ytop += f.getBounds().getHeight() + YGAP;
 		}

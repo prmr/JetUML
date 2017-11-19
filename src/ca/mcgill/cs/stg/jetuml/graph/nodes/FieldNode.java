@@ -108,7 +108,7 @@ public class FieldNode extends NamedNode implements ChildNode
      * of the = sign) from the left corner of the bounding rectangle.
      * @return the x-offset of the axis
 	 */
-	public double getAxisX()
+	public int obtainAxis()
 	{
 		return ((FieldNodeView)view()).getAxis();
 	}
