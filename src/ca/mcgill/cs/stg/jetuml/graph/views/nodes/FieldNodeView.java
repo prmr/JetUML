@@ -28,8 +28,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		EQUALS.setText(" = ");
 	}
 	
-	private Rectangle aValueBounds;
-	
 	/**
 	 * @param pNode The node to wrap.
 	 */
@@ -60,13 +58,10 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		final Rectangle b = getBounds();
-		
-		name().draw(pGraphics2D, new Rectangle(b.getX(), b.getY(), leftWidth(), b.getHeight()));
-		Rectangle mid = new Rectangle(b.getX() + leftWidth(), b.getY(), midWidth(), b.getHeight());
-		EQUALS.draw(pGraphics2D, mid);
-		aValueBounds = new Rectangle(b.getMaxX() - rightWidth(), b.getY(), rightWidth(), b.getHeight());
-		value().draw(pGraphics2D, aValueBounds);
+		final Rectangle bounds = getBounds();
+		name().draw(pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
+		EQUALS.draw(pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
+		value().draw(pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
 	}
 	
 	private int leftWidth()
@@ -92,21 +87,17 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		aValueBounds = value().getBounds();
-		double width = leftWidth() + midWidth() + rightWidth();
-		double height = Math.max(name().getBounds().getHeight(), Math.max(aValueBounds.getHeight(), EQUALS.getBounds().getHeight()));
-
-		Rectangle bounds = getBounds();
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
-		bounds = getBounds();
-		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
+		final int width = leftWidth() + midWidth() + rightWidth();
+		final int height = Math.max(name().getBounds().getHeight(), Math.max(value().getBounds().getHeight(), EQUALS.getBounds().getHeight()));
+		final Rectangle bounds = getBounds();
+		setBounds(new Rectangle(bounds.getX(), bounds.getY(), width, height));
 	}
 	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
-		Rectangle b = getBounds();
-		return new Point((b.getMaxX() + b.getX() + getAxis()) / 2, b.getCenter().getY());
+		Rectangle bounds = getBounds();
+		return new Point((bounds.getMaxX() + bounds.getX() + getAxis()) / 2, bounds.getCenter().getY());
 	}
 	
 	/**
