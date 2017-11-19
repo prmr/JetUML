@@ -5,7 +5,6 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -30,7 +29,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	}
 	
 	private Rectangle aValueBounds;
-	private double aBoxWidth;
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -48,11 +46,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	private MultiLineString value()
 	{
 		return ((FieldNode)node()).getValue();
-	}
-	
-	private boolean boxedValue()
-	{
-		return ((FieldNode)node()).isBoxedValue();
 	}
 	
 	/**
@@ -73,19 +66,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		Rectangle mid = new Rectangle(b.getX() + leftWidth(), b.getY(), midWidth(), b.getHeight());
 		EQUALS.draw(pGraphics2D, mid);
 		aValueBounds = new Rectangle(b.getMaxX() - rightWidth(), b.getY(), rightWidth(), b.getHeight());
-		if(boxedValue())
-		{
-			value().setJustification(MultiLineString.CENTER);
-		}
-		else
-		{
-			name().setJustification(MultiLineString.LEFT);
-		}
 		value().draw(pGraphics2D, aValueBounds);
-		if(boxedValue())
-		{
-			pGraphics2D.draw(Conversions.toRectangle2D(aValueBounds));
-		}
 	}
 	
 	private int leftWidth()
@@ -105,7 +86,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		return (int) Math.max(rightWidth, aBoxWidth - midWidth() / 2.0);
+		return rightWidth;
 	}
 	
 	@Override
@@ -119,15 +100,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
 		bounds = getBounds();
 		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
-	}
-	
-	/**
-     * Sets the box width.
-     * @param pBoxWidth the new box width
-	 */
-	public void setBoxWidth(double pBoxWidth)
-	{
-		aBoxWidth = pBoxWidth;
 	}
 	
 	@Override
@@ -148,13 +120,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	@Override
 	public Shape getShape()
 	{
-		if(boxedValue())
-		{
-			return Conversions.toRectangle2D(aValueBounds);
-		}
-		else
-		{
-			return new Rectangle2D.Double();
-		}
+		return new Rectangle2D.Double();
 	}
 }

@@ -32,7 +32,6 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 public class FieldNode extends NamedNode implements ChildNode
 {
 	private MultiLineString aValue;
-	private boolean aBoxedValue = false;
 	private ObjectNode aObject; // The object defining this field
 
 	/**
@@ -66,33 +65,6 @@ public class FieldNode extends NamedNode implements ChildNode
 	public MultiLineString getValue()
 	{
 		return aValue;
-	}
-
-	/**
-     * Sets the box width.
-     * @param pBoxWidth the new box width
-	 */
-	public void setBoxWidth(double pBoxWidth)
-	{
-		((FieldNodeView)view()).setBoxWidth(pBoxWidth);
-	}
-   
-	/**
-     * Sets the boxedValue property value.
-     * @param pNewValue the new property value
-	 */
-	public void setBoxedValue(boolean pNewValue)
-	{
-		aBoxedValue = pNewValue;
-	}
-
-	/**
-     * Gets the boxedValue property value.
-     * @return the property value
-	 */
-	public boolean isBoxedValue()
-	{
-		return aBoxedValue;
 	}
 
 	@Override

@@ -638,7 +638,6 @@ public class TestPersistenceService
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
-		assertFalse(name.isBoxedValue());
 
 		assertEquals(new Rectangle(440, 290, 80, 60), blank.getBounds());
 		children = blank.getChildren();
@@ -653,21 +652,18 @@ public class TestPersistenceService
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
-		assertFalse(name2.isBoxedValue());
 		
 		assertEquals(new Rectangle(445, 388, 60, 20), name3.getBounds());
 		assertEquals(54,name3.obtainAxis());
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
-		assertTrue(name3.isBoxedValue());
 		
 		assertEquals(new Rectangle(445, 409, 60, 20), name4.getBounds());
 		assertEquals(54,name4.obtainAxis());
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
-		assertFalse(name4.isBoxedValue());
 
 		assertEquals(new Rectangle(540, 150, 80, 60), object2.getBounds());
 		children = object2.getChildren();

@@ -111,12 +111,11 @@ public class TestPropertyChangeTracker
 	
 		aTracker.startTrackingPropertyChange(node);
 		node.getName().setText("Foo");
-		node.setBoxedValue(true);
 		node.setValue(new MultiLineString());
 		
 		CompoundCommand command = aTracker.stopTrackingPropertyChange(new ObjectDiagramGraph());
 		Stack<Command> commands = getChildCommands(command);
-		assertEquals(3, commands.size());
+		assertEquals(2, commands.size());
 		
 		PropertyChangeCommand pcc = (PropertyChangeCommand)commands.pop();
 		assertEquals("value", getPropertyName(pcc, node));
@@ -129,12 +128,6 @@ public class TestPropertyChangeTracker
 		assertEquals(node, getFieldValue(aObjectField, pcc));
 		assertEquals(oldName, getFieldValue(aOldValueField, pcc));
 		assertEquals(node.getName(), getFieldValue(aNewValueField, pcc));
-		
-		pcc = (PropertyChangeCommand)commands.pop();
-		assertEquals("boxedValue", getPropertyName(pcc, node));
-		assertEquals(node, getFieldValue(aObjectField, pcc));
-		assertEquals(false, getFieldValue(aOldValueField, pcc));
-		assertEquals(true, getFieldValue(aNewValueField, pcc));
 	}
 	
 	@Test

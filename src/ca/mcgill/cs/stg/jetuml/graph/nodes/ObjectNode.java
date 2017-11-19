@@ -129,7 +129,6 @@ public class ObjectNode extends RectangularNode implements ParentNode
 			FieldNode f = (FieldNode)fields.get(i);
 			Rectangle b2 = f.getBounds();
 			f.setBounds(new Rectangle((int)(xmid - f.obtainAxis()), (int)ytop, (int)(f.obtainAxis() + rightWidth), b2.getHeight()));
-			f.setBoxWidth(rightWidth);
 			ytop += f.getBounds().getHeight() + YGAP;
 		}
 	}
