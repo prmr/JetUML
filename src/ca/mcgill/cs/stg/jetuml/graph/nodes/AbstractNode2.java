@@ -47,6 +47,12 @@ public abstract class AbstractNode2 implements Node
 	protected abstract NodeView generateView();
 	
 	@Override
+	public NodeView view()
+	{
+		return aView;
+	}
+	
+	@Override
 	public Rectangle getBounds()
 	{
 		return aView.getBounds();

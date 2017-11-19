@@ -18,14 +18,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode" id="FieldNode0">
-      <void property="bounds">
-       <void property="x">
-         <int>253</int>
+       <void method="translate">
+        <int>253</int>
+        <int>209</int>
        </void>
-       <void property="y">
-         <int>209</int>
-       </void>
-      </void>
       <void property="name">
        <void property="justification">
         <int>0</int>
@@ -53,14 +49,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode">
-      <void property="bounds">
-       <void property="x">
-         <int>446</int>
+       <void method="translate">
+        <int>446</int>
+        <int>367</int>
        </void>
-       <void property="y">
-         <int>367</int>
-       </void>
-      </void>
       <void property="name">
        <void property="justification">
         <int>0</int>
@@ -81,14 +73,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode">
-      <void property="bounds">
-       <void property="x">
-         <int>445</int>
+       <void method="translate">
+        <int>445</int>
+        <int>388</int>
        </void>
-       <void property="y">
-         <int>388</int>
-       </void>
-      </void>
         <void property="boxedValue">
        <boolean>true</boolean>
       </void>
@@ -112,14 +100,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode" id="FieldNode1">
-      <void property="bounds">
-       <void property="x">
-         <int>445</int>
+       <void method="translate">
+        <int>445</int>
+        <int>409</int>
        </void>
-       <void property="y">
-         <int>409</int>
-       </void>
-      </void>
       <void property="name">
        <void property="justification">
         <int>0</int>

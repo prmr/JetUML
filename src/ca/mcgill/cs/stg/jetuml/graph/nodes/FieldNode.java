@@ -21,31 +21,18 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
-import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.FieldNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends RectangularNode implements ChildNode
+public class FieldNode extends NamedNode implements ChildNode
 {
-	public static final int DEFAULT_WIDTH = 60;
-	public static final int DEFAULT_HEIGHT = 20;
-	
-	private double aAxisX;
-	private MultiLineString aName;
 	private MultiLineString aValue;
-	private Rectangle aNameBounds;
-	private Rectangle aValueBounds;
-	private boolean aBoxedValue;
-	private double aBoxWidth;
+	private boolean aBoxedValue = false;
 	private ObjectNode aObject; // The object defining this field
 
 	/**
@@ -53,97 +40,14 @@ public class FieldNode extends RectangularNode implements ChildNode
 	 */
 	public FieldNode()
 	{
-		aName = new MultiLineString();
-		aName.setJustification(MultiLineString.RIGHT);
+		getName().setJustification(MultiLineString.RIGHT);
 		aValue = new MultiLineString();
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		super.draw(pGraphics2D);
-		Rectangle b = getBounds();
-		int leftWidth = aName.getBounds().getWidth();
-		MultiLineString equal = new MultiLineString();
-		equal.setText(" = ");
-		int midWidth = equal.getBounds().getWidth();
-      
-		int rightWidth = aValue.getBounds().getWidth();
-		if(rightWidth == 0)
-		{
-			rightWidth = DEFAULT_WIDTH / 2;
-		}
-		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
-
-		aNameBounds = new Rectangle(b.getX(), b.getY(), leftWidth, b.getHeight());
-		aName.draw(pGraphics2D, aNameBounds);
-		Rectangle mid = new Rectangle(b.getX() + leftWidth, b.getY(), midWidth, b.getHeight());
-		equal.draw(pGraphics2D, mid);
-		aValueBounds = new Rectangle(b.getMaxX() - rightWidth, b.getY(), rightWidth, b.getHeight());
-		if(aBoxedValue)
-		{
-			aValue.setJustification(MultiLineString.CENTER);
-		}
-		else
-		{
-			aName.setJustification(MultiLineString.LEFT);
-		}
-		aValue.draw(pGraphics2D, aValueBounds);
-		if(aBoxedValue)
-		{
-			pGraphics2D.draw(Conversions.toRectangle2D(aValueBounds));
-		}
-	}
 	
 	@Override
-	public Point getConnectionPoint(Direction pDirection)
+	protected NodeView generateView()
 	{
-		Rectangle b = getBounds();
-		return new Point((b.getMaxX() + b.getX() + aAxisX) / 2, b.getCenter().getY());
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		aNameBounds = aName.getBounds(); 
-		aValueBounds = aValue.getBounds();
-		MultiLineString equal = new MultiLineString();
-		equal.setText(" = ");
-		Rectangle e = equal.getBounds();
-		int leftWidth = aNameBounds.getWidth();
-		int midWidth = e.getWidth();
-		int rightWidth = aValueBounds.getWidth();
-		if(rightWidth == 0)
-		{
-			rightWidth = DEFAULT_WIDTH / 2;
-		}
-		rightWidth = (int) Math.max(rightWidth, aBoxWidth - midWidth / 2.0);
-		double width = leftWidth + midWidth + rightWidth;
-		double height = Math.max(aNameBounds.getHeight(), Math.max(aValueBounds.getHeight(), e.getHeight()));
-
-		Rectangle bounds = getBounds();
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), (int)width, (int)height));
-		aAxisX = leftWidth + midWidth / 2;
-		aValueBounds = new Rectangle(bounds.getMaxX() - rightWidth, bounds.getY(), aValueBounds.getWidth(), aValueBounds.getHeight());
-	}
-
-	/**
-     * Sets the name property value.
-     * @param pName the field name
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the field name
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
+		return new FieldNodeView(this);
 	}
 
 	/**
@@ -170,7 +74,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 	 */
 	public void setBoxWidth(double pBoxWidth)
 	{
-		aBoxWidth = pBoxWidth;
+		((FieldNodeView)view()).setBoxWidth(pBoxWidth);
 	}
    
 	/**
@@ -194,8 +98,7 @@ public class FieldNode extends RectangularNode implements ChildNode
 	@Override
 	public FieldNode clone()
 	{
-		FieldNode cloned = (FieldNode)super.clone();
-		cloned.aName = aName.clone();
+		FieldNode cloned = (FieldNode) super.clone();
 		cloned.aValue = aValue.clone();
 		return cloned;
 	}
@@ -207,20 +110,15 @@ public class FieldNode extends RectangularNode implements ChildNode
 	 */
 	public double getAxisX()
 	{
-		return aAxisX;
+		return ((FieldNodeView)view()).getAxis();
 	}
-   
-	@Override
-	public Shape getShape()
+	
+	/**
+	 * @param pBounds The new bounds
+	 */
+	public void setBounds(Rectangle pBounds)
 	{
-		if(aBoxedValue)
-		{
-			return Conversions.toRectangle2D(aValueBounds);
-		}
-		else
-		{
-			return null;
-		}
+		((FieldNodeView)view()).setBounds(pBounds);
 	}
 
 	@Override

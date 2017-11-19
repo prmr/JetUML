@@ -27,6 +27,7 @@ import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
   * A node in a graph.
@@ -92,4 +93,13 @@ public interface Node extends GraphElement
 	 * @return A clone of the node.
 	 */
 	Node clone();
+	
+	/**
+	 * @return The view for this node. TODO remove default
+	 */
+	default NodeView view()
+	{
+		assert false;
+		return null;
+	}
 }
