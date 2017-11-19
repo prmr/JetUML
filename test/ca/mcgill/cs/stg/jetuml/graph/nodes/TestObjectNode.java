@@ -23,8 +23,6 @@ package ca.mcgill.cs.stg.jetuml.graph.nodes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.awt.geom.Rectangle2D;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,8 +30,6 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
 
 public class TestObjectNode
 {
@@ -61,7 +57,6 @@ public class TestObjectNode
 		assertEquals(new Point(40,0), aObject1.getConnectionPoint(Direction.NORTH));
 		assertEquals(new Point(40,60), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
-		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), aObject1.getShape().getBounds());
 	}
 	
 	@Test
@@ -115,7 +110,6 @@ public class TestObjectNode
 		assertEquals(new Point(40,0), clone.getConnectionPoint(Direction.NORTH));
 		assertEquals(new Point(40,60), clone.getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
-		assertEquals(new Rectangle2D.Double(0, 0, 80, 60), clone.getShape().getBounds());
 		
 		MultiLineString f1 = new MultiLineString();
 		f1.setText("f1");

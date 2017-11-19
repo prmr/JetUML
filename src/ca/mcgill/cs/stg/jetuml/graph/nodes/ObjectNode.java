@@ -21,141 +21,57 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ObjectNodeView;
 
 /**
  *  An object node in an object diagram.
  */
-public class ObjectNode extends RectangularNode implements ParentNode
+public class ObjectNode extends NamedNode implements ParentNode
 {
-	private static final int DEFAULT_WIDTH = 80;
-	private static final int DEFAULT_HEIGHT = 60;
-	private static final int XGAP = 5;
-	private static final int YGAP = 5;
-
-	private int aTopHeight;
-	private MultiLineString aName;
-	private ArrayList<ChildNode> aFields;
+	private ArrayList<ChildNode> aFields = new ArrayList<>();
 
 	/**
 	 * Construct an object node with a default size.
 	 */
 	public ObjectNode()
 	{
-		aName = new MultiLineString(true);
-		aName.setUnderlined(true);
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		aFields = new ArrayList<>();
+		setName(new MultiLineString(true));
+		getName().setUnderlined(true);
 	}
-
+	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	protected NodeView generateView()
 	{
-		super.draw(pGraphics2D);
-		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		aName.draw(pGraphics2D, top);
+		return new ObjectNodeView(this);
 	}
 
 	/* 
-	 * Object Nodes are now responsible for translating their Field Node children.
+ 	 * Translate the children as well. 
+	 * 
+	 * @see ca.mcgill.cs.stg.jetuml.graph.nodes.AbstractNode2#translate(int, int)
 	 */
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		for (Node childNode : getChildren())
+		for(Node child : getChildren())
 		{
-			childNode.translate(pDeltaX, pDeltaY);
+			child.translate(pDeltaX, pDeltaY);
 		}   
 	}    
-
-	/**
-	 * Returns the rectangle at the top of the object node.
-	 * @return the top rectangle
-	 */
-	public Rectangle getTopRectangle()
-	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle b = aName.getBounds(); 
-		b = b.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
-		double leftWidth = 0;
-		double rightWidth = 0;
-		List<ChildNode> fields = getChildren();
-		int height = 0;
-		if( fields.size() != 0 )
-		{
-			height = YGAP;
-		}
-		for(int i = 0; i < fields.size(); i++)
-		{
-			FieldNode f = (FieldNode)fields.get(i);
-			f.layout(pGraph);
-			Rectangle b2 = f.getBounds();
-			height += b2.getHeight() + YGAP;   
-			double axis = f.obtainAxis();
-			leftWidth = Math.max(leftWidth, axis);
-			rightWidth = Math.max(rightWidth, b2.getWidth() - axis);
-		}
-		int width = (int) (2 * Math.max(leftWidth, rightWidth) + 2 * XGAP);
-		width = Math.max(width, b.getWidth());
-		width = Math.max(width, DEFAULT_WIDTH);
-		b = new Rectangle(getBounds().getX(), getBounds().getY(), width, b.getHeight() + height);
-		Rectangle snappedBounds = Grid.snapped(b);
-		setBounds(snappedBounds);
-		b = snappedBounds;
-		aTopHeight = b.getHeight() - height;
-		int ytop = (int)(b.getY() + aTopHeight + YGAP);
-		int xmid = b.getCenter().getX();
-		for(int i = 0; i < fields.size(); i++)
-		{
-			FieldNode f = (FieldNode)fields.get(i);
-			Rectangle b2 = f.getBounds();
-			f.setBounds(new Rectangle((int)(xmid - f.obtainAxis()), (int)ytop, (int)(f.obtainAxis() + rightWidth), b2.getHeight()));
-			ytop += f.getBounds().getHeight() + YGAP;
-		}
-	}
-
-	/**
-	 * Sets the name property value.
-	 * @param pName the new object name
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-	 * Gets the name property value.
-	 * @return the object name
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
-	}
 
 	@Override
 	public ObjectNode clone()
 	{
-		ObjectNode cloned = (ObjectNode)super.clone();
-		cloned.aName = aName.clone();
+		ObjectNode cloned = (ObjectNode) super.clone();
 		cloned.aFields = new ArrayList<>();
 		
 		for( ChildNode child : aFields )
@@ -165,7 +81,6 @@ public class ObjectNode extends RectangularNode implements ParentNode
 			clonedChild.setParent(cloned);
 			cloned.aFields.add(clonedChild);
 		}
-		
 		return cloned;
 	}
 

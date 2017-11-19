@@ -1,6 +1,9 @@
 package ca.mcgill.cs.stg.jetuml.graph.views.nodes;
 
+import java.awt.Shape;
+
 import ca.mcgill.cs.stg.jetuml.framework.Grid;
+import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
@@ -53,6 +56,12 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		node().moveTo(pNewBounds.getOrigin());
 		aWidth = pNewBounds.getWidth();
 		aHeight = pNewBounds.getHeight();
+	}
+	
+	@Override
+	protected Shape getShape()
+	{
+		return Conversions.toRectangle2D(getBounds());
 	}
 
 	/* 
