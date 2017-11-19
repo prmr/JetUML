@@ -61,15 +61,11 @@
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode" id="NoteNode0">
-    <void property="bounds">
-     <void property="x">
-       <int>690</int>
+     <void method="translate">
+      <int>690</int>
+      <int>320</int>
      </void>
-     <void property="y">
-       <int>320</int>
-     </void>
-    </void>
-    <void property="text">
+    <void property="name">
      <void property="text">
       <string>A note
 on two lines</string>

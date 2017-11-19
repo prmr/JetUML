@@ -117,9 +117,9 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(noteNode, new Point(50, 50));
 		name = new MultiLineString();
 		name.setText("something...\nsomething");
-		noteNode.setText(name);
+		noteNode.setName(name);
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals("something...\nsomething", noteNode.getText().getText());
+		assertEquals("something...\nsomething", noteNode.getName().getText());
 	}
 	
 	/**

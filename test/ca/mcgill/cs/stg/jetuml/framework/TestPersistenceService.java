@@ -184,7 +184,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(280, 230, 48, 64), a2.getBounds());
 		assertEquals("Actor2", a2.getName().toString());
 		
-		assertEquals("A note", n1.getText().getText());
+		assertEquals("A note", n1.getName().getText());
 		assertEquals(new Rectangle(700, 50, 60, 40), n1.getBounds());
 		
 		assertEquals(new Rectangle(567, 56, 0, 0), p1.getBounds());
@@ -302,7 +302,7 @@ public class TestPersistenceService
 		
 		NoteNode n1 = (NoteNode) nIterator.next();
 		assertEquals(new Rectangle(490, 160, 60, 40), n1.getBounds());
-		assertEquals("n1", n1.getText().toString());
+		assertEquals("n1", n1.getName().toString());
 
 		Collection<Edge> edges = pGraph.getEdges();
 		assertEquals(3, edges.size());
@@ -366,7 +366,7 @@ public class TestPersistenceService
 		assertNull(node4.getParent());
 		assertEquals(new Rectangle(630, 370, 100, 60), node4.getBounds());
 		
-		assertEquals("A note", node5.getText().getText());
+		assertEquals("A note", node5.getName().getText());
 		assertEquals(new Rectangle(700, 530, 60, 40), node5.getBounds());
 		
 		List<ChildNode> children = node6.getChildren();
@@ -483,7 +483,7 @@ public class TestPersistenceService
 		assertFalse(o3Call.isOpenBottom());
 		
 		assertEquals(new Rectangle(440,200,60,40), note.getBounds());
-		assertEquals("A note", note.getText().toString());
+		assertEquals("A note", note.getName().toString());
 		
 		assertEquals(new Rectangle(409,189,0,0), point.getBounds());
 	
@@ -560,7 +560,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(640, 230, 20, 20), end.getBounds());
 		assertTrue(end.isFinal());
 		
-		assertEquals("A note\non two lines", note.getText().getText());
+		assertEquals("A note\non two lines", note.getName().getText());
 		assertEquals(new Rectangle(690, 320, 60, 40), note.getBounds());
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), point.getBounds());
@@ -679,7 +679,7 @@ public class TestPersistenceService
 		assertEquals(0, children.size());
 		assertEquals(":Type3", type3.getName().toString());
 
-		assertEquals("A note", note.getText().getText());
+		assertEquals("A note", note.getName().getText());
 		assertEquals(new Rectangle(280, 330, 60, 40), note.getBounds());
 		
 		assertEquals(new Rectangle(281, 216, 0, 0), p1.getBounds());

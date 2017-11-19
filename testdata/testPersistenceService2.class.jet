@@ -127,15 +127,11 @@ I1</string>
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode">
-    <void property="bounds">
-     <void property="x">
-       <int>490</int>
+     <void method="translate">
+      <int>490</int>
+      <int>160</int>
      </void>
-     <void property="y">
-       <int>160</int>
-     </void>
-    </void>
-    <void property="text">
+    <void property="name">
      <void property="text">
       <string>n1</string>
      </void>
