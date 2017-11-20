@@ -14,14 +14,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode" id="CallNode0">
-      <void property="bounds">
-       <void property="x">
-         <int>202</int>
+       <void method="translate">
+        <int>202</int>
+        <int>77</int>
        </void>
-       <void property="y">
-         <int>77</int>
-       </void>
-      </void>
       <void property="parent">
        <object idref="ImplicitParameterNode0"/>
       </void>
@@ -29,14 +25,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode" id="CallNode1">
-      <void property="bounds">
-       <void property="x">
-         <int>210</int>
+       <void method="translate">
+        <int>210</int>
+        <int>106</int>
        </void>
-       <void property="y">
-         <int>106</int>
-       </void>
-      </void>
       <void property="parent">
        <object idref="ImplicitParameterNode0"/>
       </void>
@@ -57,14 +49,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode" id="CallNode2">
-      <void property="bounds">
-       <void property="x">
-         <int>402</int>
+       <void method="translate">
+        <int>402</int>
+        <int>125</int>
        </void>
-       <void property="y">
-         <int>125</int>
-       </void>
-      </void>
       <void property="parent">
        <object idref="ImplicitParameterNode1"/>
       </void>
@@ -85,14 +73,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode" id="CallNode3">
-      <void property="bounds">
-       <void property="x">
-         <int>622</int>
+       <void method="translate">
+        <int>622</int>
+        <int>149</int>
        </void>
-       <void property="y">
-         <int>149</int>
-       </void>
-      </void>
       <void property="parent">
        <object idref="ImplicitParameterNode2"/>
       </void>
