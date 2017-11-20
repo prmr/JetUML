@@ -51,7 +51,6 @@ public class CallNode extends RectangularNode implements ChildNode
 	private static final int MIN_YGAP = 10;
 
 	private ImplicitParameterNode aImplicitParameter;
-	private boolean aSignaled;
 	private boolean aOpenBottom;
 
 	/**
@@ -221,7 +220,7 @@ public class CallNode extends RectangularNode implements ChildNode
 
 				node.translate(0, bottomY - node.getBounds().getY());
 				node.layout(pGraph);
-				if(((CallNode) node).aSignaled)
+				if(((CallNode) node).isSignaled(pGraph))
 				{
 					bottomY += CALL_YGAP;
 				}
@@ -238,13 +237,16 @@ public class CallNode extends RectangularNode implements ChildNode
 		return bottomY;
 	}
 
-	/**
-	 * Sets the signaled property.
-	 * @param pNewValue true if this node is the target of a signal edge
-	 */      
-	public void setSignaled(boolean pNewValue)
-	{ 
-		aSignaled = pNewValue; 
+	private boolean isSignaled(Graph pGraph)
+	{
+		for( Edge edge : pGraph.getEdges(this))
+		{
+			if( edge instanceof CallEdge && edge.getEnd() == this && ((CallEdge)edge).isSignal())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
