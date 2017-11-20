@@ -724,5 +724,35 @@ public class TestUsageScenariosSequenceDiagram
 		
 		assertEquals(0, tempDiagram.getRootNodes().size());
 		assertEquals(0, tempDiagram.getEdges().size());
+	}
+
+	/**
+	 * Tests the creation of a basic diagram.
+	 */
+	@Test
+	public void testCreateBasicGraph()
+	{
+		aDiagram.addNode(aParameterNode1, new Point(10, 0));
+		assertEquals(new Rectangle(10,0,80,120), aParameterNode1.getBounds());
+		
+		aDiagram.addNode(aParameterNode2, new Point(110, 0));
+		assertEquals(new Rectangle(110,0,80,120), aParameterNode2.getBounds());
+
+		aDiagram.addNode(aCallNode1, new Point(15, 75));
+		assertEquals(new Rectangle(15,75,16,30), aCallNode1.getBounds());
+
+		aDiagram.addNode(aCallNode2, new Point(115, 75));
+		assertEquals(new Rectangle(115, 75,16,30), aCallNode2.getBounds());
+		
+		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
+		assertEquals(new Rectangle(31, 70,84,10), aCallEdge1.getBounds());
+		
+		aDiagram.draw(aGraphics);
+		
+		assertEquals(new Rectangle(10,0,80,155), aParameterNode1.getBounds());
+		assertEquals(new Rectangle(110,0,80,155), aParameterNode2.getBounds());
+		assertEquals(new Rectangle(42,75,16,60), aCallNode1.getBounds());
+		assertEquals(new Rectangle(142, 85,16,30), aCallNode2.getBounds());
+		assertEquals(new Rectangle(58, 80,84,10), aCallEdge1.getBounds());
 	}	
 }
