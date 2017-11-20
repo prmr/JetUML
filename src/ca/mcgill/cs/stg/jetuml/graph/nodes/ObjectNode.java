@@ -111,7 +111,8 @@ public class ObjectNode extends NamedNode implements ParentNode
 	@Override
 	public void removeChild(ChildNode pNode)
 	{
-		if (pNode.getParent() != this)
+		assert pNode != null;
+		if(pNode.getParent() != this)
 		{
 			return;
 		}

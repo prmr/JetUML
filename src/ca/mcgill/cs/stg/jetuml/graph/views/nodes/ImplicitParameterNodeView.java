@@ -26,6 +26,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
+	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
 	
@@ -50,19 +51,16 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		pGraphics2D.draw(Conversions.toRectangle2D(top));
 		name().draw(pGraphics2D, top);
 		int xmid = getBounds().getCenter().getX();
-		Line2D line = new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
 		Stroke oldStroke = pGraphics2D.getStroke();
-		// CSOFF:
-		pGraphics2D.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f, new float[] { 5.0f, 5.0f }, 0.0f));
-		// CSON:
-		pGraphics2D.draw(line);
+		pGraphics2D.setStroke(STROKE);
+		pGraphics2D.draw(new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY()));
 		pGraphics2D.setStroke(oldStroke);
 	}
 	
 	@Override
 	public boolean contains(Point pPoint)
 	{
-		Rectangle bounds = getBounds();
+		final Rectangle bounds = getBounds();
 		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 	}
 

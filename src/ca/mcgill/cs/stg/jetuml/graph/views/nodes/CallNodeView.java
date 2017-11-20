@@ -30,6 +30,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
+	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 5, 5 }, 0);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -65,19 +66,17 @@ public class CallNodeView extends RectangleBoundedNodeView
 		pGraphics2D.setColor(oldColor);
 		if(openBottom())
 		{
-			Rectangle b = getBounds();
-			double x1 = b.getX();
-			double x2 = x1 + b.getWidth();
-			double y1 = b.getY();
-			double y3 = y1 + b.getHeight();
-			double y2 = y3 - CallNode.CALL_YGAP;
+			final Rectangle bounds = getBounds();
+			int x1 = bounds.getX();
+			int x2 = bounds.getMaxX();
+			int y1 = bounds.getY();
+			int y3 = bounds.getMaxY();
+			int y2 = y3 - CallNode.CALL_YGAP;
 			pGraphics2D.draw(new Line2D.Double(x1, y1, x2, y1));
 			pGraphics2D.draw(new Line2D.Double(x1, y1, x1, y2));
 			pGraphics2D.draw(new Line2D.Double(x2, y1, x2, y2));
 			Stroke oldStroke = pGraphics2D.getStroke();
-			// CSOFF:
-			pGraphics2D.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f, new float[] { 5.0f, 5.0f }, 0.0f));
-			// CSON:
+			pGraphics2D.setStroke(STROKE);
 			pGraphics2D.draw(new Line2D.Double(x1, y2, x1, y3));
 			pGraphics2D.draw(new Line2D.Double(x2, y2, x2, y3));
 			pGraphics2D.setStroke(oldStroke);
@@ -99,18 +98,17 @@ public class CallNodeView extends RectangleBoundedNodeView
 		node().translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
 
 		// Compute the Y coordinate of the bottom of the node
-		double bottomY = computeBottomY(graph);
+		int bottomY = computeBottomY(graph);
 
-		Rectangle bounds = getBounds();
+		final Rectangle bounds = getBounds();
 
-		double minHeight = DEFAULT_HEIGHT;
-		Edge returnEdge = graph.findEdge(node(), graph.getCaller(this.node()));
+		int minHeight = DEFAULT_HEIGHT;
+		Edge returnEdge = graph.findEdge(node(), graph.getCaller(node()));
 		if(returnEdge != null)
 		{
-			Rectangle edgeBounds = returnEdge.getBounds();
-			minHeight = Math.max(minHeight, edgeBounds.getHeight());         
+			minHeight = Math.max(minHeight, returnEdge.getBounds().getHeight());         
 		}
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), (int)Math.max(minHeight, bottomY - bounds.getY())));
+		setBounds(new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
 	}
 	
 	/*
@@ -137,7 +135,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
 	 */
-	private double computeBottomY(SequenceDiagramGraph pGraph)
+	private int computeBottomY(SequenceDiagramGraph pGraph)
 	{
 		// Compute the Y coordinate of the bottom of the node
 		int bottomY = getBounds().getY() + CallNode.CALL_YGAP;
@@ -203,8 +201,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 		return callees;
 	}
 
-
-	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
