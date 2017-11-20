@@ -326,18 +326,6 @@ public class SequenceDiagramGraph extends Graph
 				}
 			}
 		}
-		
-		for( Edge edge : aEdges )
-		{
-			if(edge instanceof CallEdge)
-			{
-				Node end = edge.getEnd();
-				if(end instanceof CallNode)
-				{
-					((CallNode)end).setSignaled(((CallEdge)edge).isSignal());
-				}
-			}
-		}
 		heightObjectLayout(topLevelCalls, objects);
 	}
 	

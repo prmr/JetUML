@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph;
@@ -39,8 +40,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 
 /**
- * A method call node in a sequence diagram. In addition to edges,
- * the node is linked to it callee and callers.
+ * A method call node in a sequence diagram. 
 */
 public class CallNode extends RectangularNode implements ChildNode
 {
@@ -51,7 +51,6 @@ public class CallNode extends RectangularNode implements ChildNode
 	private static final int MIN_YGAP = 10;
 
 	private ImplicitParameterNode aImplicitParameter;
-	private boolean aSignaled;
 	private boolean aOpenBottom;
 
 	/**
@@ -193,6 +192,23 @@ public class CallNode extends RectangularNode implements ChildNode
 		}
 		return xmid;
 	}
+	
+	/*
+	 * Returns true if this node is the target 
+	 * of a signal edge.
+	 */
+	private boolean signaled( Graph pGraph )
+	{
+		Collection<Edge> edges = pGraph.getEdges(this);
+		for( Edge edge : edges )
+		{
+			if( edge.getEnd() == this )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/*
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
@@ -221,7 +237,7 @@ public class CallNode extends RectangularNode implements ChildNode
 
 				node.translate(0, bottomY - node.getBounds().getY());
 				node.layout(pGraph);
-				if(((CallNode) node).aSignaled)
+				if(signaled(pGraph))
 				{
 					bottomY += CALL_YGAP;
 				}
@@ -236,15 +252,6 @@ public class CallNode extends RectangularNode implements ChildNode
 			bottomY += 2 * CALL_YGAP;
 		}
 		return bottomY;
-	}
-
-	/**
-	 * Sets the signaled property.
-	 * @param pNewValue true if this node is the target of a signal edge
-	 */      
-	public void setSignaled(boolean pNewValue)
-	{ 
-		aSignaled = pNewValue; 
 	}
 
 	/**
