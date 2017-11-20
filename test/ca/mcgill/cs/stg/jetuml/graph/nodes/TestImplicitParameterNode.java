@@ -27,12 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.CallNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
 
 public class TestImplicitParameterNode
 {
@@ -60,7 +57,6 @@ public class TestImplicitParameterNode
 		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.NORTH));
 		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
-		assertEquals(Conversions.toRectangle2D(new Rectangle(0, 0, 80, 60)), aObject1.getShape().getBounds());
 	}
 	
 	@Test
@@ -114,7 +110,6 @@ public class TestImplicitParameterNode
 		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.NORTH));
 		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
-		assertEquals(Conversions.toRectangle2D(new Rectangle(0, 0, 80, 60)), clone.getShape().getBounds());
 		
 		aObject1.addChild(aCall1);
 		aObject1.addChild(aCall2);

@@ -21,24 +21,16 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
-import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ImplicitParameterNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
  * An implicit parameter node in a sequence diagram. The 
@@ -48,14 +40,8 @@ import ca.mcgill.cs.stg.jetuml.graph.Graph;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends RectangularNode implements ParentNode
+public class ImplicitParameterNode extends NamedNode implements ParentNode
 {
-	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final int DEFAULT_WIDTH = 80;
-	private static final int DEFAULT_HEIGHT = 120;
-	
-	private int aTopHeight;
-	private MultiLineString aName;
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 
 	/**
@@ -63,96 +49,19 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 	 */
 	public ImplicitParameterNode()
 	{
-		aName = new MultiLineString();
-		aName.setUnderlined(true);
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		aTopHeight = DEFAULT_TOP_HEIGHT;
+		getName().setUnderlined(true);
 	}
-
+	
 	@Override
-	public boolean contains(Point pPoint)
+	protected NodeView generateView()
 	{
-		Rectangle bounds = getBounds();
-		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
-	}
-
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		super.draw(pGraphics2D);
-		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		aName.draw(pGraphics2D, top);
-		int xmid = getBounds().getCenter().getX();
-		Line2D line = new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
-		Stroke oldStroke = pGraphics2D.getStroke();
-		// CSOFF:
-		pGraphics2D.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0.0f, new float[] { 5.0f, 5.0f }, 0.0f));
-		// CSON:
-		pGraphics2D.draw(line);
-		pGraphics2D.setStroke(oldStroke);
-	}
-
-	/**
-     * Returns the rectangle at the top of the object node.
-     * @return the top rectangle
-	 */
-	public Rectangle getTopRectangle()
-	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
-	}
-
-	@Override
-	public Shape getShape()
-	{ return Conversions.toRectangle2D(getTopRectangle()); }
-   
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		if(pDirection.getX() > 0)
-		{
-			return new Point(getBounds().getMaxX(), getBounds().getY() + aTopHeight / 2);
-		}
-		else
-		{
-			return new Point(getBounds().getX(), getBounds().getY() + aTopHeight / 2);
-		}
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle bounds = aName.getBounds(); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
-		Rectangle snappedTop = Grid.snapped(top);
-		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
-		aTopHeight = top.getHeight();
-	}
-
-	/**
-     * Sets the name property value.
-     * @param pName the name of this object
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the name of this object
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
+		return new ImplicitParameterNodeView(this);
 	}
 
 	@Override
 	public ImplicitParameterNode clone()
 	{
 		ImplicitParameterNode cloned = (ImplicitParameterNode) super.clone();
-		cloned.aName = aName.clone();
 		cloned.aCallNodes = new ArrayList<>();
 		for( ChildNode child : aCallNodes )
 		{
@@ -212,6 +121,22 @@ public class ImplicitParameterNode extends RectangularNode implements ParentNode
 		}
 		aCallNodes.remove(pNode);
 		pNode.setParent(null);
+	}
+	
+	/**
+	 * @return The bounds of the top rectangle.
+	 */
+	public Rectangle getTopRectangle()
+	{
+		return ((ImplicitParameterNodeView)view()).getTopRectangle();
+	}
+	
+	/**
+	 * @param pNewBounds The new bounds.
+	 */
+	public void setBounds(Rectangle pNewBounds)
+	{
+		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
 	}
 	
 	/**
