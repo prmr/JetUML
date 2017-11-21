@@ -21,31 +21,19 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-
-import ca.mcgill.cs.stg.jetuml.framework.Grid;
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.InterfaceNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
  * An interface node in a class diagram that can be composed
  * of three compartments: top (for the name), middle (for attributes,
  * normally unused), and bottom (for methods).
  */
-public class InterfaceNode extends RectangularNode implements ChildNode
+public class InterfaceNode extends NamedNode implements ChildNode
 {
-	protected static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
-	protected static final int DEFAULT_WIDTH = 100;
-	protected static final int DEFAULT_HEIGHT = 60;
-	
-	protected MultiLineString aName;
-	protected MultiLineString aMethods;   
-	
+	private MultiLineString aMethods;   
 	private ParentNode aContainer;
-	
 
 	/**
      * Construct an interface node with a default size and
@@ -53,127 +41,19 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	 */
 	public InterfaceNode()
 	{
-		aName = new MultiLineString(true);
-		aName.setText("\u00ABinterface\u00BB\n");
-		aName.setJustification(MultiLineString.CENTER);
+		setName(new MultiLineString(true));
+		getName().setText("\u00ABinterface\u00BB\n");
+		getName().setJustification(MultiLineString.CENTER);
 		aMethods = new MultiLineString();
 		aMethods.setJustification(MultiLineString.LEFT);
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
-
+	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	protected NodeView generateView()
 	{
-		super.draw(pGraphics2D);
-		int midHeight = computeMiddle().getHeight();
-		double bottomHeight = computeBottom().getHeight();
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
-		pGraphics2D.draw(top);
-		aName.draw(pGraphics2D, Conversions.toRectangle(top));
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), midHeight);
-		pGraphics2D.draw(mid);
-		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		pGraphics2D.draw(bot);
-		aMethods.draw(pGraphics2D, Conversions.toRectangle(bot));
-	}
-	
-	/**
-	 * The top is computed to be at least the default
-	 * node size.
-	 * @return The area of the top compartment
-	 */
-	protected Rectangle computeTop()
-	{
-		Rectangle top = aName.getBounds(); 
-		
-		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
-		if(!needsMiddleCompartment() && !needsBottomCompartment() )
-		{
-			minHeight = DEFAULT_HEIGHT;
-		}
-		else if( needsMiddleCompartment() ^ needsBottomCompartment() )
-		{
-			minHeight = 2 * DEFAULT_COMPARTMENT_HEIGHT;
-		}
-		top = top.add(new Rectangle(0, 0, DEFAULT_WIDTH, minHeight));
-
-		return top;
-	}
-	
-	/**
-	 * @return The area of the middle compartment. The x and y values
-	 * are meaningless.
-	 */
-	protected Rectangle computeMiddle()
-	{
-		return new Rectangle(0, 0, 0, 0);
-	}
-	
-	/**
-	 * @return The area of the bottom compartment. The x and y values
-	 * are meaningless.
-	 */
-	protected Rectangle computeBottom()
-	{
-		if( !needsBottomCompartment() )
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-			
-		Rectangle bottom = aMethods.getBounds();
-		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return bottom;
-	}
-	
-
-	/**
-	 * @return True if the node requires a bottom compartment.
-	 */
-	protected boolean needsMiddleCompartment()
-	{
-		return false;
-	}
-	
-	/**
-	 * @return True if the node requires a bottom compartment.
-	 */
-	protected boolean needsBottomCompartment()
-	{
-		return !aMethods.getText().isEmpty();
-	}
-	
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle top = computeTop();
-		Rectangle middle = computeMiddle();
-		Rectangle bottom = computeBottom();
-
-		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				Math.max(Math.max(top.getWidth(), middle.getWidth()), bottom.getWidth()), top.getHeight() + middle.getHeight() + bottom.getHeight());
-		setBounds(Grid.snapped(bounds));
+		return new InterfaceNodeView(this);
 	}
 
-	/**
-     * Sets the name property value.
-     * @param pName the interface name
-	 */
-	public void setName(MultiLineString pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the interface name
-	 */
-	public MultiLineString getName()
-	{
-		return aName;
-	}
-	
 	/**
      * Sets the methods property value.
      * @param pMethods the methods of this interface
@@ -195,8 +75,7 @@ public class InterfaceNode extends RectangularNode implements ChildNode
 	@Override
 	public InterfaceNode clone()
 	{
-		InterfaceNode cloned = (InterfaceNode)super.clone();
-		cloned.aName = aName.clone();
+		InterfaceNode cloned = (InterfaceNode) super.clone();
 		cloned.aMethods = aMethods.clone();
 		return cloned;
 	}

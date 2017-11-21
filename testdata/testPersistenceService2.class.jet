@@ -16,14 +16,10 @@
     </void>
     <void method="addChild">
      <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode0">
-      <void property="bounds">
-       <void property="x">
-         <int>320</int>
+       <void method="translate">
+        <int>320</int>
+        <int>260</int>
        </void>
-       <void property="y">
-         <int>260</int>
-       </void>
-      </void>
       <void property="name">
        <void property="text">
         <string>C1</string>
@@ -82,14 +78,10 @@
       </void>
       <void method="addChild">
        <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
-        <void property="bounds">
-         <void property="x">
-           <int>640</int>
+         <void method="translate">
+          <int>640</int>
+          <int>330</int>
          </void>
-         <void property="y">
-           <int>330</int>
-         </void>
-        </void>
         <void property="name">
          <void property="text">
           <string>«interface»
@@ -103,14 +95,10 @@ I1</string>
       </void>
       <void method="addChild">
        <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode1">
-        <void property="bounds">
-         <void property="x">
-           <int>810</int>
+         <void method="translate">
+          <int>810</int>
+          <int>330</int>
          </void>
-         <void property="y">
-           <int>330</int>
-         </void>
-        </void>
         <void property="name">
          <void property="text">
           <string>C2</string>

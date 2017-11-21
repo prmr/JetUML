@@ -21,10 +21,9 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ClassNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
  * A class node in a class diagram.
@@ -40,21 +39,15 @@ public class ClassNode extends InterfaceNode
 	{
 		aAttributes = new MultiLineString();
 		aAttributes.setJustification(MultiLineString.LEFT);
-		aName.setText("");
+		getName().setText("");
+	}
+	
+	@Override
+	protected NodeView generateView()
+	{
+		return new ClassNodeView(this);
 	}
 
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		super.draw(pGraphics2D); 
-		int midHeight = computeMiddle().getHeight();
-		double bottomHeight = computeBottom().getHeight();
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - midHeight - bottomHeight));
-		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(midHeight));
-		aAttributes.draw(pGraphics2D, mid);
-   }
-	
 	/**
      * Sets the attributes property value.
      * @param pNewValue the attributes of this class
@@ -71,32 +64,6 @@ public class ClassNode extends InterfaceNode
 	public MultiLineString getAttributes()
 	{
 		return aAttributes;
-	}
-	
-	/**
-	 * @return True if the node requires a bottom compartment.
-	 */
-	@Override
-	protected boolean needsMiddleCompartment()
-	{
-		return !aAttributes.getText().isEmpty();
-	}
-	
-	/**
-	 * @return The area of the middle compartment. The x and y values
-	 * are meaningless.
-	 */
-	@Override
-	protected Rectangle computeMiddle()
-	{
-		if( !needsMiddleCompartment() )
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-			
-		Rectangle attributes = aAttributes.getBounds();
-		attributes = attributes.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return attributes;
 	}
 
 	@Override
