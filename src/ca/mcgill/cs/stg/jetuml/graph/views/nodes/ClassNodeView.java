@@ -31,11 +31,10 @@ public class ClassNodeView extends InterfaceNodeView
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D); 
-		int midHeight = computeMiddle().getHeight();
 		int bottomHeight = computeBottom().getHeight();
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - midHeight - bottomHeight));
-		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(midHeight));
+				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - middleHeight() - bottomHeight));
+		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(middleHeight()));
 		attributes().draw(pGraphics2D, mid);
 	}
 	
@@ -48,20 +47,29 @@ public class ClassNodeView extends InterfaceNodeView
 		return !attributes().getText().isEmpty();
 	}
 	
-	/**
-	 * @return The area of the middle compartment. The x and y values
-	 * are meaningless.
-	 */
 	@Override
-	protected Rectangle computeMiddle()
+	protected int middleWidth()
 	{
 		if( !needsMiddleCompartment() )
 		{
-			return new Rectangle(0, 0, 0, 0);
+			return 0;
 		}
-			
-		Rectangle attributes = attributes().getBounds();
-		attributes = attributes.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return attributes;
+		else
+		{
+			return Math.max(attributes().getBounds().getWidth(), DEFAULT_WIDTH);
+		}
+	}
+	
+	@Override
+	protected int middleHeight()
+	{
+		if( !needsMiddleCompartment() )
+		{
+			return 0;
+		}
+		else
+		{
+			return Math.max(attributes().getBounds().getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
+		}
 	}
 }

@@ -72,7 +72,8 @@ public class TestInterfaceNodeView
 	@Test
 	public void testComputeMiddle()
 	{
-		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeMiddle());
+		assertEquals(0, ((InterfaceNodeView)aNode1.view()).middleWidth());
+		assertEquals(0, ((InterfaceNodeView)aNode1.view()).middleHeight());
 	}
 	
 	@Test

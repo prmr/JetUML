@@ -76,17 +76,22 @@ public class TestClassViewNode
 	@Test
 	public void testComputeMiddle()
 	{
-		assertEquals(new Rectangle(0,0,0,0), ((ClassNodeView)aNode1.view()).computeMiddle());
+		assertEquals(0, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(0, ((ClassNodeView)aNode1.view()).middleHeight());
 		MultiLineString attributes = new MultiLineString();
 		attributes.setText("Foo");
 		aNode1.setAttributes(attributes);
-		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeMiddle());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 		attributes.setText("Foo\nFoo");
-		assertEquals(new Rectangle(0,0,100,32), ((ClassNodeView)aNode1.view()).computeMiddle());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(32, ((ClassNodeView)aNode1.view()).middleHeight());
 		attributes.setText("Foo");
-		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeMiddle());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,350,20), ((ClassNodeView)aNode1.view()).computeMiddle());
+		assertEquals(350, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 	}
 	
 	@Test

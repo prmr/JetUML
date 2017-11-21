@@ -44,13 +44,12 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	public void draw(Graphics2D pGraphics2D)
 	{
 		super.draw(pGraphics2D);
-		int midHeight = computeMiddle().getHeight();
 		int bottomHeight = computeBottom().getHeight();
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - midHeight - bottomHeight);
+				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
 		pGraphics2D.draw(top);
 		name().draw(pGraphics2D, Conversions.toRectangle(top));
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), midHeight);
+		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
 		pGraphics2D.draw(mid);
 		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
 		pGraphics2D.draw(bot);
@@ -58,12 +57,19 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	}
 	
 	/**
-	 * @return The area of the middle compartment. The x and y values
-	 * are meaningless.
+	 * @return The width of the middle compartment.
 	 */
-	protected Rectangle computeMiddle()
+	protected int middleWidth()
 	{
-		return new Rectangle(0, 0, 0, 0);
+		return 0;
+	}
+	
+	/**
+	 * @return The width of the middle compartment.
+	 */
+	protected int middleHeight()
+	{
+		return 0;
 	}
 	
 	/**
@@ -117,11 +123,10 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		Rectangle top = computeTop();
-		Rectangle middle = computeMiddle();
 		Rectangle bottom = computeBottom();
 
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				Math.max(Math.max(top.getWidth(), middle.getWidth()), bottom.getWidth()), top.getHeight() + middle.getHeight() + bottom.getHeight());
+				Math.max(Math.max(top.getWidth(), middleWidth()), bottom.getWidth()), top.getHeight() + middleHeight() + bottom.getHeight());
 		setBounds(Grid.snapped(bounds));
 	}
 	
