@@ -6,7 +6,6 @@ import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
 /**
@@ -66,12 +65,6 @@ public abstract class AbstractNode implements Node
 	public void moveTo(Point pPoint)
 	{
 		aPosition = pPoint;
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		aView.layout(pGraph);	
 	}
 
 	@Override

@@ -157,7 +157,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 				}
 
 				node.translate(0, bottomY - node.getBounds().getY());
-				node.layout(pGraph);
+				node.view().layout(pGraph);
 				if(((CallNode) node).isSignaled(pGraph))
 				{
 					bottomY += CallNode.CALL_YGAP;

@@ -346,7 +346,7 @@ public class SequenceDiagramGraph extends Graph
 
 		for(Node node : pTopLevelCalls )
 		{
-			node.layout(this);
+			node.view().layout(this);
 		}
 
 		for(Node node : aRootNodes )

@@ -22,7 +22,6 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 
@@ -52,12 +51,6 @@ public interface Node extends GraphElement
 	void translate(int pDeltaX, int pDeltaY);
 
 	/**
-     * Lays out the node and its children.
-     * @param pGraph the ambient graph
-	 */
-	void layout(Graph pGraph);
-
-	/**
 	 * @return A clone of the node.
 	 */
 	Node clone();
@@ -65,9 +58,5 @@ public interface Node extends GraphElement
 	/**
 	 * @return The view for this node. TODO remove default
 	 */
-	default NodeView view()
-	{
-		assert false;
-		return null;
-	}
+	NodeView view();
 }

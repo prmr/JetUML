@@ -141,7 +141,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		Rectangle childBounds = null;
 		for( ChildNode child : children() )
 		{
-			child.layout(pGraph);
+			child.view().layout(pGraph);
 			if( childBounds == null )
 			{
 				childBounds = child.getBounds();

@@ -591,7 +591,7 @@ public abstract class Graph
 
 		for(Node node : aRootNodes)
 		{
-			node.layout(this);
+			node.view().layout(this);
 		}
 		aNeedsLayout = false;
 	}
