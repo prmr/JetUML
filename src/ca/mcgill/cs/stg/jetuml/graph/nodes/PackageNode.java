@@ -21,192 +21,30 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
-
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
-import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PackageNodeView;
 
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends RectangularNode implements ParentNode, ChildNode
+public class PackageNode extends AbstractNode2 implements ParentNode, ChildNode
 {
-	private static final int DEFAULT_TOP_WIDTH = 60;
-	private static final int DEFAULT_TOP_HEIGHT = 20;
-	private static final int DEFAULT_WIDTH = 100;
-	private static final int DEFAULT_HEIGHT = 80;
-	private static final int NAME_GAP = 3;
-	private static final int XGAP = 5;
-	private static final int YGAP = 5;
-	   
-	private static JLabel label = new JLabel();
-
-	private String aName;
-	private MultiLineString aContents;
-	private Rectangle aTop;
-	private Rectangle aBottom;
-	private ArrayList<ChildNode> aContainedNodes;
+	private String aName = "";
+	private MultiLineString aContents  = new MultiLineString();
+	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
-	   
-	/**
-     * Construct a package node with a default size.
-	 */
-	public PackageNode()
-	{
-		aName = "";
-		aContents = new MultiLineString();
-		setBounds(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		aTop = new Rectangle(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
-		aBottom = new Rectangle(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
-		aContainedNodes = new ArrayList<>();
-	}
-
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		super.draw(pGraphics2D);
-		Rectangle bounds = getBounds();
-
-		label.setText("<html>" + aName + "</html>");
-		label.setFont(pGraphics2D.getFont());
-		Dimension d = label.getPreferredSize();
-		label.setBounds(0, 0, d.width, d.height);
-
-		pGraphics2D.draw(Conversions.toRectangle2D(aTop));
-
-		double textX = bounds.getX() + NAME_GAP;
-		double textY = bounds.getY() + (aTop.getHeight() - d.getHeight()) / 2;
-      
-		pGraphics2D.translate(textX, textY);
-		label.paint(pGraphics2D);
-		pGraphics2D.translate(-textX, -textY);        
-     
-		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
-		aContents.draw(pGraphics2D, aBottom);
-	}
-   
-	@Override
-	public Shape getShape()
-	{
-		GeneralPath path = new GeneralPath();
-		path.append(Conversions.toRectangle2D(aTop), false);
-		path.append(Conversions.toRectangle2D(aBottom), false);
-		return path;
-	}
-	
-	/**
-	 * @return The point that corresponds to the actual top right
-	 * corner of the figure (as opposed to bounds).
-	 */
-	public Point2D getTopRightCorner()
-	{
-		return new Point2D.Double(aBottom.getMaxX(), aBottom.getY());
-	}
 	
 	@Override
-	public Point getConnectionPoint(Direction pDirection)
+	protected NodeView generateView()
 	{
-		Point connectionPoint = super.getConnectionPoint(pDirection);
-		if( connectionPoint.getY() < aBottom.getY() && aTop.getMaxX() < connectionPoint.getX() )
-		{
-			// The connection point falls in the empty top-right corner, re-compute it so
-			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			int delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenter().getX()) * 2 / 
-					getBounds().getHeight();
-			int newX = connectionPoint.getX() - delta;
-			if( newX < aTop.getMaxX() )
-			{
-				newX = aTop.getMaxX() + 1;
-			}
-			return new Point(newX, aBottom.getY());	
-		}
-		else
-		{
-			return connectionPoint;
-		}
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		label.setText(aName);
-		Dimension d = label.getPreferredSize();
-		int topWidth = (int)Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		int topHeight = (int)Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
-		
-		Rectangle childBounds = null;
-		for( ChildNode child : getChildren() )
-		{
-			child.layout(pGraph);
-			if( childBounds == null )
-			{
-				childBounds = child.getBounds();
-			}
-			else
-			{
-				childBounds = childBounds.add(child.getBounds());
-			}
-		}
-		
-		Rectangle contentsBounds = aContents.getBounds();
-		
-		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
-		{
-			setBounds( new Rectangle(getBounds().getX(), getBounds().getY(), 
-					(int)computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
-					(int)computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
-		}
-		else
-		{
-			setBounds( new Rectangle(childBounds.getX() - XGAP, (int)(childBounds.getY() - topHeight - YGAP), 
-					(int)computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
-					(int)computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
-		}
-		
-		Rectangle b = getBounds();
-		aTop = new Rectangle(b.getX(), b.getY(), topWidth, topHeight);
-		aBottom = new Rectangle(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
-	}
-	
-	private double computeWidth(double pTopWidth, double pContentWidth, double pChildrenWidth)
-	{
-		return max( DEFAULT_WIDTH, pTopWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, pContentWidth, pChildrenWidth);
-	}
-	
-	private double computeHeight(double pTopHeight, double pContentHeight, double pChildrenHeight)
-	{
-		return pTopHeight + max( DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, pContentHeight, pChildrenHeight);
-	}
-	
-	/*
-	 * I can't believe I had to implement this.
-	 */
-	private static double max(double ... pNumbers)
-	{
-		double maximum = Double.MIN_VALUE;
-		for(double number : pNumbers)
-		{
-			if(number > maximum)
-			{
-				maximum = number;
-			}
-		}
-		return maximum;
+		return new PackageNodeView(this);
 	}
 	
 	/**
@@ -241,8 +79,8 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	{
 		super.translate(pDeltaX, pDeltaY);
 		
-		aTop = new Rectangle(aTop.getX() + pDeltaX, aTop.getY() + pDeltaY, aTop.getWidth(), aTop.getHeight());
-		aBottom  = new Rectangle(aBottom.getX() + pDeltaX, aBottom.getY() + pDeltaY, aBottom.getWidth(), aBottom.getHeight());
+		((PackageNodeView)view()).translateTop(pDeltaX,  pDeltaY);
+		((PackageNodeView)view()).translateBottom(pDeltaX, pDeltaY);
 		for(Node childNode : getChildren())
         {
         	childNode.translate(pDeltaX, pDeltaY);
@@ -261,7 +99,7 @@ public class PackageNode extends RectangularNode implements ParentNode, ChildNod
 	@Override
 	public PackageNode clone()
 	{
-		PackageNode cloned = (PackageNode)super.clone();
+		PackageNode cloned = (PackageNode) super.clone();
 		cloned.aContents = aContents.clone();
 		cloned.aContainedNodes = new ArrayList<>();
 		for( ChildNode child : aContainedNodes )

@@ -60,14 +60,10 @@
   </void>
   <void method="restoreRootNode">
    <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode0">
-    <void property="bounds">
-     <void property="x">
-       <int>275</int>
+     <void method="translate">
+      <int>275</int>
+      <int>345</int>
      </void>
-     <void property="y">
-       <int>345</int>
-     </void>
-    </void>
     <void property="name">
      <string>Package</string>
     </void>

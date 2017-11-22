@@ -28,12 +28,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 
 public class TestPackageNode
 {
@@ -66,7 +63,6 @@ public class TestPackageNode
 		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
 		assertNull(aPackage1.getParent());
-		assertEquals(Conversions.toRectangle2D(new Rectangle(0, 0, 100, 80)), aPackage1.getShape().getBounds());
 	}
 	
 	@Test
@@ -143,7 +139,6 @@ public class TestPackageNode
 		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
 		assertNull(clone.getParent());
-		assertEquals(Conversions.toRectangle2D(new Rectangle(0, 0, 100, 80)), clone.getShape().getBounds());
 		
 		aPackage2.setName("p2");
 		MultiLineString c1 = new MultiLineString();

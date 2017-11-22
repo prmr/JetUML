@@ -38,6 +38,7 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyle.Side;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PackageNodeView;
 
 /**
  * A class for creating line segmentation strategies.
@@ -122,7 +123,7 @@ public final class SegmentationStyleFactory
 	{
 		if( pNode instanceof PackageNode )
 		{
-			return ((PackageNode)pNode).getTopRightCorner();
+			return ((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner();
 		}
 		else
 		{
