@@ -38,6 +38,7 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.views.LineStyle;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).

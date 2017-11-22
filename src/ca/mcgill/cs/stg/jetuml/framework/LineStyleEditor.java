@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.framework;
 
+import ca.mcgill.cs.stg.jetuml.views.LineStyle;
+
 /**
  * A property editor for the LineStyle type.
  */

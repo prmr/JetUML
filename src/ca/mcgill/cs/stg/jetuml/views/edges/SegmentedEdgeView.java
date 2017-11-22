@@ -11,12 +11,12 @@ import java.util.function.Supplier;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
+import ca.mcgill.cs.stg.jetuml.views.LineStyle;
 
 /**
  * Renders edges as a straight line connected to center of nodes.
