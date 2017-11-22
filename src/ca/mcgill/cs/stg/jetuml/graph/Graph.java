@@ -615,7 +615,7 @@ public abstract class Graph
 		}
 		for(Edge edge : aEdges)
 		{
-			bounds = bounds.add(edge.getBounds());
+			bounds = bounds.add(edge.view().getBounds());
 		}
 		if(bounds == null )
 		{

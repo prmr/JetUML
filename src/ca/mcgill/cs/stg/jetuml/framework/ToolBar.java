@@ -182,7 +182,7 @@ public class ToolBar extends JPanel
 				Rectangle bounds = new Rectangle(0, 0, 0, 0);
 				bounds = bounds.add(pointNode.view().getBounds());
 				bounds = bounds.add(q.view().getBounds());
-				bounds = bounds.add(pEdge.getBounds());
+				bounds = bounds.add(pEdge.view().getBounds());
 
 				double width = bounds.getWidth();
 				double height = bounds.getHeight();

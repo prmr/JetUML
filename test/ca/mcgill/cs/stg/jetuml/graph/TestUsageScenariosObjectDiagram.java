@@ -255,9 +255,9 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 		aPanel.selectAll();
 
-		Rectangle referenceEdge1Bounds = aReferenceEdge1.getBounds();
-		Rectangle referenceEdge2Bounds = aReferenceEdge2.getBounds();
-		Rectangle collaborationEdge1Bounds = collaborationEdge1.getBounds();
+		Rectangle referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
+		Rectangle referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
+		Rectangle collaborationEdge1Bounds = collaborationEdge1.view().getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -276,15 +276,15 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		assertEquals(aObjectNode1, collaborationEdge1.getStart());
 		assertEquals(aObjectNode2, collaborationEdge1.getEnd());
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.getBounds());
-		assertFalse(collaborationEdge1Bounds == collaborationEdge1.getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
+		assertFalse(collaborationEdge1Bounds == collaborationEdge1.view().getBounds());
 		
-		referenceEdge1Bounds = aReferenceEdge1.getBounds();
-		referenceEdge2Bounds = aReferenceEdge2.getBounds();
+		referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
+		referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
 		aObjectNode1.translate(-5, -5);
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
 	}
 	
 	/**

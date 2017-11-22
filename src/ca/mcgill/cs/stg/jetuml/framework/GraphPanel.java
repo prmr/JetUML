@@ -804,11 +804,11 @@ public class GraphPanel extends JPanel
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
 				for (Edge edge: aGraph.getEdges())
 				{
-					if(!isCtrl && !lasso.contains(edge.getBounds()))
+					if(!isCtrl && !lasso.contains(edge.view().getBounds()))
 					{
 						aSelectedElements.remove(edge);
 					}
-					else if(lasso.contains(edge.getBounds()))
+					else if(lasso.contains(edge.view().getBounds()))
 					{
 						if(aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
 						{

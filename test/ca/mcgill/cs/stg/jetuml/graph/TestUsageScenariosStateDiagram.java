@@ -267,9 +267,9 @@ public class TestUsageScenariosStateDiagram
 		aPanel.getSelectionList().add(aTransitionEdge2);
 		aPanel.getSelectionList().add(aTransitionEdge3);
 
-		Rectangle aTransitionEdge1Bounds = aTransitionEdge1.getBounds();
-		Rectangle aTransitionEdge2Bounds = aTransitionEdge2.getBounds();
-		Rectangle aTransitionEdge3Bounds = aTransitionEdge3.getBounds();
+		Rectangle aTransitionEdge1Bounds = aTransitionEdge1.view().getBounds();
+		Rectangle aTransitionEdge2Bounds = aTransitionEdge2.view().getBounds();
+		Rectangle aTransitionEdge3Bounds = aTransitionEdge3.view().getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -290,13 +290,13 @@ public class TestUsageScenariosStateDiagram
 		 *  if either start or end node is moved,
 		 *  the edge bounds would be changed
 		 */
-		assertFalse(aTransitionEdge1Bounds == aTransitionEdge1.getBounds());
-		assertFalse(aTransitionEdge2Bounds == aTransitionEdge2.getBounds());
+		assertFalse(aTransitionEdge1Bounds == aTransitionEdge1.view().getBounds());
+		assertFalse(aTransitionEdge2Bounds == aTransitionEdge2.view().getBounds());
 		/*
 		 *  if both the start and end node are not moved,
 		 *  the edge should have the same bounds
 		 */
-		assertEquals(aTransitionEdge3Bounds, aTransitionEdge3.getBounds());
+		assertEquals(aTransitionEdge3Bounds, aTransitionEdge3.view().getBounds());
 	}
 	
 	/**

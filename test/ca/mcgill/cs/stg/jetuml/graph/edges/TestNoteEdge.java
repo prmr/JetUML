@@ -81,7 +81,7 @@ public class TestNoteEdge
 	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
-		assertEquals(new Rectangle(60,20,40,0), aNoteEdge.getBounds());
+		assertEquals(new Rectangle(60,20,40,0), aNoteEdge.view().getBounds());
 		
 		Line connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
@@ -91,7 +91,7 @@ public class TestNoteEdge
 		
 		
 		aPointNode.translate(20, 0);
-		assertEquals(new Rectangle(60,20,60,0), aNoteEdge.getBounds());
+		assertEquals(new Rectangle(60,20,60,0), aNoteEdge.view().getBounds());
 		
 		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
@@ -105,7 +105,7 @@ public class TestNoteEdge
 		// The edge should intersect the note edge at x=26, y=60
 		// (basic correspondence of proportions between triangles)
 		// yielding bounds of [x=60,y=26,width=60,height=14]
-		assertEquals(new Rectangle(60,26,60,14), aNoteEdge.getBounds());
+		assertEquals(new Rectangle(60,26,60,14), aNoteEdge.view().getBounds());
 		
 		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());

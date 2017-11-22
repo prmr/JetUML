@@ -1,6 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
@@ -26,12 +25,6 @@ public abstract class AbstractEdge implements Edge
 		aView = generateView();
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		return aView.getBounds();
-	}
-
 	@Override
 	public void connect(Node pStart, Node pEnd, Graph pGraph)
 	{

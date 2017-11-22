@@ -166,22 +166,22 @@ public class TestUsageScenarios
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());
 		
-		assertEquals(new Rectangle(11, 5, 38, 25), edge1.getBounds());
+		assertEquals(new Rectangle(11, 5, 38, 25), edge1.view().getBounds());
 		assertEquals("Edge 1", edge1.getMiddleLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());
 		
-		assertEquals(new Rectangle(53, 76, 38, 24), edge2.getBounds());
+		assertEquals(new Rectangle(53, 76, 38, 24), edge2.view().getBounds());
 		assertEquals("Edge 2", edge2.getMiddleLabel());
 		assertEquals(node1, edge2.getStart());
 		assertEquals(node2, edge2.getEnd());
 		
-		assertEquals(new Rectangle(46, 76, 38, 24), edge3.getBounds());
+		assertEquals(new Rectangle(46, 76, 38, 24), edge3.view().getBounds());
 		assertEquals("Edge 3", edge3.getMiddleLabel());
 		assertEquals(node2, edge3.getStart());
 		assertEquals(node1, edge3.getEnd());
 		
-		assertEquals(new Rectangle(44, 160, 51, 41), edge4.getBounds());
+		assertEquals(new Rectangle(44, 160, 51, 41), edge4.view().getBounds());
 		assertEquals("Edge 4", edge4.getMiddleLabel());
 		assertEquals(node2, edge4.getStart());
 		assertEquals(end, edge4.getEnd());

@@ -743,7 +743,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(new Rectangle(115, 75,16,30), aCallNode2.view().getBounds());
 		
 		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
-		assertEquals(new Rectangle(31, 70,84,10), aCallEdge1.getBounds());
+		assertEquals(new Rectangle(31, 70,84,10), aCallEdge1.view().getBounds());
 		
 		aDiagram.draw(aGraphics);
 		
@@ -751,6 +751,6 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(new Rectangle(110,0,80,155), aParameterNode2.view().getBounds());
 		assertEquals(new Rectangle(42,75,16,60), aCallNode1.view().getBounds());
 		assertEquals(new Rectangle(142, 85,16,30), aCallNode2.view().getBounds());
-		assertEquals(new Rectangle(58, 80,84,10), aCallEdge1.getBounds());
+		assertEquals(new Rectangle(58, 80,84,10), aCallEdge1.view().getBounds());
 	}	
 }

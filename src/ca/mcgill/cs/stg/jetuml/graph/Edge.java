@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph;
 
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
 
 /**
@@ -66,12 +65,5 @@ public interface Edge extends GraphElement
    	 * @return The view for this edge.
    	 */
    	EdgeView view();
-   	
-	/**
-     * Gets the smallest rectangle that bounds this edge.
-     * The bounding rectangle contains all labels.
-     * @return the bounding rectangle
-   	 */
-   	Rectangle getBounds();
 }
 

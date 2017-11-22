@@ -322,7 +322,7 @@ public final class Clipboard
 		}
 		else if( pElement instanceof Edge )
 		{
-			return ((Edge)pElement).getBounds();
+			return ((Edge)pElement).view().getBounds();
 		}
 		else
 		{
