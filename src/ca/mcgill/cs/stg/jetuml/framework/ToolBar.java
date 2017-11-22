@@ -138,8 +138,8 @@ public class ToolBar extends JPanel
             
             public void paintIcon(Component pComponent, Graphics pGraphic, int pX, int pY)
             {
-            	double width = pNode.getBounds().getWidth();
-            	double height = pNode.getBounds().getHeight();
+            	double width = pNode.view().getBounds().getWidth();
+            	double height = pNode.view().getBounds().getHeight();
                	Graphics2D g2 = (Graphics2D)pGraphic;
                	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
@@ -180,8 +180,8 @@ public class ToolBar extends JPanel
 				pEdge.connect(pointNode, q, null);
 
 				Rectangle bounds = new Rectangle(0, 0, 0, 0);
-				bounds = bounds.add(pointNode.getBounds());
-				bounds = bounds.add(q.getBounds());
+				bounds = bounds.add(pointNode.view().getBounds());
+				bounds = bounds.add(q.view().getBounds());
 				bounds = bounds.add(pEdge.getBounds());
 
 				double width = bounds.getWidth();

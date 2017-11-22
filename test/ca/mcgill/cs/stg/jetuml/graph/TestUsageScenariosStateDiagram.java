@@ -238,10 +238,10 @@ public class TestUsageScenariosStateDiagram
 		aStateNode2.translate(15, -30);
 		aFinalNode.translate(40, 20);
 		
-		assertEquals(new Rectangle(23, 32, 20, 20), aInitialNode.getBounds());
-		assertEquals(new Rectangle(45, 100, 80, 60), aStateNode1.getBounds());
-		assertEquals(new Rectangle(165, -10, 80, 60), aStateNode2.getBounds());
-		assertEquals(new Rectangle(290, 40, 20, 20), aFinalNode.getBounds());
+		assertEquals(new Rectangle(23, 32, 20, 20), aInitialNode.view().getBounds());
+		assertEquals(new Rectangle(45, 100, 80, 60), aStateNode1.view().getBounds());
+		assertEquals(new Rectangle(165, -10, 80, 60), aStateNode2.view().getBounds());
+		assertEquals(new Rectangle(290, 40, 20, 20), aFinalNode.view().getBounds());
 	}
 	
 	/**
@@ -278,10 +278,10 @@ public class TestUsageScenariosStateDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 20, 20), aInitialNode.getBounds());
-		assertEquals(new Rectangle(76, 57, 80, 60), aStateNode1.getBounds());
-		assertEquals(new Rectangle(150, 20, 80, 60), aStateNode2.getBounds());
-		assertEquals(new Rectangle(250, 20, 20, 20), aFinalNode.getBounds());
+		assertEquals(new Rectangle(46, 57, 20, 20), aInitialNode.view().getBounds());
+		assertEquals(new Rectangle(76, 57, 80, 60), aStateNode1.view().getBounds());
+		assertEquals(new Rectangle(150, 20, 80, 60), aStateNode2.view().getBounds());
+		assertEquals(new Rectangle(250, 20, 20, 20), aFinalNode.view().getBounds());
 		assertEquals(aInitialNode, aTransitionEdge1.getStart());
 		assertEquals(aStateNode1, aTransitionEdge1.getEnd());
 		assertEquals(aStateNode1, aTransitionEdge2.getStart());
@@ -394,7 +394,7 @@ public class TestUsageScenariosStateDiagram
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
-				(((StateNode) aDiagram.getRootNodes().toArray()[1]).getBounds()));
+				(((StateNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds()));
 	}
 	
 	/**
@@ -416,7 +416,7 @@ public class TestUsageScenariosStateDiagram
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
-				(((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds()));
+				(((StateNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds()));
 	}
 	
 	/**
@@ -438,7 +438,7 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
-				(((StateNode) aDiagram.getRootNodes().toArray()[2]).getBounds()));
+				(((StateNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
 	}
 	
 	/**
@@ -464,6 +464,6 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
-				(((StateNode) aDiagram.getRootNodes().toArray()[0]).getBounds()));
+				(((StateNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds()));
 	}
 }

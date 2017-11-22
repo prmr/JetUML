@@ -154,13 +154,13 @@ public class TestUsageScenarios
 		
 		// VALIDATION NODES
 		assertEquals(4, diagram.getRootNodes().size());
-		assertEquals(new Rectangle(30, 30, 80, 60), node1.getBounds());
+		assertEquals(new Rectangle(30, 30, 80, 60), node1.view().getBounds());
 		assertEquals("Node 1", node1.getName().getText());
-		assertEquals(new Rectangle(30, 100, 80, 60), node2.getBounds());
+		assertEquals(new Rectangle(30, 100, 80, 60), node2.view().getBounds());
 		assertEquals("Node 2", node2.getName().getText());
-		assertEquals(new Rectangle(5, 5, 20, 20), start.getBounds());
+		assertEquals(new Rectangle(5, 5, 20, 20), start.view().getBounds());
 		assertFalse(start.isFinal());
-		assertEquals(new Rectangle(30, 200, 20, 20), end.getBounds());
+		assertEquals(new Rectangle(30, 200, 20, 20), end.view().getBounds());
 		assertTrue(end.isFinal());
 		
 		// VALIDATION EDGES

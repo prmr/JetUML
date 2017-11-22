@@ -67,7 +67,7 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 	 */
 	private boolean isSShaped()
 	{
-		Rectangle b = edge().getEnd().getBounds();
+		Rectangle b = edge().getEnd().view().getBounds();
 		Point p = edge().getStart().view().getConnectionPoint(Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}

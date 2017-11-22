@@ -77,8 +77,8 @@ public class ReturnEdge extends SingleLabelEdge
 	private static Point2D[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
-		Rectangle start = pEdge.getStart().getBounds();
-		Rectangle end = pEdge.getEnd().getBounds();
+		Rectangle start = pEdge.getStart().view().getBounds();
+		Rectangle end = pEdge.getEnd().view().getBounds();
 		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{
 			lReturn.add(new Point2D.Double(end.getX(), end.getY()));

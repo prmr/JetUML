@@ -99,7 +99,7 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	public void addChild(ChildNode pChild, Point pPoint)
 	{
 		int i = 0;
-		while(i < aCallNodes.size() && aCallNodes.get(i).getBounds().getY() <= pPoint.getY())
+		while(i < aCallNodes.size() && aCallNodes.get(i).view().getBounds().getY() <= pPoint.getY())
 		{
 			i++;
 		}

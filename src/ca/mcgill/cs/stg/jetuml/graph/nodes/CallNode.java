@@ -55,11 +55,11 @@ public class CallNode extends AbstractNode implements ChildNode
 		super.translate(pDeltaX, pDeltaY);
 		// Prevent going above the ImplicitParameterNode
 		// TODO Remove first clause once XML serialization is replaced.
-		if( aImplicitParameter != null && getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
+		if( aImplicitParameter != null && view().getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
 		{
-			((CallNodeView)view()).setBounds(new Rectangle(getBounds().getX(), 
+			((CallNodeView)view()).setBounds(new Rectangle(view().getBounds().getX(), 
 					Math.round(aImplicitParameter.getTopRectangle().getMaxY()) + MIN_YGAP, 
-					getBounds().getWidth(), getBounds().getHeight()));
+					view().getBounds().getWidth(), view().getBounds().getHeight()));
 		}
 	}
 

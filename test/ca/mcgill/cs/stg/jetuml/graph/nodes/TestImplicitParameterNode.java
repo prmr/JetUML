@@ -50,7 +50,7 @@ public class TestImplicitParameterNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 80, 120), aObject1.getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 120), aObject1.view().getBounds());
 		assertEquals(0,aObject1.getChildren().size());
 		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
 		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
@@ -103,7 +103,7 @@ public class TestImplicitParameterNode
 		o1.setText("o1");
 		aObject1.setName(o1);
 		ImplicitParameterNode clone = aObject1.clone();
-		assertEquals(new Rectangle(0, 0, 80, 120), clone.getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 120), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
 		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
 		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));

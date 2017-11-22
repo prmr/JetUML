@@ -73,8 +73,8 @@ public abstract class AbstractEdgeView implements EdgeView
 	@Override
 	public Line getConnectionPoints()
 	{
-		Rectangle startBounds = edge().getStart().getBounds();
-		Rectangle endBounds = edge().getEnd().getBounds();
+		Rectangle startBounds = edge().getStart().view().getBounds();
+		Rectangle endBounds = edge().getEnd().view().getBounds();
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);

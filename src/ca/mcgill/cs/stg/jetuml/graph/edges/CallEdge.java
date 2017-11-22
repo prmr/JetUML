@@ -123,8 +123,8 @@ public class CallEdge extends SingleLabelEdge
 	private static Point2D[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point2D> points = new ArrayList<>();
-		Rectangle start = pEdge.getStart().getBounds();
-		Rectangle end = pEdge.getEnd().getBounds();
+		Rectangle start = pEdge.getStart().view().getBounds();
+		Rectangle end = pEdge.getEnd().view().getBounds();
       
 		if(pEdge.getEnd() instanceof CallNode && ((CallNode)pEdge.getEnd()).getParent() == 
 				((CallNode)pEdge.getStart()).getParent())

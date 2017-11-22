@@ -5,7 +5,6 @@ import java.beans.Encoder;
 import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
@@ -51,12 +50,6 @@ public abstract class AbstractNode implements Node
 	}
 	
 	@Override
-	public Rectangle getBounds()
-	{
-		return aView.getBounds();
-	}
-	
-	@Override
 	public Point position()
 	{
 		return aPosition;
@@ -86,7 +79,7 @@ public abstract class AbstractNode implements Node
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " " + getBounds();
+		return getClass().getSimpleName() + " " + view().getBounds();
 	}
 	
 	/**
@@ -107,5 +100,4 @@ public abstract class AbstractNode implements Node
 			}
 		});
 	}
-	
 }

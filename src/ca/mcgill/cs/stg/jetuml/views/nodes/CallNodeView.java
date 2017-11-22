@@ -117,7 +117,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	 */
 	private int computeMidX(Graph pGraph)
 	{
-		int xmid = implicitParameter().getBounds().getCenter().getX();
+		int xmid = implicitParameter().view().getBounds().getCenter().getX();
 
 		// Calculate a shift for each caller with the same implicit parameter
 		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(node()); node != null && node != node(); 
@@ -156,7 +156,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 					bottomY += callEdge.getBounds().getHeight() - CallNode.CALL_YGAP;
 				}
 
-				node.translate(0, bottomY - node.getBounds().getY());
+				node.translate(0, bottomY - node.view().getBounds().getY());
 				node.view().layout(pGraph);
 				if(((CallNode) node).isSignaled(pGraph))
 				{
@@ -164,7 +164,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 				}
 				else
 				{
-					bottomY += node.getBounds().getHeight() + CallNode.CALL_YGAP;
+					bottomY += node.view().getBounds().getHeight() + CallNode.CALL_YGAP;
 				}
 			}
 		}

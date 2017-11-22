@@ -89,4 +89,10 @@ public abstract class AbstractEdge implements Edge
 	{
 		return aView;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + " " + getStart() + " -> " + getEnd();
+	}
 }

@@ -109,7 +109,7 @@ public class TestCompoundCommand
         aCompoundCommand1.execute();               
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.getBounds(), new Rectangle(5, 5, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(5, 5, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -118,7 +118,7 @@ public class TestCompoundCommand
     {
         aCompoundCommand1.execute();
         aCompoundCommand1.undo();
-        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -139,8 +139,8 @@ public class TestCompoundCommand
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
         assertTrue(aGraph.getRootNodes().contains(aActorNode));
-        assertEquals(aClassNode.getBounds(), new Rectangle(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
-        assertEquals(aActorNode.getBounds(), new Rectangle(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(2, 8, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aActorNode.view().getBounds(), new Rectangle(0, 0, aActorNode.view().getBounds().getWidth(), aActorNode.view().getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -149,8 +149,8 @@ public class TestCompoundCommand
     {
         aCompoundCommand3.execute();
         aCompoundCommand3.undo();
-        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
-        assertEquals(aActorNode.getBounds(), new Rectangle(0, 0, aActorNode.getBounds().getWidth(), aActorNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aActorNode.view().getBounds(), new Rectangle(0, 0, aActorNode.view().getBounds().getWidth(), aActorNode.view().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -172,7 +172,7 @@ public class TestCompoundCommand
         aCompoundCommand4.execute();      
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.getBounds(), new Rectangle(2, 8, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(2, 8, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
         try 
         {
 			ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -201,7 +201,7 @@ public class TestCompoundCommand
 		}   
         aCompoundCommand4.undo();
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
-        assertEquals(aClassNode.getBounds(), new Rectangle(0, 0, aClassNode.getBounds().getWidth(), aClassNode.getBounds().getHeight()));
+        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));

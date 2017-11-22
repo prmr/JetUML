@@ -54,7 +54,7 @@ public class TestPackageNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 100, 80), aPackage1.getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), aPackage1.view().getBounds());
 		assertEquals(0,aPackage1.getChildren().size());
 		assertEquals(new Point(100,40), aPackage1.view().getConnectionPoint(Direction.EAST));
 		assertEquals(new Point(0,40), aPackage1.view().getConnectionPoint(Direction.WEST));
@@ -130,7 +130,7 @@ public class TestPackageNode
 	{
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
-		assertEquals(new Rectangle(0, 0, 100, 80), clone.getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
 		assertEquals(new Point(100,40), clone.view().getConnectionPoint(Direction.EAST));
 		assertEquals(new Point(0,40), clone.view().getConnectionPoint(Direction.WEST));

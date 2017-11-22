@@ -340,7 +340,7 @@ public class SequenceDiagramGraph extends Graph
 		double top = 0;
 		for(Node node : pObjects)
 		{
-			node.translate(0, -node.getBounds().getY());
+			node.translate(0, -node.view().getBounds().getY());
 			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
 		}
 
@@ -355,7 +355,7 @@ public class SequenceDiagramGraph extends Graph
 			{
 				for( Node callNode : ((ImplicitParameterNode) node).getChildren())
 				{
-					top = Math.max(top, callNode.getBounds().getY() + callNode.getBounds().getHeight());
+					top = Math.max(top, callNode.view().getBounds().getY() + callNode.view().getBounds().getHeight());
 				}
 			}
 		}
@@ -364,7 +364,7 @@ public class SequenceDiagramGraph extends Graph
 
 		for( Node node : pObjects )
 		{
-			Rectangle bounds = node.getBounds();
+			Rectangle bounds = node.view().getBounds();
 			((ImplicitParameterNode)node).setBounds(new Rectangle(bounds.getX(), 
 					bounds.getY(), bounds.getWidth(), (int)top - bounds.getY()));         
 		}

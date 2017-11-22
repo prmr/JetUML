@@ -230,9 +230,9 @@ public class TestUsageScenariosObjectDiagram
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.getBounds());
-		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.getBounds());
-		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
 	}
 	
 	/**
@@ -266,9 +266,9 @@ public class TestUsageScenariosObjectDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.getBounds());
-		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.getBounds());
-		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.getBounds());
+		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
 		assertEquals(aObjectNode1, aReferenceEdge1.getEnd());
@@ -439,7 +439,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
 		
 		// paste a FieldNode itself is not allowed
 		aPanel.getSelectionList().clearSelection();
@@ -468,7 +468,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 		
 		// a FieldNode will be cut, but will not be pasted
 		aPanel.getSelectionList().clearSelection();
@@ -502,7 +502,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds());
 	}
 	
 	/**
@@ -529,6 +529,6 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 }

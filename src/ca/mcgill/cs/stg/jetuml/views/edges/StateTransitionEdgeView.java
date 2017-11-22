@@ -282,19 +282,19 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	{
 		if( getPosition() == 1 )
 		{
-			Point2D.Double point1 = new Point2D.Double(edge().getStart().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
-					edge().getStart().getBounds().getY());
-			Point2D.Double point2 = new Point2D.Double(edge().getStart().getBounds().getMaxX(), 
-					edge().getStart().getBounds().getY() + SELF_EDGE_OFFSET);
+			Point2D.Double point1 = new Point2D.Double(edge().getStart().view().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
+					edge().getStart().view().getBounds().getY());
+			Point2D.Double point2 = new Point2D.Double(edge().getStart().view().getBounds().getMaxX(), 
+					edge().getStart().view().getBounds().getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1),
 					Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D.Double point1 = new Point2D.Double(edge().getStart().getBounds().getX(), 
-					edge().getStart().getBounds().getY() + SELF_EDGE_OFFSET);
-			Point2D.Double point2 = new Point2D.Double(edge().getStart().getBounds().getX() + SELF_EDGE_OFFSET, 
-					edge().getStart().getBounds().getY());
+			Point2D.Double point1 = new Point2D.Double(edge().getStart().view().getBounds().getX(), 
+					edge().getStart().view().getBounds().getY() + SELF_EDGE_OFFSET);
+			Point2D.Double point2 = new Point2D.Double(edge().getStart().view().getBounds().getX() + SELF_EDGE_OFFSET, 
+					edge().getStart().view().getBounds().getY());
 			return new Line(Conversions.toPoint(point1), 
 					Conversions.toPoint(point2));
 		}
@@ -352,8 +352,8 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	 */
 	private Line getNormalEdgeConnectionsPoints()
 	{
-		Rectangle start = edge().getStart().getBounds();
-		Rectangle end = edge().getEnd().getBounds();
+		Rectangle start = edge().getStart().view().getBounds();
+		Rectangle end = edge().getEnd().view().getBounds();
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;

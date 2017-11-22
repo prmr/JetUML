@@ -48,17 +48,17 @@ public class TestMoveCommand
     @Test
     public void testExecute() 
     {
-    	assertEquals(aNode.getBounds(), new Rectangle(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+    	assertEquals(aNode.view().getBounds(), new Rectangle(0, 0, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
         aMoveCommand.execute();
-        assertEquals(aNode.getBounds(), new Rectangle(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        assertEquals(aNode.view().getBounds(), new Rectangle(5, 5, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
     }
 
     @Test
     public void testUndo() 
     {
     	aMoveCommand.execute();
-        assertEquals(aNode.getBounds(), new Rectangle(5, 5, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        assertEquals(aNode.view().getBounds(), new Rectangle(5, 5, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
         aMoveCommand.undo();
-        assertEquals(aNode.getBounds(), new Rectangle(0, 0, aNode.getBounds().getWidth(), aNode.getBounds().getHeight()));
+        assertEquals(aNode.view().getBounds(), new Rectangle(0, 0, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
     } 
 }

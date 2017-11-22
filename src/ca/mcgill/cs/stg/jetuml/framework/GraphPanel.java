@@ -324,7 +324,7 @@ public class GraphPanel extends JPanel
 			}
 			else if(selected instanceof Node)
 			{
-				Rectangle grabberBounds = ((Node) selected).getBounds();
+				Rectangle grabberBounds = ((Node) selected).view().getBounds();
 				drawGrabber(g2, grabberBounds.getX(), grabberBounds.getY());
 				drawGrabber(g2, grabberBounds.getX(), grabberBounds.getMaxY());
 				drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getY());
@@ -755,7 +755,7 @@ public class GraphPanel extends JPanel
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
 				Node lastNode = aSelectedElements.getLastNode();
-				Rectangle bounds = lastNode.getBounds();
+				Rectangle bounds = lastNode.view().getBounds();
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
 				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
                    
@@ -767,7 +767,7 @@ public class GraphPanel extends JPanel
 					if(selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						bounds = bounds.add(n.getBounds());
+						bounds = bounds.add(n.view().getBounds());
 					}
 				}
 				dx = Math.max(dx, -bounds.getX());
@@ -823,11 +823,11 @@ public class GraphPanel extends JPanel
 		
 		private void selectNode( boolean pCtrl, Node pNode, Rectangle pLasso )
 		{
-			if(!pCtrl && !pLasso.contains(pNode.getBounds())) 
+			if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 			{
 				aSelectedElements.remove(pNode);
 			}
-			else if(pLasso.contains(pNode.getBounds())) 
+			else if(pLasso.contains(pNode.view().getBounds())) 
 			{
 				aSelectedElements.add(pNode);
 			}

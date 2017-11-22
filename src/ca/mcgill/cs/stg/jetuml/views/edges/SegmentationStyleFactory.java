@@ -127,7 +127,7 @@ public final class SegmentationStyleFactory
 		}
 		else
 		{
-			return new Point2D.Double(pNode.getBounds().getMaxX(), pNode.getBounds().getY());
+			return new Point2D.Double(pNode.view().getBounds().getMaxX(), pNode.view().getBounds().getY());
 		}
 	}
 	
@@ -197,21 +197,21 @@ public final class SegmentationStyleFactory
 		Point start = pNode.view().getConnectionPoint(pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
-			double yPosition = start.getY()+ pPosition.computeNudge(pNode.getBounds().getHeight()); // Default
+			double yPosition = start.getY()+ pPosition.computeNudge(pNode.view().getBounds().getHeight()); // Default
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.EAST )
 			{
-				double increment = (pNode.getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
-				yPosition = pNode.getBounds().getY() + MARGIN + pPosition.getIndex() * increment;
+				double increment = (pNode.view().getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
+				yPosition = pNode.view().getBounds().getY() + MARGIN + pPosition.getIndex() * increment;
 			}
 			return new Point( start.getX(), yPosition);	
 		}
 		else
 		{
-			double xPosition = start.getX()+ pPosition.computeNudge(pNode.getBounds().getWidth());
+			double xPosition = start.getX()+ pPosition.computeNudge(pNode.view().getBounds().getWidth());
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.NORTH )
 			{
-				double increment = (pNode.getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
-				xPosition = pNode.getBounds().getX() + pPosition.getIndex() * increment;
+				double increment = (pNode.view().getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
+				xPosition = pNode.view().getBounds().getX() + pPosition.getIndex() * increment;
 			}
 			return new Point( xPosition, start.getY());
 		}
@@ -348,11 +348,11 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return (int)(otherNode1.getBounds().getCenter().getY() - otherNode2.getBounds().getCenter().getY());
+				return (int)(otherNode1.view().getBounds().getCenter().getY() - otherNode2.view().getBounds().getCenter().getY());
 			}
 			else
 			{
-				return (int)(otherNode1.getBounds().getCenter().getX() - otherNode2.getBounds().getCenter().getX());
+				return (int)(otherNode1.view().getBounds().getCenter().getX() - otherNode2.view().getBounds().getCenter().getX());
 			}
 		});
 	}

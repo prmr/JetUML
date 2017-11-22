@@ -144,11 +144,11 @@ public class PackageNodeView extends RectangleBoundedNodeView
 			child.view().layout(pGraph);
 			if( childBounds == null )
 			{
-				childBounds = child.getBounds();
+				childBounds = child.view().getBounds();
 			}
 			else
 			{
-				childBounds = childBounds.add(child.getBounds());
+				childBounds = childBounds.add(child.view().getBounds());
 			}
 		}
 		

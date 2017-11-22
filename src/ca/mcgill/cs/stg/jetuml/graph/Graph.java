@@ -251,7 +251,7 @@ public abstract class Graph
 	 */
 	public boolean addNode(Node pNode, Point pPoint)
 	{
-		Rectangle bounds = pNode.getBounds();
+		Rectangle bounds = pNode.view().getBounds();
 		pNode.translate((int)(pPoint.getX() - bounds.getX()), (int)(pPoint.getY() - bounds.getY())); 
 		if( !(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null )
 		{
@@ -606,11 +606,11 @@ public abstract class Graph
 		{
 			if(bounds == null)
 			{
-				bounds = node.getBounds();
+				bounds = node.view().getBounds();
 			}
 			else
 			{
-				bounds = bounds.add(node.getBounds());
+				bounds = bounds.add(node.view().getBounds());
 			}
 		}
 		for(Edge edge : aEdges)
