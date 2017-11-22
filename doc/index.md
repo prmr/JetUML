@@ -34,7 +34,7 @@ The functional view is split by functional concern.
 
  * [Frame management](functional/frameManagement.md)
  * [Graph management](functional/GraphManagement.md)
- * [Edge hierarchy](functional/EdgeHierarchy.md)
+ * [Graph elements](functional/GraphElements.md)
  * [Tool bar](functional/toolbar.md)
  
 ## Glossary
