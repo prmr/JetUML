@@ -22,8 +22,8 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ClassNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.ClassNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  * A class node in a class diagram.

@@ -22,11 +22,11 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.CallNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.CallNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,

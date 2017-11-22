@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.UseCaseNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.UseCaseNodeView;
 
 /**
  *  A use case node in a use case diagram.

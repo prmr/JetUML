@@ -24,14 +24,14 @@ package ca.mcgill.cs.stg.jetuml.diagrams;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.UseCaseNode;
 

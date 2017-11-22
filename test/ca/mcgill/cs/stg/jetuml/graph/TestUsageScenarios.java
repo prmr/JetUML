@@ -38,7 +38,6 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.CircularStateNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;

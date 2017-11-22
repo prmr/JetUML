@@ -29,7 +29,7 @@ import ca.mcgill.cs.stg.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * Tracks the movement of a set of selected graph elements.

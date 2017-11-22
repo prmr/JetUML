@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+
 /**
  * Node that potentially has a parent node 
  * according to a diagram type-specific parent-child

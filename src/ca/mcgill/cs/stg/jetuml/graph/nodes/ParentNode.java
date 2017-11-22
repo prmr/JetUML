@@ -22,6 +22,8 @@ package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import java.util.List;
 
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+
 /**
  * Node that potentially has children nodes
  * according to a diagram type-specific parent-child

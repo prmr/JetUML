@@ -1,9 +1,10 @@
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
 
 /**
  * Abstract edge in the new hierarchy.

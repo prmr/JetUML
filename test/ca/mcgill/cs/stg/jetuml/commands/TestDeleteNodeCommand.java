@@ -31,8 +31,8 @@ import org.junit.Test;
 import ca.mcgill.cs.stg.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 public class TestDeleteNodeCommand 
 {

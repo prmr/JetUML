@@ -27,10 +27,10 @@ package ca.mcgill.cs.stg.jetuml.graph.edges;
 
 import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyle;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.SegmentedEdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.SegmentationStyle;
+import ca.mcgill.cs.stg.jetuml.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.stg.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML aggregation or 

@@ -32,12 +32,12 @@ import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 
 public class TestCompoundCommand 
 {

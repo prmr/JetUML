@@ -56,10 +56,10 @@ import javax.swing.KeyStroke;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
 /**

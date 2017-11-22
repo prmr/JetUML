@@ -6,7 +6,8 @@ import java.beans.Statement;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  * Common elements for the Node hierarchy.

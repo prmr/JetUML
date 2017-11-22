@@ -23,8 +23,8 @@ package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.FieldNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.FieldNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  *  A field node in an object diagram.

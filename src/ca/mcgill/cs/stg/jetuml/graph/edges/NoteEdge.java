@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.NoteEdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.NoteEdgeView;
 
 /**
  *  A dotted line that connects a note to its attachment.

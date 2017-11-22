@@ -32,14 +32,12 @@ import java.util.Collections;
 import ca.mcgill.cs.stg.jetuml.framework.GraphModificationListener;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.AbstractNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.AbstractNodeView;
 
 /**
  *  A graph consisting of nodes and edges.

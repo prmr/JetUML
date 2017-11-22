@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.EdgeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.edges.StateTransitionEdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.stg.jetuml.views.edges.StateTransitionEdgeView;
 
 /**
  *  A curved edge for a state transition in a state diagram. The

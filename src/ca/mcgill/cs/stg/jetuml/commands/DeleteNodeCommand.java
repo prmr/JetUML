@@ -21,7 +21,7 @@
 package ca.mcgill.cs.stg.jetuml.commands;
 
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 
 /**
  * Represents the removal of a node from the graph.

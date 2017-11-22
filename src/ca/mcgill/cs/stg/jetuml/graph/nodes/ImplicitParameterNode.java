@@ -29,8 +29,8 @@ import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ImplicitParameterNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.ImplicitParameterNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  * An implicit parameter node in a sequence diagram. The 

@@ -22,8 +22,8 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NoteNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NoteNodeView;
 
 /**
  *  A note node in a UML diagram. The name of the node

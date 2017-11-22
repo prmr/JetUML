@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.StateNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.StateNodeView;
 
 /**
    A state node in a state diagram.

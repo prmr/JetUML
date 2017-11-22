@@ -28,8 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PackageNodeView;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.PackageNodeView;
 
 /**
  *   A package node in a UML diagram.

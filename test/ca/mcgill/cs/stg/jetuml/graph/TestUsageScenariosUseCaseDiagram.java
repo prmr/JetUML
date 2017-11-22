@@ -39,7 +39,6 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.UseCaseNode;

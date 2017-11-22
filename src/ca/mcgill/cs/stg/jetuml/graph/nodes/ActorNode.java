@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.ActorNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.ActorNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  *  An actor node in a use case diagram.

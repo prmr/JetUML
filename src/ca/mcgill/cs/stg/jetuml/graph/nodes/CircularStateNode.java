@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.CircularStateNodeView;
-import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.CircularStateNodeView;
+import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
  * An initial or final node (bull's eye) in a state or activity diagram.

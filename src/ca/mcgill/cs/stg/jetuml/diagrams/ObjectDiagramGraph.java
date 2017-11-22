@@ -26,14 +26,14 @@ import java.util.ResourceBundle;
 
 import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
+import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
 

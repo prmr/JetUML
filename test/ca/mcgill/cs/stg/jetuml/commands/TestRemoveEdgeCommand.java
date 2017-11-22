@@ -29,9 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 
 public class TestRemoveEdgeCommand 
 {

@@ -39,7 +39,6 @@ import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ObjectNode;
 
