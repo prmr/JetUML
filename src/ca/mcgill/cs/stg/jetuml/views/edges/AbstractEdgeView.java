@@ -98,29 +98,4 @@ public abstract class AbstractEdgeView implements EdgeView
 		lReturn.append("</html>");
 		return lReturn.toString();
 	}
-	
-	/** 
-	 * Creates a clone of this object for internal use.
-	 * @return a shallow clone.
-	 * @see java.lang.Object#clone()
-	 */
-	protected AbstractEdgeView clone()
-	{
-		try
-		{
-			return (AbstractEdgeView) super.clone();
-		}
-		catch (CloneNotSupportedException e)
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public EdgeView copy(Edge pEdge)
-	{
-		AbstractEdgeView copy = clone();
-		copy.aEdge = pEdge;
-		return copy;
-	}
 }
