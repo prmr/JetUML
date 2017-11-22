@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
-
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -34,12 +32,6 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
   */
 public interface Node extends GraphElement
 {
-	/**
-     *  Draw the node.
-     * @param pGraphics2D the graphics context
-     */
-	void draw(Graphics2D pGraphics2D);
-	
 	/**
 	 * @return The position of this node. Usually corresponds to the top left corner 
 	 * of its bounding box.

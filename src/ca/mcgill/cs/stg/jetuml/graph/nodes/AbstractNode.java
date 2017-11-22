@@ -1,6 +1,5 @@
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import java.awt.Graphics2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
@@ -68,12 +67,6 @@ public abstract class AbstractNode implements Node
 	public void moveTo(Point pPoint)
 	{
 		aPosition = pPoint;
-	}
-
-	@Override
-	public void draw(Graphics2D pGraphics2D)
-	{
-		aView.draw(pGraphics2D);		
 	}
 
 	@Override

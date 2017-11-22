@@ -431,7 +431,7 @@ public abstract class Graph
 	
 	private void drawNode(Node pNode, Graphics2D pGraphics2D)
 	{
-		pNode.draw(pGraphics2D);
+		pNode.view().draw(pGraphics2D);
 		if( pNode instanceof ParentNode )
 		{
 			for( Node node : ((ParentNode) pNode).getChildren())
