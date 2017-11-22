@@ -305,13 +305,30 @@ public final class Clipboard
 		Rectangle bounds = pBounds;
 		if( bounds == null )
 		{
-			bounds = pElement.getBounds();
+			bounds = getBounds(pElement);
 		}
 		else
 		{
-			bounds = bounds.add( pElement.getBounds());
+			bounds = bounds.add( getBounds(pElement));
 		}
 		return bounds;
+	}
+	
+	private static Rectangle getBounds(GraphElement pElement)
+	{
+		if( pElement instanceof Node )
+		{
+			return ((Node)pElement).getBounds();
+		}
+		else if( pElement instanceof Edge )
+		{
+			return ((Edge)pElement).getBounds();
+		}
+		else
+		{
+			assert false;
+			return null;
+		}
 	}
 	
 	/*

@@ -60,7 +60,7 @@ public class MoveTracker
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(Conversions.toRectangle2D(element.getBounds()));
+				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).getBounds()));
 			}
 		}
 	}

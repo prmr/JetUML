@@ -22,6 +22,7 @@
 package ca.mcgill.cs.stg.jetuml.graph;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.views.nodes.NodeView;
 
 /**
@@ -58,4 +59,11 @@ public interface Node extends GraphElement
 	 * @return The view for this node. TODO remove default
 	 */
 	NodeView view();
+	
+	/**
+     * Gets the smallest rectangle that bounds this node.
+     * The bounding rectangle contains all labels.
+     * @return the bounding rectangle
+   	 */
+   	Rectangle getBounds();
 }
