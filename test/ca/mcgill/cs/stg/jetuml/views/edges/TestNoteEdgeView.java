@@ -18,18 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.stg.jetuml.graph.edges;
+package ca.mcgill.cs.stg.jetuml.views.edges;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.stg.jetuml.geom.Line;
+import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
+import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 
-public class TestNoteEdge
+public class TestNoteEdgeView
 {
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
@@ -62,14 +66,39 @@ public class TestNoteEdge
 	}
 	
 	@Test
-	public void testClone()
+	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
-		NoteEdge clonedEdge = (NoteEdge) aNoteEdge.clone();
+		assertEquals(new Rectangle(60,20,40,0), aNoteEdge.view().getBounds());
 		
-		// Test that the start and end nodes are the same object
-		// (shallow cloning)
-		assertTrue( (NoteNode) clonedEdge.getStart() == aNoteNode );
-		assertTrue( (PointNode) clonedEdge.getEnd() == aPointNode );
+		Line connectionPoints = aNoteEdge.view().getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1());
+		assertEquals( 20, connectionPoints.getY1());
+		assertEquals( 100, connectionPoints.getX2());
+		assertEquals( 20, connectionPoints.getY2());
+		
+		
+		aPointNode.translate(20, 0);
+		assertEquals(new Rectangle(60,20,60,0), aNoteEdge.view().getBounds());
+		
+		connectionPoints = aNoteEdge.view().getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1());
+		assertEquals( 20, connectionPoints.getY1());
+		assertEquals( 120, connectionPoints.getX2());
+		assertEquals( 20, connectionPoints.getY2());
+		
+		
+		aPointNode.translate(0, 20); // Now at x=120, y = 40
+		
+		// The edge should intersect the note edge at x=26, y=60
+		// (basic correspondence of proportions between triangles)
+		// yielding bounds of [x=60,y=26,width=60,height=14]
+		assertEquals(new Rectangle(60,26,60,14), aNoteEdge.view().getBounds());
+		
+		connectionPoints = aNoteEdge.view().getConnectionPoints();
+		assertEquals( 60, connectionPoints.getX1());
+		assertEquals( 26, connectionPoints.getY1());
+		assertEquals( 120, connectionPoints.getX2());
+		assertEquals( 40, connectionPoints.getY2());
 	}
 }

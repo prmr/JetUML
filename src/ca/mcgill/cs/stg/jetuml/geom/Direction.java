@@ -21,13 +21,13 @@
 
 package ca.mcgill.cs.stg.jetuml.geom;
 
-import java.awt.geom.Point2D;
-
 /**
  * This class describes a direction in the 2D plane. 
  * A direction is a vector of length 1 with an angle between 0 
  * (inclusive) and 360 degrees (exclusive). There is also
- * a degenerate direction of length 0. 
+ * a degenerate direction of length 0. Note that this class
+ * currently does not support hashing with hashCode and 
+ * equality testing with equals().
  */
 public class Direction
 {
@@ -38,8 +38,6 @@ public class Direction
 	
 	private double aX;
 	private double aY;   
-	
-	// TODO implement equals and hashcode
 	
 	/**
      * Constructs a direction (normalized to length 1).
@@ -59,17 +57,6 @@ public class Direction
 		aY = aY / length;
 	}
 
-	/**
-     * Constructs a direction between two points.
-     * @param pPoint1 the starting point
-     * @param pPoint2 the ending point
-	 */
-	public Direction(Point2D pPoint1, Point2D pPoint2) // TODO Retire
-	{
-		this(pPoint2.getX() - pPoint1.getX(),
-        pPoint2.getY() - pPoint1.getY());
-	}
-	
 	/**
      * Constructs a direction between two points.
      * @param pPoint1 the starting point

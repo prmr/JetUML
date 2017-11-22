@@ -59,6 +59,7 @@ public class TestPoint
 		assertEquals(-2239, new Point(-100,-100).hashCode());
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void testEquals()
 	{
@@ -69,5 +70,8 @@ public class TestPoint
 		assertTrue(point2.equals(point1));
 		assertFalse(point1.equals(null));
 		assertFalse(point1.equals(new Point(1,1)));
+		assertFalse(point1.equals("Foo"));
+		assertFalse(point1.equals(new Point(0,1)));
+		assertFalse(point1.equals(new Point(1,0)));
 	}
 }

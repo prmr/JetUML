@@ -55,9 +55,11 @@ public final class Point implements Cloneable
 	/**
 	 * @param pPoint Another point.
 	 * @return The distance between two points.
+	 * @pre pPoint != null
 	 */
 	public double distance(Point pPoint)
 	{
+		assert pPoint != null;
 		int a = pPoint.aY - aY;
 		int b = pPoint.aX - aX;
 		return Math.sqrt(a*a + b*b);

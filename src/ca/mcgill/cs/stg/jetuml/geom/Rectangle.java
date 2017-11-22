@@ -20,9 +20,12 @@ public class Rectangle
 	 * @param pY The Y-coordinate of the top-left corner.
 	 * @param pWidth The width of the rectangle.
 	 * @param pHeight The height of the rectangle.
+	 * @pre pWidth >=0 
+	 * @pre pHeight >= 0
 	 */
 	public Rectangle(int pX, int pY, int pWidth, int pHeight)
 	{
+		assert pWidth >= 0 && pHeight >= 0;
 		aX = pX;
 		aY = pY;
 		aWidth = pWidth;
@@ -132,9 +135,11 @@ public class Rectangle
 	/**
 	 * @param pPoint The point to include.
 	 * @return A new rectangle that is this rectangle enlarged to include pPoint.
+	 * @pre pPoint != null
 	 */ 
 	public Rectangle add(Point pPoint)
 	{
+		assert pPoint != null;
 		int x = aX;
 		int y = aY;
 		int width = aWidth;
@@ -163,9 +168,11 @@ public class Rectangle
 	/**
 	 * @param pRectangle The rectangle to include.
 	 * @return A new rectangle that is this rectangle enlarged to include pPoint.
+	 * @pre pRectangle != null
 	 */ 
 	public Rectangle add(Rectangle pRectangle)
 	{
+		assert pRectangle != null;
 		int x = Math.min(aX, pRectangle.aX);
 		int y = Math.min(aY, pRectangle.aY);
 		int maxX = Math.max(getMaxX(), pRectangle.getMaxX());
