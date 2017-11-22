@@ -15,7 +15,7 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
  */
 public abstract class AbstractNodeView implements NodeView
 {
-	private static final int SHADOW_GAP = 4;
+	public static final int SHADOW_GAP = 4;
 	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
 	
 	private Node aNode;

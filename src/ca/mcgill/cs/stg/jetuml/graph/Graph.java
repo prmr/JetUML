@@ -34,12 +34,12 @@ import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.edges.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.AbstractNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.ParentNode;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
+import ca.mcgill.cs.stg.jetuml.graph.views.nodes.AbstractNodeView;
 
 /**
  *  A graph consisting of nodes and edges.
@@ -626,7 +626,7 @@ public abstract class Graph
 		else
 		{
 			return new Rectangle(bounds.getX(), bounds.getY(), 
-					bounds.getWidth() + AbstractNode.SHADOW_GAP, bounds.getHeight() + AbstractNode.SHADOW_GAP);
+					bounds.getWidth() + AbstractNodeView.SHADOW_GAP, bounds.getHeight() + AbstractNodeView.SHADOW_GAP);
 		}
 	}
 
