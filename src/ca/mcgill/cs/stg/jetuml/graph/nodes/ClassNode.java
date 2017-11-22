@@ -38,7 +38,7 @@ public class ClassNode extends InterfaceNode
 	public ClassNode()
 	{
 		aAttributes = new MultiLineString();
-		aAttributes.setJustification(MultiLineString.LEFT);
+		aAttributes.setJustification(MultiLineString.Align.LEFT);
 		getName().setText("");
 	}
 	

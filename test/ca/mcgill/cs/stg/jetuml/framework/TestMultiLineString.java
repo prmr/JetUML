@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import ca.mcgill.cs.stg.jetuml.framework.MultiLineString.Align;
+
 public class TestMultiLineString
 {
 	@Test
@@ -34,13 +36,13 @@ public class TestMultiLineString
 		MultiLineString string = new MultiLineString();
 		assertEquals(false, string.isUnderlined());
 		assertEquals(false, string.isBold());
-		assertEquals(MultiLineString.CENTER, string.getJustification());
+		assertEquals(MultiLineString.Align.CENTER, string.obtainJustification());
 		assertEquals("", string.getText());
 		
 		string = new MultiLineString(true);
 		assertEquals(false, string.isUnderlined());
 		assertEquals(true, string.isBold());
-		assertEquals(MultiLineString.CENTER, string.getJustification());
+		assertEquals(MultiLineString.Align.CENTER, string.obtainJustification());
 		assertEquals("", string.getText());
 	}
 	
@@ -107,8 +109,8 @@ public class TestMultiLineString
 		for( int i = 0; i < 3; i++ )
 		{
 			MultiLineString string = new MultiLineString();
-			string.setJustification(i);
-			assertEquals(i, string.getJustification());
+			string.setJustification(Align.values()[i]);
+			assertEquals(Align.values()[i], string.obtainJustification());
 		}
 	}
 	
@@ -131,7 +133,7 @@ public class TestMultiLineString
 		assertFalse(string2.equals(string1));
 		
 		string2 = new MultiLineString();
-		string2.setJustification(2);
+		string2.setJustification(Align.RIGHT);
 		assertFalse(string1.equals(string2));
 		assertFalse(string2.equals(string1));
 		

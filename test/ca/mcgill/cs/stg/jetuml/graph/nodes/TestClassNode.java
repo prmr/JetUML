@@ -57,17 +57,17 @@ public class TestClassNode
 	public void testDefault()
 	{
 		MultiLineString name = aNode1.getName();
-		assertEquals( MultiLineString.CENTER, name.getJustification() );
+		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
 		assertEquals("", name.getText());
 		MultiLineString methods = aNode1.getMethods();
-		assertEquals( MultiLineString.LEFT, methods.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
 		MultiLineString attributes = aNode1.getAttributes();
-		assertEquals( MultiLineString.LEFT, attributes.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
 		assertFalse(attributes.isBold());
 		assertFalse(attributes.isUnderlined());
 		assertEquals("", attributes.getText());
@@ -104,19 +104,19 @@ public class TestClassNode
 		aNode1.setParent(package1);
 		ClassNode clone = aNode1.clone();
 		MultiLineString name = clone.getName();
-		assertEquals( MultiLineString.CENTER, name.getJustification() );
+		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
 		assertEquals("", name.getText());
 		assertFalse(name == aNode1.getName() );
 		MultiLineString methods = clone.getMethods();
-		assertEquals( MultiLineString.LEFT, methods.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
 		assertFalse(methods == aNode1.getMethods() );
 		MultiLineString attributes = clone.getAttributes();
-		assertEquals( MultiLineString.LEFT, attributes.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
 		assertFalse(attributes.isBold());
 		assertFalse(attributes.isUnderlined());
 		assertEquals("", attributes.getText());

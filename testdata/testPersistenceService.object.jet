@@ -19,9 +19,6 @@
         <int>209</int>
        </void>
       <void property="name">
-       <void property="justification">
-        <int>0</int>
-       </void>
        <void property="text">
         <string>name</string>
        </void>
@@ -46,9 +43,6 @@
         <int>367</int>
        </void>
       <void property="name">
-       <void property="justification">
-        <int>0</int>
-       </void>
        <void property="text">
         <string>name2</string>
        </void>
@@ -70,9 +64,6 @@
         <int>388</int>
       </void>
       <void property="name">
-       <void property="justification">
-        <int>0</int>
-       </void>
        <void property="text">
         <string>name3</string>
        </void>
@@ -94,9 +85,6 @@
         <int>409</int>
        </void>
       <void property="name">
-       <void property="justification">
-        <int>0</int>
-       </void>
        <void property="text">
         <string>name4</string>
        </void>

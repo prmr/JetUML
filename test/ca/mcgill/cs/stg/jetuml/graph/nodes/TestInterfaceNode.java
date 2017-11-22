@@ -57,12 +57,12 @@ public class TestInterfaceNode
 	public void testDefault()
 	{
 		MultiLineString name = aNode1.getName();
-		assertEquals( MultiLineString.CENTER, name.getJustification() );
+		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
 		assertEquals("\u00ABinterface\u00BB\n", name.getText());
 		MultiLineString methods = aNode1.getMethods();
-		assertEquals( MultiLineString.LEFT, methods.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
@@ -99,13 +99,13 @@ public class TestInterfaceNode
 		aNode1.setParent(package1);
 		InterfaceNode clone = aNode1.clone();
 		MultiLineString name = clone.getName();
-		assertEquals( MultiLineString.CENTER, name.getJustification() );
+		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
 		assertEquals("\u00ABinterface\u00BB\n", name.getText());
 		assertFalse(name == aNode1.getName() );
 		MultiLineString methods = clone.getMethods();
-		assertEquals( MultiLineString.LEFT, methods.getJustification() );
+		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());

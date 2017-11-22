@@ -35,16 +35,11 @@ import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
  */
 public class MultiLineString implements Cloneable
 {
-	private enum Align
+	/**
+	 * How to align the text in this string.
+	 */
+	public enum Align
 	{ LEFT, CENTER, RIGHT }
-	
-	// Eventually these should be ported to the enum as well
-	// For the moment they are kept as ints to preserve the 
-	// backward compatibility with the serialized version of 
-	// the test graphs.
-	public static final int LEFT = 0;
-	public static final int CENTER = 1;
-	public static final int RIGHT = 2;
 	
 	private String aText = "";
 	private Align aJustification = Align.CENTER;
@@ -89,21 +84,21 @@ public class MultiLineString implements Cloneable
    
 	/**
      * Sets the value of the justification property.
-     * @param pJustification the justification, one of LEFT, CENTER, RIGHT
+     * @param pJustification the justification.
 	 */
-	public void setJustification(int pJustification) 
+	public void setJustification(Align pJustification) 
 	{ 
-		assert pJustification >= 0 && pJustification < Align.values().length;
-		aJustification = Align.values()[pJustification]; 
+		assert pJustification != null;
+		aJustification = pJustification;
 	}
    
 	/**
      * Gets the value of the justification property.
      * @return the justification, one of LEFT, CENTER, RIGHT
 	 */
-	public int getJustification() 
+	public Align obtainJustification() 
 	{ 
-		return aJustification.ordinal();
+		return aJustification;
 	}
    
 	/**

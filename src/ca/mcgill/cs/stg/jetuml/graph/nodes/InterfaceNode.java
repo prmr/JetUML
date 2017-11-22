@@ -43,9 +43,9 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	{
 		setName(new MultiLineString(true));
 		getName().setText("\u00ABinterface\u00BB\n");
-		getName().setJustification(MultiLineString.CENTER);
+		getName().setJustification(MultiLineString.Align.CENTER);
 		aMethods = new MultiLineString();
-		aMethods.setJustification(MultiLineString.LEFT);
+		aMethods.setJustification(MultiLineString.Align.LEFT);
 	}
 	
 	@Override

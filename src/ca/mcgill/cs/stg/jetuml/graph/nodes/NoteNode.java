@@ -36,7 +36,7 @@ public class NoteNode extends NamedNode
 	 */
 	public NoteNode()
 	{
-		getName().setJustification(MultiLineString.LEFT);
+		getName().setJustification(MultiLineString.Align.LEFT);
 	}
 	
 	@Override

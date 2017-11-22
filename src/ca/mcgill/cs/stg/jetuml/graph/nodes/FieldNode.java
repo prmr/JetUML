@@ -39,7 +39,7 @@ public class FieldNode extends NamedNode implements ChildNode
 	 */
 	public FieldNode()
 	{
-		getName().setJustification(MultiLineString.RIGHT);
+		getName().setJustification(MultiLineString.Align.RIGHT);
 		aValue = new MultiLineString();
    }
 	
