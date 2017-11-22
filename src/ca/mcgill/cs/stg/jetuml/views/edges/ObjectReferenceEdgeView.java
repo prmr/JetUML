@@ -5,12 +5,12 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
 
 /**
  * An S- or C-shaped edge with an arrowhead.
@@ -88,7 +88,7 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 		{
 			x1 = x2 + ENDSIZE;
 		}
-		ArrowHead.BLACK_TRIANGLE.draw(pGraphics2D, new Point2D.Double(x1, y), new Point2D.Double(x2, y));      
+		ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics2D, new Point2D.Double(x1, y), new Point2D.Double(x2, y));      
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
@@ -19,6 +18,7 @@ import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.edges.StateTransitionEdge;
+import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
 
 /**
  * An edge view specialized for state transitions.
@@ -74,20 +74,20 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 			Point connectionPoint2 = getSelfEdgeConnectionPoints().getPoint2();
 			if( getPosition() == 1 )
 			{
-				ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
+				ArrowHead.V.view().draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
 						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
 						Conversions.toPoint2D(getConnectionPoints().getPoint2()));
 			}
 			else
 			{
-				ArrowHead.V.draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
+				ArrowHead.V.view().draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
 						connectionPoint2.getY()-SELF_EDGE_OFFSET), 
 						Conversions.toPoint2D(getConnectionPoints().getPoint2()));
 			}
 		}
 		else
 		{
-			ArrowHead.V.draw(pGraphics2D, getControlPoint(), 
+			ArrowHead.V.view().draw(pGraphics2D, getControlPoint(), 
 					Conversions.toPoint2D(getConnectionPoints().getPoint2()));
 		}
 	}

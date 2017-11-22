@@ -25,8 +25,8 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.edges;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
+import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.stg.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.views.edges.SegmentationStyleFactory;

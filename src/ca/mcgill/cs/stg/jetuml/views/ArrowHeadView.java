@@ -19,7 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.views;
+
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.BLACK_DIAMOND;
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.BLACK_TRIANGLE;
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.DIAMOND;
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.NONE;
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.TRIANGLE;
+import static ca.mcgill.cs.stg.jetuml.views.ArrowHead.V;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -27,83 +34,48 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
 /**
- * This class defines arrowheads of various shapes.
+ * Defines how to draw arrow heads.
  */
-public final class ArrowHead
+public final class ArrowHeadView
 {
-	public static final ArrowHead NONE = new ArrowHead();
-	public static final ArrowHead TRIANGLE = new ArrowHead();
-	public static final ArrowHead BLACK_TRIANGLE = new ArrowHead();
-	public static final ArrowHead V = new ArrowHead();
-	public static final ArrowHead HALF_V = new ArrowHead();
-	public static final ArrowHead DIAMOND = new ArrowHead();
-	public static final ArrowHead BLACK_DIAMOND = new ArrowHead();
-	   
-	// CSOFF:
 	private static final double ARROW_ANGLE = Math.PI / 6; 
 	private static final double ARROW_LENGTH = 10;
-	// CSON:
 	
-   private ArrowHead() {}
-   
-   /**
-    * Draws the arrowhead.
-    * @param pGraphics2D the graphics context
-    * @param pPoint1 a point on the axis of the arrow head
-    * @param pEnd the end point of the arrow head
-    */
-   public void draw(Graphics2D pGraphics2D, Point2D pPoint1, Point2D pEnd)
-   {
-	   GeneralPath path = getPath(pPoint1, pEnd);
-	   Color oldColor = pGraphics2D.getColor();
-	   if(this == BLACK_DIAMOND || this == BLACK_TRIANGLE) 
-	   {
-		   pGraphics2D.setColor(Color.BLACK);
-	   }
-	   else 
-	   {
-		   pGraphics2D.setColor(Color.WHITE);
-	   }
-	   pGraphics2D.fill(path);
-	   pGraphics2D.setColor(oldColor);
-	   pGraphics2D.draw(path);
-   	}
-   
-   @Override
-   public String toString()
-   {
-	   String lReturn = "Unknown";
-	   if( this == NONE ) 
-	   {
-		   lReturn = "NONE";
-	   }
-	   else if( this == TRIANGLE )
-	   {
-		   lReturn = "TRIANGLE";
-	   }
-	   else if( this == BLACK_TRIANGLE )
-	   {
-		   lReturn = "BLACK_TRIANGLE";
-	   }
-	   else if( this == V )
-	   {
-		   lReturn = "V";
-	   }
-	   else if( this == HALF_V )
-	   {
-		   lReturn = "HALF_V";
-	   }
-	   else if( this == DIAMOND )
-	   {
-		   lReturn = "DIAMOND";
-	   }
-	   else if( this == BLACK_DIAMOND )
-	   {
-		   lReturn = "BLACK_DIAMOND";
-	   }
-	   return lReturn;
-   }
-
+	private final ArrowHead aArrowHead;
+	
+	/**
+	 * Creates a new view for pArrowHead.
+	 * 
+	 * @param pArrowHead The arrowhead to wrap.
+	 */
+	public ArrowHeadView(ArrowHead pArrowHead)
+	{
+		aArrowHead = pArrowHead;
+	}
+	
+	/**
+	 * Draws the arrowhead.
+	 * @param pGraphics2D the graphics context
+	 * @param pPoint1 a point on the axis of the arrow head
+	 * @param pEnd the end point of the arrow head
+	 */
+	public void draw(Graphics2D pGraphics2D, Point2D pPoint1, Point2D pEnd)
+	{
+		GeneralPath path = getPath(pPoint1, pEnd);
+		Color oldColor = pGraphics2D.getColor();
+		if(aArrowHead == ArrowHead.BLACK_DIAMOND || aArrowHead == BLACK_TRIANGLE) 
+		{
+			pGraphics2D.setColor(Color.BLACK);
+		}
+		else 
+		{
+			pGraphics2D.setColor(Color.WHITE);
+		}
+		pGraphics2D.fill(path);
+		pGraphics2D.setColor(oldColor);
+		pGraphics2D.draw(path);
+	}
+	
    	/**
      *  Gets the path of the arrowhead.
      * @param pPoint1 a point on the axis of the arrow head
@@ -113,7 +85,7 @@ public final class ArrowHead
    	public GeneralPath getPath(Point2D pPoint1, Point2D pEnd)
    	{
    		GeneralPath path = new GeneralPath();
-   		if(this == NONE) 
+   		if(aArrowHead == NONE) 
    		{
    			return path;
    		}
@@ -128,17 +100,17 @@ public final class ArrowHead
 
    		path.moveTo((float)pEnd.getX(), (float)pEnd.getY());
    		path.lineTo((float)x1, (float)y1);
-   		if(this == V)
+   		if(aArrowHead == V)
    		{
    			path.moveTo((float)x2, (float)y2);
    			path.lineTo((float)pEnd.getX(), (float)pEnd.getY());
    		}
-   		else if(this == TRIANGLE || this == BLACK_TRIANGLE)
+   		else if(aArrowHead == TRIANGLE || aArrowHead == BLACK_TRIANGLE)
    		{
    			path.lineTo((float)x2, (float)y2);
    			path.closePath();                  
    		}
-   		else if(this == DIAMOND || this == BLACK_DIAMOND)
+   		else if(aArrowHead == DIAMOND || aArrowHead == BLACK_DIAMOND)
    		{
    			double x3 = x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE);
    			double y3 = y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE);

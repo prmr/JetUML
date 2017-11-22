@@ -24,13 +24,13 @@ package ca.mcgill.cs.stg.jetuml.graph.edges;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
 import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
+import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.stg.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.stg.jetuml.views.edges.SegmentedEdgeView;

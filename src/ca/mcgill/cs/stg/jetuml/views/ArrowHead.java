@@ -19,21 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.stg.jetuml.framework;
+package ca.mcgill.cs.stg.jetuml.views;
 
 /**
- * A property editor for the ArrowHead type.
+ * This class defines arrowheads of various shapes.
  */
-public class ArrowHeadEditor extends PropertySelector
+public enum ArrowHead
 {
-	private static final String[] NAMES = { "None", "Triangle", "V", "Diamond", "Black Diamond" };
-	private static final Object[] VALUES = { ArrowHead.NONE, ArrowHead.TRIANGLE, ArrowHead.V, ArrowHead.DIAMOND, ArrowHead.BLACK_DIAMOND };
+	NONE, TRIANGLE, BLACK_TRIANGLE, V, HALF_V, DIAMOND, BLACK_DIAMOND;
+	
+	private final ArrowHeadView aView = new ArrowHeadView(this);
 	
 	/**
-	 * Creates a default editor.
+	 * @return An object that can draw this arrowhead.
 	 */
-	public ArrowHeadEditor()
+	public ArrowHeadView view()
 	{
-		super(NAMES, VALUES);
+		return aView;
 	}
 }

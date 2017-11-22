@@ -11,12 +11,12 @@ import java.util.function.Supplier;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.stg.jetuml.framework.ArrowHead;
 import ca.mcgill.cs.stg.jetuml.framework.LineStyle;
 import ca.mcgill.cs.stg.jetuml.geom.Conversions;
 import ca.mcgill.cs.stg.jetuml.geom.Line;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
+import ca.mcgill.cs.stg.jetuml.views.ArrowHead;
 
 /**
  * Renders edges as a straight line connected to center of nodes.
@@ -92,8 +92,8 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		pGraphics2D.setStroke(aLineStyleSupplier.get().getStroke());
 		pGraphics2D.draw(getSegmentPath());
 		pGraphics2D.setStroke(oldStroke);
-		aArrowStartSupplier.get().draw(pGraphics2D, points[1], points[0]);
-		aArrowEndSupplier.get().draw(pGraphics2D, points[points.length - 2], points[points.length - 1]);
+		aArrowStartSupplier.get().view().draw(pGraphics2D, points[1], points[0]);
+		aArrowEndSupplier.get().view().draw(pGraphics2D, points[points.length - 2], points[points.length - 1]);
 
 		drawString(pGraphics2D, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
 		drawString(pGraphics2D, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
@@ -148,7 +148,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 			}
 			if(pArrow != null)
 			{
-				Rectangle2D arrowBounds = pArrow.getPath(pEndPoint1, pEndPoint2).getBounds2D();
+				Rectangle2D arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBounds2D();
 				if(pEndPoint1.getX() < pEndPoint2.getX())
 				{
 					xoff -= arrowBounds.getWidth();
@@ -180,8 +180,8 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	{
 		GeneralPath path = getSegmentPath();
 		Point2D[] points = getPoints();
-		path.append(aArrowStartSupplier.get().getPath(points[1], points[0]), false);
-		path.append(aArrowEndSupplier.get().getPath(points[points.length - 2], points[points.length - 1]), false);
+		path.append(aArrowStartSupplier.get().view().getPath(points[1], points[0]), false);
+		path.append(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]), false);
 		return path;
 	}
 
