@@ -78,7 +78,8 @@ public abstract class AbstractEdgeView implements EdgeView
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
-		return new Line(edge().getStart().getConnectionPoint(toEnd), edge().getEnd().getConnectionPoint(toEnd.turn(DEGREES_180)));
+		return new Line(edge().getStart().view().getConnectionPoint(toEnd), 
+				edge().getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
 	}
 	
 	/**

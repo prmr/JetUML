@@ -363,7 +363,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		}
 		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
-		return new Line(edge().getStart().getConnectionPoint(d1), edge().getEnd().getConnectionPoint(d2));
+		return new Line(edge().getStart().view().getConnectionPoint(d1), edge().getEnd().view().getConnectionPoint(d2));
 	}
 	
 }

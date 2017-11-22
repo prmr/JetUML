@@ -68,7 +68,7 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 	private boolean isSShaped()
 	{
 		Rectangle b = edge().getEnd().getBounds();
-		Point p = edge().getStart().getConnectionPoint(Direction.EAST);
+		Point p = edge().getStart().view().getConnectionPoint(Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
@@ -94,14 +94,14 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 	@Override
 	public Line getConnectionPoints()
 	{
-		Point point = edge().getStart().getConnectionPoint(Direction.EAST);
+		Point point = edge().getStart().view().getConnectionPoint(Direction.EAST);
 		if (isSShaped())
 		{
-			return new Line(point, edge().getEnd().getConnectionPoint(Direction.WEST));
+			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, edge().getEnd().getConnectionPoint(Direction.EAST));
+			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.EAST));
 		}
 	}
 

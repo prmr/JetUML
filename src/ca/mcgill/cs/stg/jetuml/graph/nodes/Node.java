@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.stg.jetuml.graph.nodes;
 
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
@@ -36,11 +35,8 @@ public interface Node extends GraphElement
 	 * @return The position of this node. Usually corresponds to the top left corner 
 	 * of its bounding box.
 	 */
-	default Point position()
-	{
-		return new Point(0, 0);
-	}
-	
+	Point position();
+
 	/**
 	 * Move the position of the node to pPoint.
 	 * 
@@ -54,16 +50,6 @@ public interface Node extends GraphElement
      * @param pDeltaY the amount to translate in the y-direction
 	 */
 	void translate(int pDeltaX, int pDeltaY);
-
-	/**
-     * Get the best connection point to connect this node 
-     * with another node. This should be a point on the boundary
-     * of the shape of this node.
-     * @param pDirection the direction from the center 
-     * of the bounding rectangle towards the boundary 
-     * @return the recommended connection point
-	 */
-	Point getConnectionPoint(Direction pDirection);
 
 	/**
      * Lays out the node and its children.

@@ -145,7 +145,7 @@ public class CallEdge extends SingleLabelEdge
 		else     
 		{
 			Direction direction = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = pEdge.getEnd().getConnectionPoint(direction);
+			Point endPoint = pEdge.getEnd().view().getConnectionPoint(direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{

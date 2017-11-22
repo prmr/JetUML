@@ -4,7 +4,6 @@ import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
 
-import ca.mcgill.cs.stg.jetuml.geom.Direction;
 import ca.mcgill.cs.stg.jetuml.geom.Point;
 import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
@@ -67,12 +66,6 @@ public abstract class AbstractNode implements Node
 	public void moveTo(Point pPoint)
 	{
 		aPosition = pPoint;
-	}
-
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		return aView.getConnectionPoint(pDirection);
 	}
 
 	@Override

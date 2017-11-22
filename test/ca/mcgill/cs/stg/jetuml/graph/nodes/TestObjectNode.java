@@ -52,10 +52,10 @@ public class TestObjectNode
 	{
 		assertEquals(new Rectangle(0, 0, 80, 60), aObject1.getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(40,0), aObject1.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(40,60), aObject1.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(40,0), aObject1.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(40,60), aObject1.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 	}
 	
@@ -141,10 +141,10 @@ public class TestObjectNode
 		ObjectNode clone = aObject1.clone();
 		assertEquals(new Rectangle(0, 0, 80, 60), clone.getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(80,30), clone.getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), clone.getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(40,0), clone.getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(40,60), clone.getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), clone.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), clone.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(40,0), clone.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(40,60), clone.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		
 		MultiLineString f1 = new MultiLineString();
