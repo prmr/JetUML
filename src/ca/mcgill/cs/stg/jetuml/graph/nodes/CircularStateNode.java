@@ -27,7 +27,7 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
 /**
  * An initial or final node (bull's eye) in a state or activity diagram.
  */
-public class CircularStateNode extends AbstractNode2
+public class CircularStateNode extends AbstractNode
 {
 	
 	private boolean aFinalState; 

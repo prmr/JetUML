@@ -34,7 +34,7 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PackageNodeView;
 /**
  *   A package node in a UML diagram.
  */
-public class PackageNode extends AbstractNode2 implements ParentNode, ChildNode
+public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 {
 	private String aName = "";
 	private MultiLineString aContents  = new MultiLineString();

@@ -26,7 +26,7 @@ import ca.mcgill.cs.stg.jetuml.framework.MultiLineString;
 /**
    A node with a name.
 */
-public abstract class NamedNode extends AbstractNode2
+public abstract class NamedNode extends AbstractNode
 {
 	private MultiLineString aName = new MultiLineString();
 

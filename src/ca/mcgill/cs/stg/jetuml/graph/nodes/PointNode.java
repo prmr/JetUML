@@ -29,7 +29,7 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.PointNodeView;
  *  edge, and in notes to serve as an end point of the node
  *  connector.
  */
-public class PointNode extends AbstractNode2
+public class PointNode extends AbstractNode
 {
 	@Override
 	protected NodeView generateView()

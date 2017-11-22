@@ -17,7 +17,7 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
  * @author Martin P. Robillard
  *
  */
-public abstract class AbstractNode2 implements Node
+public abstract class AbstractNode implements Node
 {
 	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
@@ -26,7 +26,7 @@ public abstract class AbstractNode2 implements Node
 	 * Calls an abstract delegate to generate the view for this node
 	 * and positions the node at (0,0).
 	 */
-	protected AbstractNode2()
+	protected AbstractNode()
 	{
 		aView = generateView();
 	}
@@ -89,11 +89,11 @@ public abstract class AbstractNode2 implements Node
 	}
 
 	@Override
-	public AbstractNode2 clone()
+	public AbstractNode clone()
 	{
 		try
 		{
-			AbstractNode2 clone = (AbstractNode2) super.clone();
+			AbstractNode clone = (AbstractNode) super.clone();
 			clone.aView = clone.generateView();
 			return clone;
 		}
@@ -116,7 +116,7 @@ public abstract class AbstractNode2 implements Node
 	 */
 	public static void setPersistenceDelegate(Encoder pEncoder)
 	{
-		pEncoder.setPersistenceDelegate(AbstractNode2.class, new DefaultPersistenceDelegate()
+		pEncoder.setPersistenceDelegate(AbstractNode.class, new DefaultPersistenceDelegate()
 		{
 			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
 			{

@@ -32,7 +32,7 @@ import ca.mcgill.cs.stg.jetuml.graph.views.nodes.NodeView;
  * A method call node in a sequence diagram. In addition to edges,
  * the node is linked to it callee and callers.
 */
-public class CallNode extends AbstractNode2 implements ChildNode
+public class CallNode extends AbstractNode implements ChildNode
 {
 	public static final int CALL_YGAP = 20;
 	private static final int MIN_YGAP = 10;
