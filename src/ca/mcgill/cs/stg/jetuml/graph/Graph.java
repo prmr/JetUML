@@ -331,7 +331,7 @@ public abstract class Graph
 				}
 			}
 		}
-		if( pNode.contains(pPoint))
+		if( pNode.view().contains(pPoint))
 		{
 			return pNode;
 		}

@@ -87,7 +87,7 @@ public class SequenceDiagramGraph extends Graph
 	{
 		for( Node node : getRootNodes() )
 		{
-			if(node instanceof ImplicitParameterNode && node.contains(pPoint))
+			if(node instanceof ImplicitParameterNode && node.view().contains(pPoint))
 			{
 				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
 				{

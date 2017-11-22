@@ -77,12 +77,6 @@ public abstract class AbstractNode2 implements Node
 	}
 
 	@Override
-	public boolean contains(Point pPoint)
-	{
-		return aView.contains(pPoint);
-	}
-
-	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		return aView.getConnectionPoint(pDirection);

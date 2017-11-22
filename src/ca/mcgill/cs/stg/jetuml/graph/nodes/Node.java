@@ -54,10 +54,7 @@ public interface Node extends GraphElement
 	 * 
 	 * @param pPoint The new position of the node.
 	 */
-	default void moveTo(Point pPoint)
-	{
-		// TODO make non-default once all Node classes are subclasses of AbstractNode2
-	}
+	void moveTo(Point pPoint);
 
 	/**
      * Translates the node by a given amount.
@@ -65,13 +62,6 @@ public interface Node extends GraphElement
      * @param pDeltaY the amount to translate in the y-direction
 	 */
 	void translate(int pDeltaX, int pDeltaY);
-
-	/**
-     * Tests whether the node contains a point.
-     * @param pPoint the point to test
-     * @return true if this node contains aPoint
-     */
-	boolean contains(Point pPoint);
 
 	/**
      * Get the best connection point to connect this node 

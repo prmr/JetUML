@@ -128,7 +128,7 @@ public class ObjectDiagramGraph extends Graph
 			{
 				return (ObjectNode)node;
 			}
-			else if( node.contains(pPoint) && canAddNodeAsChild(node, pNode))
+			else if( node.view().contains(pPoint) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}

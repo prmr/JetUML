@@ -112,7 +112,7 @@ public class ClassDiagramGraph extends Graph
 		PackageNode container = null;
 		for( Node node : pNodes )
 		{
-			if( node instanceof PackageNode && node.contains(pPoint) )
+			if( node instanceof PackageNode && node.view().contains(pPoint) )
 			{
 				container = (PackageNode) node;
 			}
