@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph">
+ <object class="ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph">
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode0">
      <void method="translate">
       <int>460</int>
       <int>370</int>
@@ -15,7 +15,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
      <void method="translate">
       <int>460</int>
       <int>250</int>
@@ -23,7 +23,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode1">
     <void property="attributes">
      <void property="text">
       <string>foo</string>
@@ -46,7 +46,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode2">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode2">
      <void method="translate">
       <int>630</int>
       <int>370</int>
@@ -59,7 +59,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.PackageNode" id="PackageNode0">
      <void method="translate">
       <int>275</int>
       <int>345</int>
@@ -68,7 +68,7 @@
      <string>Package</string>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode3">
+     <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode3">
        <void method="translate">
         <int>280</int>
         <int>370</int>
@@ -86,7 +86,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode" id="NoteNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.NoteNode" id="NoteNode0">
      <void method="translate">
       <int>700</int>
       <int>530</int>
@@ -99,7 +99,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode" id="PointNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.PointNode" id="PointNode0">
     <void method="translate">
      <int>694</int>
      <int>409</int>
@@ -107,12 +107,12 @@
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.NoteEdge"/>
+   <object class="ca.mcgill.cs.jetuml.graph.edges.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -121,13 +121,13 @@
    <object idref="ClassNode3"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge">
     <void property="middleLabel">
      <string>e2</string>
     </void>
     <void property="type">
      <object class="java.lang.Enum" method="valueOf">
-      <class>ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge$Type</class>
+      <class>ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge$Type</class>
       <string>Implementation</string>
      </object>
     </void>
@@ -136,7 +136,7 @@
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.GeneralizationEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>
@@ -145,7 +145,7 @@
    <object idref="ClassNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.AggregationEdge">
     <void property="endLabel">
      <string>*</string>
     </void>
@@ -160,13 +160,13 @@
    <object idref="ClassNode2"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.AggregationEdge">
     <void property="middleLabel">
      <string>e5</string>
     </void>
     <void property="type">
      <object class="java.lang.Enum" method="valueOf">
-      <class>ca.mcgill.cs.stg.jetuml.graph.edges.AggregationEdge$Type</class>
+      <class>ca.mcgill.cs.jetuml.graph.edges.AggregationEdge$Type</class>
       <string>Composition</string>
      </object>
     </void>

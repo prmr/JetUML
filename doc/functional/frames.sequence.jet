@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.stg.jetuml.diagrams.SequenceDiagramGraph">
+ <object class="ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph">
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode" id="ImplicitParameterNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.ImplicitParameterNode" id="ImplicitParameterNode0">
     <void id="Rectangle2D$Double0" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -35,7 +35,7 @@
      </void>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.CallNode" id="CallNode0">
+     <object class="ca.mcgill.cs.jetuml.graph.CallNode" id="CallNode0">
       <void id="Rectangle2D$Double1" property="bounds">
        <void class="java.awt.geom.Rectangle2D$Double" method="getField">
         <string>x</string>
@@ -79,7 +79,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ImplicitParameterNode" id="ImplicitParameterNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.ImplicitParameterNode" id="ImplicitParameterNode1">
     <void id="Rectangle2D$Double2" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -112,7 +112,7 @@
      </void>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.CallNode" id="CallNode1">
+     <object class="ca.mcgill.cs.jetuml.graph.CallNode" id="CallNode1">
       <void id="Rectangle2D$Double3" property="bounds">
        <void class="java.awt.geom.Rectangle2D$Double" method="getField">
         <string>x</string>
@@ -138,7 +138,7 @@
      </object>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.CallNode" id="CallNode2">
+     <object class="ca.mcgill.cs.jetuml.graph.CallNode" id="CallNode2">
       <void id="Rectangle2D$Double4" property="bounds">
        <void class="java.awt.geom.Rectangle2D$Double" method="getField">
         <string>x</string>
@@ -182,7 +182,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode" id="NoteNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.NoteNode" id="NoteNode0">
     <void id="Rectangle2D$Double5" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -243,7 +243,7 @@ for the requested graph type
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.PointNode" id="PointNode0"/>
+   <object class="ca.mcgill.cs.jetuml.graph.PointNode" id="PointNode0"/>
    <object class="java.awt.geom.Point2D$Double" id="Point2D$Double3">
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>x</string>
@@ -262,7 +262,7 @@ for the requested graph type
    </object>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.CallEdge">
     <void property="middleLabel">
      <string>«create»</string>
     </void>
@@ -271,7 +271,7 @@ for the requested graph type
    <object idref="ImplicitParameterNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.CallEdge">
     <void property="middleLabel">
      <string>addGraphType*</string>
     </void>
@@ -280,7 +280,7 @@ for the requested graph type
    <object idref="CallNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CallEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.CallEdge">
     <void property="middleLabel">
      <string>addWelcomeTab</string>
     </void>
@@ -289,7 +289,7 @@ for the requested graph type
    <object idref="CallNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteEdge"/>
+   <object class="ca.mcgill.cs.jetuml.graph.NoteEdge"/>
    <object idref="NoteNode0"/>
    <object idref="PointNode0"/>
   </void>

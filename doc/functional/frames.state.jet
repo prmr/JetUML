@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.stg.jetuml.diagrams.StateDiagramGraph">
+ <object class="ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph">
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CircularStateNode" id="CircularStateNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.CircularStateNode" id="CircularStateNode0">
     <void id="Rectangle2D$Double0" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -55,7 +55,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode0">
     <void id="Rectangle2D$Double1" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -106,7 +106,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode1">
     <void id="Rectangle2D$Double2" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -157,7 +157,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode2">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode2">
     <void id="Rectangle2D$Double3" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -208,7 +208,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode3">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode3">
     <void id="Rectangle2D$Double4" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -259,7 +259,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode4">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode4">
     <void id="Rectangle2D$Double5" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -310,7 +310,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode5">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode5">
     <void id="Rectangle2D$Double6" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -361,7 +361,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode6">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode6">
     <void id="Rectangle2D$Double7" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -405,7 +405,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.CircularStateNode" id="CircularStateNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.CircularStateNode" id="CircularStateNode1">
     <void id="Rectangle2D$Double8" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -461,7 +461,7 @@
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode">
+   <object class="ca.mcgill.cs.jetuml.graph.NoteNode">
     <void id="Rectangle2D$Double9" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -523,7 +523,7 @@ selecting it</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode">
+   <object class="ca.mcgill.cs.jetuml.graph.NoteNode">
     <void id="Rectangle2D$Double10" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -583,7 +583,7 @@ etc.</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode">
+   <object class="ca.mcgill.cs.jetuml.graph.NoteNode">
     <void id="Rectangle2D$Double11" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -644,7 +644,7 @@ state (not shown for clarity).</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateNode" id="StateNode7">
+   <object class="ca.mcgill.cs.jetuml.graph.StateNode" id="StateNode7">
     <void id="Rectangle2D$Double12" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -695,7 +695,7 @@ state (not shown for clarity).</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.NoteNode">
+   <object class="ca.mcgill.cs.jetuml.graph.NoteNode">
     <void id="Rectangle2D$Double13" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -755,7 +755,7 @@ with an asterisk denoting the one selected.</string>
    </object>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>launch</string>
     </void>
@@ -764,7 +764,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>new Class</string>
     </void>
@@ -773,7 +773,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>new Sequence</string>
     </void>
@@ -782,7 +782,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>new Sequence</string>
     </void>
@@ -791,7 +791,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode3"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>new Class</string>
     </void>
@@ -800,7 +800,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode4"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>new Sequence</string>
     </void>
@@ -809,7 +809,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode5"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>close</string>
     </void>
@@ -818,7 +818,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>close</string>
     </void>
@@ -827,7 +827,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode0"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>close</string>
     </void>
@@ -836,7 +836,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>close</string>
     </void>
@@ -845,7 +845,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>close</string>
     </void>
@@ -854,12 +854,12 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge"/>
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge"/>
    <object idref="StateNode6"/>
    <object idref="CircularStateNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>select sequence</string>
     </void>
@@ -868,7 +868,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode3"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>select Class</string>
     </void>
@@ -877,7 +877,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode4"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>select sequence</string>
     </void>
@@ -886,7 +886,7 @@ with an asterisk denoting the one selected.</string>
    <object idref="StateNode7"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.StateTransitionEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.StateTransitionEdge">
     <void property="label">
      <string>select sequence</string>
     </void>

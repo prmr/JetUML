@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph">
+ <object class="ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph">
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.PackageNode" id="PackageNode0">
      <void method="translate">
       <int>315</int>
       <int>235</int>
@@ -11,7 +11,7 @@
      <string>p1</string>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode0">
+     <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode0">
        <void method="translate">
         <int>320</int>
         <int>260</int>
@@ -29,7 +29,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.PackageNode" id="PackageNode1">
      <void method="translate">
       <int>477</int>
       <int>130</int>
@@ -40,7 +40,7 @@
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode2">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.PackageNode" id="PackageNode2">
      <void method="translate">
       <int>630</int>
       <int>280</int>
@@ -49,7 +49,7 @@
      <string>p3</string>
     </void>
     <void method="addChild">
-     <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.PackageNode" id="PackageNode3">
+     <object class="ca.mcgill.cs.jetuml.graph.nodes.PackageNode" id="PackageNode3">
        <void method="translate">
         <int>635</int>
         <int>305</int>
@@ -61,7 +61,7 @@
        <object idref="PackageNode2"/>
       </void>
       <void method="addChild">
-       <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
+       <object class="ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode" id="InterfaceNode0">
          <void method="translate">
           <int>640</int>
           <int>330</int>
@@ -78,7 +78,7 @@ I1</string>
        </object>
       </void>
       <void method="addChild">
-       <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.ClassNode" id="ClassNode1">
+       <object class="ca.mcgill.cs.jetuml.graph.nodes.ClassNode" id="ClassNode1">
          <void method="translate">
           <int>810</int>
           <int>330</int>
@@ -98,7 +98,7 @@ I1</string>
    </object>
   </void>
   <void method="restoreRootNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.nodes.NoteNode">
+   <object class="ca.mcgill.cs.jetuml.graph.nodes.NoteNode">
      <void method="translate">
       <int>490</int>
       <int>160</int>
@@ -111,7 +111,7 @@ I1</string>
    </object>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e1</string>
     </void>
@@ -120,7 +120,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e2</string>
     </void>
@@ -129,7 +129,7 @@ I1</string>
    <object idref="InterfaceNode0"/>
   </void>
   <void method="restoreEdge">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.edges.DependencyEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.edges.DependencyEdge">
     <void property="middleLabel">
      <string>e3</string>
     </void>

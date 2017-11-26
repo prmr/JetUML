@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.stg.jetuml.diagrams.ClassDiagramGraph">
+ <object class="ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph">
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode0">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode0">
     <void id="Rectangle2D$Double0" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -66,7 +66,7 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode1">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode1">
     <void id="Rectangle2D$Double1" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -122,7 +122,7 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode2">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode2">
     <void id="Rectangle2D$Double2" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -166,7 +166,7 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode3">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode3">
     <void id="Rectangle2D$Double3" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -210,7 +210,7 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode4">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode4">
     <void id="Rectangle2D$Double4" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -254,7 +254,7 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="addNode">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassNode" id="ClassNode5">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassNode" id="ClassNode5">
     <void id="Rectangle2D$Double5" property="bounds">
      <void class="java.awt.geom.Rectangle2D$Double" method="getField">
       <string>x</string>
@@ -298,81 +298,81 @@ void addWelcomeTab()</string>
    </object>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="HVH"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="HVH"/>
     </void>
     <void property="endLabel">
      <string>1</string>
     </void>
     <void property="startArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="DIAMOND"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="DIAMOND"/>
     </void>
    </object>
    <object idref="ClassNode0"/>
    <object idref="ClassNode1"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="VHV"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="VHV"/>
     </void>
     <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="TRIANGLE"/>
     </void>
    </object>
    <object idref="ClassNode0"/>
    <object idref="ClassNode3"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="HVH"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="HVH"/>
     </void>
     <void property="endLabel">
      <string>1</string>
     </void>
     <void property="startArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="DIAMOND"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="DIAMOND"/>
     </void>
    </object>
    <object idref="ClassNode1"/>
    <object idref="ClassNode4"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="VHV"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="VHV"/>
     </void>
     <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="TRIANGLE"/>
     </void>
    </object>
    <object idref="ClassNode4"/>
    <object idref="ClassNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="VHV"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="VHV"/>
     </void>
     <void property="endArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="TRIANGLE"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="TRIANGLE"/>
     </void>
    </object>
    <object idref="ClassNode5"/>
    <object idref="ClassNode2"/>
   </void>
   <void method="connect">
-   <object class="ca.mcgill.cs.stg.jetuml.graph.ClassRelationshipEdge">
+   <object class="ca.mcgill.cs.jetuml.graph.ClassRelationshipEdge">
     <void property="bentStyle">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.BentStyle" field="HVH"/>
+     <object class="ca.mcgill.cs.jetuml.framework.BentStyle" field="HVH"/>
     </void>
     <void property="endLabel">
      <string>*</string>
     </void>
     <void property="startArrowHead">
-     <object class="ca.mcgill.cs.stg.jetuml.framework.ArrowHead" field="DIAMOND"/>
+     <object class="ca.mcgill.cs.jetuml.framework.ArrowHead" field="DIAMOND"/>
     </void>
    </object>
    <object idref="ClassNode1"/>
