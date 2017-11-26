@@ -22,19 +22,14 @@ package ca.mcgill.cs.stg.jetuml.framework;
 
 import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,12 +50,11 @@ import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
 import ca.mcgill.cs.stg.jetuml.geom.Point;
-import ca.mcgill.cs.stg.jetuml.geom.Rectangle;
 import ca.mcgill.cs.stg.jetuml.graph.Edge;
 import ca.mcgill.cs.stg.jetuml.graph.Graph;
 import ca.mcgill.cs.stg.jetuml.graph.GraphElement;
 import ca.mcgill.cs.stg.jetuml.graph.Node;
-import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
+import ca.mcgill.cs.stg.jetuml.views.IconCreator;
 
 /**
  *  A collapsible tool bar than contains various tools and optional
@@ -74,7 +68,6 @@ import ca.mcgill.cs.stg.jetuml.graph.nodes.PointNode;
 public class ToolBar extends JPanel
 {
 	private static final int BUTTON_SIZE = 25;
-	private static final int OFFSET = 3;
 	private static final int H_PADDING = 5;
 	private static final int FONT_SIZE = 14;
 	private static final String EXPAND = "<<";
@@ -104,107 +97,9 @@ public class ToolBar extends JPanel
 		add(aToolPanel, BorderLayout.CENTER);
 	}
 	
-	private static Icon createSelectionIcon()
-	{
-		return new Icon()
-		{
-			public int getIconHeight() 
-			{ return BUTTON_SIZE; }
-            
-			public int getIconWidth() 
-			{ return BUTTON_SIZE; }
-            
-			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
-            {
-				int offset = OFFSET+3;
-				Graphics2D g2 = (Graphics2D)pGraphics;
-				GraphPanel.drawGrabber(g2, pX + offset, pY + offset);
-				GraphPanel.drawGrabber(g2, pX + offset, pY + BUTTON_SIZE - offset);
-				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + offset);
-				GraphPanel.drawGrabber(g2, pX + BUTTON_SIZE - offset, pY + BUTTON_SIZE - offset);
-            }
-		};
-	}
-	
-	private static Icon createNodeIcon( final Node pNode )
-	{
-		return new Icon()
-		{
-            public int getIconHeight() 
-            { return BUTTON_SIZE; }
-            
-            public int getIconWidth() 
-            { return BUTTON_SIZE; }
-            
-            public void paintIcon(Component pComponent, Graphics pGraphic, int pX, int pY)
-            {
-            	double width = pNode.view().getBounds().getWidth();
-            	double height = pNode.view().getBounds().getHeight();
-               	Graphics2D g2 = (Graphics2D)pGraphic;
-               	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-               	double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-               	double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-               	double scale = Math.min(scaleX, scaleY);
-
-               	AffineTransform oldTransform = g2.getTransform();
-               	g2.translate(pX, pY);
-               	g2.scale(scale, scale);
-               	
-               	g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-               	g2.setColor(Color.black);
-               	pNode.view().draw(g2);
-               	g2.setTransform(oldTransform);
-            }
-		};
-	}
-
-	private static Icon createEdgeIcon( final Edge pEdge )
-	{
-		return new Icon()
-		{
-			public int getIconHeight() 
-			{ return BUTTON_SIZE; }
-
-			public int getIconWidth() 
-			{ return BUTTON_SIZE; }
-
-			public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
-			{
-				Graphics2D g2 = (Graphics2D)pGraphics;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-				PointNode pointNode = new PointNode();
-				pointNode.translate(OFFSET, OFFSET);
-				PointNode q = new PointNode();
-				q.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-				pEdge.connect(pointNode, q, null);
-
-				Rectangle bounds = new Rectangle(0, 0, 0, 0);
-				bounds = bounds.add(pointNode.view().getBounds());
-				bounds = bounds.add(q.view().getBounds());
-				bounds = bounds.add(pEdge.view().getBounds());
-
-				double width = bounds.getWidth();
-				double height = bounds.getHeight();
-				double scaleX = (BUTTON_SIZE - OFFSET)/ width;
-				double scaleY = (BUTTON_SIZE - OFFSET)/ height;
-				double scale = Math.min(scaleX, scaleY);
-
-				AffineTransform oldTransform = g2.getTransform();
-				g2.translate(pX, pY);
-				g2.scale(scale, scale);
-				g2.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-
-				g2.setColor(Color.black);
-				pEdge.view().draw(g2);
-				g2.setTransform(oldTransform);
-			}
-		};
-	}
-	
 	private void createSelectionTool(ButtonGroup pGroup, ButtonGroup pGroupEx)
 	{
-		installTool(createSelectionIcon(), 
+		installTool(IconCreator.createSelectionIcon(), 
 				ResourceBundle.getBundle("ca.mcgill.cs.stg.jetuml.framework.EditorStrings").getString("grabber.tooltip"), 
 				null, true, pGroup, pGroupEx);
 	}
@@ -268,14 +163,14 @@ public class ToolBar extends JPanel
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			installTool(createNodeIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), 
-					nodeTypes[i], false, pGroup, pGroupEx);
+			installTool(IconCreator.createIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), 
+			nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			installTool(createEdgeIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), 
+			installTool(IconCreator.createIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), 
 					edgeTypes[i], false, pGroup, pGroupEx);
 		}
 	}
