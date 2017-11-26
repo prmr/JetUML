@@ -6,14 +6,14 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
-import ca.mcgill.cs.jetuml.framework.Grid;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.

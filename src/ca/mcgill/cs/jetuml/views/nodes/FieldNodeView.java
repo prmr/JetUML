@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;

@@ -28,10 +28,8 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.jetuml.framework.ToolBar;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -44,6 +42,8 @@ import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.ToolBar;
 
 /**
  * Tests various interactions with Use Case Diagram normally triggered from the 

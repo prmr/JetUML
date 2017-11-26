@@ -28,10 +28,8 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.jetuml.framework.SelectionList;
-import ca.mcgill.cs.jetuml.framework.ToolBar;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -43,6 +41,8 @@ import ca.mcgill.cs.jetuml.graph.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.ToolBar;
 
 /**
  * Tests various interactions with Sequence Diagram normally triggered from the 

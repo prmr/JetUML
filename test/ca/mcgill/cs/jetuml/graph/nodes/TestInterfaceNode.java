@@ -32,7 +32,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;

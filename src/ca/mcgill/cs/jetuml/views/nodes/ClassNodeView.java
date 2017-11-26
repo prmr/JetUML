@@ -2,7 +2,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Graphics2D;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 

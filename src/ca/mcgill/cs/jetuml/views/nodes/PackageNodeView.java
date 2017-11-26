@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;

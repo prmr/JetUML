@@ -31,8 +31,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;

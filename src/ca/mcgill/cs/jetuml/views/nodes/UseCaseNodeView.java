@@ -4,11 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import ca.mcgill.cs.jetuml.framework.Grid;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
+import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * An object to render a UseCaseNode.

@@ -33,7 +33,7 @@ import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.EditorFrame;
+import ca.mcgill.cs.jetuml.gui.EditorFrame;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -112,7 +112,7 @@ public final class UMLEditor
 		String version = obtainJavaVersion();
 		if( version == null || !isOKJVMVersion(version))
 		{
-			ResourceBundle resources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.framework.EditorStrings");
+			ResourceBundle resources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
 			String minor = "";
 			int minorVersion = JAVA_MINOR_VERSION;
 			if( minorVersion > 0 )

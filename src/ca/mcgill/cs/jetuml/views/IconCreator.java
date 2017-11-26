@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import ca.mcgill.cs.jetuml.framework.GraphPanel;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
 
 /**
  * Utility class to create icons that are drawn

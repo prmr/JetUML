@@ -24,7 +24,7 @@ package ca.mcgill.cs.jetuml.diagrams;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;

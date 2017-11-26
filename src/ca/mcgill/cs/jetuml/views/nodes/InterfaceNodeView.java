@@ -3,12 +3,12 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.jetuml.framework.Grid;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * An object to render an interface in a class diagram.

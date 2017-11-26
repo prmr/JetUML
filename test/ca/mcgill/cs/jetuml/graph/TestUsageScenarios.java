@@ -26,11 +26,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.Clipboard;
+import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.Clipboard;
-import ca.mcgill.cs.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.jetuml.framework.SelectionList;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Node;
@@ -43,6 +42,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
 
 /**
  * Tests various interactions normally triggered from the 

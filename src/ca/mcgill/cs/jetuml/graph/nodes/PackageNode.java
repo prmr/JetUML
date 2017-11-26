@@ -27,7 +27,7 @@ import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;

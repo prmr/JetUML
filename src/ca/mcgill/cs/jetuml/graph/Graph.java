@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import ca.mcgill.cs.jetuml.framework.GraphModificationListener;
+import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;

@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 
 /**
    A node with a name.

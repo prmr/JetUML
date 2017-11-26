@@ -4,12 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
-import ca.mcgill.cs.jetuml.framework.Grid;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * An object to render an actor in a use case diagram.

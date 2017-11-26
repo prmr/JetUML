@@ -29,10 +29,8 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.framework.GraphPanel;
-import ca.mcgill.cs.jetuml.framework.MultiLineString;
-import ca.mcgill.cs.jetuml.framework.ToolBar;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -43,6 +41,8 @@ import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.ToolBar;
 
 /**
  * Tests various interactions with Object Diagram normally triggered from the 

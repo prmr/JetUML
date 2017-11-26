@@ -2,13 +2,13 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Shape;
 
-import ca.mcgill.cs.jetuml.framework.Grid;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * A view for nodes that are bounded by a rectangle.
