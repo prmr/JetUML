@@ -9,6 +9,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an interface in a class diagram.
@@ -48,12 +49,12 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
 		pGraphics2D.draw(top);
-		name().draw(pGraphics2D, Conversions.toRectangle(top));
+		StringViewer.draw(name(), pGraphics2D, Conversions.toRectangle(top));
 		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
 		pGraphics2D.draw(mid);
 		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
 		pGraphics2D.draw(bot);
-		methods().draw(pGraphics2D, Conversions.toRectangle(bot));
+		StringViewer.draw(methods(), pGraphics2D, Conversions.toRectangle(bot));
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 			return new Rectangle(0, 0, 0, 0);
 		}
 			
-		Rectangle bottom = methods().getBounds();
+		Rectangle bottom = StringViewer.getBounds(methods());
 		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
 		return bottom;
 	}
@@ -95,7 +96,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	 */
 	protected Rectangle computeTop()
 	{
-		Rectangle top = name().getBounds(); 
+		Rectangle top = StringViewer.getBounds(name()); 
 		
 		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
 		if(!needsMiddleCompartment() && !needsBottomCompartment() )

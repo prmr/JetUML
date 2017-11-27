@@ -94,7 +94,7 @@ public class TestClassViewNode
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(350, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(307, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 	}
 	
@@ -111,7 +111,7 @@ public class TestClassViewNode
 		methods.setText("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeBottom());
 		methods.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,350,20), ((ClassNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Rectangle(0,0,307,20), ((ClassNodeView)aNode1.view()).computeBottom());
 	}
 	
 	@Test

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an interface in a class diagram.
@@ -35,7 +36,7 @@ public class ClassNodeView extends InterfaceNodeView
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - middleHeight() - bottomHeight));
 		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(middleHeight()));
-		attributes().draw(pGraphics2D, mid);
+		StringViewer.draw(attributes(), pGraphics2D, mid);
 	}
 	
 	/**
@@ -56,7 +57,7 @@ public class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(attributes().getBounds().getWidth(), DEFAULT_WIDTH);
+			return Math.max(StringViewer.getBounds(attributes()).getWidth(), DEFAULT_WIDTH);
 		}
 	}
 	
@@ -69,7 +70,7 @@ public class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(attributes().getBounds().getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
+			return Math.max(StringViewer.getBounds(attributes()).getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
 		}
 	}
 }

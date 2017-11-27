@@ -10,6 +10,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a NoteNode.
@@ -62,7 +63,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 		pGraphics2D.setColor(oldColor);      
 		pGraphics2D.draw(fold);      
       
-		name().draw(pGraphics2D, getBounds());
+		StringViewer.draw(name(), pGraphics2D, getBounds());
 	}
 	
 	@Override
@@ -82,7 +83,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle b = name().getBounds(); 
+		Rectangle b = StringViewer.getBounds(name()); 
 		Rectangle bounds = getBounds();
 		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
 		setBounds(Grid.snapped(b));

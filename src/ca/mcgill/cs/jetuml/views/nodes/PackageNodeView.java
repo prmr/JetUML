@@ -17,6 +17,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a package in a class diagram.
@@ -86,7 +87,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		pGraphics2D.translate(-textX, -textY);        
      
 		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
-		contents().draw(pGraphics2D, aBottom);
+		StringViewer.draw(contents(), pGraphics2D, aBottom);
 	}
 	
 	@Override
@@ -152,7 +153,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 			}
 		}
 		
-		Rectangle contentsBounds = contents().getBounds();
+		Rectangle contentsBounds = StringViewer.getBounds(contents());
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{

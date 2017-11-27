@@ -11,6 +11,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an object in an object diagram.
@@ -52,13 +53,13 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 		Rectangle top = getTopRectangle();
 		pGraphics2D.draw(Conversions.toRectangle2D(top));
 		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		name().draw(pGraphics2D, top);
+		StringViewer.draw(name(), pGraphics2D, top);
 	}
 	
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = name().getBounds(); 
+		Rectangle bounds = StringViewer.getBounds(name()); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		int leftWidth = 0;
 		int rightWidth = 0;

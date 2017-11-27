@@ -21,14 +21,7 @@
 
 package ca.mcgill.cs.jetuml.application;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.util.StringTokenizer;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
  *  A string that can extend over multiple lines.
@@ -70,7 +63,6 @@ public class MultiLineString implements Cloneable
 	public void setText(String pText)
 	{ 
 		aText = pText; 
-		getLabel(); 
 	}
    
 	/**
@@ -133,30 +125,11 @@ public class MultiLineString implements Cloneable
 		return aText.replace('\n', '|');
 	}
 
-	private JLabel getLabel()
-	{
-		JLabel label = new JLabel(convertToHtml().toString());
-		
-		if(aJustification == Align.LEFT)
-		{
-			label.setHorizontalAlignment(SwingConstants.LEFT);
-		}
-		else if(aJustification == Align.CENTER)
-		{
-			label.setHorizontalAlignment(SwingConstants.CENTER);
-		}
-		else if(aJustification == Align.RIGHT) 
-		{
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
-		}
-		return label;
-	}
-
-	/*
+	/**
 	 * @return an HTML version of the text of the string,
 	 * taking into account the properties (underline, bold, etc.)
 	 */
-	StringBuffer convertToHtml()
+	public String convertToHtml()
 	{
 		StringBuffer prefix = new StringBuffer();
 		StringBuffer suffix = new StringBuffer();
@@ -198,36 +171,7 @@ public class MultiLineString implements Cloneable
 			htmlText.append(suffix);
 		}      
 		htmlText.append("</p></html>");
-		return htmlText;
-	}
-   
-	/**
-     * Gets the bounding rectangle for this multiline string.
-     * @return the bounding rectangle (with top left corner (0,0))
-	 */
-	public Rectangle getBounds()
-	{
-		if(aText.length() == 0) 
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-		Dimension dimensions = getLabel().getPreferredSize();       
-		return new Rectangle(0, 0, (int) Math.round(dimensions.getWidth()), (int) Math.round(dimensions.getHeight()));
-	}
-
-	/**
-     * Draws this multi-line string inside a given rectangle.
-     * @param pGraphics2D the graphics context
-     * @param pRectangle the rectangle into which to place this multi-line string
-	 */
-	public void draw(Graphics2D pGraphics2D, Rectangle pRectangle)
-	{
-		JLabel label = getLabel();
-		label.setFont(pGraphics2D.getFont());
-		label.setBounds(0, 0, pRectangle.getWidth(), pRectangle.getHeight());
-		pGraphics2D.translate(pRectangle.getX(), pRectangle.getY());
-		label.paint(pGraphics2D);
-		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        
+		return htmlText.toString();
 	}
 	
 	@Override

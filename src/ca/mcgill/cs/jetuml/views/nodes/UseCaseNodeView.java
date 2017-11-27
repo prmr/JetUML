@@ -9,6 +9,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a UseCaseNode.
@@ -34,7 +35,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics2D);      
 		pGraphics2D.draw(getShape());
-		name().draw(pGraphics2D, getBounds());
+		StringViewer.draw(name(), pGraphics2D, getBounds());
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	@Override	
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = name().getBounds();
+		Rectangle bounds = StringViewer.getBounds(name());
 		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
 		setBounds(Grid.snapped(bounds));

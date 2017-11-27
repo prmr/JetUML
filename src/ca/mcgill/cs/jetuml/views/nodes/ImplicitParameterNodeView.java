@@ -14,6 +14,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -49,7 +50,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		super.draw(pGraphics2D);
 		Rectangle top = getTopRectangle();
 		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		name().draw(pGraphics2D, top);
+		StringViewer.draw(name(), pGraphics2D, top);
 		int xmid = getBounds().getCenter().getX();
 		Stroke oldStroke = pGraphics2D.getStroke();
 		pGraphics2D.setStroke(STROKE);
@@ -90,7 +91,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = name().getBounds(); 
+		Rectangle bounds = StringViewer.getBounds(name()); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
 		Rectangle snappedTop = Grid.snapped(top);

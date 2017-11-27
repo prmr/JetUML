@@ -10,6 +10,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an actor in a use case diagram.
@@ -48,7 +49,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = name().getBounds();
+		Rectangle bot = StringViewer.getBounds(name());
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 		setBounds(Grid.snapped(bounds));
@@ -88,11 +89,11 @@ public class ActorNodeView extends RectangleBoundedNodeView
 		pGraphics2D.draw(path);
 
 		// Draw name
-		Rectangle nameBox = name().getBounds();
+		Rectangle nameBox = StringViewer.getBounds(name());
 
 		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
 				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		name().draw(pGraphics2D, namebox);
+		StringViewer.draw(name(), pGraphics2D, namebox);
 	}
 	
 	@Override
