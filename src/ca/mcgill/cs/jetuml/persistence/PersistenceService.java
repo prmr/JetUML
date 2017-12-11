@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2017 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -18,31 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.graph;
+package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.persistence.Properties;
+import java.io.OutputStream;
+
+import ca.mcgill.cs.jetuml.graph.Graph;
 
 /**
- * A type that allows us to treat nodes and edges uniformly.
+ * Services for saving and loading Graph objects (i.e., UML diagrams).
  * 
  * @author Martin P. Robillard
  */
-public interface GraphElement extends Cloneable
+public final class PersistenceService
 {
-	/**
-	 * @return A set of properties that define this object.
-	 */
-	default Properties getProperties()
-	{
-		return null; // TODO remove default
-	}
+	private PersistenceService() {}
 	
 	/**
-	 * Initialize the state of this element based on a property.
-	 * 
-	 * @param pExtractor An object that can supply the value for the key given 
-	 * that the value expected is of type Class
-	 */
-	default void initialize(ValueExtractor pExtractor)
-	{}
+     * Saves the current graph in a file. 
+     * 
+     * @param pGraph The graph to save
+     * @param pOut the stream for saving
+     */
+	public static void saveFile(Graph pGraph, OutputStream pOut)
+	{
+
+	}
 }

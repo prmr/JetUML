@@ -22,6 +22,9 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 
 /**
    A node with a name.
@@ -46,6 +49,21 @@ public abstract class NamedNode extends AbstractNode
 	public MultiLineString getName()
 	{
 		return aName;
+	}
+	
+	@Override
+	public Properties getProperties()
+	{
+		Properties properties = super.getProperties();
+		properties.put("name", aName.getText());
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		super.initialize(pExtractor);
+		aName.setText((String)pExtractor.get("name", Type.STRING));
 	}
 
 	@Override

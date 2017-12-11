@@ -6,6 +6,9 @@ import java.beans.Statement;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
@@ -80,6 +83,22 @@ public abstract class AbstractNode implements Node
 	public String toString()
 	{
 		return getClass().getSimpleName() + " " + view().getBounds();
+	}
+	
+	@Override
+	public Properties getProperties()
+	{
+		Properties properties = new Properties();
+		properties.put("type", getClass().getSimpleName());
+		properties.put("x", aPosition.getX());
+		properties.put("y", aPosition.getY());
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aPosition = new Point((int)pExtractor.get("x", Type.INT), (int) pExtractor.get("y", Type.INT));
 	}
 	
 	/**
