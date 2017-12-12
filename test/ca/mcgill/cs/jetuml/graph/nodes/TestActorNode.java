@@ -23,10 +23,9 @@ public class TestActorNode
 	@Test
 	public void testGetPropertiesDefault()
 	{
-		Properties properties = aNode.getProperties();
+		Properties properties = aNode.properties();
 		assertEquals("Actor", properties.get("name"));
 		assertEquals(0, properties.get("x"));
 		assertEquals(0, properties.get("y"));
-		assertEquals("ActorNode", properties.get("type"));
 	}
 }

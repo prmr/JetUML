@@ -86,10 +86,9 @@ public abstract class AbstractNode implements Node
 	}
 	
 	@Override
-	public Properties getProperties()
+	public Properties properties()
 	{
 		Properties properties = new Properties();
-		properties.put("type", getClass().getSimpleName());
 		properties.put("x", aPosition.getX());
 		properties.put("y", aPosition.getY());
 		return properties;

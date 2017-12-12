@@ -32,17 +32,13 @@ public interface GraphElement extends Cloneable
 	/**
 	 * @return A set of properties that define this object.
 	 */
-	default Properties getProperties()
-	{
-		return null; // TODO remove default
-	}
+	Properties properties();
 	
 	/**
 	 * Initialize the state of this element based on a property.
 	 * 
-	 * @param pExtractor An object that can supply the value for the key given 
-	 * that the value expected is of type Class
+	 * @param pExtractor An object that can supply the value to be used
+	 * for the initialization.
 	 */
-	default void initialize(ValueExtractor pExtractor)
-	{}
+	void initialize(ValueExtractor pExtractor);
 }

@@ -3,6 +3,8 @@ package ca.mcgill.cs.jetuml.graph.edges;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
@@ -76,6 +78,16 @@ public abstract class AbstractEdge implements Edge
 			return null;
 		}
 	}
+	
+	@Override
+	public Properties properties()
+	{
+		return new Properties();
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{}
 	
 	@Override
 	public EdgeView view()

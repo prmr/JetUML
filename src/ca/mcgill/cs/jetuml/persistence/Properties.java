@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 /**
  * A dictionary of key values pairs with string keys 
- * and values of types string, boolean, int, enum. Putting a value
+ * and values of types string, boolean, or int, enum. Putting a value
  * if a key already exists will silently override the previous value
  * with the same key.
  * 
@@ -21,9 +21,11 @@ public class Properties implements Iterable<String>
 	/**
 	 * Adds a property.
 	 * 
-	 * @param pKey The key (not null).
-	 * @param pValue The value (not null), of type String,
+	 * @param pKey The key.
+	 * @param pValue The value, of type String,
 	 * Integer, Boolean, or enum.
+	 * @pre pKey != null && pValue != null
+	 * @pre pValue is an int, boolean, String, or enum.
 	 */
 	public void put(String pKey, Object pValue)
 	{

@@ -52,9 +52,9 @@ public abstract class NamedNode extends AbstractNode
 	}
 	
 	@Override
-	public Properties getProperties()
+	public Properties properties()
 	{
-		Properties properties = super.getProperties();
+		Properties properties = super.properties();
 		properties.put("name", aName.getText());
 		return properties;
 	}
