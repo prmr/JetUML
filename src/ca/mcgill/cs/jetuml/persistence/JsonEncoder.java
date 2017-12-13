@@ -33,6 +33,7 @@ public final class JsonEncoder
 	public static JSONObject encode(Graph pGraph)
 	{
 		assert pGraph != null;
+		
 		JSONObject object = new JSONObject();
 		object.put("version", ResourceBundle.getBundle(UMLEditor.class.getName() + "Version").getString("version.number"));
 		object.put("diagram", pGraph.getClass().getSimpleName());
@@ -47,21 +48,31 @@ public final class JsonEncoder
 		JSONArray nodes = new JSONArray();
 		for( Node node : pContext ) 
 		{
-			JSONObject object = toJSONObject(node.properties());
-			object.put("id", pContext.getId(node));
-			object.put("type", node.getClass().getSimpleName());
-			if( node instanceof ParentNode )
-			{
-				JSONArray children = new JSONArray();
-				object.put("children", children);
-				for( ChildNode child : ((ParentNode)node).getChildren())
-				{
-					children.put(pContext.getId(child));
-				}
-			}
-			nodes.put(object);
+			nodes.put(encodeNode(node, pContext));
 		}
 		return nodes;
+	}
+	
+	private static JSONObject encodeNode(Node pNode, SerializationContext pContext)
+	{
+		JSONObject object = toJSONObject(pNode.properties());
+		object.put("id", pContext.getId(pNode));
+		object.put("type", pNode.getClass().getSimpleName());
+		if( pNode instanceof ParentNode )
+		{
+			object.put("children", encodeChildren(pNode, pContext));
+		}
+		return object;
+	}
+	
+	private static JSONArray encodeChildren(Node pNode, SerializationContext pContext)
+	{
+		JSONArray children = new JSONArray();
+		for( ChildNode child : ((ParentNode)pNode).getChildren())
+		{
+			children.put(pContext.getId(child));
+		}
+		return children;
 	}
 	
 	private static JSONArray encodeEdges(AbstractContext pContext)
@@ -70,6 +81,7 @@ public final class JsonEncoder
 		for( Edge edge : pContext.getGraph().getEdges() ) 
 		{
 			JSONObject object = toJSONObject(edge.properties());
+			object.put("type", edge.getClass().getSimpleName());
 			object.put("start", pContext.getId(edge.getStart()));
 			object.put("end", pContext.getId(edge.getEnd()));
 			
