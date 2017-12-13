@@ -29,19 +29,18 @@ public class SerializationContext extends AbstractContext
 	
 	/**
 	 * Adds a node to the context if it is not already there. Its identifier
-	 * is automatically defined. If the node is alredy in the 
+	 * is automatically defined. If the node is already in the 
 	 * context, it is not added.
 	 * 
 	 * @param pNode The node to add.
 	 * @pre pNode != null;
+	 * @pre !aNodes.containsKey(pNode)
 	 */
 	private void addNode(Node pNode)
 	{
 		assert pNode != null;
-		if( !aNodes.containsKey(pNode))
-		{
-			aNodes.put(pNode, aNodes.size());
-		}
+		assert !aNodes.containsKey(pNode);
+		aNodes.put(pNode, aNodes.size());
 	}
 	
 	private void getAllNodes(Graph pGraph)
@@ -60,10 +59,7 @@ public class SerializationContext extends AbstractContext
 	{
 		for( Node node : pParent.getChildren() )
 		{
-			if( !aNodes.containsKey(node))
-			{
-				addNode(node);
-			}
+			addNode(node);
 			if( node instanceof ParentNode )
 			{
 				addChildren((ParentNode)node);
