@@ -1,5 +1,8 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
+
 /**
  * An edge with three labels.
  * 
@@ -40,5 +43,21 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	public String getEndLabel()
 	{
 		return aEndLabel;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("startLabel", aStartLabel);
+		properties.put("endLabel", aEndLabel);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aStartLabel = (String)pExtractor.get("startLabel", ValueExtractor.Type.STRING);
+		aEndLabel = (String)pExtractor.get("endLabel", ValueExtractor.Type.STRING);
 	}
 }

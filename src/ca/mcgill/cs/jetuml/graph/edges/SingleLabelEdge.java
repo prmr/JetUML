@@ -1,5 +1,8 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
+
 /**
  * An edge with a single middle label.
  * 
@@ -25,5 +28,19 @@ public abstract class SingleLabelEdge extends AbstractEdge
 	public String getMiddleLabel()
 	{
 		return aLabelText;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("middleLabel", aLabelText);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aLabelText = (String)pExtractor.get("middleLabel", ValueExtractor.Type.STRING);
 	}
 }

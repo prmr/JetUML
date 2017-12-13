@@ -25,6 +25,8 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -84,6 +86,20 @@ public class AggregationEdge extends ClassRelationshipEdge
 	public void setType(Type pType)
 	{
 		aType = pType;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("aggregationType", aType);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aType = Type.valueOf((String)pExtractor.get("aggregationType", ValueExtractor.Type.STRING));
 	}
 
 	private ArrowHead getStartArrowHead()

@@ -25,6 +25,8 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -49,6 +51,12 @@ public class UseCaseDependencyEdge extends AbstractEdge
 	private Type aType = Type.None;
 	
 	/**
+	 * Creates a general dependency.
+	 */
+	public UseCaseDependencyEdge()
+	{}
+	
+	/**
 	 * Creates a typed dependency.
 	 * @param pType The type of dependency.
 	 */
@@ -57,11 +65,19 @@ public class UseCaseDependencyEdge extends AbstractEdge
 		aType = pType;
 	}
 	
-	/**
-	 * Creates a general dependency.
-	 */
-	public UseCaseDependencyEdge()
-	{}
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("dependencyType", aType);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aType = Type.valueOf((String)pExtractor.get("dependencyType", ValueExtractor.Type.STRING));
+	}
 	
 	@Override
 	protected EdgeView generateView()

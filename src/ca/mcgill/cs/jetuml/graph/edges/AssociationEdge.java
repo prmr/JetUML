@@ -25,6 +25,8 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -68,6 +70,20 @@ public class AssociationEdge extends ClassRelationshipEdge
 	public Directionality getDirectionality()
 	{
 		return aDirectionality;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("directionality", aDirectionality);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aDirectionality = Directionality.valueOf((String)pExtractor.get("directionality", ValueExtractor.Type.STRING));
 	}
 	
 	private ArrowHead getStartArrowHead()

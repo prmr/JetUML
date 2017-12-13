@@ -40,7 +40,6 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  */
 public class ReturnEdge extends SingleLabelEdge
 {
-
 	@Override
 	protected EdgeView generateView()
 	{
