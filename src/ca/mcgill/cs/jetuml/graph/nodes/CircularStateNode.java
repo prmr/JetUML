@@ -21,6 +21,9 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -29,7 +32,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class CircularStateNode extends AbstractNode
 {
-	
 	private boolean aFinalState; 
 	
 	@Override
@@ -52,6 +54,20 @@ public class CircularStateNode extends AbstractNode
 	public void setFinal(boolean pFinalState)
 	{
 		aFinalState = pFinalState;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("finalState", aFinalState);
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aFinalState = (boolean) pExtractor.get("finalState", Type.BOOLEAN);
 	}
 }
 

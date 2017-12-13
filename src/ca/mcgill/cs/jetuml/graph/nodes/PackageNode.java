@@ -29,6 +29,9 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
+import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
@@ -164,6 +167,22 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	public boolean requiresParent()
 	{
 		return false;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.put("name", aName);
+		properties.put("contents", aContents.getText());
+		return properties;
+	}
+	
+	@Override
+	public void initialize(ValueExtractor pExtractor)
+	{
+		aName = (String) pExtractor.get("name", Type.STRING);
+		aContents.setText((String) pExtractor.get("contents", Type.STRING));
 	}
 	
 	/**

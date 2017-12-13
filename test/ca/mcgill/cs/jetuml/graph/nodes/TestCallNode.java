@@ -1,23 +1,22 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.persistence.Properties;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Martin P. Robillard
  */
-public class TestActorNode
+public class TestCallNode
 {
-	private ActorNode aNode;
+	private CallNode aNode;
 	
 	@Before
 	public void setup()
 	{
-		aNode = new ActorNode();
+		aNode = new CallNode();
 	}
 	
 	@Test
@@ -25,14 +24,14 @@ public class TestActorNode
 	{
 		Properties properties = aNode.properties();
 		
-		assertEquals("Actor", properties.get("name"));
+		assertEquals(false, properties.get("openBottom"));
 		assertEquals(0, properties.get("x"));
 		assertEquals(0, properties.get("y"));
 		
-		aNode.getName().setText("Foo");
+		aNode.setOpenBottom(true);
 		aNode.translate(10, 20);
 		properties = aNode.properties();
-		assertEquals("Foo", properties.get("name"));
+		assertEquals(true, properties.get("openBottom"));
 		assertEquals(10, properties.get("x"));
 		assertEquals(20, properties.get("y"));
 	}
