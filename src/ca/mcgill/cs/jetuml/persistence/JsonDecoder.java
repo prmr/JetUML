@@ -135,7 +135,7 @@ public final class JsonDecoder
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
 				Edge edge = (Edge) edgeClass.newInstance();
 				edge.initialize(createValueExtractor(object));
-				pContext.getGraph().restoreEdge(edge, pContext.getNode(object.getInt("start")), pContext.getNode(pObject.getInt("end")));
+				pContext.getGraph().restoreEdge(edge, pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
 			}
 			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
 			{
