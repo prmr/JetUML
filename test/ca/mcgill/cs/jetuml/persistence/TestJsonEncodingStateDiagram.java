@@ -1,10 +1,12 @@
 package ca.mcgill.cs.jetuml.persistence;
 
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.assertHasKeys;
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.find;
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findEdge;
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,9 +15,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
@@ -213,113 +212,5 @@ public class TestJsonEncodingStateDiagram
 		assertSame(edge1.getEnd(), node2);
 		assertSame(edge2.getStart(), node1);
 		assertSame(edge2.getEnd(), node2);
-
-	}
-	
-	private void assertHasKeys(JSONObject pObject, String... pKeys)
-	{
-		for( String key : pKeys )
-		{
-			assertTrue(pObject.has(key));
-		}
-	}
-	
-	/*
-	 * Finds the object in an array with the specified properties
-	 */
-	private JSONObject find(JSONArray pArray, Properties pProperties)
-	{
-		JSONObject found = null;
-		for( int i = 0; i < pArray.length(); i++ )
-		{
-			boolean match = true;
-			JSONObject object = pArray.getJSONObject(i);
-			for( String key : pProperties )
-			{
-				if( !object.has(key))
-				{
-					match = false;
-				}
-				else
-				{
-					if(!object.get(key).equals(pProperties.get(key)))
-					{
-						match = false;
-					}
-				}
-			}
-			if( match )
-			{
-				found = object;
-				break;
-			}
-		}
-		assertNotNull(found);
-		return found;
-	}
-	
-	private Node findRootNode(Graph pGraph, Class<?> pClass, Properties pProperties)
-	{
-		for( Node node : pGraph.getRootNodes() )
-		{
-			if( node.getClass() == pClass )
-			{
-				boolean match = true;
-				Properties nodeProperties = node.properties();
-				for( String key : pProperties )
-				{
-					if( !nodeProperties.get(key).equals(pProperties.get(key)))
-					{
-						match = false;
-						break;
-					}
-				}
-				if( match )
-				{
-					return node;
-				}
-			}
-		}
-		fail("Expected node not found");
-		return null;
-	}
-	
-	private Edge findEdge(Graph pGraph, Class<?> pClass, Properties pProperties)
-	{
-		for( Edge edge : pGraph.getEdges() )
-		{
-			if( edge.getClass() == pClass )
-			{
-				boolean match = true;
-				Properties edgeProperties = edge.properties();
-				for( String key : pProperties )
-				{
-					if( !edgeProperties.get(key).equals(pProperties.get(key)))
-					{
-						match = false;
-						break;
-					}
-				}
-				if( match )
-				{
-					return edge;
-				}
-			}
-		}
-		fail("Expected edge not found");
-		return null;
-	}
-	
-	/*
-	 * Creates a properties object with keys as even arguments and values as odd arguments.
-	 */
-	private Properties build(Object... pInput)
-	{
-		Properties properties = new Properties();
-		for( int i = 0; i < pInput.length; i+=2 )
-		{
-			properties.put((String)pInput[i], pInput[i+1]);
-		}
-		return properties;
 	}
 }

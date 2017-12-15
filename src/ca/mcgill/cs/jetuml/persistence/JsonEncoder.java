@@ -98,7 +98,7 @@ public final class JsonEncoder
 			Object value = pProperties.get(key);
 			if( value instanceof String || value instanceof Enum )
 			{
-				object.put(key, (String) value);
+				object.put(key, value.toString());
 			}
 			else if( value instanceof Integer)
 			{
