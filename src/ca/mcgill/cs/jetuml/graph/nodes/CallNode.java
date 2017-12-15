@@ -102,6 +102,7 @@ public class CallNode extends AbstractNode implements ChildNode
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aOpenBottom = (boolean) pExtractor.get("openBottom", Type.BOOLEAN);
 	}
 	

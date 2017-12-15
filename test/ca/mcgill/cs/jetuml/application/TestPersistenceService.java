@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -34,15 +33,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.PersistenceService;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
@@ -69,21 +65,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
-	
-	@Test
-	public void testClassDiagram() throws Exception
-	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.class.jet"));
-		verifyClassDiagram(graph);
-		
-		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
-		verifyClassDiagram(graph);
-		tmp.delete();
-	}
 	
 	@Test
 	public void testClassDiagramContainment() throws Exception
@@ -327,113 +308,6 @@ public class TestPersistenceService
 		assertEquals( p2, e3.getEnd());
 		
 
-	}
-	
-	private void verifyClassDiagram(Graph pGraph)
-	{
-		Collection<Node> nodes = pGraph.getRootNodes();
-		
-		assertEquals(7, nodes.size());
-		Iterator<Node> nIterator = nodes.iterator();
-		
-		ClassNode node1 = (ClassNode) nIterator.next();
-		InterfaceNode node2 = (InterfaceNode) nIterator.next();
-		ClassNode node3 = (ClassNode) nIterator.next();
-		ClassNode node4 = (ClassNode) nIterator.next();
-		PackageNode node6 = (PackageNode) nIterator.next();
-		NoteNode node5 = (NoteNode) nIterator.next();
-		PointNode node8 = (PointNode) nIterator.next();
-		
-		assertEquals("", node1.getAttributes().getText());
-		assertEquals("", node1.getMethods().getText());
-		assertEquals("Class1", node1.getName().getText());
-		assertNull(node1.getParent());
-		assertEquals(new Rectangle(460, 370, 100, 60), node1.view().getBounds());
-		
-		assertEquals("", node2.getMethods().getText());
-		assertEquals("\u00ABinterface\u00BB\n", node2.getName().getText());
-		assertNull(node2.getParent());
-		assertEquals(new Rectangle(460, 250, 100, 60), node2.view().getBounds());
-		
-		assertEquals("foo", node3.getAttributes().getText());
-		assertEquals("bar", node3.getMethods().getText());
-		assertEquals("Class2", node3.getName().getText());
-		assertNull(node3.getParent());
-		assertEquals(new Rectangle(460, 520, 100, 60), node3.view().getBounds());
-		
-		assertEquals("", node4.getAttributes().getText());
-		assertEquals("", node4.getMethods().getText());
-		assertEquals("Class3", node4.getName().getText());
-		assertNull(node4.getParent());
-		assertEquals(new Rectangle(630, 370, 100, 60), node4.view().getBounds());
-		
-		assertEquals("A note", node5.getName().getText());
-		assertEquals(new Rectangle(700, 530, 60, 40), node5.view().getBounds());
-		
-		List<ChildNode> children = node6.getChildren();
-		assertEquals(1, children.size());
-		ClassNode node7 = (ClassNode) children.get(0);
-		assertEquals("", node6.getContents().getText());
-		assertEquals("Package", node6.getName());
-		assertNull(node6.getParent());
-		assertEquals(new Rectangle(275, 345, 100, 80), node6.view().getBounds()); // needs a layout to compute correct size
-
-		assertEquals("", node7.getAttributes().getText());
-		assertEquals("", node7.getMethods().getText());
-		assertEquals("Class", node7.getName().getText());
-		assertEquals(node6,node7.getParent());
-		assertEquals(new Rectangle(280, 370, 100, 60), node7.view().getBounds());
-		
-		assertEquals(new Rectangle(694, 409, 0, 0), node8.view().getBounds());
-		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(6, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
-		
-		NoteEdge edge5 = (NoteEdge) eIterator.next();
-		assertEquals(new Rectangle(694, 409, 30, 121), edge5.view().getBounds());
-		assertEquals(node5, edge5.getStart());
-		assertEquals(node8, edge5.getEnd());
-		
-		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(380, 381, 80, 24), edge6.view().getBounds());
-		assertEquals(node7, edge6.getEnd());
-		assertEquals("", edge6.getEndLabel());
-		assertEquals("e1", edge6.getMiddleLabel());
-		assertEquals(node1, edge6.getStart());
-		assertEquals("", edge6.getStartLabel());
-		
-		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(505, 310, 22, 60), edge1.view().getBounds());
-		assertEquals(node2, edge1.getEnd());
-		assertEquals("", edge1.getEndLabel());
-		assertEquals("e2", edge1.getMiddleLabel());
-		assertEquals(node1, edge1.getStart());
-		assertEquals("", edge1.getStartLabel());
-		
-		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(505, 430, 22, 90), edge2.view().getBounds());
-		assertEquals(node1, edge2.getEnd());
-		assertEquals("", edge2.getEndLabel());
-		assertEquals("e3", edge2.getMiddleLabel());
-		assertEquals(node3, edge2.getStart());
-		assertEquals("", edge2.getStartLabel());
-		
-		AggregationEdge edge3 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(560, 376, 70, 24), edge3.view().getBounds());
-		assertEquals(node4, edge3.getEnd());
-		assertEquals("*", edge3.getEndLabel());
-		assertEquals("e4", edge3.getMiddleLabel());
-		assertEquals(node1, edge3.getStart());
-		assertEquals("1", edge3.getStartLabel());
-		
-		AggregationEdge edge4 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(560, 401, 70, 149), edge4.view().getBounds());
-		assertEquals(node3, edge4.getEnd());
-		assertEquals("", edge4.getEndLabel());
-		assertEquals("e5", edge4.getMiddleLabel());
-		assertEquals(node4, edge4.getStart());
-		assertEquals("", edge4.getStartLabel());
 	}
 	
 	private void verifySequenceDiagram(Graph pGraph)

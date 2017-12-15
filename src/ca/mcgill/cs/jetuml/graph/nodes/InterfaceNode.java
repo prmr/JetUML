@@ -113,6 +113,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aMethods.setText((String) pExtractor.get("methods", Type.STRING));
 	}
 }

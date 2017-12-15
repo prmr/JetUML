@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -73,16 +75,26 @@ public class TestPersistenceService
 	@Test
 	public void testClassDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.class.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService.class.jet"));
 		verifyClassDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		PersistenceService2.save(graph,  new File(TEST_FILE_NAME + "2"));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifyClassDiagram(graph);
 		tmp.delete();
+		
+//		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.class.jet"));
+//		verifyClassDiagram(graph);
+//		
+//		File tmp = new File(TEST_FILE_NAME);
+//		tmp.delete();
+//		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
+//		PersistenceService2.save(graph,  new File(TEST_FILE_NAME + "2"));
+//		graph = PersistenceService.read(new FileInputStream(tmp));
+//		verifyClassDiagram(graph);
+//		tmp.delete();
 	}
 	
 	@Test
@@ -334,15 +346,14 @@ public class TestPersistenceService
 		Collection<Node> nodes = pGraph.getRootNodes();
 		
 		assertEquals(7, nodes.size());
-		Iterator<Node> nIterator = nodes.iterator();
 		
-		ClassNode node1 = (ClassNode) nIterator.next();
-		InterfaceNode node2 = (InterfaceNode) nIterator.next();
-		ClassNode node3 = (ClassNode) nIterator.next();
-		ClassNode node4 = (ClassNode) nIterator.next();
-		PackageNode node6 = (PackageNode) nIterator.next();
-		NoteNode node5 = (NoteNode) nIterator.next();
-		PointNode node8 = (PointNode) nIterator.next();
+		ClassNode node1 = (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class1"));
+		InterfaceNode node2 = (InterfaceNode) findRootNode(pGraph, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
+		ClassNode node3 = (ClassNode) (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class2"));
+		ClassNode node4 = (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class3"));
+		PackageNode node6 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "Package"));
+		NoteNode node5 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		PointNode node8 = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
 		assertEquals("", node1.getAttributes().getText());
 		assertEquals("", node1.getMethods().getText());

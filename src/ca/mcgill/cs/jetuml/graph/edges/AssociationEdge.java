@@ -83,6 +83,7 @@ public class AssociationEdge extends ClassRelationshipEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aDirectionality = Directionality.valueOf((String)pExtractor.get("directionality", ValueExtractor.Type.STRING));
 	}
 	

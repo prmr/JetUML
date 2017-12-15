@@ -91,6 +91,7 @@ public class CallEdge extends SingleLabelEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aSignal = (boolean)pExtractor.get("signal", ValueExtractor.Type.BOOLEAN);
 	}
 

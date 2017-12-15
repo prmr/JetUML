@@ -100,6 +100,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aType = Type.valueOf((String)pExtractor.get("generalizationType", ValueExtractor.Type.STRING));
 	}
 	

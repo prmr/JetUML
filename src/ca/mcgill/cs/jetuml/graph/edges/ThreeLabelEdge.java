@@ -57,6 +57,7 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aStartLabel = (String)pExtractor.get("startLabel", ValueExtractor.Type.STRING);
 		aEndLabel = (String)pExtractor.get("endLabel", ValueExtractor.Type.STRING);
 	}

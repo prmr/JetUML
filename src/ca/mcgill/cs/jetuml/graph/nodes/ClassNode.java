@@ -88,6 +88,7 @@ public class ClassNode extends InterfaceNode
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aAttributes.setText((String) pExtractor.get("attributes", Type.STRING));
 	}
 }

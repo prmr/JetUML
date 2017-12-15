@@ -137,7 +137,6 @@ public class TestJsonEncodingUseCaseDiagram
 	{
 		initiGraph2();
 		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
-		System.out.println(JsonEncoder.encode(aGraph));
 		
 		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));
 		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node2"));

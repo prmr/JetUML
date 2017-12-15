@@ -99,6 +99,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aType = Type.valueOf((String)pExtractor.get("aggregationType", ValueExtractor.Type.STRING));
 	}
 

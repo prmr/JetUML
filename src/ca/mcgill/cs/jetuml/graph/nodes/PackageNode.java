@@ -181,6 +181,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aName = (String) pExtractor.get("name", Type.STRING);
 		aContents.setText((String) pExtractor.get("contents", Type.STRING));
 	}

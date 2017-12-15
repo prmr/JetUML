@@ -67,6 +67,7 @@ public class CircularStateNode extends AbstractNode
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aFinalState = (boolean) pExtractor.get("finalState", Type.BOOLEAN);
 	}
 }

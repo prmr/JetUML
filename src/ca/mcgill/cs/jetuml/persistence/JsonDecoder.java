@@ -62,6 +62,7 @@ public final class JsonDecoder
 			DeserializationContext context = new DeserializationContext(graph);
 			decodeNodes(context, pGraph);
 			restoreChildren(context, pGraph);
+			restoreRootNodes(context);
 			decodeEdges(context, pGraph);
 			return graph;
 		}
@@ -88,11 +89,24 @@ public final class JsonDecoder
 				Node node = (Node) nodeClass.newInstance();
 				node.initialize(createValueExtractor(object));
 				pContext.addNode(node, object.getInt("id"));
-				pContext.getGraph().restoreRootNode(node);
 			}
 			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
 			{
 				throw new DeserializationException("Cannot instantiate serialized object", exception);
+			}
+		}
+	}
+	
+	/* 
+	 * Discovers the root nodes and stores them in the graph.
+	 */
+	private static void restoreRootNodes(DeserializationContext pContext)
+	{
+		for( Node node : pContext )
+		{
+			if( !(node instanceof ChildNode) || ((ChildNode)node).getParent() == null )
+			{
+				pContext.getGraph().restoreRootNode(node);
 			}
 		}
 	}

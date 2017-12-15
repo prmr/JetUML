@@ -41,6 +41,7 @@ public abstract class SingleLabelEdge extends AbstractEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aLabelText = (String)pExtractor.get("middleLabel", ValueExtractor.Type.STRING);
 	}
 }

@@ -76,6 +76,7 @@ public class UseCaseDependencyEdge extends AbstractEdge
 	@Override
 	public void initialize(ValueExtractor pExtractor)
 	{
+		super.initialize(pExtractor);
 		aType = Type.valueOf((String)pExtractor.get("dependencyType", ValueExtractor.Type.STRING));
 	}
 	
