@@ -28,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -37,36 +36,17 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.graph.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 
 public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
-	
-	@Test
-	public void testObjectDiagram() throws Exception
-	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.object.jet"));
-		verifyObjectDiagram(graph);
-
-		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
-		verifyObjectDiagram(graph);
-		tmp.delete();
-	}
 	
 	@Test
 	public void testUseCaseDiagram() throws Exception
@@ -187,113 +167,4 @@ public class TestPersistenceService
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
-	
-	private void verifyObjectDiagram(Graph pGraph)
-	{
-		Collection<Node> nodes = pGraph.getRootNodes();
-		assertEquals(7, nodes.size());
-		
-		Iterator<Node> nIt = nodes.iterator(); 
-		ObjectNode type1 = (ObjectNode) nIt.next(); 
-		ObjectNode blank = (ObjectNode) nIt.next(); 
-		ObjectNode object2 = (ObjectNode) nIt.next(); 
-		ObjectNode type3 = (ObjectNode) nIt.next();
-
-		NoteNode note = (NoteNode) nIt.next(); 
-		PointNode p1 = (PointNode) nIt.next();
-		PointNode p2 = (PointNode) nIt.next();
-		
-		assertEquals(new Rectangle(240, 130, 80, 60), type1.view().getBounds());
-		List<ChildNode> children = type1.getChildren();
-		assertEquals(1, children.size());
-		assertEquals(":Type1", type1.getName().toString());
-		
-		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(253, 209, 60, 20), name.view().getBounds());
-		assertEquals(47,name.obtainAxis());
-		assertEquals("name", name.getName().toString());
-		assertEquals(type1, name.getParent());
-		assertEquals("", name.getValue().toString());
-
-		assertEquals(new Rectangle(440, 290, 80, 60), blank.view().getBounds());
-		children = blank.getChildren();
-		assertEquals(3, children.size());
-		assertEquals("", blank.getName().toString());
-		FieldNode name2 = (FieldNode) children.get(0);
-		FieldNode name3 = (FieldNode) children.get(1);
-		FieldNode name4 = (FieldNode) children.get(2);
-		
-		assertEquals(new Rectangle(446, 367, 60, 20), name2.view().getBounds());
-		assertEquals(54,name2.obtainAxis());
-		assertEquals("name2", name2.getName().toString());
-		assertEquals(blank, name2.getParent());
-		assertEquals("value", name2.getValue().toString());
-		
-		assertEquals(new Rectangle(445, 388, 60, 20), name3.view().getBounds());
-		assertEquals(54,name3.obtainAxis());
-		assertEquals("name3", name3.getName().toString());
-		assertEquals(blank, name3.getParent());
-		assertEquals("value", name3.getValue().toString());
-		
-		assertEquals(new Rectangle(445, 409, 60, 20), name4.view().getBounds());
-		assertEquals(54,name4.obtainAxis());
-		assertEquals("name4", name4.getName().toString());
-		assertEquals(blank, name4.getParent());
-		assertEquals("", name4.getValue().toString());
-
-		assertEquals(new Rectangle(540, 150, 80, 60), object2.view().getBounds());
-		children = object2.getChildren();
-		assertEquals(0, children.size());
-		assertEquals("object2:", object2.getName().toString());
-		
-		assertEquals(new Rectangle(610, 300, 80, 60), type3.view().getBounds());
-		children = type3.getChildren();
-		assertEquals(0, children.size());
-		assertEquals(":Type3", type3.getName().toString());
-
-		assertEquals("A note", note.getName().getText());
-		assertEquals(new Rectangle(280, 330, 60, 40), note.view().getBounds());
-		
-		assertEquals(new Rectangle(281, 216, 0, 0), p1.view().getBounds());
-		
-		assertEquals(new Rectangle(474, 339, 0, 0), p2.view().getBounds());
-		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(6, edges.size());
-		Iterator<Edge> eIt = edges.iterator();
-		
-		ObjectReferenceEdge o1 = (ObjectReferenceEdge) eIt.next();
-		ObjectReferenceEdge o2 = (ObjectReferenceEdge) eIt.next();
-		ObjectReferenceEdge o3 = (ObjectReferenceEdge) eIt.next();
-		NoteEdge ne1 = (NoteEdge) eIt.next();
-		NoteEdge ne2 = (NoteEdge) eIt.next();
-		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
-		
-		assertEquals(new Rectangle(306, 160, 34, 59), o1.view().getBounds());
-		assertEquals(name, o1.getStart());
-		assertEquals(type1, o1.getEnd());
-		
-		assertEquals(new Rectangle(306, 219, 134, 101), o2.view().getBounds());
-		assertEquals(name, o2.getStart());
-		assertEquals(blank, o2.getEnd());
-		
-		assertEquals(new Rectangle(480, 180, 60, 110), cr1.view().getBounds());
-		assertEquals(object2, cr1.getEnd());
-		assertEquals("", cr1.getEndLabel());
-		assertEquals("e1", cr1.getMiddleLabel().toString());
-		assertEquals(blank, cr1.getStart());
-		assertEquals("", cr1.getStartLabel().toString());
-		
-		assertEquals(new Rectangle(502, 330, 108, 89), o3.view().getBounds());
-		assertEquals(name4, o3.getStart());
-		assertEquals(type3, o3.getEnd());
-		
-		assertEquals(new Rectangle(281, 216, 24, 114), ne1.view().getBounds());
-		assertEquals(note, ne1.getStart());
-		assertEquals(p1, ne1.getEnd());
-		
-		assertEquals(new Rectangle(340, 339, 134, 8), ne2.view().getBounds());
-		assertEquals(note, ne2.getStart());
-		assertEquals(p2, ne2.getEnd());
-	}
 }

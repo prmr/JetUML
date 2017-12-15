@@ -131,13 +131,13 @@ public class TestPersistenceService
 	@Test
 	public void testObjectDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.object.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService.object.jet"));
 		verifyObjectDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifyObjectDiagram(graph);
 		tmp.delete();
 	}
@@ -614,15 +614,14 @@ public class TestPersistenceService
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());
 		
-		Iterator<Node> nIt = nodes.iterator(); 
-		ObjectNode type1 = (ObjectNode) nIt.next(); 
-		ObjectNode blank = (ObjectNode) nIt.next(); 
-		ObjectNode object2 = (ObjectNode) nIt.next(); 
-		ObjectNode type3 = (ObjectNode) nIt.next();
+		ObjectNode type1 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ":Type1"));
+		ObjectNode blank = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ""));
+		ObjectNode object2 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", "object2:"));
+		ObjectNode type3 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ":Type3"));
 
-		NoteNode note = (NoteNode) nIt.next(); 
-		PointNode p1 = (PointNode) nIt.next();
-		PointNode p2 = (PointNode) nIt.next();
+		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		PointNode p1 = (PointNode) findRootNode(pGraph, PointNode.class, build("x", 281));
+		PointNode p2 = (PointNode) findRootNode(pGraph, PointNode.class, build("x", 474));
 		
 		assertEquals(new Rectangle(240, 130, 80, 60), type1.view().getBounds());
 		List<ChildNode> children = type1.getChildren();
