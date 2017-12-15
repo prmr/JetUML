@@ -37,9 +37,9 @@ import ca.mcgill.cs.jetuml.graph.Graph;
  * 
  * @author Martin P. Robillard
  */
-public final class PersistenceService2
+public final class PersistenceService
 {
-	private PersistenceService2() {}
+	private PersistenceService() {}
 	
 	/**
      * Saves the current graph in a file. 

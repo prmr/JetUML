@@ -39,7 +39,6 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -74,7 +73,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.ExtensionFilter;
-import ca.mcgill.cs.jetuml.application.PersistenceService;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
@@ -82,6 +80,8 @@ import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.persistence.DeserializationException;
+import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 
 /**
  * This desktop frame contains panes that show graphs.
@@ -488,13 +488,13 @@ public class EditorFrame extends JFrame
 		}	      
 		try
 		{	              
-			Graph graph = PersistenceService.read(new FileInputStream(pName));
+			Graph graph = PersistenceService.read(new File(pName));
 			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
 			frame.setFile(new File(pName).getAbsoluteFile());    
 			addRecentFile(new File(pName).getPath());
 			addTab(frame);
 		}
-		catch(IOException exception)
+		catch(IOException | DeserializationException exception )
 		{
 			JOptionPane.showMessageDialog(aTabbedPane, exception.getMessage(), 
     			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
@@ -865,7 +865,7 @@ public class EditorFrame extends JFrame
    		}
    		try
    		{
-   			PersistenceService.saveFile(frame.getGraph(), new FileOutputStream(file));
+   			PersistenceService.save(frame.getGraph(), file);
    			frame.getGraphPanel().setModified(false);
    		}        
    		catch(Exception exception)
@@ -929,15 +929,7 @@ public class EditorFrame extends JFrame
    			
    			if(result != null)
    			{
-   				OutputStream out = new FileOutputStream(result);
-   				try
-   				{
-   					PersistenceService.saveFile(graph, out);
-   				}
-   				finally
-   				{
-   					out.close();
-   				}
+   				PersistenceService.save(graph, result);
    				addRecentFile(result.getAbsolutePath());
    				frame.setFile(result);
    				aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
