@@ -103,13 +103,13 @@ public class TestPersistenceService
 	@Test
 	public void testSequenceDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.sequence.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService.sequence.jet"));
 		verifySequenceDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifySequenceDiagram(graph);
 		tmp.delete();
 	}
@@ -438,13 +438,12 @@ public class TestPersistenceService
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(5, nodes.size());
-		Iterator<Node> nIterator = nodes.iterator();
 		
-		ImplicitParameterNode object1 = (ImplicitParameterNode) nIterator.next();
-		ImplicitParameterNode object2 = (ImplicitParameterNode) nIterator.next();
-		ImplicitParameterNode object3 = (ImplicitParameterNode) nIterator.next();
-		NoteNode note = (NoteNode) nIterator.next();
-		PointNode point = (PointNode) nIterator.next();
+		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", "object1:Type1"));
+		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", ":Type2"));
+		ImplicitParameterNode object3 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", "object3:"));
+		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		PointNode point = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
 		assertEquals(new Rectangle(160,0,80,120), object1.view().getBounds());
 		List<ChildNode> o1children = object1.getChildren();
