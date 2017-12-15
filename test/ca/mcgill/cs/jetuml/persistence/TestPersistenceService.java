@@ -20,23 +20,20 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.*;
-
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
+import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.PersistenceService;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -145,13 +142,13 @@ public class TestPersistenceService
 	@Test
 	public void testUseCaseDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.usecase.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService.usecase.jet"));
 		verifyUseCaseDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifyUseCaseDiagram(graph);
 		tmp.delete();
 	}
@@ -160,16 +157,15 @@ public class TestPersistenceService
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(9, nodes.size());
-		Iterator<Node> nIt = nodes.iterator();
-		UseCaseNode u1 = (UseCaseNode) nIt.next();
-		UseCaseNode u2 = (UseCaseNode) nIt.next();
-		UseCaseNode u3 = (UseCaseNode) nIt.next();
-		ActorNode a1 = (ActorNode) nIt.next();
-		ActorNode a2 = (ActorNode) nIt.next();
-		NoteNode n1 = (NoteNode) nIt.next();
-		PointNode p1 = (PointNode) nIt.next();
-		UseCaseNode u4 = (UseCaseNode) nIt.next();
-		ActorNode a3 = (ActorNode) nIt.next();
+		UseCaseNode u1 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 1"));
+		UseCaseNode u2 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 2"));
+		UseCaseNode u3 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 3"));
+		ActorNode a1 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor"));
+		ActorNode a2 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor2"));
+		NoteNode n1 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		PointNode p1 = (PointNode) findRootNode(pGraph, PointNode.class, build());
+		UseCaseNode u4 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 4"));
+		ActorNode a3 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor3"));
 		
 		assertEquals(new Rectangle(440, 40, 110, 40), u1.view().getBounds());
 		assertEquals("Use case 1", u1.getName().toString());
