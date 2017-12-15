@@ -117,13 +117,13 @@ public class TestPersistenceService
 	@Test
 	public void testStateDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.state.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService.state.jet"));
 		verifyStateDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifyStateDiagram(graph);
 		tmp.delete();
 	}
@@ -534,14 +534,13 @@ public class TestPersistenceService
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());
 		
-		Iterator<Node> nIterator = nodes.iterator();
-		StateNode s1 = (StateNode) nIterator.next(); 
-		StateNode s2 = (StateNode) nIterator.next(); 
-		StateNode s3 = (StateNode) nIterator.next(); 
-		CircularStateNode start = (CircularStateNode) nIterator.next(); 
-		CircularStateNode end = (CircularStateNode) nIterator.next(); 
-		NoteNode note = (NoteNode) nIterator.next();
-		PointNode point = (PointNode) nIterator.next();
+		StateNode s1 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S1"));
+		StateNode s2 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S2"));
+		StateNode s3 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S3"));
+		CircularStateNode start = (CircularStateNode) findRootNode(pGraph, CircularStateNode.class, build("finalState", false));
+		CircularStateNode end = (CircularStateNode) findRootNode(pGraph, CircularStateNode.class, build("finalState", true));
+		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		PointNode point = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
 		assertEquals(new Rectangle(250, 100, 80, 60), s1.view().getBounds());
 		assertEquals("S1", s1.getName().toString());

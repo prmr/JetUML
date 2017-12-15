@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -40,37 +39,20 @@ import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
-import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
-import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 
 public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
-	
-	@Test
-	public void testStateDiagram() throws Exception
-	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.state.jet"));
-		verifyStateDiagram(graph);
-
-		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
-		verifyStateDiagram(graph);
-		tmp.delete();
-	}
 	
 	@Test
 	public void testObjectDiagram() throws Exception
@@ -205,87 +187,6 @@ public class TestPersistenceService
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
-	
-	private void verifyStateDiagram(Graph pGraph)
-	{
-		Collection<Node> nodes = pGraph.getRootNodes();
-		assertEquals(7, nodes.size());
-		
-		Iterator<Node> nIterator = nodes.iterator();
-		StateNode s1 = (StateNode) nIterator.next(); 
-		StateNode s2 = (StateNode) nIterator.next(); 
-		StateNode s3 = (StateNode) nIterator.next(); 
-		CircularStateNode start = (CircularStateNode) nIterator.next(); 
-		CircularStateNode end = (CircularStateNode) nIterator.next(); 
-		NoteNode note = (NoteNode) nIterator.next();
-		PointNode point = (PointNode) nIterator.next();
-		
-		assertEquals(new Rectangle(250, 100, 80, 60), s1.view().getBounds());
-		assertEquals("S1", s1.getName().toString());
-		
-		assertEquals(new Rectangle(510, 100, 80, 60), s2.view().getBounds());
-		assertEquals("S2", s2.getName().toString());
-		
-		assertEquals(new Rectangle(520, 310, 80, 60), s3.view().getBounds());
-		assertEquals("S3", s3.getName().toString());
-		
-		assertEquals(new Rectangle(150, 70, 20, 20), start.view().getBounds());
-		assertFalse(start.isFinal());
-		
-		assertEquals(new Rectangle(640, 230, 20, 20), end.view().getBounds());
-		assertTrue(end.isFinal());
-		
-		assertEquals("A note\non two lines", note.getName().getText());
-		assertEquals(new Rectangle(690, 320, 60, 40), note.view().getBounds());
-		
-		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
-		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(7, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
-		
-		NoteEdge ne = (NoteEdge) eIterator.next();
-		StateTransitionEdge fromStart = (StateTransitionEdge) eIterator.next(); 
-		StateTransitionEdge e1 = (StateTransitionEdge) eIterator.next(); 
-		StateTransitionEdge e2 = (StateTransitionEdge) eIterator.next(); 
-		StateTransitionEdge self = (StateTransitionEdge) eIterator.next(); 
-		StateTransitionEdge toEnd = (StateTransitionEdge) eIterator.next(); 
-		StateTransitionEdge toS3 = (StateTransitionEdge) eIterator.next(); 
-		
-		assertEquals(new Rectangle(576, 339, 114, 0), ne.view().getBounds());
-		assertEquals(note, ne.getStart());
-		assertEquals(point, ne.getEnd());
-		
-		assertEquals(new Rectangle(170, 72, 80, 38), fromStart.view().getBounds());
-		assertEquals(start, fromStart.getStart());
-		assertEquals(s1, fromStart.getEnd());
-		assertEquals("start", fromStart.getMiddleLabel().toString());
-		
-		assertEquals(new Rectangle(330, 98, 180, 28), e1.view().getBounds());
-		assertEquals(s1, e1.getStart());
-		assertEquals(s2, e1.getEnd());
-		assertEquals("e1", e1.getMiddleLabel().toString());
-		
-		assertEquals(new Rectangle(330, 133, 180, 26), e2.view().getBounds());
-		assertEquals(s2, e2.getStart());
-		assertEquals(s1, e2.getEnd());
-		assertEquals("e2", e2.getMiddleLabel().toString());
-		
-		assertEquals(new Rectangle(575, 70, 30, 45), self.view().getBounds());
-		assertEquals(s2, self.getStart());
-		assertEquals(s2, self.getEnd());
-		assertEquals("self", self.getMiddleLabel().toString());
-		
-		assertEquals(new Rectangle(582, 247, 61, 63), toEnd.view().getBounds());
-		assertEquals(s3, toEnd.getStart());
-		assertEquals(end, toEnd.getEnd());
-		assertEquals("", toEnd.getMiddleLabel().toString());
-		
-		assertEquals(new Rectangle(554, 160, 17, 150), toS3.view().getBounds());
-		assertEquals(s2, toS3.getStart());
-		assertEquals(s3, toS3.getEnd());
-		assertEquals("", toS3.getMiddleLabel().toString());
-	}
 	
 	private void verifyObjectDiagram(Graph pGraph)
 	{
