@@ -22,9 +22,6 @@
 package ca.mcgill.cs.jetuml.graph;
 
 import java.awt.Graphics2D;
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -639,34 +636,6 @@ public abstract class Graph
 	 * @return an array of edge prototypes
 	 */   
 	public abstract Edge[] getEdgePrototypes();
-
-	/**
-	 * Adds a persistence delegate to a given encoder that
-	 * encodes the child nodes of this graph.
-	 * @param pEncoder the encoder to which to add the delegate
-	 */
-	public static void setPersistenceDelegate(Encoder pEncoder)
-	{
-		pEncoder.setPersistenceDelegate(Graph.class, new DefaultPersistenceDelegate()
-		{
-			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-			{
-				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				Graph graph = (Graph) pOldInstance;
-
-				for(Node node : graph.aRootNodes)
-				{
-					pOut.writeStatement( new Statement(pOldInstance, "restoreRootNode", 
-							new Object[]{ node }) );
-				}
-				for(Edge edge : graph.aEdges)
-				{
-					pOut.writeStatement( new Statement(pOldInstance, "restoreEdge", 
-							new Object[]{ edge, edge.getStart(), edge.getEnd() }) );            
-				}
-			}
-		});
-	}
 
 	/**
 	 * Gets the nodes of this graph.

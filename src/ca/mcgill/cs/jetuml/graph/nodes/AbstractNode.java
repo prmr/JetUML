@@ -1,9 +1,5 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
-
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.ValueExtractor;
@@ -98,24 +94,5 @@ public abstract class AbstractNode implements Node
 	public void initialize(ValueExtractor pExtractor)
 	{
 		aPosition = new Point((int)pExtractor.get("x", Type.INT), (int) pExtractor.get("y", Type.INT));
-	}
-	
-	/**
-	 * The persistence delegate recovers the position of the point.
-	 * 
-	 * @param pEncoder the encoder to which to add the delegate
-	 */
-	public static void setPersistenceDelegate(Encoder pEncoder)
-	{
-		pEncoder.setPersistenceDelegate(AbstractNode.class, new DefaultPersistenceDelegate()
-		{
-			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-			{
-				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				int x = ((Node)pOldInstance).position().getX();
-				int y = ((Node)pOldInstance).position().getY();
-				pOut.writeStatement( new Statement(pOldInstance, "translate", new Object[]{ x, y }) );            
-			}
-		});
 	}
 }

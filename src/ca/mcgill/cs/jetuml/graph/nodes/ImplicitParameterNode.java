@@ -21,9 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,25 +134,5 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	public void setBounds(Rectangle pNewBounds)
 	{
 		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
-	}
-	
-	/**
-	 *  Adds a persistence delegate to a given encoder that
-	 * encodes the child nodes of this node.
-	 * @param pEncoder the encoder to which to add the delegate
-	 */
-	public static void setPersistenceDelegate(Encoder pEncoder)
-	{
-		pEncoder.setPersistenceDelegate(ImplicitParameterNode.class, new DefaultPersistenceDelegate()
-		{
-			protected void initialize(Class<?> pType, Object pOldInstance, Object pNewInstance, Encoder pOut) 
-			{
-				super.initialize(pType, pOldInstance, pNewInstance, pOut);
-				for(ChildNode node : ((ParentNode) pOldInstance).getChildren())
-				{
-					pOut.writeStatement( new Statement(pOldInstance, "addChild", new Object[]{ node }) );            
-				}
-			}
-		});
 	}
 }
