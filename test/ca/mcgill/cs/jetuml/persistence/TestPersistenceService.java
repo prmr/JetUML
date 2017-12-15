@@ -84,29 +84,18 @@ public class TestPersistenceService
 		graph = PersistenceService2.read(tmp);
 		verifyClassDiagram(graph);
 		tmp.delete();
-		
-//		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService.class.jet"));
-//		verifyClassDiagram(graph);
-//		
-//		File tmp = new File(TEST_FILE_NAME);
-//		tmp.delete();
-//		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-//		PersistenceService2.save(graph,  new File(TEST_FILE_NAME + "2"));
-//		graph = PersistenceService.read(new FileInputStream(tmp));
-//		verifyClassDiagram(graph);
-//		tmp.delete();
 	}
 	
 	@Test
 	public void testClassDiagramContainment() throws Exception
 	{
-		Graph graph = PersistenceService.read(new FileInputStream("testdata/testPersistenceService2.class.jet"));
+		Graph graph = PersistenceService2.read(new File("testdata/testPersistenceService2.class.jet"));
 		verifyClassDiagram2(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
-		PersistenceService.saveFile(graph, new FileOutputStream(tmp));
-		graph = PersistenceService.read(new FileInputStream(tmp));
+		PersistenceService2.save(graph, tmp);
+		graph = PersistenceService2.read(tmp);
 		verifyClassDiagram2(graph);
 		tmp.delete();
 	}
@@ -277,10 +266,10 @@ public class TestPersistenceService
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(4, nodes.size());
-		Iterator<Node> nIterator = nodes.iterator();
-		PackageNode p1 = (PackageNode) nIterator.next();
-		PackageNode p2 = (PackageNode) nIterator.next();
-		PackageNode p3 = (PackageNode) nIterator.next();
+		
+		PackageNode p1 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p1"));
+		PackageNode p2 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p2"));
+		PackageNode p3 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p3"));
 		
 		assertEquals(new Rectangle(315, 235, 100, 80), p1.view().getBounds());
 		assertEquals("p1", p1.getName().toString());
@@ -313,7 +302,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(810, 330, 100, 60), c2.view().getBounds());
 		assertEquals("C2", c2.getName().toString());
 		
-		NoteNode n1 = (NoteNode) nIterator.next();
+		NoteNode n1 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
 		assertEquals(new Rectangle(490, 160, 60, 40), n1.view().getBounds());
 		assertEquals("n1", n1.getName().toString());
 
@@ -337,8 +326,6 @@ public class TestPersistenceService
 		
 		assertEquals( p3, e3.getStart());
 		assertEquals( p2, e3.getEnd());
-		
-
 	}
 	
 	private void verifyClassDiagram(Graph pGraph)
