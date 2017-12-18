@@ -1,6 +1,7 @@
 package ca.mcgill.cs.jetuml.persistence;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -51,6 +52,7 @@ public final class JsonDecoder
 	/**
 	 * @param pGraph A JSON object that encodes the graph.
 	 * @return The decoded graph.
+	 * @throws DeserializationException If it's not possible to decode the object into a valid graph.
 	 */
 	public static Graph decode(JSONObject pGraph)
 	{
@@ -66,9 +68,9 @@ public final class JsonDecoder
 			decodeEdges(context, pGraph);
 			return graph;
 		}
-		catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
+		catch( ClassNotFoundException | IllegalAccessException | InstantiationException | JSONException exception )
 		{
-			throw new DeserializationException("Cannot instantiate serialized object", exception);
+			throw new DeserializationException("Cannot decode serialized object", exception);
 		}
 	}
 	

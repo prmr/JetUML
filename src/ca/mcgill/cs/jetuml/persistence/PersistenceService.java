@@ -78,7 +78,7 @@ public final class PersistenceService
 		}
 		catch( JSONException e )
 		{
-			throw new DeserializationException("Problem with the JSON structure", e);
+			throw new DeserializationException("Cannot decode the file", e);
 		}
 	}
 }
