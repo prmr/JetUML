@@ -16,7 +16,8 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
+import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 
@@ -40,10 +41,8 @@ public class TestJsonEncodingStateDiagram
 		node1.getName().setText("Start");
 		StateNode node2 = new StateNode();
 		node2.getName().setText("End");
-		CircularStateNode start = new CircularStateNode();
-		start.setFinal(false);
-		CircularStateNode end = new CircularStateNode();
-		end.setFinal(true);
+		InitialStateNode start = new InitialStateNode();
+		FinalStateNode end = new FinalStateNode();
 		StateTransitionEdge edge1 = new StateTransitionEdge();
 		edge1.setMiddleLabel("edge1");
 		StateTransitionEdge edge2 = new StateTransitionEdge();
@@ -142,8 +141,8 @@ public class TestJsonEncodingStateDiagram
 		JSONArray nodes = object.getJSONArray("nodes");
 		JSONObject node1b = find(nodes, build("type", "StateNode", "name", "Start"));
 		JSONObject node2b = find(nodes, build("type", "StateNode", "name", "End"));
-		JSONObject startb = find(nodes, build("type", "CircularStateNode", "finalState", false));
-		JSONObject endb = find(nodes, build("type", "CircularStateNode", "finalState", true));
+		JSONObject startb = find(nodes, build("type", "InitialStateNode"));
+		JSONObject endb = find(nodes, build("type", "FinalStateNode"));
 		
 		JSONArray edges = object.getJSONArray("edges");
 		JSONObject edge1b = find(edges, build("type", "StateTransitionEdge", "middleLabel", "edge1"));
@@ -166,8 +165,8 @@ public class TestJsonEncodingStateDiagram
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Start"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "End"));
-		CircularStateNode start = (CircularStateNode) findRootNode(graph, CircularStateNode.class, build("finalState", false));
-		CircularStateNode end = (CircularStateNode) findRootNode(graph, CircularStateNode.class, build("finalState", true));
+		InitialStateNode start = (InitialStateNode) findRootNode(graph, InitialStateNode.class, build());
+		FinalStateNode end = (FinalStateNode) findRootNode(graph, FinalStateNode.class, build());
 		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge1"));
 		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge2"));
 		StateTransitionEdge edge3 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge3"));

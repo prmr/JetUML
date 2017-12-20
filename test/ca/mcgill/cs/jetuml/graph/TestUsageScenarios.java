@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -32,12 +31,12 @@ import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
@@ -120,10 +119,8 @@ public class TestUsageScenarios
 		node1.getName().setText("Node 1");
 		StateNode node2 = new StateNode();
 		node2.getName().setText("Node 2");
-		CircularStateNode start = new CircularStateNode();
-		start.setFinal(false);
-		CircularStateNode end = new CircularStateNode();
-		end.setFinal(true);
+		InitialStateNode start = new InitialStateNode();
+		FinalStateNode end = new FinalStateNode();
 		diagram.addNode(node1, new Point(30,30));
 		diagram.addNode(node2, new Point(30, 100));
 		diagram.addNode(start, new Point(5, 5));
@@ -160,9 +157,7 @@ public class TestUsageScenarios
 		assertEquals(new Rectangle(30, 100, 80, 60), node2.view().getBounds());
 		assertEquals("Node 2", node2.getName().getText());
 		assertEquals(new Rectangle(5, 5, 20, 20), start.view().getBounds());
-		assertFalse(start.isFinal());
 		assertEquals(new Rectangle(30, 200, 20, 20), end.view().getBounds());
-		assertTrue(end.isFinal());
 		
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());

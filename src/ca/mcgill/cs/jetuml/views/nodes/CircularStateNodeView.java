@@ -8,7 +8,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
+import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
@@ -21,18 +21,16 @@ public class CircularStateNodeView extends AbstractNodeView
 {
 	private static final int DIAMETER = 20;
 	private static final int DEFAULT_GAP = 3;   
+	private final boolean aFinal;
 	
 	/**
 	 * @param pNode The node to wrap.
+	 * @param pFinal true if this is a final node, false if it's an initial node.
 	 */
-	public CircularStateNodeView(CircularStateNode pNode)
+	public CircularStateNodeView(Node pNode, boolean pFinal)
 	{
 		super(pNode);
-	}
-	
-	private boolean isFinal()
-	{
-		return ((CircularStateNode)node()).isFinal();
+		aFinal = pFinal;
 	}
 	
 	@Override
@@ -42,7 +40,7 @@ public class CircularStateNodeView extends AbstractNodeView
 		Ellipse2D circle = new Ellipse2D.Double(node().position().getX(), node().position().getY(), 
 				DIAMETER, DIAMETER);
       
-      	if(isFinal())
+      	if(aFinal)
       	{
       		Ellipse2D inside = new Ellipse2D.Double( node().position().getX() + DEFAULT_GAP, 
       				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);

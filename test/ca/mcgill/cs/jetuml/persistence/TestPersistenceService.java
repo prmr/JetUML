@@ -53,10 +53,11 @@ import ca.mcgill.cs.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
@@ -533,8 +534,8 @@ public class TestPersistenceService
 		StateNode s1 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S1"));
 		StateNode s2 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S2"));
 		StateNode s3 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S3"));
-		CircularStateNode start = (CircularStateNode) findRootNode(pGraph, CircularStateNode.class, build("finalState", false));
-		CircularStateNode end = (CircularStateNode) findRootNode(pGraph, CircularStateNode.class, build("finalState", true));
+		InitialStateNode start = (InitialStateNode) findRootNode(pGraph, InitialStateNode.class, build());
+		FinalStateNode end = (FinalStateNode) findRootNode(pGraph, FinalStateNode.class, build());
 		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
@@ -548,10 +549,8 @@ public class TestPersistenceService
 		assertEquals("S3", s3.getName().toString());
 		
 		assertEquals(new Rectangle(150, 70, 20, 20), start.view().getBounds());
-		assertFalse(start.isFinal());
 		
 		assertEquals(new Rectangle(640, 230, 20, 20), end.view().getBounds());
-		assertTrue(end.isFinal());
 		
 		assertEquals("A note\non two lines", note.getName().getText());
 		assertEquals(new Rectangle(690, 320, 60, 40), note.view().getBounds());

@@ -29,7 +29,8 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.CircularStateNode;
+import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 
@@ -38,13 +39,8 @@ import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
  */
 public class StateDiagramGraph extends Graph
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new CircularStateNode(), new CircularStateNode(), new NoteNode()};
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
-	
-	static
-	{
-		((CircularStateNode)NODE_PROTOTYPES[2]).setFinal(true);
-	}
 	
 	@Override
 	public Node[] getNodePrototypes()
@@ -92,19 +88,17 @@ public class StateDiagramGraph extends Graph
 		}
 		if(pNode1 != null)
 		{
-			if(pNode1 instanceof CircularStateNode)
+			if(pNode1 instanceof FinalStateNode)
 			{
-				CircularStateNode end = (CircularStateNode) pNode1;
-				if(end.isFinal() && !(pEdge instanceof NoteEdge))
+				if(!(pEdge instanceof NoteEdge))
 				{
 					return false;
 				}
 			}
 		}
-		if(pNode2 instanceof CircularStateNode)
+		if(pNode2 instanceof InitialStateNode)
 		{
-			CircularStateNode begin = (CircularStateNode) pNode2;
-			if(!begin.isFinal() && !(pEdge instanceof NoteEdge))
+			if(!(pEdge instanceof NoteEdge))
 			{
 				return false;
 			}

@@ -21,54 +21,18 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
- * An initial or final node (bull's eye) in a state or activity diagram.
+ * An initial in a state diagram.
  */
-public class CircularStateNode extends AbstractNode
+public class InitialStateNode extends AbstractNode
 {
-	private boolean aFinalState; 
-	
 	@Override
 	protected NodeView generateView()
 	{
-		return new CircularStateNodeView(this);
-	}
-	   
-	/**
-	 * @return true if this represents a final state.
-	 */
-	public boolean isFinal()
-	{
-		return aFinalState; 
-	}
-   
-	/**
-	 * @param pFinalState true to set this object to represent a final state.
-	 */
-	public void setFinal(boolean pFinalState)
-	{
-		aFinalState = pFinalState;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.put("finalState", aFinalState);
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aFinalState = (boolean) pExtractor.get("finalState", Type.BOOLEAN);
+		return new CircularStateNodeView(this, false);
 	}
 }
 
