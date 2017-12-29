@@ -2,14 +2,14 @@ package ca.mcgill.cs.jetuml.geom;
 
 /**
  * A framework independent representation of a point in 
- * integer space. Immutable.
+ * integer space. 
  * 
  * @author Martin P. Robillard
  */
 public final class Point implements Cloneable
 {
-	private final int aX;
-	private final int aY;
+	private int aX;
+	private int aY;
 	
 	/**
 	 * Create a new point.
@@ -42,6 +42,26 @@ public final class Point implements Cloneable
 	public int getX()
 	{
 		return aX;
+	}
+	
+	/**
+	 * Sets the X coordinate.
+	 * 
+	 * @param pX The new X coordinate.
+	 */
+	public void setX(int pX)
+	{
+		aX = pX;
+	}
+	
+	/**
+	 * Sets the Y coordinate.
+	 * 
+	 * @param pY The new Y coordinate.
+	 */
+	public void setY(int pY)
+	{
+		aY = pY;
 	}
 	
 	/**

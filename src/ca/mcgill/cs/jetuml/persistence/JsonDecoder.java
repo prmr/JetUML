@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 
@@ -24,30 +24,6 @@ public final class JsonDecoder
 	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.graph.edges.";
 	
 	private JsonDecoder() {}
-	
-	private static ValueExtractor createValueExtractor(JSONObject pObject)
-	{
-		return new ValueExtractor()
-		{
-			@Override
-			public Object get(String pKey, Type pType)
-			{
-				if( pType == Type.BOOLEAN )
-				{
-					return pObject.getBoolean(pKey);
-				}
-				else if( pType == Type.INT )
-				{
-					return pObject.getInt(pKey);
-				}
-				else
-				{
-					return pObject.getString(pKey);
-				}
-			}
-		};
-	}
-
 	
 	/**
 	 * @param pGraph A JSON object that encodes the graph.
@@ -89,7 +65,11 @@ public final class JsonDecoder
 				JSONObject object = nodes.getJSONObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
 				Node node = (Node) nodeClass.newInstance();
-				node.initialize(createValueExtractor(object));
+				Properties properties = node.properties();
+				for( String property : properties )
+				{
+					properties.set(property, object.get(property));
+				}
 				pContext.addNode(node, object.getInt("id"));
 			}
 			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
@@ -150,7 +130,12 @@ public final class JsonDecoder
 				JSONObject object = edges.getJSONObject(i);
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
 				Edge edge = (Edge) edgeClass.newInstance();
-				edge.initialize(createValueExtractor(object));
+				
+				Properties properties = edge.properties();
+				for( String property : properties)
+				{
+					properties.set(property, object.get(property));
+				}
 				pContext.getGraph().restoreEdge(edge, pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
 			}
 			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )

@@ -38,5 +38,5 @@ public interface GraphElement extends Cloneable
 	 * @param pExtractor An object that can supply the value to be used
 	 * for the initialization.
 	 */
-	void initialize(ValueExtractor pExtractor);
+//	void initialize(ValueExtractor pExtractor);
 }

@@ -26,7 +26,6 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -93,15 +92,8 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("generalizationType", aType);
+		properties.put("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
 		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aType = Type.valueOf((String)pExtractor.get("generalizationType", ValueExtractor.Type.STRING));
 	}
 	
 	private LineStyle getLineStyle()

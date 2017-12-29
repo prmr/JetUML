@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -84,17 +83,10 @@ public class CallEdge extends SingleLabelEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("signal", aSignal);
+		properties.put("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
 		return properties;
 	}
 	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aSignal = (boolean)pExtractor.get("signal", ValueExtractor.Type.BOOLEAN);
-	}
-
 	/**
      * Gets the signal property.
      * @return true if this is a signal edge

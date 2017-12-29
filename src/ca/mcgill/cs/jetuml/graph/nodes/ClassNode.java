@@ -23,8 +23,6 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -81,14 +79,7 @@ public class ClassNode extends InterfaceNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("attributes", aAttributes.getText());
+		properties.put("attributes", () -> aAttributes.getText(), pAttributes -> aAttributes.setText((String)pAttributes));
 		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aAttributes.setText((String) pExtractor.get("attributes", Type.STRING));
 	}
 }

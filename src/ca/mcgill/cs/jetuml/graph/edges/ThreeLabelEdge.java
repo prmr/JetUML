@@ -1,7 +1,6 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
 
 /**
  * An edge with three labels.
@@ -49,16 +48,8 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("startLabel", aStartLabel);
-		properties.put("endLabel", aEndLabel);
+		properties.put("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel);
+		properties.put("endLabel", ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
 		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aStartLabel = (String)pExtractor.get("startLabel", ValueExtractor.Type.STRING);
-		aEndLabel = (String)pExtractor.get("endLabel", ValueExtractor.Type.STRING);
 	}
 }
