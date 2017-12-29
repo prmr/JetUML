@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.persistence;
+package ca.mcgill.cs.jetuml.graph;
 
 import java.util.HashMap;
 import java.util.Iterator;

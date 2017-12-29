@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.persistence.Properties;
+import ca.mcgill.cs.jetuml.graph.Properties;
 
 /**
  * @author Martin P. Robillard

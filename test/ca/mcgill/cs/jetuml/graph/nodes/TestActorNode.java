@@ -2,8 +2,8 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 
 import static org.junit.Assert.*;
 

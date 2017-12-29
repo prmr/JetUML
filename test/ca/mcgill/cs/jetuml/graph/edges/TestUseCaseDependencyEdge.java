@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 
 public class TestUseCaseDependencyEdge
 {

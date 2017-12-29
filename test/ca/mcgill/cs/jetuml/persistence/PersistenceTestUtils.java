@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Properties;
 
 /**
  * Utilities to facilitate writing tests for the persistence

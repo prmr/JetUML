@@ -1,7 +1,7 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 
 /**
  * An edge with a single middle label.

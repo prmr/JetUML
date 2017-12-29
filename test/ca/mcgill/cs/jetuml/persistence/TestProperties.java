@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
+import ca.mcgill.cs.jetuml.graph.Properties;
 
 import static org.junit.Assert.*;
 

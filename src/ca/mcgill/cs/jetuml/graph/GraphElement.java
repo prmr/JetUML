@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.graph;
 
-import ca.mcgill.cs.jetuml.persistence.Properties;
-
 /**
  * A type that allows us to treat nodes and edges uniformly.
  * 
