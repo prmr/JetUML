@@ -8,17 +8,23 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A dictionary of key values pairs with string keys and values 
- * that are actually suppliers of values. Putting a value
- * if a key already exists will silently override the previous value
- * with the same key. 
+ * A class to externalize the properties of an object into a separate
+ * object. For this object, a "property" is an association between a key
+ * and a getter-setter pair. The key is the name of the property. The "getter"
+ * is a Supplier implementation that can supply the current value of the property
+ * in the original object. Likewise, the "setter" is an implementation of the 
+ * Consumer interface that can set the value of the property in the original 
+ * object. The class hides the delegation to the setter and getter by allowing
+ * client code to directly get or set the value of a property.
  * 
- * Iterable over keys. This class provides support for storing keys in a
- * meaninful order. By default, this is the order of insertion. However,
- * use of the method put(String, Object, int) allows client code to 
- * insert a property at a specific index. Keeping properties in order
- * allows for uses such as displaying properties in a predictable order,
- * for instance in GUI forms.
+ * Adding a property that already exists will silently override the previous getter
+ * and setter for this property.
+ * 
+ * Iterable over keys (property names). This class provides support for storing properties
+ * in a meaningful order. By default, this is the order of insertion. However,
+ * use of the method put allows client code to insert a property at a specific index. 
+ * Keeping properties in order allows for uses such as displaying properties in a predictable 
+ * order, for instance in GUI forms.
  * 
  * @author Martin P. Robillard
  *
@@ -30,44 +36,43 @@ public class Properties implements Iterable<String>
 	private final List<String> aKeys = new ArrayList<>();
 	
 	/**
-	 * Adds a property.
+	 * Adds a property to the list. The property is added at the end of the list.
 	 * 
-	 * @param pKey The key.
+	 * @param pPropertyName The name of the property.
 	 * @param pGetter The getter for this property.
 	 * @param pSetter The setter for this property.
-	 * @pre pKey != null && pValue != null
-	 * @pre pValue is an int, boolean, String, or enum.
+	 * @pre pPropertyName != null && pGetter != null && pSetter != null
 	 */
-	public void put(String pKey, Supplier<Object> pGetter, Consumer<Object> pSetter)
+	public void add(String pPropertyName, Supplier<Object> pGetter, Consumer<Object> pSetter)
 	{
-		assert pKey != null && pGetter != null & pSetter != null;
-		aGetters.put(pKey, pGetter);
-		aSetters.put(pKey, pSetter);
-		if( !aKeys.contains(pKey) )
+		assert pPropertyName != null && pGetter != null & pSetter != null;
+		aGetters.put(pPropertyName, pGetter);
+		aSetters.put(pPropertyName, pSetter);
+		if( !aKeys.contains(pPropertyName) )
 		{
-			aKeys.add(pKey);
+			aKeys.add(pPropertyName);
 		}
 	}
 	
 	/**
 	 * Adds a property and inserts its key at the specified index, shifting
-	 * all other keys down by one. If the key already exists, it's previous index
-	 * is unchanged and its value is silently overwritten.
+	 * all other properties down by one. If the property already exists, its previous index
+	 * is unchanged and its getter and setter are silently overwritten.
 	 * 
-	 * @param pKey The key.
+	 * @param pPropertyName The name of the property.
 	 * @param pGetter The getter for this property.
 	 * @param pSetter The setter for this property.
-	 * @param pIndex Where to insert the key. Must be between 0 and size()-1, inclusive.
+	 * @param pIndex Where to insert the property. Must be between 0 and size()-1, inclusive.
 	 */
-	public void put(String pKey, Supplier<Object> pGetter, Consumer<Object> pSetter, int pIndex)
+	public void addAt(String pPropertyName, Supplier<Object> pGetter, Consumer<Object> pSetter, int pIndex)
 	{
-		assert pKey != null && pGetter != null;
+		assert pPropertyName != null && pGetter != null;
 		assert pIndex >=0 && pIndex <= aKeys.size();
-		aGetters.put(pKey, pGetter);
-		aSetters.put(pKey, pSetter);
-		if( !aKeys.contains(pKey) )
+		aGetters.put(pPropertyName, pGetter);
+		aSetters.put(pPropertyName, pSetter);
+		if( !aKeys.contains(pPropertyName) )
 		{
-			aKeys.add(pIndex, pKey);
+			aKeys.add(pIndex, pPropertyName);
 		}
 	}
 	

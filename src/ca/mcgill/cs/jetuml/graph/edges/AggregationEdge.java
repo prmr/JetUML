@@ -91,7 +91,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties.add("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
 		return properties;
 	}
 	

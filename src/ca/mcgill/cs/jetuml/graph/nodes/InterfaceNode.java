@@ -104,7 +104,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("methods", () -> aMethods.getText(), pMethods -> aMethods.setText((String)pMethods));
+		properties.add("methods", () -> aMethods.getText(), pMethods -> aMethods.setText((String)pMethods));
 		return properties;
 	}
 }

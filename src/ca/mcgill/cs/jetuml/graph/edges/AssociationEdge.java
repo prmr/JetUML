@@ -75,7 +75,7 @@ public class AssociationEdge extends ClassRelationshipEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("directionality", () -> aDirectionality, 
+		properties.add("directionality", () -> aDirectionality, 
 				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
 		return properties;
 	}

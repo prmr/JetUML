@@ -24,10 +24,10 @@ public class TestProperties
 	@Test
 	public void testBasicPut()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> 100, CONSUMER);
-		aProperties.put("C", () -> false, CONSUMER);
-		aProperties.put("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> 100, CONSUMER);
+		aProperties.add("C", () -> false, CONSUMER);
+		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
 		assertEquals(4, size());
 		assertEquals("A", (String) aProperties.get("A"));
 		assertEquals(100, (int) aProperties.get("B"));
@@ -38,10 +38,10 @@ public class TestProperties
 	@Test
 	public void testInsertionOrderBasic()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> 100, CONSUMER);
-		aProperties.put("C", () -> false, CONSUMER);
-		aProperties.put("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> 100, CONSUMER);
+		aProperties.add("C", () -> false, CONSUMER);
+		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("A", iterator.next());
 		assertEquals("B", iterator.next());
@@ -52,12 +52,12 @@ public class TestProperties
 	@Test
 	public void testInsertionOrderWithReinsertion()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> 100, CONSUMER);
-		aProperties.put("C", () -> false, CONSUMER);
-		aProperties.put("D", () -> MultiLineString.Align.CENTER, CONSUMER);
-		aProperties.put("A", () -> "AA", CONSUMER);
-		aProperties.put("B", () -> 10000, CONSUMER);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> 100, CONSUMER);
+		aProperties.add("C", () -> false, CONSUMER);
+		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("A", () -> "AA", CONSUMER);
+		aProperties.add("B", () -> 10000, CONSUMER);
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("A", iterator.next());
 		assertEquals("B", iterator.next());
@@ -68,9 +68,9 @@ public class TestProperties
 	@Test
 	public void testPutAt1()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> 100, CONSUMER);
-		aProperties.put("C", () -> false, CONSUMER, 0);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> 100, CONSUMER);
+		aProperties.addAt("C", () -> false, CONSUMER, 0);
 		assertEquals(3, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("C", iterator.next());
@@ -81,10 +81,10 @@ public class TestProperties
 	@Test
 	public void testPutAt2()
 	{
-		aProperties.put("A", () -> "A", CONSUMER );
-		aProperties.put("B", () -> 100, CONSUMER );
-		aProperties.put("C", () -> false, CONSUMER, 0);
-		aProperties.put("D", () -> false, CONSUMER, 1);
+		aProperties.add("A", () -> "A", CONSUMER );
+		aProperties.add("B", () -> 100, CONSUMER );
+		aProperties.addAt("C", () -> false, CONSUMER, 0);
+		aProperties.addAt("D", () -> false, CONSUMER, 1);
 		assertEquals(4, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("C", iterator.next());
@@ -96,7 +96,7 @@ public class TestProperties
 	@Test
 	public void testPutAt3()
 	{
-		aProperties.put("A", () -> "A", CONSUMER, 0);
+		aProperties.addAt("A", () -> "A", CONSUMER, 0);
 		assertEquals(1, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("A", iterator.next());
@@ -105,9 +105,9 @@ public class TestProperties
 	@Test
 	public void testPutAt4()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> "B", CONSUMER);
-		aProperties.put("C", () -> "C", CONSUMER, 2);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> "B", CONSUMER);
+		aProperties.addAt("C", () -> "C", CONSUMER, 2);
 		assertEquals(3, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("A", iterator.next());
@@ -118,10 +118,10 @@ public class TestProperties
 	@Test
 	public void testPutAtWithReinsertion1()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> "B", CONSUMER);
-		aProperties.put("C", () -> "C", CONSUMER, 0);
-		aProperties.put("C", () -> "C", CONSUMER);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> "B", CONSUMER);
+		aProperties.addAt("C", () -> "C", CONSUMER, 0);
+		aProperties.add("C", () -> "C", CONSUMER);
 		assertEquals(3, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("C", iterator.next());
@@ -132,11 +132,11 @@ public class TestProperties
 	@Test
 	public void testPutAtWithReinsertion2()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
-		aProperties.put("B", () -> "B", CONSUMER);
-		aProperties.put("C", () -> "C", CONSUMER, 0);
-		aProperties.put("C", () -> "C", CONSUMER, 1);
-		aProperties.put("A", () -> "A", CONSUMER, 0);
+		aProperties.add("A", () -> "A", CONSUMER);
+		aProperties.add("B", () -> "B", CONSUMER);
+		aProperties.addAt("C", () -> "C", CONSUMER, 0);
+		aProperties.addAt("C", () -> "C", CONSUMER, 1);
+		aProperties.addAt("A", () -> "A", CONSUMER, 0);
 		assertEquals(3, size());
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("C", iterator.next());
@@ -147,18 +147,30 @@ public class TestProperties
 	@Test
 	public void testPutOverride()
 	{
-		aProperties.put("A", () -> "A", CONSUMER);
+		aProperties.add("A", () -> "A", CONSUMER);
 		assertEquals(1, size());
 		assertEquals("A", (String) aProperties.get("A"));
-		aProperties.put("A", () -> 100, CONSUMER );
+		aProperties.add("A", () -> 100, CONSUMER );
 		assertEquals(1, size());
 		assertEquals(100, (int) aProperties.get("A"));
-		aProperties.put("A", () -> false, CONSUMER);
+		aProperties.add("A", () -> false, CONSUMER);
 		assertEquals(1, size());
 		assertEquals(false, (boolean) aProperties.get("A"));
-		aProperties.put("A", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("A", () -> MultiLineString.Align.CENTER, CONSUMER);
 		assertEquals(1, size());
 		assertEquals(MultiLineString.Align.CENTER, (MultiLineString.Align) aProperties.get("A"));
+	}
+	
+	@Test
+	public void testModifications()
+	{
+		class Stub { int aNumber = 0; }
+		Stub stub = new Stub();
+		aProperties.add("A", () -> stub.aNumber, number -> stub.aNumber = (int) number);
+		assertEquals(0, aProperties.get("A"));
+		aProperties.set("A", 28);
+		assertEquals(28, aProperties.get("A"));
+		assertEquals(28, stub.aNumber);
 	}
 	
 	private int size()

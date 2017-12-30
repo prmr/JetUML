@@ -83,7 +83,7 @@ public class CallEdge extends SingleLabelEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
+		properties.add("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
 		return properties;
 	}
 	

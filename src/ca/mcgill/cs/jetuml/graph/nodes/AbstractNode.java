@@ -83,8 +83,8 @@ public abstract class AbstractNode implements Node
 	public Properties properties()
 	{
 		Properties properties = new Properties();
-		properties.put("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
-		properties.put("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
+		properties.add("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
+		properties.add("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
 		return properties;
 	}
 }

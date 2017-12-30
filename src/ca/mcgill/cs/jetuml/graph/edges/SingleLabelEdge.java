@@ -33,7 +33,7 @@ public abstract class SingleLabelEdge extends AbstractEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("middleLabel", ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
+		properties.add("middleLabel", ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
 		return properties;
 	}
 }

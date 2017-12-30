@@ -168,8 +168,8 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("name", () -> aName, pName -> aName = (String)pName);
-		properties.put("contents", () -> aContents.getText(), pContents -> aContents.setText((String)pContents));
+		properties.add("name", () -> aName, pName -> aName = (String)pName);
+		properties.add("contents", () -> aContents.getText(), pContents -> aContents.setText((String)pContents));
 		return properties;
 	}
 }

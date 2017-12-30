@@ -93,7 +93,7 @@ public class CallNode extends AbstractNode implements ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
+		properties.add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
 		return properties;
 	}
 	

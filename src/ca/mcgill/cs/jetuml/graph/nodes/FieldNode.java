@@ -117,7 +117,7 @@ public class FieldNode extends NamedNode implements ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("value", () -> aValue.getText(), pValue -> aValue.setText((String) pValue));
+		properties.add("value", () -> aValue.getText(), pValue -> aValue.setText((String) pValue));
 		return properties;
 	}
 }

@@ -32,7 +32,7 @@ final class PersistenceTestUtils
 		for( int i = 0; i < pInput.length; i+=2 )
 		{
 			final int j = i;
-			properties.put((String)pInput[i], () -> pInput[j+1], p -> {});
+			properties.add((String)pInput[i], () -> pInput[j+1], p -> {});
 		}
 		return properties;
 	}

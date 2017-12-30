@@ -92,7 +92,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.put("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties.add("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
 		return properties;
 	}
 	
