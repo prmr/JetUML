@@ -2,6 +2,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 
@@ -25,14 +26,14 @@ public class TestActorNode
 	{
 		Properties properties = aNode.properties();
 		
-		assertEquals("Actor", properties.get("name"));
+		assertEquals(new MultiLineString("Actor"), properties.get("name"));
 		assertEquals(0, properties.get("x"));
 		assertEquals(0, properties.get("y"));
 		
 		aNode.getName().setText("Foo");
 		aNode.translate(10, 20);
 		properties = aNode.properties();
-		assertEquals("Foo", properties.get("name"));
+		assertEquals(new MultiLineString("Foo"), properties.get("name"));
 		assertEquals(10, properties.get("x"));
 		assertEquals(20, properties.get("y"));
 	}

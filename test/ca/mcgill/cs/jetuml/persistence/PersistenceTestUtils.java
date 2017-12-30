@@ -89,7 +89,7 @@ final class PersistenceTestUtils
 				Properties nodeProperties = node.properties();
 				for( String key : pProperties )
 				{
-					if( !nodeProperties.get(key).equals(pProperties.get(key)))
+					if( !nodeProperties.get(key).toString().equals(pProperties.get(key).toString()))
 					{
 						match = false;
 						break;

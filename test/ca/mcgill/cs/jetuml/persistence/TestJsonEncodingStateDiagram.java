@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
@@ -163,8 +164,8 @@ public class TestJsonEncodingStateDiagram
 		initiGraph1();
 		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Start"));
-		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "End"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("Start")));
+		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("End")));
 		InitialStateNode start = (InitialStateNode) findRootNode(graph, InitialStateNode.class, build());
 		FinalStateNode end = (FinalStateNode) findRootNode(graph, FinalStateNode.class, build());
 		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge1"));
@@ -185,7 +186,7 @@ public class TestJsonEncodingStateDiagram
 		initiGraph2();
 		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "The Node"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("The Node")));
 		assertEquals(new Point(10,20), node1.position());
 		assertEquals("The Node", node1.getName().getText());
 	}
@@ -196,8 +197,8 @@ public class TestJsonEncodingStateDiagram
 		initiGraph3();
 		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node1"));
-		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node2"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("Node1")));
+		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("Node2")));
 		StateTransitionEdge self1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "self1"));
 		StateTransitionEdge self2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "self2"));
 		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge1"));

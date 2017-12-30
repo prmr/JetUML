@@ -53,7 +53,7 @@ public abstract class NamedNode extends AbstractNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("name", () -> aName.getText(), pName -> aName.setText((String)pName));
+		properties.add("name", () -> aName, pName -> aName.setText((String)pName));
 		return properties;
 	}
 	

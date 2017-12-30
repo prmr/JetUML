@@ -47,6 +47,20 @@ public class MultiLineString implements Cloneable
 	{}
 	
 	/**
+     * Constructs a centered, normal size multi-line
+     * string that is not underlined and not bold and with
+     * the text pText.
+     * 
+     * @param pText The text of the string.
+     * @pre pTetxt != null
+	 */
+	public MultiLineString(String pText)
+	{
+		assert pText != null;
+		aText = pText;
+	}
+	
+	/**
      * Constructs an empty, centered, normal size multi-line
      * string that is not underlined. pBold determines if it is bold.
      * @param pBold True if the string should be bold.
@@ -122,7 +136,7 @@ public class MultiLineString implements Cloneable
 	@Override
 	public String toString()
 	{
-		return aText.replace('\n', '|');
+		return aText;
 	}
 
 	/**
