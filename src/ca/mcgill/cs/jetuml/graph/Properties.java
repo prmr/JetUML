@@ -20,6 +20,10 @@ import java.util.function.Supplier;
  * Adding a property that already exists will silently override the previous getter
  * and setter for this property.
  * 
+ * Properties also have a "visibility" bit which can be used to distinguish between
+ * inherent properties of an object that e.g., must be serialized, and properties that
+ * should be visible and editable by a user. By default, properties are visible.
+ * 
  * Iterable over keys (property names). This class provides support for storing properties
  * in a meaningful order. By default, this is the order of insertion. However,
  * use of the method put allows client code to insert a property at a specific index. 
@@ -33,10 +37,11 @@ public class Properties implements Iterable<String>
 {
 	private final HashMap<String, Supplier<Object>> aGetters = new HashMap<>();
 	private final HashMap<String, Consumer<Object>> aSetters = new HashMap<>();
+	private final HashMap<String, Boolean> aVisible = new HashMap<>();
 	private final List<String> aKeys = new ArrayList<>();
 	
 	/**
-	 * Adds a property to the list. The property is added at the end of the list.
+	 * Adds a visible property to the list. The property is added at the end of the list.
 	 * 
 	 * @param pPropertyName The name of the property.
 	 * @param pGetter The getter for this property.
@@ -48,6 +53,7 @@ public class Properties implements Iterable<String>
 		assert pPropertyName != null && pGetter != null & pSetter != null;
 		aGetters.put(pPropertyName, pGetter);
 		aSetters.put(pPropertyName, pSetter);
+		aVisible.put(pPropertyName, true);
 		if( !aKeys.contains(pPropertyName) )
 		{
 			aKeys.add(pPropertyName);
@@ -55,7 +61,27 @@ public class Properties implements Iterable<String>
 	}
 	
 	/**
-	 * Adds a property and inserts its key at the specified index, shifting
+	 * Adds an invisible property to the list. The property is added at the end of the list.
+	 * 
+	 * @param pPropertyName The name of the property.
+	 * @param pGetter The getter for this property.
+	 * @param pSetter The setter for this property.
+	 * @pre pPropertyName != null && pGetter != null && pSetter != null
+	 */
+	public void addInvisible(String pPropertyName, Supplier<Object> pGetter, Consumer<Object> pSetter)
+	{
+		assert pPropertyName != null && pGetter != null & pSetter != null;
+		aGetters.put(pPropertyName, pGetter);
+		aSetters.put(pPropertyName, pSetter);
+		aVisible.put(pPropertyName, false);
+		if( !aKeys.contains(pPropertyName) )
+		{
+			aKeys.add(pPropertyName);
+		}
+	}
+	
+	/**
+	 * Adds a visible property and inserts its key at the specified index, shifting
 	 * all other properties down by one. If the property already exists, its previous index
 	 * is unchanged and its getter and setter are silently overwritten.
 	 * 
@@ -70,10 +96,22 @@ public class Properties implements Iterable<String>
 		assert pIndex >=0 && pIndex <= aKeys.size();
 		aGetters.put(pPropertyName, pGetter);
 		aSetters.put(pPropertyName, pSetter);
+		aVisible.put(pPropertyName, true);
 		if( !aKeys.contains(pPropertyName) )
 		{
 			aKeys.add(pIndex, pPropertyName);
 		}
+	}
+	
+	/**
+	 * @param pProperty The property to check for visibility. Must exist.
+	 * @return True iff the property is visible.
+	 * @pre pProperty != null && containsKey(pProperty)
+	 */
+	public boolean isVisible(String pProperty)
+	{
+		assert pProperty != null && aVisible.containsKey(pProperty);
+		return aVisible.get(pProperty);
 	}
 	
 	/**

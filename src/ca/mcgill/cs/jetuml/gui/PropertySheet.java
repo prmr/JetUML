@@ -26,11 +26,8 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyEditorSupport;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -59,7 +56,9 @@ public class PropertySheet extends JPanel
 {
 	/**
 	 * A handler for whenever a property is being detected
-	 * as being edited.
+	 * as being edited. This allows a more responsive UI,
+	 * where properties can be shown as they are typed, as
+	 * opposed to only when the value is entered.
 	 */
 	interface PropertyChangeListener
 	{
@@ -67,7 +66,6 @@ public class PropertySheet extends JPanel
 	}
 	
 	private static final int TEXT_FIELD_WIDTH = 10;
-	private static Map<Class<?>, Class<?>> editors;
 	private static Set<AWTKeyStroke> tab = new HashSet<>(1);
 	private static Set<AWTKeyStroke> shiftTab = new HashSet<>(1);
 	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.graph.GraphElementProperties");
@@ -76,18 +74,8 @@ public class PropertySheet extends JPanel
 	
 	static
 	{  
-		editors = new HashMap<>();
-		editors.put(String.class, PropertyEditorSupport.class);
 		tab.add(KeyStroke.getKeyStroke("TAB" ));
 		shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
-	}
-	
-	/**
-	 * @return aEmpty whether this PropertySheet has fields to edit or not.
-	 */
-	public boolean isEmpty()
-	{
-		return getComponentCount() == 0;
 	}
 	
 	/**
@@ -106,11 +94,23 @@ public class PropertySheet extends JPanel
 		Properties properties = pElement.properties();
 		for( String property : properties )
 		{
-			add(new JLabel(getPropertyName(pElement.getClass(), property)));
-			add(getEditorComponent(properties, property));
+			Component editor = getEditorComponent(properties, property);
+			if(properties.isVisible(property) && editor != null )
+			{
+				add(new JLabel(getPropertyName(pElement.getClass(), property)));
+				add(editor);
+			}
 		}
 	}
-
+	
+	/**
+	 * @return aEmpty whether this PropertySheet has fields to edit or not.
+	 */
+	public boolean isEmpty()
+	{
+		return getComponentCount() == 0;
+	}
+	
 	private Component getEditorComponent(Properties pProperties, String pProperty)   
 	{      
 		if( pProperties.get(pProperty) instanceof String )
@@ -208,7 +208,9 @@ public class PropertySheet extends JPanel
 	/*
 	 * Obtains the externalized name of a property and takes account
 	 * of property inheritance: if a property is not found on a class,
-	 * looks for the property name is superclasses.
+	 * looks for the property name is superclasses. We do not use the actual
+	 * property names to decouple visual representation (which can eventually
+	 * be translated) from names in the design space.
 	 */
 	private static String getPropertyName(Class<?> pClass, String pProperty)
 	{
