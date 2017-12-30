@@ -40,8 +40,6 @@ import java.util.Stack;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
@@ -156,23 +154,23 @@ public class GraphPanel extends JPanel
 			return;
 		}
 		aPropertyChangeTracker.startTrackingPropertyChange(edited);
-		PropertySheet sheet = new PropertySheet(edited);
-		if(sheet.isEmpty())
+		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
 		{
-			return;
-		}
-		sheet.addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent pEvent)
+			@Override
+			public void propertyChanged()
 			{
 				aGraph.requestLayout();
 				repaint();
 			}
 		});
-		 String[] options = {"OK"};
-		 JOptionPane.showOptionDialog(this, sheet, 
-		            ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
-		            		JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+		if(sheet.isEmpty())
+		{
+			return;
+		}
+		String[] options = {"OK"};
+		JOptionPane.showOptionDialog(this, sheet, 
+				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
 		if(command.size() > 0)
 		{

@@ -21,249 +21,67 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import java.awt.AWTKeyStroke;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.beans.PropertyEditorManager;
 import java.beans.PropertyEditorSupport;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ca.mcgill.cs.jetuml.graph.PropertyOrder;
+import ca.mcgill.cs.jetuml.application.MultiLineString;
+import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.Properties;
 
 /**
- *  A GUI component that can present the properties of an 
- *  object detected through the JavaBeans framework and 
- *  allow editing them.
+ *  A GUI component that can present the properties of a GraphElement
+ *  and allow editing them.
  *  
- *  All writable properties of an object will be presented
- *  in the property sheet unless a) there is no corresponding
- *  editor detected for them, or b) their name (specified in
- *  GraphElementProperties.properties) is the same as the 
- *  string INVISIBLE_PROPERTY_MARKER
- *  
- *  @author Cay Horstmann - initial version
- *  @author Martin P. Robillard - property name sequencing and externalization, visibility
- *  @author Eric Quinn - change listening
+ *  @author Martin P. Robillard
  */
 @SuppressWarnings("serial")
 public class PropertySheet extends JPanel
 {
-	private static final String INVISIBLE_PROPERTY_MARKER = "**INVISIBLE**";
+	/**
+	 * A handler for whenever a property is being detected
+	 * as being edited.
+	 */
+	interface PropertyChangeListener
+	{
+		void propertyChanged();
+	}
+	
+	private static final int TEXT_FIELD_WIDTH = 10;
 	private static Map<Class<?>, Class<?>> editors;
+	private static Set<AWTKeyStroke> tab = new HashSet<>(1);
+	private static Set<AWTKeyStroke> shiftTab = new HashSet<>(1);
 	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.graph.GraphElementProperties");
 
-	private ArrayList<ChangeListener> aChangeListeners = new ArrayList<>();
+	private final PropertyChangeListener aListener;
 	
 	static
 	{  
-	      editors = new HashMap<>();
-	      editors.put(String.class, PropertyEditorSupport.class);
+		editors = new HashMap<>();
+		editors.put(String.class, PropertyEditorSupport.class);
+		tab.add(KeyStroke.getKeyStroke("TAB" ));
+		shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
 	}
 	
-	/**
-     * Constructs a property sheet that shows the editable
-     * properties of a given object.
-     * @param pBean the object whose properties are being edited
-	 */
-	public PropertySheet(final Object pBean)
-	{
-		setLayout(new FormLayout());
-		try
-		{
-			PropertyDescriptor[] descriptors = Introspector.getBeanInfo(pBean.getClass()).getPropertyDescriptors().clone();
-			Arrays.sort(descriptors, new Comparator<PropertyDescriptor>()
-			{
-				public int compare(PropertyDescriptor pDescriptor1, PropertyDescriptor pDescriptor2)
-				{
-					int index1 = PropertyOrder.getInstance().getIndex(pBean.getClass(), pDescriptor1.getName());
-					int index2 = PropertyOrder.getInstance().getIndex(pBean.getClass(), pDescriptor2.getName());
-					if( index1 == index2 )
-					{
-						return pDescriptor1.getName().compareTo(pDescriptor2.getName());
-					}
-					else
-					{
-						return index1 - index2;
-					}
-				}
-			});
-			
-			for(PropertyDescriptor descriptor : descriptors)
-			{
-				PropertyEditor editor = getEditor(pBean, descriptor);
-				String propertyName = getPropertyName(pBean.getClass(), descriptor.getName());
-				if(editor != null && !propertyName.equals(INVISIBLE_PROPERTY_MARKER))
-				{
-					add(new JLabel(propertyName));
-					add(getEditorComponent(editor));
-				}
-			}		
-		}
-		catch (IntrospectionException exception)
-		{
-			// Do nothing
-		}
-	}
-
-	/**
-     * Gets the property editor for a given property,
-     * and wires it so that it updates the given object.
-     * @param pBean the object whose properties are being edited
-     * @param pDescriptor the descriptor of the property to be edited
-     * @return a property editor that edits the property
-     *  with the given descriptor and updates the given object
-	 */
-	public PropertyEditor getEditor(final Object pBean, PropertyDescriptor pDescriptor)
-	{
-		try
-		{
-			final Method getter = pDescriptor.getReadMethod();
-			final Method setter = pDescriptor.getWriteMethod();
-			if(getter == null || setter == null )
-			{
-				return null;
-			}
-			
-			Class<?> type = pDescriptor.getPropertyType();
-			final PropertyEditor editor;
-			Class<?> editorClass = pDescriptor.getPropertyEditorClass();
-			if(editorClass == null && editors.containsKey(type))
-			{
-				editorClass = editors.get(type);
-			}
-			if(editorClass != null)
-			{
-				editor = (PropertyEditor) editorClass.newInstance();
-			}
-			else
-			{
-				editor = PropertyEditorManager.findEditor(type);
-			}
-			if(editor == null)
-			{
-				return null;
-			}
-
-			Object value = getter.invoke(pBean, new Object[] {});
-			editor.setValue(value);
-			editor.addPropertyChangeListener(new PropertyChangeListener()
-			{
-				public void propertyChange(PropertyChangeEvent pEvent)
-				{
-					try
-					{	
-						setter.invoke(pBean, new Object[] { editor.getValue() });
-						fireStateChanged(null);
-					}
-					catch(IllegalAccessException | InvocationTargetException exception)
-					{
-						exception.printStackTrace();
-					}
-				}
-			});
-			return editor;
-		}
-		catch(InstantiationException | IllegalAccessException | InvocationTargetException exception)
-		{
-			return null;
-		}
-	}
-
-	/**
-     * Wraps a property editor into a component.
-     * @param pEditor the editor to wrap
-     * @return a button (if there is a custom editor), 
-     * combo box (if the editor has tags), or text field (otherwise)
-	 */      
-	public Component getEditorComponent(final PropertyEditor pEditor)   
-	{      
-		String[] tags = pEditor.getTags();
-		String text = pEditor.getAsText();
-		if(pEditor.supportsCustomEditor())
-		{
-			return pEditor.getCustomEditor();         
-         
-		}
-		else if(tags != null)
-		{
-			// make a combo box that shows all tags
-			final JComboBox<String> comboBox = new JComboBox<>(tags);
-			comboBox.setSelectedItem(text);
-			comboBox.addItemListener(new ItemListener()
-            	{
-					public void itemStateChanged(ItemEvent pEvent)
-					{
-						if(pEvent.getStateChange() == ItemEvent.SELECTED)
-						{
-							pEditor.setAsText((String)comboBox.getSelectedItem());
-						}
-					}
-            	});
-			return comboBox;
-		}
-		else 
-		{
-			final JTextField textField = new JTextField(text, 10);
-			textField.getDocument().addDocumentListener(new DocumentListener()
-            	{
-					public void insertUpdate(DocumentEvent pEvent) 
-					{
-						pEditor.setAsText(textField.getText());	
-					}
-					public void removeUpdate(DocumentEvent pEvent) 
-					{
-						pEditor.setAsText(textField.getText());
-					}
-					public void changedUpdate(DocumentEvent pEvent) 
-					{}
-            	});
-			return textField;
-		}
-	}
-
-	/**
-     * Adds a change listener to the list of listeners.
-     * @param pListener the listener to add
-	 */
-	public void addChangeListener(ChangeListener pListener)
-	{
-		aChangeListeners.add(pListener);
-	}
-
-	/**
-     * Notifies all listeners of a state change.
-     * @param pEvent the event to propagate
-	 */
-	private void fireStateChanged(ChangeEvent pEvent)
-	{
-		for(ChangeListener listener : aChangeListeners)
-		{
-			listener.stateChanged(pEvent);
-		}
-	}
-
 	/**
 	 * @return aEmpty whether this PropertySheet has fields to edit or not.
 	 */
@@ -272,6 +90,121 @@ public class PropertySheet extends JPanel
 		return getComponentCount() == 0;
 	}
 	
+	/**
+	 * Constructs a PropertySheet to show and support editing all the properties 
+	 * for pElement.
+	 * 
+	 * @param pElement The element whose properties we wish to edit.
+	 * @param pListener An object that responds to property change events.
+	 * @pre pElement != null
+	 */
+	public PropertySheet(GraphElement pElement, PropertyChangeListener pListener)
+	{
+		assert pElement != null;
+		aListener = pListener;
+		setLayout(new FormLayout());
+		Properties properties = pElement.properties();
+		for( String property : properties )
+		{
+			add(new JLabel(getPropertyName(pElement.getClass(), property)));
+			add(getEditorComponent(properties, property));
+		}
+	}
+
+	private Component getEditorComponent(Properties pProperties, String pProperty)   
+	{      
+		if( pProperties.get(pProperty) instanceof String )
+		{
+			return createStringEditor(pProperties, pProperty);
+		}
+		else if( pProperties.get(pProperty) instanceof MultiLineString )
+		{
+			return createMultiLineStringEditor(pProperties, pProperty);
+		}
+		else if(  pProperties.get(pProperty) instanceof Enum )
+		{
+			return createEnumEditor(pProperties, pProperty);
+		}
+		return new JTextField();
+	}
+	
+	private Component createMultiLineStringEditor(Properties pProperties, String pProperty)
+	{
+		final MultiLineString value = (MultiLineString) pProperties.get(pProperty);
+		final int rows = 5;
+		final int columns = 30;
+		final JTextArea textArea = new JTextArea(rows, columns);
+
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
+
+		textArea.setText(value.getText());
+		textArea.getDocument().addDocumentListener(new DocumentListener()
+		{
+			public void insertUpdate(DocumentEvent pEvent) 
+			{
+				value.setText(textArea.getText());
+				aListener.propertyChanged();
+			}
+			public void removeUpdate(DocumentEvent pEvent) 
+			{
+				value.setText(textArea.getText());
+				aListener.propertyChanged();
+			}
+			public void changedUpdate(DocumentEvent pEvent) 
+			{}
+		});
+		return new JScrollPane(textArea);
+	}
+	
+	private Component createStringEditor(Properties pProperties, String pProperty)
+	{
+		JTextField textField = new JTextField((String) pProperties.get(pProperty), TEXT_FIELD_WIDTH);
+		textField.getDocument().addDocumentListener(new DocumentListener()
+        	{
+				public void insertUpdate(DocumentEvent pEvent) 
+				{
+					pProperties.set(pProperty, textField.getText());
+					aListener.propertyChanged();
+				}
+				public void removeUpdate(DocumentEvent pEvent) 
+				{
+					pProperties.set(pProperty, textField.getText());
+					aListener.propertyChanged();
+				}
+				public void changedUpdate(DocumentEvent pEvent) 
+				{}
+        	});
+		return textField;
+	}
+	
+	private Component createEnumEditor(Properties pProperties, String pProperty)
+	{
+		Enum<?> value = (Enum<?>)pProperties.get(pProperty);
+		try 
+		{
+			final JComboBox<Enum<?>> comboBox = new JComboBox<Enum<?>>((Enum<?>[])value.getClass().getMethod("values").invoke(null));
+			comboBox.setSelectedItem(value);
+			comboBox.addItemListener(new ItemListener()
+			{
+					@Override
+					public void itemStateChanged(ItemEvent pEvent)
+					{
+						if(pEvent.getStateChange() == ItemEvent.SELECTED)
+						{
+							pProperties.set(pProperty, comboBox.getSelectedItem().toString());
+							aListener.propertyChanged();
+						}
+					}
+	        	});
+			return comboBox;
+		}
+		catch(NoSuchMethodException | InvocationTargetException | IllegalAccessException e) 
+		{ 
+			return null; 
+		}
+	}
+
 	/*
 	 * Obtains the externalized name of a property and takes account
 	 * of property inheritance: if a property is not found on a class,
