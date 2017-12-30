@@ -280,7 +280,7 @@ public final class SegmentationStyleFactory
 	}
 	
 	// CSOFF:
-	private static final boolean canAggregate(Edge pEdge1, Edge pEdge2, Node pTarget)
+	private static boolean canAggregate(Edge pEdge1, Edge pEdge2, Node pTarget)
 	{
 		if( pEdge1.getEnd() == pTarget && pEdge2.getEnd() == pTarget &&
 				pEdge1 instanceof GeneralizationEdge && pEdge2 instanceof GeneralizationEdge &&
