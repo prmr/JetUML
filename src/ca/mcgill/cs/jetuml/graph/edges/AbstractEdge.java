@@ -1,9 +1,9 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
@@ -11,7 +11,7 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
  * 
  * @author Martin P. Robillard
  */
-public abstract class AbstractEdge implements Edge
+public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 {
 	protected EdgeView aView;
 	private Node aStart;
@@ -76,12 +76,6 @@ public abstract class AbstractEdge implements Edge
 		{
 			return null;
 		}
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		return new Properties();
 	}
 	
 	@Override

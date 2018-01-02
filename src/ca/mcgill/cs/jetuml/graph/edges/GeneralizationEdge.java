@@ -25,7 +25,6 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -54,6 +53,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	 */
 	public GeneralizationEdge( Type pType )
 	{
+		this();
 		aType = pType;
 	}
 	
@@ -61,7 +61,9 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	 * Creates an inheritance edge.
 	 */
 	public GeneralizationEdge()
-	{}
+	{
+		properties().add("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
+	}
 	
 	@Override
 	protected EdgeView generateView()
@@ -86,14 +88,6 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	public void setType(Type pType)
 	{
 		aType = pType;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.add("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
-		return properties;
 	}
 	
 	private LineStyle getLineStyle()

@@ -1,7 +1,5 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
-
 /**
  * An edge with a single middle label.
  * 
@@ -10,6 +8,14 @@ import ca.mcgill.cs.jetuml.graph.Properties;
 public abstract class SingleLabelEdge extends AbstractEdge
 {
 	private String aLabelText = "";
+	
+	/**
+	 * Creates an edge with a single, empty label.
+	 */
+	protected SingleLabelEdge()
+	{
+		properties().add("middleLabel", ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
+	}
 	
 	/**
      * Sets the label property value.
@@ -27,13 +33,5 @@ public abstract class SingleLabelEdge extends AbstractEdge
 	public String getMiddleLabel()
 	{
 		return aLabelText;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.add("middleLabel", ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
-		return properties;
 	}
 }

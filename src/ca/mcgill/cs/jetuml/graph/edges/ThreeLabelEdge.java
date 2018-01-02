@@ -1,7 +1,5 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
-
 /**
  * An edge with three labels.
  * 
@@ -11,6 +9,15 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 {
 	private String aStartLabel = "";
 	private String aEndLabel = "";
+	
+	/**
+	 * Creates an edge with three empty labels.
+	 */
+	protected ThreeLabelEdge()
+	{
+		properties().addAt("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel, 0);
+		properties().add("endLabel", ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
+	}
 	
 	/**
 	 * @param pLabel The new start label.
@@ -42,14 +49,5 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	public String getEndLabel()
 	{
 		return aEndLabel;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.addAt("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel, 0);
-		properties.add("endLabel", ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
-		return properties;
 	}
 }

@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -41,6 +40,7 @@ public class ClassNode extends InterfaceNode
 		aAttributes = new MultiLineString();
 		aAttributes.setJustification(MultiLineString.Align.LEFT);
 		getName().setText("");
+		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes.setText((String)pAttributes), 3);
 	}
 	
 	@Override
@@ -73,13 +73,5 @@ public class ClassNode extends InterfaceNode
 		ClassNode cloned = (ClassNode)super.clone();
 		cloned.aAttributes = aAttributes.clone();
 		return cloned;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.addAt("attributes", () -> aAttributes, pAttributes -> aAttributes.setText((String)pAttributes), 3);
-		return properties;
 	}
 }
