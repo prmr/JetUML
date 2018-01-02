@@ -24,6 +24,8 @@ package ca.mcgill.cs.jetuml.gui;
 import java.awt.AWTKeyStroke;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +33,7 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -125,6 +128,10 @@ public class PropertySheet extends JPanel
 		{
 			return createEnumEditor(pProperties, pProperty);
 		}
+		else if( pProperties.get(pProperty) instanceof Boolean)
+		{
+			return createBooleanEditor(pProperties, pProperty);
+		}
 		return new JTextField();
 	}
 	
@@ -203,6 +210,22 @@ public class PropertySheet extends JPanel
 		{ 
 			return null; 
 		}
+	}
+	
+	private Component createBooleanEditor(Properties pProperties, String pProperty)
+	{
+		JCheckBox checkBox = new JCheckBox();
+		checkBox.setSelected((boolean)pProperties.get(pProperty));
+		checkBox.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent pEvent)
+			{
+				pProperties.set(pProperty, checkBox.isSelected());
+				aListener.propertyChanged();
+			}
+		});
+		return checkBox;
 	}
 
 	/*
