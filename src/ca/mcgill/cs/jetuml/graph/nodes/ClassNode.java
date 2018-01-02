@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -65,10 +64,9 @@ public class ClassNode extends InterfaceNode
 	}
 
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 3);
-		return properties;
+		super.buildProperties();
+		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 3);
 	}
 }

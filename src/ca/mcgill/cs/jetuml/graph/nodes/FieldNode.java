@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -96,11 +95,10 @@ public class FieldNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("value", () -> aValue, pValue -> aValue = (String) pValue);
-		return properties;
+		super.buildProperties();
+		properties().add("value", () -> aValue, pValue -> aValue = (String) pValue);
 	}
 }
 

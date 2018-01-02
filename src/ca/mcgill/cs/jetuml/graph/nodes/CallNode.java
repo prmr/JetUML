@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -90,11 +89,10 @@ public class CallNode extends AbstractNode implements ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
-		return properties;
+		super.buildProperties();
+		properties().add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
 	}
 	
 	/**

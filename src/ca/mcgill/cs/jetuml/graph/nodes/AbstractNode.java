@@ -1,8 +1,8 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
@@ -11,7 +11,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  * @author Martin P. Robillard
  *
  */
-public abstract class AbstractNode implements Node
+public abstract class AbstractNode extends AbstractGraphElement implements Node
 {
 	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
@@ -61,16 +61,9 @@ public abstract class AbstractNode implements Node
 	@Override
 	public AbstractNode clone()
 	{
-		try
-		{
-			AbstractNode clone = (AbstractNode) super.clone();
-			clone.aView = clone.generateView();
-			return clone;
-		}
-		catch (CloneNotSupportedException e)
-		{
-			return null;
-		}
+		AbstractNode clone = (AbstractNode) super.clone();
+		clone.aView = clone.generateView();
+		return clone;
 	}
 	
 	@Override
@@ -80,11 +73,10 @@ public abstract class AbstractNode implements Node
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = new Properties();
-		properties.addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
-		properties.addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
-		return properties;
+		super.buildProperties();
+		properties().addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
+		properties().addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
 	}
 }

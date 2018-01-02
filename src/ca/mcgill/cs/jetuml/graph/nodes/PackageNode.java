@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
@@ -163,11 +162,10 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("name", () -> aName, pName -> aName = (String)pName);
-		properties.add("contents", () -> aContents, pContents -> aContents = (String)pContents);
-		return properties;
+		super.buildProperties();
+		properties().add("name", () -> aName, pName -> aName = (String)pName);
+		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
 	}
 }
