@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.AWTKeyStroke;
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -36,6 +37,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
@@ -43,6 +46,10 @@ import javax.swing.event.DocumentListener;
 
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
+import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 /**
  *  A GUI component that can present the properties of a GraphElement
@@ -90,11 +97,10 @@ public class PropertySheet extends JPanel
 		assert pElement != null;
 		aListener = pListener;
 		setLayout(new FormLayout());
-		Properties properties = pElement.properties();
-		for( String property : properties )
+		for( String property : pElement.properties() )
 		{
-			Component editor = getEditorComponent(properties, property);
-			if(properties.isVisible(property) && editor != null )
+			Component editor = getEditorComponent(pElement, property);
+			if(pElement.properties().isVisible(property) && editor != null )
 			{
 				add(new JLabel(getPropertyName(pElement.getClass(), property)));
 				add(editor);
@@ -110,55 +116,69 @@ public class PropertySheet extends JPanel
 		return getComponentCount() == 0;
 	}
 	
-	private Component getEditorComponent(Properties pProperties, String pProperty)   
+	private Component getEditorComponent(GraphElement pElement, String pProperty)   
 	{      
-		if( pProperties.get(pProperty) instanceof String )
+		Properties properties = pElement.properties();
+		if( properties.get(pProperty) instanceof String )
 		{
-			return createStringEditor(pProperties, pProperty);
+			if( extended(pElement, pProperty))
+			{
+				return createExtendedStringEditor(properties, pProperty);
+			}
+			else
+			{
+				return createStringEditor(properties, pProperty);
+			}
 		}
-//		else if( pProperties.get(pProperty) instanceof MultiLineString )
-//		{
-//			return createMultiLineStringEditor(pProperties, pProperty);
-//		}
-		else if(  pProperties.get(pProperty) instanceof Enum )
+		else if(  properties.get(pProperty) instanceof Enum )
 		{
-			return createEnumEditor(pProperties, pProperty);
+			return createEnumEditor(properties, pProperty);
 		}
-		else if( pProperties.get(pProperty) instanceof Boolean)
+		else if( properties.get(pProperty) instanceof Boolean)
 		{
-			return createBooleanEditor(pProperties, pProperty);
+			return createBooleanEditor(properties, pProperty);
 		}
 		return new JTextField();
 	}
 	
-//	private Component createMultiLineStringEditor(Properties pProperties, String pProperty)
-//	{
-//		final MultiLineString value = (MultiLineString) pProperties.get(pProperty);
-//		final int rows = 5;
-//		final int columns = 30;
-//		final JTextArea textArea = new JTextArea(rows, columns);
-//
-//		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
-//		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
-//
-//		textArea.setText(value.getText());
-//		textArea.getDocument().addDocumentListener(new DocumentListener()
-//		{
-//			public void insertUpdate(DocumentEvent pEvent) 
-//			{
-//				value.setText(textArea.getText());
-//				aListener.propertyChanged();
-//			}
-//			public void removeUpdate(DocumentEvent pEvent) 
-//			{
-//				value.setText(textArea.getText());
-//				aListener.propertyChanged();
-//			}
-//			public void changedUpdate(DocumentEvent pEvent) 
-//			{}
-//		});
-//		return new JScrollPane(textArea);
-//	}
+	/*
+	 * Not the greatest but avoids over-engineering the rest of the properties API. CSOFF:
+	 */
+	private static boolean extended(GraphElement pElement, String pProperty)
+	{
+		return 	pElement.getClass() == ClassNode.class ||
+				pElement.getClass() == InterfaceNode.class ||
+				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
+				pElement.getClass() == NoteNode.class;
+	} // CSON:
+	
+	private Component createExtendedStringEditor(Properties pProperties, String pProperty)
+	{
+		final int rows = 5;
+		final int columns = 30;
+		final JTextArea textArea = new JTextArea(rows, columns);
+
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
+
+		textArea.setText((String) pProperties.get(pProperty));
+		textArea.getDocument().addDocumentListener(new DocumentListener()
+		{
+			public void insertUpdate(DocumentEvent pEvent) 
+			{
+				pProperties.set(pProperty, textArea.getText());
+				aListener.propertyChanged();
+			}
+			public void removeUpdate(DocumentEvent pEvent) 
+			{
+				pProperties.set(pProperty, textArea.getText());
+				aListener.propertyChanged();
+			}
+			public void changedUpdate(DocumentEvent pEvent) 
+			{}
+		});
+		return new JScrollPane(textArea);
+	}
 	
 	private Component createStringEditor(Properties pProperties, String pProperty)
 	{
