@@ -83,9 +83,9 @@ public class TestPropertyChangeTracker
 		ClassNode node = new ClassNode();
 		aTracker.startTrackingPropertyChange(node);
 		MultiLineString oldName = node.getName().clone();
-		MultiLineString oldAttributes = node.getAttributes().clone();
+		String oldAttributes = node.getAttributes();
 		node.getName().setText("Foo");
-		node.getAttributes().setText("String foo");
+		node.setAttributes("String foo");
 		CompoundCommand command = aTracker.stopTrackingPropertyChange(new ClassDiagramGraph());
 		Stack<Command> commands = getChildCommands(command);
 		assertEquals(2, commands.size());
@@ -107,13 +107,13 @@ public class TestPropertyChangeTracker
 	{
 		FieldNode node = new FieldNode();
 		MultiLineString oldName = node.getName().clone();
-		MultiLineString oldValue = node.getValue();
-		oldValue.setText("value");
-		oldValue = oldValue.clone();
+		String oldValue = node.getValue();
+		node.setValue("value");
+		oldValue = node.getValue();
 	
 		aTracker.startTrackingPropertyChange(node);
 		node.getName().setText("Foo");
-		node.setValue(new MultiLineString());
+		node.setValue("");
 		
 		CompoundCommand command = aTracker.stopTrackingPropertyChange(new ObjectDiagramGraph());
 		Stack<Command> commands = getChildCommands(command);

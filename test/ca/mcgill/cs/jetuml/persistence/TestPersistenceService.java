@@ -339,7 +339,7 @@ public class TestPersistenceService
 		NoteNode node5 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
 		PointNode node8 = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
-		assertEquals("", node1.getAttributes().getText());
+		assertEquals("", node1.getAttributes());
 		assertEquals("", node1.getMethods().getText());
 		assertEquals("Class1", node1.getName().getText());
 		assertNull(node1.getParent());
@@ -350,13 +350,13 @@ public class TestPersistenceService
 		assertNull(node2.getParent());
 		assertEquals(new Rectangle(460, 250, 100, 60), node2.view().getBounds());
 		
-		assertEquals("foo", node3.getAttributes().getText());
+		assertEquals("foo", node3.getAttributes());
 		assertEquals("bar", node3.getMethods().getText());
 		assertEquals("Class2", node3.getName().getText());
 		assertNull(node3.getParent());
 		assertEquals(new Rectangle(460, 520, 100, 60), node3.view().getBounds());
 		
-		assertEquals("", node4.getAttributes().getText());
+		assertEquals("", node4.getAttributes());
 		assertEquals("", node4.getMethods().getText());
 		assertEquals("Class3", node4.getName().getText());
 		assertNull(node4.getParent());
@@ -373,7 +373,7 @@ public class TestPersistenceService
 		assertNull(node6.getParent());
 		assertEquals(new Rectangle(275, 345, 100, 80), node6.view().getBounds()); // needs a layout to compute correct size
 
-		assertEquals("", node7.getAttributes().getText());
+		assertEquals("", node7.getAttributes());
 		assertEquals("", node7.getMethods().getText());
 		assertEquals("Class", node7.getName().getText());
 		assertEquals(node6,node7.getParent());

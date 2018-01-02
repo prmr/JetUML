@@ -2,10 +2,9 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Graphics2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render an interface in a class diagram.
@@ -15,6 +14,8 @@ import ca.mcgill.cs.jetuml.views.StringViewer;
  */
 public class ClassNodeView extends InterfaceNodeView
 {
+	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	
 	/**
 	 * @param pNode The node to wrap.
 	 */
@@ -23,7 +24,7 @@ public class ClassNodeView extends InterfaceNodeView
 		super(pNode);
 	}
 	
-	private MultiLineString attributes()
+	private String attributes()
 	{
 		return ((ClassNode)node()).getAttributes();
 	}
@@ -36,7 +37,7 @@ public class ClassNodeView extends InterfaceNodeView
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - middleHeight() - bottomHeight));
 		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(middleHeight()));
-		StringViewer.draw(attributes(), pGraphics2D, mid);
+		STRING_VIEWER.draw(attributes(), pGraphics2D, mid);
 	}
 	
 	/**
@@ -45,7 +46,7 @@ public class ClassNodeView extends InterfaceNodeView
 	@Override
 	protected boolean needsMiddleCompartment()
 	{
-		return !attributes().getText().isEmpty();
+		return attributes().length() > 0;
 	}
 	
 	@Override
@@ -57,7 +58,7 @@ public class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(StringViewer.getBounds(attributes()).getWidth(), DEFAULT_WIDTH);
+			return Math.max(STRING_VIEWER.getBounds(attributes()).getWidth(), DEFAULT_WIDTH);
 		}
 	}
 	
@@ -70,7 +71,7 @@ public class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(StringViewer.getBounds(attributes()).getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
+			return Math.max(STRING_VIEWER.getBounds(attributes()).getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
 		}
 	}
 }

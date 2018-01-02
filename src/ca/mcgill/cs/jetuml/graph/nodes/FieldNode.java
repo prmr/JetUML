@@ -32,7 +32,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class FieldNode extends NamedNode implements ChildNode
 {
-	private MultiLineString aValue;
+	private String aValue = "";
 	private ObjectNode aObject; // The object defining this field
 
 	/**
@@ -41,7 +41,6 @@ public class FieldNode extends NamedNode implements ChildNode
 	public FieldNode()
 	{
 		getName().setJustification(MultiLineString.Align.RIGHT);
-		aValue = new MultiLineString();
    }
 	
 	@Override
@@ -54,7 +53,7 @@ public class FieldNode extends NamedNode implements ChildNode
      * Sets the value property value.
      * @param pNewValue the field value
 	 */
-	public void setValue(MultiLineString pNewValue)
+	public void setValue(String pNewValue)
 	{
 		aValue = pNewValue;
 	}
@@ -63,17 +62,9 @@ public class FieldNode extends NamedNode implements ChildNode
      * Gets the value property value.
      * @return the field value
 	 */
-	public MultiLineString getValue()
+	public String getValue()
 	{
 		return aValue;
-	}
-
-	@Override
-	public FieldNode clone()
-	{
-		FieldNode cloned = (FieldNode) super.clone();
-		cloned.aValue = aValue.clone();
-		return cloned;
 	}
 
 	/**
@@ -117,7 +108,7 @@ public class FieldNode extends NamedNode implements ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("value", () -> aValue, pValue -> aValue.setText((String) pValue));
+		properties.add("value", () -> aValue, pValue -> aValue = (String) pValue);
 		return properties;
 	}
 }

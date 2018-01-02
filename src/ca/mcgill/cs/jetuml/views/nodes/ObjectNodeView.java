@@ -12,6 +12,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render an object in an object diagram.
@@ -25,6 +26,7 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
+	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, true, true);
 	
 	private int aTopHeight;
 	

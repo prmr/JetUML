@@ -61,9 +61,7 @@ public class TestClassViewNode
 	public void testNeedsMiddle()
 	{
 		assertFalse(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
+		aNode1.setAttributes("Foo");
 		assertTrue(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
 	}
 	
@@ -82,18 +80,16 @@ public class TestClassViewNode
 	{
 		assertEquals(0, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(0, ((ClassNodeView)aNode1.view()).middleHeight());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
+		aNode1.setAttributes("Foo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("Foo\nFoo");
+		aNode1.setAttributes("Foo\nFoo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(32, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("Foo");
+		aNode1.setAttributes("Foo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		aNode1.setAttributes("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		assertEquals(307, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 	}
@@ -140,9 +136,7 @@ public class TestClassViewNode
 		
 		name.setText("X");
 		methods.setText("X");
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("X");
-		aNode1.setAttributes(attributes);
+		aNode1.setAttributes("X");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		methods.setText("");

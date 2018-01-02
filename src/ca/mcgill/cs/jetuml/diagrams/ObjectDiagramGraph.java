@@ -49,14 +49,12 @@ public class ObjectDiagramGraph extends Graph
 	{
 		NODE_PROTOTYPES[0] = new ObjectNode();
 	      
-		FieldNode f = new FieldNode();
+		FieldNode fieldNode = new FieldNode();
 	    MultiLineString fn = new MultiLineString();
 	    fn.setText("name");
-	    f.setName(fn);
-	    MultiLineString fv = new MultiLineString();
-	    fv.setText("value");
-	    f.setValue(fv);
-	    NODE_PROTOTYPES[1] = f;
+	    fieldNode.setName(fn);
+	    fieldNode.setValue("value");
+	    NODE_PROTOTYPES[1] = fieldNode;
 	      
 	    NODE_PROTOTYPES[2] = new NoteNode();
 	    
@@ -162,8 +160,8 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pOrigin instanceof FieldNode )
 		{
-			MultiLineString oldValue = ((FieldNode)pOrigin).getValue().clone();
-			((FieldNode)pOrigin).getValue().setText("");
+			String oldValue = ((FieldNode)pOrigin).getValue();
+			((FieldNode)pOrigin).setValue("");
 			notifyPropertyChanged(pOrigin, "value", oldValue, ((FieldNode)pOrigin).getValue());
 		}
 	}

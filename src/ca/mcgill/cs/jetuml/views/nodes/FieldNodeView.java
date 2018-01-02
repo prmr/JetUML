@@ -11,6 +11,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render a FieldNode.
@@ -23,6 +24,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	private static final MultiLineString EQUALS = new MultiLineString();
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
+	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
 	
 	static
 	{
@@ -42,7 +44,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		return ((FieldNode)node()).getName();
 	}
 	
-	private MultiLineString value()
+	private String value()
 	{
 		return ((FieldNode)node()).getValue();
 	}
@@ -62,7 +64,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		final Rectangle bounds = getBounds();
 		StringViewer.draw(name(), pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
 		StringViewer.draw(EQUALS, pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
-		StringViewer.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
+		STRING_VIEWER.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
 	}
 	
 	private int leftWidth()
@@ -77,7 +79,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	
 	private int rightWidth()
 	{
-		int rightWidth = StringViewer.getBounds(value()).getWidth();
+		int rightWidth = STRING_VIEWER.getBounds(value()).getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
@@ -90,7 +92,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	{
 		final int width = leftWidth() + midWidth() + rightWidth();
 		final int height = Math.max(StringViewer.getBounds(name()).getHeight(), 
-				Math.max(StringViewer.getBounds(value()).getHeight(), StringViewer.getBounds(EQUALS).getHeight()));
+				Math.max(STRING_VIEWER.getBounds(value()).getHeight(), StringViewer.getBounds(EQUALS).getHeight()));
 		final Rectangle bounds = getBounds();
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), width, height));
 	}

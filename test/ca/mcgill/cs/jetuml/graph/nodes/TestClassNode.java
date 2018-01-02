@@ -68,11 +68,8 @@ public class TestClassNode
 		assertFalse(methods.isBold());
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
-		MultiLineString attributes = aNode1.getAttributes();
-		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
+		String attributes = aNode1.getAttributes();
+		assertEquals("", attributes);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
 		assertNull(aNode1.getParent());
 	}
@@ -104,7 +101,7 @@ public class TestClassNode
 	{
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
-		ClassNode clone = aNode1.clone();
+		ClassNode clone = (ClassNode) aNode1.clone();
 		MultiLineString name = clone.getName();
 		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
 		assertTrue(name.isBold());
@@ -117,12 +114,6 @@ public class TestClassNode
 		assertFalse(methods.isUnderlined());
 		assertEquals("", methods.getText());
 		assertFalse(methods == aNode1.getMethods() );
-		MultiLineString attributes = clone.getAttributes();
-		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
-		assertFalse(attributes == aNode1.getAttributes() );
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
 		assertTrue(clone.view().getBounds().equals(aNode1.view().getBounds()));
 		assertTrue(clone.getParent().equals(aNode1.getParent()));

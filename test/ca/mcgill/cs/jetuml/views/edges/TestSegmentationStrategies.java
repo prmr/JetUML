@@ -172,7 +172,7 @@ public class TestSegmentationStrategies
 	@Test
 	public void testHVH3()
 	{
-		ClassNode node = aNode3.clone();
+		ClassNode node = (ClassNode) aNode3.clone();
 		node.translate(150, 5);
 		aGraph.insertNode(node);
 		Edge edge = new DependencyEdge();
