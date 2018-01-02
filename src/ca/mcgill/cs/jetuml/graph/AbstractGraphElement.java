@@ -10,11 +10,48 @@ package ca.mcgill.cs.jetuml.graph;
  */
 public class AbstractGraphElement implements GraphElement
 {
-	private final Properties aProperties = new Properties();
+	private Properties aProperties;
+	
+	/**
+	 * Initializes the properties for this object.
+	 */
+	protected AbstractGraphElement()
+	{
+		buildProperties();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	protected GraphElement clone()
+	{
+		try
+		{
+			AbstractGraphElement clone = (AbstractGraphElement) super.clone();
+			clone.buildProperties();
+			return clone;
+		}
+		catch(CloneNotSupportedException pException)
+		{
+			return null;
+		}
+	}
 	
 	@Override
-	public Properties properties()
+	public final Properties properties()
 	{
 		return aProperties;
+	}
+	
+	/**
+	 * Builds the properties object associated with this object.
+	 * Must be outside the constructor because of cloning.
+	 * Subclasses should call super.buildProperties() before
+	 * adding their own properties.
+	 */
+	protected void buildProperties()
+	{
+		aProperties = new Properties();
 	}
 }

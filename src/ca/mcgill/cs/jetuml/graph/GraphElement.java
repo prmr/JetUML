@@ -31,12 +31,4 @@ public interface GraphElement extends Cloneable
 	 * @return A set of properties that define this object.
 	 */
 	Properties properties();
-	
-	/**
-	 * Initialize the state of this element based on a property.
-	 * 
-	 * @param pExtractor An object that can supply the value to be used
-	 * for the initialization.
-	 */
-//	void initialize(ValueExtractor pExtractor);
 }

@@ -25,7 +25,6 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -88,11 +87,10 @@ public class AggregationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
-		return properties;
+		super.buildProperties();
+		properties().add("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 	
 	private ArrowHead getStartArrowHead()

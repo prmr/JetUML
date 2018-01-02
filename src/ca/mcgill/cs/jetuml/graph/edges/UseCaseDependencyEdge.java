@@ -25,7 +25,6 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -65,11 +64,10 @@ public class UseCaseDependencyEdge extends AbstractEdge
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("dependencyType", () -> aType, pType -> aType = Type.valueOf((String)pType));
-		return properties;
+		super.buildProperties();
+		properties().add("dependencyType", () -> aType, pType -> aType = Type.valueOf((String)pType));
 	}
 	
 	@Override

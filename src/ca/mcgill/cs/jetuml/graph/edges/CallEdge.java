@@ -31,7 +31,6 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -80,11 +79,10 @@ public class CallEdge extends SingleLabelEdge
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.add("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
-		return properties;
+		super.buildProperties();
+		properties().add("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
 	}
 	
 	/**
