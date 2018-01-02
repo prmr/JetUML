@@ -41,14 +41,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 
-	/**
-     * Construct an object node with a default size.
-	 */
-	public ImplicitParameterNode()
-	{
-		getName().setUnderlined(true);
-	}
-	
 	@Override
 	protected NodeView generateView()
 	{

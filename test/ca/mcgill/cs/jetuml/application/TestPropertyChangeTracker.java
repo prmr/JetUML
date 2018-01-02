@@ -82,9 +82,9 @@ public class TestPropertyChangeTracker
 	{
 		ClassNode node = new ClassNode();
 		aTracker.startTrackingPropertyChange(node);
-		MultiLineString oldName = node.getName().clone();
+		String oldName = node.getName();
 		String oldAttributes = node.getAttributes();
-		node.getName().setText("Foo");
+		node.setName("Foo");
 		node.setAttributes("String foo");
 		CompoundCommand command = aTracker.stopTrackingPropertyChange(new ClassDiagramGraph());
 		Stack<Command> commands = getChildCommands(command);
@@ -106,13 +106,13 @@ public class TestPropertyChangeTracker
 	public void testObjectNode()
 	{
 		FieldNode node = new FieldNode();
-		MultiLineString oldName = node.getName().clone();
+		String oldName = node.getName();
 		String oldValue = node.getValue();
 		node.setValue("value");
 		oldValue = node.getValue();
 	
 		aTracker.startTrackingPropertyChange(node);
-		node.getName().setText("Foo");
+		node.setName("Foo");
 		node.setValue("");
 		
 		CompoundCommand command = aTracker.stopTrackingPropertyChange(new ObjectDiagramGraph());
@@ -191,30 +191,22 @@ public class TestPropertyChangeTracker
 	@Test
 	public void testPropertyChangeCommandExecute()
 	{
-		MultiLineString old = new MultiLineString();
-		old.setText("old");
-		MultiLineString newValue = new MultiLineString();
-		old.setText("new");
 		ClassNode node = new ClassNode();
 		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
-				node, "name", old, newValue);
+				node, "name", "old", "new");
 		command.execute();
-		assertEquals(newValue, node.getName());
+		assertEquals("new", node.getName());
 	}
 	
 	@Test
 	public void testPropertyChangeCommandUndo()
 	{
-		MultiLineString old = new MultiLineString();
-		old.setText("old");
-		MultiLineString newValue = new MultiLineString();
-		old.setText("new");
 		ClassNode node = new ClassNode();
 		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
-				node, "name", old, newValue);
+				node, "name", "old", "new");
 		command.execute();
 		command.undo();
-		assertEquals(old, node.getName());
+		assertEquals("old", node.getName());
 	}
 	
 	@SuppressWarnings("unchecked")

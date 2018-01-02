@@ -5,12 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render a NoteNode.
@@ -25,6 +24,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	private static final int FOLD_X = 8;
 	private static final int FOLD_Y = 8;
 	private static final Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // Pale yellow
+	private static final StringViewer2 NOTE_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -34,7 +34,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((NoteNode)node()).getName();
 	}
@@ -63,7 +63,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 		pGraphics2D.setColor(oldColor);      
 		pGraphics2D.draw(fold);      
       
-		StringViewer.draw(name(), pGraphics2D, getBounds());
+		NOTE_VIEWER.draw(name(), pGraphics2D, getBounds());
 	}
 	
 	@Override
@@ -83,7 +83,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle b = StringViewer.getBounds(name()); 
+		Rectangle b = NOTE_VIEWER.getBounds(name()); 
 		Rectangle bounds = getBounds();
 		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
 		setBounds(Grid.snapped(b));

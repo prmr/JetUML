@@ -31,15 +31,15 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 public class ClassNode extends InterfaceNode
 {
 	private String aAttributes = "";
-
+	
 	/**
-     * Construct a class node with a default size.
+	 * Constructs a new ClassNode with an empty name.
 	 */
 	public ClassNode()
 	{
-		getName().setText("");
+		setName("");
 	}
-	
+
 	@Override
 	protected NodeView generateView()
 	{

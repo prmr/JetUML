@@ -116,9 +116,9 @@ public class TestUsageScenarios
 		// Create a state diagram with two state nodes, one start node, one end node
 		StateDiagramGraph diagram = new StateDiagramGraph();
 		StateNode node1 = new StateNode();
-		node1.getName().setText("Node 1");
+		node1.setName("Node 1");
 		StateNode node2 = new StateNode();
-		node2.getName().setText("Node 2");
+		node2.setName("Node 2");
 		InitialStateNode start = new InitialStateNode();
 		FinalStateNode end = new FinalStateNode();
 		diagram.addNode(node1, new Point(30,30));
@@ -153,9 +153,9 @@ public class TestUsageScenarios
 		// VALIDATION NODES
 		assertEquals(4, diagram.getRootNodes().size());
 		assertEquals(new Rectangle(30, 30, 80, 60), node1.view().getBounds());
-		assertEquals("Node 1", node1.getName().getText());
+		assertEquals("Node 1", node1.getName());
 		assertEquals(new Rectangle(30, 100, 80, 60), node2.view().getBounds());
-		assertEquals("Node 2", node2.getName().getText());
+		assertEquals("Node 2", node2.getName());
 		assertEquals(new Rectangle(5, 5, 20, 20), start.view().getBounds());
 		assertEquals(new Rectangle(30, 200, 20, 20), end.view().getBounds());
 		
@@ -189,7 +189,7 @@ public class TestUsageScenarios
 		// Create a state diagram with two state nodes, one start node, one end node
 		StateDiagramGraph diagram = new StateDiagramGraph();
 		StateNode node1 = new StateNode();
-		node1.getName().setText("Node 1");
+		node1.setName("Node 1");
 		diagram.addNode(node1, new Point(30,30));
 		NoteNode note = new NoteNode();
 		diagram.addNode(note, new Point(130,130));

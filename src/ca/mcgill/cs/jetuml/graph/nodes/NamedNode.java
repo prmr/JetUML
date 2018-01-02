@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Properties;
 
 /**
@@ -29,13 +28,13 @@ import ca.mcgill.cs.jetuml.graph.Properties;
 */
 public abstract class NamedNode extends AbstractNode
 {
-	private MultiLineString aName = new MultiLineString();
+	private String aName = "";
 
 	/**
      * Sets the name property value.
      * @param pName the new state name
 	 */
-	public void setName(MultiLineString pName)
+	public void setName(String pName)
 	{
 		aName = pName;
 	}
@@ -44,7 +43,7 @@ public abstract class NamedNode extends AbstractNode
      * Gets the name property value.
      * @return the state name
 	 */
-	public MultiLineString getName()
+	public String getName()
 	{
 		return aName;
 	}
@@ -53,15 +52,7 @@ public abstract class NamedNode extends AbstractNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("name", () -> aName, pName -> aName.setText((String)pName));
+		properties.add("name", () -> aName, pName -> aName = (String)pName);
 		return properties;
-	}
-	
-	@Override
-	public NamedNode clone()
-	{
-		NamedNode clone = (NamedNode)super.clone();
-		clone.aName = aName.clone();
-		return clone;
 	}
 }

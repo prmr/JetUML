@@ -36,7 +36,7 @@ public class ActorNode extends NamedNode
 	 */
 	public ActorNode()
 	{
-		getName().setText(DEFAULT_NAME);
+		setName(DEFAULT_NAME);
 	}
 	
 	@Override

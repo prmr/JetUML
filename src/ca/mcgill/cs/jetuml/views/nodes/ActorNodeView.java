@@ -4,13 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render an actor in a use case diagram.
@@ -22,6 +21,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 48;
 	private static final int DEFAULT_HEIGHT = 64;
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
 	
 	// Stick man
 	// CSOFF:
@@ -40,7 +40,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((ActorNode)node()).getName();
 	}
@@ -49,7 +49,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = StringViewer.getBounds(name());
+		Rectangle bot = NAME_VIEWER.getBounds(name());
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 		setBounds(Grid.snapped(bounds));
@@ -89,11 +89,11 @@ public class ActorNodeView extends RectangleBoundedNodeView
 		pGraphics2D.draw(path);
 
 		// Draw name
-		Rectangle nameBox = StringViewer.getBounds(name());
+		Rectangle nameBox = NAME_VIEWER.getBounds(name());
 
 		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
 				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		StringViewer.draw(name(), pGraphics2D, namebox);
+		NAME_VIEWER.draw(name(), pGraphics2D, namebox);
 	}
 	
 	@Override

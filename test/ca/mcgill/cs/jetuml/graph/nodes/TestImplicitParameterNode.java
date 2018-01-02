@@ -26,12 +26,9 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 
 public class TestImplicitParameterNode
 {
@@ -101,9 +98,7 @@ public class TestImplicitParameterNode
 	@Test 
 	public void testClone()
 	{
-		MultiLineString o1 = new MultiLineString();
-		o1.setText("o1");
-		aObject1.setName(o1);
+		aObject1.setName("o1");
 		ImplicitParameterNode clone = aObject1.clone();
 		assertEquals(new Rectangle(0, 0, 80, 120), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());

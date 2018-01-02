@@ -3,13 +3,11 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
@@ -24,6 +22,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
 	private static final StringViewer2 METHOD_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, true, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -33,7 +32,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((InterfaceNode)node()).getName();
 	}
@@ -51,7 +50,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
 		pGraphics2D.draw(top);
-		StringViewer.draw(name(), pGraphics2D, Conversions.toRectangle(top));
+		NAME_VIEWER.draw(name(), pGraphics2D, Conversions.toRectangle(top));
 		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
 		pGraphics2D.draw(mid);
 		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
@@ -98,7 +97,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	 */
 	protected Rectangle computeTop()
 	{
-		Rectangle top = StringViewer.getBounds(name()); 
+		Rectangle top = NAME_VIEWER.getBounds(name()); 
 		
 		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
 		if(!needsMiddleCompartment() && !needsBottomCompartment() )

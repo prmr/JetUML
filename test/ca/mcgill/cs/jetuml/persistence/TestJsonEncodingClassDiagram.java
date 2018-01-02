@@ -32,7 +32,7 @@ public class TestJsonEncodingClassDiagram
 		PackageNode p = new PackageNode();
 		p.setName("package");
 		ClassNode c = new ClassNode();
-		c.getName().setText("class");
+		c.setName("class");
 		p.addChild(c);
 		aGraph.restoreRootNode(p);
 	}
@@ -61,6 +61,6 @@ public class TestJsonEncodingClassDiagram
 		
 		ClassNode node = (ClassNode) p.getChildren().get(0);
 		assertSame(p, node.getParent());
-		assertEquals("class", node.getName().getText());
+		assertEquals("class", node.getName());
 	}
 }

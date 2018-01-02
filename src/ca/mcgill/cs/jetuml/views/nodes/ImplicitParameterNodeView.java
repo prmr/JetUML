@@ -6,7 +6,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -14,7 +13,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -28,6 +27,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, true);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
 	
@@ -39,7 +39,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((ImplicitParameterNode)node()).getName();
 	}
@@ -50,7 +50,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		super.draw(pGraphics2D);
 		Rectangle top = getTopRectangle();
 		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		StringViewer.draw(name(), pGraphics2D, top);
+		NAME_VIEWER.draw(name(), pGraphics2D, top);
 		int xmid = getBounds().getCenter().getX();
 		Stroke oldStroke = pGraphics2D.getStroke();
 		pGraphics2D.setStroke(STROKE);
@@ -91,7 +91,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = StringViewer.getBounds(name()); 
+		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
 		Rectangle snappedTop = Grid.snapped(top);

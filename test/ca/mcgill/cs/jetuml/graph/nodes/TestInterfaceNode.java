@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,10 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 public class TestInterfaceNode
 {
@@ -58,11 +54,7 @@ public class TestInterfaceNode
 	@Test
 	public void testDefault()
 	{
-		MultiLineString name = aNode1.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("\u00ABinterface\u00BB\n", name.getText());
+		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
@@ -72,10 +64,8 @@ public class TestInterfaceNode
 	@Test
 	public void testSetName()
 	{
-		MultiLineString name = new MultiLineString();
-		name.setText("Foo");
-		aNode1.setName(name);
-		assertEquals("Foo", aNode1.getName().getText());
+		aNode1.setName("Foo");
+		assertEquals("Foo", aNode1.getName());
 	}
 	
 	@Test
@@ -97,12 +87,7 @@ public class TestInterfaceNode
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
 		InterfaceNode clone = (InterfaceNode) aNode1.clone();
-		MultiLineString name = clone.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("\u00ABinterface\u00BB\n", name.getText());
-		assertFalse(name == aNode1.getName() );
+		assertEquals("\u00ABinterface\u00BB\n", clone.getName());
 		String methods = clone.getMethods();
 		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());

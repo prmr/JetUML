@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,10 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 public class TestClassNode
 {
@@ -58,11 +54,7 @@ public class TestClassNode
 	@Test
 	public void testDefault()
 	{
-		MultiLineString name = aNode1.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
+		assertEquals("", aNode1.getName());
 		String attributes = aNode1.getAttributes();
 		assertEquals("", attributes);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
@@ -72,10 +64,8 @@ public class TestClassNode
 	@Test
 	public void testSetName()
 	{
-		MultiLineString name = new MultiLineString();
-		name.setText("Foo");
-		aNode1.setName(name);
-		assertEquals("Foo", aNode1.getName().getText());
+		aNode1.setName("Foo");
+		assertEquals("Foo", aNode1.getName());
 	}
 	
 	@Test
@@ -97,12 +87,8 @@ public class TestClassNode
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
 		ClassNode clone = (ClassNode) aNode1.clone();
-		MultiLineString name = clone.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
-		assertFalse(name == aNode1.getName() );
+		String name = clone.getName();
+		assertEquals("", name);
 		String methods = clone.getMethods();
 		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());

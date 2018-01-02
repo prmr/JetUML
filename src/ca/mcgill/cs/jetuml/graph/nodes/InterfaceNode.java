@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -42,9 +41,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	 */
 	public InterfaceNode()
 	{
-		setName(new MultiLineString(true));
-		getName().setText("\u00ABinterface\u00BB\n");
-		getName().setJustification(MultiLineString.Align.CENTER);
+		setName("\u00ABinterface\u00BB\n");
 	}
 	
 	@Override

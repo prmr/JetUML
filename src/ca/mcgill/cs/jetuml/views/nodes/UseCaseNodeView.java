@@ -4,12 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render a UseCaseNode.
@@ -21,6 +20,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -35,7 +35,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics2D);      
 		pGraphics2D.draw(getShape());
-		StringViewer.draw(name(), pGraphics2D, getBounds());
+		NAME_VIEWER.draw(name(), pGraphics2D, getBounds());
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 				getBounds().getWidth(), getBounds().getHeight());
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((UseCaseNode)node()).getName();
 	}
@@ -53,7 +53,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	@Override	
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = StringViewer.getBounds(name());
+		Rectangle bounds = NAME_VIEWER.getBounds(name());
 		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
 		setBounds(Grid.snapped(bounds));

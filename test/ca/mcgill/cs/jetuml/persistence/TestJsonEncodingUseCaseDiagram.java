@@ -37,9 +37,9 @@ public class TestJsonEncodingUseCaseDiagram
 	private void initiGraph1()
 	{
 		ActorNode actor = new ActorNode();
-		actor.getName().setText("Mr. Bob");
+		actor.setName("Mr. Bob");
 		UseCaseNode useCase = new UseCaseNode();
-		useCase.getName().setText("Do it");
+		useCase.setName("Do it");
 		
 		aGraph.restoreRootNode(actor);
 		aGraph.restoreRootNode(useCase);
@@ -55,9 +55,9 @@ public class TestJsonEncodingUseCaseDiagram
 	private void initiGraph2()
 	{
 		UseCaseNode node1 = new UseCaseNode();
-		node1.getName().setText("Node1");
+		node1.setName("Node1");
 		UseCaseNode node2 = new UseCaseNode();
-		node2.getName().setText("Node2");
+		node2.setName("Node2");
 		
 		aGraph.restoreRootNode(node1);
 		aGraph.restoreRootNode(node2);

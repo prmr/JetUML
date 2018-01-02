@@ -39,9 +39,9 @@ public class TestJsonEncodingStateDiagram
 	private void initiGraph1()
 	{
 		StateNode node1 = new StateNode();
-		node1.getName().setText("Start");
+		node1.setName("Start");
 		StateNode node2 = new StateNode();
-		node2.getName().setText("End");
+		node2.setName("End");
 		InitialStateNode start = new InitialStateNode();
 		FinalStateNode end = new FinalStateNode();
 		StateTransitionEdge edge1 = new StateTransitionEdge();
@@ -65,9 +65,9 @@ public class TestJsonEncodingStateDiagram
 	private void initiGraph3()
 	{
 		StateNode node1 = new StateNode();
-		node1.getName().setText("Node1");
+		node1.setName("Node1");
 		StateNode node2 = new StateNode();
-		node2.getName().setText("Node2");
+		node2.setName("Node2");
 
 		StateTransitionEdge self1 = new StateTransitionEdge();
 		self1.setMiddleLabel("self1");
@@ -93,7 +93,7 @@ public class TestJsonEncodingStateDiagram
 	private void initiGraph2()
 	{
 		StateNode node1 = new StateNode();
-		node1.getName().setText("The Node");
+		node1.setName("The Node");
 		node1.moveTo(new Point(10,20));
 		aGraph.restoreRootNode(node1);
 	}
@@ -188,7 +188,7 @@ public class TestJsonEncodingStateDiagram
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", new MultiLineString("The Node")));
 		assertEquals(new Point(10,20), node1.position());
-		assertEquals("The Node", node1.getName().getText());
+		assertEquals("The Node", node1.getName());
 	}
 	
 	@Test

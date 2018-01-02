@@ -4,13 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
@@ -21,15 +19,12 @@ import ca.mcgill.cs.jetuml.views.StringViewer2;
  */
 public class FieldNodeView extends RectangleBoundedNodeView
 {
-	private static final MultiLineString EQUALS = new MultiLineString();
+	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
-	
-	static
-	{
-		EQUALS.setText(" = ");
-	}
+	private static final StringViewer2 VALUE_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
+	private static final StringViewer2 EQUALS_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -39,7 +34,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((FieldNode)node()).getName();
 	}
@@ -62,24 +57,24 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics2D);
 		final Rectangle bounds = getBounds();
-		StringViewer.draw(name(), pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		StringViewer.draw(EQUALS, pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
-		STRING_VIEWER.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
+		NAME_VIEWER.draw(name(), pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
+		VALUE_VIEWER.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
 	}
 	
 	private int leftWidth()
 	{
-		return StringViewer.getBounds(name()).getWidth();
+		return NAME_VIEWER.getBounds(name()).getWidth();
 	}
 	
 	private int midWidth()
 	{
-		return StringViewer.getBounds(EQUALS).getWidth();
+		return EQUALS_VIEWER.getBounds(EQUALS).getWidth();
 	}
 	
 	private int rightWidth()
 	{
-		int rightWidth = STRING_VIEWER.getBounds(value()).getWidth();
+		int rightWidth = VALUE_VIEWER.getBounds(value()).getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
@@ -91,8 +86,8 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		final int width = leftWidth() + midWidth() + rightWidth();
-		final int height = Math.max(StringViewer.getBounds(name()).getHeight(), 
-				Math.max(STRING_VIEWER.getBounds(value()).getHeight(), StringViewer.getBounds(EQUALS).getHeight()));
+		final int height = Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 
+				Math.max(VALUE_VIEWER.getBounds(value()).getHeight(), EQUALS_VIEWER.getBounds(EQUALS).getHeight()));
 		final Rectangle bounds = getBounds();
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), width, height));
 	}

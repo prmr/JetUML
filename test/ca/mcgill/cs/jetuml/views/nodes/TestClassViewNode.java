@@ -31,11 +31,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 
 public class TestClassViewNode
 {
@@ -110,12 +108,10 @@ public class TestClassViewNode
 	public void testComputeTop()
 	{
 		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("");
+		aNode1.setName("");
 		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setMethods("X");
@@ -123,12 +119,12 @@ public class TestClassViewNode
 		aNode1.setMethods("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("X\nX\nX");
+		aNode1.setName("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,48), ((ClassNodeView)aNode1.view()).computeTop());
-		name.setText("X\nX\nX\nX");
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("X");
+		aNode1.setName("X");
 		aNode1.setMethods("X");
 		aNode1.setAttributes("X");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeTop());
@@ -145,9 +141,7 @@ public class TestClassViewNode
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
 		
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		
@@ -155,7 +149,7 @@ public class TestClassViewNode
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
-		name.setText("X");
+		aNode1.setName("X");
 		aNode1.setMethods("X");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());

@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.ObjectNodeView;
@@ -36,15 +35,6 @@ public class ObjectNode extends NamedNode implements ParentNode
 {
 	private ArrayList<ChildNode> aFields = new ArrayList<>();
 
-	/**
-	 * Construct an object node with a default size.
-	 */
-	public ObjectNode()
-	{
-		setName(new MultiLineString(true));
-		getName().setUnderlined(true);
-	}
-	
 	@Override
 	protected NodeView generateView()
 	{

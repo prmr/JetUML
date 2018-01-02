@@ -4,12 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render a StateNode.
@@ -22,6 +21,7 @@ public class StateNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int ARC_SIZE = 20;
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -31,7 +31,7 @@ public class StateNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((StateNode)node()).getName();
 	}
@@ -41,7 +41,7 @@ public class StateNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics2D);
 		pGraphics2D.draw(getShape());
-		StringViewer.draw(name(), pGraphics2D, getBounds());
+		NAME_VIEWER.draw(name(), pGraphics2D, getBounds());
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class StateNodeView extends RectangleBoundedNodeView
 	@Override	
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = StringViewer.getBounds(name());
+		Rectangle bounds = NAME_VIEWER.getBounds(name());
 		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
 		setBounds(Grid.snapped(bounds));

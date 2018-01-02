@@ -3,7 +3,6 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import java.awt.Graphics2D;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -11,7 +10,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
@@ -26,7 +24,7 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_HEIGHT = 60;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, true, true);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, true, true);
 	
 	private int aTopHeight;
 	
@@ -38,7 +36,7 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((ObjectNode)node()).getName();
 	}
@@ -55,13 +53,13 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 		Rectangle top = getTopRectangle();
 		pGraphics2D.draw(Conversions.toRectangle2D(top));
 		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		StringViewer.draw(name(), pGraphics2D, top);
+		NAME_VIEWER.draw(name(), pGraphics2D, top);
 	}
 	
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle bounds = StringViewer.getBounds(name()); 
+		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
 		int leftWidth = 0;
 		int rightWidth = 0;
