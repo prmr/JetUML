@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -17,7 +16,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 
 /**
  * An object to render a package in a class diagram.
@@ -34,6 +33,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private static final int NAME_GAP = 3;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
+	private static final StringViewer2 CONTENTS_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
 	
 	private static final JLabel LABEL = new JLabel();
 	
@@ -56,7 +56,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		return ((PackageNode)node()).getName();
 	}
 	
-	private MultiLineString contents()
+	private String contents()
 	{
 		return ((PackageNode)node()).getContents();
 	}
@@ -87,7 +87,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		pGraphics2D.translate(-textX, -textY);        
      
 		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
-		StringViewer.draw(contents(), pGraphics2D, aBottom);
+		CONTENTS_VIEWER.draw(contents(), pGraphics2D, aBottom);
 	}
 	
 	@Override
@@ -153,7 +153,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 			}
 		}
 		
-		Rectangle contentsBounds = StringViewer.getBounds(contents());
+		Rectangle contentsBounds = CONTENTS_VIEWER.getBounds(contents());
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{

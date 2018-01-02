@@ -368,7 +368,7 @@ public class TestPersistenceService
 		List<ChildNode> children = node6.getChildren();
 		assertEquals(1, children.size());
 		ClassNode node7 = (ClassNode) children.get(0);
-		assertEquals("", node6.getContents().getText());
+		assertEquals("", node6.getContents());
 		assertEquals("Package", node6.getName());
 		assertNull(node6.getParent());
 		assertEquals(new Rectangle(275, 345, 100, 80), node6.view().getBounds()); // needs a layout to compute correct size

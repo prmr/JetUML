@@ -114,7 +114,7 @@ public class TestUsageScenariosClassDiagram
 		aInterfaceNode.setName("vehicle");
 		aInterfaceNode.setMethods("getPrice()");
 		aPackageNode.setName("object");
-		aPackageNode.getContents().setText("some stuff");
+		aPackageNode.setContents("some stuff");
 		aNoteNode.setName("some text...");
 		
 		// test node properties
@@ -122,7 +122,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(aClassNode.getMethods(), "setDriver()");
 		assertEquals(aInterfaceNode.getMethods(), "getPrice()");
 		assertEquals(aPackageNode.getName(), "object");
-		assertEquals(aPackageNode.getContents().getText(), "some stuff");
+		assertEquals(aPackageNode.getContents(), "some stuff");
 		assertEquals(aNoteNode.getName(), "some text...");
 	}
 	

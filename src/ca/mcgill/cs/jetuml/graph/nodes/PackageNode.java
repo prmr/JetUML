@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -36,7 +35,7 @@ import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 {
 	private String aName = "";
-	private MultiLineString aContents  = new MultiLineString();
+	private String aContents = "";
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
 	
@@ -68,7 +67,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
      * Sets the contents property value.
      * @param pContents the contents of this class
 	 */
-	public void setContents(MultiLineString pContents)
+	public void setContents(String pContents)
 	{
 		aContents = pContents;
 	}
@@ -90,7 +89,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
      * Gets the contents property value.
      * @return the contents of this class
 	 */
-	public MultiLineString getContents()
+	public String getContents()
 	{
 		return aContents;
 	}
@@ -99,7 +98,6 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	public PackageNode clone()
 	{
 		PackageNode cloned = (PackageNode) super.clone();
-		cloned.aContents = aContents.clone();
 		cloned.aContainedNodes = new ArrayList<>();
 		for( ChildNode child : aContainedNodes )
 		{
@@ -169,7 +167,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	{
 		Properties properties = super.properties();
 		properties.add("name", () -> aName, pName -> aName = (String)pName);
-		properties.add("contents", () -> aContents, pContents -> aContents.setText((String)pContents));
+		properties.add("contents", () -> aContents, pContents -> aContents = (String)pContents);
 		return properties;
 	}
 }
