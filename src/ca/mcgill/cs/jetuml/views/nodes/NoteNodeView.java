@@ -9,7 +9,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a NoteNode.
@@ -24,7 +24,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	private static final int FOLD_X = 8;
 	private static final int FOLD_Y = 8;
 	private static final Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // Pale yellow
-	private static final StringViewer2 NOTE_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer NOTE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.

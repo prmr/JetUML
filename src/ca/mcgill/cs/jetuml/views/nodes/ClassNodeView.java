@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an interface in a class diagram.
@@ -14,7 +14,7 @@ import ca.mcgill.cs.jetuml.views.StringViewer2;
  */
 public class ClassNodeView extends InterfaceNodeView
 {
-	private static final StringViewer2 STRING_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.

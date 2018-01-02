@@ -13,7 +13,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -27,7 +27,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
 	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, true);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
 	

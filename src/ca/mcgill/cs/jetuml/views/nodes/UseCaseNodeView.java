@@ -8,7 +8,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a UseCaseNode.
@@ -20,7 +20,7 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.

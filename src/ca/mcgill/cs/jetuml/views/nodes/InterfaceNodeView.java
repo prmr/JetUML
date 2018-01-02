@@ -8,7 +8,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an interface in a class diagram.
@@ -21,8 +21,8 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int DEFAULT_COMPARTMENT_HEIGHT = 20;
-	private static final StringViewer2 METHOD_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, true, false);
+	private static final StringViewer METHOD_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, true, false);
 	
 	/**
 	 * @param pNode The node to wrap.

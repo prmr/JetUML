@@ -9,7 +9,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render an actor in a use case diagram.
@@ -21,7 +21,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 48;
 	private static final int DEFAULT_HEIGHT = 64;
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	// Stick man
 	// CSOFF:

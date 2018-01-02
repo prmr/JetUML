@@ -16,7 +16,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a package in a class diagram.
@@ -33,7 +33,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private static final int NAME_GAP = 3;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringViewer2 CONTENTS_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
+	private static final StringViewer CONTENTS_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	private static final JLabel LABEL = new JLabel();
 	

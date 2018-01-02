@@ -9,7 +9,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.views.StringViewer2;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 
 /**
  * An object to render a FieldNode.
@@ -22,9 +22,9 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer2 VALUE_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
-	private static final StringViewer2 EQUALS_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
+	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
+	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
