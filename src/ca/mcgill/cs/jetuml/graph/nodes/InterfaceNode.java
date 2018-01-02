@@ -33,7 +33,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class InterfaceNode extends NamedNode implements ChildNode
 {
-	private MultiLineString aMethods;   
+	private String aMethods = "";   
 	private ParentNode aContainer;
 
 	/**
@@ -45,8 +45,6 @@ public class InterfaceNode extends NamedNode implements ChildNode
 		setName(new MultiLineString(true));
 		getName().setText("\u00ABinterface\u00BB\n");
 		getName().setJustification(MultiLineString.Align.CENTER);
-		aMethods = new MultiLineString();
-		aMethods.setJustification(MultiLineString.Align.LEFT);
 	}
 	
 	@Override
@@ -59,7 +57,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
      * Sets the methods property value.
      * @param pMethods the methods of this interface
 	 */
-	public void setMethods(MultiLineString pMethods)
+	public void setMethods(String pMethods)
 	{
 		aMethods = pMethods;
 	}
@@ -68,19 +66,11 @@ public class InterfaceNode extends NamedNode implements ChildNode
      * Gets the methods property value.
      * @return the methods of this interface
 	 */
-	public MultiLineString getMethods()
+	public String getMethods()
 	{
 		return aMethods;
 	}
 
-	@Override
-	public InterfaceNode clone()
-	{
-		InterfaceNode cloned = (InterfaceNode) super.clone();
-		cloned.aMethods = aMethods.clone();
-		return cloned;
-	}
-	
 	@Override
 	public ParentNode getParent()
 	{
@@ -104,7 +94,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("methods", () -> aMethods, pMethods -> aMethods.setText((String)pMethods));
+		properties.add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
 		return properties;
 	}
 }

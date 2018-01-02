@@ -67,9 +67,7 @@ public class TestInterfaceNodeView
 	public void testNeedsBottom()
 	{
 		assertFalse(((InterfaceNodeView)aNode1.view()).needsBottomCompartment());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertTrue(((InterfaceNodeView)aNode1.view()).needsBottomCompartment());
 	}
 	
@@ -84,15 +82,13 @@ public class TestInterfaceNodeView
 	public void testComputeBottom()
 	{
 		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo\nFoo");
+		aNode1.setMethods("Foo\nFoo");
 		assertEquals(new Rectangle(0,0,100,32), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo");
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		assertEquals(new Rectangle(0,0,350,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
 	}
 	
@@ -108,11 +104,9 @@ public class TestInterfaceNodeView
 		name.setText("");
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X");
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
-		methods.setText("X\nX\nX");
+		aNode1.setMethods("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
 		name.setText("X\nX\nX");
@@ -135,9 +129,7 @@ public class TestInterfaceNodeView
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X\nX");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		

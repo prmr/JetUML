@@ -63,11 +63,6 @@ public class TestClassNode
 		assertTrue(name.isBold());
 		assertFalse(name.isUnderlined());
 		assertEquals("", name.getText());
-		MultiLineString methods = aNode1.getMethods();
-		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
-		assertFalse(methods.isBold());
-		assertFalse(methods.isUnderlined());
-		assertEquals("", methods.getText());
 		String attributes = aNode1.getAttributes();
 		assertEquals("", attributes);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
@@ -108,12 +103,8 @@ public class TestClassNode
 		assertFalse(name.isUnderlined());
 		assertEquals("", name.getText());
 		assertFalse(name == aNode1.getName() );
-		MultiLineString methods = clone.getMethods();
-		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
-		assertFalse(methods.isBold());
-		assertFalse(methods.isUnderlined());
-		assertEquals("", methods.getText());
-		assertFalse(methods == aNode1.getMethods() );
+		String methods = clone.getMethods();
+		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
 		assertTrue(clone.view().getBounds().equals(aNode1.view().getBounds()));
 		assertTrue(clone.getParent().equals(aNode1.getParent()));

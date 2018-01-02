@@ -110,17 +110,17 @@ public class TestUsageScenariosClassDiagram
 		
 		// set up the properties for the nodes
 		aClassNode.getName().setText("truck");
-		aClassNode.getMethods().setText("setDriver()");
+		aClassNode.setMethods("setDriver()");
 		aInterfaceNode.getName().setText("vehicle");
-		aInterfaceNode.getMethods().setText("getPrice()");
+		aInterfaceNode.setMethods("getPrice()");
 		aPackageNode.setName("object");
 		aPackageNode.getContents().setText("some stuff");
 		aNoteNode.getName().setText("some text...");
 		
 		// test node properties
 		assertEquals(aClassNode.getName().getText(), "truck");
-		assertEquals(aClassNode.getMethods().getText(), "setDriver()");
-		assertEquals(aInterfaceNode.getMethods().getText(), "getPrice()");
+		assertEquals(aClassNode.getMethods(), "setDriver()");
+		assertEquals(aInterfaceNode.getMethods(), "getPrice()");
 		assertEquals(aPackageNode.getName(), "object");
 		assertEquals(aPackageNode.getContents().getText(), "some stuff");
 		assertEquals(aNoteNode.getName().getText(), "some text...");
