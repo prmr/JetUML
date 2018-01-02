@@ -25,6 +25,7 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -45,15 +46,6 @@ public class AssociationEdge extends ClassRelationshipEdge
 	{None, Start, End, Both}
 	
 	private Directionality aDirectionality = Directionality.None;
-	
-	/**
-	 * Create a new association edge with no directionality.
-	 */
-	public AssociationEdge()
-	{
-		properties().add("directionality", () -> aDirectionality, 
-				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
-	}
 	
 	@Override
 	protected EdgeView generateView()
@@ -77,6 +69,15 @@ public class AssociationEdge extends ClassRelationshipEdge
 	public Directionality getDirectionality()
 	{
 		return aDirectionality;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.add("directionality", () -> aDirectionality, 
+				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
+		return properties;
 	}
 	
 	private ArrowHead getStartArrowHead()

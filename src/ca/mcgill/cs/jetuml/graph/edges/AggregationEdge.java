@@ -54,7 +54,6 @@ public class AggregationEdge extends ClassRelationshipEdge
 	 */
 	public AggregationEdge( Type pType )
 	{
-		this();
 		aType = pType;
 	}
 	
@@ -62,9 +61,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	 * Creates a plain aggregation.
 	 */
 	public AggregationEdge()
-	{
-		properties().add("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
-	}
+	{}
 	
 	@Override
 	protected EdgeView generateView()

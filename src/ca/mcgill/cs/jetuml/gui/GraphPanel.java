@@ -92,6 +92,7 @@ public class GraphPanel extends JPanel
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
+	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -152,8 +153,7 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		PropertyChangeTracker tracker = new PropertyChangeTracker();
-		tracker.startTrackingPropertyChange(edited);
+		aPropertyChangeTracker.startTrackingPropertyChange(edited);
 		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
 		{
 			@Override
@@ -171,7 +171,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showOptionDialog(this, sheet, 
 				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
-		CompoundCommand command = tracker.stopTrackingPropertyChange(aGraph);
+		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
 		if(command.size() > 0)
 		{
 			aUndoManager.add(command);
@@ -711,7 +711,7 @@ public class GraphPanel extends JPanel
 				handleEdgeStart(pEvent);
 			}
 			Point point = getMousePoint(pEvent);
-			aLastMousePoint = new Point2D.Double(point.getX(), point.getY()); 
+			aLastMousePoint = new Point2D.Double(point.getX(), point.getY()); // TODO move to geom.point
 			aMouseDownPoint = aLastMousePoint;
 			repaint();
 		}

@@ -1,8 +1,8 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
@@ -11,7 +11,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  * @author Martin P. Robillard
  *
  */
-public abstract class AbstractNode extends AbstractGraphElement implements Node
+public abstract class AbstractNode implements Node
 {
 	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
@@ -23,8 +23,6 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	protected AbstractNode()
 	{
 		aView = generateView();
-		properties().addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
-		properties().addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
 	}
 	
 	@Override
@@ -79,5 +77,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	public String toString()
 	{
 		return getClass().getSimpleName() + " " + view().getBounds();
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = new Properties();
+		properties.addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
+		properties.addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
+		return properties;
 	}
 }

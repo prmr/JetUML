@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -41,7 +42,6 @@ public class FieldNode extends NamedNode implements ChildNode
 	{
 		getName().setJustification(MultiLineString.Align.RIGHT);
 		aValue = new MultiLineString();
-		properties().add("value", () -> aValue, pValue -> aValue.setText((String) pValue));
    }
 	
 	@Override
@@ -111,6 +111,14 @@ public class FieldNode extends NamedNode implements ChildNode
 	public boolean requiresParent()
 	{
 		return true;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.add("value", () -> aValue, pValue -> aValue.setText((String) pValue));
+		return properties;
 	}
 }
 

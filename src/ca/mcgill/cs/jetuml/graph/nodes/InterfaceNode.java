@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -46,7 +47,6 @@ public class InterfaceNode extends NamedNode implements ChildNode
 		getName().setJustification(MultiLineString.Align.CENTER);
 		aMethods = new MultiLineString();
 		aMethods.setJustification(MultiLineString.Align.LEFT);
-		properties().add("methods", () -> aMethods, pMethods -> aMethods.setText((String)pMethods));
 	}
 	
 	@Override
@@ -98,5 +98,13 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	public boolean requiresParent()
 	{
 		return false;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.add("methods", () -> aMethods, pMethods -> aMethods.setText((String)pMethods));
+		return properties;
 	}
 }

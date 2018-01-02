@@ -26,6 +26,7 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
@@ -38,15 +39,6 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	private MultiLineString aContents  = new MultiLineString();
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
-	
-	/**
-	 * Creates a PackageNode with an empty name and content.
-	 */
-	public PackageNode()
-	{
-		properties().add("name", () -> aName, pName -> aName = (String)pName);
-		properties().add("contents", () -> aContents, pContents -> aContents.setText((String)pContents));
-	}
 	
 	@Override
 	protected NodeView generateView()
@@ -170,5 +162,14 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	public boolean requiresParent()
 	{
 		return false;
+	}
+	
+	@Override
+	public Properties properties()
+	{
+		Properties properties = super.properties();
+		properties.add("name", () -> aName, pName -> aName = (String)pName);
+		properties.add("contents", () -> aContents, pContents -> aContents.setText((String)pContents));
+		return properties;
 	}
 }
