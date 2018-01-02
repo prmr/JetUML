@@ -79,7 +79,7 @@ public class ClassNode extends InterfaceNode
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("attributes", () -> aAttributes, pAttributes -> aAttributes.setText((String)pAttributes));
+		properties.addAt("attributes", () -> aAttributes, pAttributes -> aAttributes.setText((String)pAttributes), 3);
 		return properties;
 	}
 }

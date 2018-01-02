@@ -48,7 +48,7 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	public Properties properties()
 	{
 		Properties properties = super.properties();
-		properties.add("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel);
+		properties.addAt("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel, 0);
 		properties.add("endLabel", ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
 		return properties;
 	}
