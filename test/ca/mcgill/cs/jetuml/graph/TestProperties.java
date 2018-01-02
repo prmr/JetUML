@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
+import ca.mcgill.cs.jetuml.views.ArrowHead;
 
 public class TestProperties
 {
@@ -27,12 +27,12 @@ public class TestProperties
 		aProperties.add("A", () -> "A", CONSUMER);
 		aProperties.add("B", () -> 100, CONSUMER);
 		aProperties.add("C", () -> false, CONSUMER);
-		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("D", () -> ArrowHead.DIAMOND, CONSUMER);
 		assertEquals(4, size());
 		assertEquals("A", (String) aProperties.get("A"));
 		assertEquals(100, (int) aProperties.get("B"));
 		assertEquals(false, (boolean) aProperties.get("C"));
-		assertEquals(MultiLineString.Align.CENTER, (MultiLineString.Align) aProperties.get("D"));
+		assertEquals(ArrowHead.DIAMOND, (ArrowHead) aProperties.get("D"));
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class TestProperties
 		aProperties.add("A", () -> "A", CONSUMER);
 		aProperties.add("B", () -> 100, CONSUMER);
 		aProperties.add("C", () -> false, CONSUMER);
-		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("D", () -> ArrowHead.DIAMOND, CONSUMER);
 		Iterator<String> iterator = aProperties.iterator();
 		assertEquals("A", iterator.next());
 		assertEquals("B", iterator.next());
@@ -55,7 +55,7 @@ public class TestProperties
 		aProperties.add("A", () -> "A", CONSUMER);
 		aProperties.add("B", () -> 100, CONSUMER);
 		aProperties.add("C", () -> false, CONSUMER);
-		aProperties.add("D", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("D", () -> ArrowHead.DIAMOND, CONSUMER);
 		aProperties.add("A", () -> "AA", CONSUMER);
 		aProperties.add("B", () -> 10000, CONSUMER);
 		Iterator<String> iterator = aProperties.iterator();
@@ -156,9 +156,9 @@ public class TestProperties
 		aProperties.add("A", () -> false, CONSUMER);
 		assertEquals(1, size());
 		assertEquals(false, (boolean) aProperties.get("A"));
-		aProperties.add("A", () -> MultiLineString.Align.CENTER, CONSUMER);
+		aProperties.add("A", () -> ArrowHead.DIAMOND, CONSUMER);
 		assertEquals(1, size());
-		assertEquals(MultiLineString.Align.CENTER, (MultiLineString.Align) aProperties.get("A"));
+		assertEquals(ArrowHead.DIAMOND, (ArrowHead) aProperties.get("A"));
 	}
 	
 	@Test

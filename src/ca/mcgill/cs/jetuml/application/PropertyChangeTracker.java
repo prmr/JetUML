@@ -81,29 +81,12 @@ public class PropertyChangeTracker
 		{
 			try
 			{
-				return copyIfNecessary(getter.invoke( aEdited ));
+				return getter.invoke( aEdited );
 			}
 			catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 			{
 				return null;
 			}
-		}
-	}
-	
-	/*
-	 * Encodes domain knowledge about which types of objects need to be 
-	 * copied and which can safely be shared. If an object is mutable,
-	 * it is copied.
-	 */
-	private static Object copyIfNecessary(Object pObject)
-	{
-		if(pObject instanceof MultiLineString)
-		{
-			return ((MultiLineString) pObject).clone();
-		}
-		else
-		{
-			return pObject;
 		}
 	}
 	
@@ -126,7 +109,7 @@ public class PropertyChangeTracker
 			{
 				if( descriptors[i].getName().equals(pProperty))
 				{
-					return new PropertyChangeCommand(pGraph, pElement, copyIfNecessary(pOldValue), copyIfNecessary(pNewValue), i);
+					return new PropertyChangeCommand(pGraph, pElement, pOldValue, pNewValue, i);
 				}
 			}
 			return null;
@@ -156,7 +139,7 @@ public class PropertyChangeTracker
 				Object propVal = getPropertyValue(descriptors[i]);
 				if(!equals(propVal, aPropertyValues[i]))
 				{
-					command.add(new PropertyChangeCommand(pGraph, aEdited, aPropertyValues[i], copyIfNecessary(propVal), i));
+					command.add(new PropertyChangeCommand(pGraph, aEdited, aPropertyValues[i], propVal, i));
 				}
 				
 			}

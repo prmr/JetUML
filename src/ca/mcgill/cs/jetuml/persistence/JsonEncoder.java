@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
@@ -98,7 +97,7 @@ public final class JsonEncoder
 		for( String key : pProperties )
 		{
 			Object value = pProperties.get(key);
-			if( value instanceof String || value instanceof Enum || value instanceof MultiLineString)
+			if( value instanceof String || value instanceof Enum )
 			{
 				object.put(key, value.toString());
 			}

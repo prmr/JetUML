@@ -35,8 +35,6 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker.PropertyChangeCommand;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
@@ -175,17 +173,13 @@ public class TestPropertyChangeTracker
 	@Test
 	public void testCreatePropertyChangeCommandValid()
 	{
-		MultiLineString old = new MultiLineString();
-		old.setText("old");
-		MultiLineString newValue = new MultiLineString();
-		old.setText("new");
 		ClassNode node = new ClassNode();
 		PropertyChangeCommand command = PropertyChangeTracker.createPropertyChangeCommand(new ClassDiagramGraph(), 
-				node, "name", old, newValue);
+				node, "name", "old", "new");
 		assertEquals("name", getPropertyName(command, node));
 		assertEquals(node, getFieldValue(aObjectField, command));
-		assertEquals(old, getFieldValue(aOldValueField, command));
-		assertEquals(newValue, getFieldValue(aNewValueField, command));
+		assertEquals("old", getFieldValue(aOldValueField, command));
+		assertEquals("new", getFieldValue(aNewValueField, command));
 	}
 	
 	@Test

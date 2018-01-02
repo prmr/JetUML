@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
@@ -125,8 +124,8 @@ public class TestJsonEncodingUseCaseDiagram
 		initiGraph1();
 		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build("name", new MultiLineString("Mr. Bob")));
-		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", new MultiLineString("Do it")));
+		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build("name", "Mr. Bob"));
+		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Do it"));
 		UseCaseAssociationEdge edge = (UseCaseAssociationEdge) findEdge(graph, UseCaseAssociationEdge.class, build());
 		
 		assertSame(edge.getStart(), actor);
@@ -139,8 +138,8 @@ public class TestJsonEncodingUseCaseDiagram
 		initiGraph2();
 		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", new MultiLineString("Node1")));
-		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", new MultiLineString("Node2")));
+		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));
+		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node2"));
 
 		UseCaseDependencyEdge edge = (UseCaseDependencyEdge) findEdge(graph, UseCaseDependencyEdge.class, build("dependencyType", UseCaseDependencyEdge.Type.Extend));
 		

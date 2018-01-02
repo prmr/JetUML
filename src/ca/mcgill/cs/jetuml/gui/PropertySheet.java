@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.AWTKeyStroke;
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -37,14 +36,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Properties;
 
@@ -120,10 +116,10 @@ public class PropertySheet extends JPanel
 		{
 			return createStringEditor(pProperties, pProperty);
 		}
-		else if( pProperties.get(pProperty) instanceof MultiLineString )
-		{
-			return createMultiLineStringEditor(pProperties, pProperty);
-		}
+//		else if( pProperties.get(pProperty) instanceof MultiLineString )
+//		{
+//			return createMultiLineStringEditor(pProperties, pProperty);
+//		}
 		else if(  pProperties.get(pProperty) instanceof Enum )
 		{
 			return createEnumEditor(pProperties, pProperty);
@@ -135,34 +131,34 @@ public class PropertySheet extends JPanel
 		return new JTextField();
 	}
 	
-	private Component createMultiLineStringEditor(Properties pProperties, String pProperty)
-	{
-		final MultiLineString value = (MultiLineString) pProperties.get(pProperty);
-		final int rows = 5;
-		final int columns = 30;
-		final JTextArea textArea = new JTextArea(rows, columns);
-
-		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
-		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
-
-		textArea.setText(value.getText());
-		textArea.getDocument().addDocumentListener(new DocumentListener()
-		{
-			public void insertUpdate(DocumentEvent pEvent) 
-			{
-				value.setText(textArea.getText());
-				aListener.propertyChanged();
-			}
-			public void removeUpdate(DocumentEvent pEvent) 
-			{
-				value.setText(textArea.getText());
-				aListener.propertyChanged();
-			}
-			public void changedUpdate(DocumentEvent pEvent) 
-			{}
-		});
-		return new JScrollPane(textArea);
-	}
+//	private Component createMultiLineStringEditor(Properties pProperties, String pProperty)
+//	{
+//		final MultiLineString value = (MultiLineString) pProperties.get(pProperty);
+//		final int rows = 5;
+//		final int columns = 30;
+//		final JTextArea textArea = new JTextArea(rows, columns);
+//
+//		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
+//		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
+//
+//		textArea.setText(value.getText());
+//		textArea.getDocument().addDocumentListener(new DocumentListener()
+//		{
+//			public void insertUpdate(DocumentEvent pEvent) 
+//			{
+//				value.setText(textArea.getText());
+//				aListener.propertyChanged();
+//			}
+//			public void removeUpdate(DocumentEvent pEvent) 
+//			{
+//				value.setText(textArea.getText());
+//				aListener.propertyChanged();
+//			}
+//			public void changedUpdate(DocumentEvent pEvent) 
+//			{}
+//		});
+//		return new JScrollPane(textArea);
+//	}
 	
 	private Component createStringEditor(Properties pProperties, String pProperty)
 	{
