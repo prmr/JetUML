@@ -80,11 +80,9 @@ public interface GraphModificationListener
 	 * Notifies implementers that a property of a graph element has
 	 * a new value.
 	 * 
-	 * @param pGraph The target graph.
 	 * @param pElement The element whose property changed.
 	 * @param pProperty The name of the changed property.
 	 * @param pOldValue The value of the property before the change.
-	 * @param pNewValue The value of the property after the change.
 	 */
-	void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue);
+	void propertyChanged(GraphElement pElement, String pProperty, Object pOldValue);
 }

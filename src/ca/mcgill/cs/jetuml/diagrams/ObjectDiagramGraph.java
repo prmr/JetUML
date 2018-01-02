@@ -158,7 +158,7 @@ public class ObjectDiagramGraph extends Graph
 		{
 			String oldValue = ((FieldNode)pOrigin).getValue();
 			((FieldNode)pOrigin).setValue("");
-			notifyPropertyChanged(pOrigin, "value", oldValue, ((FieldNode)pOrigin).getValue());
+			notifyPropertyChanged(pOrigin, "value", oldValue);
 		}
 	}
 	

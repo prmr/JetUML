@@ -49,6 +49,7 @@ import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
+import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
@@ -92,7 +93,6 @@ public class GraphPanel extends JPanel
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
-	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -153,7 +153,8 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		aPropertyChangeTracker.startTrackingPropertyChange(edited);
+		PropertyChangeTracker tracker = new PropertyChangeTracker(edited);
+		tracker.startTracking();
 		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
 		{
 			@Override
@@ -171,7 +172,7 @@ public class GraphPanel extends JPanel
 		JOptionPane.showOptionDialog(this, sheet, 
 				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
-		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
+		CompoundCommand command = tracker.stopTracking();
 		if(command.size() > 0)
 		{
 			aUndoManager.add(command);
@@ -885,9 +886,9 @@ public class GraphPanel extends JPanel
 		}
 
 		@Override
-		public void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue)
+		public void propertyChanged(GraphElement pElement, String pProperty, Object pOldValue)
 		{
-			aUndoManager.add(PropertyChangeTracker.createPropertyChangeCommand(pGraph, pElement, pProperty, pOldValue, pNewValue));
+			aUndoManager.add(new ChangePropertyCommand(pElement.properties(), pProperty, pOldValue, pElement.properties().get(pProperty)));
 		}
 	}
 }

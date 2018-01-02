@@ -17,6 +17,9 @@ import java.util.function.Supplier;
  * object. The class hides the delegation to the setter and getter by allowing
  * client code to directly get or set the value of a property.
  * 
+ * It is very important that the type of a property, returned by the getter
+ * and set by the setter, be immutable and non-null.
+ * 
  * Adding a property that already exists will silently override the previous getter
  * and setter for this property.
  * 

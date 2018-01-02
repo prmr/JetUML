@@ -38,7 +38,7 @@ public class TestChangePropertyCommand
     {
         aProperties = new Properties();
         aProperties.add("test", () -> aValue, value -> aValue = (String) value);
-        aCommand = new ChangePropertyCommand(aProperties, "test",  "TWO");
+        aCommand = new ChangePropertyCommand(aProperties, "test",  "ONE", "TWO");
     }
 
     @Test

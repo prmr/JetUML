@@ -19,15 +19,16 @@ public class ChangePropertyCommand implements Command
 	 * 
 	 * @param pProperties The properties object containing the property changed.
 	 * @param pProperty The name of the changed property.
-	 * @param pNewValue The new value for the property.
+	 * @param pOldValue The former value for the property.
+	 * @param pNewValue The value the property should have after executing the command
 	 * @pre pProperties != null && pProperty != null && pOldValue != null && pNewValue != null
 	 */
-	public ChangePropertyCommand( Properties pProperties, String pProperty, Object pNewValue)
+	public ChangePropertyCommand( Properties pProperties, String pProperty, Object pOldValue, Object pNewValue)
 	{
-		assert pProperties != null && pProperty != null && pNewValue != null;
+		assert pProperties != null && pProperty != null && pOldValue != null;
 		aProperties = pProperties;
 		aProperty = pProperty;
-		aOldValue = pProperties.get(pProperty);
+		aOldValue = pOldValue;
 		aNewValue = pNewValue;
 	}
 	
