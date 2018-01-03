@@ -10,8 +10,11 @@ import java.util.function.Supplier;
  * A class to externalize the properties of an object into a separate
  * object. 
  * 
- * Adding a property that already exists will silently override the previous getter
- * and setter for this property.
+ * It is not possible to overwrite properties. Adding a property with a
+ * name equal to the name of a property that already exists will silently
+ * do nothing. It is also not possible to change a property once it's 
+ * added to a Properties object. Properties objects are intended to be
+ * constructed once, then queried only.
  * 
  * This class provides support for storing properties in a meaningful order. 
  * By default, this is the order of insertion. However, use of the method <code>addAt</code>
