@@ -86,7 +86,7 @@ public abstract class Graph
 	{
 		if( aModificationListener != null )
 		{
-			aModificationListener.propertyChanged(pElement, pProperty, pOldValue);
+			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
 		}
 	}
 	

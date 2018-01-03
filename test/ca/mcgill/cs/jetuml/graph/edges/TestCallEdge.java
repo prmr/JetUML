@@ -1,12 +1,10 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import ca.mcgill.cs.jetuml.graph.Properties;
 
 public class TestCallEdge
 {
@@ -17,13 +15,12 @@ public class TestCallEdge
 		assertFalse(edge.isSignal());
 		edge.setSignal(true);
 		assertTrue(edge.isSignal());
-		Properties properties = edge.properties();
-		assertTrue((boolean) properties.get("signal"));
-		properties.set("signal", false);
-		assertFalse((boolean) properties.get("signal"));
+		assertTrue((boolean) edge.properties().get("signal").get());
+		edge.properties().get("signal").set(false);
+		assertFalse((boolean) edge.properties().get("signal").get());
 		assertFalse(edge.isSignal());
 		
-		properties.set("middleLabel", "Foo");
+		edge.properties().get("middleLabel").set("Foo");
 		assertEquals("Foo", edge.getMiddleLabel());
 	}
 	
@@ -33,10 +30,9 @@ public class TestCallEdge
 		CallEdge edge = new CallEdge();
 		CallEdge clone = (CallEdge) edge.clone();
 		
-		Properties properties = edge.properties();
-		properties.set("middleLabel", "Foo");
+		edge.properties().get("middleLabel").set("Foo");
 		
-		assertEquals("Foo", edge.properties().get("middleLabel"));
-		assertEquals("", clone.properties().get("middleLabel"));
+		assertEquals("Foo", edge.properties().get("middleLabel").get());
+		assertEquals("", clone.properties().get("middleLabel").get());
 	}
 }

@@ -24,15 +24,15 @@ public class TestCallNode
 	{
 		Properties properties = aNode.properties();
 		
-		assertEquals(false, properties.get("openBottom"));
-		assertEquals(0, properties.get("x"));
-		assertEquals(0, properties.get("y"));
+		assertEquals(false, properties.get("openBottom").get());
+		assertEquals(0, properties.get("x").get());
+		assertEquals(0, properties.get("y").get());
 		
 		aNode.setOpenBottom(true);
 		aNode.translate(10, 20);
 		properties = aNode.properties();
-		assertEquals(true, properties.get("openBottom"));
-		assertEquals(10, properties.get("x"));
-		assertEquals(20, properties.get("y"));
+		assertEquals(true, properties.get("openBottom").get());
+		assertEquals(10, properties.get("x").get());
+		assertEquals(20, properties.get("y").get());
 	}
 }

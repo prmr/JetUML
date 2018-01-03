@@ -38,19 +38,19 @@ public class TestChangePropertyCommand
     {
         aProperties = new Properties();
         aProperties.add("test", () -> aValue, value -> aValue = (String) value);
-        aCommand = new ChangePropertyCommand(aProperties, "test",  "ONE", "TWO");
+        aCommand = new ChangePropertyCommand(aProperties.get("test"),  "ONE", "TWO");
     }
 
     @Test
     public void testExecuteUndo() 
     {
         aCommand.execute();
-        assertEquals("TWO", aProperties.get("test"));
+        assertEquals("TWO", aProperties.get("test").get());
         aCommand.undo();
-        assertEquals("ONE", aProperties.get("test"));
+        assertEquals("ONE", aProperties.get("test").get());
         aCommand.execute();
-        assertEquals("TWO", aProperties.get("test"));
+        assertEquals("TWO", aProperties.get("test").get());
         aCommand.undo();
-        assertEquals("ONE", aProperties.get("test"));
+        assertEquals("ONE", aProperties.get("test").get());
     }
 }

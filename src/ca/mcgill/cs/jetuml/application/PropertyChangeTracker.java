@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Tracks modification to the properties of a GraphElement.
@@ -56,9 +57,9 @@ public class PropertyChangeTracker
 	 */
 	public void startTracking()
 	{
-		for( String property : aProperties )
+		for( Property property : aProperties )
 		{
-			aOldValues.put(property, aProperties.get(property));
+			aOldValues.put(property.getName(), property.get());
 		}
 	}
 	
@@ -72,11 +73,11 @@ public class PropertyChangeTracker
 	public CompoundCommand stopTracking()
 	{
 		CompoundCommand command = new CompoundCommand();
-		for( String property : aProperties )
+		for( Property property : aProperties )
 		{
-			if( !aOldValues.get(property).equals(aProperties.get(property)))
+			if( !aOldValues.get(property.getName()).equals(property.get()))
 			{
-				command.add(new ChangePropertyCommand(aProperties, property, aOldValues.get(property), aProperties.get(property)));
+				command.add(new ChangePropertyCommand(property, aOldValues.get(property.getName()), property.get()));
 			}
 		}
 		return command;

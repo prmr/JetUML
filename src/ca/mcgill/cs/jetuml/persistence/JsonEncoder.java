@@ -10,6 +10,7 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 
@@ -94,20 +95,20 @@ public final class JsonEncoder
 	private static JSONObject toJSONObject(Properties pProperties)
 	{
 		JSONObject object = new JSONObject();
-		for( String key : pProperties )
+		for( Property property : pProperties )
 		{
-			Object value = pProperties.get(key);
+			Object value = property.get();
 			if( value instanceof String || value instanceof Enum )
 			{
-				object.put(key, value.toString());
+				object.put(property.getName(), value.toString());
 			}
 			else if( value instanceof Integer)
 			{
-				object.put(key, (int) value);
+				object.put(property.getName(), (int) value);
 			}
 			else if( value instanceof Boolean)
 			{
-				object.put(key, (boolean) value);
+				object.put(property.getName(), (boolean) value);
 			}
 		}
 		return object;

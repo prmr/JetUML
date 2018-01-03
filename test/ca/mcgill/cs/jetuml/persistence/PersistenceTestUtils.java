@@ -11,6 +11,7 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Utilities to facilitate writing tests for the persistence
@@ -55,15 +56,15 @@ final class PersistenceTestUtils
 		{
 			boolean match = true;
 			JSONObject object = pArray.getJSONObject(i);
-			for( String key : pProperties )
+			for( Property property : pProperties )
 			{
-				if( !object.has(key))
+				if( !object.has(property.getName()))
 				{
 					match = false;
 				}
 				else
 				{
-					if(!object.get(key).equals(pProperties.get(key)))
+					if(!object.get(property.getName()).equals(property.get()))
 					{
 						match = false;
 					}
@@ -87,9 +88,9 @@ final class PersistenceTestUtils
 			{
 				boolean match = true;
 				Properties nodeProperties = node.properties();
-				for( String key : pProperties )
+				for( Property property : pProperties )
 				{
-					if( !nodeProperties.get(key).toString().equals(pProperties.get(key).toString()))
+					if( !nodeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;
@@ -113,9 +114,9 @@ final class PersistenceTestUtils
 			{
 				boolean match = true;
 				Properties edgeProperties = edge.properties();
-				for( String key : pProperties )
+				for( Property property : pProperties )
 				{
-					if( !edgeProperties.get(key).equals(pProperties.get(key)))
+					if( !edgeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;

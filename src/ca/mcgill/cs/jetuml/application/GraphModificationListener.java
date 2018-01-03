@@ -22,8 +22,8 @@ package ca.mcgill.cs.jetuml.application;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Specifies a list of callback methods for any object
@@ -80,9 +80,8 @@ public interface GraphModificationListener
 	 * Notifies implementers that a property of a graph element has
 	 * a new value.
 	 * 
-	 * @param pElement The element whose property changed.
-	 * @param pProperty The name of the changed property.
+	 * @param pProperty The changed property.
 	 * @param pOldValue The value of the property before the change.
 	 */
-	void propertyChanged(GraphElement pElement, String pProperty, Object pOldValue);
+	void propertyChanged(Property pProperty, Object pOldValue);
 }

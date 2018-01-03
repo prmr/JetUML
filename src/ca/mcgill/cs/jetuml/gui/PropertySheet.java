@@ -45,7 +45,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
@@ -97,12 +97,12 @@ public class PropertySheet extends JPanel
 		assert pElement != null;
 		aListener = pListener;
 		setLayout(new FormLayout());
-		for( String property : pElement.properties() )
+		for( Property property : pElement.properties() )
 		{
 			Component editor = getEditorComponent(pElement, property);
-			if(pElement.properties().isVisible(property) && editor != null )
+			if(property.isVisible() && editor != null )
 			{
-				add(new JLabel(getPropertyName(pElement.getClass(), property)));
+				add(new JLabel(getPropertyName(pElement.getClass(), property.getName())));
 				add(editor);
 			}
 		}
@@ -116,29 +116,28 @@ public class PropertySheet extends JPanel
 		return getComponentCount() == 0;
 	}
 	
-	private Component getEditorComponent(GraphElement pElement, String pProperty)   
+	private Component getEditorComponent(GraphElement pElement, Property pProperty)   
 	{      
-		Properties properties = pElement.properties();
-		if( properties.get(pProperty) instanceof String )
+		if( pProperty.get() instanceof String )
 		{
-			if( extended(pElement, pProperty))
+			if( extended(pElement, pProperty.getName()))
 			{
-				return createExtendedStringEditor(properties, pProperty);
+				return createExtendedStringEditor(pProperty);
 			}
 			else
 			{
-				return createStringEditor(properties, pProperty);
+				return createStringEditor(pProperty);
 			}
 		}
-		else if(  properties.get(pProperty) instanceof Enum )
+		else if( pProperty.get() instanceof Enum )
 		{
-			return createEnumEditor(properties, pProperty);
+			return createEnumEditor(pProperty);
 		}
-		else if( properties.get(pProperty) instanceof Boolean)
+		else if( pProperty.get() instanceof Boolean)
 		{
-			return createBooleanEditor(properties, pProperty);
+			return createBooleanEditor(pProperty);
 		}
-		return new JTextField();
+		return null;
 	}
 	
 	/*
@@ -152,7 +151,7 @@ public class PropertySheet extends JPanel
 				pElement.getClass() == NoteNode.class;
 	} // CSON:
 	
-	private Component createExtendedStringEditor(Properties pProperties, String pProperty)
+	private Component createExtendedStringEditor(Property pProperty)
 	{
 		final int rows = 5;
 		final int columns = 30;
@@ -161,17 +160,17 @@ public class PropertySheet extends JPanel
 		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
 		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
 
-		textArea.setText((String) pProperties.get(pProperty));
+		textArea.setText((String) pProperty.get());
 		textArea.getDocument().addDocumentListener(new DocumentListener()
 		{
 			public void insertUpdate(DocumentEvent pEvent) 
 			{
-				pProperties.set(pProperty, textArea.getText());
+				pProperty.set(textArea.getText());
 				aListener.propertyChanged();
 			}
 			public void removeUpdate(DocumentEvent pEvent) 
 			{
-				pProperties.set(pProperty, textArea.getText());
+				pProperty.set(textArea.getText());
 				aListener.propertyChanged();
 			}
 			public void changedUpdate(DocumentEvent pEvent) 
@@ -180,19 +179,19 @@ public class PropertySheet extends JPanel
 		return new JScrollPane(textArea);
 	}
 	
-	private Component createStringEditor(Properties pProperties, String pProperty)
+	private Component createStringEditor(Property pProperty)
 	{
-		JTextField textField = new JTextField((String) pProperties.get(pProperty), TEXT_FIELD_WIDTH);
+		JTextField textField = new JTextField((String) pProperty.get(), TEXT_FIELD_WIDTH);
 		textField.getDocument().addDocumentListener(new DocumentListener()
         	{
 				public void insertUpdate(DocumentEvent pEvent) 
 				{
-					pProperties.set(pProperty, textField.getText());
+					pProperty.set(textField.getText());
 					aListener.propertyChanged();
 				}
 				public void removeUpdate(DocumentEvent pEvent) 
 				{
-					pProperties.set(pProperty, textField.getText());
+					pProperty.set(textField.getText());
 					aListener.propertyChanged();
 				}
 				public void changedUpdate(DocumentEvent pEvent) 
@@ -201,9 +200,9 @@ public class PropertySheet extends JPanel
 		return textField;
 	}
 	
-	private Component createEnumEditor(Properties pProperties, String pProperty)
+	private Component createEnumEditor(Property pProperty)
 	{
-		Enum<?> value = (Enum<?>)pProperties.get(pProperty);
+		Enum<?> value = (Enum<?>)pProperty.get();
 		try 
 		{
 			final JComboBox<Enum<?>> comboBox = new JComboBox<Enum<?>>((Enum<?>[])value.getClass().getMethod("values").invoke(null));
@@ -215,7 +214,7 @@ public class PropertySheet extends JPanel
 					{
 						if(pEvent.getStateChange() == ItemEvent.SELECTED)
 						{
-							pProperties.set(pProperty, comboBox.getSelectedItem().toString());
+							pProperty.set(comboBox.getSelectedItem().toString());
 							aListener.propertyChanged();
 						}
 					}
@@ -228,16 +227,16 @@ public class PropertySheet extends JPanel
 		}
 	}
 	
-	private Component createBooleanEditor(Properties pProperties, String pProperty)
+	private Component createBooleanEditor(Property pProperty)
 	{
 		JCheckBox checkBox = new JCheckBox();
-		checkBox.setSelected((boolean)pProperties.get(pProperty));
+		checkBox.setSelected((boolean)pProperty.get());
 		checkBox.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent pEvent)
 			{
-				pProperties.set(pProperty, checkBox.isSelected());
+				pProperty.set(checkBox.isSelected());
 				aListener.propertyChanged();
 			}
 		});
