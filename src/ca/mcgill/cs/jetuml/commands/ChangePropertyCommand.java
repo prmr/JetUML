@@ -32,12 +32,24 @@ public class ChangePropertyCommand implements Command
 	@Override
 	public void execute()
 	{
-		aProperty.set(aNewValue);
+		set(aNewValue);
 	}
 
 	@Override
 	public void undo()
 	{
-		aProperty.set(aOldValue);		
+		set(aOldValue);		
+	}
+	
+	private void set(Object pValue)
+	{
+		if( pValue instanceof Enum )
+		{
+			aProperty.set(pValue.toString());		
+		}
+		else
+		{
+			aProperty.set(pValue);		
+		}
 	}
 }
