@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
@@ -34,8 +35,6 @@ import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
-
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * A program for editing UML diagrams.
@@ -53,7 +52,7 @@ public final class UMLEditor
 	 */
 	public static void main(String[] pArgs)
 	{
-		checkVersion();
+		// checkVersion(); 
 		try
 		{
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -107,6 +106,7 @@ public final class UMLEditor
 	 *  Checks if the current VM has at least the given
 	 *  version, and exits the program with an error dialog if not.
 	 */
+	@SuppressWarnings("unused")
 	private static void checkVersion()
 	{
 		String version = obtainJavaVersion();
