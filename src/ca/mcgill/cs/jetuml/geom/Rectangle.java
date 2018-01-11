@@ -53,28 +53,6 @@ public class Rectangle
 	}
 	
 	/**
-	 * Do not use this method. Only here to enable
-	 * JavaBeans deserialization.
-	 * 
-	 * @param pX The new X value.
-	 */
-	public void setX(int pX)
-	{
-		aX = pX;
-	}
-	
-	/**
-	 * Do not use this method. Only here to enable
-	 * JavaBeans deserialization.
-	 * 
-	 * @param pY The new Y value.
-	 */
-	public void setY(int pY)
-	{
-		aY = pY;
-	}
-	
-	/**
 	 * @return The X-coordinate of the top-left point.
 	 */
 	public int getX()
