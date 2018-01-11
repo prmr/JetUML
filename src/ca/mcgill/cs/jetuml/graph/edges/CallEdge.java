@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -31,10 +31,8 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -81,20 +79,12 @@ public class CallEdge extends SingleLabelEdge
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("signal", aSignal);
-		return properties;
+		super.buildProperties();
+		properties().add("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
 	}
 	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aSignal = (boolean)pExtractor.get("signal", ValueExtractor.Type.BOOLEAN);
-	}
-
 	/**
      * Gets the signal property.
      * @return true if this is a signal edge

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -87,13 +87,13 @@ public class TestUsageScenariosSequenceDiagram
 	@Test
 	public void testCreateAndLinkParameterNode()
 	{
-		aParameterNode1.getName().setText("client");
-		aParameterNode2.getName().setText("platform");
+		aParameterNode1.setName("client");
+		aParameterNode2.setName("platform");
 		aDiagram.addNode(aParameterNode1, new Point(5, 0));
 		aDiagram.addNode(aParameterNode2, new Point(25, 0));
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals("client", aParameterNode1.getName().getText());
-		assertEquals("platform", aParameterNode2.getName().getText());
+		assertEquals("client", aParameterNode1.getName());
+		assertEquals("platform", aParameterNode2.getName());
 		
 		CallEdge callEdge = new CallEdge();
 		ReturnEdge returnEdge = new ReturnEdge();

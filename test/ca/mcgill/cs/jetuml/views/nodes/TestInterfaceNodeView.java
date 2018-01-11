@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -31,11 +31,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
 
 public class TestInterfaceNodeView
 {
@@ -67,9 +65,7 @@ public class TestInterfaceNodeView
 	public void testNeedsBottom()
 	{
 		assertFalse(((InterfaceNodeView)aNode1.view()).needsBottomCompartment());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertTrue(((InterfaceNodeView)aNode1.view()).needsBottomCompartment());
 	}
 	
@@ -84,15 +80,13 @@ public class TestInterfaceNodeView
 	public void testComputeBottom()
 	{
 		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo\nFoo");
+		aNode1.setMethods("Foo\nFoo");
 		assertEquals(new Rectangle(0,0,100,32), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo");
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
-		methods.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		assertEquals(new Rectangle(0,0,350,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
 	}
 	
@@ -100,24 +94,19 @@ public class TestInterfaceNodeView
 	public void testComputeTop()
 	{
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((InterfaceNodeView)aNode1.view()).computeTop());
-		
-		name.setText("");
+		aNode1.setName("");
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X");
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
-		methods.setText("X\nX\nX");
+		aNode1.setMethods("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
-		name.setText("X\nX\nX");
+		aNode1.setName("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,48), ((InterfaceNodeView)aNode1.view()).computeTop());
-		name.setText("X\nX\nX\nX");
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((InterfaceNodeView)aNode1.view()).computeTop());
 	}
 	
@@ -129,19 +118,15 @@ public class TestInterfaceNodeView
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
 		
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X\nX");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
-		name.setText("X");
+		aNode1.setName("X");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		

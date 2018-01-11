@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -22,8 +22,8 @@ package ca.mcgill.cs.jetuml.application;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Specifies a list of callback methods for any object
@@ -80,11 +80,8 @@ public interface GraphModificationListener
 	 * Notifies implementers that a property of a graph element has
 	 * a new value.
 	 * 
-	 * @param pGraph The target graph.
-	 * @param pElement The element whose property changed.
-	 * @param pProperty The name of the changed property.
+	 * @param pProperty The changed property.
 	 * @param pOldValue The value of the property before the change.
-	 * @param pNewValue The value of the property after the change.
 	 */
-	void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue);
+	void propertyChanged(Property pProperty, Object pOldValue);
 }

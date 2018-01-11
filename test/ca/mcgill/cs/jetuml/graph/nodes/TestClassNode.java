@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,10 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 public class TestClassNode
 {
@@ -58,21 +54,9 @@ public class TestClassNode
 	@Test
 	public void testDefault()
 	{
-		MultiLineString name = aNode1.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
-		MultiLineString methods = aNode1.getMethods();
-		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
-		assertFalse(methods.isBold());
-		assertFalse(methods.isUnderlined());
-		assertEquals("", methods.getText());
-		MultiLineString attributes = aNode1.getAttributes();
-		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
+		assertEquals("", aNode1.getName());
+		String attributes = aNode1.getAttributes();
+		assertEquals("", attributes);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
 		assertNull(aNode1.getParent());
 	}
@@ -80,10 +64,8 @@ public class TestClassNode
 	@Test
 	public void testSetName()
 	{
-		MultiLineString name = new MultiLineString();
-		name.setText("Foo");
-		aNode1.setName(name);
-		assertEquals("Foo", aNode1.getName().getText());
+		aNode1.setName("Foo");
+		assertEquals("Foo", aNode1.getName());
 	}
 	
 	@Test
@@ -104,25 +86,11 @@ public class TestClassNode
 	{
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
-		ClassNode clone = aNode1.clone();
-		MultiLineString name = clone.getName();
-		assertEquals( MultiLineString.Align.CENTER, name.obtainJustification() );
-		assertTrue(name.isBold());
-		assertFalse(name.isUnderlined());
-		assertEquals("", name.getText());
-		assertFalse(name == aNode1.getName() );
-		MultiLineString methods = clone.getMethods();
-		assertEquals( MultiLineString.Align.LEFT, methods.obtainJustification() );
-		assertFalse(methods.isBold());
-		assertFalse(methods.isUnderlined());
-		assertEquals("", methods.getText());
-		assertFalse(methods == aNode1.getMethods() );
-		MultiLineString attributes = clone.getAttributes();
-		assertEquals( MultiLineString.Align.LEFT, attributes.obtainJustification() );
-		assertFalse(attributes.isBold());
-		assertFalse(attributes.isUnderlined());
-		assertEquals("", attributes.getText());
-		assertFalse(attributes == aNode1.getAttributes() );
+		ClassNode clone = (ClassNode) aNode1.clone();
+		String name = clone.getName();
+		assertEquals("", name);
+		String methods = clone.getMethods();
+		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
 		assertTrue(clone.view().getBounds().equals(aNode1.view().getBounds()));
 		assertTrue(clone.getParent().equals(aNode1.getParent()));

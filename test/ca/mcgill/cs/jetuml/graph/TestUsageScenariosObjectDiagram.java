@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -29,12 +29,9 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
@@ -98,11 +95,9 @@ public class TestUsageScenariosObjectDiagram
 		// create an object node
 		aDiagram.addNode(aObjectNode1, new Point(20, 20));
 		aDiagram.draw(aGraphics);
-		MultiLineString name = new MultiLineString();
-		name.setText("Car");
-		aObjectNode1.setName(name);
+		aObjectNode1.setName("Car");
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals("Car", aObjectNode1.getName().getText());
+		assertEquals("Car", aObjectNode1.getName());
 		
 		// create field node outside an object node.(not allowed)
 		aDiagram.addNode(aFieldNode1, new Point(120, 80));
@@ -199,7 +194,7 @@ public class TestUsageScenariosObjectDiagram
 		aReferenceEdge1 = new ObjectReferenceEdge();
 		aDiagram.addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals("", aFieldNode1.getName().getText());
+		assertEquals("", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
@@ -208,10 +203,8 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		
 		// change the property of a field
-		MultiLineString name = new MultiLineString();
-		name.setText("Car");
-		aFieldNode3.setName(name);
-		assertEquals("Car", aFieldNode3.getName().getText());
+		aFieldNode3.setName("Car");
+		assertEquals("Car", aFieldNode3.getName());
 	}
 	
 	/**

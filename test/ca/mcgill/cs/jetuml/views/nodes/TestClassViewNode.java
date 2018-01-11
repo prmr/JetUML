@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -31,11 +31,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 
 public class TestClassViewNode
 {
@@ -61,9 +59,7 @@ public class TestClassViewNode
 	public void testNeedsMiddle()
 	{
 		assertFalse(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
+		aNode1.setAttributes("Foo");
 		assertTrue(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
 	}
 	
@@ -71,9 +67,7 @@ public class TestClassViewNode
 	public void testNeedsBottom()
 	{
 		assertFalse(((ClassNodeView)aNode1.view()).needsBottomCompartment());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertTrue(((ClassNodeView)aNode1.view()).needsBottomCompartment());
 	}
 	
@@ -82,18 +76,16 @@ public class TestClassViewNode
 	{
 		assertEquals(0, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(0, ((ClassNodeView)aNode1.view()).middleHeight());
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("Foo");
-		aNode1.setAttributes(attributes);
+		aNode1.setAttributes("Foo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("Foo\nFoo");
+		aNode1.setAttributes("Foo\nFoo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(32, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("Foo");
+		aNode1.setAttributes("Foo");
 		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
-		attributes.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		aNode1.setAttributes("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		assertEquals(307, ((ClassNodeView)aNode1.view()).middleWidth());
 		assertEquals(20, ((ClassNodeView)aNode1.view()).middleHeight());
 	}
@@ -102,15 +94,13 @@ public class TestClassViewNode
 	public void testComputeBottom()
 	{
 		assertEquals(new Rectangle(0,0,0,0), ((ClassNodeView)aNode1.view()).computeBottom());
-		MultiLineString methods = new MultiLineString();
-		methods.setText("Foo");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo\nFoo");
+		aNode1.setMethods("Foo\nFoo");
 		assertEquals(new Rectangle(0,0,100,32), ((ClassNodeView)aNode1.view()).computeBottom());
-		methods.setText("Foo");
+		aNode1.setMethods("Foo");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeBottom());
-		methods.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		assertEquals(new Rectangle(0,0,307,20), ((ClassNodeView)aNode1.view()).computeBottom());
 	}
 	
@@ -118,34 +108,28 @@ public class TestClassViewNode
 	public void testComputeTop()
 	{
 		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("");
+		aNode1.setName("");
 		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X");
 		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
-		methods.setText("X\nX\nX");
+		aNode1.setMethods("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("X\nX\nX");
+		aNode1.setName("X\nX\nX");
 		assertEquals(new Rectangle(0,0,100,48), ((ClassNodeView)aNode1.view()).computeTop());
-		name.setText("X\nX\nX\nX");
+		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		name.setText("X");
-		methods.setText("X");
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("X");
-		aNode1.setAttributes(attributes);
+		aNode1.setName("X");
+		aNode1.setMethods("X");
+		aNode1.setAttributes("X");
 		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView)aNode1.view()).computeTop());
 		
-		methods.setText("");
+		aNode1.setMethods("");
 		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 	}
 	
@@ -157,23 +141,16 @@ public class TestClassViewNode
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
 		
-		MultiLineString name = new MultiLineString();
-		name.setText("X\nX\nX\nX");
-		aNode1.setName(name);
+		aNode1.setName("X\nX\nX\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		
-		MultiLineString methods = new MultiLineString();
-		methods.setText("X\nX");
-		aNode1.setMethods(methods);
+		aNode1.setMethods("X\nX");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
-		name.setText("X");
-		methods.setText("X");
-		MultiLineString attributes = new MultiLineString();
-		attributes.setText("X");
-		aNode1.setMethods(attributes);
+		aNode1.setName("X");
+		aNode1.setMethods("X");
 		aNode1.view().layout(aGraph);
 		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
 		

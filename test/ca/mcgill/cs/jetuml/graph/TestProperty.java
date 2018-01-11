@@ -1,8 +1,8 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
- *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
  * See: https://github.com/prmr/JetUML
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,25 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
+package ca.mcgill.cs.jetuml.graph;
 
-package ca.mcgill.cs.jetuml.application;
+import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.views.LineStyle;
+import static org.junit.Assert.*;
 
-/**
- * A property editor for the LineStyle type.
- */
-public class LineStyleEditor extends PropertySelector
+public class TestProperty
 {
-	private static final String[] NAMES = { "Solid", "Dotted" };
-	private static final Object[] VALUES = { LineStyle.SOLID, LineStyle.DOTTED };
-	
-	/**
-	 * Creates a line style editor with the default values.
-	 */
-	public LineStyleEditor()
+	@Test
+	public void testProperty()
 	{
-		super(NAMES, VALUES);
+		class Stub { String aValue = "value"; }
+		Stub stub = new Stub();
+		Property property = new Property("test", () -> stub.aValue, newval -> stub.aValue = (String) newval, true);
+		assertEquals("test", property.getName());
+		assertEquals("value", property.get());
+		assertTrue(property.isVisible());
+		
+		property.set("foo");
+		assertEquals("foo", property.get());
 	}
 }
-

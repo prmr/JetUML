@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,10 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -35,7 +31,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class InterfaceNode extends NamedNode implements ChildNode
 {
-	private MultiLineString aMethods;   
+	private String aMethods = "";   
 	private ParentNode aContainer;
 
 	/**
@@ -44,11 +40,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	 */
 	public InterfaceNode()
 	{
-		setName(new MultiLineString(true));
-		getName().setText("\u00ABinterface\u00BB\n");
-		getName().setJustification(MultiLineString.Align.CENTER);
-		aMethods = new MultiLineString();
-		aMethods.setJustification(MultiLineString.Align.LEFT);
+		setName("\u00ABinterface\u00BB\n");
 	}
 	
 	@Override
@@ -61,7 +53,7 @@ public class InterfaceNode extends NamedNode implements ChildNode
      * Sets the methods property value.
      * @param pMethods the methods of this interface
 	 */
-	public void setMethods(MultiLineString pMethods)
+	public void setMethods(String pMethods)
 	{
 		aMethods = pMethods;
 	}
@@ -70,19 +62,11 @@ public class InterfaceNode extends NamedNode implements ChildNode
      * Gets the methods property value.
      * @return the methods of this interface
 	 */
-	public MultiLineString getMethods()
+	public String getMethods()
 	{
 		return aMethods;
 	}
 
-	@Override
-	public InterfaceNode clone()
-	{
-		InterfaceNode cloned = (InterfaceNode) super.clone();
-		cloned.aMethods = aMethods.clone();
-		return cloned;
-	}
-	
 	@Override
 	public ParentNode getParent()
 	{
@@ -103,17 +87,9 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("methods", aMethods.getText());
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aMethods.setText((String) pExtractor.get("methods", Type.STRING));
+		super.buildProperties();
+		properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
 	}
 }

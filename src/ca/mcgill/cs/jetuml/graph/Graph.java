@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -81,13 +81,12 @@ public abstract class Graph
 	 * @param pElement The element whose property changed.
 	 * @param pProperty The name of the changed property.
 	 * @param pOldValue The value of the property before the change.
-	 * @param pNewValue The value of the property after the change.
 	 */
-	protected void notifyPropertyChanged(GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue)
+	protected void notifyPropertyChanged(GraphElement pElement, String pProperty, Object pOldValue)
 	{
 		if( aModificationListener != null )
 		{
-			aModificationListener.propertyChanged(this, pElement, pProperty, pOldValue, pNewValue);
+			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
 		}
 	}
 	

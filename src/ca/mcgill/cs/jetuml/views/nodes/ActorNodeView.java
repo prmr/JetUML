@@ -1,10 +1,29 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -22,6 +41,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 48;
 	private static final int DEFAULT_HEIGHT = 64;
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	// Stick man
 	// CSOFF:
@@ -40,7 +60,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private MultiLineString name()
+	private String name()
 	{
 		return ((ActorNode)node()).getName();
 	}
@@ -49,7 +69,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = StringViewer.getBounds(name());
+		Rectangle bot = NAME_VIEWER.getBounds(name());
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 		setBounds(Grid.snapped(bounds));
@@ -89,11 +109,11 @@ public class ActorNodeView extends RectangleBoundedNodeView
 		pGraphics2D.draw(path);
 
 		// Draw name
-		Rectangle nameBox = StringViewer.getBounds(name());
+		Rectangle nameBox = NAME_VIEWER.getBounds(name());
 
 		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
 				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		StringViewer.draw(name(), pGraphics2D, namebox);
+		NAME_VIEWER.draw(name(), pGraphics2D, namebox);
 	}
 	
 	@Override

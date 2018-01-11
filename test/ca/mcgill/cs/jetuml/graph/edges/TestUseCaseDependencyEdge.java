@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 
 public class TestUseCaseDependencyEdge
 {
@@ -43,9 +43,9 @@ public class TestUseCaseDependencyEdge
 	{
 		Properties properties = aEdge.properties();
 		
-		assertEquals(Type.None, properties.get("dependencyType"));
+		assertEquals(Type.None, properties.get("dependencyType").get());
 		aEdge.setType(Type.Extend);
 		properties = aEdge.properties();
-		assertEquals(Type.Extend, properties.get("dependencyType"));
+		assertEquals(Type.Extend, properties.get("dependencyType").get());
 	}
 }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -172,7 +172,7 @@ public class TestSegmentationStrategies
 	@Test
 	public void testHVH3()
 	{
-		ClassNode node = aNode3.clone();
+		ClassNode node = (ClassNode) aNode3.clone();
 		node.translate(150, 5);
 		aGraph.insertNode(node);
 		Edge edge = new DependencyEdge();

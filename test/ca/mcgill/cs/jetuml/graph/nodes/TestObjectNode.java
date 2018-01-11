@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -26,12 +26,9 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 
 public class TestObjectNode
 {
@@ -137,9 +134,7 @@ public class TestObjectNode
 	@Test 
 	public void testClone()
 	{
-		MultiLineString o1 = new MultiLineString();
-		o1.setText("o1");
-		aObject1.setName(o1);
+		aObject1.setName("o1");
 		ObjectNode clone = aObject1.clone();
 		assertEquals(new Rectangle(0, 0, 80, 60), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
@@ -149,12 +144,8 @@ public class TestObjectNode
 		assertEquals(new Point(40,60), clone.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		
-		MultiLineString f1 = new MultiLineString();
-		f1.setText("f1");
-		aField1.setName(f1);
-		MultiLineString f2 = new MultiLineString();
-		f2.setText("f2");
-		aField2.setName(f2);
+		aField1.setName("f1");
+		aField2.setName("f2");
 		
 		aObject1.addChild(aField1);
 		aObject1.addChild(aField2);

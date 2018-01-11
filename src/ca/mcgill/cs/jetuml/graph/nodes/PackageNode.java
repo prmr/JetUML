@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -24,11 +24,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
@@ -38,7 +34,7 @@ import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 {
 	private String aName = "";
-	private MultiLineString aContents  = new MultiLineString();
+	private String aContents = "";
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
 	
@@ -70,7 +66,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
      * Sets the contents property value.
      * @param pContents the contents of this class
 	 */
-	public void setContents(MultiLineString pContents)
+	public void setContents(String pContents)
 	{
 		aContents = pContents;
 	}
@@ -92,7 +88,7 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
      * Gets the contents property value.
      * @return the contents of this class
 	 */
-	public MultiLineString getContents()
+	public String getContents()
 	{
 		return aContents;
 	}
@@ -101,7 +97,6 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	public PackageNode clone()
 	{
 		PackageNode cloned = (PackageNode) super.clone();
-		cloned.aContents = aContents.clone();
 		cloned.aContainedNodes = new ArrayList<>();
 		for( ChildNode child : aContainedNodes )
 		{
@@ -167,19 +162,10 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("name", aName);
-		properties.put("contents", aContents.getText());
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aName = (String) pExtractor.get("name", Type.STRING);
-		aContents.setText((String) pExtractor.get("contents", Type.STRING));
+		super.buildProperties();
+		properties().add("name", () -> aName, pName -> aName = (String)pName);
+		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
 	}
 }

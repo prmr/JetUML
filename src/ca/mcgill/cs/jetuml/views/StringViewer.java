@@ -1,17 +1,39 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.StringTokenizer;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.application.MultiLineString.Align;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
- * A utility class to view multi-line strings.
+ * A utility class to view strings with various decorations:
+ * - underline
+ * - bold
+ * - different alignments.
  * 
  * @author Martin P. Robillard.
  */
@@ -20,7 +42,31 @@ public final class StringViewer
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
 	private static final JLabel LABEL = new JLabel();
 	
-	private StringViewer() {}
+	/**
+	 * How to align the text in this string.
+	 */
+	public enum Align
+	{ LEFT, CENTER, RIGHT }
+	
+	private Align aAlignment = Align.CENTER;
+	private boolean aBold = false;
+	private boolean aUnderlined = false;
+	
+	/**
+	 * Creates a new StringViewer.
+	 * 
+	 * @param pAlignment The alignment of the string.
+	 * @param pBold True if the string is to be rendered bold.
+	 * @param pUnderlined True if the string is to be rendered underlined.
+	 * @pre pAlign != null.
+	 */
+	public StringViewer(Align pAlignment, boolean pBold, boolean pUnderlined) 
+	{
+		assert pAlignment != null;
+		aAlignment = pAlignment;
+		aBold = pBold;
+		aUnderlined = pUnderlined;
+	}
 	
 	/**
      * Gets the bounding rectangle for pString.
@@ -28,10 +74,10 @@ public final class StringViewer
      * @return the bounding rectangle (with top left corner (0,0))
      * @pre pString != null.
 	 */
-	public static Rectangle getBounds(MultiLineString pString)
+	public Rectangle getBounds(String pString)
 	{
 		assert pString != null;
-		if(pString.getText().length() == 0) 
+		if(pString.length() == 0) 
 		{
 			return EMPTY;
 		}
@@ -39,21 +85,21 @@ public final class StringViewer
 		return new Rectangle(0, 0, (int) Math.round(dimensions.getWidth()), (int) Math.round(dimensions.getHeight()));
 	}
 	
-	private static JLabel getLabel(MultiLineString pString)
+	private JLabel getLabel(String pString)
 	{
 		JLabel label = LABEL;
 		label.setBounds(0, 0, 0, 0);
-		label.setText(pString.convertToHtml());
+		label.setText(convertToHtml(pString));
 		
-		if(pString.obtainJustification() == Align.LEFT)
+		if(aAlignment == Align.LEFT)
 		{
 			label.setHorizontalAlignment(SwingConstants.LEFT);
 		}
-		else if(pString.obtainJustification() == Align.CENTER)
+		else if(aAlignment == Align.CENTER)
 		{
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 		}
-		else if(pString.obtainJustification() == Align.RIGHT) 
+		else if(aAlignment == Align.RIGHT) 
 		{
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
@@ -61,12 +107,12 @@ public final class StringViewer
 	}
 	
 	/**
-     * Draws this multi-line string inside a given rectangle.
+     * Draws the string inside a given rectangle.
      * @param pString The string to draw.
      * @param pGraphics2D the graphics context
-     * @param pRectangle the rectangle into which to place this multi-line string
+     * @param pRectangle the rectangle into which to place the string
 	 */
-	public static void draw(MultiLineString pString, Graphics2D pGraphics2D, Rectangle pRectangle)
+	public void draw(String pString, Graphics2D pGraphics2D, Rectangle pRectangle)
 	{
 		JLabel label = getLabel(pString);
 		label.setFont(pGraphics2D.getFont());
@@ -74,5 +120,54 @@ public final class StringViewer
 		pGraphics2D.translate(pRectangle.getX(), pRectangle.getY());
 		label.paint(pGraphics2D);
 		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        
+	}
+	
+	/**
+	 * @return an HTML version of the text of the string,
+	 * taking into account the properties (underline, bold, etc.)
+	 */
+	private String convertToHtml(String pString)
+	{
+		StringBuffer prefix = new StringBuffer();
+		StringBuffer suffix = new StringBuffer();
+		StringBuffer htmlText = new StringBuffer();
+		
+		// Add some spacing before and after the text.
+		prefix.append("&nbsp;");
+		suffix.insert(0, "&nbsp;");
+		if(aUnderlined) 
+		{
+			prefix.append("<u>");
+			suffix.insert(0, "</u>");
+		}
+		if(aBold)
+		{
+			prefix.append("<b>");
+			suffix.insert(0, "</b>");
+		}
+
+		htmlText.append("<html><p align=\"" + aAlignment.toString().toLowerCase() + "\">");
+		StringTokenizer tokenizer = new StringTokenizer(pString, "\n");
+		boolean first = true;
+		while(tokenizer.hasMoreTokens())
+		{
+			if(first) 
+			{
+				first = false;
+			}
+			else 
+			{
+				htmlText.append("<br>");
+			}
+			htmlText.append(prefix);
+			String next = tokenizer.nextToken();
+			String next0 = next.replaceAll("&", "&amp;");
+			String next1 = next0.replaceAll("<", "&lt;");
+			String next2 = next1.replaceAll(">", "&gt;");
+			htmlText.append(next2);
+			htmlText.append(suffix);
+		}      
+		htmlText.append("</p></html>");
+		return htmlText.toString();
 	}
 }

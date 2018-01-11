@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -28,12 +28,9 @@ import java.awt.image.BufferedImage;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
@@ -99,28 +96,22 @@ public class TestUsageScenariosUseCaseDiagram
 		// create an ActorNode
 		aDiagram.addNode(aActorNode1, new Point(20, 20));
 		aDiagram.draw(aGraphics);
-		MultiLineString name = new MultiLineString();
-		name.setText("Car");
-		aActorNode1.setName(name);
+		aActorNode1.setName("Car");
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals("Car", aActorNode1.getName().getText());
+		assertEquals("Car", aActorNode1.getName());
 		
 		// create some UseCaseNode
 		aDiagram.addNode(aUseCaseNode1, new Point(120, 80));
-		name = new MultiLineString();
-		name.setText("driving");
-		aUseCaseNode1.setName(name);
+		aUseCaseNode1.setName("driving");
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals("driving", aUseCaseNode1.getName().getText());
+		assertEquals("driving", aUseCaseNode1.getName());
 
 		// create field nodes inside ObjectNode
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addNode(noteNode, new Point(50, 50));
-		name = new MultiLineString();
-		name.setText("something...\nsomething");
-		noteNode.setName(name);
+		noteNode.setName("something...\nsomething");
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals("something...\nsomething", noteNode.getName().getText());
+		assertEquals("something...\nsomething", noteNode.getName());
 	}
 	
 	/**

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NoteNodeView;
 
@@ -31,14 +30,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NoteNodeView;
  */
 public class NoteNode extends NamedNode
 {
-	/**
-	 * Creates an empty NoteNode.
-	 */
-	public NoteNode()
-	{
-		getName().setJustification(MultiLineString.Align.LEFT);
-	}
-	
 	@Override
 	protected NodeView generateView()
 	{

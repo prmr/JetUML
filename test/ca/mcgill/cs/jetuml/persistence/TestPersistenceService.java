@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -183,7 +183,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(280, 230, 48, 64), a2.view().getBounds());
 		assertEquals("Actor2", a2.getName().toString());
 		
-		assertEquals("A note", n1.getName().getText());
+		assertEquals("A note", n1.getName());
 		assertEquals(new Rectangle(700, 50, 60, 40), n1.view().getBounds());
 		
 		assertEquals(new Rectangle(567, 56, 0, 0), p1.view().getBounds());
@@ -339,43 +339,43 @@ public class TestPersistenceService
 		NoteNode node5 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
 		PointNode node8 = (PointNode) findRootNode(pGraph, PointNode.class, build());
 		
-		assertEquals("", node1.getAttributes().getText());
-		assertEquals("", node1.getMethods().getText());
-		assertEquals("Class1", node1.getName().getText());
+		assertEquals("", node1.getAttributes());
+		assertEquals("", node1.getMethods());
+		assertEquals("Class1", node1.getName());
 		assertNull(node1.getParent());
 		assertEquals(new Rectangle(460, 370, 100, 60), node1.view().getBounds());
 		
-		assertEquals("", node2.getMethods().getText());
-		assertEquals("\u00ABinterface\u00BB\n", node2.getName().getText());
+		assertEquals("", node2.getMethods());
+		assertEquals("\u00ABinterface\u00BB\n", node2.getName());
 		assertNull(node2.getParent());
 		assertEquals(new Rectangle(460, 250, 100, 60), node2.view().getBounds());
 		
-		assertEquals("foo", node3.getAttributes().getText());
-		assertEquals("bar", node3.getMethods().getText());
-		assertEquals("Class2", node3.getName().getText());
+		assertEquals("foo", node3.getAttributes());
+		assertEquals("bar", node3.getMethods());
+		assertEquals("Class2", node3.getName());
 		assertNull(node3.getParent());
 		assertEquals(new Rectangle(460, 520, 100, 60), node3.view().getBounds());
 		
-		assertEquals("", node4.getAttributes().getText());
-		assertEquals("", node4.getMethods().getText());
-		assertEquals("Class3", node4.getName().getText());
+		assertEquals("", node4.getAttributes());
+		assertEquals("", node4.getMethods());
+		assertEquals("Class3", node4.getName());
 		assertNull(node4.getParent());
 		assertEquals(new Rectangle(630, 370, 100, 60), node4.view().getBounds());
 		
-		assertEquals("A note", node5.getName().getText());
+		assertEquals("A note", node5.getName());
 		assertEquals(new Rectangle(700, 530, 60, 40), node5.view().getBounds());
 		
 		List<ChildNode> children = node6.getChildren();
 		assertEquals(1, children.size());
 		ClassNode node7 = (ClassNode) children.get(0);
-		assertEquals("", node6.getContents().getText());
+		assertEquals("", node6.getContents());
 		assertEquals("Package", node6.getName());
 		assertNull(node6.getParent());
 		assertEquals(new Rectangle(275, 345, 100, 80), node6.view().getBounds()); // needs a layout to compute correct size
 
-		assertEquals("", node7.getAttributes().getText());
-		assertEquals("", node7.getMethods().getText());
-		assertEquals("Class", node7.getName().getText());
+		assertEquals("", node7.getAttributes());
+		assertEquals("", node7.getMethods());
+		assertEquals("Class", node7.getName());
 		assertEquals(node6,node7.getParent());
 		assertEquals(new Rectangle(280, 370, 100, 60), node7.view().getBounds());
 		
@@ -552,7 +552,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(640, 230, 20, 20), end.view().getBounds());
 		
-		assertEquals("A note\non two lines", note.getName().getText());
+		assertEquals("A note\non two lines", note.getName());
 		assertEquals(new Rectangle(690, 320, 60, 40), note.view().getBounds());
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
@@ -666,7 +666,7 @@ public class TestPersistenceService
 		assertEquals(0, children.size());
 		assertEquals(":Type3", type3.getName().toString());
 
-		assertEquals("A note", note.getName().getText());
+		assertEquals("A note", note.getName());
 		assertEquals(new Rectangle(280, 330, 60, 40), note.view().getBounds());
 		
 		assertEquals(new Rectangle(281, 216, 0, 0), p1.view().getBounds());

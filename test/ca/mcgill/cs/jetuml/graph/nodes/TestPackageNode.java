@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -27,12 +27,9 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 public class TestPackageNode
 {
@@ -143,12 +140,8 @@ public class TestPackageNode
 		assertNull(clone.getParent());
 		
 		aPackage2.setName("p2");
-		MultiLineString c1 = new MultiLineString();
-		c1.setText("c1");
-		aClass1.setName(c1);
-		MultiLineString c2 = new MultiLineString();
-		c2.setText("c2");
-		aClass2.setName(c2);
+		aClass1.setName("c1");
+		aClass2.setName("c2");
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aClass1);
 		aPackage2.addChild(aClass2);

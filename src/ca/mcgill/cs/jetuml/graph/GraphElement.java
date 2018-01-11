@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.graph;
 
-import ca.mcgill.cs.jetuml.persistence.Properties;
-
 /**
  * A type that allows us to treat nodes and edges uniformly.
  * 
@@ -33,12 +31,4 @@ public interface GraphElement extends Cloneable
 	 * @return A set of properties that define this object.
 	 */
 	Properties properties();
-	
-	/**
-	 * Initialize the state of this element based on a property.
-	 * 
-	 * @param pExtractor An object that can supply the value to be used
-	 * for the initialization.
-	 */
-	void initialize(ValueExtractor pExtractor);
 }

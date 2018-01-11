@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -109,21 +109,21 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		
 		// set up the properties for the nodes
-		aClassNode.getName().setText("truck");
-		aClassNode.getMethods().setText("setDriver()");
-		aInterfaceNode.getName().setText("vehicle");
-		aInterfaceNode.getMethods().setText("getPrice()");
+		aClassNode.setName("truck");
+		aClassNode.setMethods("setDriver()");
+		aInterfaceNode.setName("vehicle");
+		aInterfaceNode.setMethods("getPrice()");
 		aPackageNode.setName("object");
-		aPackageNode.getContents().setText("some stuff");
-		aNoteNode.getName().setText("some text...");
+		aPackageNode.setContents("some stuff");
+		aNoteNode.setName("some text...");
 		
 		// test node properties
-		assertEquals(aClassNode.getName().getText(), "truck");
-		assertEquals(aClassNode.getMethods().getText(), "setDriver()");
-		assertEquals(aInterfaceNode.getMethods().getText(), "getPrice()");
+		assertEquals(aClassNode.getName(), "truck");
+		assertEquals(aClassNode.getMethods(), "setDriver()");
+		assertEquals(aInterfaceNode.getMethods(), "getPrice()");
 		assertEquals(aPackageNode.getName(), "object");
-		assertEquals(aPackageNode.getContents().getText(), "some stuff");
-		assertEquals(aNoteNode.getName().getText(), "some text...");
+		assertEquals(aPackageNode.getContents(), "some stuff");
+		assertEquals(aNoteNode.getName(), "some text...");
 	}
 	
 	/**

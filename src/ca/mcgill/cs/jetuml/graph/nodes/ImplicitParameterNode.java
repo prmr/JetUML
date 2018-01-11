@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -41,14 +41,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 
-	/**
-     * Construct an object node with a default size.
-	 */
-	public ImplicitParameterNode()
-	{
-		getName().setUnderlined(true);
-	}
-	
 	@Override
 	protected NodeView generateView()
 	{

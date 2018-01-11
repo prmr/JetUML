@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,23 +21,18 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
-
 /**
    A node with a name.
 */
 public abstract class NamedNode extends AbstractNode
 {
-	private MultiLineString aName = new MultiLineString();
+	private String aName = "";
 
 	/**
      * Sets the name property value.
      * @param pName the new state name
 	 */
-	public void setName(MultiLineString pName)
+	public void setName(String pName)
 	{
 		aName = pName;
 	}
@@ -46,31 +41,15 @@ public abstract class NamedNode extends AbstractNode
      * Gets the name property value.
      * @return the state name
 	 */
-	public MultiLineString getName()
+	public String getName()
 	{
 		return aName;
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("name", aName.getText());
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aName.setText((String)pExtractor.get("name", Type.STRING));
-	}
-
-	@Override
-	public NamedNode clone()
-	{
-		NamedNode clone = (NamedNode)super.clone();
-		clone.aName = aName.clone();
-		return clone;
+		super.buildProperties();
+		properties().add("name", () -> aName, pName -> aName = (String)pName);
 	}
 }

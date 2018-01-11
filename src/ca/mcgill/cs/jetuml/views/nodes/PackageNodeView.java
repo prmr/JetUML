@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Dimension;
@@ -9,7 +29,6 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -34,6 +53,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private static final int NAME_GAP = 3;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
+	private static final StringViewer CONTENTS_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	private static final JLabel LABEL = new JLabel();
 	
@@ -56,7 +76,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		return ((PackageNode)node()).getName();
 	}
 	
-	private MultiLineString contents()
+	private String contents()
 	{
 		return ((PackageNode)node()).getContents();
 	}
@@ -87,7 +107,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		pGraphics2D.translate(-textX, -textY);        
      
 		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
-		StringViewer.draw(contents(), pGraphics2D, aBottom);
+		CONTENTS_VIEWER.draw(contents(), pGraphics2D, aBottom);
 	}
 	
 	@Override
@@ -153,7 +173,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 			}
 		}
 		
-		Rectangle contentsBounds = StringViewer.getBounds(contents());
+		Rectangle contentsBounds = CONTENTS_VIEWER.getBounds(contents());
 		
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{

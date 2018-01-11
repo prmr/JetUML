@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -36,7 +36,7 @@ public class ActorNode extends NamedNode
 	 */
 	public ActorNode()
 	{
-		getName().setText(DEFAULT_NAME);
+		setName(DEFAULT_NAME);
 	}
 	
 	@Override

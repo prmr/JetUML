@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -40,8 +40,6 @@ import java.util.Stack;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
@@ -51,6 +49,7 @@ import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
+import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
@@ -62,6 +61,7 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
@@ -94,7 +94,6 @@ public class GraphPanel extends JPanel
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
-	private final PropertyChangeTracker aPropertyChangeTracker = new PropertyChangeTracker();
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -155,25 +154,26 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		aPropertyChangeTracker.startTrackingPropertyChange(edited);
-		PropertySheet sheet = new PropertySheet(edited);
-		if(sheet.isEmpty())
+		PropertyChangeTracker tracker = new PropertyChangeTracker(edited);
+		tracker.startTracking();
+		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
 		{
-			return;
-		}
-		sheet.addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent pEvent)
+			@Override
+			public void propertyChanged()
 			{
 				aGraph.requestLayout();
 				repaint();
 			}
 		});
-		 String[] options = {"OK"};
-		 JOptionPane.showOptionDialog(this, sheet, 
-		            ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
-		            		JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
-		CompoundCommand command = aPropertyChangeTracker.stopTrackingPropertyChange(aGraph);
+		if(sheet.isEmpty())
+		{
+			return;
+		}
+		String[] options = {"OK"};
+		JOptionPane.showOptionDialog(this, sheet, 
+				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+		CompoundCommand command = tracker.stopTracking();
 		if(command.size() > 0)
 		{
 			aUndoManager.add(command);
@@ -887,9 +887,9 @@ public class GraphPanel extends JPanel
 		}
 
 		@Override
-		public void propertyChanged(Graph pGraph, GraphElement pElement, String pProperty, Object pOldValue, Object pNewValue)
+		public void propertyChanged(Property pProperty, Object pOldValue)
 		{
-			aUndoManager.add(PropertyChangeTracker.createPropertyChangeCommand(pGraph, pElement, pProperty, pOldValue, pNewValue));
+			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
 		}
 	}
 }

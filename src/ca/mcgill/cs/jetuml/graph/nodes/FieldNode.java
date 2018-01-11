@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,11 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -34,18 +30,9 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class FieldNode extends NamedNode implements ChildNode
 {
-	private MultiLineString aValue;
+	private String aValue = "";
 	private ObjectNode aObject; // The object defining this field
 
-	/**
-	 * A default field node.
-	 */
-	public FieldNode()
-	{
-		getName().setJustification(MultiLineString.Align.RIGHT);
-		aValue = new MultiLineString();
-   }
-	
 	@Override
 	protected NodeView generateView()
 	{
@@ -56,7 +43,7 @@ public class FieldNode extends NamedNode implements ChildNode
      * Sets the value property value.
      * @param pNewValue the field value
 	 */
-	public void setValue(MultiLineString pNewValue)
+	public void setValue(String pNewValue)
 	{
 		aValue = pNewValue;
 	}
@@ -65,17 +52,9 @@ public class FieldNode extends NamedNode implements ChildNode
      * Gets the value property value.
      * @return the field value
 	 */
-	public MultiLineString getValue()
+	public String getValue()
 	{
 		return aValue;
-	}
-
-	@Override
-	public FieldNode clone()
-	{
-		FieldNode cloned = (FieldNode) super.clone();
-		cloned.aValue = aValue.clone();
-		return cloned;
 	}
 
 	/**
@@ -116,18 +95,10 @@ public class FieldNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("value", aValue.getText());
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aValue.setText((String)pExtractor.get("value", Type.STRING));
+		super.buildProperties();
+		properties().add("value", () -> aValue, pValue -> aValue = (String) pValue);
 	}
 }
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,10 +21,6 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -33,18 +29,16 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public class ClassNode extends InterfaceNode
 {
-	private MultiLineString aAttributes;
-
+	private String aAttributes = "";
+	
 	/**
-     * Construct a class node with a default size.
+	 * Constructs a new ClassNode with an empty name.
 	 */
 	public ClassNode()
 	{
-		aAttributes = new MultiLineString();
-		aAttributes.setJustification(MultiLineString.Align.LEFT);
-		getName().setText("");
+		setName("");
 	}
-	
+
 	@Override
 	protected NodeView generateView()
 	{
@@ -55,7 +49,7 @@ public class ClassNode extends InterfaceNode
      * Sets the attributes property value.
      * @param pNewValue the attributes of this class
 	 */
-	public void setAttributes(MultiLineString pNewValue)
+	public void setAttributes(String pNewValue)
 	{
 		aAttributes = pNewValue;
 	}
@@ -64,31 +58,15 @@ public class ClassNode extends InterfaceNode
      * Gets the attributes property value.
      * @return the attributes of this class
 	 */
-	public MultiLineString getAttributes()
+	public String getAttributes()
 	{
 		return aAttributes;
 	}
 
 	@Override
-	public ClassNode clone()
+	protected void buildProperties()
 	{
-		ClassNode cloned = (ClassNode)super.clone();
-		cloned.aAttributes = aAttributes.clone();
-		return cloned;
-	}
-	
-	@Override
-	public Properties properties()
-	{
-		Properties properties = super.properties();
-		properties.put("attributes", aAttributes.getText());
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aAttributes.setText((String) pExtractor.get("attributes", Type.STRING));
+		super.buildProperties();
+		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 3);
 	}
 }

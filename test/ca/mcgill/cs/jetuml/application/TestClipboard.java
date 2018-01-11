@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -31,9 +31,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.MultiLineString;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Node;
@@ -65,13 +62,9 @@ public class TestClipboard
 		aClipboard = Clipboard.instance();
 		aSelectionList = new SelectionList();
 		aClass1 = new ClassNode();
-		MultiLineString c1 = new MultiLineString();
-		c1.setText("c1");
-		aClass1.setName(c1);
+		aClass1.setName("c1");
 		aClass2 = new ClassNode();
-		MultiLineString c2 = new MultiLineString();
-		c2.setText("c2");
-		aClass2.setName(c2);
+		aClass2.setName("c2");
 		aEdge1 = new DependencyEdge();
 		aEdge1.setMiddleLabel("e1");
 		aEdge2 = new DependencyEdge();

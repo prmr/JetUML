@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.diagrams;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.application.MultiLineString;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -49,19 +48,14 @@ public class ObjectDiagramGraph extends Graph
 	{
 		NODE_PROTOTYPES[0] = new ObjectNode();
 	      
-		FieldNode f = new FieldNode();
-	    MultiLineString fn = new MultiLineString();
-	    fn.setText("name");
-	    f.setName(fn);
-	    MultiLineString fv = new MultiLineString();
-	    fv.setText("value");
-	    f.setValue(fv);
-	    NODE_PROTOTYPES[1] = f;
-	      
+		FieldNode fieldNode = new FieldNode();
+	    fieldNode.setName("name");
+	    fieldNode.setValue("value");
+	    
+	    NODE_PROTOTYPES[1] = fieldNode;
 	    NODE_PROTOTYPES[2] = new NoteNode();
 	    
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
-	    
 	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
 	}
@@ -162,9 +156,9 @@ public class ObjectDiagramGraph extends Graph
 	{
 		if( pOrigin instanceof FieldNode )
 		{
-			MultiLineString oldValue = ((FieldNode)pOrigin).getValue().clone();
-			((FieldNode)pOrigin).getValue().setText("");
-			notifyPropertyChanged(pOrigin, "value", oldValue, ((FieldNode)pOrigin).getValue());
+			String oldValue = ((FieldNode)pOrigin).getValue();
+			((FieldNode)pOrigin).setValue("");
+			notifyPropertyChanged(pOrigin, "value", oldValue);
 		}
 	}
 	

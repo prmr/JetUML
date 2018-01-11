@@ -1,10 +1,29 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.graph.edges;
 
+import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
@@ -12,7 +31,7 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
  * 
  * @author Martin P. Robillard
  */
-public abstract class AbstractEdge implements Edge
+public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 {
 	protected EdgeView aView;
 	private Node aStart;
@@ -66,28 +85,10 @@ public abstract class AbstractEdge implements Edge
 	@Override
 	public AbstractEdge clone()
 	{
-		AbstractEdge clone;
-		try
-		{
-			clone = (AbstractEdge) super.clone();
-			clone.aView = clone.generateView();
-			return clone;
-		}
-		catch (CloneNotSupportedException e)
-		{
-			return null;
-		}
+		AbstractEdge clone = (AbstractEdge) super.clone();
+		clone.aView = clone.generateView();
+		return clone;
 	}
-	
-	@Override
-	public Properties properties()
-	{
-		return new Properties();
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{}
 	
 	@Override
 	public EdgeView view()

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -25,8 +25,6 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -73,18 +71,11 @@ public class AssociationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("directionality", aDirectionality);
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aDirectionality = Directionality.valueOf((String)pExtractor.get("directionality", ValueExtractor.Type.STRING));
+		super.buildProperties();
+		properties().add("directionality", () -> aDirectionality, 
+				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
 	}
 	
 	private ArrowHead getStartArrowHead()

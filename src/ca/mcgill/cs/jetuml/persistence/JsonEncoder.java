@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
 import java.util.ResourceBundle;
@@ -9,6 +29,8 @@ import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 
@@ -93,20 +115,20 @@ public final class JsonEncoder
 	private static JSONObject toJSONObject(Properties pProperties)
 	{
 		JSONObject object = new JSONObject();
-		for( String key : pProperties )
+		for( Property property : pProperties )
 		{
-			Object value = pProperties.get(key);
+			Object value = property.get();
 			if( value instanceof String || value instanceof Enum )
 			{
-				object.put(key, value.toString());
+				object.put(property.getName(), value.toString());
 			}
 			else if( value instanceof Integer)
 			{
-				object.put(key, (int) value);
+				object.put(property.getName(), (int) value);
 			}
 			else if( value instanceof Boolean)
 			{
-				object.put(key, (boolean) value);
+				object.put(property.getName(), (boolean) value);
 			}
 		}
 		return object;

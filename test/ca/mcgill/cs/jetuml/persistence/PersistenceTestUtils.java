@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2018 by the contributors of the JetUML project.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
 import static org.junit.Assert.assertNotNull;
@@ -10,6 +30,8 @@ import org.json.JSONObject;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Utilities to facilitate writing tests for the persistence
@@ -30,7 +52,8 @@ final class PersistenceTestUtils
 		Properties properties = new Properties();
 		for( int i = 0; i < pInput.length; i+=2 )
 		{
-			properties.put((String)pInput[i], pInput[i+1]);
+			final int j = i;
+			properties.add((String)pInput[i], () -> pInput[j+1], p -> {});
 		}
 		return properties;
 	}
@@ -53,15 +76,15 @@ final class PersistenceTestUtils
 		{
 			boolean match = true;
 			JSONObject object = pArray.getJSONObject(i);
-			for( String key : pProperties )
+			for( Property property : pProperties )
 			{
-				if( !object.has(key))
+				if( !object.has(property.getName()))
 				{
 					match = false;
 				}
 				else
 				{
-					if(!object.get(key).equals(pProperties.get(key)))
+					if(!object.get(property.getName()).equals(property.get()))
 					{
 						match = false;
 					}
@@ -85,9 +108,9 @@ final class PersistenceTestUtils
 			{
 				boolean match = true;
 				Properties nodeProperties = node.properties();
-				for( String key : pProperties )
+				for( Property property : pProperties )
 				{
-					if( !nodeProperties.get(key).equals(pProperties.get(key)))
+					if( !nodeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;
@@ -111,9 +134,9 @@ final class PersistenceTestUtils
 			{
 				boolean match = true;
 				Properties edgeProperties = edge.properties();
-				for( String key : pProperties )
+				for( Property property : pProperties )
 				{
-					if( !edgeProperties.get(key).equals(pProperties.get(key)))
+					if( !edgeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;

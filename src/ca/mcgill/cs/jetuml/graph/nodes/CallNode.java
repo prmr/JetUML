@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -24,10 +24,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor;
-import ca.mcgill.cs.jetuml.graph.ValueExtractor.Type;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.jetuml.persistence.Properties;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -92,18 +89,10 @@ public class CallNode extends AbstractNode implements ChildNode
 	}
 	
 	@Override
-	public Properties properties()
+	protected void buildProperties()
 	{
-		Properties properties = super.properties();
-		properties.put("openBottom", aOpenBottom);
-		return properties;
-	}
-	
-	@Override
-	public void initialize(ValueExtractor pExtractor)
-	{
-		super.initialize(pExtractor);
-		aOpenBottom = (boolean) pExtractor.get("openBottom", Type.BOOLEAN);
+		super.buildProperties();
+		properties().add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
 	}
 	
 	/**
