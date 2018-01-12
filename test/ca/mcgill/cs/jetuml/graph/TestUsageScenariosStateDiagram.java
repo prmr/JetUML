@@ -22,14 +22,9 @@ package ca.mcgill.cs.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,42 +54,15 @@ public class TestUsageScenariosStateDiagram
 	private StateDiagramGraph aDiagram;
 	private Graphics2D aGraphics;
 	private GraphPanel aPanel;
-	private UserCreatedNode aStateNode1;
-	private UserCreatedNode aStateNode2;
-	private UserCreatedNode aInitialNode;
-	private UserCreatedNode aFinalNode;
+	private StateNode aStateNode1;
+	private StateNode aStateNode2;
+	private InitialStateNode aInitialNode;
+	private FinalStateNode aFinalNode;
 	private StateTransitionEdge aTransitionEdge1;
 	private StateTransitionEdge aTransitionEdge2;
 	private StateTransitionEdge aTransitionEdge3;
 	private StateTransitionEdge aTransitionEdge4;
 	private StateTransitionEdge aTransitionEdge5;
-
-	private static final Function<UserCreatedNode, Rectangle> GET_BOUNDS =
-			(node) -> node.aNode.view().getBounds();
-	private static final Function<UserCreatedNode, Point> GET_CENTER =
-			GET_BOUNDS.andThen((pRectangle) -> pRectangle.getCenter());
-	private static final Supplier<UserCreatedNode> NOTE_NODE_PROVIDER =
-			() -> new UserCreatedNode(new NoteNode(), new Point(50, 200));
-	private static final BiPredicate<UserCreatedNode, Node> IS_IDENTICAL =
-			(pExpected, pActual) -> pExpected.aNode == pActual;
-	private final IntSupplier aNumberOfEdges = () -> aDiagram.getEdges().size();
-
-	private static class UserCreatedNode
-	{
-		private final AbstractNode aNode;
-		private final Point aInitialPosition;
-
-		private UserCreatedNode(AbstractNode pNode, Point pInitialPoint)
-		{
-			aNode = pNode;
-			aInitialPosition = pInitialPoint;
-		}
-
-		private void translate(int pDeltaX, int pDeltaY)
-		{
-			aNode.translate(pDeltaX, pDeltaY);
-		}
-	}
 
 	/**
 	 * General setup.
@@ -105,10 +73,14 @@ public class TestUsageScenariosStateDiagram
 		aDiagram = new StateDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
-		aStateNode1 = new UserCreatedNode(new StateNode(), new Point(50, 20));
-		aStateNode2 = new UserCreatedNode(new StateNode(), new Point(150, 20));
-		aInitialNode = new UserCreatedNode(new InitialStateNode(), new Point(20, 20));
-		aFinalNode = new UserCreatedNode(new FinalStateNode(), new Point(250, 20));
+		aStateNode1 = new StateNode();
+		aStateNode1.moveTo(new Point(50, 20));
+		aStateNode2 = new StateNode();
+		aStateNode2.moveTo(new Point(150, 20));
+		aInitialNode = new InitialStateNode();
+		aInitialNode.moveTo(new Point(20, 20));
+		aFinalNode = new FinalStateNode();
+		aFinalNode.moveTo(new Point(250, 20));
 		aTransitionEdge1 = new StateTransitionEdge();
 		aTransitionEdge2 = new StateTransitionEdge();
 		aTransitionEdge3 = new StateTransitionEdge();
@@ -120,21 +92,23 @@ public class TestUsageScenariosStateDiagram
 	public void testReconnectStatesWithPreExistingHorizontalEdgeShouldNotInduceDivisionByZeroException()
 	{
 		createSampleDiagram(aStateNode1, aStateNode2);
-		createInterStateTransition(aStateNode1, aStateNode2);
+		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
+		aDiagram.draw(aGraphics);
 		aStateNode1.translate(10, 0);
-		createInterStateTransition(aStateNode1, aStateNode2);
+		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
+		aDiagram.draw(aGraphics);
 	}
 
 	@Test
 	public void testDuplicateTransitionEdgeNotAllowed()
 	{
 		createSampleDiagram(aStateNode1, aFinalNode);
-		assertEquals(0, aNumberOfEdges.getAsInt());
-		createInterStateTransition(aStateNode1, aFinalNode);
-		assertEquals(1, aNumberOfEdges.getAsInt());
+		assertEquals(0, aDiagram.getEdges().size());
+		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aFinalNode);
+		assertEquals(1, aDiagram.getEdges().size());
 		aFinalNode.translate(0, 100);
-		createInterStateTransition(aStateNode1, aFinalNode);
-		assertEquals(1, aNumberOfEdges.getAsInt());
+		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aFinalNode);
+		assertEquals(1, aDiagram.getEdges().size());
 	}
 
 	/**
@@ -156,7 +130,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-		assertEquals(5, aNumberOfEdges.getAsInt());
+		assertEquals(5, aDiagram.getEdges().size());
 		
 		/*
 		 *  link from StateNode to InitialNode, from FinalNode to StateNode
@@ -168,7 +142,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20)); // Third
 		aDiagram.addEdge(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20));
 		aDiagram.addEdge(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25));
-		assertEquals(6, aNumberOfEdges.getAsInt());
+		assertEquals(6, aDiagram.getEdges().size());
 		
 		// test labeling edges
 		aTransitionEdge1.setMiddleLabel("start");
@@ -201,7 +175,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge3, new Point(155, 25), new Point(255, 25));
 		aDiagram.addEdge(noteEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(noteEdge5, new Point(25, 25), new Point(255, 25));
-		assertEquals(0, aNumberOfEdges.getAsInt());
+		assertEquals(0, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -210,7 +184,9 @@ public class TestUsageScenariosStateDiagram
 	@Test
 	public void testConnectNoteNodeWithNoteEdge()
 	{
-		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, NOTE_NODE_PROVIDER.get());
+		NoteNode note = new NoteNode();
+		note.moveTo(new Point(50, 200));
+		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, note);
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
@@ -222,7 +198,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
 		aDiagram.addEdge(noteEdge4, new Point(50, 200), new Point(455, 125));
 		aDiagram.addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
-		assertEquals(5, aNumberOfEdges.getAsInt());
+		assertEquals(5, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -231,7 +207,9 @@ public class TestUsageScenariosStateDiagram
 	@Test
 	public void testConnectStateNodeWithNoteNode()
 	{
-		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, NOTE_NODE_PROVIDER.get());
+		NoteNode note = new NoteNode();
+		note.moveTo(new Point(50, 200));
+		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, note);
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
@@ -242,12 +220,12 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
 		aDiagram.addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
 		aDiagram.addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
-		assertEquals(3, aNumberOfEdges.getAsInt());
+		assertEquals(3, aDiagram.getEdges().size());
 		// invalid operations, cannot connect any StateNode with NoteEdges
 		aDiagram.addEdge(noteEdge4, new Point(20, 20), new Point(-20, 200));
 		aDiagram.addEdge(noteEdge5, new Point(150, 20), new Point(-50, 200));
 		aDiagram.addEdge(new NoteEdge(), new Point(20, 20), new Point(50, 49));
-		assertEquals(3, aNumberOfEdges.getAsInt());
+		assertEquals(3, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -266,10 +244,10 @@ public class TestUsageScenariosStateDiagram
 		aStateNode2.translate(15, -30);
 		aFinalNode.translate(40, 20);
 		
-		assertEquals(new Rectangle(23, 32, 20, 20), GET_BOUNDS.apply(aInitialNode));
-		assertEquals(new Rectangle(45, 100, 80, 60), GET_BOUNDS.apply(aStateNode1));
-		assertEquals(new Rectangle(165, -10, 80, 60), GET_BOUNDS.apply(aStateNode2));
-		assertEquals(new Rectangle(290, 40, 20, 20), GET_BOUNDS.apply(aFinalNode));
+		assertEquals(new Rectangle(23, 32, 20, 20), aInitialNode.view().getBounds());
+		assertEquals(new Rectangle(45, 100, 80, 60), aStateNode1.view().getBounds());
+		assertEquals(new Rectangle(165, -10, 80, 60), aStateNode2.view().getBounds());
+		assertEquals(new Rectangle(290, 40, 20, 20), aFinalNode.view().getBounds());
 	}
 	
 	/**
@@ -285,8 +263,8 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		
-		aPanel.getSelectionList().add(aInitialNode.aNode);
-		aPanel.getSelectionList().add(aStateNode1.aNode);
+		aPanel.getSelectionList().add(aInitialNode);
+		aPanel.getSelectionList().add(aStateNode1);
 		aPanel.getSelectionList().add(aTransitionEdge1);
 		aPanel.getSelectionList().add(aTransitionEdge2);
 		aPanel.getSelectionList().add(aTransitionEdge3);
@@ -302,14 +280,14 @@ public class TestUsageScenariosStateDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 20, 20), GET_BOUNDS.apply(aInitialNode));
-		assertEquals(new Rectangle(76, 57, 80, 60), GET_BOUNDS.apply(aStateNode1));
-		assertEquals(new Rectangle(150, 20, 80, 60), GET_BOUNDS.apply(aStateNode2));
-		assertEquals(new Rectangle(250, 20, 20, 20), GET_BOUNDS.apply(aFinalNode));
-		assertTrue(IS_IDENTICAL.test(aInitialNode, aTransitionEdge1.getStart()));
-		assertTrue(IS_IDENTICAL.test(aStateNode1, aTransitionEdge1.getEnd()));
-		assertTrue(IS_IDENTICAL.test(aStateNode1, aTransitionEdge2.getStart()));
-		assertTrue(IS_IDENTICAL.test(aStateNode2, aTransitionEdge2.getEnd()));
+		assertEquals(new Rectangle(46, 57, 20, 20), aInitialNode.view().getBounds());
+		assertEquals(new Rectangle(76, 57, 80, 60), aStateNode1.view().getBounds());
+		assertEquals(new Rectangle(150, 20, 80, 60), aStateNode2.view().getBounds());
+		assertEquals(new Rectangle(250, 20, 20, 20), aFinalNode.view().getBounds());
+		assertEquals(aInitialNode, aTransitionEdge1.getStart());
+		assertEquals(aStateNode1, aTransitionEdge1.getEnd());
+		assertEquals(aStateNode1, aTransitionEdge2.getStart());
+		assertEquals(aStateNode2, aTransitionEdge2.getEnd());
 
 		/*
 		 *  if either start or end node is moved,
@@ -335,17 +313,17 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aInitialNode, aStateNode1);
 		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		aPanel.getSelectionList().add(aInitialNode.aNode);
+		aPanel.getSelectionList().add(aInitialNode);
 		aPanel.removeSelected();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(0, aNumberOfEdges.getAsInt());
+		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.undo();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aNumberOfEdges.getAsInt());
+		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -356,17 +334,17 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aStateNode2, aFinalNode);
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		aPanel.getSelectionList().add(aFinalNode.aNode);
+		aPanel.getSelectionList().add(aFinalNode);
 		aPanel.removeSelected();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(0, aNumberOfEdges.getAsInt());
+		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.undo();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aNumberOfEdges.getAsInt());
+		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -381,17 +359,17 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-		aPanel.getSelectionList().add(aStateNode2.aNode);
+		aPanel.getSelectionList().add(aStateNode2);
 		aPanel.removeSelected();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals(2, aNumberOfEdges.getAsInt());
+		assertEquals(2, aDiagram.getEdges().size());
 
 		aPanel.undo();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
-		assertEquals(5, aNumberOfEdges.getAsInt());
+		assertEquals(5, aDiagram.getEdges().size());
 	}
 	
 	/**
@@ -405,10 +383,10 @@ public class TestUsageScenariosStateDiagram
 	public void testCopyStateNode()
 	{
 		createSampleDiagram(aStateNode1);
-		aPanel.getSelectionList().add(aStateNode1.aNode);
+		aPanel.getSelectionList().add(aStateNode1);
 		aPanel.copy();
 		aPanel.paste();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
@@ -423,13 +401,13 @@ public class TestUsageScenariosStateDiagram
 	public void testCutStateNode()
 	{
 		createSampleDiagram(aStateNode1);
-		aPanel.getSelectionList().add(aStateNode1.aNode);
+		aPanel.getSelectionList().add(aStateNode1);
 		aPanel.cut();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
 		aPanel.paste();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
@@ -449,9 +427,9 @@ public class TestUsageScenariosStateDiagram
 		aPanel.copy();
 		aPanel.paste();
 
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
-		assertEquals(2, aNumberOfEdges.getAsInt());
+		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
 				(((StateNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
 	}
@@ -468,36 +446,24 @@ public class TestUsageScenariosStateDiagram
 		
 		aPanel.selectAll();
 		aPanel.cut();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aNumberOfEdges.getAsInt());
+		assertEquals(0, aDiagram.getEdges().size());
 
 		aPanel.paste();
-		drawSampleDiagram();
+		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aNumberOfEdges.getAsInt());
+		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60),
 				(((StateNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds()));
 	}
 
-	private void createInterStateTransition(UserCreatedNode pFrom, UserCreatedNode pTo)
+	private void createSampleDiagram(AbstractNode... pNodes)
 	{
-		aDiagram.addEdge(new StateTransitionEdge(), GET_CENTER.apply(pFrom), GET_CENTER.apply(pTo));
-		drawSampleDiagram();
-	}
-
-	private void createSampleDiagram(UserCreatedNode... nodes)
-	{
-		for (UserCreatedNode n : nodes)
+		for (AbstractNode n : pNodes)
 		{
-			aDiagram.addNode(n.aNode, n.aInitialPosition);
+			aDiagram.restoreRootNode(n);
 		}
-
-		drawSampleDiagram();
-	}
-
-	private void drawSampleDiagram()
-	{
 		aDiagram.draw(aGraphics);
 	}
 
