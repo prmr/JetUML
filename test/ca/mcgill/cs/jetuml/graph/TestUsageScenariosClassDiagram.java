@@ -376,6 +376,61 @@ public class TestUsageScenariosClassDiagram
 	}
 	
 	/**
+	 * Testing multiple edges of the same type cannot exist between the same nodes.
+	 */
+	@Test
+	public void testMultipleEdgesSameTypeCanNotExist()
+	{		
+		aDiagram.addNode(aClassNode, new Point(5, 5));
+		aDiagram.addNode(aInterfaceNode, new Point(44, 44));
+		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		aDiagram.addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
+		aDiagram.addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
+		aDiagram.addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		assertEquals(4, aDiagram.getEdges().size());
+		
+		// new edges should not be added to the diagram's edges
+		aDiagram.addEdge(aAggregationEdge, new Point(9, 11), new Point(46, 49));
+		aDiagram.addEdge(aAssociationEdge, new Point(9, 11), new Point(46, 49));
+		aDiagram.addEdge(aDependencyEdge, new Point(9, 11), new Point(46, 49)); 
+		aDiagram.addEdge(aGeneralizationEdge, new Point(9, 11), new Point(46, 49));
+		assertEquals(4, aDiagram.getEdges().size());
+
+	}
+	
+	/**
+	 * Testing new edges of the same type do not replace original edges.
+	 */
+	@Test
+	public void testNewEdgesSameTypeDoNotReplaceOriginalEdges()
+	{
+		AggregationEdge aSecondAggregationEdge = new AggregationEdge();
+		AssociationEdge aSecondAssociationEdge = new AssociationEdge();
+		DependencyEdge aSecondDependencyEdge = new DependencyEdge();
+		GeneralizationEdge aSecondGeneralizationEdge = new GeneralizationEdge();
+		
+		aDiagram.addNode(aClassNode, new Point(5, 5));
+		aDiagram.addNode(aInterfaceNode, new Point(44, 44));
+		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		aDiagram.addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
+		aDiagram.addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
+		aDiagram.addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		assertEquals(4, aDiagram.getEdges().size());
+		
+		// new edges should not replace the current edges in the diagram
+		aDiagram.addEdge(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49));
+		aDiagram.addEdge(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49));
+		aDiagram.addEdge(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49));
+		aDiagram.addEdge(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49));
+		assertEquals(4, aDiagram.getEdges().size());
+		assertFalse(aDiagram.getEdges().contains(aSecondAggregationEdge));
+		assertFalse(aDiagram.getEdges().contains(aSecondAssociationEdge));
+		assertFalse(aDiagram.getEdges().contains(aSecondDependencyEdge));
+		assertFalse(aDiagram.getEdges().contains(aSecondGeneralizationEdge));
+	}
+	
+	
+	/**
 	 * Testing delete an edge and node combination, selecting one node in the first case.
 	 */
 	@Test 
