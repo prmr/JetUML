@@ -94,7 +94,6 @@ public class TestUsageScenariosStateDiagram
 		createSampleDiagram(aStateNode1, aStateNode2);
 		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
 		aDiagram.draw(aGraphics);
-		aStateNode1.translate(10, 0);
 		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
 		aDiagram.draw(aGraphics);
 	}
@@ -108,7 +107,7 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(1, aDiagram.getEdges().size());
 		aFinalNode.translate(0, 100);
 		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aFinalNode);
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.getEdges().size());
 	}
 
 	/**
