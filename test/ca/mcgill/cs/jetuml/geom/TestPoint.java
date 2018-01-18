@@ -47,22 +47,6 @@ public class TestPoint
 		assertEquals(2.8284, ONE.distance(M_ONE),0.0001);
 	}
 	
-	@Test 
-	public void testDoubleConstructor()
-	{
-		Point point = new Point(0.0, 0.0);
-		assertEquals(0, point.getX());
-		assertEquals(0, point.getY());
-		
-		point = new Point(1.1,-1.1);
-		assertEquals(1, point.getX());
-		assertEquals(-1, point.getY());
-		
-		point = new Point(1.9,-1.9);
-		assertEquals(2, point.getX());
-		assertEquals(-2, point.getY());
-	}
-	
 	@Test
 	public void testClone()
 	{

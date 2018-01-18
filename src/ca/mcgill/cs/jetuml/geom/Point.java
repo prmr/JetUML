@@ -44,19 +44,6 @@ public final class Point implements Cloneable
 	}
 	
 	/**
-	 * Create a new point by converting the coordinates
-	 * by rounding them to the closest integer value.
-	 * 
-	 * @param pX The x-coordinate of the point.
-	 * @param pY The y-coordinate of the point.
-	 */
-	public Point( double pX, double pY )
-	{
-		aX = (int) Math.round(pX);
-		aY = (int) Math.round(pY);
-	}
-	
-	/**
 	 * @return The X-coordinate.
 	 */
 	public int getX()
@@ -108,6 +95,8 @@ public final class Point implements Cloneable
 	@Override
 	public Point clone()
 	{
+//		aCreations++;
+//		System.out.println(aCreations);
 		try
 		{
 			return (Point) super.clone();
