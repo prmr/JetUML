@@ -87,11 +87,11 @@ public class CircularStateNodeView extends AbstractNodeView
 		if(a != 0 && b != 0 && !(x == 0 && y == 0))
 		{
 			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
-			return new Point(cx + x / t, cy + y / t);
+			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
 		}
 		else
 		{
-			return new Point(cx, cy);
+			return new Point((int) Math.round(cx), (int) Math.round(cy));
 		}
 	}   	 
 	

@@ -203,7 +203,7 @@ public final class SegmentationStyleFactory
 				double increment = (pNode.view().getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
 				yPosition = pNode.view().getBounds().getY() + MARGIN + pPosition.getIndex() * increment;
 			}
-			return new Point( start.getX(), yPosition);	
+			return new Point( start.getX(), (int) Math.round(yPosition));	
 		}
 		else
 		{
@@ -213,7 +213,7 @@ public final class SegmentationStyleFactory
 				double increment = (pNode.view().getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
 				xPosition = pNode.view().getBounds().getX() + pPosition.getIndex() * increment;
 			}
-			return new Point( xPosition, start.getY());
+			return new Point( (int) Math.round(xPosition), start.getY());
 		}
 	}
 	

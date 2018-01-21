@@ -183,7 +183,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		// Additional gap to make sure the labels don't overlap
 		if( edge().getGraph() != null && getPosition() > 1 )
 		{
-			double delta = Math.abs(Math.atan((line.getX2()-line.getX1())/(line.getY2()-line.getY1())));
+			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
 			delta = dimension.getHeight() - delta*RADIANS_TO_PIXELS;
 			if( line.getX1() <= line.getX2() )
 			{
@@ -285,7 +285,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 			{
 				lReturn++;
 			}
-			if( edge == this )
+			if( edge == edge() )
 			{
 				return lReturn;
 			}
