@@ -54,6 +54,7 @@ import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -90,7 +91,7 @@ import ca.mcgill.cs.jetuml.persistence.PersistenceService;
  * @author Martin P. Robillard - Refactorings, file handling, menu management.
  */
 @SuppressWarnings("serial")
-public class EditorFrame extends JFrame
+public class EditorFrame
 {
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
@@ -112,6 +113,8 @@ public class EditorFrame extends JFrame
 	private JMenu aRecentFilesMenu;
 	
 	private WelcomeTab aWelcomeTab;
+	
+	private JMenuBar aMenuBar = new JMenuBar();
 	
 	// Menus or menu items that must be disabled if there is no current diagram.
 	private final List<JMenuItem> aDiagramRelevantMenus = new ArrayList<>();
@@ -135,23 +138,23 @@ public class EditorFrame extends JFrame
 		
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
       
-		setTitle(aAppResources.getString("app.name"));
+//		setTitle(aAppResources.getString("app.name"));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   
 		int screenWidth = (int)screenSize.getWidth();
 		int screenHeight = (int)screenSize.getHeight();
 
-		setBounds(screenWidth / (MARGIN_SCREEN*2), screenHeight / (MARGIN_SCREEN*2), (screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN, 
-				(screenHeight * (MARGIN_SCREEN-1))/MARGIN_SCREEN);
+//		setBounds(screenWidth / (MARGIN_SCREEN*2), screenHeight / (MARGIN_SCREEN*2), (screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN, 
+//				(screenHeight * (MARGIN_SCREEN-1))/MARGIN_SCREEN);
 
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-            public void windowClosing(WindowEvent pEvent)
-            {
-               exit();
-            }
-		});
+//		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+//		addWindowListener(new WindowAdapter()
+//		{
+//            public void windowClosing(WindowEvent pEvent)
+//            {
+//               exit();
+//            }
+//		});
 
 		aTabbedPane = new JTabbedPane();
 		aTabbedPane.addChangeListener(new ChangeListener()
@@ -166,9 +169,9 @@ public class EditorFrame extends JFrame
 				}
 			}
 		});
-		setContentPane(aTabbedPane);
+//		setContentPane(aTabbedPane);
 
-     	setJMenuBar(new JMenuBar());
+//     	setJMenuBar(new JMenuBar());
      	
 		createFileMenu(factory);
 		createEditMenu(factory);
@@ -176,11 +179,22 @@ public class EditorFrame extends JFrame
      	createHelpMenu(factory);
 	}
 	
+	public JComponent getTabbedPane() {
+		aTabbedPane.setVisible(true);
+		return aTabbedPane;
+	}
+	public JComponent getMenuBar() {
+		aMenuBar.setVisible(true);
+		return aMenuBar;
+	}
+	
+	
 	private void createFileMenu(MenuFactory pFactory)
 	{
-		JMenuBar menuBar = getJMenuBar();
+//		JMenuBar menuBar = getJMenuBar();
      	JMenu fileMenu = pFactory.createMenu("file");
-     	menuBar.add(fileMenu);
+//     	menuBar.add(fileMenu);
+     	aMenuBar.add(fileMenu);
 
      	aNewMenu = pFactory.createMenu("file.new");
      	fileMenu.add(aNewMenu);
@@ -225,9 +239,10 @@ public class EditorFrame extends JFrame
 	
 	private void createEditMenu(MenuFactory pFactory)
 	{
-		JMenuBar menuBar = getJMenuBar();
+//		JMenuBar menuBar = getJMenuBar();
 		JMenu editMenu = pFactory.createMenu("edit");
-     	menuBar.add(editMenu);
+//     	menuBar.add(editMenu);
+		aMenuBar.add(editMenu);
      	aDiagramRelevantMenus.add(editMenu);
      	editMenu.setEnabled(!noCurrentGraphFrame());
      	
@@ -299,10 +314,11 @@ public class EditorFrame extends JFrame
 	
 	private void createViewMenu(MenuFactory pFactory)
 	{
-		JMenuBar menuBar = getJMenuBar();
+//		JMenuBar menuBar = getJMenuBar();
 		
 		JMenu viewMenu = pFactory.createMenu("view");
-     	menuBar.add(viewMenu);
+//     	menuBar.add(viewMenu);
+		aMenuBar.add(viewMenu);
      	aDiagramRelevantMenus.add(viewMenu);
      	viewMenu.setEnabled(!noCurrentGraphFrame());
 
@@ -372,9 +388,10 @@ public class EditorFrame extends JFrame
 	
 	private void createHelpMenu(MenuFactory pFactory)
 	{
-		JMenuBar menuBar = getJMenuBar();
+//		JMenuBar menuBar = getJMenuBar();
 		JMenu helpMenu = pFactory.createMenu("help");
-		menuBar.add(helpMenu);
+//		menuBar.add(helpMenu);
+		aMenuBar.add(helpMenu);
 		
 		helpMenu.add(pFactory.createMenuItem("help.about", this, "showAboutDialog"));
 		helpMenu.add(pFactory.createMenuItem("help.license", new ActionListener()
@@ -436,7 +453,7 @@ public class EditorFrame extends JFrame
 			java.net.URL url = getClass().getClassLoader().getResource(aAppResources.getString("app.icon"));
 			Toolkit kit = Toolkit.getDefaultToolkit();
 			Image img = kit.createImage(url);
-			setIconImage(img);
+//			setIconImage(img);
 		}
 		catch(Exception e)
 		{
@@ -692,11 +709,13 @@ public class EditorFrame extends JFrame
 		{
 			fileChooser.addChoosableFileFilter(filter);
 		}
-		if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			File file = fileChooser.getSelectedFile();
-   			open(file.getAbsolutePath());
-		}
+   		
+   		//RESOLVE THIS ISSUE
+//		if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
+//		{
+//			File file = fileChooser.getSelectedFile();
+//   			open(file.getAbsolutePath());
+//		}
    	}
    	
    	/**
@@ -885,8 +904,8 @@ public class EditorFrame extends JFrame
    		}
    		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
    		Graph graph = frame.getGraph();    
-   		try
-   		{
+//   		try
+//   		{
    			File result = null;
    			
    	   		JFileChooser fileChooser = new JFileChooser();
@@ -902,44 +921,46 @@ public class EditorFrame extends JFrame
    			{
    				fileChooser.setSelectedFile(new File(""));
    			}
-   			int response = fileChooser.showSaveDialog(this);         
-   			if(response == JFileChooser.APPROVE_OPTION)
-   			{
-   				File f = fileChooser.getSelectedFile();
-   				if( !fileChooser.getFileFilter().accept(f))
-   				{
-   					f = new File(f.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
-   				}
-
-   				if(!f.exists()) 
-   				{
-   					result = f;
-   				}
-   				else
-   				{
-   	        		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-   	        		int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), 
-   	        				null, JOptionPane.YES_NO_OPTION);
-   	        		if(theresult == JOptionPane.YES_OPTION) 
-   	        		{
-   	        			result = f;
-   	        		}
-   				}
-   			}
    			
-   			if(result != null)
-   			{
-   				PersistenceService.save(graph, result);
-   				addRecentFile(result.getAbsolutePath());
-   				frame.setFile(result);
-   				aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
-   				frame.getGraphPanel().setModified(false);
-   			}
-   		}
-   		catch(IOException exception)
-   		{
-   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
-   		}
+   			// RESOLVE THIS ISSUE
+//   			int response = fileChooser.showSaveDialog(this);         
+//   			if(response == JFileChooser.APPROVE_OPTION)
+//   			{
+//   				File f = fileChooser.getSelectedFile();
+//   				if( !fileChooser.getFileFilter().accept(f))
+//   				{
+//   					f = new File(f.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+//   				}
+//
+//   				if(!f.exists()) 
+//   				{
+//   					result = f;
+//   				}
+//   				else
+//   				{
+//   	        		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
+//   	        		int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), 
+//   	        				null, JOptionPane.YES_NO_OPTION);
+//   	        		if(theresult == JOptionPane.YES_OPTION) 
+//   	        		{
+//   	        			result = f;
+//   	        		}
+//   				}
+//   			}
+//   			
+//   			if(result != null)
+//   			{
+//   				PersistenceService.save(graph, result);
+//   				addRecentFile(result.getAbsolutePath());
+//   				frame.setFile(result);
+//   				aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
+//   				frame.getGraphPanel().setModified(false);
+//   			}
+//   		}
+//   		catch(IOException exception)
+//   		{
+//   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
+//   		}
    	}
 
 	/**
@@ -1071,17 +1092,18 @@ public class EditorFrame extends JFrame
 		}
 		
 		File file = null;
-		if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
-		{
-			file = fileChooser.getSelectedFile();	
-			FileFilter selectedFilter = fileChooser.getFileFilter();
-			
-			if( !selectedFilter.accept(file) && selectedFilter != fileChooser.getAcceptAllFileFilter())
-			{
-				file = new File(file.getPath() + "." + 
-						selectedFilter.getDescription().substring(0, selectedFilter.toString().length()).toLowerCase());
-			}
-		}
+		//RESOLVE THIS ISSUE
+//		if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
+//		{
+//			file = fileChooser.getSelectedFile();	
+//			FileFilter selectedFilter = fileChooser.getFileFilter();
+//			
+//			if( !selectedFilter.accept(file) && selectedFilter != fileChooser.getAcceptAllFileFilter())
+//			{
+//				file = new File(file.getPath() + "." + 
+//						selectedFilter.getDescription().substring(0, selectedFilter.toString().length()).toLowerCase());
+//			}
+//		}
 		return file;
    	}
    	
@@ -1096,15 +1118,17 @@ public class EditorFrame extends JFrame
 		}
 		
 		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-		int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-		if(result == JOptionPane.YES_OPTION) 
-		{
-			return pFile;	     
-		}
-		else
-		{
-			return null;
-		}
+		//RESOLVE THIS ISSUE
+//		int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
+//		if(result == JOptionPane.YES_OPTION) 
+//		{
+//			return pFile;	     
+//		}
+//		else
+//		{
+//			return null;
+//		}
+		return null;
    	}
 
    

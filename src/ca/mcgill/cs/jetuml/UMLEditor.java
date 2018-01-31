@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -35,16 +37,25 @@ import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingNode;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 
 /**
  * A program for editing UML diagrams.
  */
-public final class UMLEditor
+public final class UMLEditor extends Application
 {
 	private static final int JAVA_MAJOR_VERSION = 7;
 	private static final int JAVA_MINOR_VERSION = 0;
 	
-	private UMLEditor() {}
+//	private UMLEditor() {}
 	
 	/**
 	 * @param pArgs Each argument is a file to open upon launch.
@@ -61,13 +72,39 @@ public final class UMLEditor
 		{
 			// well, we tried...
 		}
-		final String[] arguments = pArgs;
+//		final String[] arguments = pArgs;
+		launch(pArgs);
+   }
+	@Override
+	public void start(Stage pStage) throws Exception 
+	{
+
+		final SwingNode tabsSwingNode = new SwingNode();
+		final SwingNode menuSwingNode = new SwingNode();			
 		
+		createAndSetSwingContent(tabsSwingNode, menuSwingNode);
+			
+		BorderPane pane = new BorderPane();
+		pane.setTop(menuSwingNode);
+		pane.setCenter(tabsSwingNode);
+		
+		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName()+"Strings");
+		pStage.setTitle(aAppResources.getString("app.name"));
+		
+		
+		pStage.setScene(new Scene(pane, 1500, 800));
+        pStage.show();
+	}
+
+	private void createAndSetSwingContent(SwingNode pTabsNode, SwingNode pMenuNode) 
+	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				List<String> argsList = getParameters().getRaw();
+				String[] arguments = argsList.toArray(new String[argsList.size()]);
 				setLookAndFeel();
 				EditorFrame frame = new EditorFrame(UMLEditor.class);
 				frame.addGraphType("class_diagram", ClassDiagramGraph.class);
@@ -75,13 +112,16 @@ public final class UMLEditor
 				frame.addGraphType("state_diagram", StateDiagramGraph.class);
 			    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
 			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-				frame.setVisible(true);
+//				frame.setVisible(true);
 				frame.readArgs(arguments);
 				frame.addWelcomeTab();
 				frame.setIcon();
+				pTabsNode.setContent(frame.getTabbedPane());
+				pMenuNode.setContent(frame.getMenuBar());
 			}
 		});
-   }
+		
+	}
 	
 	private static void setLookAndFeel()
 	{
@@ -179,4 +219,7 @@ public final class UMLEditor
 		}
 		return lReturn;
     }
+
+
+
 }
