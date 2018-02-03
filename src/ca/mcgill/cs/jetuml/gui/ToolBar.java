@@ -262,16 +262,14 @@ public class ToolBar extends JPanel
 		});
 	}
 	
-	//RESOLVE THIS ISSUE
 	private void copyToClipboard()
 	{
-		// Obtain the editor frame by going through the component graph
-//		Container parent = getParent();
-//		while( parent.getClass() != EditorFrame.class )
-//		{
-//			parent = parent.getParent();
-//		}
-//		((EditorFrame)parent).copyToClipboard();
+		// Obtain the current editor frame
+		EditorFrame editorFrame = EditorFrame.getCurInstance();
+		if(editorFrame != null) 
+		{
+			editorFrame.copyToClipboard();
+		}
 	}
 		
 	private void createExpandButton()

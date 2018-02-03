@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,24 +37,25 @@ import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
 /**
  * A program for editing UML diagrams.
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class UMLEditor extends Application
 {
 	private static final int JAVA_MAJOR_VERSION = 7;
 	private static final int JAVA_MINOR_VERSION = 0;
 	
-//	private UMLEditor() {}
+	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	
 	/**
 	 * @param pArgs Each argument is a file to open upon launch.
@@ -72,31 +72,51 @@ public final class UMLEditor extends Application
 		{
 			// well, we tried...
 		}
-//		final String[] arguments = pArgs;
 		launch(pArgs);
    }
 	@Override
 	public void start(Stage pStage) throws Exception 
 	{
-
-		final SwingNode tabsSwingNode = new SwingNode();
-		final SwingNode menuSwingNode = new SwingNode();			
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+	     
+		//set Stage boundaries 
+	    int screenWidth = (int) primaryScreenBounds.getWidth();
+	    int screenHeight = (int) primaryScreenBounds.getHeight();
+	    pStage.setX(screenWidth / (MARGIN_SCREEN*2));
+	    pStage.setY(screenHeight / (MARGIN_SCREEN*2));
+	    pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
+	    pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
 		
-		createAndSetSwingContent(tabsSwingNode, menuSwingNode);
+		final SwingNode swingNode = new SwingNode();	
+		createAndSetSwingContent(swingNode, pStage);
+		
+		pStage.setOnCloseRequest(pWindowEvent -> 
+		{
+			pWindowEvent.consume();
+	    	EditorFrame frame = EditorFrame.getCurInstance();
+	    	if(frame != null) 
+	    	{
+	    		frame.exit();
+	    	}
+	    	else 
+	    	{
+	    		pStage.close();
+	    	}	
+	    });
 			
 		BorderPane pane = new BorderPane();
-		pane.setTop(menuSwingNode);
-		pane.setCenter(tabsSwingNode);
+		pane.setCenter(swingNode);
 		
 		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName()+"Strings");
 		pStage.setTitle(aAppResources.getString("app.name"));
+		String imagePath = getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString();
+		pStage.getIcons().add(new Image(imagePath));
 		
-		
-		pStage.setScene(new Scene(pane, 1500, 800));
+		pStage.setScene(new Scene(pane));
         pStage.show();
 	}
 
-	private void createAndSetSwingContent(SwingNode pTabsNode, SwingNode pMenuNode) 
+	private void createAndSetSwingContent(SwingNode pNode, Stage pStage) 
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -106,21 +126,17 @@ public final class UMLEditor extends Application
 				List<String> argsList = getParameters().getRaw();
 				String[] arguments = argsList.toArray(new String[argsList.size()]);
 				setLookAndFeel();
-				EditorFrame frame = new EditorFrame(UMLEditor.class);
+				EditorFrame frame = new EditorFrame(UMLEditor.class, pStage);
 				frame.addGraphType("class_diagram", ClassDiagramGraph.class);
 				frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
 				frame.addGraphType("state_diagram", StateDiagramGraph.class);
 			    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
 			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-//				frame.setVisible(true);
 				frame.readArgs(arguments);
 				frame.addWelcomeTab();
-				frame.setIcon();
-				pTabsNode.setContent(frame.getTabbedPane());
-				pMenuNode.setContent(frame.getMenuBar());
+				pNode.setContent(frame.getSwingPanel());
 			}
-		});
-		
+		});	
 	}
 	
 	private static void setLookAndFeel()

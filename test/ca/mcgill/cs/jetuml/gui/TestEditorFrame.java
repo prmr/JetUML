@@ -47,7 +47,7 @@ public class TestEditorFrame
 	{
 		aCreateFileFilter = EditorFrame.class.getDeclaredMethod("createFileFilter", String.class);
 		aCreateFileFilter.setAccessible(true);
-		aEditorFrame = new EditorFrame(UMLEditor.class);
+		aEditorFrame = new EditorFrame(UMLEditor.class, null);
 	}
 	
 	@Test
