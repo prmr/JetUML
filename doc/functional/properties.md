@@ -2,7 +2,7 @@
 
 ## Scope
 
-The graph element properties feature concerns how domain-related stated of graph elements (nodes and edges) is captured, initialized, and made available to the rest of the application.
+The graph element properties feature concerns how the domain-related state of graph elements (nodes and edges) is captured, initialized, and made available to the rest of the application.
 
 ## Design
 
@@ -30,15 +30,15 @@ for a graph element.
 * A *setter* for the property.
 * A *getter* for the property.
 
-The getter and setter are references to objects whose method will obtain (`get`) or set (`accept`) the value of the property. These are intended to be supplied through lambda expressions. With this design, a separate object (the property) thus becomes a proxy for a small part of the state of a graph element. Although technically the getter and setter used to initialize a `Property` instance could be defined to get and set values on *different* objects, this is not an intended use: properties should always get and set values *on the same object*. The following object diagram shows a `Property` instance to represent the X-coordinate of a `ClassNode`.
+The getter and setter are references to objects whose method will obtain (`get`) or set (`accept`) the value of the property. These are intended to be supplied through lambda expressions. With this design, a separate object (the property) thus becomes a proxy for a small part of the state of a graph element. Although technically the getter and setter used to initialize a `Property` instance could be defined to get and set values on *different* objects, this is not an intended use: a given property should always get and set values *on the same object*. The following object diagram shows a `Property` instance to represent the X-coordinate of a `ClassNode`.
 
 ![JetUML Class Diagram](properties1o.png)
 
 ### Property Collections
 
-A collection of `Property` instances for a given `GraphElememt` object is aggregated into `Properties` object. A `Properties` object is essentially an order-preserving map between property names and the corresponding `Property` object, together with a number of convenient method for creating properties and adding them to the collection. Order is important because other parts of the application (typically the GUI) will want to rely on a predictable iteration order for presenting properties to users. Properties are made available through the `properties()` method, defined in the `GraphElement` interface.
+A collection of `Property` instances for a given `GraphElement` object is aggregated into a `Properties` object. A `Properties` object is essentially an order-preserving map between property names and the corresponding `Property` object, together with a number of convenient methods for creating properties and adding them to the collection. Order is important because other parts of the application (typically the GUI) will want to rely on a predictable iteration order for presenting properties to users. Properties are made available through the `properties()` method, defined in the `GraphElement` interface.
 
-Given the above design, getting and setting the value of a properties is done as follows:
+Given the above design, getting and setting the value of a property is done as follows:
 
 ```
 ClassNode node = ...
@@ -50,7 +50,7 @@ Note that this example uses autoboxing.
 
 ### Initializing Properties
 
-Initializing properties is a bit tricky because instances of `GraphElement` must be `Cloneable`, which rules out exclusive constructor-based initialization. The protocol for creating a `Properties` object for a `GraphElement` is thus triggered by a call to `buildProperties()`, which is called by both the constructor and `clone()` method of `AbstractGraphElement`. The idea is that `buildProperties()` is overridden by subclasses, which however call `super.buildProperties()` as the first statement of the method. The class chain thus propagates up to `AbstractGraphElement.buildProperties()`, which initializes a fresh (empty) `Properties` object, and then back down into the method of each subclass, which can then add the properties that correspond to the fields visible in the subclass.
+Initializing properties is a bit tricky because instances of `GraphElement` must be `Cloneable`, which rules out exclusive constructor-based initialization. The protocol for creating a `Properties` object for a `GraphElement` is thus triggered by a call to `buildProperties()`, which is called by both the constructor and `clone()` method of `AbstractGraphElement`. The idea is that `buildProperties()` is overridden by subclasses, which however call `super.buildProperties()` as the first statement of the method. The call chain thus propagates up to `AbstractGraphElement.buildProperties()`, which initializes a fresh (empty) `Properties` object, and then back down into the method of each subclass, which can then add the properties that correspond to the fields visible in the subclass.
 
 The following code, in class `InterfaceNode`, illustrates this protocol:
 
