@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -265,7 +264,7 @@ public class ToolBar extends JPanel
 	private void copyToClipboard()
 	{
 		// Obtain the current editor frame
-		EditorFrame editorFrame = EditorFrame.getCurInstance();
+		EditorFrame editorFrame = EditorFrame.getInstance();
 		if(editorFrame != null) 
 		{
 			editorFrame.copyToClipboard();

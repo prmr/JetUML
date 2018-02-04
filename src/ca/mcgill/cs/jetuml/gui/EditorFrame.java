@@ -118,7 +118,8 @@ public class EditorFrame
 	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
 
-	private static EditorFrame aCurInstance = null;
+	private static EditorFrame aInstance = null;
+	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -127,17 +128,16 @@ public class EditorFrame
 	private JTabbedPane aTabbedPane;
 	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	private JMenu aNewMenu;
-
+	private JMenuBar aMenuBar = new JMenuBar();
+	private JetExtensions aJetExtensions;
+	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
 
 	private WelcomeTab aWelcomeTab;
-
-	private JMenuBar aMenuBar = new JMenuBar();
-
+	
+	// Panel holding all Swing components
 	private JPanel aMainPanel = new JPanel();
-
-	private JetExtensions aJetExtensions;
 
 	// Menus or menu items that must be disabled if there is no current diagram.
 	private final List<JMenuItem> aDiagramRelevantMenus = new ArrayList<>();
@@ -150,11 +150,11 @@ public class EditorFrame
 	 *            resources are appClassName + "Strings" and appClassName +
 	 *            "Version" (the latter for version-specific resources)
 	 * @param pMainStage
-	 *            the main stage for the UML Editor
+	 *            the main stage used by the UMLEditor
 	 */
 	public EditorFrame(Class<?> pAppClass, Stage pMainStage) 
 	{
-		aCurInstance = this;
+		aInstance = this;
 		aMainStage = pMainStage;
 		String appClassName = pAppClass.getName();
 		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
@@ -191,15 +191,15 @@ public class EditorFrame
 	}
 
 	/**
-	 * @return the current EditorFrame
+	 * @return aInstance the current EditorFrame
 	 */
-	public static EditorFrame getCurInstance() 
+	public static EditorFrame getInstance() 
 	{
-		return aCurInstance;
+		return aInstance;
 	}
 	
 	/**
-	 * @return Swing panel holding all Swing contents
+	 * @return aMainPanel the JComponent holding all Swing contents
 	 */
 	public JComponent getSwingPanel() 
 	{
@@ -207,7 +207,8 @@ public class EditorFrame
 		return aMainPanel;
 	}
 
-	private void createFileMenu(MenuFactory pFactory) {
+	private void createFileMenu(MenuFactory pFactory) 
+	{
 		JMenu fileMenu = pFactory.createMenu("file");
 		fileMenu.setVisible(true);
 		aMenuBar.add(fileMenu);
@@ -253,7 +254,8 @@ public class EditorFrame
 		fileMenu.add(fileExitItem);
 	}
 
-	private void createEditMenu(MenuFactory pFactory) {
+	private void createEditMenu(MenuFactory pFactory) 
+	{
 		JMenu editMenu = pFactory.createMenu("edit");
 		editMenu.setVisible(true);
 		aMenuBar.add(editMenu);
@@ -261,36 +263,48 @@ public class EditorFrame
 		aDiagramRelevantMenus.add(editMenu);
 		editMenu.setEnabled(!noCurrentGraphFrame());
 
-		editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().undo();
 			}
 		}));
 
-		editMenu.add(pFactory.createMenuItem("edit.redo", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		editMenu.add(pFactory.createMenuItem("edit.redo", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().redo();
 			}
 		}));
 
-		editMenu.add(pFactory.createMenuItem("edit.selectall", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		editMenu.add(pFactory.createMenuItem("edit.selectall", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().selectAll();
 			}
 		}));
 
-		editMenu.add(pFactory.createMenuItem("edit.properties", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		editMenu.add(pFactory.createMenuItem("edit.properties", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().editSelected();
@@ -301,9 +315,12 @@ public class EditorFrame
 		editMenu.add(pFactory.createMenuItem("edit.paste", this, "paste"));
 		editMenu.add(pFactory.createMenuItem("edit.copy", this, "copy"));
 
-		editMenu.add(pFactory.createMenuItem("edit.delete", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		editMenu.add(pFactory.createMenuItem("edit.delete", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().removeSelected();
@@ -311,25 +328,32 @@ public class EditorFrame
 		}));
 	}
 
-	private void createViewMenu(MenuFactory pFactory) {
+	private void createViewMenu(MenuFactory pFactory) 
+	{
 		JMenu viewMenu = pFactory.createMenu("view");
 		viewMenu.setVisible(true);
 		aMenuBar.add(viewMenu);
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setEnabled(!noCurrentGraphFrame());
 
-		viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(-1);
 			}
 		}));
 
-		viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				if (noCurrentGraphFrame()) {
+		viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				if (noCurrentGraphFrame()) 
+				{
 					return;
 				}
 				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(1);
@@ -337,9 +361,12 @@ public class EditorFrame
 		}));
 
 		final JCheckBoxMenuItem hideGridItem = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid",
-				new ActionListener() {
-					public void actionPerformed(ActionEvent pEvent) {
-						if (noCurrentGraphFrame()) {
+				new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent pEvent) 
+					{
+						if (noCurrentGraphFrame()) 
+						{
 							return;
 						}
 						GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
@@ -350,28 +377,31 @@ public class EditorFrame
 				});
 		viewMenu.add(hideGridItem);
 
-		viewMenu.addMenuListener(new MenuListener() {
-			public void menuSelected(MenuEvent pEvent) {
-				if (aTabbedPane.getSelectedComponent() instanceof WelcomeTab) {
+		viewMenu.addMenuListener(new MenuListener() 
+		{
+			public void menuSelected(MenuEvent pEvent) 
+			{
+				if (aTabbedPane.getSelectedComponent() instanceof WelcomeTab) 
+				{
 					return;
 				}
 				GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-				if (frame == null) {
+				if (frame == null) 
+				{
 					return;
 				}
 				GraphPanel panel = frame.getGraphPanel();
 				hideGridItem.setSelected(panel.getHideGrid());
 			}
 
-			public void menuDeselected(MenuEvent pEvent) {
-			}
+			public void menuDeselected(MenuEvent pEvent) {}
 
-			public void menuCanceled(MenuEvent pEvent) {
-			}
+			public void menuCanceled(MenuEvent pEvent) {}
 		});
 	}
 
-	private void createHelpMenu(MenuFactory pFactory) {
+	private void createHelpMenu(MenuFactory pFactory) 
+	{
 		JMenu helpMenu = pFactory.createMenu("help");
 		helpMenu.setVisible(true);
 		aMenuBar.add(helpMenu);
@@ -383,8 +413,7 @@ public class EditorFrame
 			{
 				try 
 				{
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(getClass().getResourceAsStream("license.txt")));
+					BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
 					TextArea text = new TextArea();
 					text.setPrefColumnCount(HELP_MENU_TEXT_WIDTH);
 					text.setPrefRowCount(HELP_MENU_TEXT_HEIGHT);
@@ -402,14 +431,13 @@ public class EditorFrame
 					scrollPane.setFitToWidth(true);
 
 					Stage window = new Stage();
-					Image appIcon = new Image(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString());
+					window.setTitle(aEditorResources.getString("dialog.license.title"));
+					Image appIcon = new Image(aAppResources.getString("app.icon"));
 					window.getIcons().add(appIcon);
 					window.initModality(Modality.APPLICATION_MODAL);
-					window.setTitle(aEditorResources.getString("dialog.license.title"));
 
 					Button button = new Button("OK");
 					button.setOnAction(pEvent -> window.close());
-					button.setAlignment(Pos.BASELINE_RIGHT);
 					button.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 					{
 						if (pEvent.getCode() == KeyCode.ENTER) 
@@ -431,8 +459,7 @@ public class EditorFrame
 					window.setScene(scene);
 					window.showAndWait();
 				} 
-				catch(IOException exception)
-				{}
+				catch(IOException exception){}
 			});
 		}));
 	}
@@ -445,13 +472,19 @@ public class EditorFrame
 	 * @param pGraphClass
 	 *            the class object for the graph
 	 */
-	public void addGraphType(String pResourceName, final Class<?> pGraphClass) {
-		aNewMenu.add(aAppFactory.createMenuItem(pResourceName, new ActionListener() {
-			public void actionPerformed(ActionEvent pEvent) {
-				try {
+	public void addGraphType(String pResourceName, final Class<?> pGraphClass) 
+	{
+		aNewMenu.add(aAppFactory.createMenuItem(pResourceName, new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent pEvent) 
+			{
+				try 
+				{
 					GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
 					addTab(frame);
-				} catch (Exception exception) {
+				}
+				catch (Exception exception) 
+				{
 					exception.printStackTrace();
 				}
 			}
@@ -464,9 +497,12 @@ public class EditorFrame
 	 * @param pArgs
 	 *            the command line arguments
 	 */
-	public void readArgs(String[] pArgs) {
-		if (pArgs.length != 0) {
-			for (String argument : pArgs) {
+	public void readArgs(String[] pArgs) 
+	{
+		if (pArgs.length != 0) 
+		{
+			for (String argument : pArgs) 
+			{
 				open(argument);
 			}
 		}
@@ -494,8 +530,8 @@ public class EditorFrame
 						frame.toFront();
 						frame.setSelected(true);
 						addRecentFile(new File(pName).getPath());
-					} catch (PropertyVetoException exception) 
-					{}
+					}
+					catch (PropertyVetoException exception) {}
 					return;
 				}
 			}
@@ -510,9 +546,12 @@ public class EditorFrame
 		} 
 		catch (IOException | DeserializationException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, "Error while opening file.", ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.showAndWait();
+			Platform.runLater(() ->
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			});
 		}
 	}
 
@@ -523,7 +562,8 @@ public class EditorFrame
 	 * 
 	 * @param t the title of the internal frame.
 	 */
-	private void addTab(final JInternalFrame pInternalFrame) {
+	private void addTab(final JInternalFrame pInternalFrame) 
+	{
 		int frameCount = aTabbedPane.getComponentCount();
 		BasicInternalFrameUI ui = (BasicInternalFrameUI) pInternalFrame.getUI();
 		Container north = ui.getNorthPane();
@@ -543,7 +583,8 @@ public class EditorFrame
 		pInternalFrame.show();
 		int last = aTabs.size();
 		aTabbedPane.setSelectedIndex(last - 1);
-		if (aTabbedPane.getComponentAt(0) instanceof WelcomeTab) {
+		if (aTabbedPane.getComponentAt(0) instanceof WelcomeTab) 
+		{
 			removeWelcomeTab();
 		}
 
@@ -554,30 +595,46 @@ public class EditorFrame
 	 *            The current frame to give a Title in its tab.
 	 * @return The title of a given tab.
 	 */
-	private String setTitle(JInternalFrame pInternalFrame) {
+	private String setTitle(JInternalFrame pInternalFrame) 
+	{
 		String appName = aAppResources.getString("app.name");
 		String diagramName;
 
-		if (pInternalFrame == null || !(pInternalFrame instanceof GraphFrame)) {
+		if (pInternalFrame == null || !(pInternalFrame instanceof GraphFrame)) 
+		{
 			return appName;
-		} else {
+		} 
+		else 
+		{
 			GraphFrame frame = (GraphFrame) pInternalFrame;
 			File file = frame.getFileName();
-			if (file == null) {
+			if (file == null) 
+			{
 				Graph graphType = frame.getGraph();
-				if (graphType instanceof ClassDiagramGraph) {
+				if (graphType instanceof ClassDiagramGraph) 
+				{
 					diagramName = "Class Diagram";
-				} else if (graphType instanceof ObjectDiagramGraph) {
+				} 
+				else if (graphType instanceof ObjectDiagramGraph) 
+				{
 					diagramName = "Object Diagram";
-				} else if (graphType instanceof UseCaseDiagramGraph) {
+				} 
+				else if (graphType instanceof UseCaseDiagramGraph) 
+				{
 					diagramName = "Use Case Diagram";
-				} else if (graphType instanceof StateDiagramGraph) {
+				} 
+				else if (graphType instanceof StateDiagramGraph) 
+				{
 					diagramName = "State Diagram";
-				} else {
+				} 
+				else 
+				{
 					diagramName = "Sequence Diagram";
 				}
 				return diagramName;
-			} else {
+			} 
+			else 
+			{
 				return file.getName();
 			}
 		}
@@ -587,7 +644,8 @@ public class EditorFrame
 	 * This adds a WelcomeTab to the tabs. This is only done if all other tabs have
 	 * been previously closed.
 	 */
-	public void addWelcomeTab() {
+	public void addWelcomeTab() 
+	{
 		aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
 		aTabbedPane.add("Welcome", aWelcomeTab);
 		aTabs.add(aWelcomeTab);
@@ -597,8 +655,10 @@ public class EditorFrame
 	 * This method removes the WelcomeTab after a file has been opened or a diagram
 	 * starts being created.
 	 */
-	public void removeWelcomeTab() {
-		if (aWelcomeTab != null) {
+	public void removeWelcomeTab() 
+	{
+		if (aWelcomeTab != null) 
+		{
 			aTabbedPane.remove(0);
 			aTabs.remove(0);
 		}
@@ -609,15 +669,18 @@ public class EditorFrame
 	 *            The JInternalFrame to remove. Calling this method will remove a
 	 *            given JInternalFrame.
 	 */
-	public void removeTab(final JInternalFrame pInternalFrame) {
-		if (!aTabs.contains(pInternalFrame)) {
+	public void removeTab(final JInternalFrame pInternalFrame) 
+	{
+		if (!aTabs.contains(pInternalFrame)) 
+		{
 			return;
 		}
 		JTabbedPane tp = aTabbedPane;
 		int pos = aTabs.indexOf(pInternalFrame);
 		tp.remove(pos);
 		aTabs.remove(pInternalFrame);
-		if (aTabs.size() == 0) {
+		if (aTabs.size() == 0) 
+		{
 			aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
 			aTabbedPane.add("Welcome", aWelcomeTab);
 			aTabs.add(aWelcomeTab);
@@ -630,7 +693,8 @@ public class EditorFrame
 	 * 
 	 * @param pNewFile the file name to add
 	 */
-	private void addRecentFile(String pNewFile) {
+	private void addRecentFile(String pNewFile) 
+	{
 		aRecentFiles.add(pNewFile);
 		buildRecentFilesMenu();
 	}
@@ -640,19 +704,23 @@ public class EditorFrame
 	 * less than 8. Otherwise, additional logic will need to be added to 0-index the
 	 * mnemonics for files 1-9
 	 */
-	private void buildRecentFilesMenu() {
+	private void buildRecentFilesMenu() 
+	{
 		assert aRecentFiles.size() <= MAX_RECENT_FILES;
 		aRecentFilesMenu.removeAll();
 		aRecentFilesMenu.setEnabled(aRecentFiles.size() > 0);
 		int i = 1;
-		for (File file : aRecentFiles) {
+		for (File file : aRecentFiles) 
+		{
 			String name = i + " " + file.getName();
 			final String fileName = file.getAbsolutePath();
 			JMenuItem item = new JMenuItem(name);
 			item.setMnemonic('0' + i);
 			aRecentFilesMenu.add(item);
-			item.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent pEvent) {
+			item.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent pEvent) 
+				{
 					open(fileName);
 				}
 			});
@@ -671,7 +739,7 @@ public class EditorFrame
 		Platform.runLater(() -> 
 		{
 			File selectedFile = fileChooser.showOpenDialog(aMainStage);
-			open(selectedFile.getAbsolutePath());
+			SwingUtilities.invokeLater(() -> open(selectedFile.getAbsolutePath()));
 		});
 	}
 
@@ -679,8 +747,10 @@ public class EditorFrame
 	 * Cuts the current selection of the current panel and puts the content into the
 	 * application-specific clipboard.
 	 */
-	public void cut() {
-		if (noCurrentGraphFrame()) {
+	public void cut() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
@@ -692,8 +762,10 @@ public class EditorFrame
 	 * Copies the current selection of the current panel and puts the content into
 	 * the application-specific clipboard.
 	 */
-	public void copy() {
-		if (noCurrentGraphFrame()) {
+	public void copy() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().copy();
@@ -704,8 +776,10 @@ public class EditorFrame
 	 * panel. All the logic is done in the application-specific CutPasteBehavior.
 	 * 
 	 */
-	public void paste() {
-		if (noCurrentGraphFrame()) {
+	public void paste() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
@@ -716,28 +790,37 @@ public class EditorFrame
 	/**
 	 * Copies the current image to the clipboard.
 	 */
-	public void copyToClipboard() {
-		if (noCurrentGraphFrame()) {
+	public void copyToClipboard() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
 		final BufferedImage image = getImage(frame.getGraph());
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() {
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
+		{
 			@Override
-			public boolean isDataFlavorSupported(DataFlavor pFlavor) {
+			public boolean isDataFlavorSupported(DataFlavor pFlavor) 
+			{
 				return DataFlavor.imageFlavor.equals(pFlavor);
 			}
 
 			@Override
-			public DataFlavor[] getTransferDataFlavors() {
+			public DataFlavor[] getTransferDataFlavors() 
+			{
 				return new DataFlavor[] { DataFlavor.imageFlavor };
 			}
 
 			@Override
-			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException {
-				if (DataFlavor.imageFlavor.equals(pFlavor)) {
+			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException 
+			{
+				if (DataFlavor.imageFlavor.equals(pFlavor)) 
+				{
 					return image;
-				} else {
+				}
+				else 
+				{
 					throw new UnsupportedFlavorException(pFlavor);
 				}
 			}
@@ -751,21 +834,24 @@ public class EditorFrame
 		});
 	}
 
-	private boolean noCurrentGraphFrame() {
-		return aTabbedPane.getSelectedComponent() == null
-				|| !(aTabbedPane.getSelectedComponent() instanceof GraphFrame);
+	private boolean noCurrentGraphFrame() 
+	{
+		return aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame);
 	}
 
 	/**
 	 * If a user confirms that they want to close their modified graph, this method
 	 * will remove it from the current list of tabs.
 	 */
-	public void close() {
-		if (noCurrentGraphFrame()) {
+	public void close() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		JInternalFrame curFrame = (JInternalFrame) aTabbedPane.getSelectedComponent();
-		if (curFrame != null) {
+		if (curFrame != null) 
+		{
 			GraphFrame openFrame = (GraphFrame) curFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
@@ -775,6 +861,8 @@ public class EditorFrame
 				{
 					Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
 					alert.initOwner(aMainStage);
+					alert.setTitle(aEditorResources.getString("dialog.close.title"));
+					alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
 					alert.showAndWait();
 
 					if (alert.getResult() == ButtonType.YES) 
@@ -798,12 +886,15 @@ public class EditorFrame
 	 * @param pJInternalFrame
 	 *            The current JInternalFrame that one wishes to close.
 	 */
-	public void close(JInternalFrame pJInternalFrame) {
+	public void close(JInternalFrame pJInternalFrame) 
+	{
 		JInternalFrame curFrame = pJInternalFrame;
-		if (curFrame != null) {
+		if (curFrame != null) 
+		{
 			GraphFrame openFrame = (GraphFrame) curFrame;
 			// we only want to check attempts to close a frame
-			if (openFrame.getGraphPanel().isModified()) {
+			if (openFrame.getGraphPanel().isModified()) 
+			{
 				if (openFrame.getGraphPanel().isModified()) 
 				{
 					// ask user if it is ok to close
@@ -811,6 +902,8 @@ public class EditorFrame
 					{
 						Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
 						alert.initOwner(aMainStage);
+						alert.setTitle(aEditorResources.getString("dialog.close.title"));
+						alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
 						alert.showAndWait();
 
 						if (alert.getResult() == ButtonType.YES) 
@@ -828,13 +921,16 @@ public class EditorFrame
 	/**
 	 * Save a file. Called by reflection.
 	 */
-	public void save() {
-		if (noCurrentGraphFrame()) {
+	public void save() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
 			return;
 		}
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
 		File file = frame.getFileName();
-		if (file == null) {
+		if (file == null) 
+		{
 			saveAs();
 			return;
 		}
@@ -847,7 +943,7 @@ public class EditorFrame
 		{
 				Platform.runLater(() -> 
 				{
-					Alert alert = new Alert(AlertType.ERROR, "Error while saving file.", ButtonType.OK);
+					Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 					alert.initOwner(aMainStage);
 					alert.showAndWait();
 				});
@@ -886,6 +982,10 @@ public class EditorFrame
 			try 
 			{
 				File result = fileChooser.showSaveDialog(aMainStage);
+				if(fileChooser.getSelectedExtensionFilter()!=aJetExtensions.getFilter(graph.getDescription()))
+				{
+					result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+				}
 				if (result != null) 
 				{
 					PersistenceService.save(graph, result);
@@ -897,12 +997,11 @@ public class EditorFrame
 			} 
 			catch (IOException exception) 
 			{
-				Alert alert = new Alert(AlertType.ERROR, "Error occured while saving file.", ButtonType.OK);
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 				alert.initOwner(aMainStage);
 				alert.showAndWait();
 			}
 		});
-
 	}
 
 	/**
@@ -919,12 +1018,16 @@ public class EditorFrame
 	 * @return original if it already has the desired extension, or a new file with
 	 *         the edited file path
 	 */
-	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired) {
+	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired) 
+	{
 		assert pOriginal != null && pToBeRemoved != null && pDesired != null;
 
-		if (pOriginal.endsWith(pToBeRemoved)) {
+		if (pOriginal.endsWith(pToBeRemoved)) 
+		{
 			return pOriginal.substring(0, pOriginal.length() - pToBeRemoved.length()) + pDesired;
-		} else {
+		}
+		else 
+		{
 			return pOriginal;
 		}
 	}
@@ -954,8 +1057,7 @@ public class EditorFrame
 			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
 			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
 			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),
-						ButtonType.OK);
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
 				alert.initOwner(aMainStage);
 				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
 				alert.showAndWait();
@@ -968,17 +1070,19 @@ public class EditorFrame
 			} 
 			catch (IOException exception) 
 			{
-				Alert alert = new Alert(AlertType.ERROR, "Error occured while writing image to file.", ButtonType.OK);
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 				alert.initOwner(aMainStage);
 				alert.showAndWait();
 			}
 		});
 	}
 
-	private static String[] getAllSupportedImageWriterFormats() {
+	private static String[] getAllSupportedImageWriterFormats() 
+	{
 		String[] names = ImageIO.getWriterFormatNames();
 		HashSet<String> formats = new HashSet<String>();
-		for (String name : names) {
+		for (String name : names) 
+		{
 			formats.add(name.toLowerCase());
 		}
 		String[] lReturn = formats.toArray(new String[formats.size()]);
@@ -1018,7 +1122,8 @@ public class EditorFrame
 	 * @return bufferedImage. To convert it into an image, use the syntax :
 	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
 	 */
-	private static BufferedImage getImage(Graph pGraph) {
+	private static BufferedImage getImage(Graph pGraph) 
+	{
 		Rectangle bounds = pGraph.getBounds();
 		BufferedImage image = new BufferedImage((int) (bounds.getWidth() + MARGIN_IMAGE * 2),
 				(int) (bounds.getHeight() + MARGIN_IMAGE * 2), BufferedImage.TYPE_INT_RGB);
@@ -1086,10 +1191,13 @@ public class EditorFrame
 	public void exit() 
 	{
 		int modcount = 0;
-		for (int i = 0; i < aTabs.size(); i++) {
-			if (aTabs.get(i) instanceof GraphFrame) {
+		for (int i = 0; i < aTabs.size(); i++) 
+		{
+			if (aTabs.get(i) instanceof GraphFrame) 
+			{
 				GraphFrame frame = (GraphFrame) aTabs.get(i);
-				if (frame.getGraphPanel().isModified()) {
+				if (frame.getGraphPanel().isModified()) 
+				{
 					modcount++;
 				}
 			}
@@ -1105,6 +1213,8 @@ public class EditorFrame
 						ButtonType.YES, 
 						ButtonType.NO);
 				alert.initOwner(aMainStage);
+				alert.setTitle(aEditorResources.getString("dialog.exit.title"));
+				alert.setHeaderText(aEditorResources.getString("dialog.exit.title"));
 				alert.showAndWait();
 
 				if (alert.getResult() == ButtonType.YES) 
@@ -1119,6 +1229,5 @@ public class EditorFrame
 			Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
 			System.exit(0);
 		}
-	}
-		
+	}		
 }

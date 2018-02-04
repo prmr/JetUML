@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -37,9 +36,12 @@ import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
@@ -77,9 +79,8 @@ public final class UMLEditor extends Application
 	@Override
 	public void start(Stage pStage) throws Exception 
 	{
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-	     
 		//set Stage boundaries 
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 	    int screenWidth = (int) primaryScreenBounds.getWidth();
 	    int screenHeight = (int) primaryScreenBounds.getHeight();
 	    pStage.setX(screenWidth / (MARGIN_SCREEN*2));
@@ -93,7 +94,7 @@ public final class UMLEditor extends Application
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
-	    	EditorFrame frame = EditorFrame.getCurInstance();
+	    	EditorFrame frame = EditorFrame.getInstance();
 	    	if(frame != null) 
 	    	{
 	    		frame.exit();
@@ -107,9 +108,9 @@ public final class UMLEditor extends Application
 		BorderPane pane = new BorderPane();
 		pane.setCenter(swingNode);
 		
-		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName()+"Strings");
+		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName() + "Strings");
 		pStage.setTitle(aAppResources.getString("app.name"));
-		String imagePath = getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString();
+		String imagePath = aAppResources.getString("app.icon");
 		pStage.getIcons().add(new Image(imagePath));
 		
 		pStage.setScene(new Scene(pane));
@@ -175,8 +176,12 @@ public final class UMLEditor extends Application
 			{
 				minor = "." + JAVA_MINOR_VERSION;
 			}
-			JOptionPane.showMessageDialog(null, resources.getString("error.version") + 
-					"1." + JAVA_MAJOR_VERSION + minor);
+			final String minorValue = minor;
+			Platform.runLater(() -> 
+			{
+				Alert alert = new Alert(AlertType.ERROR, resources.getString("error.version") +	"1." + JAVA_MAJOR_VERSION + minorValue);
+				alert.showAndWait();
+			});
 			System.exit(1);
 		}
 	}
@@ -235,7 +240,4 @@ public final class UMLEditor extends Application
 		}
 		return lReturn;
     }
-
-
-
 }

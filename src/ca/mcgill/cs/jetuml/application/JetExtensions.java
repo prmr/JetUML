@@ -9,23 +9,20 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 
 /**
- * A class to create and access diagram's extension filters 
+ * A class to create and access diagram extension filters 
  * used by the file chooser.
  * 
  * @author Kaylee I. Kutschera
- *
  */
 public final class JetExtensions 
 {
-	
-	private ResourceBundle aAppResources;
-	private List<ExtensionFilter> aJetFilters = new LinkedList<>();
-	
 	private static final JetExtensions INSTANCE = new JetExtensions();
+	
+	private List<ExtensionFilter> aJetFilters = new LinkedList<>();
 	
 	private JetExtensions() 
 	{
-		aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
+		ResourceBundle aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
 		aJetFilters.add(new ExtensionFilter("Jet Files", "*" + aAppResources.getString("files.extension")));
 		aJetFilters.add(new ExtensionFilter(aAppResources.getString("state.name"), 
 					    "*" + aAppResources.getString("state.extension") + aAppResources.getString("files.extension")));
@@ -49,7 +46,7 @@ public final class JetExtensions
 	}
 	
 	/**
-	 * @return list of all jet-related filters
+	 * @return list of all diagram extension filters
 	 */
 	public List<ExtensionFilter> getFilters()
 	{
@@ -58,7 +55,7 @@ public final class JetExtensions
 	
 	/**
 	 * @param pDescription description of the filter
-	 * @return the corresponding jet-related filter
+	 * @return the corresponding diagram extension filter
 	 */
 	public ExtensionFilter getFilter(String pDescription) 
 	{

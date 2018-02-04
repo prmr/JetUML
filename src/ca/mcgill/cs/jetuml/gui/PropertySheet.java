@@ -88,7 +88,6 @@ public class PropertySheet
 	{
 		assert pElement != null;
 		aListener = pListener;
-		aSheetLayout.setPadding(new Insets(LAYOUT_PADDING));
 		for( Property property : pElement.properties() )
 		{
 			Control editor = getEditorControl(pElement, property);
@@ -100,6 +99,7 @@ public class PropertySheet
 				aSheetLayout.getChildren().add(propertyLayout);
 			}
 		}
+		aSheetLayout.setPadding(new Insets(LAYOUT_PADDING));
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class PropertySheet
 	}
 	
 	/**
-	 * @return aSheetLayout a VBox containing the field editors.
+	 * @return aSheetLayout a pane containing the field editors.
 	 */
 	public Pane getSheetLayout()
 	{
@@ -191,11 +191,8 @@ public class PropertySheet
 	            textAreaSource.fireEvent(tabControlEvent);
 	        }
 	    });
-		
-		
 
 		textArea.setText((String) pProperty.get());
-		
 		textArea.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
 		{
 		   pProperty.set(textArea.getText());
@@ -244,7 +241,6 @@ public class PropertySheet
 	
 	private Control createBooleanEditor(Property pProperty)
 	{
-		System.out.println("here");
 		CheckBox checkBox = new CheckBox();
 		checkBox.setSelected((boolean)pProperty.get());
 		checkBox.selectedProperty().addListener((pObservable, pOldValue, pNewValue) -> 

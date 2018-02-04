@@ -38,7 +38,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
@@ -73,6 +72,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -184,20 +184,22 @@ public class GraphPanel extends JPanel
 		Platform.runLater(() -> 
 		{
 			Stage window = new Stage();
-			window.setTitle("Properties");
+			window.setTitle(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"));
+			window.getIcons().add(new Image(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("app.icon")));
+			
 			BorderPane layout = new BorderPane();
-			layout.setCenter(sheet.getSheetLayout());
 			Button button = new Button("OK");
 			button.setOnAction(pEvent -> window.close());
 			BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
+			
 			layout.setPadding(new Insets(LAYOUT_PADDING));
+			layout.setCenter(sheet.getSheetLayout());
 			layout.setBottom(button);
+			
 			Scene scene = new Scene(layout);
 			window.setScene(scene);
 			window.show();
-		});
-		
-		
+		});	
 		
 		CompoundCommand command = tracker.stopTracking();
 		if(command.size() > 0)
