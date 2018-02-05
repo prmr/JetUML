@@ -95,8 +95,6 @@ public final class Point implements Cloneable
 	@Override
 	public Point clone()
 	{
-//		aCreations++;
-//		System.out.println(aCreations);
 		try
 		{
 			return (Point) super.clone();

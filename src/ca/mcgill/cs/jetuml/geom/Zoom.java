@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.application;
+package ca.mcgill.cs.jetuml.geom;
 
 /**
  * A zoom helps convert coordinates between two system: a base
@@ -91,6 +91,30 @@ public class Zoom
 	public double factor()
 	{
 		return LEVELS[aZoomLevelIndex];
+	}
+	
+	/**
+	 * Converts a coordinate from the base system
+	 * to the zoomed system.
+	 * 
+	 * @param pCoordinate A coordinate to zoom.
+	 * @return The value of the coordinate after the zoom is applied.
+	 */
+	public int zoom(int pCoordinate)
+	{
+		return (int) Math.round(pCoordinate * factor());
+	}
+	
+	/**
+	 * Converts a coordinate from the zoomed system
+	 * back to the base system.
+	 * 
+	 * @param pCoordinate A coordinate to dezoom.
+	 * @return The value of the coordinate after the zooming is removed.
+	 */
+	public int dezoom(int pCoordinate)
+	{
+		return (int) Math.round(pCoordinate / factor());
 	}
 	
 	@Override

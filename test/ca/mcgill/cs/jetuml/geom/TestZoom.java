@@ -18,14 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.application;
+package ca.mcgill.cs.jetuml.geom;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 import java.lang.reflect.Field;
 
 import org.junit.Test;
+
+import ca.mcgill.cs.jetuml.geom.Zoom;
 
 public class TestZoom
 {
@@ -82,4 +85,68 @@ public class TestZoom
 		zoom.decreaseLevel(); // should not increase because reached min
 		assertEquals(1/(INCREMENT * MAX_LEVELS), zoom.factor(), 0.0);
 	}
+	
+	@Test 
+	public void testZoomPositive()
+	{
+		assumeTrue(INCREMENT == Math.sqrt(2));
+		// If the original value of INCREMENT was modified, update
+		// this test accordingly.
+		// Tests that the rounding works as expected
+		Zoom zoom = new Zoom();
+		zoom.increaseLevel();
+		assertEquals(1, zoom.zoom(1)); // Rounds downs from 1.41
+		assertEquals(3, zoom.zoom(2)); // Rounds up from 2.82
+		assertEquals(4, zoom.zoom(3)); // Rounds down from 4.24
+		assertEquals(0, zoom.zoom(0)); // Zero never moves
+	}
+	
+	@Test 
+	public void testZoomNegative()
+	{
+		assumeTrue(INCREMENT == Math.sqrt(2));
+		// If the original value of INCREMENT was modified, update
+		// this test accordingly.
+		// Tests that the rounding works as expected
+		Zoom zoom = new Zoom();
+		zoom.decreaseLevel();
+		zoom.decreaseLevel();
+		assertEquals(0, zoom.zoom(1)); // Rounds downs from 0.35
+		assertEquals(1, zoom.zoom(2)); // Rounds up from 0.71
+		assertEquals(1, zoom.zoom(3)); // Rounds down from 1.06
+		assertEquals(2, zoom.zoom(5)); // Rounds up from 1.77
+		assertEquals(0, zoom.zoom(0)); // Zero never moves
+	}
+	
+	@Test 
+	public void testDezoomPositive()
+	{
+		assumeTrue(INCREMENT == Math.sqrt(2));
+		// If the original value of INCREMENT was modified, update
+		// this test accordingly.
+		// Tests that the rounding works as expected
+		Zoom zoom = new Zoom();
+		zoom.increaseLevel();
+		assertEquals(1, zoom.dezoom(1)); // Rounds up from .71
+		assertEquals(1, zoom.dezoom(2)); // Rounds down from 1.41
+		assertEquals(2, zoom.dezoom(3)); // Rounds down from 2.12
+		assertEquals(0, zoom.dezoom(0)); // Zero never moves
+	}
+	
+	@Test 
+	public void testDezoomNegative()
+	{
+		assumeTrue(INCREMENT == Math.sqrt(2));
+		// If the original value of INCREMENT was modified, update
+		// this test accordingly.
+		// Tests that the rounding works as expected
+		Zoom zoom = new Zoom();
+		zoom.decreaseLevel();
+		assertEquals(1, zoom.dezoom(1)); // Rounds downs from 1.41
+		assertEquals(3, zoom.dezoom(2)); // Rounds up from 2.82
+		assertEquals(4, zoom.dezoom(3)); // Rounds down from 4.24
+		assertEquals(0, zoom.dezoom(0)); // Zero never moves
+	}
+	
+
 }
