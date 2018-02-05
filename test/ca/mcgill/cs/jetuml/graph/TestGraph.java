@@ -26,6 +26,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -256,5 +258,29 @@ public class TestGraph
 		assertEquals(new Rectangle(50,50,104,64), graph.getBounds());
 		node.translate(-50, -50);
 		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
+	}
+	
+	/*
+	 * Tests that the point node associated with a NoteEdge is properly removed. 
+	 */
+	@Test
+	public void testRemoveNodeEdge()
+	{
+		ClassDiagramGraph graph = new ClassDiagramGraph();
+		NoteNode node = new NoteNode();
+		PointNode point = new PointNode();
+		NoteEdge edge = new NoteEdge();
+		point.translate(100, 100);
+		graph.restoreRootNode(node);
+		graph.restoreRootNode(point);
+		graph.restoreEdge(edge, node, point);
+		assertEquals(1, graph.getEdges().size());
+		assertEquals(2, graph.getRootNodes().size());
+		graph.removeEdge(edge);
+		graph.layout();
+		assertEquals(0, graph.getEdges().size());
+		Collection<Node> nodes = graph.getRootNodes();
+		assertEquals(1, nodes.size());
+		assertFalse(nodes.contains(point));
 	}
 }

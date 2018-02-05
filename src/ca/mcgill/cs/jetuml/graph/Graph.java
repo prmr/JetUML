@@ -548,10 +548,10 @@ public abstract class Graph
 		notifyEdgeRemoved(pEdge);
 		for(int i = aRootNodes.size() - 1; i >= 0; i--)
 		{
-			Node n = aRootNodes.get(i);
-			if( n instanceof NoteEdge )
+			Node node = aRootNodes.get(i);
+			if( node instanceof NoteNode )
 			{
-				if(pEdge.getStart() == n)
+				if(pEdge.getStart() == node)
 				{
 					removeNode(pEdge.getEnd());
 				}

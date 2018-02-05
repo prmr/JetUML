@@ -56,6 +56,7 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.geom.Zoom;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -97,7 +98,7 @@ public class GraphPanel extends JPanel
 	
 	private Graph aGraph;
 	private ToolBar aSideBar;
-	private int aZoom;	
+	private Zoom aZoom = new Zoom();	
 	private boolean aHideGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
@@ -118,7 +119,6 @@ public class GraphPanel extends JPanel
 	{
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
-		aZoom = 1;
 		aSideBar = pSideBar;
 		setBackground(Color.WHITE);
 		addMouseListener(new GraphPanelMouseListener());
@@ -340,13 +340,13 @@ public class GraphPanel extends JPanel
 	{
 		super.paintComponent(pGraphics);
 		Graphics2D g2 = (Graphics2D) pGraphics;
-		g2.scale(aZoom, aZoom);
+		g2.scale(aZoom.factor(), aZoom.factor());
 		Rectangle2D bounds = getBounds();
 		Rectangle graphBounds = aGraph.getBounds();
 		if(!aHideGrid) 
 		{
-			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(bounds.getMaxX() / aZoom, graphBounds.getMaxX()), 
-				   Math.max(bounds.getMaxY() / aZoom, graphBounds.getMaxY())));
+			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(aZoom.dezoom((int)Math.round(bounds.getMaxX())), 
+					graphBounds.getMaxX()), Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxY())), graphBounds.getMaxY())));
 		}
 		aGraph.draw(g2);
 
@@ -423,28 +423,29 @@ public class GraphPanel extends JPanel
 	public Dimension getPreferredSize()
 	{
 		Rectangle bounds = aGraph.getBounds();
-		return new Dimension(aZoom * bounds.getMaxX(), aZoom * bounds.getMaxY());
+		return new Dimension(aZoom.zoom(bounds.getMaxX()), aZoom.zoom(bounds.getMaxY()));
 	}
-
+	
 	/**
-	 * Changes the zoom of this panel. The zoom is 1 by default and is multiplied
-	 * by sqrt(2) for each positive stem or divided by sqrt(2) for each negative step.
-	 * @param pSteps the number of steps by which to change the zoom. A positive
-	 * value zooms in, a negative value zooms out.
+	 * Increase the zoom level of this panel
+	 * by one step.
 	 */
-	public void changeZoom(int pSteps)
+	public void zoomIn()
 	{
-      final double factor = Math.sqrt(2);
-      for(int i = 1; i <= pSteps; i++)
-      {
-    	  aZoom *= factor;
-      }
-      for(int i = 1; i <= -pSteps; i++)
-      {
-    	  aZoom /= factor;
-      }
-      revalidate();
-      repaint();
+		aZoom.increaseLevel();
+		revalidate();
+		repaint();
+	}
+	
+	/**
+	 * Decrease the zoom level of this panel 
+	 * by one step.
+	 */
+	public void zoomOut()
+	{
+		aZoom.decreaseLevel();
+		revalidate();
+		repaint();
 	}
 
 	/**
@@ -600,7 +601,7 @@ public class GraphPanel extends JPanel
 		
 		private Point getMousePoint(MouseEvent pEvent)
 		{
-			return new Point((int)(pEvent.getX() / aZoom), (int)(pEvent.getY() / aZoom));
+			return new Point(aZoom.dezoom(pEvent.getX()), aZoom.dezoom(pEvent.getY()));
 		}
 		
 		/*
@@ -749,7 +750,7 @@ public class GraphPanel extends JPanel
 		@Override
 		public void mouseReleased(MouseEvent pEvent)
 		{
-			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			Point2D mousePoint = new Point2D.Double(aZoom.dezoom(pEvent.getX()), aZoom.dezoom(pEvent.getY()));
 			Object tool = aSideBar.getSelectedTool();
 			if(aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
@@ -784,7 +785,7 @@ public class GraphPanel extends JPanel
 		@Override
 		public void mouseDragged(MouseEvent pEvent)
 		{
-			Point2D mousePoint = new Point2D.Double(pEvent.getX() / aZoom, pEvent.getY() / aZoom);
+			Point2D mousePoint = new Point2D.Double(aZoom.dezoom(pEvent.getX()), aZoom.dezoom(pEvent.getY()));
 			boolean isCtrl = (pEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0; 
 
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)

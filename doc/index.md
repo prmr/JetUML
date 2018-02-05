@@ -28,6 +28,7 @@ The following principles guide the development of JetUML:
 * **Minimalist feature set:** The application only supports core UML diagramming features. 
 * **Violate Encapsulation for Testing:** To goal for the design is to support the highest possible level of encapsulation, and this implies the most restrictive access modifiers. When necessary, the 
 classes in the `test` source folders can use reflection to get around accessibility restrictions.
+* **No reflection:** To avoid fragile and hard-to-understand code, the project does not rely on any heavily-reflective framework, such as Javabeans. 
 
 ## Functional View
 The functional view is split by functional concern.
@@ -36,6 +37,7 @@ The functional view is split by functional concern.
  * [Graph management](functional/GraphManagement.md)
  * [Graph elements](functional/GraphElements.md)
  * [Tool bar](functional/toolbar.md)
+ * [Graph element properties](functional/properties.md)
  
 ## Glossary
 The glossary is limited to terms that are unique to JetUML or have a speific meaning in the context of the JetUML project.
