@@ -105,7 +105,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
  * @author Martin P. Robillard - Refactorings, file handling, menu management.
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-@SuppressWarnings("serial")
 public class EditorFrame 
 {
 	private static final int FRAME_GAP = 20;

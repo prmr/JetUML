@@ -53,7 +53,6 @@ import javafx.scene.layout.VBox;
  *  @author Martin P. Robillard
  *  @author Kaylee I. Kutschera - Migration to JavaFX
  */
-@SuppressWarnings("serial")
 public class PropertySheet
 {
 	/**
