@@ -82,16 +82,17 @@ public final class UMLEditor extends Application
 	{
 		//set Stage boundaries 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-	    int screenWidth = (int) primaryScreenBounds.getWidth();
-	    int screenHeight = (int) primaryScreenBounds.getHeight();
-	    pStage.setX(screenWidth / (MARGIN_SCREEN*2));
-	    pStage.setY(screenHeight / (MARGIN_SCREEN*2));
-	    pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
-	    pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
+		int screenWidth = (int) primaryScreenBounds.getWidth();
+		int screenHeight = (int) primaryScreenBounds.getHeight();
+		pStage.setX(screenWidth / (MARGIN_SCREEN*2));
+		pStage.setY(screenHeight / (MARGIN_SCREEN*2));
+		pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
+		pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
 		
 		final SwingNode swingNode = new SwingNode();	
 		createAndSetSwingContent(swingNode, pStage);
 		
+		// Prevents nodes from rendering as transparent
 		Properties props = System.getProperties(); 
 		props.setProperty("swing.jlf.contentPaneTransparent", "true");
 		
