@@ -314,7 +314,7 @@ public class EditorFrame extends JFrame
      			{
      				return;
      			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(-1);
+     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomOut();
      		}
          }));
 
@@ -326,7 +326,7 @@ public class EditorFrame extends JFrame
             	{
             		return;
             	}
-            	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(1);
+            	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomIn();
             }
      	}));
       
