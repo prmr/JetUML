@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.swing.SwingUtilities;
@@ -90,6 +91,9 @@ public final class UMLEditor extends Application
 		
 		final SwingNode swingNode = new SwingNode();	
 		createAndSetSwingContent(swingNode, pStage);
+		
+		Properties props = System.getProperties(); 
+		props.setProperty("swing.jlf.contentPaneTransparent", "true");
 		
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
