@@ -75,6 +75,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -183,6 +184,7 @@ public class GraphPanel extends JPanel
 			Stage window = new Stage();
 			window.setTitle(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"));
 			window.getIcons().add(new Image(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("app.icon")));
+			window.initModality(Modality.APPLICATION_MODAL);
 			
 			BorderPane layout = new BorderPane();
 			Button button = new Button("OK");
@@ -190,7 +192,7 @@ public class GraphPanel extends JPanel
 			BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
 			
 			layout.setPadding(new Insets(LAYOUT_PADDING));
-			layout.setCenter(sheet.getSheetLayout());
+			layout.setCenter(sheet);
 			layout.setBottom(button);
 			
 			Scene scene = new Scene(layout);

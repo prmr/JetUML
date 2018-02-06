@@ -43,7 +43,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -53,7 +52,7 @@ import javafx.scene.layout.VBox;
  *  @author Martin P. Robillard
  *  @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class PropertySheet
+public class PropertySheet extends VBox
 {
 	/**
 	 * A handler for whenever a property is being detected
@@ -70,8 +69,6 @@ public class PropertySheet
 	private static final int LAYOUT_SPACING = 10;
 	private static final int LAYOUT_PADDING = 20;
 	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.graph.GraphElementProperties");
-	
-	private final VBox aSheetLayout = new VBox(LAYOUT_SPACING);
 
 	private final PropertyChangeListener aListener;
 
@@ -85,6 +82,7 @@ public class PropertySheet
 	 */
 	public PropertySheet(GraphElement pElement, PropertyChangeListener pListener)
 	{
+		super(LAYOUT_SPACING);
 		assert pElement != null;
 		aListener = pListener;
 		for( Property property : pElement.properties() )
@@ -95,10 +93,10 @@ public class PropertySheet
 				HBox propertyLayout = new HBox(LAYOUT_SPACING);
 				propertyLayout.setAlignment(Pos.CENTER_RIGHT);
 				propertyLayout.getChildren().addAll(new Label(getPropertyName(pElement.getClass(), property.getName())), editor);
-				aSheetLayout.getChildren().add(propertyLayout);
+				this.getChildren().add(propertyLayout);
 			}
 		}
-		aSheetLayout.setPadding(new Insets(LAYOUT_PADDING));
+		this.setPadding(new Insets(LAYOUT_PADDING));
 	}
 	
 	/**
@@ -106,17 +104,9 @@ public class PropertySheet
 	 */
 	public boolean isEmpty()
 	{
-		return aSheetLayout.getChildren().size() == 0;
+		return this.getChildren().size() == 0;
 	}
-	
-	/**
-	 * @return aSheetLayout a pane containing the field editors.
-	 */
-	public Pane getSheetLayout()
-	{
-		return aSheetLayout;
-	}
-	
+
 	private Control getEditorControl(GraphElement pElement, Property pProperty)   
 	{      
 		if( pProperty.get() instanceof String )
