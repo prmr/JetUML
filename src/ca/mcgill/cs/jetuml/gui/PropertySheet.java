@@ -46,7 +46,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- *  A class that creates a layout that presents the properties of a GraphElement
+ *  A layout that presents the properties of a GraphElement
  *  and allow editing them.
  *  
  *  @author Martin P. Robillard
