@@ -50,7 +50,6 @@ import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -99,13 +98,14 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
- * This desktop frame contains panes that show graphs.
+ * This panel contains panes that show graphs.
  * 
  * @author Cay S. Horstmann - Original code
  * @author Martin P. Robillard - Refactorings, file handling, menu management.
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class EditorFrame 
+@SuppressWarnings("serial")
+public class EditorFrame extends JPanel
 {
 	private static final int FRAME_GAP = 20;
 	private static final int ESTIMATED_FRAMES = 5;
@@ -116,8 +116,6 @@ public class EditorFrame
 	private static final int HELP_MENU_TEXT_HEIGHT = 10; // Number of rows for the text area of the Help Menu.
 	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
-
-	private static EditorFrame aInstance = null;
 	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
@@ -134,9 +132,6 @@ public class EditorFrame
 	private JMenu aRecentFilesMenu;
 
 	private WelcomeTab aWelcomeTab;
-	
-	// Panel holding all Swing components
-	private JPanel aMainPanel = new JPanel();
 
 	// Menus or menu items that must be disabled if there is no current diagram.
 	private final List<JMenuItem> aDiagramRelevantMenus = new ArrayList<>();
@@ -153,7 +148,6 @@ public class EditorFrame
 	 */
 	public EditorFrame(Class<?> pAppClass, Stage pMainStage) 
 	{
-		aInstance = this;
 		aMainStage = pMainStage;
 		String appClassName = pAppClass.getName();
 		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
@@ -179,31 +173,14 @@ public class EditorFrame
 			}
 		});
 
-		aMainPanel.setLayout(new BorderLayout());
-		aMainPanel.add(aMenuBar, BorderLayout.NORTH);
-		aMainPanel.add(aTabbedPane, BorderLayout.CENTER);
+		this.setLayout(new BorderLayout());
+		this.add(aMenuBar, BorderLayout.NORTH);
+		this.add(aTabbedPane, BorderLayout.CENTER);
 
 		createFileMenu(factory);
 		createEditMenu(factory);
 		createViewMenu(factory);
 		createHelpMenu(factory);
-	}
-
-	/**
-	 * @return aInstance the current EditorFrame
-	 */
-	public static EditorFrame getInstance() 
-	{
-		return aInstance;
-	}
-	
-	/**
-	 * @return aMainPanel the JComponent holding all Swing contents
-	 */
-	public JComponent getSwingPanel() 
-	{
-		aMainPanel.setVisible(true);
-		return aMainPanel;
 	}
 
 	private void createFileMenu(MenuFactory pFactory) 

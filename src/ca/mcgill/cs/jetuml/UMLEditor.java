@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -90,7 +89,8 @@ public final class UMLEditor extends Application
 		pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
 		
 		final SwingNode swingNode = new SwingNode();	
-		createAndSetSwingContent(swingNode, pStage);
+		EditorFrame frame = initializeEditorFrame(pStage);
+		swingNode.setContent(frame);
 		
 		// Prevents nodes from rendering as transparent
 		Properties props = System.getProperties(); 
@@ -99,15 +99,7 @@ public final class UMLEditor extends Application
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
-	    	EditorFrame frame = EditorFrame.getInstance();
-	    	if(frame != null) 
-	    	{
-	    		frame.exit();
-	    	}
-	    	else 
-	    	{
-	    		pStage.close();
-	    	}	
+	    	frame.exit();
 	    });
 			
 		BorderPane pane = new BorderPane();
@@ -122,27 +114,20 @@ public final class UMLEditor extends Application
         pStage.show();
 	}
 
-	private void createAndSetSwingContent(SwingNode pNode, Stage pStage) 
+	private EditorFrame initializeEditorFrame(Stage pStage) 
 	{
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				List<String> argsList = getParameters().getRaw();
-				String[] arguments = argsList.toArray(new String[argsList.size()]);
-				setLookAndFeel();
-				EditorFrame frame = new EditorFrame(UMLEditor.class, pStage);
-				frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-				frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-				frame.addGraphType("state_diagram", StateDiagramGraph.class);
-			    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-				frame.readArgs(arguments);
-				frame.addWelcomeTab();
-				pNode.setContent(frame.getSwingPanel());
-			}
-		});	
+		EditorFrame frame = new EditorFrame(UMLEditor.class, pStage);
+		List<String> argsList = getParameters().getRaw();
+		String[] arguments = argsList.toArray(new String[argsList.size()]);
+		setLookAndFeel();
+		frame.addGraphType("class_diagram", ClassDiagramGraph.class);
+		frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
+		frame.addGraphType("state_diagram", StateDiagramGraph.class);
+	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
+	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+		frame.readArgs(arguments);
+		frame.addWelcomeTab();
+		return frame;
 	}
 	
 	private static void setLookAndFeel()
