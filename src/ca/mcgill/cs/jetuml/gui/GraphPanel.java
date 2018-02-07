@@ -38,7 +38,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
@@ -69,9 +68,19 @@ import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.views.Grid;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * A panel to draw a graph.
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 @SuppressWarnings("serial")
 public class GraphPanel extends JPanel
@@ -80,6 +89,7 @@ public class GraphPanel extends JPanel
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
+	private static final int LAYOUT_PADDING = 20;
 	private static final Color GRABBER_COLOR = new Color(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = new Color(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
@@ -169,10 +179,27 @@ public class GraphPanel extends JPanel
 		{
 			return;
 		}
-		String[] options = {"OK"};
-		JOptionPane.showOptionDialog(this, sheet, 
-				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"),
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+		Platform.runLater(() -> 
+		{
+			Stage window = new Stage();
+			window.setTitle(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"));
+			window.getIcons().add(new Image(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("app.icon")));
+			window.initModality(Modality.APPLICATION_MODAL);
+			
+			BorderPane layout = new BorderPane();
+			Button button = new Button("OK");
+			button.setOnAction(pEvent -> window.close());
+			BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
+			
+			layout.setPadding(new Insets(LAYOUT_PADDING));
+			layout.setCenter(sheet);
+			layout.setBottom(button);
+			
+			Scene scene = new Scene(layout);
+			window.setScene(scene);
+			window.show();
+		});	
+		
 		CompoundCommand command = tracker.stopTracking();
 		if(command.size() > 0)
 		{

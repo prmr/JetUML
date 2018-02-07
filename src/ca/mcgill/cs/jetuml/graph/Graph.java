@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -411,7 +412,7 @@ public abstract class Graph
 	public void draw(Graphics2D pGraphics2D)
 	{
 		layout();
-		
+		pGraphics2D.setBackground(Color.WHITE);
 		for( Node node : aRootNodes )
 		{
 			drawNode(node, pGraphics2D);
