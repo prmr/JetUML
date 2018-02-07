@@ -64,7 +64,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.application.JetExtensions;
+import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
@@ -126,7 +126,6 @@ public class EditorFrame extends JPanel
 	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	private JMenu aNewMenu;
 	private JMenuBar aMenuBar = new JMenuBar();
-	private JetExtensions aJetExtensions;
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private JMenu aRecentFilesMenu;
@@ -151,7 +150,6 @@ public class EditorFrame extends JPanel
 		aMainStage = pMainStage;
 		String appClassName = pAppClass.getName();
 		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
-		aJetExtensions = JetExtensions.getInstance();
 		aAppFactory = new MenuFactory(aAppResources);
 		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
 		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
@@ -712,7 +710,7 @@ viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
-		fileChooser.getExtensionFilters().addAll(aJetExtensions.getFilters());
+		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 		Platform.runLater(() -> 
 		{
 			File selectedFile = fileChooser.showOpenDialog(aMainStage);
@@ -940,8 +938,8 @@ viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
 		Graph graph = frame.getGraph();
 
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(aJetExtensions.getFilters());
-		fileChooser.setSelectedExtensionFilter(aJetExtensions.getFilter(graph.getDescription()));
+		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+		fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
 
 		if (frame.getFileName() != null) 
 		{
@@ -959,7 +957,7 @@ viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
 			try 
 			{
 				File result = fileChooser.showSaveDialog(aMainStage);
-				if(fileChooser.getSelectedExtensionFilter()!=aJetExtensions.getFilter(graph.getDescription()))
+				if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
 				{
 					result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
 				}

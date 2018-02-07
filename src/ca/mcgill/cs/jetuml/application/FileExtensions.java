@@ -9,57 +9,52 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 
 /**
- * A class to create and access diagram extension filters 
- * used by the file chooser.
+ * A utility class to create and access diagram extension 
+ * filters used by the file chooser.
  * 
  * @author Kaylee I. Kutschera
  */
-public final class JetExtensions 
+public final class FileExtensions
 {
-	private static final JetExtensions INSTANCE = new JetExtensions();
+	private static List<ExtensionFilter> aFileFilters = new LinkedList<>();
 	
-	private List<ExtensionFilter> aJetFilters = new LinkedList<>();
-	
-	private JetExtensions() 
-	{
-		ResourceBundle aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
-		aJetFilters.add(new ExtensionFilter("Jet Files", "*" + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter(aAppResources.getString("state.name"), 
-					    "*" + aAppResources.getString("state.extension") + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter(aAppResources.getString("object.name"), 
-						"*" + aAppResources.getString("object.extension") + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter(aAppResources.getString("class.name"), 
-						"*" + aAppResources.getString("class.extension") + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter(aAppResources.getString("usecase.name"), 
-						"*" + aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter(aAppResources.getString("sequence.name"), 
-						"*" + aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension")));
-		aJetFilters.add(new ExtensionFilter("All Files", "*.*"));
-	}
+	private FileExtensions() {}
 	
 	/**
-	 * @return instance of JetExtensions
+	 * Constructs all file extension filters related to the diagrams.
 	 */
-	public static JetExtensions getInstance()
+	static 
 	{
-		return INSTANCE;
+		ResourceBundle aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
+		aFileFilters.add(new ExtensionFilter("Jet Files", "*" + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("state.name"), 
+					    "*" + aAppResources.getString("state.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("object.name"), 
+						"*" + aAppResources.getString("object.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class.name"), 
+						"*" + aAppResources.getString("class.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase.name"), 
+						"*" + aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence.name"), 
+						"*" + aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter("All Files", "*.*"));
 	}
 	
 	/**
 	 * @return list of all diagram extension filters
 	 */
-	public List<ExtensionFilter> getFilters()
+	public static List<ExtensionFilter> getAll()
 	{
-		return aJetFilters;
+		return aFileFilters;
 	}
 	
 	/**
 	 * @param pDescription description of the filter
 	 * @return the corresponding diagram extension filter
 	 */
-	public ExtensionFilter getFilter(String pDescription) 
+	public static ExtensionFilter get(String pDescription) 
 	{
-		for(ExtensionFilter filter: aJetFilters) 
+		for(ExtensionFilter filter: aFileFilters) 
 		{
 			if(filter.getDescription().equals(pDescription))
 			{
