@@ -171,9 +171,9 @@ public class EditorFrame extends JPanel
 			}
 		});
 
-		this.setLayout(new BorderLayout());
-		this.add(aMenuBar, BorderLayout.NORTH);
-		this.add(aTabbedPane, BorderLayout.CENTER);
+		setLayout(new BorderLayout());
+		add(aMenuBar, BorderLayout.NORTH);
+		add(aTabbedPane, BorderLayout.CENTER);
 
 		createFileMenu(factory);
 		createEditMenu(factory);
