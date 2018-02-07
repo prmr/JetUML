@@ -92,10 +92,6 @@ public final class UMLEditor extends Application
 		EditorFrame frame = initializeEditorFrame(pStage);
 		swingNode.setContent(frame);
 		
-		// Prevents nodes from rendering as transparent
-		Properties props = System.getProperties(); 
-		props.setProperty("swing.jlf.contentPaneTransparent", "true");
-		
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
