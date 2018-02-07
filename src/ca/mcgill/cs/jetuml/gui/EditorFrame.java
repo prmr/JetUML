@@ -311,66 +311,65 @@ public class EditorFrame extends JPanel
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setEnabled(!noCurrentGraphFrame());
 		
-//=====
-viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
-	{
-		public void actionPerformed(ActionEvent pEvent)
+
+		viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
 		{
-			if( noCurrentGraphFrame() )
+			public void actionPerformed(ActionEvent pEvent)
 			{
-				return;
-			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomOut();
-		}
- }));
-
-	viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener()
-	{
-    public void actionPerformed(ActionEvent pEvent)
-    {
-    	if( noCurrentGraphFrame() )
-    	{
-    		return;
-    	}
-    	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomIn();
-    }
-	}));
-
-	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
-	{
-    public void actionPerformed(ActionEvent pEvent)
-    {
-    	if( noCurrentGraphFrame() )
-    	{
-    		return;
-    	}
-    	GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-    	GraphPanel panel = frame.getGraphPanel();
-    	JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) pEvent.getSource();               
-    	panel.setHideGrid(menuItem.isSelected());
-    }
-});
-	viewMenu.add(hideGridItem);
-
-	viewMenu.addMenuListener(new MenuListener()
-	{
-		public void menuSelected(MenuEvent pEvent)
-    {
- 		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
- 		{
- 			return;
- 		}	
-			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-				if (frame == null) 
+				if( noCurrentGraphFrame() )
 				{
 					return;
 				}
-				GraphPanel panel = frame.getGraphPanel();
-				hideGridItem.setSelected(panel.getHideGrid());
+				((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomOut();
 			}
-
+		}));
+		viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener()
+		{
+		    public void actionPerformed(ActionEvent pEvent)
+		    {
+		    	if( noCurrentGraphFrame() )
+		    	{
+		    		return;
+		    	}
+		    	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomIn();
+		    }
+		}));
+	
+		final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
+		{
+		    public void actionPerformed(ActionEvent pEvent)
+		    {
+		    	if( noCurrentGraphFrame() )
+		    	{
+		    		return;
+		    	}
+		    	GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
+		    	GraphPanel panel = frame.getGraphPanel();
+		    	JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) pEvent.getSource();               
+		    	panel.setHideGrid(menuItem.isSelected());
+		    }
+		});
+		viewMenu.add(hideGridItem);
+	
+		viewMenu.addMenuListener(new MenuListener()
+		{
+			public void menuSelected(MenuEvent pEvent)
+			{
+		 		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
+		 		{
+		 			return;
+		 		}	
+					GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+						if (frame == null) 
+						{
+							return;
+						}
+						GraphPanel panel = frame.getGraphPanel();
+						hideGridItem.setSelected(panel.getHideGrid());
+			}
+	
 			public void menuDeselected(MenuEvent pEvent) {}
-
+	
 			public void menuCanceled(MenuEvent pEvent) {}
 		});
 	}
