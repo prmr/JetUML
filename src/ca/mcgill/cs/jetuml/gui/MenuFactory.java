@@ -166,6 +166,7 @@ class MenuFactory
 			}
 		}
 		pMenuItem.setText(text);
+		
 		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
 		{
 			if(aSystem.indexOf("mac") >= 0)
@@ -177,10 +178,7 @@ class MenuFactory
 				pMenuItem.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.win")));
 			}	
 		}
-		else if (aBundle.containsKey(pPrefix + ".accelerator.all")) 
-		{
-			pMenuItem.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.all")));
-		}
+		
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
 			pMenuItem.setGraphic(new ImageView(aBundle.getString(pPrefix + ".icon").toString()));
@@ -252,11 +250,7 @@ class MenuFactory
 				menu.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.win")));
 			}
 		}
-		else if( aBundle.containsKey(pPrefix + ".accelerator.all"))
-		{
-			menu.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.all")));
-		}
-		
+
 		if( aBundle.containsKey(pPrefix + ".icon"))
 		{
 			menu.setGraphic(new ImageView(aBundle.getString(pPrefix + ".icon").toString()));
