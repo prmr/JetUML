@@ -26,13 +26,13 @@ import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
@@ -91,21 +91,19 @@ class MenuFactory
 	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
 		MenuItem menuItem = new MenuItem();
-		menuItem.setOnAction(pHandler);
-		return configure(menuItem, pPrefix);
+		return configure(menuItem, pPrefix, pHandler);
 	}
 
 	/**
 	 * Create a checkbox menu.
 	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
-	 * @param pListener The callback to execute when the menu item is selected.
+	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
-	public JMenuItem createCheckBoxMenuItem(String pPrefix, ActionListener pListener)
+	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler) 
 	{
-		String text = aBundle.getString(pPrefix + ".text");
-		JMenuItem menuItem = new JCheckBoxMenuItem(text);
-		return configureJMenuItem(menuItem, pPrefix, pListener);
+		MenuItem menuItem = new CheckMenuItem();
+		return configure(menuItem, pPrefix, pHandler);
 	}	
 
 	/*
@@ -144,8 +142,9 @@ class MenuFactory
 	/*
 	 * Configures the menu with text, mnemonic, accelerator, etc
 	 */
-	private MenuItem configure(MenuItem pMenuItem, String pPrefix)
+	private MenuItem configure(MenuItem pMenuItem, String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
+		pMenuItem.setOnAction(pHandler);
 		String text = aBundle.getString(pPrefix + ".text");
 		
 		if( aBundle.containsKey(pPrefix + ".mnemonic"))
