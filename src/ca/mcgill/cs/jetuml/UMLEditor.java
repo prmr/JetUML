@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.swing.UIManager;
@@ -37,7 +36,6 @@ import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.embed.swing.SwingNode;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -88,25 +86,21 @@ public final class UMLEditor extends Application
 		pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
 		pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
 		
-		final SwingNode swingNode = new SwingNode();	
 		EditorFrame frame = initializeEditorFrame(pStage);
-		swingNode.setContent(frame);
-		
-		pStage.setOnCloseRequest(pWindowEvent -> 
-		{
-			pWindowEvent.consume();
-	    	frame.exit();
-	    });
-			
 		BorderPane pane = new BorderPane();
-		pane.setCenter(swingNode);
-		
+		pane.setCenter(frame);
+			
 		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName() + "Strings");
 		pStage.setTitle(aAppResources.getString("app.name"));
 		String imagePath = aAppResources.getString("app.icon");
 		pStage.getIcons().add(new Image(imagePath));
 		
 		pStage.setScene(new Scene(pane));
+		pStage.setOnCloseRequest(pWindowEvent -> 
+		{
+			pWindowEvent.consume();
+			frame.exit();
+	    });
         pStage.show();
 	}
 
