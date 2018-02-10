@@ -41,7 +41,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -85,21 +84,18 @@ public final class UMLEditor extends Application
 		pStage.setY(screenHeight / (MARGIN_SCREEN*2));
 		pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
 		pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
-		
-		EditorFrame frame = initializeEditorFrame(pStage);
-		BorderPane pane = new BorderPane();
-		pane.setCenter(frame);
 			
 		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName() + "Strings");
 		pStage.setTitle(aAppResources.getString("app.name"));
 		String imagePath = aAppResources.getString("app.icon");
 		pStage.getIcons().add(new Image(imagePath));
 		
-		pStage.setScene(new Scene(pane));
+		pStage.setScene(new Scene(initializeEditorFrame(pStage)));
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
-			frame.exit();
+			// Exit the EditorFrame
+			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
 	    });
         pStage.show();
 	}

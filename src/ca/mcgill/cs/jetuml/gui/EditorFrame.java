@@ -127,20 +127,17 @@ public class EditorFrame extends BorderPane
 	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	
 	private Menu aNewMenu;
-	private JMenu aNewJMenu;
-	
+	private JMenu aNewJMenu;	// Menu used by Welcome Tab
 	private MenuBar aMenuBar = new MenuBar();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
-	
 	private Menu aRecentFilesMenu;
-	private JMenu aRecentFilesJMenu;
+	private JMenu aRecentFilesJMenu;	// Menu used by Welcome Tab
 
 	private WelcomeTab aWelcomeTab;
 
 	// Menus or menu items that must be disabled if there is no current diagram.
 	private final List<MenuItem> aDiagramRelevantMenus = new ArrayList<>();
-	private final List<JMenuItem> aDiagramRelevantJMenus = new ArrayList<>();
 
 	/**
 	 * Constructs a blank frame with a desktop pane but no graph windows.
@@ -172,10 +169,6 @@ public class EditorFrame extends BorderPane
 			public void stateChanged(ChangeEvent pEvent) 
 			{
 				boolean noGraphFrame = noCurrentGraphFrame();
-				for (JMenuItem menuItem : aDiagramRelevantJMenus) 
-				{
-					menuItem.setEnabled(!noGraphFrame);
-				}
 				Platform.runLater(() -> 
 				{
 					for (MenuItem menuItem : aDiagramRelevantMenus) 
@@ -192,14 +185,12 @@ public class EditorFrame extends BorderPane
 		setTop(aMenuBar);
 		setCenter(tabbedSwingNode);
 
-		// Create file menu for Welcome Tab
-		createJFileMenu(factory);
+		createWelcomeTabMenus(factory);
 		
 		createFileMenu(factory);
 		createEditMenu(factory);
 		createViewMenu(factory);
 		createHelpMenu(factory);
-
 	}
 	
 	/**
@@ -210,50 +201,11 @@ public class EditorFrame extends BorderPane
 		return aInstance;
 	}
 
-	private void createJFileMenu(MenuFactory pFactory) 
+	private void createWelcomeTabMenus(MenuFactory pFactory) 
 	{
-		JMenu fileMenu = pFactory.createJMenu("file");
-		fileMenu.setVisible(true);
-
 		aNewJMenu = pFactory.createJMenu("file.new");
-		fileMenu.add(aNewJMenu);
-
-		JMenuItem fileOpenItem = pFactory.createJMenuItem("file.open", this, "openFile");
-		fileMenu.add(fileOpenItem);
-
 		aRecentFilesJMenu = pFactory.createJMenu("file.recent");
 		buildRecentFilesJMenu();
-		fileMenu.add(aRecentFilesJMenu);
-
-		JMenuItem closeFileItem = pFactory.createJMenuItem("file.close", this, "close");
-		fileMenu.add(closeFileItem);
-		aDiagramRelevantJMenus.add(closeFileItem);
-		closeFileItem.setEnabled(!noCurrentGraphFrame());
-
-		JMenuItem fileSaveItem = pFactory.createJMenuItem("file.save", this, "save");
-		fileMenu.add(fileSaveItem);
-		aDiagramRelevantJMenus.add(fileSaveItem);
-		fileSaveItem.setEnabled(!noCurrentGraphFrame());
-
-		JMenuItem fileSaveAsItem = pFactory.createJMenuItem("file.save_as", this, "saveAs");
-		fileMenu.add(fileSaveAsItem);
-		aDiagramRelevantJMenus.add(fileSaveAsItem);
-		fileSaveAsItem.setEnabled(!noCurrentGraphFrame());
-
-		JMenuItem fileExportItem = pFactory.createJMenuItem("file.export_image", this, "exportImage");
-		fileMenu.add(fileExportItem);
-		aDiagramRelevantJMenus.add(fileExportItem);
-		fileExportItem.setEnabled(!noCurrentGraphFrame());
-
-		JMenuItem fileCopyToClipboard = pFactory.createJMenuItem("file.copy_to_clipboard", this, "copyToClipboard");
-		fileMenu.add(fileCopyToClipboard);
-		aDiagramRelevantJMenus.add(fileCopyToClipboard);
-		fileCopyToClipboard.setEnabled(!noCurrentGraphFrame());
-
-		fileMenu.addSeparator();
-
-		JMenuItem fileExitItem = pFactory.createJMenuItem("file.exit", this, "exit");
-		fileMenu.add(fileExitItem);
 	}
 	
 	private void createFileMenu(MenuFactory pFactory) 
@@ -306,7 +258,6 @@ public class EditorFrame extends BorderPane
 	{
 		Menu editMenu = pFactory.createMenu("edit");
 		aMenuBar.getMenus().add(editMenu);
-
 		aDiagramRelevantMenus.add(editMenu);
 		editMenu.setDisable(noCurrentGraphFrame());
 
