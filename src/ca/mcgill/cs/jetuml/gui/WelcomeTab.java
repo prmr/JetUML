@@ -28,8 +28,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.BoxLayout;
@@ -37,16 +37,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
- * @author JoelChev
  * This class instantiates the Welcome Tab that is the default Tab in JetUML.
- *
+ * 
+ * @author JoelChev - Original Code
+ * @author Kaylee I. Kutschera - Content initialization from maps
  */
 @SuppressWarnings("serial")
 public class WelcomeTab extends JInternalFrame
@@ -61,17 +60,15 @@ public class WelcomeTab extends JInternalFrame
     private JPanel aLeftTitlePanel;
     private JPanel aLeftPanel;
     private JPanel aRightPanel;
-    private JMenu aNewFileMenu;
-    private JMenu aRecentFileMenu;
     private ImageIcon aLeftPanelIcon;
     private ImageIcon aRightPanelIcon;
     private String aFootText;
     
 	/**
-	 * @param pNewFileMenu The NewFileMenu to link to the WelcomeTab.
-	 * @param pRecentFileMenu The RecentFileMenu to link to the WelcomeTab.
+	 * @param pNewDiagramMap a map containing the name and handler corresponding to the creation of a new diagram.
+	 * @param pRecentFilesMap a map containing the name and handler corresponding to opening a recent file.
 	 */
-	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)
+	public WelcomeTab(Map<String, ActionListener> pNewDiagramMap, Map<String, ActionListener> pRecentFilesMap)
 	{
 		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
 		aLeftPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.create.icon")));
@@ -85,8 +82,6 @@ public class WelcomeTab extends JInternalFrame
 	    north.validate();
 	    north.repaint();
 	
-	    aNewFileMenu = pNewFileMenu;
-	    aRecentFileMenu = pRecentFileMenu;
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new GridBagLayout());
 	    panel.setOpaque(false);
@@ -96,8 +91,8 @@ public class WelcomeTab extends JInternalFrame
 	    shortcutPanel.setLayout(new GridLayout(2, 2));
 	    shortcutPanel.add(getLeftTitlePanel());
 	    shortcutPanel.add(getRightTitlePanel());
-	    shortcutPanel.add(getLeftPanel());
-	    shortcutPanel.add(getRightPanel());
+	    shortcutPanel.add(getLeftPanel(pNewDiagramMap));
+	    shortcutPanel.add(getRightPanel(pRecentFilesMap));
 	    GridBagConstraints c = new GridBagConstraints();
 	    c.anchor = GridBagConstraints.NORTH;
 	    c.weightx = 1;
@@ -109,8 +104,8 @@ public class WelcomeTab extends JInternalFrame
 	    add(getFootTextPanel(), BorderLayout.SOUTH);
 	    setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
 	}
-	
-	private JPanel getLeftPanel()
+		
+	private JPanel getLeftPanel(Map<String, ActionListener> pNewDiagramMap)
 	{
 		if(aLeftPanel == null)
 		{
@@ -119,27 +114,20 @@ public class WelcomeTab extends JInternalFrame
 			aLeftPanel.setLayout(new BoxLayout(aLeftPanel, BoxLayout.Y_AXIS));
 			aLeftPanel.setBorder(new EmptyBorder(0, 0, 0, BORDER_MARGIN));
 
-			for(int i = 0; i < aNewFileMenu.getItemCount(); i++)
+			for(Map.Entry<String, ActionListener> entry : pNewDiagramMap.entrySet())
 			{
-				final JMenuItem item = aNewFileMenu.getItem(i);
-				String label = item.getText();
+				String label = entry.getKey();
 				JButton newDiagramShortcut = new JButton(label.toLowerCase());
 				newDiagramShortcut.setUI(new WelcomeButtonUI());
 				newDiagramShortcut.setAlignmentX(Component.RIGHT_ALIGNMENT);
-				newDiagramShortcut.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent pEvent)
-					{
-						item.doClick();
-					}
-				});
+				newDiagramShortcut.addActionListener(entry.getValue());
 				aLeftPanel.add(newDiagramShortcut);
 			}
 		}
 		return aLeftPanel;
 	}
-
-	private JPanel getRightPanel()
+	
+	private JPanel getRightPanel(Map<String, ActionListener> pRecentFilesMap)
 	{
 		if(aRightPanel == null)
 		{
@@ -148,20 +136,13 @@ public class WelcomeTab extends JInternalFrame
 			aRightPanel.setLayout(new BoxLayout(aRightPanel, BoxLayout.Y_AXIS));
 			aRightPanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, 0, BORDER_MARGIN));
 
-			for(int i = 0; i < aRecentFileMenu.getItemCount(); i++)
+			for(Map.Entry<String, ActionListener> entry : pRecentFilesMap.entrySet())
 			{
-				final JMenuItem item = aRecentFileMenu.getItem(i);
-				String label = item.getText().substring(2);
+				String label = entry.getKey();
 				JButton fileShortcut = new JButton(label.toLowerCase());
 				fileShortcut.setUI(new WelcomeButtonUI());
 				fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
-				fileShortcut.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent pEvent)
-					{
-						item.doClick();
-					}
-				});
+				fileShortcut.addActionListener(entry.getValue());
 				aRightPanel.add(fileShortcut);
 			}
 
@@ -176,7 +157,7 @@ public class WelcomeTab extends JInternalFrame
 			JLabel icon = new JLabel();
 			icon.setIcon(this.aLeftPanelIcon);
 
-			JLabel title = new JLabel(aNewFileMenu.getText().toLowerCase());
+			JLabel title = new JLabel(aWelcomeResources.getString("file.new.text").toLowerCase());
 			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
 			title.setForeground(Color.DARK_GRAY);
 			title.setBorder(new EmptyBorder(0, ALTERNATIVE_BORDER_MARGIN, 0, 0));
@@ -204,7 +185,7 @@ public class WelcomeTab extends JInternalFrame
 			icon.setIcon(this.aRightPanelIcon);
 			icon.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-			JLabel title = new JLabel(aRecentFileMenu.getText().toLowerCase());
+			JLabel title = new JLabel(aWelcomeResources.getString("file.recent.text").toLowerCase());
 			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
 			title.setForeground(Color.DARK_GRAY);
 			title.setBorder(new EmptyBorder(0, 0, 0, ALTERNATIVE_BORDER_MARGIN));

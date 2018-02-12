@@ -28,7 +28,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -43,14 +42,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -127,12 +125,15 @@ public class EditorFrame extends BorderPane
 	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
 	
 	private Menu aNewMenu;
-	private JMenu aNewJMenu;	// Menu used by Welcome Tab
 	private MenuBar aMenuBar = new MenuBar();
+	
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
-	private JMenu aRecentFilesJMenu;	// Menu used by Welcome Tab
+	
+	// Maps used by WelcomeTab to create menus that create new diagrams or open recent files
+	private LinkedHashMap<String, ActionListener> aNewDiagramMap = new LinkedHashMap<>();
+	private LinkedHashMap<String, ActionListener> aRecentFilesMap = new LinkedHashMap<>();
 
 	private WelcomeTab aWelcomeTab;
 
@@ -184,9 +185,7 @@ public class EditorFrame extends BorderPane
 
 		setTop(aMenuBar);
 		setCenter(tabbedSwingNode);
-
-		createWelcomeTabMenus(factory);
-		
+	
 		createFileMenu(factory);
 		createEditMenu(factory);
 		createViewMenu(factory);
@@ -201,13 +200,6 @@ public class EditorFrame extends BorderPane
 		return aInstance;
 	}
 
-	private void createWelcomeTabMenus(MenuFactory pFactory) 
-	{
-		aNewJMenu = pFactory.createJMenu("file.new");
-		aRecentFilesJMenu = pFactory.createJMenu("file.recent");
-		buildRecentFilesJMenu();
-	}
-	
 	private void createFileMenu(MenuFactory pFactory) 
 	{
 		Menu fileMenu = pFactory.createMenu("file");
@@ -438,21 +430,18 @@ public class EditorFrame extends BorderPane
 	 */
 	public void addGraphType(String pResourceName, final Class<?> pGraphClass) 
 	{
-		aNewJMenu.add(aAppFactory.createJMenuItem(pResourceName, new ActionListener() 
+		aNewDiagramMap.put(aAppResources.getString(pResourceName + ".text"), pEvent ->
 		{
-			public void actionPerformed(ActionEvent pEvent) 
+			try 
 			{
-				try 
-				{
-					GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-					addTab(frame);
-				}
-				catch (Exception exception) 
-				{
-					exception.printStackTrace();
-				}
+				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				addTab(frame);
 			}
-		}));
+			catch (Exception exception) 
+			{
+				exception.printStackTrace();
+			}
+		});
 		
 		aNewMenu.getItems().add(aAppFactory.createMenuItem(pResourceName, pEvent ->
 		{
@@ -626,7 +615,7 @@ public class EditorFrame extends BorderPane
 	 */
 	public void addWelcomeTab() 
 	{
-		aWelcomeTab = new WelcomeTab(aNewJMenu, aRecentFilesJMenu);
+		aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
 		aTabbedPane.add("Welcome", aWelcomeTab);
 		aTabs.add(aWelcomeTab);
 	}
@@ -661,7 +650,7 @@ public class EditorFrame extends BorderPane
 		aTabs.remove(pInternalFrame);
 		if (aTabs.size() == 0) 
 		{
-			aWelcomeTab = new WelcomeTab(aNewJMenu, aRecentFilesJMenu);
+			aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
 			aTabbedPane.add("Welcome", aWelcomeTab);
 			aTabs.add(aWelcomeTab);
 		}
@@ -676,37 +665,7 @@ public class EditorFrame extends BorderPane
 	private void addRecentFile(String pNewFile) 
 	{
 		aRecentFiles.add(pNewFile);
-		buildRecentFilesJMenu();
 		buildRecentFilesMenu();
-	}
-
-	/*
-	 * Rebuilds the "recent files" menu. Only works if the number of recent files is
-	 * less than 8. Otherwise, additional logic will need to be added to 0-index the
-	 * mnemonics for files 1-9
-	 */
-	private void buildRecentFilesJMenu() 
-	{
-		assert aRecentFiles.size() <= MAX_RECENT_FILES;
-		aRecentFilesJMenu.removeAll();
-		aRecentFilesJMenu.setEnabled(aRecentFiles.size() > 0);
-		int i = 1;
-		for (File file : aRecentFiles) 
-		{
-			String name = i + " " + file.getName();
-			final String fileName = file.getAbsolutePath();
-			JMenuItem item = new JMenuItem(name);
-			item.setMnemonic('0' + i);
-			aRecentFilesJMenu.add(item);
-			item.addActionListener(new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent pEvent) 
-				{
-					open(fileName);
-				}
-			});
-			i++;
-		}
 	}
 	
    	/*
@@ -717,6 +676,7 @@ public class EditorFrame extends BorderPane
    	private void buildRecentFilesMenu()
    	{ 
    		assert aRecentFiles.size() <= MAX_RECENT_FILES;
+   		aRecentFilesMap.clear();
    		aRecentFilesMenu.getItems().clear();
    		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
    		int i = 1;
@@ -724,6 +684,7 @@ public class EditorFrame extends BorderPane
    		{
    			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
+   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
    			item.setOnAction(pEvent ->
