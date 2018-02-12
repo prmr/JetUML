@@ -21,13 +21,7 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
-
-import javax.swing.ImageIcon;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,31 +49,6 @@ class MenuFactory
 		aBundle = pBundle;
 		aSystem = System.getProperty("os.name").toLowerCase();
 	}
-
-	/**
-	 * Creates a menu item that calls a method in response to the action event.
-	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
-	 * @param pTarget The object on which pMethodName will be invoked when the menu is selected.
-	 * @param pMethodName The method to invoke when the menu is selected.
-	 * @return A menu item for the action described.
-	 */
-	public JMenuItem createJMenuItem(String pPrefix, Object pTarget, String pMethodName)
-	{
-		return createJMenuItem(pPrefix, java.beans.EventHandler.create(ActionListener.class, pTarget, pMethodName));
-	}
-
-	/**
-	 * Creates a menu item where pListener is triggered when the menu item is selected.
-	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
-	 * @param pListener The callback to execute when the menu item is selected.
-	 * @return A menu item for the action described.
-	 */
-	public JMenuItem createJMenuItem(String pPrefix, ActionListener pListener)
-	{
-		String text = aBundle.getString(pPrefix + ".text");
-		JMenuItem menuItem = new JMenuItem(text);
-		return configureJMenuItem(menuItem, pPrefix, pListener);
-	}
 	
 	/**
 	 * Creates a menu item where pListener is triggered when the menu item is selected.
@@ -104,39 +73,6 @@ class MenuFactory
 		MenuItem menuItem = new CheckMenuItem();
 		return configure(menuItem, pPrefix, pHandler);
 	}	
-
-	/*
-	 * Configures the menu with text, mnemonic, accelerator, etc
-	 */
-	private JMenuItem configureJMenuItem(JMenuItem pMenuItem, String pPrefix, ActionListener pListener)
-	{
-		pMenuItem.addActionListener(pListener);
-		if( aBundle.containsKey(pPrefix + ".mnemonic"))
-		{
-			pMenuItem.setMnemonic(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
-		}
-		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
-		{
-			if(aSystem.indexOf("mac") >= 0)
-			{
-				pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.mac")));	
-			}
-			else
-			{
-				pMenuItem.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.win")));
-			}
-			
-		}
-		if( aBundle.containsKey(pPrefix + ".tooltip"))
-		{
-			pMenuItem.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
-		}
-		if( aBundle.containsKey(pPrefix + ".icon"))
-		{
-			pMenuItem.setIcon(new ImageIcon(getClass().getClassLoader().getResource(aBundle.getString(pPrefix + ".icon"))));
-		}
-		return pMenuItem;
-	}
 	
 	/*
 	 * Configures the menu with text, mnemonic, accelerator, etc
@@ -183,42 +119,6 @@ class MenuFactory
 			pMenuItem.setGraphic(new ImageView(aBundle.getString(pPrefix + ".icon").toString()));
 		}
 		return pMenuItem;
-	}
-	
-	/**
-	 * Create a menu that corresponds to the resource for key pPrefix.
-	 * @param pPrefix A string such as "file" that indicates the menu->submenu path
-	 * @return A configured menu
-	 */
-	public JMenu createJMenu(String pPrefix)
-	{
-		String text = aBundle.getString(pPrefix + ".text");
-		JMenu menu = new JMenu(text);
-		if( aBundle.containsKey(pPrefix + ".mnemonic"))
-		{
-			menu.setMnemonic(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
-		}
-		if( aBundle.containsKey(pPrefix + ".tooltip"))
-      	{
-      		menu.setToolTipText(aBundle.getString(pPrefix + ".tooltip"));         
-      	}
-		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
-		{
-			if(aSystem.indexOf("mac") >= 0)
-			{
-				menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.mac")));	
-			}
-			else
-			{
-				menu.setAccelerator(KeyStroke.getKeyStroke(aBundle.getString(pPrefix + ".accelerator.win")));
-			}
-		}
-		if( aBundle.containsKey(pPrefix + ".icon"))
-		{
-			menu.setIcon(new ImageIcon(getClass().getClassLoader().getResource(aBundle.getString(pPrefix + ".icon"))));
-		}
-
-		return menu;
 	}
 	
 	/**
