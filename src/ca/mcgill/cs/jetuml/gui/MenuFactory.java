@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.event.ActionListener;
-//import java.beans.EventHandler;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
