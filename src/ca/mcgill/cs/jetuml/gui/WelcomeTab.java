@@ -48,7 +48,7 @@ import javafx.scene.control.Tab;
  * This class instantiates the Welcome Tab that is the default Tab in JetUML.
  * 
  * @author JoelChev - Original Code
- * @author Kaylee I. Kutschera - Content initialization from maps
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class WelcomeTab extends Tab
 {
