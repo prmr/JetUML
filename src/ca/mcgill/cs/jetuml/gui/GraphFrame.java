@@ -62,6 +62,7 @@ public class GraphFrame extends Tab
 		aPanel = new GraphPanel(pGraph, sideBar, this);
 		
 		JInternalFrame frame = new JInternalFrame();
+		frame.setLayout(new BorderLayout());
 		((BasicInternalFrameUI) frame.getUI()).getNorthPane().remove(0); // Removes the system pop-up menu full of disabled buttons.
 		frame.setVisible(true);
 		
