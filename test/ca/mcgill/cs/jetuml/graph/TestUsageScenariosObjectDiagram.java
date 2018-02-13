@@ -71,7 +71,7 @@ public class TestUsageScenariosObjectDiagram
 	{
 		aDiagram = new ObjectDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();

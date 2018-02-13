@@ -74,7 +74,7 @@ public class TestClipboard
 		aPackage2 = new PackageNode();
 		
 		aClassDiagramGraph = new ClassDiagramGraph();
-		aPanel = new GraphPanel(aClassDiagramGraph, new ToolBar(aClassDiagramGraph));
+		aPanel = new GraphPanel(aClassDiagramGraph, new ToolBar(aClassDiagramGraph), null);
 	}
 	
 	@Test

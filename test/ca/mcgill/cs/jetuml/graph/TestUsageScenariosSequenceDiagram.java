@@ -72,7 +72,7 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram = new SequenceDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aList = new SelectionList();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();

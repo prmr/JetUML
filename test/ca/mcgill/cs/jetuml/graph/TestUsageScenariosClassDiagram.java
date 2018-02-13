@@ -79,7 +79,7 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram = new ClassDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aList = new SelectionList();
 		aClassNode = new ClassNode();
 		aInterfaceNode = new InterfaceNode();

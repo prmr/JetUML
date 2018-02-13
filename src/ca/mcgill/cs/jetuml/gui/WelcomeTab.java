@@ -41,14 +41,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+import javafx.embed.swing.SwingNode;
+import javafx.scene.control.Tab;
+
 /**
  * This class instantiates the Welcome Tab that is the default Tab in JetUML.
  * 
  * @author JoelChev - Original Code
  * @author Kaylee I. Kutschera - Content initialization from maps
  */
-@SuppressWarnings("serial")
-public class WelcomeTab extends JInternalFrame
+public class WelcomeTab extends Tab
 {
 	private static final int BORDER_MARGIN = 45;
 	private static final int ALTERNATIVE_BORDER_MARGIN = 30;
@@ -70,13 +72,16 @@ public class WelcomeTab extends JInternalFrame
 	 */
 	public WelcomeTab(Map<String, ActionListener> pNewDiagramMap, Map<String, ActionListener> pRecentFilesMap)
 	{
+		super("Welcome");
+		setClosable(false);
 		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
 		aLeftPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.create.icon")));
 		aRightPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.open.icon"))); 
-	    setOpaque(false);
-	    setLayout(new BorderLayout());
+		JInternalFrame content = new JInternalFrame();
+	    content.setOpaque(false);
+	    content.setLayout(new BorderLayout());
 	    
-	    BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
+	    BasicInternalFrameUI ui = (BasicInternalFrameUI)content.getUI();
 	    Container north = ui.getNorthPane();
 	    north.remove(0);
 	    north.validate();
@@ -100,9 +105,17 @@ public class WelcomeTab extends JInternalFrame
 	    c.gridy = 1;
 	    panel.add(shortcutPanel, c);
 	
-	    add(panel, BorderLayout.NORTH);
-	    add(getFootTextPanel(), BorderLayout.SOUTH);
-	    setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
+	    content.add(panel, BorderLayout.NORTH);
+	    content.add(getFootTextPanel(), BorderLayout.SOUTH);
+	    content.setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
+	    content.setVisible(true);
+	    
+	    SwingNode contentNode = new SwingNode();
+	    contentNode.setContent(content);
+	    
+	    setContent(contentNode);
+	    
+
 	}
 		
 	private JPanel getLeftPanel(Map<String, ActionListener> pNewDiagramMap)

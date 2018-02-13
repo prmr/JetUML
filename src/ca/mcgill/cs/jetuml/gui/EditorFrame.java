@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -31,7 +30,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,26 +46,16 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
-import javax.swing.JInternalFrame;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.application.Platform;
-import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -81,6 +69,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -104,8 +94,6 @@ import javafx.stage.Stage;
  */
 public class EditorFrame extends BorderPane
 {
-	private static final int FRAME_GAP = 20;
-	private static final int ESTIMATED_FRAMES = 5;
 	private static final int MAX_RECENT_FILES = 8;
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an
 												// image
@@ -121,8 +109,8 @@ public class EditorFrame extends BorderPane
 	private ResourceBundle aAppResources;
 	private ResourceBundle aVersionResources;
 	private ResourceBundle aEditorResources;
-	private JTabbedPane aTabbedPane;
-	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
+	private TabPane aTabbedPane;
+	private ArrayList<Tab> aTabs = new ArrayList<>();
 	
 	private Menu aNewMenu;
 	private MenuBar aMenuBar = new MenuBar();
@@ -163,28 +151,17 @@ public class EditorFrame extends BorderPane
 
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
 
-		aTabbedPane = new JTabbedPane();
-		aTabbedPane.addChangeListener(new ChangeListener() 
+		aTabbedPane = new TabPane();
+		aTabbedPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> 
 		{
-			@Override
-			public void stateChanged(ChangeEvent pEvent) 
+			for (MenuItem menuItem : aDiagramRelevantMenus) 
 			{
-				boolean noGraphFrame = noCurrentGraphFrame();
-				Platform.runLater(() -> 
-				{
-					for (MenuItem menuItem : aDiagramRelevantMenus) 
-					{
-						menuItem.setDisable(noGraphFrame);
-					}
-				});
+				menuItem.setDisable(noCurrentGraphFrame());
 			}
 		});
 
-		SwingNode tabbedSwingNode = new SwingNode();
-		tabbedSwingNode.setContent(aTabbedPane);
-
 		setTop(aMenuBar);
-		setCenter(tabbedSwingNode);
+		setCenter(aTabbedPane);
 	
 		createFileMenu(factory);
 		createEditMenu(factory);
@@ -259,7 +236,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().undo();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.redo", pEvent ->
@@ -268,7 +245,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().redo();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.selectall", pEvent ->
@@ -277,7 +254,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().selectAll();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
@@ -286,7 +263,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().editSelected();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
@@ -299,7 +276,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().removeSelected();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
 		}));
 	}
 
@@ -316,7 +293,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomOut();
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
 		}));
 		viewMenu.getItems().add(pFactory.createMenuItem("view.zoom_in", pEvent -> 
 		{
@@ -324,7 +301,7 @@ public class EditorFrame extends BorderPane
 	    	{
 	    		return;
 	    	}
-	    	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().zoomIn();
+	    	((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
 		}));
 	
 		final CheckMenuItem hideGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.hide_grid", pEvent ->
@@ -337,7 +314,7 @@ public class EditorFrame extends BorderPane
 	    	boolean selected = menuItem.isSelected();
 	    	SwingUtilities.invokeLater(() ->
 	    	{
-	    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
+	    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
 	    		GraphPanel panel = frame.getGraphPanel();  
 		    	panel.setHideGrid(selected);
 	    	});
@@ -346,11 +323,11 @@ public class EditorFrame extends BorderPane
 	
 		viewMenu.setOnShowing(pEvent ->
 		{
-			if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
+			if(aTabbedPane.getSelectionModel().getSelectedItem() instanceof WelcomeTab)
 	 		{
 	 			return;
 	 		}
-			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 			if (frame == null) 
 			{
 				return;
@@ -432,20 +409,7 @@ public class EditorFrame extends BorderPane
 	{
 		aNewDiagramMap.put(aAppResources.getString(pResourceName + ".text"), pEvent ->
 		{
-			try 
-			{
-				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-				addTab(frame);
-			}
-			catch (Exception exception) 
-			{
-				exception.printStackTrace();
-			}
-		});
-		
-		aNewMenu.getItems().add(aAppFactory.createMenuItem(pResourceName, pEvent ->
-		{
-			SwingUtilities.invokeLater(() -> 
+			Platform.runLater(() ->
 			{
 				try 
 				{
@@ -457,6 +421,19 @@ public class EditorFrame extends BorderPane
 					exception.printStackTrace();
 				}
 			});
+		});
+		
+		aNewMenu.getItems().add(aAppFactory.createMenuItem(pResourceName, pEvent ->
+		{
+			try 
+			{
+				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				addTab(frame);
+			}
+			catch (Exception exception) 
+			{
+				exception.printStackTrace();
+			}
 		}));
 	}
 
@@ -489,18 +466,18 @@ public class EditorFrame extends BorderPane
 	{
 		for (int i = 0; i < aTabs.size(); i++) 
 		{
-			if (aTabbedPane.getComponentAt(i) instanceof GraphFrame) 
+			if (aTabbedPane.getTabs().get(i) instanceof GraphFrame) 
 			{
-				GraphFrame frame = (GraphFrame) aTabbedPane.getComponentAt(i);
+				GraphFrame frame = (GraphFrame) aTabbedPane.getTabs().get(i);
 				if (frame.getFileName() != null	&& frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
-					try 
-					{
-						frame.toFront();
-						frame.setSelected(true);
+//					try 
+//					{
+//						frame.toFront();
+						frame.isSelected();
 						addRecentFile(new File(pName).getPath());
-					}
-					catch (PropertyVetoException exception) {}
+//					}
+//					catch (PropertyVetoException exception) {}
 					return;
 				}
 			}
@@ -525,87 +502,21 @@ public class EditorFrame extends BorderPane
 	}
 
 	/*
-	 * Adds an InternalFrame to the list of Tabs.
+	 * Adds a Tab to the list of Tabs.
 	 * 
 	 * @param c the component to display in the internal frame
 	 * 
 	 * @param t the title of the internal frame.
 	 */
-	private void addTab(final JInternalFrame pInternalFrame) 
+	private void addTab(final Tab pTab) 
 	{
-		int frameCount = aTabbedPane.getComponentCount();
-		BasicInternalFrameUI ui = (BasicInternalFrameUI) pInternalFrame.getUI();
-		Container north = ui.getNorthPane();
-		north.remove(0);
-		north.validate();
-		north.repaint();
-		aTabbedPane.add(setTitle(pInternalFrame), pInternalFrame);
-		int i = aTabs.size();
-		aTabbedPane.setTabComponentAt(i, new ButtonTabComponent(this, pInternalFrame, aTabbedPane));
-		aTabs.add(pInternalFrame);
-		// position frame
-		int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
-		int width = Math.max(aTabbedPane.getWidth() / 2, aTabbedPane.getWidth() - emptySpace);
-		int height = Math.max(aTabbedPane.getHeight() / 2, aTabbedPane.getHeight() - emptySpace);
-
-		pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
-		pInternalFrame.show();
+		aTabbedPane.getTabs().add(pTab);
+		aTabs.add(pTab);
 		int last = aTabs.size();
-		aTabbedPane.setSelectedIndex(last - 1);
-		if (aTabbedPane.getComponentAt(0) instanceof WelcomeTab) 
+		aTabbedPane.getSelectionModel().select(last-1);
+		if (aTabbedPane.getTabs().get(0) instanceof WelcomeTab) 
 		{
 			removeWelcomeTab();
-		}
-
-	}
-
-	/**
-	 * @param pInternalFrame
-	 *            The current frame to give a Title in its tab.
-	 * @return The title of a given tab.
-	 */
-	private String setTitle(JInternalFrame pInternalFrame) 
-	{
-		String appName = aAppResources.getString("app.name");
-		String diagramName;
-
-		if (pInternalFrame == null || !(pInternalFrame instanceof GraphFrame)) 
-		{
-			return appName;
-		} 
-		else 
-		{
-			GraphFrame frame = (GraphFrame) pInternalFrame;
-			File file = frame.getFileName();
-			if (file == null) 
-			{
-				Graph graphType = frame.getGraph();
-				if (graphType instanceof ClassDiagramGraph) 
-				{
-					diagramName = "Class Diagram";
-				} 
-				else if (graphType instanceof ObjectDiagramGraph) 
-				{
-					diagramName = "Object Diagram";
-				} 
-				else if (graphType instanceof UseCaseDiagramGraph) 
-				{
-					diagramName = "Use Case Diagram";
-				} 
-				else if (graphType instanceof StateDiagramGraph) 
-				{
-					diagramName = "State Diagram";
-				} 
-				else 
-				{
-					diagramName = "Sequence Diagram";
-				}
-				return diagramName;
-			} 
-			else 
-			{
-				return file.getName();
-			}
 		}
 	}
 
@@ -616,7 +527,7 @@ public class EditorFrame extends BorderPane
 	public void addWelcomeTab() 
 	{
 		aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
-		aTabbedPane.add("Welcome", aWelcomeTab);
+		aTabbedPane.getTabs().add(aWelcomeTab);
 		aTabs.add(aWelcomeTab);
 	}
 
@@ -628,30 +539,29 @@ public class EditorFrame extends BorderPane
 	{
 		if (aWelcomeTab != null) 
 		{
-			aTabbedPane.remove(0);
+			aTabbedPane.getTabs().remove(0);
 			aTabs.remove(0);
 		}
 	}
 
 	/**
-	 * @param pInternalFrame
-	 *            The JInternalFrame to remove. Calling this method will remove a
-	 *            given JInternalFrame.
+	 * Calling this method will remove a given Tab.
+	 * @param pTab The Tab to remove. 
 	 */
-	public void removeTab(final JInternalFrame pInternalFrame) 
+	public void removeTab(final Tab pTab) 
 	{
-		if (!aTabs.contains(pInternalFrame)) 
+		if (!aTabs.contains(pTab)) 
 		{
 			return;
 		}
-		JTabbedPane tp = aTabbedPane;
-		int pos = aTabs.indexOf(pInternalFrame);
-		tp.remove(pos);
-		aTabs.remove(pInternalFrame);
+		TabPane tp = aTabbedPane;
+		int pos = aTabs.indexOf(pTab);
+		aTabs.remove(pos);
+		tp.getTabs().remove(pos);
 		if (aTabs.size() == 0) 
 		{
 			aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
-			aTabbedPane.add("Welcome", aWelcomeTab);
+			aTabbedPane.getTabs().add(aWelcomeTab);
 			aTabs.add(aWelcomeTab);
 		}
 	}
@@ -684,12 +594,15 @@ public class EditorFrame extends BorderPane
    		{
    			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
-   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));
+   			aRecentFilesMap.put(name.substring(3), pEvent -> 
+   			{
+   				Platform.runLater(() -> open(fileName));
+   			});		
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
    			item.setOnAction(pEvent ->
             {
-            	SwingUtilities.invokeLater(() -> open(fileName));
+            	open(fileName);
             });
             i++;
    		}
@@ -708,7 +621,7 @@ public class EditorFrame extends BorderPane
 			File selectedFile = fileChooser.showOpenDialog(aMainStage);
 			if (selectedFile != null) 
 			{
-				SwingUtilities.invokeLater(() -> open(selectedFile.getAbsolutePath()));
+				open(selectedFile.getAbsolutePath());
 			}
 		});
 	}
@@ -723,7 +636,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
+		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 		panel.cut();
 		panel.repaint();
 	}
@@ -738,7 +651,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().copy();
+		((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
 	}
 
 	/**
@@ -752,7 +665,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
+		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 		panel.paste();
 		panel.repaint();
 	}
@@ -766,7 +679,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		final BufferedImage image = getImage(frame.getGraph());
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
 		{
@@ -806,7 +719,8 @@ public class EditorFrame extends BorderPane
 
 	private boolean noCurrentGraphFrame() 
 	{
-		return aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame);
+		return aTabbedPane.getSelectionModel().getSelectedItem() == null ||
+				!(aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame);
 	}
 
 	/**
@@ -819,7 +733,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		JInternalFrame curFrame = (JInternalFrame) aTabbedPane.getSelectedComponent();
+		Tab curFrame = (Tab) aTabbedPane.getSelectionModel().getSelectedItem();
 		if (curFrame != null) 
 		{
 			GraphFrame openFrame = (GraphFrame) curFrame;
@@ -837,7 +751,7 @@ public class EditorFrame extends BorderPane
 
 					if (alert.getResult() == ButtonType.YES) 
 					{
-						SwingUtilities.invokeLater(() -> removeTab(curFrame));
+						removeTab(curFrame);
 					}
 				});
 				return;
@@ -853,12 +767,11 @@ public class EditorFrame extends BorderPane
 	 * If a user confirms that they want to close their modified graph, this method
 	 * will remove it from the current list of tabs.
 	 * 
-	 * @param pJInternalFrame
-	 *            The current JInternalFrame that one wishes to close.
+	 * @param pTab The current Tab that one wishes to close.
 	 */
-	public void close(JInternalFrame pJInternalFrame) 
+	public void close(Tab pTab) 
 	{
-		JInternalFrame curFrame = pJInternalFrame;
+		Tab curFrame = pTab;
 		if (curFrame != null) 
 		{
 			GraphFrame openFrame = (GraphFrame) curFrame;
@@ -878,7 +791,7 @@ public class EditorFrame extends BorderPane
 
 						if (alert.getResult() == ButtonType.YES) 
 						{
-							SwingUtilities.invokeLater(() -> removeTab(curFrame));
+							removeTab(curFrame);
 						}
 					});
 				}
@@ -897,7 +810,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		File file = frame.getFileName();
 		if (file == null) 
 		{
@@ -929,7 +842,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		Graph graph = frame.getGraph();
 
 		FileChooser fileChooser = new FileChooser();
@@ -961,7 +874,8 @@ public class EditorFrame extends BorderPane
 					PersistenceService.save(graph, result);
 					addRecentFile(result.getAbsolutePath());
 					frame.setFile(result);
-					aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
+					aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
+//					aTabbedPane.setTitleAt(aTabbedPane.getSelectionModel().getSelectedIndex(), frame.getFileName().getName());
 					frame.getGraphPanel().setModified(false);
 				}
 			} 
@@ -1011,7 +925,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 
 		FileChooser fileChooser = getImageFileChooser();
 		Platform.runLater(() -> 
@@ -1062,7 +976,7 @@ public class EditorFrame extends BorderPane
 
 	private FileChooser getImageFileChooser() 
 	{
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		assert frame != null;
 
 		// Initialize the file chooser widget

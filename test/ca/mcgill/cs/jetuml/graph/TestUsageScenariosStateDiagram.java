@@ -72,7 +72,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		aDiagram = new StateDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));
 		aStateNode2 = new StateNode();
