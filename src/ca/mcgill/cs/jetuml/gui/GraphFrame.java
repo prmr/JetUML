@@ -21,13 +21,9 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.io.File;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
@@ -37,6 +33,7 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 
 /**
  *A frame for showing a graphical editor.
@@ -61,19 +58,16 @@ public class GraphFrame extends Tab
 		ToolBar sideBar = new ToolBar(pGraph);
 		aPanel = new GraphPanel(pGraph, sideBar, this);
 		
-		JInternalFrame frame = new JInternalFrame();
-		((BasicInternalFrameUI) frame.getUI()).getNorthPane().remove(0); // Removes the system pop-up menu full of disabled buttons.
-		frame.setVisible(true);
-		
-		Container contentPane = frame.getContentPane();
-		contentPane.add(sideBar, BorderLayout.EAST);
-		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
-		
-		SwingNode contentNode = new SwingNode();
-		contentNode.setContent(frame);
+		BorderPane layout = new BorderPane();
+		SwingNode sideBarNode = new SwingNode();
+		sideBarNode.setContent(sideBar);
+		layout.setRight(sideBarNode);
+		SwingNode panelNode = new SwingNode();
+		panelNode.setContent(new JScrollPane(aPanel));
+		layout.setCenter(panelNode);
 		
 		setTitle(false);
-		setContent(contentNode);
+		setContent(layout);
 
 		setOnCloseRequest(pEvent -> 
 		{
