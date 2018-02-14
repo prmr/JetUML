@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -114,45 +115,48 @@ public class GraphFrame extends Tab
 	 */
 	public void setTitle(boolean pModified)
 	{
-		if(aFile != null)
+		Platform.runLater(() -> 
 		{
-			String title = aFile.getName();
-			if(pModified)
+			if(aFile != null)
 			{
-				if(!getText().endsWith("*"))
+				String title = aFile.getName();
+				if(pModified)
 				{
-					setText(title + "*");
+					if(!getText().endsWith("*"))
+					{
+						setText(title + "*");
+					}
+				}
+				else
+				{
+					setText(title);
 				}
 			}
 			else
 			{
-				setText(title);
+				Graph graphType = getGraph();
+				if (graphType instanceof ClassDiagramGraph) 
+				{
+					setText("Class Diagram");
+				} 
+				else if (graphType instanceof ObjectDiagramGraph) 
+				{
+					setText("Object Diagram");
+				} 
+				else if (graphType instanceof UseCaseDiagramGraph) 
+				{
+					setText("Use Case Diagram");
+				} 
+				else if (graphType instanceof StateDiagramGraph) 
+				{
+					setText("State Diagram");
+				} 
+				else 
+				{
+					setText("Sequence Diagram");
+				}
 			}
-		}
-		else
-		{
-			Graph graphType = getGraph();
-			if (graphType instanceof ClassDiagramGraph) 
-			{
-				setText("Class Diagram");
-			} 
-			else if (graphType instanceof ObjectDiagramGraph) 
-			{
-				setText("Object Diagram");
-			} 
-			else if (graphType instanceof UseCaseDiagramGraph) 
-			{
-				setText("Use Case Diagram");
-			} 
-			else if (graphType instanceof StateDiagramGraph) 
-			{
-				setText("State Diagram");
-			} 
-			else 
-			{
-				setText("Sequence Diagram");
-			}
-		}
+		});
 	}
 
 	/**
