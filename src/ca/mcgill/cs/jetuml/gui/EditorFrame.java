@@ -471,13 +471,8 @@ public class EditorFrame extends BorderPane
 				GraphFrame frame = (GraphFrame) aTabbedPane.getTabs().get(i);
 				if (frame.getFileName() != null	&& frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
-//					try 
-//					{
-//						frame.toFront();
-						frame.isSelected();
-						addRecentFile(new File(pName).getPath());
-//					}
-//					catch (PropertyVetoException exception) {}
+					aTabbedPane.getSelectionModel().select(frame);
+					addRecentFile(new File(pName).getPath());
 					return;
 				}
 			}
