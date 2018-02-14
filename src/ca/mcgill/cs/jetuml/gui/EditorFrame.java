@@ -547,10 +547,9 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		TabPane tp = aTabbedPane;
 		int pos = aTabs.indexOf(pTab);
 		aTabs.remove(pos);
-		tp.getTabs().remove(pos);
+		aTabbedPane.getTabs().remove(pos);
 		if (aTabs.size() == 0) 
 		{
 			aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
@@ -587,16 +586,10 @@ public class EditorFrame extends BorderPane
    		{
    			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
-   			aRecentFilesMap.put(name.substring(3), pEvent -> 
-   			{
-   				open(fileName);
-   			});		
+   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));		
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
-   			item.setOnAction(pEvent ->
-            {
-            	open(fileName);
-            });
+   			item.setOnAction(pEvent -> open(fileName));
             i++;
    		}
    }
@@ -868,7 +861,6 @@ public class EditorFrame extends BorderPane
 					addRecentFile(result.getAbsolutePath());
 					frame.setFile(result);
 					aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
-//					aTabbedPane.setTitleAt(aTabbedPane.getSelectionModel().getSelectedIndex(), frame.getFileName().getName());
 					frame.getGraphPanel().setModified(false);
 				}
 			} 

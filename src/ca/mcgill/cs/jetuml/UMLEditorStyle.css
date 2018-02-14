@@ -27,8 +27,8 @@
 } 
 .welcome-tab .button
 {
-	-fx-font: 25pt "Arial";
 	-fx-background-color: transparent;
+	-fx-font: 25pt "Arial";
 }
 
 .welcome-tab .button:hover
