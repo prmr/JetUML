@@ -56,6 +56,8 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -120,8 +122,8 @@ public class EditorFrame extends BorderPane
 	private Menu aRecentFilesMenu;
 	
 	// Maps used by WelcomeTab to create menus that create new diagrams or open recent files
-	private LinkedHashMap<String, ActionListener> aNewDiagramMap = new LinkedHashMap<>();
-	private LinkedHashMap<String, ActionListener> aRecentFilesMap = new LinkedHashMap<>();
+	private LinkedHashMap<String, EventHandler<ActionEvent>> aNewDiagramMap = new LinkedHashMap<>();
+	private LinkedHashMap<String, EventHandler<ActionEvent>> aRecentFilesMap = new LinkedHashMap<>();
 
 	private WelcomeTab aWelcomeTab;
 
@@ -409,18 +411,15 @@ public class EditorFrame extends BorderPane
 	{
 		aNewDiagramMap.put(aAppResources.getString(pResourceName + ".text"), pEvent ->
 		{
-			Platform.runLater(() ->
+			try 
 			{
-				try 
-				{
-					GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-					addTab(frame);
-				}
-				catch (Exception exception) 
-				{
-					exception.printStackTrace();
-				}
-			});
+				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				addTab(frame);
+			}
+			catch (Exception exception) 
+			{
+				exception.printStackTrace();
+			}
 		});
 		
 		aNewMenu.getItems().add(aAppFactory.createMenuItem(pResourceName, pEvent ->
@@ -591,7 +590,7 @@ public class EditorFrame extends BorderPane
    			final String fileName = file.getAbsolutePath();
    			aRecentFilesMap.put(name.substring(3), pEvent -> 
    			{
-   				Platform.runLater(() -> open(fileName));
+   				open(fileName);
    			});		
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
