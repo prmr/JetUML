@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -42,11 +41,6 @@ import javafx.scene.layout.VBox;
  */
 public class WelcomeTab extends Tab
 {
-	private static final int BORDER_MARGIN = 45;
-	private static final int ALTERNATIVE_BORDER_MARGIN = 30;
-	private static final int FOOT_BORDER_MARGIN = 10;
-	private static final int FONT_SIZE = 25;
-	private static final int PADDING = 10;
 	private ResourceBundle aWelcomeResources;
     private HBox aFootTextPanel;
     private HBox aRightTitlePanel;
@@ -72,15 +66,8 @@ public class WelcomeTab extends Tab
 		BorderPane layout = new BorderPane();
 		layout.getStyleClass().add("welcome-tab");
 		HBox shortcutPanel = new HBox();
-		shortcutPanel.setAlignment(Pos.TOP_CENTER);
-		VBox newPanel = new VBox();
-		newPanel.setAlignment(Pos.CENTER_RIGHT);
-		newPanel.getChildren().addAll(getLeftTitlePanel(), getLeftPanel(pNewDiagramMap));
-		VBox recentPanel = new VBox();
-		recentPanel.setAlignment(Pos.CENTER_LEFT);
-		recentPanel.getChildren().addAll(getRightTitlePanel(), getRightPanel(pRecentFilesMap));
-
-		shortcutPanel.getChildren().addAll(newPanel, recentPanel);
+		shortcutPanel.getStyleClass().add("panel");
+		shortcutPanel.getChildren().addAll(getLeftPanel(pNewDiagramMap), getRightPanel(pRecentFilesMap));
 		layout.setCenter(shortcutPanel);
 		layout.setBottom(getFootTextPanel());
 	    
@@ -89,9 +76,21 @@ public class WelcomeTab extends Tab
 		
 	private VBox getLeftPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
 	{
+		if(aLeftTitlePanel == null)
+		{
+			Label icon = new Label();
+			icon.setGraphic(this.aLeftPanelIcon);
+			Label title = new Label(aWelcomeResources.getString("file.new.text").toLowerCase());
+
+			aLeftTitlePanel = new HBox();
+			aLeftTitlePanel.getStyleClass().add("panel-title");
+			aLeftTitlePanel.getChildren().addAll(icon, title);
+		}
 		if(aLeftPanel == null)
 		{
 			aLeftPanel = new VBox();
+			aLeftPanel.getStyleClass().add("panel-content");
+			aLeftPanel.getChildren().add(aLeftTitlePanel);
 			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
 			{
 				String label = entry.getKey();
@@ -105,13 +104,22 @@ public class WelcomeTab extends Tab
 	
 	private VBox getRightPanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
 	{
+		if(aRightTitlePanel == null)
+		{
+			Label title = new Label(aWelcomeResources.getString("file.recent.text").toLowerCase());
+			Label icon = new Label();
+			icon.setGraphic(this.aRightPanelIcon);
+			
+			aRightTitlePanel = new HBox();
+			aRightTitlePanel.getStyleClass().add("panel-title");
+			aRightTitlePanel.getChildren().addAll(title, icon);
+		}
 		if(aRightPanel == null)
 		{
 			aRightPanel = new VBox();
-//			aRightPanel.setOpaque(false);
-//			aRightPanel.setLayout(new BoxLayout(aRightPanel, BoxLayout.Y_AXIS));
-//			aRightPanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, 0, BORDER_MARGIN));
-
+			aRightPanel.getStyleClass().add("panel-content");
+			aRightPanel.getChildren().add(aRightTitlePanel);
+			
 			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
 			{
 				String label = entry.getKey();
@@ -119,52 +127,8 @@ public class WelcomeTab extends Tab
 				fileShortcut.setOnAction(entry.getValue());
 				aRightPanel.getChildren().add(fileShortcut);
 			}
-
 		}
 		return this.aRightPanel;
-	}
-
-	private HBox getLeftTitlePanel()
-	{
-		if(aLeftTitlePanel == null)
-		{
-			Label icon = new Label();
-			icon.setGraphic(this.aLeftPanelIcon);
-
-			Label title = new Label(aWelcomeResources.getString("file.new.text").toLowerCase());
-//			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-//			title.setForeground(Color.DARK_GRAY);
-//			title.setBorder(new EmptyBorder(0, ALTERNATIVE_BORDER_MARGIN, 0, 0));
-
-			aLeftTitlePanel = new HBox();
-			aLeftTitlePanel.getChildren().addAll(icon, title);
-			
-//			aLeftTitlePanel.add(panel, BorderLayout.EAST);
-//			aLeftTitlePanel.setBorder(new EmptyBorder(0, 0, ALTERNATIVE_BORDER_MARGIN, BORDER_MARGIN));
-		
-		}
-		return aLeftTitlePanel;
-	}
-
-	private HBox getRightTitlePanel()
-	{
-		if(aRightTitlePanel == null)
-		{
-			Label icon = new Label();
-			icon.setGraphic(this.aRightPanelIcon);
-//			icon.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-			Label title = new Label(aWelcomeResources.getString("file.recent.text").toLowerCase());
-//			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-//			title.setForeground(Color.DARK_GRAY);
-//			title.setBorder(new EmptyBorder(0, 0, 0, ALTERNATIVE_BORDER_MARGIN));
-
-			aRightTitlePanel = new HBox();
-			aRightTitlePanel.getChildren().addAll(title, icon);
-
-//			aRightTitlePanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, ALTERNATIVE_BORDER_MARGIN, 0));
-		}
-		return aRightTitlePanel;
 	}
 
 	private HBox getFootTextPanel()
@@ -172,17 +136,12 @@ public class WelcomeTab extends Tab
 		if(aFootTextPanel == null)
 		{
 			aFootText = aWelcomeResources.getString("welcome.copyright");
-			aFootTextPanel = new HBox();
-			aFootTextPanel.setAlignment(Pos.BASELINE_CENTER);
-//			aFootTextPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 			Label text = new Label(this.aFootText);
-//			text.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			
+			aFootTextPanel = new HBox();
+			aFootTextPanel.getStyleClass().add("footer");
 			aFootTextPanel.getChildren().add(text);
 		}
-
 		return aFootTextPanel;
 	}
-
 }	
