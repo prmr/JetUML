@@ -485,12 +485,9 @@ public class EditorFrame extends BorderPane
 		} 
 		catch (IOException | DeserializationException exception) 
 		{
-			Platform.runLater(() ->
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
-			});
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
 		}
 	}
 
@@ -602,14 +599,12 @@ public class EditorFrame extends BorderPane
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
-		Platform.runLater(() -> 
+
+		File selectedFile = fileChooser.showOpenDialog(aMainStage);
+		if (selectedFile != null) 
 		{
-			File selectedFile = fileChooser.showOpenDialog(aMainStage);
-			if (selectedFile != null) 
-			{
-				open(selectedFile.getAbsolutePath());
-			}
-		});
+			open(selectedFile.getAbsolutePath());
+		}
 	}
 
 	/**
@@ -727,19 +722,16 @@ public class EditorFrame extends BorderPane
 			if (openFrame.getGraphPanel().isModified()) 
 			{
 				// ask user if it is ok to close
-				Platform.runLater(() -> 
-				{
-					Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
-					alert.initOwner(aMainStage);
-					alert.setTitle(aEditorResources.getString("dialog.close.title"));
-					alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
-					alert.showAndWait();
+				Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+				alert.initOwner(aMainStage);
+				alert.setTitle(aEditorResources.getString("dialog.close.title"));
+				alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+				alert.showAndWait();
 
-					if (alert.getResult() == ButtonType.YES) 
-					{
-						removeTab(curFrame);
-					}
-				});
+				if (alert.getResult() == ButtonType.YES) 
+				{
+					removeTab(curFrame);
+				}
 				return;
 			} 
 			else 
@@ -767,19 +759,16 @@ public class EditorFrame extends BorderPane
 				if (openFrame.getGraphPanel().isModified()) 
 				{
 					// ask user if it is ok to close
-					Platform.runLater(() -> 
-					{
-						Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
-						alert.initOwner(aMainStage);
-						alert.setTitle(aEditorResources.getString("dialog.close.title"));
-						alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
-						alert.showAndWait();
+					Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+					alert.initOwner(aMainStage);
+					alert.setTitle(aEditorResources.getString("dialog.close.title"));
+					alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+					alert.showAndWait();
 
-						if (alert.getResult() == ButtonType.YES) 
-						{
-							removeTab(curFrame);
-						}
-					});
+					if (alert.getResult() == ButtonType.YES) 
+					{
+						removeTab(curFrame);
+					}
 				}
 				return;
 			}
@@ -810,12 +799,9 @@ public class EditorFrame extends BorderPane
 		} 
 		catch (Exception exception) 
 		{
-				Platform.runLater(() -> 
-				{
-					Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-					alert.initOwner(aMainStage);
-					alert.showAndWait();
-				});
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
 		}
 	}
 
@@ -846,31 +832,28 @@ public class EditorFrame extends BorderPane
 			fileChooser.setInitialFileName("");
 		}
 
-		Platform.runLater(() -> 
+		try 
 		{
-			try 
+			File result = fileChooser.showSaveDialog(aMainStage);
+			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
 			{
-				File result = fileChooser.showSaveDialog(aMainStage);
-				if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
-				{
-					result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
-				}
-				if (result != null) 
-				{
-					PersistenceService.save(graph, result);
-					addRecentFile(result.getAbsolutePath());
-					frame.setFile(result);
-					aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
-					frame.getGraphPanel().setModified(false);
-				}
-			} 
-			catch (IOException exception) 
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
+				result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
 			}
-		});
+			if (result != null) 
+			{
+				PersistenceService.save(graph, result);
+				addRecentFile(result.getAbsolutePath());
+				frame.setFile(result);
+				aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
+				frame.getGraphPanel().setModified(false);
+			}
+		} 
+		catch (IOException exception) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
 	}
 
 	/**
@@ -913,37 +896,34 @@ public class EditorFrame extends BorderPane
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 
 		FileChooser fileChooser = getImageFileChooser();
-		Platform.runLater(() -> 
+		File file = fileChooser.showSaveDialog(aMainStage);
+		if (file == null) 
 		{
-			File file = fileChooser.showSaveDialog(aMainStage);
-			if (file == null) 
-			{
-				return;
-			}
+			return;
+		}
 
-			// Validate the file format
-			String fileName = file.getPath();
-			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
-				alert.showAndWait();
-				return;
-			}
+		// Validate the file format
+		String fileName = file.getPath();
+		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+		{
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
+			alert.showAndWait();
+			return;
+		}
 
-			try (OutputStream out = new FileOutputStream(file)) 
-			{
-				ImageIO.write(getImage(frame.getGraph()), format, out);
-			} 
-			catch (IOException exception) 
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
-			}
-		});
+		try (OutputStream out = new FileOutputStream(file)) 
+		{
+			ImageIO.write(getImage(frame.getGraph()), format, out);
+		} 
+		catch (IOException exception) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
 	}
 
 	private static String[] getAllSupportedImageWriterFormats() 
@@ -1013,44 +993,41 @@ public class EditorFrame extends BorderPane
 	 */
 	public void showAboutDialog() 
 	{
-		Platform.runLater(() -> 
+		MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
+		Text text = new Text(formatter.format(new Object[] { aAppResources.getString("app.name"),
+				aVersionResources.getString("version.number"), aVersionResources.getString("version.date"),
+				aAppResources.getString("app.copyright"), aEditorResources.getString("dialog.about.license") }));
+		Image appIcon = new Image(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString());
+		
+		HBox info = new HBox(HELP_MENU_SPACING);
+		info.setAlignment(Pos.CENTER);
+		info.getChildren().addAll(new ImageView(appIcon), text);
+		
+		VBox layout = new VBox(HELP_MENU_SPACING);
+		layout.setPadding(new Insets(HELP_MENU_PADDING));
+		layout.setAlignment(Pos.CENTER_RIGHT);
+		
+		Stage window = new Stage();
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setTitle(new MessageFormat(aEditorResources.getString("dialog.about.title"))
+				.format(new Object[] { aAppResources.getString("app.name") }));
+		window.getIcons().add(appIcon);
+		
+		Button button = new Button("OK");
+		button.setOnAction(pEvent -> window.close());
+		button.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
-			MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
-			Text text = new Text(formatter.format(new Object[] { aAppResources.getString("app.name"),
-					aVersionResources.getString("version.number"), aVersionResources.getString("version.date"),
-					aAppResources.getString("app.copyright"), aEditorResources.getString("dialog.about.license") }));
-			Image appIcon = new Image(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString());
-			
-			HBox info = new HBox(HELP_MENU_SPACING);
-			info.setAlignment(Pos.CENTER);
-			info.getChildren().addAll(new ImageView(appIcon), text);
-			
-			VBox layout = new VBox(HELP_MENU_SPACING);
-			layout.setPadding(new Insets(HELP_MENU_PADDING));
-			layout.setAlignment(Pos.CENTER_RIGHT);
-			
-			Stage window = new Stage();
-			window.initModality(Modality.APPLICATION_MODAL);
-			window.setTitle(new MessageFormat(aEditorResources.getString("dialog.about.title"))
-					.format(new Object[] { aAppResources.getString("app.name") }));
-			window.getIcons().add(appIcon);
-			
-			Button button = new Button("OK");
-			button.setOnAction(pEvent -> window.close());
-			button.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
+			if (pEvent.getCode() == KeyCode.ENTER) 
 			{
-				if (pEvent.getCode() == KeyCode.ENTER) 
-				{
-					button.fire();
-					pEvent.consume();
-				}
-			});
-			
-			layout.getChildren().addAll(info, button);
-			Scene scene = new Scene(layout);
-			window.setScene(scene);
-			window.showAndWait();
+				button.fire();
+				pEvent.consume();
+			}
 		});
+		
+		layout.getChildren().addAll(info, button);
+		Scene scene = new Scene(layout);
+		window.setScene(scene);
+		window.showAndWait();
 	}
 
 	/**
@@ -1075,23 +1052,20 @@ public class EditorFrame extends BorderPane
 		{
 			// ask user if it is ok to close
 			final int finalModCount = modcount;
-			Platform.runLater(() -> 
-			{
-				Alert alert = new Alert(AlertType.CONFIRMATION, 
-						MessageFormat.format(aEditorResources.getString("dialog.exit.ok"), new Object[] { new Integer(finalModCount) }),
-						ButtonType.YES, 
-						ButtonType.NO);
-				alert.initOwner(aMainStage);
-				alert.setTitle(aEditorResources.getString("dialog.exit.title"));
-				alert.setHeaderText(aEditorResources.getString("dialog.exit.title"));
-				alert.showAndWait();
+			Alert alert = new Alert(AlertType.CONFIRMATION, 
+					MessageFormat.format(aEditorResources.getString("dialog.exit.ok"), new Object[] { new Integer(finalModCount) }),
+					ButtonType.YES, 
+					ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(aEditorResources.getString("dialog.exit.title"));
+			alert.setHeaderText(aEditorResources.getString("dialog.exit.title"));
+			alert.showAndWait();
 
-				if (alert.getResult() == ButtonType.YES) 
-				{
-					Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
-					System.exit(0);
-				}
-			});
+			if (alert.getResult() == ButtonType.YES) 
+			{
+				Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
+				System.exit(0);
+			}
 		}
 		else 
 		{
