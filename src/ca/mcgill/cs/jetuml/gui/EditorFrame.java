@@ -103,8 +103,6 @@ public class EditorFrame extends BorderPane
 	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
 	
-	private static EditorFrame aInstance;
-	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -141,7 +139,6 @@ public class EditorFrame extends BorderPane
 	 */
 	public EditorFrame(Class<?> pAppClass, Stage pMainStage) 
 	{
-		aInstance = this;
 		aMainStage = pMainStage;
 		String appClassName = pAppClass.getName();
 		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
@@ -170,14 +167,6 @@ public class EditorFrame extends BorderPane
 		createHelpMenu(factory);
 	}
 	
-	/**
-	 * @return current instance of the EditorFrame
-	 */
-	public static EditorFrame getInstance() 
-	{
-		return aInstance;
-	}
-
 	private void createFileMenu(MenuFactory pFactory) 
 	{
 		Menu fileMenu = pFactory.createMenu("file");
