@@ -60,9 +60,7 @@ public class GraphFrame extends Tab
 		aPanel = new GraphPanel(pGraph, sideBar, this);
 		
 		BorderPane layout = new BorderPane();
-		SwingNode sideBarNode = new SwingNode();
-		sideBarNode.setContent(sideBar);
-		layout.setRight(sideBarNode);
+		layout.setRight(sideBar);
 		SwingNode panelNode = new SwingNode();
 		panelNode.setContent(new JScrollPane(aPanel));
 		layout.setCenter(panelNode);

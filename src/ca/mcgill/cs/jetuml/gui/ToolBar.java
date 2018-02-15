@@ -20,33 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.AWTKeyStroke;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -54,6 +33,23 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.IconCreator;
+import ca.mcgill.cs.jetuml.views.ImageCreator;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 /**
  *  A collapsible tool bar than contains various tools and optional
@@ -63,19 +59,20 @@ import ca.mcgill.cs.jetuml.views.IconCreator;
  *  
  *  @author Martin P. Robillard
  */
-@SuppressWarnings("serial")
-public class ToolBar extends JPanel
+public class ToolBar extends BorderPane
 {
-	private static final int BUTTON_SIZE = 25;
-	private static final int H_PADDING = 5;
+	private static final double BUTTON_HEIGHT = 20;
+	private static final int PADDING = 5;
 	private static final int FONT_SIZE = 14;
 	private static final String EXPAND = "<<";
 	private static final String COLLAPSE = ">>";
 	
-	private ArrayList<JToggleButton> aButtons = new ArrayList<>();
-	private ArrayList<JToggleButton> aButtonsEx = new ArrayList<>();
-	private JPanel aToolPanel = new JPanel(new VerticalLayout());
-	private JPanel aToolPanelEx = new JPanel(new VerticalLayout());
+	private ArrayList<ToggleButton> aButtons = new ArrayList<>();
+	private ArrayList<ToggleButton> aButtonsEx = new ArrayList<>();
+	private FlowPane aToolsLayout = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
+	private FlowPane aToolsLayoutEx = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
+	private BorderPane aLayout = new BorderPane();
+	private BorderPane aLayoutEx = new BorderPane();
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 
@@ -85,110 +82,121 @@ public class ToolBar extends JPanel
 	 */
 	public ToolBar(Graph pGraph)
 	{
-		ButtonGroup group = new ButtonGroup();
-		ButtonGroup groupEx = new ButtonGroup();
-		setLayout(new BorderLayout());
+		ToggleGroup group = new ToggleGroup();
+		ToggleGroup groupEx = new ToggleGroup();
+		aToolsLayout.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+		// Adjust preferred height to use all available vertical space
+		aToolsLayout.setPrefHeight(Double.MAX_VALUE);
+		aLayout.setCenter(aToolsLayout);
+		
+		aToolsLayoutEx.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+		// Adjust preferred height to use all available vertical space
+		aToolsLayoutEx.setPrefHeight(Double.MAX_VALUE);
+		aLayoutEx.setCenter(aToolsLayoutEx);
+		
 		createSelectionTool(group, groupEx);
 		createNodesAndEdgesTools(pGraph, group, groupEx);
 		addCopyToClipboard();
 		createExpandButton();
-		freeCtrlTab();
-		add(aToolPanel, BorderLayout.CENTER);
+		setCenter(aLayout);
+		
 	}
 	
-	private void createSelectionTool(ButtonGroup pGroup, ButtonGroup pGroupEx)
+	private void createSelectionTool(ToggleGroup pGroup, ToggleGroup pGroupEx)
 	{
-		installTool(IconCreator.createSelectionIcon(), 
+		installTool(ImageCreator.createSelectionImage(), IconCreator.createSelectionIcon(), 
 				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("grabber.tooltip"), 
 				null, true, pGroup, pGroupEx);
 	}
 	
 	/*
 	 * Adds a tool to the tool bars and menus.
-	 * @param pIcon The icon for the tool
+	 * @param pImage The image for the tool
+	 * @param pIcon The icon for the popup menu
 	 * @param pToolTip the tool's tool tip
 	 * @param pTool the object representing the tool
 	 * @param pIsSelected true if the tool is initially selected.
 	 */
-	private void installTool( Icon pIcon, String pToolTip, GraphElement pTool, boolean pIsSelected, ButtonGroup pCollapsed, ButtonGroup pExpanded )
+	private void installTool( Image pImage, 
+				Icon pIcon, 
+				String pToolTip, 
+				GraphElement pTool, 
+				boolean pIsSelected, 
+				ToggleGroup pCollapsed, 
+				ToggleGroup pExpanded )
 	{
-		final JToggleButton button = new JToggleButton(pIcon);
-		button.setToolTipText(pToolTip);
-		pCollapsed.add(button);
+		final ToggleButton button = new ToggleButton();
+		button.setGraphic(new ImageView(pImage));
+		button.setToggleGroup(pCollapsed);
 		aButtons.add(button);
-		aToolPanel.add(button);
 		button.setSelected(pIsSelected);
+		aToolsLayout.getChildren().add(button);
 		aTools.add(pTool);
 		
-		final JToggleButton buttonEx = new JToggleButton(pIcon);
-		buttonEx.setToolTipText(pToolTip);
-		pExpanded.add(buttonEx);
+		final ToggleButton buttonEx = new ToggleButton();
+		buttonEx.setGraphic(new ImageView(pImage));
+		buttonEx.setToggleGroup(pExpanded);
 		aButtonsEx.add(buttonEx);
-		
-		aToolPanelEx.add(createExpandedRowElement(buttonEx, pToolTip));
 		buttonEx.setSelected(pIsSelected);
+		aToolsLayoutEx.getChildren().add(createExpandedRowElement(buttonEx, pToolTip));
+		
+		Tooltip toolTip = new Tooltip(pToolTip);
+		Tooltip.install(button, toolTip);
+		Tooltip.install(buttonEx, toolTip);
       
-		JMenuItem item = new JMenuItem(pToolTip, pIcon);
-		item.addActionListener(new ActionListener()
+		button.setOnAction(pEvent->
 		{
-			public void actionPerformed(ActionEvent pEvent)
+			button.setSelected(true);
+			buttonEx.setSelected(true);
+		});
+		buttonEx.setOnAction(pEvent->
+		{
+			button.setSelected(true);
+			buttonEx.setSelected(true);
+		});
+		
+		JMenuItem item = new JMenuItem(pToolTip, pIcon);
+		item.addActionListener(pEvent -> 
+		{
+			Platform.runLater(()->
 			{
 				button.setSelected(true);
 				buttonEx.setSelected(true);
-			}
+			});
 		});
 		aPopupMenu.add(item);
 	}
 	
 	/*
-	 * Return a panel with a button on the left and a label on the right
+	 * Return a HBox pane with a button on the left and a label on the right
 	 */
-	private JPanel createExpandedRowElement(JComponent pButton, String pToolTip)
+	private HBox createExpandedRowElement(ButtonBase pButton, String pToolTip)
 	{
-		JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		linePanel.add(pButton);
-		JLabel label = new JLabel(pToolTip);
-		Font font = new Font(label.getFont().getFontName(), Font.PLAIN, FONT_SIZE);
-		label.setFont(font);
-		label.setBorder(BorderFactory.createEmptyBorder(0, H_PADDING, 0, H_PADDING));
-		linePanel.add(label);
-		return linePanel;
+		Label buttonLabel = new Label(pToolTip);
+		Font font = new Font(buttonLabel.getFont().getName(), FONT_SIZE);
+		buttonLabel.setFont(font);
+		HBox buttonLayout = new HBox(PADDING);
+		buttonLayout.getChildren().addAll(pButton, buttonLabel);
+		return buttonLayout;
 	}
 	
-	private void createNodesAndEdgesTools(Graph pGraph, ButtonGroup pGroup, ButtonGroup pGroupEx)
+	private void createNodesAndEdgesTools(Graph pGraph, ToggleGroup pGroup, ToggleGroup pGroupEx)
 	{
 		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
 
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			installTool(IconCreator.createIcon(nodeTypes[i]), resources.getString("node" + (i + 1) + ".tooltip"), 
-			nodeTypes[i], false, pGroup, pGroupEx);
+			installTool(ImageCreator.createImage(nodeTypes[i]), IconCreator.createIcon(nodeTypes[i]), 
+					resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			installTool(IconCreator.createIcon(edgeTypes[i]), resources.getString("edge" + (i + 1) + ".tooltip"), 
-					edgeTypes[i], false, pGroup, pGroupEx);
+			installTool(ImageCreator.createImage(edgeTypes[i]), IconCreator.createIcon(edgeTypes[i]), 
+					resources.getString("edge" + (i + 1) + ".tooltip"), edgeTypes[i], false, pGroup, pGroupEx);
 		}
-	}
-	
-	/*
-	 * Free up ctrl TAB for cycling windows
-	 */
-	private void freeCtrlTab()
-	{
-		Set<AWTKeyStroke> oldKeys = getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
-		HashSet<AWTKeyStroke> newKeys = new HashSet<>();
-		newKeys.addAll(oldKeys);
-		newKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
-		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, newKeys);
-		oldKeys = getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS);
-		newKeys = new HashSet<>();
-		newKeys.addAll(oldKeys);
-		newKeys.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
-		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, newKeys); 
 	}
 	
 	/**
@@ -206,11 +214,11 @@ public class ToolBar extends JPanel
 	 */
 	public void setToolToBeSelect()
 	{
-		for( JToggleButton button : aButtons )
+		for( ToggleButton button : aButtons )
 		{
 			button.setSelected(false);
 		}
-		for( JToggleButton button : aButtonsEx )
+		for( ToggleButton button : aButtonsEx )
 		{
 			button.setSelected(false);
 		}
@@ -218,87 +226,80 @@ public class ToolBar extends JPanel
 		aButtonsEx.get(0).setSelected(true);
 	}
 
+
 	private void addCopyToClipboard()
 	{
-		URL imageLocation = getClass().getClassLoader().
+		String imageLocation = getClass().getClassLoader().
 				getResource(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
-						getString("toolbar.copyToClipBoard"));
-		String toolTip = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("file.copy_to_clipboard.text");
+						getString("toolbar.copyToClipBoard")).toString();
+		String toolTipText = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("file.copy_to_clipboard.text");
 		
-		final JButton button = new JButton(new ImageIcon(imageLocation));
-		button.setToolTipText(toolTip);
-		if( aButtons.size() > 0 )
+		final Button button = new Button();
+		ImageView buttonImageView = new ImageView(imageLocation);
+		final Button buttonEx = new Button();
+		ImageView buttonExImageView = new ImageView(imageLocation);
+		
+		if( aButtonsEx.size() > 0 )
 		{
-			button.setPreferredSize(aButtons.get(0).getPreferredSize());
-		}
-		aToolPanel.add(button);
-
-		
-		final JButton buttonEx = new JButton(new ImageIcon(imageLocation));
-		buttonEx.setToolTipText(toolTip);
-		aToolPanelEx.add(createExpandedRowElement(buttonEx, toolTip));
-		
-		if( aButtons.size() > 0 )
-		{
-			button.setPreferredSize(aButtons.get(0).getPreferredSize());
-			buttonEx.setPreferredSize(aButtons.get(0).getPreferredSize());
+			button.prefWidthProperty().bind(aButtons.get(0).widthProperty());
+			button.prefHeightProperty().bind(aButtons.get(0).heightProperty());
+			buttonEx.prefWidthProperty().bind(aButtons.get(0).widthProperty());
+			buttonEx.prefHeightProperty().bind(aButtons.get(0).heightProperty());
 		}
 
-		button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				copyToClipboard();
-			}
-		});
+		button.setGraphic(buttonImageView);
+		buttonEx.setGraphic(buttonExImageView);
+		Tooltip toolTip = new Tooltip(toolTipText);
+		Tooltip.install(button, toolTip);
+		Tooltip.install(buttonEx, toolTip);
 
-		buttonEx.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				copyToClipboard();
-			}
-		});
+		aToolsLayout.getChildren().add(button);
+		aToolsLayoutEx.getChildren().add(createExpandedRowElement(buttonEx, toolTipText));
+		
+		button.setOnAction(pEvent-> copyToClipboard());
+		buttonEx.setOnAction(pEvent-> copyToClipboard());
 	}
 	
 	private void copyToClipboard()
 	{
-		EditorFrame.getInstance().copyToClipboard();	
+		// Obtain the editor frame by going through the component graph
+		Parent parent = getParent();
+		while( parent.getClass() != EditorFrame.class )
+		{
+			parent = parent.getParent();
+		}
+		((EditorFrame)parent).copyToClipboard();	
 	}
-		
+	
 	private void createExpandButton()
 	{
-		final JButton expandButton = new JButton(EXPAND);
-		expandButton.setAlignmentX(CENTER_ALIGNMENT);
+		final Button expandButton = new Button(EXPAND);
+		final Button collapseButton = new Button(COLLAPSE);
 		final String expandString = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("toolbar.expand");
 		final String collapseString = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("toolbar.collapse");
-		expandButton.setToolTipText(expandString);
-		expandButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-		expandButton.addActionListener(new ActionListener()
+		Tooltip expandToolTip = new Tooltip(expandString);
+		Tooltip collapseToolTip = new Tooltip(collapseString);
+		Tooltip.install(expandButton, expandToolTip);
+		Tooltip.install(collapseButton, collapseToolTip);
+		
+		expandButton.setPrefHeight(BUTTON_HEIGHT);
+		expandButton.setMaxWidth(Double.MAX_VALUE);
+		collapseButton.setPrefHeight(BUTTON_HEIGHT);
+		collapseButton.setMaxWidth(Double.MAX_VALUE);
+		
+		expandButton.setOnAction(pEvent ->
 		{
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				if(expandButton.getText().equals(EXPAND))
-				{
-					synchronizeToolSelection();
-					expandButton.setText(COLLAPSE);
-					expandButton.setToolTipText(collapseString);
-					aToolPanelEx.setBounds(aToolPanel.getBounds());
-					remove(aToolPanel);
-					add(aToolPanelEx, BorderLayout.CENTER);
-				}
-				else
-				{
-					synchronizeToolSelection();
-					expandButton.setText(EXPAND);
-					expandButton.setToolTipText(expandString);
-					aToolPanel.setBounds(aToolPanelEx.getBounds());
-					remove(aToolPanelEx);
-					add(aToolPanel, BorderLayout.CENTER);
-				}
-			}
+			synchronizeToolSelection();
+			setCenter(aLayoutEx);
+
 		});
-		add(expandButton, BorderLayout.SOUTH);
+		collapseButton.setOnAction(pEvent -> 
+		{
+			synchronizeToolSelection();
+			setCenter(aLayout);
+		});
+		aLayout.setBottom(expandButton);
+		aLayoutEx.setBottom(collapseButton);
 	}
 	
 	private void synchronizeToolSelection()
@@ -308,18 +309,17 @@ public class ToolBar extends JPanel
 		aButtons.get(index).setSelected(true);
 		aButtonsEx.get(index).setSelected(true);
 	}
-	
+
 	private int getSelectedButtonIndex()
 	{
-		ArrayList<JToggleButton> activeButtons = aButtons;
+		ArrayList<ToggleButton> activeButtons = aButtons;
 		if( isExpanded() )
 		{
 			activeButtons = aButtonsEx;
 		}
-		
 		for(int i = 0; i < activeButtons.size(); i++)
 		{
-			JToggleButton button = activeButtons.get(i);
+			ToggleButton button = activeButtons.get(i);
 			if(button.isSelected())
 			{
 				return i;
@@ -334,12 +334,9 @@ public class ToolBar extends JPanel
 	 */
 	private boolean isExpanded()
 	{
-		for( Component component : getComponents() )
+		if(getCenter() == aLayoutEx) 
 		{
-			if( component == aToolPanelEx )
-			{
-				return true;
-			}
+			return true;
 		}
 		return false;
 	}
