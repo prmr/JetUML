@@ -41,6 +41,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import ca.mcgill.cs.jetuml.gui.ToolBar;
+import javafx.embed.swing.JFXPanel;
 
 /**
  * Tests various interactions with State Diagram normally triggered from the 
@@ -72,6 +73,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		aDiagram = new StateDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
+		new JFXPanel();	// to prepare JavaFX toolkit and environment
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));
