@@ -1,17 +1,11 @@
 .welcome-tab .panel 
 {
 	-fx-alignment: top-center;
-	-fx-padding: 40px;	
 }
 
 .welcome-tab .panel-title
 {
 	-fx-alignment: center;
-	-fx-padding: 25px;
-}
-
-.welcome-tab .panel-content
-{
 	-fx-padding: 25px;
 }
 
