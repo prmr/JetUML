@@ -58,6 +58,7 @@ import javafx.scene.text.Font;
  *  the tool bar.
  *  
  *  @author Martin P. Robillard
+ *  @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ToolBar extends BorderPane
 {
@@ -85,13 +86,8 @@ public class ToolBar extends BorderPane
 		ToggleGroup group = new ToggleGroup();
 		ToggleGroup groupEx = new ToggleGroup();
 		aToolsLayout.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
-		// Adjust preferred height to use all available vertical space
-		aToolsLayout.setPrefHeight(Double.MAX_VALUE);
 		aLayout.setCenter(aToolsLayout);
-		
 		aToolsLayoutEx.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
-		// Adjust preferred height to use all available vertical space
-		aToolsLayoutEx.setPrefHeight(Double.MAX_VALUE);
 		aLayoutEx.setCenter(aToolsLayoutEx);
 		
 		createSelectionTool(group, groupEx);
@@ -214,16 +210,19 @@ public class ToolBar extends BorderPane
 	 */
 	public void setToolToBeSelect()
 	{
-		for( ToggleButton button : aButtons )
+		Platform.runLater(() -> 
 		{
-			button.setSelected(false);
-		}
-		for( ToggleButton button : aButtonsEx )
-		{
-			button.setSelected(false);
-		}
-		aButtons.get(0).setSelected(true);
-		aButtonsEx.get(0).setSelected(true);
+			for( ToggleButton button : aButtons )
+			{
+				button.setSelected(false);
+			}
+			for( ToggleButton button : aButtonsEx )
+			{
+				button.setSelected(false);
+			}
+			aButtons.get(0).setSelected(true);
+			aButtonsEx.get(0).setSelected(true);
+		});
 	}
 
 
