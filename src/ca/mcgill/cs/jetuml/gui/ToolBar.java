@@ -86,9 +86,10 @@ public class ToolBar extends BorderPane
 		ToggleGroup group = new ToggleGroup();
 		ToggleGroup groupEx = new ToggleGroup();
 		aToolsLayout.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
+		aToolsLayout.setPrefHeight(Double.MAX_VALUE); // Adjust preferred height to use all available vertical space
 		aLayout.setCenter(aToolsLayout);
 		aToolsLayoutEx.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
-		aLayoutEx.setCenter(aToolsLayoutEx);
+		aToolsLayoutEx.setPrefHeight(Double.MAX_VALUE); // Adjust preferred height to use all available vertical space
 		
 		createSelectionTool(group, groupEx);
 		createNodesAndEdgesTools(pGraph, group, groupEx);
