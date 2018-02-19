@@ -62,7 +62,7 @@ import javafx.scene.text.Font;
  */
 public class ToolBar extends BorderPane
 {
-	private static final double BUTTON_HEIGHT = 20;
+	private static final int BUTTON_HEIGHT = 20;
 	private static final int PADDING = 5;
 	private static final int FONT_SIZE = 14;
 	private static final String EXPAND = "<<";
@@ -72,8 +72,8 @@ public class ToolBar extends BorderPane
 	private ArrayList<ToggleButton> aButtonsEx = new ArrayList<>();
 	private FlowPane aToolsLayout = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
 	private FlowPane aToolsLayoutEx = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
-	private BorderPane aLayout = new BorderPane();
-	private BorderPane aLayoutEx = new BorderPane();
+//	private BorderPane aLayout = new BorderPane();
+//	private BorderPane aLayoutEx = new BorderPane();
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 
@@ -87,7 +87,7 @@ public class ToolBar extends BorderPane
 		ToggleGroup groupEx = new ToggleGroup();
 		aToolsLayout.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
 		aToolsLayout.setPrefHeight(Double.MAX_VALUE); // Adjust preferred height to use all available vertical space
-		aLayout.setCenter(aToolsLayout);
+		setCenter(aToolsLayout);
 		aToolsLayoutEx.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
 		aToolsLayoutEx.setPrefHeight(Double.MAX_VALUE); // Adjust preferred height to use all available vertical space
 		
@@ -95,8 +95,6 @@ public class ToolBar extends BorderPane
 		createNodesAndEdgesTools(pGraph, group, groupEx);
 		addCopyToClipboard();
 		createExpandButton();
-		setCenter(aLayout);
-		
 	}
 	
 	private void createSelectionTool(ToggleGroup pGroup, ToggleGroup pGroupEx)
@@ -290,16 +288,17 @@ public class ToolBar extends BorderPane
 		expandButton.setOnAction(pEvent ->
 		{
 			synchronizeToolSelection();
-			setCenter(aLayoutEx);
+			setCenter(aToolsLayoutEx);
+			setBottom(collapseButton);
 
 		});
 		collapseButton.setOnAction(pEvent -> 
 		{
 			synchronizeToolSelection();
-			setCenter(aLayout);
+			setCenter(aToolsLayout);
+			setBottom(expandButton);
 		});
-		aLayout.setBottom(expandButton);
-		aLayoutEx.setBottom(collapseButton);
+		setBottom(expandButton);
 	}
 	
 	private void synchronizeToolSelection()
@@ -334,7 +333,7 @@ public class ToolBar extends BorderPane
 	 */
 	private boolean isExpanded()
 	{
-		if(getCenter() == aLayoutEx) 
+		if(getCenter() == aToolsLayoutEx) 
 		{
 			return true;
 		}
