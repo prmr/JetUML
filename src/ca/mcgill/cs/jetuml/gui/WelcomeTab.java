@@ -43,8 +43,6 @@ public class WelcomeTab extends Tab
 {
 	private ResourceBundle aWelcomeResources;
     private HBox aFootTextPanel;
-    private HBox aRightTitlePanel;
-    private HBox aLeftTitlePanel;
     private VBox aLeftPanel;
     private VBox aRightPanel;
     private ImageView aLeftPanelIcon;
@@ -76,21 +74,19 @@ public class WelcomeTab extends Tab
 		
 	private VBox getLeftPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
 	{
-		if(aLeftTitlePanel == null)
+		if(aLeftPanel == null)
 		{
 			Label icon = new Label();
 			icon.setGraphic(this.aLeftPanelIcon);
 			Label title = new Label(aWelcomeResources.getString("file.new.text").toLowerCase());
 
-			aLeftTitlePanel = new HBox();
-			aLeftTitlePanel.getStyleClass().add("panel-title");
-			aLeftTitlePanel.getChildren().addAll(icon, title);
-		}
-		if(aLeftPanel == null)
-		{
+			HBox leftTitlePanel = new HBox();
+			leftTitlePanel.getStyleClass().add("panel-title");
+			leftTitlePanel.getChildren().addAll(icon, title);
+
 			aLeftPanel = new VBox();
 			aLeftPanel.getStyleClass().add("panel-content");
-			aLeftPanel.getChildren().add(aLeftTitlePanel);
+			aLeftPanel.getChildren().add(leftTitlePanel);
 			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
 			{
 				String label = entry.getKey();
@@ -104,21 +100,19 @@ public class WelcomeTab extends Tab
 	
 	private VBox getRightPanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
 	{
-		if(aRightTitlePanel == null)
+		if(aRightPanel == null)
 		{
 			Label title = new Label(aWelcomeResources.getString("file.recent.text").toLowerCase());
 			Label icon = new Label();
 			icon.setGraphic(this.aRightPanelIcon);
 			
-			aRightTitlePanel = new HBox();
-			aRightTitlePanel.getStyleClass().add("panel-title");
-			aRightTitlePanel.getChildren().addAll(title, icon);
-		}
-		if(aRightPanel == null)
-		{
+			HBox rightTitlePanel = new HBox();
+			rightTitlePanel.getStyleClass().add("panel-title");
+			rightTitlePanel.getChildren().addAll(title, icon);
+		
 			aRightPanel = new VBox();
 			aRightPanel.getStyleClass().add("panel-content");
-			aRightPanel.getChildren().add(aRightTitlePanel);
+			aRightPanel.getChildren().add(rightTitlePanel);
 			
 			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
 			{
