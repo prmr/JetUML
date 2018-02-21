@@ -72,8 +72,6 @@ public class ToolBar extends BorderPane
 	private ArrayList<ToggleButton> aButtonsEx = new ArrayList<>();
 	private FlowPane aToolsLayout = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
 	private FlowPane aToolsLayoutEx = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
-//	private BorderPane aLayout = new BorderPane();
-//	private BorderPane aLayoutEx = new BorderPane();
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
 	private JPopupMenu aPopupMenu = new JPopupMenu();
 
