@@ -54,11 +54,9 @@ public class GraphFrame extends Tab
 	 */
 	public GraphFrame(Graph pGraph, TabPane pTabbedPane)
 	{
-		super();
 		aTabbedPane = pTabbedPane;
 		ToolBar sideBar = new ToolBar(pGraph);
 		aPanel = new GraphPanel(pGraph, sideBar, this);
-		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
 		SwingNode panelNode = new SwingNode();

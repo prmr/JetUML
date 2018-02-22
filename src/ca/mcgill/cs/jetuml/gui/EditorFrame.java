@@ -403,10 +403,10 @@ public class EditorFrame extends BorderPane
 			{
 				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
 				addTab(frame);
-			}
-			catch (Exception exception) 
+			} 
+			catch (InstantiationException | IllegalAccessException exception) 
 			{
-				exception.printStackTrace();
+					assert false;
 			}
 		});
 		
@@ -417,9 +417,9 @@ public class EditorFrame extends BorderPane
 				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
 				addTab(frame);
 			}
-			catch (Exception exception) 
+			catch (InstantiationException | IllegalAccessException exception) 
 			{
-				exception.printStackTrace();
+					assert false;
 			}
 		}));
 	}
@@ -572,7 +572,7 @@ public class EditorFrame extends BorderPane
    		{
    			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
-   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));		
+   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
    			item.setOnAction(pEvent -> open(fileName));
@@ -703,10 +703,10 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		Tab curFrame = (Tab) aTabbedPane.getSelectionModel().getSelectedItem();
-		if (curFrame != null) 
+		Tab currentFrame = (Tab) aTabbedPane.getSelectionModel().getSelectedItem();
+		if (currentFrame != null) 
 		{
-			GraphFrame openFrame = (GraphFrame) curFrame;
+			GraphFrame openFrame = (GraphFrame) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -719,13 +719,13 @@ public class EditorFrame extends BorderPane
 
 				if (alert.getResult() == ButtonType.YES) 
 				{
-					removeTab(curFrame);
+					removeTab(currentFrame);
 				}
 				return;
 			} 
 			else 
 			{
-				removeTab(curFrame);
+				removeTab(currentFrame);
 			}
 		}
 	}
@@ -738,10 +738,10 @@ public class EditorFrame extends BorderPane
 	 */
 	public void close(Tab pTab) 
 	{
-		Tab curFrame = pTab;
-		if (curFrame != null) 
+		Tab currentFrame = pTab;
+		if (currentFrame != null) 
 		{
-			GraphFrame openFrame = (GraphFrame) curFrame;
+			GraphFrame openFrame = (GraphFrame) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -756,12 +756,12 @@ public class EditorFrame extends BorderPane
 
 					if (alert.getResult() == ButtonType.YES) 
 					{
-						removeTab(curFrame);
+						removeTab(currentFrame);
 					}
 				}
 				return;
 			}
-			removeTab(curFrame);
+			removeTab(currentFrame);
 		}
 	}
 
@@ -786,7 +786,7 @@ public class EditorFrame extends BorderPane
 			PersistenceService.save(frame.getGraph(), file);
 			frame.getGraphPanel().setModified(false);
 		} 
-		catch (Exception exception) 
+		catch (IOException exception) 
 		{
 			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
