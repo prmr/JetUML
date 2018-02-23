@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -94,6 +93,7 @@ public class GraphPanel extends JPanel
 	private static final Color GRABBER_FILL_COLOR = new Color(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = new Color(173, 193, 214, 75);
 	
+	private GraphFrame aFrame;
 	private Graph aGraph;
 	private ToolBar aSideBar;
 	private Zoom aZoom = new Zoom();	
@@ -112,15 +112,18 @@ public class GraphPanel extends JPanel
 	 * 
 	 * @param pGraph The graph managed by this panel.
 	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
+	 * @param pFrame the GraphFrame containing this GraphPanel 
 	 */
-	public GraphPanel(Graph pGraph, ToolBar pSideBar)
+	public GraphPanel(Graph pGraph, ToolBar pSideBar, GraphFrame pFrame)
 	{
+		aFrame = pFrame;
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 		setBackground(Color.WHITE);
 		addMouseListener(new GraphPanelMouseListener());
 		addMouseMotionListener(new GraphPanelMouseMotionListener());
+		setVisible(true);
 	}
 
 	/**
@@ -476,13 +479,7 @@ public class GraphPanel extends JPanel
 	 */
 	private GraphFrame getFrame()
 	{
-		Component parent = this;
-		do
-		{
-			parent = parent.getParent();
-		}
-		while(parent != null && !(parent instanceof GraphFrame));
-		return (GraphFrame) parent;
+		return aFrame;
 	}
    
 	/**

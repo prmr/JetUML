@@ -1,0 +1,42 @@
+.welcome-tab .panel 
+{
+	-fx-alignment: top-center;
+}
+
+.welcome-tab .panel-title
+{
+	-fx-alignment: center;
+	-fx-padding: 25px;
+}
+
+.welcome-tab .panel-content .label
+{
+	-fx-padding: 10px;
+}
+
+.welcome-tab .label
+{
+	-fx-font: 25pt "Arial";
+
+} 
+.welcome-tab .button
+{
+	-fx-background-color: transparent;
+	-fx-font: 25pt "Arial";
+}
+
+.welcome-tab .button:hover
+{
+	-fx-text-fill: gray;
+}
+
+.welcome-tab .footer 
+{
+	-fx-alignment: center;	
+	-fx-padding: 0 0 10px 0;
+}
+
+.welcome-tab .footer .label
+{
+	-fx-font: 15pt "Arial";
+}

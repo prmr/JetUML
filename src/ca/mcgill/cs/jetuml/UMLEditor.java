@@ -91,6 +91,7 @@ public final class UMLEditor extends Application
 		pStage.getIcons().add(new Image(imagePath));
 		
 		pStage.setScene(new Scene(initializeEditorFrame(pStage)));
+		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();

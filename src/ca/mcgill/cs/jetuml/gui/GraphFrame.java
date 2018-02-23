@@ -21,40 +21,57 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.io.File;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingNode;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 
 /**
  *A frame for showing a graphical editor.
+ *
+ *@author Kaylee I. Kutschera - Migration to JavaFX
  */
-@SuppressWarnings("serial")
-public class GraphFrame extends JInternalFrame
-{
-	private JTabbedPane aTabbedPane;
+public class GraphFrame extends Tab
+{	
+	private TabPane aTabbedPane;
 	private GraphPanel aPanel;
 	private File aFile; // The file associated with this graph
 	
 	/**
      * Constructs a graph frame with an empty tool bar.
      * @param pGraph the initial graph
-     * @param pTabbedPane the JTabbedPane associated with this GraphFrame.
+     * @param pTabbedPane the TabPane associated with this GraphFrame.
 	 */
-	public GraphFrame(Graph pGraph, JTabbedPane pTabbedPane)
+	public GraphFrame(Graph pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
 		ToolBar sideBar = new ToolBar(pGraph);
-		aPanel = new GraphPanel(pGraph, sideBar);
-		Container contentPane = getContentPane();
-		contentPane.add(sideBar, BorderLayout.EAST);
-		contentPane.add(new JScrollPane(aPanel), BorderLayout.CENTER);
-		setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
+		aPanel = new GraphPanel(pGraph, sideBar, this);
+		BorderPane layout = new BorderPane();
+		layout.setRight(sideBar);
+		SwingNode panelNode = new SwingNode();
+		panelNode.setContent(new JScrollPane(aPanel));
+		layout.setCenter(panelNode);
+		
+		setTitle(false);
+		setContent(layout);
+
+		setOnCloseRequest(pEvent -> 
+		{
+			pEvent.consume();
+			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
+			editorFrame.close(this);
+		});
 	}
 
 	/**
@@ -78,9 +95,9 @@ public class GraphFrame extends JInternalFrame
 	/**
 	 * This association and getter method are needed to display messages using the copy to clipboard
 	 * functionality of the Optional ToolBar.
-	 * @return aTabbedPane the JTabbedPane associated with this GraphFrame.
+	 * @return aTabbedPane the TabPane associated with this GraphFrame.
 	 */
-	public JTabbedPane getJTabbedPane()
+	public TabPane getTabbedPane()
 	{
 		return aTabbedPane;
 	}
@@ -94,21 +111,48 @@ public class GraphFrame extends JInternalFrame
 	 */
 	public void setTitle(boolean pModified)
 	{
-		if(aFile != null)
+		Platform.runLater(() -> 
 		{
-			String title = aFile.getName();
-			if(pModified)
+			if(aFile != null)
 			{
-				if(!getTitle().endsWith("*"))
+				String title = aFile.getName();
+				if(pModified)
 				{
-					setTitle(title + "*");
+					if(!getText().endsWith("*"))
+					{
+						setText(title + "*");
+					}
+				}
+				else
+				{
+					setText(title);
 				}
 			}
 			else
 			{
-				setTitle(title);
+				Graph graphType = getGraph();
+				if (graphType instanceof ClassDiagramGraph) 
+				{
+					setText("Class Diagram");
+				} 
+				else if (graphType instanceof ObjectDiagramGraph) 
+				{
+					setText("Object Diagram");
+				} 
+				else if (graphType instanceof UseCaseDiagramGraph) 
+				{
+					setText("Use Case Diagram");
+				} 
+				else if (graphType instanceof StateDiagramGraph) 
+				{
+					setText("State Diagram");
+				} 
+				else 
+				{
+					setText("Sequence Diagram");
+				}
 			}
-		}
+		});
 	}
 
 	/**
@@ -127,6 +171,6 @@ public class GraphFrame extends JInternalFrame
 	public void setFile(File pFile)
 	{
 		aFile = pFile;
-		setTitle(aFile.getName());
+		setTitle(false);
 	}
 }	        
