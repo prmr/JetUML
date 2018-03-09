@@ -32,16 +32,16 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
  * @author Martin P. Robillard
  *
  */
-public abstract class AbstractNode extends AbstractGraphElement implements Node
+public abstract class AbstractNode2 extends AbstractGraphElement implements Node
 {
-	private NodeView aView;
+	private NodeView2 aView;
 	private Point aPosition = new Point(0, 0);
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this node
 	 * and positions the node at (0,0).
 	 */
-	protected AbstractNode()
+	protected AbstractNode2()
 	{
 		aView = generateView();
 	}
@@ -59,18 +59,18 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	 * 
 	 * @return The view that wraps this node.
 	 */
-	protected abstract NodeView generateView();
+	protected abstract NodeView2 generateView();
 	
 	@Override
 	public NodeView view()
 	{
-		return aView;
+		return null;
 	}
 	
 	@Override
 	public NodeView2 view2()
 	{
-		return null;
+		return aView;
 	}
 	
 	@Override
@@ -86,9 +86,9 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	}
 
 	@Override
-	public AbstractNode clone()
+	public AbstractNode2 clone()
 	{
-		AbstractNode clone = (AbstractNode) super.clone();
+		AbstractNode2 clone = (AbstractNode2) super.clone();
 		clone.aView = clone.generateView();
 		return clone;
 	}

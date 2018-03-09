@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.graph;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
   * A node in a graph.
@@ -58,4 +59,9 @@ public interface Node extends GraphElement
 	 * @return The view for this node. TODO remove default
 	 */
 	NodeView view();
+	
+	/**
+	 * @return The view2 for this node. TODO remove default
+	 */
+	NodeView2 view2();
 }
