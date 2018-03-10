@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.views;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -33,7 +32,7 @@ import javafx.scene.paint.Paint;
  */
 public final class Grid2
 {
-	private static final Color GRID_COLOR = Color.rgb(220, 220, 220); 
+	private static final Color GRID_COLOR = Color.rgb(220, 220, 220);
 	private static final double GRID_SIZE = 10;
 	
 	private Grid2() {}
@@ -43,19 +42,19 @@ public final class Grid2
      * @param pGraphics the graphics context
      * @param pBounds the bounding rectangle
      */
-	public static void draw(GraphicsContext pGraphics, Rectangle2D pBounds)
+	public static void draw(GraphicsContext pGraphics, Rectangle pBounds)
 	{
-		Paint oldFill = pGraphics.getFill();
-		pGraphics.setFill(GRID_COLOR);
-		for(double x = pBounds.getMinX(); x < pBounds.getMaxX(); x += GRID_SIZE)
+		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.setStroke(GRID_COLOR);
+		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += GRID_SIZE)
 		{
-			pGraphics.strokeLine(x, pBounds.getMinY(), x, pBounds.getMaxY());
+			pGraphics.strokeLine(x, pBounds.getY(), x, pBounds.getMaxY());
 		}
-		for(double y = pBounds.getMinY(); y < pBounds.getMaxY(); y += GRID_SIZE)
+		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += GRID_SIZE)
 		{
-			pGraphics.strokeLine(pBounds.getMinX(), y, pBounds.getMaxX(), y);
+			pGraphics.strokeLine(pBounds.getX(), y, pBounds.getMaxX(), y);
 		}
-		pGraphics.setFill(oldFill);
+		pGraphics.setStroke(oldStroke);
 	}
 
 	

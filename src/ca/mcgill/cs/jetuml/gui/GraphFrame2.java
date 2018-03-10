@@ -23,12 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.io.File;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
@@ -57,6 +52,8 @@ public class GraphFrame2 extends Tab
 		aTabbedPane = pTabbedPane;
 		ToolBar2 sideBar = new ToolBar2(pGraph);
 		aPanel = new GraphPanel2(pGraph, sideBar, this);
+		aPanel.resize(0, 0);
+		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
 		layout.setCenter(new ScrollPane(aPanel));
@@ -71,7 +68,7 @@ public class GraphFrame2 extends Tab
 			editorFrame.close(this);
 		});
 	}
-
+	
 	/**
      * Gets the graph that is being edited in this frame.
      * @return the graph
@@ -129,27 +126,14 @@ public class GraphFrame2 extends Tab
 			else
 			{
 				Graph2 graphType = getGraph();
-//				if (graphType instanceof ClassDiagramGraph) 
-//				{
-//					setText("Class Diagram");
-//				} 
-//				else if (graphType instanceof ObjectDiagramGraph) 
-//				{
-//					setText("Object Diagram");
-//				} 
-//				else if (graphType instanceof UseCaseDiagramGraph)
 				if (graphType instanceof UseCaseDiagramGraph2)
 				{
-					setText("Use Case Diagram");
+					setText("Use Case Diagram 2");
 				} 
-//				else if (graphType instanceof StateDiagramGraph) 
-//				{
-//					setText("State Diagram");
-//				} 
-//				else 
-//				{
-//					setText("Sequence Diagram");
-//				}
+				else 
+				{
+					setText("Not supported in JavaFX");
+				}
 			}
 		});
 	}

@@ -22,7 +22,9 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.NoteNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NoteNodeView2;
 
 /**
  *  A note node in a UML diagram. The name of the node
@@ -34,5 +36,11 @@ public class NoteNode extends NamedNode
 	protected NodeView generateView()
 	{
 		return new NoteNodeView(this);
+	}
+
+	@Override
+	protected NodeView2 generateView2() 
+	{
+		return new NoteNodeView2(this);
 	}
 }

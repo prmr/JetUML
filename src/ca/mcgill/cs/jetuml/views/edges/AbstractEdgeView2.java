@@ -20,15 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.BasicStroke;
-import java.awt.Shape;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
+import javafx.geometry.Bounds;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Shape;
 
 /**
  * Provides shared services for rendering an edge.
@@ -57,6 +56,12 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	protected abstract Shape getShape();
 	
 	/**
+	 * Fills in shape of the edge.
+	 * @param pGraphics GraphicsContext in which to fill the shape.
+	 */
+	protected abstract void fillShape(GraphicsContext pGraphics);
+	
+	/**
 	 * @return The wrapped edge.
 	 */
 	protected Edge edge()
@@ -73,14 +78,16 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 			return false;
 		}
 
-		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
-		return fatPath.contains(Conversions.toPoint2D(pPoint));
+		Shape fatPath = getShape();
+		fatPath.setStrokeWidth(2 * MAX_DISTANCE);
+		return fatPath.contains(pPoint.getX(), pPoint.getY());
 	}
 	
 	@Override
 	public Rectangle getBounds()
 	{
-		return Conversions.toRectangle(getShape().getBounds()); 
+		Bounds bounds = getShape().getBoundsInLocal();	
+		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
 	/** 

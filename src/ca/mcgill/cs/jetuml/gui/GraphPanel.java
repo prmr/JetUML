@@ -345,6 +345,7 @@ public class GraphPanel extends JPanel
 		g2.scale(aZoom.factor(), aZoom.factor());
 		Rectangle2D bounds = getBounds();
 		Rectangle graphBounds = aGraph.getBounds();
+		
 		if(!aHideGrid) 
 		{
 			Grid.draw(g2, new Rectangle2D.Double(0, 0, Math.max(aZoom.dezoom((int)Math.round(bounds.getMaxX())), 

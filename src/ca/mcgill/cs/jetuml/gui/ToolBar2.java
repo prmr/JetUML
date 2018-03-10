@@ -28,10 +28,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.Edge2;
+import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Node2;
+import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.IconCreator;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.application.Platform;
@@ -189,14 +189,14 @@ public class ToolBar2 extends BorderPane
 	{
 		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
 
-		Node2[] nodeTypes = pGraph.getNodePrototypes();
+		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
 			installTool(ImageCreator.createImage(nodeTypes[i]), IconCreator.createIcon(nodeTypes[i]), 
 					resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
-		Edge2[] edgeTypes = pGraph.getEdgePrototypes();
+		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
 			installTool(ImageCreator.createImage(edgeTypes[i]), IconCreator.createIcon(edgeTypes[i]), 

@@ -26,7 +26,9 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.ObjectNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.ObjectNodeView2;
 
 /**
  *  An object node in an object diagram.
@@ -39,6 +41,12 @@ public class ObjectNode extends NamedNode implements ParentNode
 	protected NodeView generateView()
 	{
 		return new ObjectNodeView(this);
+	}
+	
+	@Override
+	protected NodeView2 generateView2()
+	{
+		return new ObjectNodeView2(this);
 	}
 
 	/* 

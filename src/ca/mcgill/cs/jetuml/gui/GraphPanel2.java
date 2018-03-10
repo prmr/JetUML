@@ -43,19 +43,15 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.geom.Zoom;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Edge2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Node2;
 import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode2;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ParentNode2;
 import ca.mcgill.cs.jetuml.views.Grid2;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -66,6 +62,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -87,7 +84,7 @@ public class GraphPanel2 extends Canvas
 	private static final int LAYOUT_PADDING = 20;
 	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
-	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 75);
+	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	
 	private GraphicsContext aGraphics;
 	private GraphFrame2 aFrame;
@@ -119,11 +116,9 @@ public class GraphPanel2 extends Canvas
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 		
-		aGraphics.setFill(Color.WHITE); 
-		aGraphics.fillRect(0, 0, getWidth(), getHeight());
-		
 		setOnMouseClicked(new GraphPanelMouseListener());	// check if right
 
+		resize(0, 0);
 		paintComponent(aGraphics);
 	}
 
@@ -222,17 +217,17 @@ public class GraphPanel2 extends Canvas
 	public void removeSelected()
 	{
 		aUndoManager.startTracking();
-		Stack<Node2> nodes = new Stack<>();
+		Stack<Node> nodes = new Stack<>();
 		for( GraphElement element : aSelectedElements )
 		{
-			if(element instanceof Node2)
+			if(element instanceof Node)
 			{
 				aGraph.removeAllEdgesConnectedTo((Node)element);
-				nodes.add((Node2) element);
+				nodes.add((Node) element);
 			}
-			else if(element instanceof Edge2)
+			else if(element instanceof Edge)
 			{
-				aGraph.removeEdge((Edge2) element);
+				aGraph.removeEdge((Edge) element);
 			}
 		}
 		while(!nodes.empty())
@@ -330,11 +325,11 @@ public class GraphPanel2 extends Canvas
 	public void selectAll()
 	{
 		aSelectedElements.clearSelection();
-		for( Node2 node : aGraph.getRootNodes() )
+		for( Node node : aGraph.getRootNodes() )
 		{
 			aSelectedElements.add(node);
 		}
-		for( Edge2 edge : aGraph.getEdges() )
+		for( Edge edge : aGraph.getEdges() )
 		{
 			aSelectedElements.add(edge);
 		}
@@ -345,12 +340,14 @@ public class GraphPanel2 extends Canvas
 //	@Override
 	public void paintComponent(GraphicsContext pGraphics)
 	{
+		aGraphics.setFill(Color.WHITE); 
+		aGraphics.fillRect(0, 0, getWidth(), getHeight());
 		pGraphics.scale(aZoom.factor(), aZoom.factor());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
 		if(!aHideGrid) 
 		{
-			Grid2.draw(pGraphics, new Rectangle2D(0, 0, Math.max(aZoom.dezoom((int)Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
+			Grid2.draw(pGraphics, new Rectangle(0, 0, Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
 					Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxY())), graphBounds.getMaxY())));
 		}
 		aGraph.draw(pGraphics);
@@ -430,8 +427,13 @@ public class GraphPanel2 extends Canvas
 	public void resize(double pWidth, double pHeight) 
 	{
 		Rectangle bounds = aGraph.getBounds();
-		setWidth(aZoom.zoom(bounds.getMaxX()));
-		setHeight(aZoom.zoom(bounds.getMaxY()));
+		try 
+		{
+			setWidth(Math.max(((ScrollPane)getParent().getParent().getParent()).getWidth(), aZoom.zoom(bounds.getMaxX())));
+			setHeight(Math.max(((ScrollPane)getParent().getParent().getParent()).getHeight(), aZoom.zoom(bounds.getMaxY())));
+		}
+		catch(NullPointerException e) {}
+		paintComponent(aGraphics);
 	}
 	
 	/**
@@ -495,6 +497,7 @@ public class GraphPanel2 extends Canvas
 	public void setHideGrid(boolean pHideGrid)
 	{
 		aHideGrid = pHideGrid;
+		paintComponent(aGraphics);
 //		repaint();
 	}
 
@@ -545,7 +548,7 @@ public class GraphPanel2 extends Canvas
 		private void setSelection(GraphElement pElement)
 		{
 			aSelectedElements.set(pElement);
-			for( Edge2 edge : aGraph.getEdges() )
+			for( Edge edge : aGraph.getEdges() )
 			{
 				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
@@ -562,7 +565,7 @@ public class GraphPanel2 extends Canvas
 		private void addToSelection(GraphElement pElement)
 		{
 			aSelectedElements.add(pElement);
-			for( Edge2 edge : aGraph.getEdges() )
+			for( Edge edge : aGraph.getEdges() )
 			{
 				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
@@ -576,7 +579,7 @@ public class GraphPanel2 extends Canvas
 		 * @param pNode a Node to check.
 		 * @return True if pNode or any of its parent is selected
 		 */
-		private boolean hasSelectedParent(Node2 pNode)
+		private boolean hasSelectedParent(Node pNode)
 		{
 			if( pNode == null )
 			{
@@ -586,9 +589,9 @@ public class GraphPanel2 extends Canvas
 			{
 				return true;
 			}
-			else if( pNode instanceof ChildNode2 )
+			else if( pNode instanceof ChildNode )
 			{
-				return hasSelectedParent( ((ChildNode2)pNode).getParent() );
+				return hasSelectedParent( ((ChildNode)pNode).getParent() );
 			}
 			else
 			{
@@ -667,7 +670,7 @@ public class GraphPanel2 extends Canvas
 		
 		private void handleNodeCreation(MouseEvent pEvent)
 		{
-			Node2 newNode = ((Node2)aSideBar.getSelectedTool()).clone();
+			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
 			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY())); 
 			if(added)
@@ -749,8 +752,8 @@ public class GraphPanel2 extends Canvas
 			Object tool = aSideBar.getSelectedTool();
 			if(aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
-				Edge2 prototype = (Edge2) tool;
-				Edge2 newEdge = (Edge2) prototype.clone();
+				Edge prototype = (Edge) tool;
+				Edge newEdge = (Edge) prototype.clone();
 				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
@@ -822,12 +825,12 @@ public class GraphPanel2 extends Canvas
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
 				Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-				for( Node2 node : aGraph.getRootNodes() )
+				for( Node node : aGraph.getRootNodes() )
 				{
 					selectNode(isCtrl, node, lasso);
 				}
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-				for (Edge2 edge: aGraph.getEdges())
+				for (Edge edge: aGraph.getEdges())
 				{
 					if(!isCtrl && !lasso.contains(edge.view().getBounds()))
 					{
@@ -846,7 +849,7 @@ public class GraphPanel2 extends Canvas
 //			repaint();
 		}
 		
-		private void selectNode( boolean pCtrl, Node2 pNode, Rectangle pLasso )
+		private void selectNode( boolean pCtrl, Node pNode, Rectangle pLasso )
 		{
 			if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 			{
@@ -856,9 +859,9 @@ public class GraphPanel2 extends Canvas
 			{
 				aSelectedElements.add(pNode);
 			}
-			if( pNode instanceof ParentNode2 )
+			if( pNode instanceof ParentNode )
 			{
-				for( ChildNode2 child : ((ParentNode2) pNode).getChildren() )
+				for( ChildNode child : ((ParentNode) pNode).getChildren() )
 				{
 					selectNode(pCtrl, child, pLasso);
 				}
@@ -900,25 +903,25 @@ public class GraphPanel2 extends Canvas
 		}
 		
 		@Override
-		public void nodeAdded(Graph2 pGraph, Node2 pNode)
+		public void nodeAdded(Graph2 pGraph, Node pNode)
 		{
 			aUndoManager.add(new AddNodeCommand2(pGraph, pNode));
 		}
 		
 		@Override
-		public void nodeRemoved(Graph2 pGraph, Node2 pNode)
+		public void nodeRemoved(Graph2 pGraph, Node pNode)
 		{
 			aUndoManager.add(new DeleteNodeCommand2(pGraph, pNode));
 		}
 		
 		@Override
-		public void edgeAdded(Graph2 pGraph, Edge2 pEdge)
+		public void edgeAdded(Graph2 pGraph, Edge pEdge)
 		{
 			aUndoManager.add(new AddEdgeCommand2(pGraph, pEdge));
 		}
 		
 		@Override
-		public void edgeRemoved(Graph2 pGraph, Edge2 pEdge)
+		public void edgeRemoved(Graph2 pGraph, Edge pEdge)
 		{
 			aUndoManager.add(new RemoveEdgeCommand2(pGraph, pEdge));
 		}

@@ -20,16 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.GeneralPath;
-
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Edge2;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * A straight dotted line.
@@ -38,13 +37,15 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class NoteEdgeView2 extends AbstractEdgeView2
 {
-	private static final Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, 
-			  BasicStroke.JOIN_ROUND, 0.0f, new float[] { 3.0f, 3.0f }, 0.0f);
-		
+	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
+	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
+	private static final double MITER_LIMIT = 0;
+	private static final double[] DASHES = new double[] {3, 3};
+	
 	/**
 	 * @param pEdge The edge to wrap.
 	 */
-	public NoteEdgeView2(Edge2 pEdge)
+	public NoteEdgeView2(Edge pEdge)
 	{
 		super(pEdge);
 	}
@@ -52,20 +53,42 @@ public class NoteEdgeView2 extends AbstractEdgeView2
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		Stroke oldStroke = pGraphics.getStroke();
-		pGraphics.setStroke(DOTTED_STROKE);
-		pGraphics.draw(getShape());
-		pGraphics.setStroke(oldStroke);
+		StrokeLineCap oldCap = pGraphics.getLineCap();
+		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
+		double oldMiter = pGraphics.getMiterLimit();
+		double[] oldDashes = pGraphics.getLineDashes();
+		
+		pGraphics.setLineCap(LINE_CAP);
+		pGraphics.setLineJoin(LINE_JOIN);
+		pGraphics.setMiterLimit(MITER_LIMIT);
+		pGraphics.setLineDashes(DASHES);
+		
+		fillShape(pGraphics);
+		
+		pGraphics.setLineCap(oldCap);
+		pGraphics.setLineJoin(oldJoin);
+		pGraphics.setMiterLimit(oldMiter);
+		pGraphics.setLineDashes(oldDashes);
 	}
 	
 	
 	@Override
 	protected Shape getShape()
 	{
-		GeneralPath path = new GeneralPath();
+		Path path = new Path();
 		Line conn = getConnectionPoints();
-		path.moveTo((float)conn.getX1(), (float)conn.getY1());
-		path.lineTo((float)conn.getX2(), (float)conn.getY2());
+		MoveTo moveTo = new MoveTo((float)conn.getX1(), (float)conn.getY1());
+		LineTo lineTo = new LineTo((float)conn.getX2(), (float)conn.getY2());
+		path.getElements().addAll(moveTo, lineTo);
 		return path;
+	}
+
+	@Override
+	protected void fillShape(GraphicsContext pGraphics) 
+	{
+		pGraphics.beginPath();
+		Line conn = getConnectionPoints();
+		pGraphics.moveTo((float)conn.getX1(), (float)conn.getY1());
+		pGraphics.lineTo((float)conn.getX2(), (float)conn.getY2());
 	}
 }

@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.commands;
 
 import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.Node2;
+import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
  * Represents the addition of a node to the graph.
@@ -35,7 +35,7 @@ public class AddNodeCommand2 extends GraphElementRelatedCommand2
 	 * @param pGraph The graph the node was added to.
 	 * @param pNode The node added.
 	 */
-	public AddNodeCommand2(Graph2 pGraph, Node2 pNode)
+	public AddNodeCommand2(Graph2 pGraph, Node pNode)
 	{
 		super(pGraph, pNode);
 	}
@@ -45,8 +45,8 @@ public class AddNodeCommand2 extends GraphElementRelatedCommand2
 	 */
 	public void undo() 
 	{
-		assert aElement instanceof Node2;
-		aGraph.removeNode((Node2)aElement);
+		assert aElement instanceof Node;
+		aGraph.removeNode((Node)aElement);
 		aGraph.requestLayout();
 	}
 
@@ -55,8 +55,8 @@ public class AddNodeCommand2 extends GraphElementRelatedCommand2
 	 */
 	public void execute() 
 	{ 
-		assert aElement instanceof Node2;
-		aGraph.insertNode((Node2)aElement);
+		assert aElement instanceof Node;
+		aGraph.insertNode((Node)aElement);
 		aGraph.requestLayout();
 	}
 }

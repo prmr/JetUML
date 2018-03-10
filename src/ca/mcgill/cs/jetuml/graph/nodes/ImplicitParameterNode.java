@@ -27,7 +27,9 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
  * An implicit parameter node in a sequence diagram. The 
@@ -45,6 +47,12 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	protected NodeView generateView()
 	{
 		return new ImplicitParameterNodeView(this);
+	}
+	
+	@Override
+	protected NodeView2 generateView2()
+	{
+		return new ImplicitParameterNodeView2(this);
 	}
 
 	@Override

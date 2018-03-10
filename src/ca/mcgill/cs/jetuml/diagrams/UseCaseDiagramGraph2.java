@@ -24,41 +24,37 @@ package ca.mcgill.cs.jetuml.diagrams;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.Edge2;
+import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.Node2;
+import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.graph.edges.NoteEdge2;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ActorNode2;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode2;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
-import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode2;
 
 /**
  *   A UML use case diagram.
  */
 public class UseCaseDiagramGraph2 extends Graph2
 {
-	private static final Node2[] NODE_PROTOTYPES = new Node2[]{new ActorNode2(), new UseCaseNode2(), new NoteNode2()};
-	private static final Edge2[] EDGE_PROTOTYPES = new Edge2[]{new UseCaseAssociationEdge(),
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new UseCaseAssociationEdge(),
 															 new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
 															 new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
 															 new UseCaseGeneralizationEdge(),
-															 new NoteEdge2()};
+															 new NoteEdge()};
 
 	@Override
-	public Node2[] getNodePrototypes()
+	public Node[] getNodePrototypes()
 	{
 		return NODE_PROTOTYPES;
 	}
 
 	@Override
-	public Edge2[] getEdgePrototypes()
+	public Edge[] getEdgePrototypes()
 	{
 		return EDGE_PROTOTYPES;
 	}   
@@ -76,7 +72,7 @@ public class UseCaseDiagramGraph2 extends Graph2
 	}
 	
 	@Override
-	public boolean canConnect(Edge2 pEdge, Node2 pNode1, Node2 pNode2, Point pPoint2)
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{

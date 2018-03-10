@@ -26,7 +26,9 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.CallNodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,
@@ -44,6 +46,12 @@ public class CallNode extends AbstractNode implements ChildNode
 	protected NodeView generateView()
 	{
 		return new CallNodeView(this);
+	}
+	
+	@Override
+	protected NodeView2 generateView2()
+	{
+		return new CallNodeView2(this);
 	}
 
 	/* (non-Javadoc)

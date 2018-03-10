@@ -20,15 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.Node2;
+import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.Grid;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A view for nodes that are bounded by a rectangle.
@@ -49,7 +47,7 @@ public abstract class RectangleBoundedNodeView2 extends AbstractNodeView2
 	 * @param pMinWidth The minimum width for the node.
 	 * @param pMinHeight The minimum height for the node.
 	 */
-	protected RectangleBoundedNodeView2(Node2 pNode, int pMinWidth, int pMinHeight)
+	protected RectangleBoundedNodeView2(Node pNode, int pMinWidth, int pMinHeight)
 	{
 		super(pNode);
 		aWidth = pMinWidth;
@@ -78,10 +76,11 @@ public abstract class RectangleBoundedNodeView2 extends AbstractNodeView2
 		aHeight = pNewBounds.getHeight();
 	}
 	
-	@Override
-	protected Shape getShape()
+	@Override 
+	protected void fillShape(GraphicsContext pGraphics) 
 	{
-		return Conversions.toRectangle2D(getBounds());
+		Rectangle bounds = getBounds();
+		pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
 
 	/* 

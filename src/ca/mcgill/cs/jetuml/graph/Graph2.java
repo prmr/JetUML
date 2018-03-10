@@ -21,13 +21,10 @@
 
 package ca.mcgill.cs.jetuml.graph;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener2;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -409,12 +406,11 @@ public abstract class Graph2
 
 	/**
 	 * Draws the graph.
-	 * @param pGraphics2D the graphics context
+	 * @param pGraphics the graphics context
 	 */
 	public void draw(GraphicsContext pGraphics)
 	{
 		layout();
-//		pGraphics.setBackground(Color.WHITE);
 		for( Node node : aRootNodes )
 		{
 			drawNode(node, pGraphics);

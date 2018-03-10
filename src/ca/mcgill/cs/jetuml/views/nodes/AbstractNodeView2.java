@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.scene.canvas.GraphicsContext;
@@ -38,6 +36,7 @@ public abstract class AbstractNodeView2 implements NodeView2
 {
 	public static final int SHADOW_GAP = 4;
 	private static final Color SHADOW_COLOR = Color.LIGHTGRAY;
+	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	
 	private Node aNode;
 	
@@ -60,21 +59,21 @@ public abstract class AbstractNodeView2 implements NodeView2
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		Shape shape = getShape();
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(SHADOW_GAP, SHADOW_GAP);      
 		pGraphics.setFill(SHADOW_COLOR);
-		pGraphics.fill(shape);
+		fillShape(pGraphics);
 		pGraphics.translate(-SHADOW_GAP, -SHADOW_GAP);
-		pGraphics.setColor(pGraphics.getBackground());
-		pGraphics.fill(shape);      
+		pGraphics.setFill(BACKGROUND_COLOR);
+		fillShape(pGraphics);
 		pGraphics.setFill(oldFill);
 	}
 	
 	/**
-     *  @return the shape to be used for computing the drop shadow
-    */
-	protected abstract Shape getShape();
+	 * Fills in shape of the node.
+	 * @param pGraphics GraphicsContext in which to fill the shape.
+	 */
+	protected abstract void fillShape(GraphicsContext pGraphics);
 
 	@Override
 	public void layout(Graph2 pGraph)

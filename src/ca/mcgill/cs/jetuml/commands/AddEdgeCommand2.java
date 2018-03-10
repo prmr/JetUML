@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import ca.mcgill.cs.jetuml.graph.Edge2;
+import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 
 /**
@@ -35,7 +35,7 @@ public class AddEdgeCommand2 extends GraphElementRelatedCommand2
 	 * @param pGraph The target graph.
 	 * @param pEdge The related edge.
 	 */
-	public AddEdgeCommand2(Graph2 pGraph, Edge2 pEdge)
+	public AddEdgeCommand2(Graph2 pGraph, Edge pEdge)
 	{
 		super(pGraph, pEdge);
 	}
@@ -45,8 +45,8 @@ public class AddEdgeCommand2 extends GraphElementRelatedCommand2
 	 */
 	public void undo() 
 	{
-		assert aElement instanceof Edge2;
-		aGraph.removeEdge((Edge2)aElement);
+		assert aElement instanceof Edge;
+		aGraph.removeEdge((Edge)aElement);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class AddEdgeCommand2 extends GraphElementRelatedCommand2
 	 */
 	public void execute() 
 	{
-		assert aElement instanceof Edge2;
-		aGraph.insertEdge((Edge2)aElement);
+		assert aElement instanceof Edge;
+		aGraph.insertEdge((Edge)aElement);
 	}
 }

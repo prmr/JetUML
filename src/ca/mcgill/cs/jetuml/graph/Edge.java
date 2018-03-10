@@ -63,6 +63,11 @@ public interface Edge extends GraphElement
    	 * @return The graph that contains this edge.
    	 */
    	Graph getGraph();
+   	
+   	/**
+   	 * @return The graph2 that contains this edge.
+   	 */
+   	Graph2 getGraph2();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning

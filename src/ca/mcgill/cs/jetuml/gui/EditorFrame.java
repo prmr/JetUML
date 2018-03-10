@@ -50,8 +50,10 @@ import javax.swing.SwingUtilities;
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.application.Platform;
@@ -283,7 +285,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame) 
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
+			}
 		}));
 		viewMenu.getItems().add(pFactory.createMenuItem("view.zoom_in", pEvent -> 
 		{
@@ -291,7 +300,14 @@ public class EditorFrame extends BorderPane
 	    	{
 	    		return;
 	    	}
-	    	((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
+	    	else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame) 
+			{
+	    		((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
+			}
+			else //GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
+			}
 		}));
 	
 		final CheckMenuItem hideGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.hide_grid", pEvent ->
@@ -302,12 +318,21 @@ public class EditorFrame extends BorderPane
 	    	}
 	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
 	    	boolean selected = menuItem.isSelected();
-	    	SwingUtilities.invokeLater(() ->
+	    	if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame) 
 	    	{
-	    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
-	    		GraphPanel panel = frame.getGraphPanel();  
+		    	SwingUtilities.invokeLater(() ->
+		    	{
+		    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
+		    		GraphPanel panel = frame.getGraphPanel();  
+			    	panel.setHideGrid(selected);
+		    	});
+	    	}
+	    	else // GraphFrame2
+	    	{
+	    		GraphFrame2 frame = (GraphFrame2)aTabbedPane.getSelectionModel().getSelectedItem();
+	    		GraphPanel2 panel = frame.getGraphPanel();  
 		    	panel.setHideGrid(selected);
-	    	});
+	    	}
 		});
 		viewMenu.getItems().add(hideGridItem);
 	
@@ -317,13 +342,26 @@ public class EditorFrame extends BorderPane
 	 		{
 	 			return;
 	 		}
-			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-			if (frame == null) 
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame) 
 			{
-				return;
+				GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+				if (frame == null) 
+				{
+					return;
+				}
+				GraphPanel panel = frame.getGraphPanel();
+				hideGridItem.setSelected(panel.getHideGrid());
 			}
-			GraphPanel panel = frame.getGraphPanel();
-			hideGridItem.setSelected(panel.getHideGrid());
+			else // GraphFrame2
+			{
+				GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+				if (frame == null) 
+				{
+					return;
+				}
+				GraphPanel2 panel = frame.getGraphPanel();
+				hideGridItem.setSelected(panel.getHideGrid());
+			}
 		});	
 	}
 
@@ -401,7 +439,15 @@ public class EditorFrame extends BorderPane
 		{
 			try 
 			{
-				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				Tab frame;
+				if (pGraphClass == UseCaseDiagramGraph2.class) 
+				{
+					frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
+				}
+				else 
+				{
+					frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				}
 				addTab(frame);
 			} 
 			catch (InstantiationException | IllegalAccessException exception) 
@@ -414,7 +460,15 @@ public class EditorFrame extends BorderPane
 		{
 			try 
 			{
-				GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				Tab frame;
+				if (pGraphClass == UseCaseDiagramGraph2.class) 
+				{
+					frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
+				}
+				else 
+				{
+					frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
+				}
 				addTab(frame);
 			}
 			catch (InstantiationException | IllegalAccessException exception) 
@@ -466,7 +520,7 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			Graph graph = PersistenceService.read(new File(pName));
+			Graph graph = PersistenceService.read(new File(pName));	// TODO: update for Graph2
 			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
 			frame.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
@@ -690,7 +744,9 @@ public class EditorFrame extends BorderPane
 	private boolean noCurrentGraphFrame() 
 	{
 		return aTabbedPane.getSelectionModel().getSelectedItem() == null ||
-				!(aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame);
+				!((aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame ||
+						(aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame2)));
+		
 	}
 
 	/**
