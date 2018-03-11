@@ -20,11 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import java.util.StringTokenizer;
+import com.sun.javafx.tk.FontLoader;
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -38,7 +42,6 @@ import javafx.scene.text.TextAlignment;
 public final class StringViewer2
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final Label LABEL = new Label();
 	
 	/**
 	 * How to align the text in this string.
@@ -49,6 +52,7 @@ public final class StringViewer2
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
+	private Font aFont = Font.getDefault();
 	
 	/**
 	 * Creates a new StringViewer.
@@ -79,28 +83,28 @@ public final class StringViewer2
 		{
 			return EMPTY;
 		}
-		return new Rectangle(0, 0, (int) Math.round(getLabel(pString).getWidth()), (int) Math.round(getLabel(pString).getHeight()));
-	}
-	
-	private Label getLabel(String pString)
-	{
-		Label label = LABEL;
-//		label.setBounds(0, 0, 0, 0);
-		label.setText(convertToHtml(pString));
-		
-		if(aAlignment == Align.LEFT)
+		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
+		String[] lines = pString.split("\n");
+		int width = 0;
+		int height = 0;
+		for (int i = 0; i < lines.length; i++ )
 		{
-			label.setTextAlignment(TextAlignment.LEFT);
+			int lineWidth = (int) Math.round(fontLoader.computeStringWidth(lines[i], aFont));
+			if (lineWidth > width)
+			{
+				width = lineWidth;
+			}
 		}
-		else if(aAlignment == Align.CENTER)
+		if (lines.length > 1)
 		{
-			label.setTextAlignment(TextAlignment.CENTER);
+			height = (int) Math.round(fontMetrics.getLineHeight()) * (lines.length + 1);
 		}
-		else if(aAlignment == Align.RIGHT) 
+		else
 		{
-			label.setTextAlignment(TextAlignment.RIGHT);
+			height = (int) Math.round(fontMetrics.getLineHeight()) * lines.length;
 		}
-		return label;
+		return new Rectangle(0, 0, width, height);
 	}
 	
 	/**
@@ -111,59 +115,61 @@ public final class StringViewer2
 	 */
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		Label label = getLabel(pString);
-		pGraphics.setTextAlign(label.getTextAlignment());
-		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		pGraphics.fillText(label.getText(), 0, 0);	// check to see if rendering properly
-		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());        
-	}
-	
-	/**
-	 * @return an HTML version of the text of the string,
-	 * taking into account the properties (underline, bold, etc.)
-	 */
-	private String convertToHtml(String pString)
-	{
-		StringBuffer prefix = new StringBuffer();
-		StringBuffer suffix = new StringBuffer();
-		StringBuffer htmlText = new StringBuffer();
-		
-		// Add some spacing before and after the text.
-		prefix.append("&nbsp;");
-		suffix.insert(0, "&nbsp;");
-		if(aUnderlined) 
+		if (aBold) 
 		{
-			prefix.append("<u>");
-			suffix.insert(0, "</u>");
-		}
-		if(aBold)
-		{
-			prefix.append("<b>");
-			suffix.insert(0, "</b>");
+			pGraphics.setFont(Font.font(aFont.getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
 		}
 
-		htmlText.append("<html><p align=\"" + aAlignment.toString().toLowerCase() + "\">");
-		StringTokenizer tokenizer = new StringTokenizer(pString, "\n");
-		boolean first = true;
-		while(tokenizer.hasMoreTokens())
+		int textX = 0;
+		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
+		int textY = (int) Math.round(fontMetrics.getLineHeight());
+		if(aAlignment == Align.LEFT)
 		{
-			if(first) 
+			pGraphics.setTextAlign(TextAlignment.LEFT);
+		}
+		else if(aAlignment == Align.CENTER)
+		{
+			pGraphics.setTextAlign(TextAlignment.CENTER);
+			textX = pRectangle.getWidth()/2;
+			textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
+		}
+		else if(aAlignment == Align.RIGHT) 
+		{
+			pGraphics.setTextAlign(TextAlignment.RIGHT);
+			textX = pRectangle.getWidth();
+		}
+		
+		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
+		pGraphics.setFill(Color.BLACK);	
+		pGraphics.fillText(pString, textX, textY, pRectangle.getWidth());
+		  
+		if (aUnderlined)
+		{
+			Rectangle stringBounds = getBounds(pString);
+			int xOffset = 0;
+			if (aAlignment == Align.CENTER)
 			{
-				first = false;
+				xOffset = stringBounds.getWidth()/2;
 			}
-			else 
+			else if (aAlignment == Align.RIGHT)
 			{
-				htmlText.append("<br>");
+				xOffset = stringBounds.getWidth();
 			}
-			htmlText.append(prefix);
-			String next = tokenizer.nextToken();
-			String next0 = next.replaceAll("&", "&amp;");
-			String next1 = next0.replaceAll("<", "&lt;");
-			String next2 = next1.replaceAll(">", "&gt;");
-			htmlText.append(next2);
-			htmlText.append(suffix);
-		}      
-		htmlText.append("</p></html>");
-		return htmlText.toString();
+			
+			if (aBold) 
+			{
+				double oldWidth = pGraphics.getLineWidth();
+				pGraphics.setLineWidth(2);
+				pGraphics.strokeLine(textX-xOffset, textY+1, textX-xOffset+stringBounds.getWidth(), textY+1);
+				pGraphics.setLineWidth(oldWidth);
+			}
+			else
+			{
+				pGraphics.strokeLine(textX-xOffset, textY+1, textX-xOffset+stringBounds.getWidth(), textY+1);
+			}
+		}
+	
+		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY()); 
 	}
 }

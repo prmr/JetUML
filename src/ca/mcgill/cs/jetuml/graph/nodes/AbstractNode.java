@@ -101,6 +101,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
 		clone.aView = clone.generateView();
+		clone.aView2 = clone.generateView2();
 		return clone;
 	}
 	

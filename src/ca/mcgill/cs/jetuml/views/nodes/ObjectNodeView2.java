@@ -91,7 +91,7 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 		for(ChildNode field : children())
 		{
 			field.view2().layout(pGraph);
-			Rectangle b2 = field.view().getBounds();
+			Rectangle b2 = field.view2().getBounds();
 			height += b2.getHeight() + YGAP;   
 			int axis = ((FieldNode)field).obtainAxis();
 			leftWidth = Math.max(leftWidth, axis);
@@ -109,10 +109,10 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 		int xmid = bounds.getCenter().getX();
 		for(ChildNode field : children())
 		{
-			Rectangle b2 = field.view().getBounds();
+			Rectangle b2 = field.view2().getBounds();
 			((FieldNode)field).setBounds(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis()), 
 					ytop, ((FieldNode)field).obtainAxis() + rightWidth, b2.getHeight()));
-			ytop += field.view().getBounds().getHeight() + YGAP;
+			ytop += field.view2().getBounds().getHeight() + YGAP;
 		}
 	}
 	

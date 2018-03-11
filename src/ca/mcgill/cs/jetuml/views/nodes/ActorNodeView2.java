@@ -100,7 +100,7 @@ public class ActorNodeView2 extends RectangleBoundedNodeView2
 		pGraphics.lineTo(hipX, hipY);
 		pGraphics.lineTo(feetX2, feetY);
 
-		pGraphics.closePath();
+		pGraphics.stroke();
 
 		// Draw name
 		Rectangle nameBox = NAME_VIEWER.getBounds(name());
@@ -109,6 +109,5 @@ public class ActorNodeView2 extends RectangleBoundedNodeView2
 				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
 		NAME_VIEWER.draw(name(), pGraphics, namebox);
 	}
-	
 
 }

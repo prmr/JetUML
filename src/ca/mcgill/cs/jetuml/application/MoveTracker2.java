@@ -60,7 +60,7 @@ public class MoveTracker2
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).view().getBounds()));
+				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).view2().getBounds()));
 			}
 		}
 	}
@@ -80,7 +80,7 @@ public class MoveTracker2
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = Conversions.toRectangle2D(node.view().getBounds());
+			selectionBounds2[i] = Conversions.toRectangle2D(node.view2().getBounds());
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)

@@ -77,10 +77,20 @@ public abstract class RectangleBoundedNodeView2 extends AbstractNodeView2
 	}
 	
 	@Override 
-	protected void fillShape(GraphicsContext pGraphics) 
+	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
 		Rectangle bounds = getBounds();
-		pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		}	
 	}
 
 	/* 

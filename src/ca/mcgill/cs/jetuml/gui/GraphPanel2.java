@@ -116,7 +116,10 @@ public class GraphPanel2 extends Canvas
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 		
-		setOnMouseClicked(new GraphPanelMouseListener());	// check if right
+		GraphPanelMouseListener listener = new GraphPanelMouseListener();
+		setOnMousePressed(listener);
+		setOnMouseReleased(listener);
+		setOnMouseDragged(listener);
 
 		resize(0, 0);
 		paintComponent(aGraphics);
@@ -178,6 +181,7 @@ public class GraphPanel2 extends Canvas
 			{
 				aGraph.requestLayout();
 //				repaint();
+				paintComponent(aGraphics);	//change if necessary
 			}
 		});
 		if(sheet.isEmpty())
@@ -239,6 +243,7 @@ public class GraphPanel2 extends Canvas
 		{
 			setModified(true);
 		}
+		paintComponent(aGraphics);
 //		repaint();
 	}
 	
@@ -335,22 +340,24 @@ public class GraphPanel2 extends Canvas
 		}
 		aSideBar.setToolToBeSelect();
 //		repaint();
+		paintComponent(aGraphics);
 	}
 
 //	@Override
 	public void paintComponent(GraphicsContext pGraphics)
 	{
+		// don't need pGraphics
 		aGraphics.setFill(Color.WHITE); 
 		aGraphics.fillRect(0, 0, getWidth(), getHeight());
-		pGraphics.scale(aZoom.factor(), aZoom.factor());
+		aGraphics.scale(aZoom.factor(), aZoom.factor());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
 		if(!aHideGrid) 
 		{
-			Grid2.draw(pGraphics, new Rectangle(0, 0, Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
+			Grid2.draw(aGraphics, new Rectangle(0, 0, Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
 					Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxY())), graphBounds.getMaxY())));
 		}
-		aGraph.draw(pGraphics);
+		aGraph.draw(aGraphics);
 
 		Set<GraphElement> toBeRemoved = new HashSet<>();
 		for(GraphElement selected : aSelectedElements)
@@ -361,17 +368,17 @@ public class GraphPanel2 extends Canvas
 			}
 			else if(selected instanceof Node)
 			{
-				Rectangle grabberBounds = ((Node) selected).view().getBounds();
-				drawGrabber(pGraphics, grabberBounds.getX(), grabberBounds.getY());
-				drawGrabber(pGraphics, grabberBounds.getX(), grabberBounds.getMaxY());
-				drawGrabber(pGraphics, grabberBounds.getMaxX(), grabberBounds.getY());
-				drawGrabber(pGraphics, grabberBounds.getMaxX(), grabberBounds.getMaxY());
+				Rectangle grabberBounds = ((Node) selected).view2().getBounds();
+				drawGrabber(aGraphics, grabberBounds.getX(), grabberBounds.getY());
+				drawGrabber(aGraphics, grabberBounds.getX(), grabberBounds.getMaxY());
+				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getY());
+				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getMaxY());
 			}
 			else if(selected instanceof Edge)
 			{
-				Line line = ((Edge) selected).view().getConnectionPoints();
-				drawGrabber(pGraphics, line.getX1(), line.getY1());
-				drawGrabber(pGraphics, line.getX2(), line.getY2());
+				Line line = ((Edge) selected).view2().getConnectionPoints();
+				drawGrabber(aGraphics, line.getX1(), line.getY1());
+				drawGrabber(aGraphics, line.getX2(), line.getY2());
 			}
 		}
 
@@ -744,6 +751,7 @@ public class GraphPanel2 extends Canvas
 			aLastMousePoint = new Point(point.getX(), point.getY()); 
 			aMouseDownPoint = aLastMousePoint;
 //			repaint();
+			resize(0, 0);
 		}
 
 		public void mouseReleased(MouseEvent pEvent)
@@ -846,6 +854,7 @@ public class GraphPanel2 extends Canvas
 				}
 			}
 			aLastMousePoint = mousePoint;
+			paintComponent(aGraphics);
 //			repaint();
 		}
 		
@@ -932,4 +941,6 @@ public class GraphPanel2 extends Canvas
 			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
 		}
 	}
+
+
 }

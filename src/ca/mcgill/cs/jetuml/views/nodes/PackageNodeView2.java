@@ -160,14 +160,14 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 		Rectangle childBounds = null;
 		for( ChildNode child : children() )
 		{
-			child.view().layout(pGraph);
+			child.view2().layout(pGraph);
 			if( childBounds == null )
 			{
-				childBounds = child.view().getBounds();
+				childBounds = child.view2().getBounds();
 			}
 			else
 			{
-				childBounds = childBounds.add(child.view().getBounds());
+				childBounds = childBounds.add(child.view2().getBounds());
 			}
 		}
 		

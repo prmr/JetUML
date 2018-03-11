@@ -35,8 +35,9 @@ import javafx.scene.paint.Paint;
 public abstract class AbstractNodeView2 implements NodeView2
 {
 	public static final int SHADOW_GAP = 4;
-	private static final Color SHADOW_COLOR = Color.LIGHTGRAY;
-	private static final Color BACKGROUND_COLOR = Color.WHITE;
+	protected static final Color SHADOW_COLOR = Color.LIGHTGRAY;
+	protected static final Color BACKGROUND_COLOR = Color.WHITE;
+	protected static final double STROKE_WIDTH = 0.6;
 	
 	private Node aNode;
 	
@@ -49,9 +50,9 @@ public abstract class AbstractNodeView2 implements NodeView2
 	}
 	
 	/**
-	 * @return The wrapped edge.
+	 * @return The wrapped node.
 	 */
-	protected Node node()
+	public Node node()	// TODO: change back to protected
 	{
 		return aNode;
 	}
@@ -60,20 +61,22 @@ public abstract class AbstractNodeView2 implements NodeView2
 	public void draw(GraphicsContext pGraphics)
 	{
 		Paint oldFill = pGraphics.getFill();
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(STROKE_WIDTH);
 		pGraphics.translate(SHADOW_GAP, SHADOW_GAP);      
-		pGraphics.setFill(SHADOW_COLOR);
-		fillShape(pGraphics);
+		fillShape(pGraphics, true);
 		pGraphics.translate(-SHADOW_GAP, -SHADOW_GAP);
-		pGraphics.setFill(BACKGROUND_COLOR);
-		fillShape(pGraphics);
+		fillShape(pGraphics, false);
 		pGraphics.setFill(oldFill);
+		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	/**
 	 * Fills in shape of the node.
 	 * @param pGraphics GraphicsContext in which to fill the shape.
+	 * @param pShadow true when filling in the shadow of the shape.
 	 */
-	protected abstract void fillShape(GraphicsContext pGraphics);
+	protected abstract void fillShape(GraphicsContext pGraphics, boolean pShadow);
 
 	@Override
 	public void layout(Graph2 pGraph)

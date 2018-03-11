@@ -319,11 +319,11 @@ public final class Clipboard2
 	{
 		if( pElement instanceof Node )
 		{
-			return ((Node)pElement).view().getBounds();
+			return ((Node)pElement).view2().getBounds();
 		}
 		else if( pElement instanceof Edge )
 		{
-			return ((Edge)pElement).view().getBounds();
+			return ((Edge)pElement).view2().getBounds();
 		}
 		else
 		{

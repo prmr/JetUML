@@ -100,13 +100,13 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	@Override
 	public Line getConnectionPoints()
 	{
-		Rectangle startBounds = edge().getStart().view().getBounds();
-		Rectangle endBounds = edge().getEnd().view().getBounds();
+		Rectangle startBounds = edge().getStart().view2().getBounds();
+		Rectangle endBounds = edge().getEnd().view2().getBounds();
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
-		return new Line(edge().getStart().view().getConnectionPoint(toEnd), 
-				edge().getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
+		return new Line(edge().getStart().view2().getConnectionPoint(toEnd), 
+				edge().getEnd().view2().getConnectionPoint(toEnd.turn(DEGREES_180)));
 	}
 	
 	/**

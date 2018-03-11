@@ -228,7 +228,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
+			}
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.redo", pEvent ->
@@ -237,7 +244,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
+			}
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.selectall", pEvent ->
@@ -246,7 +260,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
+			}
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
@@ -255,7 +276,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+			}
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
@@ -268,7 +296,14 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
+			}
+			else // GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
+			}
 		}));
 	}
 
@@ -660,9 +695,19 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
-		panel.cut();
-		panel.repaint();
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+		{
+			GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+			panel.cut();
+			panel.repaint();
+		}
+		else // GraphFrame2
+		{
+			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+			panel.cut();
+//			panel.repaint(); //repaint
+		}
+		
 	}
 
 	/**
@@ -675,7 +720,15 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+		{
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
+		}
+		else // GraphFrame2 
+		{
+			((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
+		}
+		
 	}
 
 	/**
@@ -689,9 +742,19 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
-		panel.paste();
-		panel.repaint();
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+		{
+			GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+			panel.paste();
+			panel.repaint();
+		}
+		else // GraphFrame2
+		{
+			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+			panel.paste();
+//			panel.repaint(); //repaint
+			panel.paintComponent(null);
+		}
 	}
 
 	/**
@@ -760,9 +823,33 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		Tab currentFrame = (Tab) aTabbedPane.getSelectionModel().getSelectedItem();
-		if (currentFrame != null) 
+		if (currentFrame instanceof GraphFrame) 
 		{
 			GraphFrame openFrame = (GraphFrame) currentFrame;
+			// we only want to check attempts to close a frame
+			if (openFrame.getGraphPanel().isModified()) 
+			{
+				// ask user if it is ok to close
+				Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+				alert.initOwner(aMainStage);
+				alert.setTitle(aEditorResources.getString("dialog.close.title"));
+				alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+				alert.showAndWait();
+
+				if (alert.getResult() == ButtonType.YES) 
+				{
+					removeTab(currentFrame);
+				}
+				return;
+			} 
+			else 
+			{
+				removeTab(currentFrame);
+			}
+		}
+		else if (currentFrame instanceof GraphFrame2)
+		{
+			GraphFrame2 openFrame = (GraphFrame2) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -795,9 +882,33 @@ public class EditorFrame extends BorderPane
 	public void close(Tab pTab) 
 	{
 		Tab currentFrame = pTab;
-		if (currentFrame != null) 
+		if (currentFrame instanceof GraphFrame) 
 		{
 			GraphFrame openFrame = (GraphFrame) currentFrame;
+			// we only want to check attempts to close a frame
+			if (openFrame.getGraphPanel().isModified()) 
+			{
+				if (openFrame.getGraphPanel().isModified()) 
+				{
+					// ask user if it is ok to close
+					Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+					alert.initOwner(aMainStage);
+					alert.setTitle(aEditorResources.getString("dialog.close.title"));
+					alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+					alert.showAndWait();
+
+					if (alert.getResult() == ButtonType.YES) 
+					{
+						removeTab(currentFrame);
+					}
+				}
+				return;
+			}
+			removeTab(currentFrame);
+		}
+		else if (currentFrame instanceof GraphFrame2)
+		{
+			GraphFrame2 openFrame = (GraphFrame2) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{

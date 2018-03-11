@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * An object to render a NoteNode.
@@ -61,33 +60,43 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	public void draw(GraphicsContext pGraphics)
 	{
 		super.draw(pGraphics);
-		Paint oldFill = pGraphics.getFill();
-		pGraphics.setFill(DEFAULT_COLOR);
-
-		fillShape(pGraphics);
-		pGraphics.setFill(oldFill);
-		fillShape(pGraphics);
-
-		oldFill = pGraphics.getFill();
-		pGraphics.setFill(Color.WHITE);
-		fillFold(pGraphics);
-		pGraphics.setFill(oldFill);      
-		fillFold(pGraphics);      
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(STROKE_WIDTH);
+		fillFold(pGraphics);   
+		pGraphics.setLineWidth(oldLineWidth);
       
 		NOTE_VIEWER.draw(name(), pGraphics, getBounds());
 	}
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics) 
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		Rectangle bounds = getBounds();
-		pGraphics.beginPath();
-		pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
-		pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-		pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-		pGraphics.closePath();
+		Rectangle bounds = getBounds();		
+		if (pShadow) 
+		{
+			pGraphics.beginPath();
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
+			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+			pGraphics.closePath();
+			pGraphics.fill();	
+		}
+		else 
+		{
+			pGraphics.beginPath();
+			pGraphics.setFill(DEFAULT_COLOR);
+			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
+			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+			pGraphics.closePath();
+			pGraphics.fill();
+			pGraphics.stroke();
+		}	
 	}
 	
 	/**
@@ -98,10 +107,13 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	{
 		final Rectangle bounds = getBounds();
 		pGraphics.beginPath();
+		pGraphics.setFill(Color.WHITE);
 		pGraphics.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
 		pGraphics.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
 		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
 		pGraphics.closePath();
+		pGraphics.fill();
+		pGraphics.stroke();
 	}
 	
 	@Override

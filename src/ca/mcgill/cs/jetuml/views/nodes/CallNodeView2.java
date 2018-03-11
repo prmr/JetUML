@@ -128,7 +128,7 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 		Edge returnEdge = graph.findEdge(node(), graph.getCaller(node()));
 		if(returnEdge != null)
 		{
-			minHeight = Math.max(minHeight, returnEdge.view().getBounds().getHeight());         
+			minHeight = Math.max(minHeight, returnEdge.view2().getBounds().getHeight());         
 		}
 		setBounds(new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
 	}
@@ -139,7 +139,7 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 	 */
 	private int computeMidX(Graph pGraph)
 	{
-		int xmid = implicitParameter().view().getBounds().getCenter().getX();
+		int xmid = implicitParameter().view2().getBounds().getCenter().getX();
 
 		// Calculate a shift for each caller with the same implicit parameter
 		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(node()); node != null && node != node(); 
@@ -175,18 +175,18 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 				// compute height of call edge
 				if(callEdge != null)
 				{
-					bottomY += callEdge.view().getBounds().getHeight() - CallNode.CALL_YGAP;
+					bottomY += callEdge.view2().getBounds().getHeight() - CallNode.CALL_YGAP;
 				}
 
-				node.translate(0, bottomY - node.view().getBounds().getY());
-				node.view().layout(pGraph);
+				node.translate(0, bottomY - node.view2().getBounds().getY());
+				node.view2().layout(pGraph);
 				if(((CallNode) node).isSignaled(pGraph))
 				{
 					bottomY += CallNode.CALL_YGAP;
 				}
 				else
 				{
-					bottomY += node.view().getBounds().getHeight() + CallNode.CALL_YGAP;
+					bottomY += node.view2().getBounds().getHeight() + CallNode.CALL_YGAP;
 				}
 			}
 		}
