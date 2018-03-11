@@ -81,13 +81,6 @@ public class ObjectReferenceEdgeView2 extends AbstractEdgeView2
 		return path;
 	}
 	
-	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/**
      * 	Tests whether the node should be S- or C-shaped.
      * 	@return true if the node should be S-shaped

@@ -229,13 +229,6 @@ public class SegmentedEdgeView2 extends AbstractEdgeView2
 		path.getElements().addAll(aArrowEndSupplier.get().view2().getPath(points[points.length - 2], points[points.length - 1]).getElements());
 		return path;
 	}
-
-	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private Path getSegmentPath()
 	{

@@ -88,12 +88,6 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		drawArrowHead(pGraphics);
 	}
 	
-	@Override
-	protected void fillShape(GraphicsContext pGraphics) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private void drawArrowHead(Graphics2D pGraphics2D)
 	{
 		if( isSelfEdge() )
