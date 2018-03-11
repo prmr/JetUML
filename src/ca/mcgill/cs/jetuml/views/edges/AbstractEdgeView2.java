@@ -27,6 +27,11 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
 
 /**
@@ -56,10 +61,30 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	protected abstract Shape getShape();
 	
 	/**
-	 * Fills in shape of the edge.
-	 * @param pGraphics GraphicsContext in which to fill the shape.
+     * Completes drawing a path on the graphics context.
+     * @param pGraphics the graphics context
+     * @param pPath the path
 	 */
-	protected abstract void fillShape(GraphicsContext pGraphics);
+	protected void completeDrawPath(GraphicsContext pGraphics, Path pPath)
+	{
+		for (PathElement element : pPath.getElements())
+		{
+			if (element instanceof MoveTo)
+			{
+				pGraphics.moveTo(((MoveTo) element).getX(), ((MoveTo) element).getY());
+			}
+			else if (element instanceof LineTo)
+			{
+				pGraphics.lineTo(((LineTo) element).getX(), ((LineTo) element).getY());
+			}
+			else if (element instanceof QuadCurveTo)
+			{
+				QuadCurveTo curve = (QuadCurveTo) element;
+				pGraphics.quadraticCurveTo(curve.getControlX(), curve.getControlY(), curve.getX(), curve.getY());
+			}
+		}
+		pGraphics.stroke();
+	}
 	
 	/**
 	 * @return The wrapped edge.
@@ -86,7 +111,7 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	@Override
 	public Rectangle getBounds()
 	{
-		Bounds bounds = getShape().getBoundsInLocal();	
+		Bounds bounds = getShape().getBoundsInLocal();	// may need to fix
 		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
@@ -107,22 +132,5 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(edge().getStart().view2().getConnectionPoint(toEnd), 
 				edge().getEnd().view2().getConnectionPoint(toEnd.turn(DEGREES_180)));
-	}
-	
-	/**
-	 * Wrap the string in an html container and 
-	 * escape the angle brackets.
-	 * @param pRawLabel The initial string.
-	 * @pre pRawLabel != null;
-	 * @return The string prepared for rendering as HTML
-	 */
-	protected static String toHtml(String pRawLabel)
-	{
-		assert pRawLabel != null;
-		StringBuilder lReturn = new StringBuilder();
-		lReturn.append("<html>");
-		lReturn.append(pRawLabel.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
-		lReturn.append("</html>");
-		return lReturn.toString();
 	}
 }

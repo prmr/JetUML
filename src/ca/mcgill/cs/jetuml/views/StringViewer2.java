@@ -27,6 +27,7 @@ import com.sun.javafx.tk.Toolkit;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -140,6 +141,7 @@ public final class StringViewer2
 			textX = pRectangle.getWidth();
 		}
 		
+		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		pGraphics.setFill(Color.BLACK);	
 		pGraphics.fillText(pString, textX, textY, pRectangle.getWidth());
@@ -171,5 +173,6 @@ public final class StringViewer2
 		}
 	
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY()); 
+		pGraphics.setFill(oldFill);
 	}
 }

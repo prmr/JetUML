@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.awt.Dimension;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -34,6 +33,7 @@ import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -123,7 +123,7 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 	 */
 	public Point2D getTopRightCorner()
 	{
-		return new Point2D.Double(aBottom.getMaxX(), aBottom.getY());
+		return new Point2D(aBottom.getMaxX(), aBottom.getY());
 	}
 	
 	@Override

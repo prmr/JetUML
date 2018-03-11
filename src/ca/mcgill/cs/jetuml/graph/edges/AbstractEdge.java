@@ -101,11 +101,21 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	 */
 	protected abstract EdgeView generateView();
 	
+	/**
+	 * Generates a view for this edge. Because of cloning, this cannot
+	 * be done in the constructor, because when an edge is clone a new 
+	 * wrapper view must be produced for the clone.
+	 * 
+	 * @return The view that wraps this edge.
+	 */
+	protected abstract EdgeView2 generateView2();
+	
 	@Override
 	public AbstractEdge clone()
 	{
 		AbstractEdge clone = (AbstractEdge) super.clone();
 		clone.aView = clone.generateView();
+		clone.aView2 = clone.generateView2();
 		return clone;
 	}
 	

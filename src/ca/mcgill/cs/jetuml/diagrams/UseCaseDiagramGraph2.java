@@ -62,13 +62,13 @@ public class UseCaseDiagramGraph2 extends Graph2
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase.extension");
+		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase2.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase.name");
+		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase2.name");
 	}
 	
 	@Override

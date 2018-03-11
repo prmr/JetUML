@@ -20,16 +20,16 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand2;
-import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.geom.Conversions2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import javafx.geometry.Rectangle2D;
 
 /**
  * Tracks the movement of a set of selected graph elements.
@@ -60,7 +60,7 @@ public class MoveTracker2
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).view2().getBounds()));
+				aOriginalBounds.add(Conversions2.toRectangle2D(((Node)element).view2().getBounds()));
 			}
 		}
 	}
@@ -80,13 +80,13 @@ public class MoveTracker2
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = Conversions.toRectangle2D(node.view2().getBounds());
+			selectionBounds2[i] = Conversions2.toRectangle2D(node.view2().getBounds());
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			int dY = (int)(selectionBounds2[i].getY() - aOriginalBounds.get(i).getY());
-			int dX = (int)(selectionBounds2[i].getX() - aOriginalBounds.get(i).getX());
+			int dY = (int)(selectionBounds2[i].getMinY() - aOriginalBounds.get(i).getMinY());
+			int dX = (int)(selectionBounds2[i].getMinX() - aOriginalBounds.get(i).getMinX());
 			if(dX != 0 || dY != 0)
 			{
 				command.add(new MoveCommand2(pGraph, aTrackedNodes.get(i), dX, dY));

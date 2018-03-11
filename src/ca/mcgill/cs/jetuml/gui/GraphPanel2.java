@@ -730,7 +730,6 @@ public class GraphPanel2 extends Canvas
 		public void mousePressed(MouseEvent pEvent)
 		{
 			GraphElement tool = getTool(pEvent);
-
 			if(pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
 			{  
 				handleDoubleClick(pEvent);

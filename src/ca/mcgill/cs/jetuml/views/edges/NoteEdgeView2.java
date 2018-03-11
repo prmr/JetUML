@@ -58,12 +58,14 @@ public class NoteEdgeView2 extends AbstractEdgeView2
 		double oldMiter = pGraphics.getMiterLimit();
 		double[] oldDashes = pGraphics.getLineDashes();
 		
+		pGraphics.beginPath();
+		
 		pGraphics.setLineCap(LINE_CAP);
 		pGraphics.setLineJoin(LINE_JOIN);
 		pGraphics.setMiterLimit(MITER_LIMIT);
 		pGraphics.setLineDashes(DASHES);
 		
-		fillShape(pGraphics);
+		completeDrawPath(pGraphics, (Path) getShape());
 		
 		pGraphics.setLineCap(oldCap);
 		pGraphics.setLineJoin(oldJoin);
@@ -81,14 +83,5 @@ public class NoteEdgeView2 extends AbstractEdgeView2
 		LineTo lineTo = new LineTo((float)conn.getX2(), (float)conn.getY2());
 		path.getElements().addAll(moveTo, lineTo);
 		return path;
-	}
-
-	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
-	{
-		pGraphics.beginPath();
-		Line conn = getConnectionPoints();
-		pGraphics.moveTo((float)conn.getX1(), (float)conn.getY1());
-		pGraphics.lineTo((float)conn.getX2(), (float)conn.getY2());
 	}
 }

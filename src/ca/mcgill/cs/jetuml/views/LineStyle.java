@@ -24,6 +24,10 @@ package ca.mcgill.cs.jetuml.views;
 import java.awt.BasicStroke;
 import java.awt.Stroke;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+
 /**
  *   Defines line styles of various shapes.
  */
@@ -31,9 +35,16 @@ public enum LineStyle
 {
 	SOLID, DOTTED;
 	
+	private static final int MITER_LIMIT = 10;
+	
 	private static final Stroke[] STROKES = new Stroke[] {
 			new BasicStroke(),
 			new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10, new float[] { 3, 3 }, 0)
+	};
+	
+	private static final double[][] DASHES = new double[][] {
+			new double[] { 1, 0 },
+			new double[] { 3, 3 }
 	};
 	
 	/**
@@ -42,5 +53,17 @@ public enum LineStyle
 	public Stroke getStroke()
 	{
 		return STROKES[ordinal()];
+	}
+	
+	/**
+	 * Sets line properties of the graphics context.
+	 * @param pGraphics the graphics context.
+	 */
+	public void setLineProperties(GraphicsContext pGraphics)
+	{
+		pGraphics.setLineCap(StrokeLineCap.SQUARE);
+		pGraphics.setLineJoin(StrokeLineJoin.MITER);
+		pGraphics.setMiterLimit(MITER_LIMIT);
+		pGraphics.setLineDashes(DASHES[ordinal()]);
 	}
 }

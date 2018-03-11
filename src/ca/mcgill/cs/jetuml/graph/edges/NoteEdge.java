@@ -22,7 +22,9 @@
 package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 import ca.mcgill.cs.jetuml.views.edges.NoteEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.NoteEdgeView2;
 
 /**
  *  A dotted line that connects a note to its attachment.
@@ -33,5 +35,11 @@ public class NoteEdge extends AbstractEdge
 	protected EdgeView generateView()
 	{
 		return new NoteEdgeView(this);
+	}
+	
+	@Override
+	protected EdgeView2 generateView2()
+	{
+		return new NoteEdgeView2(this);
 	}
 }

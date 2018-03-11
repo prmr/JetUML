@@ -21,19 +21,23 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
 import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
+import javafx.geometry.Point2D;
 
 /**
  *  An edge that joins two call nodes.
@@ -44,6 +48,13 @@ public class ReturnEdge extends SingleLabelEdge
 	protected EdgeView generateView()
 	{
 		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.DOTTED,
+				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
+	}
+	
+	@Override
+	protected EdgeView2 generateView2()
+	{
+		return new SegmentedEdgeView2(this, createSegmentationStyle2(), () -> LineStyle.DOTTED,
 				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
@@ -59,7 +70,7 @@ public class ReturnEdge extends SingleLabelEdge
 			}
 
 			@Override
-			public Point2D[] getPath(Edge pEdge, Graph pGraph)
+			public java.awt.geom.Point2D[] getPath(Edge pEdge, Graph pGraph)
 			{
 				return getPoints(pEdge);
 			}
@@ -73,25 +84,74 @@ public class ReturnEdge extends SingleLabelEdge
 		};
 	}
 	
-	private static Point2D[] getPoints(Edge pEdge)
+	private SegmentationStyle2 createSegmentationStyle2()
+	{
+		return new SegmentationStyle2()
+		{
+			@Override
+			public boolean isPossible(Edge pEdge)
+			{
+				assert false; // Should not be called.
+				return false;
+			}
+
+			@Override
+			public Point2D[] getPath(Edge pEdge, Graph2 pGraph)
+			{
+				return getPoints2(pEdge);
+			}
+
+			@Override
+			public Side getAttachedSide(Edge pEdge, Node pNode)
+			{
+				assert false; // Should not be called
+				return null;
+			}
+		};
+	}
+	
+	private static java.awt.geom.Point2D[] getPoints(Edge pEdge)
+	{
+		ArrayList<java.awt.geom.Point2D> lReturn = new ArrayList<>();
+		Rectangle start = pEdge.getStart().view().getBounds();
+		Rectangle end = pEdge.getEnd().view().getBounds();
+		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
+		{
+			lReturn.add(new java.awt.geom.Point2D.Double(end.getX(), end.getY()));
+			lReturn.add(new java.awt.geom.Point2D.Double(start.getMaxX(), end.getY()));
+		}      
+		else if(start.getCenter().getX() < end.getCenter().getX())
+		{
+			lReturn.add(new java.awt.geom.Point2D.Double(start.getMaxX(), start.getMaxY()));
+			lReturn.add(new java.awt.geom.Point2D.Double(end.getX(), start.getMaxY()));
+		}
+		else
+		{
+			lReturn.add(new java.awt.geom.Point2D.Double(start.getX(), start.getMaxY()));
+			lReturn.add(new java.awt.geom.Point2D.Double(end.getMaxX(), start.getMaxY()));
+		}
+		return lReturn.toArray(new java.awt.geom.Point2D[lReturn.size()]);
+	}
+	
+	private static Point2D[] getPoints2(Edge pEdge)
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
 		Rectangle start = pEdge.getStart().view().getBounds();
 		Rectangle end = pEdge.getEnd().view().getBounds();
 		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{
-			lReturn.add(new Point2D.Double(end.getX(), end.getY()));
-			lReturn.add(new Point2D.Double(start.getMaxX(), end.getY()));
+			lReturn.add(new Point2D(end.getX(), end.getY()));
+			lReturn.add(new Point2D(start.getMaxX(), end.getY()));
 		}      
 		else if(start.getCenter().getX() < end.getCenter().getX())
 		{
-			lReturn.add(new Point2D.Double(start.getMaxX(), start.getMaxY()));
-			lReturn.add(new Point2D.Double(end.getX(), start.getMaxY()));
+			lReturn.add(new Point2D(start.getMaxX(), start.getMaxY()));
+			lReturn.add(new Point2D(end.getX(), start.getMaxY()));
 		}
 		else
 		{
-			lReturn.add(new Point2D.Double(start.getX(), start.getMaxY()));
-			lReturn.add(new Point2D.Double(end.getMaxX(), start.getMaxY()));
+			lReturn.add(new Point2D(start.getX(), start.getMaxY()));
+			lReturn.add(new Point2D(end.getMaxX(), start.getMaxY()));
 		}
 		return lReturn.toArray(new Point2D[lReturn.size()]);
 	}
