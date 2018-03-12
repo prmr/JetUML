@@ -122,7 +122,6 @@ public class GraphPanel2 extends Canvas
 		setOnMouseDragged(listener);
 
 		resize(0, 0);
-		paintPanel();
 	}
 
 	@Override
@@ -136,7 +135,7 @@ public class GraphPanel2 extends Canvas
 	 */
 	public void copy()
 	{
-		if( aSelectedElements.size() > 0 )
+		if (aSelectedElements.size() > 0)
 		{
 			Clipboard2.instance().copy(aSelectedElements);
 		}
@@ -156,7 +155,7 @@ public class GraphPanel2 extends Canvas
 	 */
 	public void cut()
 	{
-		if( aSelectedElements.size() > 0 )
+		if (aSelectedElements.size() > 0)
 		{
 			Clipboard2.instance().cut(this);
 		}
@@ -168,7 +167,7 @@ public class GraphPanel2 extends Canvas
 	public void editSelected()
 	{
 		GraphElement edited = aSelectedElements.getLastSelected();
-		if( edited == null )
+		if (edited == null)
 		{
 			return;
 		}
@@ -180,10 +179,10 @@ public class GraphPanel2 extends Canvas
 			public void propertyChanged()
 			{
 				aGraph.requestLayout();
-				paintPanel();	//change if necessary
+				paintPanel();
 			}
 		});
-		if(sheet.isEmpty())
+		if (sheet.isEmpty())
 		{
 			return;
 		}
@@ -207,7 +206,7 @@ public class GraphPanel2 extends Canvas
 		window.show();
 		
 		CompoundCommand command = tracker.stopTracking();
-		if(command.size() > 0)
+		if (command.size() > 0)
 		{
 			aUndoManager.add(command);
 		}
@@ -221,14 +220,14 @@ public class GraphPanel2 extends Canvas
 	{
 		aUndoManager.startTracking();
 		Stack<Node> nodes = new Stack<>();
-		for( GraphElement element : aSelectedElements )
+		for (GraphElement element : aSelectedElements)
 		{
-			if(element instanceof Node)
+			if (element instanceof Node)
 			{
 				aGraph.removeAllEdgesConnectedTo((Node)element);
 				nodes.add((Node) element);
 			}
-			else if(element instanceof Edge)
+			else if (element instanceof Edge)
 			{
 				aGraph.removeEdge((Edge) element);
 			}
@@ -238,7 +237,7 @@ public class GraphPanel2 extends Canvas
 			aGraph.removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
-		if(aSelectedElements.size() > 0)
+		if (aSelectedElements.size() > 0)
 		{
 			setModified(true);
 		}
@@ -326,11 +325,11 @@ public class GraphPanel2 extends Canvas
 	public void selectAll()
 	{
 		aSelectedElements.clearSelection();
-		for( Node node : aGraph.getRootNodes() )
+		for (Node node : aGraph.getRootNodes())
 		{
 			aSelectedElements.add(node);
 		}
-		for( Edge edge : aGraph.getEdges() )
+		for (Edge edge : aGraph.getEdges())
 		{
 			aSelectedElements.add(edge);
 		}
@@ -349,7 +348,7 @@ public class GraphPanel2 extends Canvas
 		aGraphics.scale(aZoom.factor(), aZoom.factor());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
-		if(!aHideGrid) 
+		if (!aHideGrid) 
 		{
 			Grid2.draw(aGraphics, new Rectangle(0, 0, Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
 					Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxY())), graphBounds.getMaxY())));
@@ -357,13 +356,13 @@ public class GraphPanel2 extends Canvas
 		aGraph.draw(aGraphics);
 
 		Set<GraphElement> toBeRemoved = new HashSet<>();
-		for(GraphElement selected : aSelectedElements)
+		for (GraphElement selected : aSelectedElements)
 		{
-			if(!aGraph.contains(selected)) 
+			if (!aGraph.contains(selected)) 
 			{
 				toBeRemoved.add(selected);
 			}
-			else if(selected instanceof Node)
+			else if (selected instanceof Node)
 			{
 				Rectangle grabberBounds = ((Node) selected).view2().getBounds();
 				drawGrabber(aGraphics, grabberBounds.getX(), grabberBounds.getY());
@@ -371,7 +370,7 @@ public class GraphPanel2 extends Canvas
 				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getY());
 				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getMaxY());
 			}
-			else if(selected instanceof Edge)
+			else if (selected instanceof Edge)
 			{
 				Line line = ((Edge) selected).view2().getConnectionPoints();
 				drawGrabber(aGraphics, line.getX1(), line.getY1());
@@ -379,19 +378,19 @@ public class GraphPanel2 extends Canvas
 			}
 		}
 
-		for( GraphElement element : toBeRemoved )
+		for (GraphElement element : toBeRemoved)
 		{
 			aSelectedElements.remove(element);
 		}                 
       
-		if(aDragMode == DragMode.DRAG_RUBBERBAND)
+		if (aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
 			Paint oldFill = aGraphics.getFill();
 			aGraphics.setFill(GRABBER_COLOR);
 			aGraphics.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
 			aGraphics.setFill(oldFill);
 		}      
-		else if(aDragMode == DragMode.DRAG_LASSO)
+		else if (aDragMode == DragMode.DRAG_LASSO)
 		{
 			Paint oldFill = aGraphics.getFill();
 			Paint oldStroke = aGraphics.getStroke();
@@ -483,9 +482,8 @@ public class GraphPanel2 extends Canvas
 	public void setModified(boolean pModified)
 	{
 		aModified = pModified;
-
 		GraphFrame2 graphFrame = getFrame();
-		if(graphFrame != null)
+		if (graphFrame != null)
 		{
 			graphFrame.setTitle(aModified);
 		}
@@ -540,7 +538,7 @@ public class GraphPanel2 extends Canvas
 	 */
 	public boolean switchToSelectException(Node pNode)
 	{
-		if(pNode instanceof PackageNode || pNode instanceof ImplicitParameterNode || pNode instanceof ObjectNode)
+		if (pNode instanceof PackageNode || pNode instanceof ImplicitParameterNode || pNode instanceof ObjectNode)
 		{
 			return true;
 		}
@@ -556,9 +554,9 @@ public class GraphPanel2 extends Canvas
 		private void setSelection(GraphElement pElement)
 		{
 			aSelectedElements.set(pElement);
-			for( Edge edge : aGraph.getEdges() )
+			for (Edge edge : aGraph.getEdges())
 			{
-				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
+				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
 					aSelectedElements.add(edge);
 				}
@@ -573,9 +571,9 @@ public class GraphPanel2 extends Canvas
 		private void addToSelection(GraphElement pElement)
 		{
 			aSelectedElements.add(pElement);
-			for( Edge edge : aGraph.getEdges() )
+			for (Edge edge : aGraph.getEdges())
 			{
-				if( hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
+				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
 					aSelectedElements.add(edge);
 				}
@@ -589,17 +587,17 @@ public class GraphPanel2 extends Canvas
 		 */
 		private boolean hasSelectedParent(Node pNode)
 		{
-			if( pNode == null )
+			if (pNode == null)
 			{
 				return false;
 			}
-			else if( aSelectedElements.contains(pNode) )
+			else if (aSelectedElements.contains(pNode))
 			{
 				return true;
 			}
-			else if( pNode instanceof ChildNode )
+			else if (pNode instanceof ChildNode)
 			{
-				return hasSelectedParent( ((ChildNode)pNode).getParent() );
+				return hasSelectedParent(((ChildNode)pNode).getParent());
 			}
 			else
 			{
@@ -619,7 +617,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Point mousePoint = getMousePoint(pEvent);
 			GraphElement element = aGraph.findEdge(mousePoint);
-			if( element == null )
+			if (element == null)
 			{
 				element = aGraph.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 			}
@@ -629,11 +627,11 @@ public class GraphPanel2 extends Canvas
 		private void handleSelection(MouseEvent pEvent)
 		{
 			GraphElement element = getSelectedElement(pEvent);
-			if(element != null) // Something is selected
+			if (element != null) // Something is selected
 			{
-				if( pEvent.isControlDown() )
+				if (pEvent.isControlDown())
 				{
-					if(!aSelectedElements.contains(element))
+					if (!aSelectedElements.contains(element))
 					{
 						addToSelection(element);
 					}
@@ -642,7 +640,7 @@ public class GraphPanel2 extends Canvas
 						aSelectedElements.remove(element);
 					}
 				}
-				else if( !aSelectedElements.contains(element))
+				else if (!aSelectedElements.contains(element))
 				{
 					// The test is necessary to ensure we don't undo multiple selections
 					setSelection(element);
@@ -652,7 +650,7 @@ public class GraphPanel2 extends Canvas
 			}
 			else // Nothing is selected
 			{
-				if(!pEvent.isControlDown()) 
+				if (!pEvent.isControlDown()) 
 				{
 					aSelectedElements.clearSelection();
 				}
@@ -663,7 +661,7 @@ public class GraphPanel2 extends Canvas
 		private void handleDoubleClick(MouseEvent pEvent)
 		{
 			GraphElement element = getSelectedElement(pEvent);
-			if( element != null )
+			if (element != null)
 			{
 				setSelection(element);
 				editSelected();
@@ -681,7 +679,7 @@ public class GraphPanel2 extends Canvas
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
 			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY())); 
-			if(added)
+			if (added)
 			{
 				setModified(true);
 				setSelection(newNode);
@@ -695,7 +693,7 @@ public class GraphPanel2 extends Canvas
 		private void handleEdgeStart(MouseEvent pEvent)
 		{
 			GraphElement element = getSelectedElement(pEvent);
-			if(element != null && element instanceof Node ) 
+			if (element != null && element instanceof Node) 
 			{
 				aDragMode = DragMode.DRAG_RUBBERBAND;
 			}
@@ -714,11 +712,11 @@ public class GraphPanel2 extends Canvas
 			GraphElement tool = aSideBar.getSelectedTool();
 			GraphElement selected = getSelectedElement(pEvent);
 			
-			if(tool !=null && tool instanceof Node)
+			if (tool !=null && tool instanceof Node)
 			{
-				if( selected != null && selected instanceof Node )
+				if (selected != null && selected instanceof Node)
 				{
-					if(!(tool instanceof ChildNode && selected instanceof ParentNode ))
+					if (!(tool instanceof ChildNode && selected instanceof ParentNode))
 					{
 						aSideBar.setToolToBeSelect();
 						tool = null;
@@ -731,19 +729,19 @@ public class GraphPanel2 extends Canvas
 		public void mousePressed(MouseEvent pEvent)
 		{
 			GraphElement tool = getTool(pEvent);
-			if(pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
+			if (pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
 			{  
 				handleDoubleClick(pEvent);
 			}
-			else if(tool == null)
+			else if (tool == null)
 			{
 				handleSelection(pEvent);
 			}
-			else if(tool instanceof Node)
+			else if (tool instanceof Node)
 			{
 				handleNodeCreation(pEvent);
 			}
-			else if(tool instanceof Edge)
+			else if (tool instanceof Edge)
 			{
 				handleEdgeStart(pEvent);
 			}
@@ -757,22 +755,22 @@ public class GraphPanel2 extends Canvas
 		{
 			Point mousePoint = new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
 			Object tool = aSideBar.getSelectedTool();
-			if(aDragMode == DragMode.DRAG_RUBBERBAND)
+			if (aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
 				Edge prototype = (Edge) tool;
 				Edge newEdge = (Edge) prototype.clone();
-				if(mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
+				if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
 					setSelection(newEdge);
 				}
 			}
-			else if(aDragMode == DragMode.DRAG_MOVE)
+			else if (aDragMode == DragMode.DRAG_MOVE)
 			{
 				aGraph.requestLayout();
 				setModified(true);
 				CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
-				if( command.size() > 0 )
+				if (command.size() > 0)
 				{
 					aUndoManager.add(command);
 				}
@@ -786,7 +784,7 @@ public class GraphPanel2 extends Canvas
 			Point mousePoint = new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
 			boolean isCtrl = pEvent.isControlDown();
 
-			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
+			if (aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.view().getBounds();
@@ -796,9 +794,9 @@ public class GraphPanel2 extends Canvas
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
-				for( GraphElement selected : aSelectedElements )
+				for (GraphElement selected : aSelectedElements)
 				{
-					if(selected instanceof Node)
+					if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
 						bounds = bounds.add(n.view().getBounds());
@@ -807,9 +805,9 @@ public class GraphPanel2 extends Canvas
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
             
-				for( GraphElement selected : aSelectedElements )
+				for (GraphElement selected : aSelectedElements)
 				{
-					if(selected instanceof ChildNode)
+					if (selected instanceof ChildNode)
 					{
 						ChildNode n = (ChildNode) selected;
 						if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
@@ -817,34 +815,34 @@ public class GraphPanel2 extends Canvas
 							n.translate(dx, dy); 
 						}	
 					}
-					else if(selected instanceof Node)
+					else if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
 						n.translate(dx, dy); 
 					}
 				}
 			}
-			else if(aDragMode == DragMode.DRAG_LASSO)
+			else if (aDragMode == DragMode.DRAG_LASSO)
 			{
 				double x1 = aMouseDownPoint.getX();
 				double y1 = aMouseDownPoint.getY();
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
 				Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-				for( Node node : aGraph.getRootNodes() )
+				for (Node node : aGraph.getRootNodes())
 				{
 					selectNode(isCtrl, node, lasso);
 				}
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
 				for (Edge edge: aGraph.getEdges())
 				{
-					if(!isCtrl && !lasso.contains(edge.view().getBounds()))
+					if (!isCtrl && !lasso.contains(edge.view().getBounds()))
 					{
 						aSelectedElements.remove(edge);
 					}
-					else if(lasso.contains(edge.view().getBounds()))
+					else if (lasso.contains(edge.view().getBounds()))
 					{
-						if(aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
+						if (aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
 						{
 							aSelectedElements.add(edge);
 						}
@@ -855,25 +853,24 @@ public class GraphPanel2 extends Canvas
 			paintPanel();
 		}
 		
-		private void selectNode( boolean pCtrl, Node pNode, Rectangle pLasso )
+		private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
 		{
-			if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
+			if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 			{
 				aSelectedElements.remove(pNode);
 			}
-			else if(pLasso.contains(pNode.view().getBounds())) 
+			else if (pLasso.contains(pNode.view().getBounds())) 
 			{
 				aSelectedElements.add(pNode);
 			}
-			if( pNode instanceof ParentNode )
+			if (pNode instanceof ParentNode)
 			{
-				for( ChildNode child : ((ParentNode) pNode).getChildren() )
+				for (ChildNode child : ((ParentNode) pNode).getChildren())
 				{
 					selectNode(pCtrl, child, pLasso);
 				}
 			}
 		}
-
 
 		@Override
 		public void handle(MouseEvent pEvent) 
@@ -938,6 +935,4 @@ public class GraphPanel2 extends Canvas
 			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
 		}
 	}
-
-
 }

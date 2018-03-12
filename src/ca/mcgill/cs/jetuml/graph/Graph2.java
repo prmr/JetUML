@@ -84,7 +84,7 @@ public abstract class Graph2
 	 */
 	protected void notifyPropertyChanged(GraphElement pElement, String pProperty, Object pOldValue)
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
 		}
@@ -92,7 +92,7 @@ public abstract class Graph2
 	
 	private void notifyNodeAdded(Node pNode)
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.nodeAdded(this, pNode);
 		}
@@ -100,7 +100,7 @@ public abstract class Graph2
 	
 	private void notifyNodeRemoved(Node pNode)
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.nodeRemoved(this, pNode);
 		}
@@ -108,7 +108,7 @@ public abstract class Graph2
 	
 	private void notifyEdgeAdded(Edge pEdge)
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.edgeAdded(this, pEdge);
 		}
@@ -116,7 +116,7 @@ public abstract class Graph2
 	
 	private void notifyEdgeRemoved(Edge pEdge)
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.edgeRemoved(this, pEdge);
 		}
@@ -124,7 +124,7 @@ public abstract class Graph2
 	
 	private void notifyStartingCompoundOperation()
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.startingCompoundOperation();
 		}
@@ -132,7 +132,7 @@ public abstract class Graph2
 	
 	private void notifyEndingCompoundOperation()
 	{
-		if( aModificationListener != null )
+		if (aModificationListener != null)
 		{
 			aModificationListener.finishingCompoundOperation();
 		}
@@ -173,7 +173,7 @@ public abstract class Graph2
 
 	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
 	{
-		if(pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		if (pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			PointNode lReturn = new PointNode();
 			lReturn.translate(pPoint2.getX(), pPoint2.getY());
@@ -197,18 +197,18 @@ public abstract class Graph2
 	public final boolean addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		Node node1 = findNode(pPoint1);
-		if( node1 == null )
+		if (node1 == null)
 		{
 			return false;
 		}
 		
 		Node node2 = findNode(pPoint2);
-		if( node1 instanceof NoteNode )
+		if (node1 instanceof NoteNode)
 		{
 			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
 		}
 		
-		if(!canConnect(pEdge, node1, node2, pPoint2))
+		if (!canConnect(pEdge, node1, node2, pPoint2))
 		{
 			return false;
 		}
@@ -222,7 +222,7 @@ public abstract class Graph2
 		aEdges.add(pEdge);
 		notifyEdgeAdded(pEdge);
 		
-		if(!aRootNodes.contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode )
+		if (!aRootNodes.contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode)
 		{
 			aRootNodes.add(pEdge.getEnd());
 		}
@@ -249,11 +249,11 @@ public abstract class Graph2
 	{
 		Rectangle bounds = pNode.view2().getBounds();
 		pNode.translate((int)(pPoint.getX() - bounds.getX()), (int)(pPoint.getY() - bounds.getY())); 
-		if( !(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null )
+		if (!(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null)
 		{
 			aRootNodes.add(pNode);
 		}
-		notifyNodeAdded( pNode );
+		notifyNodeAdded(pNode);
 		aNeedsLayout = true;
 		return true;
 	}
@@ -269,7 +269,7 @@ public abstract class Graph2
 	 */
 	public final void insertNode(Node pNode)
 	{	
-		if( !(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null) )
+		if (!(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null))
 		{	// The node does not have a parent, insert it as a root node
 			aRootNodes.add(pNode);
 		}
@@ -278,7 +278,7 @@ public abstract class Graph2
 			((ChildNode)pNode).getParent().addChild((ChildNode)pNode);
 		}
 		aNeedsLayout = true;
-		notifyNodeAdded( pNode );
+		notifyNodeAdded(pNode);
 	}
 
 	/**
@@ -290,10 +290,10 @@ public abstract class Graph2
 	public Node findNode(Point pPoint)
 	{
 		Node result = null;
-		for( Node node : aRootNodes )
+		for (Node node : aRootNodes)
 		{
 			Node temp = deepFindNode(node, pPoint);
-			if( temp != null )
+			if (temp != null)
 			{
 				result = temp;
 			}
@@ -311,21 +311,21 @@ public abstract class Graph2
 	 * or null if pPoint is not contained by pNode or 
 	 * any of its children.
 	 */
-	protected Node deepFindNode( Node pNode, Point pPoint )
+	protected Node deepFindNode(Node pNode, Point pPoint)
 	{
 		Node node = null;
-		if( pNode instanceof ParentNode )
+		if (pNode instanceof ParentNode)
 		{
-			for( Node child : ((ParentNode) pNode).getChildren())
+			for (Node child : ((ParentNode) pNode).getChildren())
 			{
 				node = deepFindNode(child, pPoint);
-				if( node != null )
+				if(node != null)
 				{
 					return node;
 				}
 			}
 		}
-		if( pNode.view2().contains(pPoint))
+		if (pNode.view2().contains(pPoint))
 		{
 			return pNode;
 		}
@@ -343,9 +343,9 @@ public abstract class Graph2
 	 */
 	public Edge findEdge(Point pPoint)
 	{
-		for(Edge edge : aEdges)
+		for (Edge edge : aEdges)
 		{
-			if(edge.view2().contains(pPoint))
+			if (edge.view2().contains(pPoint))
 			{
 				return edge;
 			}
@@ -367,15 +367,15 @@ public abstract class Graph2
 	{
 		assert pNode != null;
 		ArrayList<Edge> toRemove = new ArrayList<Edge>();
-		for(Edge edge : aEdges)
+		for (Edge edge : aEdges)
 		{
-			if((edge.getStart() == pNode || edge.getEnd() == pNode) && !aEdgesToBeRemoved.contains(edge))
+			if ((edge.getStart() == pNode || edge.getEnd() == pNode) && !aEdgesToBeRemoved.contains(edge))
 			{
 				toRemove.add(edge);
 			}
 		}
 		Collections.reverse(toRemove);
-		for(Edge edge : toRemove )
+		for(Edge edge : toRemove)
 		{
 			removeEdge(edge);
 		}
@@ -394,9 +394,9 @@ public abstract class Graph2
 	protected boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
-		for( Edge edge : getEdges() )
+		for (Edge edge : getEdges())
 		{
-			if( edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd )
+			if (edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
 			{
 				return true;
 			}
@@ -411,12 +411,12 @@ public abstract class Graph2
 	public void draw(GraphicsContext pGraphics)
 	{
 		layout();
-		for( Node node : aRootNodes )
+		for (Node node : aRootNodes)
 		{
 			drawNode(node, pGraphics);
 		}
 		
-		for( Edge edge : aEdges )
+		for (Edge edge : aEdges)
 		{
 			edge.view2().draw(pGraphics);
 		}
@@ -425,9 +425,9 @@ public abstract class Graph2
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		pNode.view2().draw(pGraphics);
-		if( pNode instanceof ParentNode )
+		if (pNode instanceof ParentNode)
 		{
-			for( Node node : ((ParentNode) pNode).getChildren())
+			for (Node node : ((ParentNode) pNode).getChildren())
 			{
 				drawNode(node, pGraphics);
 			}
@@ -440,31 +440,31 @@ public abstract class Graph2
 	 */
 	public void removeNode(Node pNode)
 	{
-		if(aNodesToBeRemoved.contains(pNode))
+		if (aNodesToBeRemoved.contains(pNode))
 		{
 			return;
 		}
 		notifyStartingCompoundOperation();
 		aNodesToBeRemoved.add(pNode);
 		
-		if(pNode instanceof ParentNode)
+		if (pNode instanceof ParentNode)
 		{
 			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
 			//We create a shallow clone so deleting children does not affect the loop
-			for(Node childNode: children)
+			for (Node childNode: children)
 			{
 				removeNode(childNode);
 			}
 		}
 
 		// Notify all nodes that pNode is being removed.
-		for(Node node : aRootNodes)
+		for (Node node : aRootNodes)
 		{
 			removeFromParent( node, pNode );
 		}
 		
 		// Notify all edges that pNode is being removed.
-		for(Edge edge : aEdges)
+		for (Edge edge : aEdges)
 		{
 			if(edge.getStart() == pNode || edge.getEnd() == pNode)
 			{
@@ -478,17 +478,17 @@ public abstract class Graph2
 	
 	private static void removeFromParent(Node pParent, Node pToRemove)
 	{
-		if( pParent instanceof ParentNode )
+		if (pParent instanceof ParentNode)
 		{
-			if( pToRemove instanceof ChildNode && ((ChildNode) pToRemove).getParent() == pParent )
+			if (pToRemove instanceof ChildNode && ((ChildNode) pToRemove).getParent() == pParent)
 			{
 				((ParentNode) pParent).getChildren().remove(pToRemove);
 				// We don't reassing the parent of the child to null in case the operation
 				// is undone, at which point we'll need to know who the parent was.
 			}
-			for( Node child : ((ParentNode) pParent).getChildren() )
+			for (Node child : ((ParentNode) pParent).getChildren())
 			{
-				removeFromParent(child, pToRemove );
+				removeFromParent(child, pToRemove);
 			}
 		}
 	}
@@ -497,15 +497,15 @@ public abstract class Graph2
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
 	 */
-	public boolean contains( GraphElement pElement )
+	public boolean contains(GraphElement pElement)
 	{	
-		if( aEdges.contains( pElement ))
+		if (aEdges.contains( pElement ))
 		{
 			return true;
 		}
-		for( Node node : aRootNodes )
+		for (Node node : aRootNodes)
 		{
-			if( containsNode( node, pElement))
+			if (containsNode( node, pElement))
 			{
 				return true;
 			}
@@ -515,15 +515,15 @@ public abstract class Graph2
 	
 	private boolean containsNode(Node pTest, GraphElement pTarget)
 	{
-		if( pTest == pTarget )
+		if (pTest == pTarget)
 		{
 			return true;
 		}
-		else if( pTest instanceof ParentNode )
+		else if (pTest instanceof ParentNode)
 		{
-			for( Node node : ((ParentNode) pTest).getChildren())
+			for (Node node : ((ParentNode) pTest).getChildren())
 			{
-				if( containsNode(node, pTarget))
+				if (containsNode(node, pTarget))
 				{
 					return true;
 				}
@@ -544,12 +544,12 @@ public abstract class Graph2
 		}
 		aEdgesToBeRemoved.add(pEdge);
 		notifyEdgeRemoved(pEdge);
-		for(int i = aRootNodes.size() - 1; i >= 0; i--)
+		for (int i = aRootNodes.size() - 1; i >= 0; i--)
 		{
 			Node node = aRootNodes.get(i);
-			if( node instanceof NoteNode )
+			if (node instanceof NoteNode)
 			{
-				if(pEdge.getStart() == node)
+				if (pEdge.getStart() == node)
 				{
 					removeNode(pEdge.getEnd());
 				}
@@ -573,7 +573,7 @@ public abstract class Graph2
 	 */
 	protected void layout()
 	{
-		if(!aNeedsLayout)
+		if (!aNeedsLayout)
 		{
 			return;
 		}
@@ -582,7 +582,7 @@ public abstract class Graph2
 		aNodesToBeRemoved.clear();
 		aEdgesToBeRemoved.clear();
 
-		for(Node node : aRootNodes)
+		for (Node node : aRootNodes)
 		{
 			node.view2().layout(this);
 		}
@@ -597,9 +597,9 @@ public abstract class Graph2
 	public Rectangle getBounds()
 	{
 		Rectangle bounds = null;
-		for(Node node : aRootNodes )
+		for (Node node : aRootNodes )
 		{
-			if(bounds == null)
+			if (bounds == null)
 			{
 				bounds = node.view2().getBounds();
 			}
@@ -608,11 +608,11 @@ public abstract class Graph2
 				bounds = bounds.add(node.view2().getBounds());
 			}
 		}
-		for(Edge edge : aEdges)
+		for (Edge edge : aEdges)
 		{
 			bounds = bounds.add(edge.view2().getBounds());
 		}
-		if(bounds == null )
+		if (bounds == null )
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}
@@ -658,9 +658,9 @@ public abstract class Graph2
 	{
 		assert pNode != null;
 		Collection<Edge> lReturn = new ArrayList<>();
-		for( Edge edge : aEdges )
+		for (Edge edge : aEdges)
 		{
-			if( edge.getStart() == pNode || edge.getEnd() == pNode )
+			if (edge.getStart() == pNode || edge.getEnd() == pNode)
 			{
 				lReturn.add(edge);
 			}
@@ -725,19 +725,19 @@ public abstract class Graph2
 	 */
 	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
-		if( pNode2 == null )
+		if (pNode2 == null)
 		{
 			return false;
 		}
-		if( existsEdge(pEdge.getClass(), pNode1, pNode2))
+		if (existsEdge(pEdge.getClass(), pNode1, pNode2))
 		{
 			return false;
 		}
-		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		if ((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
-		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
+		if (pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
 		{
 			return false;
 		}

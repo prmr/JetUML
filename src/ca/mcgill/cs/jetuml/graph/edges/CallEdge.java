@@ -59,7 +59,6 @@ public class CallEdge extends SingleLabelEdge
 		setSignal(false);
 	}
 	
-
 	@Override
 	protected EdgeView generateView()
 	{
@@ -206,7 +205,6 @@ public class CallEdge extends SingleLabelEdge
 		return points.toArray(new java.awt.geom.Point2D[points.size()]);
 	}
 	
-
 	private static Point2D[] getPoints2(Edge pEdge)
 	{
 		ArrayList<Point2D> points = new ArrayList<>();

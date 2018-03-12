@@ -25,7 +25,6 @@ import java.io.File;
 
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
-import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -106,36 +105,33 @@ public class GraphFrame2 extends Tab
 	 */
 	public void setTitle(boolean pModified)
 	{
-		Platform.runLater(() -> 
+		if(aFile != null)
 		{
-			if(aFile != null)
+			String title = aFile.getName();
+			if(pModified)
 			{
-				String title = aFile.getName();
-				if(pModified)
+				if(!getText().endsWith("*"))
 				{
-					if(!getText().endsWith("*"))
-					{
-						setText(title + "*");
-					}
-				}
-				else
-				{
-					setText(title);
+					setText(title + "*");
 				}
 			}
 			else
 			{
-				Graph2 graphType = getGraph();
-				if (graphType instanceof UseCaseDiagramGraph2)
-				{
-					setText("Use Case Diagram 2");
-				} 
-				else 
-				{
-					setText("Not supported in JavaFX");
-				}
+				setText(title);
 			}
-		});
+		}
+		else
+		{
+			Graph2 graphType = getGraph();
+			if (graphType instanceof UseCaseDiagramGraph2)
+			{
+				setText("Use Case Diagram 2");
+			} 
+			else 
+			{
+				setText("Not supported in JavaFX");
+			}
+		}
 	}
 
 	/**

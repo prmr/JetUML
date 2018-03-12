@@ -51,7 +51,7 @@ public abstract class AbstractNodeView implements NodeView
 	/**
 	 * @return The wrapped node.
 	 */
-	public Node node() // change to protected
+	protected Node node()
 	{
 		return aNode;
 	}

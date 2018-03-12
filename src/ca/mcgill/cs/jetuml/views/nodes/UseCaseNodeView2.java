@@ -70,8 +70,7 @@ public class UseCaseNodeView2 extends RectangleBoundedNodeView2
 					getBounds().getWidth(), getBounds().getHeight());
 			pGraphics.strokeOval(node().position().getX(), node().position().getY(), 
 					getBounds().getWidth(), getBounds().getHeight());
-		}
-		
+		}	
 	}
 	
 	

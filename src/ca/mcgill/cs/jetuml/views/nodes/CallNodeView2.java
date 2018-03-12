@@ -27,6 +27,10 @@ import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import javafx.scene.canvas.GraphicsContext;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  * 

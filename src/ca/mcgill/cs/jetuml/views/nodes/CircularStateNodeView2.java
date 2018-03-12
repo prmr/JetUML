@@ -28,6 +28,10 @@ import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.canvas.GraphicsContext;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An object to render a CircularStateNode.
  * 

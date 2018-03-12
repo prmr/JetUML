@@ -52,7 +52,7 @@ public abstract class AbstractNodeView2 implements NodeView2
 	/**
 	 * @return The wrapped node.
 	 */
-	public Node node()	// TODO: change back to protected
+	protected Node node()
 	{
 		return aNode;
 	}
@@ -79,6 +79,5 @@ public abstract class AbstractNodeView2 implements NodeView2
 	protected abstract void fillShape(GraphicsContext pGraphics, boolean pShadow);
 
 	@Override
-	public void layout(Graph2 pGraph)
-	{}
+	public void layout(Graph2 pGraph) {}
 }

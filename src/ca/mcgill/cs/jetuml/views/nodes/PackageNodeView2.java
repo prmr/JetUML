@@ -35,6 +35,10 @@ import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An object to render a package in a class diagram.
  * 

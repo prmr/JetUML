@@ -121,22 +121,11 @@ public class SegmentedEdgeView2 extends AbstractEdgeView2
 		completeDrawPath(pGraphics, getSegmentPath());
 		pGraphics.stroke();
 		
-//		pGraphics.setLineCap(LINE_CAP);
-//		pGraphics.setLineJoin(LINE_JOIN);
-//		pGraphics.setMiterLimit(MITER_LIMIT);
-//		pGraphics.setLineDashes(DASHES);
-		
-		//fillShape(pGraphics);
-		
 		pGraphics.setLineCap(oldCap);
 		pGraphics.setLineJoin(oldJoin);
 		pGraphics.setMiterLimit(oldMiter);
 		pGraphics.setLineDashes(oldDashes);
 		
-		
-//		Stroke oldStroke = pGraphics.getStroke();
-//		pGraphics.setStroke(aLineStyleSupplier.get().getStroke());
-//		pGraphics.draw(getSegmentPath());
 		aArrowStartSupplier.get().view2().draw(pGraphics, points[1], points[0]);
 		aArrowEndSupplier.get().view2().draw(pGraphics, points[points.length - 2], points[points.length - 1]);
 

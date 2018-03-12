@@ -28,6 +28,10 @@ import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.scene.canvas.GraphicsContext;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An object to render a FieldNode.
  * 

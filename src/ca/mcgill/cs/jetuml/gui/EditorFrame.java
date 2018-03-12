@@ -218,6 +218,7 @@ public class EditorFrame extends BorderPane
 		fileMenu.getItems().add(fileExitItem);
 	}
 
+	//CSOFF: resolved once full migrated to JavaFX
 	private void createEditMenu(MenuFactory pFactory) 
 	{
 		Menu editMenu = pFactory.createMenu("edit");
@@ -235,7 +236,7 @@ public class EditorFrame extends BorderPane
 			{
 				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 			}
@@ -251,7 +252,7 @@ public class EditorFrame extends BorderPane
 			{
 				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 			}
@@ -267,13 +268,27 @@ public class EditorFrame extends BorderPane
 			{
 				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 			}
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> editProperties()));
+		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
+		{
+			if (noCurrentGraphFrame()) 
+			{
+				return;
+			}
+			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+			{
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+			}
+			else // instanceof GraphFrame2
+			{
+				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+			}
+		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
 		editMenu.getItems().add(pFactory.createMenuItem("edit.paste", pEvent -> paste()));
@@ -289,13 +304,13 @@ public class EditorFrame extends BorderPane
 			{
 				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
 			}
 		}));
-	}
-
+	} //CSON:
+	
 	private void createViewMenu(MenuFactory pFactory) 
 	{
 		Menu viewMenu = pFactory.createMenu("view");
@@ -313,7 +328,7 @@ public class EditorFrame extends BorderPane
 			{
 				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
 			}
@@ -328,7 +343,7 @@ public class EditorFrame extends BorderPane
 			{
 	    		((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
 			}
-			else //GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
 			}
@@ -351,7 +366,7 @@ public class EditorFrame extends BorderPane
 			    	panel.setHideGrid(selected);
 		    	});
 	    	}
-	    	else // GraphFrame2
+	    	else // instanceof GraphFrame2
 	    	{
 	    		GraphFrame2 frame = (GraphFrame2)aTabbedPane.getSelectionModel().getSelectedItem();
 	    		GraphPanel2 panel = frame.getGraphPanel();  
@@ -376,7 +391,7 @@ public class EditorFrame extends BorderPane
 				GraphPanel panel = frame.getGraphPanel();
 				hideGridItem.setSelected(panel.getHideGrid());
 			}
-			else // GraphFrame2
+			else // instanceof GraphFrame2
 			{
 				GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
 				if (frame == null) 
@@ -694,25 +709,6 @@ public class EditorFrame extends BorderPane
 			open(selectedFile.getAbsolutePath());
 		}
 	}
-	
-	/**
-	 * Edit properties of selected element.
-	 */
-	public void editProperties() 
-	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
-		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
-		{
-			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
-		}
-		else // GraphFrame2
-		{
-			((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
-		}
-	}
 
 	/**
 	 * Cuts the current selection of the current panel and puts the content into the
@@ -730,7 +726,7 @@ public class EditorFrame extends BorderPane
 			panel.cut();
 			panel.repaint();
 		}
-		else // GraphFrame2
+		else // instanceof GraphFrame2
 		{
 			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 			panel.cut();
@@ -752,7 +748,7 @@ public class EditorFrame extends BorderPane
 		{
 			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
 		}
-		else // GraphFrame2 
+		else // instanceof GraphFrame2 
 		{
 			((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
 		}
@@ -776,7 +772,7 @@ public class EditorFrame extends BorderPane
 			panel.paste();
 			panel.repaint();
 		}
-		else // GraphFrame2
+		else // instanceof GraphFrame2
 		{
 			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 			panel.paste();
@@ -1244,7 +1240,6 @@ public class EditorFrame extends BorderPane
 				{
 					ImageIO.write(image, format, out);
 				}
-					
 			} 
 			catch (IOException exception) 
 			{
@@ -1344,7 +1339,6 @@ public class EditorFrame extends BorderPane
 		g2.setColor(Color.BLACK);
 		g2.setBackground(Color.WHITE);
 		pGraph.draw(g2);
-		System.out.println("wbmp type: "+ image.getType());
 		return image;
 	}
 	

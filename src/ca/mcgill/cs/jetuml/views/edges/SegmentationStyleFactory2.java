@@ -183,8 +183,7 @@ public final class SegmentationStyleFactory2
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
 			}
 			
-		    return new Point2D[] {Conversions2.toPoint2D(start), 
-		    		Conversions2.toPoint2D(end) };
+		    return new Point2D[] {Conversions2.toPoint2D(start), Conversions2.toPoint2D(end) };
 		}		
 	}
 	

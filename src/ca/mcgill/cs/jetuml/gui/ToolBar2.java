@@ -219,19 +219,16 @@ public class ToolBar2 extends BorderPane
 	 */
 	public void setToolToBeSelect()
 	{
-		Platform.runLater(() -> 
+		for( ToggleButton button : aButtons )
 		{
-			for( ToggleButton button : aButtons )
-			{
-				button.setSelected(false);
-			}
-			for( ToggleButton button : aButtonsEx )
-			{
-				button.setSelected(false);
-			}
-			aButtons.get(0).setSelected(true);
-			aButtonsEx.get(0).setSelected(true);
-		});
+			button.setSelected(false);
+		}
+		for( ToggleButton button : aButtonsEx )
+		{
+			button.setSelected(false);
+		}
+		aButtons.get(0).setSelected(true);
+		aButtonsEx.get(0).setSelected(true);
 	}
 
 

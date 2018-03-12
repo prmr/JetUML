@@ -33,6 +33,10 @@ import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An edge view specialized for state transitions.
  * 

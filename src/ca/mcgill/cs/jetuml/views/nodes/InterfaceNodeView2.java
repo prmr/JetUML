@@ -27,6 +27,10 @@ import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.scene.canvas.GraphicsContext;
 
+
+//TODO: TO BE COMPLETED
+
+
 /**
  * An object to render an interface in a class diagram.
  * 
