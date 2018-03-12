@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -85,37 +84,7 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		Rectangle bounds = getBounds();
-
-		LABEL.setText("<html>" + name() + "</html>");
-		LABEL.setFont(pGraphics.getFont());
-		Dimension d = LABEL.getPreferredSize();
-		LABEL.setBounds(0, 0, d.width, d.height);
-
-		pGraphics.draw(Conversions.toRectangle2D(aTop));
-
-		int textX = bounds.getX() + NAME_GAP;
-		double textY = bounds.getY() + (aTop.getHeight() - d.getHeight()) / 2;
-      
-		pGraphics.translate(textX, textY);
-		LABEL.paint(pGraphics);
-		pGraphics.translate(-textX, -textY);        
-     
-		pGraphics.draw(Conversions.toRectangle2D(aBottom));
-		CONTENTS_VIEWER.draw(contents(), pGraphics, aBottom);
-	}
-	
-//	@Override
-//	public Shape getShape()
-//	{
-//		GeneralPath path = new GeneralPath();
-//		path.append(Conversions.toRectangle2D(aTop), false);
-//		path.append(Conversions.toRectangle2D(aBottom), false);
-//		return path;
-//	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	/**
 	 * @return The point that corresponds to the actual top right

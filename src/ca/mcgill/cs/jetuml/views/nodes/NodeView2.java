@@ -24,7 +24,6 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -46,8 +45,6 @@ public interface NodeView2
      * @param pGraphics the graphics context
      */
 	void draw(GraphicsContext pGraphics);
-	
-	Node node();
 
 	/**
      * Tests whether the node contains a point.

@@ -20,9 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.geom.Rectangle2D;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
@@ -63,20 +60,7 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		int bottomHeight = computeBottom().getHeight();
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
-		pGraphics.draw(top);
-		NAME_VIEWER.draw(name(), pGraphics, Conversions.toRectangle(top));
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
-		pGraphics.draw(mid);
-		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		pGraphics.draw(bot);
-		METHOD_VIEWER.draw(methods(), pGraphics, Conversions.toRectangle(bot));
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	/**
 	 * @return The width of the middle compartment.

@@ -20,15 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 
@@ -50,35 +46,7 @@ public class ObjectReferenceEdgeView2 extends AbstractEdgeView2
 	@Override
 	protected Shape getShape()
 	{
-		Line line = getConnectionPoints();
-
-		double y1 = line.getY1();
-		double y2 = line.getY2();
-		double xmid = (line.getX1() + line.getX2()) / 2;
-		double ymid = (line.getY1() + line.getY2()) / 2;
-		GeneralPath path = new GeneralPath();
-		if(isSShaped())
-		{
-			double x1 = line.getX1() + ENDSIZE;
-			double x2 = line.getX2() - ENDSIZE;
-         
-			path.moveTo((float)line.getX1(), (float)y1);
-			path.lineTo((float)x1, (float)y1);
-			path.quadTo((float)((x1 + xmid) / 2), (float)y1, (float)xmid, (float)ymid);
-			path.quadTo((float)((x2 + xmid) / 2), (float)y2, (float)x2, (float)y2);
-			path.lineTo((float)line.getX2(), (float)y2);
-		}
-		else // reverse C shaped
-		{
-			double x1 = Math.max(line.getX1(), line.getX2()) + ENDSIZE;
-			double x2 = x1 + ENDSIZE;
-			path.moveTo((float)line.getX1(), (float)y1);
-			path.lineTo((float)x1, (float)y1);
-			path.quadTo((float)x2, (float)y1, (float)x2, (float)ymid);
-			path.quadTo((float)x2, (float)y2, (float)x1, (float)y2);
-			path.lineTo((float)line.getX2(), (float)y2);
-		}
-		return path;
+		return null;
 	}
 	
 	/**
@@ -93,23 +61,7 @@ public class ObjectReferenceEdgeView2 extends AbstractEdgeView2
 	}
 
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		pGraphics.draw(getShape());
-		Line line = getConnectionPoints();
-		double x1;
-		double x2 = line.getX2();
-		double y = line.getY2();
-		if (isSShaped())
-		{
-			x1 = x2 - ENDSIZE;
-		}
-		else
-		{
-			x1 = x2 + ENDSIZE;
-		}
-		ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, new Point2D.Double(x1, y), new Point2D.Double(x2, y));      
-	}
+	public void draw(GraphicsContext pGraphics) {}
 
 	@Override
 	public Line getConnectionPoints()

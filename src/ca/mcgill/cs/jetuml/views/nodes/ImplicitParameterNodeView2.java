@@ -20,11 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -45,7 +40,6 @@ public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
@@ -64,18 +58,7 @@ public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		Rectangle top = getTopRectangle();
-		pGraphics.draw(Conversions.toRectangle2D(top));
-		NAME_VIEWER.draw(name(), pGraphics, top);
-		int xmid = getBounds().getCenter().getX();
-		Stroke oldStroke = pGraphics.getStroke();
-		pGraphics.setStroke(STROKE);
-		pGraphics.draw(new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY()));
-		pGraphics.setStroke(oldStroke);
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	@Override
 	public boolean contains(Point pPoint)
@@ -84,10 +67,6 @@ public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 	}
 
-//	@Override
-//	public Shape getShape()
-//	{ return Conversions.toRectangle2D(getTopRectangle()); }
-   
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{

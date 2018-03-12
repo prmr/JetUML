@@ -20,9 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -73,14 +70,7 @@ public class FieldNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		final Rectangle bounds = getBounds();
-		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
-		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	private int leftWidth()
 	{
@@ -125,11 +115,5 @@ public class FieldNodeView2 extends RectangleBoundedNodeView2
 	public int getAxis()
 	{
 		return leftWidth() + midWidth() / 2;
-	}
-	
-//	@Override
-	public Shape getShape()
-	{
-		return new Rectangle2D.Double();
 	}
 }

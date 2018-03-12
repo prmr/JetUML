@@ -26,7 +26,6 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
  * Services to query the visual properties of a node.
@@ -47,8 +46,6 @@ public interface NodeView
      * @param pGraphics2D the graphics context
      */
 	void draw(Graphics2D pGraphics2D);
-	
-	Node node();
 
 	/**
      * Tests whether the node contains a point.

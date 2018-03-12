@@ -20,9 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -40,8 +37,6 @@ import javafx.scene.canvas.GraphicsContext;
 public class CircularStateNodeView2 extends AbstractNodeView2
 {
 	private static final int DIAMETER = 20;
-	private static final int DEFAULT_GAP = 3;   
-	private final boolean aFinal;
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -50,28 +45,13 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 	public CircularStateNodeView2(Node pNode, boolean pFinal)
 	{
 		super(pNode);
-		aFinal = pFinal;
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		Ellipse2D circle = new Ellipse2D.Double(node().position().getX(), node().position().getY(), 
-				DIAMETER, DIAMETER);
-      
-      	if(aFinal)
-      	{
-      		Ellipse2D inside = new Ellipse2D.Double( node().position().getX() + DEFAULT_GAP, 
-      				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);
-      		pGraphics.fill(inside);
-      		pGraphics.draw(circle);
-      	}
-		else
-		{
-			pGraphics.fill(circle);
-		}      
-	}
+	public void draw(GraphicsContext pGraphics) {}
+	
+	@Override
+	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) {}
 	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
@@ -95,12 +75,6 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 		}
 	}   	 
 	
-//	@Override
-//	public Shape getShape()
-//	{
-//		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-//	}
-
 	@Override
 	public Rectangle getBounds()
 	{
@@ -117,12 +91,5 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 	public boolean contains(Point pPoint)
 	{
 		return getBounds().contains(pPoint);
-	}
-
-	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }

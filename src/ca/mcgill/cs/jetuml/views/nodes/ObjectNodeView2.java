@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
@@ -67,14 +66,7 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		Rectangle top = getTopRectangle();
-		pGraphics.draw(Conversions.toRectangle2D(top));
-		pGraphics.draw(Conversions.toRectangle2D(getBounds()));
-		NAME_VIEWER.draw(name(), pGraphics, top);
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	@Override
 	public void layout(Graph2 pGraph)
@@ -114,14 +106,5 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 					ytop, ((FieldNode)field).obtainAxis() + rightWidth, b2.getHeight()));
 			ytop += field.view2().getBounds().getHeight() + YGAP;
 		}
-	}
-	
-	/**
-	 * Returns the rectangle at the top of the object node.
-	 * @return the top rectangle
-	 */
-	private Rectangle getTopRectangle()
-	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
 	}
 }

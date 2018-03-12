@@ -20,15 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.geom.RoundRectangle2D;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.Shape;
 
 /**
  * An object to render a StateNode.
@@ -40,7 +37,6 @@ public class StateNodeView2 extends RectangleBoundedNodeView2
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final int ARC_SIZE = 20;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	/**
@@ -57,19 +53,7 @@ public class StateNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		super.draw(pGraphics);
-		pGraphics.draw(getShape());
-		NAME_VIEWER.draw(name(), pGraphics, getBounds());
-	}
-	
-//	@Override
-	protected Shape getShape()
-	{       
-		return new RoundRectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	@Override	
 	public void layout(Graph2 pGraph)

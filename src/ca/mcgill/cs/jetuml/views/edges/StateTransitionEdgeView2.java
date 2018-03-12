@@ -20,15 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.JLabel;
 
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
@@ -37,7 +30,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Shape;
 
@@ -50,21 +42,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 {
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final int DEGREES_5 = 5;
-	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_20 = 20;
-	private static final int DEGREES_270 = 270;
-	
-	private static final int RADIANS_TO_PIXELS = 10;
-	private static final double HEIGHT_RATIO = 3.5;
-	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
-	private static final int MIN_FONT_SIZE = 9;
-	
-	// The amount of vertical difference in connection points to tolerate
-	// before centering the edge label on one side instead of in the center.
-	private static final int VERTICAL_TOLERANCE = 20; 
-
-	private static final JLabel LABEL = new JLabel();
-	private static final Font FONT_NORMAL = LABEL.getFont();
 	
 	/**
 	 * @param pEdge The edge to wrap.
@@ -81,52 +59,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	}
 	
 	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		pGraphics.draw(getShape());
-		drawLabel(pGraphics);
-		drawArrowHead(pGraphics);
-	}
-	
-	private void drawArrowHead(Graphics2D pGraphics2D)
-	{
-		if( isSelfEdge() )
-		{
-			Point connectionPoint2 = getSelfEdgeConnectionPoints().getPoint2();
-			if( getPosition() == 1 )
-			{
-				ArrowHead.V.view().draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
-						Conversions.toPoint2D(getConnectionPoints().getPoint2()));
-			}
-			else
-			{
-				ArrowHead.V.view().draw(pGraphics2D, new Point2D.Double(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET), 
-						Conversions.toPoint2D(getConnectionPoints().getPoint2()));
-			}
-		}
-		else
-		{
-			ArrowHead.V.view().draw(pGraphics2D, getControlPoint(), 
-					Conversions.toPoint2D(getConnectionPoints().getPoint2()));
-		}
-	}
-	
-	/*
-	 *  Draws the label.
-	 *  @param pGraphics2D the graphics context
-	 */
-	private void drawLabel(Graphics2D pGraphics2D)
-	{
-		Rectangle2D labelBounds = getLabelBounds();
-		double x = labelBounds.getX();
-		double y = labelBounds.getY();
-		pGraphics2D.translate(x, y);
-		adjustLabelFont();
-		LABEL.paint(pGraphics2D);
-		pGraphics2D.translate(-x, -y);        
-	}
+	public void draw(GraphicsContext pGraphics) {}
 	
 	private Rectangle2D getLabelBounds()
 	{
@@ -141,62 +74,13 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	}
 	
 	/*
-  *  Gets the bounds of the label text .
-  * @return the bounds of the label text
-  */
+	 *  Gets the bounds of the label text .
+	 * @return the bounds of the label text
+	 */
 	private Rectangle2D getNormalEdgeLabelBounds()
 	{
-		Line line = getConnectionPoints();
-		Point2D control = getControlPoint();
-		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
-		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
-
-		LABEL.setText(toHtml(edge().getMiddleLabel()));
-		adjustLabelFont();
-		Dimension dimension = LABEL.getPreferredSize();
-		LABEL.setBounds(0, 0, dimension.width, dimension.height);
-
-		int gap = 3;
-		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
-				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
-		{
-			// The label is centered if the edge is (mostly) horizontal
-			x -= dimension.getWidth() / 2;
-		}
-		else if( line.getY1() <= line.getY2() )
-		{
-			x += gap;
-		}
-		else
-		{
-			x -= dimension.getWidth() + gap;
-		}
-		
-		if( line.getX1() <= line.getX2() )
-		{
-			y -= dimension.getHeight() + gap;
-		}
-		else
-		{
-			y += gap;
-		}
-		
-		// Additional gap to make sure the labels don't overlap
-		if( edge().getGraph() != null && getPosition() > 1 )
-		{
-			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
-			delta = dimension.getHeight() - delta*RADIANS_TO_PIXELS;
-			if( line.getX1() <= line.getX2() )
-			{
-				y -= delta;
-			}
-			else
-			{
-				y += delta;
-			}
-		}
-		return new Rectangle2D.Double(x, y, dimension.width, dimension.height);
-}   
+		return null;
+	}   
 	
 	/*
   * Positions the label above the self edge, centered
@@ -205,37 +89,8 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
   */
 	private Rectangle2D getSelfEdgeLabelBounds()
 	{
-		Line line = getConnectionPoints();
-		LABEL.setText(toHtml(edge().getMiddleLabel()));
-		adjustLabelFont();
-		Dimension dimension = LABEL.getPreferredSize();
-		LABEL.setBounds(0, 0, dimension.width, dimension.height);
-		if( getPosition() == 1 )
-		{
-			return new Rectangle2D.Double(line.getX1() + SELF_EDGE_OFFSET - dimension.width/2,	
-					line.getY1() - SELF_EDGE_OFFSET*2, dimension.width, dimension.height);
-		}
-		else
-		{
-			return new Rectangle2D.Double(line.getX1() - dimension.width/2,	
-					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, dimension.width, dimension.height);
-		}
+		return null;
 	}   
-	
-	private void adjustLabelFont()
-	{
-		if(edge().getMiddleLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
-		{
-			float difference = edge().getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
-			difference = difference / (2*edge().getMiddleLabel().length()); // damping
-			float newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * FONT_NORMAL.getSize());
-			LABEL.setFont(FONT_NORMAL.deriveFont(newFontSize));
-		}
-		else
-		{
-			LABEL.setFont(FONT_NORMAL);
-		}
-	}
 
 	@Override
 	protected Shape getShape()
@@ -257,18 +112,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	
 	private Shape getSelfEdgeShape()
 	{
-		if( getPosition() == 1 )
-		{
-			Line line = getSelfEdgeConnectionPoints();
-			return new Arc2D.Double(line.getX1(), line.getY1()-SELF_EDGE_OFFSET, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
-					DEGREES_270, DEGREES_270, Arc2D.OPEN);
-		}
-		else
-		{
-			Line line = getSelfEdgeConnectionPoints();
-			return new Arc2D.Double(line.getX1()-SELF_EDGE_OFFSET, line.getY1()-SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, SELF_EDGE_OFFSET*2, 
-					 1, DEGREES_270, Arc2D.OPEN);
-		}
+		return null;
 	}
 	
 	/** 
@@ -323,29 +167,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	
 	private Shape getNormalEdgeShape()
 	{
-		Line line = getConnectionPoints();
-		QuadCurve2D curve = new QuadCurve2D.Float();
-		curve.setCurve(Conversions.toPoint2D(line.getPoint1()), getControlPoint(), 
-				Conversions.toPoint2D(line.getPoint2()));
-		return curve;
-	}
-	
-	
-	/**
-     *  Gets the control point for the quadratic spline.
-     * @return the control point
-     */
-	private Point2D getControlPoint()
-	{
-		Line line = getConnectionPoints();
-		double tangent = Math.tan(Math.toRadians(DEGREES_10));
-		if( edge().getGraph() != null && getPosition() > 1 )
-		{
-			tangent = Math.tan(Math.toRadians(DEGREES_20));
-		}
-		double dx = (line.getX2() - line.getX1()) / 2;
-		double dy = (line.getY2() - line.getY1()) / 2;
-		return new Point2D.Double((line.getX1() + line.getX2()) / 2 + tangent * dy, (line.getY1() + line.getY2()) / 2 - tangent * dx);         
+		return null;
 	}
 	
 	@Override

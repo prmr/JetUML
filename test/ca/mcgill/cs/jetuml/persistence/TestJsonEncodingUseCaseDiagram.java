@@ -31,6 +31,7 @@ import static org.junit.Assert.assertSame;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
@@ -39,10 +40,17 @@ import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
+import javafx.embed.swing.JFXPanel;
 
 public class TestJsonEncodingUseCaseDiagram
 {
 	private UseCaseDiagramGraph aGraph;
+	
+	@BeforeClass
+	public static void initializeJavaFX()
+	{
+		new JFXPanel(); // to initialize JavaFX toolkit and environment
+	}
 	
 	@Before
 	public void setup()
