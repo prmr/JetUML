@@ -1219,7 +1219,24 @@ public class EditorFrame extends BorderPane
 			
 			try (OutputStream out = new FileOutputStream(file)) 
 			{
-				ImageIO.write(getImage(frame.getGraphPanel()), format, out);
+				if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
+				{
+					BufferedImage image = getImage(frame.getGraphPanel()); 
+					BufferedImage imageRGB = 
+					  new BufferedImage(
+					    image.getWidth(), 
+					    image.getHeight(), 
+					    BufferedImage.OPAQUE); 
+					Graphics2D graphics = imageRGB.createGraphics();
+					graphics.drawImage(image, 0,  0, null);
+					ImageIO.write(imageRGB, format, out);
+					graphics.dispose();
+				}
+				else
+				{
+					ImageIO.write(getImage(frame.getGraphPanel()), format, out);
+				}
+					
 			} 
 			catch (IOException exception) 
 			{
