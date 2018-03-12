@@ -273,21 +273,7 @@ public class EditorFrame extends BorderPane
 			}
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
-		{
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
-			}
-			else // GraphFrame2
-			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
-			}
-		}));
+		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> editProperties()));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
 		editMenu.getItems().add(pFactory.createMenuItem("edit.paste", pEvent -> paste()));
@@ -706,6 +692,25 @@ public class EditorFrame extends BorderPane
 		if (selectedFile != null) 
 		{
 			open(selectedFile.getAbsolutePath());
+		}
+	}
+	
+	/**
+	 * Edit properties of selected element.
+	 */
+	public void editProperties() 
+	{
+		if (noCurrentGraphFrame()) 
+		{
+			return;
+		}
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
+		{
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+		}
+		else // GraphFrame2
+		{
+			((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
 		}
 	}
 
@@ -1219,22 +1224,26 @@ public class EditorFrame extends BorderPane
 			
 			try (OutputStream out = new FileOutputStream(file)) 
 			{
+				BufferedImage image = getImage(frame.getGraphPanel()); 
 				if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
 				{
-					BufferedImage image = getImage(frame.getGraphPanel()); 
-					BufferedImage imageRGB = 
-					  new BufferedImage(
-					    image.getWidth(), 
-					    image.getHeight(), 
-					    BufferedImage.OPAQUE); 
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
 					Graphics2D graphics = imageRGB.createGraphics();
 					graphics.drawImage(image, 0,  0, null);
 					ImageIO.write(imageRGB, format, out);
 					graphics.dispose();
 				}
+				else if (format.equals("bmp"))	// to correct the BufferedImage type
+				{
+					BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+					Graphics2D graphics = imageRGB.createGraphics();
+					graphics.drawImage(image, 0, 0, Color.WHITE, null);
+					ImageIO.write(imageRGB, format, out);
+					graphics.dispose();
+				}
 				else
 				{
-					ImageIO.write(getImage(frame.getGraphPanel()), format, out);
+					ImageIO.write(image, format, out);
 				}
 					
 			} 
@@ -1294,6 +1303,10 @@ public class EditorFrame extends BorderPane
 			FileChooser fileChooser = new FileChooser();
 			for (String format : getAllSupportedImageWriterFormats()) 
 			{
+				if (format.equals("wbmp"))	// no supported conversion available
+				{
+					continue;
+				}
 				fileChooser.getExtensionFilters()
 					.add(new ExtensionFilter(format.toUpperCase() + " " + aEditorResources.getString("files.image.name"), "*." +format));
 			}
@@ -1332,6 +1345,7 @@ public class EditorFrame extends BorderPane
 		g2.setColor(Color.BLACK);
 		g2.setBackground(Color.WHITE);
 		pGraph.draw(g2);
+		System.out.println("wbmp type: "+ image.getType());
 		return image;
 	}
 	

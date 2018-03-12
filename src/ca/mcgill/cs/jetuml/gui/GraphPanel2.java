@@ -180,7 +180,6 @@ public class GraphPanel2 extends Canvas
 			public void propertyChanged()
 			{
 				aGraph.requestLayout();
-//				repaint();
 				paintComponent(aGraphics);	//change if necessary
 			}
 		});
@@ -343,7 +342,6 @@ public class GraphPanel2 extends Canvas
 		paintComponent(aGraphics);
 	}
 
-//	@Override
 	public void paintComponent(GraphicsContext pGraphics)
 	{
 		// don't need pGraphics
@@ -420,16 +418,21 @@ public class GraphPanel2 extends Canvas
 	public static void drawGrabber(GraphicsContext pGraphics, double pX, double pY)
 	{
 		final int size = 6;
-		Paint oldStrokeColor = pGraphics.getStroke();
-		Paint oldFillColor = pGraphics.getFill();
+		Paint oldStroke = pGraphics.getStroke();
+		Paint oldFill = pGraphics.getFill();
 		pGraphics.setStroke(GRABBER_COLOR);
 		pGraphics.strokeRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
 		pGraphics.setFill(GRABBER_FILL_COLOR);
-		pGraphics.fillRect((int)(pX - size / 2)+1, (int)(pY - size / 2)+1, size-1, size-1);
-		pGraphics.setStroke(oldStrokeColor);
-		pGraphics.setFill(oldFillColor);
+		pGraphics.fillRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
+		pGraphics.setStroke(oldStroke);
+		pGraphics.setFill(oldFill);
 	}
 	
+	/**
+	 * Adjusts layout bounds based on the ScrollPane bounds and aGraph bounds.
+	 * @param pWidth unused
+	 * @param pHeight unused
+	 */
 	@Override
 	public void resize(double pWidth, double pHeight) 
 	{
