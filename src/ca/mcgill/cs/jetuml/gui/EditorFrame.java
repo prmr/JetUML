@@ -57,10 +57,12 @@ import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -77,6 +79,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -1049,36 +1052,73 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-
-		FileChooser fileChooser = getImageFileChooser();
-		File file = fileChooser.showSaveDialog(aMainStage);
-		if (file == null) 
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
-			return;
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+	
+			FileChooser fileChooser = getImageFileChooser();
+			File file = fileChooser.showSaveDialog(aMainStage);
+			if (file == null) 
+			{
+				return;
+			}
+	
+			// Validate the file format
+			String fileName = file.getPath();
+			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
+				alert.showAndWait();
+				return;
+			}
+	
+			try (OutputStream out = new FileOutputStream(file)) 
+			{
+				ImageIO.write(getImage(frame.getGraph()), format, out);
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
-
-		// Validate the file format
-		String fileName = file.getPath();
-		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+		else // instance of GraphFrame2
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
-			alert.showAndWait();
-			return;
-		}
-
-		try (OutputStream out = new FileOutputStream(file)) 
-		{
-			ImageIO.write(getImage(frame.getGraph()), format, out);
-		} 
-		catch (IOException exception) 
-		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.showAndWait();
+			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			
+			FileChooser fileChooser = getImageFileChooser();
+			File file = fileChooser.showSaveDialog(aMainStage);
+			if (file == null) 
+			{
+				return;
+			}
+	
+			// Validate the file format
+			String fileName = file.getPath();
+			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
+				alert.showAndWait();
+				return;
+			}
+	
+			try (OutputStream out = new FileOutputStream(file)) 
+			{
+				ImageIO.write(getImage(frame.getGraphPanel()), format, out);
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
 	}
 
@@ -1097,26 +1137,52 @@ public class EditorFrame extends BorderPane
 
 	private FileChooser getImageFileChooser() 
 	{
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		assert frame != null;
-
-		// Initialize the file chooser widget
-		FileChooser fileChooser = new FileChooser();
-		for (String format : getAllSupportedImageWriterFormats()) 
+		if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
-			fileChooser.getExtensionFilters()
-				.add(new ExtensionFilter(format.toUpperCase() + " " + aEditorResources.getString("files.image.name"), "*." +format));
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+			assert frame != null;
+	
+			// Initialize the file chooser widget
+			FileChooser fileChooser = new FileChooser();
+			for (String format : getAllSupportedImageWriterFormats()) 
+			{
+				fileChooser.getExtensionFilters()
+					.add(new ExtensionFilter(format.toUpperCase() + " " + aEditorResources.getString("files.image.name"), "*." +format));
+			}
+			fileChooser.setInitialDirectory(new File("."));
+	
+			// If the file was previously saved, use that to suggest a file name root.
+			if (frame.getFileName() != null) 
+			{
+				File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));
+				fileChooser.setInitialDirectory(f.getParentFile());
+				fileChooser.setInitialFileName(f.getName());
+			}
+			return fileChooser;
 		}
-		fileChooser.setInitialDirectory(new File("."));
-
-		// If the file was previously saved, use that to suggest a file name root.
-		if (frame.getFileName() != null) 
+		else // instanceof GraphFrame2
 		{
-			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));
-			fileChooser.setInitialDirectory(f.getParentFile());
-			fileChooser.setInitialFileName(f.getName());
+			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			assert frame != null;
+	
+			// Initialize the file chooser widget
+			FileChooser fileChooser = new FileChooser();
+			for (String format : getAllSupportedImageWriterFormats()) 
+			{
+				fileChooser.getExtensionFilters()
+					.add(new ExtensionFilter(format.toUpperCase() + " " + aEditorResources.getString("files.image.name"), "*." +format));
+			}
+			fileChooser.setInitialDirectory(new File("."));
+	
+			// If the file was previously saved, use that to suggest a file name root.
+			if (frame.getFileName() != null) 
+			{
+				File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));
+				fileChooser.setInitialDirectory(f.getParentFile());
+				fileChooser.setInitialFileName(f.getName());
+			}
+			return fileChooser;
 		}
-		return fileChooser;
 	}
 
 	/*
@@ -1141,6 +1207,23 @@ public class EditorFrame extends BorderPane
 		g2.setColor(Color.BLACK);
 		g2.setBackground(Color.WHITE);
 		pGraph.draw(g2);
+		return image;
+	}
+	
+	/*
+	 * Return the image corresponding to the graph.
+	 * 
+	 * @param pGraph The graph to convert to an image.
+	 * 
+	 * @return bufferedImage. To convert it into an image, use the syntax :
+	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
+	 */
+	private static BufferedImage getImage(GraphPanel2 pGraphPanel) 
+	{
+		Rectangle bounds = pGraphPanel.getGraph().getBounds();
+		WritableImage writableImage = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
+		((Node) pGraphPanel).snapshot(null, writableImage);
+		BufferedImage image = SwingFXUtils.fromFXImage(writableImage, null);
 		return image;
 	}
 
