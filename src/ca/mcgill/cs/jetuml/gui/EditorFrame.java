@@ -56,7 +56,7 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
-import javafx.application.Platform;
+import ca.mcgill.cs.jetuml.persistence.PersistenceService2;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -555,20 +555,41 @@ public class EditorFrame extends BorderPane
 					return;
 				}
 			}
+			else if (aTabbedPane.getTabs().get(i) instanceof GraphFrame2)
+			{
+				GraphFrame2 frame = (GraphFrame2) aTabbedPane.getTabs().get(i);
+				if (frame.getFileName() != null	&& frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				{
+					aTabbedPane.getSelectionModel().select(frame);
+					addRecentFile(new File(pName).getPath());
+					return;
+				}
+			}
 		}
 		try 
 		{
-			Graph graph = PersistenceService.read(new File(pName));	// TODO: update for Graph2
+			Graph graph = PersistenceService.read(new File(pName));
 			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
 			frame.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
 			addTab(frame);
 		} 
-		catch (IOException | DeserializationException exception) 
+		catch (IOException | DeserializationException | ClassCastException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.showAndWait();
+			try 
+			{
+				Graph2 graph2 = PersistenceService2.read(new File(pName));	
+				GraphFrame2 frame2 = new GraphFrame2(graph2, aTabbedPane);
+				frame2.setFile(new File(pName).getAbsoluteFile());
+				addRecentFile(new File(pName).getPath());
+				addTab(frame2);
+			}
+			catch (IOException | DeserializationException exception2) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
 	}
 
@@ -708,7 +729,6 @@ public class EditorFrame extends BorderPane
 		{
 			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 			panel.cut();
-//			panel.repaint(); //repaint
 		}
 		
 	}
@@ -769,42 +789,78 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		final BufferedImage image = getImage(frame.getGraph());
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
-			@Override
-			public boolean isDataFlavorSupported(DataFlavor pFlavor) 
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+			final BufferedImage image = getImage(frame.getGraph());
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
 			{
-				return DataFlavor.imageFlavor.equals(pFlavor);
-			}
-
-			@Override
-			public DataFlavor[] getTransferDataFlavors() 
-			{
-				return new DataFlavor[] { DataFlavor.imageFlavor };
-			}
-
-			@Override
-			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException 
-			{
-				if (DataFlavor.imageFlavor.equals(pFlavor)) 
+				@Override
+				public boolean isDataFlavorSupported(DataFlavor pFlavor) 
 				{
-					return image;
+					return DataFlavor.imageFlavor.equals(pFlavor);
 				}
-				else 
+	
+				@Override
+				public DataFlavor[] getTransferDataFlavors() 
 				{
-					throw new UnsupportedFlavorException(pFlavor);
+					return new DataFlavor[] { DataFlavor.imageFlavor };
 				}
-			}
-		}, null);
-		Platform.runLater(() -> 
-		{
+	
+				@Override
+				public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException 
+				{
+					if (DataFlavor.imageFlavor.equals(pFlavor)) 
+					{
+						return image;
+					}
+					else 
+					{
+						throw new UnsupportedFlavorException(pFlavor);
+					}
+				}
+			}, null);
 			Alert alert = new Alert(AlertType.INFORMATION, aEditorResources.getString("dialog.to_clipboard.message"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.setHeaderText(aEditorResources.getString("dialog.to_clipboard.title"));
 			alert.showAndWait();
-		});
+		}
+		else // instanceof GraphFrame2
+		{
+			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			final BufferedImage image = getImage(frame.getGraphPanel());
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
+			{
+				@Override
+				public boolean isDataFlavorSupported(DataFlavor pFlavor) 
+				{
+					return DataFlavor.imageFlavor.equals(pFlavor);
+				}
+	
+				@Override
+				public DataFlavor[] getTransferDataFlavors() 
+				{
+					return new DataFlavor[] { DataFlavor.imageFlavor };
+				}
+	
+				@Override
+				public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException 
+				{
+					if (DataFlavor.imageFlavor.equals(pFlavor)) 
+					{
+						return image;
+					}
+					else 
+					{
+						throw new UnsupportedFlavorException(pFlavor);
+					}
+				}
+			}, null);
+			Alert alert = new Alert(AlertType.INFORMATION, aEditorResources.getString("dialog.to_clipboard.message"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.setHeaderText(aEditorResources.getString("dialog.to_clipboard.title"));
+			alert.showAndWait();
+		}
 	}
 
 	private boolean noCurrentGraphFrame() 
@@ -944,23 +1000,47 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		File file = frame.getFileName();
-		if (file == null) 
+		if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
-			saveAs();
-			return;
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+			File file = frame.getFileName();
+			if (file == null) 
+			{
+				saveAs();
+				return;
+			}
+			try 
+			{
+				PersistenceService.save(frame.getGraph(), file);
+				frame.getGraphPanel().setModified(false);
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
-		try 
+		else // instanceof GraphFrame2
 		{
-			PersistenceService.save(frame.getGraph(), file);
-			frame.getGraphPanel().setModified(false);
-		} 
-		catch (IOException exception) 
-		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.showAndWait();
+			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			File file = frame.getFileName();
+			if (file == null) 
+			{
+				saveAs();
+				return;
+			}
+			try 
+			{
+				PersistenceService2.save(frame.getGraph(), file);
+				frame.getGraphPanel().setModified(false);
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
 	}
 
@@ -973,45 +1053,91 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		Graph graph = frame.getGraph();
-
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
-		fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
-
-		if (frame.getFileName() != null) 
+		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
-			fileChooser.setInitialDirectory(frame.getFileName().getParentFile());
-			fileChooser.setInitialFileName(frame.getFileName().getName());
-		} 
-		else 
-		{
-			fileChooser.setInitialDirectory(new File("."));
-			fileChooser.setInitialFileName("");
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+			Graph graph = frame.getGraph();
+	
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+			fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
+	
+			if (frame.getFileName() != null) 
+			{
+				fileChooser.setInitialDirectory(frame.getFileName().getParentFile());
+				fileChooser.setInitialFileName(frame.getFileName().getName());
+			} 
+			else 
+			{
+				fileChooser.setInitialDirectory(new File("."));
+				fileChooser.setInitialFileName("");
+			}
+	
+			try 
+			{
+				File result = fileChooser.showSaveDialog(aMainStage);
+				if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
+				{
+					result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+				}
+				if (result != null) 
+				{
+					PersistenceService.save(graph, result);
+					addRecentFile(result.getAbsolutePath());
+					frame.setFile(result);
+					aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
+					frame.getGraphPanel().setModified(false);
+				}
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
+		else // instanceof GraphFrame2
+		{
+			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			Graph2 graph = frame.getGraph();
 
-		try 
-		{
-			File result = fileChooser.showSaveDialog(aMainStage);
-			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+			fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
+
+			if (frame.getFileName() != null) 
 			{
-				result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
-			}
-			if (result != null) 
+				fileChooser.setInitialDirectory(frame.getFileName().getParentFile());
+				fileChooser.setInitialFileName(frame.getFileName().getName());
+			} 
+			else 
 			{
-				PersistenceService.save(graph, result);
-				addRecentFile(result.getAbsolutePath());
-				frame.setFile(result);
-				aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
-				frame.getGraphPanel().setModified(false);
+				fileChooser.setInitialDirectory(new File("."));
+				fileChooser.setInitialFileName("");
 			}
-		} 
-		catch (IOException exception) 
-		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.showAndWait();
+
+			try 
+			{
+				File result = fileChooser.showSaveDialog(aMainStage);
+				if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
+				{
+					result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+				}
+				if (result != null) 
+				{
+					PersistenceService2.save(graph, result);
+					addRecentFile(result.getAbsolutePath());
+					frame.setFile(result);
+					aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
+					frame.getGraphPanel().setModified(false);
+				}
+			} 
+			catch (IOException exception) 
+			{
+				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
 	}
 
@@ -1052,28 +1178,29 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
+		
+		FileChooser fileChooser = getImageFileChooser();
+		File file = fileChooser.showSaveDialog(aMainStage);
+		if (file == null) 
+		{
+			return;
+		}
+
+		// Validate the file format
+		String fileName = file.getPath();
+		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+		{
+			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
+			alert.showAndWait();
+			return;
+		}
+		
 		else if (aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame)
 		{
 			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-	
-			FileChooser fileChooser = getImageFileChooser();
-			File file = fileChooser.showSaveDialog(aMainStage);
-			if (file == null) 
-			{
-				return;
-			}
-	
-			// Validate the file format
-			String fileName = file.getPath();
-			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
-				alert.showAndWait();
-				return;
-			}
 	
 			try (OutputStream out = new FileOutputStream(file)) 
 			{
@@ -1090,25 +1217,6 @@ public class EditorFrame extends BorderPane
 		{
 			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
 			
-			FileChooser fileChooser = getImageFileChooser();
-			File file = fileChooser.showSaveDialog(aMainStage);
-			if (file == null) 
-			{
-				return;
-			}
-	
-			// Validate the file format
-			String fileName = file.getPath();
-			String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-			if (!ImageIO.getImageWritersByFormatName(format).hasNext())
-			{
-				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
-				alert.showAndWait();
-				return;
-			}
-	
 			try (OutputStream out = new FileOutputStream(file)) 
 			{
 				ImageIO.write(getImage(frame.getGraphPanel()), format, out);
@@ -1281,6 +1389,14 @@ public class EditorFrame extends BorderPane
 			if (aTabs.get(i) instanceof GraphFrame) 
 			{
 				GraphFrame frame = (GraphFrame) aTabs.get(i);
+				if (frame.getGraphPanel().isModified()) 
+				{
+					modcount++;
+				}
+			}
+			else if (aTabs.get(i) instanceof GraphFrame2) 
+			{
+				GraphFrame2 frame = (GraphFrame2) aTabs.get(i);
 				if (frame.getGraphPanel().isModified()) 
 				{
 					modcount++;
