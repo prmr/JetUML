@@ -780,8 +780,7 @@ public class EditorFrame extends BorderPane
 		{
 			GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 			panel.paste();
-//			panel.repaint(); //repaint
-			panel.paintComponent(null);
+			panel.paintPanel();
 		}
 	}
 

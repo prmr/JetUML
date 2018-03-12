@@ -122,7 +122,7 @@ public class GraphPanel2 extends Canvas
 		setOnMouseDragged(listener);
 
 		resize(0, 0);
-		paintComponent(aGraphics);
+		paintPanel();
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class GraphPanel2 extends Canvas
 			public void propertyChanged()
 			{
 				aGraph.requestLayout();
-				paintComponent(aGraphics);	//change if necessary
+				paintPanel();	//change if necessary
 			}
 		});
 		if(sheet.isEmpty())
@@ -242,8 +242,7 @@ public class GraphPanel2 extends Canvas
 		{
 			setModified(true);
 		}
-		paintComponent(aGraphics);
-//		repaint();
+		paintPanel();
 	}
 	
 	/**
@@ -307,7 +306,6 @@ public class GraphPanel2 extends Canvas
 	{
 		aUndoManager.undoCommand();
 		resize(0, 0);
-//		repaint();
 	}
 	
 	/**
@@ -319,7 +317,6 @@ public class GraphPanel2 extends Canvas
 	{
 		aUndoManager.redoCommand();
 		resize(0, 0);
-//		repaint();
 	}
 	
 	/**
@@ -338,13 +335,15 @@ public class GraphPanel2 extends Canvas
 			aSelectedElements.add(edge);
 		}
 		aSideBar.setToolToBeSelect();
-//		repaint();
-		paintComponent(aGraphics);
+		paintPanel();
 	}
 
-	public void paintComponent(GraphicsContext pGraphics)
+	/**
+	 * Paints the panel and all the graph elements in aGraph.
+	 * Called after the panel is resized.
+	 */
+	public void paintPanel()
 	{
-		// don't need pGraphics
 		aGraphics.setFill(Color.WHITE); 
 		aGraphics.fillRect(0, 0, getWidth(), getHeight());
 		aGraphics.scale(aZoom.factor(), aZoom.factor());
@@ -387,25 +386,27 @@ public class GraphPanel2 extends Canvas
       
 		if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			Paint oldFill = pGraphics.getFill();
-			pGraphics.setFill(GRABBER_COLOR);
-			pGraphics.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
-			pGraphics.setFill(oldFill);
+			Paint oldFill = aGraphics.getFill();
+			aGraphics.setFill(GRABBER_COLOR);
+			aGraphics.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
+			aGraphics.setFill(oldFill);
 		}      
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
-			Paint oldFill = pGraphics.getFill();
-			pGraphics.setFill(GRABBER_COLOR);
+			Paint oldFill = aGraphics.getFill();
+			Paint oldStroke = aGraphics.getStroke();
+			aGraphics.setFill(GRABBER_FILL_COLOR_TRANSPARENT);
+			aGraphics.setStroke(GRABBER_COLOR);
 			double x1 = aMouseDownPoint.getX();
 			double y1 = aMouseDownPoint.getY();
 			double x2 = aLastMousePoint.getX();
 			double y2 = aLastMousePoint.getY();
 			Rectangle2D lasso = new Rectangle2D(Math.min(x1, x2), Math.min(y1, y2),
 					Math.abs(x1 - x2) , Math.abs(y1 - y2));
-			pGraphics.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			pGraphics.setFill(GRABBER_FILL_COLOR_TRANSPARENT);
-			pGraphics.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			pGraphics.setFill(oldFill);
+			aGraphics.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
+			aGraphics.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
+			aGraphics.setFill(oldFill);
+			aGraphics.setStroke(oldStroke);
 		}      
 	}
 
@@ -429,7 +430,7 @@ public class GraphPanel2 extends Canvas
 	}
 	
 	/**
-	 * Adjusts layout bounds based on the ScrollPane bounds and aGraph bounds.
+	 * Adjusts layout bounds based on the ScrollPane bounds and aGraph bounds, and repaints the node.
 	 * @param pWidth unused
 	 * @param pHeight unused
 	 */
@@ -443,7 +444,7 @@ public class GraphPanel2 extends Canvas
 			setHeight(Math.max(((ScrollPane)getParent().getParent().getParent()).getHeight(), aZoom.zoom(bounds.getMaxY())));
 		}
 		catch(NullPointerException e) {}
-		paintComponent(aGraphics);
+		paintPanel();
 	}
 	
 	/**
@@ -454,7 +455,6 @@ public class GraphPanel2 extends Canvas
 	{
 		aZoom.increaseLevel();
 		resize(0, 0);
-//		repaint();
 	}
 	
 	/**
@@ -465,7 +465,6 @@ public class GraphPanel2 extends Canvas
 	{
 		aZoom.decreaseLevel();
 		resize(0, 0);
-//		repaint();
 	}
 
 	/**
@@ -507,8 +506,7 @@ public class GraphPanel2 extends Canvas
 	public void setHideGrid(boolean pHideGrid)
 	{
 		aHideGrid = pHideGrid;
-		paintComponent(aGraphics);
-//		repaint();
+		paintPanel();
 	}
 
 	/**
@@ -752,7 +750,6 @@ public class GraphPanel2 extends Canvas
 			Point point = getMousePoint(pEvent);
 			aLastMousePoint = new Point(point.getX(), point.getY()); 
 			aMouseDownPoint = aLastMousePoint;
-//			repaint();
 			resize(0, 0);
 		}
 
@@ -782,7 +779,6 @@ public class GraphPanel2 extends Canvas
 			}
 			aDragMode = DragMode.DRAG_NONE;
 			resize(0, 0);
-//			repaint();
 		}
 		
 		public void mouseDragged(MouseEvent pEvent)
@@ -856,8 +852,7 @@ public class GraphPanel2 extends Canvas
 				}
 			}
 			aLastMousePoint = mousePoint;
-			paintComponent(aGraphics);
-//			repaint();
+			paintPanel();
 		}
 		
 		private void selectNode( boolean pCtrl, Node pNode, Rectangle pLasso )
