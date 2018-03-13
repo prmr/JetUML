@@ -22,8 +22,10 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.graph.Properties;
 
 /**
@@ -32,6 +34,16 @@ import ca.mcgill.cs.jetuml.graph.Properties;
 public class TestActorNode
 {
 	private ActorNode aNode;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
 	
 	@Before
 	public void setup()

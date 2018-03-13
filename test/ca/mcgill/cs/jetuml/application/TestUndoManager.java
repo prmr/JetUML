@@ -28,9 +28,10 @@ import java.lang.reflect.Field;
 import java.util.Stack;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.UndoManager;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
@@ -49,6 +50,16 @@ public class TestUndoManager
 	private Field aUndoneCommands;
 	private Field aTrackingCommands;
 
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+	
 	@Before
 	public void setup() throws Exception
 	{

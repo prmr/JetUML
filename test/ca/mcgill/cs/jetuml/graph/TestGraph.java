@@ -29,12 +29,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge;
@@ -61,6 +62,16 @@ public class TestGraph
 	private DependencyEdge aEdge1;
 	private AggregationEdge aEdge2;
 	private AggregationEdge aEdge3;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
 	
 	@Before
 	public void setup()

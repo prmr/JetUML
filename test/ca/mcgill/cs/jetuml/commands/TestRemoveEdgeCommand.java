@@ -26,8 +26,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -41,8 +43,18 @@ public class TestRemoveEdgeCommand
     private Edge aEdge;
     private RemoveEdgeCommand aRemoveEdgeCommand;
 
+    /**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+    
     @Before
-    public void setUp() throws Exception 
+    public void setup() throws Exception 
     {
         aGraph = new ClassDiagramGraph();
         aEdge = new CallEdge();

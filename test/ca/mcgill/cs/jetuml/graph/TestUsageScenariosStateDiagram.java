@@ -27,8 +27,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -41,7 +43,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import ca.mcgill.cs.jetuml.gui.ToolBar;
-import javafx.embed.swing.JFXPanel;
 
 /**
  * Tests various interactions with State Diagram normally triggered from the 
@@ -66,6 +67,16 @@ public class TestUsageScenariosStateDiagram
 	private StateTransitionEdge aTransitionEdge5;
 
 	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+	
+	/**
 	 * General setup.
 	 */
 	@Before
@@ -73,7 +84,6 @@ public class TestUsageScenariosStateDiagram
 	{
 		aDiagram = new StateDiagramGraph();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		new JFXPanel();	// to prepare JavaFX toolkit and environment
 		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));

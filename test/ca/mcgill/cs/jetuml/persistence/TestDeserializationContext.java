@@ -24,8 +24,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
@@ -38,6 +40,16 @@ public class TestDeserializationContext
 	private ClassNode aClassNode2; 
 	private ClassNode aClassNode3; 
 
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+	
 	@Before
 	public void setup()
 	{

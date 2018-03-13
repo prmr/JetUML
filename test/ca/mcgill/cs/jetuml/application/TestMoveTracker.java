@@ -23,11 +23,18 @@
  */
 package ca.mcgill.cs.jetuml.application;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Field;
+import java.util.Stack;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.application.MoveTracker;
-import ca.mcgill.cs.jetuml.application.SelectionList;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
@@ -35,11 +42,6 @@ import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-
-import static org.junit.Assert.*;
-
-import java.lang.reflect.Field;
-import java.util.Stack;
 
 public class TestMoveTracker
 {
@@ -54,8 +56,18 @@ public class TestMoveTracker
 	private Field aDyField;
 	private Field aNodeField;
 	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+	
 	@Before
-	public void setUp() throws NoSuchFieldException, SecurityException
+	public void setup() throws NoSuchFieldException, SecurityException
 	{
 		aMoveTracker = new MoveTracker();
 		aSelection = new SelectionList();

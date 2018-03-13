@@ -23,8 +23,10 @@ package ca.mcgill.cs.jetuml.commands;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -38,8 +40,18 @@ public class TestMoveCommand
     private Graph aGraph;
     private Node aNode;
     
+    /**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = new JavaFXLoader();
+	}
+    
     @Before
-    public void setUp() throws Exception 
+    public void setup() throws Exception 
     {
         aGraph = new ClassDiagramGraph();
         aNode = new ClassNode();

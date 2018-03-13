@@ -34,22 +34,26 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
-import javafx.embed.swing.JFXPanel;
 
 public class TestJsonEncodingUseCaseDiagram
 {
 	private UseCaseDiagramGraph aGraph;
 	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
 	@BeforeClass
-	public static void initializeJavaFX()
+	@SuppressWarnings("unused")
+	public static void setupClass()
 	{
-		new JFXPanel(); // to initialize JavaFX toolkit and environment
+		JavaFXLoader loader = new JavaFXLoader();
 	}
 	
 	@Before
