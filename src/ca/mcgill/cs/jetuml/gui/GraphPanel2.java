@@ -115,6 +115,7 @@ public class GraphPanel2 extends Canvas
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
+
 		
 		GraphPanelMouseListener listener = new GraphPanelMouseListener();
 		setOnMousePressed(listener);
@@ -728,6 +729,7 @@ public class GraphPanel2 extends Canvas
 		
 		public void mousePressed(MouseEvent pEvent)
 		{
+			aSideBar.hidePopup();
 			GraphElement tool = getTool(pEvent);
 			if (pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
 			{  

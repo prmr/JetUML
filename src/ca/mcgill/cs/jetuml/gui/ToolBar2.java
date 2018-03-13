@@ -366,4 +366,12 @@ public class ToolBar2 extends BorderPane
 	{
 		aPopupMenu2.show(pPanel, pPoint.getX(), pPoint.getY());
 	}
+	
+	/**
+	 * Hides the pop-up menu corresponding to this toolbar.
+	 */
+	public void hidePopup() 
+	{
+		aPopupMenu2.hide();
+	}
 }
