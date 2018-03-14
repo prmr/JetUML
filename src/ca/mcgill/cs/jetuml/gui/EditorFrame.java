@@ -1216,6 +1216,8 @@ public class EditorFrame extends BorderPane
 		else // instance of GraphFrame2
 		{
 			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			boolean oldHideGrid = frame.getGraphPanel().getHideGrid();
+			frame.getGraphPanel().setHideGrid(true);
 			
 			try (OutputStream out = new FileOutputStream(file)) 
 			{
@@ -1240,9 +1242,11 @@ public class EditorFrame extends BorderPane
 				{
 					ImageIO.write(image, format, out);
 				}
+				frame.getGraphPanel().setHideGrid(oldHideGrid);
 			} 
 			catch (IOException exception) 
 			{
+				frame.getGraphPanel().setHideGrid(oldHideGrid);
 				Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 				alert.initOwner(aMainStage);
 				alert.showAndWait();
