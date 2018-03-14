@@ -110,11 +110,10 @@ public class TestZoom
 		// Tests that the rounding works as expected
 		Zoom zoom = new Zoom();
 		zoom.decreaseLevel();
-		zoom.decreaseLevel();
-		assertEquals(0, zoom.zoom(1)); // Rounds downs from 0.35
-		assertEquals(1, zoom.zoom(2)); // Rounds up from 0.71
-		assertEquals(1, zoom.zoom(3)); // Rounds down from 1.06
-		assertEquals(2, zoom.zoom(5)); // Rounds up from 1.77
+		assertEquals(1, zoom.zoom(1)); // Rounds up from 0.71
+		assertEquals(1, zoom.zoom(2)); // Rounds down from 1.41
+		assertEquals(2, zoom.zoom(3)); // Rounds down from 2.12
+		assertEquals(4, zoom.zoom(5)); // Rounds up from 3.54
 		assertEquals(0, zoom.zoom(0)); // Zero never moves
 	}
 	
