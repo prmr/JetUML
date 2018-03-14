@@ -20,14 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.views.Grid;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import javafx.scene.canvas.GraphicsContext;
+import ca.mcgill.cs.jetuml.graph.Node;
 
 
 //TODO: TO BE COMPLETED
@@ -41,72 +34,11 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 {
-	private static final int DEFAULT_WIDTH = 80;
-	private static final int DEFAULT_HEIGHT = 120;
-	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
-
-	private int aTopHeight = DEFAULT_TOP_HEIGHT;
-	
 	/**
-	 * @param pNode The node to wrap.
+	 * @param pNode a node
 	 */
-	public ImplicitParameterNodeView2(ImplicitParameterNode pNode)
+	public ImplicitParameterNodeView2(Node pNode) 
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
-	
-	private String name()
-	{
-		return ((ImplicitParameterNode)node()).getName();
-	}
-	
-	@Override
-	public void draw(GraphicsContext pGraphics) {}
-	
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		final Rectangle bounds = getBounds();
-		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
-	}
-
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		if(pDirection.getX() > 0)
-		{
-			return new Point(getBounds().getMaxX(), getBounds().getY() + aTopHeight / 2);
-		}
-		else
-		{
-			return new Point(getBounds().getX(), getBounds().getY() + aTopHeight / 2);
-		}
-	}
-	
-	@Override
-	public void setBounds(Rectangle pNewBounds)
-	{
-		super.setBounds(pNewBounds);
-	}
-
-	@Override
-	public void layout(Graph2 pGraph)
-	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
-		Rectangle snappedTop = Grid.snapped(top);
-		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
-		aTopHeight = top.getHeight();
-	}
-	
-	/**
-     * Returns the rectangle at the top of the object node.
-     * @return the top rectangle
-	 */
-	public Rectangle getTopRectangle()
-	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		super(pNode, 0, 0);
 	}
 }

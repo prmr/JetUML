@@ -23,9 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.canvas.GraphicsContext;
 
 
@@ -40,60 +38,33 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class CircularStateNodeView2 extends AbstractNodeView2
 {
-	private static final int DIAMETER = 20;
-	
 	/**
-	 * @param pNode The node to wrap.
-	 * @param pFinal true if this is a final node, false if it's an initial node.
+	 * @param pNode a node
+	 * @param pBoolean a boolean
 	 */
-	public CircularStateNodeView2(Node pNode, boolean pFinal)
+	public CircularStateNodeView2(Node pNode, boolean pBoolean) 
 	{
 		super(pNode);
 	}
-	
+
 	@Override
-	public void draw(GraphicsContext pGraphics) {}
-	
-	@Override
-	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) {}
-	
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
+	public Rectangle getBounds() 
 	{
-		Rectangle bounds = getBounds();
-		double a = bounds.getWidth() / 2;
-		double b = bounds.getHeight() / 2;
-		double x = pDirection.getX();
-		double y = pDirection.getY();
-		double cx = bounds.getCenter().getX();
-		double cy = bounds.getCenter().getY();
-      
-		if(a != 0 && b != 0 && !(x == 0 && y == 0))
-		{
-			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
-			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
-		}
-		else
-		{
-			return new Point((int) Math.round(cx), (int) Math.round(cy));
-		}
-	}   	 
-	
-	@Override
-	public Rectangle getBounds()
-	{
-		return new Rectangle(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
-	}
-	
-	@Override
-	public void layout(Graph2 pGraph)
-	{
-		node().moveTo(Grid.snapped(getBounds()).getOrigin());
+		return null;
 	}
 
 	@Override
-	public boolean contains(Point pPoint)
+	public boolean contains(Point pPoint) 
 	{
-		return getBounds().contains(pPoint);
+		return false;
 	}
+
+	@Override
+	public Point getConnectionPoint(Direction pDirection) 
+	{
+		return null;
+	}
+
+	@Override
+	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) {}
 }

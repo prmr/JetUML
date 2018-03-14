@@ -20,12 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
-import javafx.scene.canvas.GraphicsContext;
 
 
 //TODO: TO BE COMPLETED
@@ -39,39 +34,12 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class CallNodeView2 extends RectangleBoundedNodeView2
 {
-	private static final int DEFAULT_WIDTH = 16;
-	private static final int DEFAULT_HEIGHT = 30;
-	
 	/**
-	 * @param pNode The node to wrap.
+	 * @param pNode a node
 	 */
-	public CallNodeView2(CallNode pNode)
+	public CallNodeView2(CallNode pNode) 
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode, 0, 0);
 	}
 	
-	@Override
-	public void setBounds(Rectangle pNewBounds)
-	{
-		super.setBounds(pNewBounds);
-	}
-	
-	@Override
-	public void draw(GraphicsContext pGraphics) {}
-	
-	@Override
-	public void layout(Graph2 pGraph) {}
-
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		if(pDirection.getX() > 0)
-		{
-			return new Point(getBounds().getMaxX(), getBounds().getY());
-		}
-		else
-		{
-			return new Point(getBounds().getX(), getBounds().getY());
-		}
-	}
 }

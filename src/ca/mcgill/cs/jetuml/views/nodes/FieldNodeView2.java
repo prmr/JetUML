@@ -20,13 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph2;
-import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import javafx.scene.canvas.GraphicsContext;
+import ca.mcgill.cs.jetuml.graph.Node;
 
 
 //TODO: TO BE COMPLETED
@@ -40,84 +34,12 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class FieldNodeView2 extends RectangleBoundedNodeView2
 {
-	private static final String EQUALS = " = ";
-	private static final int DEFAULT_WIDTH = 60;
-	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	
 	/**
-	 * @param pNode The node to wrap.
+	 * @param pNode a node
 	 */
-	public FieldNodeView2(FieldNode pNode)
+	public FieldNodeView2(Node pNode) 
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode, 0, 0);
 	}
-	
-	private String name()
-	{
-		return ((FieldNode)node()).getName();
-	}
-	
-	private String value()
-	{
-		return ((FieldNode)node()).getValue();
-	}
-	
-	/**
-	 * @param pNewBounds The new bounds for this node.
-	 */
-	public void setBounds(Rectangle pNewBounds)
-	{
-		super.setBounds(pNewBounds);
-	}
-	
-	@Override
-	public void draw(GraphicsContext pGraphics) {}
-	
-	private int leftWidth()
-	{
-		return NAME_VIEWER.getBounds(name()).getWidth();
-	}
-	
-	private int midWidth()
-	{
-		return EQUALS_VIEWER.getBounds(EQUALS).getWidth();
-	}
-	
-	private int rightWidth()
-	{
-		int rightWidth = VALUE_VIEWER.getBounds(value()).getWidth();
-		if(rightWidth == 0)
-		{
-			rightWidth = DEFAULT_WIDTH / 2;
-		}
-		return rightWidth;
-	}
-	
-	@Override
-	public void layout(Graph2 pGraph)
-	{
-		final int width = leftWidth() + midWidth() + rightWidth();
-		final int height = Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 
-				Math.max(VALUE_VIEWER.getBounds(value()).getHeight(), EQUALS_VIEWER.getBounds(EQUALS).getHeight()));
-		final Rectangle bounds = getBounds();
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), width, height));
-	}
-	
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		Rectangle bounds = getBounds();
-		return new Point((bounds.getMaxX() + bounds.getX() + getAxis()) / 2, bounds.getCenter().getY());
-	}
-	
-	/**
-	 * @return The axis.
-	 */
-	public int getAxis()
-	{
-		return leftWidth() + midWidth() / 2;
-	}
+
 }
