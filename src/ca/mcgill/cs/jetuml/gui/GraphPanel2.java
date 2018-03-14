@@ -86,6 +86,7 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
+	private static final int CANVAS_SCREEN_FACTOR = 2;	// factor to compute maximum canvas size
 	
 	private GraphicsContext aGraphics;
 	private GraphFrame2 aFrame;
@@ -112,7 +113,7 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries, GraphFrame2 pFrame)
 	{
-		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		super(pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR, pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
 		aGraphics = getGraphicsContext2D();
 		aFrame = pFrame;
 		aGraph = pGraph;
@@ -411,7 +412,7 @@ public class GraphPanel2 extends Canvas
 	{
 		aGraphics.setFill(Color.WHITE); 
 		aGraphics.fillRect(0, 0, getWidth(), getHeight());
-		aGraphics.scale(aZoom.factor(), aZoom.factor());
+		aGraphics.setTransform(aZoom.factor(), 0, 0, aZoom.factor(), 0, 0);
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
 		if (!aHideGrid) 

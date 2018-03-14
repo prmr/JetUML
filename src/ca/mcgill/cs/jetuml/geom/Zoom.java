@@ -38,7 +38,7 @@ package ca.mcgill.cs.jetuml.geom;
 public class Zoom
 {
 	private static final double ZOOM_FACTOR_INCREMENT = Math.sqrt(2);
-	private static final int MAX_LEVELS = 3;
+	private static final int MAX_LEVELS = 1;
 	
 	private static final double[] LEVELS = new double[MAX_LEVELS * 2 + 1];
 	
