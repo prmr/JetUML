@@ -50,7 +50,7 @@ public class TestInterfaceNodeView
 	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = new JavaFXLoader();
+		JavaFXLoader loader = JavaFXLoader.instance();
 	}
 	
 	@Before

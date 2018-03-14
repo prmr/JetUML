@@ -73,7 +73,7 @@ public class TestUsageScenariosStateDiagram
 	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = new JavaFXLoader();
+		JavaFXLoader loader = JavaFXLoader.instance();
 	}
 	
 	/**

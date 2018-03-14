@@ -1,5 +1,6 @@
 package ca.mcgill.cs.jetuml;
 
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import javafx.embed.swing.JFXPanel;
 
 /**
@@ -7,6 +8,14 @@ import javafx.embed.swing.JFXPanel;
  * @author Kaylee I. Kutschera
  */
 @SuppressWarnings("unused")
-public final class JavaFXLoader {
-	private static JFXPanel aJFXPanel = new JFXPanel();	
+public class JavaFXLoader {
+	private final static JavaFXLoader INSTANCE = new JavaFXLoader();
+	private static JFXPanel aJFXPanel = new JFXPanel();
+	
+	private JavaFXLoader() {}
+	
+	public static JavaFXLoader instance()
+	{
+		return INSTANCE;
+	}
 }
