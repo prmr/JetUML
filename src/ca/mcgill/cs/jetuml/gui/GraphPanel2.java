@@ -58,6 +58,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -122,8 +123,6 @@ public class GraphPanel2 extends Canvas
 		setOnMousePressed(listener);
 		setOnMouseReleased(listener);
 		setOnMouseDragged(listener);
-
-		paintPanel();
 	}
 	
 	@Override
@@ -144,7 +143,7 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(((ScrollPane)getParent().getParent().getParent()).getWidth()-2, aZoom.zoom(bounds.getMaxX()));
+			return Math.max(getScrollPane().getWidth()-2, aZoom.zoom(bounds.getMaxX()));
 		}
 		return pWidth;
 	}
@@ -155,7 +154,7 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(((ScrollPane)getParent().getParent().getParent()).getHeight()-2, aZoom.zoom(bounds.getMaxY()));
+			return Math.max(getScrollPane().getHeight()-2, aZoom.zoom(bounds.getMaxY()));
 		}
 		return pHeight;
 	}
@@ -176,6 +175,25 @@ public class GraphPanel2 extends Canvas
 	public boolean isResizable()
 	{
 	    return true;
+	}
+	
+	/**
+     * Gets the ScrollPane containing this panel.
+     * Will return null if not yet contained in a ScrollPane.
+     * @return the scroll pane
+	 */
+	public ScrollPane getScrollPane()
+	{
+		if (getParent() != null) 
+		{
+			Parent parent = getParent();
+			while (!(parent instanceof ScrollPane))
+			{
+				parent = parent.getParent();
+			}
+			return (ScrollPane) parent;
+		}
+		return null;
 	}
 	
 	/**
@@ -455,6 +473,10 @@ public class GraphPanel2 extends Canvas
 			aGraphics.setFill(oldFill);
 			aGraphics.setStroke(oldStroke);
 		}      
+		if (getScrollPane() != null)
+		{
+			getScrollPane().requestLayout();
+		}
 	}
 
 	/**
