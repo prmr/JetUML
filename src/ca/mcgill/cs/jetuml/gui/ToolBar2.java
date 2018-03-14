@@ -297,7 +297,6 @@ public class ToolBar2 extends BorderPane
 			synchronizeToolSelection();
 			setCenter(aToolsLayoutEx);
 			setBottom(collapseButton);
-
 		});
 		collapseButton.setOnAction(pEvent -> 
 		{

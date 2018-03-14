@@ -104,25 +104,72 @@ public class GraphPanel2 extends Canvas
 	 * Constructs the panel, assigns the graph to it, and registers
 	 * the panel as a listener for the graph.
 	 * 
-	 * @param pGraph The graph managed by this panel.
-	 * @param pSideBar the Side Bar which contains all of the tools for nodes and edges.
-	 * @param pFrame the GraphFrame containing this GraphPanel 
+	 * @param pGraph the graph managed by this panel.
+	 * @param pSideBar the ToolBar which contains all of the tools for nodes and edges.
+	 * @param pScreenBoundaries the boundaries of the users screen. 
+	 * @param pFrame the GraphFrame containing this GraphPanel.
 	 */
-	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, GraphFrame2 pFrame)
+	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries, GraphFrame2 pFrame)
 	{
+		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
 		aGraphics = getGraphicsContext2D();
 		aFrame = pFrame;
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 
-		
 		GraphPanelMouseListener listener = new GraphPanelMouseListener();
 		setOnMousePressed(listener);
 		setOnMouseReleased(listener);
 		setOnMouseDragged(listener);
 
-		resize(0, 0);
+		paintPanel();
+	}
+	
+	@Override
+	public double minWidth(double pWidth)
+	{
+		return 0;
+	}
+	
+	@Override
+	public double minHeight(double pHeight)
+	{
+		return 0;
+	}
+	
+	@Override
+	public double prefWidth(double pWidth)
+	{
+		if (getParent() != null)
+		{
+			Rectangle bounds = aGraph.getBounds();
+			return Math.max(((ScrollPane)getParent().getParent().getParent()).getWidth()-2, aZoom.zoom(bounds.getMaxX()));
+		}
+		return pWidth;
+	}
+	
+	@Override
+	public double prefHeight(double pHeight)
+	{
+		if (getParent() != null)
+		{
+			Rectangle bounds = aGraph.getBounds();
+			return Math.max(((ScrollPane)getParent().getParent().getParent()).getHeight()-2, aZoom.zoom(bounds.getMaxY()));
+		}
+		return pHeight;
+	}
+	
+	@Override
+	public double maxWidth(double pWidth)
+	{
+		return Double.MAX_VALUE;
+	}
+	
+	@Override
+	public double maxHeight(double pHeight)
+	{
+		return Double.MAX_VALUE;
 	}
 
 	@Override
@@ -305,7 +352,7 @@ public class GraphPanel2 extends Canvas
 	public void undo()
 	{
 		aUndoManager.undoCommand();
-		resize(0, 0);
+		paintPanel();
 	}
 	
 	/**
@@ -316,7 +363,7 @@ public class GraphPanel2 extends Canvas
 	public void redo()
 	{
 		aUndoManager.redoCommand();
-		resize(0, 0);
+		paintPanel();
 	}
 	
 	/**
@@ -430,31 +477,13 @@ public class GraphPanel2 extends Canvas
 	}
 	
 	/**
-	 * Adjusts layout bounds based on the ScrollPane bounds and aGraph bounds, and repaints the node.
-	 * @param pWidth unused
-	 * @param pHeight unused
-	 */
-	@Override
-	public void resize(double pWidth, double pHeight) 
-	{
-		Rectangle bounds = aGraph.getBounds();
-		try 
-		{
-			setWidth(Math.max(((ScrollPane)getParent().getParent().getParent()).getWidth(), aZoom.zoom(bounds.getMaxX())));
-			setHeight(Math.max(((ScrollPane)getParent().getParent().getParent()).getHeight(), aZoom.zoom(bounds.getMaxY())));
-		}
-		catch(NullPointerException e) {}
-		paintPanel();
-	}
-	
-	/**
 	 * Increase the zoom level of this panel
 	 * by one step.
 	 */
 	public void zoomIn()
 	{
 		aZoom.increaseLevel();
-		resize(0, 0);
+		paintPanel();
 	}
 	
 	/**
@@ -464,7 +493,7 @@ public class GraphPanel2 extends Canvas
 	public void zoomOut()
 	{
 		aZoom.decreaseLevel();
-		resize(0, 0);
+		paintPanel();
 	}
 
 	/**
@@ -750,7 +779,7 @@ public class GraphPanel2 extends Canvas
 			Point point = getMousePoint(pEvent);
 			aLastMousePoint = new Point(point.getX(), point.getY()); 
 			aMouseDownPoint = aLastMousePoint;
-			resize(0, 0);
+			paintPanel();
 		}
 
 		public void mouseReleased(MouseEvent pEvent)
@@ -778,7 +807,7 @@ public class GraphPanel2 extends Canvas
 				}
 			}
 			aDragMode = DragMode.DRAG_NONE;
-			resize(0, 0);
+			paintPanel();
 		}
 		
 		public void mouseDragged(MouseEvent pEvent)

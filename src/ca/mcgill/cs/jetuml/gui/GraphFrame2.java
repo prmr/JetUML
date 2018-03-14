@@ -29,6 +29,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 
 /**
  *A frame for showing a graphical editor.
@@ -50,8 +51,8 @@ public class GraphFrame2 extends Tab
 	{
 		aTabbedPane = pTabbedPane;
 		ToolBar2 sideBar = new ToolBar2(pGraph);
-		aPanel = new GraphPanel2(pGraph, sideBar, this);
-		aPanel.resize(0, 0);
+		aPanel = new GraphPanel2(pGraph, sideBar, Screen.getPrimary().getVisualBounds(), this);
+		aPanel.paintPanel();
 		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
