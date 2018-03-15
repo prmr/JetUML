@@ -48,6 +48,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	protected AbstractEdge()
 	{
 		aView = generateView();
+		aView2 = generateView2();
 	}
 	
 	@Override
