@@ -51,7 +51,7 @@ public class GraphFrame2 extends Tab
 	{
 		aTabbedPane = pTabbedPane;
 		ToolBar2 sideBar = new ToolBar2(pGraph);
-		aPanel = new GraphPanel2(pGraph, sideBar, Screen.getPrimary().getVisualBounds(), this);
+		aPanel = new GraphPanel2(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
 		BorderPane layout = new BorderPane();

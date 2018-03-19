@@ -64,6 +64,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -89,7 +91,6 @@ public class GraphPanel2 extends Canvas
 	private static final int CANVAS_SCREEN_FACTOR = 2;	// factor to compute maximum canvas size
 	
 	private GraphicsContext aGraphics;
-	private GraphFrame2 aFrame;
 	private Graph2 aGraph;
 	private ToolBar2 aSideBar;
 	private Zoom aZoom = new Zoom();	
@@ -109,13 +110,11 @@ public class GraphPanel2 extends Canvas
 	 * @param pGraph the graph managed by this panel.
 	 * @param pSideBar the ToolBar which contains all of the tools for nodes and edges.
 	 * @param pScreenBoundaries the boundaries of the users screen. 
-	 * @param pFrame the GraphFrame containing this GraphPanel.
 	 */
-	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries, GraphFrame2 pFrame)
+	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR, pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
 		aGraphics = getGraphicsContext2D();
-		aFrame = pFrame;
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
@@ -542,12 +541,24 @@ public class GraphPanel2 extends Canvas
 		}
 	}
 	
-	/* 
+	/** 
 	 * Obtains the parent frame of this panel through the component hierarchy.
 	 */
 	private GraphFrame2 getFrame()
 	{
-		return aFrame;
+		Parent parent = getScrollPane();
+		while (!(parent instanceof TabPane))
+		{
+			parent = parent.getParent();
+		}
+		for (Tab tab : ((TabPane) parent).getTabs())
+		{
+			if (tab instanceof GraphFrame2 && tab.getContent() == getScrollPane().getParent())
+			{
+				return (GraphFrame2) tab;
+			}
+		}
+		return null;
 	}
    
 	/**
