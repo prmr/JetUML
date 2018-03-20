@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
@@ -534,17 +535,20 @@ public class GraphPanel2 extends Canvas
 	public void setModified(boolean pModified)
 	{
 		aModified = pModified;
-		GraphFrame2 graphFrame = getFrame();
-		if (graphFrame != null)
+		Optional<GraphFrame2> graphFrame = getFrame();
+		if (graphFrame.isPresent())
 		{
-			graphFrame.setTitle(aModified);
+			graphFrame.get().setTitle(aModified);
 		}
 	}
 	
 	/** 
 	 * Obtains the parent frame of this panel through the component hierarchy.
+	 * 
+	 * getFrame().isPresent() will be false if panel not yet added to its parent 
+	 * frame, for example if it is called in the constructor of this panel.
 	 */
-	private GraphFrame2 getFrame()
+	private Optional<GraphFrame2> getFrame()
 	{
 		Parent parent = getScrollPane();
 		while (!(parent instanceof TabPane))
@@ -555,10 +559,10 @@ public class GraphPanel2 extends Canvas
 		{
 			if (tab instanceof GraphFrame2 && tab.getContent() == getScrollPane().getParent())
 			{
-				return (GraphFrame2) tab;
+				return Optional.of((GraphFrame2) tab);
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
    
 	/**
