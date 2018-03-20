@@ -23,10 +23,11 @@ package ca.mcgill.cs.jetuml.graph.edges;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 
@@ -36,6 +37,16 @@ public class TestNoteEdge
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
 	private ClassDiagramGraph aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()

@@ -28,15 +28,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
@@ -73,6 +72,16 @@ public class TestUsageScenariosClassDiagram
 	private AssociationEdge aAssociationEdge = new AssociationEdge();
 	private DependencyEdge aDependencyEdge = new DependencyEdge();
 	private GeneralizationEdge aGeneralizationEdge = new GeneralizationEdge();
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()

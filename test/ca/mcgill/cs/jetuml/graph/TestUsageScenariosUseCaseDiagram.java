@@ -26,8 +26,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -63,6 +65,16 @@ public class TestUsageScenariosUseCaseDiagram
 	private UseCaseAssociationEdge aAssociationEdge;
 	private UseCaseDependencyEdge aDependencyEdge;
 	private UseCaseGeneralizationEdge aGeneralEdge;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	/**
 	 * General setup.

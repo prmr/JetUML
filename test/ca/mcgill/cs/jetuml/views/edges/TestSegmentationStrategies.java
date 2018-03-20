@@ -25,8 +25,10 @@ import static org.junit.Assert.assertEquals;
 import java.awt.geom.Point2D;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
@@ -46,6 +48,16 @@ public class TestSegmentationStrategies
 	private ClassNode aNode4;
 	private PackageNode aNode5;
 	private ClassDiagramGraph aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()

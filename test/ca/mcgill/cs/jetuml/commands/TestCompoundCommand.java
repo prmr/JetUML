@@ -28,13 +28,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
-import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
-import ca.mcgill.cs.jetuml.commands.MoveCommand;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -65,8 +62,18 @@ public class TestCompoundCommand
     private CompoundCommand aCompoundCommand3;
     private CompoundCommand aCompoundCommand4;
     
+    /**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+    
     @Before
-    public void setUp() throws Exception
+    public void setup() throws Exception
     {
         aGraph = new ClassDiagramGraph();
         aClassNode = new ClassNode();

@@ -29,8 +29,10 @@ import java.awt.image.BufferedImage;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
@@ -40,6 +42,16 @@ public class TestClassViewNode
 	private ClassNode aNode1;
 	private Graphics2D aGraphics;
 	private ClassDiagramGraph aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()

@@ -28,8 +28,10 @@ import static org.junit.Assert.assertSame;
 
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
@@ -37,6 +39,16 @@ import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 public class TestJsonEncodingClassDiagram
 {
 	private ClassDiagramGraph aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()

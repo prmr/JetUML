@@ -23,8 +23,10 @@ package ca.mcgill.cs.jetuml.graph.edges;
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 
 /**
  * Abstract edge in the new hierarchy.
@@ -34,9 +36,11 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 {
 	protected EdgeView aView;
+	protected EdgeView2 aView2;
 	private Node aStart;
 	private Node aEnd;
 	private Graph aGraph;
+	private Graph2 aGraph2;
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this edge.
@@ -44,6 +48,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	protected AbstractEdge()
 	{
 		aView = generateView();
+		aView2 = generateView2();
 	}
 	
 	@Override
@@ -53,6 +58,15 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 		aStart = pStart;
 		aEnd = pEnd;
 		aGraph = pGraph;		
+	}
+	
+	@Override
+	public void connect2(Node pStart, Node pEnd, Graph2 pGraph)
+	{
+		assert pStart != null && pEnd != null;
+		aStart = pStart;
+		aEnd = pEnd;
+		aGraph2 = pGraph;		
 	}
 
 	@Override
@@ -72,6 +86,12 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	{
 		return aGraph;
 	}
+	
+	@Override
+	public Graph2 getGraph2()
+	{
+		return aGraph2;
+	}
 
 	/**
 	 * Generates a view for this edge. Because of cloning, this cannot
@@ -82,11 +102,21 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	 */
 	protected abstract EdgeView generateView();
 	
+	/**
+	 * Generates a view for this edge. Because of cloning, this cannot
+	 * be done in the constructor, because when an edge is clone a new 
+	 * wrapper view must be produced for the clone.
+	 * 
+	 * @return The view that wraps this edge.
+	 */
+	protected abstract EdgeView2 generateView2();
+	
 	@Override
 	public AbstractEdge clone()
 	{
 		AbstractEdge clone = (AbstractEdge) super.clone();
 		clone.aView = clone.generateView();
+		clone.aView2 = clone.generateView2();
 		return clone;
 	}
 	
@@ -94,6 +124,12 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	public EdgeView view()
 	{
 		return aView;
+	}
+	
+	@Override
+	public EdgeView2 view2()
+	{
+		return aView2;
 	}
 	
 	@Override

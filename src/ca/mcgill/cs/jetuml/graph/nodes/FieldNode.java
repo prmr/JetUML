@@ -23,7 +23,9 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
  *  A field node in an object diagram.
@@ -37,6 +39,12 @@ public class FieldNode extends NamedNode implements ChildNode
 	protected NodeView generateView()
 	{
 		return new FieldNodeView(this);
+	}
+	
+	@Override
+	protected NodeView2 generateView2()
+	{
+		return new FieldNodeView2(this);
 	}
 
 	/**

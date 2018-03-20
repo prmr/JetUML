@@ -32,8 +32,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -69,6 +71,16 @@ import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Test
 	public void testClassDiagram() throws Exception

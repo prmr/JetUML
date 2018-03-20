@@ -23,8 +23,10 @@ package ca.mcgill.cs.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
@@ -50,6 +52,16 @@ import ca.mcgill.cs.jetuml.gui.GraphPanel;
  */
 public class TestUsageScenarios
 {
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass() 
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
 	@Test
 	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{

@@ -21,10 +21,24 @@
 package ca.mcgill.cs.jetuml.persistence;
 
 import org.json.JSONObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 
 public class TestJsonDecoder
 {
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
 	/*
 	 * Try to decode a valid but empty
 	 * JSON object.

@@ -20,15 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -41,8 +43,18 @@ public class TestAddEdgeCommandTest
     private Edge aEdge;
     private AddEdgeCommand aAddEdgeCommand;
 
+    /**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+    
     @Before
-    public void setUp() throws Exception 
+    public void setup() throws Exception 
     {
         aGraph = new ClassDiagramGraph();
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
