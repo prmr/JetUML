@@ -82,7 +82,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		super(pEdge);
 		aLabel = ((StateTransitionEdge) edge()).getMiddleLabel();
 	}
-	
+
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
@@ -161,8 +161,8 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	private void drawSelfEdge(GraphicsContext pGraphics)
 	{
 		Arc arc = (Arc) getShape();
-			pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
-					arc.getLength(), arc.getType());
+		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
+				arc.getLength(), arc.getType());
 	}
 	
 	private Rectangle2D getLabelBounds()
@@ -178,7 +178,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	}
 	
 	/*
-	 *  Gets the bounds of the label text .
+	 * Gets the bounds of the label text.
 	 * @return the bounds of the label text
 	 */
 	private Rectangle2D getNormalEdgeLabelBounds()
@@ -189,14 +189,14 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
 		adjustLabelFont();
-		Rectangle dimension = getLabelBounds(aLabel);
+		Rectangle bounds = getLabelBounds(aLabel);
 
 		int gap = 3;
 		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
 				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
 		{
 			// The label is centered if the edge is (mostly) horizontal
-			x -= dimension.getWidth() / 2;
+			x -= bounds.getWidth() / 2;
 		}
 		else if( line.getY1() <= line.getY2() )
 		{
@@ -204,12 +204,12 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		}
 		else
 		{
-			x -= dimension.getWidth() + gap;
+			x -= bounds.getWidth() + gap;
 		}
 		
 		if( line.getX1() <= line.getX2() )
 		{
-			y -= dimension.getHeight() + gap;
+			y -= bounds.getHeight() + gap;
 		}
 		else
 		{
@@ -220,7 +220,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		if( edge().getGraph() != null && getPosition() > 1 )
 		{
 			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
-			delta = dimension.getHeight() - delta*RADIANS_TO_PIXELS;
+			delta = bounds.getHeight() - delta*RADIANS_TO_PIXELS;
 			if( line.getX1() <= line.getX2() )
 			{
 				y -= delta;
@@ -230,14 +230,14 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 				y += delta;
 			}
 		}
-		return new Rectangle2D(x, y, dimension.getWidth(), dimension.getHeight());
+		return new Rectangle2D(x, y, bounds.getWidth(), bounds.getHeight());
 }   
 	
 	/*
-  * Positions the label above the self edge, centered
-  * in the middle of it.
-  * @return the bounds of the label text
-  */
+	 * Positions the label above the self edge, centered
+	 * in the middle of it.
+	 * @return the bounds of the label text
+	 */
 	private Rectangle2D getSelfEdgeLabelBounds()
 	{
 		Line line = getConnectionPoints();
@@ -306,25 +306,21 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	{
 		Line line = getSelfEdgeConnectionPoints();
 		Arc arc = new Arc();
+		arc.setRadiusX(SELF_EDGE_OFFSET*2);
+		arc.setRadiusY(SELF_EDGE_OFFSET*2);
+		arc.setLength(DEGREES_270);
+		arc.setType(ArcType.OPEN);
 		if( getPosition() == 1 )
 		{
 			arc.setCenterX(line.getX1());
 			arc.setCenterY(line.getY1()-SELF_EDGE_OFFSET);
-			arc.setRadiusX(SELF_EDGE_OFFSET*2);
-			arc.setRadiusY(SELF_EDGE_OFFSET*2);
 			arc.setStartAngle(DEGREES_270);
-			arc.setLength(DEGREES_270);
-			arc.setType(ArcType.OPEN);
 		}
 		else
 		{		
 			arc.setCenterX(line.getX1()-SELF_EDGE_OFFSET);
 			arc.setCenterY(line.getY1()-SELF_EDGE_OFFSET*2);
-			arc.setRadiusX(SELF_EDGE_OFFSET*2);
-			arc.setRadiusY(SELF_EDGE_OFFSET*2);
 			arc.setStartAngle(1);
-			arc.setLength(DEGREES_270);
-			arc.setType(ArcType.OPEN);
 		}
 		return arc;
 	}
@@ -457,5 +453,4 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
 		return new Line(edge().getStart().view2().getConnectionPoint(d1), edge().getEnd().view2().getConnectionPoint(d2));
 	}
-	
 }

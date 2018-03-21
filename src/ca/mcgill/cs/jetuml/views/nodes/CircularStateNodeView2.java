@@ -51,7 +51,7 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 		super(pNode);
 		aFinal = pFinal;
 	}
-	
+
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
@@ -61,16 +61,14 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 		pGraphics.setLineWidth(STROKE_WIDTH);
 		pGraphics.setFill(Color.BLACK);
 		if(aFinal)
-      	{
+		{
       		pGraphics.fillOval(node().position().getX() + DEFAULT_GAP, 
       				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);
-      		pGraphics.strokeOval(node().position().getX(), node().position().getY(), 
-    				DIAMETER, DIAMETER);
+      		pGraphics.strokeOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
       	}
 		else
 		{
-			pGraphics.fillOval(node().position().getX(), node().position().getY(), 
-				DIAMETER, DIAMETER);
+			pGraphics.fillOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
 		}      
 		pGraphics.setFill(oldFill);
 		pGraphics.setLineWidth(oldLineWidth);
@@ -97,12 +95,6 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 			return new Point((int) Math.round(cx), (int) Math.round(cy));
 		}
 	}   	 
-	
-//	@Override
-//	public Shape getShape()
-//	{
-//		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-//	}
 
 	@Override
 	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
