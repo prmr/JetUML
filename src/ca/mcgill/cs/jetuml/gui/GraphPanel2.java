@@ -856,7 +856,7 @@ public class GraphPanel2 extends Canvas
 			if (aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
 			{               
 				Node lastNode = aSelectedElements.getLastNode();
-				Rectangle bounds = lastNode.view().getBounds();
+				Rectangle bounds = lastNode.view2().getBounds();
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
 				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
                    
@@ -868,7 +868,7 @@ public class GraphPanel2 extends Canvas
 					if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						bounds = bounds.add(n.view().getBounds());
+						bounds = bounds.add(n.view2().getBounds());
 					}
 				}
 				dx = Math.max(dx, -bounds.getX());
@@ -905,11 +905,11 @@ public class GraphPanel2 extends Canvas
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
 				for (Edge edge: aGraph.getEdges())
 				{
-					if (!isCtrl && !lasso.contains(edge.view().getBounds()))
+					if (!isCtrl && !lasso.contains(edge.view2().getBounds()))
 					{
 						aSelectedElements.remove(edge);
 					}
-					else if (lasso.contains(edge.view().getBounds()))
+					else if (lasso.contains(edge.view2().getBounds()))
 					{
 						if (aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
 						{
@@ -924,11 +924,11 @@ public class GraphPanel2 extends Canvas
 		
 		private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
 		{
-			if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
+			if (!pCtrl && !pLasso.contains(pNode.view2().getBounds())) 
 			{
 				aSelectedElements.remove(pNode);
 			}
-			else if (pLasso.contains(pNode.view().getBounds())) 
+			else if (pLasso.contains(pNode.view2().getBounds())) 
 			{
 				aSelectedElements.add(pNode);
 			}
