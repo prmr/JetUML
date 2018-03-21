@@ -52,6 +52,7 @@ import javafx.scene.text.TextAlignment;
  * An edge view specialized for state transitions.
  * 
  * @author Martin P. Robillard
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class StateTransitionEdgeView2 extends AbstractEdgeView2
 {
@@ -71,7 +72,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	private static final int VERTICAL_TOLERANCE = 20; 
 
 	private Font aFont = Font.getDefault();
-	private String aText;
+	private String aLabel;
 	
 	/**
 	 * @param pEdge The edge to wrap.
@@ -79,13 +80,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	public StateTransitionEdgeView2(StateTransitionEdge pEdge)
 	{
 		super(pEdge);
-		aText = edge().getMiddleLabel();
-	}
-	
-	@Override
-	public StateTransitionEdge edge() // fix when edge hierarchy final
-	{
-		return (StateTransitionEdge)super.edge();
+		aLabel = ((StateTransitionEdge) edge()).getMiddleLabel();
 	}
 	
 	@Override
@@ -96,8 +91,6 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
 		double oldMiter = pGraphics.getMiterLimit();
 		double[] oldDashes = pGraphics.getLineDashes();
-		
-		
 		if (isSelfEdge())
 		{
 			pGraphics.setStroke(Color.BLACK);
@@ -109,7 +102,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 			pGraphics.setStroke(Color.BLACK);
 			completeDrawPath(pGraphics, (Path) getShape());
 		}
-		drawText(pGraphics);
+		drawLabel(pGraphics);
 		drawArrowHead(pGraphics);
 		
 		pGraphics.setStroke(oldStroke);
@@ -127,20 +120,17 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 			if( getPosition() == 1 )
 			{
 				ArrowHead.V.view2().draw(pGraphics, new Point2D(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), 
-						Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
+						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
 			}
 			else
 			{
 				ArrowHead.V.view2().draw(pGraphics, new Point2D(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET), 
-						Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
+						connectionPoint2.getY()-SELF_EDGE_OFFSET), Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
 			}
 		}
 		else
 		{
-			ArrowHead.V.view2().draw(pGraphics, getControlPoint(), 
-					Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
+			ArrowHead.V.view2().draw(pGraphics, getControlPoint(), Conversions2.toPoint2D(getConnectionPoints().getPoint2()));
 		}
 	}
 	
@@ -148,9 +138,9 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	 *  Draws the label.
 	 *  @param pGraphics2D the graphics context
 	 */
-	private void drawText(GraphicsContext pGraphics)
+	private void drawLabel(GraphicsContext pGraphics)
 	{
-		aText = edge().getMiddleLabel();
+		aLabel = ((StateTransitionEdge) edge()).getMiddleLabel();
 		adjustLabelFont();
 		Rectangle2D labelBounds = getLabelBounds();
 		double x = labelBounds.getMinX();
@@ -162,7 +152,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		pGraphics.setFill(Color.BLACK);
 		pGraphics.setFont(aFont);
 		pGraphics.setTextAlign(TextAlignment.CENTER);
-		pGraphics.fillText(aText, labelBounds.getWidth()/2, 0);
+		pGraphics.fillText(aLabel, labelBounds.getWidth()/2, 0);
 		pGraphics.setFill(oldFill);
 		pGraphics.setFont(oldFont);
 		pGraphics.translate(-x, -y);        
@@ -188,9 +178,9 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	}
 	
 	/*
-  *  Gets the bounds of the label text .
-  * @return the bounds of the label text
-  */
+	 *  Gets the bounds of the label text .
+	 * @return the bounds of the label text
+	 */
 	private Rectangle2D getNormalEdgeLabelBounds()
 	{
 		Line line = getConnectionPoints();
@@ -199,7 +189,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
 		adjustLabelFont();
-		Rectangle dimension = getTextBounds(aText);
+		Rectangle dimension = getLabelBounds(aLabel);
 
 		int gap = 3;
 		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
@@ -252,7 +242,7 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	{
 		Line line = getConnectionPoints();
 		adjustLabelFont();
-		Rectangle dimension = getTextBounds(aText);
+		Rectangle dimension = getLabelBounds(aLabel);
 		if( getPosition() == 1 )
 		{
 			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - dimension.getWidth()/2,	
@@ -267,30 +257,28 @@ public class StateTransitionEdgeView2 extends AbstractEdgeView2
 	
 	/**
      * Gets the bounding rectangle for pString.
-     * @param pText The input string. Cannot be null.
+     * @param pString The input string. Cannot be null.
      * @return the bounding rectangle (with top left corner (0,0))
-     * @pre pString != null.
 	 */
-	public Rectangle getTextBounds(String pText)
+	public Rectangle getLabelBounds(String pString)
 	{
-		assert pText != null;
-		if(pText.length() == 0) 
+		if(pString == null || pString.length() == 0) 
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
-		int width = (int) Math.round(fontLoader.computeStringWidth(pText, aFont));
+		int width = (int) Math.round(fontLoader.computeStringWidth(pString, aFont));
 		int height = (int) Math.round(fontMetrics.getLineHeight());
 		return new Rectangle(0, 0, width, height);
 	}
 	
 	private void adjustLabelFont()
 	{
-		if(edge().getMiddleLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
+		if(((StateTransitionEdge) edge()).getMiddleLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
 		{
-			float difference = edge().getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
-			difference = difference / (2*edge().getMiddleLabel().length()); // damping
+			float difference = ((StateTransitionEdge) edge()).getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
+			difference = difference / (2*((StateTransitionEdge) edge()).getMiddleLabel().length()); // damping
 			double newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * aFont.getSize());
 			aFont = new Font(aFont.getName(), newFontSize);
 		}
