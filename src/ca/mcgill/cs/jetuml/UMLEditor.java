@@ -32,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
@@ -113,6 +114,7 @@ public final class UMLEditor extends Application
 		frame.addGraphType("state_diagram", StateDiagramGraph.class);
 	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
 	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+	    frame.addGraphType("state_diagram_2", StateDiagramGraph2.class);
 	    frame.addGraphType("usecase_diagram_2", UseCaseDiagramGraph2.class);
 		frame.readArgs(arguments);
 		frame.addWelcomeTab();

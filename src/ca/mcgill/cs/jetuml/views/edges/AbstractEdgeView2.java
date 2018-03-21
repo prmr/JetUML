@@ -42,7 +42,7 @@ import javafx.scene.shape.Shape;
  */
 public abstract class AbstractEdgeView2 implements EdgeView2
 {
-	private static final int MAX_DISTANCE = 3;
+	protected static final int MAX_DISTANCE = 3;
 	private static final int DEGREES_180 = 180;
 	
 	private Edge aEdge;
@@ -67,16 +67,26 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	 */
 	protected void completeDrawPath(GraphicsContext pGraphics, Path pPath)
 	{
+//		double lastX = 0;
+//		double lastY = 0;
 		for (PathElement element : pPath.getElements())
 		{
 			if (element instanceof MoveTo)
 			{
+//				lastX = ((MoveTo) element).getX();
+//				lastY = ((MoveTo) element).getY();
 				pGraphics.moveTo(((MoveTo) element).getX(), ((MoveTo) element).getY());
 			}
 			else if (element instanceof LineTo)
 			{
 				pGraphics.lineTo(((LineTo) element).getX(), ((LineTo) element).getY());
 			}
+//			else if (element instanceof ArcTo)
+//			{
+//				ArcTo arc = (ArcTo) element;
+//				pGraphics.moveTo();
+//				pGraphics.arcTo(lastX, lastY, arc.getX(), arc.getY(), arc.getRadiusX());
+//			}
 			else if (element instanceof QuadCurveTo)
 			{
 				QuadCurveTo curve = (QuadCurveTo) element;
@@ -111,7 +121,7 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	@Override
 	public Rectangle getBounds()
 	{
-		Bounds bounds = getShape().getBoundsInLocal();	// may need to fix
+		Bounds bounds = getShape().getBoundsInLocal();
 		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	

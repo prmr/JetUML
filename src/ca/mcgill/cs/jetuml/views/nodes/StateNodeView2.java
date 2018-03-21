@@ -20,11 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.graph.Node;
-
-
-//TODO: TO BE COMPLETED
-
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
+import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a StateNode.
@@ -34,12 +35,57 @@ import ca.mcgill.cs.jetuml.graph.Node;
  */
 public class StateNodeView2 extends RectangleBoundedNodeView2
 {
+	private static final int DEFAULT_WIDTH = 80;
+	private static final int DEFAULT_HEIGHT = 60;
+	private static final int ARC_SIZE = 20;
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
+	
 	/**
-	 * @param pNode a node
+	 * @param pNode The node to wrap.
 	 */
-	public StateNodeView2(Node pNode) 
+	public StateNodeView2(StateNode pNode)
 	{
-		super(pNode, 0, 0);
+		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
+	private String name()
+	{
+		return ((StateNode)node()).getName();
+	}
+	
+	@Override
+	public void draw(GraphicsContext pGraphics)
+	{
+		super.draw(pGraphics);
+		NAME_VIEWER.draw(name(), pGraphics, getBounds());
+	}
+	
+	
+	@Override
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	{
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+			pGraphics.strokeRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		}	
+	}
+	
+	@Override	
+	public void layout(Graph2 pGraph)
+	{
+		Rectangle bounds = NAME_VIEWER.getBounds(name());
+		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
+				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
+		setBounds(Grid.snapped(bounds));
+	}
 }

@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.io.File;
 
+import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import javafx.scene.control.ScrollPane;
@@ -127,6 +128,10 @@ public class GraphFrame2 extends Tab
 			if (graphType instanceof UseCaseDiagramGraph2)
 			{
 				setText("Use Case Diagram 2");
+			} 
+			else if (graphType instanceof StateDiagramGraph2)
+			{
+				setText("State Diagram 2");
 			} 
 			else 
 			{
