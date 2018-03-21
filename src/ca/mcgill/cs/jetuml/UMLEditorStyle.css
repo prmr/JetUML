@@ -16,13 +16,13 @@
 
 .welcome-tab .label
 {
-	-fx-font: 25pt "Arial";
+	-fx-font: 20pt "Arial";
 
 } 
 .welcome-tab .button
 {
 	-fx-background-color: transparent;
-	-fx-font: 25pt "Arial";
+	-fx-font: 20pt "Arial";
 }
 
 .welcome-tab .button:hover
@@ -38,5 +38,5 @@
 
 .welcome-tab .footer .label
 {
-	-fx-font: 15pt "Arial";
+	-fx-font: 10pt "Arial";
 }
