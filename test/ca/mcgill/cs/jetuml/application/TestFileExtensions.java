@@ -16,7 +16,7 @@ public class TestFileExtensions
 	public void testGetAll() 
 	{
 		List<ExtensionFilter> filters = FileExtensions.getAll();
-		assertEquals(8, filters.size());
+		assertEquals(9, filters.size());
 		for(ExtensionFilter filter : filters) 
 		{
 			assertNotNull(filter);
