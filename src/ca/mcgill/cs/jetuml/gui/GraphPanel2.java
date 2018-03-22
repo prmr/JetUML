@@ -103,6 +103,8 @@ public class GraphPanel2 extends Canvas
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker2 aMoveTracker = new MoveTracker2();
+	private final int aMaxWidth;
+	private final int aMaxHeight;
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -115,6 +117,8 @@ public class GraphPanel2 extends Canvas
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR, pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
+		aMaxWidth = (int) (pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR);
+		aMaxHeight = (int) (pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
 		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
@@ -163,13 +167,13 @@ public class GraphPanel2 extends Canvas
 	@Override
 	public double maxWidth(double pWidth)
 	{
-		return Double.MAX_VALUE;
+		return aMaxWidth;
 	}
 	
 	@Override
 	public double maxHeight(double pHeight)
 	{
-		return Double.MAX_VALUE;
+		return aMaxHeight;
 	}
 
 	@Override
@@ -473,11 +477,29 @@ public class GraphPanel2 extends Canvas
 			aGraphics.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
 			aGraphics.setFill(oldFill);
 			aGraphics.setStroke(oldStroke);
-		}      
+		} 
+		drawBorder();
+		
 		if (getScrollPane() != null)
 		{
 			getScrollPane().requestLayout();
 		}
+	}
+	
+	/**
+	 * Draws black border on the right-most and 
+	 * bottom-most edges of the panel.
+	 */
+	public void drawBorder() 
+	{
+		Paint oldStroke = aGraphics.getStroke();
+		double oldLineWidth = aGraphics.getLineWidth();
+		aGraphics.setStroke(Color.BLACK);
+		aGraphics.setLineWidth(4);
+		aGraphics.strokeLine(aMaxWidth, 0, aMaxWidth, aMaxHeight);
+		aGraphics.strokeLine(0, aMaxHeight, aMaxWidth, aMaxHeight);
+		aGraphics.setStroke(oldStroke);
+		aGraphics.setLineWidth(oldLineWidth);
 	}
 
 	/**
@@ -746,7 +768,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY())); 
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aMaxWidth, aMaxHeight); 
 			if (added)
 			{
 				setModified(true);
@@ -873,6 +895,14 @@ public class GraphPanel2 extends Canvas
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
+				if (bounds.getMaxX() + dx > aMaxWidth)
+				{
+					dx = aMaxWidth - bounds.getMaxX();
+				}
+				if (bounds.getMaxY() + dy > aMaxHeight)
+				{
+					dy = aMaxHeight - bounds.getMaxY();
+				}
             
 				for (GraphElement selected : aSelectedElements)
 				{

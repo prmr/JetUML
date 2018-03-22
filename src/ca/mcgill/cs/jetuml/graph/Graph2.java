@@ -243,12 +243,24 @@ public abstract class Graph2
 	 * 
 	 * @param pNode the node to add
 	 * @param pPoint the desired location
+	 * @param pMaxWidth the maximum width of the panel
+	 * @param pMaxHeight the maximum height of the panel
 	 * @return True if the node was added.
 	 */
-	public boolean addNode(Node pNode, Point pPoint)
+	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		Rectangle bounds = pNode.view2().getBounds();
-		pNode.translate((int)(pPoint.getX() - bounds.getX()), (int)(pPoint.getY() - bounds.getY())); 
+		int newX = pPoint.getX();
+		int newY = pPoint.getY();
+		if (newX + bounds.getWidth() > pMaxWidth)
+		{
+			newX = pMaxWidth - bounds.getWidth();
+		}
+		if (newY + bounds.getHeight() > pMaxHeight)
+		{
+			newY = pMaxHeight - bounds.getHeight();
+		}
+		pNode.translate((int)(newX - bounds.getX()), (int)(newY - bounds.getY()));
 		if (!(pNode instanceof ChildNode) || ((ChildNode)pNode).getParent() == null)
 		{
 			aRootNodes.add(pNode);
