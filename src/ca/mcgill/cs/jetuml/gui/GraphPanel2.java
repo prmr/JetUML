@@ -496,8 +496,8 @@ public class GraphPanel2 extends Canvas
 		double oldLineWidth = aGraphics.getLineWidth();
 		aGraphics.setStroke(Color.BLACK);
 		aGraphics.setLineWidth(4);
-		aGraphics.strokeLine(aMaxWidth, 0, aMaxWidth, aMaxHeight);
-		aGraphics.strokeLine(0, aMaxHeight, aMaxWidth, aMaxHeight);
+		aGraphics.strokeLine(aZoom.zoom(aMaxWidth), 0, aZoom.zoom(aMaxWidth), aZoom.zoom(aMaxHeight));
+		aGraphics.strokeLine(0, aZoom.zoom(aMaxHeight), aZoom.zoom(aMaxWidth), aZoom.zoom(aMaxHeight));
 		aGraphics.setStroke(oldStroke);
 		aGraphics.setLineWidth(oldLineWidth);
 	}
@@ -700,6 +700,11 @@ public class GraphPanel2 extends Canvas
 			return new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
 		}
 		
+		private Point getSceneMousePoint(MouseEvent pEvent)
+		{
+			return new Point(aZoom.dezoom((int)pEvent.getSceneX()), aZoom.dezoom((int)pEvent.getSceneY()));
+		}
+		
 		/*
 		 * Will return null if nothing is selected.
 		 */
@@ -758,7 +763,7 @@ public class GraphPanel2 extends Canvas
 			}
 			else
 			{
-				Point point = getMousePoint(pEvent);
+				Point point = getSceneMousePoint(pEvent);
 				final Point mousePoint = new Point(point.getX(), point.getY()); 
 				aSideBar.showPopup(GraphPanel2.this, mousePoint);
 			}
@@ -768,7 +773,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aMaxWidth, aMaxHeight); 
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aZoom.zoom(aMaxWidth), aZoom.zoom(aMaxHeight)); 
 			if (added)
 			{
 				setModified(true);
