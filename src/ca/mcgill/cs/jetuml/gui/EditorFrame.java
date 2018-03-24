@@ -331,7 +331,9 @@ public class EditorFrame extends BorderPane
 			}
 			else // instanceof GraphFrame2
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomOut();
+				Alert alert = new Alert(AlertType.ERROR, "Zooming not supported in version 2 diagrams.", ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
 			}
 		}));
 		viewMenu.getItems().add(pFactory.createMenuItem("view.zoom_in", pEvent -> 
@@ -346,7 +348,9 @@ public class EditorFrame extends BorderPane
 			}
 			else // instanceof GraphFrame2
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().zoomIn();
+				Alert alert = new Alert(AlertType.ERROR, "Zooming not supported in version 2 diagrams.", ButtonType.OK);
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
 			}
 		}));
 	
