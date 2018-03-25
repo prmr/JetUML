@@ -89,6 +89,7 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int CANVAS_SCREEN_FACTOR = 2;	// factor to compute maximum canvas size
+	private static final int SCROLL_BAR_THICKNESS = 20;
 	
 	private GraphicsContext aGraphics;
 	private Graph2 aGraph;
@@ -146,7 +147,7 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getWidth()-2, bounds.getMaxX());
+			return Math.max(getScrollPane().getWidth()-SCROLL_BAR_THICKNESS, bounds.getMaxX());
 		}
 		return pWidth;
 	}
@@ -157,7 +158,7 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getHeight()-2, bounds.getMaxY());
+			return Math.max(getScrollPane().getHeight()-SCROLL_BAR_THICKNESS, bounds.getMaxY());
 		}
 		return pHeight;
 	}
@@ -823,7 +824,7 @@ public class GraphPanel2 extends Canvas
 			aMouseDownPoint = aLastMousePoint;
 			paintPanel();
 		}
-
+		
 		public void mouseReleased(MouseEvent pEvent)
 		{
 			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
@@ -858,7 +859,7 @@ public class GraphPanel2 extends Canvas
 			boolean isCtrl = pEvent.isControlDown();
 
 			if (aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
-			{               
+			{
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.view2().getBounds();
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
@@ -893,13 +894,13 @@ public class GraphPanel2 extends Canvas
 						ChildNode n = (ChildNode) selected;
 						if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
 						{
-							n.translate(dx, dy); 
+							n.translate(dx, dy);
 						}	
 					}
 					else if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						n.translate(dx, dy); 
+						n.translate(dx, dy);
 					}
 				}
 			}
@@ -968,7 +969,6 @@ public class GraphPanel2 extends Canvas
 			{
 				mouseDragged(pEvent);
 			}
-			
 		}
 	}
 	
