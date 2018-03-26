@@ -853,6 +853,7 @@ public class GraphPanel2 extends Canvas
 			paintPanel();
 		}
 		
+		// CSOFF:
 		public void mouseDragged(MouseEvent pEvent)
 		{
 			Point mousePoint = getMousePoint(pEvent);
@@ -862,9 +863,18 @@ public class GraphPanel2 extends Canvas
 			{
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.view2().getBounds();
+			
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
 				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
                    
+				// require users mouse to be in the panel when dragging up or to the left
+				// this prevents a disconnect between the user's mouse and the element's position
+				if ((mousePoint.getX() > aMaxWidth || mousePoint.getY() > aMaxHeight) && (dx < 0 || dy < 0))
+				{
+					aLastMousePoint = mousePoint;
+					return;
+				}
+
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
@@ -886,7 +896,6 @@ public class GraphPanel2 extends Canvas
 				{
 					dy = aMaxHeight - bounds.getMaxY();
 				}
-            
 				for (GraphElement selected : aSelectedElements)
 				{
 					if (selected instanceof ChildNode)
@@ -933,7 +942,7 @@ public class GraphPanel2 extends Canvas
 			}
 			aLastMousePoint = mousePoint;
 			paintPanel();
-		}
+		} // CSON:
 		
 		private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
 		{
