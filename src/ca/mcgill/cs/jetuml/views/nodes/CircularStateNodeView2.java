@@ -111,7 +111,7 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 			pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
 		}	
 	}
-	
+
 	@Override
 	public Rectangle getBounds()
 	{

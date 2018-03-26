@@ -824,7 +824,7 @@ public class GraphPanel2 extends Canvas
 			aMouseDownPoint = aLastMousePoint;
 			paintPanel();
 		}
-		
+
 		public void mouseReleased(MouseEvent pEvent)
 		{
 			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
