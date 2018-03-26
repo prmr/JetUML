@@ -866,14 +866,6 @@ public class GraphPanel2 extends Canvas
 			
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
 				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
-                   
-				// require users mouse to be in the panel when dragging up or to the left
-				// this prevents a disconnect between the user's mouse and the element's position
-				if ((mousePoint.getX() > aMaxWidth || mousePoint.getY() > aMaxHeight) && (dx < 0 || dy < 0))
-				{
-					aLastMousePoint = mousePoint;
-					return;
-				}
 
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
