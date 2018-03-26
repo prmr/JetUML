@@ -57,10 +57,7 @@ public class GraphFrame2 extends Tab
 		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
-		ScrollPane scroll = new ScrollPane(aPanel);
-		scroll.setVvalue(1);
-		scroll.setHvalue(1);
-		layout.setCenter(scroll);
+		layout.setCenter(new ScrollPane(aPanel));
 		
 		setTitle(false);
 		setContent(layout);
