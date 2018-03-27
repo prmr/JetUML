@@ -67,7 +67,7 @@ public class ActorNodeView2 extends RectangleBoundedNodeView2
 		return new Rectangle(node().position().getX(), node().position().getY(),
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 	}
-	
+
 	@Override
 	public void layout(Graph2 pGraph)
 	{
@@ -77,7 +77,7 @@ public class ActorNodeView2 extends RectangleBoundedNodeView2
             Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
 		setBounds(Grid.snapped(bounds));
 	}
-	
+
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{	
