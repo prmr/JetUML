@@ -28,8 +28,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -49,6 +51,16 @@ public class TestSelectionList
 	private PackageNode aPackage2; 
 	private PackageNode aPackage3;
 	private SelectionList aList;
+	
+	/**
+	  * Load JavaFX toolkit and environment.
+	  */
+	 @BeforeClass
+	 @SuppressWarnings("unused")
+	 public static void setupClass()
+	 {
+		 JavaFXLoader loader = JavaFXLoader.instance();
+	 }
 	
 	@Before
 	public void setup()

@@ -29,14 +29,26 @@ import java.awt.image.BufferedImage;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestInterfaceNode
 {
 	private InterfaceNode aNode1;
 	private Graphics2D aGraphics;
+	
+	/**
+	  * Load JavaFX toolkit and environment.
+	  */
+	 @BeforeClass
+	 @SuppressWarnings("unused")
+	 public static void setupClass()
+	 {
+		 JavaFXLoader loader = JavaFXLoader.instance();
+	 }
 	
 	@Before
 	public void setup()
