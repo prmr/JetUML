@@ -27,6 +27,7 @@ import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -57,7 +58,10 @@ public class GraphFrame2 extends Tab
 		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
-		layout.setCenter(new ScrollPane(aPanel));
+		ScrollPane scroll = new ScrollPane(aPanel);
+		scroll.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
+		layout.setCenter(scroll);
 		
 		setTitle(false);
 		setContent(layout);

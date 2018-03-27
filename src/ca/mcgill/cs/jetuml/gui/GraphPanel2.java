@@ -88,8 +88,7 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
-	private static final int CANVAS_SCREEN_FACTOR = 2;	// factor to compute maximum canvas size
-	private static final int SCROLL_BAR_THICKNESS = 20;
+	private static final int MINIMUM_WIDTH_OTHER_COMPONENTS = 60;	// minimum width of all other components in the window
 	
 	private GraphicsContext aGraphics;
 	private Graph2 aGraph;
@@ -115,9 +114,9 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR, pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
-		aMaxWidth = (int) (pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR);
-		aMaxHeight = (int) (pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
+		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		aMaxWidth = (int) (pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS);
+		aMaxHeight = (int) (pScreenBoundaries.getHeight());
 		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
@@ -147,18 +146,18 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getWidth()-SCROLL_BAR_THICKNESS, bounds.getMaxX());
+			return Math.max(getScrollPane().getWidth(), bounds.getMaxX());
 		}
 		return pWidth;
 	}
-	
+
 	@Override
 	public double prefHeight(double pHeight)
 	{
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getHeight()-SCROLL_BAR_THICKNESS, bounds.getMaxY());
+			return Math.max(getScrollPane().getHeight(), bounds.getMaxY());
 		}
 		return pHeight;
 	}
@@ -476,28 +475,11 @@ public class GraphPanel2 extends Canvas
 			aGraphics.setFill(oldFill);
 			aGraphics.setStroke(oldStroke);
 		} 
-		drawBorder();
 		
 		if (getScrollPane() != null)
 		{
 			getScrollPane().requestLayout();
 		}
-	}
-	
-	/**
-	 * Draws black border on the right-most and 
-	 * bottom-most edges of the panel.
-	 */
-	public void drawBorder() 
-	{
-		Paint oldStroke = aGraphics.getStroke();
-		double oldLineWidth = aGraphics.getLineWidth();
-		aGraphics.setStroke(Color.BLACK);
-		aGraphics.setLineWidth(4);
-		aGraphics.strokeLine(aMaxWidth, 0, aMaxWidth, aMaxHeight);
-		aGraphics.strokeLine(0, aMaxHeight, aMaxWidth, aMaxHeight);
-		aGraphics.setStroke(oldStroke);
-		aGraphics.setLineWidth(oldLineWidth);
 	}
 
 	/**
@@ -751,7 +733,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aMaxWidth, aMaxHeight); 
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aMaxWidth, aMaxHeight);
 			if (added)
 			{
 				setModified(true);
