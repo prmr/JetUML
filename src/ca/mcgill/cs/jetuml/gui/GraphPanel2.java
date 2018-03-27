@@ -114,7 +114,7 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		super(pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS, pScreenBoundaries.getHeight());
 		aMaxWidth = (int) (pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS);
 		aMaxHeight = (int) (pScreenBoundaries.getHeight());
 		aGraphics = getGraphicsContext2D();
