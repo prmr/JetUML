@@ -29,6 +29,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
@@ -114,6 +115,7 @@ public final class UMLEditor extends Application
 		frame.addGraphType("state_diagram", StateDiagramGraph.class);
 	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
 	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+	    frame.addGraphType("class_diagram_2", ClassDiagramGraph2.class);
 	    frame.addGraphType("state_diagram_2", StateDiagramGraph2.class);
 	    frame.addGraphType("usecase_diagram_2", UseCaseDiagramGraph2.class);
 		frame.readArgs(arguments);
