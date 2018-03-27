@@ -88,8 +88,7 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
-	private static final int MINIMUM_WIDTH_OTHER_COMPONENTS = 60;	// minimum width of all other components in the window
-	private static final int MINIMUM_HEIGHT_OTHER_COMPONENTS = 100;	// minimum height of all other components in the window
+	private static final int VIEWPORT_PADDING = 5;
 	
 	private GraphicsContext aGraphics;
 	private Graph2 aGraph;
@@ -104,6 +103,8 @@ public class GraphPanel2 extends Canvas
 	private final MoveTracker2 aMoveTracker = new MoveTracker2();
 	private final int aMaxWidth;
 	private final int aMaxHeight;
+	private int aViewWidth;
+	private int aViewHeight;
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -115,9 +116,11 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS, pScreenBoundaries.getHeight() - MINIMUM_HEIGHT_OTHER_COMPONENTS);
-		aMaxWidth = (int) (pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS);
-		aMaxHeight = (int) (pScreenBoundaries.getHeight() - MINIMUM_HEIGHT_OTHER_COMPONENTS);
+		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		aMaxWidth = (int) (pScreenBoundaries.getWidth());
+		aMaxHeight = (int) (pScreenBoundaries.getHeight());
+		aViewWidth = 0;
+		aViewHeight = 0;
 		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
@@ -734,7 +737,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aMaxWidth, aMaxHeight);
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aViewWidth, aViewHeight);
 			if (added)
 			{
 				setModified(true);
@@ -852,11 +855,11 @@ public class GraphPanel2 extends Canvas
 
 				// require users mouse to be in the panel when dragging up or to the left
 				// this prevents a disconnect between the user's mouse and the element's position
-				if (mousePoint.getX() > aMaxWidth && dx < 0)
+				if (mousePoint.getX() > aViewWidth && dx < 0)
 				{
 					dx = 0;
 				}
-				if (mousePoint.getY() > aMaxHeight && dy < 0)
+				if (mousePoint.getY() > aViewHeight && dy < 0)
 				{
 					dy = 0;
 				}
@@ -874,13 +877,13 @@ public class GraphPanel2 extends Canvas
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-				if (bounds.getMaxX() + dx > aMaxWidth)
+				if (bounds.getMaxX() + dx > aViewWidth)
 				{
-					dx = aMaxWidth - bounds.getMaxX();
+					dx = aViewWidth - bounds.getMaxX();
 				}
-				if (bounds.getMaxY() + dy > aMaxHeight)
+				if (bounds.getMaxY() + dy > aViewHeight)
 				{
-					dy = aMaxHeight - bounds.getMaxY();
+					dy = aViewHeight - bounds.getMaxY();
 				}
 				for (GraphElement selected : aSelectedElements)
 				{
@@ -952,6 +955,9 @@ public class GraphPanel2 extends Canvas
 		@Override
 		public void handle(MouseEvent pEvent) 
 		{
+			Bounds viewBounds = getScrollPane().getViewportBounds();
+			aViewWidth = (int) viewBounds.getWidth() - VIEWPORT_PADDING;
+			aViewHeight = (int) viewBounds.getHeight() - VIEWPORT_PADDING;
 			if (pEvent.getEventType() == MouseEvent.MOUSE_PRESSED) 
 			{
 				mousePressed(pEvent);
