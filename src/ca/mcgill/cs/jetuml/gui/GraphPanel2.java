@@ -89,6 +89,7 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int MINIMUM_WIDTH_OTHER_COMPONENTS = 60;	// minimum width of all other components in the window
+	private static final int MINIMUM_HEIGHT_OTHER_COMPONENTS = 100;	// minimum height of all other components in the window
 	
 	private GraphicsContext aGraphics;
 	private Graph2 aGraph;
@@ -114,9 +115,9 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS, pScreenBoundaries.getHeight());
+		super(pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS, pScreenBoundaries.getHeight() - MINIMUM_HEIGHT_OTHER_COMPONENTS);
 		aMaxWidth = (int) (pScreenBoundaries.getWidth() - MINIMUM_WIDTH_OTHER_COMPONENTS);
-		aMaxHeight = (int) (pScreenBoundaries.getHeight());
+		aMaxHeight = (int) (pScreenBoundaries.getHeight() - MINIMUM_HEIGHT_OTHER_COMPONENTS);
 		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
