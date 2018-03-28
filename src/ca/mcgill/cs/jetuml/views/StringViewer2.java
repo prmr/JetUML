@@ -116,6 +116,7 @@ public final class StringViewer2
 	 */
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
+		Font oldFont = pGraphics.getFont();
 		if (aBold) 
 		{
 			pGraphics.setFont(Font.font(aFont.getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
@@ -173,5 +174,6 @@ public final class StringViewer2
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY()); 
 		pGraphics.setFill(oldFill);
+		pGraphics.setFont(oldFont);
 	}
 }
