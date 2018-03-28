@@ -102,7 +102,7 @@ public class AggregationEdge extends ClassRelationshipEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("aggregationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties().add("Aggregation Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 	
 	private ArrowHead getStartArrowHead()
