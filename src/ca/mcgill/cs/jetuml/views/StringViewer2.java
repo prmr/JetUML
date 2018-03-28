@@ -30,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -43,6 +44,8 @@ import javafx.scene.text.TextAlignment;
 public final class StringViewer2
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
+	private static final int FONT_SIZE = 15;
+	private static final int TEXT_PADDING = 5;
 	
 	/**
 	 * How to align the text in this string.
@@ -53,7 +56,7 @@ public final class StringViewer2
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
-	private Font aFont = Font.getDefault();
+	private Font aFont = Font.font(Font.getDefault().getFamily(), FONT_SIZE);
 	
 	/**
 	 * Creates a new StringViewer.
@@ -84,27 +87,11 @@ public final class StringViewer2
 		{
 			return EMPTY;
 		}
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
+		Text text = new Text(pString);
+		text.setFont(aFont);
 		String[] lines = pString.split("\n");
-		int width = 0;
-		int height = 0;
-		for (int i = 0; i < lines.length; i++ )
-		{
-			int lineWidth = (int) Math.round(fontLoader.computeStringWidth(lines[i], aFont));
-			if (lineWidth > width)
-			{
-				width = lineWidth;
-			}
-		}
-		if (lines.length > 1)
-		{
-			height = (int) Math.round(fontMetrics.getLineHeight()) * (lines.length + 1);
-		}
-		else
-		{
-			height = (int) Math.round(fontMetrics.getLineHeight()) * lines.length;
-		}
+		int width = (int) Math.round(text.getLayoutBounds().getWidth() + 2*TEXT_PADDING);
+		int height = (int) Math.round(text.getLayoutBounds().getHeight() + 2*TEXT_PADDING + lines.length);
 		return new Rectangle(0, 0, width, height);
 	}
 	
@@ -119,10 +106,14 @@ public final class StringViewer2
 		Font oldFont = pGraphics.getFont();
 		if (aBold) 
 		{
-			pGraphics.setFont(Font.font(aFont.getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
+			pGraphics.setFont(Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize()));
+		}
+		else
+		{
+			pGraphics.setFont(aFont);
 		}
 
-		int textX = 0;
+		int textX = TEXT_PADDING;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
 		int textY = (int) Math.round(fontMetrics.getLineHeight());
@@ -145,7 +136,7 @@ public final class StringViewer2
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		pGraphics.setFill(Color.BLACK);	
-		pGraphics.fillText(pString, textX, textY, pRectangle.getWidth());
+		pGraphics.fillText(pString, textX, textY);
 		  
 		if (aUnderlined)
 		{

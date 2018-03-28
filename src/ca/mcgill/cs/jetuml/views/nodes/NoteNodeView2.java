@@ -65,7 +65,7 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 		fillFold(pGraphics);   
 		pGraphics.setLineWidth(oldLineWidth);
       
-		NOTE_VIEWER.draw(name(), pGraphics, getBounds());
+		NOTE_VIEWER.draw(name(), pGraphics, getDefaultBounds());
 	}
 	
 	@Override
@@ -116,12 +116,25 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 		pGraphics.stroke();
 	}
 	
+	/**
+	 * @return the default bounds without text
+	 */
+	public Rectangle getDefaultBounds()
+	{
+		return new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
+		return new Rectangle(node().position().getX(), node().position().getY(), 
+				Math.max(textBounds.getWidth(), DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
+	}
+	
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		Rectangle b = NOTE_VIEWER.getBounds(name()); 
-		Rectangle bounds = getBounds();
-		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(b));
+		setBounds(Grid.snapped(getBounds()));
 	}
 }
