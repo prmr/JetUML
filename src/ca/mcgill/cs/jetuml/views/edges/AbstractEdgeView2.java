@@ -42,7 +42,7 @@ import javafx.scene.shape.Shape;
  */
 public abstract class AbstractEdgeView2 implements EdgeView2
 {
-	private static final int MAX_DISTANCE = 3;
+	protected static final int MAX_DISTANCE = 3;
 	private static final int DEGREES_180 = 180;
 	
 	private Edge aEdge;
@@ -111,7 +111,7 @@ public abstract class AbstractEdgeView2 implements EdgeView2
 	@Override
 	public Rectangle getBounds()
 	{
-		Bounds bounds = getShape().getBoundsInLocal();	// may need to fix
+		Bounds bounds = getShape().getBoundsInLocal();
 		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	

@@ -23,12 +23,12 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.canvas.GraphicsContext;
-
-
-//TODO: TO BE COMPLETED
-
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * An object to render a CircularStateNode.
@@ -38,33 +38,95 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class CircularStateNodeView2 extends AbstractNodeView2
 {
+	private static final int DIAMETER = 20;
+	private static final int DEFAULT_GAP = 3;   
+	private final boolean aFinal;
+	
 	/**
-	 * @param pNode a node
-	 * @param pBoolean a boolean
+	 * @param pNode The node to wrap.
+	 * @param pFinal true if this is a final node, false if it's an initial node.
 	 */
-	public CircularStateNodeView2(Node pNode, boolean pBoolean) 
+	public CircularStateNodeView2(Node pNode, boolean pFinal)
 	{
 		super(pNode);
+		aFinal = pFinal;
 	}
 
 	@Override
-	public Rectangle getBounds() 
+	public void draw(GraphicsContext pGraphics)
 	{
-		return null;
+		super.draw(pGraphics);
+		Paint oldFill = pGraphics.getFill();
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(STROKE_WIDTH);
+		pGraphics.setFill(Color.BLACK);
+		if(aFinal)
+		{
+      		pGraphics.fillOval(node().position().getX() + DEFAULT_GAP, 
+      				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);
+      		pGraphics.strokeOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
+      	}
+		else
+		{
+			pGraphics.fillOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
+		}      
+		pGraphics.setFill(oldFill);
+		pGraphics.setLineWidth(oldLineWidth);
 	}
-
+	
 	@Override
-	public boolean contains(Point pPoint) 
+	public Point getConnectionPoint(Direction pDirection)
 	{
-		return false;
-	}
+		Rectangle bounds = getBounds();
+		double a = bounds.getWidth() / 2;
+		double b = bounds.getHeight() / 2;
+		double x = pDirection.getX();
+		double y = pDirection.getY();
+		double cx = bounds.getCenter().getX();
+		double cy = bounds.getCenter().getY();
+      
+		if(a != 0 && b != 0 && !(x == 0 && y == 0))
+		{
+			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
+			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
+		}
+		else
+		{
+			return new Point((int) Math.round(cx), (int) Math.round(cy));
+		}
+	}   	 
 
 	@Override
-	public Point getConnectionPoint(Direction pDirection) 
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
 	{
-		return null;
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+			pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		}	
 	}
 
 	@Override
-	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) {}
+	public Rectangle getBounds()
+	{
+		return new Rectangle(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
+	}
+	
+	@Override
+	public void layout(Graph2 pGraph)
+	{
+		node().moveTo(Grid.snapped(getBounds()).getOrigin());
+	}
+
+	@Override
+	public boolean contains(Point pPoint)
+	{
+		return getBounds().contains(pPoint);
+	}
 }

@@ -42,7 +42,6 @@ import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand2;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.geom.Zoom;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -89,12 +88,11 @@ public class GraphPanel2 extends Canvas
 	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
 	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
-	private static final int CANVAS_SCREEN_FACTOR = 2;	// factor to compute maximum canvas size
+	private static final int VIEWPORT_PADDING = 5;
 	
 	private GraphicsContext aGraphics;
 	private Graph2 aGraph;
 	private ToolBar2 aSideBar;
-	private Zoom aZoom = new Zoom();	
 	private boolean aHideGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
@@ -103,6 +101,10 @@ public class GraphPanel2 extends Canvas
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker2 aMoveTracker = new MoveTracker2();
+	private final int aMaxWidth;
+	private final int aMaxHeight;
+	private int aViewWidth;
+	private int aViewHeight;
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -114,7 +116,11 @@ public class GraphPanel2 extends Canvas
 	 */
 	public GraphPanel2(Graph2 pGraph, ToolBar2 pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth() * CANVAS_SCREEN_FACTOR, pScreenBoundaries.getHeight() * CANVAS_SCREEN_FACTOR);
+		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		aMaxWidth = (int) (pScreenBoundaries.getWidth());
+		aMaxHeight = (int) (pScreenBoundaries.getHeight());
+		aViewWidth = 0;
+		aViewHeight = 0;
 		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
@@ -144,18 +150,18 @@ public class GraphPanel2 extends Canvas
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getWidth()-2, aZoom.zoom(bounds.getMaxX()));
+			return Math.max(getScrollPane().getWidth(), bounds.getMaxX());
 		}
 		return pWidth;
 	}
-	
+
 	@Override
 	public double prefHeight(double pHeight)
 	{
 		if (getParent() != null)
 		{
 			Rectangle bounds = aGraph.getBounds();
-			return Math.max(getScrollPane().getHeight()-2, aZoom.zoom(bounds.getMaxY()));
+			return Math.max(getScrollPane().getHeight(), bounds.getMaxY());
 		}
 		return pHeight;
 	}
@@ -163,13 +169,13 @@ public class GraphPanel2 extends Canvas
 	@Override
 	public double maxWidth(double pWidth)
 	{
-		return Double.MAX_VALUE;
+		return aMaxWidth;
 	}
 	
 	@Override
 	public double maxHeight(double pHeight)
 	{
-		return Double.MAX_VALUE;
+		return aMaxHeight;
 	}
 
 	@Override
@@ -412,13 +418,12 @@ public class GraphPanel2 extends Canvas
 	{
 		aGraphics.setFill(Color.WHITE); 
 		aGraphics.fillRect(0, 0, getWidth(), getHeight());
-		aGraphics.setTransform(aZoom.factor(), 0, 0, aZoom.factor(), 0, 0);
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
 		if (!aHideGrid) 
 		{
-			Grid2.draw(aGraphics, new Rectangle(0, 0, Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxX())), graphBounds.getMaxX()),
-					Math.max(aZoom.dezoom((int) Math.round(bounds.getMaxY())), graphBounds.getMaxY())));
+			Grid2.draw(aGraphics, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
+					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
 		}
 		aGraph.draw(aGraphics);
 
@@ -473,7 +478,8 @@ public class GraphPanel2 extends Canvas
 			aGraphics.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
 			aGraphics.setFill(oldFill);
 			aGraphics.setStroke(oldStroke);
-		}      
+		} 
+		
 		if (getScrollPane() != null)
 		{
 			getScrollPane().requestLayout();
@@ -497,26 +503,6 @@ public class GraphPanel2 extends Canvas
 		pGraphics.fillRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
 		pGraphics.setStroke(oldStroke);
 		pGraphics.setFill(oldFill);
-	}
-	
-	/**
-	 * Increase the zoom level of this panel
-	 * by one step.
-	 */
-	public void zoomIn()
-	{
-		aZoom.increaseLevel();
-		paintPanel();
-	}
-	
-	/**
-	 * Decrease the zoom level of this panel 
-	 * by one step.
-	 */
-	public void zoomOut()
-	{
-		aZoom.decreaseLevel();
-		paintPanel();
 	}
 
 	/**
@@ -675,7 +661,12 @@ public class GraphPanel2 extends Canvas
 		
 		private Point getMousePoint(MouseEvent pEvent)
 		{
-			return new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
+			return new Point((int)pEvent.getX(), (int)pEvent.getY());
+		}
+		
+		private Point getSceneMousePoint(MouseEvent pEvent)
+		{
+			return new Point((int)pEvent.getSceneX(), (int)pEvent.getSceneY());
 		}
 		
 		/*
@@ -736,7 +727,7 @@ public class GraphPanel2 extends Canvas
 			}
 			else
 			{
-				Point point = getMousePoint(pEvent);
+				Point point = getSceneMousePoint(pEvent);
 				final Point mousePoint = new Point(point.getX(), point.getY()); 
 				aSideBar.showPopup(GraphPanel2.this, mousePoint);
 			}
@@ -746,7 +737,7 @@ public class GraphPanel2 extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY())); 
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aViewWidth, aViewHeight);
 			if (added)
 			{
 				setModified(true);
@@ -822,7 +813,7 @@ public class GraphPanel2 extends Canvas
 
 		public void mouseReleased(MouseEvent pEvent)
 		{
-			Point mousePoint = new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
+			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
 			Object tool = aSideBar.getSelectedTool();
 			if (aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
@@ -848,18 +839,31 @@ public class GraphPanel2 extends Canvas
 			paintPanel();
 		}
 		
+		// CSOFF:
 		public void mouseDragged(MouseEvent pEvent)
 		{
-			Point mousePoint = new Point(aZoom.dezoom((int)pEvent.getX()), aZoom.dezoom((int)pEvent.getY()));
+			Point mousePoint = getMousePoint(pEvent);
 			boolean isCtrl = pEvent.isControlDown();
 
 			if (aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
-			{               
+			{
 				Node lastNode = aSelectedElements.getLastNode();
-				Rectangle bounds = lastNode.view().getBounds();
+				Rectangle bounds = lastNode.view2().getBounds();
+			
 				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
 				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
-                   
+
+				// require users mouse to be in the panel when dragging up or to the left
+				// this prevents a disconnect between the user's mouse and the element's position
+				if (mousePoint.getX() > aViewWidth && dx < 0)
+				{
+					dx = 0;
+				}
+				if (mousePoint.getY() > aViewHeight && dy < 0)
+				{
+					dy = 0;
+				}
+				
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
@@ -868,12 +872,19 @@ public class GraphPanel2 extends Canvas
 					if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						bounds = bounds.add(n.view().getBounds());
+						bounds = bounds.add(n.view2().getBounds());
 					}
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-            
+				if (bounds.getMaxX() + dx > aViewWidth)
+				{
+					dx = aViewWidth - bounds.getMaxX();
+				}
+				if (bounds.getMaxY() + dy > aViewHeight)
+				{
+					dy = aViewHeight - bounds.getMaxY();
+				}
 				for (GraphElement selected : aSelectedElements)
 				{
 					if (selected instanceof ChildNode)
@@ -881,13 +892,13 @@ public class GraphPanel2 extends Canvas
 						ChildNode n = (ChildNode) selected;
 						if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
 						{
-							n.translate(dx, dy); 
+							n.translate(dx, dy);
 						}	
 					}
 					else if (selected instanceof Node)
 					{
 						Node n = (Node) selected;
-						n.translate(dx, dy); 
+						n.translate(dx, dy);
 					}
 				}
 			}
@@ -905,11 +916,11 @@ public class GraphPanel2 extends Canvas
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
 				for (Edge edge: aGraph.getEdges())
 				{
-					if (!isCtrl && !lasso.contains(edge.view().getBounds()))
+					if (!isCtrl && !lasso.contains(edge.view2().getBounds()))
 					{
 						aSelectedElements.remove(edge);
 					}
-					else if (lasso.contains(edge.view().getBounds()))
+					else if (lasso.contains(edge.view2().getBounds()))
 					{
 						if (aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
 						{
@@ -920,15 +931,15 @@ public class GraphPanel2 extends Canvas
 			}
 			aLastMousePoint = mousePoint;
 			paintPanel();
-		}
+		} // CSON:
 		
 		private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
 		{
-			if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
+			if (!pCtrl && !pLasso.contains(pNode.view2().getBounds())) 
 			{
 				aSelectedElements.remove(pNode);
 			}
-			else if (pLasso.contains(pNode.view().getBounds())) 
+			else if (pLasso.contains(pNode.view2().getBounds())) 
 			{
 				aSelectedElements.add(pNode);
 			}
@@ -944,6 +955,9 @@ public class GraphPanel2 extends Canvas
 		@Override
 		public void handle(MouseEvent pEvent) 
 		{
+			Bounds viewBounds = getScrollPane().getViewportBounds();
+			aViewWidth = (int) viewBounds.getWidth() - VIEWPORT_PADDING;
+			aViewHeight = (int) viewBounds.getHeight() - VIEWPORT_PADDING;
 			if (pEvent.getEventType() == MouseEvent.MOUSE_PRESSED) 
 			{
 				mousePressed(pEvent);
@@ -956,7 +970,6 @@ public class GraphPanel2 extends Canvas
 			{
 				mouseDragged(pEvent);
 			}
-			
 		}
 	}
 	
