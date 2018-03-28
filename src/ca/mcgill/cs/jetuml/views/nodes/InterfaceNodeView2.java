@@ -64,8 +64,6 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		int bottomHeight = computeBottom().getHeight();
-		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(STROKE_WIDTH);
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
 		NAME_VIEWER.draw(name(), pGraphics, top);
@@ -80,7 +78,6 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 			pGraphics.strokeLine(top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY());
 		}
 		METHOD_VIEWER.draw(methods(), pGraphics, bot);
-		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	/**

@@ -87,7 +87,7 @@ public final class StringViewer2
 		{
 			return EMPTY;
 		}
-		Text text = new Text(pString);
+		Text text = new Text(pString.trim());
 		text.setFont(aFont);
 		String[] lines = pString.split("\n");
 		int width = (int) Math.round(text.getLayoutBounds().getWidth() + 2*TEXT_PADDING);
@@ -125,7 +125,14 @@ public final class StringViewer2
 		{
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 			textX = pRectangle.getWidth()/2;
-			textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
+			if (!pString.trim().contains("\n"))
+			{
+				textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
+			}
+			else 
+			{
+				textY = (int) Math.round(fontMetrics.getLineHeight() + TEXT_PADDING);
+			}
 		}
 		else if(aAlignment == Align.RIGHT) 
 		{
@@ -136,7 +143,7 @@ public final class StringViewer2
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		pGraphics.setFill(Color.BLACK);	
-		pGraphics.fillText(pString, textX, textY);
+		pGraphics.fillText(pString.trim(), textX, textY);
 		  
 		if (aUnderlined)
 		{
