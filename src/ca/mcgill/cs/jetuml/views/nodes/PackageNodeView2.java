@@ -20,12 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.graph.Node;
+import java.util.List;
+
+import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.geometry.Point2D;
-
-
-//TODO: TO BE COMPLETED
-
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a package in a class diagram.
@@ -35,19 +40,192 @@ import javafx.geometry.Point2D;
  */
 public class PackageNodeView2 extends RectangleBoundedNodeView2
 {
+	private static final int DEFAULT_WIDTH = 100;
+	private static final int DEFAULT_HEIGHT = 80;
+	private static final int DEFAULT_TOP_WIDTH = 60;
+	private static final int DEFAULT_TOP_HEIGHT = 20;
+	private static final int NAME_GAP = 3;
+	private static final int XGAP = 5;
+	private static final int YGAP = 5;
+	private static final StringViewer2 PACKAGE_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer2 CONTENTS_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
+	
+	private Rectangle aTop;
+	private Rectangle aBottom;
+
+	
 	/**
-	 * @param pNode a node
+	 * @param pNode The node to wrap.
 	 */
-	public PackageNodeView2(Node pNode) 
+	public PackageNodeView2(PackageNode pNode)
 	{
-		super(pNode, 0, 0);
+		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		aTop = new Rectangle(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
+		aBottom = new Rectangle(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
+	}
+	
+	private String name()
+	{
+		return ((PackageNode)node()).getName();
+	}
+	
+	private String contents()
+	{
+		return ((PackageNode)node()).getContents();
+	}
+	
+	private List<ChildNode> children()
+	{
+		return ((PackageNode)node()).getChildren();
+	}
+	
+	@Override
+	public void draw(GraphicsContext pGraphics)
+	{
+		super.draw(pGraphics);
+		Rectangle bounds = getBounds();
+
+		int textX = bounds.getX() + NAME_GAP;
+		int textY = (int)(bounds.getY());
+		Rectangle nameRectangle = new Rectangle(textX, textY, (int)bounds.getWidth(), (int)bounds.getHeight());
+
+		PACKAGE_VIEWER.draw(name(), pGraphics, nameRectangle);
+     
+		CONTENTS_VIEWER.draw(contents(), pGraphics, aBottom);
+	}
+	
+	@Override
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
+	{
+		Rectangle bounds = getBounds();
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		}	
 	}
 	
 	/**
-	 * @return point
+	 * @return The point that corresponds to the actual top right
+	 * corner of the figure (as opposed to bounds).
 	 */
 	public Point2D getTopRightCorner()
 	{
-		return null;
+		return new Point2D(aBottom.getMaxX(), aBottom.getY());
 	}
+	
+	@Override
+	public Point getConnectionPoint(Direction pDirection)
+	{
+		Point connectionPoint = super.getConnectionPoint(pDirection);
+		if( connectionPoint.getY() < aBottom.getY() && aTop.getMaxX() < connectionPoint.getX() )
+		{
+			// The connection point falls in the empty top-right corner, re-compute it so
+			// it intersects the top of the bottom rectangle (basic triangle proportions)
+			int delta = aTop.getHeight() * (connectionPoint.getX() - getBounds().getCenter().getX()) * 2 / 
+					getBounds().getHeight();
+			int newX = connectionPoint.getX() - delta;
+			if( newX < aTop.getMaxX() )
+			{
+				newX = aTop.getMaxX() + 1;
+			}
+			return new Point(newX, aBottom.getY());	
+		}
+		else
+		{
+			return connectionPoint;
+		}
+	}
+
+	@Override
+	public void layout(Graph2 pGraph)
+	{
+		Rectangle nameBounds = PACKAGE_VIEWER.getBounds(name());
+		int topWidth = (int)Math.max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topHeight = (int)Math.max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
+		
+		Rectangle childBounds = null;
+		for( ChildNode child : children() )
+		{
+			child.view2().layout(pGraph);
+			if( childBounds == null )
+			{
+				childBounds = child.view2().getBounds();
+			}
+			else
+			{
+				childBounds = childBounds.add(child.view2().getBounds());
+			}
+		}
+		
+		Rectangle contentsBounds = CONTENTS_VIEWER.getBounds(contents());
+		
+		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
+		{
+			setBounds( new Rectangle(getBounds().getX(), getBounds().getY(), 
+					(int)computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
+					(int)computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
+		}
+		else
+		{
+			setBounds( new Rectangle(childBounds.getX() - XGAP, (int)(childBounds.getY() - topHeight - YGAP), 
+					(int)computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
+					(int)computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
+		}
+		
+		Rectangle b = getBounds();
+		aTop = new Rectangle(b.getX(), b.getY(), topWidth, topHeight);
+		aBottom = new Rectangle(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
+	}
+	
+	/**
+	 * @param pX the new X coordinate.
+	 * @param pY the new Y coordinate.
+	 */
+	public void translateTop(int pX, int pY)
+	{
+		aTop = aTop.translated(pX, pY);
+	}
+	
+	/**
+	 * @param pX the new X coordinate.
+	 * @param pY the new Y coordinate.
+	 */
+	public void translateBottom( int pX, int pY)
+	{
+		aBottom = aBottom.translated(pX, pY);
+	}
+	
+	private double computeWidth(double pTopWidth, double pContentWidth, double pChildrenWidth)
+	{
+		return max( DEFAULT_WIDTH, pTopWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, pContentWidth, pChildrenWidth);
+	}
+	
+	private double computeHeight(double pTopHeight, double pContentHeight, double pChildrenHeight)
+	{
+		return pTopHeight + max( DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, pContentHeight, pChildrenHeight);
+	}
+	
+	private static double max(double ... pNumbers)
+	{
+		double maximum = Double.MIN_VALUE;
+		for(double number : pNumbers)
+		{
+			if(number > maximum)
+			{
+				maximum = number;
+			}
+		}
+		return maximum;
+	}
+
 }
