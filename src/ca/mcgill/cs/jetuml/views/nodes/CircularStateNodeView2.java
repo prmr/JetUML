@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -121,7 +121,7 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		node().moveTo(Grid.snapped(getBounds()).getOrigin());
+		node().moveTo(Grid2.snapped(getBounds()).getOrigin());
 	}
 
 	@Override
