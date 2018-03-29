@@ -153,8 +153,6 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 		setBounds(Grid2.snapped(bounds));
 	}
 	
-	//TODO(kkutschera): remove this ->  may have to override bounds like in actor for edges
-	
 	/**
 	 * @return True if the node requires a bottom compartment.
 	 */
