@@ -47,7 +47,7 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 	private static final int NAME_GAP = 3;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringViewer2 PACKAGE_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
 	private static final StringViewer2 CONTENTS_VIEWER = new StringViewer2(StringViewer2.Align.CENTER, false, false);
 	
 	private Rectangle aTop;
@@ -84,14 +84,12 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		Rectangle bounds = getBounds();
-
 		int textX = bounds.getX() + NAME_GAP;
 		int textY = (int)(bounds.getY());
-		Rectangle nameRectangle = new Rectangle(textX, textY, (int)bounds.getWidth(), (int)bounds.getHeight());
-
-		PACKAGE_VIEWER.draw(name(), pGraphics, nameRectangle);
-     
-		CONTENTS_VIEWER.draw(contents(), pGraphics, aBottom);
+		Rectangle nameRectangle = new Rectangle(textX, textY, (int)aTop.getWidth(), (int)aTop.getHeight());
+		Rectangle contentsRectangle = new Rectangle(textX, textY + DEFAULT_TOP_HEIGHT + YGAP, (int)aBottom.getWidth(), (int)aBottom.getHeight());
+		NAME_VIEWER.draw(name(), pGraphics, nameRectangle);
+		CONTENTS_VIEWER.draw(contents(), pGraphics, contentsRectangle);
 	}
 	
 	@Override
@@ -149,7 +147,7 @@ public class PackageNodeView2 extends RectangleBoundedNodeView2
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		Rectangle nameBounds = PACKAGE_VIEWER.getBounds(name());
+		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
 		int topWidth = (int)Math.max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
 		int topHeight = (int)Math.max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
 		

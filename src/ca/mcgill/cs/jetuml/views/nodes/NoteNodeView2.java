@@ -117,7 +117,8 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	}
 	
 	/**
-	 * @return the default bounds without text
+	 * Gets the smallest rectangle that bounds this node when not containing text.
+	 * @return the bounding rectangle
 	 */
 	public Rectangle getDefaultBounds()
 	{

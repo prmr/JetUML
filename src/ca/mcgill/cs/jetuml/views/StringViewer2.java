@@ -44,7 +44,6 @@ import javafx.scene.text.TextAlignment;
 public final class StringViewer2
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final int FONT_SIZE = 15;
 	private static final int TEXT_PADDING = 5;
 	
 	/**
@@ -56,7 +55,7 @@ public final class StringViewer2
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
-	private Font aFont = Font.font(Font.getDefault().getFamily(), FONT_SIZE);
+	private Font aFont = Font.getDefault();
 	
 	/**
 	 * Creates a new StringViewer.
@@ -125,13 +124,13 @@ public final class StringViewer2
 		{
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 			textX = pRectangle.getWidth()/2;
-			if (!pString.trim().contains("\n"))
+			if (pString.trim().contains("\n"))
 			{
-				textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
+				textY = (int) Math.round(fontMetrics.getLineHeight() + TEXT_PADDING);
 			}
 			else 
 			{
-				textY = (int) Math.round(fontMetrics.getLineHeight() + TEXT_PADDING);
+				textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
 			}
 		}
 		else if(aAlignment == Align.RIGHT) 

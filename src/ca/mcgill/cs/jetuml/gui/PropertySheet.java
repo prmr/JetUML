@@ -82,15 +82,15 @@ public class PropertySheet extends GridPane
 	{
 		assert pElement != null;
 		aListener = pListener;
-		int i = 0;
+		int row = 0;
 		for( Property property : pElement.properties() )
 		{
 			Control editor = getEditorControl(pElement, property);
 			if(property.isVisible() && editor != null )
 			{
-				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, i);
-				add(editor, 1, i);
-				i++;
+				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
+				add(editor, 1, row);
+				row++;
 			}
 		}
 		setVgap(LAYOUT_SPACING);
