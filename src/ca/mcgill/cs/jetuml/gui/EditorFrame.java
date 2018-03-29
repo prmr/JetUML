@@ -51,6 +51,8 @@ import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -485,8 +487,10 @@ public class EditorFrame extends BorderPane
 			try 
 			{
 				Tab frame;
-				if (pGraphClass == UseCaseDiagramGraph2.class || pGraphClass == StateDiagramGraph2.class || pGraphClass == ClassDiagramGraph2.class) 
-				{
+				// CSOFF:
+				if (pGraphClass == UseCaseDiagramGraph2.class || pGraphClass == StateDiagramGraph2.class || pGraphClass == ClassDiagramGraph2.class 
+						|| pGraphClass == SequenceDiagramGraph2.class || pGraphClass == ObjectDiagramGraph2.class) 
+				{	// CSON:
 					frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
 				}
 				else 
@@ -506,8 +510,10 @@ public class EditorFrame extends BorderPane
 			try 
 			{
 				Tab frame;
-				if (pGraphClass == UseCaseDiagramGraph2.class || pGraphClass == StateDiagramGraph2.class || pGraphClass == ClassDiagramGraph2.class) 
-				{
+				// CSOFF:
+				if (pGraphClass == UseCaseDiagramGraph2.class || pGraphClass == StateDiagramGraph2.class || pGraphClass == ClassDiagramGraph2.class 
+						|| pGraphClass == SequenceDiagramGraph2.class || pGraphClass == ObjectDiagramGraph2.class) 
+				{	// CSON:
 					frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
 				}
 				else 

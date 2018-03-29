@@ -144,7 +144,7 @@ public final class StringViewer2
 		pGraphics.setFill(Color.BLACK);	
 		pGraphics.fillText(pString.trim(), textX, textY);
 		  
-		if (aUnderlined)
+		if (aUnderlined && pString.trim().length() > 0)
 		{
 			Rectangle stringBounds = getBounds(pString);
 			int xOffset = 0;
