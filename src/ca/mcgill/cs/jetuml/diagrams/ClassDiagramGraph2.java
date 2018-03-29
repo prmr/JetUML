@@ -73,13 +73,13 @@ public class ClassDiagramGraph2 extends Graph2
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("class.extension");
+		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("class2.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("class.name");
+		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("class2.name");
 	}
 
 	private static boolean canAddNodeAsChild(Node pPotentialChild)
