@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Property;
+import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import javafx.collections.FXCollections;
@@ -133,7 +135,9 @@ public class PropertySheet extends GridPane
 	 */
 	private static boolean extended(GraphElement pElement, String pProperty)
 	{
-		return 	pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
+		return 	pElement.getClass() == ClassNode.class && !pProperty.equals("name")||
+				pElement.getClass() == InterfaceNode.class && !pProperty.equals("name")||
+				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
 				pElement.getClass() == NoteNode.class;
 	} // CSON:
 	
