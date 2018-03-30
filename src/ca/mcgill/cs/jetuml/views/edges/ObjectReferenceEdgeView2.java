@@ -25,12 +25,14 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
+import ca.mcgill.cs.jetuml.views.ArrowHead;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
-
-
-// TODO: TO BE COMPLETED
-
 
 /**
  * An S- or C-shaped edge with an arrowhead.
@@ -50,7 +52,37 @@ public class ObjectReferenceEdgeView2 extends AbstractEdgeView2
 	@Override
 	protected Shape getShape()
 	{
-		return null;
+		Line line = getConnectionPoints();
+
+		double y1 = line.getY1();
+		double y2 = line.getY2();
+		double xmid = (line.getX1() + line.getX2()) / 2;
+		double ymid = (line.getY1() + line.getY2()) / 2;
+		Path path = new Path();
+		if(isSShaped())
+		{
+			double x1 = line.getX1() + ENDSIZE;
+			double x2 = line.getX2() - ENDSIZE;
+         
+			MoveTo moveTo = new MoveTo(line.getX1(), y1);
+			LineTo lineTo1 = new LineTo(x1, y1);
+			QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
+			QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
+			LineTo lineTo2 = new LineTo(line.getX2(), y2);
+			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
+		}
+		else // reverse C shaped
+		{
+			double x1 = Math.max(line.getX1(), line.getX2()) + ENDSIZE;
+			double x2 = x1 + ENDSIZE;
+			MoveTo moveTo = new MoveTo(line.getX1(), y1);
+			LineTo lineTo1 = new LineTo(x1, y1);
+			QuadCurveTo quadTo1 = new QuadCurveTo(x2, y1, x2, ymid);
+			QuadCurveTo quadTo2 = new QuadCurveTo(x2, y2, x1, y2);
+			LineTo lineTo2 = new LineTo(line.getX2(), y2);
+			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
+		}			
+		return path;
 	}
 	
 	/**
@@ -59,25 +91,44 @@ public class ObjectReferenceEdgeView2 extends AbstractEdgeView2
 	 */
 	private boolean isSShaped()
 	{
-		Rectangle b = edge().getEnd().view().getBounds();
-		Point p = edge().getStart().view().getConnectionPoint(Direction.EAST);
+		Rectangle b = edge().getEnd().view2().getBounds();
+		Point p = edge().getStart().view2().getConnectionPoint(Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
 	@Override
-	public void draw(GraphicsContext pGraphics) {}
+	public void draw(GraphicsContext pGraphics)
+	{
+		pGraphics.beginPath();
+		completeDrawPath(pGraphics, (Path) getShape());
+		
+		Line line = getConnectionPoints();
+		double x1;
+		double x2 = line.getX2();
+		double y = line.getY2();
+		if (isSShaped())
+		{
+			x1 = x2 - ENDSIZE;
+		}
+		else
+		{
+			x1 = x2 + ENDSIZE;
+		}
+		ArrowHead.BLACK_TRIANGLE.view2().draw(pGraphics, new Point2D(x1, y), new Point2D(x2, y));      
+	}
 
 	@Override
 	public Line getConnectionPoints()
 	{
-		Point point = edge().getStart().view().getConnectionPoint(Direction.EAST);
+		Point point = edge().getStart().view2().getConnectionPoint(Direction.EAST);
 		if (isSShaped())
 		{
-			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.WEST));
+			return new Line(point, edge().getEnd().view2().getConnectionPoint(Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.EAST));
+			return new Line(point, edge().getEnd().view2().getConnectionPoint(Direction.EAST));
 		}
 	}
+
 }

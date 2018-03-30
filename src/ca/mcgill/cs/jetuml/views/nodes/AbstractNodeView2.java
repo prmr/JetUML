@@ -37,7 +37,7 @@ public abstract class AbstractNodeView2 implements NodeView2
 	public static final int SHADOW_GAP = 4;
 	protected static final Color SHADOW_COLOR = Color.LIGHTGRAY;
 	protected static final Color BACKGROUND_COLOR = Color.WHITE;
-	protected static final double STROKE_WIDTH = 0.6;
+	protected static final double LINE_WIDTH = 0.6;
 	
 	private Node aNode;
 	
@@ -62,7 +62,7 @@ public abstract class AbstractNodeView2 implements NodeView2
 	{
 		Paint oldFill = pGraphics.getFill();
 		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(STROKE_WIDTH);
+		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.translate(SHADOW_GAP, SHADOW_GAP);      
 		fillShape(pGraphics, true);
 		pGraphics.translate(-SHADOW_GAP, -SHADOW_GAP);

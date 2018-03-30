@@ -20,11 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -72,7 +67,6 @@ public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		Rectangle top = getTopRectangle();
-		pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
 		NAME_VIEWER.draw(name(), pGraphics, top);
 		int xmid = getBounds().getCenter().getX();
 		StrokeLineCap oldLineCap = pGraphics.getLineCap();

@@ -58,7 +58,7 @@ public class CircularStateNodeView2 extends AbstractNodeView2
 		super.draw(pGraphics);
 		Paint oldFill = pGraphics.getFill();
 		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(STROKE_WIDTH);
+		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.setFill(Color.BLACK);
 		if(aFinal)
 		{

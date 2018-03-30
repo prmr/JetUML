@@ -61,7 +61,7 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(STROKE_WIDTH);
+		pGraphics.setLineWidth(LINE_WIDTH);
 		fillFold(pGraphics);   
 		pGraphics.setLineWidth(oldLineWidth);
       

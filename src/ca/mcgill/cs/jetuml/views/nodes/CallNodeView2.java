@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph2;
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -35,7 +34,9 @@ import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.Line;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * An object to render a call in a Sequence diagram.
@@ -47,7 +48,9 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 {
 	private static final int DEFAULT_WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
-//	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 5, 5 }, 0);
+	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
+	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
+	private static final double[] DASHES = new double[] {5, 5};
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -76,33 +79,54 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		System.out.println("draw call node called");
-//		super.draw(pGraphics);
-//		Color oldColor = pGraphics.getColor();
-//		pGraphics.setColor(Color.WHITE);
-//		pGraphics.fill(Conversions.toRectangle2D(getBounds()));
-//		pGraphics.setColor(oldColor);
-//		if(openBottom())
-//		{
-//			final Rectangle bounds = getBounds();
-//			int x1 = bounds.getX();
-//			int x2 = bounds.getMaxX();
-//			int y1 = bounds.getY();
-//			int y3 = bounds.getMaxY();
-//			int y2 = y3 - CallNode.CALL_YGAP;
-//			pGraphics.draw(new Line(x1, y1, x2, y1));
-//			pGraphics.draw(new Line(x1, y1, x1, y2));
-//			pGraphics.draw(new Line(x2, y1, x2, y2));
+		super.draw(pGraphics);
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
+		if(openBottom())
+		{
+			final Rectangle bounds = getBounds();
+			int x1 = bounds.getX();
+			int x2 = bounds.getMaxX();
+			int y1 = bounds.getY();
+			int y3 = bounds.getMaxY();
+			int y2 = y3 - CallNode.CALL_YGAP;
+			pGraphics.strokeLine(x1, y1, x2, y1);
+			pGraphics.strokeLine(x1, y1, x1, y2);
+			pGraphics.strokeLine(x2, y1, x2, y2);
+			StrokeLineCap oldLineCap = pGraphics.getLineCap();
+			StrokeLineJoin oldLineJoin = pGraphics.getLineJoin();
+			double[] oldDashes = pGraphics.getLineDashes();
+			pGraphics.setLineCap(LINE_CAP);
+			pGraphics.setLineJoin(LINE_JOIN);
+			pGraphics.setLineDashes(DASHES);
+			
+			pGraphics.strokeLine(x1, y2, x1, y3);
+			pGraphics.strokeLine(x2, y2, x2, y3);
+			
+			pGraphics.setLineCap(oldLineCap);
+			pGraphics.setLineJoin(oldLineJoin);
+			pGraphics.setLineDashes(oldDashes);
+			
 //			Stroke oldStroke = pGraphics.getStroke();
 //			pGraphics.setStroke(STROKE);
 //			pGraphics.draw(new Line2D.Double(x1, y2, x1, y3));
 //			pGraphics.draw(new Line2D.Double(x2, y2, x2, y3));
 //			pGraphics.setStroke(oldStroke);
-//		}
-//		else
-//		{
+		}
+		else
+		{
+			
+			Paint oldFill = pGraphics.getFill();
+			pGraphics.setFill(BACKGROUND_COLOR);
 //			pGraphics.draw(Conversions.toRectangle2D(getBounds()));
-//		}
+			Rectangle bounds = getBounds();
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+			
+			pGraphics.setFill(oldFill);
+			
+		}
+		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	@Override
