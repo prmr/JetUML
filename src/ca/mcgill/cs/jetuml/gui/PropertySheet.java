@@ -135,8 +135,8 @@ public class PropertySheet extends GridPane
 	 */
 	private static boolean extended(GraphElement pElement, String pProperty)
 	{
-		return 	pElement.getClass() == ClassNode.class ||
-				pElement.getClass() == InterfaceNode.class ||
+		return 	pElement.getClass() == ClassNode.class && !pProperty.equals("name")||
+				pElement.getClass() == InterfaceNode.class && !pProperty.equals("name")||
 				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
 				pElement.getClass() == NoteNode.class;
 	} // CSON:

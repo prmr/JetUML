@@ -66,7 +66,7 @@ public class TestInterfaceNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
+		assertEquals("", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
@@ -99,7 +99,7 @@ public class TestInterfaceNode
 		PackageNode package1 = new PackageNode();
 		aNode1.setParent(package1);
 		InterfaceNode clone = (InterfaceNode) aNode1.clone();
-		assertEquals("\u00ABinterface\u00BB\n", clone.getName());
+		assertEquals("", clone.getName());
 		String methods = clone.getMethods();
 		assertEquals("", methods);
 		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
