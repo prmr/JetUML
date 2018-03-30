@@ -28,7 +28,7 @@ import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.ImageCreator;
+import ca.mcgill.cs.jetuml.views.ImageCreator2;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Parent;
@@ -93,7 +93,7 @@ public class ToolBar2 extends BorderPane
 	
 	private void createSelectionTool(ToggleGroup pGroup, ToggleGroup pGroupEx)
 	{
-		installTool(ImageCreator.createSelectionImage(), 
+		installTool(ImageCreator2.createSelectionImage(), 
 				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("grabber.tooltip"), 
 				null, true, pGroup, pGroupEx);
 	}
@@ -168,14 +168,14 @@ public class ToolBar2 extends BorderPane
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			installTool(ImageCreator.createImage(nodeTypes[i]), 
+			installTool(ImageCreator2.createImage(nodeTypes[i]), 
 					resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			installTool(ImageCreator.createImage(edgeTypes[i]), 
+			installTool(ImageCreator2.createImage(edgeTypes[i]), 
 					resources.getString("edge" + (i + 1) + ".tooltip"), edgeTypes[i], false, pGroup, pGroupEx);
 		}
 	}
