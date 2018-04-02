@@ -106,23 +106,15 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 			pGraphics.setLineCap(oldLineCap);
 			pGraphics.setLineJoin(oldLineJoin);
 			pGraphics.setLineDashes(oldDashes);
-			
-//			Stroke oldStroke = pGraphics.getStroke();
-//			pGraphics.setStroke(STROKE);
-//			pGraphics.draw(new Line2D.Double(x1, y2, x1, y3));
-//			pGraphics.draw(new Line2D.Double(x2, y2, x2, y3));
-//			pGraphics.setStroke(oldStroke);
 		}
 		else
 		{
 			
 			Paint oldFill = pGraphics.getFill();
 			pGraphics.setFill(BACKGROUND_COLOR);
-//			pGraphics.draw(Conversions.toRectangle2D(getBounds()));
 			Rectangle bounds = getBounds();
 			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 			pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-			
 			pGraphics.setFill(oldFill);
 			
 		}
@@ -186,8 +178,8 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 		{
 			if(node instanceof ImplicitParameterNode) // <<create>>
 			{
-				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle().getCenter().getY());
-				bottomY += ((ImplicitParameterNode)node).getTopRectangle().getHeight() / 2 + CallNode.CALL_YGAP;
+				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle2().getCenter().getY());
+				bottomY += ((ImplicitParameterNode)node).getTopRectangle2().getHeight() / 2 + CallNode.CALL_YGAP;
 			}
 			else if(node instanceof CallNode)
 			{  
