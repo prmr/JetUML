@@ -89,7 +89,7 @@ public class SequenceDiagramGraph2 extends Graph2
 		{
 			if(node instanceof ImplicitParameterNode && node.view2().contains(pPoint))
 			{
-				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
+				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle2().getMaxY() + CALL_NODE_YGAP))
 				{
 					return (ImplicitParameterNode) node;
 				}
@@ -126,7 +126,7 @@ public class SequenceDiagramGraph2 extends Graph2
 		}
 		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && getCaller(pNode2) != null)
 		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
+			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle2().contains(pPoint2);
 		}
 		return lReturn;
 	}
@@ -171,7 +171,7 @@ public class SequenceDiagramGraph2 extends Graph2
 			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
 			{
 				CallNode newCallNode = new CallNode();
-				((ImplicitParameterNode)origin.getParent()).addChild(newCallNode, pPoint1);
+				((ImplicitParameterNode)origin.getParent()).addChild2(newCallNode, pPoint1);
 				pEdge.connect2(origin, newCallNode, this);
 			}
 			else // Case 2
@@ -179,7 +179,7 @@ public class SequenceDiagramGraph2 extends Graph2
 				if( isCallDominator(endAsCallNode, origin))
 				{
 					CallNode newCallNode = new CallNode();
-					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
+					((ImplicitParameterNode)endAsCallNode.getParent()).addChild2(newCallNode, pPoint1);
 					pEdge.connect2(origin, newCallNode, this);
 				}
 				// Simple connect
@@ -188,14 +188,14 @@ public class SequenceDiagramGraph2 extends Graph2
 		else if( end instanceof ImplicitParameterNode )
 		{
 			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
+			if(endAsImplicitParameterNode.getTopRectangle2().contains(pPoint2)) // Case 4
 			{
 				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
 			}
 			else // Case 3
 			{
 				CallNode newCallNode = new CallNode();
-				endAsImplicitParameterNode.addChild(newCallNode, pPoint1);
+				endAsImplicitParameterNode.addChild2(newCallNode, pPoint1);
 				pEdge.connect2(pOrigin, newCallNode, this);
 			}
 		}
@@ -341,7 +341,7 @@ public class SequenceDiagramGraph2 extends Graph2
 		for(Node node : pObjects)
 		{
 			node.translate(0, -node.view2().getBounds().getY());
-			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
+			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle2().getHeight());
 		}
 
 		for(Node node : pTopLevelCalls )

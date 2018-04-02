@@ -70,8 +70,6 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		Rectangle top = getTopRectangle();
-//		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
-//		System.out.println(top.getHeight());
 		if (top.getHeight() < getBounds().getHeight()) 
 		{
 			pGraphics.strokeLine(top.getX(), top.getMaxY(), top.getX() + top.getWidth(), top.getMaxY());
@@ -96,7 +94,7 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 			field.view2().layout(pGraph);
 			Rectangle b2 = field.view2().getBounds();
 			height += b2.getHeight() + YGAP;   
-			int axis = ((FieldNode)field).obtainAxis();
+			int axis = ((FieldNode)field).obtainAxis2();
 			leftWidth = Math.max(leftWidth, axis);
 			rightWidth = Math.max(rightWidth, b2.getWidth() - axis);
 		}
@@ -113,8 +111,8 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 		for(ChildNode field : children())
 		{
 			Rectangle b2 = field.view2().getBounds();
-			((FieldNode)field).setBounds(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis()), 
-					ytop, ((FieldNode)field).obtainAxis() + rightWidth, b2.getHeight()));
+			((FieldNode)field).setBounds2(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis2()), 
+					ytop, ((FieldNode)field).obtainAxis2() + rightWidth, b2.getHeight()));
 			ytop += field.view2().getBounds().getHeight() + YGAP;
 		}
 	}

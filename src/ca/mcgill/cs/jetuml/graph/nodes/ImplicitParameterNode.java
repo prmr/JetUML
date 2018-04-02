@@ -102,6 +102,21 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 		}
 		addChild(i, pChild);
 	}
+	
+	/**
+	 * Adds a child in the right sequence in the list of calls.
+	 * @param pChild The child to add
+	 * @param pPoint The point selected.
+	 */
+	public void addChild2(ChildNode pChild, Point pPoint)
+	{
+		int i = 0;
+		while(i < aCallNodes.size() && aCallNodes.get(i).view2().getBounds().getY() <= pPoint.getY())
+		{
+			i++;
+		}
+		addChild(i, pChild);
+	}
 
 	@Override
 	public void addChild(ChildNode pNode)
@@ -129,10 +144,19 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	}
 	
 	/**
+	 * @return The bounds of the top rectangle.
+	 */
+	public Rectangle getTopRectangle2()
+	{
+		return ((ImplicitParameterNodeView2)view2()).getTopRectangle();
+	}
+	
+	/**
 	 * @param pNewBounds The new bounds.
 	 */
 	public void setBounds(Rectangle pNewBounds)
 	{
 		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
+		((ImplicitParameterNodeView2)view2()).setBounds(pNewBounds);
 	}
 }
