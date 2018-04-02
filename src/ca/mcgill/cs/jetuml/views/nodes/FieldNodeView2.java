@@ -39,9 +39,9 @@ public class FieldNodeView2 extends RectangleBoundedNodeView2
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer2 VALUE_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
-	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
-	private static final StringViewer2 EQUALS_VIEWER = new StringViewer2(StringViewer2.Align.RIGHT, false, false);
+	private static final StringViewer2 VALUE_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer2 NAME_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
+	private static final StringViewer2 EQUALS_VIEWER = new StringViewer2(StringViewer2.Align.LEFT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.

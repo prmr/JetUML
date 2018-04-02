@@ -20,18 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 
 /**
  * A utility class to view strings with various decorations:
@@ -44,10 +43,12 @@ import javafx.scene.text.TextAlignment;
 public final class StringViewer2
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final int TEXT_PADDING = 6;
+	private static final Text LABEL = new Text();
+	private static final int HORIZONTAL_TEXT_PADDING = 3;
+	private static final int VERTICAL_TEXT_PADDING = 7;
 	
 	/**
-	 * How to align the text in this string.
+	 * How to align the text horizontally in this string.
 	 */
 	public enum Align
 	{ LEFT, CENTER, RIGHT }
@@ -86,28 +87,39 @@ public final class StringViewer2
 		{
 			return EMPTY;
 		}
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
-		String[] lines = pString.split("\n");
-		int width = 0;
-		int height = 0;
-		for (int i = 0; i < lines.length; i++ )
+		Bounds bounds = getLabel(pString).getLayoutBounds(); 
+		return new Rectangle(0, 0, (int) Math.round(bounds.getWidth() + HORIZONTAL_TEXT_PADDING*2), 
+				(int) Math.round(bounds.getHeight() + VERTICAL_TEXT_PADDING*2));
+	}
+	
+	private Text getLabel(String pString)
+	{
+		Text label = LABEL;
+		if (aBold) 
 		{
-			int lineWidth = (int) Math.round(fontLoader.computeStringWidth(lines[i], aFont));
-			if (lineWidth > width)
-			{
-				width = lineWidth;
-			}
+			aFont = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
 		}
-		if (lines.length > 1)
+		if (aUnderlined)
 		{
-			height = (int) Math.round(fontMetrics.getLineHeight() * (lines.length + 0.5));
+			label.setUnderline(true);
 		}
-		else
+		label.setFont(aFont);
+		label.setBoundsType(TextBoundsType.VISUAL);
+		label.setText(pString);
+		
+		if(aAlignment == Align.LEFT)
 		{
-			height = (int) Math.round(fontMetrics.getLineHeight()) * lines.length;
+			label.setTextAlignment(TextAlignment.LEFT);
 		}
-		return new Rectangle(0, 0, width + TEXT_PADDING, height + TEXT_PADDING);
+		else if(aAlignment == Align.CENTER)
+		{
+			label.setTextAlignment(TextAlignment.CENTER);
+		}
+		else if(aAlignment == Align.RIGHT) 
+		{
+			label.setTextAlignment(TextAlignment.RIGHT);
+		}
+		return label;
 	}
 	
 	/**
@@ -118,33 +130,22 @@ public final class StringViewer2
 	 */
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		if (aBold) 
-		{
-			aFont = Font.font(aFont.getFamily(), FontWeight.BOLD, Font.getDefault().getSize());
-		}
+		Text label = getLabel(pString);
 		
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
+		pGraphics.setTextAlign(label.getTextAlignment());
+		
 		int textX = 0;
 		int textY = 0;
-		if(aAlignment == Align.LEFT)
+		if (aAlignment == Align.CENTER) 
 		{
-			pGraphics.setTextAlign(TextAlignment.LEFT);
-			pGraphics.setTextBaseline(VPos.TOP);
-			textX = TEXT_PADDING/2;
-		}
-		else if(aAlignment == Align.CENTER)
-		{
-			pGraphics.setTextAlign(TextAlignment.CENTER);
 			textX = pRectangle.getWidth()/2;
 			textY = pRectangle.getHeight()/2;
 			pGraphics.setTextBaseline(VPos.CENTER);
 		}
-		else if(aAlignment == Align.RIGHT) 
+		else
 		{
-			pGraphics.setTextAlign(TextAlignment.RIGHT);
 			pGraphics.setTextBaseline(VPos.TOP);
-			textX = TEXT_PADDING/2;
+			textX = HORIZONTAL_TEXT_PADDING;
 		}
 		
 		pGraphics.setFont(aFont);
@@ -152,35 +153,35 @@ public final class StringViewer2
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		pGraphics.setFill(Color.BLACK);
 		pGraphics.fillText(pString.trim(), textX, textY);
-		  
-		if (aUnderlined)
+		
+		if (aUnderlined && pString.trim().length() > 0)
 		{
-			Rectangle stringBounds = getBounds(pString);
 			int xOffset = 0;
 			int yOffset = 0;
+			Bounds bounds = label.getLayoutBounds();
 			if (aAlignment == Align.CENTER)
 			{
-				xOffset = stringBounds.getWidth()/2;
-				yOffset = (int) (fontMetrics.getMaxAscent()/2);
+				xOffset = (int) (bounds.getWidth()/2);
+				yOffset = (int) (aFont.getSize()/2) + 1;
 			}
 			else if (aAlignment == Align.RIGHT)
 			{
-				xOffset = stringBounds.getWidth();
+				xOffset = (int) bounds.getWidth();
 			}
 			
 			if (aBold) 
 			{
 				double oldWidth = pGraphics.getLineWidth();
 				pGraphics.setLineWidth(2);
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+stringBounds.getWidth(), textY+yOffset);
+				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
 				pGraphics.setLineWidth(oldWidth);
 			}
 			else
 			{
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+stringBounds.getWidth(), textY+yOffset);
+				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
 			}
 		}
-		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY()); 
+		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());    
 		pGraphics.setFill(oldFill);
 	}
 }
