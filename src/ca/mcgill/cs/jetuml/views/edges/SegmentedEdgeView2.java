@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -44,6 +45,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Renders edges as a straight line connected to center of nodes.
@@ -98,12 +100,29 @@ public class SegmentedEdgeView2 extends AbstractEdgeView2
 		}
 		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
 		
+		
+		
 		Paint oldFill = pGraphics.getFill();
+		VPos oldVPos = pGraphics.getTextBaseline();
+		TextAlignment oldAlign = pGraphics.getTextAlign();
 		pGraphics.translate(bounds.getX(), bounds.getY());
 		pGraphics.setFill(Color.BLACK);
-		pGraphics.fillText(pString, 0, 0);
+		int textX = 0;
+		int textY = 0;
+		if (pCenter) 
+		{
+			FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+			FontMetrics fontMetrics = fontLoader.getFontMetrics(Font.getDefault());
+			textX = bounds.getWidth()/2;
+			textY = (int) (bounds.getHeight() - fontMetrics.getLineHeight()/2);
+			pGraphics.setTextBaseline(VPos.CENTER);
+			pGraphics.setTextAlign(TextAlignment.CENTER);
+		}
+		pGraphics.fillText(pString, textX, textY);
 		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
 		pGraphics.setFill(oldFill);
+		pGraphics.setTextBaseline(oldVPos);
+		pGraphics.setTextAlign(oldAlign);
 	}
 	
 	@Override
