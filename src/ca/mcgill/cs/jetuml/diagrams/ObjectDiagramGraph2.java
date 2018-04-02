@@ -122,7 +122,7 @@ public class ObjectDiagramGraph2 extends Graph2
 			{
 				return (ObjectNode)node;
 			}
-			else if( node.view().contains(pPoint) && canAddNodeAsChild(node, pNode))
+			else if( node.view2().contains(pPoint) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}
