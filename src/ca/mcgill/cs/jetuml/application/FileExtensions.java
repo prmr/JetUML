@@ -27,20 +27,24 @@ public final class FileExtensions
 	{
 		ResourceBundle aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
 		aFileFilters.add(new ExtensionFilter("Jet Files", "*" + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class.name"), 
+				"*" + aAppResources.getString("class.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence.name"), 
+				"*" + aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("state.name"), 
 					    "*" + aAppResources.getString("state.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("object.name"), 
 						"*" + aAppResources.getString("object.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class.name"), 
-						"*" + aAppResources.getString("class.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase.name"), 
 						"*" + aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence.name"), 
-						"*" + aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class2.name"), 
 				"*" + aAppResources.getString("class2.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("state2.name"), 
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence2.name"), 
+				"*" + aAppResources.getString("sequence2.extension") + aAppResources.getString("files.extension")));
+				aFileFilters.add(new ExtensionFilter(aAppResources.getString("state2.name"), 
 				"*" + aAppResources.getString("state2.extension") + aAppResources.getString("files.extension")));
+		aFileFilters.add(new ExtensionFilter(aAppResources.getString("object2.name"), 
+						"*" + aAppResources.getString("object2.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase2.name"), 
 				"*" + aAppResources.getString("usecase2.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter("All Files", "*.*"));
