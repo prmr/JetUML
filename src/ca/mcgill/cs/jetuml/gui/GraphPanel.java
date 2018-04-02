@@ -200,8 +200,9 @@ public class GraphPanel extends JPanel
 			
 			Scene scene = new Scene(layout);
 			window.setScene(scene);
+			window.setResizable(false);
 			window.show();
-		});	
+		});
 		
 		CompoundCommand command = tracker.stopTracking();
 		if(command.size() > 0)

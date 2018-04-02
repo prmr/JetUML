@@ -27,8 +27,10 @@ import java.lang.reflect.Field;
 import java.util.Stack;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
@@ -44,6 +46,16 @@ public class TestPropertyChangeTracker
 	private Field aOldValueField;
 	private Field aNewValueField;
 	private Field aPropertyField;
+	
+	/**
+	  * Load JavaFX toolkit and environment.
+	  */
+	 @BeforeClass
+	 @SuppressWarnings("unused")
+	 public static void setupClass()
+	 {
+		 JavaFXLoader loader = JavaFXLoader.instance();
+	 }
 	
 	public TestPropertyChangeTracker()
 	{

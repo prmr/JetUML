@@ -43,9 +43,9 @@ public class TestUseCaseDependencyEdge
 	{
 		Properties properties = aEdge.properties();
 		
-		assertEquals(Type.None, properties.get("dependencyType").get());
+		assertEquals(Type.None, properties.get("Dependency Type").get());
 		aEdge.setType(Type.Extend);
 		properties = aEdge.properties();
-		assertEquals(Type.Extend, properties.get("dependencyType").get());
+		assertEquals(Type.Extend, properties.get("Dependency Type").get());
 	}
 }

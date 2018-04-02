@@ -70,7 +70,7 @@ public class UseCaseDependencyEdge extends AbstractEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("dependencyType", () -> aType, pType -> aType = Type.valueOf((String)pType));
+		properties().add("Dependency Type", () -> aType, pType -> aType = Type.valueOf((String)pType));
 	}
 	
 	@Override

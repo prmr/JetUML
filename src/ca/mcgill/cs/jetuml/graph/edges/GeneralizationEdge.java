@@ -103,7 +103,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("generalizationType", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties().add("Generalization Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 	
 	private LineStyle getLineStyle()

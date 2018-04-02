@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -42,8 +41,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 /**
  *  A layout that presents the properties of a GraphElement
@@ -52,7 +50,7 @@ import javafx.scene.layout.VBox;
  *  @author Martin P. Robillard
  *  @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class PropertySheet extends VBox
+public class PropertySheet extends GridPane
 {
 	/**
 	 * A handler for whenever a property is being detected
@@ -82,21 +80,22 @@ public class PropertySheet extends VBox
 	 */
 	public PropertySheet(GraphElement pElement, PropertyChangeListener pListener)
 	{
-		super(LAYOUT_SPACING);
 		assert pElement != null;
 		aListener = pListener;
+		int row = 0;
 		for( Property property : pElement.properties() )
 		{
 			Control editor = getEditorControl(pElement, property);
 			if(property.isVisible() && editor != null )
 			{
-				HBox propertyLayout = new HBox(LAYOUT_SPACING);
-				propertyLayout.setAlignment(Pos.CENTER_RIGHT);
-				propertyLayout.getChildren().addAll(new Label(getPropertyName(pElement.getClass(), property.getName())), editor);
-				this.getChildren().add(propertyLayout);
+				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
+				add(editor, 1, row);
+				row++;
 			}
 		}
-		this.setPadding(new Insets(LAYOUT_PADDING));
+		setVgap(LAYOUT_SPACING);
+		setHgap(LAYOUT_SPACING);
+		setPadding(new Insets(LAYOUT_PADDING));
 	}
 	
 	/**
@@ -136,8 +135,8 @@ public class PropertySheet extends VBox
 	 */
 	private static boolean extended(GraphElement pElement, String pProperty)
 	{
-		return 	pElement.getClass() == ClassNode.class ||
-				pElement.getClass() == InterfaceNode.class ||
+		return 	pElement.getClass() == ClassNode.class && !pProperty.equals("name")||
+				pElement.getClass() == InterfaceNode.class && !pProperty.equals("name")||
 				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
 				pElement.getClass() == NoteNode.class;
 	} // CSON:

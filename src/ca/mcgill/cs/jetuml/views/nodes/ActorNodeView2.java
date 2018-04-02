@@ -71,11 +71,7 @@ public class ActorNodeView2 extends RectangleBoundedNodeView2
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = NAME_VIEWER.getBounds(name());
-		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(),
-            Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
-		setBounds(Grid.snapped(bounds));
+		setBounds(Grid.snapped(getBounds()));
 	}
 
 	@Override
