@@ -25,12 +25,12 @@ import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -41,10 +41,10 @@ import javafx.scene.text.TextAlignment;
  * 
  * @author Martin P. Robillard.
  */
-public final class StringViewer2
+public final class StringViewer3
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final int TEXT_PADDING = 6;
+	private static final int TEXT_PADDING = 5;
 	
 	/**
 	 * How to align the text in this string.
@@ -65,7 +65,7 @@ public final class StringViewer2
 	 * @param pUnderlined True if the string is to be rendered underlined.
 	 * @pre pAlign != null.
 	 */
-	public StringViewer2(Align pAlignment, boolean pBold, boolean pUnderlined) 
+	public StringViewer3(Align pAlignment, boolean pBold, boolean pUnderlined) 
 	{
 		assert pAlignment != null;
 		aAlignment = pAlignment;
@@ -86,28 +86,12 @@ public final class StringViewer2
 		{
 			return EMPTY;
 		}
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
+		Text text = new Text(pString.trim());
+		text.setFont(aFont);
 		String[] lines = pString.split("\n");
-		int width = 0;
-		int height = 0;
-		for (int i = 0; i < lines.length; i++ )
-		{
-			int lineWidth = (int) Math.round(fontLoader.computeStringWidth(lines[i], aFont));
-			if (lineWidth > width)
-			{
-				width = lineWidth;
-			}
-		}
-		if (lines.length > 1)
-		{
-			height = (int) Math.round(fontMetrics.getLineHeight() * (lines.length + 0.5));
-		}
-		else
-		{
-			height = (int) Math.round(fontMetrics.getLineHeight()) * lines.length;
-		}
-		return new Rectangle(0, 0, width + TEXT_PADDING, height + TEXT_PADDING);
+		int width = (int) Math.round(text.getLayoutBounds().getWidth() + 2*TEXT_PADDING);
+		int height = (int) Math.round(text.getLayoutBounds().getHeight() + 2*TEXT_PADDING + lines.length);
+		return new Rectangle(0, 0, width, height);
 	}
 	
 	/**
@@ -118,50 +102,55 @@ public final class StringViewer2
 	 */
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
+		Font oldFont = pGraphics.getFont();
 		if (aBold) 
 		{
-			aFont = Font.font(aFont.getFamily(), FontWeight.BOLD, Font.getDefault().getSize());
+			pGraphics.setFont(Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize()));
 		}
-		
+		else
+		{
+			pGraphics.setFont(aFont);
+		}
+
+		int textX = TEXT_PADDING;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
-		int textX = 0;
-		int textY = 0;
+		int textY = (int) Math.round(fontMetrics.getLineHeight());
 		if(aAlignment == Align.LEFT)
 		{
 			pGraphics.setTextAlign(TextAlignment.LEFT);
-			pGraphics.setTextBaseline(VPos.TOP);
-			textX = TEXT_PADDING/2;
 		}
 		else if(aAlignment == Align.CENTER)
 		{
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 			textX = pRectangle.getWidth()/2;
-			textY = pRectangle.getHeight()/2;
-			pGraphics.setTextBaseline(VPos.CENTER);
+			if (pString.trim().contains("\n"))
+			{
+				textY = (int) Math.round(fontMetrics.getLineHeight() + TEXT_PADDING);
+			}
+			else 
+			{
+				textY = (int) (pRectangle.getHeight()/2 + (fontMetrics.getAscent()-fontMetrics.getDescent())/2);
+			}
 		}
 		else if(aAlignment == Align.RIGHT) 
 		{
 			pGraphics.setTextAlign(TextAlignment.RIGHT);
-			pGraphics.setTextBaseline(VPos.TOP);
-			textX = TEXT_PADDING/2;
+			textX = pRectangle.getWidth();
 		}
 		
-		pGraphics.setFont(aFont);
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		pGraphics.setFill(Color.BLACK);
+		pGraphics.setFill(Color.BLACK);	
 		pGraphics.fillText(pString.trim(), textX, textY);
 		  
-		if (aUnderlined)
+		if (aUnderlined && pString.trim().length() > 0)
 		{
 			Rectangle stringBounds = getBounds(pString);
 			int xOffset = 0;
-			int yOffset = 0;
 			if (aAlignment == Align.CENTER)
 			{
 				xOffset = stringBounds.getWidth()/2;
-				yOffset = (int) (fontMetrics.getMaxAscent()/2);
 			}
 			else if (aAlignment == Align.RIGHT)
 			{
@@ -172,15 +161,16 @@ public final class StringViewer2
 			{
 				double oldWidth = pGraphics.getLineWidth();
 				pGraphics.setLineWidth(2);
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+stringBounds.getWidth(), textY+yOffset);
+				pGraphics.strokeLine(textX-xOffset, textY+1, textX-xOffset+stringBounds.getWidth(), textY+1);
 				pGraphics.setLineWidth(oldWidth);
 			}
 			else
 			{
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+stringBounds.getWidth(), textY+yOffset);
+				pGraphics.strokeLine(textX-xOffset, textY+1, textX-xOffset+stringBounds.getWidth(), textY+1);
 			}
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY()); 
 		pGraphics.setFill(oldFill);
+		pGraphics.setFont(oldFont);
 	}
 }
