@@ -76,11 +76,22 @@ public class FieldNode extends NamedNode implements ChildNode
 	}
 	
 	/**
+     * Gets the x-offset of the axis (the location
+     * of the = sign) from the left corner of the bounding rectangle.
+     * @return the x-offset of the axis
+	 */
+	public int obtainAxis2()
+	{
+		return ((FieldNodeView2)view2()).getAxis();
+	}
+	
+	/**
 	 * @param pBounds The new bounds
 	 */
 	public void setBounds(Rectangle pBounds)
 	{
 		((FieldNodeView)view()).setBounds(pBounds);
+		((FieldNodeView2)view2()).setBounds(pBounds);
 	}
 
 	@Override

@@ -39,7 +39,10 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	/**
      * Construct an interface node with a default size.
 	 */
-	public InterfaceNode() {}
+	public InterfaceNode() 
+	{
+		setName("\u00ABinterface\u00BB\n");
+	}
 	
 	@Override
 	protected NodeView generateView()

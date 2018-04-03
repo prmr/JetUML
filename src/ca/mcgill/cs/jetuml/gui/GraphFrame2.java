@@ -24,6 +24,8 @@ package ca.mcgill.cs.jetuml.gui;
 import java.io.File;
 
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Graph2;
@@ -141,6 +143,14 @@ public class GraphFrame2 extends Tab
 			else if (graphType instanceof ClassDiagramGraph2)
 			{
 				setText("Class Diagram 2");
+			} 
+			else if (graphType instanceof SequenceDiagramGraph2)
+			{
+				setText("Sequence Diagram 2");
+			} 
+			else if (graphType instanceof ObjectDiagramGraph2)
+			{
+				setText("Object Diagram 2");
 			} 
 			else 
 			{

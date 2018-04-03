@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -66,15 +66,7 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 		int bottomHeight = computeBottom().getHeight();
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
-		if (!(this instanceof ClassNodeView2)) 
-		{
-			NAME_VIEWER.draw("\u00ABinterface\u00BB\n" + name(), pGraphics, top);
-		}
-		else 
-		{
-			NAME_VIEWER.draw(name(), pGraphics, top);
-		}
-		
+		NAME_VIEWER.draw(name(), pGraphics, top);		
 		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
 		if (middleHeight() > 0) 
 		{
@@ -158,7 +150,7 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 		Rectangle bottom = computeBottom();
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(Math.max(top.getWidth(), middleWidth()), bottom.getWidth()), top.getHeight() + middleHeight() + bottom.getHeight());
-		setBounds(Grid.snapped(bounds));
+		setBounds(Grid2.snapped(bounds));
 	}
 	
 	/**

@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -141,7 +141,7 @@ public abstract class RectangleBoundedNodeView2 extends AbstractNodeView2
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		Rectangle snapped = Grid.snapped(getBounds());
+		Rectangle snapped = Grid2.snapped(getBounds());
 		node().moveTo(snapped.getOrigin());
 		aWidth = snapped.getWidth();
 		aHeight = snapped.getHeight();

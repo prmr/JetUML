@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -61,7 +61,7 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	{
 		super.draw(pGraphics);
 		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(STROKE_WIDTH);
+		pGraphics.setLineWidth(LINE_WIDTH);
 		fillFold(pGraphics);   
 		pGraphics.setLineWidth(oldLineWidth);
       
@@ -136,6 +136,6 @@ public class NoteNodeView2 extends RectangleBoundedNodeView2
 	@Override
 	public void layout(Graph2 pGraph)
 	{
-		setBounds(Grid.snapped(getBounds()));
+		setBounds(Grid2.snapped(getBounds()));
 	}
 }
