@@ -66,15 +66,7 @@ public class InterfaceNodeView2 extends RectangleBoundedNodeView2
 		int bottomHeight = computeBottom().getHeight();
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
-		if (!(this instanceof ClassNodeView2)) 
-		{
-			NAME_VIEWER.draw("\u00ABinterface\u00BB\n" + name(), pGraphics, top);
-		}
-		else 
-		{
-			NAME_VIEWER.draw(name(), pGraphics, top);
-		}
-		
+		NAME_VIEWER.draw(name(), pGraphics, top);		
 		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
 		if (middleHeight() > 0) 
 		{
