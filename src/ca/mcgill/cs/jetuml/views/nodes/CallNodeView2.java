@@ -109,7 +109,6 @@ public class CallNodeView2 extends RectangleBoundedNodeView2
 		}
 		else
 		{
-			
 			Paint oldFill = pGraphics.getFill();
 			pGraphics.setFill(BACKGROUND_COLOR);
 			Rectangle bounds = getBounds();

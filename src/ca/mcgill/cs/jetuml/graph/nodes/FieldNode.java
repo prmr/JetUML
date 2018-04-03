@@ -93,7 +93,7 @@ public class FieldNode extends NamedNode implements ChildNode
 		((FieldNodeView)view()).setBounds(pBounds);
 		((FieldNodeView2)view2()).setBounds(pBounds);
 	}
-	
+
 	@Override
 	public ParentNode getParent()
 	{
