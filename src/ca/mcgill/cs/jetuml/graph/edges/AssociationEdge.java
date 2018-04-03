@@ -27,13 +27,9 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
 
 /**
@@ -49,14 +45,6 @@ public class AssociationEdge extends ClassRelationshipEdge
 	{None, Start, End, Both}
 	
 	private Directionality aDirectionality = Directionality.None;
-	
-	@Override
-	protected EdgeView generateView()
-	{
-		return new SegmentedEdgeView(this, SegmentationStyleFactory.createHVHStrategy(),
-				() -> LineStyle.SOLID, () -> getStartArrowHead(), () -> getEndArrowHead(),
-				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
-	}
 	
 	@Override
 	protected EdgeView2 generateView2()
@@ -114,12 +102,6 @@ public class AssociationEdge extends ClassRelationshipEdge
 		}
 	}
 	
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createHVHStrategy();
-	}
-
 	@Override
 	public SegmentationStyle2 obtainSegmentationStyle2() 
 	{

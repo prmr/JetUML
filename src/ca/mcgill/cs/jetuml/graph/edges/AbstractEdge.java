@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
@@ -39,7 +38,6 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	protected EdgeView2 aView2;
 	private Node aStart;
 	private Node aEnd;
-	private Graph aGraph;
 	private Graph2 aGraph2;
 	
 	/**
@@ -47,17 +45,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	 */
 	protected AbstractEdge()
 	{
-		aView = generateView();
 		aView2 = generateView2();
-	}
-	
-	@Override
-	public void connect(Node pStart, Node pEnd, Graph pGraph)
-	{
-		assert pStart != null && pEnd != null;
-		aStart = pStart;
-		aEnd = pEnd;
-		aGraph = pGraph;		
 	}
 	
 	@Override
@@ -82,26 +70,11 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	}
 
 	@Override
-	public Graph getGraph()
-	{
-		return aGraph;
-	}
-	
-	@Override
 	public Graph2 getGraph2()
 	{
 		return aGraph2;
 	}
 
-	/**
-	 * Generates a view for this edge. Because of cloning, this cannot
-	 * be done in the constructor, because when an edge is clone a new 
-	 * wrapper view must be produced for the clone.
-	 * 
-	 * @return The view that wraps this edge.
-	 */
-	protected abstract EdgeView generateView();
-	
 	/**
 	 * Generates a view for this edge. Because of cloning, this cannot
 	 * be done in the constructor, because when an edge is clone a new 
@@ -115,15 +88,8 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	public AbstractEdge clone()
 	{
 		AbstractEdge clone = (AbstractEdge) super.clone();
-		clone.aView = clone.generateView();
 		clone.aView2 = clone.generateView2();
 		return clone;
-	}
-	
-	@Override
-	public EdgeView view()
-	{
-		return aView;
 	}
 	
 	@Override

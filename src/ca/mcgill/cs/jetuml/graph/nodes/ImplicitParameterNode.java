@@ -26,9 +26,7 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
@@ -42,12 +40,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 public class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new ImplicitParameterNodeView(this);
-	}
 	
 	@Override
 	protected NodeView2 generateView2()
@@ -93,21 +85,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	 * @param pChild The child to add
 	 * @param pPoint The point selected.
 	 */
-	public void addChild(ChildNode pChild, Point pPoint)
-	{
-		int i = 0;
-		while(i < aCallNodes.size() && aCallNodes.get(i).view().getBounds().getY() <= pPoint.getY())
-		{
-			i++;
-		}
-		addChild(i, pChild);
-	}
-	
-	/**
-	 * Adds a child in the right sequence in the list of calls.
-	 * @param pChild The child to add
-	 * @param pPoint The point selected.
-	 */
 	public void addChild2(ChildNode pChild, Point pPoint)
 	{
 		int i = 0;
@@ -138,14 +115,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	/**
 	 * @return The bounds of the top rectangle.
 	 */
-	public Rectangle getTopRectangle()
-	{
-		return ((ImplicitParameterNodeView)view()).getTopRectangle();
-	}
-	
-	/**
-	 * @return The bounds of the top rectangle.
-	 */
 	public Rectangle getTopRectangle2()
 	{
 		return ((ImplicitParameterNodeView2)view2()).getTopRectangle();
@@ -156,7 +125,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	 */
 	public void setBounds(Rectangle pNewBounds)
 	{
-		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
 		((ImplicitParameterNodeView2)view2()).setBounds(pNewBounds);
 	}
 }

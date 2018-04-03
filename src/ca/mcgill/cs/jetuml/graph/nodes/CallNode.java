@@ -23,12 +23,9 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
@@ -44,12 +41,6 @@ public class CallNode extends AbstractNode implements ChildNode
 	private boolean aOpenBottom;
 
 	@Override
-	protected NodeView generateView()
-	{
-		return new CallNodeView(this);
-	}
-	
-	@Override
 	protected NodeView2 generateView2()
 	{
 		return new CallNodeView2(this);
@@ -64,11 +55,11 @@ public class CallNode extends AbstractNode implements ChildNode
 		super.translate(pDeltaX, pDeltaY);
 		// Prevent going above the ImplicitParameterNode
 		// TODO Remove first clause once XML serialization is replaced.
-		if( aImplicitParameter != null && view().getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
+		if( aImplicitParameter != null && view2().getBounds().getY() < aImplicitParameter.getTopRectangle2().getMaxY() + MIN_YGAP)
 		{
-			((CallNodeView)view()).setBounds(new Rectangle(view().getBounds().getX(), 
-					Math.round(aImplicitParameter.getTopRectangle().getMaxY()) + MIN_YGAP, 
-					view().getBounds().getWidth(), view().getBounds().getHeight()));
+			((CallNodeView2)view2()).setBounds(new Rectangle(view2().getBounds().getX(), 
+					Math.round(aImplicitParameter.getTopRectangle2().getMaxY()) + MIN_YGAP, 
+					view2().getBounds().getWidth(), view2().getBounds().getHeight()));
 		}
 	}
 
@@ -102,22 +93,6 @@ public class CallNode extends AbstractNode implements ChildNode
 	{
 		super.buildProperties();
 		properties().add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
-	}
-	
-	/**
-	 * @param pGraph The graph containing the node.
-	 * @return True if this node is signaled.
-	 */
-	public boolean isSignaled(Graph pGraph)
-	{
-		for( Edge edge : pGraph.getEdges(this))
-		{
-			if( edge instanceof CallEdge && edge.getEnd() == this && ((CallEdge)edge).isSignal())
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	/**

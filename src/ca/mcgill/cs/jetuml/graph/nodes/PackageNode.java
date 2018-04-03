@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView2;
 
 /**
@@ -39,12 +37,6 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	private String aContents = "";
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
-	
-	@Override
-	protected NodeView generateView()
-	{
-		return new PackageNodeView(this);
-	}
 	
 	@Override
 	protected NodeView2 generateView2()
@@ -84,8 +76,8 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	{
 		super.translate(pDeltaX, pDeltaY);
 		
-		((PackageNodeView)view()).translateTop(pDeltaX,  pDeltaY);
-		((PackageNodeView)view()).translateBottom(pDeltaX, pDeltaY);
+		((PackageNodeView2)view2()).translateTop(pDeltaX,  pDeltaY);
+		((PackageNodeView2)view2()).translateBottom(pDeltaX, pDeltaY);
 		for(Node childNode : getChildren())
         {
         	childNode.translate(pDeltaX, pDeltaY);

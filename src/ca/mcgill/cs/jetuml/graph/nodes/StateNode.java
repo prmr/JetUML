@@ -21,9 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.StateNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.StateNodeView2;
 
 /**
@@ -31,12 +29,6 @@ import ca.mcgill.cs.jetuml.views.nodes.StateNodeView2;
 */
 public class StateNode extends NamedNode
 {
-	@Override
-	protected NodeView generateView()
-	{
-		return new StateNodeView(this);
-	}
-
 	@Override
 	protected NodeView2 generateView2() 
 	{

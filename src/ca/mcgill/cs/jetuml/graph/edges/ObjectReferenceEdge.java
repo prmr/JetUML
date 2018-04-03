@@ -21,9 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView;
 import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView2;
 
 /**
@@ -31,12 +29,6 @@ import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView2;
  */
 public class ObjectReferenceEdge extends AbstractEdge
 {
-	@Override
-	protected EdgeView generateView()
-	{
-		return new ObjectReferenceEdgeView(this);
-	}
-
 	@Override
 	protected EdgeView2 generateView2() 
 	{

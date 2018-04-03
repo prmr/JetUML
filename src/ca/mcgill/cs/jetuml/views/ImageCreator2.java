@@ -6,6 +6,7 @@ import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel2;
+import javafx.application.Platform;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -66,7 +67,10 @@ public final class ImageCreator2
 		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
 		SnapshotParameters parameters = new SnapshotParameters();
 		parameters.setFill(Color.TRANSPARENT);
-		canvas.snapshot(parameters, image);
+		Platform.runLater(() -> 
+		{
+			canvas.snapshot(parameters, image);
+		});
 		return image;
 	}
 
@@ -76,7 +80,7 @@ public final class ImageCreator2
 		pointNode.translate(OFFSET, OFFSET);
 		PointNode destination = new PointNode();
 		destination.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-		pEdge.connect(pointNode, destination, null);
+		pEdge.connect2(pointNode, destination, null);
 		Rectangle bounds = new Rectangle(0, 0, 0, 0);
 		bounds = bounds.add(pointNode.view2().getBounds());
 		bounds = bounds.add(destination.view2().getBounds());
@@ -95,7 +99,10 @@ public final class ImageCreator2
 		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
 		SnapshotParameters parameters = new SnapshotParameters();
 		parameters.setFill(Color.TRANSPARENT);
-		canvas.snapshot(parameters, image);
+		Platform.runLater(() -> 
+		{
+			canvas.snapshot(parameters, image);
+		});
 		return image;
 	}
 	
@@ -114,7 +121,10 @@ public final class ImageCreator2
 		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
 		SnapshotParameters parameters = new SnapshotParameters();
 		parameters.setFill(Color.TRANSPARENT);
-		canvas.snapshot(parameters, image);
+		Platform.runLater(() -> 
+		{
+			canvas.snapshot(parameters, image);
+		});
 		return image;
 	}
 }

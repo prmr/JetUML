@@ -21,9 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
@@ -39,12 +37,6 @@ public class ClassNode extends InterfaceNode
 	public ClassNode()
 	{
 		setName("");
-	}
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new ClassNodeView(this);
 	}
 	
 	@Override

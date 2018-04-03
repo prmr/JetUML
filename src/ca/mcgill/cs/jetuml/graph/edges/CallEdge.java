@@ -23,24 +23,19 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import java.util.ArrayList;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Conversions2;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
 import javafx.geometry.Point2D;
 
@@ -57,13 +52,6 @@ public class CallEdge extends SingleLabelEdge
 	public CallEdge()
 	{
 		setSignal(false);
-	}
-	
-	@Override
-	protected EdgeView generateView()
-	{
-		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.SOLID,
-				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
 	@Override
@@ -112,32 +100,6 @@ public class CallEdge extends SingleLabelEdge
 		aSignal = pNewValue; 
 	}
 	
-	private SegmentationStyle createSegmentationStyle()
-	{
-		return new SegmentationStyle()
-		{
-			@Override
-			public boolean isPossible(Edge pEdge)
-			{
-				assert false; // Should not be called.
-				return false;
-			}
-
-			@Override
-			public java.awt.geom.Point2D[] getPath(Edge pEdge, Graph pGraph)
-			{
-				return getPoints(pEdge);
-			}
-
-			@Override
-			public Side getAttachedSide(Edge pEdge, Node pNode)
-			{
-				assert false; // Should not be called
-				return null;
-			}
-		};
-	}
-	
 	private SegmentationStyle2 createSegmentationStyle2()
 	{
 		return new SegmentationStyle2()
@@ -164,52 +126,11 @@ public class CallEdge extends SingleLabelEdge
 		};
 	}
 	
-	private static java.awt.geom.Point2D[] getPoints(Edge pEdge)
-	{
-		ArrayList<java.awt.geom.Point2D> points = new ArrayList<>();
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
-      
-		if(pEdge.getEnd() instanceof CallNode && ((CallNode)pEdge.getEnd()).getParent() == 
-				((CallNode)pEdge.getStart()).getParent())
-		{
-			java.awt.geom.Point2D p = new java.awt.geom.Point2D.Double(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
-			java.awt.geom.Point2D q = new java.awt.geom.Point2D.Double(end.getMaxX(), end.getY());
-			java.awt.geom.Point2D s = new java.awt.geom.Point2D.Double(q.getX() + end.getWidth(), q.getY());
-			java.awt.geom.Point2D r = new java.awt.geom.Point2D.Double(s.getX(), p.getY());
-			points.add(p);
-			points.add(r);
-			points.add(s);
-			points.add(q);
-		}
-		else if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
-		{
-			points.add(new java.awt.geom.Point2D.Double(start.getMaxX(), start.getY()));
-			points.add(new java.awt.geom.Point2D.Double(end.getX(), start.getY()));
-		}
-		else     
-		{
-			Direction direction = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = pEdge.getEnd().view().getConnectionPoint(direction);
-         
-			if(start.getCenter().getX() < endPoint.getX())
-			{
-				points.add(new java.awt.geom.Point2D.Double(start.getMaxX(), endPoint.getY()));
-			}
-			else
-			{
-				points.add(new java.awt.geom.Point2D.Double(start.getX(), endPoint.getY()));
-			}
-			points.add(Conversions.toPoint2D(endPoint));
-		}
-		return points.toArray(new java.awt.geom.Point2D[points.size()]);
-	}
-	
 	private static Point2D[] getPoints2(Edge pEdge)
 	{
 		ArrayList<Point2D> points = new ArrayList<>();
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
+		Rectangle start = pEdge.getStart().view2().getBounds();
+		Rectangle end = pEdge.getEnd().view2().getBounds();
       
 		if(pEdge.getEnd() instanceof CallNode && ((CallNode)pEdge.getEnd()).getParent() == 
 				((CallNode)pEdge.getStart()).getParent())
@@ -231,7 +152,7 @@ public class CallEdge extends SingleLabelEdge
 		else     
 		{
 			Direction direction = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = pEdge.getEnd().view().getConnectionPoint(direction);
+			Point endPoint = pEdge.getEnd().view2().getConnectionPoint(direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{

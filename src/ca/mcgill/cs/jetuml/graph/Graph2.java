@@ -33,7 +33,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
-import ca.mcgill.cs.jetuml.views.nodes.AbstractNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.AbstractNodeView2;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -631,7 +631,7 @@ public abstract class Graph2
 		else
 		{
 			return new Rectangle(bounds.getX(), bounds.getY(), 
-					bounds.getWidth() + AbstractNodeView.SHADOW_GAP, bounds.getHeight() + AbstractNodeView.SHADOW_GAP);
+					bounds.getWidth() + AbstractNodeView2.SHADOW_GAP, bounds.getHeight() + AbstractNodeView2.SHADOW_GAP);
 		}
 	}
 

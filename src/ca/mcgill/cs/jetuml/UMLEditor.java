@@ -24,19 +24,10 @@ package ca.mcgill.cs.jetuml;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph2;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph2;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph2;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
@@ -111,12 +102,6 @@ public final class UMLEditor extends Application
 		EditorFrame frame = new EditorFrame(UMLEditor.class, pStage);
 		List<String> argsList = getParameters().getRaw();
 		String[] arguments = argsList.toArray(new String[argsList.size()]);
-		setLookAndFeel();
-		frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-		frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-		frame.addGraphType("state_diagram", StateDiagramGraph.class);
-	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
 	    frame.addGraphType("class_diagram_2", ClassDiagramGraph2.class);
 	    frame.addGraphType("sequence_diagram_2", SequenceDiagramGraph2.class);
 	    frame.addGraphType("state_diagram_2", StateDiagramGraph2.class);
@@ -125,25 +110,6 @@ public final class UMLEditor extends Application
 		frame.readArgs(arguments);
 		frame.addWelcomeTab();
 		return frame;
-	}
-	
-	private static void setLookAndFeel()
-	{
-		try
-		{
-			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) 
-			{
-				if("Nimbus".equals(info.getName())) 
-				{
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} 
-		catch(UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException e) 
-		{
-		    // Nothing: We revert to the default LAF
-		}
 	}
 	
 	/**

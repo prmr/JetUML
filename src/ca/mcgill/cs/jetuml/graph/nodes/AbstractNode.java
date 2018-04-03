@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
@@ -34,7 +33,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
  */
 public abstract class AbstractNode extends AbstractGraphElement implements Node
 {
-	private NodeView aView;
 	private NodeView2 aView2;
 	private Point aPosition = new Point(0, 0);
 	
@@ -44,7 +42,6 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	 */
 	protected AbstractNode()
 	{
-		aView = generateView();
 		aView2 = generateView2();
 	}
 	
@@ -55,15 +52,6 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	}
 	
 	/**
-	 * Generates a view for this node. Because of cloning, this cannot
-	 * be done in the constructor, because when a node is cloned a new 
-	 * wrapper view must be produced for the clone.
-	 * 
-	 * @return The view that wraps this node.
-	 */
-	protected abstract NodeView generateView();
-	
-	/**
 	 * Generates a view2 for this node. Because of cloning, this cannot
 	 * be done in the constructor, because when a node is cloned a new 
 	 * wrapper view2 must be produced for the clone.
@@ -71,12 +59,6 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	 * @return The view2 that wraps this node.
 	 */
 	protected abstract NodeView2 generateView2();
-	
-	@Override
-	public NodeView view()
-	{
-		return aView;
-	}
 	
 	@Override
 	public NodeView2 view2()
@@ -100,7 +82,6 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	public AbstractNode clone()
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
-		clone.aView = clone.generateView();
 		clone.aView2 = clone.generateView2();
 		return clone;
 	}
@@ -108,7 +89,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " " + view().getBounds();
+		return getClass().getSimpleName() + " " + view2().getBounds();
 	}
 	
 	@Override

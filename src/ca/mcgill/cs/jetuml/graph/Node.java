@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.graph;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 
 /**
@@ -54,11 +53,6 @@ public interface Node extends GraphElement
 	 * @return A clone of the node.
 	 */
 	Node clone();
-	
-	/**
-	 * @return The view for this node. TODO remove default
-	 */
-	NodeView view();
 	
 	/**
 	 * @return The view2 for this node. TODO remove default
