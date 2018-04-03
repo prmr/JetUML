@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -86,6 +86,6 @@ public class StateNodeView2 extends RectangleBoundedNodeView2
 		Rectangle bounds = NAME_VIEWER.getBounds(name());
 		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(bounds));
+		setBounds(Grid2.snapped(bounds));
 	}
 }

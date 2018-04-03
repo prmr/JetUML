@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.Grid2;
 import ca.mcgill.cs.jetuml.views.StringViewer2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.StrokeLineCap;
@@ -130,7 +130,7 @@ public class ImplicitParameterNodeView2 extends RectangleBoundedNodeView2
 		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
-		Rectangle snappedTop = Grid.snapped(top);
+		Rectangle snappedTop = Grid2.snapped(top);
 		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
 		aTopHeight = top.getHeight();
 	}
