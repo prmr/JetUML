@@ -91,16 +91,9 @@ public class FieldNode extends NamedNode implements ChildNode
 	public void setBounds(Rectangle pBounds)
 	{
 		((FieldNodeView)view()).setBounds(pBounds);
-	}
-	
-	/**
-	 * @param pBounds The new bounds
-	 */
-	public void setBounds2(Rectangle pBounds)
-	{
 		((FieldNodeView2)view2()).setBounds(pBounds);
 	}
-
+	
 	@Override
 	public ParentNode getParent()
 	{

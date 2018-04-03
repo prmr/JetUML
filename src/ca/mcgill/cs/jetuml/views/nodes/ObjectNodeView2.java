@@ -111,7 +111,7 @@ public class ObjectNodeView2 extends RectangleBoundedNodeView2
 		for(ChildNode field : children())
 		{
 			Rectangle b2 = field.view2().getBounds();
-			((FieldNode)field).setBounds2(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis2()), 
+			((FieldNode)field).setBounds(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis2()), 
 					ytop, ((FieldNode)field).obtainAxis2() + rightWidth, b2.getHeight()));
 			ytop += field.view2().getBounds().getHeight() + YGAP;
 		}
