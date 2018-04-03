@@ -20,23 +20,25 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
-import static org.junit.Assert.*;
-
 public class TestSerializationContext
 {
-	private SerializationContext aContext;
-	private ClassDiagramGraph aGraph;
+	private SerializationContext2 aContext;
+	private ClassDiagramGraph2 aGraph;
 	private PackageNode aPackage1; // Root
 	private PackageNode aPackage2; // Child of aPackage1
 	private ClassNode aClassNode1; // Root
@@ -57,7 +59,7 @@ public class TestSerializationContext
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagramGraph2();
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aClassNode1 = new ClassNode();
@@ -79,7 +81,7 @@ public class TestSerializationContext
 	@Test
 	public void textInit()
 	{
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext2(aGraph);
 		assertEquals(0, size());
 		assertSame(aGraph, aContext.getGraph());
 	}
@@ -88,14 +90,14 @@ public class TestSerializationContext
 	public void testMultipleInsertions()
 	{
 		loadNodes();
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext2(aGraph);
 	}
 	
 	@Test 
 	public void testBasicRetrieval()
 	{
 		loadNodes();
-		aContext = new SerializationContext(aGraph);
+		aContext = new SerializationContext2(aGraph);
 		assertEquals(6, size());
 		boolean[] slots = new boolean[6];
 		for( Node node : aContext )

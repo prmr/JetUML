@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
@@ -42,12 +42,14 @@ import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
-import ca.mcgill.cs.jetuml.gui.ToolBar;
+import ca.mcgill.cs.jetuml.gui.GraphPanel2;
+import ca.mcgill.cs.jetuml.gui.ToolBar2;
+import javafx.embed.swing.JFXPanel;
+import javafx.geometry.Rectangle2D;
 
 public class TestClipboard
 {
-	private Clipboard aClipboard;
+	private Clipboard2 aClipboard;
 	private PackageNode aPackage1;
 	private PackageNode aPackage2;
 	private ClassNode aClass1;
@@ -55,8 +57,8 @@ public class TestClipboard
 	private DependencyEdge aEdge1;
 	private DependencyEdge aEdge2;
 	private SelectionList aSelectionList;
-	private ClassDiagramGraph aClassDiagramGraph;
-	private GraphPanel aPanel;
+	private ClassDiagramGraph2 aClassDiagramGraph;
+	private GraphPanel2 aPanel;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -71,7 +73,8 @@ public class TestClipboard
 	@Before
 	public void setup()
 	{
-		aClipboard = Clipboard.instance();
+		new JFXPanel();
+		aClipboard = Clipboard2.instance();
 		aSelectionList = new SelectionList();
 		aClass1 = new ClassNode();
 		aClass1.setName("c1");
@@ -85,8 +88,8 @@ public class TestClipboard
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		
-		aClassDiagramGraph = new ClassDiagramGraph();
-		aPanel = new GraphPanel(aClassDiagramGraph, new ToolBar(aClassDiagramGraph), null);
+		aClassDiagramGraph = new ClassDiagramGraph2();
+		aPanel = new GraphPanel2(aClassDiagramGraph, new ToolBar2(aClassDiagramGraph), new Rectangle2D(0, 0, 0, 0));
 	}
 	
 	@Test
@@ -110,7 +113,7 @@ public class TestClipboard
 	@Test
 	public void testCopyDanglingEdge()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aEdge1);
 		aClipboard.copy(aSelectionList);
@@ -122,7 +125,7 @@ public class TestClipboard
 	@Test
 	public void testCopyCapturedEdgeTopLevel()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aEdge1);
 		aSelectionList.add(aClass2);
@@ -142,8 +145,8 @@ public class TestClipboard
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aClass1);
 		aPackage2.addChild(aClass2);
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aEdge2.connect(aClass2, aClass1, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
+		aEdge2.connect2(aClass2, aClass1, aClassDiagramGraph);
 		aSelectionList.add(aPackage1);
 		aSelectionList.add(aEdge1);
 		aSelectionList.add(aEdge2);
@@ -190,7 +193,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeAndEdgesNoContainment()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aClass2);
 		aSelectionList.add(aEdge1);
@@ -211,7 +214,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeAndEdgesWithContainment()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aPackage1.addChild(aClass1);
 		aPackage1.addChild(aClass2);
 		aSelectionList.add(aPackage1);
@@ -236,7 +239,7 @@ public class TestClipboard
 	@Test
 	public void testPasteNodeWithMissingParent()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
+		aEdge1.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aPackage1.addChild(aClass1);
 		aPackage1.addChild(aClass2);
 		aSelectionList.add(aClass1);
@@ -273,7 +276,7 @@ public class TestClipboard
 		aSelectionList.add(aClass1);
 		aSelectionList.add(aClass2);
 		CallEdge edge = new CallEdge();
-		edge.connect(aClass1, aClass2, aClassDiagramGraph);
+		edge.connect2(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.add(edge);
 		aClipboard.copy(aSelectionList);
 		assertEquals(1,aClipboard.getEdges().size());

@@ -27,17 +27,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.commands.MoveCommand;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestMoveCommand 
 {
-    private MoveCommand aMoveCommand;
-    private Graph aGraph;
+    private MoveCommand2 aMoveCommand;
+    private Graph2 aGraph;
     private Node aNode;
     
     /**
@@ -53,25 +52,25 @@ public class TestMoveCommand
     @Before
     public void setup() throws Exception 
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagramGraph2();
         aNode = new ClassNode();
-        aMoveCommand = new MoveCommand(aGraph, aNode, 5, 5);
+        aMoveCommand = new MoveCommand2(aGraph, aNode, 5, 5);
     }
 
     @Test
     public void testExecute() 
     {
-    	assertEquals(aNode.view().getBounds(), new Rectangle(0, 0, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
+    	assertEquals(aNode.view2().getBounds(), new Rectangle(0, 0, aNode.view2().getBounds().getWidth(), aNode.view2().getBounds().getHeight()));
         aMoveCommand.execute();
-        assertEquals(aNode.view().getBounds(), new Rectangle(5, 5, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
+        assertEquals(aNode.view2().getBounds(), new Rectangle(5, 5, aNode.view2().getBounds().getWidth(), aNode.view2().getBounds().getHeight()));
     }
 
     @Test
     public void testUndo() 
     {
     	aMoveCommand.execute();
-        assertEquals(aNode.view().getBounds(), new Rectangle(5, 5, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
+        assertEquals(aNode.view2().getBounds(), new Rectangle(5, 5, aNode.view2().getBounds().getWidth(), aNode.view2().getBounds().getHeight()));
         aMoveCommand.undo();
-        assertEquals(aNode.view().getBounds(), new Rectangle(0, 0, aNode.view().getBounds().getWidth(), aNode.view().getBounds().getHeight()));
+        assertEquals(aNode.view2().getBounds(), new Rectangle(0, 0, aNode.view2().getBounds().getWidth(), aNode.view2().getBounds().getHeight()));
     } 
 }

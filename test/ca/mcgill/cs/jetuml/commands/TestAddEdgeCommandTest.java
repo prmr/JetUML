@@ -31,17 +31,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 
 public class TestAddEdgeCommandTest 
 {
-    private Graph aGraph;
+    private Graph2 aGraph;
     private Field aEdgesToBeRemoved;
     private Edge aEdge;
-    private AddEdgeCommand aAddEdgeCommand;
+    private AddEdgeCommand2 aAddEdgeCommand;
 
     /**
 	 * Load JavaFX toolkit and environment.
@@ -56,11 +56,11 @@ public class TestAddEdgeCommandTest
     @Before
     public void setup() throws Exception 
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagramGraph2();
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
         aEdgesToBeRemoved.setAccessible(true);
         aEdge = new CallEdge();
-        aAddEdgeCommand = new AddEdgeCommand(aGraph, aEdge);  
+        aAddEdgeCommand = new AddEdgeCommand2(aGraph, aEdge);  
     }
 
     @Test

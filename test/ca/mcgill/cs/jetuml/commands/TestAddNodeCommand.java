@@ -32,17 +32,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestAddNodeCommand 
 {
-    private Graph aGraph;
+    private Graph2 aGraph;
     private Field aNodesToBeRemoved;
     private Node aNode;
-    private AddNodeCommand aAddNodeCommand;
+    private AddNodeCommand2 aAddNodeCommand;
 
     /**
 	 * Load JavaFX toolkit and environment.
@@ -57,11 +57,11 @@ public class TestAddNodeCommand
     @Before
     public void setup() throws Exception 
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagramGraph2();
         aNode = new ClassNode();
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
         aNodesToBeRemoved.setAccessible(true);
-        aAddNodeCommand = new AddNodeCommand(aGraph, aNode);  
+        aAddNodeCommand = new AddNodeCommand2(aGraph, aNode);  
     }
 
     @Test

@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
@@ -55,7 +55,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
  */
 public class TestGraph
 {
-	private Graph aGraph;
+	private Graph2 aGraph;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private ClassNode aNode3;
@@ -76,7 +76,7 @@ public class TestGraph
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagramGraph2();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNode3 = new ClassNode();
@@ -211,14 +211,14 @@ public class TestGraph
 	@Test
 	public void testGetBoundsEmpty()
 	{
-		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagramGraph().getBounds());
+		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagramGraph2().getBounds());
 	}
 	
 	@Test
 	public void testGetBoundsSingleNode()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
-		graph.addNode(aNode1, new Point(0,0));
+		ClassDiagramGraph2 graph = new ClassDiagramGraph2();
+		graph.addNode(aNode1, new Point(0,0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
 	}
 	
@@ -262,7 +262,7 @@ public class TestGraph
 	@Test
 	public void testGetBoundsWithMove()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
+		ClassDiagramGraph2 graph = new ClassDiagramGraph2();
 		ClassNode node = new ClassNode();
 		graph.restoreRootNode(node);
 		node.translate(50, 50);
@@ -277,7 +277,7 @@ public class TestGraph
 	@Test
 	public void testRemoveNodeEdge()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
+		ClassDiagramGraph2 graph = new ClassDiagramGraph2();
 		NoteNode node = new NoteNode();
 		PointNode point = new PointNode();
 		NoteEdge edge = new NoteEdge();

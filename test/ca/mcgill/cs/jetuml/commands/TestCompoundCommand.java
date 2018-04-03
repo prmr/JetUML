@@ -32,10 +32,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
@@ -43,7 +43,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestCompoundCommand 
 {
-    private Graph aGraph;
+    private Graph2 aGraph;
     private Node aClassNode;
     private Node aActorNode;
     private Edge aCallEdge;
@@ -51,12 +51,12 @@ public class TestCompoundCommand
     private Field aEdgesToBeRemoved;
     private Field aNeedsLayout;
     private Field aRootNodes;
-    private AddNodeCommand aAddClassNodeCommand;
-    private AddNodeCommand aAddActorNodeCommand;
-    private AddEdgeCommand aAddEdgeCommand;
-    private MoveCommand aMoveCommand1;
-    private MoveCommand aMoveCommand2;
-    private DeleteNodeCommand aDeleteNodeCommand;
+    private AddNodeCommand2 aAddClassNodeCommand;
+    private AddNodeCommand2 aAddActorNodeCommand;
+    private AddEdgeCommand2 aAddEdgeCommand;
+    private MoveCommand2 aMoveCommand1;
+    private MoveCommand2 aMoveCommand2;
+    private DeleteNodeCommand2 aDeleteNodeCommand;
     private CompoundCommand aCompoundCommand1;
     private CompoundCommand aCompoundCommand2;
     private CompoundCommand aCompoundCommand3;
@@ -75,17 +75,17 @@ public class TestCompoundCommand
     @Before
     public void setup() throws Exception
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagramGraph2();
         aClassNode = new ClassNode();
         aActorNode = new ActorNode();
         aCallEdge = new CallEdge();
         
-        aAddClassNodeCommand = new AddNodeCommand(aGraph, aClassNode);
-        aAddEdgeCommand = new AddEdgeCommand(aGraph, aCallEdge);
-        aAddActorNodeCommand = new AddNodeCommand(aGraph, aActorNode);
-        aMoveCommand1 = new MoveCommand(aGraph, aClassNode, 5, 5);
-        aMoveCommand2 = new MoveCommand(aGraph, aClassNode, -3, 3);
-        aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aClassNode);
+        aAddClassNodeCommand = new AddNodeCommand2(aGraph, aClassNode);
+        aAddEdgeCommand = new AddEdgeCommand2(aGraph, aCallEdge);
+        aAddActorNodeCommand = new AddNodeCommand2(aGraph, aActorNode);
+        aMoveCommand1 = new MoveCommand2(aGraph, aClassNode, 5, 5);
+        aMoveCommand2 = new MoveCommand2(aGraph, aClassNode, -3, 3);
+        aDeleteNodeCommand = new DeleteNodeCommand2(aGraph, aClassNode);
         
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
         aNodesToBeRemoved.setAccessible(true);
@@ -121,7 +121,7 @@ public class TestCompoundCommand
         aCompoundCommand1.execute();               
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(5, 5, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(5, 5, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -130,7 +130,7 @@ public class TestCompoundCommand
     {
         aCompoundCommand1.execute();
         aCompoundCommand1.undo();
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(0, 0, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -151,8 +151,8 @@ public class TestCompoundCommand
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
         assertTrue(aGraph.getRootNodes().contains(aActorNode));
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(2, 8, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
-        assertEquals(aActorNode.view().getBounds(), new Rectangle(0, 0, aActorNode.view().getBounds().getWidth(), aActorNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(2, 8, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
+        assertEquals(aActorNode.view2().getBounds(), new Rectangle(0, 0, aActorNode.view2().getBounds().getWidth(), aActorNode.view2().getBounds().getHeight()));
     }
     
     @SuppressWarnings("unchecked")
@@ -161,8 +161,8 @@ public class TestCompoundCommand
     {
         aCompoundCommand3.execute();
         aCompoundCommand3.undo();
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
-        assertEquals(aActorNode.view().getBounds(), new Rectangle(0, 0, aActorNode.view().getBounds().getWidth(), aActorNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(0, 0, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
+        assertEquals(aActorNode.view2().getBounds(), new Rectangle(0, 0, aActorNode.view2().getBounds().getWidth(), aActorNode.view2().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -184,7 +184,7 @@ public class TestCompoundCommand
         aCompoundCommand4.execute();      
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
         assertTrue(aGraph.getEdges().contains(aCallEdge));
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(2, 8, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(2, 8, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
         try 
         {
 			ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));
@@ -213,7 +213,7 @@ public class TestCompoundCommand
 		}   
         aCompoundCommand4.undo();
         assertTrue(aGraph.getRootNodes().contains(aClassNode));
-        assertEquals(aClassNode.view().getBounds(), new Rectangle(0, 0, aClassNode.view().getBounds().getWidth(), aClassNode.view().getBounds().getHeight()));
+        assertEquals(aClassNode.view2().getBounds(), new Rectangle(0, 0, aClassNode.view2().getBounds().getWidth(), aClassNode.view2().getBounds().getHeight()));
         try 
         {
             ArrayList<Node> aListNodesToBeRemoved = (ArrayList<Node>) (aNodesToBeRemoved.get(aGraph));

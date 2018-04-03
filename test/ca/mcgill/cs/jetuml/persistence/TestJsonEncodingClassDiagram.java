@@ -32,13 +32,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 
 public class TestJsonEncodingClassDiagram
 {
-	private ClassDiagramGraph aGraph;
+	private ClassDiagramGraph2 aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -53,7 +53,7 @@ public class TestJsonEncodingClassDiagram
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagramGraph2();
 	}
 	
 	/*
@@ -72,7 +72,7 @@ public class TestJsonEncodingClassDiagram
 	@Test
 	public void testEmpty()
 	{
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JSONObject object = JsonEncoder2.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("ClassDiagramGraph", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
@@ -83,7 +83,7 @@ public class TestJsonEncodingClassDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		ClassDiagramGraph graph = (ClassDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		ClassDiagramGraph2 graph = (ClassDiagramGraph2) JsonDecoder2.decode(JsonEncoder2.encode(aGraph));
 		
 		assertEquals(1, graph.getRootNodes().size());
 		

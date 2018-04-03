@@ -28,14 +28,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestDeserializationContext
 {
-	private ClassDiagramGraph aGraph;
-	private DeserializationContext aContext;
+	private ClassDiagramGraph2 aGraph;
+	private DeserializationContext2 aContext;
 	private ClassNode aClassNode1; 
 	private ClassNode aClassNode2; 
 	private ClassNode aClassNode3; 
@@ -53,7 +53,7 @@ public class TestDeserializationContext
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagramGraph2();
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aClassNode3 = new ClassNode();
@@ -62,7 +62,7 @@ public class TestDeserializationContext
 	@Test
 	public void textInit()
 	{
-		aContext = new DeserializationContext(aGraph);
+		aContext = new DeserializationContext2(aGraph);
 		assertEquals(0, size());
 		assertSame(aGraph, aContext.getGraph());
 	}
@@ -70,7 +70,7 @@ public class TestDeserializationContext
 	@Test
 	public void testAddGet()
 	{
-		aContext = new DeserializationContext(aGraph);
+		aContext = new DeserializationContext2(aGraph);
 		aContext.addNode(aClassNode1, 0);
 		assertEquals(1, size());
 		assertSame(aClassNode1, aContext.getNode(0));

@@ -20,7 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -30,18 +31,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 
 public class TestRemoveEdgeCommand 
 {
-    private Graph aGraph;
+    private Graph2 aGraph;
     private Field aEdgesToBeRemoved;
     private Edge aEdge;
-    private RemoveEdgeCommand aRemoveEdgeCommand;
+    private RemoveEdgeCommand2 aRemoveEdgeCommand;
 
     /**
 	 * Load JavaFX toolkit and environment.
@@ -56,11 +56,11 @@ public class TestRemoveEdgeCommand
     @Before
     public void setup() throws Exception 
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagramGraph2();
         aEdge = new CallEdge();
         aEdgesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aEdgesToBeRemoved");
         aEdgesToBeRemoved.setAccessible(true);
-        aRemoveEdgeCommand = new RemoveEdgeCommand(aGraph, aEdge);
+        aRemoveEdgeCommand = new RemoveEdgeCommand2(aGraph, aEdge);
     }
 
     @SuppressWarnings("unchecked")

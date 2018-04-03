@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 
@@ -36,7 +36,7 @@ public class TestNoteEdge
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagramGraph2 aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -59,16 +59,16 @@ public class TestNoteEdge
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
 		
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagramGraph2();
 	}
 	
 	@Test
 	public void testBasicConnection()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect2(aNoteNode, aPointNode, aGraph);
 		assertTrue( aNoteEdge.getStart() == aNoteNode );
 		assertTrue( aNoteEdge.getEnd() == aPointNode );
-		aNoteEdge.connect(aPointNode, aNoteNode, aGraph);
+		aNoteEdge.connect2(aPointNode, aNoteNode, aGraph);
 		assertTrue( aNoteEdge.getStart() == aPointNode );
 		assertTrue( aNoteEdge.getEnd() == aNoteNode );
 	}
@@ -76,7 +76,7 @@ public class TestNoteEdge
 	@Test
 	public void testClone()
 	{
-		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
+		aNoteEdge.connect2(aNoteNode, aPointNode, aGraph);
 		NoteEdge clonedEdge = (NoteEdge) aNoteEdge.clone();
 		
 		// Test that the start and end nodes are the same object
