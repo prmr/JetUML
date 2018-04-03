@@ -39,7 +39,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 
 /**
- * An object to render a call in a Sequence diagram.
+ * An object to render a call node in a Sequence diagram.
  * 
  * @author Martin P. Robillard
  *

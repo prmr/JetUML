@@ -181,7 +181,7 @@ public final class StringViewer2
 				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
 			}
 		}
-		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());    
+		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 		pGraphics.setFill(oldFill);
 	}
 }

@@ -100,8 +100,6 @@ public class SegmentedEdgeView2 extends AbstractEdgeView2
 		}
 		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
 		
-		
-		
 		Paint oldFill = pGraphics.getFill();
 		VPos oldVPos = pGraphics.getTextBaseline();
 		TextAlignment oldAlign = pGraphics.getTextAlign();
