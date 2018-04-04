@@ -209,7 +209,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals("", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
-		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
@@ -238,7 +238,7 @@ public class TestUsageScenariosObjectDiagram
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
 		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(61, 104, 54, 23), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
 	}
 	
@@ -274,7 +274,7 @@ public class TestUsageScenariosObjectDiagram
 			}
 		}
 		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(84, 121, 54, 23), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
@@ -359,9 +359,9 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics);	
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
-
+		
 		// delete aReferenceEdge2 and collaborationEdge1
 		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
@@ -394,7 +394,7 @@ public class TestUsageScenariosObjectDiagram
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 120), new Point(20, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
@@ -402,6 +402,10 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(assoEdge1);
 		aPanel.getSelectionList().add(aReferenceEdge1);
 		aPanel.getSelectionList().add(aReferenceEdge2);
+		
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(3, aDiagram.getEdges().size());
+		
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
@@ -412,15 +416,15 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(3, aDiagram.getEdges().size());
 		
-		// now delete aFieldNode2 and aReferenceEdge2
+		// now delete aFieldNode2 and as a result the reference edges
+		// connected to it: aReferenceEdge1 and aReferenceEdge2
 		aPanel.getSelectionList().add(aFieldNode2);
-		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aObjectNode1.getChildren().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.getEdges().size());
 		
 		aPanel.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());

@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.graph;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -208,7 +209,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aActorNode1.translate(3, 12);
 		aUseCaseNode1.translate(3, 2);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle(23, 32, 48, 64), aActorNode1.view().getBounds());
+		assertTrue(new Rectangle(23, 32, 48, 91).equals(aActorNode1.view().getBounds()) || new Rectangle(23, 32, 48, 89).equals(aActorNode1.view().getBounds()));
 		assertEquals(new Rectangle(83, 22, 110, 40), aUseCaseNode1.view().getBounds());
 		assertEquals(new Rectangle(140, 120, 60, 40), noteNode.view().getBounds());
 	}
@@ -239,10 +240,10 @@ public class TestUsageScenariosUseCaseDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 48, 64), aActorNode1.view().getBounds());
-		assertEquals(new Rectangle(276, 57, 48, 64), aActorNode2.view().getBounds());
-		assertEquals(new Rectangle(106, 57, 110, 40), aUseCaseNode1.view().getBounds());
-		assertEquals(new Rectangle(166, 57, 110, 40), aUseCaseNode2.view().getBounds());
+		assertTrue(new Rectangle(46, 57, 48, 91).equals(aActorNode1.view().getBounds()) || new Rectangle(46, 57, 48, 89).equals(aActorNode1.view().getBounds()));
+		assertTrue(new Rectangle(276, 57, 48, 91).equals(aActorNode2.view().getBounds()) || new Rectangle(276, 57, 48, 89).equals(aActorNode2.view().getBounds()));
+		assertEquals(new Rectangle(106, 57, 120, 40), aUseCaseNode1.view().getBounds());
+		assertEquals(new Rectangle(166, 57, 120, 40), aUseCaseNode2.view().getBounds());
 		assertEquals(new Rectangle(126, 137, 60, 40), noteNode.view().getBounds());
 		
 		// move a node connect to another node, edge should redraw accordingly,
@@ -401,7 +402,8 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics);
 	
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
+		assertTrue(new Rectangle(0, 0, 48, 91).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) ||
+			new Rectangle(0, 0, 48, 89).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())));
 	}
 	
 	/**
@@ -443,7 +445,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
+		assertTrue(new Rectangle(0, 0, 48, 91).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) || new Rectangle(0, 0, 48, 89).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())));
 	}
 
 	/**
@@ -475,6 +477,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(0, 0, 60, 80), (((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
+		assertTrue(new Rectangle(0, 0, 48, 91).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) || 
+				new Rectangle(0, 0, 48, 89).equals(((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
 	}
 }

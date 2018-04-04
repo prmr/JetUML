@@ -248,7 +248,7 @@ public class TestUsageScenariosSequenceDiagram
 	 * Note edge could not be moved individually.
 	 */
 	@Test
-	public void testIndividualNodeMoveMent()
+	public void testIndividualNodeMovement()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -275,24 +275,24 @@ public class TestUsageScenariosSequenceDiagram
 		// testing moving left call node, can only be moved vertically
 		aCallNode1.translate(5, 15);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(72, 90, 16, 60), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(72, 90, 16, 62), aCallNode1.view().getBounds());
 		aCallNode1.translate(0, 15);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(72, 105, 16, 60), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(72, 105, 16, 62), aCallNode1.view().getBounds());
 		aCallNode1.translate(20, 0);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(72, 105, 16, 60), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(72, 105, 16, 62), aCallNode1.view().getBounds());
 		
 		// testing moving right call node, can only be moved vertically
 		aCallNode2.translate(5, 15);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(247, 115, 16, 30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(247, 117, 16, 30), aCallNode2.view().getBounds());
 		aCallNode2.translate(0, 15);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(247, 115, 16, 30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(247, 117, 16, 30), aCallNode2.view().getBounds());
 		aCallNode2.translate(20, 0);
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(247, 115, 16, 30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(247, 117, 16, 30), aCallNode2.view().getBounds());
 	}
 	
 	/**
@@ -320,8 +320,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(25, 0, 80, 157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(125, 0, 80, 157), aParameterNode2.view().getBounds());
-		assertEquals(new Rectangle(57, 75, 16, 60), aCallNode1.view().getBounds());
-		assertEquals(new Rectangle(157, 85, 16, 30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(57, 75, 16, 62), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(157, 87, 16, 30), aCallNode2.view().getBounds());
 
 		aPanel.selectAll();
 		for(GraphElement element: aPanel.getSelectionList())
@@ -333,10 +333,10 @@ public class TestUsageScenariosSequenceDiagram
 		}
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(0, 0, 80, 155), aParameterNode1.view().getBounds());
-		assertEquals(new Rectangle(100, 0, 80, 155), aParameterNode2.view().getBounds());
-		assertEquals(new Rectangle(32, 75, 16, 60), aCallNode1.view().getBounds());
-		assertEquals(new Rectangle(132, 85, 16, 30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 157), aParameterNode1.view().getBounds());
+		assertEquals(new Rectangle(100, 0, 80, 157), aParameterNode2.view().getBounds());
+		assertEquals(new Rectangle(32, 75, 16, 62), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(132, 87, 16, 30), aCallNode2.view().getBounds());
 	}
 	
 	/**
@@ -392,6 +392,7 @@ public class TestUsageScenariosSequenceDiagram
 	public void testDeleteSingleParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aCallNode1, new Point(15, 65), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Rectangle parameterNode1Bounds = aParameterNode1.view().getBounds();
 		aPanel.getSelectionList().add(aParameterNode1);
 		aPanel.removeSelected();
@@ -761,8 +762,8 @@ public class TestUsageScenariosSequenceDiagram
 		
 		assertEquals(new Rectangle(10,0,80,157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(110,0,80,157), aParameterNode2.view().getBounds());
-		assertEquals(new Rectangle(42,75,16,60), aCallNode1.view().getBounds());
-		assertEquals(new Rectangle(142, 85,16,30), aCallNode2.view().getBounds());
-		assertEquals(new Rectangle(58, 80,84,10), aCallEdge1.view().getBounds());
+		assertEquals(new Rectangle(42,75,16,62), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(142,87,16,30), aCallNode2.view().getBounds());
+		assertEquals(new Rectangle(57,80,86,12), aCallEdge1.view().getBounds());
 	}	
 }

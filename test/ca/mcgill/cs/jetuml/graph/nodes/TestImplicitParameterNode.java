@@ -24,8 +24,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -36,6 +38,16 @@ public class TestImplicitParameterNode
 	private ImplicitParameterNode aObject2;
 	private CallNode aCall1;
 	private CallNode aCall2;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()
