@@ -69,7 +69,7 @@ public class TestClassNode
 		assertEquals("", aNode1.getName());
 		String attributes = aNode1.getAttributes();
 		assertEquals("", attributes);
-		assertEquals(new Rectangle(0,0,100,60), aNode1.view2().getBounds());
+		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
 		assertNull(aNode1.getParent());
 	}
 	
@@ -103,8 +103,8 @@ public class TestClassNode
 		assertEquals("", name);
 		String methods = clone.getMethods();
 		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), clone.view2().getBounds());
-		assertTrue(clone.view2().getBounds().equals(aNode1.view2().getBounds()));
+		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
+		assertTrue(clone.view().getBounds().equals(aNode1.view().getBounds()));
 		assertTrue(clone.getParent().equals(aNode1.getParent()));
 	}
 }

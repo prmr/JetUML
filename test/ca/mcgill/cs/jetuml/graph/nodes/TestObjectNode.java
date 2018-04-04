@@ -49,12 +49,12 @@ public class TestObjectNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 80, 60), aObject1.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 60), aObject1.view().getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(40,0), aObject1.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(40,60), aObject1.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(40,0), aObject1.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(40,60), aObject1.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 	}
 	
@@ -136,12 +136,12 @@ public class TestObjectNode
 	{
 		aObject1.setName("o1");
 		ObjectNode clone = aObject1.clone();
-		assertEquals(new Rectangle(0, 0, 80, 60), clone.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 60), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(80,30), clone.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), clone.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(40,0), clone.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(40,60), clone.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), clone.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), clone.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(40,0), clone.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(40,60), clone.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		
 		aField1.setName("f1");

@@ -32,17 +32,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
-import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestDeleteNodeCommand 
 {
-    private Graph2 aGraph;
+    private Graph aGraph;
     private Field aNodesToBeRemoved;
     private Node aNode;
-    private DeleteNodeCommand2 aDeleteNodeCommand;
+    private DeleteNodeCommand aDeleteNodeCommand;
 
     /**
 	 * Load JavaFX toolkit and environment.
@@ -57,11 +57,11 @@ public class TestDeleteNodeCommand
     @Before
     public void setup() throws Exception 
     {
-        aGraph = new ClassDiagramGraph2();
+        aGraph = new ClassDiagramGraph();
         aNode = new ClassNode();
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
         aNodesToBeRemoved.setAccessible(true);
-        aDeleteNodeCommand = new DeleteNodeCommand2(aGraph, aNode);
+        aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aNode);
     }
 
     @SuppressWarnings("unchecked")

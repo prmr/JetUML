@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
@@ -41,7 +41,7 @@ public class TestClassViewNode
 {
 	private ClassNode aNode1;
 	private Graphics2D aGraphics;
-	private ClassDiagramGraph2 aGraph;
+	private ClassDiagramGraph aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -58,7 +58,7 @@ public class TestClassViewNode
 	{
 		aNode1 = new ClassNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aGraph= new ClassDiagramGraph2();
+		aGraph= new ClassDiagramGraph();
 	}
 	
 	@After
@@ -70,79 +70,79 @@ public class TestClassViewNode
 	@Test
 	public void testNeedsMiddle()
 	{
-		assertFalse(((ClassNodeView2)aNode1.view2()).needsMiddleCompartment());
+		assertFalse(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
 		aNode1.setAttributes("Foo");
-		assertTrue(((ClassNodeView2)aNode1.view2()).needsMiddleCompartment());
+		assertTrue(((ClassNodeView)aNode1.view()).needsMiddleCompartment());
 	}
 	
 	@Test
 	public void testNeedsBottom()
 	{
-		assertFalse(((ClassNodeView2)aNode1.view2()).needsBottomCompartment());
+		assertFalse(((ClassNodeView)aNode1.view()).needsBottomCompartment());
 		aNode1.setMethods("Foo");
-		assertTrue(((ClassNodeView2)aNode1.view2()).needsBottomCompartment());
+		assertTrue(((ClassNodeView)aNode1.view()).needsBottomCompartment());
 	}
 	
 	@Test
 	public void testComputeMiddle()
 	{
-		assertEquals(0, ((ClassNodeView2)aNode1.view2()).middleWidth());
-		assertEquals(0, ((ClassNodeView2)aNode1.view2()).middleHeight());
+		assertEquals(0, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(0, ((ClassNodeView)aNode1.view()).middleHeight());
 		aNode1.setAttributes("Foo");
-		assertEquals(100, ((ClassNodeView2)aNode1.view2()).middleWidth());
-		assertEquals(20, ((ClassNodeView2)aNode1.view2()).middleHeight());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(27, ((ClassNodeView)aNode1.view()).middleHeight());
 		aNode1.setAttributes("Foo\nFoo");
-		assertEquals(100, ((ClassNodeView2)aNode1.view2()).middleWidth());
-		assertEquals(32, ((ClassNodeView2)aNode1.view2()).middleHeight());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(47, ((ClassNodeView)aNode1.view()).middleHeight());
 		aNode1.setAttributes("Foo");
-		assertEquals(100, ((ClassNodeView2)aNode1.view2()).middleWidth());
-		assertEquals(20, ((ClassNodeView2)aNode1.view2()).middleHeight());
+		assertEquals(100, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(27, ((ClassNodeView)aNode1.view()).middleHeight());
 		aNode1.setAttributes("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(307, ((ClassNodeView2)aNode1.view2()).middleWidth());
-		assertEquals(20, ((ClassNodeView2)aNode1.view2()).middleHeight());
+		assertEquals(386, ((ClassNodeView)aNode1.view()).middleWidth());
+		assertEquals(27, ((ClassNodeView)aNode1.view()).middleHeight());
 	}
 	
 	@Test
 	public void testComputeBottom()
 	{
-		assertEquals(new Rectangle(0,0,0,0), ((ClassNodeView2)aNode1.view2()).computeBottom());
+		assertEquals(new Rectangle(0,0,0,0), ((ClassNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView2)aNode1.view2()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,27), ((ClassNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo\nFoo");
-		assertEquals(new Rectangle(0,0,100,32), ((ClassNodeView2)aNode1.view2()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,47), ((ClassNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView2)aNode1.view2()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,27), ((ClassNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,307,20), ((ClassNodeView2)aNode1.view2()).computeBottom());
+		assertEquals(new Rectangle(0,0,386,27), ((ClassNodeView)aNode1.view()).computeBottom());
 	}
 	
 	@Test
 	public void testComputeTop()
 	{
-		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
 		aNode1.setName("X\nX\nX\nX");
-		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,87), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("");
-		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,60), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setMethods("X");
-		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 		aNode1.setMethods("X\nX\nX");
-		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("X\nX\nX");
-		assertEquals(new Rectangle(0,0,100,48), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,67), ((ClassNodeView)aNode1.view()).computeTop());
 		aNode1.setName("X\nX\nX\nX");
-		assertEquals(new Rectangle(0,0,100,64), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,87), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("X");
 		aNode1.setMethods("X");
 		aNode1.setAttributes("X");
-		assertEquals(new Rectangle(0,0,100,20), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,27), ((ClassNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setMethods("");
-		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView2)aNode1.view2()).computeTop());
+		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
 	}
 	
 	@Test
@@ -150,25 +150,25 @@ public class TestClassViewNode
 	{
 		// Test layout with no snapping (grid size is 10)
 		aNode1.translate(10, 10);
-		aNode1.view2().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.view2().getBounds());
+		aNode1.view().layout(aGraph);
+		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
 		
 		aNode1.setName("X\nX\nX\nX");
-		aNode1.view2().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view2().getBounds());
+		aNode1.view().layout(aGraph);
+		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
 		aNode1.setMethods("X\nX");
-		aNode1.view2().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,100), aNode1.view2().getBounds());
+		aNode1.view().layout(aGraph);
+		assertEquals(new Rectangle(10,10,100,140), aNode1.view().getBounds());
 		
 		aNode1.setName("X");
 		aNode1.setMethods("X");
-		aNode1.view2().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.view2().getBounds());
+		aNode1.view().layout(aGraph);
+		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 		
 		// Test layout with snapping
 		aNode1.translate(-4, -4);
-		aNode1.view2().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.view2().getBounds());
+		aNode1.view().layout(aGraph);
+		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 	}
 }

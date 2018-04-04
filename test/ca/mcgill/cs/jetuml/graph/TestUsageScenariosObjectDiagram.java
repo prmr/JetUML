@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
@@ -37,8 +37,8 @@ import ca.mcgill.cs.jetuml.graph.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.gui.GraphPanel2;
-import ca.mcgill.cs.jetuml.gui.ToolBar2;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.ToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -54,9 +54,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class TestUsageScenariosObjectDiagram 
 {
-	private ObjectDiagramGraph2 aDiagram;
+	private ObjectDiagramGraph aDiagram;
 	private GraphicsContext aGraphics;
-	private GraphPanel2 aPanel;
+	private GraphPanel aPanel;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
 	private FieldNode aFieldNode1;
@@ -81,9 +81,9 @@ public class TestUsageScenariosObjectDiagram
 	@Before
 	public void setup()
 	{
-		aDiagram = new ObjectDiagramGraph2();
+		aDiagram = new ObjectDiagramGraph();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new GraphPanel2(aDiagram, new ToolBar2(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -237,9 +237,9 @@ public class TestUsageScenariosObjectDiagram
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view2().getBounds());
-		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.view2().getBounds());
-		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view2().getBounds());
+		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
 	}
 	
 	/**
@@ -262,9 +262,9 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 		aPanel.selectAll();
 
-		Rectangle referenceEdge1Bounds = aReferenceEdge1.view2().getBounds();
-		Rectangle referenceEdge2Bounds = aReferenceEdge2.view2().getBounds();
-		Rectangle collaborationEdge1Bounds = collaborationEdge1.view2().getBounds();
+		Rectangle referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
+		Rectangle referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
+		Rectangle collaborationEdge1Bounds = collaborationEdge1.view().getBounds();
 
 		for(GraphElement element: aPanel.getSelectionList())
 		{
@@ -273,9 +273,9 @@ public class TestUsageScenariosObjectDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view2().getBounds());
-		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.view2().getBounds());
-		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view2().getBounds());
+		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
 		assertEquals(aObjectNode1, aReferenceEdge1.getEnd());
@@ -283,15 +283,15 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		assertEquals(aObjectNode1, collaborationEdge1.getStart());
 		assertEquals(aObjectNode2, collaborationEdge1.getEnd());
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view2().getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view2().getBounds());
-		assertFalse(collaborationEdge1Bounds == collaborationEdge1.view2().getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
+		assertFalse(collaborationEdge1Bounds == collaborationEdge1.view().getBounds());
 		
-		referenceEdge1Bounds = aReferenceEdge1.view2().getBounds();
-		referenceEdge2Bounds = aReferenceEdge2.view2().getBounds();
+		referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
+		referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
 		aObjectNode1.translate(-5, -5);
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view2().getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view2().getBounds());
+		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
+		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
 	}
 	
 	/**
@@ -446,7 +446,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).view2().getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
 		
 		// paste a FieldNode itself is not allowed
 		aPanel.getSelectionList().clearSelection();
@@ -475,7 +475,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view2().getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 		
 		// a FieldNode will be cut, but will not be pasted
 		aPanel.getSelectionList().clearSelection();
@@ -509,7 +509,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).view2().getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds());
 	}
 	
 	/**
@@ -536,6 +536,6 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view2().getBounds());
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 }

@@ -65,12 +65,12 @@ public class TestPackageNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 100, 80), aPackage1.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), aPackage1.view().getBounds());
 		assertEquals(0,aPackage1.getChildren().size());
-		assertEquals(new Point(100,40), aPackage1.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,40), aPackage1.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(50,0), aPackage1.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(50,80), aPackage1.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(100,40), aPackage1.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,40), aPackage1.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(50,0), aPackage1.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(50,80), aPackage1.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
 		assertNull(aPackage1.getParent());
@@ -141,12 +141,12 @@ public class TestPackageNode
 	{
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
-		assertEquals(new Rectangle(0, 0, 100, 80), clone.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(100,40), clone.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,40), clone.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(50,0), clone.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(50,80), clone.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(100,40), clone.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,40), clone.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(50,0), clone.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(50,80), clone.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
 		assertNull(clone.getParent());

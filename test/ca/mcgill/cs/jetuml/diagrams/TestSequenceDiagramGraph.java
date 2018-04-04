@@ -41,7 +41,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
  */
 public class TestSequenceDiagramGraph
 {
-	 private SequenceDiagramGraph2 aGraph;
+	 private SequenceDiagramGraph aGraph;
 	 
 	 /**
 	  * Load JavaFX toolkit and environment.
@@ -56,7 +56,7 @@ public class TestSequenceDiagramGraph
 	 @Before
 	 public void setup()
 	 {
-		 aGraph = new SequenceDiagramGraph2();
+		 aGraph = new SequenceDiagramGraph();
 	 }
 	 
 	 @Test
@@ -85,10 +85,10 @@ public class TestSequenceDiagramGraph
 		 aGraph.addNode(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		 aGraph.layout();
 		 CallNode callee = new CallNode();
-		 param.addChild2(callee,new Point(60, 100));
+		 param.addChild(callee,new Point(60, 100));
 		 Edge callEdge = new CallEdge();
 		 aGraph.insertEdge(callEdge);
-		 callEdge.connect2(node,  callee, aGraph);
+		 callEdge.connect(node,  callee, aGraph);
 		 aGraph.layout();
 	 
 		 // Point outside the bounds
@@ -134,7 +134,7 @@ public class TestSequenceDiagramGraph
 
 		Edge callEdge = new CallEdge();
 		aGraph.insertEdge(callEdge);
-		callEdge.connect2(node, node2, aGraph);
+		callEdge.connect(node, node2, aGraph);
 		aGraph.layout();
 
 		CallNode node3 = new CallNode();
@@ -143,7 +143,7 @@ public class TestSequenceDiagramGraph
 
 		Edge callEdge2 = new CallEdge();
 		aGraph.insertEdge(callEdge2);
-		callEdge2.connect2(node, node3, aGraph);
+		callEdge2.connect(node, node3, aGraph);
 		aGraph.layout();
 
 		// Point outside the bounds
@@ -176,7 +176,7 @@ public class TestSequenceDiagramGraph
 		
 		Edge callEdge = new CallEdge();
 		aGraph.insertEdge(callEdge);
-		callEdge.connect2(node, param2, aGraph);
+		callEdge.connect(node, param2, aGraph);
 		aGraph.layout();
 		
 		CallNode node2 = new CallNode();
@@ -185,7 +185,7 @@ public class TestSequenceDiagramGraph
 
 		Edge callEdge2 = new CallEdge();
 		aGraph.insertEdge(callEdge2);
-		callEdge2.connect2(node, node2, aGraph);
+		callEdge2.connect(node, node2, aGraph);
 		aGraph.layout();
 		
 		// Point outside the bounds

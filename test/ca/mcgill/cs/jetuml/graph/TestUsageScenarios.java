@@ -27,10 +27,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.Clipboard2;
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph2;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph2;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
@@ -43,7 +43,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
-import ca.mcgill.cs.jetuml.gui.GraphPanel2;
+import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import javafx.geometry.Rectangle2D;
 
 /**
@@ -66,7 +66,7 @@ public class TestUsageScenarios
 	@Test
 	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagramGraph2 diagram = new ClassDiagramGraph2();
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
 		PackageNode p1 = new PackageNode();
 		ClassNode c1 = new ClassNode();
 		ClassNode c2 = new ClassNode();
@@ -86,8 +86,8 @@ public class TestUsageScenarios
 		selection.add(c2);
 		selection.add(edge);
 		
-		Clipboard2.instance().copy(selection);
-		Clipboard2.instance().paste(new GraphPanel2(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().copy(selection);
+		Clipboard.instance().paste(new GraphPanel(diagram, null, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -96,7 +96,7 @@ public class TestUsageScenarios
 	@Test
 	public void testClassDiagramCopyPackageNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagramGraph2 diagram = new ClassDiagramGraph2();
+		ClassDiagramGraph diagram = new ClassDiagramGraph();
 		PackageNode p1 = new PackageNode();
 		PackageNode c1 = new PackageNode();
 		PackageNode c2 = new PackageNode();
@@ -116,8 +116,8 @@ public class TestUsageScenarios
 		selection.add(p1);
 		selection.add(edge);
 
-		Clipboard2.instance().copy(selection);
-		Clipboard2.instance().paste(new GraphPanel2(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().copy(selection);
+		Clipboard.instance().paste(new GraphPanel(diagram, null, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -127,7 +127,7 @@ public class TestUsageScenarios
 	public void testStateDiagramCreate()
 	{
 		// Create a state diagram with two state nodes, one start node, one end node
-		StateDiagramGraph2 diagram = new StateDiagramGraph2();
+		StateDiagramGraph diagram = new StateDiagramGraph();
 		StateNode node1 = new StateNode();
 		node1.setName("Node 1");
 		StateNode node2 = new StateNode();
@@ -165,32 +165,32 @@ public class TestUsageScenarios
 		
 		// VALIDATION NODES
 		assertEquals(4, diagram.getRootNodes().size());
-		assertEquals(new Rectangle(30, 30, 80, 60), node1.view2().getBounds());
+		assertEquals(new Rectangle(30, 30, 80, 60), node1.view().getBounds());
 		assertEquals("Node 1", node1.getName());
-		assertEquals(new Rectangle(30, 100, 80, 60), node2.view2().getBounds());
+		assertEquals(new Rectangle(30, 100, 80, 60), node2.view().getBounds());
 		assertEquals("Node 2", node2.getName());
-		assertEquals(new Rectangle(5, 5, 20, 20), start.view2().getBounds());
-		assertEquals(new Rectangle(30, 200, 20, 20), end.view2().getBounds());
+		assertEquals(new Rectangle(5, 5, 20, 20), start.view().getBounds());
+		assertEquals(new Rectangle(30, 200, 20, 20), end.view().getBounds());
 		
 		// VALIDATION EDGES
 		assertEquals(4, diagram.getEdges().size());
 		
-		assertEquals(new Rectangle(21, 19, 18, 11), edge1.view2().getBounds());
+		assertEquals(new Rectangle(21, 19, 18, 11), edge1.view().getBounds());
 		assertEquals("Edge 1", edge1.getMiddleLabel());
 		assertEquals(start, edge1.getStart());
 		assertEquals(node1, edge1.getEnd());
 		
-		assertEquals(new Rectangle(70, 88, 2, 12), edge2.view2().getBounds());
+		assertEquals(new Rectangle(70, 88, 2, 12), edge2.view().getBounds());
 		assertEquals("Edge 2", edge2.getMiddleLabel());
 		assertEquals(node1, edge2.getStart());
 		assertEquals(node2, edge2.getEnd());
 		
-		assertEquals(new Rectangle(65, 88, 2, 12), edge3.view2().getBounds());
+		assertEquals(new Rectangle(65, 88, 2, 12), edge3.view().getBounds());
 		assertEquals("Edge 3", edge3.getMiddleLabel());
 		assertEquals(node2, edge3.getStart());
 		assertEquals(node1, edge3.getEnd());
 		
-		assertEquals(new Rectangle(42, 158, 19, 43), edge4.view2().getBounds());
+		assertEquals(new Rectangle(42, 158, 19, 43), edge4.view().getBounds());
 		assertEquals("Edge 4", edge4.getMiddleLabel());
 		assertEquals(node2, edge4.getStart());
 		assertEquals(end, edge4.getEnd());
@@ -200,7 +200,7 @@ public class TestUsageScenarios
 	public void testStateDiagramCreateNotes() throws Exception
 	{
 		// Create a state diagram with two state nodes, one start node, one end node
-		StateDiagramGraph2 diagram = new StateDiagramGraph2();
+		StateDiagramGraph diagram = new StateDiagramGraph();
 		StateNode node1 = new StateNode();
 		node1.setName("Node 1");
 		diagram.addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);

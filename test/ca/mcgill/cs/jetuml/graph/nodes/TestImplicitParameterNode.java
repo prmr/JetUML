@@ -49,12 +49,12 @@ public class TestImplicitParameterNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 80, 120), aObject1.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 120), aObject1.view().getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 	}
 	
@@ -100,12 +100,12 @@ public class TestImplicitParameterNode
 	{
 		aObject1.setName("o1");
 		ImplicitParameterNode clone = aObject1.clone();
-		assertEquals(new Rectangle(0, 0, 80, 120), clone.view2().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 120), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.view2().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(0,30), aObject1.view2().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.NORTH));
+		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		
 		aObject1.addChild(aCall1);

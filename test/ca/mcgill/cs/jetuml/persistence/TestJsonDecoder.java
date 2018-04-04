@@ -47,7 +47,7 @@ public class TestJsonDecoder
 	public void testEmptyJSONObject()
 	{
 		JSONObject object = new JSONObject();
-		JsonDecoder2.decode(object);
+		JsonDecoder.decode(object);
 	}
 	
 	/*
@@ -60,6 +60,6 @@ public class TestJsonDecoder
 		JSONObject object = new JSONObject();
 		object.put("version", "1.2");
 		object.put("diagram", "StateDiagramGraph");
-		JsonDecoder2.decode(object);
+		JsonDecoder.decode(object);
 	}
 }
