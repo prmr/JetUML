@@ -134,23 +134,23 @@ public class GraphFrame extends Tab
 			Graph graphType = getGraph();
 			if (graphType instanceof UseCaseDiagramGraph)
 			{
-				setText("Use Case Diagram 2");
+				setText("Use Case Diagram");
 			} 
 			else if (graphType instanceof StateDiagramGraph)
 			{
-				setText("State Diagram 2");
+				setText("State Diagram");
 			} 
 			else if (graphType instanceof ClassDiagramGraph)
 			{
-				setText("Class Diagram 2");
+				setText("Class Diagram");
 			} 
 			else if (graphType instanceof SequenceDiagramGraph)
 			{
-				setText("Sequence Diagram 2");
+				setText("Sequence Diagram");
 			} 
 			else if (graphType instanceof ObjectDiagramGraph)
 			{
-				setText("Object Diagram 2");
+				setText("Object Diagram");
 			} 
 			else 
 			{
