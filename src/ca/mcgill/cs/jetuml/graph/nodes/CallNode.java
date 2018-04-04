@@ -23,10 +23,10 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * A method call node in a sequence diagram. In addition to edges,
@@ -41,9 +41,9 @@ public class CallNode extends AbstractNode implements ChildNode
 	private boolean aOpenBottom;
 
 	@Override
-	protected NodeView2 generateView2()
+	protected NodeView generateView()
 	{
-		return new CallNodeView2(this);
+		return new CallNodeView(this);
 	}
 
 	/* (non-Javadoc)
@@ -55,11 +55,11 @@ public class CallNode extends AbstractNode implements ChildNode
 		super.translate(pDeltaX, pDeltaY);
 		// Prevent going above the ImplicitParameterNode
 		// TODO Remove first clause once XML serialization is replaced.
-		if( aImplicitParameter != null && view2().getBounds().getY() < aImplicitParameter.getTopRectangle2().getMaxY() + MIN_YGAP)
+		if( aImplicitParameter != null && view().getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
 		{
-			((CallNodeView2)view2()).setBounds(new Rectangle(view2().getBounds().getX(), 
-					Math.round(aImplicitParameter.getTopRectangle2().getMaxY()) + MIN_YGAP, 
-					view2().getBounds().getWidth(), view2().getBounds().getHeight()));
+			((CallNodeView)view()).setBounds(new Rectangle(view().getBounds().getX(), 
+					Math.round(aImplicitParameter.getTopRectangle().getMaxY()) + MIN_YGAP, 
+					view().getBounds().getWidth(), view().getBounds().getHeight()));
 		}
 	}
 
@@ -99,7 +99,7 @@ public class CallNode extends AbstractNode implements ChildNode
 	 * @param pGraph The graph containing the node.
 	 * @return True if this node is signaled.
 	 */
-	public boolean isSignaled(Graph2 pGraph)
+	public boolean isSignaled(Graph pGraph)
 	{
 		for( Edge edge : pGraph.getEdges(this))
 		{

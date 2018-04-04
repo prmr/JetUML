@@ -27,10 +27,10 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
@@ -63,9 +63,9 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	{}
 	
 	@Override
-	protected EdgeView2 generateView2()
+	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView2(this, obtainSegmentationStyle2(),
+		return new SegmentedEdgeView(this, obtainSegmentationStyle(),
 				() -> getLineStyle(), () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
 				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
 	}
@@ -107,8 +107,8 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public SegmentationStyle2 obtainSegmentationStyle2() 
+	public SegmentationStyle obtainSegmentationStyle() 
 	{
-		return SegmentationStyleFactory2.createVHVStrategy();
+		return SegmentationStyleFactory.createVHVStrategy();
 	}
 }

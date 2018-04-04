@@ -37,16 +37,6 @@ public final class FileExtensions
 						"*" + aAppResources.getString("object.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase.name"), 
 						"*" + aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class2.name"), 
-				"*" + aAppResources.getString("class2.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence2.name"), 
-				"*" + aAppResources.getString("sequence2.extension") + aAppResources.getString("files.extension")));
-				aFileFilters.add(new ExtensionFilter(aAppResources.getString("state2.name"), 
-				"*" + aAppResources.getString("state2.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("object2.name"), 
-						"*" + aAppResources.getString("object2.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase2.name"), 
-				"*" + aAppResources.getString("usecase2.extension") + aAppResources.getString("files.extension")));
 		aFileFilters.add(new ExtensionFilter("All Files", "*.*"));
 	}
 	

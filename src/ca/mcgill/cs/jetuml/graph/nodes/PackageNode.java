@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
 /**
  *   A package node in a UML diagram.
@@ -39,9 +39,9 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	private ParentNode aContainer;
 	
 	@Override
-	protected NodeView2 generateView2()
+	protected NodeView generateView()
 	{
-		return new PackageNodeView2(this);
+		return new PackageNodeView(this);
 	}
 	
 	/**
@@ -76,8 +76,8 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	{
 		super.translate(pDeltaX, pDeltaY);
 		
-		((PackageNodeView2)view2()).translateTop(pDeltaX,  pDeltaY);
-		((PackageNodeView2)view2()).translateBottom(pDeltaX, pDeltaY);
+		((PackageNodeView)view()).translateTop(pDeltaX,  pDeltaY);
+		((PackageNodeView)view()).translateBottom(pDeltaX, pDeltaY);
 		for(Node childNode : getChildren())
         {
         	childNode.translate(pDeltaX, pDeltaY);

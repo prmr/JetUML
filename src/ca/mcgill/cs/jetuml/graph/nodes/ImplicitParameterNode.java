@@ -26,8 +26,8 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * An implicit parameter node in a sequence diagram. The 
@@ -42,9 +42,9 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 	
 	@Override
-	protected NodeView2 generateView2()
+	protected NodeView generateView()
 	{
-		return new ImplicitParameterNodeView2(this);
+		return new ImplicitParameterNodeView(this);
 	}
 
 	@Override
@@ -85,10 +85,10 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	 * @param pChild The child to add
 	 * @param pPoint The point selected.
 	 */
-	public void addChild2(ChildNode pChild, Point pPoint)
+	public void addChild(ChildNode pChild, Point pPoint)
 	{
 		int i = 0;
-		while(i < aCallNodes.size() && aCallNodes.get(i).view2().getBounds().getY() <= pPoint.getY())
+		while(i < aCallNodes.size() && aCallNodes.get(i).view().getBounds().getY() <= pPoint.getY())
 		{
 			i++;
 		}
@@ -115,9 +115,9 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	/**
 	 * @return The bounds of the top rectangle.
 	 */
-	public Rectangle getTopRectangle2()
+	public Rectangle getTopRectangle()
 	{
-		return ((ImplicitParameterNodeView2)view2()).getTopRectangle();
+		return ((ImplicitParameterNodeView)view()).getTopRectangle();
 	}
 	
 	/**
@@ -125,6 +125,6 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	 */
 	public void setBounds(Rectangle pNewBounds)
 	{
-		((ImplicitParameterNodeView2)view2()).setBounds(pNewBounds);
+		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
 	}
 }

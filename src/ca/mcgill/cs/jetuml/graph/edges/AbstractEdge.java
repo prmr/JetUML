@@ -22,10 +22,9 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 
 /**
  * Abstract edge in the new hierarchy.
@@ -35,26 +34,25 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 {
 	protected EdgeView aView;
-	protected EdgeView2 aView2;
 	private Node aStart;
 	private Node aEnd;
-	private Graph2 aGraph2;
+	private Graph aGraph;
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this edge.
 	 */
 	protected AbstractEdge()
 	{
-		aView2 = generateView2();
+		aView = generateView();
 	}
 	
 	@Override
-	public void connect2(Node pStart, Node pEnd, Graph2 pGraph)
+	public void connect(Node pStart, Node pEnd, Graph pGraph)
 	{
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
-		aGraph2 = pGraph;		
+		aGraph = pGraph;		
 	}
 
 	@Override
@@ -70,9 +68,9 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	}
 
 	@Override
-	public Graph2 getGraph2()
+	public Graph getGraph()
 	{
-		return aGraph2;
+		return aGraph;
 	}
 
 	/**
@@ -82,20 +80,20 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	 * 
 	 * @return The view that wraps this edge.
 	 */
-	protected abstract EdgeView2 generateView2();
+	protected abstract EdgeView generateView();
 	
 	@Override
 	public AbstractEdge clone()
 	{
 		AbstractEdge clone = (AbstractEdge) super.clone();
-		clone.aView2 = clone.generateView2();
+		clone.aView = clone.generateView();
 		return clone;
 	}
 	
 	@Override
-	public EdgeView2 view2()
+	public EdgeView view()
 	{
-		return aView2;
+		return aView;
 	}
 	
 	@Override

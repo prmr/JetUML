@@ -27,9 +27,9 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a generalization of a use case.
@@ -37,9 +37,9 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
 public class UseCaseGeneralizationEdge extends AbstractEdge
 {
 	@Override
-	protected EdgeView2 generateView2()
+	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView2(this, SegmentationStyleFactory2.createStraightStrategy(),
+		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
 				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
 				() -> "", () -> "", () -> "");
 	}

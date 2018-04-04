@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.PointNodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.PointNodeView;
 
 /**
  *  An invisible node that is used in the toolbar to draw an
@@ -32,8 +32,8 @@ import ca.mcgill.cs.jetuml.views.nodes.PointNodeView2;
 public class PointNode extends AbstractNode
 {
 	@Override
-	protected NodeView2 generateView2() 
+	protected NodeView generateView() 
 	{
-		return new PointNodeView2(this);
+		return new PointNodeView(this);
 	}
 }

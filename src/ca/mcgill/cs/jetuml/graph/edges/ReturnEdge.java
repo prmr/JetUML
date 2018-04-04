@@ -25,14 +25,14 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
+import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 import javafx.geometry.Point2D;
 
 /**
@@ -41,15 +41,15 @@ import javafx.geometry.Point2D;
 public class ReturnEdge extends SingleLabelEdge
 {
 	@Override
-	protected EdgeView2 generateView2()
+	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView2(this, createSegmentationStyle2(), () -> LineStyle.DOTTED,
+		return new SegmentedEdgeView(this, createSegmentationStyle2(), () -> LineStyle.DOTTED,
 				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
-	private SegmentationStyle2 createSegmentationStyle2()
+	private SegmentationStyle createSegmentationStyle2()
 	{
-		return new SegmentationStyle2()
+		return new SegmentationStyle()
 		{
 			@Override
 			public boolean isPossible(Edge pEdge)
@@ -59,9 +59,9 @@ public class ReturnEdge extends SingleLabelEdge
 			}
 
 			@Override
-			public Point2D[] getPath(Edge pEdge, Graph2 pGraph)
+			public Point2D[] getPath(Edge pEdge, Graph pGraph)
 			{
-				return getPoints2(pEdge);
+				return getPoints(pEdge);
 			}
 
 			@Override
@@ -73,11 +73,11 @@ public class ReturnEdge extends SingleLabelEdge
 		};
 	}
 	
-	private static Point2D[] getPoints2(Edge pEdge)
+	private static Point2D[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
-		Rectangle start = pEdge.getStart().view2().getBounds();
-		Rectangle end = pEdge.getEnd().view2().getBounds();
+		Rectangle start = pEdge.getStart().view().getBounds();
+		Rectangle end = pEdge.getEnd().view().getBounds();
 		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{
 			lReturn.add(new Point2D(end.getX(), end.getY()));

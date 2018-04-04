@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * An initial in a state diagram.
@@ -30,9 +30,9 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 public class FinalStateNode extends AbstractNode
 {
 	@Override
-	protected NodeView2 generateView2() 
+	protected NodeView generateView() 
 	{
-		return new CircularStateNodeView2(this, true);
+		return new CircularStateNodeView(this, true);
 	}
 }
 

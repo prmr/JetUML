@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * An interface node in a class diagram that can be composed
@@ -43,9 +43,9 @@ public class InterfaceNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
-	protected NodeView2 generateView2()
+	protected NodeView generateView()
 	{
-		return new InterfaceNodeView2(this);
+		return new InterfaceNodeView(this);
 	}
 
 	/**

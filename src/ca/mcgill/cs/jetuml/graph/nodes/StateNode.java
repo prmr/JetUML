@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.jetuml.graph.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.StateNodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
+import ca.mcgill.cs.jetuml.views.nodes.StateNodeView;
 
 /**
    A state node in a state diagram.
@@ -30,8 +30,8 @@ import ca.mcgill.cs.jetuml.views.nodes.StateNodeView2;
 public class StateNode extends NamedNode
 {
 	@Override
-	protected NodeView2 generateView2() 
+	protected NodeView generateView() 
 	{
-		return new StateNodeView2(this);
+		return new StateNodeView(this);
 	}
 }

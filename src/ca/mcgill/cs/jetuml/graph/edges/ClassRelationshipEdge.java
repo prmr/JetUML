@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
+import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 
 /**
  * Needed to support an optimization in SegmentationStyleFactory.
@@ -33,5 +33,5 @@ public abstract class ClassRelationshipEdge extends ThreeLabelEdge
 	 * @return The object that can draw the line corresponding
 	 * to this edge.
 	 */
-	public abstract SegmentationStyle2 obtainSegmentationStyle2();
+	public abstract SegmentationStyle obtainSegmentationStyle();
 }

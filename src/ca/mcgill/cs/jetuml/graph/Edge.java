@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.graph;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
+import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
  * An edge in a graph.
@@ -35,7 +35,7 @@ public interface Edge extends GraphElement
     * @param pGraph the graph where the two connected nodes 
     * exists. Can be null.
   	 */
-  void connect2(Node pStart, Node pEnd, Graph2 pGraph);
+  void connect(Node pStart, Node pEnd, Graph pGraph);
 
    	/**
      * Gets the starting node.
@@ -52,7 +52,7 @@ public interface Edge extends GraphElement
    	/**
    	 * @return The graph2 that contains this edge.
    	 */
-   	Graph2 getGraph2();
+   	Graph getGraph();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning
@@ -64,6 +64,6 @@ public interface Edge extends GraphElement
  	/**
    	 * @return The view2 for this edge.
    	 */
-   	EdgeView2 view2();
+   	EdgeView view();
 }
 

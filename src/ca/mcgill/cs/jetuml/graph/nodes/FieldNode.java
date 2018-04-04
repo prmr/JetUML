@@ -22,8 +22,8 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView2;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  *  A field node in an object diagram.
@@ -34,9 +34,9 @@ public class FieldNode extends NamedNode implements ChildNode
 	private ObjectNode aObject; // The object defining this field
 
 	@Override
-	protected NodeView2 generateView2()
+	protected NodeView generateView()
 	{
-		return new FieldNodeView2(this);
+		return new FieldNodeView(this);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class FieldNode extends NamedNode implements ChildNode
      * of the = sign) from the left corner of the bounding rectangle.
      * @return the x-offset of the axis
 	 */
-	public int obtainAxis2()
+	public int obtainAxis()
 	{
-		return ((FieldNodeView2)view2()).getAxis();
+		return ((FieldNodeView)view()).getAxis();
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class FieldNode extends NamedNode implements ChildNode
 	 */
 	public void setBounds(Rectangle pBounds)
 	{
-		((FieldNodeView2)view2()).setBounds(pBounds);
+		((FieldNodeView)view()).setBounds(pBounds);
 	}
 
 	@Override

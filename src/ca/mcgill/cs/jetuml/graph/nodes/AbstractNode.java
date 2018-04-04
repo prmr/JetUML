@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * Common elements for the Node hierarchy.
@@ -33,7 +33,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
  */
 public abstract class AbstractNode extends AbstractGraphElement implements Node
 {
-	private NodeView2 aView2;
+	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
 	
 	/**
@@ -42,7 +42,7 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	 */
 	protected AbstractNode()
 	{
-		aView2 = generateView2();
+		aView = generateView();
 	}
 	
 	@Override
@@ -58,12 +58,12 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	 * 
 	 * @return The view2 that wraps this node.
 	 */
-	protected abstract NodeView2 generateView2();
+	protected abstract NodeView generateView();
 	
 	@Override
-	public NodeView2 view2()
+	public NodeView view()
 	{
-		return aView2;
+		return aView;
 	}
 	
 	@Override
@@ -82,14 +82,14 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	public AbstractNode clone()
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
-		clone.aView2 = clone.generateView2();
+		clone.aView = clone.generateView();
 		return clone;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " " + view2().getBounds();
+		return getClass().getSimpleName() + " " + view().getBounds();
 	}
 	
 	@Override

@@ -49,9 +49,9 @@ import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph2;
+import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
-import ca.mcgill.cs.jetuml.persistence.PersistenceService2;
+import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -229,7 +229,7 @@ public class EditorFrame extends BorderPane
 			}
 			else
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 			}
 		}));
 
@@ -241,7 +241,7 @@ public class EditorFrame extends BorderPane
 			}
 			else
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 			}
 		}));
 
@@ -253,7 +253,7 @@ public class EditorFrame extends BorderPane
 			}
 			else
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 			}
 		}));
 
@@ -265,7 +265,7 @@ public class EditorFrame extends BorderPane
 			}
 			else
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
 			}
 		}));
 
@@ -281,7 +281,7 @@ public class EditorFrame extends BorderPane
 			}
 			else
 			{
-				((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
+				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
 			}
 		}));
 	} //CSON:
@@ -328,8 +328,8 @@ public class EditorFrame extends BorderPane
 	    	}
 	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
 	    	boolean selected = menuItem.isSelected();
-    		GraphFrame2 frame = (GraphFrame2)aTabbedPane.getSelectionModel().getSelectedItem();
-    		GraphPanel2 panel = frame.getGraphPanel();  
+    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
+    		GraphPanel panel = frame.getGraphPanel();  
 	    	panel.setHideGrid(selected);
 		});
 		viewMenu.getItems().add(hideGridItem);
@@ -340,12 +340,12 @@ public class EditorFrame extends BorderPane
 	 		{
 	 			return;
 	 		}
-			GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 			if (frame == null) 
 			{
 				return;
 			}
-			GraphPanel2 panel = frame.getGraphPanel();
+			GraphPanel panel = frame.getGraphPanel();
 			hideGridItem.setSelected(panel.getHideGrid());
 		});	
 	}
@@ -424,7 +424,7 @@ public class EditorFrame extends BorderPane
 		{
 			try 
 			{
-				Tab frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
+				Tab frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
 				addTab(frame);
 			} 
 			catch (IllegalAccessException | InstantiationException exception) 
@@ -437,7 +437,7 @@ public class EditorFrame extends BorderPane
 		{
 			try 
 			{
-				Tab frame = new GraphFrame2((Graph2) pGraphClass.newInstance(), aTabbedPane);
+				Tab frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
 				addTab(frame);
 			}
 			catch (IllegalAccessException | InstantiationException exception) 
@@ -476,9 +476,9 @@ public class EditorFrame extends BorderPane
 	{
 		for (int i = 0; i < aTabs.size(); i++) 
 		{
-			if (aTabbedPane.getTabs().get(i) instanceof GraphFrame2)
+			if (aTabbedPane.getTabs().get(i) instanceof GraphFrame)
 			{
-				GraphFrame2 frame = (GraphFrame2) aTabbedPane.getTabs().get(i);
+				GraphFrame frame = (GraphFrame) aTabbedPane.getTabs().get(i);
 				if (frame.getFileName() != null	&& frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
 					aTabbedPane.getSelectionModel().select(frame);
@@ -489,8 +489,8 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			Graph2 graph2 = PersistenceService2.read(new File(pName));	
-			GraphFrame2 frame2 = new GraphFrame2(graph2, aTabbedPane);
+			Graph graph2 = PersistenceService.read(new File(pName));	
+			GraphFrame frame2 = new GraphFrame(graph2, aTabbedPane);
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
 			addTab(frame2);
@@ -629,7 +629,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 		panel.cut();
 		panel.paintPanel();
 	}
@@ -644,7 +644,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
+		((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().copy();
 	}
 
 	/**
@@ -658,7 +658,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel2 panel = ((GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
+		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel();
 		panel.paste();
 		panel.paintPanel();
 	}
@@ -672,7 +672,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		final BufferedImage image = getImage(frame.getGraphPanel());
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
 		{
@@ -710,7 +710,7 @@ public class EditorFrame extends BorderPane
 	private boolean noCurrentGraphFrame() 
 	{
 		return aTabbedPane.getSelectionModel().getSelectedItem() == null ||
-				!(aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame2);
+				!(aTabbedPane.getSelectionModel().getSelectedItem() instanceof GraphFrame);
 	}
 
 	/**
@@ -726,7 +726,7 @@ public class EditorFrame extends BorderPane
 		Tab currentFrame = (Tab) aTabbedPane.getSelectionModel().getSelectedItem();
 		if (currentFrame != null)
 		{
-			GraphFrame2 openFrame = (GraphFrame2) currentFrame;
+			GraphFrame openFrame = (GraphFrame) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -761,7 +761,7 @@ public class EditorFrame extends BorderPane
 		Tab currentFrame = pTab;
 		if (currentFrame != null)
 		{
-			GraphFrame2 openFrame = (GraphFrame2) currentFrame;
+			GraphFrame openFrame = (GraphFrame) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -794,7 +794,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		File file = frame.getFileName();
 		if (file == null) 
 		{
@@ -803,7 +803,7 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			PersistenceService2.save(frame.getGraph(), file);
+			PersistenceService.save(frame.getGraph(), file);
 			frame.getGraphPanel().setModified(false);
 		} 
 		catch (IOException exception) 
@@ -823,8 +823,8 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
-		Graph2 graph = frame.getGraph();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
+		Graph graph = frame.getGraph();
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
@@ -850,7 +850,7 @@ public class EditorFrame extends BorderPane
 			}
 			if (result != null) 
 			{
-				PersistenceService2.save(graph, result);
+				PersistenceService.save(graph, result);
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
 				aTabbedPane.getSelectionModel().getSelectedItem().setText(frame.getFileName().getName());
@@ -922,7 +922,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		
-		GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		boolean oldHideGrid = frame.getGraphPanel().getHideGrid();
 		frame.getGraphPanel().setHideGrid(true);
 		
@@ -975,7 +975,7 @@ public class EditorFrame extends BorderPane
 
 	private FileChooser getImageFileChooser() 
 	{
-		GraphFrame2 frame = (GraphFrame2) aTabbedPane.getSelectionModel().getSelectedItem();
+		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
 		assert frame != null;
 
 		// Initialize the file chooser widget
@@ -1009,7 +1009,7 @@ public class EditorFrame extends BorderPane
 	 * @return bufferedImage. To convert it into an image, use the syntax :
 	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
 	 */
-	private static BufferedImage getImage(GraphPanel2 pGraphPanel) 
+	private static BufferedImage getImage(GraphPanel pGraphPanel) 
 	{
 		Rectangle bounds = pGraphPanel.getGraph().getBounds();
 		WritableImage writableImage = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
@@ -1069,9 +1069,9 @@ public class EditorFrame extends BorderPane
 		int modcount = 0;
 		for (int i = 0; i < aTabs.size(); i++) 
 		{
-			if (aTabs.get(i) instanceof GraphFrame2) 
+			if (aTabs.get(i) instanceof GraphFrame) 
 			{
-				GraphFrame2 frame = (GraphFrame2) aTabs.get(i);
+				GraphFrame frame = (GraphFrame) aTabs.get(i);
 				if (frame.getGraphPanel().isModified()) 
 				{
 					modcount++;
