@@ -30,7 +30,7 @@ import javafx.scene.canvas.GraphicsContext;
  * An object to render a PointNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class PointNodeView extends AbstractNodeView
 {

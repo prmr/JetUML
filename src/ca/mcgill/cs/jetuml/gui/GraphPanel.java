@@ -76,6 +76,7 @@ import javafx.stage.Stage;
 
 /**
  * A panel to draw a graph.
+ * 
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class GraphPanel extends Canvas

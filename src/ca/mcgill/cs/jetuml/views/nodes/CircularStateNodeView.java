@@ -34,7 +34,7 @@ import javafx.scene.paint.Paint;
  * An object to render a CircularStateNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class CircularStateNodeView extends AbstractNodeView
 {

@@ -39,7 +39,7 @@ import javafx.stage.Screen;
 /**
  *A frame for showing a graphical editor.
  *
- *@author Kaylee I. Kutschera - Migration to JavaFX
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class GraphFrame extends Tab
 {	

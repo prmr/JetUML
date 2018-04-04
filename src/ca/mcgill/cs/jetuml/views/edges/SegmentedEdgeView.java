@@ -49,6 +49,8 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * Renders edges as a straight line connected to center of nodes.
+ * 
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class SegmentedEdgeView extends AbstractEdgeView
 {

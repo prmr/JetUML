@@ -35,7 +35,7 @@ import javafx.scene.shape.StrokeLineJoin;
  * An object to render an implicit parameter in a Sequence diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 {

@@ -32,7 +32,7 @@ import javafx.scene.canvas.GraphicsContext;
  * A view for nodes that are bounded by a rectangle.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public abstract class RectangleBoundedNodeView extends AbstractNodeView
 {

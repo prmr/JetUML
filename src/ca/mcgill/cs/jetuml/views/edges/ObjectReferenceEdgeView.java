@@ -36,6 +36,8 @@ import javafx.scene.shape.Shape;
 
 /**
  * An S- or C-shaped edge with an arrowhead.
+ * 
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ObjectReferenceEdgeView extends AbstractEdgeView
 {

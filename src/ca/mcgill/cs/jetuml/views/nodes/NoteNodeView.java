@@ -32,7 +32,7 @@ import javafx.scene.paint.Color;
  * An object to render a NoteNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class NoteNodeView extends RectangleBoundedNodeView
 {

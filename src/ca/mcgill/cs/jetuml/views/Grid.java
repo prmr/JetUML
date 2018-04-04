@@ -29,6 +29,8 @@ import javafx.scene.paint.Paint;
 /**
  * A grid to which points and rectangles can be "snapped". The
  * snapping operation moves a point to the nearest grid point.
+ * 
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class Grid
 {

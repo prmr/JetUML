@@ -42,7 +42,7 @@ import javafx.scene.shape.StrokeLineJoin;
  * An object to render a call node in a Sequence diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class CallNodeView extends RectangleBoundedNodeView
 {
