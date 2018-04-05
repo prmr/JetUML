@@ -213,7 +213,6 @@ public class EditorFrame extends BorderPane
 		fileMenu.getItems().add(fileExitItem);
 	}
 
-	//CSOFF: resolved once full migrated to JavaFX
 	private void createEditMenu(MenuFactory pFactory) 
 	{
 		Menu editMenu = pFactory.createMenu("edit");
@@ -227,10 +226,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			else
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
-			}
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.redo", pEvent ->
@@ -239,10 +235,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			else
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
-			}
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.selectall", pEvent ->
@@ -251,10 +244,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			else
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
-			}
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
@@ -263,10 +253,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			else
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
-			}
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
 		}));
 
 		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
@@ -279,12 +266,9 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			else
-			{
-				((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
-			}
+			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().removeSelected();
 		}));
-	} //CSON:
+	}
 	
 	private void createViewMenu(MenuFactory pFactory) 
 	{
@@ -293,33 +277,6 @@ public class EditorFrame extends BorderPane
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setDisable(noCurrentGraphFrame());
 
-		viewMenu.getItems().add(pFactory.createMenuItem("view.zoom_out", pEvent -> 
-		{
-			if( noCurrentGraphFrame() )
-			{
-				return;
-			}
-			else
-			{
-				Alert alert = new Alert(AlertType.ERROR, "Zooming not supported in version 2 diagrams.", ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
-			}
-		}));
-		viewMenu.getItems().add(pFactory.createMenuItem("view.zoom_in", pEvent -> 
-		{
-	    	if( noCurrentGraphFrame() )
-	    	{
-	    		return;
-	    	}
-			else
-			{
-				Alert alert = new Alert(AlertType.ERROR, "Zooming not supported in version 2 diagrams.", ButtonType.OK);
-				alert.initOwner(aMainStage);
-				alert.showAndWait();
-			}
-		}));
-	
 		final CheckMenuItem hideGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.hide_grid", pEvent ->
 	    {
 	    	if( noCurrentGraphFrame() )
