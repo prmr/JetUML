@@ -65,7 +65,7 @@ public class PointNodeView extends AbstractNodeView
 	@Override
 	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		pGraphics.fillRect(node().position().getX(), node().position().getY(), 0, 0);	
+		pGraphics.fillRect(node().position().getX(), node().position().getY(), 0, 0);
 	}
 
 }

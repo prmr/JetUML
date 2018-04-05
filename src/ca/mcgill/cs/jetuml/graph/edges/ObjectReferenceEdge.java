@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView;
 public class ObjectReferenceEdge extends AbstractEdge
 {
 	@Override
-	protected EdgeView generateView() 
+	protected EdgeView generateView()
 	{
 		return new ObjectReferenceEdgeView(this);
 	}

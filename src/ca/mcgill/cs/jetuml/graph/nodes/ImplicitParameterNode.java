@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 public class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
-	
+
 	@Override
 	protected NodeView generateView()
 	{

@@ -55,7 +55,7 @@ public interface Node extends GraphElement
 	Node clone();
 	
 	/**
-	 * @return The view2 for this node. TODO remove default
+	 * @return The view for this node.
 	 */
 	NodeView view();
 }

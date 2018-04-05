@@ -230,14 +230,14 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	
 	@Override
 	protected Shape getShape()
-	{		
+	{
 		Path path = getSegmentPath();
 		Point2D[] points = getPoints();
 		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(points[1], points[0]).getElements());
 		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]).getElements());
 		return path;
 	}
-	
+
 	private Path getSegmentPath()
 	{
 		Point2D[] points = getPoints();

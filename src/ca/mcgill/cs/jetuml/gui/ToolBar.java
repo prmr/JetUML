@@ -333,10 +333,14 @@ public class ToolBar extends BorderPane
 	}
 	
 	/**
-	 * Hides the pop-up menu corresponding to this toolbar.
+	 * Hides the pop-up menu corresponding to this toolbar 
+	 * if it is showing.
 	 */
 	public void hidePopup() 
 	{
-		aPopupMenu.hide();
+		if (aPopupMenu.isShowing())
+		{
+			aPopupMenu.hide();
+		}
 	}
 }

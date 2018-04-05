@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 public class FinalStateNode extends AbstractNode
 {
 	@Override
-	protected NodeView generateView() 
+	protected NodeView generateView()
 	{
 		return new CircularStateNodeView(this, true);
 	}

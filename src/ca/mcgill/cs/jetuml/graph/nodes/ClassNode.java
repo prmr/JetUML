@@ -38,7 +38,7 @@ public class ClassNode extends InterfaceNode
 	{
 		setName("");
 	}
-	
+
 	@Override
 	protected NodeView generateView()
 	{

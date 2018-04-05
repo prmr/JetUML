@@ -62,7 +62,7 @@ public interface Edge extends GraphElement
    	Edge clone();
    	
  	/**
-   	 * @return The view2 for this edge.
+   	 * @return The view for this edge.
    	 */
    	EdgeView view();
 }

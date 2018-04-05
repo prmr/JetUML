@@ -361,7 +361,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		aDiagram.addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
-		
+
 		// delete aReferenceEdge2 and collaborationEdge1
 		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();

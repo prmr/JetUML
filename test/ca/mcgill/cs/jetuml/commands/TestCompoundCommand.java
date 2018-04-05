@@ -55,7 +55,7 @@ public class TestCompoundCommand
     private AddNodeCommand aAddActorNodeCommand;
     private AddEdgeCommand aAddEdgeCommand;
     private MoveCommand aMoveCommand1;
-    private MoveCommand aMoveCommand;
+    private MoveCommand aMoveCommand2;
     private DeleteNodeCommand aDeleteNodeCommand;
     private CompoundCommand aCompoundCommand1;
     private CompoundCommand aCompoundCommand2;
@@ -84,7 +84,7 @@ public class TestCompoundCommand
         aAddEdgeCommand = new AddEdgeCommand(aGraph, aCallEdge);
         aAddActorNodeCommand = new AddNodeCommand(aGraph, aActorNode);
         aMoveCommand1 = new MoveCommand(aGraph, aClassNode, 5, 5);
-        aMoveCommand = new MoveCommand(aGraph, aClassNode, -3, 3);
+        aMoveCommand2 = new MoveCommand(aGraph, aClassNode, -3, 3);
         aDeleteNodeCommand = new DeleteNodeCommand(aGraph, aClassNode);
         
         aNodesToBeRemoved = aGraph.getClass().getSuperclass().getDeclaredField("aNodesToBeRemoved");
@@ -103,7 +103,7 @@ public class TestCompoundCommand
         
         aCompoundCommand2 = new CompoundCommand();
         aCompoundCommand2.add(aAddActorNodeCommand);
-        aCompoundCommand2.add(aMoveCommand);
+        aCompoundCommand2.add(aMoveCommand2);
         
         aCompoundCommand3 = new CompoundCommand();
         aCompoundCommand3.add(aCompoundCommand1);
@@ -111,7 +111,7 @@ public class TestCompoundCommand
         
         aCompoundCommand4 = new CompoundCommand();
         aCompoundCommand4.add(aCompoundCommand1);
-        aCompoundCommand4.add(aMoveCommand);
+        aCompoundCommand4.add(aMoveCommand2);
         aCompoundCommand4.add(aDeleteNodeCommand);
     }
 

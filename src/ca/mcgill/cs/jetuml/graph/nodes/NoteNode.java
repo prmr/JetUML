@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NoteNodeView;
 public class NoteNode extends NamedNode
 {
 	@Override
-	protected NodeView generateView() 
+	protected NodeView generateView()
 	{
 		return new NoteNodeView(this);
 	}

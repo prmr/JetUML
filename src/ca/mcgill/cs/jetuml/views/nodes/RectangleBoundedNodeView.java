@@ -76,7 +76,7 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		aHeight = pNewBounds.getHeight();
 	}
 	
-	@Override 
+	@Override
 	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
 		Rectangle bounds = getBounds();

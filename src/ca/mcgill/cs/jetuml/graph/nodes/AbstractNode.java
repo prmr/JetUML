@@ -52,11 +52,11 @@ public abstract class AbstractNode extends AbstractGraphElement implements Node
 	}
 	
 	/**
-	 * Generates a view2 for this node. Because of cloning, this cannot
+	 * Generates a view for this node. Because of cloning, this cannot
 	 * be done in the constructor, because when a node is cloned a new 
-	 * wrapper view2 must be produced for the clone.
+	 * wrapper view must be produced for the clone.
 	 * 
-	 * @return The view2 that wraps this node.
+	 * @return The view that wraps this node.
 	 */
 	protected abstract NodeView generateView();
 	

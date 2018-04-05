@@ -49,7 +49,7 @@ public final class StringViewer
 	private static final int VERTICAL_TEXT_PADDING = 7;
 	
 	/**
-	 * How to align the text horizontally in this string.
+	 * How to align the text in this string.
 	 */
 	public enum Align
 	{ LEFT, CENTER, RIGHT }

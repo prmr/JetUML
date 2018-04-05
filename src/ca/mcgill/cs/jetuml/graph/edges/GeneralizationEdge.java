@@ -107,7 +107,7 @@ public class GeneralizationEdge extends ClassRelationshipEdge
 	}
 	
 	@Override
-	public SegmentationStyle obtainSegmentationStyle() 
+	public SegmentationStyle obtainSegmentationStyle()
 	{
 		return SegmentationStyleFactory.createVHVStrategy();
 	}

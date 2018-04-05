@@ -76,7 +76,7 @@ public class GraphFrame extends Tab
 			editorFrame.close(this);
 		});
 	}
-	
+
 	/**
      * Gets the graph that is being edited in this frame.
      * @return the graph

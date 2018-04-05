@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.views.nodes.StateNodeView;
 public class StateNode extends NamedNode
 {
 	@Override
-	protected NodeView generateView() 
+	protected NodeView generateView()
 	{
 		return new StateNodeView(this);
 	}

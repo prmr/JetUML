@@ -32,7 +32,7 @@ import ca.mcgill.cs.jetuml.views.nodes.PointNodeView;
 public class PointNode extends AbstractNode
 {
 	@Override
-	protected NodeView generateView() 
+	protected NodeView generateView()
 	{
 		return new PointNodeView(this);
 	}

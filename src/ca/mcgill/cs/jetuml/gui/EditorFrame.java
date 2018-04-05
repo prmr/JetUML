@@ -446,7 +446,7 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			Graph graph2 = PersistenceService.read(new File(pName));	
+			Graph graph2 = PersistenceService.read(new File(pName));
 			GraphFrame frame2 = new GraphFrame(graph2, aTabbedPane);
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
