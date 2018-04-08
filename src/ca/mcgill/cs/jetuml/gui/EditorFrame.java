@@ -23,10 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -75,6 +71,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -630,34 +628,11 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		final BufferedImage image = getImage(frame.getGraphPanel());
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable() 
-		{
-			@Override
-			public boolean isDataFlavorSupported(DataFlavor pFlavor) 
-			{
-				return DataFlavor.imageFlavor.equals(pFlavor);
-			}
-
-			@Override
-			public DataFlavor[] getTransferDataFlavors() 
-			{
-				return new DataFlavor[] { DataFlavor.imageFlavor };
-			}
-
-			@Override
-			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException 
-			{
-				if (DataFlavor.imageFlavor.equals(pFlavor)) 
-				{
-					return image;
-				}
-				else 
-				{
-					throw new UnsupportedFlavorException(pFlavor);
-				}
-			}
-		}, null);
+		final Image image = getImage(frame.getGraphPanel());
+		final Clipboard clipboard = Clipboard.getSystemClipboard();
+	    final ClipboardContent content = new ClipboardContent();
+	    content.putImage(image);
+	    clipboard.setContent(content);
 		Alert alert = new Alert(AlertType.INFORMATION, aEditorResources.getString("dialog.to_clipboard.message"), ButtonType.OK);
 		alert.initOwner(aMainStage);
 		alert.setHeaderText(aEditorResources.getString("dialog.to_clipboard.title"));
@@ -885,7 +860,7 @@ public class EditorFrame extends BorderPane
 		
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
-			BufferedImage image = getImage(frame.getGraphPanel()); 
+			BufferedImage image = getBufferedImage(frame.getGraphPanel()); 
 			if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
@@ -966,12 +941,25 @@ public class EditorFrame extends BorderPane
 	 * @return bufferedImage. To convert it into an image, use the syntax :
 	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
 	 */
-	private static BufferedImage getImage(GraphPanel pGraphPanel) 
+	private static BufferedImage getBufferedImage(GraphPanel pGraphPanel) 
 	{
 		Rectangle bounds = pGraphPanel.getGraph().getBounds();
 		WritableImage writableImage = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
 		((Node) pGraphPanel).snapshot(null, writableImage);
 		BufferedImage image = SwingFXUtils.fromFXImage(writableImage, null);
+		return image;
+	}
+	
+	/*
+	 * Return the image corresponding to the graph.
+	 * 
+	 * @param pGraph The graph to convert to an image.
+	 */
+	private static Image getImage(GraphPanel pGraphPanel) 
+	{
+		Rectangle bounds = pGraphPanel.getGraph().getBounds();
+		WritableImage image = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
+		((Node) pGraphPanel).snapshot(null, image);
 		return image;
 	}
 
