@@ -44,7 +44,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import ca.mcgill.cs.jetuml.gui.ToolBar;
-import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Rectangle2D;
 
 public class TestClipboard
@@ -73,7 +72,6 @@ public class TestClipboard
 	@Before
 	public void setup()
 	{
-		new JFXPanel();
 		aClipboard = Clipboard.instance();
 		aSelectionList = new SelectionList();
 		aClass1 = new ClassNode();
