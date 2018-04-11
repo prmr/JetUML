@@ -7,11 +7,13 @@ import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 /**
@@ -69,6 +71,7 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
+			new Scene(new Pane(canvas));
 			canvas.snapshot(parameters, image);
 		});
 		return image;
@@ -101,6 +104,7 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
+			new Scene(new Pane(canvas));
 			canvas.snapshot(parameters, image);
 		});
 		return image;
@@ -123,6 +127,7 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
+			new Scene(new Pane(canvas));
 			canvas.snapshot(parameters, image);
 		});
 		return image;
