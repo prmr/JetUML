@@ -53,8 +53,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -855,9 +857,6 @@ public class EditorFrame extends BorderPane
 		}
 		
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		boolean oldHideGrid = frame.getGraphPanel().getHideGrid();
-		frame.getGraphPanel().setHideGrid(true);
-		
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
 			BufferedImage image = getBufferedImage(frame.getGraphPanel()); 
@@ -881,11 +880,9 @@ public class EditorFrame extends BorderPane
 			{
 				ImageIO.write(image, format, out);
 			}
-			frame.getGraphPanel().setHideGrid(oldHideGrid);
 		} 
 		catch (IOException exception) 
 		{
-			frame.getGraphPanel().setHideGrid(oldHideGrid);
 			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
@@ -943,10 +940,7 @@ public class EditorFrame extends BorderPane
 	 */
 	private static BufferedImage getBufferedImage(GraphPanel pGraphPanel) 
 	{
-		Rectangle bounds = pGraphPanel.getGraph().getBounds();
-		WritableImage writableImage = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
-		((Node) pGraphPanel).snapshot(null, writableImage);
-		BufferedImage image = SwingFXUtils.fromFXImage(writableImage, null);
+		BufferedImage image = SwingFXUtils.fromFXImage(getImage(pGraphPanel), null);
 		return image;
 	}
 	
@@ -958,8 +952,14 @@ public class EditorFrame extends BorderPane
 	private static Image getImage(GraphPanel pGraphPanel) 
 	{
 		Rectangle bounds = pGraphPanel.getGraph().getBounds();
-		WritableImage image = new WritableImage((int) bounds.getMaxX() + MARGIN_IMAGE * 2, (int) bounds.getMaxY() + MARGIN_IMAGE * 2);
-		((Node) pGraphPanel).snapshot(null, image);
+		WritableImage image = new WritableImage((int) bounds.getWidth() + MARGIN_IMAGE * 2, (int) bounds.getHeight() + MARGIN_IMAGE * 2);
+		boolean oldHideGrid = pGraphPanel.getHideGrid();
+		pGraphPanel.setHideGrid(true);
+		SnapshotParameters parameter = new SnapshotParameters();
+		parameter.setViewport(new Rectangle2D(bounds.getX() - MARGIN_IMAGE, bounds.getY() - MARGIN_IMAGE, 
+				bounds.getWidth() + MARGIN_IMAGE * 2, bounds.getHeight() + MARGIN_IMAGE * 2));
+		((Node) pGraphPanel).snapshot(parameter, image);
+		pGraphPanel.setHideGrid(oldHideGrid);
 		return image;
 	}
 
