@@ -1,5 +1,7 @@
 package ca.mcgill.cs.jetuml.views;
 
+import java.util.concurrent.RejectedExecutionException;
+
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -71,8 +73,15 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
-			new Scene(new Pane(canvas));
-			canvas.snapshot(parameters, image);
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
 		});
 		return image;
 	}
@@ -104,8 +113,15 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
-			new Scene(new Pane(canvas));
-			canvas.snapshot(parameters, image);
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
 		});
 		return image;
 	}
@@ -127,8 +143,15 @@ public final class ImageCreator
 		parameters.setFill(Color.TRANSPARENT);
 		Platform.runLater(() -> 
 		{
-			new Scene(new Pane(canvas));
-			canvas.snapshot(parameters, image);
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
 		});
 		return image;
 	}
