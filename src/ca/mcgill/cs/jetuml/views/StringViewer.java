@@ -20,14 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.util.StringTokenizer;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.geometry.Bounds;
+import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 
 /**
  * A utility class to view strings with various decorations:
@@ -36,11 +39,14 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
  * - different alignments.
  * 
  * @author Martin P. Robillard.
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class StringViewer
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final JLabel LABEL = new JLabel();
+	private static final Text LABEL = new Text();
+	private static final int HORIZONTAL_TEXT_PADDING = 3;
+	private static final int VERTICAL_TEXT_PADDING = 7;
 	
 	/**
 	 * How to align the text in this string.
@@ -51,6 +57,7 @@ public final class StringViewer
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
+	private Font aFont = Font.getDefault();
 	
 	/**
 	 * Creates a new StringViewer.
@@ -81,27 +88,37 @@ public final class StringViewer
 		{
 			return EMPTY;
 		}
-		Dimension dimensions = getLabel(pString).getPreferredSize();       
-		return new Rectangle(0, 0, (int) Math.round(dimensions.getWidth()), (int) Math.round(dimensions.getHeight()));
+		Bounds bounds = getLabel(pString).getLayoutBounds(); 
+		return new Rectangle(0, 0, (int) Math.round(bounds.getWidth() + HORIZONTAL_TEXT_PADDING*2), 
+				(int) Math.round(bounds.getHeight() + VERTICAL_TEXT_PADDING*2));
 	}
 	
-	private JLabel getLabel(String pString)
+	private Text getLabel(String pString)
 	{
-		JLabel label = LABEL;
-		label.setBounds(0, 0, 0, 0);
-		label.setText(convertToHtml(pString));
+		Text label = LABEL;
+		if (aBold) 
+		{
+			aFont = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
+		}
+		if (aUnderlined)
+		{
+			label.setUnderline(true);
+		}
+		label.setFont(aFont);
+		label.setBoundsType(TextBoundsType.VISUAL);
+		label.setText(pString);
 		
 		if(aAlignment == Align.LEFT)
 		{
-			label.setHorizontalAlignment(SwingConstants.LEFT);
+			label.setTextAlignment(TextAlignment.LEFT);
 		}
 		else if(aAlignment == Align.CENTER)
 		{
-			label.setHorizontalAlignment(SwingConstants.CENTER);
+			label.setTextAlignment(TextAlignment.CENTER);
 		}
 		else if(aAlignment == Align.RIGHT) 
 		{
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
+			label.setTextAlignment(TextAlignment.RIGHT);
 		}
 		return label;
 	}
@@ -109,65 +126,63 @@ public final class StringViewer
 	/**
      * Draws the string inside a given rectangle.
      * @param pString The string to draw.
-     * @param pGraphics2D the graphics context
+     * @param pGraphics the graphics context
      * @param pRectangle the rectangle into which to place the string
 	 */
-	public void draw(String pString, Graphics2D pGraphics2D, Rectangle pRectangle)
+	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		JLabel label = getLabel(pString);
-		label.setFont(pGraphics2D.getFont());
-		label.setBounds(0, 0, pRectangle.getWidth(), pRectangle.getHeight());
-		pGraphics2D.translate(pRectangle.getX(), pRectangle.getY());
-		label.paint(pGraphics2D);
-		pGraphics2D.translate(-pRectangle.getX(), -pRectangle.getY());        
-	}
-	
-	/**
-	 * @return an HTML version of the text of the string,
-	 * taking into account the properties (underline, bold, etc.)
-	 */
-	private String convertToHtml(String pString)
-	{
-		StringBuffer prefix = new StringBuffer();
-		StringBuffer suffix = new StringBuffer();
-		StringBuffer htmlText = new StringBuffer();
+		Text label = getLabel(pString);
 		
-		// Add some spacing before and after the text.
-		prefix.append("&nbsp;");
-		suffix.insert(0, "&nbsp;");
-		if(aUnderlined) 
+		pGraphics.setTextAlign(label.getTextAlignment());
+		
+		int textX = 0;
+		int textY = 0;
+		if (aAlignment == Align.CENTER) 
 		{
-			prefix.append("<u>");
-			suffix.insert(0, "</u>");
+			textX = pRectangle.getWidth()/2;
+			textY = pRectangle.getHeight()/2;
+			pGraphics.setTextBaseline(VPos.CENTER);
 		}
-		if(aBold)
+		else
 		{
-			prefix.append("<b>");
-			suffix.insert(0, "</b>");
+			pGraphics.setTextBaseline(VPos.TOP);
+			textX = HORIZONTAL_TEXT_PADDING;
 		}
-
-		htmlText.append("<html><p align=\"" + aAlignment.toString().toLowerCase() + "\">");
-		StringTokenizer tokenizer = new StringTokenizer(pString, "\n");
-		boolean first = true;
-		while(tokenizer.hasMoreTokens())
+		
+		pGraphics.setFont(aFont);
+		Paint oldFill = pGraphics.getFill();
+		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
+		pGraphics.setFill(Color.BLACK);
+		pGraphics.fillText(pString.trim(), textX, textY);
+		
+		if (aUnderlined && pString.trim().length() > 0)
 		{
-			if(first) 
+			int xOffset = 0;
+			int yOffset = 0;
+			Bounds bounds = label.getLayoutBounds();
+			if (aAlignment == Align.CENTER)
 			{
-				first = false;
+				xOffset = (int) (bounds.getWidth()/2);
+				yOffset = (int) (aFont.getSize()/2) + 1;
 			}
-			else 
+			else if (aAlignment == Align.RIGHT)
 			{
-				htmlText.append("<br>");
+				xOffset = (int) bounds.getWidth();
 			}
-			htmlText.append(prefix);
-			String next = tokenizer.nextToken();
-			String next0 = next.replaceAll("&", "&amp;");
-			String next1 = next0.replaceAll("<", "&lt;");
-			String next2 = next1.replaceAll(">", "&gt;");
-			htmlText.append(next2);
-			htmlText.append(suffix);
-		}      
-		htmlText.append("</p></html>");
-		return htmlText.toString();
+			
+			if (aBold) 
+			{
+				double oldWidth = pGraphics.getLineWidth();
+				pGraphics.setLineWidth(2);
+				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
+				pGraphics.setLineWidth(oldWidth);
+			}
+			else
+			{
+				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
+			}
+		}
+		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
+		pGraphics.setFill(oldFill);
 	}
 }

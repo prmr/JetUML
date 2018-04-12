@@ -20,16 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.function.Supplier;
 
-import javax.swing.JLabel;
+import com.sun.javafx.tk.FontLoader;
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
 
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -37,14 +32,28 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Renders edges as a straight line connected to center of nodes.
+ * 
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class SegmentedEdgeView extends AbstractEdgeView
 {
-	private static JLabel label = new JLabel();
-	
 	private Supplier<LineStyle> aLineStyleSupplier;
 	private Supplier<ArrowHead> aArrowStartSupplier;
 	private Supplier<ArrowHead> aArrowEndSupplier;
@@ -78,46 +87,70 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	
 	/**
 	 * Draws a string.
-	 * @param pGraphics2D the graphics context
+	 * @param pGraphics the graphics context
 	 * @param pEndPoint1 an endpoint of the segment along which to draw the string
 	 * @param pEndPoint2 the other endpoint of the segment along which to draw the string
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private static void drawString(Graphics2D pGraphics2D, Point2D pEndPoint1, Point2D pEndPoint2, 
+	private static void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
 			ArrowHead pArrowHead, String pString, boolean pCenter)
 	{
 		if (pString == null || pString.length() == 0)
 		{
 			return;
 		}
-		label.setText(toHtml(pString));
-		label.setFont(pGraphics2D.getFont());
-		Dimension dimensions = label.getPreferredSize();      
-		label.setBounds(0, 0, dimensions.width, dimensions.height);
-
 		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
-
-		pGraphics2D.translate(bounds.getX(), bounds.getY());
-		label.paint(pGraphics2D);
-		pGraphics2D.translate(-bounds.getX(), -bounds.getY());        
+		
+		Paint oldFill = pGraphics.getFill();
+		VPos oldVPos = pGraphics.getTextBaseline();
+		TextAlignment oldAlign = pGraphics.getTextAlign();
+		pGraphics.translate(bounds.getX(), bounds.getY());
+		pGraphics.setFill(Color.BLACK);
+		int textX = 0;
+		int textY = 0;
+		if (pCenter) 
+		{
+			FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+			FontMetrics fontMetrics = fontLoader.getFontMetrics(Font.getDefault());
+			textX = bounds.getWidth()/2;
+			textY = (int) (bounds.getHeight() - fontMetrics.getLineHeight()/2);
+			pGraphics.setTextBaseline(VPos.CENTER);
+			pGraphics.setTextAlign(TextAlignment.CENTER);
+		}
+		pGraphics.fillText(pString, textX, textY);
+		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
+		pGraphics.setFill(oldFill);
+		pGraphics.setTextBaseline(oldVPos);
+		pGraphics.setTextAlign(oldAlign);
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
 		Point2D[] points = getPoints();
+		StrokeLineCap oldCap = pGraphics.getLineCap();
+		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
+		double oldMiter = pGraphics.getMiterLimit();
+		double[] oldDashes = pGraphics.getLineDashes();
+		
+		aLineStyleSupplier.get().setLineProperties(pGraphics);
+		
+		pGraphics.beginPath();
+		completeDrawPath(pGraphics, getSegmentPath());
+		pGraphics.stroke();
+		
+		pGraphics.setLineCap(oldCap);
+		pGraphics.setLineJoin(oldJoin);
+		pGraphics.setMiterLimit(oldMiter);
+		pGraphics.setLineDashes(oldDashes);
+		
+		aArrowStartSupplier.get().view().draw(pGraphics, points[1], points[0]);
+		aArrowEndSupplier.get().view().draw(pGraphics, points[points.length - 2], points[points.length - 1]);
 
-		Stroke oldStroke = pGraphics2D.getStroke();
-		pGraphics2D.setStroke(aLineStyleSupplier.get().getStroke());
-		pGraphics2D.draw(getSegmentPath());
-		pGraphics2D.setStroke(oldStroke);
-		aArrowStartSupplier.get().view().draw(pGraphics2D, points[1], points[0]);
-		aArrowEndSupplier.get().view().draw(pGraphics2D, points[points.length - 2], points[points.length - 1]);
-
-		drawString(pGraphics2D, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
-		drawString(pGraphics2D, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
-		drawString(pGraphics2D, points[points.length - 2], points[points.length - 1], aArrowEndSupplier.get(), aEndLabelSupplier.get(), false);
+		drawString(pGraphics, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
+		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
+		drawString(pGraphics, points[points.length - 2], points[points.length - 1], aArrowEndSupplier.get(), aEndLabelSupplier.get(), false);
 	}
 	
 	/**
@@ -129,7 +162,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	 * @return the point at which to draw the string
 	 */
 	private static Point2D getAttachmentPoint(Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrow, Dimension pDimension, boolean pCenter)
+			ArrowHead pArrow, Rectangle pDimension, boolean pCenter)
 	{    
 		final int gap = 3;
 		double xoff = gap;
@@ -141,7 +174,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 			{ 
 				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
 			}
-			attach = new Point2D.Double((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
+			attach = new Point2D((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
 					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
 			if (pEndPoint1.getY() < pEndPoint2.getY())
 			{
@@ -168,7 +201,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 			}
 			if(pArrow != null)
 			{
-				Rectangle2D arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBounds2D();
+				Bounds arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBoundsInLocal();
 				if(pEndPoint1.getX() < pEndPoint2.getX())
 				{
 					xoff -= arrowBounds.getWidth();
@@ -179,7 +212,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 				}
 			}
 		}
-		return new Point2D.Double(attach.getX() + xoff, attach.getY() + yoff);
+		return new Point2D(attach.getX() + xoff, attach.getY() + yoff);
 	}
 	
 	private Point2D[] getPoints()
@@ -198,23 +231,25 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	@Override
 	protected Shape getShape()
 	{
-		GeneralPath path = getSegmentPath();
+		Path path = getSegmentPath();
 		Point2D[] points = getPoints();
-		path.append(aArrowStartSupplier.get().view().getPath(points[1], points[0]), false);
-		path.append(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]), false);
+		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(points[1], points[0]).getElements());
+		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]).getElements());
 		return path;
 	}
 
-	private GeneralPath getSegmentPath()
+	private Path getSegmentPath()
 	{
 		Point2D[] points = getPoints();
-		GeneralPath path = new GeneralPath();
+		Path path = new Path();
 		Point2D p = points[points.length - 1];
-		path.moveTo((float) p.getX(), (float) p.getY());
+		MoveTo moveTo = new MoveTo((float) p.getX(), (float) p.getY());
+		path.getElements().add(moveTo);
 		for(int i = points.length - 2; i >= 0; i--)
 		{
 			p = points[i];
-			path.lineTo((float) p.getX(), (float) p.getY());
+			LineTo lineTo = new LineTo((float) p.getX(), (float) p.getY());
+			path.getElements().add(lineTo);
 		}
 		return path;
 	}
@@ -235,11 +270,16 @@ public class SegmentedEdgeView extends AbstractEdgeView
 			return new Rectangle((int)Math.round(pEndPoint2.getX()), 
 					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
-		label.setText(toHtml(pString));
-		Dimension d = label.getPreferredSize();
-		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, d, pCenter);
+		
+		Font font = Font.getDefault();
+		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+		FontMetrics fontMetrics = fontLoader.getFontMetrics(font);
+		int width = (int) Math.round(fontLoader.computeStringWidth(pString, font));
+		int height = (int) Math.round(fontMetrics.getLineHeight());
+		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
+		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
-				(int)Math.round(d.getWidth()), (int)Math.round(d.getHeight()));
+				(int)Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
 	}
 	
 	@Override

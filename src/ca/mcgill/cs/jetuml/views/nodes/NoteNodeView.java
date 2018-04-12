@@ -20,22 +20,19 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * An object to render a NoteNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class NoteNodeView extends RectangleBoundedNodeView
 {
@@ -43,7 +40,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_X = 8;
 	private static final int FOLD_Y = 8;
-	private static final Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // Pale yellow
+	private static final Color DEFAULT_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
 	private static final StringViewer NOTE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
@@ -60,52 +57,85 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
-		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(DEFAULT_COLOR);
-
-		Shape path = getShape();
-		pGraphics2D.fill(path);
-		pGraphics2D.setColor(oldColor);
-		pGraphics2D.draw(path);
-
-		final Rectangle bounds = getBounds();
-		GeneralPath fold = new GeneralPath();
-		fold.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		fold.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
-		fold.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		fold.closePath();
-		oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(pGraphics2D.getBackground());
-		pGraphics2D.fill(fold);
-		pGraphics2D.setColor(oldColor);      
-		pGraphics2D.draw(fold);      
+		super.draw(pGraphics);
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
+		fillFold(pGraphics);   
+		pGraphics.setLineWidth(oldLineWidth);
       
-		NOTE_VIEWER.draw(name(), pGraphics2D, getBounds());
+		NOTE_VIEWER.draw(name(), pGraphics, getDefaultBounds());
 	}
 	
 	@Override
-	public Shape getShape()
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		Rectangle bounds = getBounds();
-		GeneralPath path = new GeneralPath();
-		path.moveTo((float)bounds.getX(), (float)bounds.getY());
-		path.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		path.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		path.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-		path.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-		path.closePath();
-		return path;
+		Rectangle bounds = getBounds();		
+		if (pShadow) 
+		{
+			pGraphics.beginPath();
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
+			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+			pGraphics.closePath();
+			pGraphics.fill();	
+		}
+		else 
+		{
+			pGraphics.beginPath();
+			pGraphics.setFill(DEFAULT_COLOR);
+			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
+			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+			pGraphics.closePath();
+			pGraphics.fill();
+			pGraphics.stroke();
+		}	
+	}
+	
+	/**
+	 * Fills in note fold.
+	 * @param pGraphics GraphicsContext in which to fill the fold
+	 */
+	public void fillFold(GraphicsContext pGraphics)
+	{
+		final Rectangle bounds = getBounds();
+		pGraphics.beginPath();
+		pGraphics.setFill(Color.WHITE);
+		pGraphics.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+		pGraphics.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
+		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+		pGraphics.closePath();
+		pGraphics.fill();
+		pGraphics.stroke();
+	}
+	
+	/**
+	 * Gets the smallest rectangle that bounds this node when not containing text.
+	 * @return the bounding rectangle
+	 */
+	public Rectangle getDefaultBounds()
+	{
+		return new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
+		return new Rectangle(node().position().getX(), node().position().getY(), 
+				Math.max(textBounds.getWidth(), DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
 	}
 	
 	@Override
 	public void layout(Graph pGraph)
 	{
-		Rectangle b = NOTE_VIEWER.getBounds(name()); 
-		Rectangle bounds = getBounds();
-		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(b));
+		setBounds(Grid.snapped(getBounds()));
 	}
 }

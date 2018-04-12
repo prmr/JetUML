@@ -23,9 +23,6 @@ package ca.mcgill.cs.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,6 +40,9 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import ca.mcgill.cs.jetuml.gui.ToolBar;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Tests various interactions with State Diagram normally triggered from the 
@@ -54,7 +54,7 @@ import ca.mcgill.cs.jetuml.gui.ToolBar;
 public class TestUsageScenariosStateDiagram 
 {
 	private StateDiagramGraph aDiagram;
-	private Graphics2D aGraphics;
+	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
@@ -83,8 +83,8 @@ public class TestUsageScenariosStateDiagram
 	public void setup()
 	{
 		aDiagram = new StateDiagramGraph();
-		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
+		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));
 		aStateNode2 = new StateNode();

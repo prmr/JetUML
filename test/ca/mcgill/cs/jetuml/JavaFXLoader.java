@@ -1,6 +1,5 @@
 package ca.mcgill.cs.jetuml;
 
-import ca.mcgill.cs.jetuml.application.Clipboard;
 import javafx.embed.swing.JFXPanel;
 
 /**

@@ -20,31 +20,28 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a FieldNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class FieldNodeView extends RectangleBoundedNodeView
 {
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
+	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -73,13 +70,13 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 		final Rectangle bounds = getBounds();
-		NAME_VIEWER.draw(name(), pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
-		VALUE_VIEWER.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
+		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
 	}
 	
 	private int leftWidth()
@@ -128,8 +125,5 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public Shape getShape()
-	{
-		return new Rectangle2D.Double();
-	}
+	public void fillShape(GraphicsContext pGraphics, boolean pShadows) {}
 }

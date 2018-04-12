@@ -34,6 +34,8 @@ import javafx.scene.input.KeyCombination;
 /**
  * A class for creating menus from strings in a 
  * resource bundle.
+ * 
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 class MenuFactory
 {

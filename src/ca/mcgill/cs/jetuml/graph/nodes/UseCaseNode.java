@@ -22,9 +22,7 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView2;
 import ca.mcgill.cs.jetuml.views.nodes.UseCaseNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.UseCaseNodeView2;
 
 /**
  *  A use case node in a use case diagram.
@@ -35,11 +33,5 @@ public class UseCaseNode extends NamedNode
 	protected NodeView generateView()
 	{
 		return new UseCaseNodeView(this);
-	}
-
-	@Override
-	protected NodeView2 generateView2()
-	{
-		return new UseCaseNodeView2(this);
 	}
 }

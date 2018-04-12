@@ -20,21 +20,18 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.RoundRectangle2D;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a StateNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class StateNodeView extends RectangleBoundedNodeView
 {
@@ -57,18 +54,30 @@ public class StateNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
-		pGraphics2D.draw(getShape());
-		NAME_VIEWER.draw(name(), pGraphics2D, getBounds());
+		super.draw(pGraphics);
+		NAME_VIEWER.draw(name(), pGraphics, getBounds());
 	}
 	
+	
 	@Override
-	protected Shape getShape()
-	{       
-		return new RoundRectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	{
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+			pGraphics.strokeRoundRect(getBounds().getX(), getBounds().getY(), 
+					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		}	
 	}
 	
 	@Override	

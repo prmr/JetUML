@@ -29,7 +29,6 @@ public enum ArrowHead
 	NONE, TRIANGLE, BLACK_TRIANGLE, V, HALF_V, DIAMOND, BLACK_DIAMOND;
 	
 	private final ArrowHeadView aView = new ArrowHeadView(this);
-	private final ArrowHeadView2 aView2 = new ArrowHeadView2(this);
 	
 	/**
 	 * @return An object that can draw this arrowhead.
@@ -37,13 +36,5 @@ public enum ArrowHead
 	public ArrowHeadView view()
 	{
 		return aView;
-	}
-	
-	/**
-	 * @return An object that can draw this arrowhead.
-	 */
-	public ArrowHeadView2 view2()
-	{
-		return aView2;
 	}
 }

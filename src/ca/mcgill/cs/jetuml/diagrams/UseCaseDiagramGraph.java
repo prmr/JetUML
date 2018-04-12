@@ -86,8 +86,3 @@ public class UseCaseDiagramGraph extends Graph
 		return true;
 	}
 }
-
-
-
-
-

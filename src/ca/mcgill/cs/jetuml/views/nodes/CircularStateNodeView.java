@@ -20,22 +20,21 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.Grid;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * An object to render a CircularStateNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class CircularStateNodeView extends AbstractNodeView
 {
@@ -52,25 +51,27 @@ public class CircularStateNodeView extends AbstractNodeView
 		super(pNode);
 		aFinal = pFinal;
 	}
-	
+
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
-		Ellipse2D circle = new Ellipse2D.Double(node().position().getX(), node().position().getY(), 
-				DIAMETER, DIAMETER);
-      
-      	if(aFinal)
-      	{
-      		Ellipse2D inside = new Ellipse2D.Double( node().position().getX() + DEFAULT_GAP, 
+		super.draw(pGraphics);
+		Paint oldFill = pGraphics.getFill();
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
+		pGraphics.setFill(Color.BLACK);
+		if(aFinal)
+		{
+      		pGraphics.fillOval(node().position().getX() + DEFAULT_GAP, 
       				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);
-      		pGraphics2D.fill(inside);
-      		pGraphics2D.draw(circle);
+      		pGraphics.strokeOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
       	}
 		else
 		{
-			pGraphics2D.fill(circle);
+			pGraphics.fillOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
 		}      
+		pGraphics.setFill(oldFill);
+		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	@Override
@@ -94,11 +95,21 @@ public class CircularStateNodeView extends AbstractNodeView
 			return new Point((int) Math.round(cx), (int) Math.round(cy));
 		}
 	}   	 
-	
+
 	@Override
-	public Shape getShape()
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
 	{
-		return new Ellipse2D.Double(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+			pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		}	
 	}
 
 	@Override

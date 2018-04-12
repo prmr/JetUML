@@ -240,7 +240,6 @@ public final class Clipboard
 			clonedRootNodes.add(cloned);
 			reassignEdges(clonedEdges, node, cloned);
 			bounds = updateBounds(bounds, node);
-
 		}
 		
 		removeDanglingReferencesToParents(clonedRootNodes);
@@ -379,8 +378,3 @@ public final class Clipboard
 		return false;
 	}
 }
-
-
-
-
-

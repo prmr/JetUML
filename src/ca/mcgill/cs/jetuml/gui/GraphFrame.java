@@ -23,23 +23,23 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.io.File;
 
-import javax.swing.JScrollPane;
-
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import javafx.application.Platform;
-import javafx.embed.swing.SwingNode;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 
 /**
  *A frame for showing a graphical editor.
  *
- *@author Kaylee I. Kutschera - Migration to JavaFX
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class GraphFrame extends Tab
 {	
@@ -56,12 +56,15 @@ public class GraphFrame extends Tab
 	{
 		aTabbedPane = pTabbedPane;
 		ToolBar sideBar = new ToolBar(pGraph);
-		aPanel = new GraphPanel(pGraph, sideBar, this);
+		aPanel = new GraphPanel(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
+		aPanel.paintPanel();
+		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
-		SwingNode panelNode = new SwingNode();
-		panelNode.setContent(new JScrollPane(aPanel));
-		layout.setCenter(panelNode);
+		ScrollPane scroll = new ScrollPane(aPanel);
+		scroll.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
+		layout.setCenter(scroll);
 		
 		setTitle(false);
 		setContent(layout);
@@ -111,48 +114,49 @@ public class GraphFrame extends Tab
 	 */
 	public void setTitle(boolean pModified)
 	{
-		Platform.runLater(() -> 
+		if(aFile != null)
 		{
-			if(aFile != null)
+			String title = aFile.getName();
+			if(pModified)
 			{
-				String title = aFile.getName();
-				if(pModified)
+				if(!getText().endsWith("*"))
 				{
-					if(!getText().endsWith("*"))
-					{
-						setText(title + "*");
-					}
-				}
-				else
-				{
-					setText(title);
+					setText(title + "*");
 				}
 			}
 			else
 			{
-				Graph graphType = getGraph();
-				if (graphType instanceof ClassDiagramGraph) 
-				{
-					setText("Class Diagram");
-				} 
-				else if (graphType instanceof ObjectDiagramGraph) 
-				{
-					setText("Object Diagram");
-				} 
-				else if (graphType instanceof UseCaseDiagramGraph) 
-				{
-					setText("Use Case Diagram");
-				} 
-				else if (graphType instanceof StateDiagramGraph) 
-				{
-					setText("State Diagram");
-				} 
-				else 
-				{
-					setText("Sequence Diagram");
-				}
+				setText(title);
 			}
-		});
+		}
+		else
+		{
+			Graph graphType = getGraph();
+			if (graphType instanceof UseCaseDiagramGraph)
+			{
+				setText("Use Case Diagram");
+			} 
+			else if (graphType instanceof StateDiagramGraph)
+			{
+				setText("State Diagram");
+			} 
+			else if (graphType instanceof ClassDiagramGraph)
+			{
+				setText("Class Diagram");
+			} 
+			else if (graphType instanceof SequenceDiagramGraph)
+			{
+				setText("Sequence Diagram");
+			} 
+			else if (graphType instanceof ObjectDiagramGraph)
+			{
+				setText("Object Diagram");
+			} 
+			else 
+			{
+				setText("Not supported in JavaFX");
+			}
+		}
 	}
 
 	/**

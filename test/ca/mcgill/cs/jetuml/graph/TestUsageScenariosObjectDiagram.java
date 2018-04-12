@@ -23,9 +23,6 @@ package ca.mcgill.cs.jetuml.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,6 +39,9 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 import ca.mcgill.cs.jetuml.gui.ToolBar;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Tests various interactions with Object Diagram normally triggered from the 
@@ -55,7 +55,7 @@ import ca.mcgill.cs.jetuml.gui.ToolBar;
 public class TestUsageScenariosObjectDiagram 
 {
 	private ObjectDiagramGraph aDiagram;
-	private Graphics2D aGraphics;
+	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
@@ -82,8 +82,8 @@ public class TestUsageScenariosObjectDiagram
 	public void setup()
 	{
 		aDiagram = new ObjectDiagramGraph();
-		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), null);
+		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
+		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -105,23 +105,23 @@ public class TestUsageScenariosObjectDiagram
 	public void testCreateStateDiagram()
 	{
 		// create an object node
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aObjectNode1.setName("Car");
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals("Car", aObjectNode1.getName());
 		
 		// create field node outside an object node.(not allowed)
-		aDiagram.addNode(aFieldNode1, new Point(120, 80));
-		aDiagram.addNode(aFieldNode2, new Point(230, 40));
-		aDiagram.addNode(aFieldNode3, new Point(-20, -20));
+		aDiagram.addNode(aFieldNode1, new Point(120, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(230, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode3, new Point(-20, -20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
 		// create field nodes inside object node
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point(40, 30));
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(3, aObjectNode1.getChildren().size());
 		
 	}
@@ -134,12 +134,12 @@ public class TestUsageScenariosObjectDiagram
 	{
 		// adding one ObjectNode and one NoteNode
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point(40, 30));
-		aDiagram.addNode(noteNode, new Point(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);		
 		assertEquals(3, aDiagram.getRootNodes().size());
 		
@@ -178,12 +178,12 @@ public class TestUsageScenariosObjectDiagram
 	public void testGeneralEdgeCreation()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
-		aDiagram.addNode(aFieldNode3, new Point(40, 30));
-		aDiagram.addNode(noteNode, new Point(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);	
 		
 		// create an association edge between two ObjectNode
@@ -209,7 +209,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals("", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
-		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		aDiagram.addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
@@ -230,15 +230,15 @@ public class TestUsageScenariosObjectDiagram
 	public void testIndividualNodeMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(noteNode, new Point(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);	
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
 		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(64, 111, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(61, 104, 54, 23), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
 	}
 	
@@ -249,11 +249,11 @@ public class TestUsageScenariosObjectDiagram
 	public void testNodesAndEdgesMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
-		aDiagram.addNode(noteNode, new Point(80, 80));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);	
 
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
@@ -274,7 +274,7 @@ public class TestUsageScenariosObjectDiagram
 			}
 		}
 		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(87, 135, 49, 16), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(84, 121, 54, 23), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
@@ -305,7 +305,7 @@ public class TestUsageScenariosObjectDiagram
 	public void testDeleteObjectNodeAndNoteNode()
 	{
 		
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
@@ -317,7 +317,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point(75, 75));
+		aDiagram.addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(noteNode);
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -333,8 +333,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteFieldNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 		aPanel.getSelectionList().add(aFieldNode1);
 		aPanel.removeSelected();
@@ -352,14 +352,14 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteEdge()
 	{
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);	
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aReferenceEdge2 and collaborationEdge1
@@ -386,15 +386,15 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteCombinationNodeAndEdge()
 	{
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
-		aDiagram.addNode(aFieldNode2, new Point(30, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);	
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
 		aDiagram.addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.addEdge(aReferenceEdge1, new Point(65, 110), new Point(20, 20));
+		aDiagram.addEdge(aReferenceEdge1, new Point(65, 120), new Point(20, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
@@ -402,6 +402,10 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().add(assoEdge1);
 		aPanel.getSelectionList().add(aReferenceEdge1);
 		aPanel.getSelectionList().add(aReferenceEdge2);
+		
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(3, aDiagram.getEdges().size());
+		
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
@@ -412,15 +416,15 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(3, aDiagram.getEdges().size());
 		
-		// now delete aFieldNode2 and aReferenceEdge2
+		// now delete aFieldNode2 and as a result the reference edges
+		// connected to it: aReferenceEdge1 and aReferenceEdge2
 		aPanel.getSelectionList().add(aFieldNode2);
-		aPanel.getSelectionList().add(aReferenceEdge2);
 		aPanel.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aObjectNode1.getChildren().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.getEdges().size());
 		
 		aPanel.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -436,8 +440,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testCopyNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.copy();
 		aPanel.paste();
@@ -464,8 +468,8 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testCutStateNode()
 	{
-		aDiagram.addNode(aObjectNode1, new Point(20, 20));
-		aDiagram.addNode(aFieldNode1, new Point(20, 40));
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
 		aPanel.cut();
 		aDiagram.draw(aGraphics);
@@ -497,8 +501,8 @@ public class TestUsageScenariosObjectDiagram
 	public void testCopyNodesWithEdge()
 	{
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addNode(aObjectNode1, new Point(50, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aObjectNode1, new Point(50, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		aPanel.selectAll();
@@ -520,8 +524,8 @@ public class TestUsageScenariosObjectDiagram
 	public void testCutNodesWithEdge()
 	{
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addNode(aObjectNode1, new Point(50, 20));
-		aDiagram.addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.addNode(aObjectNode1, new Point(50, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		

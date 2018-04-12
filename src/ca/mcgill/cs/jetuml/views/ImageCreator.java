@@ -1,14 +1,6 @@
 package ca.mcgill.cs.jetuml.views;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
+import java.util.concurrent.RejectedExecutionException;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -16,12 +8,21 @@ import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * Utility class to create icons that are drawn
  * using graphic primitives.
  * 
- * @author Kaylee I. Kutschera - Based on code by Martin P. Robillard
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class ImageCreator 
 {
@@ -54,54 +55,75 @@ public final class ImageCreator
 	
 	private static Image createNodeImage( Node pNode )
 	{
-		BufferedImage image = new BufferedImage(BUTTON_SIZE, BUTTON_SIZE, BufferedImage.TYPE_INT_ARGB);
 		Rectangle bounds = pNode.view().getBounds();
 		int width = bounds.getWidth();
 		int height = bounds.getHeight();
-		Graphics2D graphics = image.createGraphics();
-		graphics.setComposite(AlphaComposite.Clear);
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
 		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
 		double scale = Math.min(scaleX, scaleY);
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(scale, scale);
-		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-		graphics.setComposite(AlphaComposite.Src);
-		graphics.setBackground(Color.WHITE);
-		graphics.setColor(Color.BLACK);
+		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
+		graphics.setFill(Color.WHITE);
+		graphics.setStroke(Color.BLACK);
 		pNode.view().draw(graphics);
-		return SwingFXUtils.toFXImage(image, null);
+		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
+		SnapshotParameters parameters = new SnapshotParameters();
+		parameters.setFill(Color.TRANSPARENT);
+		Platform.runLater(() -> 
+		{
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
+		});
+		return image;
 	}
 
 	private static Image createEdgeImage( final Edge pEdge )
 	{
-		BufferedImage image = new BufferedImage(BUTTON_SIZE, BUTTON_SIZE, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = image.createGraphics();
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 		PointNode pointNode = new PointNode();
 		pointNode.translate(OFFSET, OFFSET);
 		PointNode destination = new PointNode();
 		destination.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
 		pEdge.connect(pointNode, destination, null);
-
 		Rectangle bounds = new Rectangle(0, 0, 0, 0);
 		bounds = bounds.add(pointNode.view().getBounds());
 		bounds = bounds.add(destination.view().getBounds());
 		bounds = bounds.add(pEdge.view().getBounds());
-
 		int width = bounds.getWidth();
 		int height = bounds.getHeight();
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
 		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
 		double scale = Math.min(scaleX, scaleY);
-
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(scale, scale);
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-
-		graphics.setColor(Color.black);
+		graphics.setStroke(Color.BLACK);
 		pEdge.view().draw(graphics);
-		return SwingFXUtils.toFXImage(image, null);
+		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
+		SnapshotParameters parameters = new SnapshotParameters();
+		parameters.setFill(Color.TRANSPARENT);
+		Platform.runLater(() -> 
+		{
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
+		});
+		return image;
 	}
 	
 	/**
@@ -109,13 +131,28 @@ public final class ImageCreator
 	 */
 	public static Image createSelectionImage()
 	{
-		BufferedImage image = new BufferedImage(BUTTON_SIZE, BUTTON_SIZE, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = image.createGraphics();
 		int offset = OFFSET + 3;
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		GraphPanel.drawGrabber(graphics, offset, offset);
 		GraphPanel.drawGrabber(graphics, offset, BUTTON_SIZE - offset);
 		GraphPanel.drawGrabber(graphics, BUTTON_SIZE - offset, offset);
 		GraphPanel.drawGrabber(graphics, BUTTON_SIZE - offset, BUTTON_SIZE - offset);
-		return SwingFXUtils.toFXImage(image, null);
+		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
+		SnapshotParameters parameters = new SnapshotParameters();
+		parameters.setFill(Color.TRANSPARENT);
+		Platform.runLater(() -> 
+		{
+			try 
+			{
+				new Scene(new Pane(canvas));
+				canvas.snapshot(parameters, image);
+			}
+			catch (NullPointerException | RejectedExecutionException e)
+			{
+				// should only be caught in JUnit tests
+			}
+		});
+		return image;
 	}
 }

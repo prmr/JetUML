@@ -20,21 +20,18 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a UseCaseNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class UseCaseNodeView extends RectangleBoundedNodeView
 {
@@ -51,19 +48,31 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);      
-		pGraphics2D.draw(getShape());
-		NAME_VIEWER.draw(name(), pGraphics2D, getBounds());
+		super.draw(pGraphics);  
+		NAME_VIEWER.draw(name(), pGraphics, getBounds());
 	}
 	
 	@Override
-	public Shape getShape()
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
 	{
-		return new Ellipse2D.Double(node().position().getX(), node().position().getY(), 
-				getBounds().getWidth(), getBounds().getHeight());
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillOval(node().position().getX(), node().position().getY(), 
+					getBounds().getWidth(), getBounds().getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillOval(node().position().getX(), node().position().getY(), 
+					getBounds().getWidth(), getBounds().getHeight());
+			pGraphics.strokeOval(node().position().getX(), node().position().getY(), 
+					getBounds().getWidth(), getBounds().getHeight());
+		}	
 	}
+	
 	
 	private String name()
 	{

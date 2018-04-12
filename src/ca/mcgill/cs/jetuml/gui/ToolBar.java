@@ -23,24 +23,20 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javax.swing.Icon;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.views.IconCreator;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -73,7 +69,7 @@ public class ToolBar extends BorderPane
 	private FlowPane aToolsLayout = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
 	private FlowPane aToolsLayoutEx = new FlowPane(Orientation.VERTICAL, PADDING, PADDING);
 	private ArrayList<GraphElement> aTools = new ArrayList<>();
-	private JPopupMenu aPopupMenu = new JPopupMenu();
+	private ContextMenu aPopupMenu = new ContextMenu();
 
 	/**
      * Constructs the tool bar.
@@ -97,7 +93,7 @@ public class ToolBar extends BorderPane
 	
 	private void createSelectionTool(ToggleGroup pGroup, ToggleGroup pGroupEx)
 	{
-		installTool(ImageCreator.createSelectionImage(), IconCreator.createSelectionIcon(), 
+		installTool(ImageCreator.createSelectionImage(), 
 				ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("grabber.tooltip"), 
 				null, true, pGroup, pGroupEx);
 	}
@@ -110,13 +106,7 @@ public class ToolBar extends BorderPane
 	 * @param pTool the object representing the tool
 	 * @param pIsSelected true if the tool is initially selected.
 	 */
-	private void installTool( Image pImage, 
-				Icon pIcon, 
-				String pToolTip, 
-				GraphElement pTool, 
-				boolean pIsSelected, 
-				ToggleGroup pCollapsed, 
-				ToggleGroup pExpanded )
+	private void installTool(Image pImage, String pToolTip, GraphElement pTool, boolean pIsSelected, ToggleGroup pCollapsed, ToggleGroup pExpanded)
 	{
 		final ToggleButton button = new ToggleButton();
 		button.setGraphic(new ImageView(pImage));
@@ -148,16 +138,14 @@ public class ToolBar extends BorderPane
 			buttonEx.setSelected(true);
 		});
 		
-		JMenuItem item = new JMenuItem(pToolTip, pIcon);
-		item.addActionListener(pEvent -> 
+		MenuItem item = new MenuItem(pToolTip);
+		item.setGraphic(new ImageView(pImage));
+		item.setOnAction(pEvent -> 
 		{
-			Platform.runLater(()->
-			{
-				button.setSelected(true);
-				buttonEx.setSelected(true);
-			});
+			button.setSelected(true);
+			buttonEx.setSelected(true);
 		});
-		aPopupMenu.add(item);
+		aPopupMenu.getItems().add(item);
 	}
 	
 	/*
@@ -180,14 +168,14 @@ public class ToolBar extends BorderPane
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			installTool(ImageCreator.createImage(nodeTypes[i]), IconCreator.createIcon(nodeTypes[i]), 
+			installTool(ImageCreator.createImage(nodeTypes[i]), 
 					resources.getString("node" + (i + 1) + ".tooltip"), nodeTypes[i], false, pGroup, pGroupEx);
 		}
 		
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			installTool(ImageCreator.createImage(edgeTypes[i]), IconCreator.createIcon(edgeTypes[i]), 
+			installTool(ImageCreator.createImage(edgeTypes[i]), 
 					resources.getString("edge" + (i + 1) + ".tooltip"), edgeTypes[i], false, pGroup, pGroupEx);
 		}
 	}
@@ -207,19 +195,16 @@ public class ToolBar extends BorderPane
 	 */
 	public void setToolToBeSelect()
 	{
-		Platform.runLater(() -> 
+		for( ToggleButton button : aButtons )
 		{
-			for( ToggleButton button : aButtons )
-			{
-				button.setSelected(false);
-			}
-			for( ToggleButton button : aButtonsEx )
-			{
-				button.setSelected(false);
-			}
-			aButtons.get(0).setSelected(true);
-			aButtonsEx.get(0).setSelected(true);
-		});
+			button.setSelected(false);
+		}
+		for( ToggleButton button : aButtonsEx )
+		{
+			button.setSelected(false);
+		}
+		aButtons.get(0).setSelected(true);
+		aButtonsEx.get(0).setSelected(true);
 	}
 
 
@@ -288,7 +273,6 @@ public class ToolBar extends BorderPane
 			synchronizeToolSelection();
 			setCenter(aToolsLayoutEx);
 			setBottom(collapseButton);
-
 		});
 		collapseButton.setOnAction(pEvent -> 
 		{
@@ -337,7 +321,7 @@ public class ToolBar extends BorderPane
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Show the pop-up menu corresponding to this toolbar.
 	 * @param pPanel The panel associated with this menu.
@@ -346,5 +330,17 @@ public class ToolBar extends BorderPane
 	public void showPopup(GraphPanel pPanel, Point pPoint) 
 	{
 		aPopupMenu.show(pPanel, pPoint.getX(), pPoint.getY());
+	}
+	
+	/**
+	 * Hides the pop-up menu corresponding to this toolbar 
+	 * if it is showing.
+	 */
+	public void hidePopup() 
+	{
+		if (aPopupMenu.isShowing())
+		{
+			aPopupMenu.hide();
+		}
 	}
 }

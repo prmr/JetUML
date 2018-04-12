@@ -20,19 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Node;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a PointNode.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class PointNodeView extends AbstractNodeView
 {
@@ -65,9 +63,9 @@ public class PointNodeView extends AbstractNodeView
 	}
 
 	@Override
-	protected Shape getShape()
+	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		return new Rectangle2D.Double(node().position().getX(), node().position().getY(), 0, 0);
+		pGraphics.fillRect(node().position().getX(), node().position().getY(), 0, 0);
 	}
 
 }

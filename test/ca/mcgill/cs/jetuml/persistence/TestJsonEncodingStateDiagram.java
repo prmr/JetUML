@@ -121,7 +121,7 @@ public class TestJsonEncodingStateDiagram
 	 * Initializes a graph with a node with two self-edges,
 	 * and two transitions to a second node.
 	 */
-	private void initiGraph2()
+	private void initiGraph()
 	{
 		StateNode node1 = new StateNode();
 		node1.setName("The Node");
@@ -212,9 +212,9 @@ public class TestJsonEncodingStateDiagram
 	}
 	
 	@Test
-	public void testEncodeDecodeGraph2()
+	public void testEncodeDecodeGraph()
 	{
-		initiGraph2();
+		initiGraph();
 		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "The Node"));

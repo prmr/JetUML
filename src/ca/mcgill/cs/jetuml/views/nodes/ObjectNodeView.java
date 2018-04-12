@@ -20,10 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
@@ -31,12 +29,13 @@ import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an object in an object diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ObjectNodeView extends RectangleBoundedNodeView
 {
@@ -67,13 +66,15 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		NAME_VIEWER.draw(name(), pGraphics2D, top);
+		if (top.getHeight() < getBounds().getHeight()) 
+		{
+			pGraphics.strokeLine(top.getX(), top.getMaxY(), top.getX() + top.getWidth(), top.getMaxY());
+		}
+		NAME_VIEWER.draw(name(), pGraphics, top);
 	}
 	
 	@Override

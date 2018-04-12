@@ -86,7 +86,7 @@ public class ObjectDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.jetuml.graph.Graph#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point pPoint)
+	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		if( pNode instanceof FieldNode )
 		{
@@ -101,7 +101,7 @@ public class ObjectDiagramGraph extends Graph
 				return false;
 			}
 		}
-		super.addNode(pNode, pPoint);
+		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 		return true;
 	}
 	
@@ -186,8 +186,3 @@ public class ObjectDiagramGraph extends Graph
 		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("object.name");
 	}
 }
-
-
-
-
-

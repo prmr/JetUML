@@ -83,7 +83,7 @@ public class TestJsonEncodingUseCaseDiagram
 	 * Initializes a graph with two use cases
 	 * with a extension dependency between them.
 	 */
-	private void initiGraph2()
+	private void initiGraph()
 	{
 		UseCaseNode node1 = new UseCaseNode();
 		node1.setName("Node1");
@@ -165,9 +165,9 @@ public class TestJsonEncodingUseCaseDiagram
 	}
 	
 	@Test
-	public void testEncodeDecodeGraph2()
+	public void testEncodeDecodeGraph()
 	{
-		initiGraph2();
+		initiGraph();
 		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));

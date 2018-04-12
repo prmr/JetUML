@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +29,14 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
+import javafx.geometry.Rectangle2D;
 
 /**
  * Tracks the movement of a set of selected graph elements.
  * 
  * @author Martin P. Robillard
  */
-public class MoveTracker 
+public class MoveTracker
 {
 	private List<Node> aTrackedNodes = new ArrayList<>();
 	private List<Rectangle2D> aOriginalBounds = new ArrayList<>();
@@ -85,8 +85,8 @@ public class MoveTracker
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			int dY = (int)(selectionBounds2[i].getY() - aOriginalBounds.get(i).getY());
-			int dX = (int)(selectionBounds2[i].getX() - aOriginalBounds.get(i).getX());
+			int dY = (int)(selectionBounds2[i].getMinY() - aOriginalBounds.get(i).getMinY());
+			int dX = (int)(selectionBounds2[i].getMinX() - aOriginalBounds.get(i).getMinX());
 			if(dX != 0 || dY != 0)
 			{
 				command.add(new MoveCommand(pGraph, aTrackedNodes.get(i), dX, dY));

@@ -26,17 +26,13 @@ import java.util.ArrayList;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Graph2;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView2;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle2;
 import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView2;
 import javafx.geometry.Point2D;
 
 /**
@@ -47,18 +43,11 @@ public class ReturnEdge extends SingleLabelEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.DOTTED,
+		return new SegmentedEdgeView(this, createSegmentationStyle2(), () -> LineStyle.DOTTED,
 				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
-	@Override
-	protected EdgeView2 generateView2()
-	{
-		return new SegmentedEdgeView2(this, createSegmentationStyle2(), () -> LineStyle.DOTTED,
-				() -> ArrowHead.NONE, ()->ArrowHead.V, ()->"", ()->getMiddleLabel(), ()->"");
-	}
-	
-	private SegmentationStyle createSegmentationStyle()
+	private SegmentationStyle createSegmentationStyle2()
 	{
 		return new SegmentationStyle()
 		{
@@ -70,7 +59,7 @@ public class ReturnEdge extends SingleLabelEdge
 			}
 
 			@Override
-			public java.awt.geom.Point2D[] getPath(Edge pEdge, Graph pGraph)
+			public Point2D[] getPath(Edge pEdge, Graph pGraph)
 			{
 				return getPoints(pEdge);
 			}
@@ -84,56 +73,7 @@ public class ReturnEdge extends SingleLabelEdge
 		};
 	}
 	
-	private SegmentationStyle2 createSegmentationStyle2()
-	{
-		return new SegmentationStyle2()
-		{
-			@Override
-			public boolean isPossible(Edge pEdge)
-			{
-				assert false; // Should not be called.
-				return false;
-			}
-
-			@Override
-			public Point2D[] getPath(Edge pEdge, Graph2 pGraph)
-			{
-				return getPoints2(pEdge);
-			}
-
-			@Override
-			public Side getAttachedSide(Edge pEdge, Node pNode)
-			{
-				assert false; // Should not be called
-				return null;
-			}
-		};
-	}
-	
-	private static java.awt.geom.Point2D[] getPoints(Edge pEdge)
-	{
-		ArrayList<java.awt.geom.Point2D> lReturn = new ArrayList<>();
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
-		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
-		{
-			lReturn.add(new java.awt.geom.Point2D.Double(end.getX(), end.getY()));
-			lReturn.add(new java.awt.geom.Point2D.Double(start.getMaxX(), end.getY()));
-		}      
-		else if(start.getCenter().getX() < end.getCenter().getX())
-		{
-			lReturn.add(new java.awt.geom.Point2D.Double(start.getMaxX(), start.getMaxY()));
-			lReturn.add(new java.awt.geom.Point2D.Double(end.getX(), start.getMaxY()));
-		}
-		else
-		{
-			lReturn.add(new java.awt.geom.Point2D.Double(start.getX(), start.getMaxY()));
-			lReturn.add(new java.awt.geom.Point2D.Double(end.getMaxX(), start.getMaxY()));
-		}
-		return lReturn.toArray(new java.awt.geom.Point2D[lReturn.size()]);
-	}
-	
-	private static Point2D[] getPoints2(Edge pEdge)
+	private static Point2D[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point2D> lReturn = new ArrayList<>();
 		Rectangle start = pEdge.getStart().view().getBounds();

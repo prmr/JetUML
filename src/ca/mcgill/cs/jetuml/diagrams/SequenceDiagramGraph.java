@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagrams;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,6 +37,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A UML sequence diagram.
@@ -61,7 +61,7 @@ public class SequenceDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.jetuml.graph.Graph#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point pPoint)
+	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		if(pNode instanceof CallNode) 
 		{
@@ -75,7 +75,7 @@ public class SequenceDiagramGraph extends Graph
 				return false;
 			}
 		}
-		super.addNode( pNode, pPoint );
+		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 		return true;
 	}
 	
@@ -371,10 +371,10 @@ public class SequenceDiagramGraph extends Graph
 	}
 
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
 		layout();
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 	}
 
 	@Override
@@ -422,8 +422,3 @@ public class SequenceDiagramGraph extends Graph
 		return super.deepFindNode(pNode, pPoint);
 	}
 }
-
-
-
-
-

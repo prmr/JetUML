@@ -20,21 +20,18 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an interface in a class diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class InterfaceNodeView extends RectangleBoundedNodeView
 {
@@ -63,19 +60,24 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 		int bottomHeight = computeBottom().getHeight();
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
+		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
-		pGraphics2D.draw(top);
-		NAME_VIEWER.draw(name(), pGraphics2D, Conversions.toRectangle(top));
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
-		pGraphics2D.draw(mid);
-		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		pGraphics2D.draw(bot);
-		METHOD_VIEWER.draw(methods(), pGraphics2D, Conversions.toRectangle(bot));
+		NAME_VIEWER.draw(name(), pGraphics, top);		
+		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
+		if (middleHeight() > 0) 
+		{
+			pGraphics.strokeLine(top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY());
+		}
+		Rectangle bot = new Rectangle(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
+		if (bottomHeight > 0)
+		{
+			pGraphics.strokeLine(top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY());
+		}
+		METHOD_VIEWER.draw(methods(), pGraphics, bot);
 	}
 	
 	/**
@@ -146,7 +148,6 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	{
 		Rectangle top = computeTop();
 		Rectangle bottom = computeBottom();
-
 		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				Math.max(Math.max(top.getWidth(), middleWidth()), bottom.getWidth()), top.getHeight() + middleHeight() + bottom.getHeight());
 		setBounds(Grid.snapped(bounds));

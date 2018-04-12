@@ -20,21 +20,19 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Shape;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.Grid;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A view for nodes that are bounded by a rectangle.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public abstract class RectangleBoundedNodeView extends AbstractNodeView
 {
@@ -79,9 +77,20 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 	}
 	
 	@Override
-	protected Shape getShape()
+	protected void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		return Conversions.toRectangle2D(getBounds());
+		Rectangle bounds = getBounds();
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		}	
 	}
 
 	/* 

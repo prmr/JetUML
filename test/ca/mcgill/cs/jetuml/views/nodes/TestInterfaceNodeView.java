@@ -93,13 +93,13 @@ public class TestInterfaceNodeView
 	{
 		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,25), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo\nFoo");
-		assertEquals(new Rectangle(0,0,100,32), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,45), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Rectangle(0,0,100,25), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,350,20), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Rectangle(0,0,386,25), ((InterfaceNodeView)aNode1.view()).computeBottom());
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class TestInterfaceNodeView
 	{
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		aNode1.setName("X\nX\nX\nX");
-		assertEquals(new Rectangle(0,0,100,64), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertEquals(new Rectangle(0,0,100,84), ((InterfaceNodeView)aNode1.view()).computeTop());
 		aNode1.setName("");
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
@@ -117,9 +117,9 @@ public class TestInterfaceNodeView
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("X\nX\nX");
-		assertEquals(new Rectangle(0,0,100,48), ((InterfaceNodeView)aNode1.view()).computeTop());
-		aNode1.setName("X\nX\nX\nX");
 		assertEquals(new Rectangle(0,0,100,64), ((InterfaceNodeView)aNode1.view()).computeTop());
+		aNode1.setName("X\nX\nX\nX");
+		assertEquals(new Rectangle(0,0,100,84), ((InterfaceNodeView)aNode1.view()).computeTop());
 	}
 	
 	@Test
@@ -132,19 +132,19 @@ public class TestInterfaceNodeView
 		
 		aNode1.setName("X\nX\nX\nX");
 		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
+		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
 		aNode1.setMethods("X\nX");
 		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
+		assertEquals(new Rectangle(10,10,100,140), aNode1.view().getBounds());
 		
 		aNode1.setName("X");
 		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
+		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 		
 		// Test layout with snapping
 		aNode1.translate(-4, -4);
 		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
+		assertEquals(new Rectangle(10,10,100,100), aNode1.view().getBounds());
 	}
 }

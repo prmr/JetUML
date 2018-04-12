@@ -20,6 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,8 +34,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-
-import static org.junit.Assert.*;
 
 public class TestSerializationContext
 {

@@ -20,17 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Services to query the visual properties of a node.
  * 
  * @author Martin P. Robillard
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public interface NodeView
 {
@@ -43,9 +43,9 @@ public interface NodeView
 	
 	/**
      *  Draw the node.
-     * @param pGraphics2D the graphics context
+     * @param pGraphics the graphics context
      */
-	void draw(Graphics2D pGraphics2D);
+	void draw(GraphicsContext pGraphics);
 
 	/**
      * Tests whether the node contains a point.

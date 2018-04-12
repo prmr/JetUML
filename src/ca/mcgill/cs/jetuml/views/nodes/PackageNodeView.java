@@ -20,16 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.util.List;
 
-import javax.swing.JLabel;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -37,12 +29,14 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a package in a class diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class PackageNodeView extends RectangleBoundedNodeView
 {
@@ -53,9 +47,8 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private static final int NAME_GAP = 3;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer CONTENTS_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
-	
-	private static final JLabel LABEL = new JLabel();
 	
 	private Rectangle aTop;
 	private Rectangle aBottom;
@@ -87,36 +80,36 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 		Rectangle bounds = getBounds();
-
-		LABEL.setText("<html>" + name() + "</html>");
-		LABEL.setFont(pGraphics2D.getFont());
-		Dimension d = LABEL.getPreferredSize();
-		LABEL.setBounds(0, 0, d.width, d.height);
-
-		pGraphics2D.draw(Conversions.toRectangle2D(aTop));
-
 		int textX = bounds.getX() + NAME_GAP;
-		double textY = bounds.getY() + (aTop.getHeight() - d.getHeight()) / 2;
-      
-		pGraphics2D.translate(textX, textY);
-		LABEL.paint(pGraphics2D);
-		pGraphics2D.translate(-textX, -textY);        
-     
-		pGraphics2D.draw(Conversions.toRectangle2D(aBottom));
-		CONTENTS_VIEWER.draw(contents(), pGraphics2D, aBottom);
+		int textY = (int)(bounds.getY());
+		Rectangle nameRectangle = new Rectangle(textX, textY, (int)aTop.getWidth(), (int)aTop.getHeight());
+		Rectangle contentsRectangle = new Rectangle(textX, textY + DEFAULT_TOP_HEIGHT + YGAP, (int)aBottom.getWidth(), (int)aBottom.getHeight());
+		NAME_VIEWER.draw(name(), pGraphics, nameRectangle);
+		CONTENTS_VIEWER.draw(contents(), pGraphics, contentsRectangle);
 	}
 	
 	@Override
-	public Shape getShape()
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
 	{
-		GeneralPath path = new GeneralPath();
-		path.append(Conversions.toRectangle2D(aTop), false);
-		path.append(Conversions.toRectangle2D(aBottom), false);
-		return path;
+		Rectangle bounds = getBounds();
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+			pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		}	
 	}
 	
 	/**
@@ -125,7 +118,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	 */
 	public Point2D getTopRightCorner()
 	{
-		return new Point2D.Double(aBottom.getMaxX(), aBottom.getY());
+		return new Point2D(aBottom.getMaxX(), aBottom.getY());
 	}
 	
 	@Override
@@ -154,10 +147,9 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	@Override
 	public void layout(Graph pGraph)
 	{
-		LABEL.setText(name());
-		Dimension d = LABEL.getPreferredSize();
-		int topWidth = (int)Math.max(d.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		int topHeight = (int)Math.max(d.getHeight(), DEFAULT_TOP_HEIGHT);
+		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
+		int topWidth = (int)Math.max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topHeight = (int)Math.max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
 		
 		Rectangle childBounds = null;
 		for( ChildNode child : children() )

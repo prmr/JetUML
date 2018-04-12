@@ -20,18 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.Graphics2D;
-
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object capable of computing the actual geometry
  * of an edge and drawing it on a graphics context.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public interface EdgeView
 {
@@ -44,9 +43,9 @@ public interface EdgeView
    	
 	/**
      * Draw the edge.
-     * @param pGraphics2D the graphics context
+     * @param pGraphics the graphics context
 	 */
-   	void draw(Graphics2D pGraphics2D);
+   	void draw(GraphicsContext pGraphics);
    	
    	/**
      * Tests whether the edge contains a point.

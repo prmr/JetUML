@@ -20,13 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -34,19 +27,24 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
+	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
+	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
+	private static final double[] DASHES = new double[] {5, 5};
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
@@ -65,17 +63,22 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		super.draw(pGraphics);
 		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		NAME_VIEWER.draw(name(), pGraphics2D, top);
+		NAME_VIEWER.draw(name(), pGraphics, top);
 		int xmid = getBounds().getCenter().getX();
-		Stroke oldStroke = pGraphics2D.getStroke();
-		pGraphics2D.setStroke(STROKE);
-		pGraphics2D.draw(new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY()));
-		pGraphics2D.setStroke(oldStroke);
+		StrokeLineCap oldLineCap = pGraphics.getLineCap();
+		StrokeLineJoin oldLineJoin = pGraphics.getLineJoin();
+		double[] oldDashes = pGraphics.getLineDashes();
+		pGraphics.setLineCap(LINE_CAP);
+		pGraphics.setLineJoin(LINE_JOIN);
+		pGraphics.setLineDashes(DASHES);
+		pGraphics.strokeLine(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
+		pGraphics.setLineCap(oldLineCap);
+		pGraphics.setLineJoin(oldLineJoin);
+		pGraphics.setLineDashes(oldDashes);
 	}
 	
 	@Override
@@ -86,8 +89,21 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	}
 
 	@Override
-	public Shape getShape()
-	{ return Conversions.toRectangle2D(getTopRectangle()); }
+	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	{
+		Rectangle top = getTopRectangle();
+		if (pShadow) 
+		{
+			pGraphics.setFill(SHADOW_COLOR);
+			pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+		}
+		else 
+		{
+			pGraphics.setFill(BACKGROUND_COLOR);
+			pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+			pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+		}	
+	}
    
 	@Override
 	public Point getConnectionPoint(Direction pDirection)

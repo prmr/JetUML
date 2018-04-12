@@ -20,25 +20,30 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.BasicStroke;
-import java.awt.Shape;
-
-import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
+import javafx.geometry.Bounds;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
+import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.shape.Shape;
 
 /**
  * Provides shared services for rendering an edge.
  * 
  * @author Martin P. Robillard
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  *
  */
 public abstract class AbstractEdgeView implements EdgeView
 {
-	private static final int MAX_DISTANCE = 3;
+	protected static final int MAX_DISTANCE = 3;
 	private static final int DEGREES_180 = 180;
 	
 	private Edge aEdge;
@@ -57,6 +62,32 @@ public abstract class AbstractEdgeView implements EdgeView
 	protected abstract Shape getShape();
 	
 	/**
+     * Completes drawing a path on the graphics context.
+     * @param pGraphics the graphics context
+     * @param pPath the path
+	 */
+	protected void completeDrawPath(GraphicsContext pGraphics, Path pPath)
+	{
+		for (PathElement element : pPath.getElements())
+		{
+			if (element instanceof MoveTo)
+			{
+				pGraphics.moveTo(((MoveTo) element).getX(), ((MoveTo) element).getY());
+			}
+			else if (element instanceof LineTo)
+			{
+				pGraphics.lineTo(((LineTo) element).getX(), ((LineTo) element).getY());
+			}
+			else if (element instanceof QuadCurveTo)
+			{
+				QuadCurveTo curve = (QuadCurveTo) element;
+				pGraphics.quadraticCurveTo(curve.getControlX(), curve.getControlY(), curve.getX(), curve.getY());
+			}
+		}
+		pGraphics.stroke();
+	}
+	
+	/**
 	 * @return The wrapped edge.
 	 */
 	protected Edge edge()
@@ -73,14 +104,16 @@ public abstract class AbstractEdgeView implements EdgeView
 			return false;
 		}
 
-		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
-		return fatPath.contains(Conversions.toPoint2D(pPoint));
+		Shape fatPath = getShape();
+		fatPath.setStrokeWidth(2 * MAX_DISTANCE);
+		return fatPath.contains(pPoint.getX(), pPoint.getY());
 	}
 	
 	@Override
 	public Rectangle getBounds()
 	{
-		return Conversions.toRectangle(getShape().getBounds()); 
+		Bounds bounds = getShape().getBoundsInLocal();
+		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
 	/** 
@@ -100,22 +133,5 @@ public abstract class AbstractEdgeView implements EdgeView
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(edge().getStart().view().getConnectionPoint(toEnd), 
 				edge().getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
-	}
-	
-	/**
-	 * Wrap the string in an html container and 
-	 * escape the angle brackets.
-	 * @param pRawLabel The initial string.
-	 * @pre pRawLabel != null;
-	 * @return The string prepared for rendering as HTML
-	 */
-	protected static String toHtml(String pRawLabel)
-	{
-		assert pRawLabel != null;
-		StringBuilder lReturn = new StringBuilder();
-		lReturn.append("<html>");
-		lReturn.append(pRawLabel.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
-		lReturn.append("</html>");
-		return lReturn.toString();
 	}
 }

@@ -148,7 +148,7 @@ public class ClassDiagramGraph extends Graph
 	 * @see ca.mcgill.cs.jetuml.graph.Graph#addNode(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point pPoint)
+	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		if( canAddNodeAsChild(pNode))
 		{
@@ -158,7 +158,7 @@ public class ClassDiagramGraph extends Graph
 				container.addChild((ChildNode)pNode);
 			}
 		}
-		super.addNode(pNode, pPoint);
+		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 		return true;
 	}
 }

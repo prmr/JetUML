@@ -20,23 +20,24 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * Basic services for drawing nodes.
  * 
  * @author Martin P. Robillard
- *
+ * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public abstract class AbstractNodeView implements NodeView
 {
 	public static final int SHADOW_GAP = 4;
-	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
+	protected static final Color SHADOW_COLOR = Color.LIGHTGRAY;
+	protected static final Color BACKGROUND_COLOR = Color.WHITE;
+	protected static final double LINE_WIDTH = 0.6;
 	
 	private Node aNode;
 	
@@ -57,25 +58,26 @@ public abstract class AbstractNodeView implements NodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		Shape shape = getShape();
-		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.translate(SHADOW_GAP, SHADOW_GAP);      
-		pGraphics2D.setColor(SHADOW_COLOR);
-		pGraphics2D.fill(shape);
-		pGraphics2D.translate(-SHADOW_GAP, -SHADOW_GAP);
-		pGraphics2D.setColor(pGraphics2D.getBackground());
-		pGraphics2D.fill(shape);      
-		pGraphics2D.setColor(oldColor);
+		Paint oldFill = pGraphics.getFill();
+		double oldLineWidth = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
+		pGraphics.translate(SHADOW_GAP, SHADOW_GAP);      
+		fillShape(pGraphics, true);
+		pGraphics.translate(-SHADOW_GAP, -SHADOW_GAP);
+		fillShape(pGraphics, false);
+		pGraphics.setFill(oldFill);
+		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	/**
-     *  @return the shape to be used for computing the drop shadow
-    */
-	protected abstract Shape getShape();
+	 * Fills in shape of the node.
+	 * @param pGraphics GraphicsContext in which to fill the shape.
+	 * @param pShadow true when filling in the shadow of the shape.
+	 */
+	protected abstract void fillShape(GraphicsContext pGraphics, boolean pShadow);
 
 	@Override
-	public void layout(Graph pGraph)
-	{}
+	public void layout(Graph pGraph) {}
 }

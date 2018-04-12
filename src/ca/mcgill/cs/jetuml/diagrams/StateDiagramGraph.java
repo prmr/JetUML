@@ -119,8 +119,3 @@ public class StateDiagramGraph extends Graph
 		return lReturn;
 	}
 }
-
-
-
-
-

@@ -218,7 +218,7 @@ public class TestGraph
 	public void testGetBoundsSingleNode()
 	{
 		ClassDiagramGraph graph = new ClassDiagramGraph();
-		graph.addNode(aNode1, new Point(0,0));
+		graph.addNode(aNode1, new Point(0,0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
 	}
 	

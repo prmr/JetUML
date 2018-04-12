@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.graph.Property;
  * Observer interface in the Observer design pattern.
  * 
  * @author EJBQ - Initial code
- * @author Martin P. Robillard Observer inteface refactoring.
+ * @author Martin P. Robillard Observer interface refactoring.
  *
  */
 public interface GraphModificationListener
