@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
+import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
@@ -67,11 +69,12 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int MIN_FONT_SIZE = 9;
 	
+	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
 
-	private Font aFont = Font.getDefault();
+	private Font aFont = FONT;
 	private String aLabel;
 	
 	/**

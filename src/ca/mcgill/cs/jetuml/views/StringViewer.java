@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
@@ -57,7 +59,7 @@ public final class StringViewer
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
-	private Font aFont = Font.getDefault();
+	private Font aFont = FONT;
 	
 	/**
 	 * Creates a new StringViewer.
