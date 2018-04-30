@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
+import ca.mcgill.cs.jetuml.views.ApplicationFont;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import javafx.geometry.Bounds;
@@ -44,7 +45,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -52,7 +52,7 @@ import javafx.scene.text.TextAlignment;
  * 
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class SegmentedEdgeView extends AbstractEdgeView
+public class SegmentedEdgeView extends AbstractEdgeView implements ApplicationFont
 {
 	private Supplier<LineStyle> aLineStyleSupplier;
 	private Supplier<ArrowHead> aArrowStartSupplier;
@@ -112,7 +112,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		if (pCenter) 
 		{
 			FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-			FontMetrics fontMetrics = fontLoader.getFontMetrics(Font.getDefault());
+			FontMetrics fontMetrics = fontLoader.getFontMetrics(FONT);
 			textX = bounds.getWidth()/2;
 			textY = (int) (bounds.getHeight() - fontMetrics.getLineHeight()/2);
 			pGraphics.setTextBaseline(VPos.CENTER);
@@ -271,10 +271,9 @@ public class SegmentedEdgeView extends AbstractEdgeView
 					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		
-		Font font = Font.getDefault();
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(font);
-		int width = (int) Math.round(fontLoader.computeStringWidth(pString, font));
+		FontMetrics fontMetrics = fontLoader.getFontMetrics(FONT);
+		int width = (int) Math.round(fontLoader.computeStringWidth(pString, FONT));
 		int height = (int) Math.round(fontMetrics.getLineHeight());
 		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
