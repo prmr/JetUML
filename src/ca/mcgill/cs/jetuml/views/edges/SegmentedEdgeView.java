@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
+import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+
 import java.util.function.Supplier;
 
 import com.sun.javafx.tk.FontLoader;
@@ -30,7 +32,6 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.views.ApplicationFont;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import javafx.geometry.Bounds;
@@ -52,7 +53,7 @@ import javafx.scene.text.TextAlignment;
  * 
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class SegmentedEdgeView extends AbstractEdgeView implements ApplicationFont
+public class SegmentedEdgeView extends AbstractEdgeView
 {
 	private Supplier<LineStyle> aLineStyleSupplier;
 	private Supplier<ArrowHead> aArrowStartSupplier;

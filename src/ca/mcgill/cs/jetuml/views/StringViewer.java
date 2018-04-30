@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
@@ -41,7 +43,7 @@ import javafx.scene.text.TextBoundsType;
  * @author Martin P. Robillard.
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public final class StringViewer implements ApplicationFont
+public final class StringViewer
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
 	private static final Text LABEL = new Text();

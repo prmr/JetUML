@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
+import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
@@ -31,7 +33,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.views.ApplicationFont;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -55,7 +56,7 @@ import javafx.scene.text.TextAlignment;
  * @author Martin P. Robillard
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class StateTransitionEdgeView extends AbstractEdgeView implements ApplicationFont
+public class StateTransitionEdgeView extends AbstractEdgeView
 {
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final int DEGREES_5 = 5;
