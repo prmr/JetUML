@@ -31,6 +31,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
+import ca.mcgill.cs.jetuml.views.ApplicationFont;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -54,7 +55,7 @@ import javafx.scene.text.TextAlignment;
  * @author Martin P. Robillard
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public class StateTransitionEdgeView extends AbstractEdgeView
+public class StateTransitionEdgeView extends AbstractEdgeView implements ApplicationFont
 {
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final int DEGREES_5 = 5;
@@ -67,11 +68,12 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int MIN_FONT_SIZE = 9;
 	
+	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
 
-	private Font aFont = Font.getDefault();
+	private Font aFont = FONT;
 	private String aLabel;
 	
 	/**

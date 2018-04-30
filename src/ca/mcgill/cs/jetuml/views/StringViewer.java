@@ -41,7 +41,7 @@ import javafx.scene.text.TextBoundsType;
  * @author Martin P. Robillard.
  * @author Kaylee I. Kutschera - Migration to JavaFX
  */
-public final class StringViewer
+public final class StringViewer implements ApplicationFont
 {
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
 	private static final Text LABEL = new Text();
@@ -57,7 +57,7 @@ public final class StringViewer
 	private Align aAlignment = Align.CENTER;
 	private boolean aBold = false;
 	private boolean aUnderlined = false;
-	private Font aFont = Font.getDefault();
+	private Font aFont = FONT;
 	
 	/**
 	 * Creates a new StringViewer.
