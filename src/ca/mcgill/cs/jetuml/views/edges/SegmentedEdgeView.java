@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 import java.util.function.Supplier;
 

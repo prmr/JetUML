@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.FontMetrics;
@@ -282,8 +282,12 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		{
 			float difference = ((StateTransitionEdge) edge()).getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
 			difference = difference / (2*((StateTransitionEdge) edge()).getMiddleLabel().length()); // damping
-			double newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * aFont.getSize());
+			double newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * FONT.getSize());
 			aFont = new Font(aFont.getName(), newFontSize);
+		}
+		else
+		{
+			aFont = FONT;
 		}
 	}
 
