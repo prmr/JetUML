@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import static ca.mcgill.cs.jetuml.views.ApplicationFont.FONT;
-
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
@@ -45,6 +43,9 @@ import javafx.scene.text.TextBoundsType;
  */
 public final class StringViewer
 {
+	public static final Font FONT = Font.font("System", 12);
+	private static final Font FONT_BOLD = Font.font(FONT.getFamily(), FontWeight.BOLD, FONT.getSize());
+	
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
 	private static final Text LABEL = new Text();
 	private static final int HORIZONTAL_TEXT_PADDING = 3;
@@ -57,9 +58,8 @@ public final class StringViewer
 	{ LEFT, CENTER, RIGHT }
 	
 	private Align aAlignment = Align.CENTER;
-	private boolean aBold = false;
-	private boolean aUnderlined = false;
-	private Font aFont = FONT;
+	private final boolean aBold;
+	private final boolean aUnderlined;
 	
 	/**
 	 * Creates a new StringViewer.
@@ -75,6 +75,18 @@ public final class StringViewer
 		aAlignment = pAlignment;
 		aBold = pBold;
 		aUnderlined = pUnderlined;
+	}
+	
+	private Font getFont()
+	{
+		if( aBold )
+		{
+			return FONT_BOLD;
+		}
+		else
+		{
+			return FONT;
+		}
 	}
 	
 	/**
@@ -98,15 +110,11 @@ public final class StringViewer
 	private Text getLabel(String pString)
 	{
 		Text label = LABEL;
-		if (aBold) 
-		{
-			aFont = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
-		}
 		if (aUnderlined)
 		{
 			label.setUnderline(true);
 		}
-		label.setFont(aFont);
+		label.setFont(getFont());
 		label.setBoundsType(TextBoundsType.VISUAL);
 		label.setText(pString);
 		
@@ -151,7 +159,7 @@ public final class StringViewer
 			textX = HORIZONTAL_TEXT_PADDING;
 		}
 		
-		pGraphics.setFont(aFont);
+		pGraphics.setFont(getFont());
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
 		pGraphics.setFill(Color.BLACK);
@@ -165,7 +173,7 @@ public final class StringViewer
 			if (aAlignment == Align.CENTER)
 			{
 				xOffset = (int) (bounds.getWidth()/2);
-				yOffset = (int) (aFont.getSize()/2) + 1;
+				yOffset = (int) (getFont().getSize()/2) + 1;
 			}
 			else if (aAlignment == Align.RIGHT)
 			{
