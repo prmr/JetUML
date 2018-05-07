@@ -21,14 +21,8 @@
 
 package ca.mcgill.cs.jetuml;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -86,7 +80,7 @@ public final class UMLEditor extends Application
 		String imagePath = aAppResources.getString("app.icon");
 		pStage.getIcons().add(new Image(imagePath));
 		
-		pStage.setScene(new Scene(initializeEditorFrame(pStage)));
+		pStage.setScene(new Scene(new EditorFrame(UMLEditor.class, pStage)));
 		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
@@ -97,21 +91,6 @@ public final class UMLEditor extends Application
         pStage.show();
 	}
 
-	private EditorFrame initializeEditorFrame(Stage pStage) 
-	{
-		EditorFrame frame = new EditorFrame(UMLEditor.class, pStage);
-		List<String> argsList = getParameters().getRaw();
-		String[] arguments = argsList.toArray(new String[argsList.size()]);
-	    frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-	    frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-	    frame.addGraphType("state_diagram", StateDiagramGraph.class);
-	    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-	    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-		frame.readArgs(arguments);
-		frame.addWelcomeTab();
-		return frame;
-	}
-	
 	/**
 	 *  Checks if the current VM has at least the given
 	 *  version, and exits the program with an error dialog if not.

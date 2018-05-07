@@ -44,6 +44,11 @@ import javax.imageio.ImageIO;
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
@@ -165,6 +170,13 @@ public class EditorFrame extends BorderPane
 		createEditMenu(factory);
 		createViewMenu(factory);
 		createHelpMenu(factory);
+		
+		addGraphType("class_diagram", ClassDiagramGraph.class);
+	    addGraphType("sequence_diagram", SequenceDiagramGraph.class);
+	    addGraphType("state_diagram", StateDiagramGraph.class);
+	    addGraphType("object_diagram", ObjectDiagramGraph.class);
+	    addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+		addWelcomeTab();
 	}
 	
 	private void createFileMenu(MenuFactory pFactory) 
@@ -370,12 +382,10 @@ public class EditorFrame extends BorderPane
 	/**
 	 * Adds a graph type to the File->New menu.
 	 * 
-	 * @param pResourceName
-	 *            the name of the menu item resource
-	 * @param pGraphClass
-	 *            the class object for the graph
+	 * @param pResourceName The name of the menu item resource
+	 * @param pGraphClass The class object for the graph
 	 */
-	public void addGraphType(String pResourceName, final Class<?> pGraphClass) 
+	private void addGraphType(String pResourceName, final Class<?> pGraphClass) 
 	{
 		aNewDiagramMap.put(aAppResources.getString(pResourceName + ".text"), pEvent ->
 		{
@@ -402,25 +412,6 @@ public class EditorFrame extends BorderPane
 					assert false;
 			}
 		}));
-	}
-
-	/**
-	 * Reads the command line arguments.
-	 * 
-	 * @param pArgs
-	 *            the command line arguments
-	 */
-	public void readArgs(String[] pArgs) 
-	{
-		if (pArgs.length != 0) 
-		{
-			for (String argument : pArgs) 
-			{
-				open(argument);
-			}
-		}
-		/* @JoelChev may be needed later */
-		// setTitle();
 	}
 
 	/*
@@ -483,7 +474,7 @@ public class EditorFrame extends BorderPane
 	 * This adds a WelcomeTab to the tabs. This is only done if all other tabs have
 	 * been previously closed.
 	 */
-	public void addWelcomeTab() 
+	private void addWelcomeTab() 
 	{
 		aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
 		aTabbedPane.getTabs().add(aWelcomeTab);
