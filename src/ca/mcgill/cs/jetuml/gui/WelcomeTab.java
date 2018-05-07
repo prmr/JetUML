@@ -28,7 +28,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -47,8 +46,6 @@ public class WelcomeTab extends Tab
     private HBox aFootTextPanel;
     private VBox aLeftPanel;
     private VBox aRightPanel;
-    private ImageView aLeftPanelIcon;
-    private ImageView aRightPanelIcon;
     private String aFootText;
     
 	/**
@@ -59,8 +56,6 @@ public class WelcomeTab extends Tab
 	{
 		super(WELCOME_RESOURCES.getString("welcome.title"));
 		setClosable(false);
-		aLeftPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.create.icon"));
-		aRightPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.open.icon")); 
 		
 		BorderPane layout = new BorderPane();
 		layout.getStyleClass().add("welcome-tab");
@@ -77,13 +72,11 @@ public class WelcomeTab extends Tab
 	{
 		if(aLeftPanel == null)
 		{
-			Label icon = new Label();
-			icon.setGraphic(this.aLeftPanelIcon);
-			Label title = new Label(WELCOME_RESOURCES.getString("file.new.text").toLowerCase());
+			Label title = new Label(WELCOME_RESOURCES.getString("welcome.create.text"));
 
 			HBox leftTitlePanel = new HBox();
 			leftTitlePanel.getStyleClass().add("panel-title");
-			leftTitlePanel.getChildren().addAll(icon, title);
+			leftTitlePanel.getChildren().addAll(title);
 
 			aLeftPanel = new VBox();
 			aLeftPanel.getStyleClass().add("panel-content");
@@ -103,14 +96,12 @@ public class WelcomeTab extends Tab
 	{
 		if(aRightPanel == null)
 		{
-			Label title = new Label(WELCOME_RESOURCES.getString("file.recent.text").toLowerCase());
-			Label icon = new Label();
-			icon.setGraphic(this.aRightPanelIcon);
-			
+			Label title = new Label(WELCOME_RESOURCES.getString("welcome.open.text"));
+
 			HBox rightTitlePanel = new HBox();
 			rightTitlePanel.getStyleClass().add("panel-title");
-			rightTitlePanel.getChildren().addAll(title, icon);
-		
+			rightTitlePanel.getChildren().add(title);
+
 			aRightPanel = new VBox();
 			aRightPanel.getStyleClass().add("panel-content");
 			aRightPanel.getChildren().add(rightTitlePanel);
