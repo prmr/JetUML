@@ -57,7 +57,7 @@ public class WelcomeTab extends Tab
 	 */
 	public WelcomeTab(Map<String, EventHandler<ActionEvent>> pNewDiagramMap, Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
 	{
-		super("Welcome");
+		super(WELCOME_RESOURCES.getString("welcome.title"));
 		setClosable(false);
 		aLeftPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.create.icon"));
 		aRightPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.open.icon")); 
