@@ -108,6 +108,9 @@ public class EditorFrame extends BorderPane
 	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
 	
+	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagramGraph.class, SequenceDiagramGraph.class, 
+			StateDiagramGraph.class, ObjectDiagramGraph.class, UseCaseDiagramGraph.class};
+	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
 	private ResourceBundle aAppResources;
@@ -171,12 +174,22 @@ public class EditorFrame extends BorderPane
 		createViewMenu(factory);
 		createHelpMenu(factory);
 		
-		addGraphType("class_diagram", ClassDiagramGraph.class);
-	    addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-	    addGraphType("state_diagram", StateDiagramGraph.class);
-	    addGraphType("object_diagram", ObjectDiagramGraph.class);
-	    addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+		for( Class<?> diagramType : DIAGRAM_TYPES)
+		{
+			addGraphType(diagramType);
+		}
+		
 		addWelcomeTab();
+	}
+	
+	/*
+	 * Return the name of a diagram in the resource file. Basically converts
+	 * a camel case XDiagramGraph string into a x_diagram string
+	 */
+	private static String getResourceName(String pClassName)
+	{
+		assert pClassName.length() > "DiagramGraph".length() && pClassName.endsWith("DiagramGraph");
+		return pClassName.substring(0, pClassName.length() - "DiagramGraph".length()).toLowerCase() + "_diagram";
 	}
 	
 	private void createFileMenu(MenuFactory pFactory) 
@@ -385,9 +398,10 @@ public class EditorFrame extends BorderPane
 	 * @param pResourceName The name of the menu item resource
 	 * @param pGraphClass The class object for the graph
 	 */
-	private void addGraphType(String pResourceName, final Class<?> pGraphClass) 
+	private void addGraphType(final Class<?> pGraphClass) 
 	{
-		aNewDiagramMap.put(aAppResources.getString(pResourceName + ".text"), pEvent ->
+		String resourceName = getResourceName(pGraphClass.getSimpleName());
+		aNewDiagramMap.put(aAppResources.getString(resourceName + ".text"), pEvent ->
 		{
 			try 
 			{
@@ -400,7 +414,7 @@ public class EditorFrame extends BorderPane
 			}
 		});
 		
-		aNewMenu.getItems().add(aAppFactory.createMenuItem(pResourceName, pEvent ->
+		aNewMenu.getItems().add(aAppFactory.createMenuItem(resourceName, pEvent ->
 		{
 			try 
 			{
