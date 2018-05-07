@@ -1,41 +1,33 @@
-.welcome-tab .panel 
-{
-	-fx-alignment: top-center;
-}
 
-.welcome-tab .panel-title
-{
-	-fx-padding: 25px;
-}
-
-.welcome-tab .panel-content .label
+.welcome-tab-panel
 {
 	-fx-padding: 10px;
 }
 
-.welcome-tab .label
+.welcome-tab-panel .panel-title
 {
-	-fx-font: 20pt "Arial";
+	-fx-padding: 0px 0px 3px 0px;
+	-fx-font-size: 20pt;
+	-fx-border-width: 0 0 3 0; 
+	-fx-border-color: black; 
+	-fx-border-insets: 0 0 15px 15px;
+}
 
-} 
-.welcome-tab .button
+.welcome-tab-panel .button
 {
 	-fx-background-color: transparent;
-	-fx-font: 20pt "Arial";
+	-fx-font-size: 17pt;
+	-fx-text-fill: dimgrey;
 }
 
-.welcome-tab .button:hover
+.welcome-tab-panel .button:hover
 {
-	-fx-text-fill: gray;
+	-fx-text-fill: black;
+	-fx-font-size: 17pt;
 }
 
-.welcome-tab .footer 
+.welcome-tab-footer
 {
 	-fx-alignment: center;	
 	-fx-padding: 0 0 10px 0;
-}
-
-.welcome-tab .footer .label
-{
-	-fx-font: 10pt "Arial";
 }

@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -43,6 +44,11 @@ import javafx.scene.layout.VBox;
 public class WelcomeTab extends Tab
 {
 	private static final ResourceBundle WELCOME_RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
+	
+	/* CSS classes of the different GUI elements in the welcome tab. See UMLEditorStyle.css for the styling */
+	private static final String CLASS_WELCOME_TAB_PANEL = "welcome-tab-panel"; 	// One column in the welcome tab
+	private static final String CLASS_PANEL_TITLE = "panel-title"; 				// The title/header above each of the two columns
+	private static final String CLASS_FOOTER = "welcome-tab-footer"; 						// The footer with the copyright information
     
 	/**
 	 * @param pNewDiagramMap a map containing the name and handler corresponding to the creation of a new diagram.
@@ -54,9 +60,9 @@ public class WelcomeTab extends Tab
 		setClosable(false);
 		
 		BorderPane layout = new BorderPane();
-		layout.getStyleClass().add("welcome-tab");
+		
 		HBox shortcutPanel = new HBox();
-		shortcutPanel.getStyleClass().add("panel");
+		shortcutPanel.setAlignment(Pos.CENTER);
 		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramMap), createFilePanel(pRecentFilesMap));
 		layout.setCenter(shortcutPanel);
 		layout.setBottom(createFootTextPanel());
@@ -67,11 +73,11 @@ public class WelcomeTab extends Tab
 	private VBox createDiagramPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
 	{
 		HBox titleBox = new HBox();
-		titleBox.getStyleClass().add("panel-title");
+		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
 		titleBox.getChildren().addAll(new Label(WELCOME_RESOURCES.getString("welcome.create.text")));
 
 		VBox diagramBox = new VBox();
-		diagramBox.getStyleClass().add("panel-content");
+		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		diagramBox.getChildren().add(titleBox);
 		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
 		{
@@ -85,11 +91,11 @@ public class WelcomeTab extends Tab
 	private VBox createFilePanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
 	{
 		HBox titleBox = new HBox();
-		titleBox.getStyleClass().add("panel-title");
+		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
 		titleBox.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.open.text")));
 
 		VBox fileBox = new VBox();
-		fileBox.getStyleClass().add("panel-content");
+		fileBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		fileBox.getChildren().add(titleBox);
 
 		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
@@ -105,7 +111,7 @@ public class WelcomeTab extends Tab
 	private HBox createFootTextPanel()
 	{
 		HBox footTextPanel = new HBox();
-		footTextPanel.getStyleClass().add("footer");
+		footTextPanel.getStyleClass().add(CLASS_FOOTER);
 		footTextPanel.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.copyright")));
 		return footTextPanel;
 	}
