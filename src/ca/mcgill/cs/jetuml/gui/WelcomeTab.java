@@ -43,10 +43,8 @@ import javafx.scene.layout.VBox;
 public class WelcomeTab extends Tab
 {
 	private static final ResourceBundle WELCOME_RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-    private HBox aFootTextPanel;
     private VBox aLeftPanel;
     private VBox aRightPanel;
-    private String aFootText;
     
 	/**
 	 * @param pNewDiagramMap a map containing the name and handler corresponding to the creation of a new diagram.
@@ -119,15 +117,9 @@ public class WelcomeTab extends Tab
 
 	private HBox getFootTextPanel()
 	{
-		if(aFootTextPanel == null)
-		{
-			aFootText = WELCOME_RESOURCES.getString("welcome.copyright");
-			Label text = new Label(this.aFootText);
-			
-			aFootTextPanel = new HBox();
-			aFootTextPanel.getStyleClass().add("footer");
-			aFootTextPanel.getChildren().add(text);
-		}
-		return aFootTextPanel;
+		HBox footTextPanel = new HBox();
+		footTextPanel.getStyleClass().add("footer");
+		footTextPanel.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.copyright")));
+		return footTextPanel;
 	}
 }	
