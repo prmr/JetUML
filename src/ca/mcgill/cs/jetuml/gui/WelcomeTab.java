@@ -43,8 +43,6 @@ import javafx.scene.layout.VBox;
 public class WelcomeTab extends Tab
 {
 	private static final ResourceBundle WELCOME_RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-    private VBox aLeftPanel;
-    private VBox aRightPanel;
     
 	/**
 	 * @param pNewDiagramMap a map containing the name and handler corresponding to the creation of a new diagram.
@@ -59,63 +57,52 @@ public class WelcomeTab extends Tab
 		layout.getStyleClass().add("welcome-tab");
 		HBox shortcutPanel = new HBox();
 		shortcutPanel.getStyleClass().add("panel");
-		shortcutPanel.getChildren().addAll(getLeftPanel(pNewDiagramMap), getRightPanel(pRecentFilesMap));
+		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramMap), createFilePanel(pRecentFilesMap));
 		layout.setCenter(shortcutPanel);
-		layout.setBottom(getFootTextPanel());
+		layout.setBottom(createFootTextPanel());
 	    
 	    setContent(layout);
 	}
 		
-	private VBox getLeftPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
+	private VBox createDiagramPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
 	{
-		if(aLeftPanel == null)
+		HBox titleBox = new HBox();
+		titleBox.getStyleClass().add("panel-title");
+		titleBox.getChildren().addAll(new Label(WELCOME_RESOURCES.getString("welcome.create.text")));
+
+		VBox diagramBox = new VBox();
+		diagramBox.getStyleClass().add("panel-content");
+		diagramBox.getChildren().add(titleBox);
+		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
 		{
-			Label title = new Label(WELCOME_RESOURCES.getString("welcome.create.text"));
-
-			HBox leftTitlePanel = new HBox();
-			leftTitlePanel.getStyleClass().add("panel-title");
-			leftTitlePanel.getChildren().addAll(title);
-
-			aLeftPanel = new VBox();
-			aLeftPanel.getStyleClass().add("panel-content");
-			aLeftPanel.getChildren().add(leftTitlePanel);
-			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
-			{
-				String label = entry.getKey();
-				Button newDiagramShortcut = new Button(label.toLowerCase());
-				newDiagramShortcut.setOnAction(entry.getValue());
-				aLeftPanel.getChildren().add(newDiagramShortcut);
-			}
+			Button newDiagramShortcut = new Button(entry.getKey());
+			newDiagramShortcut.setOnAction(entry.getValue());
+			diagramBox.getChildren().add(newDiagramShortcut);
 		}
-		return aLeftPanel;
+		return diagramBox;
 	}
 	
-	private VBox getRightPanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
+	private VBox createFilePanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
 	{
-		if(aRightPanel == null)
+		HBox titleBox = new HBox();
+		titleBox.getStyleClass().add("panel-title");
+		titleBox.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.open.text")));
+
+		VBox fileBox = new VBox();
+		fileBox.getStyleClass().add("panel-content");
+		fileBox.getChildren().add(titleBox);
+
+		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
 		{
-			Label title = new Label(WELCOME_RESOURCES.getString("welcome.open.text"));
-
-			HBox rightTitlePanel = new HBox();
-			rightTitlePanel.getStyleClass().add("panel-title");
-			rightTitlePanel.getChildren().add(title);
-
-			aRightPanel = new VBox();
-			aRightPanel.getStyleClass().add("panel-content");
-			aRightPanel.getChildren().add(rightTitlePanel);
-			
-			for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
-			{
-				String label = entry.getKey();
-				Button fileShortcut = new Button(label.toLowerCase());
-				fileShortcut.setOnAction(entry.getValue());
-				aRightPanel.getChildren().add(fileShortcut);
-			}
+			Button fileShortcut = new Button(entry.getKey());
+			fileShortcut.setOnAction(entry.getValue());
+			fileBox.getChildren().add(fileShortcut);
 		}
-		return this.aRightPanel;
+		return fileBox;
 	}
 
-	private HBox getFootTextPanel()
+
+	private HBox createFootTextPanel()
 	{
 		HBox footTextPanel = new HBox();
 		footTextPanel.getStyleClass().add("footer");
