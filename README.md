@@ -9,4 +9,4 @@ Supports: Class diagrams, Sequence diagrams, State diagrams, Object diagrams, Us
 
 **Users**, please see the [JetUML web site](http://cs.mcgill.ca/~martin/jetuml/) and [Twitter account](https://twitter.com/search?q=%40JetUML&src=typd&lang=en)
 
-**Contributors**, see the [architectural description](docs/index.md) and the [project wiki](https://github.com/prmr/JetUML/wiki)
+**Contributors**, see the [Contributing Guidelines](docs/CONTRIBUTING.md)
