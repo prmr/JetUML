@@ -34,14 +34,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * This class instantiates the Welcome Tab that is the default Tab in JetUML.
+ * A tab that allow users to open new diagrams of the different types
+ * or open recently saved diagrams.
  * 
  * @author JoelChev - Original Code
  * @author Kaylee I. Kutschera - Migration to JavaFX
+ * @author Martin P. Robillard - Refactoring and new layout
  */
 public class WelcomeTab extends Tab
 {
-	private ResourceBundle aWelcomeResources;
+	private static final ResourceBundle WELCOME_RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
     private HBox aFootTextPanel;
     private VBox aLeftPanel;
     private VBox aRightPanel;
@@ -57,9 +59,8 @@ public class WelcomeTab extends Tab
 	{
 		super("Welcome");
 		setClosable(false);
-		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-		aLeftPanelIcon = new ImageView(aWelcomeResources.getString("welcome.create.icon"));
-		aRightPanelIcon = new ImageView(aWelcomeResources.getString("welcome.open.icon")); 
+		aLeftPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.create.icon"));
+		aRightPanelIcon = new ImageView(WELCOME_RESOURCES.getString("welcome.open.icon")); 
 		
 		BorderPane layout = new BorderPane();
 		layout.getStyleClass().add("welcome-tab");
@@ -78,7 +79,7 @@ public class WelcomeTab extends Tab
 		{
 			Label icon = new Label();
 			icon.setGraphic(this.aLeftPanelIcon);
-			Label title = new Label(aWelcomeResources.getString("file.new.text").toLowerCase());
+			Label title = new Label(WELCOME_RESOURCES.getString("file.new.text").toLowerCase());
 
 			HBox leftTitlePanel = new HBox();
 			leftTitlePanel.getStyleClass().add("panel-title");
@@ -102,7 +103,7 @@ public class WelcomeTab extends Tab
 	{
 		if(aRightPanel == null)
 		{
-			Label title = new Label(aWelcomeResources.getString("file.recent.text").toLowerCase());
+			Label title = new Label(WELCOME_RESOURCES.getString("file.recent.text").toLowerCase());
 			Label icon = new Label();
 			icon.setGraphic(this.aRightPanelIcon);
 			
@@ -129,7 +130,7 @@ public class WelcomeTab extends Tab
 	{
 		if(aFootTextPanel == null)
 		{
-			aFootText = aWelcomeResources.getString("welcome.copyright");
+			aFootText = WELCOME_RESOURCES.getString("welcome.copyright");
 			Label text = new Label(this.aFootText);
 			
 			aFootTextPanel = new HBox();
