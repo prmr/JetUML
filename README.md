@@ -3,10 +3,10 @@ A desktop application for fast UML diagramming. The idea of JetUML is to support
 
 If you find this tool useful please **star the repo**.
 
-![JetUML Class Diagram](doc/banner.png)
+![JetUML Class Diagram](docs/banner.png)
 
 Supports: Class diagrams, Sequence diagrams, State diagrams, Object diagrams, Use case diagrams
 
 **Users**, please see the [JetUML web site](http://cs.mcgill.ca/~martin/jetuml/) and [Twitter account](https://twitter.com/search?q=%40JetUML&src=typd&lang=en)
 
-**Contributors**, see the [architectural description](doc/index.md) and the [project wiki](https://github.com/prmr/JetUML/wiki)
+**Contributors**, see the [architectural description](docs/index.md) and the [project wiki](https://github.com/prmr/JetUML/wiki)
