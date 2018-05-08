@@ -33,9 +33,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 
 /**
  * Converts a JSONObject to a graph.
- *
- * @author Martin P. Robillard
- *
  */
 public final class JsonDecoder
 {
@@ -56,7 +53,7 @@ public final class JsonDecoder
 		try
 		{
 			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pGraph.getString("diagram"));
-			Graph graph = (Graph) diagramClass.newInstance();
+			Graph graph = (Graph) diagramClass.getDeclaredConstructor().newInstance();
 			DeserializationContext context = new DeserializationContext(graph);
 			decodeNodes(context, pGraph);
 			restoreChildren(context, pGraph);
@@ -64,7 +61,7 @@ public final class JsonDecoder
 			decodeEdges(context, pGraph);
 			return graph;
 		}
-		catch( ClassNotFoundException | IllegalAccessException | InstantiationException | JSONException exception )
+		catch( JSONException | ReflectiveOperationException exception )
 		{
 			throw new DeserializationException("Cannot decode serialized object", exception);
 		}
@@ -84,14 +81,14 @@ public final class JsonDecoder
 			{
 				JSONObject object = nodes.getJSONObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
-				Node node = (Node) nodeClass.newInstance();
+				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
 				for( Property property : node.properties() )
 				{
 					property.set(object.get(property.getName()));
 				}
 				pContext.addNode(node, object.getInt("id"));
 			}
-			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
+			catch( ReflectiveOperationException exception )
 			{
 				throw new DeserializationException("Cannot instantiate serialized object", exception);
 			}
@@ -148,7 +145,7 @@ public final class JsonDecoder
 			{
 				JSONObject object = edges.getJSONObject(i);
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
-				Edge edge = (Edge) edgeClass.newInstance();
+				Edge edge = (Edge) edgeClass.getDeclaredConstructor().newInstance();
 				
 				for( Property property : edge.properties())
 				{
@@ -156,7 +153,7 @@ public final class JsonDecoder
 				}
 				pContext.getGraph().restoreEdge(edge, pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
 			}
-			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
+			catch( ReflectiveOperationException exception )
 			{
 				throw new DeserializationException("Cannot instantiate serialized object", exception);
 			}

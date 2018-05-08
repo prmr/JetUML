@@ -484,12 +484,12 @@ public class EditorFrame extends BorderPane
 			{
 				try 
 				{
-					Tab frame = new GraphFrame((Graph) diagramType.newInstance(), aTabbedPane);
+					Tab frame = new GraphFrame((Graph) diagramType.getDeclaredConstructor().newInstance(), aTabbedPane);
 					addTab(frame);
 				}
-				catch (IllegalAccessException | InstantiationException exception) 
+				catch(ReflectiveOperationException exception) 
 				{
-						assert false;
+					assert false;
 				}
 			}));
 		}
@@ -1027,7 +1027,7 @@ public class EditorFrame extends BorderPane
 			// ask user if it is ok to close
 			final int finalModCount = modcount;
 			Alert alert = new Alert(AlertType.CONFIRMATION, 
-					MessageFormat.format(aEditorResources.getString("dialog.exit.ok"), new Object[] { new Integer(finalModCount) }),
+					MessageFormat.format(aEditorResources.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(finalModCount) }),
 					ButtonType.YES, 
 					ButtonType.NO);
 			alert.initOwner(aMainStage);
