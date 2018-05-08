@@ -20,11 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import ca.mcgill.cs.jetuml.application.NamedHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,10 +50,9 @@ public class WelcomeTab extends Tab
 	private static final String CLASS_FOOTER = "welcome-tab-footer"; 						// The footer with the copyright information
     
 	/**
-	 * @param pNewDiagramMap a map containing the name and handler corresponding to the creation of a new diagram.
-	 * @param pRecentFilesMap a map containing the name and handler corresponding to opening a recent file.
+	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams.
 	 */
-	public WelcomeTab(Map<String, EventHandler<ActionEvent>> pNewDiagramMap, Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
+	public WelcomeTab(List<NamedHandler> pNewDiagramHandlers)
 	{
 		super(WELCOME_RESOURCES.getString("welcome.title"));
 		setClosable(false);
@@ -63,14 +61,14 @@ public class WelcomeTab extends Tab
 		
 		HBox shortcutPanel = new HBox();
 		shortcutPanel.setAlignment(Pos.CENTER);
-		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramMap), createFilePanel(pRecentFilesMap));
+		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramHandlers), createFilePanel());
 		layout.setCenter(shortcutPanel);
 		layout.setBottom(createFootTextPanel());
 	    
 	    setContent(layout);
 	}
 		
-	private VBox createDiagramPanel(Map<String, EventHandler<ActionEvent>> pNewDiagramMap)
+	private VBox createDiagramPanel(List<NamedHandler> pNewDiagramHandlers)
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
@@ -79,16 +77,33 @@ public class WelcomeTab extends Tab
 		VBox diagramBox = new VBox();
 		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		diagramBox.getChildren().add(titleBox);
-		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pNewDiagramMap.entrySet())
+		for(NamedHandler handler : pNewDiagramHandlers)
 		{
-			Button newDiagramShortcut = new Button(entry.getKey());
-			newDiagramShortcut.setOnAction(entry.getValue());
+			Button newDiagramShortcut = new Button(handler.getName());
+			newDiagramShortcut.setOnAction(handler);
 			diagramBox.getChildren().add(newDiagramShortcut);
 		}
 		return diagramBox;
 	}
 	
-	private VBox createFilePanel(Map<String, EventHandler<ActionEvent>> pRecentFilesMap)
+	/**
+	 * Loads the links to recent files into the panel.
+	 * 
+	 * @param pFileOpenHanders The file handlers.
+	 */
+	public void loadRecentFileLinks(List<NamedHandler> pFileOpenHanders)
+	{
+		VBox filesNode = (VBox) ((HBox)((BorderPane) getContent()).getCenter()).getChildren().get(1);
+		filesNode.getChildren().remove(1, filesNode.getChildren().size());
+		for(NamedHandler handler : pFileOpenHanders)
+		{
+			Button fileShortcut = new Button(handler.getName());
+			fileShortcut.setOnAction(handler);
+			filesNode.getChildren().add(fileShortcut);
+		}
+	}
+	
+	private VBox createFilePanel()
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
@@ -98,12 +113,6 @@ public class WelcomeTab extends Tab
 		fileBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		fileBox.getChildren().add(titleBox);
 
-		for(Map.Entry<String, EventHandler<ActionEvent>> entry : pRecentFilesMap.entrySet())
-		{
-			Button fileShortcut = new Button(entry.getKey());
-			fileShortcut.setOnAction(entry.getValue());
-			fileBox.getChildren().add(fileShortcut);
-		}
 		return fileBox;
 	}
 

@@ -33,8 +33,8 @@ import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -43,6 +43,7 @@ import javax.imageio.ImageIO;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
+import ca.mcgill.cs.jetuml.application.NamedHandler;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
 import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
@@ -54,8 +55,6 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -122,14 +121,9 @@ public class EditorFrame extends BorderPane
 	private Menu aNewMenu;
 	private MenuBar aMenuBar = new MenuBar();
 	
-	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	
-	// Maps used by WelcomeTab to create menus that create new diagrams or open recent files
-	private LinkedHashMap<String, EventHandler<ActionEvent>> aNewDiagramMap = new LinkedHashMap<>();
-	private LinkedHashMap<String, EventHandler<ActionEvent>> aRecentFilesMap = new LinkedHashMap<>();
-
 	private WelcomeTab aWelcomeTab;
 
 	// Menus or menu items that must be disabled if there is no current diagram.
@@ -174,12 +168,21 @@ public class EditorFrame extends BorderPane
 		createViewMenu(factory);
 		createHelpMenu(factory);
 		
-		for( Class<?> diagramType : DIAGRAM_TYPES)
+		List<NamedHandler> newDiagramHandlers = getNewDiagramHandlers();
+		
+		for( NamedHandler handler : newDiagramHandlers )
 		{
-			addGraphType(diagramType);
+			aNewMenu.getItems().add(aAppFactory.createMenuItem(handler.getName(), handler));
+		}
+
+		List<NamedHandler> renamedHandlers = new ArrayList<>();
+		for( NamedHandler handler : newDiagramHandlers )
+		{
+			renamedHandlers.add(handler.renamed(aAppResources.getString(handler.getName()+ ".text")));
 		}
 		
-		addWelcomeTab();
+		aWelcomeTab = new WelcomeTab(renamedHandlers);
+		showWelcomeTab();
 	}
 	
 	/*
@@ -392,42 +395,6 @@ public class EditorFrame extends BorderPane
 		}));
 	}
 
-	/**
-	 * Adds a graph type to the File->New menu.
-	 * 
-	 * @param pResourceName The name of the menu item resource
-	 * @param pGraphClass The class object for the graph
-	 */
-	private void addGraphType(final Class<?> pGraphClass) 
-	{
-		String resourceName = getResourceName(pGraphClass.getSimpleName());
-		aNewDiagramMap.put(aAppResources.getString(resourceName + ".text"), pEvent ->
-		{
-			try 
-			{
-				Tab frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-				addTab(frame);
-			} 
-			catch (IllegalAccessException | InstantiationException exception) 
-			{
-					assert false;
-			}
-		});
-		
-		aNewMenu.getItems().add(aAppFactory.createMenuItem(resourceName, pEvent ->
-		{
-			try 
-			{
-				Tab frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-				addTab(frame);
-			}
-			catch (IllegalAccessException | InstantiationException exception) 
-			{
-					assert false;
-			}
-		}));
-	}
-
 	/*
 	 * Opens a file with the given name, or switches to the frame if it is already
 	 * open.
@@ -488,11 +455,45 @@ public class EditorFrame extends BorderPane
 	 * This adds a WelcomeTab to the tabs. This is only done if all other tabs have
 	 * been previously closed.
 	 */
-	private void addWelcomeTab() 
+	private void showWelcomeTab() 
 	{
-		aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
-		aTabbedPane.getTabs().add(aWelcomeTab);
-		aTabs.add(aWelcomeTab);
+		if(aTabs.size() == 0) 
+		{
+			aWelcomeTab.loadRecentFileLinks(getOpenFileHandlers());
+			aTabbedPane.getTabs().add(aWelcomeTab);
+			aTabs.add(aWelcomeTab);
+		}
+	}
+	
+	private List<NamedHandler> getOpenFileHandlers()
+	{
+		List<NamedHandler> result = new ArrayList<>();
+		for( File file : aRecentFiles )
+   		{
+			result.add(new NamedHandler(file.getName(), pEvent -> open(file.getAbsolutePath())));
+   		}
+		return Collections.unmodifiableList(result);
+	}
+	
+	private List<NamedHandler> getNewDiagramHandlers()
+	{
+		List<NamedHandler> result = new ArrayList<>();
+		for( Class<?> diagramType : DIAGRAM_TYPES )
+		{
+			result.add(new NamedHandler(getResourceName(diagramType.getSimpleName()), pEvent ->
+			{
+				try 
+				{
+					Tab frame = new GraphFrame((Graph) diagramType.newInstance(), aTabbedPane);
+					addTab(frame);
+				}
+				catch (IllegalAccessException | InstantiationException exception) 
+				{
+						assert false;
+				}
+			}));
+		}
+		return Collections.unmodifiableList(result);
 	}
 
 	/**
@@ -521,12 +522,7 @@ public class EditorFrame extends BorderPane
 		int pos = aTabs.indexOf(pTab);
 		aTabs.remove(pos);
 		aTabbedPane.getTabs().remove(pos);
-		if (aTabs.size() == 0) 
-		{
-			aWelcomeTab = new WelcomeTab(aNewDiagramMap, aRecentFilesMap);
-			aTabbedPane.getTabs().add(aWelcomeTab);
-			aTabs.add(aWelcomeTab);
-		}
+		showWelcomeTab();
 	}
 
 	/*
@@ -549,7 +545,6 @@ public class EditorFrame extends BorderPane
    	private void buildRecentFilesMenu()
    	{ 
    		assert aRecentFiles.size() <= MAX_RECENT_FILES;
-   		aRecentFilesMap.clear();
    		aRecentFilesMenu.getItems().clear();
    		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
    		int i = 1;
@@ -557,7 +552,6 @@ public class EditorFrame extends BorderPane
    		{
    			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
-   			aRecentFilesMap.put(name.substring(3), pEvent -> open(fileName));
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
    			item.setOnAction(pEvent -> open(fileName));
