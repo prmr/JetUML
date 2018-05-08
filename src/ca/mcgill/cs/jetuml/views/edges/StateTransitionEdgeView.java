@@ -22,10 +22,6 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -34,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -52,9 +49,6 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * An edge view specialized for state transitions.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class StateTransitionEdgeView extends AbstractEdgeView
 {
@@ -68,7 +62,6 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private static final double HEIGHT_RATIO = 3.5;
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int MIN_FONT_SIZE = 9;
-	
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
@@ -269,10 +262,10 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(aFont);
-		int width = (int) Math.round(fontLoader.computeStringWidth(pString, aFont));
-		int height = (int) Math.round(fontMetrics.getLineHeight());
+		
+		Bounds bounds = textBounds(pString);
+		int width = (int) Math.round(bounds.getWidth());
+		int height = (int) Math.round(bounds.getHeight());
 		return new Rectangle(0, 0, width, height);
 	}
 	

@@ -33,6 +33,9 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
+
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 /**
  * Provides shared services for rendering an edge.
@@ -44,6 +47,13 @@ import javafx.scene.shape.Shape;
 public abstract class AbstractEdgeView implements EdgeView
 {
 	protected static final int MAX_DISTANCE = 3;
+	private static final Text SIZE_TESTER = new Text();
+	
+	static
+	{
+		SIZE_TESTER.setFont(FONT);
+	}
+	
 	private static final int DEGREES_180 = 180;
 	
 	private Edge aEdge;
@@ -60,6 +70,18 @@ public abstract class AbstractEdgeView implements EdgeView
 	 * @return The shape.
 	 */
 	protected abstract Shape getShape();
+	
+	/**
+	 * @param pText Some text to test.
+	 * @return A bounds object to be used as
+	 * metrics for the size of the string when rendered
+	 * in the application font.
+	 */
+	protected static Bounds textBounds( String pText )
+	{
+		SIZE_TESTER.setText(pText);
+		return SIZE_TESTER.getBoundsInLocal();
+	}
 	
 	/**
      * Completes drawing a path on the graphics context.

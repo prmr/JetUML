@@ -20,13 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
-
 import java.util.function.Supplier;
-
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
 
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -49,9 +43,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.TextAlignment;
 
 /**
- * Renders edges as a straight line connected to center of nodes.
- * 
- * @author Kaylee I. Kutschera - Migration to JavaFX
+ * Renders edges as a path consisting of straight line segments.
  */
 public class SegmentedEdgeView extends AbstractEdgeView
 {
@@ -110,12 +102,10 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		pGraphics.setFill(Color.BLACK);
 		int textX = 0;
 		int textY = 0;
-		if (pCenter) 
+		if(pCenter) 
 		{
-			FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-			FontMetrics fontMetrics = fontLoader.getFontMetrics(FONT);
 			textX = bounds.getWidth()/2;
-			textY = (int) (bounds.getHeight() - fontMetrics.getLineHeight()/2);
+			textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
 			pGraphics.setTextBaseline(VPos.CENTER);
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
@@ -272,14 +262,13 @@ public class SegmentedEdgeView extends AbstractEdgeView
 					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		FontMetrics fontMetrics = fontLoader.getFontMetrics(FONT);
-		int width = (int) Math.round(fontLoader.computeStringWidth(pString, FONT));
-		int height = (int) Math.round(fontMetrics.getLineHeight());
+		Bounds bounds = textBounds(pString);
+		int width = (int) Math.round(bounds.getWidth());
+		int height = (int) Math.round(bounds.getHeight());
 		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
-				(int)Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
+				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
 	}
 	
 	@Override
