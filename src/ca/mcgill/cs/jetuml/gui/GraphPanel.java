@@ -127,18 +127,6 @@ public class GraphPanel extends Canvas
 	}
 	
 	@Override
-	public double minWidth(double pWidth)
-	{
-		return 0;
-	}
-	
-	@Override
-	public double minHeight(double pHeight)
-	{
-		return 0;
-	}
-	
-	@Override
 	public double prefWidth(double pWidth)
 	{
 		if (getParent() != null)
