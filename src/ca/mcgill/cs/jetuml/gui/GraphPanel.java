@@ -77,7 +77,6 @@ import javafx.stage.Stage;
 /**
  * A panel to draw a graph.
  * 
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class GraphPanel extends Canvas
 {
@@ -91,7 +90,6 @@ public class GraphPanel extends Canvas
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int VIEWPORT_PADDING = 5;
 	
-	private GraphicsContext aGraphics;
 	private Graph aGraph;
 	private ToolBar aSideBar;
 	private boolean aHideGrid;
@@ -122,7 +120,6 @@ public class GraphPanel extends Canvas
 		aMaxHeight = (int) (pScreenBoundaries.getHeight());
 		aViewWidth = 0;
 		aViewHeight = 0;
-		aGraphics = getGraphicsContext2D();
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
@@ -418,16 +415,17 @@ public class GraphPanel extends Canvas
 	 */
 	public void paintPanel()
 	{
-		aGraphics.setFill(Color.WHITE); 
-		aGraphics.fillRect(0, 0, getWidth(), getHeight());
+		GraphicsContext context = getGraphicsContext2D();
+		context.setFill(Color.WHITE); 
+		context.fillRect(0, 0, getWidth(), getHeight());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
 		if (!aHideGrid) 
 		{
-			Grid.draw(aGraphics, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
+			Grid.draw(context, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
 					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
 		}
-		aGraph.draw(aGraphics);
+		aGraph.draw(context);
 
 		Set<GraphElement> toBeRemoved = new HashSet<>();
 		for (GraphElement selected : aSelectedElements)
@@ -439,16 +437,16 @@ public class GraphPanel extends Canvas
 			else if (selected instanceof Node)
 			{
 				Rectangle grabberBounds = ((Node) selected).view().getBounds();
-				drawGrabber(aGraphics, grabberBounds.getX(), grabberBounds.getY());
-				drawGrabber(aGraphics, grabberBounds.getX(), grabberBounds.getMaxY());
-				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getY());
-				drawGrabber(aGraphics, grabberBounds.getMaxX(), grabberBounds.getMaxY());
+				drawGrabber(context, grabberBounds.getX(), grabberBounds.getY());
+				drawGrabber(context, grabberBounds.getX(), grabberBounds.getMaxY());
+				drawGrabber(context, grabberBounds.getMaxX(), grabberBounds.getY());
+				drawGrabber(context, grabberBounds.getMaxX(), grabberBounds.getMaxY());
 			}
 			else if (selected instanceof Edge)
 			{
 				Line line = ((Edge) selected).view().getConnectionPoints();
-				drawGrabber(aGraphics, line.getX1(), line.getY1());
-				drawGrabber(aGraphics, line.getX2(), line.getY2());
+				drawGrabber(context, line.getX1(), line.getY1());
+				drawGrabber(context, line.getX2(), line.getY2());
 			}
 		}
 
@@ -459,27 +457,27 @@ public class GraphPanel extends Canvas
       
 		if (aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			Paint oldFill = aGraphics.getFill();
-			aGraphics.setFill(GRABBER_COLOR);
-			aGraphics.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
-			aGraphics.setFill(oldFill);
+			Paint oldFill = context.getFill();
+			context.setFill(GRABBER_COLOR);
+			context.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
+			context.setFill(oldFill);
 		}      
 		else if (aDragMode == DragMode.DRAG_LASSO)
 		{
-			Paint oldFill = aGraphics.getFill();
-			Paint oldStroke = aGraphics.getStroke();
-			aGraphics.setFill(GRABBER_FILL_COLOR_TRANSPARENT);
-			aGraphics.setStroke(GRABBER_COLOR);
+			Paint oldFill = context.getFill();
+			Paint oldStroke = context.getStroke();
+			context.setFill(GRABBER_FILL_COLOR_TRANSPARENT);
+			context.setStroke(GRABBER_COLOR);
 			double x1 = aMouseDownPoint.getX();
 			double y1 = aMouseDownPoint.getY();
 			double x2 = aLastMousePoint.getX();
 			double y2 = aLastMousePoint.getY();
 			Rectangle2D lasso = new Rectangle2D(Math.min(x1, x2), Math.min(y1, y2),
 					Math.abs(x1 - x2) , Math.abs(y1 - y2));
-			aGraphics.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			aGraphics.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			aGraphics.setFill(oldFill);
-			aGraphics.setStroke(oldStroke);
+			context.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
+			context.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
+			context.setFill(oldFill);
+			context.setStroke(oldStroke);
 		} 
 		
 		if (getScrollPane() != null)
