@@ -100,8 +100,6 @@ public class GraphPanel extends Canvas
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
-	private final int aMaxWidth;
-	private final int aMaxHeight;
 	private int aViewWidth;
 	private int aViewHeight;
 	
@@ -116,8 +114,6 @@ public class GraphPanel extends Canvas
 	public GraphPanel(Graph pGraph, ToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
-		aMaxWidth = (int) (pScreenBoundaries.getWidth());
-		aMaxHeight = (int) (pScreenBoundaries.getHeight());
 		aViewWidth = 0;
 		aViewHeight = 0;
 		aGraph = pGraph;
@@ -164,18 +160,6 @@ public class GraphPanel extends Canvas
 		return pHeight;
 	}
 	
-	@Override
-	public double maxWidth(double pWidth)
-	{
-		return aMaxWidth;
-	}
-	
-	@Override
-	public double maxHeight(double pHeight)
-	{
-		return aMaxHeight;
-	}
-
 	@Override
 	public boolean isResizable()
 	{
