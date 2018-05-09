@@ -76,7 +76,6 @@ import javafx.stage.Stage;
 
 /**
  * A panel to draw a graph.
- * 
  */
 public class GraphPanel extends Canvas
 {
@@ -100,8 +99,6 @@ public class GraphPanel extends Canvas
 	private DragMode aDragMode;
 	private UndoManager aUndoManager = new UndoManager();
 	private final MoveTracker aMoveTracker = new MoveTracker();
-	private int aViewWidth;
-	private int aViewHeight;
 	
 	/**
 	 * Constructs the panel, assigns the graph to it, and registers
@@ -114,8 +111,6 @@ public class GraphPanel extends Canvas
 	public GraphPanel(Graph pGraph, ToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
-		aViewWidth = 0;
-		aViewHeight = 0;
 		aGraph = pGraph;
 		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
@@ -713,7 +708,7 @@ public class GraphPanel extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), aViewWidth, aViewHeight);
+			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
 			if (added)
 			{
 				setModified(true);
@@ -831,11 +826,11 @@ public class GraphPanel extends Canvas
 
 				// require users mouse to be in the panel when dragging up or to the left
 				// this prevents a disconnect between the user's mouse and the element's position
-				if (mousePoint.getX() > aViewWidth && dx < 0)
+				if (mousePoint.getX() > getViewWidth() && dx < 0)
 				{
 					dx = 0;
 				}
-				if (mousePoint.getY() > aViewHeight && dy < 0)
+				if (mousePoint.getY() > getViewHeight() && dy < 0)
 				{
 					dy = 0;
 				}
@@ -853,13 +848,13 @@ public class GraphPanel extends Canvas
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-				if (bounds.getMaxX() + dx > aViewWidth)
+				if (bounds.getMaxX() + dx > getViewWidth())
 				{
-					dx = aViewWidth - bounds.getMaxX();
+					dx = getViewWidth() - bounds.getMaxX();
 				}
-				if (bounds.getMaxY() + dy > aViewHeight)
+				if (bounds.getMaxY() + dy > getViewHeight())
 				{
-					dy = aViewHeight - bounds.getMaxY();
+					dy = getViewHeight() - bounds.getMaxY();
 				}
 				for (GraphElement selected : aSelectedElements)
 				{
@@ -927,13 +922,20 @@ public class GraphPanel extends Canvas
 				}
 			}
 		}
+		
+		private int getViewWidth()
+		{
+			return ((int) getScrollPane().getViewportBounds().getWidth()) - VIEWPORT_PADDING;
+		}
+		
+		private int getViewHeight()
+		{
+			return ((int) getScrollPane().getViewportBounds().getHeight()) - VIEWPORT_PADDING;
+		}
 
 		@Override
 		public void handle(MouseEvent pEvent) 
 		{
-			Bounds viewBounds = getScrollPane().getViewportBounds();
-			aViewWidth = (int) viewBounds.getWidth() - VIEWPORT_PADDING;
-			aViewHeight = (int) viewBounds.getHeight() - VIEWPORT_PADDING;
 			if (pEvent.getEventType() == MouseEvent.MOUSE_PRESSED) 
 			{
 				mousePressed(pEvent);
