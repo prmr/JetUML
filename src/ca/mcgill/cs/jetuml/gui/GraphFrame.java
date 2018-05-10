@@ -62,6 +62,10 @@ public class GraphFrame extends Tab
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
 		ScrollPane scroll = new ScrollPane(aPanel);
+		
+		// The call below is necessary to removes the focus highlight around the Canvas
+		// See issue #250
+		scroll.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		scroll.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
 		layout.setCenter(scroll);
