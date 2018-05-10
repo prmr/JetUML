@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml;
+package ca.mcgill.cs.jetuml.application;
 
 /**
  * Represents the fact that the application was not able to detect or
