@@ -166,7 +166,15 @@ public class JavaVersion implements Comparable<JavaVersion>
 			String[] tokens = pTokens[2].split("_");
 			if( tokens.length == 1 )
 			{
-				result[2] = Integer.parseInt(tokens[0]);
+				if( result[0] == 1 )
+				{
+					result[2] = Integer.parseInt(tokens[0]);
+				}
+				else
+				{
+					result[1] = Integer.parseInt(tokens[0]);
+					result[2] = 0;
+				}
 			}
 			else if( tokens.length == 2 )
 			{
@@ -176,7 +184,8 @@ public class JavaVersion implements Comparable<JavaVersion>
 				}
 				else
 				{
-					result[2] = Integer.parseInt(tokens[0]);
+					result[1] = Integer.parseInt(tokens[0]);
+					result[2] = Integer.parseInt(tokens[1]);
 				}
 			}
 		}
