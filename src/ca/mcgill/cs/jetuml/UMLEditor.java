@@ -22,7 +22,9 @@
 package ca.mcgill.cs.jetuml;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
+import ca.mcgill.cs.jetuml.application.JavaVersion;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -37,30 +39,19 @@ import javafx.stage.Stage;
 
 /**
  * A program for editing UML diagrams.
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class UMLEditor extends Application
 {
-	private static final int JAVA_MAJOR_VERSION = 7;
-	private static final int JAVA_MINOR_VERSION = 0;
-	
+	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(8, 0, 0);
 	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	
 	/**
-	 * @param pArgs Each argument is a file to open upon launch.
-	 * Can be empty.
+	 * @param pArgs Not used.
 	 */
 	public static void main(String[] pArgs)
 	{
-		// checkVersion(); 
-		try
-		{
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-		}
-		catch (SecurityException ex)
-		{
-			// well, we tried...
-		}
+		checkVersion(); 
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		launch(pArgs);
    }
 	@Override
@@ -91,85 +82,38 @@ public final class UMLEditor extends Application
         pStage.show();
 	}
 
-	/**
-	 *  Checks if the current VM has at least the given
-	 *  version, and exits the program with an error dialog if not.
+	/*
+	 * Verifies that the current version of Java is equal to or 
+	 * higher than the required version, and exits with an error
+	 * message if it is not. 
 	 */
-	@SuppressWarnings("unused")
 	private static void checkVersion()
 	{
-		String version = obtainJavaVersion();
-		if( version == null || !isOKJVMVersion(version))
+		JavaVersion currentVersion = new JavaVersion();
+		if( currentVersion.compareTo(MINIMAL_JAVA_VERSION) < 0 )
 		{
+			final CountDownLatch wait = new CountDownLatch(1);
 			ResourceBundle resources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-			String minor = "";
-			int minorVersion = JAVA_MINOR_VERSION;
-			if( minorVersion > 0 )
-			{
-				minor = "." + JAVA_MINOR_VERSION;
-			}
-			final String minorValue = minor;
 			Platform.runLater(() -> 
 			{
-				Alert alert = new Alert(AlertType.ERROR, resources.getString("error.version") +	"1." + JAVA_MAJOR_VERSION + minorValue);
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle(resources.getString("error.title"));
+				alert.setHeaderText(resources.getString("error.version.header"));
+				alert.setContentText(String.format("%s %s. %s %s.",
+						resources.getString("error.version.required"),
+						MINIMAL_JAVA_VERSION,
+						resources.getString("error.version.detected"),
+						currentVersion));
 				alert.showAndWait();
+				wait.countDown();
 			});
+			try
+			{
+				wait.await();
+			}
+			catch(InterruptedException exception)
+			{} // Nothing, we want to exit anyways
 			System.exit(1);
 		}
 	}
-	
-	static String obtainJavaVersion()
-	{
-		String version = System.getProperty("java.version");
-		if( version == null )
-		{
-			version = System.getProperty("java.runtime.version");
-		}
-		return version;
-	}
-	
-	/**
-	 * @return True is the JVM version is higher than the 
-	 * versions specified as constants.
-	 */
-	static boolean isOKJVMVersion(String pVersion)
-	{
-		assert pVersion != null;
-		String[] components = pVersion.split("\\.|_");
-		boolean lReturn = true;
-		
-		try
-		{
-			int systemMajor = Integer.parseInt(String.valueOf(components[1]));
-			int systemMinor = Integer.parseInt(String.valueOf(components[2]));
-			if( systemMajor > JAVA_MAJOR_VERSION )
-			{
-				lReturn = true;
-			}
-			else if( systemMajor < JAVA_MAJOR_VERSION )
-			{
-				lReturn = false;
-			}
-			else // major Equals
-			{
-				if( systemMinor > JAVA_MINOR_VERSION )
-				{
-					lReturn = true;
-				}
-				else if( systemMinor < JAVA_MINOR_VERSION )
-				{
-					lReturn = false;
-				}
-				else // minor equals
-				{
-					lReturn = true;
-				}
-			}
-        }
-		catch( NumberFormatException e)
-		{
-			lReturn = false;
-		}
-		return lReturn;
-    }
 }
