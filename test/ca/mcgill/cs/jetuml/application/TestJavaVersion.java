@@ -91,12 +91,47 @@ public class TestJavaVersion
 		new JavaVersion();
 	}
 	
+	@Test(expected=JavaVersionNotDetectedException.class)
+	public void testTooLongVersionString()
+	{
+		setJavaVersion("1.2.3.4");
+		new JavaVersion();
+	}
+	
+	@Test(expected=JavaVersionNotDetectedException.class)
+	public void testIncorrectVersionString1()
+	{
+		setJavaVersion("2");
+		new JavaVersion();
+	}
+	
 	@Test
 	public void testCompareTo()
 	{
 		JavaVersion v1 = new JavaVersion(2,3,4);
 		JavaVersion v2 = new JavaVersion(3,4,5);
 		
+		assertTrue(v1.compareTo(v2) < 0);
+		assertTrue(v2.compareTo(v1) > 0);
+		assertEquals(0, v1.compareTo(v1));
+		assertEquals(0, v2.compareTo(v2));
+		
+		v1 = new JavaVersion(2,1,4);
+		v2 = new JavaVersion(2,1,5);
+		assertTrue(v1.compareTo(v2) < 0);
+		assertTrue(v2.compareTo(v1) > 0);
+		assertEquals(0, v1.compareTo(v1));
+		assertEquals(0, v2.compareTo(v2));
+		
+		v1 = new JavaVersion(2,3,4);
+		v2 = new JavaVersion(2,3,5);
+		assertTrue(v1.compareTo(v2) < 0);
+		assertTrue(v2.compareTo(v1) > 0);
+		assertEquals(0, v1.compareTo(v1));
+		assertEquals(0, v2.compareTo(v2));
+		
+		v1 = new JavaVersion(2,4,4);
+		v2 = new JavaVersion(2,5,5);
 		assertTrue(v1.compareTo(v2) < 0);
 		assertTrue(v2.compareTo(v1) > 0);
 		assertEquals(0, v1.compareTo(v1));

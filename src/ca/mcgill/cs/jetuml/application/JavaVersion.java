@@ -81,7 +81,7 @@ public class JavaVersion implements Comparable<JavaVersion>
 			{
 				if( major != 1 || tokens.length < 2 )
 				{
-					new JavaVersionNotDetectedException("Unrecognized version string: " + versionString);
+					throw new JavaVersionNotDetectedException("Unrecognized version string: " + versionString);
 				}
 				result = parseWithOldNumberingScheme(tokens);
 			}
