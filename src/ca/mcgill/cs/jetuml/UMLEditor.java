@@ -36,7 +36,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
 /**
  * A program for editing UML diagrams.
  */
@@ -57,15 +56,8 @@ public final class UMLEditor extends Application
 	@Override
 	public void start(Stage pStage) throws Exception 
 	{
-		//set Stage boundaries 
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		int screenWidth = (int) primaryScreenBounds.getWidth();
-		int screenHeight = (int) primaryScreenBounds.getHeight();
-		pStage.setX(screenWidth / (MARGIN_SCREEN*2));
-		pStage.setY(screenHeight / (MARGIN_SCREEN*2));
-		pStage.setWidth((screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN);
-		pStage.setHeight((screenHeight * (MARGIN_SCREEN-1))/ MARGIN_SCREEN);
-			
+		setStageBoundaries(pStage);
+		
 		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName() + "Strings");
 		pStage.setTitle(aAppResources.getString("app.name"));
 		String imagePath = aAppResources.getString("app.icon");
@@ -73,13 +65,24 @@ public final class UMLEditor extends Application
 		
 		pStage.setScene(new Scene(new EditorFrame(UMLEditor.class, pStage)));
 		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
+		
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
-			// Exit the EditorFrame
 			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
 	    });
         pStage.show();
+	}
+	
+	private void setStageBoundaries(Stage pStage)
+	{
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		int screenWidth = (int) primaryScreenBounds.getWidth();
+		int screenHeight = (int) primaryScreenBounds.getHeight();
+		pStage.setX(screenWidth / (MARGIN_SCREEN * 2));
+		pStage.setY(screenHeight / (MARGIN_SCREEN * 2));
+		pStage.setWidth((screenWidth * (MARGIN_SCREEN -1 )) / MARGIN_SCREEN);
+		pStage.setHeight((screenHeight * (MARGIN_SCREEN -1 ))/ MARGIN_SCREEN);
 	}
 
 	/*
