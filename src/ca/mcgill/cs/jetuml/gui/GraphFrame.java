@@ -55,7 +55,7 @@ public class GraphFrame extends Tab
 	public GraphFrame(Graph pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
-		GraphPanelToolBar sideBar = new GraphPanelToolBar(pGraph);
+		DiagramFrameToolBar sideBar = new DiagramFrameToolBar(pGraph);
 		aPanel = new GraphPanel(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
@@ -89,6 +89,16 @@ public class GraphFrame extends Tab
 	{
 		return aPanel.getGraph();
 	}
+	
+	/**
+	 * Shoes or hides the textual description of the tools and commands.
+	 * 
+	 * @param pShow True if the labels are to be shown
+	 */
+	public void showToolbarButtonLabels(boolean pShow)
+	{
+		((DiagramFrameToolBar)((BorderPane)getContent()).getRight()).showButtonLabels(pShow);
+	}
 
 	/**
      * Gets the graph panel that is contained in this frame.
@@ -101,7 +111,7 @@ public class GraphFrame extends Tab
 	
 	/**
 	 * This association and getter method are needed to display messages using the copy to clipboard
-	 * functionality of the Optional GraphPanelToolBar.
+	 * functionality of the Optional DiagramFrameToolBar.
 	 * @return aTabbedPane the TabPane associated with this GraphFrame.
 	 */
 	public TabPane getTabbedPane()

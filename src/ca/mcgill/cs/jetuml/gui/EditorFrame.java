@@ -318,7 +318,21 @@ public class EditorFrame extends BorderPane
 	    	panel.setHideGrid(selected);
 		});
 		viewMenu.getItems().add(hideGridItem);
+		
+		final CheckMenuItem showToolHints  = (CheckMenuItem) pFactory.createCheckMenuItem("view.show_hints", pEvent ->
+	    {
+	    	if( noCurrentGraphFrame() )
+	    	{
+	    		return;
+	    	}
+	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
+	    	boolean selected = menuItem.isSelected();
+    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
+    		frame.showToolbarButtonLabels(selected);
+		});
+		viewMenu.getItems().add(showToolHints);
 	
+		// TODO move this code to the frame creation
 		viewMenu.setOnShowing(pEvent ->
 		{
 			if(aTabbedPane.getSelectionModel().getSelectedItem() instanceof WelcomeTab)

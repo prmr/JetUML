@@ -90,7 +90,7 @@ public class GraphPanel extends Canvas
 	private static final int VIEWPORT_PADDING = 5;
 	
 	private Graph aGraph;
-	private GraphPanelToolBar aSideBar;
+	private DiagramFrameToolBar aSideBar;
 	private boolean aHideGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
@@ -105,10 +105,10 @@ public class GraphPanel extends Canvas
 	 * the panel as a listener for the graph.
 	 * 
 	 * @param pGraph the graph managed by this panel.
-	 * @param pSideBar the GraphPanelToolBar which contains all of the tools for nodes and edges.
+	 * @param pSideBar the DiagramFrameToolBar which contains all of the tools for nodes and edges.
 	 * @param pScreenBoundaries the boundaries of the users screen. 
 	 */
-	public GraphPanel(Graph pGraph, GraphPanelToolBar pSideBar, Rectangle2D pScreenBoundaries)
+	public GraphPanel(Graph pGraph, DiagramFrameToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
 		aGraph = pGraph;

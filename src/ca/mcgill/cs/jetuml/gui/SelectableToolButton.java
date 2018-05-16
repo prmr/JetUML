@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.graph.GraphElement;
+import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -53,7 +54,8 @@ public class SelectableToolButton extends ToggleButton
 		setGraphic(new ImageView(pImage));
 		setToggleGroup(pToggleGroup);
 		setSelected(true);
-		Tooltip.install(this, new Tooltip(pToolTip));
+		setTooltip(new Tooltip(pToolTip));
+		setAlignment(Pos.BASELINE_LEFT);
 		setOnAction( pEvent -> setSelected(true) );
 	}
 	
@@ -75,7 +77,8 @@ public class SelectableToolButton extends ToggleButton
 		setGraphic(new ImageView(pImage));
 		setToggleGroup(pToggleGroup);
 		setSelected(false);
-		Tooltip.install(this, new Tooltip(pToolTip));
+		setTooltip(new Tooltip(pToolTip));
+		setAlignment(Pos.BASELINE_LEFT);
 		setOnAction( pEvent -> setSelected(true) );
 	}
 	

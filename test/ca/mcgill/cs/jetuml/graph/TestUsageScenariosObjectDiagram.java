@@ -38,7 +38,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
-import ca.mcgill.cs.jetuml.gui.GraphPanelToolBar;
+import ca.mcgill.cs.jetuml.gui.DiagramFrameToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -83,7 +83,7 @@ public class TestUsageScenariosObjectDiagram
 	{
 		aDiagram = new ObjectDiagramGraph();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new GraphPanel(aDiagram, new GraphPanelToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new GraphPanel(aDiagram, new DiagramFrameToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();

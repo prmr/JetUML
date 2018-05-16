@@ -30,8 +30,10 @@ import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
@@ -42,22 +44,24 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- *  A collapsible tool bar than contains various tools and optional
- *  command shortcut buttons. Only one tool can be selected at the time.
- *  The tool bar also controls a pop-up menu with the same tools as 
- *  the tool bar.
+ *  A tool bar than contains various tools and command shortcut buttons. 
+ *  Only one tool can be selected at the time. The tool bar also controls a pop-up 
+ *  menu with the same tools as the tool bar. Labels can optionally be shown next 
+ *  to tools.
  */
-public class GraphPanelToolBar extends ToolBar
+public class DiagramFrameToolBar extends ToolBar
 {
 	private ContextMenu aPopupMenu = new ContextMenu();
 
 	/**
      * Constructs the tool bar.
+     * 
      * @param pGraph The graph associated with this tool bar.
 	 */
-	public GraphPanelToolBar(Graph pGraph)
+	public DiagramFrameToolBar(Graph pGraph)
 	{
 		setOrientation(Orientation.VERTICAL);
+		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		ToggleGroup toggleGroup = new ToggleGroup();
 		installSelectionTool(toggleGroup);
 		installNodesAndEdgesTools(pGraph, toggleGroup);
@@ -83,18 +87,28 @@ public class GraphPanelToolBar extends ToolBar
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			getItems().add( new SelectableToolButton(ImageCreator.createImage(nodeTypes[i]), 
-					resources.getString("node" + (i + 1) + ".tooltip"), 
-					pToggleGroup,
-					nodeTypes[i]));
+			String tooltip = resources.getString("node" + (i + 1) + ".tooltip");
+			Image image = ImageCreator.createImage(nodeTypes[i]);
+			SelectableToolButton button =  new SelectableToolButton(image, tooltip, pToggleGroup, nodeTypes[i]);
+			getItems().add(button);
+			
+			MenuItem item = new MenuItem(tooltip);
+			item.setGraphic(new ImageView(image));
+			item.setOnAction(pEvent -> button.setSelected(true));
+			aPopupMenu.getItems().add(item);
 		}
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			getItems().add( new SelectableToolButton(ImageCreator.createImage(edgeTypes[i]), 
-					resources.getString("edge" + (i + 1) + ".tooltip"), 
-					pToggleGroup,
-					edgeTypes[i]));
+			String tooltip = resources.getString("edge" + (i + 1) + ".tooltip");
+			Image image = ImageCreator.createImage(edgeTypes[i]);
+			SelectableToolButton button =  new SelectableToolButton(image, tooltip, pToggleGroup, edgeTypes[i]);
+			getItems().add(button);
+						
+			MenuItem item = new MenuItem(tooltip);
+			item.setGraphic(new ImageView(image));
+			item.setOnAction(pEvent -> button.setSelected(true));
+			aPopupMenu.getItems().add(item);
 		}
 	}
 	
@@ -105,14 +119,35 @@ public class GraphPanelToolBar extends ToolBar
 		
 		final Button button = new Button();
 		button.setGraphic(new ImageView(imageLocation));
-		Tooltip.install(button, new Tooltip(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
-				getString("file.copy_to_clipboard.text")));
-		button.setOnAction(pEvent-> copyToClipboard());
+		button.setTooltip( new Tooltip(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
+				getString("toolbar.copyToClipBoardText")));
+		button.setOnAction(pEvent-> 
+		{
+			copyToClipboard();
+			getSelectedTool().requestFocus();
+		});
 		button.setStyle("-fx-background-radius: 0");
+		button.setAlignment(Pos.BASELINE_LEFT);
 		assert getItems().size() > 0; // We copy size information from the top button
 		button.prefWidthProperty().bind(((ToggleButton)getItems().get(0)).widthProperty());
 		button.prefHeightProperty().bind(((ToggleButton)getItems().get(0)).heightProperty());
 		getItems().add(button);
+		
+		MenuItem item = new MenuItem(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
+				getString("toolbar.copyToClipBoardText"));
+		item.setGraphic(new ImageView(imageLocation));
+		item.setOnAction(pEvent-> 
+		{
+			copyToClipboard();
+			getSelectedTool().requestFocus();
+		});
+		aPopupMenu.getItems().add(item);
+	}
+	
+	private ToggleButton getSelectedTool()
+	{
+		assert getItems().size() > 0;
+		return (ToggleButton) ((ToggleButton)getItems().get(0)).getToggleGroup().getSelectedToggle();
 	}
 	
 	/**
@@ -172,5 +207,27 @@ public class GraphPanelToolBar extends ToolBar
 	{
 		assert getItems().size() > 0;
 		((ToggleButton)getItems().get(0)).setSelected(true);
+	}
+	
+	/**
+	 * Shows or hides the textual description of the tools and commands.
+	 * @param pShow True if the labels should be shown
+	 */
+	public void showButtonLabels(boolean pShow)
+	{
+		for( javafx.scene.Node item : getItems() )
+		{
+			ButtonBase button = (ButtonBase) item;
+			if( pShow )
+			{
+				button.setText(button.getTooltip().getText());
+				button.setMaxWidth(Double.MAX_VALUE);
+			}
+			else
+			{
+				button.setText("");
+				button.autosize();
+			}
+		}
 	}
 }
