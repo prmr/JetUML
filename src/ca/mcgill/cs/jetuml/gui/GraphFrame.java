@@ -55,7 +55,7 @@ public class GraphFrame extends Tab
 	public GraphFrame(Graph pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
-		ToolBar sideBar = new ToolBar(pGraph);
+		GraphPanelToolBar sideBar = new GraphPanelToolBar(pGraph);
 		aPanel = new GraphPanel(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
@@ -101,7 +101,7 @@ public class GraphFrame extends Tab
 	
 	/**
 	 * This association and getter method are needed to display messages using the copy to clipboard
-	 * functionality of the Optional ToolBar.
+	 * functionality of the Optional GraphPanelToolBar.
 	 * @return aTabbedPane the TabPane associated with this GraphFrame.
 	 */
 	public TabPane getTabbedPane()

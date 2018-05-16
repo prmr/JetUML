@@ -38,7 +38,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
-import ca.mcgill.cs.jetuml.gui.ToolBar;
+import ca.mcgill.cs.jetuml.gui.GraphPanelToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -81,7 +81,7 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram = new SequenceDiagramGraph();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new GraphPanel(aDiagram, new ToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new GraphPanel(aDiagram, new GraphPanelToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aList = new SelectionList();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();

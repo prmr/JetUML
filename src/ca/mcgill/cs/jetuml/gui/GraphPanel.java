@@ -90,7 +90,7 @@ public class GraphPanel extends Canvas
 	private static final int VIEWPORT_PADDING = 5;
 	
 	private Graph aGraph;
-	private ToolBar aSideBar;
+	private GraphPanelToolBar aSideBar;
 	private boolean aHideGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
@@ -105,10 +105,10 @@ public class GraphPanel extends Canvas
 	 * the panel as a listener for the graph.
 	 * 
 	 * @param pGraph the graph managed by this panel.
-	 * @param pSideBar the ToolBar which contains all of the tools for nodes and edges.
+	 * @param pSideBar the GraphPanelToolBar which contains all of the tools for nodes and edges.
 	 * @param pScreenBoundaries the boundaries of the users screen. 
 	 */
-	public GraphPanel(Graph pGraph, ToolBar pSideBar, Rectangle2D pScreenBoundaries)
+	public GraphPanel(Graph pGraph, GraphPanelToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
 		aGraph = pGraph;
@@ -706,7 +706,7 @@ public class GraphPanel extends Canvas
 		
 		private void handleNodeCreation(MouseEvent pEvent)
 		{
-			Node newNode = ((Node)aSideBar.getSelectedTool()).clone();
+			Node newNode = ((Node)aSideBar.getCreationPrototype()).clone();
 			Point point = getMousePoint(pEvent);
 			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
 			if (added)
@@ -739,7 +739,7 @@ public class GraphPanel extends Canvas
 		 */
 		private GraphElement getTool(MouseEvent pEvent)
 		{
-			GraphElement tool = aSideBar.getSelectedTool();
+			GraphElement tool = aSideBar.getCreationPrototype();
 			GraphElement selected = getSelectedElement(pEvent);
 			
 			if (tool !=null && tool instanceof Node)
@@ -785,7 +785,7 @@ public class GraphPanel extends Canvas
 		public void mouseReleased(MouseEvent pEvent)
 		{
 			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
-			Object tool = aSideBar.getSelectedTool();
+			Object tool = aSideBar.getCreationPrototype();
 			if (aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
 				Edge prototype = (Edge) tool;
