@@ -91,11 +91,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * This panel contains panes that show graphs.
- * 
- * @author Cay S. Horstmann - Original code
- * @author Martin P. Robillard - Refactorings, file handling, menu management.
- * @author Kaylee I. Kutschera - Migration to JavaFX
+ * The main frame that contains panes that contain diagrams.
  */
 public class EditorFrame extends BorderPane
 {
@@ -305,7 +301,7 @@ public class EditorFrame extends BorderPane
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setDisable(noCurrentGraphFrame());
 
-		final CheckMenuItem hideGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.hide_grid", pEvent ->
+		final CheckMenuItem showGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.show_grid", pEvent ->
 	    {
 	    	if( noCurrentGraphFrame() )
 	    	{
@@ -313,11 +309,11 @@ public class EditorFrame extends BorderPane
 	    	}
 	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
 	    	boolean selected = menuItem.isSelected();
-    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
-    		GraphPanel panel = frame.getGraphPanel();  
-	    	panel.setHideGrid(selected);
+	    	Preferences.userNodeForPackage(UMLEditor.class).put("showGrid", Boolean.toString(selected));
+	    	setShowGridForAllFrames(selected);
 		});
-		viewMenu.getItems().add(hideGridItem);
+		showGridItem.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true")));
+		viewMenu.getItems().add(showGridItem);
 		
 		final CheckMenuItem showToolHints  = (CheckMenuItem) pFactory.createCheckMenuItem("view.show_hints", pEvent ->
 	    {
@@ -328,35 +324,30 @@ public class EditorFrame extends BorderPane
 	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
 	    	boolean selected = menuItem.isSelected();
 	    	Preferences.userNodeForPackage(UMLEditor.class).put("showToolHints", Boolean.toString(selected));
-    		showToolbarButtonLabelsForAllFrames(selected);
+    		setShowToolbarButtonLabelsForAllFrames(selected);
 		});
 		showToolHints.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")));
 		viewMenu.getItems().add(showToolHints);
-	
-		// TODO move this code to the frame creation
-		viewMenu.setOnShowing(pEvent ->
-		{
-			if(aTabbedPane.getSelectionModel().getSelectedItem() instanceof WelcomeTab)
-	 		{
-	 			return;
-	 		}
-			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-			if (frame == null) 
-			{
-				return;
-			}
-			GraphPanel panel = frame.getGraphPanel();
-			hideGridItem.setSelected(panel.getHideGrid());
-		});	
 	}
 	
-	private void showToolbarButtonLabelsForAllFrames(boolean pShow)
+	private void setShowToolbarButtonLabelsForAllFrames(boolean pShow)
 	{
 		for( Tab tab : aTabbedPane.getTabs() )
 		{
 			if( tab instanceof GraphFrame )
 			{
 				((GraphFrame)tab).showToolbarButtonLabels(pShow);
+			}
+		}
+	}
+	
+	private void setShowGridForAllFrames(boolean pShow)
+	{
+		for( Tab tab : aTabbedPane.getTabs() )
+		{
+			if( tab instanceof GraphFrame )
+			{
+				((GraphFrame)tab).getGraphPanel().setShowGrid(pShow);
 			}
 		}
 	}
@@ -978,13 +969,13 @@ public class EditorFrame extends BorderPane
 	{
 		Rectangle bounds = pGraphPanel.getGraph().getBounds();
 		WritableImage image = new WritableImage((int) bounds.getWidth() + MARGIN_IMAGE * 2, (int) bounds.getHeight() + MARGIN_IMAGE * 2);
-		boolean oldHideGrid = pGraphPanel.getHideGrid();
-		pGraphPanel.setHideGrid(true);
+		boolean oldShowGrid = pGraphPanel.getShowGrid();
+		pGraphPanel.setShowGrid(false);
 		SnapshotParameters parameter = new SnapshotParameters();
 		parameter.setViewport(new Rectangle2D(bounds.getX() - MARGIN_IMAGE, bounds.getY() - MARGIN_IMAGE, 
 				bounds.getWidth() + MARGIN_IMAGE * 2, bounds.getHeight() + MARGIN_IMAGE * 2));
 		((Node) pGraphPanel).snapshot(parameter, image);
-		pGraphPanel.setHideGrid(oldHideGrid);
+		pGraphPanel.setShowGrid(oldShowGrid);
 		return image;
 	}
 

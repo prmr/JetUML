@@ -26,7 +26,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
+import java.util.prefs.Preferences;
 
+import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
@@ -91,7 +93,7 @@ public class GraphPanel extends Canvas
 	
 	private Graph aGraph;
 	private DiagramFrameToolBar aSideBar;
-	private boolean aHideGrid;
+	private boolean aShowGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
 	private Point aLastMousePoint;
@@ -119,6 +121,7 @@ public class GraphPanel extends Canvas
 		setOnMousePressed(listener);
 		setOnMouseReleased(listener);
 		setOnMouseDragged(listener);
+		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
 	@Override
@@ -387,7 +390,7 @@ public class GraphPanel extends Canvas
 		context.fillRect(0, 0, getWidth(), getHeight());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aGraph.getBounds();
-		if (!aHideGrid) 
+		if(aShowGrid) 
 		{
 			Grid.draw(context, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
 					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
@@ -524,11 +527,11 @@ public class GraphPanel extends Canvas
    
 	/**
 	 * Sets the value of the hideGrid property.
-	 * @param pHideGrid true if the grid is being hidden
+	 * @param pShowGrid true if the grid is being shown
 	 */
-	public void setHideGrid(boolean pHideGrid)
+	public void setShowGrid(boolean pShowGrid)
 	{
-		aHideGrid = pHideGrid;
+		aShowGrid = pShowGrid;
 		paintPanel();
 	}
 
@@ -536,9 +539,9 @@ public class GraphPanel extends Canvas
 	 * Gets the value of the hideGrid property.
 	 * @return true if the grid is being hidden
 	 */
-	public boolean getHideGrid()
+	public boolean getShowGrid()
 	{
-		return aHideGrid;
+		return aShowGrid;
 	}
 	
 	/**
