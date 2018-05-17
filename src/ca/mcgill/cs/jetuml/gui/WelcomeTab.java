@@ -35,10 +35,6 @@ import javafx.scene.layout.VBox;
 /**
  * A tab that allow users to open new diagrams of the different types
  * or open recently saved diagrams.
- * 
- * @author JoelChev - Original Code
- * @author Kaylee I. Kutschera - Migration to JavaFX
- * @author Martin P. Robillard - Refactoring and new layout
  */
 public class WelcomeTab extends Tab
 {

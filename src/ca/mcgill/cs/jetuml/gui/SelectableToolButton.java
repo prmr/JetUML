@@ -31,7 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- *
+ * A selectable button in the DiagramFrameToolBar. 
  */
 public class SelectableToolButton extends ToggleButton
 {
@@ -83,7 +83,8 @@ public class SelectableToolButton extends ToggleButton
 	}
 	
 	/**
-	 * @return The prototype graph element to create new ones.
+	 * @return The prototype graph element to create new ones. isPresent() == false indicates
+	 * that the Selection Tool is selected.
 	 */
 	public Optional<GraphElement> getPrototype()
 	{

@@ -40,7 +40,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -51,6 +50,8 @@ import javafx.scene.image.ImageView;
  */
 public class DiagramFrameToolBar extends ToolBar
 {
+	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
+	
 	private ContextMenu aPopupMenu = new ContextMenu();
 
 	/**
@@ -70,14 +71,9 @@ public class DiagramFrameToolBar extends ToolBar
 	
 	private void installSelectionTool(ToggleGroup pToggleGroup)
 	{
-		String tooltip = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("grabber.tooltip");
-		Image image = ImageCreator.createSelectionImage();
-		final SelectableToolButton button = new SelectableToolButton(image, tooltip, pToggleGroup);
-		getItems().add( button );
-		MenuItem item = new MenuItem(tooltip);
-		item.setGraphic(new ImageView(image));
-		item.setOnAction(pEvent -> button.setSelected(true));
-		aPopupMenu.getItems().add(item);
+		add(new SelectableToolButton(ImageCreator.createSelectionImage(), 
+									 RESOURCES.getString("grabber.tooltip"), 
+									 pToggleGroup));
 	}
 	
 	private void installNodesAndEdgesTools(Graph pGraph, ToggleGroup pToggleGroup)
@@ -87,40 +83,22 @@ public class DiagramFrameToolBar extends ToolBar
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			String tooltip = resources.getString("node" + (i + 1) + ".tooltip");
-			Image image = ImageCreator.createImage(nodeTypes[i]);
-			SelectableToolButton button =  new SelectableToolButton(image, tooltip, pToggleGroup, nodeTypes[i]);
-			getItems().add(button);
-			
-			MenuItem item = new MenuItem(tooltip);
-			item.setGraphic(new ImageView(image));
-			item.setOnAction(pEvent -> button.setSelected(true));
-			aPopupMenu.getItems().add(item);
+			add(new SelectableToolButton(ImageCreator.createImage(nodeTypes[i]), 
+					resources.getString("node" + (i + 1) + ".tooltip"), pToggleGroup, nodeTypes[i]));
 		}
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			String tooltip = resources.getString("edge" + (i + 1) + ".tooltip");
-			Image image = ImageCreator.createImage(edgeTypes[i]);
-			SelectableToolButton button =  new SelectableToolButton(image, tooltip, pToggleGroup, edgeTypes[i]);
-			getItems().add(button);
-						
-			MenuItem item = new MenuItem(tooltip);
-			item.setGraphic(new ImageView(image));
-			item.setOnAction(pEvent -> button.setSelected(true));
-			aPopupMenu.getItems().add(item);
+			add(new SelectableToolButton(ImageCreator.createImage(edgeTypes[i]), 
+					resources.getString("edge" + (i + 1) + ".tooltip"), pToggleGroup, edgeTypes[i]));
 		}
 	}
 	
 	private void installCopyToClipboard()
 	{
-		String imageLocation = getClass().getClassLoader().
-				getResource(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("toolbar.copyToClipBoard")).toString();
-		
 		final Button button = new Button();
-		button.setGraphic(new ImageView(imageLocation));
-		button.setTooltip( new Tooltip(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
-				getString("toolbar.copyToClipBoardText")));
+		button.setGraphic(new ImageView(getClass().getClassLoader().getResource(RESOURCES.getString("toolbar.copyToClipBoard")).toString()));
+		button.setTooltip( new Tooltip(RESOURCES.getString("toolbar.copyToClipBoardText")));
 		button.setOnAction(pEvent-> 
 		{
 			copyToClipboard();
@@ -131,16 +109,21 @@ public class DiagramFrameToolBar extends ToolBar
 		assert getItems().size() > 0; // We copy size information from the top button
 		button.prefWidthProperty().bind(((ToggleButton)getItems().get(0)).widthProperty());
 		button.prefHeightProperty().bind(((ToggleButton)getItems().get(0)).heightProperty());
-		getItems().add(button);
-		
-		MenuItem item = new MenuItem(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").
-				getString("toolbar.copyToClipBoardText"));
-		item.setGraphic(new ImageView(imageLocation));
-		item.setOnAction(pEvent-> 
-		{
-			copyToClipboard();
-			getSelectedTool().requestFocus();
-		});
+		add(button);
+	}
+	
+	/**
+	 * Adds the button to this toolbar and the corresponding context menu.
+	 * 
+	 * @param pButton The button to add.
+	 */
+	private void add(ButtonBase pButton)
+	{
+		assert pButton != null;
+		getItems().add( pButton );
+		MenuItem item = new MenuItem(pButton.getTooltip().getText());
+		item.setGraphic(new ImageView(((ImageView)pButton.getGraphic()).getImage()));
+		item.setOnAction(pButton.getOnAction());
 		aPopupMenu.getItems().add(item);
 	}
 	
@@ -172,7 +155,6 @@ public class DiagramFrameToolBar extends ToolBar
 	
 	private void copyToClipboard()
 	{
-		// Obtain the editor frame by going through the component graph
 		Parent parent = getParent();
 		while( parent.getClass() != EditorFrame.class )
 		{
