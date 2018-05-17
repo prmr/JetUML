@@ -22,7 +22,9 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
+import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -67,6 +69,7 @@ public class DiagramFrameToolBar extends ToolBar
 		installSelectionTool(toggleGroup);
 		installNodesAndEdgesTools(pGraph, toggleGroup);
 		installCopyToClipboard();
+    	showButtonLabels( Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")) );
 	}
 	
 	private void installSelectionTool(ToggleGroup pToggleGroup)

@@ -240,7 +240,7 @@ public class EditorFrame extends BorderPane
 		MenuItem fileExitItem = pFactory.createMenuItem("file.exit", pEvent -> exit());
 		fileMenu.getItems().add(fileExitItem);
 	}
-
+	
 	private void createEditMenu(MenuFactory pFactory) 
 	{
 		Menu editMenu = pFactory.createMenu("edit");
@@ -327,9 +327,10 @@ public class EditorFrame extends BorderPane
 	    	}
 	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
 	    	boolean selected = menuItem.isSelected();
-    		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectionModel().getSelectedItem();
-    		frame.showToolbarButtonLabels(selected);
+	    	Preferences.userNodeForPackage(UMLEditor.class).put("showToolHints", Boolean.toString(selected));
+    		showToolbarButtonLabelsForAllFrames(selected);
 		});
+		showToolHints.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")));
 		viewMenu.getItems().add(showToolHints);
 	
 		// TODO move this code to the frame creation
@@ -347,6 +348,17 @@ public class EditorFrame extends BorderPane
 			GraphPanel panel = frame.getGraphPanel();
 			hideGridItem.setSelected(panel.getHideGrid());
 		});	
+	}
+	
+	private void showToolbarButtonLabelsForAllFrames(boolean pShow)
+	{
+		for( Tab tab : aTabbedPane.getTabs() )
+		{
+			if( tab instanceof GraphFrame )
+			{
+				((GraphFrame)tab).showToolbarButtonLabels(pShow);
+			}
+		}
 	}
 
 	private void createHelpMenu(MenuFactory pFactory) 
