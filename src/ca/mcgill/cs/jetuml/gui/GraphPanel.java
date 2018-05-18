@@ -638,11 +638,6 @@ public class GraphPanel extends Canvas
 			return new Point((int)pEvent.getX(), (int)pEvent.getY());
 		}
 		
-		private Point getSceneMousePoint(MouseEvent pEvent)
-		{
-			return new Point((int)pEvent.getSceneX(), (int)pEvent.getSceneY());
-		}
-		
 		/*
 		 * Will return null if nothing is selected.
 		 */
@@ -701,9 +696,7 @@ public class GraphPanel extends Canvas
 			}
 			else
 			{
-				Point point = getSceneMousePoint(pEvent);
-				final Point mousePoint = new Point(point.getX(), point.getY()); 
-				aSideBar.showPopup(GraphPanel.this, mousePoint);
+				aSideBar.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
 			}
 		}
 		

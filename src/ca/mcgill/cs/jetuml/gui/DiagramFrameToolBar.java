@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
@@ -168,12 +167,12 @@ public class DiagramFrameToolBar extends ToolBar
 	
 	/**
 	 * Show the pop-up menu corresponding to this toolbar.
-	 * @param pPanel The panel associated with this menu.
-	 * @param pPoint The point where to show the menu.
+	 * @param pScreenXCoordinate The X-coordinate where to position the menu, in screen coordinates.
+	 * @param pScreenYCoordinate The Y-coordinate where to position the menu, in screen coordinates.
 	 */
-	public void showPopup(GraphPanel pPanel, Point pPoint) 
+	public void showPopup(double pScreenXCoordinate, double pScreenYCoordinate) 
 	{
-		aPopupMenu.show(pPanel, pPoint.getX(), pPoint.getY());
+		aPopupMenu.show(this, pScreenXCoordinate, pScreenYCoordinate);
 	}
 	
 	/**
