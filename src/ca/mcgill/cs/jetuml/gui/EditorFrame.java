@@ -406,6 +406,7 @@ public class EditorFrame extends BorderPane
 				Scene scene = new Scene(layout);
 				button.requestFocus();
 				window.setScene(scene);
+				window.initOwner(getScene().getWindow());
 				window.showAndWait();
 			} 
 			catch(IOException exception){}

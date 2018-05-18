@@ -245,6 +245,7 @@ public class GraphPanel extends Canvas
 		Scene scene = new Scene(layout);
 		window.setScene(scene);
 		window.setResizable(false);
+		window.initOwner(getScene().getWindow());
 		window.show();
 		
 		CompoundCommand command = tracker.stopTracking();
