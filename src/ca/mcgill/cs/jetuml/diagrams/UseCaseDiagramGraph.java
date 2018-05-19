@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagrams;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -62,13 +62,13 @@ public class UseCaseDiagramGraph extends Graph
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase.extension");
+		return RESOURCES.getString("usecasediagram.file.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("usecase.name");
+		return RESOURCES.getString("usecasediagram.file.name");
 	}
 	
 	@Override

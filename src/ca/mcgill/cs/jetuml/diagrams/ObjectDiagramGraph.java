@@ -21,8 +21,9 @@
 
 package ca.mcgill.cs.jetuml.diagrams;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -177,12 +178,12 @@ public class ObjectDiagramGraph extends Graph
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("object.extension");
+		return RESOURCES.getString("objectdiagram.file.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("object.name");
+		return RESOURCES.getString("objectdiagram.file.name");
 	}
 }

@@ -21,9 +21,10 @@
 
 package ca.mcgill.cs.jetuml.diagrams;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -392,13 +393,13 @@ public class SequenceDiagramGraph extends Graph
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("sequence.extension");
+		return RESOURCES.getString("sequencediagram.file.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("sequence.name");
+		return RESOURCES.getString("sequencediagram.file.name");
 	}
 
 	@Override

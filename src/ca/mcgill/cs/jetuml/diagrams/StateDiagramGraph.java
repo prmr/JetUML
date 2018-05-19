@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagrams;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
@@ -57,13 +57,13 @@ public class StateDiagramGraph extends Graph
 	@Override
 	public String getFileExtension() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("state.extension");
+		return RESOURCES.getString("statediagram.file.extension");
 	}
 
 	@Override
 	public String getDescription() 
 	{
-		return ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("state.name");
+		return RESOURCES.getString("statediagram.file.name");
 	}
 	
 	// CSOFF:
