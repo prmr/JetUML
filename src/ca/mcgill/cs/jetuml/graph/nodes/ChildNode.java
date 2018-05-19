@@ -29,9 +29,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
  * cannot exist without its parent according to the rules
  * of UML. Child nodes are controlled by their parent nodes.
  * See ParentNode for details.
- * 
- * @author Martin P. Robillard
- *
  */
 public interface ChildNode extends Node
 {

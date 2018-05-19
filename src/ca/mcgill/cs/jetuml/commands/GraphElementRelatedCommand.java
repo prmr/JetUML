@@ -25,8 +25,6 @@ import ca.mcgill.cs.jetuml.graph.GraphElement;
 
 /**
  * A command that involves a single graph element.
- * 
- * @author Martin P. Robillard
  */
 abstract class GraphElementRelatedCommand implements Command
 {

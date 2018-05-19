@@ -28,9 +28,6 @@ import javafx.scene.paint.Paint;
 
 /**
  * Basic services for drawing nodes.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public abstract class AbstractNodeView implements NodeView
 {

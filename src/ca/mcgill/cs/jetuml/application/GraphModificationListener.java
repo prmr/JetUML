@@ -29,10 +29,6 @@ import ca.mcgill.cs.jetuml.graph.Property;
  * Specifies a list of callback methods for any object
  * interested in modifications to a graph. Maps to the 
  * Observer interface in the Observer design pattern.
- * 
- * @author EJBQ - Initial code
- * @author Martin P. Robillard Observer interface refactoring.
- *
  */
 public interface GraphModificationListener
 {

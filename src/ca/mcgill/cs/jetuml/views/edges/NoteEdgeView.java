@@ -32,9 +32,6 @@ import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * A straight dotted line.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class NoteEdgeView extends AbstractEdgeView
 {

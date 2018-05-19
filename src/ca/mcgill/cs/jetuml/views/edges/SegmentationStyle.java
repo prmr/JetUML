@@ -29,8 +29,6 @@ import javafx.geometry.Point2D;
 
 /**
  * A strategy for drawing a segmented line between two nodes.
- * 
- * @author Martin P. Robillard
  */
 public interface SegmentationStyle
 {

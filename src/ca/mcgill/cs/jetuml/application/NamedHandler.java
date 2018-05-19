@@ -25,8 +25,6 @@ import javafx.event.EventHandler;
 
 /**
  * An event handler with a name.
- * 
- * @author Martin P. Robillard
  */
 public class NamedHandler implements EventHandler<ActionEvent>
 {

@@ -20,15 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-/*
- * Contains something that was done in the model.
- * This is used for redoing and undoing commands by 
- * the graph listener and the undo manager
- */
 /**
- * @author EJBQ
- * An interface to allo for commands to be undoable and redoable.
- *
+ * An interface to allow for commands to be undoable and redoable.
  */
 public interface Command 
 {

@@ -28,9 +28,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
  * A serialization context automatically finds all the nodes
  * in a graph, including children nodes, and creates a new map between
  * nodes and identifiers.
- * 
- * @author Martin P. Robillard
- *
  */
 public class SerializationContext extends AbstractContext
 {

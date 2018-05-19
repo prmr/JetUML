@@ -25,8 +25,6 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 
 /**
  * Represents the removal of an edge to the graph.
- * 
- * @author Martin P. Robillard
  */
 public class RemoveEdgeCommand extends GraphElementRelatedCommand
 {

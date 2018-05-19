@@ -29,7 +29,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 
 /**
- *   Defines line styles of various shapes.
+ * Defines line styles of various shapes.
  */
 public enum LineStyle
 {

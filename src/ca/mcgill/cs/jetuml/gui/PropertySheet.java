@@ -46,9 +46,6 @@ import javafx.scene.layout.GridPane;
 /**
  *  A layout that presents the properties of a GraphElement
  *  and allow editing them.
- *  
- *  @author Martin P. Robillard
- *  @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class PropertySheet extends GridPane
 {

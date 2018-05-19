@@ -24,8 +24,6 @@ import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
  * Represents a change to the property of a GraphElement.
- * 
- * @author Martin P. Robillard
  */
 public class ChangePropertyCommand implements Command
 {

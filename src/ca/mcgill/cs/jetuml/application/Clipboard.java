@@ -35,8 +35,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
 
 /**
- * @author Martin P. Robillard
- * 
  * Stores a graph subset for purpose of pasting. The clip-board does not
  * accept edges unless both end-points are also being copied.
  * 

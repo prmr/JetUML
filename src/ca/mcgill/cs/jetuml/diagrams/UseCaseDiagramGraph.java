@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 
 /**
- *   A UML use case diagram.
+ * A UML use case diagram.
  */
 public class UseCaseDiagramGraph extends Graph
 {

@@ -33,9 +33,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an object in an object diagram.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class ObjectNodeView extends RectangleBoundedNodeView
 {

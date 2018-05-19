@@ -25,9 +25,6 @@ import javafx.geometry.Rectangle2D;
 
 /**
  * Conversion utilities.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class Conversions
 {

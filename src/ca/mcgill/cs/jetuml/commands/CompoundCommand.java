@@ -24,7 +24,6 @@ import java.util.Stack;
 
 /**
  * Holds multiple commands to be executed or undone.
- * @author EJBQ
  */
 public class CompoundCommand implements Command
 {

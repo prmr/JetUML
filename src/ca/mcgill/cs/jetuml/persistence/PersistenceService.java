@@ -34,8 +34,6 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 
 /**
  * Services for saving and loading Graph objects (i.e., UML diagrams).
- * 
- * @author Martin P. Robillard
  */
 public final class PersistenceService
 {

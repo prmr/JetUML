@@ -28,8 +28,6 @@ import ca.mcgill.cs.jetuml.views.edges.StateTransitionEdgeView;
  *  A curved edge for a state transition in a state diagram. The
  *  edge has two natures, either a self-edge, or a inter-node 
  *  edge.
- *  
- *  @author Martin P. Robillard
  */
 public class StateTransitionEdge extends SingleLabelEdge
 {

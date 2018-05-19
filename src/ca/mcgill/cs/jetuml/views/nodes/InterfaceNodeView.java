@@ -29,9 +29,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an interface in a class diagram.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class InterfaceNodeView extends RectangleBoundedNodeView
 {

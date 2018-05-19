@@ -27,7 +27,6 @@ import java.util.LinkedList;
 /**
  * A fixed-sized queue for storing a list of 
  * files recently manipulated by the application.
- * @author Martin P. Robillard
  */
 public class RecentFilesQueue implements Iterable<File>
 {

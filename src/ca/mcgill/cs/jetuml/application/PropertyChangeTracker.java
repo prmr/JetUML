@@ -31,8 +31,6 @@ import ca.mcgill.cs.jetuml.graph.Property;
 /**
  * Tracks modification to the properties of a GraphElement.
  * Should be discarded after a call to stopTracking().
- * 
- * @author Martin P. Robillard
  */
 public class PropertyChangeTracker 
 {

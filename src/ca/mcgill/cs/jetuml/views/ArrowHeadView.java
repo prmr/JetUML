@@ -40,8 +40,6 @@ import javafx.scene.shape.PathElement;
 
 /**
  * Defines how to draw arrow heads.
- * 
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class ArrowHeadView
 {

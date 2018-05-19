@@ -39,10 +39,6 @@ import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 /**
  * Provides shared services for rendering an edge.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
- *
  */
 public abstract class AbstractEdgeView implements EdgeView
 {

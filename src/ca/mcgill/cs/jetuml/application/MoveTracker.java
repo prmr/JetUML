@@ -33,8 +33,6 @@ import javafx.geometry.Rectangle2D;
 
 /**
  * Tracks the movement of a set of selected graph elements.
- * 
- * @author Martin P. Robillard
  */
 public class MoveTracker
 {

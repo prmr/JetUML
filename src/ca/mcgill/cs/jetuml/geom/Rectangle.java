@@ -23,8 +23,6 @@ package ca.mcgill.cs.jetuml.geom;
 /**
  * A framework independent representation of a rectangle in 
  * 2-dimensional integer space. Immutable.
- * 
- * @author Martin P. Robillard
  */
 public class Rectangle
 {

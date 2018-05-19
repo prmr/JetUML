@@ -33,9 +33,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
  * removed from the graph, all its children are also removed. 
  * Cloning a parent node clones all the children, and similarly
  * with all other operations, including copying, translating, etc.
- * 
- * @author Martin P. Robillard
- *
  */
 public interface ParentNode extends Node
 {

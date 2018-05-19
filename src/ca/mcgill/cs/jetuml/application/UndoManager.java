@@ -27,8 +27,6 @@ import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 
 /**
  * Performs the undoing and redoing of commands on a graph.
- * @author EJBQ
- *
  */
 public class UndoManager 
 {

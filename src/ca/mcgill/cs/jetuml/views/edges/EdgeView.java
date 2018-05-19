@@ -28,9 +28,6 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object capable of computing the actual geometry
  * of an edge and drawing it on a graphics context.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public interface EdgeView
 {

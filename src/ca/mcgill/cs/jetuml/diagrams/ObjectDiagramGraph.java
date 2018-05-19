@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 
 /**
- *   An UML-style object diagram that shows object references.
+ *  An UML-style object diagram that shows object references.
  */
 public class ObjectDiagramGraph extends Graph
 {

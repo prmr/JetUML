@@ -27,9 +27,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
  * A deserialization context allows clients to incrementally build
  * up the context. The identifiers that correspond to objects must be 
  * specified explicitly. 
- * 
- * @author Martin P. Robillard
- *
  */
 public class DeserializationContext extends AbstractContext
 {

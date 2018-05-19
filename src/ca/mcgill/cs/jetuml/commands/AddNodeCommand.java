@@ -25,8 +25,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
  * Represents the addition of a node to the graph.
- * 
- * @author Martin P. Robillard
  */
 public class AddNodeCommand extends GraphElementRelatedCommand
 {

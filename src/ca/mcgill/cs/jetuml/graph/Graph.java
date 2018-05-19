@@ -52,8 +52,6 @@ import javafx.scene.canvas.GraphicsContext;
  *    
  *  - Adding nodes or edges. This mode is used for adding completely new elements, typically
  *    through UI actions. See methods add{Node|Edge}, which trigger notifications.
- *    
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public abstract class Graph
 {

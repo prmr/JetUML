@@ -41,8 +41,6 @@ import javafx.scene.paint.Color;
 /**
  * Utility class to create icons that are drawn
  * using graphic primitives.
- * 
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class ImageCreator 
 {

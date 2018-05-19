@@ -31,8 +31,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 /**
  * A utility class to create and access diagram extension 
  * filters used by the file chooser.
- * 
- * @author Kaylee I. Kutschera
  */
 public final class FileExtensions
 {

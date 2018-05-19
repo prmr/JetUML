@@ -37,9 +37,6 @@ import javafx.scene.text.TextBoundsType;
  * - underline
  * - bold
  * - different alignments.
- * 
- * @author Martin P. Robillard.
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class StringViewer
 {

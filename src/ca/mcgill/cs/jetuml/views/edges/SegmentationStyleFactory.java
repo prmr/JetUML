@@ -42,9 +42,6 @@ import javafx.geometry.Point2D;
 
 /**
  * A class for creating line segmentation strategies.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public final class SegmentationStyleFactory
 {

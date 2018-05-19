@@ -28,8 +28,6 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
  * Abstract edge in the new hierarchy.
- * 
- * @author Martin P. Robillard
  */
 public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 {

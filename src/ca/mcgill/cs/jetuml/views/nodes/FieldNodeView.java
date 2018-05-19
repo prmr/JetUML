@@ -30,9 +30,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a FieldNode.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public class FieldNodeView extends RectangleBoundedNodeView
 {

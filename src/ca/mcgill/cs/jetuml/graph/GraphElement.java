@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.graph;
 
 /**
  * A type that allows us to treat nodes and edges uniformly.
- * 
- * @author Martin P. Robillard
  */
 public interface GraphElement extends Cloneable
 {

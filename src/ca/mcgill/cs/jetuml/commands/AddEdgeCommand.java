@@ -25,8 +25,6 @@ import ca.mcgill.cs.jetuml.graph.Graph;
 
 /**
  * Represents the addition of an edge to the graph.
- * 
- * @author Martin P. Robillard
  */
 public class AddEdgeCommand extends GraphElementRelatedCommand
 {

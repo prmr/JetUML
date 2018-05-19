@@ -40,9 +40,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
  * * The graph type
  * * An array of node encodings
  * * An array of edge encodings
- * 
- * @author Martin P. Robillard
- *
  */
 public final class JsonEncoder
 {

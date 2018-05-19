@@ -41,9 +41,6 @@ import java.util.function.Supplier;
  * allows client code to insert a property at a specific index. Keeping properties in order
  * allows for uses such as displaying properties in a predictable order, for instance 
  * in GUI forms.
- * 
- * @author Martin P. Robillard
- *
  */
 public class Properties implements Iterable<Property>
 {

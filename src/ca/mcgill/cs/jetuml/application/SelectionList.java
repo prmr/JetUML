@@ -40,9 +40,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
  *    the add operation, if a child node is added and its parent is present, it is 
  *    transparently not added. If a parent node is added that transitively contains 
  *    some of the nodes in the selection, these are removed from the selection.
- * 
- * @author Martin P. Robillard
- *
  */
 public class SelectionList implements Iterable<GraphElement>
 {

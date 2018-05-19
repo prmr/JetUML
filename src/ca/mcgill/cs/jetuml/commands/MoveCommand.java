@@ -25,7 +25,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
  * Stores the moving of a node.
- * @author EJBQ
  */
 public class MoveCommand implements Command
 {

@@ -31,8 +31,6 @@ import java.util.function.Supplier;
  * properties can be used, e.g., when creating UI components.
  * 
  * The values managed by a property should only be of immutable types.
- * 
- * @author Martin P. Robillard
  */
 public class Property
 {

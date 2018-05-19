@@ -31,9 +31,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
  * is a mapping between nodes and arbitrary identifiers. The only constraint
  * on identifiers is that they consistently preserve mapping between objects and
  * their identity.
- * 
- * @author Martin P. Robillard
- *
  */
 public abstract class AbstractContext implements Iterable<Node>
 {

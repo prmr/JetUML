@@ -25,8 +25,6 @@ import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
  * Represents the removal of a node from the graph.
- * 
- * @author Martin P. Robillard
  */
 public class DeleteNodeCommand extends GraphElementRelatedCommand
 {

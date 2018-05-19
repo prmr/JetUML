@@ -27,9 +27,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * Common elements for the Node hierarchy.
- * 
- * @author Martin P. Robillard
- *
  */
 public abstract class AbstractNode extends AbstractGraphElement implements Node
 {

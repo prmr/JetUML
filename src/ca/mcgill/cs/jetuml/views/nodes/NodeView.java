@@ -28,9 +28,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Services to query the visual properties of a node.
- * 
- * @author Martin P. Robillard
- * @author Kaylee I. Kutschera - Migration to JavaFX
  */
 public interface NodeView
 {

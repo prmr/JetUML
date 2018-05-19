@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 /**
  * An edge with three labels.
- * 
- * @author Martin P. Robillard
  */
 public abstract class ThreeLabelEdge extends SingleLabelEdge
 {
