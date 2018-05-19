@@ -49,9 +49,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 /**
  * Tests for the methods of class Graph as obtainable through
  * an instance of ClassDiagramGraph
- * 
- * @author Martin P. Robillard
- *
  */
 public class TestGraph
 {

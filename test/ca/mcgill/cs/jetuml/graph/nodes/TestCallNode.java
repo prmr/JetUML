@@ -26,9 +26,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.graph.Properties;
 
-/**
- * @author Martin P. Robillard
- */
 public class TestCallNode
 {
 	private CallNode aNode;

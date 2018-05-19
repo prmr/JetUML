@@ -36,9 +36,6 @@ import ca.mcgill.cs.jetuml.graph.Property;
 /**
  * Utilities to facilitate writing tests for the persistence
  * classes.
- * 
- * @author Martin P. Robillard
- *
  */
 final class PersistenceTestUtils
 {

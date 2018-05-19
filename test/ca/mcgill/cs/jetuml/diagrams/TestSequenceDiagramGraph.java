@@ -35,10 +35,6 @@ import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 
-/**
- * @author Martin P. Robillard
- * @author Gabriel Cormier-Affleck (testDeepFindNodeTwoChildren)
- */
 public class TestSequenceDiagramGraph
 {
 	 private SequenceDiagramGraph aGraph;

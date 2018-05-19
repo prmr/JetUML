@@ -46,11 +46,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Tests various interactions with Sequence Diagram normally triggered from the 
  * GUI. Here we use the API to simulate GUI Operation for Sequence Diagram.
- * 
- * @author Jiajun Chen
- * @author Martin P. Robillard - Modifications to Clipboard API
  */
-
 public class TestUsageScenariosSequenceDiagram 
 {
 	private SequenceDiagramGraph aDiagram;

@@ -28,9 +28,6 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.graph.Properties;
 
-/**
- * @author Martin P. Robillard
- */
 public class TestActorNode
 {
 	private ActorNode aNode;

@@ -46,12 +46,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Tests various interactions with Object Diagram normally triggered from the 
  * GUI. Here we use the API to simulate GUI Operation for Object Diagram.
- * 
- * @author Jiajun Chen
- * @author Martin P. Robillard - Modifications to Clipboard API
- *
  */
-
 public class TestUsageScenariosObjectDiagram 
 {
 	private ObjectDiagramGraph aDiagram;
