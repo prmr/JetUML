@@ -31,7 +31,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 public class TestFileExtensions 
 {
-	
 	@Test
 	public void testGetAll() 
 	{
@@ -47,7 +46,7 @@ public class TestFileExtensions
 	public void testGetOnValidInput() 
 	{
 		assertNotNull(FileExtensions.get("Class Diagram Files"));
-		assertNotNull(FileExtensions.get("Jet Files"));
+		assertNotNull(FileExtensions.get("JetUML Files"));
 		assertNotNull(FileExtensions.get("All Files"));
 	}
 	
@@ -56,5 +55,4 @@ public class TestFileExtensions
 	{
 		assertEquals(null, FileExtensions.get(""));
 	}
-
 }

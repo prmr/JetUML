@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 
@@ -43,19 +43,25 @@ public final class FileExtensions
 	 */
 	static 
 	{
-		ResourceBundle aAppResources = ResourceBundle.getBundle(UMLEditor.class.getName() + "Strings");
-		aFileFilters.add(new ExtensionFilter("Jet Files", "*" + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("class.name"), 
-				"*" + aAppResources.getString("class.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("sequence.name"), 
-				"*" + aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("state.name"), 
-					    "*" + aAppResources.getString("state.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("object.name"), 
-						"*" + aAppResources.getString("object.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter(aAppResources.getString("usecase.name"), 
-						"*" + aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")));
-		aFileFilters.add(new ExtensionFilter("All Files", "*.*"));
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.name"), 
+				"*" + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("classdiagram.file.name"), 
+				"*" + RESOURCES.getString("classdiagram.file.extension") + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("sequencediagram.file.name"), 
+				"*" + RESOURCES.getString("sequencediagram.file.extension") + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("state.file.name"), 
+				"*" + RESOURCES.getString("state.file.extension") + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("object.file.name"), 
+				"*" + RESOURCES.getString("object.file.extension") + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecase.file.name"), 
+				"*" + RESOURCES.getString("usecase.file.extension") + RESOURCES.getString("application.file.extension")));
+		
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*"));
 	}
 	
 	/**
