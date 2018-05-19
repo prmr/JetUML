@@ -21,7 +21,8 @@
 
 package ca.mcgill.cs.jetuml;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.concurrent.CountDownLatch;
 
 import ca.mcgill.cs.jetuml.application.JavaVersion;
@@ -37,11 +38,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * A program for editing UML diagrams.
+ * Entry point for launching JetUML.
  */
 public final class UMLEditor extends Application
 {
-	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(8, 0, 0);
+	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(10, 0, 1);
 	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	
 	/**
@@ -58,10 +59,8 @@ public final class UMLEditor extends Application
 	{
 		setStageBoundaries(pStage);
 		
-		ResourceBundle aAppResources = ResourceBundle.getBundle(this.getClass().getName() + "Strings");
-		pStage.setTitle(aAppResources.getString("app.name"));
-		String imagePath = aAppResources.getString("app.icon");
-		pStage.getIcons().add(new Image(imagePath));
+		pStage.setTitle(RESOURCES.getString("application.name"));
+		pStage.getIcons().add(new Image(RESOURCES.getString("application.iconpath")));
 		
 		pStage.setScene(new Scene(new EditorFrame(UMLEditor.class, pStage)));
 		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
@@ -92,22 +91,13 @@ public final class UMLEditor extends Application
 	 */
 	private static void checkVersion()
 	{
-		JavaVersion currentVersion = new JavaVersion();
+		final JavaVersion currentVersion = new JavaVersion();
 		if( currentVersion.compareTo(MINIMAL_JAVA_VERSION) < 0 )
 		{
 			final CountDownLatch wait = new CountDownLatch(1);
-			ResourceBundle resources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
 			Platform.runLater(() -> 
 			{
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle(resources.getString("error.title"));
-				alert.setHeaderText(resources.getString("error.version.header"));
-				alert.setContentText(String.format("%s %s. %s %s.",
-						resources.getString("error.version.required"),
-						MINIMAL_JAVA_VERSION,
-						resources.getString("error.version.detected"),
-						currentVersion));
-				alert.showAndWait();
+				createVersionNotSupportedDialog(currentVersion).showAndWait();
 				wait.countDown();
 			});
 			try
@@ -118,5 +108,18 @@ public final class UMLEditor extends Application
 			{} // Nothing, we want to exit anyways
 			System.exit(1);
 		}
+	}
+	
+	private static Alert createVersionNotSupportedDialog(JavaVersion pCurrentVersion)
+	{
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(RESOURCES.getString("alert.error.title"));
+		alert.setHeaderText(RESOURCES.getString("alert.version.header"));
+		alert.setContentText(String.format("%s %s. %s %s.",
+				RESOURCES.getString("alert.version.required"),
+				MINIMAL_JAVA_VERSION,
+				RESOURCES.getString("alert.version.detected"),
+				pCurrentVersion));
+		return alert;
 	}
 }
