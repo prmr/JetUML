@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.AssociationEdge;
@@ -45,7 +45,7 @@ public class TestSegmentationStrategies
 	private ClassNode aNode3;
 	private ClassNode aNode4;
 	private PackageNode aNode5;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -71,7 +71,7 @@ public class TestSegmentationStrategies
 		aNode4.translate(110, 20);
 		aNode5 = new PackageNode();
 		aNode5.translate(200, 250);
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aGraph.insertNode(aNode1);
 		aGraph.insertNode(aNode2);
 		aGraph.insertNode(aNode3);

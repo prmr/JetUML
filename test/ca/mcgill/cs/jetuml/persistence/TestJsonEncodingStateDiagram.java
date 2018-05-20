@@ -35,7 +35,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
@@ -45,7 +45,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 
 public class TestJsonEncodingStateDiagram
 {
-	private StateDiagramGraph aGraph;
+	private StateDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -60,7 +60,7 @@ public class TestJsonEncodingStateDiagram
 	@Before
 	public void setup()
 	{
-		aGraph = new StateDiagramGraph();
+		aGraph = new StateDiagram();
 	}
 	
 	/*
@@ -134,7 +134,7 @@ public class TestJsonEncodingStateDiagram
 	{
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("StateDiagramGraph", object.getString("diagram"));
+		assertEquals("StateDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());				
 	}
@@ -146,7 +146,7 @@ public class TestJsonEncodingStateDiagram
 		
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("StateDiagramGraph", object.getString("diagram"));
+		assertEquals("StateDiagram", object.getString("diagram"));
 		assertEquals(1, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());	
 		JSONObject node = object.getJSONArray("nodes").getJSONObject(0);
@@ -166,7 +166,7 @@ public class TestJsonEncodingStateDiagram
 		JSONObject object = JsonEncoder.encode(aGraph);
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("StateDiagramGraph", object.getString("diagram"));
+		assertEquals("StateDiagram", object.getString("diagram"));
 		assertEquals(4, object.getJSONArray("nodes").length());	
 		assertEquals(3, object.getJSONArray("edges").length());	
 		
@@ -193,7 +193,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Start"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "End"));
@@ -215,7 +215,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph()
 	{
 		initiGraph();
-		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "The Node"));
 		assertEquals(new Point(10,20), node1.position());
@@ -226,7 +226,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph3()
 	{
 		initiGraph3();
-		StateDiagramGraph graph = (StateDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node1"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node2"));

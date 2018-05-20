@@ -35,7 +35,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
@@ -44,7 +44,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 
 public class TestJsonEncodingUseCaseDiagram
 {
-	private UseCaseDiagramGraph aGraph;
+	private UseCaseDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -59,7 +59,7 @@ public class TestJsonEncodingUseCaseDiagram
 	@Before
 	public void setup()
 	{
-		aGraph = new UseCaseDiagramGraph();
+		aGraph = new UseCaseDiagram();
 	}
 	
 	/*
@@ -103,7 +103,7 @@ public class TestJsonEncodingUseCaseDiagram
 	{
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("UseCaseDiagramGraph", object.getString("diagram"));
+		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());				
 	}
@@ -115,7 +115,7 @@ public class TestJsonEncodingUseCaseDiagram
 		
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("UseCaseDiagramGraph", object.getString("diagram"));
+		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(1, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());	
 		JSONObject node = object.getJSONArray("nodes").getJSONObject(0);
@@ -135,7 +135,7 @@ public class TestJsonEncodingUseCaseDiagram
 		JSONObject object = JsonEncoder.encode(aGraph);
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("UseCaseDiagramGraph", object.getString("diagram"));
+		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(2, object.getJSONArray("nodes").length());	
 		assertEquals(1, object.getJSONArray("edges").length());	
 		
@@ -154,7 +154,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		UseCaseDiagram graph = (UseCaseDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build("name", "Mr. Bob"));
 		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Do it"));
@@ -168,7 +168,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecodeGraph()
 	{
 		initiGraph();
-		UseCaseDiagramGraph graph = (UseCaseDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		UseCaseDiagram graph = (UseCaseDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));
 		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node2"));

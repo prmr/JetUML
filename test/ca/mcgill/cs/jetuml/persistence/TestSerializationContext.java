@@ -29,7 +29,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
@@ -38,7 +38,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 public class TestSerializationContext
 {
 	private SerializationContext aContext;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	private PackageNode aPackage1; // Root
 	private PackageNode aPackage2; // Child of aPackage1
 	private ClassNode aClassNode1; // Root
@@ -59,7 +59,7 @@ public class TestSerializationContext
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aClassNode1 = new ClassNode();

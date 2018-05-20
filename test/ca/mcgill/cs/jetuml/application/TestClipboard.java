@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
@@ -56,7 +56,7 @@ public class TestClipboard
 	private DependencyEdge aEdge1;
 	private DependencyEdge aEdge2;
 	private SelectionList aSelectionList;
-	private ClassDiagramGraph aClassDiagramGraph;
+	private ClassDiagram aClassDiagramGraph;
 	private GraphPanel aPanel;
 	
 	/**
@@ -86,7 +86,7 @@ public class TestClipboard
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		
-		aClassDiagramGraph = new ClassDiagramGraph();
+		aClassDiagramGraph = new ClassDiagram();
 		aPanel = new GraphPanel(aClassDiagramGraph, new DiagramFrameToolBar(aClassDiagramGraph), new Rectangle2D(0, 0, 0, 0));
 	}
 	

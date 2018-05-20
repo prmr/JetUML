@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
@@ -49,7 +49,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class TestUsageScenariosObjectDiagram 
 {
-	private ObjectDiagramGraph aDiagram;
+	private ObjectDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private ObjectNode aObjectNode1;
@@ -76,7 +76,7 @@ public class TestUsageScenariosObjectDiagram
 	@Before
 	public void setup()
 	{
-		aDiagram = new ObjectDiagramGraph();
+		aDiagram = new ObjectDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aPanel = new GraphPanel(aDiagram, new DiagramFrameToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aObjectNode1 = new ObjectNode();

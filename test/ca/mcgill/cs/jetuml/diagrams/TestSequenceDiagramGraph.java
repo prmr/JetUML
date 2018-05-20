@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
 
 public class TestSequenceDiagramGraph
 {
-	 private SequenceDiagramGraph aGraph;
+	 private SequenceDiagram aGraph;
 	 
 	 /**
 	  * Load JavaFX toolkit and environment.
@@ -52,7 +52,7 @@ public class TestSequenceDiagramGraph
 	 @Before
 	 public void setup()
 	 {
-		 aGraph = new SequenceDiagramGraph();
+		 aGraph = new SequenceDiagram();
 	 }
 	 
 	 @Test

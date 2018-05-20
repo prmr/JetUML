@@ -43,7 +43,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagramGraph extends Graph
+public class SequenceDiagram extends Graph
 {
 	private static final ImplicitParameterNode IMPLICIT_PARAMETER_NODE = new ImplicitParameterNode();
 	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};

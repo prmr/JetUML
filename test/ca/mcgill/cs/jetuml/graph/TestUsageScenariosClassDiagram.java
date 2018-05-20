@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
@@ -56,7 +56,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class TestUsageScenariosClassDiagram 
 {
-	private ClassDiagramGraph aDiagram;
+	private ClassDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private SelectionList aList;
@@ -82,7 +82,7 @@ public class TestUsageScenariosClassDiagram
 	@Before
 	public void setup()
 	{
-		aDiagram = new ClassDiagramGraph();
+		aDiagram = new ClassDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aPanel = new GraphPanel(aDiagram, new DiagramFrameToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aList = new SelectionList();

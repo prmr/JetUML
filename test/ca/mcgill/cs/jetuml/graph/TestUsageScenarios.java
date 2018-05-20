@@ -29,8 +29,8 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
@@ -66,7 +66,7 @@ public class TestUsageScenarios
 	@Test
 	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		ClassDiagram diagram = new ClassDiagram();
 		PackageNode p1 = new PackageNode();
 		ClassNode c1 = new ClassNode();
 		ClassNode c2 = new ClassNode();
@@ -96,7 +96,7 @@ public class TestUsageScenarios
 	@Test
 	public void testClassDiagramCopyPackageNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagramGraph diagram = new ClassDiagramGraph();
+		ClassDiagram diagram = new ClassDiagram();
 		PackageNode p1 = new PackageNode();
 		PackageNode c1 = new PackageNode();
 		PackageNode c2 = new PackageNode();
@@ -127,7 +127,7 @@ public class TestUsageScenarios
 	public void testStateDiagramCreate()
 	{
 		// Create a state diagram with two state nodes, one start node, one end node
-		StateDiagramGraph diagram = new StateDiagramGraph();
+		StateDiagram diagram = new StateDiagram();
 		StateNode node1 = new StateNode();
 		node1.setName("Node 1");
 		StateNode node2 = new StateNode();
@@ -200,7 +200,7 @@ public class TestUsageScenarios
 	public void testStateDiagramCreateNotes() throws Exception
 	{
 		// Create a state diagram with two state nodes, one start node, one end node
-		StateDiagramGraph diagram = new StateDiagramGraph();
+		StateDiagram diagram = new StateDiagram();
 		StateNode node1 = new StateNode();
 		node1.setName("Node 1");
 		diagram.addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);

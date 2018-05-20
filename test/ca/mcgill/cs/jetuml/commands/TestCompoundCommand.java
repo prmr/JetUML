@@ -32,7 +32,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Graph;
@@ -75,7 +75,7 @@ public class TestCompoundCommand
     @Before
     public void setup() throws Exception
     {
-        aGraph = new ClassDiagramGraph();
+        aGraph = new ClassDiagram();
         aClassNode = new ClassNode();
         aActorNode = new ActorNode();
         aCallEdge = new CallEdge();

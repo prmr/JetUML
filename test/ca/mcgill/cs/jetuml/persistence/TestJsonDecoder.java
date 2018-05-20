@@ -59,7 +59,7 @@ public class TestJsonDecoder
 	{
 		JSONObject object = new JSONObject();
 		object.put("version", "1.2");
-		object.put("diagram", "StateDiagramGraph");
+		object.put("diagram", "StateDiagram");
 		JsonDecoder.decode(object);
 	}
 }

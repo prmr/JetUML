@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
@@ -40,7 +40,7 @@ public class TestNoteEdgeView
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -63,7 +63,7 @@ public class TestNoteEdgeView
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
 		
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 	}
 	
 	@Test

@@ -44,7 +44,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 /**
  *  A UML class diagram.
  */
-public class ClassDiagramGraph extends Graph
+public class ClassDiagram extends Graph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), 
 															  new InterfaceNode(), 

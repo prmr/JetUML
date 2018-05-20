@@ -38,7 +38,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
@@ -47,7 +47,7 @@ public class TestMoveTracker
 {
 	private MoveTracker aMoveTracker;
 	private SelectionList aSelection;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
 	private DependencyEdge aEdge1;
@@ -71,7 +71,7 @@ public class TestMoveTracker
 	{
 		aMoveTracker = new MoveTracker();
 		aSelection = new SelectionList();
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);
 		aNode2 = new ClassNode();

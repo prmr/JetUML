@@ -23,11 +23,11 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.io.File;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -144,23 +144,23 @@ public class GraphFrame extends Tab
 		else
 		{
 			Graph graphType = getGraph();
-			if (graphType instanceof UseCaseDiagramGraph)
+			if (graphType instanceof UseCaseDiagram)
 			{
 				setText("Use Case Diagram");
 			} 
-			else if (graphType instanceof StateDiagramGraph)
+			else if (graphType instanceof StateDiagram)
 			{
 				setText("State Diagram");
 			} 
-			else if (graphType instanceof ClassDiagramGraph)
+			else if (graphType instanceof ClassDiagram)
 			{
 				setText("Class Diagram");
 			} 
-			else if (graphType instanceof SequenceDiagramGraph)
+			else if (graphType instanceof SequenceDiagram)
 			{
 				setText("Sequence Diagram");
 			} 
-			else if (graphType instanceof ObjectDiagramGraph)
+			else if (graphType instanceof ObjectDiagram)
 			{
 				setText("Object Diagram");
 			} 

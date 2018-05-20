@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 /**
  * A UML state diagram.
  */
-public class StateDiagramGraph extends Graph
+public class StateDiagram extends Graph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};

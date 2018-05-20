@@ -45,11 +45,11 @@ import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.NamedHandler;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagrams.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
@@ -103,8 +103,8 @@ public class EditorFrame extends BorderPane
 	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
 	
-	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagramGraph.class, SequenceDiagramGraph.class, 
-			StateDiagramGraph.class, ObjectDiagramGraph.class, UseCaseDiagramGraph.class};
+	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagram.class, SequenceDiagram.class, 
+			StateDiagram.class, ObjectDiagram.class, UseCaseDiagram.class};
 	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
@@ -187,8 +187,8 @@ public class EditorFrame extends BorderPane
 	 */
 	private static String getResourceName(String pClassName)
 	{
-		assert pClassName.length() > "DiagramGraph".length() && pClassName.endsWith("DiagramGraph");
-		return pClassName.substring(0, pClassName.length() - "DiagramGraph".length()).toLowerCase() + "_diagram";
+		assert pClassName.length() > "Diagram".length() && pClassName.endsWith("Diagram");
+		return pClassName.substring(0, pClassName.length() - "Diagram".length()).toLowerCase() + "_diagram";
 	}
 	
 	private void createFileMenu(MenuFactory pFactory) 

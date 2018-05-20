@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 /**
  *  An UML-style object diagram that shows object references.
  */
-public class ObjectDiagramGraph extends Graph
+public class ObjectDiagram extends Graph
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];

@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
@@ -49,7 +49,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class TestUsageScenariosSequenceDiagram 
 {
-	private SequenceDiagramGraph aDiagram;
+	private SequenceDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private SelectionList aList;
@@ -75,7 +75,7 @@ public class TestUsageScenariosSequenceDiagram
 	@Before
 	public void setup()
 	{
-		aDiagram = new SequenceDiagramGraph();
+		aDiagram = new SequenceDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aPanel = new GraphPanel(aDiagram, new DiagramFrameToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aList = new SelectionList();
@@ -725,7 +725,7 @@ public class TestUsageScenariosSequenceDiagram
 		}
 		aPanel.setSelectionList(aList);
 		aPanel.copy();
-		SequenceDiagramGraph tempDiagram = new SequenceDiagramGraph();
+		SequenceDiagram tempDiagram = new SequenceDiagram();
 		aPanel.paste();
 		tempDiagram.draw(aGraphics);
 		

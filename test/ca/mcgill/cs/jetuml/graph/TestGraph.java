@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
@@ -48,7 +48,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 
 /**
  * Tests for the methods of class Graph as obtainable through
- * an instance of ClassDiagramGraph
+ * an instance of ClassDiagram
  */
 public class TestGraph
 {
@@ -73,7 +73,7 @@ public class TestGraph
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNode3 = new ClassNode();
@@ -208,13 +208,13 @@ public class TestGraph
 	@Test
 	public void testGetBoundsEmpty()
 	{
-		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagramGraph().getBounds());
+		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagram().getBounds());
 	}
 	
 	@Test
 	public void testGetBoundsSingleNode()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
+		ClassDiagram graph = new ClassDiagram();
 		graph.addNode(aNode1, new Point(0,0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
 	}
@@ -259,7 +259,7 @@ public class TestGraph
 	@Test
 	public void testGetBoundsWithMove()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
+		ClassDiagram graph = new ClassDiagram();
 		ClassNode node = new ClassNode();
 		graph.restoreRootNode(node);
 		node.translate(50, 50);
@@ -274,7 +274,7 @@ public class TestGraph
 	@Test
 	public void testRemoveNodeEdge()
 	{
-		ClassDiagramGraph graph = new ClassDiagramGraph();
+		ClassDiagram graph = new ClassDiagram();
 		NoteNode node = new NoteNode();
 		PointNode point = new PointNode();
 		NoteEdge edge = new NoteEdge();

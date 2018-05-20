@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
@@ -51,7 +51,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class TestUsageScenariosUseCaseDiagram 
 {
-	private UseCaseDiagramGraph aDiagram;
+	private UseCaseDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private GraphPanel aPanel;
 	private ActorNode aActorNode1;
@@ -78,7 +78,7 @@ public class TestUsageScenariosUseCaseDiagram
 	@Before
 	public void setup()
 	{
-		aDiagram = new UseCaseDiagramGraph();
+		aDiagram = new UseCaseDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aPanel = new GraphPanel(aDiagram, new DiagramFrameToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aActorNode1 = new ActorNode();

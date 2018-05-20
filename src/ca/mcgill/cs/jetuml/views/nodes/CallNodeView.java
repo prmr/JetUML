@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -121,8 +121,8 @@ public class CallNodeView extends RectangleBoundedNodeView
 	public void layout(Graph pGraph)
 	{
 		assert implicitParameter() != null;
-		assert pGraph instanceof SequenceDiagramGraph;
-		SequenceDiagramGraph graph = (SequenceDiagramGraph) pGraph;
+		assert pGraph instanceof SequenceDiagram;
+		SequenceDiagram graph = (SequenceDiagram) pGraph;
 
 		// Shift the node to its proper place on the X axis.
 		node().translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
@@ -150,8 +150,8 @@ public class CallNodeView extends RectangleBoundedNodeView
 		int xmid = implicitParameter().view().getBounds().getCenter().getX();
 
 		// Calculate a shift for each caller with the same implicit parameter
-		for(CallNode node = ((SequenceDiagramGraph)pGraph).getCaller(node()); node != null && node != node(); 
-				node = ((SequenceDiagramGraph)pGraph).getCaller(node))
+		for(CallNode node = ((SequenceDiagram)pGraph).getCaller(node()); node != null && node != node(); 
+				node = ((SequenceDiagram)pGraph).getCaller(node))
 		{
 			if(((CallNode)node).getParent() == implicitParameter())
 			{
@@ -165,7 +165,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	 * Compute the Y coordinate of the bottom of the CallNode. This 
 	 * triggers the layout of all callee nodes.
 	 */
-	private int computeBottomY(SequenceDiagramGraph pGraph)
+	private int computeBottomY(SequenceDiagram pGraph)
 	{
 		// Compute the Y coordinate of the bottom of the node
 		int bottomY = getBounds().getY() + CallNode.CALL_YGAP;

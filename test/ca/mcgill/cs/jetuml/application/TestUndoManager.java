@@ -35,7 +35,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestUndoManager
@@ -64,11 +64,11 @@ public class TestUndoManager
 	public void setup() throws Exception
 	{
 		aUndoManager = new UndoManager();
-		aCommand1 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
-		aCommand2 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
-		aCommand3 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
-		aCommand4 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
-		aCommand5 = new AddNodeCommand(new ClassDiagramGraph(), new ClassNode());
+		aCommand1 = new AddNodeCommand(new ClassDiagram(), new ClassNode());
+		aCommand2 = new AddNodeCommand(new ClassDiagram(), new ClassNode());
+		aCommand3 = new AddNodeCommand(new ClassDiagram(), new ClassNode());
+		aCommand4 = new AddNodeCommand(new ClassDiagram(), new ClassNode());
+		aCommand5 = new AddNodeCommand(new ClassDiagram(), new ClassNode());
 		aPastCommands = UndoManager.class.getDeclaredField("aPastCommands");
 		aPastCommands.setAccessible(true);
 		aUndoneCommands = UndoManager.class.getDeclaredField("aUndoneCommands");

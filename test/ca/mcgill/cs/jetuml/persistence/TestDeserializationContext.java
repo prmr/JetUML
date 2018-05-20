@@ -28,13 +28,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestDeserializationContext
 {
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	private DeserializationContext aContext;
 	private ClassNode aClassNode1; 
 	private ClassNode aClassNode2; 
@@ -53,7 +53,7 @@ public class TestDeserializationContext
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aClassNode3 = new ClassNode();

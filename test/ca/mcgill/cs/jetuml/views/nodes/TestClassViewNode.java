@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
@@ -41,7 +41,7 @@ public class TestClassViewNode
 {
 	private ClassNode aNode1;
 	private Graphics2D aGraphics;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -58,7 +58,7 @@ public class TestClassViewNode
 	{
 		aNode1 = new ClassNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aGraph= new ClassDiagramGraph();
+		aGraph= new ClassDiagram();
 	}
 	
 	@After
