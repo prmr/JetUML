@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.commands;
 import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
- * Represents a change to the property of a GraphElement.
+ * Represents a change to the property of a DiagramElement.
  */
 public class ChangePropertyCommand implements Command
 {

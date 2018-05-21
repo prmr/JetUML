@@ -26,7 +26,7 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 /**
  * An edge in a graph.
  */
-public interface Edge extends GraphElement
+public interface Edge extends DiagramElement
 {
    /**
     * Connect this edge to two nodes.

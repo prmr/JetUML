@@ -305,7 +305,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 
 		aPanel.selectAll();
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
@@ -320,7 +320,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(new Rectangle(157, 87, 16, 30), aCallNode2.view().getBounds());
 
 		aPanel.selectAll();
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
@@ -348,7 +348,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		
 		aPanel.selectAll();
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
@@ -362,7 +362,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(new Rectangle(57, 75, 16, 70), aCallNode1.view().getBounds());
 		
 		aPanel.selectAll();
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{

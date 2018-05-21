@@ -228,7 +228,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
 		aPanel.selectAll();
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{

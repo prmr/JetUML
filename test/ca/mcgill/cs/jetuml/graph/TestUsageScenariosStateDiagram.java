@@ -281,7 +281,7 @@ public class TestUsageScenariosStateDiagram
 		Rectangle aTransitionEdge2Bounds = aTransitionEdge2.view().getBounds();
 		Rectangle aTransitionEdge3Bounds = aTransitionEdge3.view().getBounds();
 
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{

@@ -46,7 +46,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
@@ -207,7 +207,7 @@ public class GraphPanel extends Canvas
 	 */
 	public void editSelected()
 	{
-		GraphElement edited = aSelectedElements.getLastSelected();
+		DiagramElement edited = aSelectedElements.getLastSelected();
 		if (edited == null)
 		{
 			return;
@@ -263,7 +263,7 @@ public class GraphPanel extends Canvas
 	{
 		aUndoManager.startTracking();
 		Stack<Node> nodes = new Stack<>();
-		for (GraphElement element : aSelectedElements)
+		for (DiagramElement element : aSelectedElements)
 		{
 			if (element instanceof Node)
 			{
@@ -398,8 +398,8 @@ public class GraphPanel extends Canvas
 		}
 		aGraph.draw(context);
 
-		Set<GraphElement> toBeRemoved = new HashSet<>();
-		for (GraphElement selected : aSelectedElements)
+		Set<DiagramElement> toBeRemoved = new HashSet<>();
+		for (DiagramElement selected : aSelectedElements)
 		{
 			if (!aGraph.contains(selected)) 
 			{
@@ -421,7 +421,7 @@ public class GraphPanel extends Canvas
 			}
 		}
 
-		for (GraphElement element : toBeRemoved)
+		for (DiagramElement element : toBeRemoved)
 		{
 			aSelectedElements.remove(element);
 		}                 
@@ -580,7 +580,7 @@ public class GraphPanel extends Canvas
 		 * Also adds the inner edges of parent nodes to the selection list.
 		 * @param pElement
 		 */
-		private void setSelection(GraphElement pElement)
+		private void setSelection(DiagramElement pElement)
 		{
 			aSelectedElements.set(pElement);
 			for (Edge edge : aGraph.getEdges())
@@ -597,7 +597,7 @@ public class GraphPanel extends Canvas
 		 * Also adds the inner edges of parent nodes to the selection list.
 		 * @param pElement
 		 */
-		private void addToSelection(GraphElement pElement)
+		private void addToSelection(DiagramElement pElement)
 		{
 			aSelectedElements.add(pElement);
 			for (Edge edge : aGraph.getEdges())
@@ -642,10 +642,10 @@ public class GraphPanel extends Canvas
 		/*
 		 * Will return null if nothing is selected.
 		 */
-		private GraphElement getSelectedElement(MouseEvent pEvent)
+		private DiagramElement getSelectedElement(MouseEvent pEvent)
 		{
 			Point mousePoint = getMousePoint(pEvent);
-			GraphElement element = aGraph.findEdge(mousePoint);
+			DiagramElement element = aGraph.findEdge(mousePoint);
 			if (element == null)
 			{
 				element = aGraph.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
@@ -655,7 +655,7 @@ public class GraphPanel extends Canvas
 		
 		private void handleSelection(MouseEvent pEvent)
 		{
-			GraphElement element = getSelectedElement(pEvent);
+			DiagramElement element = getSelectedElement(pEvent);
 			if (element != null) // Something is selected
 			{
 				if (pEvent.isControlDown())
@@ -689,7 +689,7 @@ public class GraphPanel extends Canvas
 		
 		private void handleDoubleClick(MouseEvent pEvent)
 		{
-			GraphElement element = getSelectedElement(pEvent);
+			DiagramElement element = getSelectedElement(pEvent);
 			if (element != null)
 			{
 				setSelection(element);
@@ -719,7 +719,7 @@ public class GraphPanel extends Canvas
 		
 		private void handleEdgeStart(MouseEvent pEvent)
 		{
-			GraphElement element = getSelectedElement(pEvent);
+			DiagramElement element = getSelectedElement(pEvent);
 			if (element != null && element instanceof Node) 
 			{
 				aDragMode = DragMode.DRAG_RUBBERBAND;
@@ -734,10 +734,10 @@ public class GraphPanel extends Canvas
 	     * and forgot to switch tool. The only exception is when adding
 	     * children nodes, where the parent node obviously has to be selected.
 		 */
-		private GraphElement getTool(MouseEvent pEvent)
+		private DiagramElement getTool(MouseEvent pEvent)
 		{
-			GraphElement tool = aSideBar.getCreationPrototype();
-			GraphElement selected = getSelectedElement(pEvent);
+			DiagramElement tool = aSideBar.getCreationPrototype();
+			DiagramElement selected = getSelectedElement(pEvent);
 			
 			if (tool !=null && tool instanceof Node)
 			{
@@ -756,7 +756,7 @@ public class GraphPanel extends Canvas
 		public void mousePressed(MouseEvent pEvent)
 		{
 			aSideBar.hidePopup();
-			GraphElement tool = getTool(pEvent);
+			DiagramElement tool = getTool(pEvent);
 			if (pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
 			{  
 				handleDoubleClick(pEvent);
@@ -835,7 +835,7 @@ public class GraphPanel extends Canvas
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
-				for (GraphElement selected : aSelectedElements)
+				for (DiagramElement selected : aSelectedElements)
 				{
 					if (selected instanceof Node)
 					{
@@ -853,7 +853,7 @@ public class GraphPanel extends Canvas
 				{
 					dy = getViewHeight() - bounds.getMaxY();
 				}
-				for (GraphElement selected : aSelectedElements)
+				for (DiagramElement selected : aSelectedElements)
 				{
 					if (selected instanceof ChildNode)
 					{

@@ -21,14 +21,14 @@
 package ca.mcgill.cs.jetuml.commands;
 
 import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 
 /**
  * A command that involves a single graph element.
  */
 abstract class GraphElementRelatedCommand implements Command
 {
-	protected GraphElement aElement;
+	protected DiagramElement aElement;
 	protected Diagram aGraph;
 	
 	/**
@@ -36,7 +36,7 @@ abstract class GraphElementRelatedCommand implements Command
 	 * @param pGraph The target graph.
 	 * @param pElement The related element
 	 */
-	protected GraphElementRelatedCommand(Diagram pGraph, GraphElement pElement)
+	protected GraphElementRelatedCommand(Diagram pGraph, DiagramElement pElement)
 	{
 		aGraph = pGraph;
 		aElement = pElement;

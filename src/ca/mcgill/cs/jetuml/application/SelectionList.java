@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
@@ -41,9 +41,9 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
  *    transparently not added. If a parent node is added that transitively contains 
  *    some of the nodes in the selection, these are removed from the selection.
  */
-public class SelectionList implements Iterable<GraphElement>
+public class SelectionList implements Iterable<DiagramElement>
 {
-	private Stack<GraphElement> aSelected = new Stack<>();
+	private Stack<DiagramElement> aSelected = new Stack<>();
 	
 	/**
 	 * Adds an element to the selection set and sets
@@ -55,7 +55,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @param pElement The element to add to the list.
 	 * Cannot be null.
 	 */
-	public void add(GraphElement pElement)
+	public void add(DiagramElement pElement)
 	{
 		assert pElement != null;
 		if( !parentContained( pElement ))
@@ -64,15 +64,15 @@ public class SelectionList implements Iterable<GraphElement>
 			aSelected.push(pElement);
 			
 			// Remove children in case a parent was added.
-			ArrayList<GraphElement> toRemove = new ArrayList<>();
-			for( GraphElement element : aSelected )
+			ArrayList<DiagramElement> toRemove = new ArrayList<>();
+			for( DiagramElement element : aSelected )
 			{
 				if( parentContained(element) )
 				{
 					toRemove.add(element);
 				}
 			}
-			for( GraphElement element : toRemove )
+			for( DiagramElement element : toRemove )
 			{
 				remove(element);
 			}
@@ -86,7 +86,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @return true if any of the parents of pElement are included in the 
 	 * selection.
 	 */
-	public boolean parentContained(GraphElement pElement)
+	public boolean parentContained(DiagramElement pElement)
 	{
 		if( pElement instanceof ChildNode )
 		{
@@ -114,7 +114,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @param pElement The element to test.
 	 * @return True if either this element or one of its parent is contained.
 	 */
-	public boolean transitivelyContains(GraphElement pElement)
+	public boolean transitivelyContains(DiagramElement pElement)
 	{
 		return contains(pElement) || parentContained(pElement);
 	}
@@ -131,7 +131,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @return The last element that was selected, or null
 	 * if there are no such elements.
 	 */
-	public GraphElement getLastSelected()
+	public DiagramElement getLastSelected()
 	{
 		if( aSelected.size() > 0 )
 		{
@@ -163,7 +163,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @param pElement The element to test.
 	 * @return True if pElement is in the list of selected elements.
 	 */
-	public boolean contains(GraphElement pElement)
+	public boolean contains(DiagramElement pElement)
 	{
 		return aSelected.contains(pElement);
 	}
@@ -183,7 +183,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * or does nothing if pElement is not selected.
 	 * @param pElement The element to remove. Cannot be null.
 	 */
-	public void remove(GraphElement pElement)
+	public void remove(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.remove(pElement);
@@ -194,7 +194,7 @@ public class SelectionList implements Iterable<GraphElement>
 	 * @param pElement The element to set as selected. Cannot
 	 * be null.
 	 */
-	public void set(GraphElement pElement)
+	public void set(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.clear();
@@ -202,7 +202,7 @@ public class SelectionList implements Iterable<GraphElement>
 	}
 
 	@Override
-	public Iterator<GraphElement> iterator()
+	public Iterator<DiagramElement> iterator()
 	{
 		return aSelected.iterator();
 	}

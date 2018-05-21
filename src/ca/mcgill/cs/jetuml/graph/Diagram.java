@@ -82,7 +82,7 @@ public abstract class Diagram
 	 * @param pProperty The name of the changed property.
 	 * @param pOldValue The value of the property before the change.
 	 */
-	protected void notifyPropertyChanged(GraphElement pElement, String pProperty, Object pOldValue)
+	protected void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
 	{
 		if (aModificationListener != null)
 		{
@@ -508,7 +508,7 @@ public abstract class Diagram
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
 	 */
-	public boolean contains(GraphElement pElement)
+	public boolean contains(DiagramElement pElement)
 	{	
 		if (aEdges.contains( pElement ))
 		{
@@ -524,7 +524,7 @@ public abstract class Diagram
 		return false;
 	}
 	
-	private boolean containsNode(Node pTest, GraphElement pTarget)
+	private boolean containsNode(Node pTest, DiagramElement pTarget)
 	{
 		if (pTest == pTarget)
 		{

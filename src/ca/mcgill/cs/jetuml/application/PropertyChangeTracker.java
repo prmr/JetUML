@@ -24,12 +24,12 @@ import java.util.HashMap;
 
 import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.Property;
 
 /**
- * Tracks modification to the properties of a GraphElement.
+ * Tracks modification to the properties of a DiagramElement.
  * Should be discarded after a call to stopTracking().
  */
 public class PropertyChangeTracker 
@@ -43,7 +43,7 @@ public class PropertyChangeTracker
 	 * @param pEdited The element to track.
 	 * @pre pEdited != null;
 	 */
-	public PropertyChangeTracker(GraphElement pEdited)
+	public PropertyChangeTracker(DiagramElement pEdited)
 	{
 		assert pEdited != null;
 		aProperties = pEdited.properties();

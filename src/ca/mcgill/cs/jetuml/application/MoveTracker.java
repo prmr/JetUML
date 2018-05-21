@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.geometry.Rectangle2D;
 
@@ -52,7 +52,7 @@ public class MoveTracker
 		aTrackedNodes.clear();
 		aOriginalBounds.clear();
 		
-		for(GraphElement element : pSelectedElements)
+		for(DiagramElement element : pSelectedElements)
 		{
 			assert element != null;
 			if(element instanceof Node)

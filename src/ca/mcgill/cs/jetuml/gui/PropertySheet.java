@@ -24,7 +24,7 @@ package ca.mcgill.cs.jetuml.gui;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
@@ -44,7 +44,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 /**
- *  A layout that presents the properties of a GraphElement
+ *  A layout that presents the properties of a DiagramElement
  *  and allow editing them.
  */
 public class PropertySheet extends GridPane
@@ -75,7 +75,7 @@ public class PropertySheet extends GridPane
 	 * @param pListener An object that responds to property change events.
 	 * @pre pElement != null
 	 */
-	public PropertySheet(GraphElement pElement, PropertyChangeListener pListener)
+	public PropertySheet(DiagramElement pElement, PropertyChangeListener pListener)
 	{
 		assert pElement != null;
 		aListener = pListener;
@@ -103,7 +103,7 @@ public class PropertySheet extends GridPane
 		return this.getChildren().size() == 0;
 	}
 
-	private Control getEditorControl(GraphElement pElement, Property pProperty)   
+	private Control getEditorControl(DiagramElement pElement, Property pProperty)   
 	{      
 		if( pProperty.get() instanceof String )
 		{
@@ -130,7 +130,7 @@ public class PropertySheet extends GridPane
 	/*
 	 * Not the greatest but avoids over-engineering the rest of the properties API. CSOFF:
 	 */
-	private static boolean extended(GraphElement pElement, String pProperty)
+	private static boolean extended(DiagramElement pElement, String pProperty)
 	{
 		return 	pElement.getClass() == ClassNode.class ||
 				pElement.getClass() == InterfaceNode.class ||

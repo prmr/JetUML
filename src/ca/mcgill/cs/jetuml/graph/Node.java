@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 /**
   * A node in a graph.
   */
-public interface Node extends GraphElement
+public interface Node extends DiagramElement
 {
 	/**
 	 * @return The position of this node. Usually corresponds to the top left corner 

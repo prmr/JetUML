@@ -34,7 +34,7 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
@@ -203,7 +203,7 @@ public class TestSelectionList
 		aList.add(aNode1);
 		aList.remove(aEdge1);
 		assertEquals(2,  aList.size());
-		Iterator<GraphElement> iterator = aList.iterator();
+		Iterator<DiagramElement> iterator = aList.iterator();
 		assertEquals(aEdge2, iterator.next());
 		assertEquals(aNode1, iterator.next());
 		assertEquals(aNode1, aList.getLastSelected());

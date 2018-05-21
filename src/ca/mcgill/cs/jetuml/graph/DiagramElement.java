@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.graph;
 /**
  * A type that allows us to treat nodes and edges uniformly.
  */
-public interface GraphElement extends Cloneable
+public interface DiagramElement extends Cloneable
 {
 	/**
 	 * @return A set of properties that define this object.

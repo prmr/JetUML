@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -36,7 +36,7 @@ import javafx.scene.image.ImageView;
 public class SelectableToolButton extends ToggleButton
 {
 	// If empty, indicates the "Select" tool
-	private final Optional<GraphElement> aPrototype;
+	private final Optional<DiagramElement> aPrototype;
 	
 	/**
 	 * Creates a button to represent the "select" tool.
@@ -68,7 +68,7 @@ public class SelectableToolButton extends ToggleButton
 	 * @param pPrototype The object prototype for the creation.
 	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
 	 */
-	public SelectableToolButton(Image pImage, String pToolTip, ToggleGroup pToggleGroup, GraphElement pPrototype)
+	public SelectableToolButton(Image pImage, String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
 	{
 		// Note: we don't use a this(...) constructor call here to be able to set aPrototype to final.
 		assert pImage != null && pToolTip != null && pToggleGroup != null;
@@ -86,7 +86,7 @@ public class SelectableToolButton extends ToggleButton
 	 * @return The prototype graph element to create new ones. isPresent() == false indicates
 	 * that the Selection Tool is selected.
 	 */
-	public Optional<GraphElement> getPrototype()
+	public Optional<DiagramElement> getPrototype()
 	{
 		return aPrototype;
 	}

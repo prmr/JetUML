@@ -27,7 +27,7 @@ import java.util.prefs.Preferences;
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Orientation;
@@ -140,10 +140,10 @@ public class DiagramFrameToolBar extends ToolBar
      * the currently selected button.
      * @return a Node or Edge prototype. Null if a different tool is selected.
 	 */
-	public GraphElement getCreationPrototype()
+	public DiagramElement getCreationPrototype()
 	{
 		assert getItems().size() > 0;
-		Optional<GraphElement> prototype = ((SelectableToolButton)((ToggleButton) getItems().get(0)).
+		Optional<DiagramElement> prototype = ((SelectableToolButton)((ToggleButton) getItems().get(0)).
 				getToggleGroup().getSelectedToggle()).getPrototype();
 		if( prototype.isPresent() )
 		{

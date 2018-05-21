@@ -249,7 +249,7 @@ public class TestUsageScenariosClassDiagram
 		aList.add(aAggregationEdge);
 		aList.add(aInterfaceNode);
 		Rectangle aggregationEdgeBounds = aAggregationEdge.view().getBounds();
-		for(GraphElement element: aList)
+		for(DiagramElement element: aList)
 		{
 			if(element instanceof Node)
 			{
@@ -274,7 +274,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(12, 9));
 		Rectangle oldAggregationEdgeBounds = aAggregationEdge.view().getBounds();
 		aList.add(aClassNode);
-		for(GraphElement element: aList)
+		for(DiagramElement element: aList)
 		{
 			if(element instanceof Node)
 			{

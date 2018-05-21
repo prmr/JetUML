@@ -21,14 +21,14 @@
 package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
+import ca.mcgill.cs.jetuml.graph.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * Common elements for the Node hierarchy.
  */
-public abstract class AbstractNode extends AbstractGraphElement implements Node
+public abstract class AbstractNode extends AbstractDiagramElement implements Node
 {
 	private NodeView aView;
 	private Point aPosition = new Point(0, 0);

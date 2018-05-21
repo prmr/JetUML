@@ -261,7 +261,7 @@ public class TestUsageScenariosObjectDiagram
 		Rectangle referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
 		Rectangle collaborationEdge1Bounds = collaborationEdge1.view().getBounds();
 
-		for(GraphElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
 			{

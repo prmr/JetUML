@@ -28,7 +28,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
@@ -86,7 +86,7 @@ public final class Clipboard
 		
 		// First copy the edges so we can assign their end-points when copying nodes.
 		// Do not include dangling edges.
-		for( GraphElement element : pSelection )
+		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Edge && pSelection.capturesEdge((Edge)element ))
 			{	
@@ -95,7 +95,7 @@ public final class Clipboard
 		}
 		
 		// Clone the nodes and re-route their edges
-		for( GraphElement element : pSelection )
+		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Node )
 			{
@@ -298,7 +298,7 @@ public final class Clipboard
 		}
 	}
 	
-	private static Rectangle updateBounds(Rectangle pBounds, GraphElement pElement)
+	private static Rectangle updateBounds(Rectangle pBounds, DiagramElement pElement)
 	{
 		Rectangle bounds = pBounds;
 		if( bounds == null )
@@ -312,7 +312,7 @@ public final class Clipboard
 		return bounds;
 	}
 	
-	private static Rectangle getBounds(GraphElement pElement)
+	private static Rectangle getBounds(DiagramElement pElement)
 	{
 		if( pElement instanceof Node )
 		{

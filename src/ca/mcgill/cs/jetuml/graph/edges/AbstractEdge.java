@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.graph.edges;
 
-import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
+import ca.mcgill.cs.jetuml.graph.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 /**
  * Abstract edge in the new hierarchy.
  */
-public abstract class AbstractEdge extends AbstractGraphElement implements Edge
+public abstract class AbstractEdge extends AbstractDiagramElement implements Edge
 {
 	protected EdgeView aView;
 	private Node aStart;

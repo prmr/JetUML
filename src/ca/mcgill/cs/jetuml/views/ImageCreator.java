@@ -24,7 +24,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
+import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 import ca.mcgill.cs.jetuml.gui.GraphPanel;
@@ -56,7 +56,7 @@ public final class ImageCreator
 	 * @return An image for the element.
 	 * @pre pElement != null;
 	 */
-	public static Image createImage(GraphElement pElement)
+	public static Image createImage(DiagramElement pElement)
 	{
 		assert pElement != null;
 		
