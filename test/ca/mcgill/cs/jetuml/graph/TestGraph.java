@@ -47,12 +47,12 @@ import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 
 
 /**
- * Tests for the methods of class Graph as obtainable through
+ * Tests for the methods of class Diagram as obtainable through
  * an instance of ClassDiagram
  */
 public class TestGraph
 {
-	private Graph aGraph;
+	private Diagram aGraph;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private ClassNode aNode3;

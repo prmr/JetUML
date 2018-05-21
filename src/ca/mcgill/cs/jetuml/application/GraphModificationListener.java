@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.application;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Property;
 
@@ -37,28 +37,28 @@ public interface GraphModificationListener
 	 * @param pGraph The target graph.
 	 * @param pNode The node added.
 	 */
-	void nodeAdded(Graph pGraph, Node pNode);
+	void nodeAdded(Diagram pGraph, Node pNode);
 	
 	/**
 	 * Called whenever a node is removed from a graph.
 	 * @param pGraph The target graph.
 	 * @param pNode The node removed.
 	 */
-	void nodeRemoved(Graph pGraph, Node pNode);
+	void nodeRemoved(Diagram pGraph, Node pNode);
 
 	/**
 	 * Called whenever an edge is added to a graph.
 	 * @param pGraph The target graph.
 	 * @param pEdge The edge added
 	 */
-	void edgeAdded(Graph pGraph, Edge pEdge);
+	void edgeAdded(Diagram pGraph, Edge pEdge);
 
 	/**
 	 * Called whenever an edge is removed from a graph.
 	 * @param pGraph The target graph.
 	 * @param pEdge The edge removed
 	 */
-	void edgeRemoved(Graph pGraph, Edge pEdge);
+	void edgeRemoved(Diagram pGraph, Edge pEdge);
 
 	/**
 	 * Indicates that the graph is about to be modified

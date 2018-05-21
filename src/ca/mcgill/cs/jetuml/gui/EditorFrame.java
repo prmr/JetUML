@@ -51,7 +51,7 @@ import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.embed.swing.SwingFXUtils;
@@ -436,7 +436,7 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			Graph graph2 = PersistenceService.read(new File(pName));
+			Diagram graph2 = PersistenceService.read(new File(pName));
 			GraphFrame frame2 = new GraphFrame(graph2, aTabbedPane);
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
@@ -502,7 +502,7 @@ public class EditorFrame extends BorderPane
 			{
 				try 
 				{
-					Tab frame = new GraphFrame((Graph) diagramType.getDeclaredConstructor().newInstance(), aTabbedPane);
+					Tab frame = new GraphFrame((Diagram) diagramType.getDeclaredConstructor().newInstance(), aTabbedPane);
 					addTab(frame);
 				}
 				catch(ReflectiveOperationException exception) 
@@ -775,7 +775,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem();
-		Graph graph = frame.getGraph();
+		Diagram graph = frame.getGraph();
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());

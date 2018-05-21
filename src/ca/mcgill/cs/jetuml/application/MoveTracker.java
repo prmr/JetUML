@@ -26,7 +26,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.geom.Conversions;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.geometry.Rectangle2D;
@@ -68,10 +68,10 @@ public class MoveTracker
 	 * of all tracked nodes between the time where startTrackingMove was 
 	 * called and the time endTrackingMove was called.
 	 * 
-	 * @param pGraph The Graph containing the selected elements.
+	 * @param pGraph The Diagram containing the selected elements.
 	 * @return A CompoundCommand describing the move.
 	 */
-	public CompoundCommand endTrackingMove(Graph pGraph)
+	public CompoundCommand endTrackingMove(Diagram pGraph)
 	{
 		CompoundCommand command = new CompoundCommand();
 		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];

@@ -35,7 +35,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
@@ -43,7 +43,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestCompoundCommand 
 {
-    private Graph aGraph;
+    private Diagram aGraph;
     private Node aClassNode;
     private Node aActorNode;
     private Edge aCallEdge;

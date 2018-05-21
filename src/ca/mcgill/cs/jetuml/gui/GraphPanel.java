@@ -45,7 +45,7 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Property;
@@ -91,7 +91,7 @@ public class GraphPanel extends Canvas
 	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int VIEWPORT_PADDING = 5;
 	
-	private Graph aGraph;
+	private Diagram aGraph;
 	private DiagramFrameToolBar aSideBar;
 	private boolean aShowGrid;
 	private boolean aModified;
@@ -110,7 +110,7 @@ public class GraphPanel extends Canvas
 	 * @param pSideBar the DiagramFrameToolBar which contains all of the tools for nodes and edges.
 	 * @param pScreenBoundaries the boundaries of the users screen. 
 	 */
-	public GraphPanel(Graph pGraph, DiagramFrameToolBar pSideBar, Rectangle2D pScreenBoundaries)
+	public GraphPanel(Diagram pGraph, DiagramFrameToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
 		aGraph = pGraph;
@@ -318,7 +318,7 @@ public class GraphPanel extends Canvas
 	/**
 	 * @return the graph in this panel.
 	 */
-	public Graph getGraph()
+	public Diagram getGraph()
 	{
 		return aGraph;
 	}
@@ -963,25 +963,25 @@ public class GraphPanel extends Canvas
 		}
 		
 		@Override
-		public void nodeAdded(Graph pGraph, Node pNode)
+		public void nodeAdded(Diagram pGraph, Node pNode)
 		{
 			aUndoManager.add(new AddNodeCommand(pGraph, pNode));
 		}
 		
 		@Override
-		public void nodeRemoved(Graph pGraph, Node pNode)
+		public void nodeRemoved(Diagram pGraph, Node pNode)
 		{
 			aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
 		}
 		
 		@Override
-		public void edgeAdded(Graph pGraph, Edge pEdge)
+		public void edgeAdded(Diagram pGraph, Edge pEdge)
 		{
 			aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
 		}
 		
 		@Override
-		public void edgeRemoved(Graph pGraph, Edge pEdge)
+		public void edgeRemoved(Diagram pGraph, Edge pEdge)
 		{
 			aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
 		}

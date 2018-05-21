@@ -33,13 +33,13 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestAddNodeCommand 
 {
-    private Graph aGraph;
+    private Diagram aGraph;
     private Field aNodesToBeRemoved;
     private Node aNode;
     private AddNodeCommand aAddNodeCommand;

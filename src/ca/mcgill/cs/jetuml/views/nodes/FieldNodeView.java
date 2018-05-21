@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.scene.canvas.GraphicsContext;
@@ -97,7 +97,7 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void layout(Graph pGraph)
+	public void layout(Diagram pGraph)
 	{
 		final int width = leftWidth() + midWidth() + rightWidth();
 		final int height = Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 

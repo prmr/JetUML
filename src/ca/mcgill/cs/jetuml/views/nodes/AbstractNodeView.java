@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -76,5 +76,5 @@ public abstract class AbstractNodeView implements NodeView
 	protected abstract void fillShape(GraphicsContext pGraphics, boolean pShadow);
 
 	@Override
-	public void layout(Graph pGraph) {}
+	public void layout(Diagram pGraph) {}
 }

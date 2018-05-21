@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
@@ -37,7 +37,7 @@ public class DeserializationContext extends AbstractContext
 	 * @param pGraph The graph associated with the context.
 	 * @pre pGraph != null.
 	 */
-	public DeserializationContext(Graph pGraph)
+	public DeserializationContext(Diagram pGraph)
 	{
 		super( pGraph );
 	}

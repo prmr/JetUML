@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.graph.edges;
 
 import ca.mcgill.cs.jetuml.graph.AbstractGraphElement;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
@@ -34,7 +34,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	protected EdgeView aView;
 	private Node aStart;
 	private Node aEnd;
-	private Graph aGraph;
+	private Diagram aGraph;
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this edge.
@@ -45,7 +45,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	}
 	
 	@Override
-	public void connect(Node pStart, Node pEnd, Graph pGraph)
+	public void connect(Node pStart, Node pEnd, Diagram pGraph)
 	{
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
@@ -66,7 +66,7 @@ public abstract class AbstractEdge extends AbstractGraphElement implements Edge
 	}
 
 	@Override
-	public Graph getGraph()
+	public Diagram getGraph()
 	{
 		return aGraph;
 	}

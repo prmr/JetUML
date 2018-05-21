@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.commands;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 
 /**
  * Represents the removal of an edge to the graph.
@@ -33,7 +33,7 @@ public class RemoveEdgeCommand extends GraphElementRelatedCommand
 	 * @param pGraph The target graph.
 	 * @param pEdge The related edge.
 	 */
-	public RemoveEdgeCommand(Graph pGraph, Edge pEdge)
+	public RemoveEdgeCommand(Diagram pGraph, Edge pEdge)
 	{
 		super(pGraph, pEdge);
 	}

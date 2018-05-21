@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 
 /**
@@ -29,14 +29,14 @@ import ca.mcgill.cs.jetuml.graph.GraphElement;
 abstract class GraphElementRelatedCommand implements Command
 {
 	protected GraphElement aElement;
-	protected Graph aGraph;
+	protected Diagram aGraph;
 	
 	/**
 	 * Creates the command.
 	 * @param pGraph The target graph.
 	 * @param pElement The related element
 	 */
-	protected GraphElementRelatedCommand(Graph pGraph, GraphElement pElement)
+	protected GraphElementRelatedCommand(Diagram pGraph, GraphElement pElement)
 	{
 		aGraph = pGraph;
 		aElement = pElement;

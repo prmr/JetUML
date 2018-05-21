@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge.Type;
@@ -159,7 +159,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			if( pEdge.getStart() == pEdge.getEnd() )
 			{
@@ -187,7 +187,7 @@ public final class SegmentationStyleFactory
 	/*
 	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
 	 */
-	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Graph pGraph)
+	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Diagram pGraph)
 	{
 		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
 		Point start = pNode.view().getConnectionPoint(pSide.getDirection());
@@ -213,7 +213,7 @@ public final class SegmentationStyleFactory
 		}
 	}
 	
-	private static boolean hasSelfEdge(Node pNode, Graph pGraph)
+	private static boolean hasSelfEdge(Node pNode, Diagram pGraph)
 	{
 		for( Edge edge : pGraph.getEdges(pNode))
 		{
@@ -236,7 +236,7 @@ public final class SegmentationStyleFactory
 	 * @param pForward true if this is the calculation for the start node of the edge
 	 * @return The position on the side of the node where the edge should be connected.
 	 */
-	private static Position computePosition(Edge pEdge, Side pStartSide, Graph pGraph, boolean pForward)
+	private static Position computePosition(Edge pEdge, Side pStartSide, Diagram pGraph, boolean pForward)
 	{
 		assert pEdge != null && pStartSide != null && pGraph != null;
 		Node tempTarget = pEdge.getStart();
@@ -305,7 +305,7 @@ public final class SegmentationStyleFactory
 	} // CSON:
 	
 	// TODO Fix this
-	private static List<Edge> getAllEdgesForSide(Graph pGraph, Node pTarget, Side pSide)
+	private static List<Edge> getAllEdgesForSide(Diagram pGraph, Node pTarget, Side pSide)
 	{
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges(pTarget))
@@ -446,7 +446,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			assert pEdge != null;
 			
@@ -582,7 +582,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			assert pEdge != null;
 			

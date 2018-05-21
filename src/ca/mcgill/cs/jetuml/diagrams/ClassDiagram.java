@@ -28,7 +28,7 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.AssociationEdge;
@@ -44,7 +44,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 /**
  *  A UML class diagram.
  */
-public class ClassDiagram extends Graph
+public class ClassDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), 
 															  new InterfaceNode(), 
@@ -146,7 +146,7 @@ public class ClassDiagram extends Graph
 	 * See if, given its position, the node should be added as a child of
 	 * a PackageNode.
 	 * 
-	 * @see ca.mcgill.cs.jetuml.graph.Graph#addNode(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
+	 * @see ca.mcgill.cs.jetuml.graph.Diagram#addNode(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
 	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)

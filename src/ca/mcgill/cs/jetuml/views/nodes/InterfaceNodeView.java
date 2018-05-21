@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
@@ -141,7 +141,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void layout(Graph pGraph)
+	public void layout(Diagram pGraph)
 	{
 		Rectangle top = computeTop();
 		Rectangle bottom = computeBottom();

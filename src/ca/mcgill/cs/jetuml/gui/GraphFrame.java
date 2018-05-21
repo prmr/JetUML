@@ -28,7 +28,7 @@ import ca.mcgill.cs.jetuml.diagrams.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
 import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
@@ -50,7 +50,7 @@ public class GraphFrame extends Tab
      * @param pGraph the initial graph
      * @param pTabbedPane the TabPane associated with this GraphFrame.
 	 */
-	public GraphFrame(Graph pGraph, TabPane pTabbedPane)
+	public GraphFrame(Diagram pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
 		DiagramFrameToolBar sideBar = new DiagramFrameToolBar(pGraph);
@@ -83,7 +83,7 @@ public class GraphFrame extends Tab
      * Gets the graph that is being edited in this frame.
      * @return the graph
 	 */
-	public Graph getGraph()
+	public Diagram getGraph()
 	{
 		return aPanel.getGraph();
 	}
@@ -143,7 +143,7 @@ public class GraphFrame extends Tab
 		}
 		else
 		{
-			Graph graphType = getGraph();
+			Diagram graphType = getGraph();
 			if (graphType instanceof UseCaseDiagram)
 			{
 				setText("Use Case Diagram");

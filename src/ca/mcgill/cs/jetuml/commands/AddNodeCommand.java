@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
@@ -33,7 +33,7 @@ public class AddNodeCommand extends GraphElementRelatedCommand
 	 * @param pGraph The graph the node was added to.
 	 * @param pNode The node added.
 	 */
-	public AddNodeCommand(Graph pGraph, Node pNode)
+	public AddNodeCommand(Diagram pGraph, Node pNode)
 	{
 		super(pGraph, pNode);
 	}

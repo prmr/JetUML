@@ -28,7 +28,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
@@ -118,7 +118,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void layout(Graph pGraph)
+	public void layout(Diagram pGraph)
 	{
 		assert implicitParameter() != null;
 		assert pGraph instanceof SequenceDiagram;
@@ -145,7 +145,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	 * @return The X coordinate that should be the middle
 	 * of this call node. Takes into account nested calls.
 	 */
-	private int computeMidX(Graph pGraph)
+	private int computeMidX(Diagram pGraph)
 	{
 		int xmid = implicitParameter().view().getBounds().getCenter().getX();
 
@@ -211,7 +211,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 	 * originating at this CallNode. If an ImplicitParameterNode is in the list, it's always
 	 * returned first.
 	 */
-	private List<Node> getCallees(Graph pGraph)
+	private List<Node> getCallees(Diagram pGraph)
 	{
 		List<Node> callees = new ArrayList<>();
 		for( Edge edge : pGraph.getEdges())

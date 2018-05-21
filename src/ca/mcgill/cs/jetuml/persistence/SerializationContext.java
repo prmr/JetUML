@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
 
@@ -38,7 +38,7 @@ public class SerializationContext extends AbstractContext
 	 * @param pGraph The graph to load into the context.
 	 * @pre pGraph != null.
 	 */
-	public SerializationContext(Graph pGraph)
+	public SerializationContext(Diagram pGraph)
 	{
 		super(pGraph);
 		getAllNodes(pGraph);
@@ -60,7 +60,7 @@ public class SerializationContext extends AbstractContext
 		aNodes.put(pNode, aNodes.size());
 	}
 	
-	private void getAllNodes(Graph pGraph)
+	private void getAllNodes(Diagram pGraph)
 	{
 		for( Node node : pGraph.getRootNodes() )
 		{

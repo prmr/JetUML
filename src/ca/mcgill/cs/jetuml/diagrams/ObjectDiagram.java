@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.ObjectCollaborationEdge;
@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
 /**
  *  An UML-style object diagram that shows object references.
  */
-public class ObjectDiagram extends Graph
+public class ObjectDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
@@ -84,7 +84,7 @@ public class ObjectDiagram extends Graph
 	 * See if, given its position, the node should be added as a child of
 	 * an ObjectNode.
 
-	 * @see ca.mcgill.cs.jetuml.graph.Graph#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
+	 * @see ca.mcgill.cs.jetuml.graph.Diagram#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
 	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)

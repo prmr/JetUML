@@ -37,9 +37,9 @@ import ca.mcgill.cs.jetuml.views.nodes.AbstractNodeView;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- *  A graph consisting of nodes and edges.
+ *  A diagram consisting of nodes and edges.
  *  
- *  There are three modes for creating a graph:
+ *  There are three modes for creating a diagram:
  *  
  *  - Restoring nodes or edges. This mode is used for loading serialized elements
  *    and does not trigger any notifications. It is intended to be used for deserialization
@@ -53,7 +53,7 @@ import javafx.scene.canvas.GraphicsContext;
  *  - Adding nodes or edges. This mode is used for adding completely new elements, typically
  *    through UI actions. See methods add{Node|Edge}, which trigger notifications.
  */
-public abstract class Graph
+public abstract class Diagram
 {
 	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
@@ -65,7 +65,7 @@ public abstract class Graph
 	/**
 	 * Constructs a graph with no nodes or edges.
 	 */
-	public Graph()
+	public Diagram()
 	{
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
@@ -140,7 +140,7 @@ public abstract class Graph
 	
 	/**
 	 * Sets the modification listener.
-	 * @param pListener the single GraphModificationListener for this Graph.
+	 * @param pListener the single GraphModificationListener for this Diagram.
 	 */
 	public void setGraphModificationListener(GraphModificationListener pListener)
 	{

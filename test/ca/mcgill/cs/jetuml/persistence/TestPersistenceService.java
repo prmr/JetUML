@@ -38,7 +38,7 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
@@ -85,7 +85,7 @@ public class TestPersistenceService
 	@Test
 	public void testClassDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService.class.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.class.jet"));
 		verifyClassDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
@@ -99,7 +99,7 @@ public class TestPersistenceService
 	@Test
 	public void testClassDiagramContainment() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet"));
 		verifyClassDiagram2(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
@@ -113,7 +113,7 @@ public class TestPersistenceService
 	@Test
 	public void testSequenceDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet"));
 		verifySequenceDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
@@ -127,7 +127,7 @@ public class TestPersistenceService
 	@Test
 	public void testStateDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService.state.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.state.jet"));
 		verifyStateDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
@@ -141,7 +141,7 @@ public class TestPersistenceService
 	@Test
 	public void testObjectDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService.object.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.object.jet"));
 		verifyObjectDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
@@ -155,7 +155,7 @@ public class TestPersistenceService
 	@Test
 	public void testUseCaseDiagram() throws Exception
 	{
-		Graph graph = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet"));
 		verifyUseCaseDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
@@ -166,7 +166,7 @@ public class TestPersistenceService
 		tmp.delete();
 	}
 	
-	private void verifyUseCaseDiagram(Graph pGraph)
+	private void verifyUseCaseDiagram(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(9, nodes.size());
@@ -268,7 +268,7 @@ public class TestPersistenceService
 		assertTrue( cr10.getEnd() == u4 );
  	}
 	
-	private void verifyClassDiagram2(Graph pGraph)
+	private void verifyClassDiagram2(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(4, nodes.size());
@@ -334,7 +334,7 @@ public class TestPersistenceService
 		assertEquals( p2, e3.getEnd());
 	}
 	
-	private void verifyClassDiagram(Graph pGraph)
+	private void verifyClassDiagram(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		
@@ -440,7 +440,7 @@ public class TestPersistenceService
 		assertEquals("", edge4.getStartLabel());
 	}
 	
-	private void verifySequenceDiagram(Graph pGraph)
+	private void verifySequenceDiagram(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(5, nodes.size());
@@ -535,7 +535,7 @@ public class TestPersistenceService
 		assertEquals(note, nedge.getStart());
 	}
 	
-	private void verifyStateDiagram(Graph pGraph)
+	private void verifyStateDiagram(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());
@@ -612,7 +612,7 @@ public class TestPersistenceService
 		assertEquals("", toS3.getMiddleLabel().toString());
 	}
 	
-	private void verifyObjectDiagram(Graph pGraph)
+	private void verifyObjectDiagram(Diagram pGraph)
 	{
 		Collection<Node> nodes = pGraph.getRootNodes();
 		assertEquals(7, nodes.size());

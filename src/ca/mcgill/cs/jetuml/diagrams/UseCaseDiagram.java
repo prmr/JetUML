@@ -25,7 +25,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
@@ -38,7 +38,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
 /**
  * A UML use case diagram.
  */
-public class UseCaseDiagram extends Graph
+public class UseCaseDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new UseCaseAssociationEdge(),

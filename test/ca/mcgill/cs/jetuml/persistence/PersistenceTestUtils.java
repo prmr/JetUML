@@ -28,7 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.Property;
@@ -97,7 +97,7 @@ final class PersistenceTestUtils
 		return found;
 	}
 	
-	static Node findRootNode(Graph pGraph, Class<?> pClass, Properties pProperties)
+	static Node findRootNode(Diagram pGraph, Class<?> pClass, Properties pProperties)
 	{
 		for( Node node : pGraph.getRootNodes() )
 		{
@@ -123,7 +123,7 @@ final class PersistenceTestUtils
 		return null;
 	}
 	
-	static Edge findEdge(Graph pGraph, Class<?> pClass, Properties pProperties)
+	static Edge findEdge(Diagram pGraph, Class<?> pClass, Properties pProperties)
 	{
 		for( Edge edge : pGraph.getEdges() )
 		{

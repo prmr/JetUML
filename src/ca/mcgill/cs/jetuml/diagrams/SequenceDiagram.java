@@ -29,7 +29,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
@@ -43,7 +43,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagram extends Graph
+public class SequenceDiagram extends Diagram
 {
 	private static final ImplicitParameterNode IMPLICIT_PARAMETER_NODE = new ImplicitParameterNode();
 	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};
@@ -59,7 +59,7 @@ public class SequenceDiagram extends Graph
 	/* 
 	 * Adds the node, ensuring that call nodes can only be added if the
 	 * point is inside the space of the related ImplicitParameterNode
-	 * @see ca.mcgill.cs.jetuml.graph.Graph#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
+	 * @see ca.mcgill.cs.jetuml.graph.Diagram#add(ca.mcgill.cs.jetuml.graph.Node, java.awt.geom.Point2D)
 	 */
 	@Override
 	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)

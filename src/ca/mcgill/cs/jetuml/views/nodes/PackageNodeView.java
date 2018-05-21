@@ -25,7 +25,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
@@ -142,7 +142,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	}
 
 	@Override
-	public void layout(Graph pGraph)
+	public void layout(Diagram pGraph)
 	{
 		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
 		int topWidth = (int)Math.max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);

@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.geometry.Point2D;
 
@@ -94,7 +94,7 @@ public interface SegmentationStyle
      * @return an array list of points at which to bend the
      * segmented line representing the edge. Never null.
 	 */
-	Point2D[] getPath(Edge pEdge, Graph pGraph);
+	Point2D[] getPath(Edge pEdge, Diagram pGraph);
 	
 	/**
 	 * Returns which side of the node attached to

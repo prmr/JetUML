@@ -27,7 +27,7 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
@@ -211,7 +211,7 @@ public final class Clipboard
 	
 	/**
 	 * Pastes the current selection into the pGraphPanel.
-	 * @param pPanel The current Graph to paste contents to.
+	 * @param pPanel The current Diagram to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
 	// CSOFF: Fix in later release
@@ -333,7 +333,7 @@ public final class Clipboard
 	 * Returns true only of all the nodes and edges in the selection 
 	 * are compatible with the target graph type.
 	 */
-	private boolean validPaste(Graph pGraph)
+	private boolean validPaste(Diagram pGraph)
 	{
 		for( Edge edge : aEdges )
 		{
@@ -352,7 +352,7 @@ public final class Clipboard
 		return true;
 	}
 	
-	private static boolean validNodeFor( Node pNode, Graph pGraph )
+	private static boolean validNodeFor( Node pNode, Diagram pGraph )
 	{
 		for( Node node : pGraph.getNodePrototypes() )
 		{
@@ -364,7 +364,7 @@ public final class Clipboard
 		return false;
 	}
 	
-	private static boolean validEdgeFor( Edge pEdge, Graph pGraph )
+	private static boolean validEdgeFor( Edge pEdge, Diagram pGraph )
 	{
 		for( Edge edge : pGraph.getEdgePrototypes() )
 		{

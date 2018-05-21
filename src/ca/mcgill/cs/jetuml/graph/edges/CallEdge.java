@@ -28,7 +28,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.CallNode;
 import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
@@ -112,7 +112,7 @@ public class CallEdge extends SingleLabelEdge
 			}
 
 			@Override
-			public Point2D[] getPath(Edge pEdge, Graph pGraph)
+			public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 			{
 				return getPoints(pEdge);
 			}

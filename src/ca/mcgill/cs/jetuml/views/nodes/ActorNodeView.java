@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
@@ -66,7 +66,7 @@ public class ActorNodeView extends RectangleBoundedNodeView
 	}
 
 	@Override
-	public void layout(Graph pGraph)
+	public void layout(Diagram pGraph)
 	{
 		setBounds(Grid.snapped(getBounds()));
 	}

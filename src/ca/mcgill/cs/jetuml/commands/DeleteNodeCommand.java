@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
@@ -33,7 +33,7 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	 * @param pGraph The graph the node was removed from.
 	 * @param pNode The node removed.
 	 */
-	public DeleteNodeCommand(Graph pGraph, Node pNode)
+	public DeleteNodeCommand(Diagram pGraph, Node pNode)
 	{
 		super( pGraph, pNode );
 	}

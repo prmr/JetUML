@@ -33,12 +33,12 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 
 public class TestAddEdgeCommandTest 
 {
-    private Graph aGraph;
+    private Diagram aGraph;
     private Field aEdgesToBeRemoved;
     private Edge aEdge;
     private AddEdgeCommand aAddEdgeCommand;

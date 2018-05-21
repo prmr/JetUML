@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.graph.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -99,7 +99,7 @@ public class CallNode extends AbstractNode implements ChildNode
 	 * @param pGraph The graph containing the node.
 	 * @return True if this node is signaled.
 	 */
-	public boolean isSignaled(Graph pGraph)
+	public boolean isSignaled(Diagram pGraph)
 	{
 		for( Edge edge : pGraph.getEdges(this))
 		{

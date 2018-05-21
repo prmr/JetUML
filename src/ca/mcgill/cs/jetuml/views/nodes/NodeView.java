@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -65,5 +65,5 @@ public interface NodeView
      * Lays out the node and its children.
      * @param pGraph the ambient graph
 	 */
-	void layout(Graph pGraph);
+	void layout(Diagram pGraph);
 }

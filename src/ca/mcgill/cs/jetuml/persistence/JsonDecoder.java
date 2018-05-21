@@ -25,7 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Property;
 import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
@@ -47,13 +47,13 @@ public final class JsonDecoder
 	 * @return The decoded graph.
 	 * @throws DeserializationException If it's not possible to decode the object into a valid graph.
 	 */
-	public static Graph decode(JSONObject pGraph)
+	public static Diagram decode(JSONObject pGraph)
 	{
 		assert pGraph != null;
 		try
 		{
 			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pGraph.getString("diagram"));
-			Graph graph = (Graph) diagramClass.getDeclaredConstructor().newInstance();
+			Diagram graph = (Diagram) diagramClass.getDeclaredConstructor().newInstance();
 			DeserializationContext context = new DeserializationContext(graph);
 			decodeNodes(context, pGraph);
 			restoreChildren(context, pGraph);

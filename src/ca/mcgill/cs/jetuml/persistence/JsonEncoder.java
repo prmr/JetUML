@@ -27,7 +27,7 @@ import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.Property;
@@ -49,7 +49,7 @@ public final class JsonEncoder
 	 * @param pGraph The graph to serialize.
 	 * @return A JSON object that encodes the graph.
 	 */
-	public static JSONObject encode(Graph pGraph)
+	public static JSONObject encode(Diagram pGraph)
 	{
 		assert pGraph != null;
 		

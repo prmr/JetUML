@@ -26,7 +26,7 @@ import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.GraphElement;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
@@ -60,7 +60,7 @@ public class DiagramFrameToolBar extends ToolBar
      * 
      * @param pGraph The graph associated with this tool bar.
 	 */
-	public DiagramFrameToolBar(Graph pGraph)
+	public DiagramFrameToolBar(Diagram pGraph)
 	{
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
@@ -78,7 +78,7 @@ public class DiagramFrameToolBar extends ToolBar
 									 pToggleGroup));
 	}
 	
-	private void installNodesAndEdgesTools(Graph pGraph, ToggleGroup pToggleGroup)
+	private void installNodesAndEdgesTools(Diagram pGraph, ToggleGroup pToggleGroup)
 	{
 		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
 

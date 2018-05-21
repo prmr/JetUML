@@ -30,10 +30,10 @@ import java.io.PrintWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 
 /**
- * Services for saving and loading Graph objects (i.e., UML diagrams).
+ * Services for saving and loading Diagram objects (i.e., UML diagrams).
  */
 public final class PersistenceService
 {
@@ -48,7 +48,7 @@ public final class PersistenceService
      * @pre pGraph != null.
      * @pre pFile != null.
      */
-	public static void save(Graph pGraph, File pFile) throws IOException
+	public static void save(Diagram pGraph, File pFile) throws IOException
 	{
 		assert pGraph != null && pFile != null;
 		try( PrintWriter out = new PrintWriter(new FileWriter(pFile)))
@@ -66,12 +66,12 @@ public final class PersistenceService
 	 * @throws DeserializationException if there is a problem decoding the file.
 	 * @pre pFile != null
 	 */
-	public static Graph read(File pFile) throws IOException, DeserializationException
+	public static Diagram read(File pFile) throws IOException, DeserializationException
 	{
 		assert pFile != null;
 		try( BufferedReader in = new BufferedReader(new FileReader(pFile)))
 		{
-			Graph graph = JsonDecoder.decode(new JSONObject(in.readLine()));
+			Diagram graph = JsonDecoder.decode(new JSONObject(in.readLine()));
 			return graph;
 		}
 		catch( JSONException e )

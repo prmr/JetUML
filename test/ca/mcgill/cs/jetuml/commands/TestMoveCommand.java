@@ -29,14 +29,14 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 
 public class TestMoveCommand 
 {
     private MoveCommand aMoveCommand;
-    private Graph aGraph;
+    private Diagram aGraph;
     private Node aNode;
     
     /**

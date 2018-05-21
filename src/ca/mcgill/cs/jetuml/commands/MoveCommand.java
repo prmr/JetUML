@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.commands;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 
 /**
@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.graph.Node;
 public class MoveCommand implements Command
 {
 	private Node aNode;
-	private Graph aGraph;
+	private Diagram aGraph;
 	private int aDX;
 	private int aDY;
 	
@@ -40,7 +40,7 @@ public class MoveCommand implements Command
 	 * @param pDX The amount moved horizontally
 	 * @param pDY The amount moved vertically
 	 */
-	public MoveCommand(Graph pGraph, Node pNode, int pDX, int pDY)
+	public MoveCommand(Diagram pGraph, Node pNode, int pDX, int pDY)
 	{
 		aGraph = pGraph;
 		aNode = pNode;

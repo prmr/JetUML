@@ -25,7 +25,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
+import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 /**
  * A UML state diagram.
  */
-public class StateDiagram extends Graph
+public class StateDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
