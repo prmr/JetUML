@@ -25,10 +25,10 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Conversions;
-import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.DiagramElement;
-import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.geometry.Rectangle2D;
 
 /**

@@ -22,13 +22,13 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

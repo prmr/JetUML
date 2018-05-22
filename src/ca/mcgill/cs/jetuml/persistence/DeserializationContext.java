@@ -20,8 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
  * A deserialization context allows clients to incrementally build

@@ -35,13 +35,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
+import ca.mcgill.cs.jetuml.diagram.StateDiagram;
+import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.graph.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.StateNode;
 
 public class TestJsonEncodingStateDiagram
 {

@@ -24,21 +24,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Property;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * Converts a JSONObject to a graph.
  */
 public final class JsonDecoder
 {
-	private static final String PREFIX_DIAGRAMS = "ca.mcgill.cs.jetuml.diagrams.";
-	private static final String PREFIX_NODES = "ca.mcgill.cs.jetuml.graph.nodes.";
-	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.graph.edges.";
+	private static final String PREFIX_DIAGRAMS = "ca.mcgill.cs.jetuml.diagram.";
+	private static final String PREFIX_NODES = "ca.mcgill.cs.jetuml.diagram.nodes.";
+	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.diagram.edges.";
 	
 	private JsonDecoder() {}
 	

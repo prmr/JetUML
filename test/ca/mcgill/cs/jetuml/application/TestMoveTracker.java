@@ -38,10 +38,10 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.MoveCommand;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 public class TestMoveTracker
 {

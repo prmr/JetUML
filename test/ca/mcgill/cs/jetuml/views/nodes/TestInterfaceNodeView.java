@@ -33,9 +33,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
 
 public class TestInterfaceNodeView
 {
@@ -93,13 +93,17 @@ public class TestInterfaceNodeView
 	{
 		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,23), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertTrue(new Rectangle(0,0,100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Rectangle(0,0,100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("Foo\nFoo");
-		assertEquals(new Rectangle(0,0,100,39), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertTrue(new Rectangle(0,0,100,39).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Rectangle(0,0,100,40).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("Foo");
-		assertEquals(new Rectangle(0,0,100,23), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertTrue(new Rectangle(0,0,100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Rectangle(0,0,100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Rectangle(0,0,310,22), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertTrue(new Rectangle(0,0,310,22).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Rectangle(0,0,310,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 	}
 	
 	@Test
@@ -107,7 +111,8 @@ public class TestInterfaceNodeView
 	{
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		aNode1.setName("X\nX\nX\nX");
-		assertEquals(new Rectangle(0,0,100,70), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertTrue(new Rectangle(0,0,100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+					new Rectangle(0,0,100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 		aNode1.setName("");
 		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
@@ -117,9 +122,11 @@ public class TestInterfaceNodeView
 		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("X\nX\nX");
-		assertEquals(new Rectangle(0,0,100,54), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertTrue(new Rectangle(0,0,100,54).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+					new Rectangle(0,0,100,56).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 		aNode1.setName("X\nX\nX\nX");
-		assertEquals(new Rectangle(0,0,100,70), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertTrue(new Rectangle(0,0,100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+				new Rectangle(0,0,100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 	}
 	
 	@Test

@@ -23,8 +23,8 @@ package ca.mcgill.cs.jetuml.persistence;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
  * Base class for serialization and deserialization contexts. A context 

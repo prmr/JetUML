@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.jetuml.diagrams.StateDiagram"/>
+ <object class="ca.mcgill.cs.jetuml.diagram.StateDiagram"/>
 </java>

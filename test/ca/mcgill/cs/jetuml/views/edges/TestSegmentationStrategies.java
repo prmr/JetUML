@@ -27,15 +27,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.AssociationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge.Type;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge.Type;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import javafx.geometry.Point2D;
 
 public class TestSegmentationStrategies 

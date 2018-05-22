@@ -24,7 +24,6 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -36,6 +35,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
+
+import ca.mcgill.cs.jetuml.diagram.Edge;
 
 /**
  * Provides shared services for rendering an edge.

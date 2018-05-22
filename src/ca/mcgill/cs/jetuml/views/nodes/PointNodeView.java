@@ -20,10 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Node;
 import javafx.scene.canvas.GraphicsContext;
 
 /**

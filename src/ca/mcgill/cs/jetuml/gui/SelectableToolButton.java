@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.graph.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;

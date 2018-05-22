@@ -20,9 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.graph.Diagram;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * A serialization context automatically finds all the nodes

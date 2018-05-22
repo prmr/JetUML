@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.commands;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.graph.Properties;
+import ca.mcgill.cs.jetuml.diagram.Properties;
 
 import static org.junit.Assert.*;
 

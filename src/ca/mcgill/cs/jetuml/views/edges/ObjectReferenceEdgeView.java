@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;

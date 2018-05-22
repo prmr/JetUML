@@ -35,12 +35,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
-import ca.mcgill.cs.jetuml.graph.edges.UseCaseAssociationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.UseCaseDependencyEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.UseCaseNode;
+import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
+import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 
 public class TestJsonEncodingUseCaseDiagram
 {

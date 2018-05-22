@@ -30,7 +30,7 @@ import java.io.PrintWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.graph.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 
 /**
  * Services for saving and loading Diagram objects (i.e., UML diagrams).

@@ -23,12 +23,12 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.io.File;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagram;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagram;
-import ca.mcgill.cs.jetuml.graph.Diagram;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.StateDiagram;
+import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
