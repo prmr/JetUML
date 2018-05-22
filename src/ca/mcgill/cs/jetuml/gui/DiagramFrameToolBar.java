@@ -20,14 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
 import ca.mcgill.cs.jetuml.graph.DiagramElement;
+import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Orientation;
@@ -51,22 +52,20 @@ import javafx.scene.image.ImageView;
  */
 public class DiagramFrameToolBar extends ToolBar
 {
-	private static final ResourceBundle RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-	
 	private ContextMenu aPopupMenu = new ContextMenu();
 
 	/**
      * Constructs the tool bar.
      * 
-     * @param pGraph The graph associated with this tool bar.
+     * @param pDiagram The diagram associated with this tool bar.
 	 */
-	public DiagramFrameToolBar(Diagram pGraph)
+	public DiagramFrameToolBar(Diagram pDiagram)
 	{
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		ToggleGroup toggleGroup = new ToggleGroup();
 		installSelectionTool(toggleGroup);
-		installNodesAndEdgesTools(pGraph, toggleGroup);
+		installNodesAndEdgesTools(pDiagram, toggleGroup);
 		installCopyToClipboard();
     	showButtonLabels( Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")) );
 	}
@@ -74,33 +73,33 @@ public class DiagramFrameToolBar extends ToolBar
 	private void installSelectionTool(ToggleGroup pToggleGroup)
 	{
 		add(new SelectableToolButton(ImageCreator.createSelectionImage(), 
-									 RESOURCES.getString("grabber.tooltip"), 
+									 RESOURCES.getString("toolbar.select.tooltip"), 
 									 pToggleGroup));
 	}
 	
 	private void installNodesAndEdgesTools(Diagram pGraph, ToggleGroup pToggleGroup)
 	{
-		ResourceBundle resources = ResourceBundle.getBundle(pGraph.getClass().getName() + "Strings");
-
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
 			add(new SelectableToolButton(ImageCreator.createImage(nodeTypes[i]), 
-					resources.getString("node" + (i + 1) + ".tooltip"), pToggleGroup, nodeTypes[i]));
+					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
+					pToggleGroup, nodeTypes[i]));
 		}
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
 			add(new SelectableToolButton(ImageCreator.createImage(edgeTypes[i]), 
-					resources.getString("edge" + (i + 1) + ".tooltip"), pToggleGroup, edgeTypes[i]));
+					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
+					pToggleGroup, edgeTypes[i]));
 		}
 	}
 	
 	private void installCopyToClipboard()
 	{
 		final Button button = new Button();
-		button.setGraphic(new ImageView(getClass().getClassLoader().getResource(RESOURCES.getString("toolbar.copyToClipBoard")).toString()));
-		button.setTooltip( new Tooltip(RESOURCES.getString("toolbar.copyToClipBoardText")));
+		button.setGraphic(new ImageView(RESOURCES.getUrl("toolbar.toclipboard.iconpath")));
+		button.setTooltip( new Tooltip(RESOURCES.getString("toolbar.toclipboard.tooltip")));
 		button.setOnAction(pEvent-> 
 		{
 			copyToClipboard();

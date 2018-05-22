@@ -44,6 +44,9 @@ public final class ApplicationResources
 	
 	private ResourceBundle aResouceBundle = ResourceBundle.getBundle(UMLEditor.class.getName());
 	
+	// An instance of the class loader is used to discover the path to application resources such as images
+	private ClassLoader aClassLoader = getClass().getClassLoader();
+	
 	private ApplicationResources() {}
 	
 	/**
@@ -65,5 +68,18 @@ public final class ApplicationResources
 		{
 			return ERROR_MESSAGE;
 		}
+	}
+	
+	/**
+	 * Returns the url for the path indicated by the value of pKey. The url
+	 * should represent a complete path to the resource in the deployed system.
+	 * @param pKey The key to a resources indicating the relative path of another resource.
+	 * @return The full path of the resource.
+	 * @pre pKey exists.
+	 */
+	public String getUrl(String pKey)
+	{
+		assert !getString(pKey).equals(ERROR_MESSAGE);
+		return aClassLoader.getResource(getString(pKey)).toString();
 	}
 }
