@@ -20,8 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.List;
-import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.application.NamedHandler;
 import javafx.geometry.Pos;
@@ -38,8 +39,6 @@ import javafx.scene.layout.VBox;
  */
 public class WelcomeTab extends Tab
 {
-	private static final ResourceBundle WELCOME_RESOURCES = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-	
 	/* CSS classes of the different GUI elements in the welcome tab. See UMLEditorStyle.css for the styling */
 	private static final String CLASS_WELCOME_TAB_PANEL = "welcome-tab-panel"; 	// One column in the welcome tab
 	private static final String CLASS_PANEL_TITLE = "panel-title"; 				// The title/header above each of the two columns
@@ -50,7 +49,7 @@ public class WelcomeTab extends Tab
 	 */
 	public WelcomeTab(List<NamedHandler> pNewDiagramHandlers)
 	{
-		super(WELCOME_RESOURCES.getString("welcome.title"));
+		super(RESOURCES.getString("welcome.title"));
 		setClosable(false);
 		
 		BorderPane layout = new BorderPane();
@@ -68,7 +67,7 @@ public class WelcomeTab extends Tab
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
-		titleBox.getChildren().addAll(new Label(WELCOME_RESOURCES.getString("welcome.create.text")));
+		titleBox.getChildren().addAll(new Label(RESOURCES.getString("welcome.create.text")));
 
 		VBox diagramBox = new VBox();
 		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
@@ -103,7 +102,7 @@ public class WelcomeTab extends Tab
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
-		titleBox.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.open.text")));
+		titleBox.getChildren().add(new Label(RESOURCES.getString("welcome.open.text")));
 
 		VBox fileBox = new VBox();
 		fileBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
@@ -117,7 +116,7 @@ public class WelcomeTab extends Tab
 	{
 		HBox footTextPanel = new HBox();
 		footTextPanel.getStyleClass().add(CLASS_FOOTER);
-		footTextPanel.getChildren().add(new Label(WELCOME_RESOURCES.getString("welcome.copyright")));
+		footTextPanel.getChildren().add(new Label(RESOURCES.getString("welcome.copyright")));
 		return footTextPanel;
 	}
 }	

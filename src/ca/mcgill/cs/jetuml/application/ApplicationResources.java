@@ -82,4 +82,14 @@ public final class ApplicationResources
 		assert !getString(pKey).equals(ERROR_MESSAGE);
 		return aClassLoader.getResource(getString(pKey)).toString();
 	}
+	
+	/**
+	 * @param pKey The key to check. Cannot be null.
+	 * @return True if the key is found in the resources.
+	 */
+	public boolean containsKey(String pKey)
+	{
+		assert pKey != null;
+		return aResouceBundle.containsKey(pKey);
+	}
 }

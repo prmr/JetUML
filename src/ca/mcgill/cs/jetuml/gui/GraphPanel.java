@@ -21,9 +21,10 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
 import java.util.prefs.Preferences;
@@ -229,8 +230,8 @@ public class GraphPanel extends Canvas
 		}
 
 		Stage window = new Stage();
-		window.setTitle(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings").getString("dialog.properties"));
-		window.getIcons().add(new Image(ResourceBundle.getBundle("ca.mcgill.cs.jetuml.UMLEditorStrings").getString("app.icon")));
+		window.setTitle(RESOURCES.getString("dialog.properties"));
+		window.getIcons().add(new Image(RESOURCES.getUrl("application.iconpath")));
 		window.initModality(Modality.APPLICATION_MODAL);
 		
 		BorderPane layout = new BorderPane();

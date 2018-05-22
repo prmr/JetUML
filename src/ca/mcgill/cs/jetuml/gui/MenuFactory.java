@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,16 +37,14 @@ import javafx.scene.input.KeyCombination;
  */
 class MenuFactory
 {
-	private ResourceBundle aBundle;
 	private final String aSystem; 
 	
 	/**
 	 * @param pBundle The bundle to use to fetch
 	 * resources.
 	 */
-	MenuFactory(ResourceBundle pBundle)
+	MenuFactory()
 	{
-		aBundle = pBundle;
 		aSystem = System.getProperty("os.name").toLowerCase();
 	}
 	
@@ -80,15 +78,15 @@ class MenuFactory
 	private MenuItem configure(MenuItem pMenuItem, String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
 		pMenuItem.setOnAction(pHandler);
-		String text = aBundle.getString(pPrefix + ".text");
+		String text = RESOURCES.getString(pPrefix + ".text");
 		
-		if( aBundle.containsKey(pPrefix + ".mnemonic"))
+		if( RESOURCES.containsKey(pPrefix + ".mnemonic"))
 		{
 			// get index of character to properly insert mnemonic symbol "_"
-			int index = text.indexOf(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
+			int index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").charAt(0));
 			if(index < 0) 
 			{
-				index = text.indexOf(aBundle.getString(pPrefix + ".mnemonic").toLowerCase().charAt(0));
+				index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").toLowerCase().charAt(0));
 			}
 			
 			if (index >= 0) 
@@ -97,26 +95,26 @@ class MenuFactory
 			}
 			else 
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination("ALT+"+aBundle.getString(pPrefix + ".mnemonic")));
+				pMenuItem.setAccelerator(KeyCombination.keyCombination("ALT+"+ RESOURCES.getString(pPrefix + ".mnemonic")));
 			}
 		}
 		pMenuItem.setText(text);
 		
-		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
+		if( RESOURCES.containsKey(pPrefix + ".accelerator.mac"))
 		{
 			if(aSystem.indexOf("mac") >= 0)
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.mac")));	
+				pMenuItem.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.mac")));	
 			}
 			else
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.win")));
+				pMenuItem.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.win")));
 			}	
 		}
 		
-		if( aBundle.containsKey(pPrefix + ".icon"))
+		if( RESOURCES.containsKey(pPrefix + ".icon"))
 		{
-			pMenuItem.setGraphic(new ImageView(aBundle.getString(pPrefix + ".icon").toString()));
+			pMenuItem.setGraphic(new ImageView(RESOURCES.getString(pPrefix + ".icon").toString()));
 		}
 		return pMenuItem;
 	}
@@ -128,31 +126,31 @@ class MenuFactory
 	 */
 	public Menu createMenu(String pPrefix)
 	{
-		String text = aBundle.getString(pPrefix + ".text");
+		String text = RESOURCES.getString(pPrefix + ".text");
 		Menu menu = new Menu();
-		if( aBundle.containsKey(pPrefix + ".mnemonic"))
+		if( RESOURCES.containsKey(pPrefix + ".mnemonic"))
 		{
-			int index = text.indexOf(aBundle.getString(pPrefix + ".mnemonic").charAt(0));
+			int index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").charAt(0));
 			assert index >= 0;
 			text = text.substring(0, index) + "_" + text.substring(index);
 		}
 		menu.setText(text);
 		
-		if( aBundle.containsKey(pPrefix + ".accelerator.mac"))
+		if( RESOURCES.containsKey(pPrefix + ".accelerator.mac"))
 		{
 			if(aSystem.indexOf("mac") >= 0)
 			{
-				menu.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.mac")));	
+				menu.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.mac")));	
 			}
 			else
 			{
-				menu.setAccelerator(KeyCombination.keyCombination(aBundle.getString(pPrefix + ".accelerator.win")));
+				menu.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.win")));
 			}
 		}
 
-		if( aBundle.containsKey(pPrefix + ".icon"))
+		if( RESOURCES.containsKey(pPrefix + ".icon"))
 		{
-			menu.setGraphic(new ImageView(aBundle.getString(pPrefix + ".icon").toString()));
+			menu.setGraphic(new ImageView(RESOURCES.getString(pPrefix + ".icon").toString()));
 		}
 
 		return menu;

@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -36,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
@@ -108,9 +109,6 @@ public class EditorFrame extends BorderPane
 	
 	private Stage aMainStage;
 	private MenuFactory aAppFactory;
-	private ResourceBundle aAppResources;
-	private ResourceBundle aVersionResources;
-	private ResourceBundle aEditorResources;
 	private TabPane aTabbedPane;
 	private ArrayList<Tab> aTabs = new ArrayList<>();
 	
@@ -126,24 +124,15 @@ public class EditorFrame extends BorderPane
 	private final List<MenuItem> aDiagramRelevantMenus = new ArrayList<>();
 
 	/**
-	 * Constructs a blank frame with a desktop pane but no graph windows.
+	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
-	 * @param pAppClass
-	 *            the fully qualified app class name. It is expected that the
-	 *            resources are appClassName + "Strings" and appClassName +
-	 *            "Version" (the latter for version-specific resources)
-	 * @param pMainStage
-	 *            the main stage used by the UMLEditor
+	 * @param pMainStage The main stage used by the UMLEditor
 	 */
-	public EditorFrame(Class<?> pAppClass, Stage pMainStage) 
+	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
-		String appClassName = pAppClass.getName();
-		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
-		aAppFactory = new MenuFactory(aAppResources);
-		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
-		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-		MenuFactory factory = new MenuFactory(aEditorResources);
+		aAppFactory = new MenuFactory();
+		MenuFactory factory = new MenuFactory();
 
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
 
@@ -174,7 +163,7 @@ public class EditorFrame extends BorderPane
 		List<NamedHandler> renamedHandlers = new ArrayList<>();
 		for( NamedHandler handler : newDiagramHandlers )
 		{
-			renamedHandlers.add(handler.renamed(aAppResources.getString(handler.getName()+ ".text")));
+			renamedHandlers.add(handler.renamed(RESOURCES.getString(handler.getName()+ ".text")));
 		}
 		
 		aWelcomeTab = new WelcomeTab(renamedHandlers);
@@ -380,9 +369,8 @@ public class EditorFrame extends BorderPane
 				scrollPane.setFitToWidth(true);
 
 				Stage window = new Stage();
-				window.setTitle(aEditorResources.getString("dialog.license.title"));
-				Image appIcon = new Image(aAppResources.getString("app.icon"));
-				window.getIcons().add(appIcon);
+				window.setTitle(RESOURCES.getString("dialog.license.title"));
+				window.getIcons().add(new Image(RESOURCES.getUrl("application.iconpath")));
 				window.initModality(Modality.APPLICATION_MODAL);
 
 				Button button = new Button("OK");
@@ -444,7 +432,7 @@ public class EditorFrame extends BorderPane
 		}
 		catch (IOException | DeserializationException exception2) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.open_file"), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
@@ -652,9 +640,9 @@ public class EditorFrame extends BorderPane
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
 	    clipboard.setContent(content);
-		Alert alert = new Alert(AlertType.INFORMATION, aEditorResources.getString("dialog.to_clipboard.message"), ButtonType.OK);
+		Alert alert = new Alert(AlertType.INFORMATION, RESOURCES.getString("dialog.to_clipboard.message"), ButtonType.OK);
 		alert.initOwner(aMainStage);
-		alert.setHeaderText(aEditorResources.getString("dialog.to_clipboard.title"));
+		alert.setHeaderText(RESOURCES.getString("dialog.to_clipboard.title"));
 		alert.showAndWait();
 	}
 
@@ -682,10 +670,10 @@ public class EditorFrame extends BorderPane
 			if (openFrame.getGraphPanel().isModified()) 
 			{
 				// ask user if it is ok to close
-				Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+				Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
 				alert.initOwner(aMainStage);
-				alert.setTitle(aEditorResources.getString("dialog.close.title"));
-				alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+				alert.setTitle(RESOURCES.getString("dialog.close.title"));
+				alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 				alert.showAndWait();
 
 				if (alert.getResult() == ButtonType.YES) 
@@ -719,10 +707,10 @@ public class EditorFrame extends BorderPane
 				if (openFrame.getGraphPanel().isModified()) 
 				{
 					// ask user if it is ok to close
-					Alert alert = new Alert(AlertType.CONFIRMATION, aEditorResources.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+					Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
 					alert.initOwner(aMainStage);
-					alert.setTitle(aEditorResources.getString("dialog.close.title"));
-					alert.setHeaderText(aEditorResources.getString("dialog.close.title"));
+					alert.setTitle(RESOURCES.getString("dialog.close.title"));
+					alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
 					alert.showAndWait();
 
 					if (alert.getResult() == ButtonType.YES) 
@@ -759,7 +747,7 @@ public class EditorFrame extends BorderPane
 		} 
 		catch (IOException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
@@ -797,7 +785,7 @@ public class EditorFrame extends BorderPane
 			File result = fileChooser.showSaveDialog(aMainStage);
 			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
 			{
-				result = new File(result.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
+				result = new File(result.getPath() + graph.getFileExtension() + RESOURCES.getString("application.file.extension"));
 			}
 			if (result != null) 
 			{
@@ -810,7 +798,7 @@ public class EditorFrame extends BorderPane
 		} 
 		catch (IOException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
@@ -866,9 +854,9 @@ public class EditorFrame extends BorderPane
 		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
 		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.unsupported_image"),	ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.unsupported_image"),	ButtonType.OK);
 			alert.initOwner(aMainStage);
-			alert.setHeaderText(aEditorResources.getString("error.unsupported_image.title"));
+			alert.setHeaderText(RESOURCES.getString("error.unsupported_image.title"));
 			alert.showAndWait();
 			return;
 		}
@@ -900,7 +888,7 @@ public class EditorFrame extends BorderPane
 		} 
 		catch (IOException exception) 
 		{
-			Alert alert = new Alert(AlertType.ERROR, aEditorResources.getString("error.save_file"), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
@@ -933,16 +921,16 @@ public class EditorFrame extends BorderPane
 				continue;
 			}
 			fileChooser.getExtensionFilters()
-				.add(new ExtensionFilter(format.toUpperCase() + " " + aEditorResources.getString("files.image.name"), "*." +format));
+				.add(new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format));
 		}
 		fileChooser.setInitialDirectory(new File("."));
 
 		// If the file was previously saved, use that to suggest a file name root.
 		if (frame.getFileName() != null) 
 		{
-			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), aAppResources.getString("files.extension"), ""));
-			fileChooser.setInitialDirectory(f.getParentFile());
-			fileChooser.setInitialFileName(f.getName());
+			File file = new File(replaceExtension(frame.getFileName().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
+			fileChooser.setInitialDirectory(file.getParentFile());
+			fileChooser.setInitialFileName(file.getName());
 		}
 		return fileChooser;
 	}
@@ -985,11 +973,11 @@ public class EditorFrame extends BorderPane
 	 */
 	public void showAboutDialog() 
 	{
-		MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
-		Text text = new Text(formatter.format(new Object[] { aAppResources.getString("app.name"),
-				aVersionResources.getString("version.number"), aVersionResources.getString("version.date"),
-				aAppResources.getString("app.copyright"), aEditorResources.getString("dialog.about.license") }));
-		Image appIcon = new Image(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")).toString());
+		MessageFormat formatter = new MessageFormat(RESOURCES.getString("dialog.about.version"));
+		Text text = new Text(formatter.format(new Object[] { RESOURCES.getString("application.name"),
+				RESOURCES.getString("version.number"), RESOURCES.getString("version.date"),
+				RESOURCES.getString("application.copyright"), RESOURCES.getString("dialog.about.license") }));
+		Image appIcon = new Image(RESOURCES.getUrl("application.iconpath"));
 		
 		HBox info = new HBox(HELP_MENU_SPACING);
 		info.setAlignment(Pos.CENTER);
@@ -1001,8 +989,8 @@ public class EditorFrame extends BorderPane
 		
 		Stage window = new Stage();
 		window.initModality(Modality.APPLICATION_MODAL);
-		window.setTitle(new MessageFormat(aEditorResources.getString("dialog.about.title"))
-				.format(new Object[] { aAppResources.getString("app.name") }));
+		window.setTitle(new MessageFormat(RESOURCES.getString("dialog.about.title"))
+				.format(new Object[] { RESOURCES.getString("application.name") }));
 		window.getIcons().add(appIcon);
 		
 		Button button = new Button("OK");
@@ -1045,12 +1033,12 @@ public class EditorFrame extends BorderPane
 			// ask user if it is ok to close
 			final int finalModCount = modcount;
 			Alert alert = new Alert(AlertType.CONFIRMATION, 
-					MessageFormat.format(aEditorResources.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(finalModCount) }),
+					MessageFormat.format(RESOURCES.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(finalModCount) }),
 					ButtonType.YES, 
 					ButtonType.NO);
 			alert.initOwner(aMainStage);
-			alert.setTitle(aEditorResources.getString("dialog.exit.title"));
-			alert.setHeaderText(aEditorResources.getString("dialog.exit.title"));
+			alert.setTitle(RESOURCES.getString("dialog.exit.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
 			alert.showAndWait();
 
 			if (alert.getResult() == ButtonType.YES) 

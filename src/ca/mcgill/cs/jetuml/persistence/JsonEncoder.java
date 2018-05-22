@@ -20,14 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Diagram;
+import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.graph.Node;
 import ca.mcgill.cs.jetuml.graph.Properties;
 import ca.mcgill.cs.jetuml.graph.Property;
@@ -54,7 +53,7 @@ public final class JsonEncoder
 		assert pGraph != null;
 		
 		JSONObject object = new JSONObject();
-		object.put("version", ResourceBundle.getBundle(UMLEditor.class.getName() + "Version").getString("version.number"));
+		object.put("version", RESOURCES.getString("version.number"));
 		object.put("diagram", pGraph.getClass().getSimpleName());
 		SerializationContext context = new SerializationContext(pGraph);
 		object.put("nodes", encodeNodes(context));
