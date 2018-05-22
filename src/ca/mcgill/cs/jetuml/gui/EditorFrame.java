@@ -973,10 +973,13 @@ public class EditorFrame extends BorderPane
 	 */
 	public void showAboutDialog() 
 	{
-		MessageFormat formatter = new MessageFormat(RESOURCES.getString("dialog.about.version"));
-		Text text = new Text(formatter.format(new Object[] { RESOURCES.getString("application.name"),
-				RESOURCES.getString("version.number"), RESOURCES.getString("version.date"),
-				RESOURCES.getString("application.copyright"), RESOURCES.getString("dialog.about.license") }));
+		Text text = new Text(String.format("%s %s %s (%s)\n%s\n%s",
+				RESOURCES.getString("application.name"),
+				RESOURCES.getString("dialog.about.version"),
+				RESOURCES.getString("version.number"),
+				RESOURCES.getString("version.date"),
+				RESOURCES.getString("application.copyright"),
+				RESOURCES.getString("dialog.about.license")));
 		Image appIcon = new Image(RESOURCES.getUrl("application.iconpath"));
 		
 		HBox info = new HBox(HELP_MENU_SPACING);

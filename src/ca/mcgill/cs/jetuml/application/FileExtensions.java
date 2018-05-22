@@ -52,14 +52,14 @@ public final class FileExtensions
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("sequencediagram.file.name"), 
 				"*" + RESOURCES.getString("sequencediagram.file.extension") + RESOURCES.getString("application.file.extension")));
 		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("state.file.name"), 
-				"*" + RESOURCES.getString("state.file.extension") + RESOURCES.getString("application.file.extension")));
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("statediagram.file.name"), 
+				"*" + RESOURCES.getString("statediagram.file.extension") + RESOURCES.getString("application.file.extension")));
 		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("object.file.name"), 
-				"*" + RESOURCES.getString("object.file.extension") + RESOURCES.getString("application.file.extension")));
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("objectdiagram.file.name"), 
+				"*" + RESOURCES.getString("objectdiagram.file.extension") + RESOURCES.getString("application.file.extension")));
 		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecase.file.name"), 
-				"*" + RESOURCES.getString("usecase.file.extension") + RESOURCES.getString("application.file.extension")));
+		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecasediagram.file.name"), 
+				"*" + RESOURCES.getString("usecasediagram.file.extension") + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*"));
 	}
