@@ -21,8 +21,9 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.lang.reflect.InvocationTargetException;
-import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.graph.DiagramElement;
 import ca.mcgill.cs.jetuml.graph.Property;
@@ -63,7 +64,6 @@ public class PropertySheet extends GridPane
 	private static final int TEXT_FIELD_WIDTH = 10;
 	private static final int LAYOUT_SPACING = 10;
 	private static final int LAYOUT_PADDING = 20;
-	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.graph.GraphElementProperties");
 
 	private final PropertyChangeListener aListener;
 
@@ -252,13 +252,13 @@ public class PropertySheet extends GridPane
 			return pProperty;
 		}
 		String key = pClass.getSimpleName() + "." + pProperty;
-		if( !aPropertyNames.containsKey(key) )
+		if( !RESOURCES.containsKey(key) )
 		{
 			return getPropertyName(pClass.getSuperclass(), pProperty);
 		}
 		else
 		{
-			return aPropertyNames.getString(key);
+			return RESOURCES.getString(key);
 		}
 	}
 }
