@@ -45,9 +45,10 @@ public class WelcomeTab extends Tab
 	private static final String CLASS_FOOTER = "welcome-tab-footer"; 						// The footer with the copyright information
     
 	/**
-	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams.
+	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams. The name 
+	 * is expected to be the simple name of a concrete diagram, all in lower case.
 	 */
-	public WelcomeTab(List<NamedHandler> pNewDiagramHandlers)
+	public WelcomeTab(List<NewDiagramHandler> pNewDiagramHandlers)
 	{
 		super(RESOURCES.getString("welcome.title"));
 		setClosable(false);
@@ -63,7 +64,7 @@ public class WelcomeTab extends Tab
 	    setContent(layout);
 	}
 		
-	private VBox createDiagramPanel(List<NamedHandler> pNewDiagramHandlers)
+	private VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers)
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
@@ -72,9 +73,9 @@ public class WelcomeTab extends Tab
 		VBox diagramBox = new VBox();
 		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
 		diagramBox.getChildren().add(titleBox);
-		for(NamedHandler handler : pNewDiagramHandlers)
+		for(NewDiagramHandler handler : pNewDiagramHandlers)
 		{
-			Button newDiagramShortcut = new Button(handler.getName());
+			Button newDiagramShortcut = new Button(RESOURCES.getString(handler.getDiagramType().getSimpleName().toLowerCase() + ".text"));
 			newDiagramShortcut.setOnAction(handler);
 			diagramBox.getChildren().add(newDiagramShortcut);
 		}

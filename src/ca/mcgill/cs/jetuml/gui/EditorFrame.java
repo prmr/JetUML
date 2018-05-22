@@ -153,31 +153,15 @@ public class EditorFrame extends BorderPane
 		createViewMenu(factory);
 		createHelpMenu(factory);
 		
-		List<NamedHandler> newDiagramHandlers = getNewDiagramHandlers();
+		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
 		
-		for( NamedHandler handler : newDiagramHandlers )
+		for( NewDiagramHandler handler : newDiagramHandlers )
 		{
-			aNewMenu.getItems().add(aAppFactory.createMenuItem(handler.getName(), handler));
-		}
-
-		List<NamedHandler> renamedHandlers = new ArrayList<>();
-		for( NamedHandler handler : newDiagramHandlers )
-		{
-			renamedHandlers.add(handler.renamed(RESOURCES.getString(handler.getName()+ ".text")));
+			aNewMenu.getItems().add(aAppFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
 		}
 		
-		aWelcomeTab = new WelcomeTab(renamedHandlers);
+		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTab();
-	}
-	
-	/*
-	 * Return the name of a diagram in the resource file. Basically converts
-	 * a camel case XDiagramGraph string into a x_diagram string
-	 */
-	private static String getResourceName(String pClassName)
-	{
-		assert pClassName.length() > "Diagram".length() && pClassName.endsWith("Diagram");
-		return pClassName.substring(0, pClassName.length() - "Diagram".length()).toLowerCase() + "_diagram";
 	}
 	
 	private void createFileMenu(MenuFactory pFactory) 
@@ -481,12 +465,12 @@ public class EditorFrame extends BorderPane
 		return Collections.unmodifiableList(result);
 	}
 	
-	private List<NamedHandler> getNewDiagramHandlers()
+	private List<NewDiagramHandler> createNewDiagramHandlers()
 	{
-		List<NamedHandler> result = new ArrayList<>();
+		List<NewDiagramHandler> result = new ArrayList<>();
 		for( Class<?> diagramType : DIAGRAM_TYPES )
 		{
-			result.add(new NamedHandler(getResourceName(diagramType.getSimpleName()), pEvent ->
+			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
 				try 
 				{
