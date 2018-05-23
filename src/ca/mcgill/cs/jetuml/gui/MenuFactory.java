@@ -21,8 +21,7 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
+import ca.mcgill.cs.jetuml.application.ApplicationResources;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;
@@ -32,32 +31,44 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 
 /**
- * A class for creating menus from strings in a 
- * resource bundle.
+ * A utility class for creating menus from strings in a resource bundle. The class does not 
+ * depend on the Singleton ApplicationResource instance to improve testability.
+ * 
+ * An instance of this class is intended to be initialized with a resource bundle,
+ * used to create any number of menus, then discarded.
  */
 class MenuFactory
 {
-	private final String aSystem; 
+	private static final boolean IS_MAC = isMacOS();
 	
-	/**
-	 * @param pBundle The bundle to use to fetch
-	 * resources.
-	 */
-	MenuFactory()
+	private final ApplicationResources aResources;
+	
+	MenuFactory(ApplicationResources pResources)
 	{
-		aSystem = System.getProperty("os.name").toLowerCase();
+		aResources = pResources;
+	}
+	
+	private static boolean isMacOS()
+	{
+		boolean result = false;
+		try
+		{
+			result = System.getProperty("os.name", "unknown").toLowerCase().startsWith("mac");
+		}
+		catch( SecurityException pException )
+		{ /* Result stays false */ }
+		return result;
 	}
 	
 	/**
-	 * Creates a menu item where pListener is triggered when the menu item is selected.
+	 * Creates a normal menu item with pHandler as the event handler.
 	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
 	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
-		MenuItem menuItem = new MenuItem();
-		return configure(menuItem, pPrefix, pHandler);
+		return initialize(new MenuItem(), pPrefix, pHandler);
 	}
 
 	/**
@@ -68,25 +79,24 @@ class MenuFactory
 	 */
 	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler) 
 	{
-		MenuItem menuItem = new CheckMenuItem();
-		return configure(menuItem, pPrefix, pHandler);
+		return initialize(new CheckMenuItem(), pPrefix, pHandler);
 	}	
 	
 	/*
-	 * Configures the menu with text, mnemonic, accelerator, etc
+	 * Initializes pMenuItem with text, mnemonic, accelerator, etc., and returns it.
 	 */
-	private MenuItem configure(MenuItem pMenuItem, String pPrefix, EventHandler<ActionEvent> pHandler)
+	private MenuItem initialize(MenuItem pMenuItem, String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
 		pMenuItem.setOnAction(pHandler);
-		String text = RESOURCES.getString(pPrefix + ".text");
+		String text = aResources.getString(pPrefix + ".text");
 		
-		if( RESOURCES.containsKey(pPrefix + ".mnemonic"))
+		if( aResources.containsKey(pPrefix + ".mnemonic"))
 		{
 			// get index of character to properly insert mnemonic symbol "_"
-			int index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").charAt(0));
+			int index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").charAt(0));
 			if(index < 0) 
 			{
-				index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").toLowerCase().charAt(0));
+				index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").toLowerCase().charAt(0));
 			}
 			
 			if (index >= 0) 
@@ -95,26 +105,26 @@ class MenuFactory
 			}
 			else 
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination("ALT+"+ RESOURCES.getString(pPrefix + ".mnemonic")));
+				pMenuItem.setAccelerator(KeyCombination.keyCombination("ALT+"+ aResources.getString(pPrefix + ".mnemonic")));
 			}
 		}
 		pMenuItem.setText(text);
 		
-		if( RESOURCES.containsKey(pPrefix + ".accelerator.mac"))
+		if( aResources.containsKey(pPrefix + ".accelerator.mac"))
 		{
-			if(aSystem.indexOf("mac") >= 0)
+			if(IS_MAC)
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.mac")));	
+				pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.mac")));	
 			}
 			else
 			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.win")));
+				pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.win")));
 			}	
 		}
 		
-		if( RESOURCES.containsKey(pPrefix + ".icon"))
+		if( aResources.containsKey(pPrefix + ".icon"))
 		{
-			pMenuItem.setGraphic(new ImageView(RESOURCES.getString(pPrefix + ".icon").toString()));
+			pMenuItem.setGraphic(new ImageView(aResources.getString(pPrefix + ".icon").toString()));
 		}
 		return pMenuItem;
 	}
@@ -126,31 +136,31 @@ class MenuFactory
 	 */
 	public Menu createMenu(String pPrefix)
 	{
-		String text = RESOURCES.getString(pPrefix + ".text");
+		String text = aResources.getString(pPrefix + ".text");
 		Menu menu = new Menu();
-		if( RESOURCES.containsKey(pPrefix + ".mnemonic"))
+		if( aResources.containsKey(pPrefix + ".mnemonic"))
 		{
-			int index = text.indexOf(RESOURCES.getString(pPrefix + ".mnemonic").charAt(0));
+			int index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").charAt(0));
 			assert index >= 0;
 			text = text.substring(0, index) + "_" + text.substring(index);
 		}
 		menu.setText(text);
 		
-		if( RESOURCES.containsKey(pPrefix + ".accelerator.mac"))
+		if( aResources.containsKey(pPrefix + ".accelerator.mac"))
 		{
-			if(aSystem.indexOf("mac") >= 0)
+			if(IS_MAC)
 			{
-				menu.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.mac")));	
+				menu.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.mac")));	
 			}
 			else
 			{
-				menu.setAccelerator(KeyCombination.keyCombination(RESOURCES.getString(pPrefix + ".accelerator.win")));
+				menu.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.win")));
 			}
 		}
 
-		if( RESOURCES.containsKey(pPrefix + ".icon"))
+		if( aResources.containsKey(pPrefix + ".icon"))
 		{
-			menu.setGraphic(new ImageView(RESOURCES.getString(pPrefix + ".icon").toString()));
+			menu.setGraphic(new ImageView(aResources.getString(pPrefix + ".icon").toString()));
 		}
 
 		return menu;

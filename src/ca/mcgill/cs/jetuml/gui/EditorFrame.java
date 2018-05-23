@@ -108,7 +108,6 @@ public class EditorFrame extends BorderPane
 			StateDiagram.class, ObjectDiagram.class, UseCaseDiagram.class};
 	
 	private Stage aMainStage;
-	private MenuFactory aAppFactory;
 	private TabPane aTabbedPane;
 	private ArrayList<Tab> aTabs = new ArrayList<>();
 	
@@ -131,9 +130,6 @@ public class EditorFrame extends BorderPane
 	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
-		aAppFactory = new MenuFactory();
-		MenuFactory factory = new MenuFactory();
-
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
 
 		aTabbedPane = new TabPane();
@@ -148,76 +144,81 @@ public class EditorFrame extends BorderPane
 		setTop(aMenuBar);
 		setCenter(aTabbedPane);
 	
-		createFileMenu(factory);
-		createEditMenu(factory);
-		createViewMenu(factory);
-		createHelpMenu(factory);
+		createFileMenu();
+		createEditMenu();
+		createViewMenu();
+		createHelpMenu();
 		
 		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
 		
+		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		for( NewDiagramHandler handler : newDiagramHandlers )
 		{
-			aNewMenu.getItems().add(aAppFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
+			aNewMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
 		}
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTab();
 	}
 	
-	private void createFileMenu(MenuFactory pFactory) 
+	private void createFileMenu() 
 	{
-		Menu fileMenu = pFactory.createMenu("file");
+		MenuFactory menuFactory = new MenuFactory(RESOURCES);
+		
+		Menu fileMenu = menuFactory.createMenu("file");
 		aMenuBar.getMenus().add(fileMenu);
 
-		aNewMenu = pFactory.createMenu("file.new");
+		aNewMenu = menuFactory.createMenu("file.new");
 		fileMenu.getItems().add(aNewMenu);
 
-		MenuItem fileOpenItem = pFactory.createMenuItem("file.open", pEvent -> openFile());
+		MenuItem fileOpenItem = menuFactory.createMenuItem("file.open", pEvent -> openFile());
 		fileMenu.getItems().add(fileOpenItem);
 
-		aRecentFilesMenu = pFactory.createMenu("file.recent");
+		aRecentFilesMenu = menuFactory.createMenu("file.recent");
 		buildRecentFilesMenu();
 		fileMenu.getItems().add(aRecentFilesMenu);
 
-		MenuItem closeFileItem = pFactory.createMenuItem("file.close", pEvent -> close());
+		MenuItem closeFileItem = menuFactory.createMenuItem("file.close", pEvent -> close());
 		fileMenu.getItems().add(closeFileItem);
 		aDiagramRelevantMenus.add(closeFileItem);
 		closeFileItem.setDisable(noCurrentGraphFrame());
 
-		MenuItem fileSaveItem = pFactory.createMenuItem("file.save", pEvent -> save());
+		MenuItem fileSaveItem = menuFactory.createMenuItem("file.save", pEvent -> save());
 		fileMenu.getItems().add(fileSaveItem);
 		aDiagramRelevantMenus.add(fileSaveItem);
 		fileSaveItem.setDisable(noCurrentGraphFrame());
 
-		MenuItem fileSaveAsItem = pFactory.createMenuItem("file.save_as", pEvent -> saveAs());
+		MenuItem fileSaveAsItem = menuFactory.createMenuItem("file.save_as", pEvent -> saveAs());
 		fileMenu.getItems().add(fileSaveAsItem);
 		aDiagramRelevantMenus.add(fileSaveAsItem);
 		fileSaveAsItem.setDisable(noCurrentGraphFrame());
 
-		MenuItem fileExportItem = pFactory.createMenuItem("file.export_image", pEvent -> exportImage());
+		MenuItem fileExportItem = menuFactory.createMenuItem("file.export_image", pEvent -> exportImage());
 		fileMenu.getItems().add(fileExportItem);
 		aDiagramRelevantMenus.add(fileExportItem);
 		fileExportItem.setDisable(noCurrentGraphFrame());
 
-		MenuItem fileCopyToClipboard = pFactory.createMenuItem("file.copy_to_clipboard", pEvent -> copyToClipboard());
+		MenuItem fileCopyToClipboard = menuFactory.createMenuItem("file.copy_to_clipboard", pEvent -> copyToClipboard());
 		fileMenu.getItems().add(fileCopyToClipboard);
 		aDiagramRelevantMenus.add(fileCopyToClipboard);
 		fileCopyToClipboard.setDisable(noCurrentGraphFrame());
 
 		fileMenu.getItems().add(new SeparatorMenuItem());
 
-		MenuItem fileExitItem = pFactory.createMenuItem("file.exit", pEvent -> exit());
+		MenuItem fileExitItem = menuFactory.createMenuItem("file.exit", pEvent -> exit());
 		fileMenu.getItems().add(fileExitItem);
 	}
 	
-	private void createEditMenu(MenuFactory pFactory) 
+	private void createEditMenu() 
 	{
-		Menu editMenu = pFactory.createMenu("edit");
+		MenuFactory menuFactory = new MenuFactory(RESOURCES);
+		
+		Menu editMenu = menuFactory.createMenu("edit");
 		aMenuBar.getMenus().add(editMenu);
 		aDiagramRelevantMenus.add(editMenu);
 		editMenu.setDisable(noCurrentGraphFrame());
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.undo", pEvent -> 
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.undo", pEvent -> 
 		{
 			if (noCurrentGraphFrame()) 
 			{
@@ -226,7 +227,7 @@ public class EditorFrame extends BorderPane
 			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().undo();
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.redo", pEvent ->
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.redo", pEvent ->
 		{	
 			if (noCurrentGraphFrame()) 
 			{
@@ -235,7 +236,7 @@ public class EditorFrame extends BorderPane
 			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().redo();
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.selectall", pEvent ->
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.selectall", pEvent ->
 		{
 			if (noCurrentGraphFrame()) 
 			{
@@ -244,7 +245,7 @@ public class EditorFrame extends BorderPane
 			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().selectAll();
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.properties", pEvent -> 
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.properties", pEvent -> 
 		{
 			if (noCurrentGraphFrame()) 
 			{
@@ -253,11 +254,11 @@ public class EditorFrame extends BorderPane
 			((GraphFrame) aTabbedPane.getSelectionModel().getSelectedItem()).getGraphPanel().editSelected();
 		}));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.cut", pEvent -> cut()));
-		editMenu.getItems().add(pFactory.createMenuItem("edit.paste", pEvent -> paste()));
-		editMenu.getItems().add(pFactory.createMenuItem("edit.copy", pEvent -> copy()));
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.cut", pEvent -> cut()));
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.paste", pEvent -> paste()));
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.copy", pEvent -> copy()));
 
-		editMenu.getItems().add(pFactory.createMenuItem("edit.delete", pEvent ->  
+		editMenu.getItems().add(menuFactory.createMenuItem("edit.delete", pEvent ->  
 		{
 			if (noCurrentGraphFrame()) 
 			{
@@ -267,14 +268,16 @@ public class EditorFrame extends BorderPane
 		}));
 	}
 	
-	private void createViewMenu(MenuFactory pFactory) 
+	private void createViewMenu() 
 	{
-		Menu viewMenu = pFactory.createMenu("view");
+		MenuFactory menuFactory = new MenuFactory(RESOURCES);
+		
+		Menu viewMenu = menuFactory.createMenu("view");
 		aMenuBar.getMenus().add(viewMenu);
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setDisable(noCurrentGraphFrame());
 
-		final CheckMenuItem showGridItem  = (CheckMenuItem) pFactory.createCheckMenuItem("view.show_grid", pEvent ->
+		final CheckMenuItem showGridItem  = (CheckMenuItem) menuFactory.createCheckMenuItem("view.show_grid", pEvent ->
 	    {
 	    	if( noCurrentGraphFrame() )
 	    	{
@@ -288,7 +291,7 @@ public class EditorFrame extends BorderPane
 		showGridItem.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true")));
 		viewMenu.getItems().add(showGridItem);
 		
-		final CheckMenuItem showToolHints  = (CheckMenuItem) pFactory.createCheckMenuItem("view.show_hints", pEvent ->
+		final CheckMenuItem showToolHints  = (CheckMenuItem) menuFactory.createCheckMenuItem("view.show_hints", pEvent ->
 	    {
 	    	if( noCurrentGraphFrame() )
 	    	{
@@ -325,13 +328,15 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	private void createHelpMenu(MenuFactory pFactory) 
+	private void createHelpMenu() 
 	{
-		Menu helpMenu = pFactory.createMenu("help");
+		MenuFactory menuFactory = new MenuFactory(RESOURCES);
+		
+		Menu helpMenu = menuFactory.createMenu("help");
 		aMenuBar.getMenus().add(helpMenu);
 
-		helpMenu.getItems().add(pFactory.createMenuItem("help.about", pEvent -> showAboutDialog()));
-		helpMenu.getItems().add(pFactory.createMenuItem("help.license", pEvent -> 
+		helpMenu.getItems().add(menuFactory.createMenuItem("help.about", pEvent -> showAboutDialog()));
+		helpMenu.getItems().add(menuFactory.createMenuItem("help.license", pEvent -> 
 		{
 			try 
 			{
