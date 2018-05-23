@@ -111,8 +111,6 @@ public class EditorFrame extends BorderPane
 	private TabPane aTabbedPane;
 	private ArrayList<Tab> aTabs = new ArrayList<>();
 	
-	private MenuBar aMenuBar = new MenuBar();
-	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	
@@ -140,13 +138,14 @@ public class EditorFrame extends BorderPane
 			}
 		});
 
-		setTop(aMenuBar);
+		MenuBar menuBar = new MenuBar();
+		setTop(menuBar);
 		setCenter(aTabbedPane);
 	
-		Menu newMenu = createFileMenu();
-		createEditMenu();
-		createViewMenu();
-		createHelpMenu();
+		Menu newMenu = createFileMenu(menuBar);
+		createEditMenu(menuBar);
+		createViewMenu(menuBar);
+		createHelpMenu(menuBar);
 		
 		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
 		
@@ -161,12 +160,12 @@ public class EditorFrame extends BorderPane
 	}
 	
 	// Returns the new menu
-	private Menu createFileMenu() 
+	private Menu createFileMenu(MenuBar pMenuBar) 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
 		Menu fileMenu = menuFactory.createMenu("file");
-		aMenuBar.getMenus().add(fileMenu);
+		pMenuBar.getMenus().add(fileMenu);
 
 		Menu newMenu = menuFactory.createMenu("file.new");
 		fileMenu.getItems().add(newMenu);
@@ -210,12 +209,12 @@ public class EditorFrame extends BorderPane
 		return newMenu;
 	}
 	
-	private void createEditMenu() 
+	private void createEditMenu(MenuBar pMenuBar) 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
 		Menu editMenu = menuFactory.createMenu("edit");
-		aMenuBar.getMenus().add(editMenu);
+		pMenuBar.getMenus().add(editMenu);
 		aDiagramRelevantMenus.add(editMenu);
 		editMenu.setDisable(noCurrentGraphFrame());
 
@@ -269,12 +268,12 @@ public class EditorFrame extends BorderPane
 		}));
 	}
 	
-	private void createViewMenu() 
+	private void createViewMenu(MenuBar pMenuBar) 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
 		Menu viewMenu = menuFactory.createMenu("view");
-		aMenuBar.getMenus().add(viewMenu);
+		pMenuBar.getMenus().add(viewMenu);
 		aDiagramRelevantMenus.add(viewMenu);
 		viewMenu.setDisable(noCurrentGraphFrame());
 
@@ -329,12 +328,12 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	private void createHelpMenu() 
+	private void createHelpMenu(MenuBar pMenuBar) 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
 		Menu helpMenu = menuFactory.createMenu("help");
-		aMenuBar.getMenus().add(helpMenu);
+		pMenuBar.getMenus().add(helpMenu);
 
 		helpMenu.getItems().add(menuFactory.createMenuItem("help.about", pEvent -> showAboutDialog()));
 		helpMenu.getItems().add(menuFactory.createMenuItem("help.license", pEvent -> 
