@@ -231,7 +231,7 @@ public class GraphPanel extends Canvas
 
 		Stage window = new Stage();
 		window.setTitle(RESOURCES.getString("dialog.properties"));
-		window.getIcons().add(new Image(RESOURCES.getUrl("application.icon")));
+		window.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		window.initModality(Modality.APPLICATION_MODAL);
 		
 		BorderPane layout = new BorderPane();
