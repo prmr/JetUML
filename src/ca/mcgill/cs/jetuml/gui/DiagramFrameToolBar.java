@@ -98,7 +98,7 @@ public class DiagramFrameToolBar extends ToolBar
 	private void installCopyToClipboard()
 	{
 		final Button button = new Button();
-		button.setGraphic(new ImageView(RESOURCES.getUrl("toolbar.toclipboard.iconpath")));
+		button.setGraphic(new ImageView(RESOURCES.getUrl("toolbar.toclipboard.icon")));
 		button.setTooltip( new Tooltip(RESOURCES.getString("toolbar.toclipboard.tooltip")));
 		button.setOnAction(pEvent-> 
 		{

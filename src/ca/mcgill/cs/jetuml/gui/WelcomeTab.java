@@ -117,7 +117,7 @@ public class WelcomeTab extends Tab
 	{
 		HBox footTextPanel = new HBox();
 		footTextPanel.getStyleClass().add(CLASS_FOOTER);
-		footTextPanel.getChildren().add(new Label(RESOURCES.getString("welcome.copyright")));
+		footTextPanel.getChildren().add(new Label(RESOURCES.getString("application.copyright")));
 		return footTextPanel;
 	}
 }	

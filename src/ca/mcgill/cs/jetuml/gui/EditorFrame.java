@@ -359,7 +359,7 @@ public class EditorFrame extends BorderPane
 
 				Stage window = new Stage();
 				window.setTitle(RESOURCES.getString("dialog.license.title"));
-				window.getIcons().add(new Image(RESOURCES.getUrl("application.iconpath")));
+				window.getIcons().add(new Image(RESOURCES.getUrl("application.icon")));
 				window.initModality(Modality.APPLICATION_MODAL);
 
 				Button button = new Button("OK");
@@ -965,11 +965,11 @@ public class EditorFrame extends BorderPane
 		Text text = new Text(String.format("%s %s %s (%s)\n%s\n%s",
 				RESOURCES.getString("application.name"),
 				RESOURCES.getString("dialog.about.version"),
-				RESOURCES.getString("version.number"),
-				RESOURCES.getString("version.date"),
+				RESOURCES.getString("application.version.number"),
+				RESOURCES.getString("application.version.date"),
 				RESOURCES.getString("application.copyright"),
 				RESOURCES.getString("dialog.about.license")));
-		Image appIcon = new Image(RESOURCES.getUrl("application.iconpath"));
+		Image appIcon = new Image(RESOURCES.getUrl("application.icon"));
 		
 		HBox info = new HBox(HELP_MENU_SPACING);
 		info.setAlignment(Pos.CENTER);

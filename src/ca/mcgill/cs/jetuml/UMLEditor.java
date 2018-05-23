@@ -60,7 +60,7 @@ public final class UMLEditor extends Application
 		setStageBoundaries(pStage);
 		
 		pStage.setTitle(RESOURCES.getString("application.name"));
-		pStage.getIcons().add(new Image(RESOURCES.getString("application.iconpath")));
+		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		
 		pStage.setScene(new Scene(new EditorFrame(pStage)));
 		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());

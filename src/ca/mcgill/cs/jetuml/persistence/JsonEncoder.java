@@ -53,7 +53,7 @@ public final class JsonEncoder
 		assert pGraph != null;
 		
 		JSONObject object = new JSONObject();
-		object.put("version", RESOURCES.getString("version.number"));
+		object.put("version", RESOURCES.getString("application.version.number"));
 		object.put("diagram", pGraph.getClass().getSimpleName());
 		SerializationContext context = new SerializationContext(pGraph);
 		object.put("nodes", encodeNodes(context));
