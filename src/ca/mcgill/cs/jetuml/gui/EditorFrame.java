@@ -111,7 +111,6 @@ public class EditorFrame extends BorderPane
 	private TabPane aTabbedPane;
 	private ArrayList<Tab> aTabs = new ArrayList<>();
 	
-	private Menu aNewMenu;
 	private MenuBar aMenuBar = new MenuBar();
 	
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
@@ -144,7 +143,7 @@ public class EditorFrame extends BorderPane
 		setTop(aMenuBar);
 		setCenter(aTabbedPane);
 	
-		createFileMenu();
+		Menu newMenu = createFileMenu();
 		createEditMenu();
 		createViewMenu();
 		createHelpMenu();
@@ -154,22 +153,23 @@ public class EditorFrame extends BorderPane
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		for( NewDiagramHandler handler : newDiagramHandlers )
 		{
-			aNewMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
+			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
 		}
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTab();
 	}
 	
-	private void createFileMenu() 
+	// Returns the new menu
+	private Menu createFileMenu() 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
 		Menu fileMenu = menuFactory.createMenu("file");
 		aMenuBar.getMenus().add(fileMenu);
 
-		aNewMenu = menuFactory.createMenu("file.new");
-		fileMenu.getItems().add(aNewMenu);
+		Menu newMenu = menuFactory.createMenu("file.new");
+		fileMenu.getItems().add(newMenu);
 
 		MenuItem fileOpenItem = menuFactory.createMenuItem("file.open", pEvent -> openFile());
 		fileMenu.getItems().add(fileOpenItem);
@@ -207,6 +207,7 @@ public class EditorFrame extends BorderPane
 
 		MenuItem fileExitItem = menuFactory.createMenuItem("file.exit", pEvent -> exit());
 		fileMenu.getItems().add(fileExitItem);
+		return newMenu;
 	}
 	
 	private void createEditMenu() 
