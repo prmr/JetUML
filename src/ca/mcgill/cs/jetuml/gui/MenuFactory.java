@@ -31,15 +31,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 
 /**
- * A utility class for creating menus from strings in a resource bundle. The class does not 
+ * A class for creating menus from strings in a resource bundle. The class does not 
  * depend on the Singleton ApplicationResource instance to improve testability.
  * 
  * An instance of this class is intended to be initialized with a resource bundle,
  * used to create any number of menus, then discarded.
+ * 
+ * To create a menu item, the creation methods will look for the following resources
+ * in the specified ApplicationResources object, with a key followed by a prefix P.
+ * 
+ * - P.text (required):        The text of the menu
+ * - P.mnemonic (optional):    The single letter mnemonic for opening the menu with the keyboard 
+ * - P.icon (optional):	 	   The path to the menu icon
+ * - P.accelerator (optional): The shortcut key combination.  Add ".mac" for macs.
  */
 class MenuFactory
 {
 	private static final boolean IS_MAC = isMacOS();
+	private static final String KEY_TEXT = ".text";
+	private static final String KEY_MNEMONIC = ".mnemonic";
+	private static final String KEY_ICON = ".icon";
+	private static final String KEY_ACCELERATOR_MAC = ".accelerator.mac";
+	private static final String KEY_ACCELERATOR = ".accelerator";
 	
 	private final ApplicationResources aResources;
 	
@@ -68,7 +81,10 @@ class MenuFactory
 	 */
 	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler)
 	{
-		return initialize(new MenuItem(), pPrefix, pHandler);
+		MenuItem item = new MenuItem();
+		initialize(item, pPrefix);
+		item.setOnAction(pHandler);
+		return item;
 	}
 
 	/**
@@ -79,91 +95,72 @@ class MenuFactory
 	 */
 	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler) 
 	{
-		return initialize(new CheckMenuItem(), pPrefix, pHandler);
+		CheckMenuItem item = new CheckMenuItem();
+		initialize(item, pPrefix);
+		item.setOnAction(pHandler);
+		return item;
 	}	
 	
 	/*
 	 * Initializes pMenuItem with text, mnemonic, accelerator, etc., and returns it.
 	 */
-	private MenuItem initialize(MenuItem pMenuItem, String pPrefix, EventHandler<ActionEvent> pHandler)
+	private void initialize(MenuItem pMenuItem, String pPrefix)
 	{
-		pMenuItem.setOnAction(pHandler);
-		String text = aResources.getString(pPrefix + ".text");
+		assert aResources.containsKey(pPrefix + KEY_TEXT);
 		
-		if( aResources.containsKey(pPrefix + ".mnemonic"))
+		String text = aResources.getString(pPrefix + KEY_TEXT);
+		if( aResources.containsKey(pPrefix + KEY_MNEMONIC))
 		{
-			// get index of character to properly insert mnemonic symbol "_"
-			int index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").charAt(0));
-			if(index < 0) 
-			{
-				index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").toLowerCase().charAt(0));
-			}
-			
-			if (index >= 0) 
-			{
-				text = text.substring(0, index) + "_" + text.substring(index);
-			}
-			else 
-			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination("ALT+"+ aResources.getString(pPrefix + ".mnemonic")));
-			}
+			text = installMnemonic(text, aResources.getString(pPrefix + KEY_MNEMONIC));
 		}
+		
 		pMenuItem.setText(text);
-		
-		if( aResources.containsKey(pPrefix + ".accelerator.mac"))
+		if( aResources.containsKey(pPrefix + KEY_ICON))
 		{
-			if(IS_MAC)
-			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.mac")));	
-			}
-			else
-			{
-				pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.win")));
-			}	
+			pMenuItem.setGraphic(new ImageView(aResources.getString(pPrefix + KEY_ICON)));
 		}
 		
-		if( aResources.containsKey(pPrefix + ".icon"))
+		if( IS_MAC && aResources.containsKey(pPrefix + KEY_ACCELERATOR_MAC))
 		{
-			pMenuItem.setGraphic(new ImageView(aResources.getString(pPrefix + ".icon").toString()));
+			pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + KEY_ACCELERATOR_MAC)));	
 		}
-		return pMenuItem;
+		else if( aResources.containsKey(pPrefix + KEY_ACCELERATOR))
+		{
+			pMenuItem.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + KEY_ACCELERATOR)));
+		}
+	}
+	
+	/*
+	 * @param pText The text to install the mnemonic on
+	 * @param pMnemonic The letter that is the mnemonic
+	 * @return A new text string with the character '_' before the letter
+	 * that is to be the mnemonic for the menu item. The resulting
+	 * string is intended to be set as the text of the menu. 
+	 * If pMnemonic is not a single letter that is part of pText, it
+	 * is simply ignored.
+	 */
+	private String installMnemonic(String pText, String pMnemonic)
+	{
+		if( pMnemonic.length() != 1 || !pText.contains(pMnemonic))
+		{
+			return pText;
+		}
+		int index = pText.indexOf(pMnemonic.charAt(0));
+		assert index >=0 && index < pText.length();
+		return pText.substring(0, index) + "_" + pText.substring(index);
 	}
 	
 	/**
-	 * Create a menu that corresponds to the resource for key pPrefix.
-	 * @param pPrefix A string such as "file" that indicates the menu->submenu path
-	 * @return A configured menu
+	 * Create a menu with the resources for key pPrefix.
+	 * @param pPrefix A string such as "file" that indicates where to find the related
+	 * resources in the resource bundle.
+	 * @return A configured menu.
+	 * @pre The .text and .mnemonic properties exist in the resource bundle
 	 */
 	public Menu createMenu(String pPrefix)
 	{
-		String text = aResources.getString(pPrefix + ".text");
 		Menu menu = new Menu();
-		if( aResources.containsKey(pPrefix + ".mnemonic"))
-		{
-			int index = text.indexOf(aResources.getString(pPrefix + ".mnemonic").charAt(0));
-			assert index >= 0;
-			text = text.substring(0, index) + "_" + text.substring(index);
-		}
-		menu.setText(text);
-		
-		if( aResources.containsKey(pPrefix + ".accelerator.mac"))
-		{
-			if(IS_MAC)
-			{
-				menu.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.mac")));	
-			}
-			else
-			{
-				menu.setAccelerator(KeyCombination.keyCombination(aResources.getString(pPrefix + ".accelerator.win")));
-			}
-		}
-
-		if( aResources.containsKey(pPrefix + ".icon"))
-		{
-			menu.setGraphic(new ImageView(aResources.getString(pPrefix + ".icon").toString()));
-		}
-
+		initialize(menu, pPrefix);
 		return menu;
 	}
-
 }
