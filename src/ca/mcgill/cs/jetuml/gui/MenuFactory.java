@@ -37,6 +37,9 @@ import javafx.scene.input.KeyCombination;
  * An instance of this class is intended to be initialized with a resource bundle,
  * used to create any number of menus, then discarded.
  * 
+ * The user data for a menu item is a boolean flag that indicates whether the
+ * menu is only relevant to a current diagram (true) or generally relevant (false).
+ * 
  * To create a menu item, the creation methods will look for the following resources
  * in the specified ApplicationResources object, with a key followed by a prefix P.
  * 
@@ -79,9 +82,10 @@ class MenuFactory
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
-	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler)
+	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler, boolean pDiagramSpecific)
 	{
 		MenuItem item = new MenuItem();
+		item.setUserData(pDiagramSpecific);
 		initialize(item, pPrefix);
 		item.setOnAction(pHandler);
 		return item;
@@ -93,9 +97,10 @@ class MenuFactory
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
-	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler) 
+	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler, boolean pDiagramSpecific) 
 	{
 		CheckMenuItem item = new CheckMenuItem();
+		item.setUserData(pDiagramSpecific);
 		initialize(item, pPrefix);
 		item.setOnAction(pHandler);
 		return item;
@@ -157,9 +162,10 @@ class MenuFactory
 	 * @return A configured menu.
 	 * @pre The .text and .mnemonic properties exist in the resource bundle
 	 */
-	public Menu createMenu(String pPrefix)
+	public Menu createMenu(String pPrefix, boolean pDiagramSpecific)
 	{
 		Menu menu = new Menu();
+		menu.setUserData(pDiagramSpecific);
 		initialize(menu, pPrefix);
 		return menu;
 	}

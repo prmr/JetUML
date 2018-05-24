@@ -77,14 +77,14 @@ public class TestMenuFactory
 	@Test
 	public void testCreateMenuWithTextAndMnemonic()
 	{
-		MenuItem item = aMenuFactory.createMenu("file");
+		MenuItem item = aMenuFactory.createMenu("file", false);
 		assertEquals("_File", item.getText());
 	}
 	
 	@Test
 	public void testCreateMenuItemWithAll()
 	{
-		MenuItem item = aMenuFactory.createMenuItem("file.open", e -> {});
+		MenuItem item = aMenuFactory.createMenuItem("file.open", e -> {}, false);
 		assertEquals("_Open", item.getText());
 		assertNotNull(item.getGraphic());
 		KeyCombination accelerator = item.getAccelerator();
@@ -103,7 +103,7 @@ public class TestMenuFactory
 	@Test
 	public void testCreateMenuItemWithTextOnly()
 	{
-		MenuItem item = aMenuFactory.createMenuItem("file.new", e -> {});
+		MenuItem item = aMenuFactory.createMenuItem("file.new", e -> {}, false);
 		assertEquals("New", item.getText());
 		assertNull(item.getGraphic());
 		assertNull(item.getAccelerator());
