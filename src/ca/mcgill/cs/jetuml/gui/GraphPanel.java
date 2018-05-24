@@ -538,15 +538,6 @@ public class GraphPanel extends Canvas
 	}
 
 	/**
-	 * Gets the value of the hideGrid property.
-	 * @return true if the grid is being hidden
-	 */
-	public boolean getShowGrid()
-	{
-		return aShowGrid;
-	}
-	
-	/**
 	 * @return the currently SelectedElements from the GraphPanel.
 	 */
 	public SelectionList getSelectionList()

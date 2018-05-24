@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.views;
 
 import java.util.concurrent.RejectedExecutionException;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -46,6 +47,7 @@ public final class ImageCreator
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
+	private static final int DIAGRAM_PADDING = 4;
 	
 	private ImageCreator() {}
 	
@@ -69,6 +71,27 @@ public final class ImageCreator
 			assert pElement instanceof Edge;
 			return createEdgeImage((Edge)pElement);
 		}
+	}
+	
+	/**
+	 * Creates an image of an entire diagram, with a white border around.
+	 * @param pDiagram The diagram to create an image off.
+	 * @return An image of the diagram.
+	 * @pre pDiagram != null.
+	 */
+	public static Image createImage(Diagram pDiagram)
+	{
+		assert pDiagram != null;
+		Rectangle bounds = pDiagram.getBounds();
+		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
+				bounds.getHeight() + DIAGRAM_PADDING *2);
+		GraphicsContext context = canvas.getGraphicsContext2D();
+		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
+		pDiagram.draw(context);
+		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
+				bounds.getHeight() + DIAGRAM_PADDING *2);
+		canvas.snapshot(null, image);
+		return image;
 	}
 	
 	private static Image createNodeImage( Node pNode )

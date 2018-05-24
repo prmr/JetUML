@@ -46,13 +46,10 @@ import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
+import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -64,7 +61,6 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.BorderPane;
@@ -77,8 +73,6 @@ import javafx.stage.Stage;
  */
 public class EditorFrame extends BorderPane
 {
-	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the diagram when exporting as image
-	
 	private Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
@@ -389,7 +383,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		DiagramTab frame = (DiagramTab) getSelectedTab();
-		final Image image = getImage(frame.getGraphPanel());
+		final Image image = ImageCreator.createImage(frame.getGraphPanel().getGraph());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
@@ -689,26 +683,7 @@ public class EditorFrame extends BorderPane
 	 */
 	private static BufferedImage getBufferedImage(GraphPanel pGraphPanel) 
 	{
-		BufferedImage image = SwingFXUtils.fromFXImage(getImage(pGraphPanel), null);
-		return image;
-	}
-	
-	/*
-	 * Return the image corresponding to the graph.
-	 * 
-	 * @param pGraph The graph to convert to an image.
-	 */
-	private static Image getImage(GraphPanel pGraphPanel) 
-	{
-		Rectangle bounds = pGraphPanel.getGraph().getBounds();
-		WritableImage image = new WritableImage((int) bounds.getWidth() + MARGIN_IMAGE * 2, (int) bounds.getHeight() + MARGIN_IMAGE * 2);
-		boolean oldShowGrid = pGraphPanel.getShowGrid();
-		pGraphPanel.setShowGrid(false);
-		SnapshotParameters parameter = new SnapshotParameters();
-		parameter.setViewport(new Rectangle2D(bounds.getX() - MARGIN_IMAGE, bounds.getY() - MARGIN_IMAGE, 
-				bounds.getWidth() + MARGIN_IMAGE * 2, bounds.getHeight() + MARGIN_IMAGE * 2));
-		((Node) pGraphPanel).snapshot(parameter, image);
-		pGraphPanel.setShowGrid(oldShowGrid);
+		BufferedImage image = SwingFXUtils.fromFXImage(ImageCreator.createImage(pGraphPanel.getGraph()), null);
 		return image;
 	}
 	
