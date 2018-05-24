@@ -329,7 +329,7 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			Diagram diagram2 = PersistenceService.read(new File(pName));
-			DiagramTab frame2 = new DiagramTab(diagram2, tabPane());
+			DiagramTab frame2 = new DiagramTab(diagram2);
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
 			insertGraphFrameIntoTabbedPane(frame2);
@@ -359,7 +359,7 @@ public class EditorFrame extends BorderPane
 		{
 			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
-				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance(), tabPane()));
+				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance()));
 			}));
 		}
 		return Collections.unmodifiableList(result);

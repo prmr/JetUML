@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 
@@ -41,20 +40,17 @@ import javafx.stage.Screen;
  */
 public class DiagramTab extends Tab
 {	
-	private TabPane aTabbedPane;
 	private GraphPanel aPanel;
-	private File aFile; // The file associated with this graph
+	private File aFile; // The file associated with this diagram
 	
 	/**
-     * Constructs a graph frame with an empty tool bar.
-     * @param pGraph the initial graph
-     * @param pTabbedPane the TabPane associated with this DiagramTab.
+     * Constructs a diagram tab initialized with pDiagram.
+     * @param pDiagram The initial diagram
 	 */
-	public DiagramTab(Diagram pGraph, TabPane pTabbedPane)
+	public DiagramTab(Diagram pDiagram)
 	{
-		aTabbedPane = pTabbedPane;
-		DiagramTabToolBar sideBar = new DiagramTabToolBar(pGraph);
-		aPanel = new GraphPanel(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
+		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
+		aPanel = new GraphPanel(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
 		BorderPane layout = new BorderPane();
@@ -106,16 +102,6 @@ public class DiagramTab extends Tab
    	{
 		return aPanel;
    	}
-	
-	/**
-	 * This association and getter method are needed to display messages using the copy to clipboard
-	 * functionality of the Optional DiagramTabToolBar.
-	 * @return aTabbedPane the TabPane associated with this DiagramTab.
-	 */
-	public TabPane getTabbedPane()
-	{
-		return aTabbedPane;
-	}
 	
 	/**
 	 * Sets the title of the frame as the file name if there
