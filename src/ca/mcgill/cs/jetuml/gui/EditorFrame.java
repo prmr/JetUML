@@ -316,8 +316,8 @@ public class EditorFrame extends BorderPane
 		{
 			if(tab instanceof DiagramTab)
 			{
-				if(((DiagramTab) tab).getFileName() != null	&& 
-						((DiagramTab) tab).getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				if(((DiagramTab) tab).getFile() != null	&& 
+						((DiagramTab) tab).getFile().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
 					tabPane().getSelectionModel().select(tab);
 					addRecentFile(new File(pName).getPath());
@@ -567,7 +567,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		DiagramTab frame = (DiagramTab) getSelectedTab();
-		File file = frame.getFileName();
+		File file = frame.getFile();
 		if (file == null) 
 		{
 			saveAs();
@@ -575,7 +575,7 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			PersistenceService.save(frame.getGraph(), file);
+			PersistenceService.save(frame.getDiagram(), file);
 			frame.getGraphPanel().setModified(false);
 		} 
 		catch (IOException exception) 
@@ -596,16 +596,16 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		DiagramTab frame = (DiagramTab) getSelectedTab();
-		Diagram graph = frame.getGraph();
+		Diagram graph = frame.getDiagram();
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 		fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
 
-		if (frame.getFileName() != null) 
+		if (frame.getFile() != null) 
 		{
-			fileChooser.setInitialDirectory(frame.getFileName().getParentFile());
-			fileChooser.setInitialFileName(frame.getFileName().getName());
+			fileChooser.setInitialDirectory(frame.getFile().getParentFile());
+			fileChooser.setInitialFileName(frame.getFile().getName());
 		} 
 		else 
 		{
@@ -625,7 +625,7 @@ public class EditorFrame extends BorderPane
 				PersistenceService.save(graph, result);
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
-				getSelectedTab().setText(frame.getFileName().getName());
+				getSelectedTab().setText(frame.getFile().getName());
 				frame.getGraphPanel().setModified(false);
 			}
 		} 
@@ -759,9 +759,9 @@ public class EditorFrame extends BorderPane
 		fileChooser.setInitialDirectory(new File("."));
 
 		// If the file was previously saved, use that to suggest a file name root.
-		if (frame.getFileName() != null) 
+		if (frame.getFile() != null) 
 		{
-			File file = new File(replaceExtension(frame.getFileName().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
+			File file = new File(replaceExtension(frame.getFile().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}

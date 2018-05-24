@@ -21,14 +21,11 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.io.File;
 
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
@@ -76,10 +73,9 @@ public class DiagramTab extends Tab
 	}
 
 	/**
-     * Gets the graph that is being edited in this frame.
-     * @return the graph
+     * @return The diagram being edited within this tab.
 	 */
-	public Diagram getGraph()
+	public Diagram getDiagram()
 	{
 		return aPanel.getGraph();
 	}
@@ -129,31 +125,7 @@ public class DiagramTab extends Tab
 		}
 		else
 		{
-			Diagram graphType = getGraph();
-			if (graphType instanceof UseCaseDiagram)
-			{
-				setText("Use Case Diagram");
-			} 
-			else if (graphType instanceof StateDiagram)
-			{
-				setText("State Diagram");
-			} 
-			else if (graphType instanceof ClassDiagram)
-			{
-				setText("Class Diagram");
-			} 
-			else if (graphType instanceof SequenceDiagram)
-			{
-				setText("Sequence Diagram");
-			} 
-			else if (graphType instanceof ObjectDiagram)
-			{
-				setText("Object Diagram");
-			} 
-			else 
-			{
-				setText("Not supported in JavaFX");
-			}
+			setText(RESOURCES.getString(getDiagram().getClass().getSimpleName().toLowerCase() + ".text"));
 		}
 	}
 
@@ -161,7 +133,7 @@ public class DiagramTab extends Tab
      * Gets the file property.
      * @return the file associated with this graph
 	 */
-	public File getFileName()
+	public File getFile()
 	{
 		return aFile;
 	}
