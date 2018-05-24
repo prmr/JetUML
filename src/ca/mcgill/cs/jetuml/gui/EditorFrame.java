@@ -76,16 +76,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -101,7 +97,6 @@ public class EditorFrame extends BorderPane
 												// image
 	private static final int HELP_MENU_TEXT_WIDTH = 32; // Number of columns for the text area of the Help Menu.
 	private static final int HELP_MENU_TEXT_HEIGHT = 10; // Number of rows for the text area of the Help Menu.
-	private static final int HELP_MENU_SPACING = 10; // Number of pixels between text area and button of the Help Menu.
 	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
 	
 	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagram.class, SequenceDiagram.class, 
@@ -962,44 +957,7 @@ public class EditorFrame extends BorderPane
 	 */
 	public void showAboutDialog() 
 	{
-		Text text = new Text(String.format("%s %s %s (%s)\n%s\n%s",
-				RESOURCES.getString("application.name"),
-				RESOURCES.getString("dialog.about.version"),
-				RESOURCES.getString("application.version.number"),
-				RESOURCES.getString("application.version.date"),
-				RESOURCES.getString("application.copyright"),
-				RESOURCES.getString("dialog.about.license")));
-		Image appIcon = new Image(RESOURCES.getString("application.icon"));
-		
-		HBox info = new HBox(HELP_MENU_SPACING);
-		info.setAlignment(Pos.CENTER);
-		info.getChildren().addAll(new ImageView(appIcon), text);
-		
-		VBox layout = new VBox(HELP_MENU_SPACING);
-		layout.setPadding(new Insets(HELP_MENU_PADDING));
-		layout.setAlignment(Pos.CENTER_RIGHT);
-		
-		Stage window = new Stage();
-		window.initModality(Modality.APPLICATION_MODAL);
-		window.setTitle(new MessageFormat(RESOURCES.getString("dialog.about.title"))
-				.format(new Object[] { RESOURCES.getString("application.name") }));
-		window.getIcons().add(appIcon);
-		
-		Button button = new Button("OK");
-		button.setOnAction(pEvent -> window.close());
-		button.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
-		{
-			if (pEvent.getCode() == KeyCode.ENTER) 
-			{
-				button.fire();
-				pEvent.consume();
-			}
-		});
-		
-		layout.getChildren().addAll(info, button);
-		Scene scene = new Scene(layout);
-		window.setScene(scene);
-		window.showAndWait();
+		new AboutDialog(aMainStage).show();
 	}
 
 	/**
