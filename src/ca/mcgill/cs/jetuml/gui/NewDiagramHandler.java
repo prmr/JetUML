@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -30,7 +30,7 @@ import javafx.event.EventHandler;
  */
 public class NewDiagramHandler implements EventHandler<ActionEvent>
 {
-	private final Class<?> aDiagramType;
+	private final DiagramType aDiagramType;
 	private final EventHandler<ActionEvent> aHandler;
 	
 	/**
@@ -39,10 +39,9 @@ public class NewDiagramHandler implements EventHandler<ActionEvent>
 	 * @param pDiagramType The type of diagram to open. Must be a subtype of Diagram.
 	 * @param pHandler The function that opens a new diagram of this type.
 	 */
-	public NewDiagramHandler( Class<?> pDiagramType, EventHandler<ActionEvent> pHandler)
+	public NewDiagramHandler( DiagramType pDiagramType, EventHandler<ActionEvent> pHandler)
 	{
 		assert pDiagramType != null && pHandler != null;
-		assert Diagram.class.isAssignableFrom(pDiagramType) && pDiagramType != Diagram.class;
 		aDiagramType = pDiagramType;
 		aHandler = pHandler;
 	}
@@ -56,7 +55,7 @@ public class NewDiagramHandler implements EventHandler<ActionEvent>
 	/**
 	 * @return The diagram type.
 	 */
-	public Class<?> getDiagramType()
+	public DiagramType getDiagramType()
 	{
 		return aDiagramType;
 	}

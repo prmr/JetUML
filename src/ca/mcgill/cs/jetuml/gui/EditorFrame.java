@@ -44,12 +44,8 @@ import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.NamedHandler;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
@@ -83,9 +79,6 @@ public class EditorFrame extends BorderPane
 {
 	private static final int MAX_RECENT_FILES = 8;
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the diagram when exporting as image
-	
-	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagram.class, SequenceDiagram.class, 
-			StateDiagram.class, ObjectDiagram.class, UseCaseDiagram.class};
 	
 	private Stage aMainStage;
 	private TabPane aTabbedPane;
@@ -132,7 +125,7 @@ public class EditorFrame extends BorderPane
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		for( NewDiagramHandler handler : newDiagramHandlers )
 		{
-			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getSimpleName().toLowerCase(), handler));
+			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getName(), handler));
 		}
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
@@ -149,6 +142,7 @@ public class EditorFrame extends BorderPane
 
 		Menu newMenu = menuFactory.createMenu("file.new");
 		fileMenu.getItems().add(newMenu);
+		
 
 		MenuItem fileOpenItem = menuFactory.createMenuItem("file.open", pEvent -> openFile());
 		fileMenu.getItems().add(fileOpenItem);
@@ -400,19 +394,12 @@ public class EditorFrame extends BorderPane
 	private List<NewDiagramHandler> createNewDiagramHandlers()
 	{
 		List<NewDiagramHandler> result = new ArrayList<>();
-		for( Class<?> diagramType : DIAGRAM_TYPES )
+		for( DiagramType diagramType : DiagramType.values() )
 		{
 			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
-				try 
-				{
-					Tab frame = new GraphFrame((Diagram) diagramType.getDeclaredConstructor().newInstance(), aTabbedPane);
-					addTab(frame);
-				}
-				catch(ReflectiveOperationException exception) 
-				{
-					assert false;
-				}
+				Tab frame = new GraphFrame(diagramType.newInstance(), aTabbedPane);
+				addTab(frame);
 			}));
 		}
 		return Collections.unmodifiableList(result);
