@@ -107,7 +107,6 @@ public class AboutDialog
 		{
 			if (pEvent.getCode() == KeyCode.ENTER) 
 			{
-				System.out.println("close");
 				aStage.close();
 			}
 		});

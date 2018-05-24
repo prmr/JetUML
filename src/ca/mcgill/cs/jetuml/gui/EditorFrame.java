@@ -26,11 +26,9 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -56,35 +54,26 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -93,11 +82,7 @@ import javafx.stage.Stage;
 public class EditorFrame extends BorderPane
 {
 	private static final int MAX_RECENT_FILES = 8;
-	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an
-												// image
-	private static final int HELP_MENU_TEXT_WIDTH = 32; // Number of columns for the text area of the Help Menu.
-	private static final int HELP_MENU_TEXT_HEIGHT = 10; // Number of rows for the text area of the Help Menu.
-	private static final int HELP_MENU_PADDING = 10; // Number of pixels padding the nodes in the Help Menu.
+	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the diagram when exporting as image
 	
 	private static final Class<?>[] DIAGRAM_TYPES = {ClassDiagram.class, SequenceDiagram.class, 
 			StateDiagram.class, ObjectDiagram.class, UseCaseDiagram.class};
@@ -329,60 +314,7 @@ public class EditorFrame extends BorderPane
 		
 		Menu helpMenu = menuFactory.createMenu("help");
 		pMenuBar.getMenus().add(helpMenu);
-
-		helpMenu.getItems().add(menuFactory.createMenuItem("help.about", pEvent -> showAboutDialog()));
-		helpMenu.getItems().add(menuFactory.createMenuItem("help.license", pEvent -> 
-		{
-			try 
-			{
-				BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
-				TextArea text = new TextArea();
-				text.setPrefColumnCount(HELP_MENU_TEXT_WIDTH);
-				text.setPrefRowCount(HELP_MENU_TEXT_HEIGHT);
-				String line;
-				while ((line = reader.readLine()) != null) 
-				{
-					text.appendText(line);
-					text.appendText("\n");
-				}
-				text.positionCaret(0);
-				text.setEditable(false);
-
-				ScrollPane scrollPane = new ScrollPane(text);
-				scrollPane.setFitToHeight(true);
-				scrollPane.setFitToWidth(true);
-
-				Stage window = new Stage();
-				window.setTitle(RESOURCES.getString("dialog.license.title"));
-				window.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-				window.initModality(Modality.APPLICATION_MODAL);
-
-				Button button = new Button("OK");
-				button.setOnAction(pButtonEvent -> window.close());
-				button.addEventHandler(KeyEvent.KEY_PRESSED, pKeyEvent -> 
-				{
-					if (pKeyEvent.getCode() == KeyCode.ENTER) 
-					{
-						button.fire();
-						pEvent.consume();
-					}
-				});
-
-				BorderPane layout = new BorderPane();
-				layout.setPadding(new Insets(HELP_MENU_PADDING));
-				layout.setCenter(scrollPane);
-				layout.setBottom(button);
-				BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
-				BorderPane.setMargin(button, new Insets(HELP_MENU_PADDING, 0, 0, 0));
-
-				Scene scene = new Scene(layout);
-				button.requestFocus();
-				window.setScene(scene);
-				window.initOwner(getScene().getWindow());
-				window.showAndWait();
-			} 
-			catch(IOException exception){}
-		}));
+		helpMenu.getItems().add(menuFactory.createMenuItem("help.about", pEvent -> new AboutDialog(aMainStage).show()));
 	}
 
 	/*
@@ -952,15 +884,7 @@ public class EditorFrame extends BorderPane
 		return image;
 	}
 
-	/**
-	 * Displays the About dialog box.
-	 */
-	public void showAboutDialog() 
-	{
-		new AboutDialog(aMainStage).show();
-	}
-
-	/**
+		/**
 	 * Exits the program if no graphs have been modified or if the user agrees to
 	 * abandon modified graphs.
 	 */
