@@ -24,7 +24,6 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.NamedHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.application;
+package ca.mcgill.cs.jetuml.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

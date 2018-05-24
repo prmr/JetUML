@@ -42,7 +42,6 @@ import javax.imageio.ImageIO;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
-import ca.mcgill.cs.jetuml.application.NamedHandler;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
@@ -77,7 +76,6 @@ import javafx.stage.Stage;
  */
 public class EditorFrame extends BorderPane
 {
-	private static final int MAX_RECENT_FILES = 8;
 	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the diagram when exporting as image
 	
 	private Stage aMainStage;
@@ -115,25 +113,18 @@ public class EditorFrame extends BorderPane
 		setTop(menuBar);
 		setCenter(aTabbedPane);
 	
-		Menu newMenu = createFileMenu(menuBar);
+		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
+		createFileMenu(menuBar, newDiagramHandlers);
 		createEditMenu(menuBar);
 		createViewMenu(menuBar);
 		createHelpMenu(menuBar);
-		
-		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
-		
-		MenuFactory menuFactory = new MenuFactory(RESOURCES);
-		for( NewDiagramHandler handler : newDiagramHandlers )
-		{
-			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getName(), handler));
-		}
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTab();
 	}
 	
 	// Returns the new menu
-	private Menu createFileMenu(MenuBar pMenuBar) 
+	private void createFileMenu(MenuBar pMenuBar, List<NewDiagramHandler> pNewDiagramHandlers) 
 	{
 		MenuFactory menuFactory = new MenuFactory(RESOURCES);
 		
@@ -142,7 +133,10 @@ public class EditorFrame extends BorderPane
 
 		Menu newMenu = menuFactory.createMenu("file.new");
 		fileMenu.getItems().add(newMenu);
-		
+		for( NewDiagramHandler handler : pNewDiagramHandlers )
+		{
+			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getName(), handler));
+		}
 
 		MenuItem fileOpenItem = menuFactory.createMenuItem("file.open", pEvent -> openFile());
 		fileMenu.getItems().add(fileOpenItem);
@@ -180,7 +174,6 @@ public class EditorFrame extends BorderPane
 
 		MenuItem fileExitItem = menuFactory.createMenuItem("file.exit", pEvent -> exit());
 		fileMenu.getItems().add(fileExitItem);
-		return newMenu;
 	}
 	
 	private void createEditMenu(MenuBar pMenuBar) 
@@ -453,7 +446,6 @@ public class EditorFrame extends BorderPane
    	 */
    	private void buildRecentFilesMenu()
    	{ 
-   		assert aRecentFiles.size() <= MAX_RECENT_FILES;
    		aRecentFilesMenu.getItems().clear();
    		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
    		int i = 1;
