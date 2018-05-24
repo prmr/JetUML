@@ -22,14 +22,17 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import ca.mcgill.cs.jetuml.UMLEditor;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -38,12 +41,9 @@ import javafx.stage.Stage;
 
 /**
  * A modal dialog that provides information about JetUML.
- *
  */
 public class AboutDialog
 {
-	private static final int SPACING = 10; 
-	
 	private final Stage aStage = new Stage();
 	
 	/**
@@ -59,6 +59,7 @@ public class AboutDialog
 	
 	private void prepareStage(Stage pOwner) 
 	{
+		aStage.setResizable(false);
 		aStage.initModality(Modality.WINDOW_MODAL);
 		aStage.initOwner(pOwner);
 		aStage.setTitle(String.format("%s %s", RESOURCES.getString("dialog.about.title"),
@@ -68,34 +69,48 @@ public class AboutDialog
 	
 	private Scene createScene() 
 	{
-		VBox layout = new VBox(SPACING);
-		layout.setPadding(new Insets(SPACING));
-		layout.setAlignment(Pos.CENTER_RIGHT);
+		final int verticalSpacing = 5;
 		
-		Text text = new Text(String.format("%s %s %s (%s)\n%s\n%s",
-		RESOURCES.getString("application.name"),
-		RESOURCES.getString("dialog.about.version"),
-		RESOURCES.getString("application.version.number"),
-		RESOURCES.getString("application.version.date"),
-		RESOURCES.getString("application.copyright"),
-		RESOURCES.getString("dialog.about.license")));
-
-		HBox info = new HBox(SPACING);
-		info.setAlignment(Pos.CENTER);
-		info.getChildren().addAll(new ImageView(RESOURCES.getString("application.icon")), text);
-
-		Button button = new Button("OK");
-		button.setOnAction(pEvent -> aStage.close());
-		button.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
+		VBox info = new VBox(verticalSpacing);
+		Text name = new Text(RESOURCES.getString("application.name"));
+		name.setStyle("-fx-font-size: 18pt;");
+		
+		Text version = new Text(String.format("%s %s (%s)", RESOURCES.getString("dialog.about.version"), 
+				RESOURCES.getString("application.version.number"), 
+				RESOURCES.getString("application.version.date")));
+		
+		Text copyright = new Text(RESOURCES.getString("application.copyright"));
+		
+		Text license = new Text(RESOURCES.getString("dialog.about.license"));
+		
+		Hyperlink link = new Hyperlink(RESOURCES.getString("dialog.about.link"));
+		link.setBorder(Border.EMPTY);
+		link.setPadding(new Insets(0));
+		link.setOnMouseClicked(e -> UMLEditor.openBrowser(RESOURCES.getString("dialog.about.url")));
+		link.setUnderline(true);
+		link.setFocusTraversable(false);
+		
+		info.getChildren().addAll(name, version, copyright, license, link);
+		
+		final int padding = 15;
+		HBox layout = new HBox(padding);
+		layout.setStyle("-fx-background-color: gainsboro;");
+		layout.setPadding(new Insets(padding));
+		layout.setAlignment(Pos.CENTER_LEFT);
+		
+		ImageView logo = new ImageView(RESOURCES.getString("application.icon"));
+		logo.setEffect(new BoxBlur());
+		layout.getChildren().addAll(logo, info);
+		
+		aStage.requestFocus();
+		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
 			if (pEvent.getCode() == KeyCode.ENTER) 
 			{
-				button.fire();
-				pEvent.consume();
+				System.out.println("close");
+				aStage.close();
 			}
 		});
-
-		layout.getChildren().addAll(info, button);
 		
 		return new Scene(layout);
 	}

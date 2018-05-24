@@ -28,6 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import ca.mcgill.cs.jetuml.application.JavaVersion;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -45,6 +46,8 @@ public final class UMLEditor extends Application
 	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(10, 0, 1);
 	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
 	
+	private static HostServices aHostServices; // Required to open a browser page.
+	
 	/**
 	 * @param pArgs Not used.
 	 */
@@ -53,26 +56,40 @@ public final class UMLEditor extends Application
 		checkVersion(); 
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		launch(pArgs);
-   }
+	}
+	
 	@Override
 	public void start(Stage pStage) throws Exception 
 	{
+		aHostServices = getHostServices();
 		setStageBoundaries(pStage);
-		
+
 		pStage.setTitle(RESOURCES.getString("application.name"));
 		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		
+
 		pStage.setScene(new Scene(new EditorFrame(pStage)));
 		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
-		
+
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
 			pWindowEvent.consume();
 			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
-	    });
-        pStage.show();
+		});
+		pStage.show();
 	}
 	
+	/**
+	 * Open pUrl in the default system browser.
+	 * 
+	 * @param pUrl The url to open.
+	 * @pre pUrl != null
+	 */
+	public static void openBrowser(String pUrl)
+	{
+		assert pUrl != null;
+		aHostServices.showDocument(pUrl);
+	}
+
 	private void setStageBoundaries(Stage pStage)
 	{
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -109,7 +126,7 @@ public final class UMLEditor extends Application
 			System.exit(1);
 		}
 	}
-	
+
 	private static Alert createVersionNotSupportedDialog(JavaVersion pCurrentVersion)
 	{
 		Alert alert = new Alert(AlertType.ERROR);
