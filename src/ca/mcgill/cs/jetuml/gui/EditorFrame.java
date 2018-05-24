@@ -192,7 +192,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) getSelectedTab()).getGraphPanel().undo();
+			((DiagramTab) getSelectedTab()).getGraphPanel().undo();
 		}, true));
 
 		editMenu.getItems().add(menuFactory.createMenuItem("edit.redo", pEvent ->
@@ -201,7 +201,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) getSelectedTab()).getGraphPanel().redo();
+			((DiagramTab) getSelectedTab()).getGraphPanel().redo();
 		}, true));
 
 		editMenu.getItems().add(menuFactory.createMenuItem("edit.selectall", pEvent ->
@@ -210,7 +210,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) getSelectedTab()).getGraphPanel().selectAll();
+			((DiagramTab) getSelectedTab()).getGraphPanel().selectAll();
 		}, true));
 
 		editMenu.getItems().add(menuFactory.createMenuItem("edit.properties", pEvent -> 
@@ -219,7 +219,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) getSelectedTab()).getGraphPanel().editSelected();
+			((DiagramTab) getSelectedTab()).getGraphPanel().editSelected();
 		}, true));
 
 		editMenu.getItems().add(menuFactory.createMenuItem("edit.cut", pEvent -> cut(), true));
@@ -232,7 +232,7 @@ public class EditorFrame extends BorderPane
 			{
 				return;
 			}
-			((GraphFrame) getSelectedTab()).getGraphPanel().removeSelected();
+			((DiagramTab) getSelectedTab()).getGraphPanel().removeSelected();
 		}, true));
 	}
 	
@@ -277,9 +277,9 @@ public class EditorFrame extends BorderPane
 	{
 		for( Tab tab : tabs() )
 		{
-			if( tab instanceof GraphFrame )
+			if( tab instanceof DiagramTab )
 			{
-				((GraphFrame)tab).showToolbarButtonLabels(pShow);
+				((DiagramTab)tab).showToolbarButtonLabels(pShow);
 			}
 		}
 	}
@@ -288,9 +288,9 @@ public class EditorFrame extends BorderPane
 	{
 		for( Tab tab : tabs() )
 		{
-			if( tab instanceof GraphFrame )
+			if( tab instanceof DiagramTab )
 			{
-				((GraphFrame)tab).getGraphPanel().setShowGrid(pShow);
+				((DiagramTab)tab).getGraphPanel().setShowGrid(pShow);
 			}
 		}
 	}
@@ -314,10 +314,10 @@ public class EditorFrame extends BorderPane
 	{
 		for( Tab tab : tabs() )
 		{
-			if(tab instanceof GraphFrame)
+			if(tab instanceof DiagramTab)
 			{
-				if(((GraphFrame) tab).getFileName() != null	&& 
-						((GraphFrame) tab).getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				if(((DiagramTab) tab).getFileName() != null	&& 
+						((DiagramTab) tab).getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
 					tabPane().getSelectionModel().select(tab);
 					addRecentFile(new File(pName).getPath());
@@ -329,7 +329,7 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			Diagram diagram2 = PersistenceService.read(new File(pName));
-			GraphFrame frame2 = new GraphFrame(diagram2, tabPane());
+			DiagramTab frame2 = new DiagramTab(diagram2, tabPane());
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
 			insertGraphFrameIntoTabbedPane(frame2);
@@ -359,7 +359,7 @@ public class EditorFrame extends BorderPane
 		{
 			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
-				insertGraphFrameIntoTabbedPane(new GraphFrame(diagramType.newInstance(), tabPane()));
+				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance(), tabPane()));
 			}));
 		}
 		return Collections.unmodifiableList(result);
@@ -424,7 +424,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) getSelectedTab()).getGraphPanel();
+		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.cut();
 		panel.paintPanel();
 	}
@@ -439,7 +439,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		((GraphFrame) getSelectedTab()).getGraphPanel().copy();
+		((DiagramTab) getSelectedTab()).getGraphPanel().copy();
 	}
 
 	/**
@@ -453,7 +453,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphPanel panel = ((GraphFrame) getSelectedTab()).getGraphPanel();
+		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.paste();
 		panel.paintPanel();
 	}
@@ -467,7 +467,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) getSelectedTab();
+		DiagramTab frame = (DiagramTab) getSelectedTab();
 		final Image image = getImage(frame.getGraphPanel());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
@@ -482,7 +482,7 @@ public class EditorFrame extends BorderPane
 	private boolean noCurrentGraphFrame() 
 	{
 		return getSelectedTab() == null ||
-				!(getSelectedTab() instanceof GraphFrame);
+				!(getSelectedTab() instanceof DiagramTab);
 	}
 
 	/**
@@ -498,7 +498,7 @@ public class EditorFrame extends BorderPane
 		Tab currentFrame = getSelectedTab();
 		if (currentFrame != null)
 		{
-			GraphFrame openFrame = (GraphFrame) currentFrame;
+			DiagramTab openFrame = (DiagramTab) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -533,7 +533,7 @@ public class EditorFrame extends BorderPane
 		Tab currentFrame = pTab;
 		if (currentFrame != null)
 		{
-			GraphFrame openFrame = (GraphFrame) currentFrame;
+			DiagramTab openFrame = (DiagramTab) currentFrame;
 			// we only want to check attempts to close a frame
 			if (openFrame.getGraphPanel().isModified()) 
 			{
@@ -566,7 +566,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) getSelectedTab();
+		DiagramTab frame = (DiagramTab) getSelectedTab();
 		File file = frame.getFileName();
 		if (file == null) 
 		{
@@ -595,7 +595,7 @@ public class EditorFrame extends BorderPane
 		{
 			return;
 		}
-		GraphFrame frame = (GraphFrame) getSelectedTab();
+		DiagramTab frame = (DiagramTab) getSelectedTab();
 		Diagram graph = frame.getGraph();
 
 		FileChooser fileChooser = new FileChooser();
@@ -694,7 +694,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		
-		GraphFrame frame = (GraphFrame) getSelectedTab();
+		DiagramTab frame = (DiagramTab) getSelectedTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
 			BufferedImage image = getBufferedImage(frame.getGraphPanel()); 
@@ -742,7 +742,7 @@ public class EditorFrame extends BorderPane
 
 	private FileChooser getImageFileChooser() 
 	{
-		GraphFrame frame = (GraphFrame) getSelectedTab();
+		DiagramTab frame = (DiagramTab) getSelectedTab();
 		assert frame != null;
 
 		// Initialize the file chooser widget
@@ -804,8 +804,8 @@ public class EditorFrame extends BorderPane
 	private int getNumberOfDirtyDiagrams()
 	{
 		return (int) tabs().stream()
-			.filter( tab -> tab instanceof GraphFrame ) 
-			.filter( frame -> ((GraphFrame) frame).getGraphPanel().isModified())
+			.filter( tab -> tab instanceof DiagramTab ) 
+			.filter( frame -> ((DiagramTab) frame).getGraphPanel().isModified())
 			.count();
 	}
 
@@ -865,7 +865,7 @@ public class EditorFrame extends BorderPane
 	}
 	
 	/* Insert a graph frame into the tabbedpane */ 
-	private void insertGraphFrameIntoTabbedPane(GraphFrame pGraphFrame) 
+	private void insertGraphFrameIntoTabbedPane(DiagramTab pGraphFrame) 
 	{
 		if( isWelcomeTabShowing() )
 		{
@@ -890,7 +890,7 @@ public class EditorFrame extends BorderPane
 	/*
 	 * Removes the graph frame from the tabbed pane
 	 */
-	private void removeGraphFrameFromTabbedPane(GraphFrame pTab) 
+	private void removeGraphFrameFromTabbedPane(DiagramTab pTab) 
 	{
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();

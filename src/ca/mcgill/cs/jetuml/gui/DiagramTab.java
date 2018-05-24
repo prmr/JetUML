@@ -37,9 +37,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 
 /**
- *A frame for showing a diagram.
+ *A tab holding a single diagram.
  */
-public class GraphFrame extends Tab
+public class DiagramTab extends Tab
 {	
 	private TabPane aTabbedPane;
 	private GraphPanel aPanel;
@@ -48,9 +48,9 @@ public class GraphFrame extends Tab
 	/**
      * Constructs a graph frame with an empty tool bar.
      * @param pGraph the initial graph
-     * @param pTabbedPane the TabPane associated with this GraphFrame.
+     * @param pTabbedPane the TabPane associated with this DiagramTab.
 	 */
-	public GraphFrame(Diagram pGraph, TabPane pTabbedPane)
+	public DiagramTab(Diagram pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
 		DiagramFrameToolBar sideBar = new DiagramFrameToolBar(pGraph);
@@ -110,7 +110,7 @@ public class GraphFrame extends Tab
 	/**
 	 * This association and getter method are needed to display messages using the copy to clipboard
 	 * functionality of the Optional DiagramFrameToolBar.
-	 * @return aTabbedPane the TabPane associated with this GraphFrame.
+	 * @return aTabbedPane the TabPane associated with this DiagramTab.
 	 */
 	public TabPane getTabbedPane()
 	{

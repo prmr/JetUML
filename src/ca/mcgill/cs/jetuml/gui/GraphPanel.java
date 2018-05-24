@@ -493,7 +493,7 @@ public class GraphPanel extends Canvas
 	public void setModified(boolean pModified)
 	{
 		aModified = pModified;
-		Optional<GraphFrame> graphFrame = getFrame();
+		Optional<DiagramTab> graphFrame = getFrame();
 		if (graphFrame.isPresent())
 		{
 			graphFrame.get().setTitle(aModified);
@@ -506,7 +506,7 @@ public class GraphPanel extends Canvas
 	 * getFrame().isPresent() will be false if panel not yet added to its parent 
 	 * frame, for example if it is called in the constructor of this panel.
 	 */
-	private Optional<GraphFrame> getFrame()
+	private Optional<DiagramTab> getFrame()
 	{
 		try 
 		{
@@ -517,9 +517,9 @@ public class GraphPanel extends Canvas
 			}
 			for (Tab tab : ((TabPane) parent).getTabs())
 			{
-				if (tab instanceof GraphFrame && tab.getContent() == getScrollPane().getParent())
+				if (tab instanceof DiagramTab && tab.getContent() == getScrollPane().getParent())
 				{
-					return Optional.of((GraphFrame) tab);
+					return Optional.of((DiagramTab) tab);
 				}
 			}
 		}
