@@ -378,10 +378,6 @@ public class EditorFrame extends BorderPane
 	 */
 	public void copyToClipboard() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
 		DiagramTab frame = (DiagramTab) getSelectedTab();
 		final Image image = ImageCreator.createImage(frame.getGraphPanel().getGraph());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -573,7 +569,7 @@ public class EditorFrame extends BorderPane
 	/**
 	 * Exports the current graph to an image file.
 	 */
-	public void exportImage() 
+	private void exportImage() 
 	{
 		if (noCurrentGraphFrame()) 
 		{
@@ -725,8 +721,6 @@ public class EditorFrame extends BorderPane
 			System.exit(0);
 		}
 	}		
-	
-	// -- TABBING METHODS
 	
 	private List<Tab> tabs()
 	{
