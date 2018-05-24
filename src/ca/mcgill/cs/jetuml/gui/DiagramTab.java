@@ -53,7 +53,7 @@ public class DiagramTab extends Tab
 	public DiagramTab(Diagram pGraph, TabPane pTabbedPane)
 	{
 		aTabbedPane = pTabbedPane;
-		DiagramFrameToolBar sideBar = new DiagramFrameToolBar(pGraph);
+		DiagramTabToolBar sideBar = new DiagramTabToolBar(pGraph);
 		aPanel = new GraphPanel(pGraph, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
@@ -95,7 +95,7 @@ public class DiagramTab extends Tab
 	 */
 	public void showToolbarButtonLabels(boolean pShow)
 	{
-		((DiagramFrameToolBar)((BorderPane)getContent()).getRight()).showButtonLabels(pShow);
+		((DiagramTabToolBar)((BorderPane)getContent()).getRight()).showButtonLabels(pShow);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class DiagramTab extends Tab
 	
 	/**
 	 * This association and getter method are needed to display messages using the copy to clipboard
-	 * functionality of the Optional DiagramFrameToolBar.
+	 * functionality of the Optional DiagramTabToolBar.
 	 * @return aTabbedPane the TabPane associated with this DiagramTab.
 	 */
 	public TabPane getTabbedPane()

@@ -31,7 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * A selectable button in the DiagramFrameToolBar. 
+ * A selectable button in the DiagramTabToolBar. 
  */
 public class SelectableToolButton extends ToggleButton
 {

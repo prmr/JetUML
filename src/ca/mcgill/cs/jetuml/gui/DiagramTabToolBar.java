@@ -50,7 +50,7 @@ import javafx.scene.image.ImageView;
  *  menu with the same tools as the tool bar. Labels can optionally be shown next 
  *  to tools.
  */
-public class DiagramFrameToolBar extends ToolBar
+public class DiagramTabToolBar extends ToolBar
 {
 	private ContextMenu aPopupMenu = new ContextMenu();
 
@@ -59,7 +59,7 @@ public class DiagramFrameToolBar extends ToolBar
      * 
      * @param pDiagram The diagram associated with this tool bar.
 	 */
-	public DiagramFrameToolBar(Diagram pDiagram)
+	public DiagramTabToolBar(Diagram pDiagram)
 	{
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
