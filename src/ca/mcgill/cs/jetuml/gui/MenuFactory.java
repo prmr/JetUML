@@ -82,7 +82,7 @@ class MenuFactory
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
-	public MenuItem createMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler, boolean pDiagramSpecific)
+	public MenuItem createMenuItem(String pPrefix,  boolean pDiagramSpecific, EventHandler<ActionEvent> pHandler)
 	{
 		MenuItem item = new MenuItem();
 		item.setUserData(pDiagramSpecific);
@@ -97,12 +97,13 @@ class MenuFactory
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @return A menu item for the action described.
 	 */
-	public MenuItem createCheckMenuItem(String pPrefix, EventHandler<ActionEvent> pHandler, boolean pDiagramSpecific) 
+	public MenuItem createCheckMenuItem(String pPrefix, boolean pDiagramSpecific, boolean pInitialState, EventHandler<ActionEvent> pHandler) 
 	{
 		CheckMenuItem item = new CheckMenuItem();
 		item.setUserData(pDiagramSpecific);
 		initialize(item, pPrefix);
 		item.setOnAction(pHandler);
+		item.setSelected(pInitialState);
 		return item;
 	}	
 	
@@ -167,6 +168,27 @@ class MenuFactory
 		Menu menu = new Menu();
 		menu.setUserData(pDiagramSpecific);
 		initialize(menu, pPrefix);
+		return menu;
+	}
+	
+	/**
+	 * Create a menu with the resources for key pPrefix, with submenus that 
+	 * correspond to the NamedHandlers.
+	 * @param pPrefix A string such as "file" that indicates where to find the related
+	 * resources in the resource bundle.
+	 * @param pMenuItems The items to add to the menu
+	 * @return A configured menu.
+	 * @pre The .text and .mnemonic properties exist in the resource bundle
+	 */
+	public Menu createMenu(String pPrefix, boolean pDiagramSpecific, MenuItem... pMenuItems)
+	{
+		Menu menu = new Menu();
+		menu.setUserData(pDiagramSpecific);
+		initialize(menu, pPrefix);
+		for( MenuItem item : pMenuItems )
+		{
+			menu.getItems().add(item);
+		}
 		return menu;
 	}
 }

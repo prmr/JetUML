@@ -133,148 +133,71 @@ public class EditorFrame extends BorderPane
 	// Returns the new menu
 	private void createFileMenu(MenuBar pMenuBar, List<NewDiagramHandler> pNewDiagramHandlers) 
 	{
-		MenuFactory menuFactory = new MenuFactory(RESOURCES);
+		MenuFactory factory = new MenuFactory(RESOURCES);
 		
-		Menu fileMenu = menuFactory.createMenu("file", false);
-		pMenuBar.getMenus().add(fileMenu);
-
-		Menu newMenu = menuFactory.createMenu("file.new", false);
-		fileMenu.getItems().add(newMenu);
+		// Special menu items whose creation can't be inlined in the factory call.
+		Menu newMenu = factory.createMenu("file.new", false);
 		for( NewDiagramHandler handler : pNewDiagramHandlers )
 		{
-			newMenu.getItems().add(menuFactory.createMenuItem(handler.getDiagramType().getName(), handler, false));
+			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName(), false, handler));
 		}
-
-		MenuItem fileOpenItem = menuFactory.createMenuItem("file.open", pEvent -> openFile(), false);
-		fileMenu.getItems().add(fileOpenItem);
-
-		aRecentFilesMenu = menuFactory.createMenu("file.recent", false);
+		
+		aRecentFilesMenu = factory.createMenu("file.recent", false);
 		buildRecentFilesMenu();
-		fileMenu.getItems().add(aRecentFilesMenu);
-
-		MenuItem closeFileItem = menuFactory.createMenuItem("file.close", pEvent -> close(), true);
-		fileMenu.getItems().add(closeFileItem);
-		closeFileItem.setDisable(noCurrentGraphFrame());
-
-		MenuItem fileSaveItem = menuFactory.createMenuItem("file.save", pEvent -> save(), true);
-		fileMenu.getItems().add(fileSaveItem);
-		fileSaveItem.setDisable(noCurrentGraphFrame());
-
-		MenuItem fileSaveAsItem = menuFactory.createMenuItem("file.save_as", pEvent -> saveAs(), true);
-		fileMenu.getItems().add(fileSaveAsItem);
-		fileSaveAsItem.setDisable(noCurrentGraphFrame());
-
-		MenuItem fileExportItem = menuFactory.createMenuItem("file.export_image", pEvent -> exportImage(), true);
-		fileMenu.getItems().add(fileExportItem);
-		fileExportItem.setDisable(noCurrentGraphFrame());
-
-		MenuItem fileCopyToClipboard = menuFactory.createMenuItem("file.copy_to_clipboard", pEvent -> copyToClipboard(), true);
-		fileMenu.getItems().add(fileCopyToClipboard);
-		fileCopyToClipboard.setDisable(noCurrentGraphFrame());
-
-		fileMenu.getItems().add(new SeparatorMenuItem());
-
-		MenuItem fileExitItem = menuFactory.createMenuItem("file.exit", pEvent -> exit(), false);
-		fileMenu.getItems().add(fileExitItem);
+		
+		// Standard factory invocation
+		pMenuBar.getMenus().add(factory.createMenu("file", false, 
+				newMenu,
+				factory.createMenuItem("file.open", false, pEvent -> openFile()),
+				aRecentFilesMenu,
+				factory.createMenuItem("file.close", true, pEvent -> close()),
+				factory.createMenuItem("file.save", true, pEvent -> save()),
+				factory.createMenuItem("file.save_as", true, pEvent -> saveAs()),
+				factory.createMenuItem("file.export_image", true, pEvent -> exportImage()),
+				factory.createMenuItem("file.copy_to_clipboard", true, pEvent -> copyToClipboard()),
+				new SeparatorMenuItem(),
+				factory.createMenuItem("file.exit", false, pEvent -> exit())));
 	}
 	
 	private void createEditMenu(MenuBar pMenuBar) 
 	{
-		MenuFactory menuFactory = new MenuFactory(RESOURCES);
-		
-		Menu editMenu = menuFactory.createMenu("edit", true);
-		pMenuBar.getMenus().add(editMenu);
-		editMenu.setDisable(noCurrentGraphFrame());
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.undo", pEvent -> 
-		{
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			((DiagramTab) getSelectedTab()).getGraphPanel().undo();
-		}, true));
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.redo", pEvent ->
-		{	
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			((DiagramTab) getSelectedTab()).getGraphPanel().redo();
-		}, true));
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.selectall", pEvent ->
-		{
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			((DiagramTab) getSelectedTab()).getGraphPanel().selectAll();
-		}, true));
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.properties", pEvent -> 
-		{
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			((DiagramTab) getSelectedTab()).getGraphPanel().editSelected();
-		}, true));
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.cut", pEvent -> cut(), true));
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.paste", pEvent -> paste(), true));
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.copy", pEvent -> copy(), true));
-
-		editMenu.getItems().add(menuFactory.createMenuItem("edit.delete", pEvent ->  
-		{
-			if (noCurrentGraphFrame()) 
-			{
-				return;
-			}
-			((DiagramTab) getSelectedTab()).getGraphPanel().removeSelected();
-		}, true));
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("edit", true, 
+				factory.createMenuItem("edit.undo", true, pEvent -> undo()),
+				factory.createMenuItem("edit.redo", true, pEvent -> redo()),
+				factory.createMenuItem("edit.selectall", true, pEvent -> selectAll()),
+				factory.createMenuItem("edit.properties", true, pEvent -> editSelected()),
+				factory.createMenuItem("edit.cut", true, pEvent -> cut()),
+				factory.createMenuItem("edit.paste", true, pEvent -> paste()),
+				factory.createMenuItem("edit.copy", true, pEvent -> copy()),
+				factory.createMenuItem("edit.delete", true, pEvent -> removeSelected() )));
 	}
 	
 	private void createViewMenu(MenuBar pMenuBar) 
 	{
-		MenuFactory menuFactory = new MenuFactory(RESOURCES);
-		
-		Menu viewMenu = menuFactory.createMenu("view", true);
-		pMenuBar.getMenus().add(viewMenu);
-		viewMenu.setDisable(noCurrentGraphFrame());
-
-		final CheckMenuItem showGridItem  = (CheckMenuItem) menuFactory.createCheckMenuItem("view.show_grid", pEvent ->
-	    {
-	    	if( noCurrentGraphFrame() )
-	    	{
-	    		return;
-	    	}
-	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
-	    	boolean selected = menuItem.isSelected();
-	    	Preferences.userNodeForPackage(UMLEditor.class).put("showGrid", Boolean.toString(selected));
-	    	setShowGridForAllFrames(selected);
-		}, true);
-		showGridItem.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true")));
-		viewMenu.getItems().add(showGridItem);
-		
-		final CheckMenuItem showToolHints  = (CheckMenuItem) menuFactory.createCheckMenuItem("view.show_hints", pEvent ->
-	    {
-	    	if( noCurrentGraphFrame() )
-	    	{
-	    		return;
-	    	}
-	    	CheckMenuItem menuItem = (CheckMenuItem) pEvent.getSource();  
-	    	boolean selected = menuItem.isSelected();
-	    	Preferences.userNodeForPackage(UMLEditor.class).put("showToolHints", Boolean.toString(selected));
-    		setShowToolbarButtonLabelsForAllFrames(selected);
-		}, true);
-		showToolHints.setSelected(Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")));
-		viewMenu.getItems().add(showToolHints);
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("view", true, 
+				
+				factory.createCheckMenuItem("view.show_grid", true, 
+				Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true")), 
+				pEvent -> setShowGridForAllFrames(((CheckMenuItem) pEvent.getSource()).isSelected())),
+				
+				factory.createCheckMenuItem("view.show_hints", true, 
+				Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")), 
+				pEvent -> setShowToolbarButtonLabelsForAllFrames(((CheckMenuItem) pEvent.getSource()).isSelected()))));
+	}
+	
+	private void createHelpMenu(MenuBar pMenuBar) 
+	{
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("help", false,
+				factory.createMenuItem("help.about", false, pEvent -> new AboutDialog(aMainStage).show())));
 	}
 	
 	private void setShowToolbarButtonLabelsForAllFrames(boolean pShow)
 	{
+		assert !noCurrentGraphFrame();
+    	Preferences.userNodeForPackage(UMLEditor.class).put("showToolHints", Boolean.toString(pShow));
 		for( Tab tab : tabs() )
 		{
 			if( tab instanceof DiagramTab )
@@ -286,6 +209,8 @@ public class EditorFrame extends BorderPane
 	
 	private void setShowGridForAllFrames(boolean pShow)
 	{
+		assert !noCurrentGraphFrame();
+    	Preferences.userNodeForPackage(UMLEditor.class).put("showGrid", Boolean.toString(pShow));
 		for( Tab tab : tabs() )
 		{
 			if( tab instanceof DiagramTab )
@@ -293,15 +218,6 @@ public class EditorFrame extends BorderPane
 				((DiagramTab)tab).getGraphPanel().setShowGrid(pShow);
 			}
 		}
-	}
-
-	private void createHelpMenu(MenuBar pMenuBar) 
-	{
-		MenuFactory menuFactory = new MenuFactory(RESOURCES);
-		
-		Menu helpMenu = menuFactory.createMenu("help", false);
-		pMenuBar.getMenus().add(helpMenu);
-		helpMenu.getItems().add(menuFactory.createMenuItem("help.about", pEvent -> new AboutDialog(aMainStage).show(), false));
 	}
 
 	/*
@@ -398,10 +314,7 @@ public class EditorFrame extends BorderPane
    		}
    }
 
-	/**
-	 * Asks the user to open a graph file.
-	 */
-	public void openFile() 
+	private void openFile() 
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
@@ -414,48 +327,56 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	/**
-	 * Cuts the current selection of the current panel and puts the content into the
-	 * application-specific clipboard.
-	 */
-	public void cut() 
+	private void cut() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
+		assert !noCurrentGraphFrame();
 		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.cut();
 		panel.paintPanel();
 	}
 
-	/**
-	 * Copies the current selection of the current panel and puts the content into
-	 * the application-specific clipboard.
-	 */
-	public void copy() 
+	private void copy() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
+		assert !noCurrentGraphFrame();
 		((DiagramTab) getSelectedTab()).getGraphPanel().copy();
 	}
 
-	/**
-	 * Pastes a past selection from the application-specific Clipboard into current
-	 * panel. All the logic is done in the application-specific CutPasteBehavior.
-	 * 
-	 */
-	public void paste() 
+	private void paste() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
+		assert !noCurrentGraphFrame();
 		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.paste();
 		panel.paintPanel();
+	}
+	
+	private void undo()
+	{
+		assert !noCurrentGraphFrame();
+		((DiagramTab) getSelectedTab()).getGraphPanel().undo();
+	}
+	
+	private void redo()
+	{
+		assert !noCurrentGraphFrame();
+		((DiagramTab) getSelectedTab()).getGraphPanel().redo();
+	}
+	
+	private void selectAll()
+	{
+		assert !noCurrentGraphFrame();
+		((DiagramTab) getSelectedTab()).getGraphPanel().selectAll();
+	}
+	
+	private void editSelected()
+	{
+		assert !noCurrentGraphFrame();
+		((DiagramTab) getSelectedTab()).getGraphPanel().editSelected();
+	}
+	
+	private void removeSelected()
+	{
+		assert !noCurrentGraphFrame();
+		((DiagramTab) getSelectedTab()).getGraphPanel().removeSelected();
 	}
 
 	/**
@@ -485,11 +406,7 @@ public class EditorFrame extends BorderPane
 				!(getSelectedTab() instanceof DiagramTab);
 	}
 
-	/**
-	 * If a user confirms that they want to close their modified graph, this method
-	 * will remove it from the current list of tabs.
-	 */
-	public void close() 
+	private void close() 
 	{
 		if (noCurrentGraphFrame()) 
 		{
@@ -557,10 +474,7 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	/**
-	 * Save a file. Called by reflection.
-	 */
-	public void save() 
+	private void save() 
 	{
 		if (noCurrentGraphFrame()) 
 		{
@@ -586,10 +500,7 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	/**
-	 * Saves the current graph as a new file.
-	 */
-	public void saveAs() 
+	private void saveAs() 
 	{
 		if (noCurrentGraphFrame()) 
 		{
