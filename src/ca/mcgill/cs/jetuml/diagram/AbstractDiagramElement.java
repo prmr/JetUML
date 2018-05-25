@@ -26,7 +26,7 @@ package ca.mcgill.cs.jetuml.diagram;
  * There is only a single Properties object associated with a DiagramElement, 
  * used to represent the element's properties through its life-cycle.
  */
-public class AbstractDiagramElement implements DiagramElement
+public abstract class AbstractDiagramElement implements DiagramElement
 {
 	private Properties aProperties;
 	

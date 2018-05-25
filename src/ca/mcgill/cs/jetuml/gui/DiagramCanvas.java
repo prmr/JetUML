@@ -402,13 +402,9 @@ public class DiagramCanvas extends Canvas
 			{
 				toBeRemoved.add(selected);
 			}
-			else if(selected instanceof Node)
+			else
 			{
-				ToolGraphics.drawHandles(context, ((Node) selected).view().getBounds());
-			}
-			else if (selected instanceof Edge)
-			{
-				ToolGraphics.drawHandles(context, ((Edge) selected).view().getConnectionPoints());
+				selected.view().drawSelectionHandles(context);
 			}
 		}
 

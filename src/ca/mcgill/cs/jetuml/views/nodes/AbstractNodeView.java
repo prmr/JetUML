@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -77,4 +78,10 @@ public abstract class AbstractNodeView implements NodeView
 
 	@Override
 	public void layout(Diagram pGraph) {}
+
+	@Override
+	public void drawSelectionHandles(GraphicsContext pGraphics)
+	{
+		ToolGraphics.drawHandles(pGraphics, getBounds());		
+	}
 }

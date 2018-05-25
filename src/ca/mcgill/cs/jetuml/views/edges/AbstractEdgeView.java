@@ -24,6 +24,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -152,5 +153,11 @@ public abstract class AbstractEdgeView implements EdgeView
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(edge().getStart().view().getConnectionPoint(toEnd), 
 				edge().getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
+	}
+
+	@Override
+	public void drawSelectionHandles(GraphicsContext pGraphics)
+	{
+		ToolGraphics.drawHandles(pGraphics, getConnectionPoints());		
 	}
 }

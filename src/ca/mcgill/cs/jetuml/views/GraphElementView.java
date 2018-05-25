@@ -18,21 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views.edges;
+package ca.mcgill.cs.jetuml.views;
 
-import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.views.GraphElementView;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object capable of computing the actual geometry
- * of an edge and drawing it on a graphics context.
+ * of a graph element and draw it on a graphics context.
  */
-public interface EdgeView extends GraphElementView
+public interface GraphElementView
 {
+	/**
+     * Gets the smallest rectangle that bounds this element.
+     * The bounding rectangle contains all labels.
+     * @return the bounding rectangle
+   	 */
+	Rectangle getBounds();
+   	
+	/**
+     * Draw the element.
+     * @param pGraphics the graphics context
+	 */
+   	void draw(GraphicsContext pGraphics);
+   	
    	/**
-     * Gets the points at which this edge is connected to
-     * its nodes.
-     * @return a line joining the two connection points
+     * Draw selection handles around the element.
+     * @param pGraphics the graphics context
+	 */
+   	void drawSelectionHandles(GraphicsContext pGraphics);
+   	
+   	/**
+     * Tests whether the element contains a point.
+     * @param pPoint the point to test
+     * @return true if this element contains aPoint
      */
-   	Line getConnectionPoints();
+   	boolean contains(Point pPoint);
 }
