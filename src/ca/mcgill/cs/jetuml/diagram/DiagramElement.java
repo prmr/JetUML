@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.views.GraphElementView;
+import ca.mcgill.cs.jetuml.views.DiagramElementView;
 
 /**
  * A type that allows us to treat nodes and edges uniformly.
@@ -35,5 +35,5 @@ public interface DiagramElement extends Cloneable
 	/**
    	 * @return The view for this edge.
    	 */
-   	GraphElementView view();
+   	DiagramElementView view();
 }

@@ -26,9 +26,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object capable of computing the actual geometry
- * of a graph element and draw it on a graphics context.
+ * of a diagram element and draw it on a graphics context.
  */
-public interface GraphElementView
+public interface DiagramElementView
 {
 	/**
      * Gets the smallest rectangle that bounds this element.

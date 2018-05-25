@@ -23,12 +23,12 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.GraphElementView;
+import ca.mcgill.cs.jetuml.views.DiagramElementView;
 
 /**
  * Services to query the visual properties of a node.
  */
-public interface NodeView extends GraphElementView
+public interface NodeView extends DiagramElementView
 {
 	/**
      * Get the best connection point to connect this node 

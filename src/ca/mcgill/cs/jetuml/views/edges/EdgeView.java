@@ -21,13 +21,13 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.views.GraphElementView;
+import ca.mcgill.cs.jetuml.views.DiagramElementView;
 
 /**
  * An object capable of computing the actual geometry
  * of an edge and drawing it on a graphics context.
  */
-public interface EdgeView extends GraphElementView
+public interface EdgeView extends DiagramElementView
 {
    	/**
      * Gets the points at which this edge is connected to
