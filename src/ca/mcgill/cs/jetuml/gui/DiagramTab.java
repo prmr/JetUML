@@ -77,7 +77,7 @@ public class DiagramTab extends Tab
 	 */
 	public Diagram getDiagram()
 	{
-		return aPanel.getGraph();
+		return aPanel.getDiagram();
 	}
 	
 	/**

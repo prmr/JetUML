@@ -315,7 +315,7 @@ public class DiagramCanvas extends Canvas
 	/**
 	 * @return the graph in this panel.
 	 */
-	public Diagram getGraph()
+	public Diagram getDiagram()
 	{
 		return aDiagram;
 	}

@@ -217,7 +217,7 @@ public final class Clipboard
 	// CSOFF: Fix in later release
 	public SelectionList paste(DiagramCanvas pPanel)
 	{
-		if( !validPaste(pPanel.getGraph()))
+		if( !validPaste(pPanel.getDiagram()))
 		{
 			return new SelectionList();
 		}
@@ -244,7 +244,7 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			pPanel.getGraph().insertNode(node);
+			pPanel.getDiagram().insertNode(node);
 		}
 		for( Edge edge : clonedEdges )
 		{
@@ -252,9 +252,9 @@ public final class Clipboard
 			// It is possible that some nodes could not be 
 			// pasted (e.g., children nodes without their parent)
 			// so some edges might no longer be relevant.
-			if( pPanel.getGraph().contains( edge.getStart() ) && pPanel.getGraph().contains(edge.getEnd()))
+			if( pPanel.getDiagram().contains( edge.getStart() ) && pPanel.getDiagram().contains(edge.getEnd()))
 			{
-				pPanel.getGraph().insertEdge(edge);
+				pPanel.getDiagram().insertEdge(edge);
 			}
 		}
 		

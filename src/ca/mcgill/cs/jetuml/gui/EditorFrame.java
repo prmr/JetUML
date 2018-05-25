@@ -379,7 +379,7 @@ public class EditorFrame extends BorderPane
 	public void copyToClipboard() 
 	{
 		DiagramTab frame = (DiagramTab) getSelectedTab();
-		final Image image = ImageCreator.createImage(frame.getGraphPanel().getGraph());
+		final Image image = ImageCreator.createImage(frame.getGraphPanel().getDiagram());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
@@ -679,7 +679,7 @@ public class EditorFrame extends BorderPane
 	 */
 	private static BufferedImage getBufferedImage(DiagramCanvas pGraphPanel) 
 	{
-		BufferedImage image = SwingFXUtils.fromFXImage(ImageCreator.createImage(pGraphPanel.getGraph()), null);
+		BufferedImage image = SwingFXUtils.fromFXImage(ImageCreator.createImage(pGraphPanel.getDiagram()), null);
 		return image;
 	}
 	
