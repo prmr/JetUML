@@ -37,7 +37,7 @@ import javafx.stage.Screen;
  */
 public class DiagramTab extends Tab
 {	
-	private GraphPanel aPanel;
+	private DiagramCanvas aPanel;
 	private File aFile; // The file associated with this diagram
 	
 	/**
@@ -47,7 +47,7 @@ public class DiagramTab extends Tab
 	public DiagramTab(Diagram pDiagram)
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
-		aPanel = new GraphPanel(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
+		aPanel = new DiagramCanvas(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
 		aPanel.paintPanel();
 		
 		BorderPane layout = new BorderPane();
@@ -94,7 +94,7 @@ public class DiagramTab extends Tab
      * Gets the graph panel that is contained in this frame.
      * @return the graph panel
 	 */
-	public GraphPanel getGraphPanel()
+	public DiagramCanvas getGraphPanel()
    	{
 		return aPanel;
    	}

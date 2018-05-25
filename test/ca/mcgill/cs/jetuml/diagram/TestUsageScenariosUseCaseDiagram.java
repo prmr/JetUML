@@ -41,7 +41,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -55,7 +55,7 @@ public class TestUsageScenariosUseCaseDiagram
 {
 	private UseCaseDiagram aDiagram;
 	private GraphicsContext aGraphics;
-	private GraphPanel aPanel;
+	private DiagramCanvas aPanel;
 	private ActorNode aActorNode1;
 	private ActorNode aActorNode2;
 	private UseCaseNode aUseCaseNode1;
@@ -82,7 +82,7 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		aDiagram = new UseCaseDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new GraphPanel(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();

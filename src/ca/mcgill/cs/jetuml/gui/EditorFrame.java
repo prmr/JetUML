@@ -324,7 +324,7 @@ public class EditorFrame extends BorderPane
 	private void cut() 
 	{
 		assert !noCurrentGraphFrame();
-		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
+		DiagramCanvas panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.cut();
 		panel.paintPanel();
 	}
@@ -338,7 +338,7 @@ public class EditorFrame extends BorderPane
 	private void paste() 
 	{
 		assert !noCurrentGraphFrame();
-		GraphPanel panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
+		DiagramCanvas panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
 		panel.paste();
 		panel.paintPanel();
 	}
@@ -677,7 +677,7 @@ public class EditorFrame extends BorderPane
 	 * @return bufferedImage. To convert it into an image, use the syntax :
 	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
 	 */
-	private static BufferedImage getBufferedImage(GraphPanel pGraphPanel) 
+	private static BufferedImage getBufferedImage(DiagramCanvas pGraphPanel) 
 	{
 		BufferedImage image = SwingFXUtils.fromFXImage(ImageCreator.createImage(pGraphPanel.getGraph()), null);
 		return image;

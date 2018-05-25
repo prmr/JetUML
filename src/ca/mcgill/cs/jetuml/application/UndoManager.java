@@ -36,7 +36,7 @@ public class UndoManager
 	private boolean aHoldChanges = false; //turned on while undoing or redoing to prevent duplication
 	
 	/**
-	 * Creates a new UndoManager with the GraphPanel.
+	 * Creates a new UndoManager with the DiagramCanvas.
 	 * These should be assigned one per panel.
 	 */
 	public UndoManager()

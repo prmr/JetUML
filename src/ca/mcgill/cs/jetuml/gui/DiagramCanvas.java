@@ -52,10 +52,10 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -73,26 +73,22 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * A panel to draw a graph.
+ * A canvas on which to view, create, and modify diagrams.
  */
-public class GraphPanel extends Canvas
+public class DiagramCanvas extends Canvas
 {
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final int LAYOUT_PADDING = 20;
-	private static final Color GRABBER_COLOR = Color.rgb(77, 115, 153);
-	private static final Color GRABBER_FILL_COLOR = Color.rgb(173, 193, 214);
-	private static final Color GRABBER_FILL_COLOR_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final int VIEWPORT_PADDING = 5;
 	
-	private Diagram aGraph;
+	private Diagram aDiagram;
 	private DiagramTabToolBar aSideBar;
 	private boolean aShowGrid;
 	private boolean aModified;
@@ -104,18 +100,18 @@ public class GraphPanel extends Canvas
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	
 	/**
-	 * Constructs the panel, assigns the graph to it, and registers
-	 * the panel as a listener for the graph.
+	 * Constructs the canvas, assigns the diagram to it, and registers
+	 * the canvas as a listener for the diagram.
 	 * 
-	 * @param pGraph the graph managed by this panel.
+	 * @param pDiagram the graph managed by this panel.
 	 * @param pSideBar the DiagramTabToolBar which contains all of the tools for nodes and edges.
-	 * @param pScreenBoundaries the boundaries of the users screen. 
+	 * @param pScreenBoundaries the boundaries of the user's screen. 
 	 */
-	public GraphPanel(Diagram pGraph, DiagramTabToolBar pSideBar, Rectangle2D pScreenBoundaries)
+	public DiagramCanvas(Diagram pDiagram, DiagramTabToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
-		aGraph = pGraph;
-		aGraph.setGraphModificationListener(new PanelGraphModificationListener());
+		aDiagram = pDiagram;
+		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 
 		GraphPanelMouseListener listener = new GraphPanelMouseListener();
@@ -130,7 +126,7 @@ public class GraphPanel extends Canvas
 	{
 		if (getParent() != null)
 		{
-			Rectangle bounds = aGraph.getBounds();
+			Rectangle bounds = aDiagram.getBounds();
 			return Math.max(getScrollPane().getWidth(), bounds.getMaxX());
 		}
 		return pWidth;
@@ -141,7 +137,7 @@ public class GraphPanel extends Canvas
 	{
 		if (getParent() != null)
 		{
-			Rectangle bounds = aGraph.getBounds();
+			Rectangle bounds = aDiagram.getBounds();
 			return Math.max(getScrollPane().getHeight(), bounds.getMaxY());
 		}
 		return pHeight;
@@ -220,7 +216,7 @@ public class GraphPanel extends Canvas
 			@Override
 			public void propertyChanged()
 			{
-				aGraph.requestLayout();
+				aDiagram.requestLayout();
 				paintPanel();
 			}
 		});
@@ -268,17 +264,17 @@ public class GraphPanel extends Canvas
 		{
 			if (element instanceof Node)
 			{
-				aGraph.removeAllEdgesConnectedTo((Node)element);
+				aDiagram.removeAllEdgesConnectedTo((Node)element);
 				nodes.add((Node) element);
 			}
 			else if (element instanceof Edge)
 			{
-				aGraph.removeEdge((Edge) element);
+				aDiagram.removeEdge((Edge) element);
 			}
 		}
 		while(!nodes.empty())
 		{
-			aGraph.removeNode(nodes.pop());
+			aDiagram.removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
 		if (aSelectedElements.size() > 0)
@@ -289,7 +285,7 @@ public class GraphPanel extends Canvas
 	}
 	
 	/**
-	 * Indicate to the GraphPanel that is should 
+	 * Indicate to the DiagramCanvas that is should 
 	 * consider all following operations on the graph
 	 * to be part of a single conceptual one.
 	 */
@@ -299,7 +295,7 @@ public class GraphPanel extends Canvas
 	}
 	
 	/**
-	 * Indicate to the GraphPanel that is should 
+	 * Indicate to the DiagramCanvas that is should 
 	 * stop considering all following operations on the graph
 	 * to be part of a single conceptual one.
 	 */
@@ -313,7 +309,7 @@ public class GraphPanel extends Canvas
 	 */
 	public void layoutGraph()
 	{
-		aGraph.requestLayout();
+		aDiagram.requestLayout();
 	}
 	
 	/**
@@ -321,7 +317,7 @@ public class GraphPanel extends Canvas
 	 */
 	public Diagram getGraph()
 	{
-		return aGraph;
+		return aDiagram;
 	}
 	
 	/**
@@ -369,11 +365,11 @@ public class GraphPanel extends Canvas
 	public void selectAll()
 	{
 		aSelectedElements.clearSelection();
-		for (Node node : aGraph.getRootNodes())
+		for (Node node : aDiagram.getRootNodes())
 		{
 			aSelectedElements.add(node);
 		}
-		for (Edge edge : aGraph.getEdges())
+		for (Edge edge : aDiagram.getEdges())
 		{
 			aSelectedElements.add(edge);
 		}
@@ -382,7 +378,7 @@ public class GraphPanel extends Canvas
 	}
 
 	/**
-	 * Paints the panel and all the graph elements in aGraph.
+	 * Paints the panel and all the graph elements in aDiagram.
 	 * Called after the panel is resized.
 	 */
 	public void paintPanel()
@@ -391,34 +387,28 @@ public class GraphPanel extends Canvas
 		context.setFill(Color.WHITE); 
 		context.fillRect(0, 0, getWidth(), getHeight());
 		Bounds bounds = getBoundsInLocal();
-		Rectangle graphBounds = aGraph.getBounds();
+		Rectangle graphBounds = aDiagram.getBounds();
 		if(aShowGrid) 
 		{
 			Grid.draw(context, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
 					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
 		}
-		aGraph.draw(context);
+		aDiagram.draw(context);
 
 		Set<DiagramElement> toBeRemoved = new HashSet<>();
 		for (DiagramElement selected : aSelectedElements)
 		{
-			if (!aGraph.contains(selected)) 
+			if(!aDiagram.contains(selected)) 
 			{
 				toBeRemoved.add(selected);
 			}
-			else if (selected instanceof Node)
+			else if(selected instanceof Node)
 			{
-				Rectangle grabberBounds = ((Node) selected).view().getBounds();
-				drawGrabber(context, grabberBounds.getX(), grabberBounds.getY());
-				drawGrabber(context, grabberBounds.getX(), grabberBounds.getMaxY());
-				drawGrabber(context, grabberBounds.getMaxX(), grabberBounds.getY());
-				drawGrabber(context, grabberBounds.getMaxX(), grabberBounds.getMaxY());
+				ToolGraphics.drawHandles(context, ((Node) selected).view().getBounds());
 			}
 			else if (selected instanceof Edge)
 			{
-				Line line = ((Edge) selected).view().getConnectionPoints();
-				drawGrabber(context, line.getX1(), line.getY1());
-				drawGrabber(context, line.getX2(), line.getY2());
+				ToolGraphics.drawHandles(context, ((Edge) selected).view().getConnectionPoints());
 			}
 		}
 
@@ -429,52 +419,20 @@ public class GraphPanel extends Canvas
       
 		if (aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			Paint oldFill = context.getFill();
-			context.setFill(GRABBER_COLOR);
-			context.strokeLine(aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
-			context.setFill(oldFill);
+			ToolGraphics.drawRubberband(context, aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
 		}      
 		else if (aDragMode == DragMode.DRAG_LASSO)
 		{
-			Paint oldFill = context.getFill();
-			Paint oldStroke = context.getStroke();
-			context.setFill(GRABBER_FILL_COLOR_TRANSPARENT);
-			context.setStroke(GRABBER_COLOR);
-			double x1 = aMouseDownPoint.getX();
-			double y1 = aMouseDownPoint.getY();
-			double x2 = aLastMousePoint.getX();
-			double y2 = aLastMousePoint.getY();
-			Rectangle2D lasso = new Rectangle2D(Math.min(x1, x2), Math.min(y1, y2),
-					Math.abs(x1 - x2) , Math.abs(y1 - y2));
-			context.fillRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			context.strokeRect(lasso.getMinX(), lasso.getMinY(), lasso.getWidth(), lasso.getHeight());
-			context.setFill(oldFill);
-			context.setStroke(oldStroke);
+			ToolGraphics.drawLasso(context, Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
+					                        Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
+					                        Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()), 
+					                        Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
 		} 
 		
 		if (getScrollPane() != null)
 		{
 			getScrollPane().requestLayout();
 		}
-	}
-
-	/**
-	 * Draws a single "grabber", a filled square.
-	 * @param pGraphics the graphics context
-	 * @param pX the x coordinate of the center of the grabber
-	 * @param pY the y coordinate of the center of the grabber
-	 */
-	public static void drawGrabber(GraphicsContext pGraphics, double pX, double pY)
-	{
-		final int size = 6;
-		Paint oldStroke = pGraphics.getStroke();
-		Paint oldFill = pGraphics.getFill();
-		pGraphics.setStroke(GRABBER_COLOR);
-		pGraphics.strokeRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
-		pGraphics.setFill(GRABBER_FILL_COLOR);
-		pGraphics.fillRect((int)(pX - size / 2), (int)(pY - size / 2), size, size);
-		pGraphics.setStroke(oldStroke);
-		pGraphics.setFill(oldFill);
 	}
 
 	/**
@@ -538,7 +496,7 @@ public class GraphPanel extends Canvas
 	}
 
 	/**
-	 * @return the currently SelectedElements from the GraphPanel.
+	 * @return the currently SelectedElements from the DiagramCanvas.
 	 */
 	public SelectionList getSelectionList()
 	{
@@ -546,7 +504,7 @@ public class GraphPanel extends Canvas
 	}
 	
 	/**
-	 * @param pSelectionList the new SelectedElements for the GraphPanel.
+	 * @param pSelectionList the new SelectedElements for the DiagramCanvas.
 	 */
 	public void setSelectionList(SelectionList pSelectionList)
 	{
@@ -575,7 +533,7 @@ public class GraphPanel extends Canvas
 		private void setSelection(DiagramElement pElement)
 		{
 			aSelectedElements.set(pElement);
-			for (Edge edge : aGraph.getEdges())
+			for (Edge edge : aDiagram.getEdges())
 			{
 				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
@@ -592,7 +550,7 @@ public class GraphPanel extends Canvas
 		private void addToSelection(DiagramElement pElement)
 		{
 			aSelectedElements.add(pElement);
-			for (Edge edge : aGraph.getEdges())
+			for (Edge edge : aDiagram.getEdges())
 			{
 				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
 				{
@@ -637,10 +595,10 @@ public class GraphPanel extends Canvas
 		private DiagramElement getSelectedElement(MouseEvent pEvent)
 		{
 			Point mousePoint = getMousePoint(pEvent);
-			DiagramElement element = aGraph.findEdge(mousePoint);
+			DiagramElement element = aDiagram.findEdge(mousePoint);
 			if (element == null)
 			{
-				element = aGraph.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
+				element = aDiagram.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 			}
 			return element;
 		}
@@ -697,7 +655,7 @@ public class GraphPanel extends Canvas
 		{
 			Node newNode = ((Node)aSideBar.getCreationPrototype()).clone();
 			Point point = getMousePoint(pEvent);
-			boolean added = aGraph.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
+			boolean added = aDiagram.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
 			if (added)
 			{
 				setModified(true);
@@ -779,7 +737,7 @@ public class GraphPanel extends Canvas
 			{
 				Edge prototype = (Edge) tool;
 				Edge newEdge = (Edge) prototype.clone();
-				if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aGraph.addEdge(newEdge, aMouseDownPoint, mousePoint))
+				if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
 				{
 					setModified(true);
 					setSelection(newEdge);
@@ -787,9 +745,9 @@ public class GraphPanel extends Canvas
 			}
 			else if (aDragMode == DragMode.DRAG_MOVE)
 			{
-				aGraph.requestLayout();
+				aDiagram.requestLayout();
 				setModified(true);
-				CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
+				CompoundCommand command = aMoveTracker.endTrackingMove(aDiagram);
 				if (command.size() > 0)
 				{
 					aUndoManager.add(command);
@@ -869,12 +827,12 @@ public class GraphPanel extends Canvas
 				double x2 = mousePoint.getX();
 				double y2 = mousePoint.getY();
 				Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-				for (Node node : aGraph.getRootNodes())
+				for (Node node : aDiagram.getRootNodes())
 				{
 					selectNode(isCtrl, node, lasso);
 				}
 				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-				for (Edge edge: aGraph.getEdges())
+				for (Edge edge: aDiagram.getEdges())
 				{
 					if (!isCtrl && !lasso.contains(edge.view().getBounds()))
 					{

@@ -32,7 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 
 /**
  * Stores a graph subset for purpose of pasting. The clip-board does not
@@ -130,7 +130,7 @@ public final class Clipboard
 	 * 
 	 * @param pPanel The graph containing the elements
 	 */
-	public void cut(GraphPanel pPanel)
+	public void cut(DiagramCanvas pPanel)
 	{
 		assert pPanel != null;
 		assert pPanel.getSelectionList() != null;
@@ -215,7 +215,7 @@ public final class Clipboard
 	 * @return The elements to paste as a selectionList.
 	 */
 	// CSOFF: Fix in later release
-	public SelectionList paste(GraphPanel pPanel)
+	public SelectionList paste(DiagramCanvas pPanel)
 	{
 		if( !validPaste(pPanel.getGraph()))
 		{

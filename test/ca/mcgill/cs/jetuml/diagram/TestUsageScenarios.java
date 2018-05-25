@@ -44,7 +44,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import javafx.geometry.Rectangle2D;
 
 /**
@@ -88,7 +88,7 @@ public class TestUsageScenarios
 		selection.add(edge);
 		
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new GraphPanel(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().paste(new DiagramCanvas(diagram, null, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -118,7 +118,7 @@ public class TestUsageScenarios
 		selection.add(edge);
 
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new GraphPanel(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().paste(new DiagramCanvas(diagram, null, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());

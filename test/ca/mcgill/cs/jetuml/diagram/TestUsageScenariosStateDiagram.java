@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -54,7 +54,7 @@ public class TestUsageScenariosStateDiagram
 {
 	private StateDiagram aDiagram;
 	private GraphicsContext aGraphics;
-	private GraphPanel aPanel;
+	private DiagramCanvas aPanel;
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
 	private InitialStateNode aInitialNode;
@@ -83,7 +83,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		aDiagram = new StateDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new GraphPanel(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));
 		aStateNode2 = new StateNode();
