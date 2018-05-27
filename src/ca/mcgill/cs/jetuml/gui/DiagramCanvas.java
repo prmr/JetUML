@@ -707,10 +707,9 @@ public class DiagramCanvas extends Canvas
 		public void mouseReleased(MouseEvent pEvent)
 		{
 			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
-			Object tool = aSideBar.getCreationPrototype();
 			if (aDragMode == DragMode.DRAG_RUBBERBAND)
 			{
-				Edge prototype = (Edge) tool;
+				Edge prototype = (Edge) aSideBar.getCreationPrototype();
 				Edge newEdge = (Edge) prototype.clone();
 				if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
 				{
@@ -738,7 +737,7 @@ public class DiagramCanvas extends Canvas
 			Point mousePoint = getMousePoint(pEvent);
 			boolean isCtrl = pEvent.isControlDown();
 
-			if (aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode()!=null)
+			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode() != null)
 			{
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.view().getBounds();
@@ -748,11 +747,11 @@ public class DiagramCanvas extends Canvas
 
 				// require users mouse to be in the panel when dragging up or to the left
 				// this prevents a disconnect between the user's mouse and the element's position
-				if (mousePoint.getX() > getViewWidth() && dx < 0)
+				if( mousePoint.getX() > getViewWidth() && dx < 0 )
 				{
 					dx = 0;
 				}
-				if (mousePoint.getY() > getViewHeight() && dy < 0)
+				if( mousePoint.getY() > getViewHeight() && dy < 0 )
 				{
 					dy = 0;
 				}
@@ -760,7 +759,7 @@ public class DiagramCanvas extends Canvas
 				// we don't want to drag nodes into negative coordinates
 				// particularly with multiple selection, we might never be 
 				// able to get them back.
-				for (DiagramElement selected : aSelectedElements)
+				for(DiagramElement selected : aSelectedElements )
 				{
 					if (selected instanceof Node)
 					{
@@ -770,15 +769,16 @@ public class DiagramCanvas extends Canvas
 				}
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
-				if (bounds.getMaxX() + dx > getViewWidth())
+							
+				if(bounds.getMaxX() + dx > getViewWidth())
 				{
 					dx = getViewWidth() - bounds.getMaxX();
 				}
-				if (bounds.getMaxY() + dy > getViewHeight())
+				if(bounds.getMaxY() + dy > getViewHeight())
 				{
 					dy = getViewHeight() - bounds.getMaxY();
 				}
-				for (DiagramElement selected : aSelectedElements)
+				for(DiagramElement selected : aSelectedElements)
 				{
 					if (selected instanceof ChildNode)
 					{
@@ -795,7 +795,7 @@ public class DiagramCanvas extends Canvas
 					}
 				}
 			}
-			else if (aDragMode == DragMode.DRAG_LASSO)
+			else if(aDragMode == DragMode.DRAG_LASSO)
 			{
 				double x1 = aMouseDownPoint.getX();
 				double y1 = aMouseDownPoint.getY();
