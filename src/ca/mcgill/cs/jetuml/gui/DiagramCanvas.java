@@ -739,6 +739,7 @@ public class DiagramCanvas extends Canvas
 
 			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode() != null)
 			{
+				// TODO, include edges between selected nodes in the bounds check.
 				Node lastNode = aSelectedElements.getLastNode();
 				Rectangle bounds = lastNode.view().getBounds();
 			
@@ -770,14 +771,16 @@ public class DiagramCanvas extends Canvas
 				dx = Math.max(dx, -bounds.getX());
 				dy = Math.max(dy, -bounds.getY());
 							
-				if(bounds.getMaxX() + dx > getViewWidth())
+				// Right bounds checks
+				if(bounds.getMaxX() + dx > boundsInLocalProperty().get().getMaxX())
 				{
-					dx = getViewWidth() - bounds.getMaxX();
+					dx = (int) boundsInLocalProperty().get().getMaxX() - bounds.getMaxX();
 				}
-				if(bounds.getMaxY() + dy > getViewHeight())
+				if(bounds.getMaxY() + dy > boundsInLocalProperty().get().getMaxY())
 				{
-					dy = getViewHeight() - bounds.getMaxY();
+					dy = (int) boundsInLocalProperty().get().getMaxY() - bounds.getMaxY();
 				}
+
 				for(DiagramElement selected : aSelectedElements)
 				{
 					if (selected instanceof ChildNode)
