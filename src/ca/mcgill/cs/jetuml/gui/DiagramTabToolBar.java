@@ -136,22 +136,15 @@ public class DiagramTabToolBar extends ToolBar
 	
 	/**
      * Gets the node or edge prototype that is associated with
-     * the currently selected button.
-     * @return a Node or Edge prototype. Null if a different tool is selected.
+     * the currently selected button, if available. A tool is unavailable if 
+     * the select tool is currently selected.
+     * @return a Node or Edge prototype if present.
 	 */
-	public DiagramElement getCreationPrototype()
+	public Optional<DiagramElement> getCreationPrototype()
 	{
 		assert getItems().size() > 0;
-		Optional<DiagramElement> prototype = ((SelectableToolButton)((ToggleButton) getItems().get(0)).
+		return ((SelectableToolButton)((ToggleButton) getItems().get(0)).
 				getToggleGroup().getSelectedToggle()).getPrototype();
-		if( prototype.isPresent() )
-		{
-			return prototype.get();
-		}
-		else
-		{
-			return null;
-		}
 	}
 	
 	private void copyToClipboard()
@@ -172,15 +165,6 @@ public class DiagramTabToolBar extends ToolBar
 	public void showPopup(double pScreenXCoordinate, double pScreenYCoordinate) 
 	{
 		aPopupMenu.show(this, pScreenXCoordinate, pScreenYCoordinate);
-	}
-	
-	/**
-	 * Hides the pop-up menu corresponding to this toolbar 
-	 * if it is showing.
-	 */
-	public void hidePopup() 
-	{
-		aPopupMenu.hide();
 	}
 	
 	/**

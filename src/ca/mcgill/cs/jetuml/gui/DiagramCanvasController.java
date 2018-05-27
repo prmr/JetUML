@@ -41,6 +41,9 @@ import javafx.scene.input.MouseEvent;
 /**
  * An instance of this class is responsible to handle the user
  * interface events on a diagram canvas.
+ * 
+ * Right-click: Show toolbar;
+ * Double-click: Edit properties of last selected, if available.
  */
 class DiagramCanvasController
 {
@@ -55,18 +58,16 @@ class DiagramCanvasController
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
 	private final UndoManager aUndoManager;
-	private DiagramTabToolBar aSideBar;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;   
 	
 	DiagramCanvasController(SelectionList pSelectionList, Diagram pDiagram, DiagramCanvas pCanvas,
-			DiagramTabToolBar pToolBar, UndoManager pManager)
+			UndoManager pManager)
 	{
 		aSelectedElements = pSelectionList;
 		aDiagram = pDiagram;
 		aCanvas = pCanvas;
-		aSideBar = pToolBar;
 		aUndoManager = pManager;
 	}
 	
@@ -169,18 +170,37 @@ class DiagramCanvasController
 			aSelectedElements.set(element);
 			aCanvas.editSelected();
 		}
-		else
+	}
+	
+	private void handleSingleClick(MouseEvent pEvent)
+	{
+		Optional<DiagramElement> tool = getTool(pEvent);
+		if(!tool.isPresent())
 		{
-			aSideBar.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
+			handleSelection(pEvent);
 		}
+		else if(tool.get() instanceof Node)
+		{
+			handleNodeCreation(pEvent);
+		}
+		else if(tool.get() instanceof Edge)
+		{
+			handleEdgeStart(pEvent);
+		}
+	}
+	
+	private void handleRightClick(MouseEvent pEvent)
+	{
+		aCanvas.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
 	}
 
 	private void handleNodeCreation(MouseEvent pEvent)
 	{
-		Node newNode = ((Node)aSideBar.getCreationPrototype()).clone();
+		assert aCanvas.getCreationPrototype().isPresent();
+		Node newNode = ((Node)aCanvas.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
 		boolean added = aDiagram.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
-		if (added)
+		if(added)
 		{
 			aCanvas.setModified(true);
 			aSelectedElements.set(newNode);
@@ -194,7 +214,7 @@ class DiagramCanvasController
 	private void handleEdgeStart(MouseEvent pEvent)
 	{
 		DiagramElement element = getSelectedElement(pEvent);
-		if (element != null && element instanceof Node) 
+		if(element != null && element instanceof Node) 
 		{
 			aDragMode = DragMode.DRAG_RUBBERBAND;
 		}
@@ -204,23 +224,23 @@ class DiagramCanvasController
 	 * Implements a convenience feature. Normally returns 
 	 * aSideBar.getSelectedTool(), except if the mouse points
 	 * to an existing node, in which case defaults to select
-	 * mode because it's likely the user wanted to select the node
+	 * mode because it's likely the user wanted to select the element
 	 * and forgot to switch tool. The only exception is when adding
 	 * children nodes, where the parent node obviously has to be selected.
 	 */
-	private DiagramElement getTool(MouseEvent pEvent)
+	private Optional<DiagramElement> getTool(MouseEvent pEvent)
 	{
-		DiagramElement tool = aSideBar.getCreationPrototype();
+		Optional<DiagramElement> tool = aCanvas.getCreationPrototype();
 		DiagramElement selected = getSelectedElement(pEvent);
 
-		if (tool !=null && tool instanceof Node)
+		if( tool.isPresent() && tool.get() instanceof Node)
 		{
-			if (selected != null && selected instanceof Node)
+			if(selected != null && selected instanceof Node)
 			{
-				if (!(tool instanceof ChildNode && selected instanceof ParentNode))
+				if(!(tool.get() instanceof ChildNode && selected instanceof ParentNode))
 				{
-					aSideBar.setToolToBeSelect();
-					tool = null;
+					aCanvas.setToolToSelect();
+					tool = Optional.empty();
 				}
 			}
 		}	
@@ -229,23 +249,17 @@ class DiagramCanvasController
 
 	public void mousePressed(MouseEvent pEvent)
 	{
-		aSideBar.hidePopup();
-		DiagramElement tool = getTool(pEvent);
-		if (pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
-		{  
+		if( pEvent.isSecondaryButtonDown() )
+		{
+			handleRightClick(pEvent);
+		}
+		else if( pEvent.getClickCount() > 1 )
+		{
 			handleDoubleClick(pEvent);
 		}
-		else if (tool == null)
+		else
 		{
-			handleSelection(pEvent);
-		}
-		else if (tool instanceof Node)
-		{
-			handleNodeCreation(pEvent);
-		}
-		else if (tool instanceof Edge)
-		{
-			handleEdgeStart(pEvent);
+			handleSingleClick(pEvent);
 		}
 		Point point = getMousePoint(pEvent);
 		aLastMousePoint = new Point(point.getX(), point.getY()); 
@@ -258,7 +272,8 @@ class DiagramCanvasController
 		Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
 		if (aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			Edge prototype = (Edge) aSideBar.getCreationPrototype();
+			assert aCanvas.getCreationPrototype().isPresent();
+			Edge prototype = (Edge) aCanvas.getCreationPrototype().get();
 			Edge newEdge = (Edge) prototype.clone();
 			if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
 			{

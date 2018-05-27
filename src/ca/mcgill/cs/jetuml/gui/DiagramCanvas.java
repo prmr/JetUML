@@ -102,17 +102,44 @@ public class DiagramCanvas extends Canvas
 		aSideBar = pSideBar;
 
 		aController = new DiagramCanvasController(aSelectedElements, 
-				aDiagram, this, aSideBar, aUndoManager);
+				aDiagram, this, aUndoManager);
 		setOnMousePressed(aController.mousePressedHandler());
 		setOnMouseReleased(aController.mouseReleasedHandler());
 		setOnMouseDragged(aController.mouseDraggedHandler());
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
+	/**
+	 * @return The currently selected tool.
+	 */
+	public Optional<DiagramElement> getCreationPrototype()
+	{
+		return aSideBar.getCreationPrototype();
+	}
+	
+	/**
+	 * Toggles the selection tool.
+	 */
+	public void setToolToSelect()
+	{
+		aSideBar.setToolToBeSelect();
+	}
+	
 	@Override
 	public boolean isResizable()
 	{
 	    return false;
+	}
+	
+	/**
+	 * Shows the tool bar pop up menu at the specified screen location.
+	 * 
+	 * @param pX The X-coordinate of the popup.
+	 * @param pY The Y-coordinate of the popup.
+	 */
+	public void showPopup(double pX, double pY)
+	{
+		aSideBar.showPopup(pX,  pY);
 	}
 	
 	/**
@@ -150,6 +177,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void paste()
 	{
+		// TODO aSelectedElements should be final
 		aSelectedElements = Clipboard.instance().paste(this);
 	}
 	
