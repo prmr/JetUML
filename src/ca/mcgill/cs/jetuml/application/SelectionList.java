@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.application;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -58,7 +59,7 @@ public class SelectionList implements Iterable<DiagramElement>
 	public void add(DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( !parentContained( pElement ))
+		if( !containsParent( pElement ))
 		{
 			aSelected.remove(pElement);
 			aSelected.push(pElement);
@@ -67,7 +68,7 @@ public class SelectionList implements Iterable<DiagramElement>
 			ArrayList<DiagramElement> toRemove = new ArrayList<>();
 			for( DiagramElement element : aSelected )
 			{
-				if( parentContained(element) )
+				if( containsParent(element) )
 				{
 					toRemove.add(element);
 				}
@@ -86,7 +87,7 @@ public class SelectionList implements Iterable<DiagramElement>
 	 * @return true if any of the parents of pElement are included in the 
 	 * selection.
 	 */
-	public boolean parentContained(DiagramElement pElement)
+	public boolean containsParent(DiagramElement pElement)
 	{
 		if( pElement instanceof ChildNode )
 		{
@@ -101,7 +102,7 @@ public class SelectionList implements Iterable<DiagramElement>
 			}
 			else
 			{
-				return parentContained(parent);
+				return containsParent(parent);
 			}
 		}
 		else
@@ -116,7 +117,7 @@ public class SelectionList implements Iterable<DiagramElement>
 	 */
 	public boolean transitivelyContains(DiagramElement pElement)
 	{
-		return contains(pElement) || parentContained(pElement);
+		return contains(pElement) || containsParent(pElement);
 	}
 	
 	/**
@@ -141,6 +142,29 @@ public class SelectionList implements Iterable<DiagramElement>
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Include in the selection list any edge in pEdges whose start and end nodes
+	 * are already in the selection list, and replaces the previously last element
+	 * in the selection to last place.
+	 * @param pEdges The edges to consider adding.
+	 */
+	public void addEdgesIfContained(Collection<Edge> pEdges)
+	{
+		if( aSelected.isEmpty() )
+		{
+			return;
+		}
+		DiagramElement last = aSelected.pop();
+		for( Edge edge : pEdges )
+		{
+			if( capturesEdge(edge))
+			{
+				add(edge);
+			}
+		}
+		aSelected.push(last);
 	}
 	
 	/**
@@ -174,8 +198,8 @@ public class SelectionList implements Iterable<DiagramElement>
 	 */
 	public boolean capturesEdge(Edge pEdge)
 	{
-		return (contains(pEdge.getStart()) || parentContained(pEdge.getStart())) &&
-				(contains(pEdge.getEnd()) || parentContained(pEdge.getEnd()));
+		return (contains(pEdge.getStart()) || containsParent(pEdge.getStart())) &&
+				(contains(pEdge.getEnd()) || containsParent(pEdge.getEnd()));
 	}
 	
 	/**

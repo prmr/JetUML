@@ -212,29 +212,29 @@ public class TestSelectionList
 	@Test
 	public void testParentContained()
 	{
-		assertFalse(aList.parentContained(aEdge1));
-		assertFalse(aList.parentContained(aNode1));
+		assertFalse(aList.containsParent(aEdge1));
+		assertFalse(aList.containsParent(aNode1));
 		aList.add(aEdge1);
-		assertFalse(aList.parentContained(aEdge1));
+		assertFalse(aList.containsParent(aEdge1));
 		aList.add(aNode1);
-		assertFalse(aList.parentContained(aEdge1));
-		assertFalse(aList.parentContained(aNode1));
+		assertFalse(aList.containsParent(aEdge1));
+		assertFalse(aList.containsParent(aNode1));
 
 		aPackage1.addChild(aNode1);
-		assertFalse(aList.parentContained(aNode1));
+		assertFalse(aList.containsParent(aNode1));
 		
 		aList.add(aPackage1);
-		assertTrue(aList.parentContained(aNode1));
+		assertTrue(aList.containsParent(aNode1));
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aNode2);
 		aPackage2.addChild(aPackage3);
 		aPackage3.addChild(aNode3);
 
-		assertFalse(aList.parentContained(aPackage1));
-		assertTrue(aList.parentContained(aNode2));
-		assertTrue(aList.parentContained(aPackage2));
-		assertTrue(aList.parentContained(aPackage3));
-		assertTrue(aList.parentContained(aNode3));
+		assertFalse(aList.containsParent(aPackage1));
+		assertTrue(aList.containsParent(aNode2));
+		assertTrue(aList.containsParent(aPackage2));
+		assertTrue(aList.containsParent(aPackage3));
+		assertTrue(aList.containsParent(aNode3));
 	}
 	
 	@Test

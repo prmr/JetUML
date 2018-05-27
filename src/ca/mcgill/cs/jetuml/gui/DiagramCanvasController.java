@@ -107,64 +107,6 @@ class DiagramCanvasController
 		}
 	}
 	
-	/**
-	 * Also adds the inner edges of parent nodes to the selection list.
-	 * @param pElement
-	 */
-	private void setSelection(DiagramElement pElement)
-	{
-		aSelectedElements.set(pElement);
-		for (Edge edge : aDiagram.getEdges())
-		{
-			if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
-			{
-				aSelectedElements.add(edge);
-			}
-		}
-		aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
-	}
-
-	/**
-	 * Also adds the inner edges of parent nodes to the selection list.
-	 * @param pElement
-	 */
-	private void addToSelection(DiagramElement pElement)
-	{
-		aSelectedElements.add(pElement);
-		for (Edge edge : aDiagram.getEdges())
-		{
-			if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
-			{
-				aSelectedElements.add(edge);
-			}
-		}
-		aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
-	}
-
-	/**
-	 * @param pNode a Node to check.
-	 * @return True if pNode or any of its parent is selected
-	 */
-	private boolean hasSelectedParent(Node pNode)
-	{
-		if (pNode == null)
-		{
-			return false;
-		}
-		else if (aSelectedElements.contains(pNode))
-		{
-			return true;
-		}
-		else if (pNode instanceof ChildNode)
-		{
-			return hasSelectedParent(((ChildNode)pNode).getParent());
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	private Point getMousePoint(MouseEvent pEvent)
 	{
 		return new Point((int)pEvent.getX(), (int)pEvent.getY());
@@ -193,7 +135,8 @@ class DiagramCanvasController
 			{
 				if (!aSelectedElements.contains(element))
 				{
-					addToSelection(element);
+					aSelectedElements.add(element);
+					aSelectedElements.addEdgesIfContained(aDiagram.getEdges());
 				}
 				else
 				{
@@ -203,7 +146,7 @@ class DiagramCanvasController
 			else if (!aSelectedElements.contains(element))
 			{
 				// The test is necessary to ensure we don't undo multiple selections
-				setSelection(element);
+				aSelectedElements.set(element);
 			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectedElements);
@@ -223,7 +166,7 @@ class DiagramCanvasController
 		DiagramElement element = getSelectedElement(pEvent);
 		if (element != null)
 		{
-			setSelection(element);
+			aSelectedElements.set(element);
 			aCanvas.editSelected();
 		}
 		else
@@ -240,7 +183,7 @@ class DiagramCanvasController
 		if (added)
 		{
 			aCanvas.setModified(true);
-			setSelection(newNode);
+			aSelectedElements.set(newNode);
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
 		{
@@ -320,7 +263,7 @@ class DiagramCanvasController
 			if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
 			{
 				aCanvas.setModified(true);
-				setSelection(newEdge);
+				aSelectedElements.set(newEdge);
 			}
 		}
 		else if (aDragMode == DragMode.DRAG_MOVE)
@@ -392,7 +335,7 @@ class DiagramCanvasController
 				if (selected instanceof ChildNode)
 				{
 					ChildNode n = (ChildNode) selected;
-					if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
+					if (!aSelectedElements.containsParent(n)) // parents are responsible for translating their children
 					{
 						n.translate(dx, dy);
 					}	
