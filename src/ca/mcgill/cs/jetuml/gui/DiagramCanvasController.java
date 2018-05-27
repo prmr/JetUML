@@ -42,7 +42,7 @@ import javafx.scene.input.MouseEvent;
  * An instance of this class is responsible to handle the user
  * interface events on a diagram canvas.
  */
-class DiagramCanvasController implements EventHandler<MouseEvent>
+class DiagramCanvasController
 {
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
@@ -72,7 +72,7 @@ class DiagramCanvasController implements EventHandler<MouseEvent>
 	
 	/**
 	 * @return The line that defines the active rubberband, if the 
-	 * controller is in rubberband dragging mode, or nothing othervise.
+	 * controller is in rubberband dragging mode, or nothing otherwise.
 	 */
 	public Optional<Line> getRubberband()
 	{
@@ -89,7 +89,7 @@ class DiagramCanvasController implements EventHandler<MouseEvent>
 	
 	/**
 	 * @return The rectangle that defines the active lasso, if the 
-	 * controller is in lasso dragging mode, or nothing othervise.
+	 * controller is in lasso dragging mode, or nothing otherwise.
 	 */
 	public Optional<Rectangle> getLasso()
 	{
@@ -463,21 +463,19 @@ class DiagramCanvasController implements EventHandler<MouseEvent>
 	{
 		return ((int) aCanvas.getScrollPane().getViewportBounds().getHeight()) - VIEWPORT_PADDING;
 	}
-
-	@Override
-	public void handle(MouseEvent pEvent) 
+	
+	EventHandler<MouseEvent> mousePressedHandler()
 	{
-		if (pEvent.getEventType() == MouseEvent.MOUSE_PRESSED) 
-		{
-			mousePressed(pEvent);
-		} 
-		else if (pEvent.getEventType() == MouseEvent.MOUSE_RELEASED) 
-		{
-			mouseReleased(pEvent);
-		}
-		else if (pEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) 
-		{
-			mouseDragged(pEvent);
-		}
+		return e -> mousePressed(e);
+	}
+	
+	EventHandler<MouseEvent> mouseReleasedHandler()
+	{
+		return e -> mouseReleased(e);
+	}
+	
+	EventHandler<MouseEvent> mouseDraggedHandler()
+	{
+		return e -> mouseDragged(e);
 	}
 }

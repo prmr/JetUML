@@ -103,9 +103,9 @@ public class DiagramCanvas extends Canvas
 
 		aController = new DiagramCanvasController(aSelectedElements, 
 				aDiagram, this, aSideBar, aUndoManager);
-		setOnMousePressed(aController);
-		setOnMouseReleased(aController);
-		setOnMouseDragged(aController);
+		setOnMousePressed(aController.mousePressedHandler());
+		setOnMouseReleased(aController.mouseReleasedHandler());
+		setOnMouseDragged(aController.mouseDraggedHandler());
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
