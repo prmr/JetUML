@@ -87,6 +87,7 @@ public class DiagramCanvas extends Canvas
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final int LAYOUT_PADDING = 20;
 	private static final int VIEWPORT_PADDING = 5;
+	private static final double SIZE_RATIO = 0.75;
 	
 	private Diagram aDiagram;
 	private DiagramTabToolBar aSideBar;
@@ -109,7 +110,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public DiagramCanvas(Diagram pDiagram, DiagramTabToolBar pSideBar, Rectangle2D pScreenBoundaries)
 	{
-		super(pScreenBoundaries.getWidth(), pScreenBoundaries.getHeight());
+		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
 		aDiagram = pDiagram;
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
@@ -122,31 +123,9 @@ public class DiagramCanvas extends Canvas
 	}
 	
 	@Override
-	public double prefWidth(double pWidth)
-	{
-		if (getParent() != null)
-		{
-			Rectangle bounds = aDiagram.getBounds();
-			return Math.max(getScrollPane().getWidth(), bounds.getMaxX());
-		}
-		return pWidth;
-	}
-
-	@Override
-	public double prefHeight(double pHeight)
-	{
-		if (getParent() != null)
-		{
-			Rectangle bounds = aDiagram.getBounds();
-			return Math.max(getScrollPane().getHeight(), bounds.getMaxY());
-		}
-		return pHeight;
-	}
-	
-	@Override
 	public boolean isResizable()
 	{
-	    return true;
+	    return false;
 	}
 	
 	/**
@@ -154,7 +133,7 @@ public class DiagramCanvas extends Canvas
      * Will return null if not yet contained in a ScrollPane.
      * @return the scroll pane
 	 */
-	public ScrollPane getScrollPane()
+	private ScrollPane getScrollPane()
 	{
 		if (getParent() != null) 
 		{

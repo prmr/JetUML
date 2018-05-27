@@ -27,9 +27,9 @@ import java.io.File;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 
 /**
@@ -37,7 +37,7 @@ import javafx.stage.Screen;
  */
 public class DiagramTab extends Tab
 {	
-	private DiagramCanvas aPanel;
+	private DiagramCanvas aDiagramCanvas;
 	private File aFile; // The file associated with this diagram
 	
 	/**
@@ -47,18 +47,31 @@ public class DiagramTab extends Tab
 	public DiagramTab(Diagram pDiagram)
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
-		aPanel = new DiagramCanvas(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
-		aPanel.paintPanel();
+		aDiagramCanvas = new DiagramCanvas(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
+		aDiagramCanvas.paintPanel();
 		
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
-		ScrollPane scroll = new ScrollPane(aPanel);
+
+		// We put the diagram in a stack pane for the sole
+		// purpose of being able to decorate it with CSS
+		StackPane pane = new StackPane(aDiagramCanvas);
+		final String cssDefault = "-fx-border-color: grey;\n"
+				+ "-fx-border-insets: 4;\n"
+				+ "-fx-border-width: 1;\n"
+				+ "-fx-border-style: solid;\n";
+		pane.setStyle(cssDefault);
+		ScrollPane scroll = new ScrollPane(pane);
 		
 		// The call below is necessary to removes the focus highlight around the Canvas
 		// See issue #250
 		scroll.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
-		scroll.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
+
+		// We need to set the max size of the scroll pane so it do not expand to fill 
+		// the entire center region of the BorderPane, as dictated by this layout for
+		// resizable nodes.
+		final int buffer = 12; // (border insets + border width + 1)*2
+		scroll.setMaxSize(aDiagramCanvas.getWidth() + buffer, aDiagramCanvas.getHeight() + buffer);
 		layout.setCenter(scroll);
 		
 		setTitle(false);
@@ -77,7 +90,7 @@ public class DiagramTab extends Tab
 	 */
 	public Diagram getDiagram()
 	{
-		return aPanel.getDiagram();
+		return aDiagramCanvas.getDiagram();
 	}
 	
 	/**
@@ -96,7 +109,7 @@ public class DiagramTab extends Tab
 	 */
 	public DiagramCanvas getGraphPanel()
    	{
-		return aPanel;
+		return aDiagramCanvas;
    	}
 	
 	/**
