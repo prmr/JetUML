@@ -125,7 +125,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 		double oldMiter = pGraphics.getMiterLimit();
 		double[] oldDashes = pGraphics.getLineDashes();
 		
-		aLineStyleSupplier.get().setLineProperties(pGraphics);
+		pGraphics.setLineDashes(aLineStyleSupplier.get().getLineDashes());
 		
 		pGraphics.beginPath();
 		completeDrawPath(pGraphics, getSegmentPath());
