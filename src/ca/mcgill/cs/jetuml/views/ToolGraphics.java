@@ -92,16 +92,13 @@ public final class ToolGraphics
 	 * in the color of the selection tools.
 	 * 
 	 * @param pGraphics The graphics context on which to draw the line.
-	 * @param pX1 The x-coordinate of the first point
-	 * @param pY1 The y-coordinate of the first point
-	 * @param pX2 The x-coordinate of the second point
-	 * @param pY2 The y-coordinate of the second point
+	 * @param pLine The line that represents the rubberband.
 	 */
-	public static void drawRubberband(GraphicsContext pGraphics, double pX1, double pY1, double pX2, double pY2)
+	public static void drawRubberband(GraphicsContext pGraphics, Line pLine)
 	{
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setStroke(SELECTION_FILL_COLOR);
-		pGraphics.strokeLine(pX1, pY1, pX2, pY2);
+		pGraphics.strokeLine(pLine.getX1(), pLine.getY1(), pLine.getX2(), pLine.getY2());
 		pGraphics.setStroke(oldStroke);
 	}
 	
@@ -110,19 +107,16 @@ public final class ToolGraphics
 	 * rectangle in the color of the selection tools.
 	 * 
 	 * @param pGraphics The graphics context on which to draw the lasso.
-	 * @param pX The x-coordinate of the origin point
-	 * @param pY The y-coordinate of the origin point
-	 * @param pWidth The width of the rectangle
-	 * @param pHeight The height of the rectangle
+	 * @param pRectangle The rectangle that defines the lasso.
 	 */
-	public static void drawLasso(GraphicsContext pGraphics, double pX, double pY, double pWidth, double pHeight)
+	public static void drawLasso(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		Paint oldFill = pGraphics.getFill();
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setFill(SELECTION_FILL_TRANSPARENT);
 		pGraphics.setStroke(SELECTION_COLOR);
-		pGraphics.fillRect(pX, pY, pWidth, pHeight);
-		pGraphics.strokeRect(pX, pY, pWidth, pHeight);
+		pGraphics.fillRect(pRectangle.getX(), pRectangle.getY(), pRectangle.getWidth(), pRectangle.getHeight());
+		pGraphics.strokeRect(pRectangle.getX(), pRectangle.getY(), pRectangle.getWidth(), pRectangle.getHeight());
 		pGraphics.setFill(oldFill);
 		pGraphics.setStroke(oldStroke);
 	}

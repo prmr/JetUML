@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
@@ -32,7 +31,6 @@ import java.util.prefs.Preferences;
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
-import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
@@ -47,16 +45,13 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -70,7 +65,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -80,13 +74,8 @@ import javafx.stage.Stage;
  * A canvas on which to view, create, and modify diagrams.
  */
 public class DiagramCanvas extends Canvas
-{
-	private enum DragMode 
-	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
-	
-	private static final int CONNECT_THRESHOLD = 8;
+{	
 	private static final int LAYOUT_PADDING = 20;
-	private static final int VIEWPORT_PADDING = 5;
 	private static final double SIZE_RATIO = 0.65;
 	
 	private Diagram aDiagram;
@@ -94,11 +83,8 @@ public class DiagramCanvas extends Canvas
 	private boolean aShowGrid;
 	private boolean aModified;
 	private SelectionList aSelectedElements = new SelectionList();
-	private Point aLastMousePoint;
-	private Point aMouseDownPoint;   
-	private DragMode aDragMode;
+	private final DiagramCanvasController aController;
 	private UndoManager aUndoManager = new UndoManager();
-	private final MoveTracker aMoveTracker = new MoveTracker();
 	
 	/**
 	 * Constructs the canvas, assigns the diagram to it, and registers
@@ -115,10 +101,11 @@ public class DiagramCanvas extends Canvas
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 
-		GraphPanelMouseListener listener = new GraphPanelMouseListener();
-		setOnMousePressed(listener);
-		setOnMouseReleased(listener);
-		setOnMouseDragged(listener);
+		aController = new DiagramCanvasController(aSelectedElements, 
+				aDiagram, this, aSideBar, aUndoManager);
+		setOnMousePressed(aController);
+		setOnMouseReleased(aController);
+		setOnMouseDragged(aController);
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
@@ -133,7 +120,7 @@ public class DiagramCanvas extends Canvas
      * Will return null if not yet contained in a ScrollPane.
      * @return the scroll pane
 	 */
-	private ScrollPane getScrollPane()
+	public ScrollPane getScrollPane()
 	{
 		if (getParent() != null) 
 		{
@@ -392,17 +379,17 @@ public class DiagramCanvas extends Canvas
 			aSelectedElements.remove(element);
 		}                 
       
-		if (aDragMode == DragMode.DRAG_RUBBERBAND)
+		Optional<Line> rubberband = aController.getRubberband();
+		if( rubberband.isPresent() )
 		{
-			ToolGraphics.drawRubberband(context, aMouseDownPoint.getX(), aMouseDownPoint.getY(), aLastMousePoint.getX(), aLastMousePoint.getY());
-		}      
-		else if (aDragMode == DragMode.DRAG_LASSO)
+			ToolGraphics.drawRubberband(context, rubberband.get());
+		}
+		
+		Optional<Rectangle> lasso = aController.getLasso();
+		if( lasso.isPresent() )
 		{
-			ToolGraphics.drawLasso(context, Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
-					                        Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
-					                        Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()), 
-					                        Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
-		} 
+			ToolGraphics.drawLasso(context, lasso.get());
+		}
 		
 		if (getScrollPane() != null)
 		{
@@ -498,384 +485,7 @@ public class DiagramCanvas extends Canvas
 		}
 		return false;
 	}
-	
-	private class GraphPanelMouseListener implements EventHandler<MouseEvent>
-	{	
-		/**
-		 * Also adds the inner edges of parent nodes to the selection list.
-		 * @param pElement
-		 */
-		private void setSelection(DiagramElement pElement)
-		{
-			aSelectedElements.set(pElement);
-			for (Edge edge : aDiagram.getEdges())
-			{
-				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
-				{
-					aSelectedElements.add(edge);
-				}
-			}
-			aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
-		}
 		
-		/**
-		 * Also adds the inner edges of parent nodes to the selection list.
-		 * @param pElement
-		 */
-		private void addToSelection(DiagramElement pElement)
-		{
-			aSelectedElements.add(pElement);
-			for (Edge edge : aDiagram.getEdges())
-			{
-				if (hasSelectedParent(edge.getStart()) && hasSelectedParent(edge.getEnd()))
-				{
-					aSelectedElements.add(edge);
-				}
-			}
-			aSelectedElements.add(pElement); // Necessary to make a parent node the last node selected so it can be edited.
-		}
-		
-		/**
-		 * @param pNode a Node to check.
-		 * @return True if pNode or any of its parent is selected
-		 */
-		private boolean hasSelectedParent(Node pNode)
-		{
-			if (pNode == null)
-			{
-				return false;
-			}
-			else if (aSelectedElements.contains(pNode))
-			{
-				return true;
-			}
-			else if (pNode instanceof ChildNode)
-			{
-				return hasSelectedParent(((ChildNode)pNode).getParent());
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
-		private Point getMousePoint(MouseEvent pEvent)
-		{
-			return new Point((int)pEvent.getX(), (int)pEvent.getY());
-		}
-		
-		/*
-		 * Will return null if nothing is selected.
-		 */
-		private DiagramElement getSelectedElement(MouseEvent pEvent)
-		{
-			Point mousePoint = getMousePoint(pEvent);
-			DiagramElement element = aDiagram.findEdge(mousePoint);
-			if (element == null)
-			{
-				element = aDiagram.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
-			}
-			return element;
-		}
-		
-		private void handleSelection(MouseEvent pEvent)
-		{
-			DiagramElement element = getSelectedElement(pEvent);
-			if (element != null) // Something is selected
-			{
-				if (pEvent.isControlDown())
-				{
-					if (!aSelectedElements.contains(element))
-					{
-						addToSelection(element);
-					}
-					else
-					{
-						aSelectedElements.remove(element);
-					}
-				}
-				else if (!aSelectedElements.contains(element))
-				{
-					// The test is necessary to ensure we don't undo multiple selections
-					setSelection(element);
-				}
-				aDragMode = DragMode.DRAG_MOVE;
-				aMoveTracker.startTrackingMove(aSelectedElements);
-			}
-			else // Nothing is selected
-			{
-				if (!pEvent.isControlDown()) 
-				{
-					aSelectedElements.clearSelection();
-				}
-				aDragMode = DragMode.DRAG_LASSO;
-			}
-		}
-		
-		private void handleDoubleClick(MouseEvent pEvent)
-		{
-			DiagramElement element = getSelectedElement(pEvent);
-			if (element != null)
-			{
-				setSelection(element);
-				editSelected();
-			}
-			else
-			{
-				aSideBar.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
-			}
-		}
-		
-		private void handleNodeCreation(MouseEvent pEvent)
-		{
-			Node newNode = ((Node)aSideBar.getCreationPrototype()).clone();
-			Point point = getMousePoint(pEvent);
-			boolean added = aDiagram.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
-			if (added)
-			{
-				setModified(true);
-				setSelection(newNode);
-			}
-			else // Special behavior, if we can't add a node, we select any element at the point
-			{
-				handleSelection(pEvent);
-			}
-		}
-		
-		private void handleEdgeStart(MouseEvent pEvent)
-		{
-			DiagramElement element = getSelectedElement(pEvent);
-			if (element != null && element instanceof Node) 
-			{
-				aDragMode = DragMode.DRAG_RUBBERBAND;
-			}
-		}
-		
-		/*
-	     * Implements a convenience feature. Normally returns 
-	     * aSideBar.getSelectedTool(), except if the mouse points
-	     * to an existing node, in which case defaults to select
-	     * mode because it's likely the user wanted to select the node
-	     * and forgot to switch tool. The only exception is when adding
-	     * children nodes, where the parent node obviously has to be selected.
-		 */
-		private DiagramElement getTool(MouseEvent pEvent)
-		{
-			DiagramElement tool = aSideBar.getCreationPrototype();
-			DiagramElement selected = getSelectedElement(pEvent);
-			
-			if (tool !=null && tool instanceof Node)
-			{
-				if (selected != null && selected instanceof Node)
-				{
-					if (!(tool instanceof ChildNode && selected instanceof ParentNode))
-					{
-						aSideBar.setToolToBeSelect();
-						tool = null;
-					}
-				}
-			}	
-			return tool;
-		}
-		
-		public void mousePressed(MouseEvent pEvent)
-		{
-			aSideBar.hidePopup();
-			DiagramElement tool = getTool(pEvent);
-			if (pEvent.getClickCount() > 1 || pEvent.isSecondaryButtonDown()) // double/right click
-			{  
-				handleDoubleClick(pEvent);
-			}
-			else if (tool == null)
-			{
-				handleSelection(pEvent);
-			}
-			else if (tool instanceof Node)
-			{
-				handleNodeCreation(pEvent);
-			}
-			else if (tool instanceof Edge)
-			{
-				handleEdgeStart(pEvent);
-			}
-			Point point = getMousePoint(pEvent);
-			aLastMousePoint = new Point(point.getX(), point.getY()); 
-			aMouseDownPoint = aLastMousePoint;
-			paintPanel();
-		}
-
-		public void mouseReleased(MouseEvent pEvent)
-		{
-			Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
-			if (aDragMode == DragMode.DRAG_RUBBERBAND)
-			{
-				Edge prototype = (Edge) aSideBar.getCreationPrototype();
-				Edge newEdge = (Edge) prototype.clone();
-				if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
-				{
-					setModified(true);
-					setSelection(newEdge);
-				}
-			}
-			else if (aDragMode == DragMode.DRAG_MOVE)
-			{
-				aDiagram.requestLayout();
-				setModified(true);
-				CompoundCommand command = aMoveTracker.endTrackingMove(aDiagram);
-				if (command.size() > 0)
-				{
-					aUndoManager.add(command);
-				}
-			}
-			aDragMode = DragMode.DRAG_NONE;
-			paintPanel();
-		}
-		
-		// CSOFF:
-		public void mouseDragged(MouseEvent pEvent)
-		{
-			Point mousePoint = getMousePoint(pEvent);
-			boolean isCtrl = pEvent.isControlDown();
-
-			if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode() != null)
-			{
-				// TODO, include edges between selected nodes in the bounds check.
-				Node lastNode = aSelectedElements.getLastNode();
-				Rectangle bounds = lastNode.view().getBounds();
-			
-				int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
-				int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
-
-				// require users mouse to be in the panel when dragging up or to the left
-				// this prevents a disconnect between the user's mouse and the element's position
-				if( mousePoint.getX() > getViewWidth() && dx < 0 )
-				{
-					dx = 0;
-				}
-				if( mousePoint.getY() > getViewHeight() && dy < 0 )
-				{
-					dy = 0;
-				}
-				
-				// we don't want to drag nodes into negative coordinates
-				// particularly with multiple selection, we might never be 
-				// able to get them back.
-				for(DiagramElement selected : aSelectedElements )
-				{
-					if (selected instanceof Node)
-					{
-						Node n = (Node) selected;
-						bounds = bounds.add(n.view().getBounds());
-					}
-				}
-				dx = Math.max(dx, -bounds.getX());
-				dy = Math.max(dy, -bounds.getY());
-							
-				// Right bounds checks
-				if(bounds.getMaxX() + dx > boundsInLocalProperty().get().getMaxX())
-				{
-					dx = (int) boundsInLocalProperty().get().getMaxX() - bounds.getMaxX();
-				}
-				if(bounds.getMaxY() + dy > boundsInLocalProperty().get().getMaxY())
-				{
-					dy = (int) boundsInLocalProperty().get().getMaxY() - bounds.getMaxY();
-				}
-
-				for(DiagramElement selected : aSelectedElements)
-				{
-					if (selected instanceof ChildNode)
-					{
-						ChildNode n = (ChildNode) selected;
-						if (!aSelectedElements.parentContained(n)) // parents are responsible for translating their children
-						{
-							n.translate(dx, dy);
-						}	
-					}
-					else if (selected instanceof Node)
-					{
-						Node n = (Node) selected;
-						n.translate(dx, dy);
-					}
-				}
-			}
-			else if(aDragMode == DragMode.DRAG_LASSO)
-			{
-				double x1 = aMouseDownPoint.getX();
-				double y1 = aMouseDownPoint.getY();
-				double x2 = mousePoint.getX();
-				double y2 = mousePoint.getY();
-				Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-				for (Node node : aDiagram.getRootNodes())
-				{
-					selectNode(isCtrl, node, lasso);
-				}
-				//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-				for (Edge edge: aDiagram.getEdges())
-				{
-					if (!isCtrl && !lasso.contains(edge.view().getBounds()))
-					{
-						aSelectedElements.remove(edge);
-					}
-					else if (lasso.contains(edge.view().getBounds()))
-					{
-						if (aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
-						{
-							aSelectedElements.add(edge);
-						}
-					}
-				}
-			}
-			aLastMousePoint = mousePoint;
-			paintPanel();
-		} // CSON:
-		
-		private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
-		{
-			if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
-			{
-				aSelectedElements.remove(pNode);
-			}
-			else if (pLasso.contains(pNode.view().getBounds())) 
-			{
-				aSelectedElements.add(pNode);
-			}
-			if (pNode instanceof ParentNode)
-			{
-				for (ChildNode child : ((ParentNode) pNode).getChildren())
-				{
-					selectNode(pCtrl, child, pLasso);
-				}
-			}
-		}
-		
-		private int getViewWidth()
-		{
-			return ((int) getScrollPane().getViewportBounds().getWidth()) - VIEWPORT_PADDING;
-		}
-		
-		private int getViewHeight()
-		{
-			return ((int) getScrollPane().getViewportBounds().getHeight()) - VIEWPORT_PADDING;
-		}
-
-		@Override
-		public void handle(MouseEvent pEvent) 
-		{
-			if (pEvent.getEventType() == MouseEvent.MOUSE_PRESSED) 
-			{
-				mousePressed(pEvent);
-			} 
-			else if (pEvent.getEventType() == MouseEvent.MOUSE_RELEASED) 
-			{
-				mouseReleased(pEvent);
-			}
-			else if (pEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) 
-			{
-				mouseDragged(pEvent);
-			}
-		}
-	}
-	
 	private class PanelGraphModificationListener implements GraphModificationListener
 	{
 		@Override
