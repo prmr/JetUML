@@ -87,7 +87,7 @@ public class DiagramCanvas extends Canvas
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final int LAYOUT_PADDING = 20;
 	private static final int VIEWPORT_PADDING = 5;
-	private static final double SIZE_RATIO = 0.75;
+	private static final double SIZE_RATIO = 0.65;
 	
 	private Diagram aDiagram;
 	private DiagramTabToolBar aSideBar;
