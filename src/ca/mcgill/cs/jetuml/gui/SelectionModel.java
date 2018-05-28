@@ -80,7 +80,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 			}
 			else if(pLasso.contains(edge.view().getBounds()))
 			{
-				if(transitivelyContains(edge.getStart()) && transitivelyContains(edge.getEnd()))
+				if(aSelectionList.transitivelyContains(edge.getStart()) && aSelectionList.transitivelyContains(edge.getEnd()))
 				{
 					addToSelection(edge);
 				}
@@ -181,11 +181,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		assert pElement != null;
 		aSelectionList.add(pElement);
-	}
-	
-	public boolean transitivelyContains(Node pNode)
-	{
-		return aSelectionList.transitivelyContains(pNode);
 	}
 	
 	public Optional<Node> getLastSelectedNode()
