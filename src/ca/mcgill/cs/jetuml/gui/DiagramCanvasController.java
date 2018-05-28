@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.MoveTracker;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -53,7 +52,7 @@ class DiagramCanvasController
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final int VIEWPORT_PADDING = 5;
 	
-	private final SelectionList aSelectedElements;
+	private final SelectionModel aSelectionModel = new SelectionModel(null); // TODO should not be null
 	private final Diagram aDiagram;
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
@@ -62,13 +61,17 @@ class DiagramCanvasController
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;   
 	
-	DiagramCanvasController(SelectionList pSelectionList, Diagram pDiagram, DiagramCanvas pCanvas,
+	DiagramCanvasController(Diagram pDiagram, DiagramCanvas pCanvas,
 			UndoManager pManager)
 	{
-		aSelectedElements = pSelectionList;
 		aDiagram = pDiagram;
 		aCanvas = pCanvas;
 		aUndoManager = pManager;
+	}
+	
+	SelectionModel getSelectionModel()
+	{
+		return aSelectionModel;
 	}
 	
 	/**
@@ -134,29 +137,29 @@ class DiagramCanvasController
 		{
 			if (pEvent.isControlDown())
 			{
-				if (!aSelectedElements.contains(element))
+				if (!aSelectionModel.contains(element))
 				{
-					aSelectedElements.add(element);
-					aSelectedElements.addEdgesIfContained(aDiagram.getEdges());
+					aSelectionModel.addToSelection(element);
+					aSelectionModel.addEdgesIfContained(aDiagram.getEdges());
 				}
 				else
 				{
-					aSelectedElements.remove(element);
+					aSelectionModel.removeFromSelection(element);
 				}
 			}
-			else if (!aSelectedElements.contains(element))
+			else if (!aSelectionModel.contains(element))
 			{
 				// The test is necessary to ensure we don't undo multiple selections
-				aSelectedElements.set(element);
+				aSelectionModel.setSelection(element);
 			}
 			aDragMode = DragMode.DRAG_MOVE;
-			aMoveTracker.startTrackingMove(aSelectedElements);
+			aMoveTracker.startTrackingMove(aSelectionModel);
 		}
 		else // Nothing is selected
 		{
 			if (!pEvent.isControlDown()) 
 			{
-				aSelectedElements.clearSelection();
+				aSelectionModel.clearSelection();
 			}
 			aDragMode = DragMode.DRAG_LASSO;
 		}
@@ -188,7 +191,7 @@ class DiagramCanvasController
 		if(added)
 		{
 			aCanvas.setModified(true);
-			aSelectedElements.set(newNode);
+			aSelectionModel.setSelection(newNode);
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
 		{
@@ -263,7 +266,7 @@ class DiagramCanvasController
 			if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
 			{
 				aCanvas.setModified(true);
-				aSelectedElements.set(newEdge);
+				aSelectionModel.setSelection(newEdge);
 			}
 		}
 		else if (aDragMode == DragMode.DRAG_MOVE)
@@ -286,10 +289,11 @@ class DiagramCanvasController
 		Point mousePoint = getMousePoint(pEvent);
 		boolean isCtrl = pEvent.isControlDown();
 
-		if(aDragMode == DragMode.DRAG_MOVE && aSelectedElements.getLastNode() != null)
+		Optional<Node> lastSelected = aSelectionModel.getLastSelectedNode();
+		if(aDragMode == DragMode.DRAG_MOVE && lastSelected.isPresent() )
 		{
 			// TODO, include edges between selected nodes in the bounds check.
-			Node lastNode = aSelectedElements.getLastNode();
+			Node lastNode = lastSelected.get();
 			Rectangle bounds = lastNode.view().getBounds();
 
 			int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
@@ -309,7 +313,7 @@ class DiagramCanvasController
 			// we don't want to drag nodes into negative coordinates
 			// particularly with multiple selection, we might never be 
 			// able to get them back.
-			for(DiagramElement selected : aSelectedElements )
+			for(DiagramElement selected : aSelectionModel )
 			{
 				if (selected instanceof Node)
 				{
@@ -330,21 +334,21 @@ class DiagramCanvasController
 				dy = (int) aCanvas.boundsInLocalProperty().get().getMaxY() - bounds.getMaxY();
 			}
 
-			for(DiagramElement selected : aSelectedElements)
+			for(DiagramElement selected : aSelectionModel)
 			{
-				if (selected instanceof ChildNode)
-				{
-					ChildNode n = (ChildNode) selected;
-					if (!aSelectedElements.containsParent(n)) // parents are responsible for translating their children
-					{
-						n.translate(dx, dy);
-					}	
-				}
-				else if (selected instanceof Node)
-				{
-					Node n = (Node) selected;
-					n.translate(dx, dy);
-				}
+				// TODO Test that we indeed don't need this, since child node with a contained parent node should not be in the selection.
+//				if (selected instanceof ChildNode)
+//				{
+//					ChildNode n = (ChildNode) selected;
+//					if (!aSelectedElements.containsParent(n)) // parents are responsible for translating their children
+//					{
+//						n.translate(dx, dy);
+//					}	
+//				}
+//				else if (selected instanceof Node)
+//				{
+					((Node) selected).translate(dx, dy);
+//				}
 			}
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
@@ -363,13 +367,13 @@ class DiagramCanvasController
 			{
 				if (!isCtrl && !lasso.contains(edge.view().getBounds()))
 				{
-					aSelectedElements.remove(edge);
+					aSelectionModel.removeFromSelection(edge);
 				}
 				else if (lasso.contains(edge.view().getBounds()))
 				{
-					if (aSelectedElements.transitivelyContains(edge.getStart()) && aSelectedElements.transitivelyContains(edge.getEnd()))
+					if (aSelectionModel.transitivelyContains(edge.getStart()) && aSelectionModel.transitivelyContains(edge.getEnd()))
 					{
-						aSelectedElements.add(edge);
+						aSelectionModel.addToSelection(edge);
 					}
 				}
 			}
@@ -382,11 +386,11 @@ class DiagramCanvasController
 	{
 		if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 		{
-			aSelectedElements.remove(pNode);
+			aSelectionModel.removeFromSelection(pNode);
 		}
 		else if (pLasso.contains(pNode.view().getBounds())) 
 		{
-			aSelectedElements.add(pNode);
+			aSelectionModel.addToSelection(pNode);
 		}
 		if (pNode instanceof ParentNode)
 		{

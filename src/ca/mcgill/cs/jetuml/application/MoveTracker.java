@@ -45,7 +45,7 @@ public class MoveTracker
 	 * 
 	 * @param pSelectedElements The elements that are being moved. Not null.
 	 */
-	public void startTrackingMove(SelectionList pSelectedElements)
+	public void startTrackingMove(Iterable<DiagramElement> pSelectedElements)
 	{
 		assert pSelectedElements != null;
 		

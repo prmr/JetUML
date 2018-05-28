@@ -82,7 +82,6 @@ public class DiagramCanvas extends Canvas
 	private DiagramTabToolBar aSideBar;
 	private boolean aShowGrid;
 	private boolean aModified;
-	private SelectionList aSelectedElements = new SelectionList();
 	private final DiagramCanvasController aController;
 	private UndoManager aUndoManager = new UndoManager();
 	
@@ -101,8 +100,7 @@ public class DiagramCanvas extends Canvas
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
 
-		aController = new DiagramCanvasController(aSelectedElements, 
-				aDiagram, this, aUndoManager);
+		aController = new DiagramCanvasController(aDiagram, this, aUndoManager);
 		setOnMousePressed(aController.mousePressedHandler());
 		setOnMouseReleased(aController.mouseReleasedHandler());
 		setOnMouseDragged(aController.mouseDraggedHandler());
@@ -166,9 +164,9 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void copy()
 	{
-		if (aSelectedElements.size() > 0)
+		if (aController.getSelectionModel().getSelectionList().size() > 0)
 		{
-			Clipboard.instance().copy(aSelectedElements);
+			Clipboard.instance().copy(aController.getSelectionModel().getSelectionList());
 		}
 	}
 	
@@ -177,8 +175,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void paste()
 	{
-		// TODO aSelectedElements should be final
-		aSelectedElements = Clipboard.instance().paste(this);
+		aController.getSelectionModel().resetSelection(Clipboard.instance().paste(this));
 	}
 	
 	/**
@@ -187,7 +184,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void cut()
 	{
-		if (aSelectedElements.size() > 0)
+		if (aController.getSelectionModel().getSelectionList().size() > 0)
 		{
 			Clipboard.instance().cut(this);
 		}
@@ -198,7 +195,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void editSelected()
 	{
-		DiagramElement edited = aSelectedElements.getLastSelected();
+		DiagramElement edited = aController.getSelectionModel().getSelectionList().getLastSelected();
 		if (edited == null)
 		{
 			return;
@@ -254,7 +251,7 @@ public class DiagramCanvas extends Canvas
 	{
 		aUndoManager.startTracking();
 		Stack<Node> nodes = new Stack<>();
-		for (DiagramElement element : aSelectedElements)
+		for (DiagramElement element : aController.getSelectionModel().getSelectionList())
 		{
 			if (element instanceof Node)
 			{
@@ -271,7 +268,7 @@ public class DiagramCanvas extends Canvas
 			aDiagram.removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
-		if (aSelectedElements.size() > 0)
+		if (aController.getSelectionModel().getSelectionList().size() > 0)
 		{
 			setModified(true);
 		}
@@ -358,14 +355,14 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void selectAll()
 	{
-		aSelectedElements.clearSelection();
+		aController.getSelectionModel().getSelectionList().clearSelection();
 		for (Node node : aDiagram.getRootNodes())
 		{
-			aSelectedElements.add(node);
+			aController.getSelectionModel().getSelectionList().add(node);
 		}
 		for (Edge edge : aDiagram.getEdges())
 		{
-			aSelectedElements.add(edge);
+			aController.getSelectionModel().getSelectionList().add(edge);
 		}
 		aSideBar.setToolToBeSelect();
 		paintPanel();
@@ -390,7 +387,7 @@ public class DiagramCanvas extends Canvas
 		aDiagram.draw(context);
 
 		Set<DiagramElement> toBeRemoved = new HashSet<>();
-		for (DiagramElement selected : aSelectedElements)
+		for (DiagramElement selected : aController.getSelectionModel().getSelectionList())
 		{
 			if(!aDiagram.contains(selected)) 
 			{
@@ -404,7 +401,7 @@ public class DiagramCanvas extends Canvas
 
 		for (DiagramElement element : toBeRemoved)
 		{
-			aSelectedElements.remove(element);
+			aController.getSelectionModel().getSelectionList().remove(element);
 		}                 
       
 		Optional<Line> rubberband = aController.getRubberband();
@@ -490,7 +487,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public SelectionList getSelectionList()
 	{
-		return aSelectedElements;
+		return aController.getSelectionModel().getSelectionList();
 	}
 	
 	/**
@@ -498,7 +495,7 @@ public class DiagramCanvas extends Canvas
 	 */
 	public void setSelectionList(SelectionList pSelectionList)
 	{
-		aSelectedElements = pSelectionList;
+		aController.getSelectionModel().resetSelection(pSelectionList);
 	}
 	
 	/**
