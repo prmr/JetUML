@@ -25,7 +25,6 @@ import java.util.Optional;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -39,9 +38,6 @@ import javafx.scene.input.MouseEvent;
 /**
  * An instance of this class is responsible to handle the user
  * interface events on a diagram canvas.
- * 
- * Right-click: Show toolbar;
- * Double-click: Edit properties of last selected, if available.
  */
 class DiagramCanvasController
 {
@@ -49,10 +45,8 @@ class DiagramCanvasController
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
-	private static final int VIEWPORT_PADDING = 5;
 	
 	private final SelectionModel aSelectionModel;
-	private final Diagram aDiagram;
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
 	private final UndoManager aUndoManager;
@@ -60,9 +54,8 @@ class DiagramCanvasController
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;   
 	
-	DiagramCanvasController(Diagram pDiagram, DiagramCanvas pCanvas, UndoManager pManager)
+	DiagramCanvasController(DiagramCanvas pCanvas, UndoManager pManager)
 	{
-		aDiagram = pDiagram;
 		aCanvas = pCanvas;
 		aUndoManager = pManager;
 		aSelectionModel = new SelectionModel(aCanvas);
@@ -101,10 +94,10 @@ class DiagramCanvasController
 	private DiagramElement getSelectedElement(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		DiagramElement element = aDiagram.findEdge(mousePoint);
+		DiagramElement element = aCanvas.getDiagram().findEdge(mousePoint);
 		if (element == null)
 		{
-			element = aDiagram.findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
+			element = aCanvas.getDiagram().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}
@@ -119,7 +112,7 @@ class DiagramCanvasController
 				if (!aSelectionModel.contains(element))
 				{
 					aSelectionModel.addToSelection(element);
-					aSelectionModel.addEdgesIfContained(aDiagram.getEdges());
+					aSelectionModel.addEdgesIfContained(aCanvas.getDiagram().getEdges());
 				}
 				else
 				{
@@ -166,7 +159,8 @@ class DiagramCanvasController
 		assert aCanvas.getCreationPrototype().isPresent();
 		Node newNode = ((Node)aCanvas.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
-		boolean added = aDiagram.addNode(newNode, new Point(point.getX(), point.getY()), getViewWidth(), getViewHeight());
+		boolean added = aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
+				(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
 		if(added)
 		{
 			aCanvas.setModified(true);
@@ -214,7 +208,7 @@ class DiagramCanvasController
 		return tool;
 	}
 
-	public void mousePressed(MouseEvent pEvent)
+	private void mousePressed(MouseEvent pEvent)
 	{
 		if( pEvent.isSecondaryButtonDown() )
 		{
@@ -234,32 +228,15 @@ class DiagramCanvasController
 		aCanvas.paintPanel();
 	}
 
-	public void mouseReleased(MouseEvent pEvent)
+	private void mouseReleased(MouseEvent pEvent)
 	{
-		Point mousePoint = new Point((int)pEvent.getX(), (int)pEvent.getY());
 		if (aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			assert aCanvas.getCreationPrototype().isPresent();
-			Edge prototype = (Edge) aCanvas.getCreationPrototype().get();
-			Edge newEdge = (Edge) prototype.clone();
-			if (mousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD && aDiagram.addEdge(newEdge, aMouseDownPoint, mousePoint))
-			{
-				aCanvas.setModified(true);
-				aSelectionModel.setSelection(newEdge);
-			}
-			aSelectionModel.deactivateRubberband();
-			aCanvas.paintPanel();
+			releaseRubberband(getMousePoint(pEvent));
 		}
-		else if (aDragMode == DragMode.DRAG_MOVE)
+		else if(aDragMode == DragMode.DRAG_MOVE)
 		{
-			aDiagram.requestLayout();
-			aCanvas.setModified(true);
-			CompoundCommand command = aMoveTracker.endTrackingMove(aDiagram);
-			if (command.size() > 0)
-			{
-				aUndoManager.add(command);
-			}
-			aCanvas.paintPanel();
+			releaseMove();
 		}
 		else if( aDragMode == DragMode.DRAG_LASSO )
 		{
@@ -267,83 +244,71 @@ class DiagramCanvasController
 		}
 		aDragMode = DragMode.DRAG_NONE;
 	}
-
-	// CSOFF:
-	public void mouseDragged(MouseEvent pEvent)
+	
+	private void releaseRubberband(Point pMousePoint)
 	{
-		Point mousePoint = getMousePoint(pEvent);
-
-		Optional<Node> lastSelected = aSelectionModel.getLastSelectedNode();
-		if(aDragMode == DragMode.DRAG_MOVE && lastSelected.isPresent() )
+		assert aCanvas.getCreationPrototype().isPresent();
+		Edge newEdge = (Edge) ((Edge) aCanvas.getCreationPrototype().get()).clone();
+		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
-			// TODO, include edges between selected nodes in the bounds check.
-			Node lastNode = lastSelected.get();
-			Rectangle bounds = lastNode.view().getBounds();
+			if( aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint) )
+			{
+				aCanvas.setModified(true);
+				aSelectionModel.setSelection(newEdge);
+			}
+		}
+		aSelectionModel.deactivateRubberband();
+	}
+	
+	private void releaseMove()
+	{
+		// For optimization purposes, some of the layouts are not done on every move event.
+		aCanvas.getDiagram().requestLayout();
+		aCanvas.setModified(true);
+		CompoundCommand command = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
+		if(command.size() > 0)
+		{
+			aUndoManager.add(command);
+		}
+		aCanvas.paintPanel();
+	}
 
-			int dx = (int)(mousePoint.getX() - aLastMousePoint.getX());
-			int dy = (int)(mousePoint.getY() - aLastMousePoint.getY());
-
-			// require users mouse to be in the panel when dragging up or to the left
-			// this prevents a disconnect between the user's mouse and the element's position
-			if( mousePoint.getX() > getViewWidth() && dx < 0 )
-			{
-				dx = 0;
-			}
-			if( mousePoint.getY() > getViewHeight() && dy < 0 )
-			{
-				dy = 0;
-			}
-
-			// we don't want to drag nodes into negative coordinates
-			// particularly with multiple selection, we might never be 
-			// able to get them back.
-			for(DiagramElement selected : aSelectionModel )
-			{
-				if (selected instanceof Node)
-				{
-					Node n = (Node) selected;
-					bounds = bounds.add(n.view().getBounds());
-				}
-			}
-			dx = Math.max(dx, -bounds.getX());
-			dy = Math.max(dy, -bounds.getY());
-
-			// Right bounds checks
-			if(bounds.getMaxX() + dx > aCanvas.boundsInLocalProperty().get().getMaxX())
-			{
-				dx = (int) aCanvas.boundsInLocalProperty().get().getMaxX() - bounds.getMaxX();
-			}
-			if(bounds.getMaxY() + dy > aCanvas.boundsInLocalProperty().get().getMaxY())
-			{
-				dy = (int) aCanvas.boundsInLocalProperty().get().getMaxY() - bounds.getMaxY();
-			}
-
-			for(DiagramElement selected : aSelectionModel)
-			{
-				((Node) selected).translate(dx, dy);
-			}
-			aCanvas.paintPanel();
+	private void mouseDragged(MouseEvent pEvent)
+	{
+		if(aDragMode == DragMode.DRAG_MOVE ) 
+		{
+			moveSelection(getMousePoint(pEvent));
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
-			aLastMousePoint = mousePoint;
-			aSelectionModel.activateLasso(computeLasso(), aDiagram, pEvent.isControlDown());
+			aLastMousePoint = getMousePoint(pEvent);
+			aSelectionModel.activateLasso(computeLasso(), aCanvas.getDiagram(), pEvent.isControlDown());
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			aLastMousePoint = mousePoint;
+			aLastMousePoint = getMousePoint(pEvent);
 			aSelectionModel.activateRubberband(computeRubberband());
 		}
-		aLastMousePoint = mousePoint; // TODO move into if-else, so it's no longer redundant
-	} // CSON:
-
-	private int getViewWidth()
-	{
-		return ((int) aCanvas.getScrollPane().getViewportBounds().getWidth()) - VIEWPORT_PADDING;
 	}
-
-	private int getViewHeight()
+	
+	// TODO, include edges between selected nodes in the bounds check.
+	private void moveSelection(Point pMousePoint)
 	{
-		return ((int) aCanvas.getScrollPane().getViewportBounds().getHeight()) - VIEWPORT_PADDING;
+		int dx = (int)(pMousePoint.getX() - aLastMousePoint.getX());
+		int dy = (int)(pMousePoint.getY() - aLastMousePoint.getY());
+
+		// Ensure the selection does not exceed the canvas bounds
+		Rectangle bounds = aSelectionModel.getSelectionBounds();
+		dx = Math.max(dx, -bounds.getX());
+		dy = Math.max(dy, -bounds.getY());
+		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
+		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
+
+		for(Node selected : aSelectionModel.getSelectedNodes())
+		{
+			selected.translate(dx, dy);
+		}
+		aLastMousePoint = pMousePoint; 
+		aCanvas.paintPanel();
 	}
 }

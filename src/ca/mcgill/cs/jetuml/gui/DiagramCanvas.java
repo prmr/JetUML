@@ -99,7 +99,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aDiagram = pDiagram;
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aSideBar = pSideBar;
-		aController = new DiagramCanvasController(aDiagram, this, aUndoManager);
+		aController = new DiagramCanvasController(this, aUndoManager);
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	

@@ -20,8 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.SelectionList;
@@ -59,9 +61,53 @@ public class SelectionModel implements Iterable<DiagramElement>
 		aObserver = pObserver;
 	}
 	
+	/**
+	 * Assumes parent nodes geometrically include their children.
+	 * @return The bounds of the entire selection.
+	 */
+//	public Rectangle getSelectionBounds()
+//	{
+//		Rectangle bounds = new Rectangle(0, 0 , 0, 0);
+//		for(DiagramElement selected : aSelectionList )
+//		{
+//			bounds = bounds.add(selected.view().getBounds());
+//		}
+//		return bounds;
+//	}
+	
+	public Rectangle getSelectionBounds()
+	{
+		Optional<Node> lastSelected = getLastSelectedNode();
+		assert lastSelected.isPresent();
+		Rectangle bounds = lastSelected.get().view().getBounds();
+		for(DiagramElement selected : aSelectionList )
+		{
+			bounds = bounds.add(selected.view().getBounds());
+		}
+		return bounds;
+	}
+	
+	public Iterable<Node> getSelectedNodes()
+	{
+		List<Node> result = new ArrayList<>();
+		for( DiagramElement element : aSelectionList )
+		{
+			if( element instanceof Node )
+			{
+				result.add((Node) element);
+			}
+		}
+		return result;
+	}
+	
 	public SelectionList getSelectionList()
 	{
 		return aSelectionList;
+	}
+	
+	public void fireNotification()
+	{
+		aObserver.selectionModelChanged();
 	}
 	
 	public void activateLasso(Rectangle pLasso, Diagram pDiagram, boolean pAddMode)
