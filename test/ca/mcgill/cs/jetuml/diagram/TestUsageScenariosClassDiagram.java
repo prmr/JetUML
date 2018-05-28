@@ -349,10 +349,10 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
-		aPanel.undo();
+		aController.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(interfaceNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[0])).view().getBounds());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).view().getBounds());
 	}
@@ -378,7 +378,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// test undo
-		aPanel.undo();
+		aController.undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
 	}
@@ -460,7 +460,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aPanel.undo();
+		aController.undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
@@ -486,7 +486,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
@@ -520,7 +520,7 @@ public class TestUsageScenariosClassDiagram
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aPackageNode.getChildren().size());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(2, aPackageNode.getChildren().size());
 	}
 
@@ -545,7 +545,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(1, innerNode.getChildren().size());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(2, innerNode.getChildren().size());
 	}
@@ -621,7 +621,7 @@ public class TestUsageScenariosClassDiagram
 		}
 		assertTrue(trigger1 && trigger2);
 		
-		aPanel.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -666,11 +666,11 @@ public class TestUsageScenariosClassDiagram
 		}
 		assertTrue(trigger1 && trigger2);
 		
-		aPanel.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
-		aPanel.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

@@ -114,6 +114,16 @@ public class DiagramTab extends Tab
 		aDiagramCanvasController.editSelected();
 	}
 	
+	public void undo()
+	{
+		aDiagramCanvasController.undo();
+	}
+	
+	public void redo()
+	{
+		aDiagramCanvasController.redo();
+	}
+	
 	/**
 	 * Copy the current selection to the clipboard.
 	 */

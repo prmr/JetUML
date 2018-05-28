@@ -344,13 +344,13 @@ public class EditorFrame extends BorderPane
 	private void undo()
 	{
 		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).getGraphPanel().undo();
+		((DiagramTab) getSelectedTab()).undo();
 	}
 	
 	private void redo()
 	{
 		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).getGraphPanel().redo();
+		((DiagramTab) getSelectedTab()).redo();
 	}
 	
 	private void selectAll()

@@ -148,6 +148,28 @@ public class DiagramCanvasController
 	}
 	
 	/**
+	 * Undoes the most recent command.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
+	 */
+	public void undo()
+	{
+		aUndoManager.undoCommand();
+		aCanvas.paintPanel();
+	}
+	
+	/**
+	 * Removes the last undone action and performs it.
+	 * If the UndoManager performs a command, the method 
+	 * it calls will repaint on its own
+	 */
+	public void redo()
+	{
+		aUndoManager.redoCommand();
+		aCanvas.paintPanel();
+	}
+	
+	/**
 	 * Copy the currently selected elements to the clip board.
 	 */
 	public void copy()

@@ -266,7 +266,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aPanel.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
@@ -277,7 +277,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		
 		aDiagram.addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -286,7 +286,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
-		aPanel.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 	}
@@ -321,9 +321,9 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aController.undo();
 		assertEquals(3, aDiagram.getEdges().size());
-		aPanel.undo();
+		aController.undo();
 		assertEquals(4, aDiagram.getEdges().size());
 	}
 	
@@ -358,7 +358,7 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aController.undo();
 		assertEquals(5, aDiagram.getRootNodes().size());
 		assertEquals(4, aDiagram.getEdges().size());
 		
@@ -375,7 +375,7 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aController.undo();
 		assertEquals(5, aDiagram.getRootNodes().size());
 		assertEquals(4, aDiagram.getEdges().size());
 	}

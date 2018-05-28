@@ -119,18 +119,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aController.getSelectionModel().resetSelection(Clipboard.instance().paste(this));
 	}
 	
-//	/**
-//	 * Copy the currently selected elements to the clip board and removes them
-//	 * from the graph managed by this panel.
-//	 */
-//	public void cut()
-//	{
-//		if (aController.getSelectionModel().getSelectionList().size() > 0)
-//		{
-//			Clipboard.instance().cut(this);
-//		}
-//	}
-	
 	/**
 	 * Indicate to the DiagramCanvas that is should 
 	 * consider all following operations on the graph
@@ -167,28 +155,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		return aDiagram;
 	}
 	
-	/**
-	 * Undoes the most recent command.
-	 * If the UndoManager performs a command, the method 
-	 * it calls will repaint on its own
-	 */
-	public void undo()
-	{
-		aController.getUndoManager().undoCommand();
-		paintPanel();
-	}
-	
-	/**
-	 * Removes the last undone action and performs it.
-	 * If the UndoManager performs a command, the method 
-	 * it calls will repaint on its own
-	 */
-	public void redo()
-	{
-		aController.getUndoManager().redoCommand();
-		paintPanel();
-	}
-
 	/**
 	 * Paints the panel and all the graph elements in aDiagram.
 	 * Called after the panel is resized.

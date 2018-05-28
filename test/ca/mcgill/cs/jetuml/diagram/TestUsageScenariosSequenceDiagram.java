@@ -398,7 +398,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aCanvas.undo();
+		aController.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(parameterNode1Bounds, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).view().getBounds());
 	}
@@ -421,7 +421,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aParameterNode1.getChildren().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		assertEquals(1, aParameterNode1.getChildren().size());
 		assertEquals(callNode1Bounds, ((CallNode) (aParameterNode1.getChildren().toArray()[0])).view().getBounds());
 	}
@@ -458,7 +458,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, newParameterNode.getChildren().size());
@@ -504,7 +504,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, newParameterNode1.getChildren().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, newParameterNode1.getChildren().size());
@@ -545,7 +545,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(0, newParameterNode.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(1, aParameterNode2.getChildren().size()); 
@@ -575,7 +575,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
@@ -604,7 +604,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(0, aParameterNode2.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aCanvas.undo();
+		aController.undo();
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(2, aDiagram.getEdges().size());
 	}
