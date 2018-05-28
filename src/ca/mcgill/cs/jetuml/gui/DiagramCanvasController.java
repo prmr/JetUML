@@ -50,15 +50,17 @@ class DiagramCanvasController
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
 	private final UndoManager aUndoManager;
+	private final DiagramTabToolBar aToolBar;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
-	private Point aMouseDownPoint;   
+	private Point aMouseDownPoint;  
 	
-	DiagramCanvasController(DiagramCanvas pCanvas, UndoManager pManager)
+	DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar, UndoManager pManager)
 	{
 		aCanvas = pCanvas;
 		aUndoManager = pManager;
 		aSelectionModel = new SelectionModel(aCanvas);
+		aToolBar = pToolBar;
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
 		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
@@ -156,8 +158,8 @@ class DiagramCanvasController
 	
 	private void handleNodeCreation(MouseEvent pEvent)
 	{
-		assert aCanvas.getCreationPrototype().isPresent();
-		Node newNode = ((Node)aCanvas.getCreationPrototype().get()).clone();
+		assert aToolBar.getCreationPrototype().isPresent();
+		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
 		boolean added = aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
 				(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
@@ -191,7 +193,7 @@ class DiagramCanvasController
 	 */
 	private Optional<DiagramElement> getTool(MouseEvent pEvent)
 	{
-		Optional<DiagramElement> tool = aCanvas.getCreationPrototype();
+		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
 		DiagramElement selected = getSelectedElement(pEvent);
 
 		if( tool.isPresent() && tool.get() instanceof Node)
@@ -200,19 +202,25 @@ class DiagramCanvasController
 			{
 				if(!(tool.get() instanceof ChildNode && selected instanceof ParentNode))
 				{
-					aCanvas.setToolToSelect();
+					aToolBar.setToolToBeSelect();
 					tool = Optional.empty();
 				}
 			}
 		}	
 		return tool;
 	}
+	
+	public void selectAll()
+	{
+		aToolBar.setToolToBeSelect();
+		aSelectionModel.selectAll(aCanvas.getDiagram());
+	}
 
 	private void mousePressed(MouseEvent pEvent)
 	{
 		if( pEvent.isSecondaryButtonDown() )
 		{
-			aCanvas.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
+			aToolBar.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
 		}
 		else if( pEvent.getClickCount() > 1 )
 		{
@@ -247,8 +255,8 @@ class DiagramCanvasController
 	
 	private void releaseRubberband(Point pMousePoint)
 	{
-		assert aCanvas.getCreationPrototype().isPresent();
-		Edge newEdge = (Edge) ((Edge) aCanvas.getCreationPrototype().get()).clone();
+		assert aToolBar.getCreationPrototype().isPresent();
+		Edge newEdge = (Edge) ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
 			if( aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint) )

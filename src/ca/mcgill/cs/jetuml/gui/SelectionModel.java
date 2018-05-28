@@ -61,19 +61,19 @@ public class SelectionModel implements Iterable<DiagramElement>
 		aObserver = pObserver;
 	}
 	
-	/**
-	 * Assumes parent nodes geometrically include their children.
-	 * @return The bounds of the entire selection.
-	 */
-//	public Rectangle getSelectionBounds()
-//	{
-//		Rectangle bounds = new Rectangle(0, 0 , 0, 0);
-//		for(DiagramElement selected : aSelectionList )
-//		{
-//			bounds = bounds.add(selected.view().getBounds());
-//		}
-//		return bounds;
-//	}
+	public void selectAll(Diagram pDiagram)
+	{
+		aSelectionList.clearSelection();
+		for(Node node : pDiagram.getRootNodes())
+		{
+			aSelectionList.add(node);
+		}
+		for(Edge edge : pDiagram.getEdges())
+		{
+			aSelectionList.add(edge);
+		}
+		aObserver.selectionModelChanged();
+	}
 	
 	public Rectangle getSelectionBounds()
 	{

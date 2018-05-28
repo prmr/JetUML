@@ -79,7 +79,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	private static final double SIZE_RATIO = 0.65;
 	
 	private Diagram aDiagram;
-	private DiagramTabToolBar aSideBar;
 	private boolean aShowGrid;
 	private boolean aModified;
 	private final DiagramCanvasController aController;
@@ -98,25 +97,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
 		aDiagram = pDiagram;
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
-		aSideBar = pSideBar;
-		aController = new DiagramCanvasController(this, aUndoManager);
+		aController = new DiagramCanvasController(this, pSideBar, aUndoManager);
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
-	}
-	
-	/**
-	 * @return The currently selected tool.
-	 */
-	public Optional<DiagramElement> getCreationPrototype()
-	{
-		return aSideBar.getCreationPrototype();
-	}
-	
-	/**
-	 * Toggles the selection tool.
-	 */
-	public void setToolToSelect()
-	{
-		aSideBar.setToolToBeSelect();
 	}
 	
 	@Override
@@ -125,23 +107,12 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	    return false;
 	}
 	
-	/**
-	 * Shows the tool bar pop up menu at the specified screen location.
-	 * 
-	 * @param pX The X-coordinate of the popup.
-	 * @param pY The Y-coordinate of the popup.
-	 */
-	public void showPopup(double pX, double pY)
-	{
-		aSideBar.showPopup(pX,  pY);
-	}
-	
-	/**
+	/*
      * Gets the ScrollPane containing this panel.
      * Will return null if not yet contained in a ScrollPane.
      * @return the scroll pane
 	 */
-	public ScrollPane getScrollPane()
+	private ScrollPane getScrollPane()
 	{
 		if (getParent() != null) 
 		{
@@ -351,17 +322,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 */
 	public void selectAll()
 	{
-		aController.getSelectionModel().getSelectionList().clearSelection();
-		for (Node node : aDiagram.getRootNodes())
-		{
-			aController.getSelectionModel().getSelectionList().add(node);
-		}
-		for (Edge edge : aDiagram.getEdges())
-		{
-			aController.getSelectionModel().getSelectionList().add(edge);
-		}
-		aSideBar.setToolToBeSelect();
-		paintPanel();
+		aController.selectAll();
 	}
 
 	/**
