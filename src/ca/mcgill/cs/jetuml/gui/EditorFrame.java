@@ -364,7 +364,7 @@ public class EditorFrame extends BorderPane
 	private void editSelected()
 	{
 		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).getGraphPanel().editSelected();
+		((DiagramTab) getSelectedTab()).editSelected();
 	}
 	
 	private void removeSelected()

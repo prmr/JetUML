@@ -104,6 +104,11 @@ public class DiagramTab extends Tab
 		aDiagramCanvasController.copy();
 	}
 	
+	public void editSelected()
+	{
+		aDiagramCanvasController.editSelected();
+	}
+	
 	/**
 	 * Copy the current selection to the clipboard.
 	 */

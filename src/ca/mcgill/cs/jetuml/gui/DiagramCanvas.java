@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,9 +27,7 @@ import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -39,29 +35,20 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * A canvas on which to view, create, and modify diagrams.
  */
 public class DiagramCanvas extends Canvas implements SelectionObserver
 {	
-	private static final int LAYOUT_PADDING = 20;
 	private static final double SIZE_RATIO = 0.65;
 	
 	private Diagram aDiagram;
@@ -144,60 +131,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		}
 	}
 	
-	/**
-	 * Edits the properties of the selected graph element.
-	 */
-	public void editSelected()
-	{
-		DiagramElement edited = aController.getSelectionModel().getSelectionList().getLastSelected();
-		if (edited == null)
-		{
-			return;
-		}
-		PropertyChangeTracker tracker = new PropertyChangeTracker(edited);
-		tracker.startTracking();
-		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
-		{
-			@Override
-			public void propertyChanged()
-			{
-				aDiagram.requestLayout();
-				paintPanel();
-			}
-		});
-		if (sheet.isEmpty())
-		{
-			return;
-		}
-
-		Stage window = new Stage();
-		window.setTitle(RESOURCES.getString("dialog.properties"));
-		window.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		window.initModality(Modality.APPLICATION_MODAL);
-		
-		BorderPane layout = new BorderPane();
-		Button button = new Button("OK");
-		button.setOnAction(pEvent -> window.close());
-		BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
-		
-		layout.setPadding(new Insets(LAYOUT_PADDING));
-		layout.setCenter(sheet);
-		layout.setBottom(button);
-		
-		Scene scene = new Scene(layout);
-		window.setScene(scene);
-		window.setResizable(false);
-		window.initOwner(getScene().getWindow());
-		window.show();
-		
-		CompoundCommand command = tracker.stopTracking();
-		if (command.size() > 0)
-		{
-			aController.getUndoManager().add(command);
-		}
-		setModified(true);
-	}
-
 	/**
 	 * Indicate to the DiagramCanvas that is should 
 	 * consider all following operations on the graph
