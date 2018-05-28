@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
+import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
@@ -96,6 +97,24 @@ public class DiagramCanvasController
 	public Diagram getDiagram()
 	{
 		return aCanvas.getDiagram();
+	}
+	
+	/**
+	 * TODO, only used for testing.
+	 * @return the currently SelectedElements from the DiagramCanvas.
+	 */
+	public SelectionList getSelectionList()
+	{
+		return aSelectionModel.getSelectionList();
+	}
+	
+	/**
+	 *  TODO, only used for testing.
+	 * @param pSelectionList the new SelectedElements for the DiagramCanvas.
+	 */
+	public void setSelectionList(SelectionList pSelectionList)
+	{
+		aSelectionModel.resetSelection(pSelectionList);
 	}
 	
 	/**

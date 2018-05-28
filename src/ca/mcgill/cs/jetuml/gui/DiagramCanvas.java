@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -81,11 +79,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aDiagram.setGraphModificationListener(pController.createGraphModificationListener());
 	}
 	
-	public DiagramCanvasController getController()
-	{
-		return aController;
-	}
-	
 	@Override
 	public boolean isResizable()
 	{
@@ -109,14 +102,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 			return (ScrollPane) parent;
 		}
 		return null;
-	}
-	
-	/**
-	 * Resets the layout of the graph if there was a change made.
-	 */
-	public void layoutGraph()
-	{
-		aDiagram.requestLayout();
 	}
 	
 	/**
@@ -239,22 +224,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	{
 		aShowGrid = pShowGrid;
 		paintPanel();
-	}
-
-	/**
-	 * @return the currently SelectedElements from the DiagramCanvas.
-	 */
-	public SelectionList getSelectionList()
-	{
-		return aController.getSelectionModel().getSelectionList();
-	}
-	
-	/**
-	 * @param pSelectionList the new SelectedElements for the DiagramCanvas.
-	 */
-	public void setSelectionList(SelectionList pSelectionList)
-	{
-		aController.getSelectionModel().resetSelection(pSelectionList);
 	}
 
 	@Override

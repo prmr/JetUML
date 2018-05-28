@@ -231,7 +231,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
 		aController.selectAll();
-		for(DiagramElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aController.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
@@ -261,9 +261,9 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testDeleteNode()
 	{
 		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(aActorNode1);
+		aController.getSelectionList().add(aActorNode1);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		aController.undo();
@@ -272,18 +272,18 @@ public class TestUsageScenariosUseCaseDiagram
 		
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(noteNode);
+		aController.getSelectionList().add(noteNode);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		aController.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		
 		aDiagram.addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(aUseCaseNode1);
+		aController.getSelectionList().add(aUseCaseNode1);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		aController.undo();
@@ -310,14 +310,14 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 		
 		// delete aAssociationEdge and aGeneralEdge
-		aPanel.getSelectionList().add(aAssociationEdge);
+		aController.getSelectionList().add(aAssociationEdge);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getEdges().size());
-		aPanel.getSelectionList().add(aGeneralEdge);
+		aController.getSelectionList().add(aGeneralEdge);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		
@@ -346,14 +346,14 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
 		// delete aActorNode1 and all 4 edges
-		aPanel.getSelectionList().add(aActorNode1);
-		aPanel.getSelectionList().add(aAssociationEdge);
-		aPanel.getSelectionList().add(aDependencyEdge);
-		aPanel.getSelectionList().add(aGeneralEdge);
-		aPanel.getSelectionList().add(noteEdge1);
+		aController.getSelectionList().add(aActorNode1);
+		aController.getSelectionList().add(aAssociationEdge);
+		aController.getSelectionList().add(aDependencyEdge);
+		aController.getSelectionList().add(aGeneralEdge);
+		aController.getSelectionList().add(noteEdge1);
 
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
@@ -366,11 +366,11 @@ public class TestUsageScenariosUseCaseDiagram
 		 * aAssociationEdge and aDependencyEdge will also be deleted
 		 * since they are connected to aActorNode2
 		 */
-		aPanel.getSelectionList().add(aUseCaseNode2);
-		aPanel.getSelectionList().add(aActorNode2);
-		aPanel.getSelectionList().add(aGeneralEdge);
+		aController.getSelectionList().add(aUseCaseNode2);
+		aController.getSelectionList().add(aActorNode2);
+		aController.getSelectionList().add(aGeneralEdge);
 		aController.removeSelected();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -394,7 +394,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aActorNode1.view().getBounds();
 		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
-		aPanel.getSelectionList().add(aActorNode1);
+		aController.getSelectionList().add(aActorNode1);
 		aController.copy();
 		aController.paste();
 		aDiagram.draw(aGraphics);
@@ -415,9 +415,9 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		
-		aPanel.getSelectionList().add(aUseCaseNode1);
+		aController.getSelectionList().add(aUseCaseNode1);
 		aController.cut();
-		aPanel.getSelectionList().clearSelection();
+		aController.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 
@@ -461,9 +461,9 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
 		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		
-		aPanel.getSelectionList().add(aActorNode1);
-		aPanel.getSelectionList().add(aUseCaseNode2);
-		aPanel.getSelectionList().add(aGeneralEdge);
+		aController.getSelectionList().add(aActorNode1);
+		aController.getSelectionList().add(aUseCaseNode2);
+		aController.getSelectionList().add(aGeneralEdge);
 		
 		aController.cut();
 		aDiagram.draw(aGraphics);

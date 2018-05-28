@@ -274,17 +274,17 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		
-		aPanel.getSelectionList().add(aInitialNode);
-		aPanel.getSelectionList().add(aStateNode1);
-		aPanel.getSelectionList().add(aTransitionEdge1);
-		aPanel.getSelectionList().add(aTransitionEdge2);
-		aPanel.getSelectionList().add(aTransitionEdge3);
+		aController.getSelectionList().add(aInitialNode);
+		aController.getSelectionList().add(aStateNode1);
+		aController.getSelectionList().add(aTransitionEdge1);
+		aController.getSelectionList().add(aTransitionEdge2);
+		aController.getSelectionList().add(aTransitionEdge3);
 
 		Rectangle aTransitionEdge1Bounds = aTransitionEdge1.view().getBounds();
 		Rectangle aTransitionEdge2Bounds = aTransitionEdge2.view().getBounds();
 		Rectangle aTransitionEdge3Bounds = aTransitionEdge3.view().getBounds();
 
-		for(DiagramElement element: aPanel.getSelectionList())
+		for(DiagramElement element: aController.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
@@ -324,7 +324,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aInitialNode, aStateNode1);
 		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		aPanel.getSelectionList().add(aInitialNode);
+		aController.getSelectionList().add(aInitialNode);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -345,7 +345,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aStateNode2, aFinalNode);
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		aPanel.getSelectionList().add(aFinalNode);
+		aController.getSelectionList().add(aFinalNode);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -370,7 +370,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-		aPanel.getSelectionList().add(aStateNode2);
+		aController.getSelectionList().add(aStateNode2);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -394,7 +394,7 @@ public class TestUsageScenariosStateDiagram
 	public void testCopyStateNode()
 	{
 		createSampleDiagram(aStateNode1);
-		aPanel.getSelectionList().add(aStateNode1);
+		aController.getSelectionList().add(aStateNode1);
 		aController.copy();
 		aController.paste();
 		aDiagram.draw(aGraphics);
@@ -412,7 +412,7 @@ public class TestUsageScenariosStateDiagram
 	public void testCutStateNode()
 	{
 		createSampleDiagram(aStateNode1);
-		aPanel.getSelectionList().add(aStateNode1);
+		aController.getSelectionList().add(aStateNode1);
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());

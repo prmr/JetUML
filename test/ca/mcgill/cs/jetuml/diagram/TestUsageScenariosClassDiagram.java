@@ -336,14 +336,14 @@ public class TestUsageScenariosClassDiagram
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 		
 		aList.set(aClassNode);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		aList.set(aInterfaceNode);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
@@ -371,7 +371,7 @@ public class TestUsageScenariosClassDiagram
 		
 		// test deletion
 		aList.set(aAggregationEdge);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
@@ -452,7 +452,7 @@ public class TestUsageScenariosClassDiagram
 		Rectangle classNodeBounds = aClassNode.view().getBounds();
 		
 		aList.set(aClassNode);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
@@ -515,7 +515,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(node1, new Point(6, 8), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(node2);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -539,7 +539,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(node1, new Point(10, 13), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(node2);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -558,7 +558,7 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(aClassNode);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.copy();
 		aController.paste();
 		
@@ -575,7 +575,7 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(aClassNode);
-		aPanel.setSelectionList(aList);
+		aController.setSelectionList(aList);
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
