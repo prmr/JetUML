@@ -27,8 +27,6 @@ public interface SelectionObserver
 {
 	/**
 	 * Called whenever the state of pModel changes.
-	 * 
-	 * @param pModel A reference to an instance of the SelectionModel that changed.
 	 */
-	void selectionModelChanged(SelectionModel pModel);
+	void selectionModelChanged();
 }

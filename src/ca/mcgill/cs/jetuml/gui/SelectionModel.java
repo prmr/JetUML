@@ -25,9 +25,12 @@ import java.util.Iterator;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.SelectionList;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
@@ -59,6 +62,61 @@ public class SelectionModel implements Iterable<DiagramElement>
 	public SelectionList getSelectionList()
 	{
 		return aSelectionList;
+	}
+	
+	public void activateLasso(Rectangle pLasso, Diagram pDiagram, boolean pAddMode)
+	{
+		aLasso = Optional.of(pLasso);
+		for(Node node : pDiagram.getRootNodes())
+		{
+			selectNode(pAddMode, node, pLasso);
+		}
+		//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
+		for(Edge edge: pDiagram.getEdges())
+		{
+			if(!pAddMode && !pLasso.contains(edge.view().getBounds()))
+			{
+				removeFromSelection(edge);
+			}
+			else if(pLasso.contains(edge.view().getBounds()))
+			{
+				if(transitivelyContains(edge.getStart()) && transitivelyContains(edge.getEnd()))
+				{
+					addToSelection(edge);
+				}
+			}
+		}
+		aObserver.selectionModelChanged();
+	}
+	
+	public Optional<Rectangle> getLasso()
+	{
+		return aLasso;
+	}
+	
+	public void deactivateLasso()
+	{
+		aLasso = Optional.empty();
+		aObserver.selectionModelChanged();
+	}
+	
+	private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
+	{
+		if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
+		{
+			removeFromSelection(pNode);
+		}
+		else if (pLasso.contains(pNode.view().getBounds())) 
+		{
+			addToSelection(pNode);
+		}
+		if (pNode instanceof ParentNode)
+		{
+			for (ChildNode child : ((ParentNode) pNode).getChildren())
+			{
+				selectNode(pCtrl, child, pLasso);
+			}
+		}
 	}
 	
 	public void resetSelection(SelectionList pNewSelection)

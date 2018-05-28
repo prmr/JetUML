@@ -73,7 +73,7 @@ import javafx.stage.Stage;
 /**
  * A canvas on which to view, create, and modify diagrams.
  */
-public class DiagramCanvas extends Canvas
+public class DiagramCanvas extends Canvas implements SelectionObserver
 {	
 	private static final int LAYOUT_PADDING = 20;
 	private static final double SIZE_RATIO = 0.65;
@@ -410,7 +410,7 @@ public class DiagramCanvas extends Canvas
 			ToolGraphics.drawRubberband(context, rubberband.get());
 		}
 		
-		Optional<Rectangle> lasso = aController.getLasso();
+		Optional<Rectangle> lasso = aController.getSelectionModel().getLasso();
 		if( lasso.isPresent() )
 		{
 			ToolGraphics.drawLasso(context, lasso.get());
@@ -554,5 +554,11 @@ public class DiagramCanvas extends Canvas
 		{
 			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
 		}
+	}
+
+	@Override
+	public void selectionModelChanged()
+	{
+		paintPanel();		
 	}
 }

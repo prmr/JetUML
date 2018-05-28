@@ -52,7 +52,7 @@ class DiagramCanvasController
 	private static final int CONNECT_THRESHOLD = 8;
 	private static final int VIEWPORT_PADDING = 5;
 	
-	private final SelectionModel aSelectionModel = new SelectionModel(null); // TODO should not be null
+	private final SelectionModel aSelectionModel;
 	private final Diagram aDiagram;
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
@@ -67,6 +67,7 @@ class DiagramCanvasController
 		aDiagram = pDiagram;
 		aCanvas = pCanvas;
 		aUndoManager = pManager;
+		aSelectionModel = new SelectionModel(aCanvas);
 	}
 	
 	SelectionModel getSelectionModel()
@@ -88,26 +89,6 @@ class DiagramCanvasController
 		{
 			return Optional.of(new Line(new Point(aMouseDownPoint.getX(), aMouseDownPoint.getY()), 
 							new Point(aLastMousePoint.getX(), aLastMousePoint.getY())));
-		}
-	}
-	
-	/**
-	 * @return The rectangle that defines the active lasso, if the 
-	 * controller is in lasso dragging mode, or nothing otherwise.
-	 */
-	public Optional<Rectangle> getLasso()
-	{
-		if( aDragMode != DragMode.DRAG_LASSO )
-		{
-			return Optional.empty();
-		}
-		else
-		{
-			return Optional.of(new Rectangle(
-					Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()),
-				    Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
-				    Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()), 
-				    Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY())));
 		}
 	}
 	
@@ -268,6 +249,7 @@ class DiagramCanvasController
 				aCanvas.setModified(true);
 				aSelectionModel.setSelection(newEdge);
 			}
+			aCanvas.paintPanel();
 		}
 		else if (aDragMode == DragMode.DRAG_MOVE)
 		{
@@ -278,9 +260,13 @@ class DiagramCanvasController
 			{
 				aUndoManager.add(command);
 			}
+			aCanvas.paintPanel();
+		}
+		else if( aDragMode == DragMode.DRAG_LASSO )
+		{
+			aSelectionModel.deactivateLasso();
 		}
 		aDragMode = DragMode.DRAG_NONE;
-		aCanvas.paintPanel();
 	}
 
 	// CSOFF:
@@ -336,20 +322,9 @@ class DiagramCanvasController
 
 			for(DiagramElement selected : aSelectionModel)
 			{
-				// TODO Test that we indeed don't need this, since child node with a contained parent node should not be in the selection.
-//				if (selected instanceof ChildNode)
-//				{
-//					ChildNode n = (ChildNode) selected;
-//					if (!aSelectedElements.containsParent(n)) // parents are responsible for translating their children
-//					{
-//						n.translate(dx, dy);
-//					}	
-//				}
-//				else if (selected instanceof Node)
-//				{
-					((Node) selected).translate(dx, dy);
-//				}
+				((Node) selected).translate(dx, dy);
 			}
+			aCanvas.paintPanel();
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
@@ -358,48 +333,10 @@ class DiagramCanvasController
 			double x2 = mousePoint.getX();
 			double y2 = mousePoint.getY();
 			Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-			for (Node node : aDiagram.getRootNodes())
-			{
-				selectNode(isCtrl, node, lasso);
-			}
-			//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-			for (Edge edge: aDiagram.getEdges())
-			{
-				if (!isCtrl && !lasso.contains(edge.view().getBounds()))
-				{
-					aSelectionModel.removeFromSelection(edge);
-				}
-				else if (lasso.contains(edge.view().getBounds()))
-				{
-					if (aSelectionModel.transitivelyContains(edge.getStart()) && aSelectionModel.transitivelyContains(edge.getEnd()))
-					{
-						aSelectionModel.addToSelection(edge);
-					}
-				}
-			}
+			aSelectionModel.activateLasso(lasso, aDiagram, isCtrl);
 		}
 		aLastMousePoint = mousePoint;
-		aCanvas.paintPanel();
 	} // CSON:
-
-	private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
-	{
-		if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
-		{
-			aSelectionModel.removeFromSelection(pNode);
-		}
-		else if (pLasso.contains(pNode.view().getBounds())) 
-		{
-			aSelectionModel.addToSelection(pNode);
-		}
-		if (pNode instanceof ParentNode)
-		{
-			for (ChildNode child : ((ParentNode) pNode).getChildren())
-			{
-				selectNode(pCtrl, child, pLasso);
-			}
-		}
-	}
 
 	private int getViewWidth()
 	{
