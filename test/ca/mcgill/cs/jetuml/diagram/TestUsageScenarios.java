@@ -45,6 +45,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
+import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 
 /**
@@ -88,7 +90,12 @@ public class TestUsageScenarios
 		selection.add(edge);
 		
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0)));
+		
+		DiagramCanvas canvas = new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0));
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
+		canvas.setController(controller);
+		
+		Clipboard.instance().paste(canvas);
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -118,7 +125,12 @@ public class TestUsageScenarios
 		selection.add(edge);
 
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0)));
+		
+		DiagramCanvas canvas = new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0));
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
+		canvas.setController(controller);
+		
+		Clipboard.instance().paste(canvas);
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());

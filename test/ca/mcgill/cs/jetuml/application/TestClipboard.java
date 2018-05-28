@@ -43,6 +43,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
+import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 
 public class TestClipboard
@@ -57,6 +59,7 @@ public class TestClipboard
 	private SelectionList aSelectionList;
 	private ClassDiagram aClassDiagramGraph;
 	private DiagramCanvas aPanel;
+	private DiagramCanvasController aController;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -87,6 +90,8 @@ public class TestClipboard
 		
 		aClassDiagramGraph = new ClassDiagram();
 		aPanel = new DiagramCanvas(aClassDiagramGraph, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aClassDiagramGraph));
+		aPanel.setController(aController);
 	}
 	
 	@Test

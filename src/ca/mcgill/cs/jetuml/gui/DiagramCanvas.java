@@ -30,22 +30,13 @@ import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.application.UndoManager;
-import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
-import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
-import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
-import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -80,7 +71,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	private boolean aShowGrid;
 	private boolean aModified;
 	private DiagramCanvasController aController;
-	private UndoManager aUndoManager = new UndoManager();
 	
 	/**
 	 * Constructs the canvas, assigns the diagram to it, and registers
@@ -93,7 +83,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	{
 		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
 		aDiagram = pDiagram;
-		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
@@ -105,6 +94,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	public void setController(DiagramCanvasController pController)
 	{
 		aController = pController;
+		aDiagram.setGraphModificationListener(pController.createGraphModificationListener());
 	}
 	
 	@Override
@@ -130,16 +120,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 			return (ScrollPane) parent;
 		}
 		return null;
-	}
-	
-	/**
-	 * Adds pCommand to the undo manager.
-	 * 
-	 * @param pCommand The command to add.
-	 */
-	public void addMove(Command pCommand)
-	{
-		aUndoManager.add(pCommand);
 	}
 	
 	/**
@@ -211,7 +191,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		CompoundCommand command = tracker.stopTracking();
 		if (command.size() > 0)
 		{
-			aUndoManager.add(command);
+			aController.getUndoManager().add(command);
 		}
 		setModified(true);
 	}
@@ -221,7 +201,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 */
 	public void removeSelected()
 	{
-		aUndoManager.startTracking();
+		aController.getUndoManager().startTracking();
 		Stack<Node> nodes = new Stack<>();
 		for (DiagramElement element : aController.getSelectionModel().getSelectionList())
 		{
@@ -239,7 +219,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		{
 			aDiagram.removeNode(nodes.pop());
 		}
-		aUndoManager.endTracking();
+		aController.getUndoManager().endTracking();
 		if (aController.getSelectionModel().getSelectionList().size() > 0)
 		{
 			setModified(true);
@@ -254,7 +234,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 */
 	public void startCompoundGraphOperation()
 	{
-		aUndoManager.startTracking();
+		aController.getUndoManager().startTracking();
 	}
 	
 	/**
@@ -264,7 +244,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 */
 	public void finishCompoundGraphOperation()
 	{
-		aUndoManager.endTracking();
+		aController.getUndoManager().endTracking();
 	}
 	
 	/**
@@ -284,29 +264,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	}
 	
 	/**
-	 * Collects all coming calls into single undo - redo command.
-	 */
-	public void startCompoundListening() 
-	{
-		aUndoManager.startTracking();
-	}
-	
-	/**
-	 * Ends collecting all coming calls into single undo - redo command.
-	 */
-	public void endCompoundListening() 
-	{
-		aUndoManager.endTracking();
-	}
-	
-	/**
 	 * Undoes the most recent command.
 	 * If the UndoManager performs a command, the method 
 	 * it calls will repaint on its own
 	 */
 	public void undo()
 	{
-		aUndoManager.undoCommand();
+		aController.getUndoManager().undoCommand();
 		paintPanel();
 	}
 	
@@ -317,7 +281,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 */
 	public void redo()
 	{
-		aUndoManager.redoCommand();
+		aController.getUndoManager().redoCommand();
 		paintPanel();
 	}
 
@@ -449,51 +413,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	public void setSelectionList(SelectionList pSelectionList)
 	{
 		aController.getSelectionModel().resetSelection(pSelectionList);
-	}
-	
-	private class PanelGraphModificationListener implements GraphModificationListener
-	{
-		@Override
-		public void startingCompoundOperation() 
-		{
-			aUndoManager.startTracking();
-		}
-		
-		@Override
-		public void finishingCompoundOperation()
-		{
-			aUndoManager.endTracking();
-		}
-		
-		@Override
-		public void nodeAdded(Diagram pGraph, Node pNode)
-		{
-			aUndoManager.add(new AddNodeCommand(pGraph, pNode));
-		}
-		
-		@Override
-		public void nodeRemoved(Diagram pGraph, Node pNode)
-		{
-			aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
-		}
-		
-		@Override
-		public void edgeAdded(Diagram pGraph, Edge pEdge)
-		{
-			aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
-		}
-		
-		@Override
-		public void edgeRemoved(Diagram pGraph, Edge pEdge)
-		{
-			aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
-		}
-
-		@Override
-		public void propertyChanged(Property pProperty, Object pOldValue)
-		{
-			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
-		}
 	}
 
 	@Override
