@@ -34,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -61,13 +60,15 @@ class DiagramCanvasController
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;   
 	
-	DiagramCanvasController(Diagram pDiagram, DiagramCanvas pCanvas,
-			UndoManager pManager)
+	DiagramCanvasController(Diagram pDiagram, DiagramCanvas pCanvas, UndoManager pManager)
 	{
 		aDiagram = pDiagram;
 		aCanvas = pCanvas;
 		aUndoManager = pManager;
 		aSelectionModel = new SelectionModel(aCanvas);
+		aCanvas.setOnMousePressed(e -> mousePressed(e));
+		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
+		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
 	}
 	
 	SelectionModel getSelectionModel()
@@ -271,7 +272,6 @@ class DiagramCanvasController
 	public void mouseDragged(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		boolean isCtrl = pEvent.isControlDown();
 
 		Optional<Node> lastSelected = aSelectionModel.getLastSelectedNode();
 		if(aDragMode == DragMode.DRAG_MOVE && lastSelected.isPresent() )
@@ -327,7 +327,7 @@ class DiagramCanvasController
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
 			aLastMousePoint = mousePoint;
-			aSelectionModel.activateLasso(computeLasso(), aDiagram, isCtrl);
+			aSelectionModel.activateLasso(computeLasso(), aDiagram, pEvent.isControlDown());
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
@@ -345,20 +345,5 @@ class DiagramCanvasController
 	private int getViewHeight()
 	{
 		return ((int) aCanvas.getScrollPane().getViewportBounds().getHeight()) - VIEWPORT_PADDING;
-	}
-	
-	EventHandler<MouseEvent> mousePressedHandler()
-	{
-		return e -> mousePressed(e);
-	}
-	
-	EventHandler<MouseEvent> mouseReleasedHandler()
-	{
-		return e -> mouseReleased(e);
-	}
-	
-	EventHandler<MouseEvent> mouseDraggedHandler()
-	{
-		return e -> mouseDragged(e);
 	}
 }
