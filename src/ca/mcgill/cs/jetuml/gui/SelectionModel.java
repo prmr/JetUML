@@ -94,9 +94,26 @@ public class SelectionModel implements Iterable<DiagramElement>
 		return aLasso;
 	}
 	
+	public Optional<Line> getRubberband()
+	{
+		return aRubberband;
+	}
+	
+	public void activateRubberband(Line pLine)
+	{
+		aRubberband = Optional.of(pLine);
+		aObserver.selectionModelChanged();
+	}
+	
 	public void deactivateLasso()
 	{
 		aLasso = Optional.empty();
+		aObserver.selectionModelChanged();
+	}
+	
+	public void deactivateRubberband()
+	{
+		aRubberband = Optional.empty();
 		aObserver.selectionModelChanged();
 	}
 	

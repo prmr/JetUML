@@ -75,21 +75,18 @@ class DiagramCanvasController
 		return aSelectionModel;
 	}
 	
-	/**
-	 * @return The line that defines the active rubberband, if the 
-	 * controller is in rubberband dragging mode, or nothing otherwise.
-	 */
-	public Optional<Line> getRubberband()
+	private Line computeRubberband()
 	{
-		if( aDragMode != DragMode.DRAG_RUBBERBAND )
-		{
-			return Optional.empty();
-		}
-		else
-		{
-			return Optional.of(new Line(new Point(aMouseDownPoint.getX(), aMouseDownPoint.getY()), 
-							new Point(aLastMousePoint.getX(), aLastMousePoint.getY())));
-		}
+		return new Line(new Point(aMouseDownPoint.getX(), aMouseDownPoint.getY()), 
+				new Point(aLastMousePoint.getX(), aLastMousePoint.getY()));
+	}
+	
+	private Rectangle computeLasso()
+	{
+		return new Rectangle((int) Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
+						     (int) Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
+						     (int) Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()) , 
+						     (int) Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
 	}
 	
 	private Point getMousePoint(MouseEvent pEvent)
@@ -249,6 +246,7 @@ class DiagramCanvasController
 				aCanvas.setModified(true);
 				aSelectionModel.setSelection(newEdge);
 			}
+			aSelectionModel.deactivateRubberband();
 			aCanvas.paintPanel();
 		}
 		else if (aDragMode == DragMode.DRAG_MOVE)
@@ -328,14 +326,15 @@ class DiagramCanvasController
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
-			double x1 = aMouseDownPoint.getX();
-			double y1 = aMouseDownPoint.getY();
-			double x2 = mousePoint.getX();
-			double y2 = mousePoint.getY();
-			Rectangle lasso = new Rectangle((int)Math.min(x1, x2), (int)Math.min(y1, y2), (int)Math.abs(x1 - x2) , (int)Math.abs(y1 - y2));
-			aSelectionModel.activateLasso(lasso, aDiagram, isCtrl);
+			aLastMousePoint = mousePoint;
+			aSelectionModel.activateLasso(computeLasso(), aDiagram, isCtrl);
 		}
-		aLastMousePoint = mousePoint;
+		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
+		{
+			aLastMousePoint = mousePoint;
+			aSelectionModel.activateRubberband(computeRubberband());
+		}
+		aLastMousePoint = mousePoint; // TODO move into if-else, so it's no longer redundant
 	} // CSON:
 
 	private int getViewWidth()

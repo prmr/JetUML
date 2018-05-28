@@ -404,7 +404,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 			aController.getSelectionModel().getSelectionList().remove(element);
 		}                 
       
-		Optional<Line> rubberband = aController.getRubberband();
+		Optional<Line> rubberband = aController.getSelectionModel().getRubberband();
 		if( rubberband.isPresent() )
 		{
 			ToolGraphics.drawRubberband(context, rubberband.get());
