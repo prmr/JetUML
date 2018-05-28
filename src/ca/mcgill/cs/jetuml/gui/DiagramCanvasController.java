@@ -162,16 +162,6 @@ class DiagramCanvasController
 		}
 	}
 
-	private void handleDoubleClick(MouseEvent pEvent)
-	{
-		DiagramElement element = getSelectedElement(pEvent);
-		if (element != null)
-		{
-			aSelectedElements.set(element);
-			aCanvas.editSelected();
-		}
-	}
-	
 	private void handleSingleClick(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = getTool(pEvent);
@@ -189,11 +179,6 @@ class DiagramCanvasController
 		}
 	}
 	
-	private void handleRightClick(MouseEvent pEvent)
-	{
-		aCanvas.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
-	}
-
 	private void handleNodeCreation(MouseEvent pEvent)
 	{
 		assert aCanvas.getCreationPrototype().isPresent();
@@ -251,11 +236,11 @@ class DiagramCanvasController
 	{
 		if( pEvent.isSecondaryButtonDown() )
 		{
-			handleRightClick(pEvent);
+			aCanvas.showPopup(pEvent.getScreenX(), pEvent.getScreenY());
 		}
 		else if( pEvent.getClickCount() > 1 )
 		{
-			handleDoubleClick(pEvent);
+			aCanvas.editSelected();
 		}
 		else
 		{
