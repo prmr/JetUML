@@ -442,7 +442,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -454,7 +454,7 @@ public class TestUsageScenariosObjectDiagram
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
@@ -472,7 +472,7 @@ public class TestUsageScenariosObjectDiagram
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
@@ -486,7 +486,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 	}
@@ -505,7 +505,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		aController.selectAll();
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -533,7 +533,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

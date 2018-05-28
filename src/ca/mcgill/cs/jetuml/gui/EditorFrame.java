@@ -337,7 +337,7 @@ public class EditorFrame extends BorderPane
 	{
 		assert !noCurrentGraphFrame();
 		DiagramCanvas panel = ((DiagramTab) getSelectedTab()).getGraphPanel();
-		panel.paste();
+		((DiagramTab) getSelectedTab()).paste();
 		panel.paintPanel();
 	}
 	

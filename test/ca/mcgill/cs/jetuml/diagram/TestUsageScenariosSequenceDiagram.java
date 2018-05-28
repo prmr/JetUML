@@ -622,7 +622,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aCanvas.getSelectionList().add(aParameterNode1);
 		aController.copy();
-		aCanvas.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -642,7 +642,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 
-		aCanvas.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -660,7 +660,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aCanvas.getSelectionList().add(aParameterNode1);
 		aController.copy();
-		aCanvas.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -691,7 +691,7 @@ public class TestUsageScenariosSequenceDiagram
 		
 		aController.selectAll();
 		aController.copy();
-		aCanvas.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(6, aDiagram.getRootNodes().size());
@@ -729,7 +729,7 @@ public class TestUsageScenariosSequenceDiagram
 		aCanvas.setSelectionList(aList);
 		aController.copy();
 		SequenceDiagram tempDiagram = new SequenceDiagram();
-		aCanvas.paste();
+		aController.paste();
 		tempDiagram.draw(aGraphics);
 		
 		assertEquals(0, tempDiagram.getRootNodes().size());

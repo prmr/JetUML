@@ -109,6 +109,11 @@ public class DiagramTab extends Tab
 		aDiagramCanvasController.cut();
 	}
 	
+	public void paste()
+	{
+		aDiagramCanvasController.paste();
+	}
+	
 	public void editSelected()
 	{
 		aDiagramCanvasController.editSelected();

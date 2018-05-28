@@ -396,7 +396,7 @@ public class TestUsageScenariosStateDiagram
 		createSampleDiagram(aStateNode1);
 		aPanel.getSelectionList().add(aStateNode1);
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -417,7 +417,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -436,7 +436,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		aController.selectAll();
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -461,7 +461,7 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

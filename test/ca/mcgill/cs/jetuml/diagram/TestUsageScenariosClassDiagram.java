@@ -560,7 +560,7 @@ public class TestUsageScenariosClassDiagram
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 100, 60), 
@@ -579,7 +579,7 @@ public class TestUsageScenariosClassDiagram
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aPanel.paste();
+		aController.paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(new Rectangle(0, 0, 100, 60), 
 				((Node) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
@@ -598,7 +598,7 @@ public class TestUsageScenariosClassDiagram
 		
 		aController.selectAll();
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
@@ -643,7 +643,7 @@ public class TestUsageScenariosClassDiagram
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -751,7 +751,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
@@ -775,7 +775,7 @@ public class TestUsageScenariosClassDiagram
 		
 		aController.selectAll();
 		aController.copy();
-		aPanel.paste();
+		aController.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());

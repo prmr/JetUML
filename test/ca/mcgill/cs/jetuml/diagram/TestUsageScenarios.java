@@ -95,7 +95,7 @@ public class TestUsageScenarios
 		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
 		canvas.setController(controller);
 		
-		Clipboard.instance().paste(canvas);
+		Clipboard.instance().paste(controller);
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -130,7 +130,7 @@ public class TestUsageScenarios
 		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
 		canvas.setController(controller);
 		
-		Clipboard.instance().paste(canvas);
+		Clipboard.instance().paste(controller);
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());

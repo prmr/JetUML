@@ -112,34 +112,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	}
 	
 	/**
-	 * Pastes the content of the clip board into the graph managed by this panel.
-	 */
-	public void paste()
-	{
-		aController.getSelectionModel().resetSelection(Clipboard.instance().paste(this));
-	}
-	
-	/**
-	 * Indicate to the DiagramCanvas that is should 
-	 * consider all following operations on the graph
-	 * to be part of a single conceptual one.
-	 */
-	public void startCompoundGraphOperation()
-	{
-		aController.getUndoManager().startTracking();
-	}
-	
-	/**
-	 * Indicate to the DiagramCanvas that is should 
-	 * stop considering all following operations on the graph
-	 * to be part of a single conceptual one.
-	 */
-	public void finishCompoundGraphOperation()
-	{
-		aController.getUndoManager().endTracking();
-	}
-	
-	/**
 	 * Resets the layout of the graph if there was a change made.
 	 */
 	public void layoutGraph()

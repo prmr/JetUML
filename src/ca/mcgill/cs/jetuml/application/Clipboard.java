@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 
 /**
@@ -211,18 +210,18 @@ public final class Clipboard
 	
 	/**
 	 * Pastes the current selection into the pGraphPanel.
-	 * @param pPanel The current Diagram to paste contents to.
+	 * @param pController The current Diagram to paste contents to.
 	 * @return The elements to paste as a selectionList.
 	 */
 	// CSOFF: Fix in later release
-	public SelectionList paste(DiagramCanvas pPanel)
+	public SelectionList paste(DiagramCanvasController pController)
 	{
-		if( !validPaste(pPanel.getDiagram()))
+		if( !validPaste(pController.getDiagram()))
 		{
 			return new SelectionList();
 		}
 		
-		pPanel.startCompoundGraphOperation();
+		pController.startCompoundGraphOperation();
 		List<Edge> clonedEdges = new ArrayList<>();
 		for( Edge edge : aEdges )
 		{
@@ -244,7 +243,7 @@ public final class Clipboard
 		
 		for( Node node : clonedRootNodes )
 		{
-			pPanel.getDiagram().insertNode(node);
+			pController.getDiagram().insertNode(node);
 		}
 		for( Edge edge : clonedEdges )
 		{
@@ -252,9 +251,9 @@ public final class Clipboard
 			// It is possible that some nodes could not be 
 			// pasted (e.g., children nodes without their parent)
 			// so some edges might no longer be relevant.
-			if( pPanel.getDiagram().contains( edge.getStart() ) && pPanel.getDiagram().contains(edge.getEnd()))
+			if( pController.getDiagram().contains( edge.getStart() ) && pController.getDiagram().contains(edge.getEnd()))
 			{
-				pPanel.getDiagram().insertEdge(edge);
+				pController.getDiagram().insertEdge(edge);
 			}
 		}
 		
@@ -268,7 +267,7 @@ public final class Clipboard
 			node.translate(-bounds.getX(), -bounds.getY());
 		}
 		// End graph repositioning
-		pPanel.finishCompoundGraphOperation();
+		pController.finishCompoundGraphOperation();
 		
 		SelectionList selectionList  = new SelectionList();
 		for( Edge edge : clonedEdges )

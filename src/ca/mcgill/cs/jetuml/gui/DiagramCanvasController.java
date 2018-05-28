@@ -93,6 +93,11 @@ public class DiagramCanvasController
 		return aSelectionModel;
 	}
 	
+	public Diagram getDiagram()
+	{
+		return aCanvas.getDiagram();
+	}
+	
 	/**
 	 * Edits the properties of the selected graph element.
 	 */
@@ -145,6 +150,34 @@ public class DiagramCanvasController
 			aUndoManager.add(command);
 		}
 		aCanvas.setModified(true);
+	}
+	
+	/**
+	 * Indicate to the DiagramCanvas that is should 
+	 * consider all following operations on the graph
+	 * to be part of a single conceptual one.
+	 */
+	public void startCompoundGraphOperation()
+	{
+		aUndoManager.startTracking();
+	}
+	
+	/**
+	 * Indicate to the DiagramCanvas that is should 
+	 * stop considering all following operations on the graph
+	 * to be part of a single conceptual one.
+	 */
+	public void finishCompoundGraphOperation()
+	{
+		aUndoManager.endTracking();
+	}
+	
+	/**
+	 * Pastes the content of the clip board into the graph managed by this panel.
+	 */
+	public void paste()
+	{
+		aSelectionModel.resetSelection(Clipboard.instance().paste(this));
 	}
 	
 	/**
