@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 
 /**
  * Stores a graph subset for purpose of pasting. The clip-board does not
@@ -128,14 +129,13 @@ public final class Clipboard
 	 * Copies the selection list in the panel (as done by the copy method) and removes all
 	 * the nodes in the selection from the graph wrapped by this pPanel.
 	 * 
-	 * @param pPanel The graph containing the elements
+	 * @param pController The controller.
 	 */
-	public void cut(DiagramCanvas pPanel)
+	public void cut(DiagramCanvasController pController)
 	{
-		assert pPanel != null;
-		assert pPanel.getSelectionList() != null;
-		copy(pPanel.getSelectionList());	
-		pPanel.getController().removeSelected();
+		assert pController != null;
+		copy(pController.getSelectionModel().getSelectionList());	
+		pController.removeSelected();
 	}
 	
 	private boolean recursivelyContains(Node pNode)

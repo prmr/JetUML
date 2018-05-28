@@ -189,6 +189,18 @@ public class DiagramCanvasController
 		aCanvas.paintPanel();
 	}
 	
+	/**
+	 * Copy the currently selected elements to the clip board and removes them
+	 * from the graph managed by this panel.
+	 */
+	public void cut()
+	{
+		if (aSelectionModel.getSelectionList().size() > 0)
+		{
+			Clipboard.instance().cut(this);
+		}
+	}
+	
 	private Line computeRubberband()
 	{
 		return new Line(new Point(aMouseDownPoint.getX(), aMouseDownPoint.getY()), 

@@ -576,7 +576,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		aPanel.paste();
@@ -640,7 +640,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.draw(aGraphics);
 		
 		aController.selectAll();
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		
 		aPanel.paste();
@@ -746,7 +746,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
 		
 		aController.selectAll();
-		aPanel.cut(); 
+		aController.cut(); 
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());

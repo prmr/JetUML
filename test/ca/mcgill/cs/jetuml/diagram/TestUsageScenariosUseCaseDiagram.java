@@ -416,7 +416,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.draw(aGraphics);
 		
 		aPanel.getSelectionList().add(aUseCaseNode1);
-		aPanel.cut();
+		aController.cut();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -465,7 +465,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aUseCaseNode2);
 		aPanel.getSelectionList().add(aGeneralEdge);
 		
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		

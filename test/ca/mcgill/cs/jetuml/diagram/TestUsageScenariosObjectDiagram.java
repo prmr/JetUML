@@ -469,7 +469,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		
 		aPanel.paste();
@@ -482,7 +482,7 @@ public class TestUsageScenariosObjectDiagram
 		// a FieldNode will be cut, but will not be pasted
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aObjectNode1.getChildren().size());
 		
@@ -528,7 +528,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		
 		aController.selectAll();
-		aPanel.cut();
+		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
