@@ -135,7 +135,7 @@ public final class Clipboard
 		assert pPanel != null;
 		assert pPanel.getSelectionList() != null;
 		copy(pPanel.getSelectionList());	
-		pPanel.removeSelected();
+		pPanel.getController().removeSelected();
 	}
 	
 	private boolean recursivelyContains(Node pNode)

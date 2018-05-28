@@ -337,14 +337,14 @@ public class TestUsageScenariosClassDiagram
 		
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		aList.set(aInterfaceNode);
 		aPanel.setSelectionList(aList);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -372,7 +372,7 @@ public class TestUsageScenariosClassDiagram
 		// test deletion
 		aList.set(aAggregationEdge);
 		aPanel.setSelectionList(aList);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getEdges().size());
@@ -453,7 +453,7 @@ public class TestUsageScenariosClassDiagram
 		
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aList.clearSelection();
 		aDiagram.draw(aGraphics);
 		
@@ -482,7 +482,7 @@ public class TestUsageScenariosClassDiagram
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 
 		aController.selectAll();
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
@@ -517,7 +517,7 @@ public class TestUsageScenariosClassDiagram
 		aList.set(node2);
 		aPanel.setSelectionList(aList);
 		
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aPackageNode.getChildren().size());
 		aPanel.undo();
@@ -541,7 +541,7 @@ public class TestUsageScenariosClassDiagram
 		aList.set(node2);
 		aPanel.setSelectionList(aList);
 		
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(1, innerNode.getChildren().size());

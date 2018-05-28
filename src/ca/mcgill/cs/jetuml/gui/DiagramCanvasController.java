@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
+import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
@@ -88,6 +89,37 @@ public class DiagramCanvasController
 		{
 			Clipboard.instance().copy(aSelectionModel.getSelectionList());
 		}
+	}
+	
+	/**
+	 * Removes the selected graph elements.
+	 */
+	public void removeSelected()
+	{
+		aUndoManager.startTracking();
+		Stack<Node> nodes = new Stack<>();
+		for(DiagramElement element : aSelectionModel.getSelectionList())
+		{
+			if(element instanceof Node)
+			{
+				aCanvas.getDiagram().removeAllEdgesConnectedTo((Node)element);
+				nodes.add((Node) element);
+			}
+			else if(element instanceof Edge)
+			{
+				aCanvas.getDiagram().removeEdge((Edge) element);
+			}
+		}
+		while(!nodes.empty())
+		{
+			aCanvas.getDiagram().removeNode(nodes.pop());
+		}
+		aUndoManager.endTracking();
+		if(aSelectionModel.getSelectionList().size() > 0)
+		{
+			aCanvas.setModified(true);
+		}
+		aCanvas.paintPanel();
 	}
 	
 	private Line computeRubberband()

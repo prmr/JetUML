@@ -105,6 +105,14 @@ public class DiagramTab extends Tab
 	}
 	
 	/**
+	 * Copy the current selection to the clipboard.
+	 */
+	public void removeSelected()
+	{
+		aDiagramCanvasController.removeSelected();
+	}
+	
+	/**
 	 * Selects all elements in the diagram.
 	 */
 	public void selectAll()

@@ -262,7 +262,7 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aActorNode1);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -273,7 +273,7 @@ public class TestUsageScenariosUseCaseDiagram
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(noteNode);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -282,7 +282,7 @@ public class TestUsageScenariosUseCaseDiagram
 		
 		aDiagram.addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aUseCaseNode1);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -311,12 +311,12 @@ public class TestUsageScenariosUseCaseDiagram
 		
 		// delete aAssociationEdge and aGeneralEdge
 		aPanel.getSelectionList().add(aAssociationEdge);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getEdges().size());
 		aPanel.getSelectionList().add(aGeneralEdge);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
@@ -352,7 +352,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aGeneralEdge);
 		aPanel.getSelectionList().add(noteEdge1);
 
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -369,7 +369,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aPanel.getSelectionList().add(aUseCaseNode2);
 		aPanel.getSelectionList().add(aActorNode2);
 		aPanel.getSelectionList().add(aGeneralEdge);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());

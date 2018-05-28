@@ -25,7 +25,6 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Stack;
 import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
@@ -35,8 +34,6 @@ import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -95,6 +92,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	{
 		aController = pController;
 		aDiagram.setGraphModificationListener(pController.createGraphModificationListener());
+	}
+	
+	public DiagramCanvasController getController()
+	{
+		return aController;
 	}
 	
 	@Override
@@ -196,37 +198,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		setModified(true);
 	}
 
-	/**
-	 * Removes the selected graph elements.
-	 */
-	public void removeSelected()
-	{
-		aController.getUndoManager().startTracking();
-		Stack<Node> nodes = new Stack<>();
-		for (DiagramElement element : aController.getSelectionModel().getSelectionList())
-		{
-			if (element instanceof Node)
-			{
-				aDiagram.removeAllEdgesConnectedTo((Node)element);
-				nodes.add((Node) element);
-			}
-			else if (element instanceof Edge)
-			{
-				aDiagram.removeEdge((Edge) element);
-			}
-		}
-		while(!nodes.empty())
-		{
-			aDiagram.removeNode(nodes.pop());
-		}
-		aController.getUndoManager().endTracking();
-		if (aController.getSelectionModel().getSelectionList().size() > 0)
-		{
-			setModified(true);
-		}
-		paintPanel();
-	}
-	
 	/**
 	 * Indicate to the DiagramCanvas that is should 
 	 * consider all following operations on the graph

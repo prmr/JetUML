@@ -305,7 +305,7 @@ public class TestUsageScenariosObjectDiagram
 		
 		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -317,7 +317,7 @@ public class TestUsageScenariosObjectDiagram
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(noteNode);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 
@@ -335,7 +335,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 		aPanel.getSelectionList().add(aFieldNode1);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aObjectNode1.getChildren().size());
 
@@ -362,12 +362,12 @@ public class TestUsageScenariosObjectDiagram
 
 		// delete aReferenceEdge2 and collaborationEdge1
 		aPanel.getSelectionList().add(aReferenceEdge2);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		aPanel.getSelectionList().add(collaborationEdge1);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getEdges().size());
@@ -404,7 +404,7 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(3, aDiagram.getEdges().size());
 		
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -417,7 +417,7 @@ public class TestUsageScenariosObjectDiagram
 		// now delete aFieldNode2 and as a result the reference edges
 		// connected to it: aReferenceEdge1 and aReferenceEdge2
 		aPanel.getSelectionList().add(aFieldNode2);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aPanel.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());

@@ -394,7 +394,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode1, new Point(15, 65), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Rectangle parameterNode1Bounds = aParameterNode1.view().getBounds();
 		aCanvas.getSelectionList().add(aParameterNode1);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -415,7 +415,7 @@ public class TestUsageScenariosSequenceDiagram
 
 		Rectangle callNode1Bounds = aCallNode1.view().getBounds();
 		aCanvas.getSelectionList().add(aCallNode1);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -447,7 +447,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		
 		aCanvas.getSelectionList().add(aParameterNode1);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(0, newParameterNode.getChildren().size());
@@ -500,7 +500,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(callEdge2, edges[1]);
 		
 		aCanvas.getSelectionList().add(caller);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, newParameterNode1.getChildren().size());
 		
@@ -537,7 +537,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
 		aCanvas.getSelectionList().add(middleCallNode);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aParameterNode1.getChildren().size()); 
@@ -569,7 +569,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
 		aCanvas.getSelectionList().add(returnEdge);
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(1, aParameterNode2.getChildren().size()); 
@@ -598,7 +598,7 @@ public class TestUsageScenariosSequenceDiagram
 		aCanvas.getSelectionList().add(aCallEdge1);
 		aCanvas.getSelectionList().add(middleCallNode);
 
-		aCanvas.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(0, aParameterNode2.getChildren().size()); 

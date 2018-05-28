@@ -325,7 +325,7 @@ public class TestUsageScenariosStateDiagram
 		createSampleDiagram(aInitialNode, aStateNode1);
 		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
 		aPanel.getSelectionList().add(aInitialNode);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -346,7 +346,7 @@ public class TestUsageScenariosStateDiagram
 		createSampleDiagram(aStateNode2, aFinalNode);
 		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		aPanel.getSelectionList().add(aFinalNode);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -371,7 +371,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
 		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		aPanel.getSelectionList().add(aStateNode2);
-		aPanel.removeSelected();
+		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(3, aDiagram.getRootNodes().size());
