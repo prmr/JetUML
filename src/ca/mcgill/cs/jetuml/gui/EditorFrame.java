@@ -405,7 +405,7 @@ public class EditorFrame extends BorderPane
 		{
 			DiagramTab openFrame = (DiagramTab) currentFrame;
 			// we only want to check attempts to close a frame
-			if (openFrame.getGraphPanel().isModified()) 
+			if (openFrame.isModified()) 
 			{
 				// ask user if it is ok to close
 				Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
@@ -431,34 +431,26 @@ public class EditorFrame extends BorderPane
 	 * If a user confirms that they want to close their modified graph, this method
 	 * will remove it from the current list of tabs.
 	 * 
-	 * @param pTab The current Tab that one wishes to close.
+	 * @param pDiagramTab The current Tab that one wishes to close.
 	 */
-	public void close(Tab pTab) 
+	public void close(DiagramTab pDiagramTab) 
 	{
-		Tab currentFrame = pTab;
-		if (currentFrame != null)
+		if(pDiagramTab.isModified()) 
 		{
-			DiagramTab openFrame = (DiagramTab) currentFrame;
-			// we only want to check attempts to close a frame
-			if (openFrame.getGraphPanel().isModified()) 
-			{
-				if (openFrame.getGraphPanel().isModified()) 
-				{
-					// ask user if it is ok to close
-					Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
-					alert.initOwner(aMainStage);
-					alert.setTitle(RESOURCES.getString("dialog.close.title"));
-					alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
-					alert.showAndWait();
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(RESOURCES.getString("dialog.close.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			alert.showAndWait();
 
-					if (alert.getResult() == ButtonType.YES) 
-					{
-						removeGraphFrameFromTabbedPane(openFrame);
-					}
-				}
-				return;
+			if (alert.getResult() == ButtonType.YES) 
+			{
+				removeGraphFrameFromTabbedPane(pDiagramTab);
 			}
-			removeGraphFrameFromTabbedPane(openFrame);
+		}
+		else
+		{
+			removeGraphFrameFromTabbedPane(pDiagramTab);
 		}
 	}
 
@@ -478,7 +470,7 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			PersistenceService.save(frame.getDiagram(), file);
-			frame.getGraphPanel().setModified(false);
+			frame.setModified(false);
 		} 
 		catch (IOException exception) 
 		{
@@ -525,7 +517,7 @@ public class EditorFrame extends BorderPane
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
 				getSelectedTab().setText(frame.getFile().getName());
-				frame.getGraphPanel().setModified(false);
+				frame.setModified(false);
 			}
 		} 
 		catch (IOException exception) 
@@ -685,7 +677,7 @@ public class EditorFrame extends BorderPane
 	{
 		return (int) tabs().stream()
 			.filter( tab -> tab instanceof DiagramTab ) 
-			.filter( frame -> ((DiagramTab) frame).getGraphPanel().isModified())
+			.filter( frame -> ((DiagramTab) frame).isModified())
 			.count();
 	}
 

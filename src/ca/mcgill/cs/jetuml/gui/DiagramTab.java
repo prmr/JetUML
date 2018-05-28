@@ -193,6 +193,16 @@ public class DiagramTab extends Tab
 			setText(RESOURCES.getString(getDiagram().getClass().getSimpleName().toLowerCase() + ".text"));
 		}
 	}
+	
+	public boolean isModified()
+	{
+		return aDiagramCanvasController.isModified();
+	}
+	
+	public void setModified(boolean pModified)
+	{
+		aDiagramCanvasController.setModified(pModified);
+	}
 
 	/**
      * Gets the file property.

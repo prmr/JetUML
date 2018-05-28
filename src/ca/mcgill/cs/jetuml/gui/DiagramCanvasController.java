@@ -77,7 +77,9 @@ public class DiagramCanvasController
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
-	private UndoManager aUndoManager = new UndoManager();
+	private UndoManager aUndoManager = new UndoManager();	
+	private boolean aModified = false;
+
 	
 	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar)
 	{
@@ -97,6 +99,24 @@ public class DiagramCanvasController
 	public Diagram getDiagram()
 	{
 		return aCanvas.getDiagram();
+	}
+	
+	/**
+	 * Checks whether this graph has been modified since it was last saved.
+	 * @return true if the graph has been modified
+	 */
+	public boolean isModified()
+	{	
+		return aModified;
+	}
+
+	/**
+	 * Sets or resets the modified flag for this graph.
+	 * @param pModified true to indicate that the graph has been modified
+	 */
+	public void setModified(boolean pModified)
+	{
+		aModified = pModified;
 	}
 	
 	/**
@@ -168,7 +188,7 @@ public class DiagramCanvasController
 		{
 			aUndoManager.add(command);
 		}
-		aCanvas.setModified(true);
+		setModified(true);
 	}
 	
 	/**
@@ -258,7 +278,7 @@ public class DiagramCanvasController
 		aUndoManager.endTracking();
 		if(aSelectionModel.getSelectionList().size() > 0)
 		{
-			aCanvas.setModified(true);
+			setModified(true);
 		}
 		aCanvas.paintPanel();
 	}
@@ -369,7 +389,7 @@ public class DiagramCanvasController
 				(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
 		if(added)
 		{
-			aCanvas.setModified(true);
+			setModified(true);
 			aSelectionModel.setSelection(newNode);
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
@@ -465,7 +485,7 @@ public class DiagramCanvasController
 		{
 			if( aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint) )
 			{
-				aCanvas.setModified(true);
+				setModified(true);
 				aSelectionModel.setSelection(newEdge);
 			}
 		}
@@ -476,18 +496,13 @@ public class DiagramCanvasController
 	{
 		// For optimization purposes, some of the layouts are not done on every move event.
 		aCanvas.getDiagram().requestLayout();
-		aCanvas.setModified(true);
+		setModified(true);
 		CompoundCommand command = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
 		if(command.size() > 0)
 		{
 			aUndoManager.add(command);
 		}
 		aCanvas.paintPanel();
-	}
-	
-	public UndoManager getUndoManager()
-	{
-		return aUndoManager;
 	}
 
 	private void mouseDragged(MouseEvent pEvent)

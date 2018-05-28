@@ -34,16 +34,12 @@ import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.paint.Color;
 
 /**
- * A canvas on which to view, create, and modify diagrams.
+ * A canvas on which to view diagrams.
  */
 public class DiagramCanvas extends Canvas implements SelectionObserver
 {	
@@ -51,12 +47,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	
 	private Diagram aDiagram;
 	private boolean aShowGrid;
-	private boolean aModified;
 	private DiagramCanvasController aController;
 	
 	/**
-	 * Constructs the canvas, assigns the diagram to it, and registers
-	 * the canvas as a listener for the diagram.
+	 * Constructs the canvas, assigns the diagram to it.
 	 * 
 	 * @param pDiagram the graph managed by this panel.
 	 * @param pScreenBoundaries the boundaries of the user's screen. 
@@ -83,25 +77,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	public boolean isResizable()
 	{
 	    return false;
-	}
-	
-	/*
-     * Gets the ScrollPane containing this panel.
-     * Will return null if not yet contained in a ScrollPane.
-     * @return the scroll pane
-	 */
-	private ScrollPane getScrollPane()
-	{
-		if (getParent() != null) 
-		{
-			Parent parent = getParent();
-			while (!(parent instanceof ScrollPane))
-			{
-				parent = parent.getParent();
-			}
-			return (ScrollPane) parent;
-		}
-		return null;
 	}
 	
 	/**
@@ -159,63 +134,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		{
 			ToolGraphics.drawLasso(context, lasso.get());
 		}
-		
-		if (getScrollPane() != null)
-		{
-			getScrollPane().requestLayout();
-		}
-	}
-
-	/**
-	 * Checks whether this graph has been modified since it was last saved.
-	 * @return true if the graph has been modified
-	 */
-	public boolean isModified()
-	{	
-		return aModified;
-	}
-
-	/**
-	 * Sets or resets the modified flag for this graph.
-	 * @param pModified true to indicate that the graph has been modified
-	 */
-	public void setModified(boolean pModified)
-	{
-		aModified = pModified;
-		Optional<DiagramTab> graphFrame = getFrame();
-		if (graphFrame.isPresent())
-		{
-			graphFrame.get().setTitle(aModified);
-		}
 	}
 	
-	/** 
-	 * Obtains the parent frame of this panel through the component hierarchy.
-	 * 
-	 * getFrame().isPresent() will be false if panel not yet added to its parent 
-	 * frame, for example if it is called in the constructor of this panel.
-	 */
-	private Optional<DiagramTab> getFrame()
-	{
-		try 
-		{
-			Parent parent = getScrollPane();
-			while (!(parent instanceof TabPane))
-			{
-				parent = parent.getParent();
-			}
-			for (Tab tab : ((TabPane) parent).getTabs())
-			{
-				if (tab instanceof DiagramTab && tab.getContent() == getScrollPane().getParent())
-				{
-					return Optional.of((DiagramTab) tab);
-				}
-			}
-		}
-		catch (NullPointerException e) {}
-		return Optional.empty();
-	}
-   
 	/**
 	 * Sets the value of the hideGrid property.
 	 * @param pShowGrid true if the grid is being shown
