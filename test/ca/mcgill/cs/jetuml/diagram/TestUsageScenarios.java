@@ -88,7 +88,7 @@ public class TestUsageScenarios
 		selection.add(edge);
 		
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new DiagramCanvas(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().paste(new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(3, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());
@@ -118,7 +118,7 @@ public class TestUsageScenarios
 		selection.add(edge);
 
 		Clipboard.instance().copy(selection);
-		Clipboard.instance().paste(new DiagramCanvas(diagram, null, new Rectangle2D(0, 0, 0, 0)));
+		Clipboard.instance().paste(new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0)));
 		
 		assertEquals(2, diagram.getRootNodes().size());
 		assertEquals(2, diagram.getEdges().size());

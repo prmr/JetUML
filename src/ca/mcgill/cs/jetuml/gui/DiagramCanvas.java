@@ -37,6 +37,7 @@ import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
 import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
+import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
 import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
@@ -45,9 +46,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -81,7 +79,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	private Diagram aDiagram;
 	private boolean aShowGrid;
 	private boolean aModified;
-	private final DiagramCanvasController aController;
+	private DiagramCanvasController aController;
 	private UndoManager aUndoManager = new UndoManager();
 	
 	/**
@@ -89,16 +87,24 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	 * the canvas as a listener for the diagram.
 	 * 
 	 * @param pDiagram the graph managed by this panel.
-	 * @param pSideBar the DiagramTabToolBar which contains all of the tools for nodes and edges.
 	 * @param pScreenBoundaries the boundaries of the user's screen. 
 	 */
-	public DiagramCanvas(Diagram pDiagram, DiagramTabToolBar pSideBar, Rectangle2D pScreenBoundaries)
+	public DiagramCanvas(Diagram pDiagram, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
 		aDiagram = pDiagram;
 		aDiagram.setGraphModificationListener(new PanelGraphModificationListener());
-		aController = new DiagramCanvasController(this, pSideBar, aUndoManager);
 		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
+	}
+	
+	/**
+	 * Should only be called once immediately after the constructor call.
+	 * 
+	 * @param pController The controller for this canvas.
+	 */
+	public void setController(DiagramCanvasController pController)
+	{
+		aController = pController;
 	}
 	
 	@Override
@@ -127,14 +133,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	}
 	
 	/**
-	 * Copy the currently selected elements to the clip board.
+	 * Adds pCommand to the undo manager.
+	 * 
+	 * @param pCommand The command to add.
 	 */
-	public void copy()
+	public void addMove(Command pCommand)
 	{
-		if (aController.getSelectionModel().getSelectionList().size() > 0)
-		{
-			Clipboard.instance().copy(aController.getSelectionModel().getSelectionList());
-		}
+		aUndoManager.add(pCommand);
 	}
 	
 	/**
@@ -315,15 +320,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aUndoManager.redoCommand();
 		paintPanel();
 	}
-	
-	/**
-	 * Clears the selection list and adds all the root nodes and edges to 
-	 * it. Makes the selection tool the active tool.
-	 */
-	public void selectAll()
-	{
-		aController.selectAll();
-	}
 
 	/**
 	 * Paints the panel and all the graph elements in aDiagram.
@@ -455,19 +451,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aController.getSelectionModel().resetSelection(pSelectionList);
 	}
 	
-	/**
-	 * @param pNode the currently selected Node
-	 * @return whether or not there is a problem with switching to the selection tool.
-	 */
-	public boolean switchToSelectException(Node pNode)
-	{
-		if (pNode instanceof PackageNode || pNode instanceof ImplicitParameterNode || pNode instanceof ObjectNode)
-		{
-			return true;
-		}
-		return false;
-	}
-		
 	private class PanelGraphModificationListener implements GraphModificationListener
 	{
 		@Override

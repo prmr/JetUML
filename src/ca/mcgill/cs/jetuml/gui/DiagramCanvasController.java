@@ -22,8 +22,8 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
-import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -39,7 +39,7 @@ import javafx.scene.input.MouseEvent;
  * An instance of this class is responsible to handle the user
  * interface events on a diagram canvas.
  */
-class DiagramCanvasController
+public class DiagramCanvasController
 {
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
@@ -49,16 +49,14 @@ class DiagramCanvasController
 	private final SelectionModel aSelectionModel;
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
-	private final UndoManager aUndoManager;
 	private final DiagramTabToolBar aToolBar;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
 	
-	DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar, UndoManager pManager)
+	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar)
 	{
 		aCanvas = pCanvas;
-		aUndoManager = pManager;
 		aSelectionModel = new SelectionModel(aCanvas);
 		aToolBar = pToolBar;
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
@@ -66,9 +64,20 @@ class DiagramCanvasController
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
 	}
 	
-	SelectionModel getSelectionModel()
+	public SelectionModel getSelectionModel()
 	{
 		return aSelectionModel;
+	}
+	
+	/**
+	 * Copy the currently selected elements to the clip board.
+	 */
+	public void copy()
+	{
+		if(aSelectionModel.getSelectionList().size() > 0)
+		{
+			Clipboard.instance().copy(aSelectionModel.getSelectionList());
+		}
 	}
 	
 	private Line computeRubberband()
@@ -276,7 +285,7 @@ class DiagramCanvasController
 		CompoundCommand command = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
 		if(command.size() > 0)
 		{
-			aUndoManager.add(command);
+			aCanvas.addMove(command);
 		}
 		aCanvas.paintPanel();
 	}

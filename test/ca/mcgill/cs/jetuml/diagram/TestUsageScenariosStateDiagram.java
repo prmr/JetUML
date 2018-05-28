@@ -28,9 +28,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
@@ -41,6 +38,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -55,6 +53,7 @@ public class TestUsageScenariosStateDiagram
 	private StateDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aPanel;
+	private DiagramCanvasController aController;
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
 	private InitialStateNode aInitialNode;
@@ -83,7 +82,9 @@ public class TestUsageScenariosStateDiagram
 	{
 		aDiagram = new StateDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
+		aPanel.setController(aController);
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));
 		aStateNode2 = new StateNode();
@@ -394,7 +395,7 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aStateNode1);
 		aPanel.getSelectionList().add(aStateNode1);
-		aPanel.copy();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		
@@ -433,8 +434,8 @@ public class TestUsageScenariosStateDiagram
 	{
 		createSampleDiagram(aStateNode1, aStateNode2);
 		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		aPanel.selectAll();
-		aPanel.copy();
+		aController.selectAll();
+		aController.copy();
 		aPanel.paste();
 
 		aDiagram.draw(aGraphics);
@@ -454,7 +455,7 @@ public class TestUsageScenariosStateDiagram
 		createSampleDiagram(aStateNode1, aStateNode2);
 		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		
-		aPanel.selectAll();
+		aController.selectAll();
 		aPanel.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());

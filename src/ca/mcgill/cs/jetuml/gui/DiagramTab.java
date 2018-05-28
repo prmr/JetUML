@@ -38,6 +38,7 @@ import javafx.stage.Screen;
 public class DiagramTab extends Tab
 {	
 	private DiagramCanvas aDiagramCanvas;
+	private final DiagramCanvasController aDiagramCanvasController;
 	private File aFile; // The file associated with this diagram
 	
 	/**
@@ -47,7 +48,9 @@ public class DiagramTab extends Tab
 	public DiagramTab(Diagram pDiagram)
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, sideBar, Screen.getPrimary().getVisualBounds());
+		aDiagramCanvas = new DiagramCanvas(pDiagram, Screen.getPrimary().getVisualBounds());
+		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
+		aDiagramCanvas.setController(aDiagramCanvasController);
 		aDiagramCanvas.paintPanel();
 		
 		BorderPane layout = new BorderPane();
@@ -91,6 +94,22 @@ public class DiagramTab extends Tab
 	public Diagram getDiagram()
 	{
 		return aDiagramCanvas.getDiagram();
+	}
+	
+	/**
+	 * Copy the current selection to the clipboard.
+	 */
+	public void copy()
+	{
+		aDiagramCanvasController.copy();
+	}
+	
+	/**
+	 * Selects all elements in the diagram.
+	 */
+	public void selectAll()
+	{
+		aDiagramCanvasController.selectAll();
 	}
 	
 	/**

@@ -28,10 +28,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -41,6 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -54,7 +51,8 @@ public class TestUsageScenariosSequenceDiagram
 {
 	private SequenceDiagram aDiagram;
 	private GraphicsContext aGraphics;
-	private DiagramCanvas aPanel;
+	private DiagramCanvas aCanvas;
+	private DiagramCanvasController aController;
 	private SelectionList aList;
 	private ImplicitParameterNode aParameterNode1;
 	private ImplicitParameterNode aParameterNode2;
@@ -80,7 +78,9 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram = new SequenceDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aCanvas = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram));
+		aCanvas.setController(aController);
 		aList = new SelectionList();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
@@ -307,30 +307,30 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
 		aDiagram.draw(aGraphics);
 
-		aPanel.selectAll();
-		for(DiagramElement element: aPanel.getSelectionList())
+		aController.selectAll();
+		for(DiagramElement element: aCanvas.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(15, 0);
 			}
 		}
-		aPanel.getSelectionList().clearSelection();
+		aCanvas.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(25, 0, 80, 157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(125, 0, 80, 157), aParameterNode2.view().getBounds());
 		assertEquals(new Rectangle(57, 75, 16, 62), aCallNode1.view().getBounds());
 		assertEquals(new Rectangle(157, 87, 16, 30), aCallNode2.view().getBounds());
 
-		aPanel.selectAll();
-		for(DiagramElement element: aPanel.getSelectionList())
+		aController.selectAll();
+		for(DiagramElement element: aCanvas.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(-25, 0);
 			}
 		}
-		aPanel.getSelectionList().clearSelection();
+		aCanvas.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(0, 0, 80, 157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(100, 0, 80, 157), aParameterNode2.view().getBounds());
@@ -350,29 +350,29 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(aCallEdge1, new Point(15, 80), new Point(116,0));
 		aDiagram.draw(aGraphics);
 		
-		aPanel.selectAll();
-		for(DiagramElement element: aPanel.getSelectionList())
+		aController.selectAll();
+		for(DiagramElement element: aCanvas.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(15, 0);
 			}
 		}
-		aPanel.getSelectionList().clearSelection();
+		aCanvas.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(25, 0, 80, 165), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(125, 65, 80, 100), aParameterNode2.view().getBounds());
 		assertEquals(new Rectangle(57, 75, 16, 70), aCallNode1.view().getBounds());
 		
-		aPanel.selectAll();
-		for(DiagramElement element: aPanel.getSelectionList())
+		aController.selectAll();
+		for(DiagramElement element: aCanvas.getSelectionList())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(-25, 0);
 			}
 		}
-		aPanel.getSelectionList().clearSelection();
+		aCanvas.getSelectionList().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(0, 0, 80, 165), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(100, 65, 80, 100), aParameterNode2.view().getBounds());
@@ -393,12 +393,12 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 65), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Rectangle parameterNode1Bounds = aParameterNode1.view().getBounds();
-		aPanel.getSelectionList().add(aParameterNode1);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(aParameterNode1);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aPanel.undo();
+		aCanvas.undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(parameterNode1Bounds, ((ImplicitParameterNode) (aDiagram.getRootNodes().toArray()[0])).view().getBounds());
 	}
@@ -414,14 +414,14 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 
 		Rectangle callNode1Bounds = aCallNode1.view().getBounds();
-		aPanel.getSelectionList().add(aCallNode1);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(aCallNode1);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aParameterNode1.getChildren().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		assertEquals(1, aParameterNode1.getChildren().size());
 		assertEquals(callNode1Bounds, ((CallNode) (aParameterNode1.getChildren().toArray()[0])).view().getBounds());
 	}
@@ -446,8 +446,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(callEdge2, new Point(45, 75), new Point(210,75));
 		aDiagram.draw(aGraphics);
 		
-		aPanel.getSelectionList().add(aParameterNode1);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(aParameterNode1);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(0, newParameterNode.getChildren().size());
@@ -458,7 +458,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, newParameterNode.getChildren().size());
@@ -499,12 +499,12 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(callEdge1, edges[0]);
 		assertEquals(callEdge2, edges[1]);
 		
-		aPanel.getSelectionList().add(caller);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(caller);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, newParameterNode1.getChildren().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, newParameterNode1.getChildren().size());
@@ -536,8 +536,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
 		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
-		aPanel.getSelectionList().add(middleCallNode);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(middleCallNode);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aParameterNode1.getChildren().size()); 
@@ -545,7 +545,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(0, newParameterNode.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(1, aParameterNode2.getChildren().size()); 
@@ -568,14 +568,14 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new CallEdge(), new Point(18, 75), new Point(115,75));
 		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
-		aPanel.getSelectionList().add(returnEdge);
-		aPanel.removeSelected();
+		aCanvas.getSelectionList().add(returnEdge);
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
@@ -594,17 +594,17 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(118,75));
 		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
-		aPanel.getSelectionList().add(returnEdge);
-		aPanel.getSelectionList().add(aCallEdge1);
-		aPanel.getSelectionList().add(middleCallNode);
+		aCanvas.getSelectionList().add(returnEdge);
+		aCanvas.getSelectionList().add(aCallEdge1);
+		aCanvas.getSelectionList().add(middleCallNode);
 
-		aPanel.removeSelected();
+		aCanvas.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
 		assertEquals(0, aParameterNode2.getChildren().size()); 
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aPanel.undo();
+		aCanvas.undo();
 		assertEquals(1, aParameterNode2.getChildren().size()); 
 		assertEquals(2, aDiagram.getEdges().size());
 	}
@@ -620,9 +620,9 @@ public class TestUsageScenariosSequenceDiagram
 	public void testCopyPasteParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(aParameterNode1);
-		aPanel.copy();
-		aPanel.paste();
+		aCanvas.getSelectionList().add(aParameterNode1);
+		aController.copy();
+		aCanvas.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -637,12 +637,12 @@ public class TestUsageScenariosSequenceDiagram
 	public void testCutPasteParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(aParameterNode1);
-		aPanel.cut();
+		aCanvas.getSelectionList().add(aParameterNode1);
+		aCanvas.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 
-		aPanel.paste();
+		aCanvas.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -658,9 +658,9 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aPanel.getSelectionList().add(aParameterNode1);
-		aPanel.copy();
-		aPanel.paste();
+		aCanvas.getSelectionList().add(aParameterNode1);
+		aController.copy();
+		aCanvas.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -689,9 +689,9 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
 		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
-		aPanel.selectAll();
-		aPanel.copy();
-		aPanel.paste();
+		aController.selectAll();
+		aController.copy();
+		aCanvas.paste();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(6, aDiagram.getRootNodes().size());
@@ -726,10 +726,10 @@ public class TestUsageScenariosSequenceDiagram
 		{
 			aList.add(edge);
 		}
-		aPanel.setSelectionList(aList);
-		aPanel.copy();
+		aCanvas.setSelectionList(aList);
+		aController.copy();
 		SequenceDiagram tempDiagram = new SequenceDiagram();
-		aPanel.paste();
+		aCanvas.paste();
 		tempDiagram.draw(aGraphics);
 		
 		assertEquals(0, tempDiagram.getRootNodes().size());

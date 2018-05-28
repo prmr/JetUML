@@ -30,10 +30,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -47,6 +43,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -62,6 +59,7 @@ public class TestUsageScenariosClassDiagram
 	private ClassDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aPanel;
+	private DiagramCanvasController aController;
 	private SelectionList aList;
 	private ClassNode aClassNode = new ClassNode();
 	private InterfaceNode aInterfaceNode = new InterfaceNode();
@@ -87,7 +85,9 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram = new ClassDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
+		aPanel.setController(aController);
 		aList = new SelectionList();
 		aClassNode = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
@@ -481,7 +481,7 @@ public class TestUsageScenariosClassDiagram
 		Rectangle classNodeBounds = aClassNode.view().getBounds();
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 
-		aPanel.selectAll();
+		aController.selectAll();
 		aPanel.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -559,7 +559,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aList.set(aClassNode);
 		aPanel.setSelectionList(aList);
-		aPanel.copy();
+		aController.copy();
 		aPanel.paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -596,8 +596,8 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		aDiagram.draw(aGraphics);
 		
-		aPanel.selectAll();
-		aPanel.copy();
+		aController.selectAll();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -639,7 +639,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		aDiagram.draw(aGraphics);
 		
-		aPanel.selectAll();
+		aController.selectAll();
 		aPanel.cut();
 		aDiagram.draw(aGraphics);
 		
@@ -745,7 +745,7 @@ public class TestUsageScenariosClassDiagram
 		node2.translate(100, 0);
 		aDiagram.addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
 		
-		aPanel.selectAll();
+		aController.selectAll();
 		aPanel.cut(); 
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -773,8 +773,8 @@ public class TestUsageScenariosClassDiagram
 		node2.translate(100, 0);
 		aDiagram.addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
 		
-		aPanel.selectAll();
-		aPanel.copy();
+		aController.selectAll();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());

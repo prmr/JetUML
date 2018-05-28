@@ -28,9 +28,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -40,6 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -54,6 +52,7 @@ public class TestUsageScenariosObjectDiagram
 	private ObjectDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aPanel;
+	private DiagramCanvasController aController;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
 	private FieldNode aFieldNode1;
@@ -80,7 +79,9 @@ public class TestUsageScenariosObjectDiagram
 	{
 		aDiagram = new ObjectDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
+		aPanel.setController(aController);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -257,7 +258,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		aDiagram.addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
 		aDiagram.addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
-		aPanel.selectAll();
+		aController.selectAll();
 
 		Rectangle referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
 		Rectangle referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
@@ -440,7 +441,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aPanel.getSelectionList().add(aObjectNode1);
-		aPanel.copy();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		
@@ -452,7 +453,7 @@ public class TestUsageScenariosObjectDiagram
 		// paste a FieldNode itself is not allowed
 		aPanel.getSelectionList().clearSelection();
 		aPanel.getSelectionList().add(aFieldNode1);
-		aPanel.copy();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -502,8 +503,8 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
-		aPanel.selectAll();
-		aPanel.copy();
+		aController.selectAll();
+		aController.copy();
 		aPanel.paste();
 
 		aDiagram.draw(aGraphics);
@@ -526,7 +527,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics);
 		aDiagram.addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
 		
-		aPanel.selectAll();
+		aController.selectAll();
 		aPanel.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());

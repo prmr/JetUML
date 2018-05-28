@@ -332,7 +332,7 @@ public class EditorFrame extends BorderPane
 	private void copy() 
 	{
 		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).getGraphPanel().copy();
+		((DiagramTab) getSelectedTab()).copy();
 	}
 
 	private void paste() 
@@ -358,7 +358,7 @@ public class EditorFrame extends BorderPane
 	private void selectAll()
 	{
 		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).getGraphPanel().selectAll();
+		((DiagramTab) getSelectedTab()).selectAll();
 	}
 	
 	private void editSelected()

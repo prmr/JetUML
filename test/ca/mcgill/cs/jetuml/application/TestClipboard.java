@@ -43,7 +43,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 
 public class TestClipboard
@@ -87,7 +86,7 @@ public class TestClipboard
 		aPackage2 = new PackageNode();
 		
 		aClassDiagramGraph = new ClassDiagram();
-		aPanel = new DiagramCanvas(aClassDiagramGraph, new DiagramTabToolBar(aClassDiagramGraph), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aClassDiagramGraph, new Rectangle2D(0, 0, 0, 0));
 	}
 	
 	@Test

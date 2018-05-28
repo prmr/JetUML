@@ -28,9 +28,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -42,6 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
+import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
@@ -56,6 +54,7 @@ public class TestUsageScenariosUseCaseDiagram
 	private UseCaseDiagram aDiagram;
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aPanel;
+	private DiagramCanvasController aController;
 	private ActorNode aActorNode1;
 	private ActorNode aActorNode2;
 	private UseCaseNode aUseCaseNode1;
@@ -82,7 +81,9 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		aDiagram = new UseCaseDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new DiagramTabToolBar(aDiagram), new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
+		aPanel.setController(aController);
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -229,7 +230,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		aDiagram.addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
 
-		aPanel.selectAll();
+		aController.selectAll();
 		for(DiagramElement element: aPanel.getSelectionList())
 		{
 			if(element instanceof Node)
@@ -394,7 +395,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aPanel.getSelectionList().add(aActorNode1);
-		aPanel.copy();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 	
@@ -436,8 +437,8 @@ public class TestUsageScenariosUseCaseDiagram
 		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
-		aPanel.selectAll();
-		aPanel.copy();
+		aController.selectAll();
+		aController.copy();
 		aPanel.paste();
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
