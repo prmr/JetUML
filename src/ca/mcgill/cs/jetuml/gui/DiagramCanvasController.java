@@ -227,7 +227,7 @@ public class DiagramCanvasController
 	 */
 	public void copy()
 	{
-		if(aSelectionModel.isEmpty())
+		if(!aSelectionModel.isEmpty())
 		{
 			Clipboard.instance().copy(aSelectionModel);
 		}
@@ -270,7 +270,7 @@ public class DiagramCanvasController
 	 */
 	public void cut()
 	{
-		if (aSelectionModel.isEmpty())
+		if(!aSelectionModel.isEmpty())
 		{
 			Clipboard.instance().cut(this);
 		}
