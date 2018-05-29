@@ -461,10 +461,10 @@ public class TestUsageScenariosObjectDiagram
 	
 	/**
 	 * 
-	 * Testing cut a State Node
+	 * Testing cut an object Node
 	 */
 	@Test
-	public void testCutStateNode()
+	public void testCutObjectNodeWithFieldNode()
 	{
 		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -478,17 +478,32 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
 		assertEquals(new Rectangle(0, 0, 100, 100), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
-		
-		// a FieldNode will be cut, but will not be pasted
-		aController.getSelectionModel().clearSelection();
+	}
+	
+	/**
+	 * 
+	 * Testing cut an object Node
+	 */
+	@Test
+	public void testCutFieldNode()
+	{
+		aDiagram.addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aController.getSelectionModel().addToSelection(aFieldNode1);
 		aController.cut();
 		aDiagram.draw(aGraphics);
-		assertEquals(0, aObjectNode1.getChildren().size());
 		
-		aController.paste();
-		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(0, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
+		assertEquals(new Rectangle(20, 20, 80, 60), 
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
+		
+		// a FieldNode will be cut, but will not be pasted
+		aController.paste();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(0, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
+		assertEquals(new Rectangle(20, 20, 80, 60), 
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 	
 	/**

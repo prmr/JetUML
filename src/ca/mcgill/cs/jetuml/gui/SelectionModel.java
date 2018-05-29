@@ -72,7 +72,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		assert pDiagramData != null;
 		clearSelection();
-		pDiagramData.allElements().forEach(this::addToSelection);
+		pDiagramData.allElements().forEach(this::internalAddToSelection);
 		aObserver.selectionModelChanged();
 	}
 	
@@ -137,7 +137,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		}
 		else if(pLasso.contains(pNode.view().getBounds())) 
 		{
-			addToSelection(pNode);
+			internalAddToSelection(pNode);
 		}
 		if(pNode instanceof ParentNode)
 		{
@@ -161,7 +161,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			if(transitivelyContains(pEdge.getStart()) && transitivelyContains(pEdge.getEnd()))
 			{
-				addToSelection(pEdge);
+				internalAddToSelection(pEdge);
 			}
 		}		
 	}
@@ -229,18 +229,24 @@ public class SelectionModel implements Iterable<DiagramElement>
 	}
 	
 	/**
-	 * Adds an element to the selection set and sets
-	 * it as the last selected element. If the element 
-	 * is already in the list, it is added to the end 
-	 * of the list. If the node is transitively a child of 
-	 * any node in the list, it is not added.
+	 * Adds an element to the selection set and sets it as the last 
+	 * selected element. If the element is already in the list, it
+	 * is added to the end of the list. If the node is transitively 
+	 * a child of any node in the list, it is not added.
+	 * Triggers a notification.
 	 * 
 	 * @param pElement The element to add to the list.
-	 * Cannot be null.
+	 * @pre pElement != null
 	 */
 	public void addToSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
+		internalAddToSelection(pElement);
+		aObserver.selectionModelChanged();
+	}
+	
+	private void internalAddToSelection(DiagramElement pElement)
+	{
 		if( !containsParent( pElement ))
 		{
 			aSelected.remove(pElement);
@@ -303,11 +309,12 @@ public class SelectionModel implements Iterable<DiagramElement>
 	}
 	
 	/**
-	 * Removes all selections.
+	 * Removes all selections and triggers a notification.
 	 */
 	public void clearSelection()
 	{
 		aSelected.clear();
+		aObserver.selectionModelChanged();
 	}
 	
 	/**
@@ -323,29 +330,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			return Optional.of(aSelected.peek());
 		}
-	}
-	
-	/**
-	 * Include in the selection list any edge in pEdges whose start and end nodes
-	 * are already in the selection list, and replaces the previously last element
-	 * in the selection to last place.
-	 * @param pEdges The edges to consider adding.
-	 */
-	public void addEdgesIfContained(Iterable<Edge> pEdges)
-	{
-		if( aSelected.isEmpty() )
-		{
-			return;
-		}
-		DiagramElement last = aSelected.pop();
-		for( Edge edge : pEdges )
-		{
-			if( capturesEdge(edge))
-			{
-				addToSelection(edge);
-			}
-		}
-		aSelected.push(last);
 	}
 	
 	/**
@@ -370,6 +354,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	/**
 	 * Removes pElement from the list of selected elements,
 	 * or does nothing if pElement is not selected.
+	 * Triggers a notification.
 	 * @param pElement The element to remove.
 	 * @pre pElement != null;
 	 */
@@ -377,18 +362,21 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		assert pElement != null;
 		aSelected.remove(pElement);
+		aObserver.selectionModelChanged();
 	}
 	
 	/**
 	 * Sets pElement as the single selected element.
-	 * @param pElement The element to set as selected. Cannot
-	 * be null.
+	 * Triggers a notification.
+	 * @param pElement The element to set as selected.
+	 * @pre pElement != null;
 	 */
 	public void set(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.clear();
 		aSelected.add(pElement);
+		aObserver.selectionModelChanged();
 	}
 
 	@Override

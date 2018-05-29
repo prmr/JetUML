@@ -319,7 +319,6 @@ public class DiagramCanvasController
 				if (!aSelectionModel.contains(element))
 				{
 					aSelectionModel.addToSelection(element);
-					aSelectionModel.addEdgesIfContained(aCanvas.getDiagram().edges());
 				}
 				else
 				{
