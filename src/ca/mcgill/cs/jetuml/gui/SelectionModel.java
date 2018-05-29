@@ -215,6 +215,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	/**
 	 * Clears any existing selection and initializes it with pNewSelection.
+	 * Triggers a notification.
 	 * 
 	 * @param pNewSelection A list of elements to select.
 	 * @pre pNewSelection != null;
@@ -224,6 +225,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		assert pNewSelection != null;
 		clearSelection();
 		pNewSelection.forEach(aSelected::add);
+		aObserver.selectionModelChanged();
 	}
 	
 	/**
