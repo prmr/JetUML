@@ -133,7 +133,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 		{
-			removeFromSelection(pNode);
+			internalRemoveFromSelection(pNode);
 		}
 		else if(pLasso.contains(pNode.view().getBounds())) 
 		{
@@ -148,21 +148,15 @@ public class SelectionModel implements Iterable<DiagramElement>
 		}
 	}
 	
-	/*
-	 * Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-	 */
 	private void selectEdge( boolean pAddMode, Edge pEdge, Rectangle pLasso )
 	{
-		if(!pAddMode && !pLasso.contains(pEdge.view().getBounds()))
+		if( !pAddMode && !pLasso.contains(pEdge.view().getBounds()) )
 		{
-			removeFromSelection(pEdge);
+			internalRemoveFromSelection(pEdge);
 		}
 		else if(pLasso.contains(pEdge.view().getBounds()))
 		{
-			if(transitivelyContains(pEdge.getStart()) && transitivelyContains(pEdge.getEnd()))
-			{
-				internalAddToSelection(pEdge);
-			}
+			internalAddToSelection(pEdge);
 		}		
 	}
 	
@@ -263,7 +257,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 			}
 			for( DiagramElement element : toRemove )
 			{
-				removeFromSelection(element);
+				internalRemoveFromSelection(element);
 			}
 		}
 	}
@@ -297,15 +291,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			return false;
 		}
-	}
-	
-	/**
-	 * @param pElement The element to test.
-	 * @return True if either this element or one of its parent is contained.
-	 */
-	private boolean transitivelyContains(DiagramElement pElement)
-	{
-		return contains(pElement) || containsParent(pElement);
 	}
 	
 	/**
@@ -361,8 +346,13 @@ public class SelectionModel implements Iterable<DiagramElement>
 	public void removeFromSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
-		aSelected.remove(pElement);
+		internalRemoveFromSelection(pElement);
 		aObserver.selectionModelChanged();
+	}
+	
+	private void internalRemoveFromSelection(DiagramElement pElement)
+	{
+		aSelected.remove(pElement);
 	}
 	
 	/**
