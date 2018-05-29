@@ -20,15 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 import java.util.prefs.Preferences;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -104,36 +99,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
 		}
 		aDiagram.draw(context);
+		aController.synchronizeSelectionModel();
+		aController.getSelectionModel().forEach( selected -> selected.view().drawSelectionHandles(context));
 
-		Set<DiagramElement> toBeRemoved = new HashSet<>();
-		for(DiagramElement selected : aController.getSelectionModel())
-		{
-			if(!aDiagram.contains(selected)) 
-			{
-				toBeRemoved.add(selected);
-			}
-			else
-			{
-				selected.view().drawSelectionHandles(context);
-			}
-		}
-
-		for (DiagramElement element : toBeRemoved)
-		{
-			aController.getSelectionModel().removeFromSelection(element);
-		}                 
-      
-		Optional<Line> rubberband = aController.getSelectionModel().getRubberband();
-		if( rubberband.isPresent() )
-		{
-			ToolGraphics.drawRubberband(context, rubberband.get());
-		}
-		
-		Optional<Rectangle> lasso = aController.getSelectionModel().getLasso();
-		if( lasso.isPresent() )
-		{
-			ToolGraphics.drawLasso(context, lasso.get());
-		}
+		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
+		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
 	
 	/**

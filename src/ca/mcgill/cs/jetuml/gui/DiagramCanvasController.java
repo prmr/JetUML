@@ -22,7 +22,9 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
@@ -88,6 +90,24 @@ public class DiagramCanvasController
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
 		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
+	}
+	
+	/**
+	 * Removes any element in the selectionmodel that is not in the diagram.
+	 * TODO a hack which will hopefully be factored out.
+	 */
+	public void synchronizeSelectionModel()
+	{
+		Set<DiagramElement> toBeRemoved = new HashSet<>();
+		for(DiagramElement selected : aSelectionModel )
+		{
+			if(!aCanvas.getDiagram().contains(selected)) 
+			{
+				toBeRemoved.add(selected);
+			}
+		}
+
+		toBeRemoved.forEach( element -> aSelectionModel.removeFromSelection(element));            
 	}
 	
 	public SelectionModel getSelectionModel()
