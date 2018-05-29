@@ -338,14 +338,14 @@ public class TestUsageScenariosClassDiagram
 		
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(aClassNode);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.removeSelected();
 		list.clear();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		list.add(aInterfaceNode);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.removeSelected();
 		aList.clear();
 		aDiagram.draw(aGraphics);
@@ -374,7 +374,7 @@ public class TestUsageScenariosClassDiagram
 		// test deletion
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(aAggregationEdge);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.removeSelected();
 		list.clear();
 		aDiagram.draw(aGraphics);
@@ -456,7 +456,7 @@ public class TestUsageScenariosClassDiagram
 		
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(aClassNode);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.removeSelected();
 		aList.clear();
 		aDiagram.draw(aGraphics);
@@ -521,7 +521,7 @@ public class TestUsageScenariosClassDiagram
 		
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(node2);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -546,7 +546,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(node2);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -567,7 +567,7 @@ public class TestUsageScenariosClassDiagram
 		
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(aClassNode);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.copy();
 		aController.paste();
 		
@@ -585,7 +585,7 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		ArrayList<DiagramElement> list = new ArrayList<>();
 		list.add(aClassNode);
-		aController.setSelectionList(list);
+		aController.getSelectionModel().setSelectionTo(list);
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());

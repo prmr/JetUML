@@ -92,7 +92,7 @@ public class TestMoveTracker
 	@Test
 	public void moveSingleObjectFourTimes()
 	{
-		aSelection.add(aNode1);
+		aSelection.addToSelection(aNode1);
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
@@ -131,9 +131,9 @@ public class TestMoveTracker
 	@Test
 	public void moveNodesAndEdges()
 	{
-		aSelection.add(aNode1);
-		aSelection.add(aNode2);
-		aSelection.add(aEdge1);
+		aSelection.addToSelection(aNode1);
+		aSelection.addToSelection(aNode2);
+		aSelection.addToSelection(aEdge1);
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);

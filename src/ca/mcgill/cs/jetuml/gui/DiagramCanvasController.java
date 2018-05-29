@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
@@ -120,27 +119,18 @@ public class DiagramCanvasController
 	}
 	
 	/**
-	 *  TODO, only used for testing.
-	 * @param pSelectionList the new SelectedElements for the DiagramCanvas.
-	 */
-	public void setSelectionList(List<DiagramElement> pSelectionList)
-	{
-		aSelectionModel.resetSelection(pSelectionList);
-	}
-	
-	/**
 	 * Edits the properties of the selected graph element.
 	 */
 	public void editSelected()
 	{
-		DiagramElement edited = aSelectionModel.getLastSelected();
-		if (edited == null)
+		Optional<DiagramElement> edited = aSelectionModel.getLastSelected();
+		if( !edited.isPresent() )
 		{
 			return;
 		}
-		PropertyChangeTracker tracker = new PropertyChangeTracker(edited);
+		PropertyChangeTracker tracker = new PropertyChangeTracker(edited.get());
 		tracker.startTracking();
-		PropertySheet sheet = new PropertySheet(edited, new PropertySheet.PropertyChangeListener()
+		PropertySheet sheet = new PropertySheet(edited.get(), new PropertySheet.PropertyChangeListener()
 		{
 			@Override
 			public void propertyChanged()
@@ -207,7 +197,7 @@ public class DiagramCanvasController
 	 */
 	public void paste()
 	{
-		aSelectionModel.resetSelection(Clipboard.instance().paste(this));
+		aSelectionModel.setSelectionTo(Clipboard.instance().paste(this));
 	}
 	
 	/**
@@ -237,7 +227,7 @@ public class DiagramCanvasController
 	 */
 	public void copy()
 	{
-		if(aSelectionModel.size() > 0)
+		if(aSelectionModel.isEmpty())
 		{
 			Clipboard.instance().copy(aSelectionModel);
 		}
@@ -267,7 +257,7 @@ public class DiagramCanvasController
 			aCanvas.getDiagram().removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
-		if(aSelectionModel.size() > 0)
+		if(aSelectionModel.isEmpty())
 		{
 			setModified(true);
 		}
@@ -280,7 +270,7 @@ public class DiagramCanvasController
 	 */
 	public void cut()
 	{
-		if (aSelectionModel.size() > 0)
+		if (aSelectionModel.isEmpty())
 		{
 			Clipboard.instance().cut(this);
 		}
@@ -328,12 +318,12 @@ public class DiagramCanvasController
 			{
 				if (!aSelectionModel.contains(element))
 				{
-					aSelectionModel.add(element);
-					aSelectionModel.addEdgesIfContained(aCanvas.getDiagram().getEdges());
+					aSelectionModel.addToSelection(element);
+					aSelectionModel.addEdgesIfContained(aCanvas.getDiagram().edges());
 				}
 				else
 				{
-					aSelectionModel.remove(element);
+					aSelectionModel.removeFromSelection(element);
 				}
 			}
 			else if (!aSelectionModel.contains(element))

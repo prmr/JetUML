@@ -21,13 +21,12 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramData;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -49,7 +48,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 	private final SelectionObserver aObserver;
 	
 	private Stack<DiagramElement> aSelected = new Stack<>();
-	
 	private Optional<Line> aRubberband = Optional.empty();
 	private Optional<Rectangle> aLasso = Optional.empty();
 	
@@ -63,23 +61,28 @@ public class SelectionModel implements Iterable<DiagramElement>
 		aObserver = pObserver;
 	}
 	
-	public void selectAll(Diagram pDiagram)
+	/**
+	 * Clears the selection model and selects all root nodes and 
+	 * edges in the diagram. Triggers a notification.
+	 * 
+	 * @param pDiagramData Provides the data for the selection.
+	 * @pre pDiagramData != null
+	 */
+	public void selectAll(DiagramData pDiagramData)
 	{
+		assert pDiagramData != null;
 		clearSelection();
-		for(Node node : pDiagram.getRootNodes())
-		{
-			add(node);
-		}
-		for(Edge edge : pDiagram.getEdges())
-		{
-			add(edge);
-		}
+		pDiagramData.allElements().forEach(this::addToSelection);
 		aObserver.selectionModelChanged();
 	}
 	
+	/**
+	 * @return A rectangle that represents the bounding
+	 * box of the entire selection.
+	 */
 	public Rectangle getSelectionBounds()
 	{
-		Optional<Node> lastSelected = getLastSelectedNode();
+		Optional<DiagramElement> lastSelected = getLastSelected();
 		assert lastSelected.isPresent();
 		Rectangle bounds = lastSelected.get().view().getBounds();
 		for(DiagramElement selected : aSelected )
@@ -89,6 +92,10 @@ public class SelectionModel implements Iterable<DiagramElement>
 		return bounds;
 	}
 	
+	/**
+	 * @return An iterable of all selected nodes. This 
+	 * corresponds to the entire selection, except the edge.
+	 */
 	public Iterable<Node> getSelectedNodes()
 	{
 		List<Node> result = new ArrayList<>();
@@ -102,75 +109,37 @@ public class SelectionModel implements Iterable<DiagramElement>
 		return result;
 	}
 	
-	public void fireNotification()
+	/**
+	 * Records information about an active lasso selection tool, select all elements
+	 * in the lasso, and triggers a notification.
+	 * 
+	 * @param pLasso The bounds of the current lasso.
+	 * @param pDiagramData Data about the diagram whose elements are being selected with the lasso.
+	 * @param pAddMode If true, elements in the lasso are added to any existing selection. Otherwise, 
+	 * only the elements in the lasso are selected.
+	 * @pre pLasso != null;
+	 * @pre pDiagramData != null;
+	 */
+	public void activateLasso(Rectangle pLasso, DiagramData pDiagramData, boolean pAddMode)
 	{
-		aObserver.selectionModelChanged();
-	}
-	
-	public void activateLasso(Rectangle pLasso, Diagram pDiagram, boolean pAddMode)
-	{
+		assert pLasso != null;
 		aLasso = Optional.of(pLasso);
-		for(Node node : pDiagram.getRootNodes())
-		{
-			selectNode(pAddMode, node, pLasso);
-		}
-		//Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
-		for(Edge edge: pDiagram.getEdges())
-		{
-			if(!pAddMode && !pLasso.contains(edge.view().getBounds()))
-			{
-				remove(edge);
-			}
-			else if(pLasso.contains(edge.view().getBounds()))
-			{
-				if(transitivelyContains(edge.getStart()) && transitivelyContains(edge.getEnd()))
-				{
-					add(edge);
-				}
-			}
-		}
-		aObserver.selectionModelChanged();
-	}
-	
-	public Optional<Rectangle> getLasso()
-	{
-		return aLasso;
-	}
-	
-	public Optional<Line> getRubberband()
-	{
-		return aRubberband;
-	}
-	
-	public void activateRubberband(Line pLine)
-	{
-		aRubberband = Optional.of(pLine);
-		aObserver.selectionModelChanged();
-	}
-	
-	public void deactivateLasso()
-	{
-		aLasso = Optional.empty();
-		aObserver.selectionModelChanged();
-	}
-	
-	public void deactivateRubberband()
-	{
-		aRubberband = Optional.empty();
+		pDiagramData.rootNodes().forEach( node -> selectNode(pAddMode, node, pLasso));
+		pDiagramData.edges().forEach( edge -> selectEdge(pAddMode, edge, pLasso));
 		aObserver.selectionModelChanged();
 	}
 	
 	private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
 	{
-		if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
+		if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 		{
-			remove(pNode);
+			removeFromSelection(pNode);
 		}
-		else if (pLasso.contains(pNode.view().getBounds())) 
+		else if(pLasso.contains(pNode.view().getBounds())) 
 		{
-			add(pNode);
+			addToSelection(pNode);
 		}
-		if (pNode instanceof ParentNode)
+		if(pNode instanceof ParentNode)
 		{
 			for (ChildNode child : ((ParentNode) pNode).getChildren())
 			{
@@ -179,29 +148,83 @@ public class SelectionModel implements Iterable<DiagramElement>
 		}
 	}
 	
-	public void resetSelection(List<DiagramElement> pNewSelection)
+	/*
+	 * Edges need to be added too when highlighted, but only if both their endpoints have been highlighted.
+	 */
+	private void selectEdge( boolean pAddMode, Edge pEdge, Rectangle pLasso )
 	{
+		if(!pAddMode && !pLasso.contains(pEdge.view().getBounds()))
+		{
+			removeFromSelection(pEdge);
+		}
+		else if(pLasso.contains(pEdge.view().getBounds()))
+		{
+			if(transitivelyContains(pEdge.getStart()) && transitivelyContains(pEdge.getEnd()))
+			{
+				addToSelection(pEdge);
+			}
+		}		
+	}
+	
+	/**
+	 * @return The active lasso, if available.
+	 */
+	public Optional<Rectangle> getLasso()
+	{
+		return aLasso;
+	}
+	
+	/**
+	 * Removes the active lasso from the model and triggers a notification.
+	 */
+	public void deactivateLasso()
+	{
+		aLasso = Optional.empty();
+		aObserver.selectionModelChanged();
+	}
+	
+	/**
+	 * Records information about an active rubberband selection tool and triggers a notification.
+	 * @param pLine The line that represents the rubberband.
+	 * @pre pLine != null;
+	 */
+	public void activateRubberband(Line pLine)
+	{
+		assert pLine != null;
+		aRubberband = Optional.of(pLine);
+		aObserver.selectionModelChanged();
+	}
+	
+	
+	/**
+	 * @return The active rubberband, if available.
+	 */
+	public Optional<Line> getRubberband()
+	{
+		return aRubberband;
+	}
+	
+	/**
+	 * Removes the active rubberband from the model and triggers a notification.
+	 */
+	public void deactivateRubberband()
+	{
+		aRubberband = Optional.empty();
+		aObserver.selectionModelChanged();
+	}
+	
+	/**
+	 * Clears any existing selection and initializes it with pNewSelection.
+	 * 
+	 * @param pNewSelection A list of elements to select.
+	 * @pre pNewSelection != null;
+	 */
+	public void setSelectionTo(List<DiagramElement> pNewSelection)
+	{
+		assert pNewSelection != null;
 		clearSelection();
-		for( DiagramElement element : pNewSelection )
-		{
-			aSelected.add(element);
-		}
+		pNewSelection.forEach(aSelected::add);
 	}
-	
-	public Optional<Node> getLastSelectedNode()
-	{
-		Node last = getLastNode();
-		if( last == null )
-		{
-			return Optional.empty();
-		}
-		else
-		{
-			return Optional.ofNullable(last);
-		}
-	}
-	
-	// SELECTION LIST METHODS
 	
 	/**
 	 * Adds an element to the selection set and sets
@@ -213,7 +236,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * @param pElement The element to add to the list.
 	 * Cannot be null.
 	 */
-	public void add(DiagramElement pElement)
+	public void addToSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
 		if( !containsParent( pElement ))
@@ -232,19 +255,19 @@ public class SelectionModel implements Iterable<DiagramElement>
 			}
 			for( DiagramElement element : toRemove )
 			{
-				remove(element);
+				removeFromSelection(element);
 			}
 		}
 	}
 	
-	/**
+	/*
 	 * Returns true if any of the parents of pElement is contained
 	 * (transitively).
 	 * @param pElement The element to test
 	 * @return true if any of the parents of pElement are included in the 
 	 * selection.
 	 */
-	public boolean containsParent(DiagramElement pElement)
+	private boolean containsParent(DiagramElement pElement)
 	{
 		if( pElement instanceof ChildNode )
 		{
@@ -272,7 +295,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * @param pElement The element to test.
 	 * @return True if either this element or one of its parent is contained.
 	 */
-	public boolean transitivelyContains(DiagramElement pElement)
+	private boolean transitivelyContains(DiagramElement pElement)
 	{
 		return contains(pElement) || containsParent(pElement);
 	}
@@ -286,18 +309,17 @@ public class SelectionModel implements Iterable<DiagramElement>
 	}
 	
 	/**
-	 * @return The last element that was selected, or null
-	 * if there are no such elements.
+	 * @return The last element that was selected, if present.
 	 */
-	public DiagramElement getLastSelected()
+	public Optional<DiagramElement> getLastSelected()
 	{
-		if( aSelected.size() > 0 )
+		if( aSelected.isEmpty() )
 		{
-			return aSelected.peek();
+			return Optional.empty();
 		}
 		else
 		{
-			return null;
+			return Optional.of(aSelected.peek());
 		}
 	}
 	
@@ -307,7 +329,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * in the selection to last place.
 	 * @param pEdges The edges to consider adding.
 	 */
-	public void addEdgesIfContained(Collection<Edge> pEdges)
+	public void addEdgesIfContained(Iterable<Edge> pEdges)
 	{
 		if( aSelected.isEmpty() )
 		{
@@ -318,26 +340,10 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			if( capturesEdge(edge))
 			{
-				add(edge);
+				addToSelection(edge);
 			}
 		}
 		aSelected.push(last);
-	}
-	
-	/**
-	 * @return The last Node that was selected, or null 
-	 * if there are no Nodes selected.
-	 */
-	public Node getLastNode()
-	{
-		for( int i = aSelected.size()-1; i >=0; i--)
-		{
-			if( aSelected.get(i) instanceof Node )
-			{
-				return (Node) aSelected.get(i);
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -362,9 +368,10 @@ public class SelectionModel implements Iterable<DiagramElement>
 	/**
 	 * Removes pElement from the list of selected elements,
 	 * or does nothing if pElement is not selected.
-	 * @param pElement The element to remove. Cannot be null.
+	 * @param pElement The element to remove.
+	 * @pre pElement != null;
 	 */
-	public void remove(DiagramElement pElement)
+	public void removeFromSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.remove(pElement);
@@ -389,11 +396,10 @@ public class SelectionModel implements Iterable<DiagramElement>
 	}
 	
 	/**
-	 * @return The number of elements currently selected.
+	 * @return True if there is not element in the selection list.
 	 */
-	public int size()
+	public boolean isEmpty()
 	{
-		return aSelected.size();
+		return aSelected.isEmpty();
 	}
-	
 }

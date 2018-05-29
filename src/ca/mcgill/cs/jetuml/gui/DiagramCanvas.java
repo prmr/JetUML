@@ -120,7 +120,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 
 		for (DiagramElement element : toBeRemoved)
 		{
-			aController.getSelectionModel().remove(element);
+			aController.getSelectionModel().removeFromSelection(element);
 		}                 
       
 		Optional<Line> rubberband = aController.getSelectionModel().getRubberband();

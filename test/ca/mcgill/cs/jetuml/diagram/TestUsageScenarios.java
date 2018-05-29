@@ -82,9 +82,9 @@ public class TestUsageScenarios
 		assertEquals(c2, edge.getEnd());
 		
 		SelectionModel selection = new SelectionModel( () -> {} );
-		selection.add(c1);
-		selection.add(c2);
-		selection.add(edge);
+		selection.addToSelection(c1);
+		selection.addToSelection(c2);
+		selection.addToSelection(edge);
 		
 		Clipboard.instance().copy(selection);
 		
@@ -117,8 +117,8 @@ public class TestUsageScenarios
 		assertEquals(c1, edge.getStart());
 		assertEquals(c2, edge.getEnd());
 		
-		SelectionModel selection = new SelectionModel( () -> {} );		selection.add(p1);
-		selection.add(edge);
+		SelectionModel selection = new SelectionModel( () -> {} );		selection.addToSelection(p1);
+		selection.addToSelection(edge);
 
 		Clipboard.instance().copy(selection);
 		

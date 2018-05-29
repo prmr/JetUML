@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-
 package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ import javafx.scene.canvas.GraphicsContext;
  *  - Adding nodes or edges. This mode is used for adding completely new elements, typically
  *    through UI actions. See methods add{Node|Edge}, which trigger notifications.
  */
-public abstract class Diagram
+public abstract class Diagram implements DiagramData
 {
 	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
@@ -72,6 +71,26 @@ public abstract class Diagram
 		aNodesToBeRemoved = new ArrayList<>();
 		aEdgesToBeRemoved = new ArrayList<>();
 		aNeedsLayout = true;
+	}
+	
+	@Override
+	public Iterable<DiagramElement> allElements()
+	{
+		ArrayList<DiagramElement> result = new ArrayList<>(aRootNodes);
+		result.addAll(aEdges);
+		return result;
+	}
+	
+	@Override
+	public Iterable<Node> rootNodes()
+	{
+		return aRootNodes;
+	}
+	
+	@Override
+	public Iterable<Edge> edges()
+	{
+		return aEdges;
 	}
 	
 	/**
