@@ -24,12 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -60,7 +61,7 @@ public class TestUsageScenariosClassDiagram
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aPanel;
 	private DiagramCanvasController aController;
-	private SelectionList aList;
+	private ArrayList<DiagramElement> aList;
 	private ClassNode aClassNode = new ClassNode();
 	private InterfaceNode aInterfaceNode = new InterfaceNode();
 	private PackageNode aPackageNode = new PackageNode();
@@ -88,7 +89,6 @@ public class TestUsageScenariosClassDiagram
 		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
 		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
 		aPanel.setController(aController);
-		aList = new SelectionList();
 		aClassNode = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
 		aPackageNode = new PackageNode();
@@ -97,6 +97,7 @@ public class TestUsageScenariosClassDiagram
 		aAssociationEdge = new AssociationEdge();
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
+		aList = new ArrayList<>();
 	}
 	
 	/**
@@ -335,17 +336,18 @@ public class TestUsageScenariosClassDiagram
 		Rectangle classNodeBounds = aClassNode.view().getBounds();
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 		
-		aList.set(aClassNode);
-		aController.setSelectionList(aList);
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(aClassNode);
+		aController.setSelectionList(list);
 		aController.removeSelected();
-		aList.clearSelection();
+		list.clear();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
-		aList.set(aInterfaceNode);
-		aController.setSelectionList(aList);
+		list.add(aInterfaceNode);
+		aController.setSelectionList(list);
 		aController.removeSelected();
-		aList.clearSelection();
+		aList.clear();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
@@ -370,10 +372,11 @@ public class TestUsageScenariosClassDiagram
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		
 		// test deletion
-		aList.set(aAggregationEdge);
-		aController.setSelectionList(aList);
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(aAggregationEdge);
+		aController.setSelectionList(list);
 		aController.removeSelected();
-		aList.clearSelection();
+		list.clear();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getEdges().size());
 		
@@ -451,10 +454,11 @@ public class TestUsageScenariosClassDiagram
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		Rectangle classNodeBounds = aClassNode.view().getBounds();
 		
-		aList.set(aClassNode);
-		aController.setSelectionList(aList);
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(aClassNode);
+		aController.setSelectionList(list);
 		aController.removeSelected();
-		aList.clearSelection();
+		aList.clear();
 		aDiagram.draw(aGraphics);
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -514,8 +518,10 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aPackageNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node1, new Point(6, 8), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aList.set(node2);
-		aController.setSelectionList(aList);
+		
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(node2);
+		aController.setSelectionList(list);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -538,8 +544,9 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(innerNode, new Point(10, 10), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node1, new Point(10, 13), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aList.set(node2);
-		aController.setSelectionList(aList);
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(node2);
+		aController.setSelectionList(list);
 		
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -557,8 +564,10 @@ public class TestUsageScenariosClassDiagram
 	public void testCopyPasteSingleNode()
 	{
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aList.set(aClassNode);
-		aController.setSelectionList(aList);
+		
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(aClassNode);
+		aController.setSelectionList(list);
 		aController.copy();
 		aController.paste();
 		
@@ -574,8 +583,9 @@ public class TestUsageScenariosClassDiagram
 	public void testCutPasteSingleNode()
 	{
 		aDiagram.addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aList.set(aClassNode);
-		aController.setSelectionList(aList);
+		ArrayList<DiagramElement> list = new ArrayList<>();
+		list.add(aClassNode);
+		aController.setSelectionList(list);
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());

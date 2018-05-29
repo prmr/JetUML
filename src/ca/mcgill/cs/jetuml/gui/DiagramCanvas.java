@@ -106,7 +106,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aDiagram.draw(context);
 
 		Set<DiagramElement> toBeRemoved = new HashSet<>();
-		for (DiagramElement selected : aController.getSelectionModel().getSelectionList())
+		for(DiagramElement selected : aController.getSelectionModel())
 		{
 			if(!aDiagram.contains(selected)) 
 			{
@@ -120,7 +120,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 
 		for (DiagramElement element : toBeRemoved)
 		{
-			aController.getSelectionModel().getSelectionList().remove(element);
+			aController.getSelectionModel().remove(element);
 		}                 
       
 		Optional<Line> rubberband = aController.getSelectionModel().getRubberband();

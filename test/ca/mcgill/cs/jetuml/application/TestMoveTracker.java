@@ -42,11 +42,12 @@ import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.gui.SelectionModel;
 
 public class TestMoveTracker
 {
 	private MoveTracker aMoveTracker;
-	private SelectionList aSelection;
+	private SelectionModel aSelection;
 	private ClassDiagram aGraph;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
@@ -70,7 +71,7 @@ public class TestMoveTracker
 	public void setup() throws NoSuchFieldException, SecurityException
 	{
 		aMoveTracker = new MoveTracker();
-		aSelection = new SelectionList();
+		aSelection = new SelectionModel( () -> {} );
 		aGraph = new ClassDiagram();
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);

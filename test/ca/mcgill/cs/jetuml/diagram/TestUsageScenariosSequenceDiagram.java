@@ -22,12 +22,14 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -53,7 +55,7 @@ public class TestUsageScenariosSequenceDiagram
 	private GraphicsContext aGraphics;
 	private DiagramCanvas aCanvas;
 	private DiagramCanvasController aController;
-	private SelectionList aList;
+	private List<DiagramElement> aList;
 	private ImplicitParameterNode aParameterNode1;
 	private ImplicitParameterNode aParameterNode2;
 	private CallNode aCallNode1;
@@ -81,7 +83,7 @@ public class TestUsageScenariosSequenceDiagram
 		aCanvas = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
 		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram));
 		aCanvas.setController(aController);
-		aList = new SelectionList();
+		aList = new ArrayList<>();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
 		aCallNode1 = new CallNode();
@@ -308,14 +310,14 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 
 		aController.selectAll();
-		for(DiagramElement element: aController.getSelectionList())
+		for(DiagramElement element: aController.getSelectionModel())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(15, 0);
 			}
 		}
-		aController.getSelectionList().clearSelection();
+		aController.getSelectionModel().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(25, 0, 80, 157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(125, 0, 80, 157), aParameterNode2.view().getBounds());
@@ -323,14 +325,14 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(new Rectangle(157, 87, 16, 30), aCallNode2.view().getBounds());
 
 		aController.selectAll();
-		for(DiagramElement element: aController.getSelectionList())
+		for(DiagramElement element: aController.getSelectionModel())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(-25, 0);
 			}
 		}
-		aController.getSelectionList().clearSelection();
+		aController.getSelectionModel().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(0, 0, 80, 157), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(100, 0, 80, 157), aParameterNode2.view().getBounds());
@@ -351,28 +353,28 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		
 		aController.selectAll();
-		for(DiagramElement element: aController.getSelectionList())
+		for(DiagramElement element: aController.getSelectionModel())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(15, 0);
 			}
 		}
-		aController.getSelectionList().clearSelection();
+		aController.getSelectionModel().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(25, 0, 80, 165), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(125, 65, 80, 100), aParameterNode2.view().getBounds());
 		assertEquals(new Rectangle(57, 75, 16, 70), aCallNode1.view().getBounds());
 		
 		aController.selectAll();
-		for(DiagramElement element: aController.getSelectionList())
+		for(DiagramElement element: aController.getSelectionModel())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(-25, 0);
 			}
 		}
-		aController.getSelectionList().clearSelection();
+		aController.getSelectionModel().clearSelection();
 		aDiagram.draw(aGraphics);
 		assertEquals(new Rectangle(0, 0, 80, 165), aParameterNode1.view().getBounds());
 		assertEquals(new Rectangle(100, 65, 80, 100), aParameterNode2.view().getBounds());
@@ -393,7 +395,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 65), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		Rectangle parameterNode1Bounds = aParameterNode1.view().getBounds();
-		aController.getSelectionList().add(aParameterNode1);
+		aController.getSelectionModel().add(aParameterNode1);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -414,7 +416,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 
 		Rectangle callNode1Bounds = aCallNode1.view().getBounds();
-		aController.getSelectionList().add(aCallNode1);
+		aController.getSelectionModel().add(aCallNode1);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -446,7 +448,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(callEdge2, new Point(45, 75), new Point(210,75));
 		aDiagram.draw(aGraphics);
 		
-		aController.getSelectionList().add(aParameterNode1);
+		aController.getSelectionModel().add(aParameterNode1);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
@@ -499,7 +501,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(callEdge1, edges[0]);
 		assertEquals(callEdge2, edges[1]);
 		
-		aController.getSelectionList().add(caller);
+		aController.getSelectionModel().add(caller);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, newParameterNode1.getChildren().size());
@@ -536,7 +538,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
 		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
-		aController.getSelectionList().add(middleCallNode);
+		aController.getSelectionModel().add(middleCallNode);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		
@@ -568,7 +570,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(new CallEdge(), new Point(18, 75), new Point(115,75));
 		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
-		aController.getSelectionList().add(returnEdge);
+		aController.getSelectionModel().add(returnEdge);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aParameterNode1.getChildren().size()); 
@@ -594,9 +596,9 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(118,75));
 		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
-		aController.getSelectionList().add(returnEdge);
-		aController.getSelectionList().add(aCallEdge1);
-		aController.getSelectionList().add(middleCallNode);
+		aController.getSelectionModel().add(returnEdge);
+		aController.getSelectionModel().add(aCallEdge1);
+		aController.getSelectionModel().add(middleCallNode);
 
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -620,7 +622,7 @@ public class TestUsageScenariosSequenceDiagram
 	public void testCopyPasteParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionList().add(aParameterNode1);
+		aController.getSelectionModel().add(aParameterNode1);
 		aController.copy();
 		aController.paste();
 		aDiagram.draw(aGraphics);
@@ -637,7 +639,7 @@ public class TestUsageScenariosSequenceDiagram
 	public void testCutPasteParameterNode()
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionList().add(aParameterNode1);
+		aController.getSelectionModel().add(aParameterNode1);
 		aController.cut();
 		aDiagram.draw(aGraphics);
 		assertEquals(0, aDiagram.getRootNodes().size());
@@ -658,7 +660,7 @@ public class TestUsageScenariosSequenceDiagram
 	{
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionList().add(aParameterNode1);
+		aController.getSelectionModel().add(aParameterNode1);
 		aController.copy();
 		aController.paste();
 		aDiagram.draw(aGraphics);

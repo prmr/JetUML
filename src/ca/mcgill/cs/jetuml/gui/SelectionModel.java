@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -47,7 +47,9 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public class SelectionModel implements Iterable<DiagramElement>
 {
 	private final SelectionObserver aObserver;
-	private final SelectionList aSelectionList = new SelectionList();
+	
+	private Stack<DiagramElement> aSelected = new Stack<>();
+	
 	private Optional<Line> aRubberband = Optional.empty();
 	private Optional<Rectangle> aLasso = Optional.empty();
 	
@@ -63,14 +65,14 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	public void selectAll(Diagram pDiagram)
 	{
-		aSelectionList.clearSelection();
+		clearSelection();
 		for(Node node : pDiagram.getRootNodes())
 		{
-			aSelectionList.add(node);
+			add(node);
 		}
 		for(Edge edge : pDiagram.getEdges())
 		{
-			aSelectionList.add(edge);
+			add(edge);
 		}
 		aObserver.selectionModelChanged();
 	}
@@ -80,7 +82,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		Optional<Node> lastSelected = getLastSelectedNode();
 		assert lastSelected.isPresent();
 		Rectangle bounds = lastSelected.get().view().getBounds();
-		for(DiagramElement selected : aSelectionList )
+		for(DiagramElement selected : aSelected )
 		{
 			bounds = bounds.add(selected.view().getBounds());
 		}
@@ -90,7 +92,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	public Iterable<Node> getSelectedNodes()
 	{
 		List<Node> result = new ArrayList<>();
-		for( DiagramElement element : aSelectionList )
+		for( DiagramElement element : aSelected )
 		{
 			if( element instanceof Node )
 			{
@@ -98,11 +100,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 			}
 		}
 		return result;
-	}
-	
-	public SelectionList getSelectionList()
-	{
-		return aSelectionList;
 	}
 	
 	public void fireNotification()
@@ -122,13 +119,13 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			if(!pAddMode && !pLasso.contains(edge.view().getBounds()))
 			{
-				removeFromSelection(edge);
+				remove(edge);
 			}
 			else if(pLasso.contains(edge.view().getBounds()))
 			{
-				if(aSelectionList.transitivelyContains(edge.getStart()) && aSelectionList.transitivelyContains(edge.getEnd()))
+				if(transitivelyContains(edge.getStart()) && transitivelyContains(edge.getEnd()))
 				{
-					addToSelection(edge);
+					add(edge);
 				}
 			}
 		}
@@ -167,11 +164,11 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		if (!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
 		{
-			removeFromSelection(pNode);
+			remove(pNode);
 		}
 		else if (pLasso.contains(pNode.view().getBounds())) 
 		{
-			addToSelection(pNode);
+			add(pNode);
 		}
 		if (pNode instanceof ParentNode)
 		{
@@ -182,36 +179,29 @@ public class SelectionModel implements Iterable<DiagramElement>
 		}
 	}
 	
-	public void resetSelection(SelectionList pNewSelection)
+	public void resetSelection(List<DiagramElement> pNewSelection)
 	{
-		aSelectionList.clearSelection();
+		clearSelection();
 		for( DiagramElement element : pNewSelection )
 		{
-			aSelectionList.add(element);
+			aSelected.add(element);
 		}
 	}
 	
-	/**
-	 * Sets pElement as the single element in the selection list.
-	 * 
-	 * @param pElement The element to set.
-	 */
-	public void setSelection(DiagramElement pElement)
+	public Optional<Node> getLastSelectedNode()
 	{
-		assert pElement != null;
-		aSelectionList.set(pElement);
+		Node last = getLastNode();
+		if( last == null )
+		{
+			return Optional.empty();
+		}
+		else
+		{
+			return Optional.ofNullable(last);
+		}
 	}
 	
-	/**
-	 * Removes pElement from the list of selected elements,
-	 * or does nothing if pElement is not selected.
-	 * @param pElement The element to remove. Cannot be null.
-	 */
-	public void removeFromSelection(DiagramElement pElement)
-	{
-		assert pElement != null;
-		aSelectionList.remove(pElement);
-	}
+	// SELECTION LIST METHODS
 	
 	/**
 	 * Adds an element to the selection set and sets
@@ -223,45 +213,187 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * @param pElement The element to add to the list.
 	 * Cannot be null.
 	 */
-	public void addToSelection(DiagramElement pElement)
+	public void add(DiagramElement pElement)
 	{
 		assert pElement != null;
-		aSelectionList.add(pElement);
+		if( !containsParent( pElement ))
+		{
+			aSelected.remove(pElement);
+			aSelected.push(pElement);
+			
+			// Remove children in case a parent was added.
+			ArrayList<DiagramElement> toRemove = new ArrayList<>();
+			for( DiagramElement element : aSelected )
+			{
+				if( containsParent(element) )
+				{
+					toRemove.add(element);
+				}
+			}
+			for( DiagramElement element : toRemove )
+			{
+				remove(element);
+			}
+		}
 	}
 	
-	public Optional<Node> getLastSelectedNode()
+	/**
+	 * Returns true if any of the parents of pElement is contained
+	 * (transitively).
+	 * @param pElement The element to test
+	 * @return true if any of the parents of pElement are included in the 
+	 * selection.
+	 */
+	public boolean containsParent(DiagramElement pElement)
 	{
-		Node last = aSelectionList.getLastNode();
-		if( last == null )
+		if( pElement instanceof ChildNode )
 		{
-			return Optional.empty();
+			ParentNode parent = ((ChildNode) pElement).getParent();
+			if( parent == null )
+			{
+				return false;
+			}
+			else if( aSelected.contains(parent))
+			{
+				return true;
+			}
+			else
+			{
+				return containsParent(parent);
+			}
 		}
 		else
 		{
-			return Optional.ofNullable(last);
+			return false;
 		}
 	}
 	
+	/**
+	 * @param pElement The element to test.
+	 * @return True if either this element or one of its parent is contained.
+	 */
+	public boolean transitivelyContains(DiagramElement pElement)
+	{
+		return contains(pElement) || containsParent(pElement);
+	}
+	
+	/**
+	 * Removes all selections.
+	 */
 	public void clearSelection()
 	{
-		aSelectionList.clearSelection();
+		aSelected.clear();
 	}
 	
+	/**
+	 * @return The last element that was selected, or null
+	 * if there are no such elements.
+	 */
+	public DiagramElement getLastSelected()
+	{
+		if( aSelected.size() > 0 )
+		{
+			return aSelected.peek();
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * Include in the selection list any edge in pEdges whose start and end nodes
+	 * are already in the selection list, and replaces the previously last element
+	 * in the selection to last place.
+	 * @param pEdges The edges to consider adding.
+	 */
 	public void addEdgesIfContained(Collection<Edge> pEdges)
 	{
-		aSelectionList.addEdgesIfContained(pEdges);
+		if( aSelected.isEmpty() )
+		{
+			return;
+		}
+		DiagramElement last = aSelected.pop();
+		for( Edge edge : pEdges )
+		{
+			if( capturesEdge(edge))
+			{
+				add(edge);
+			}
+		}
+		aSelected.push(last);
 	}
 	
+	/**
+	 * @return The last Node that was selected, or null 
+	 * if there are no Nodes selected.
+	 */
+	public Node getLastNode()
+	{
+		for( int i = aSelected.size()-1; i >=0; i--)
+		{
+			if( aSelected.get(i) instanceof Node )
+			{
+				return (Node) aSelected.get(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * @param pElement The element to test.
+	 * @return True if pElement is in the list of selected elements.
+	 */
 	public boolean contains(DiagramElement pElement)
 	{
+		return aSelected.contains(pElement);
+	}
+	
+	/**
+	 * @param pEdge The edge to test.
+	 * @return true iif the selection contains both end-points of pEdge, or their parent.
+	 */
+	public boolean capturesEdge(Edge pEdge)
+	{
+		return (contains(pEdge.getStart()) || containsParent(pEdge.getStart())) &&
+				(contains(pEdge.getEnd()) || containsParent(pEdge.getEnd()));
+	}
+	
+	/**
+	 * Removes pElement from the list of selected elements,
+	 * or does nothing if pElement is not selected.
+	 * @param pElement The element to remove. Cannot be null.
+	 */
+	public void remove(DiagramElement pElement)
+	{
 		assert pElement != null;
-		return aSelectionList.contains(pElement);
+		aSelected.remove(pElement);
+	}
+	
+	/**
+	 * Sets pElement as the single selected element.
+	 * @param pElement The element to set as selected. Cannot
+	 * be null.
+	 */
+	public void set(DiagramElement pElement)
+	{
+		assert pElement != null;
+		aSelected.clear();
+		aSelected.add(pElement);
 	}
 
 	@Override
 	public Iterator<DiagramElement> iterator()
 	{
-		return aSelectionList.iterator();
+		return aSelected.iterator();
+	}
+	
+	/**
+	 * @return The number of elements currently selected.
+	 */
+	public int size()
+	{
+		return aSelected.size();
 	}
 	
 }

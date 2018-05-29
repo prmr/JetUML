@@ -32,13 +32,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.gui.SelectionModel;
 
 public class TestSelectionList
 {
@@ -50,7 +50,7 @@ public class TestSelectionList
 	private PackageNode aPackage1; 
 	private PackageNode aPackage2; 
 	private PackageNode aPackage3;
-	private SelectionList aList;
+	private SelectionModel aList;
 	
 	/**
 	  * Load JavaFX toolkit and environment.
@@ -73,7 +73,7 @@ public class TestSelectionList
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aPackage3 = new PackageNode();
-		aList = new SelectionList();
+		aList = new SelectionModel( () -> {});
 	}
 	
 	@Test

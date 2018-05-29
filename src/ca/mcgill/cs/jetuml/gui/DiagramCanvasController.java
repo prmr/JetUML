@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
@@ -29,7 +30,6 @@ import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
-import ca.mcgill.cs.jetuml.application.SelectionList;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
 import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
@@ -120,19 +120,10 @@ public class DiagramCanvasController
 	}
 	
 	/**
-	 * TODO, only used for testing.
-	 * @return the currently SelectedElements from the DiagramCanvas.
-	 */
-	public SelectionList getSelectionList()
-	{
-		return aSelectionModel.getSelectionList();
-	}
-	
-	/**
 	 *  TODO, only used for testing.
 	 * @param pSelectionList the new SelectedElements for the DiagramCanvas.
 	 */
-	public void setSelectionList(SelectionList pSelectionList)
+	public void setSelectionList(List<DiagramElement> pSelectionList)
 	{
 		aSelectionModel.resetSelection(pSelectionList);
 	}
@@ -142,7 +133,7 @@ public class DiagramCanvasController
 	 */
 	public void editSelected()
 	{
-		DiagramElement edited = aSelectionModel.getSelectionList().getLastSelected();
+		DiagramElement edited = aSelectionModel.getLastSelected();
 		if (edited == null)
 		{
 			return;
@@ -246,9 +237,9 @@ public class DiagramCanvasController
 	 */
 	public void copy()
 	{
-		if(aSelectionModel.getSelectionList().size() > 0)
+		if(aSelectionModel.size() > 0)
 		{
-			Clipboard.instance().copy(aSelectionModel.getSelectionList());
+			Clipboard.instance().copy(aSelectionModel);
 		}
 	}
 	
@@ -259,7 +250,7 @@ public class DiagramCanvasController
 	{
 		aUndoManager.startTracking();
 		Stack<Node> nodes = new Stack<>();
-		for(DiagramElement element : aSelectionModel.getSelectionList())
+		for(DiagramElement element : aSelectionModel)
 		{
 			if(element instanceof Node)
 			{
@@ -276,7 +267,7 @@ public class DiagramCanvasController
 			aCanvas.getDiagram().removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
-		if(aSelectionModel.getSelectionList().size() > 0)
+		if(aSelectionModel.size() > 0)
 		{
 			setModified(true);
 		}
@@ -289,7 +280,7 @@ public class DiagramCanvasController
 	 */
 	public void cut()
 	{
-		if (aSelectionModel.getSelectionList().size() > 0)
+		if (aSelectionModel.size() > 0)
 		{
 			Clipboard.instance().cut(this);
 		}
@@ -337,18 +328,18 @@ public class DiagramCanvasController
 			{
 				if (!aSelectionModel.contains(element))
 				{
-					aSelectionModel.addToSelection(element);
+					aSelectionModel.add(element);
 					aSelectionModel.addEdgesIfContained(aCanvas.getDiagram().getEdges());
 				}
 				else
 				{
-					aSelectionModel.removeFromSelection(element);
+					aSelectionModel.remove(element);
 				}
 			}
 			else if (!aSelectionModel.contains(element))
 			{
 				// The test is necessary to ensure we don't undo multiple selections
-				aSelectionModel.setSelection(element);
+				aSelectionModel.set(element);
 			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
@@ -390,7 +381,7 @@ public class DiagramCanvasController
 		if(added)
 		{
 			setModified(true);
-			aSelectionModel.setSelection(newNode);
+			aSelectionModel.set(newNode);
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
 		{
@@ -486,7 +477,7 @@ public class DiagramCanvasController
 			if( aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint) )
 			{
 				setModified(true);
-				aSelectionModel.setSelection(newEdge);
+				aSelectionModel.set(newEdge);
 			}
 		}
 		aSelectionModel.deactivateRubberband();

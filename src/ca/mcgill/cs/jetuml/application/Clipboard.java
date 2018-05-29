@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
+import ca.mcgill.cs.jetuml.gui.SelectionModel;
 
 /**
  * Stores a graph subset for purpose of pasting. The clip-board does not
@@ -78,7 +79,7 @@ public final class Clipboard
 	 * Clones the selection in pPanel and stores it in the clip-board.
 	 * @param pSelection The elements to copy. Cannot be null.
 	 */
-	public void copy(SelectionList pSelection)
+	public void copy(SelectionModel pSelection)
 	{
 		assert pSelection != null;
 		aNodes.clear();
@@ -133,7 +134,7 @@ public final class Clipboard
 	public void cut(DiagramCanvasController pController)
 	{
 		assert pController != null;
-		copy(pController.getSelectionModel().getSelectionList());	
+		copy(pController.getSelectionModel());	
 		pController.removeSelected();
 	}
 	
@@ -214,11 +215,11 @@ public final class Clipboard
 	 * @return The elements to paste as a selectionList.
 	 */
 	// CSOFF: Fix in later release
-	public SelectionList paste(DiagramCanvasController pController)
+	public List<DiagramElement> paste(DiagramCanvasController pController)
 	{
 		if( !validPaste(pController.getDiagram()))
 		{
-			return new SelectionList();
+			return new ArrayList<>();
 		}
 		
 		pController.startCompoundGraphOperation();
@@ -269,7 +270,7 @@ public final class Clipboard
 		// End graph repositioning
 		pController.finishCompoundGraphOperation();
 		
-		SelectionList selectionList  = new SelectionList();
+		ArrayList<DiagramElement> selectionList  = new ArrayList<>();
 		for( Edge edge : clonedEdges )
 		{
 			selectionList.add(edge);

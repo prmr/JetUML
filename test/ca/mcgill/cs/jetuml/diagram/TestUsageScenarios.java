@@ -28,10 +28,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.SelectionList;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
@@ -47,6 +43,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
+import ca.mcgill.cs.jetuml.gui.SelectionModel;
 import javafx.geometry.Rectangle2D;
 
 /**
@@ -84,7 +81,7 @@ public class TestUsageScenarios
 		assertEquals(c1, edge.getStart());
 		assertEquals(c2, edge.getEnd());
 		
-		SelectionList selection = new SelectionList();
+		SelectionModel selection = new SelectionModel( () -> {} );
 		selection.add(c1);
 		selection.add(c2);
 		selection.add(edge);
@@ -120,8 +117,7 @@ public class TestUsageScenarios
 		assertEquals(c1, edge.getStart());
 		assertEquals(c2, edge.getEnd());
 		
-		SelectionList selection = new SelectionList();
-		selection.add(p1);
+		SelectionModel selection = new SelectionModel( () -> {} );		selection.add(p1);
 		selection.add(edge);
 
 		Clipboard.instance().copy(selection);
