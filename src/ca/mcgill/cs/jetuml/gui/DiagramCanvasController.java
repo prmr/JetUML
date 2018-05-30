@@ -514,7 +514,11 @@ public class DiagramCanvasController
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
 			aLastMousePoint = getMousePoint(pEvent);
-			aSelectionModel.activateLasso(computeLasso(), aCanvas.getDiagram(), pEvent.isControlDown());
+			if( !pEvent.isControlDown() )
+			{
+				aSelectionModel.clearSelection();
+			}
+			aSelectionModel.activateLasso(computeLasso(), aCanvas.getDiagram());
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{

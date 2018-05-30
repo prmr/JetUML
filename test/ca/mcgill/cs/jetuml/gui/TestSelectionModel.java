@@ -136,15 +136,15 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testActivateLassoOneNodeNotAddMode()
+	public void testActivateLassoOneNode()
 	{
 		aClassDiagram.restoreRootNode(aNode1);
 		aNode1.translate(10, 10);
-		aModel.activateLasso(new Rectangle(5,5,5,5), aClassDiagram, false);
+		aModel.activateLasso(new Rectangle(5,5,5,5), aClassDiagram);
 		assertTrue(aModel.getLasso().isPresent());
 		assertEquals(new Rectangle(5,5,5,5), aModel.getLasso().get());
 		assertContent();
-		aModel.activateLasso(new Rectangle(0,0,200,200), aClassDiagram, false);
+		aModel.activateLasso(new Rectangle(0,0,200,200), aClassDiagram);
 		assertEquals(new Rectangle(0,0,200,200), aModel.getLasso().get());
 		assertContent(aNode1);
 		aModel.deactivateLasso();
@@ -152,7 +152,7 @@ public class TestSelectionModel
 	}
 	
 	@Test 
-	public void testActivateLassoNodesAndEdgesNotAddMode()
+	public void testActivateLassoNodesAndEdges1()
 	{
 		// aNode1: [x=0, y=0, w=100, h=60]
 		// aNode2: [x=200, y=0, w=100, h=60]
@@ -163,22 +163,27 @@ public class TestSelectionModel
 		aNode2.translate(200, 0);
 		
 		// Just Node 1
-		aModel.activateLasso(new Rectangle(0,0,105,61), aClassDiagram, false);
+		aModel.activateLasso(new Rectangle(0,0,105,61), aClassDiagram);
 		assertContent(aNode1);
 		// Just Node 2
-		aModel.activateLasso(new Rectangle(199,0,105,61), aClassDiagram, false);
+		aModel.clearSelection();
+		aModel.activateLasso(new Rectangle(199,0,105,61), aClassDiagram);
 		assertContent(aNode2);
 		// Just Edge 1
-		aModel.activateLasso(new Rectangle(97,20,110,20), aClassDiagram, false);
+		aModel.clearSelection();
+		aModel.activateLasso(new Rectangle(97,20,110,20), aClassDiagram);
 		assertContent(aEdge1);
 		// Node 1 and edge
-		aModel.activateLasso(new Rectangle(0,0,230,63), aClassDiagram, false);
+		aModel.clearSelection();
+		aModel.activateLasso(new Rectangle(0,0,230,63), aClassDiagram);
 		assertContent(aNode1, aEdge1);
 		// Node 2 and edge
-		aModel.activateLasso(new Rectangle(5,0,330,70), aClassDiagram, false);
+		aModel.clearSelection();
+		aModel.activateLasso(new Rectangle(5,0,330,70), aClassDiagram);
 		assertContent(aNode2, aEdge1);
 		// Everything
-		aModel.activateLasso(new Rectangle(0,0,330,70), aClassDiagram, false);
+		aModel.clearSelection();
+		aModel.activateLasso(new Rectangle(0,0,330,70), aClassDiagram);
 		assertContent(aNode1, aNode2, aEdge1);
 	}
 	
@@ -199,27 +204,27 @@ public class TestSelectionModel
 		
 		aModel.set(extraNode);
 		// Just Node 1
-		aModel.activateLasso(new Rectangle(0,0,105,61), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(0,0,105,61), aClassDiagram);
 		assertContent(extraNode, aNode1);
 		// Just Node 2
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(199,0,105,61), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(199,0,105,61), aClassDiagram);
 		assertContent(extraNode, aNode2);
 		// Just Edge 1
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(97,20,110,20), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(97,20,110,20), aClassDiagram);
 		assertContent(extraNode, aEdge1);
 		// Node 1 and edge
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(0,0,230,63), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(0,0,230,63), aClassDiagram);
 		assertContent(extraNode, aNode1, aEdge1);
 		// Node 2 and edge
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(5,0,330,70), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(5,0,330,70), aClassDiagram);
 		assertContent(extraNode, aNode2, aEdge1);
 		// Everything
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(0,0,330,70), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(0,0,330,70), aClassDiagram);
 		assertContent(extraNode, aNode1, aNode2, aEdge1);
 	}
 	
@@ -235,7 +240,7 @@ public class TestSelectionModel
 		Method layoutMethod = Diagram.class.getDeclaredMethod("layout");
 		layoutMethod.setAccessible(true);
 		layoutMethod.invoke(aClassDiagram);
-		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram, false);
+		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
 		assertContent(aPackage1, aNode2);
 	}
 	
@@ -255,7 +260,7 @@ public class TestSelectionModel
 		layoutMethod.setAccessible(true);
 		layoutMethod.invoke(aClassDiagram);
 		aModel.set(extraNode);
-		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
 		assertContent(extraNode, aPackage1, aNode2);
 	}
 	
@@ -269,7 +274,7 @@ public class TestSelectionModel
 		Method layoutMethod = Diagram.class.getDeclaredMethod("layout");
 		layoutMethod.setAccessible(true);
 		layoutMethod.invoke(aClassDiagram);
-		aModel.activateLasso(new Rectangle(99,99,102,102), aClassDiagram, true);
+		aModel.activateLasso(new Rectangle(99,99,102,102), aClassDiagram);
 		assertContent(aNode1);
 	}
 	

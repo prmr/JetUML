@@ -115,27 +115,22 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * 
 	 * @param pLasso The bounds of the current lasso.
 	 * @param pDiagramData Data about the diagram whose elements are being selected with the lasso.
-	 * @param pAddMode If true, elements in the lasso are added to any existing selection. Otherwise, 
 	 * only the elements in the lasso are selected.
 	 * @pre pLasso != null;
 	 * @pre pDiagramData != null;
 	 */
-	public void activateLasso(Rectangle pLasso, DiagramData pDiagramData, boolean pAddMode)
+	public void activateLasso(Rectangle pLasso, DiagramData pDiagramData)
 	{
 		assert pLasso != null;
 		aLasso = Optional.of(pLasso);
-		pDiagramData.rootNodes().forEach( node -> selectNode(pAddMode, node, pLasso));
-		pDiagramData.edges().forEach( edge -> selectEdge(pAddMode, edge, pLasso));
+		pDiagramData.rootNodes().forEach( node -> selectNode(node, pLasso));
+		pDiagramData.edges().forEach( edge -> selectEdge(edge, pLasso));
 		aObserver.selectionModelChanged();
 	}
 	
-	private void selectNode(boolean pCtrl, Node pNode, Rectangle pLasso)
+	private void selectNode(Node pNode, Rectangle pLasso)
 	{
-		if(!pCtrl && !pLasso.contains(pNode.view().getBounds())) 
-		{
-			internalRemoveFromSelection(pNode);
-		}
-		else if(pLasso.contains(pNode.view().getBounds())) 
+		if(pLasso.contains(pNode.view().getBounds())) 
 		{
 			internalAddToSelection(pNode);
 		}
@@ -143,18 +138,14 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			for(ChildNode child : ((ParentNode) pNode).getChildren())
 			{
-				selectNode(pCtrl, child, pLasso);
+				selectNode(child, pLasso);
 			}
 		}
 	}
 	
-	private void selectEdge( boolean pAddMode, Edge pEdge, Rectangle pLasso )
+	private void selectEdge(Edge pEdge, Rectangle pLasso )
 	{
-		if( !pAddMode && !pLasso.contains(pEdge.view().getBounds()) )
-		{
-			internalRemoveFromSelection(pEdge);
-		}
-		else if(pLasso.contains(pEdge.view().getBounds()))
+		if(pLasso.contains(pEdge.view().getBounds()))
 		{
 			internalAddToSelection(pEdge);
 		}		
