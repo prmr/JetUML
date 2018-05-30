@@ -44,6 +44,8 @@ import javax.imageio.ImageIO;
 import ca.mcgill.cs.jetuml.UMLEditor;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
@@ -121,7 +123,7 @@ public class EditorFrame extends BorderPane
 			((MenuBar)getTop()).getMenus().stream() // All top level menus
 				.flatMap(menu -> Stream.concat(Stream.of(menu), menu.getItems().stream())) // All menus and immediate sub-menus
 				.filter( item -> Boolean.TRUE.equals(item.getUserData())) // Retain only diagram-relevant menu items
-				.forEach( item -> item.setDisable(noCurrentGraphFrame()));
+				.forEach( item -> item.setDisable(isWelcomeTabShowing()));
 	}
 	
 	// Returns the new menu
@@ -157,14 +159,14 @@ public class EditorFrame extends BorderPane
 	{
 		MenuFactory factory = new MenuFactory(RESOURCES);
 		pMenuBar.getMenus().add(factory.createMenu("edit", true, 
-				factory.createMenuItem("edit.undo", true, pEvent -> undo()),
-				factory.createMenuItem("edit.redo", true, pEvent -> redo()),
-				factory.createMenuItem("edit.selectall", true, pEvent -> selectAll()),
-				factory.createMenuItem("edit.properties", true, pEvent -> editSelected()),
-				factory.createMenuItem("edit.cut", true, pEvent -> cut()),
-				factory.createMenuItem("edit.paste", true, pEvent -> paste()),
-				factory.createMenuItem("edit.copy", true, pEvent -> copy()),
-				factory.createMenuItem("edit.delete", true, pEvent -> removeSelected() )));
+				factory.createMenuItem("edit.undo", true, pEvent -> getSelectedDiagramTab().undo()),
+				factory.createMenuItem("edit.redo", true, pEvent -> getSelectedDiagramTab().redo()),
+				factory.createMenuItem("edit.selectall", true, pEvent -> getSelectedDiagramTab().selectAll()),
+				factory.createMenuItem("edit.properties", true, pEvent -> getSelectedDiagramTab().editSelected()),
+				factory.createMenuItem("edit.cut", true, pEvent -> getSelectedDiagramTab().cut()),
+				factory.createMenuItem("edit.paste", true, pEvent -> getSelectedDiagramTab().paste()),
+				factory.createMenuItem("edit.copy", true, pEvent -> getSelectedDiagramTab().copy()),
+				factory.createMenuItem("edit.delete", true, pEvent -> getSelectedDiagramTab().removeSelected() )));
 	}
 	
 	private void createViewMenu(MenuBar pMenuBar) 
@@ -173,12 +175,13 @@ public class EditorFrame extends BorderPane
 		pMenuBar.getMenus().add(factory.createMenu("view", true, 
 				
 				factory.createCheckMenuItem("view.show_grid", true, 
-				Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true")), 
-				pEvent -> setShowGridForAllFrames(((CheckMenuItem) pEvent.getSource()).isSelected())),
-				
+				UserPreferences.instance().getBoolean(BooleanPreference.showGrid), 
+				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, ((CheckMenuItem) pEvent.getSource()).isSelected())),
+			
 				factory.createCheckMenuItem("view.show_hints", true, 
-				Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")), 
-				pEvent -> setShowToolbarButtonLabelsForAllFrames(((CheckMenuItem) pEvent.getSource()).isSelected()))));
+				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
+				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
+						((CheckMenuItem) pEvent.getSource()).isSelected()))));
 	}
 	
 	private void createHelpMenu(MenuBar pMenuBar) 
@@ -188,32 +191,6 @@ public class EditorFrame extends BorderPane
 				factory.createMenuItem("help.about", false, pEvent -> new AboutDialog(aMainStage).show())));
 	}
 	
-	private void setShowToolbarButtonLabelsForAllFrames(boolean pShow)
-	{
-		assert !noCurrentGraphFrame();
-    	Preferences.userNodeForPackage(UMLEditor.class).put("showToolHints", Boolean.toString(pShow));
-		for( Tab tab : tabs() )
-		{
-			if( tab instanceof DiagramTab )
-			{
-				((DiagramTab)tab).showToolbarButtonLabels(pShow);
-			}
-		}
-	}
-	
-	private void setShowGridForAllFrames(boolean pShow)
-	{
-		assert !noCurrentGraphFrame();
-    	Preferences.userNodeForPackage(UMLEditor.class).put("showGrid", Boolean.toString(pShow));
-		for( Tab tab : tabs() )
-		{
-			if( tab instanceof DiagramTab )
-			{
-				((DiagramTab)tab).getGraphPanel().setShowGrid(pShow);
-			}
-		}
-	}
-
 	/*
 	 * Opens a file with the given name, or switches to the frame if it is already
 	 * open.
@@ -321,60 +298,12 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	private void cut() 
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).cut();
-	}
-
-	private void copy() 
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).copy();
-	}
-
-	private void paste() 
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).paste();
-	}
-	
-	private void undo()
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).undo();
-	}
-	
-	private void redo()
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).redo();
-	}
-	
-	private void selectAll()
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).selectAll();
-	}
-	
-	private void editSelected()
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).editSelected();
-	}
-	
-	private void removeSelected()
-	{
-		assert !noCurrentGraphFrame();
-		((DiagramTab) getSelectedTab()).removeSelected();
-	}
-
 	/**
 	 * Copies the current image to the clipboard.
 	 */
 	public void copyToClipboard() 
 	{
-		DiagramTab frame = (DiagramTab) getSelectedTab();
+		DiagramTab frame = getSelectedDiagramTab();
 		final Image image = ImageCreator.createImage(frame.getGraphPanel().getDiagram());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
@@ -386,42 +315,36 @@ public class EditorFrame extends BorderPane
 		alert.showAndWait();
 	}
 
-	private boolean noCurrentGraphFrame() 
+	/* @pre there is a selected diagram tab, not just the welcome tab */
+	private DiagramTab getSelectedDiagramTab()
 	{
-		return getSelectedTab() == null ||
-				!(getSelectedTab() instanceof DiagramTab);
+		Tab tab = ((TabPane) getCenter()).getSelectionModel().getSelectedItem();
+		assert tab instanceof DiagramTab; // implies a null check.
+		return (DiagramTab) tab;
 	}
 
 	private void close() 
 	{
-		if (noCurrentGraphFrame()) 
+		DiagramTab openFrame = getSelectedDiagramTab();
+		// we only want to check attempts to close a frame
+		if (openFrame.isModified()) 
 		{
-			return;
-		}
-		Tab currentFrame = getSelectedTab();
-		if (currentFrame != null)
-		{
-			DiagramTab openFrame = (DiagramTab) currentFrame;
-			// we only want to check attempts to close a frame
-			if (openFrame.isModified()) 
-			{
-				// ask user if it is ok to close
-				Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
-				alert.initOwner(aMainStage);
-				alert.setTitle(RESOURCES.getString("dialog.close.title"));
-				alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
-				alert.showAndWait();
+			// ask user if it is ok to close
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(RESOURCES.getString("dialog.close.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			alert.showAndWait();
 
-				if (alert.getResult() == ButtonType.YES) 
-				{
-					removeGraphFrameFromTabbedPane(openFrame);
-				}
-				return;
-			} 
-			else 
+			if (alert.getResult() == ButtonType.YES) 
 			{
 				removeGraphFrameFromTabbedPane(openFrame);
 			}
+			return;
+		} 
+		else 
+		{
+			removeGraphFrameFromTabbedPane(openFrame);
 		}
 	}
 
@@ -454,13 +377,9 @@ public class EditorFrame extends BorderPane
 
 	private void save() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
-		DiagramTab frame = (DiagramTab) getSelectedTab();
+		DiagramTab frame = getSelectedDiagramTab();
 		File file = frame.getFile();
-		if (file == null) 
+		if(file == null) 
 		{
 			saveAs();
 			return;
@@ -470,7 +389,7 @@ public class EditorFrame extends BorderPane
 			PersistenceService.save(frame.getDiagram(), file);
 			frame.setModified(false);
 		} 
-		catch (IOException exception) 
+		catch(IOException exception) 
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
@@ -480,16 +399,12 @@ public class EditorFrame extends BorderPane
 
 	private void saveAs() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
-		DiagramTab frame = (DiagramTab) getSelectedTab();
-		Diagram graph = frame.getDiagram();
+		DiagramTab frame = (DiagramTab) getSelectedDiagramTab();
+		Diagram diagram = frame.getDiagram();
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
-		fileChooser.setSelectedExtensionFilter(FileExtensions.get(graph.getDescription()));
+		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
 
 		if (frame.getFile() != null) 
 		{
@@ -505,16 +420,16 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			File result = fileChooser.showSaveDialog(aMainStage);
-			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(graph.getDescription()))
+			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
 			{
-				result = new File(result.getPath() + graph.getFileExtension() + RESOURCES.getString("application.file.extension"));
+				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
 			}
-			if (result != null) 
+			if(result != null) 
 			{
-				PersistenceService.save(graph, result);
+				PersistenceService.save(diagram, result);
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
-				getSelectedTab().setText(frame.getFile().getName());
+				frame.setText(frame.getFile().getName());
 				frame.setModified(false);
 			}
 		} 
@@ -559,14 +474,9 @@ public class EditorFrame extends BorderPane
 	 */
 	private void exportImage() 
 	{
-		if (noCurrentGraphFrame()) 
-		{
-			return;
-		}
-		
 		FileChooser fileChooser = getImageFileChooser();
 		File file = fileChooser.showSaveDialog(aMainStage);
-		if (file == null) 
+		if(file == null) 
 		{
 			return;
 		}
@@ -583,7 +493,7 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		
-		DiagramTab frame = (DiagramTab) getSelectedTab();
+		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
 			BufferedImage image = getBufferedImage(frame.getGraphPanel()); 
@@ -631,8 +541,7 @@ public class EditorFrame extends BorderPane
 
 	private FileChooser getImageFileChooser() 
 	{
-		DiagramTab frame = (DiagramTab) getSelectedTab();
-		assert frame != null;
+		DiagramTab frame = getSelectedDiagramTab();
 
 		// Initialize the file chooser widget
 		FileChooser fileChooser = new FileChooser();
@@ -715,11 +624,6 @@ public class EditorFrame extends BorderPane
 		return ((TabPane) getCenter()).getTabs();
 	}
 	
-	private Tab getSelectedTab()
-	{
-		return ((TabPane) getCenter()).getSelectionModel().getSelectedItem();
-	}
-	
 	private TabPane tabPane()
 	{
 		return (TabPane) getCenter();
@@ -760,6 +664,7 @@ public class EditorFrame extends BorderPane
 	 */
 	private void removeGraphFrameFromTabbedPane(DiagramTab pTab) 
 	{
+		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
 	}

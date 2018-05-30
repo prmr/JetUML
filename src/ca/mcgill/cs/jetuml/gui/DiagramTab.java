@@ -25,6 +25,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.io.File;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -48,7 +49,9 @@ public class DiagramTab extends Tab
 	public DiagramTab(Diagram pDiagram)
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
+		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 		aDiagramCanvas = new DiagramCanvas(pDiagram, Screen.getPrimary().getVisualBounds());
+		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
 		aDiagramCanvas.setController(aDiagramCanvasController);
 		aDiagramCanvas.paintPanel();
@@ -86,6 +89,15 @@ public class DiagramTab extends Tab
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
+	}
+	
+	/**
+	 * This method should be called immediately before closing the tab.
+	 */
+	public void close()
+	{
+		UserPreferences.instance().removeBooleanPreferenceChangeHandler(aDiagramCanvas);
+		UserPreferences.instance().removeBooleanPreferenceChangeHandler((DiagramTabToolBar)((BorderPane)getContent()).getRight());
 	}
 
 	/**
@@ -145,16 +157,6 @@ public class DiagramTab extends Tab
 		aDiagramCanvasController.selectAll();
 	}
 	
-	/**
-	 * Shoes or hides the textual description of the tools and commands.
-	 * 
-	 * @param pShow True if the labels are to be shown
-	 */
-	public void showToolbarButtonLabels(boolean pShow)
-	{
-		((DiagramTabToolBar)((BorderPane)getContent()).getRight()).showButtonLabels(pShow);
-	}
-
 	/**
      * Gets the graph panel that is contained in this frame.
      * @return the graph panel

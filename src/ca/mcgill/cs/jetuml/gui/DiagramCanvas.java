@@ -20,9 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import java.util.prefs.Preferences;
-
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -36,12 +36,11 @@ import javafx.scene.paint.Color;
 /**
  * A canvas on which to view diagrams.
  */
-public class DiagramCanvas extends Canvas implements SelectionObserver
+public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler
 {	
 	private static final double SIZE_RATIO = 0.65;
 	
 	private Diagram aDiagram;
-	private boolean aShowGrid;
 	private DiagramCanvasController aController;
 	
 	/**
@@ -54,7 +53,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 	{
 		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
 		aDiagram = pDiagram;
-		aShowGrid = Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showGrid", "true"));
 	}
 	
 	/**
@@ -93,7 +91,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		context.fillRect(0, 0, getWidth(), getHeight());
 		Bounds bounds = getBoundsInLocal();
 		Rectangle graphBounds = aDiagram.getBounds();
-		if(aShowGrid) 
+		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
 			Grid.draw(context, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
 					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
@@ -106,19 +104,18 @@ public class DiagramCanvas extends Canvas implements SelectionObserver
 		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
 	
-	/**
-	 * Sets the value of the hideGrid property.
-	 * @param pShowGrid true if the grid is being shown
-	 */
-	public void setShowGrid(boolean pShowGrid)
-	{
-		aShowGrid = pShowGrid;
-		paintPanel();
-	}
-
 	@Override
 	public void selectionModelChanged()
 	{
 		paintPanel();		
+	}
+
+	@Override
+	public void preferenceChanged(BooleanPreference pPreference)
+	{
+		if( pPreference == BooleanPreference.showGrid )
+		{
+			paintPanel();
+		}
 	}
 }

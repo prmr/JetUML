@@ -23,9 +23,10 @@ package ca.mcgill.cs.jetuml.gui;
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.Optional;
-import java.util.prefs.Preferences;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -50,7 +51,7 @@ import javafx.scene.image.ImageView;
  *  menu with the same tools as the tool bar. Labels can optionally be shown next 
  *  to tools.
  */
-public class DiagramTabToolBar extends ToolBar
+public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChangeHandler
 {
 	private ContextMenu aPopupMenu = new ContextMenu();
 
@@ -67,7 +68,7 @@ public class DiagramTabToolBar extends ToolBar
 		installSelectionTool(toggleGroup);
 		installNodesAndEdgesTools(pDiagram, toggleGroup);
 		installCopyToClipboard();
-    	showButtonLabels( Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get("showToolHints", "false")) );
+    	showButtonLabels( UserPreferences.instance().getBoolean(BooleanPreference.showToolHints ));
 	}
 	
 	private void installSelectionTool(ToggleGroup pToggleGroup)
@@ -180,7 +181,7 @@ public class DiagramTabToolBar extends ToolBar
 	 * Shows or hides the textual description of the tools and commands.
 	 * @param pShow True if the labels should be shown
 	 */
-	public void showButtonLabels(boolean pShow)
+	private void showButtonLabels(boolean pShow)
 	{
 		for( javafx.scene.Node item : getItems() )
 		{
@@ -195,6 +196,15 @@ public class DiagramTabToolBar extends ToolBar
 				button.setText("");
 				button.autosize();
 			}
+		}
+	}
+
+	@Override
+	public void preferenceChanged(BooleanPreference pPreference)
+	{
+		if( pPreference == BooleanPreference.showToolHints )
+		{
+			showButtonLabels(UserPreferences.instance().getBoolean(BooleanPreference.showToolHints));
 		}
 	}
 }
