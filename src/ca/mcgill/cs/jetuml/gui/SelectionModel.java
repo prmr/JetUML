@@ -218,7 +218,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		assert pNewSelection != null;
 		clearSelection();
-		pNewSelection.forEach(aSelected::add);
+		pNewSelection.forEach(this::internalAddToSelection);
 		aObserver.selectionModelChanged();
 	}
 	

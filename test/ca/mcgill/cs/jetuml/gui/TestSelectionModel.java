@@ -25,13 +25,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -39,7 +42,9 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.gui.SelectionModel;
+import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestSelectionModel
 {
@@ -49,6 +54,7 @@ public class TestSelectionModel
 	private ClassNode aNode2;
 	private PackageNode aPackage1; 
 	private PackageNode aPackage2; 
+	private ClassDiagram aClassDiagram;
 	private SelectionModel aModel;
 	
 	/**
@@ -71,16 +77,33 @@ public class TestSelectionModel
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aModel = new SelectionModel( () -> {});
+		aClassDiagram = new ClassDiagram();
 	}
 	
-	private static int size(SelectionModel pModel)
+	private int size()
 	{
 		int size = 0;
-		for( @SuppressWarnings("unused") DiagramElement element : pModel )
+		for( @SuppressWarnings("unused") DiagramElement element : aModel )
 		{
 			size++;
 		}
 		return size;
+	}
+	
+	private void assertContent(DiagramElement... pElements)
+	{
+		Iterator<DiagramElement> iterator = aModel.iterator();
+		for( DiagramElement element : pElements)
+		{
+			assertTrue(iterator.hasNext());
+			assertEquals(element, iterator.next());
+		}
+		assertFalse(iterator.hasNext());
+	}
+	
+	private void assertSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
+	{
+		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getSelectionBounds());
 	}
 	
 	@Test
@@ -92,6 +115,142 @@ public class TestSelectionModel
 		assertFalse(aModel.iterator().hasNext());
 		assertTrue(aModel.isEmpty());
 		assertFalse(aModel.contains(aEdge1));
+	}
+	
+	@Test
+	public void testRubberband()
+	{
+		assertFalse(aModel.getRubberband().isPresent());
+		aModel.activateRubberband(new Line(new Point(0,0), new Point(10,10)));
+		assertTrue(aModel.getRubberband().isPresent());
+		assertEquals(new Line(new Point(0,0), new Point(10,10)), aModel.getRubberband().get());
+		aModel.activateRubberband(new Line(new Point(0,0), new Point(20,30)));
+		assertTrue(aModel.getRubberband().isPresent());
+		assertEquals(new Line(new Point(0,0), new Point(20,30)), aModel.getRubberband().get());
+		aModel.deactivateRubberband();
+		assertFalse(aModel.getRubberband().isPresent());
+		aModel.deactivateRubberband();
+		assertFalse(aModel.getRubberband().isPresent());
+	}
+	
+	@Test
+	public void testSetSelectionToEmpty()
+	{
+		List<DiagramElement> list = new ArrayList<>();
+		aModel.setSelectionTo(list);
+		assertContent();
+	}
+	
+	@Test
+	public void testSetSelectionToNodesOnly()
+	{
+		List<DiagramElement> list = new ArrayList<>();
+		list.add(aNode1);
+		list.add(aNode2);
+		aModel.setSelectionTo(list);
+		assertContent(aNode1, aNode2);
+	}
+	
+	@Test
+	public void testSetSelectionToNodesAndEdges()
+	{
+		List<DiagramElement> list = new ArrayList<>();
+		list.add(aNode1);
+		list.add(aNode2);
+		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		list.add(aEdge1);
+		aModel.setSelectionTo(list);
+		assertContent(aNode1, aNode2, aEdge1);
+	}
+	
+	@Test
+	public void testSetSelectionWithContainment()
+	{
+		List<DiagramElement> list = new ArrayList<>();
+		list.add(aNode1);
+		list.add(aNode2);
+		list.add(aPackage1);
+		aPackage1.addChild(aNode1);
+		aPackage1.addChild(aNode2);
+		aModel.setSelectionTo(list);
+		assertContent(aPackage1);
+	}
+	
+	@Test
+	public void testSetSelectionTwice()
+	{
+		List<DiagramElement> list = new ArrayList<>();
+		list.add(aNode1);
+		aModel.setSelectionTo(list);
+		assertContent(aNode1);
+		list.clear();
+		list.add(aNode2);
+		aModel.setSelectionTo(list);
+		assertContent(aNode2);
+	}
+	
+	@Test
+	public void testSelectAllRootNodesOnly()
+	{
+		aClassDiagram.restoreRootNode(aNode1);
+		aClassDiagram.restoreRootNode(aNode2);
+		aModel.selectAll(aClassDiagram);
+		assertEquals(2, size());
+		assertContent(aNode1, aNode2);
+	}
+	
+	@Test
+	public void testSelectAllRootAndChildNode()
+	{
+		aPackage1.addChild(aNode1);
+		aClassDiagram.restoreRootNode(aPackage1);
+		aModel.selectAll(aClassDiagram);
+		assertEquals(1, size());
+		assertContent(aPackage1);
+	}
+	
+	@Test
+	public void testGetSelectionBoundsOneNode()
+	{
+		aModel.addToSelection(aNode1);
+		assertSelectionBounds(0, 0, 100, 60); 
+		aNode1.translate(10, 10);
+		assertSelectionBounds(10, 10, 100, 60); 
+	}
+	
+	@Test
+	public void testGetSelectionBoundsTwoNodes()
+	{
+		aModel.addToSelection(aNode1);
+		aModel.addToSelection(aNode2);
+		aNode1.translate(10, 10);
+		aNode2.translate(100, 100);
+		assertSelectionBounds(10, 10, 190, 150); 
+	}
+	
+	@Test
+	public void testGetSelectionBoundsTwoNodesOneEdge()
+	{
+		aModel.addToSelection(aNode1);
+		aModel.addToSelection(aNode2);
+		aNode1.translate(10, 10);
+		aNode2.translate(100, 100);
+		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aModel.addToSelection(aEdge1);
+		assertSelectionBounds(10, 10, 190, 150); 
+	}
+	
+	// TODO Test with self-edge
+	
+	@Test
+	public void testSelectRootNodesAndEdges()
+	{
+		aClassDiagram.restoreRootNode(aNode1);
+		aClassDiagram.restoreRootNode(aNode2);
+		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aModel.selectAll(aClassDiagram);
+		assertEquals(3, size());
+		assertContent(aNode1, aNode2, aEdge1);
 	}
 	
 	@Test
@@ -156,13 +315,13 @@ public class TestSelectionModel
 	public void testAdd()
 	{
 		aModel.addToSelection(aEdge1);
-		assertEquals(1, size(aModel));
+		assertEquals(1, size());
 		assertEquals(aEdge1, aModel.getLastSelected().get());
 		aModel.addToSelection(aNode1);
-		assertEquals(2, size(aModel));
+		assertEquals(2, size());
 		assertEquals(aNode1, aModel.getLastSelected().get());
 		aModel.addToSelection(aEdge1);
-		assertEquals(2, size(aModel));
+		assertEquals(2, size());
 		assertEquals(aEdge1, aModel.getLastSelected().get());
 	}
 	
@@ -173,7 +332,7 @@ public class TestSelectionModel
 		aPackage1.addChild(aNode1);
 		aModel.addToSelection(aPackage1);
 		aModel.addToSelection(aNode1);
-		assertEquals(2, size(aModel));
+		assertEquals(2, size());
 		assertTrue(aModel.contains(aEdge1));
 		assertTrue(aModel.contains(aPackage1));
 	}
@@ -186,11 +345,11 @@ public class TestSelectionModel
 		aPackage2.addChild(aNode2);
 		aModel.addToSelection(aNode1);
 		aModel.addToSelection(aNode2);
-		assertEquals(2, size(aModel));
+		assertEquals(2, size());
 		assertTrue(aModel.contains(aNode1));
 		assertTrue(aModel.contains(aNode2));
 		aModel.addToSelection(aPackage1);
-		assertEquals(1, size(aModel));
+		assertEquals(1, size());
 		assertTrue(aModel.contains(aPackage1));
 	}
 	
@@ -213,7 +372,7 @@ public class TestSelectionModel
 		aModel.addToSelection(aEdge2);
 		aModel.addToSelection(aNode1);
 		aModel.clearSelection();
-		assertEquals(0, size(aModel));
+		assertEquals(0, size());
 		assertFalse(aModel.getLastSelected().isPresent());
 	}
 	
@@ -224,7 +383,7 @@ public class TestSelectionModel
 		aModel.addToSelection(aEdge2);
 		aModel.addToSelection(aNode1);
 		aModel.removeFromSelection(aEdge1);
-		assertEquals(2,  size(aModel));
+		assertEquals(2,  size());
 		Iterator<DiagramElement> iterator = aModel.iterator();
 		assertEquals(aEdge2, iterator.next());
 		assertEquals(aNode1, iterator.next());
@@ -237,13 +396,13 @@ public class TestSelectionModel
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
 		aModel.set(aNode1);
-		assertEquals(1, size(aModel));
+		assertEquals(1, size());
 		assertEquals(aNode1, aModel.getLastSelected().get());
 		aModel.clearSelection();
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
 		aModel.set(aEdge1);
-		assertEquals(1, size(aModel));
+		assertEquals(1, size());
 		assertEquals(aEdge1, aModel.getLastSelected().get());
 	}
 }
