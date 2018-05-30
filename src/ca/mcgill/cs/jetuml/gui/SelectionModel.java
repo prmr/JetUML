@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramData;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -47,7 +46,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 {
 	private final SelectionObserver aObserver;
 	
-	private Stack<DiagramElement> aSelected = new Stack<>();
+	private List<DiagramElement> aSelected = new ArrayList<>();
 	private Optional<Line> aRubberband = Optional.empty();
 	private Optional<Rectangle> aLasso = Optional.empty();
 	
@@ -235,7 +234,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		if( !containsParent( pElement ))
 		{
 			aSelected.remove(pElement);
-			aSelected.push(pElement);
+			aSelected.add(pElement);
 			
 			// Remove children in case a parent was added.
 			ArrayList<DiagramElement> toRemove = new ArrayList<>();
@@ -248,7 +247,8 @@ public class SelectionModel implements Iterable<DiagramElement>
 			}
 			for( DiagramElement element : toRemove )
 			{
-				internalRemoveFromSelection(element);
+				// Do no use removeFromSelection because it notifies the observer
+				aSelected.remove(element); 
 			}
 		}
 	}
@@ -304,7 +304,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		}
 		else
 		{
-			return Optional.of(aSelected.peek());
+			return Optional.of(aSelected.get(aSelected.size()-1));
 		}
 	}
 	
@@ -337,13 +337,8 @@ public class SelectionModel implements Iterable<DiagramElement>
 	public void removeFromSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
-		internalRemoveFromSelection(pElement);
-		aObserver.selectionModelChanged();
-	}
-	
-	private void internalRemoveFromSelection(DiagramElement pElement)
-	{
 		aSelected.remove(pElement);
+		aObserver.selectionModelChanged();
 	}
 	
 	/**
