@@ -139,9 +139,9 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			internalAddToSelection(pNode);
 		}
-		if(pNode instanceof ParentNode)
+		if(pNode instanceof ParentNode) // check whether any child node might be selectable
 		{
-			for (ChildNode child : ((ParentNode) pNode).getChildren())
+			for(ChildNode child : ((ParentNode) pNode).getChildren())
 			{
 				selectNode(pCtrl, child, pLasso);
 			}
