@@ -82,6 +82,11 @@ public class DiagramCanvasController
 	private boolean aModified = false;
 
 	
+	/**
+	 * Creates a new controller.
+	 * @param pCanvas The canvas being controlled
+	 * @param pToolBar The toolbar.
+	 */
 	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar)
 	{
 		aCanvas = pCanvas;
@@ -93,7 +98,7 @@ public class DiagramCanvasController
 	}
 	
 	/**
-	 * Removes any element in the selectionmodel that is not in the diagram.
+	 * Removes any element in the selection model that is not in the diagram.
 	 * TODO a hack which will hopefully be factored out.
 	 */
 	public void synchronizeSelectionModel()
@@ -110,11 +115,17 @@ public class DiagramCanvasController
 		toBeRemoved.forEach( element -> aSelectionModel.removeFromSelection(element));            
 	}
 	
+	/**
+	 * @return The selection model associated with this controller
+	 */
 	public SelectionModel getSelectionModel()
 	{
 		return aSelectionModel;
 	}
 	
+	/**
+	 * @return The diagram associated with this controller.
+	 */
 	public Diagram getDiagram()
 	{
 		return aCanvas.getDiagram();
@@ -434,6 +445,9 @@ public class DiagramCanvasController
 		return tool;
 	}
 	
+	/**
+	 * Select all elements in the diagram.
+	 */
 	public void selectAll()
 	{
 		aToolBar.setToolToBeSelect();
@@ -528,6 +542,7 @@ public class DiagramCanvasController
 	}
 	
 	// TODO, include edges between selected nodes in the bounds check.
+	// This will be doable by collecting all edges connected to a transitively selected node.
 	private void moveSelection(Point pMousePoint)
 	{
 		int dx = (int)(pMousePoint.getX() - aLastMousePoint.getX());
@@ -548,6 +563,9 @@ public class DiagramCanvasController
 		aCanvas.paintPanel();
 	}
 	
+	/**
+	 * @return A graph modification listener.
+	 */
 	public GraphModificationListener createGraphModificationListener()
 	{
 		return new PanelGraphModificationListener();
