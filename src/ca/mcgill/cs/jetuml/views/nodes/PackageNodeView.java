@@ -81,23 +81,17 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	{
 		super.draw(pGraphics);
 		Rectangle bounds = getBounds();
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+		pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+		pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
 		int textX = bounds.getX() + NAME_GAP;
 		int textY = (int)(bounds.getY());
 		Rectangle nameRectangle = new Rectangle(textX, textY, (int)aTop.getWidth(), (int)aTop.getHeight());
 		Rectangle contentsRectangle = new Rectangle(textX, textY + DEFAULT_TOP_HEIGHT + YGAP, (int)aBottom.getWidth(), (int)aBottom.getHeight());
 		NAME_VIEWER.draw(name(), pGraphics, nameRectangle);
 		CONTENTS_VIEWER.draw(contents(), pGraphics, contentsRectangle);
-	}
-	
-	@Override
-	public void fillShape(GraphicsContext pGraphics) 
-	{
-		Rectangle bounds = getBounds();
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-		pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
-		pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-		pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
 	}
 	
 	/**

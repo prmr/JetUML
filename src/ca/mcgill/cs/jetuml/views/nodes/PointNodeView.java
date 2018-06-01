@@ -60,6 +60,8 @@ public class PointNodeView extends AbstractNodeView
 	}
 
 	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
-	{}
+	public void draw(GraphicsContext pGraphics) 
+	{
+		// Do nothing, a point is invisible.
+	}
 }

@@ -62,8 +62,11 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
 		Rectangle top = getTopRectangle();
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+		pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+		
 		NAME_VIEWER.draw(name(), pGraphics, top);
 		int xmid = getBounds().getCenter().getX();
 		StrokeLineCap oldLineCap = pGraphics.getLineCap();
@@ -85,15 +88,6 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 	}
 
-	@Override
-	public void fillShape(GraphicsContext pGraphics)
-	{
-		Rectangle top = getTopRectangle();
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-		pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-	}
-   
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{

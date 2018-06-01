@@ -69,7 +69,6 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
 		final Rectangle bounds = getBounds();
 		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
 		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
@@ -120,7 +119,4 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	{
 		return leftWidth() + midWidth() / 2;
 	}
-	
-	@Override
-	public void fillShape(GraphicsContext pGraphics) {}
 }

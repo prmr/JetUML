@@ -74,7 +74,7 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 	}
 	
 	@Override
-	protected void fillShape(GraphicsContext pGraphics) 
+	public void draw(GraphicsContext pGraphics) 
 	{
 		Rectangle bounds = getBounds();	
 		pGraphics.setFill(BACKGROUND_COLOR);

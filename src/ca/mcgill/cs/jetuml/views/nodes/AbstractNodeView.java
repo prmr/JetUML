@@ -25,7 +25,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * Basic services for drawing nodes.
@@ -33,7 +32,6 @@ import javafx.scene.paint.Paint;
 public abstract class AbstractNodeView implements NodeView
 {
 	public static final int SHADOW_GAP = 4;
-	protected static final Color SHADOW_COLOR = Color.LIGHTGRAY;
 	protected static final Color BACKGROUND_COLOR = Color.WHITE;
 	protected static final double LINE_WIDTH = 0.6;
 	
@@ -55,23 +53,6 @@ public abstract class AbstractNodeView implements NodeView
 		return aNode;
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		Paint oldFill = pGraphics.getFill();
-		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(LINE_WIDTH);
-		fillShape(pGraphics);
-		pGraphics.setFill(oldFill);
-		pGraphics.setLineWidth(oldLineWidth);
-	}
-	
-	/**
-	 * Fills in shape of the node.
-	 * @param pGraphics GraphicsContext in which to fill the shape.
-	 */
-	protected abstract void fillShape(GraphicsContext pGraphics);
-
 	@Override
 	public void layout(Diagram pGraph) {}
 

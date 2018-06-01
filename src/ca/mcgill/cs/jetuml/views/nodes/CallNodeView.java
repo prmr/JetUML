@@ -76,7 +76,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
 		double oldLineWidth = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
 		if(openBottom())

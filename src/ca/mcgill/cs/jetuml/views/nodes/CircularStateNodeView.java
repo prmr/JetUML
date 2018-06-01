@@ -52,7 +52,10 @@ public class CircularStateNodeView extends AbstractNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		
 		Paint oldFill = pGraphics.getFill();
 		double oldLineWidth = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
@@ -92,14 +95,6 @@ public class CircularStateNodeView extends AbstractNodeView
 			return new Point((int) Math.round(cx), (int) Math.round(cy));
 		}
 	}   	 
-
-	@Override
-	public void fillShape(GraphicsContext pGraphics)
-	{
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-		pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-	}
 
 	@Override
 	public Rectangle getBounds()

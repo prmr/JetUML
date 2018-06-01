@@ -25,8 +25,12 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 /**
  * An object to render a NoteNode.
@@ -35,9 +39,8 @@ public class NoteNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
-	private static final int FOLD_X = 8;
-	private static final int FOLD_Y = 8;
-	private static final Color DEFAULT_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
+	private static final int FOLD_LENGTH = 8;
+	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
 	private static final StringViewer NOTE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
@@ -56,46 +59,40 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
-		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(LINE_WIDTH);
-		fillFold(pGraphics);   
-		pGraphics.setLineWidth(oldLineWidth);
-      
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE);
 		NOTE_VIEWER.draw(name(), pGraphics, getDefaultBounds());
 	}
 	
-	@Override
-	public void fillShape(GraphicsContext pGraphics) 
+	private Path createNotePath()
 	{
+		Path path = new Path();
 		Rectangle bounds = getBounds();		
-		pGraphics.beginPath();
-		pGraphics.setFill(DEFAULT_COLOR);
-		pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
-		pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-		pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-		pGraphics.closePath();
-		pGraphics.fill();
-		pGraphics.stroke();
+		path.getElements().addAll(
+				new MoveTo(bounds.getX(), bounds.getY()),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX(), bounds.getMaxY()),
+				new LineTo(bounds.getX(), bounds.getMaxY()),
+				new LineTo(bounds.getX(), bounds.getY()));
+		return path;
 	}
 	
 	/**
 	 * Fills in note fold.
 	 * @param pGraphics GraphicsContext in which to fill the fold
 	 */
-	public void fillFold(GraphicsContext pGraphics)
+	private Path createFoldPath()
 	{
-		final Rectangle bounds = getBounds();
-		pGraphics.beginPath();
-		pGraphics.setFill(Color.WHITE);
-		pGraphics.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		pGraphics.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
-		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		pGraphics.closePath();
-		pGraphics.fill();
-		pGraphics.stroke();
+		Rectangle bounds = getBounds();
+		Path path = new Path();
+		path.getElements().addAll(
+				new MoveTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY())
+		);
+		return path;
 	}
 	
 	/**
