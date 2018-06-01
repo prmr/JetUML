@@ -41,6 +41,7 @@ public final class ToolGraphics
 	private static final Color SELECTION_COLOR = Color.rgb(77, 115, 153);
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
+	private static final double LINE_WIDTH = 0.6;
 	
 	private ToolGraphics() {}
 	
@@ -150,6 +151,8 @@ public final class ToolGraphics
 	{
 		double[] oldDash = pGraphics.getLineDashes();
 		pGraphics.setLineDashes(pStyle.getLineDashes());
+		double width = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.beginPath();
 		for(PathElement element : pPath.getElements())
 		{
@@ -170,6 +173,26 @@ public final class ToolGraphics
 		}
 		pGraphics.stroke();
 		pGraphics.setLineDashes(oldDash);
+		pGraphics.setLineWidth(width);
+	}
+	
+	/**
+	 * Strokes and fills a path, by converting the elements to integer coordinates and then
+	 * aligning them to the center of the pixels, so that it aligns precisely
+	 * with the JavaFX coordinate system. See the documentation for 
+	 * javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pPath The path to stroke
+	 * @param pFill The fill color for the path.
+	 */
+	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill)
+	{
+		strokeSharpPath(pGraphics, pPath, LineStyle.SOLID);
+		Paint oldFill = pGraphics.getFill();
+		pGraphics.setFill(pFill);
+		pGraphics.fill();
+		pGraphics.setFill(oldFill);
 	}
 	
 	/**

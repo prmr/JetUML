@@ -57,6 +57,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_20 = 20;
 	private static final int DEGREES_270 = 270;
+	private static final double LINE_WIDTH = 0.6;
 	
 	private static final int RADIANS_TO_PIXELS = 10;
 	private static final double HEIGHT_RATIO = 3.5;
@@ -144,8 +145,11 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	private void drawSelfEdge(GraphicsContext pGraphics)
 	{
 		Arc arc = (Arc) getShape();
+		double width = pGraphics.getLineWidth();
+		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.strokeArc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(), arc.getStartAngle(), 
 				arc.getLength(), arc.getType());
+		pGraphics.setLineWidth(width);
 	}
 	
 	private Rectangle2D getLabelBounds()

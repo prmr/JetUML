@@ -31,12 +31,9 @@ import static ca.mcgill.cs.jetuml.views.ArrowHead.V;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
-
 
 /**
  * Defines how to draw arrow heads.
@@ -66,25 +63,18 @@ public final class ArrowHeadView
 	 */
 	public void draw(GraphicsContext pGraphics, Point2D pPoint1, Point2D pEnd)
 	{
-		Paint oldFill = pGraphics.getFill();
-		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.beginPath();
-		pGraphics.setStroke(Color.BLACK);
 		if(aArrowHead == ArrowHead.BLACK_DIAMOND || aArrowHead == BLACK_TRIANGLE) 
 		{
-			pGraphics.setFill(Color.BLACK);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pPoint1, pEnd), Color.BLACK);
 		}
 		else 
 		{
-			pGraphics.setFill(Color.WHITE);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pPoint1, pEnd), Color.WHITE);
 		}
-		completeDrawPath(pGraphics, getPath(pPoint1, pEnd));
-		pGraphics.setFill(oldFill);
-		pGraphics.setStroke(oldStroke);
 	}
 	
    	/**
-     *  Gets the path of the arrowhead.
+     * Gets the path of the arrowhead.
      * @param pPoint1 a point on the axis of the arrow head
      * @param pEnd the end point of the arrow head
      * @return the path
@@ -130,22 +120,5 @@ public final class ArrowHeadView
    			path.getElements().addAll(lineTo5, lineTo6, lineTo7);
    		}      
    		return path;
-   	}
-   	
-   	private void completeDrawPath(GraphicsContext pGraphics, Path pPath)
-   	{
-   		for (PathElement element : pPath.getElements())
-		{
-			if (element instanceof MoveTo)
-			{
-				pGraphics.moveTo(((MoveTo) element).getX(), ((MoveTo) element).getY());
-			}
-			else // element instanceof LineTo
-			{
-				pGraphics.lineTo(((LineTo) element).getX(), ((LineTo) element).getY());
-			}
-		}
-		pGraphics.stroke();
-		pGraphics.fill();
    	}
 }
