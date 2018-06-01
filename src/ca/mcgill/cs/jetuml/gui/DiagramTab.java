@@ -116,26 +116,41 @@ public class DiagramTab extends Tab
 		aDiagramCanvasController.copy();
 	}
 	
+	/**
+	 * Cuts the current selection to the clip board.
+	 */
 	public void cut()
 	{
 		aDiagramCanvasController.cut();
 	}
 	
+	/**
+	 * Pastes the current clip board content to the diagram.
+	 */
 	public void paste()
 	{
 		aDiagramCanvasController.paste();
 	}
 	
+	/**
+	 * Open a dialog to edit the properties of the currently selected element.
+	 */
 	public void editSelected()
 	{
 		aDiagramCanvasController.editSelected();
 	}
 	
+	/**
+	 * Undoes the last command.
+	 */
 	public void undo()
 	{
 		aDiagramCanvasController.undo();
 	}
 	
+	/**
+	 * Redoes the last undone command.
+	 */
 	public void redo()
 	{
 		aDiagramCanvasController.redo();
@@ -196,11 +211,19 @@ public class DiagramTab extends Tab
 		}
 	}
 	
+	/**
+	 * @return True if the diagram is flagged as modified.
+	 */
 	public boolean isModified()
 	{
 		return aDiagramCanvasController.isModified();
 	}
 	
+	/**
+	 * Sets whether the corresponding diagram should be flagged as modified.
+	 * 
+	 * @param pModified True if the diagram should be flagged as modified.
+	 */
 	public void setModified(boolean pModified)
 	{
 		aDiagramCanvasController.setModified(pModified);
