@@ -66,34 +66,19 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
+	public void fillShape(GraphicsContext pGraphics) 
 	{
 		Rectangle bounds = getBounds();		
-		if (pShadow) 
-		{
-			pGraphics.beginPath();
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
-			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-			pGraphics.closePath();
-			pGraphics.fill();	
-		}
-		else 
-		{
-			pGraphics.beginPath();
-			pGraphics.setFill(DEFAULT_COLOR);
-			pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
-			pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-			pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-			pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-			pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-			pGraphics.closePath();
-			pGraphics.fill();
-			pGraphics.stroke();
-		}	
+		pGraphics.beginPath();
+		pGraphics.setFill(DEFAULT_COLOR);
+		pGraphics.moveTo((float)bounds.getX(), (float)bounds.getY());
+		pGraphics.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
+		pGraphics.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
+		pGraphics.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
+		pGraphics.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
+		pGraphics.closePath();
+		pGraphics.fill();
+		pGraphics.stroke();
 	}
 	
 	/**

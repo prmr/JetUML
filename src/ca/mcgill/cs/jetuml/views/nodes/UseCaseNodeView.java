@@ -52,22 +52,13 @@ public class UseCaseNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	public void fillShape(GraphicsContext pGraphics)
 	{
-		if (pShadow) 
-		{
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.fillOval(node().position().getX(), node().position().getY(), 
-					getBounds().getWidth(), getBounds().getHeight());
-		}
-		else 
-		{
-			pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.setFill(BACKGROUND_COLOR);
 			pGraphics.fillOval(node().position().getX(), node().position().getY(), 
 					getBounds().getWidth(), getBounds().getHeight());
 			pGraphics.strokeOval(node().position().getX(), node().position().getY(), 
 					getBounds().getWidth(), getBounds().getHeight());
-		}	
 	}
 	
 	

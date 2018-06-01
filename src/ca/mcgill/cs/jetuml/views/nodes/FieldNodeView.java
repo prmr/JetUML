@@ -122,5 +122,5 @@ public class FieldNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadows) {}
+	public void fillShape(GraphicsContext pGraphics) {}
 }

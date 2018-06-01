@@ -59,22 +59,13 @@ public class StateNodeView extends RectangleBoundedNodeView
 	
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	public void fillShape(GraphicsContext pGraphics)
 	{
-		if (pShadow) 
-		{
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
-					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
-		}
-		else 
-		{
-			pGraphics.setFill(BACKGROUND_COLOR);
-			pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
-					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
-			pGraphics.strokeRoundRect(getBounds().getX(), getBounds().getY(), 
-					getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
-		}	
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
+				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		pGraphics.strokeRoundRect(getBounds().getX(), getBounds().getY(), 
+				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
 	}
 	
 	@Override	

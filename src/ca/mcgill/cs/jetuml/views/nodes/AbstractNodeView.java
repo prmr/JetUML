@@ -61,10 +61,7 @@ public abstract class AbstractNodeView implements NodeView
 		Paint oldFill = pGraphics.getFill();
 		double oldLineWidth = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
-		pGraphics.translate(SHADOW_GAP, SHADOW_GAP);      
-		fillShape(pGraphics, true);
-		pGraphics.translate(-SHADOW_GAP, -SHADOW_GAP);
-		fillShape(pGraphics, false);
+		fillShape(pGraphics);
 		pGraphics.setFill(oldFill);
 		pGraphics.setLineWidth(oldLineWidth);
 	}
@@ -72,9 +69,8 @@ public abstract class AbstractNodeView implements NodeView
 	/**
 	 * Fills in shape of the node.
 	 * @param pGraphics GraphicsContext in which to fill the shape.
-	 * @param pShadow true when filling in the shadow of the shape.
 	 */
-	protected abstract void fillShape(GraphicsContext pGraphics, boolean pShadow);
+	protected abstract void fillShape(GraphicsContext pGraphics);
 
 	@Override
 	public void layout(Diagram pGraph) {}

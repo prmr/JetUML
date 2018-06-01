@@ -90,23 +90,14 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow) 
+	public void fillShape(GraphicsContext pGraphics) 
 	{
 		Rectangle bounds = getBounds();
-		if (pShadow) 
-		{
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
-		}
-		else 
-		{
-			pGraphics.setFill(BACKGROUND_COLOR);
-			pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-			pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
-			pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-			pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
-		}	
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+		pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
+		pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
 	}
 	
 	/**

@@ -94,19 +94,11 @@ public class CircularStateNodeView extends AbstractNodeView
 	}   	 
 
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	public void fillShape(GraphicsContext pGraphics)
 	{
-		if (pShadow) 
-		{
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-		}
-		else 
-		{
-			pGraphics.setFill(BACKGROUND_COLOR);
-			pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-			pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-		}	
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
+		pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
 	}
 
 	@Override

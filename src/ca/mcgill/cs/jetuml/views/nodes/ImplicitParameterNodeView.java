@@ -86,20 +86,12 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	}
 
 	@Override
-	public void fillShape(GraphicsContext pGraphics, boolean pShadow)
+	public void fillShape(GraphicsContext pGraphics)
 	{
 		Rectangle top = getTopRectangle();
-		if (pShadow) 
-		{
-			pGraphics.setFill(SHADOW_COLOR);
-			pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-		}
-		else 
-		{
-			pGraphics.setFill(BACKGROUND_COLOR);
-			pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-			pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-		}	
+		pGraphics.setFill(BACKGROUND_COLOR);
+		pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
+		pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
 	}
    
 	@Override
