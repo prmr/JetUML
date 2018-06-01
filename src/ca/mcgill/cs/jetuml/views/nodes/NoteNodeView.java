@@ -59,8 +59,8 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR);
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR, true);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE, false);
 		NOTE_VIEWER.draw(name(), pGraphics, getDefaultBounds());
 	}
 	
@@ -109,7 +109,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	{
 		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
 		return new Rectangle(node().position().getX(), node().position().getY(), 
-				Math.max(textBounds.getWidth(), DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
+				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
 	}
 	
 	@Override

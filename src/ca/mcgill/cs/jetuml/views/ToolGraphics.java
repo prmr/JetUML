@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.views;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
@@ -42,6 +43,7 @@ public final class ToolGraphics
 	private static final Color SELECTION_FILL_COLOR = Color.rgb(173, 193, 214);
 	private static final Color SELECTION_FILL_TRANSPARENT = Color.rgb(173, 193, 214, 0.75);
 	private static final double LINE_WIDTH = 0.6;
+	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	
 	private ToolGraphics() {}
 	
@@ -153,6 +155,14 @@ public final class ToolGraphics
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		double width = pGraphics.getLineWidth();
 		pGraphics.setLineWidth(LINE_WIDTH);
+		applyPath(pGraphics, pPath);
+		pGraphics.stroke();
+		pGraphics.setLineDashes(oldDash);
+		pGraphics.setLineWidth(width);
+	}
+	
+	private static void applyPath(GraphicsContext pGraphics, Path pPath)
+	{
 		pGraphics.beginPath();
 		for(PathElement element : pPath.getElements())
 		{
@@ -171,11 +181,7 @@ public final class ToolGraphics
 						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);
 			}
 		}
-		pGraphics.stroke();
-		pGraphics.setLineDashes(oldDash);
-		pGraphics.setLineWidth(width);
 	}
-	
 	/**
 	 * Strokes and fills a path, by converting the elements to integer coordinates and then
 	 * aligning them to the center of the pixels, so that it aligns precisely
@@ -185,14 +191,25 @@ public final class ToolGraphics
 	 * @param pGraphics The graphics context.
 	 * @param pPath The path to stroke
 	 * @param pFill The fill color for the path.
+	 * @param pShadow True to include a drop shadow.
 	 */
-	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill)
+	public static void strokeAndFillSharpPath(GraphicsContext pGraphics, Path pPath, Paint pFill, boolean pShadow)
 	{
-		strokeSharpPath(pGraphics, pPath, LineStyle.SOLID);
-		Paint oldFill = pGraphics.getFill();
+		double width = pGraphics.getLineWidth();
+		Paint fill = pGraphics.getFill();
+		pGraphics.setLineWidth(LINE_WIDTH);
 		pGraphics.setFill(pFill);
+		applyPath(pGraphics, pPath);
+		
+		if( pShadow )
+		{
+			pGraphics.setEffect(DROP_SHADOW);
+		}
 		pGraphics.fill();
-		pGraphics.setFill(oldFill);
+		pGraphics.stroke();
+		pGraphics.setLineWidth(width);
+		pGraphics.setFill(fill);
+		pGraphics.setEffect(null);
 	}
 	
 	/**
