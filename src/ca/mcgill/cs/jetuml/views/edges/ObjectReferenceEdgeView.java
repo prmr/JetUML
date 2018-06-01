@@ -26,6 +26,8 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -99,14 +101,12 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		pGraphics.beginPath();
-		completeDrawPath(pGraphics, (Path) getShape());
-		
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.SOLID);
 		Line line = getConnectionPoints();
 		double x1;
 		double x2 = line.getX2();
 		double y = line.getY2();
-		if (isSShaped())
+		if(isSShaped())
 		{
 			x1 = x2 - ENDSIZE;
 		}
@@ -130,5 +130,4 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.EAST));
 		}
 	}
-
 }

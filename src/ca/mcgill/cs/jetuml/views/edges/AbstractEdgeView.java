@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
+
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -27,17 +30,8 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-
-import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
-
-import ca.mcgill.cs.jetuml.diagram.Edge;
 
 /**
  * Provides shared services for rendering an edge.
@@ -79,32 +73,6 @@ public abstract class AbstractEdgeView implements EdgeView
 	{
 		SIZE_TESTER.setText(pText);
 		return SIZE_TESTER.getBoundsInLocal();
-	}
-	
-	/**
-     * Completes drawing a path on the graphics context.
-     * @param pGraphics the graphics context
-     * @param pPath the path
-	 */
-	protected void completeDrawPath(GraphicsContext pGraphics, Path pPath)
-	{
-		for (PathElement element : pPath.getElements())
-		{
-			if (element instanceof MoveTo)
-			{
-				pGraphics.moveTo(((MoveTo) element).getX(), ((MoveTo) element).getY());
-			}
-			else if (element instanceof LineTo)
-			{
-				pGraphics.lineTo(((LineTo) element).getX(), ((LineTo) element).getY());
-			}
-			else if (element instanceof QuadCurveTo)
-			{
-				QuadCurveTo curve = (QuadCurveTo) element;
-				pGraphics.quadraticCurveTo(curve.getControlX(), curve.getControlY(), curve.getX(), curve.getY());
-			}
-		}
-		pGraphics.stroke();
 	}
 	
 	/**

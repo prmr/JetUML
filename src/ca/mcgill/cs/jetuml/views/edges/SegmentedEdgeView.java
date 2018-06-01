@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
@@ -38,8 +39,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.TextAlignment;
 
 /**
@@ -119,23 +118,8 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		Point2D[] points = getPoints();
-		StrokeLineCap oldCap = pGraphics.getLineCap();
-		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
-		double oldMiter = pGraphics.getMiterLimit();
-		double[] oldDashes = pGraphics.getLineDashes();
-		
-		pGraphics.setLineDashes(aLineStyleSupplier.get().getLineDashes());
-		
-		pGraphics.beginPath();
-		completeDrawPath(pGraphics, getSegmentPath());
-		pGraphics.stroke();
-		
-		pGraphics.setLineCap(oldCap);
-		pGraphics.setLineJoin(oldJoin);
-		pGraphics.setMiterLimit(oldMiter);
-		pGraphics.setLineDashes(oldDashes);
-		
+		Point2D[] points = getPoints();		
+		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(), aLineStyleSupplier.get());
 		aArrowStartSupplier.get().view().draw(pGraphics, points[1], points[0]);
 		aArrowEndSupplier.get().view().draw(pGraphics, points[points.length - 2], points[points.length - 1]);
 

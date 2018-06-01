@@ -26,6 +26,11 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
+import javafx.scene.shape.QuadCurveTo;
 
 /**
  * A utility class to draw various graphics for diagram handling tools.
@@ -129,6 +134,42 @@ public final class ToolGraphics
 	public static void strokeSharpLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2)
 	{
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+	}
+	
+	/**
+	 * Strokes a path, by converting the elements to integer coordinates and then
+	 * aligning them to the center of the pixels, so that it aligns precisely
+	 * with the JavaFX coordinate system. See the documentation for 
+	 * javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pPath The path to stroke
+	 * @param pStyle The line style for the path.
+	 */
+	public static void strokeSharpPath(GraphicsContext pGraphics, Path pPath, LineStyle pStyle)
+	{
+		double[] oldDash = pGraphics.getLineDashes();
+		pGraphics.setLineDashes(pStyle.getLineDashes());
+		pGraphics.beginPath();
+		for(PathElement element : pPath.getElements())
+		{
+			if(element instanceof MoveTo)
+			{
+				pGraphics.moveTo(((int)((MoveTo) element).getX()) + 0.5, ((int)((MoveTo) element).getY()) + 0.5);
+			}
+			else if(element instanceof LineTo)
+			{
+				pGraphics.lineTo(((int)((LineTo) element).getX()) + 0.5, ((int)((LineTo) element).getY()) + 0.5);
+			}
+			else if (element instanceof QuadCurveTo)
+			{
+				QuadCurveTo curve = (QuadCurveTo) element;
+				pGraphics.quadraticCurveTo(((int)curve.getControlX())+0.5, ((int)curve.getControlY()) + 0.5, 
+						((int) curve.getX()) + 0.5, ((int) curve.getY()) + 0.5);
+			}
+		}
+		pGraphics.stroke();
+		pGraphics.setLineDashes(oldDash);
 	}
 	
 	/**

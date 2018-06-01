@@ -30,6 +30,8 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -42,8 +44,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -82,30 +82,17 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		Paint oldStroke = pGraphics.getStroke();
-		StrokeLineCap oldCap = pGraphics.getLineCap();
-		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
-		double oldMiter = pGraphics.getMiterLimit();
-		double[] oldDashes = pGraphics.getLineDashes();
-		if (isSelfEdge())
+		if(isSelfEdge())
 		{
 			pGraphics.setStroke(Color.BLACK);
 			drawSelfEdge(pGraphics);
 		}
 		else 
 		{
-			pGraphics.beginPath();
-			pGraphics.setStroke(Color.BLACK);
-			completeDrawPath(pGraphics, (Path) getShape());
+			ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.SOLID);
 		}
 		drawLabel(pGraphics);
 		drawArrowHead(pGraphics);
-		
-		pGraphics.setStroke(oldStroke);
-		pGraphics.setLineCap(oldCap);
-		pGraphics.setLineJoin(oldJoin);
-		pGraphics.setMiterLimit(oldMiter);
-		pGraphics.setLineDashes(oldDashes);
 	}
 	
 	private void drawArrowHead(GraphicsContext pGraphics)

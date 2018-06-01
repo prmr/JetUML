@@ -22,24 +22,19 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * A straight dotted line.
  */
 public class NoteEdgeView extends AbstractEdgeView
 {
-	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
-	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
-	private static final double MITER_LIMIT = 0;
-	private static final double[] DASHES = new double[] {3, 3};
-	
 	/**
 	 * @param pEdge The edge to wrap.
 	 */
@@ -51,24 +46,7 @@ public class NoteEdgeView extends AbstractEdgeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		StrokeLineCap oldCap = pGraphics.getLineCap();
-		StrokeLineJoin oldJoin = pGraphics.getLineJoin();
-		double oldMiter = pGraphics.getMiterLimit();
-		double[] oldDashes = pGraphics.getLineDashes();
-		
-		pGraphics.beginPath();
-		
-		pGraphics.setLineCap(LINE_CAP);
-		pGraphics.setLineJoin(LINE_JOIN);
-		pGraphics.setMiterLimit(MITER_LIMIT);
-		pGraphics.setLineDashes(DASHES);
-		
-		completeDrawPath(pGraphics, (Path) getShape());
-		
-		pGraphics.setLineCap(oldCap);
-		pGraphics.setLineJoin(oldJoin);
-		pGraphics.setMiterLimit(oldMiter);
-		pGraphics.setLineDashes(oldDashes);
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.DOTTED);
 	}
 	
 	
