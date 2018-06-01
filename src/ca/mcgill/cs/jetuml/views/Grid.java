@@ -46,13 +46,17 @@ public final class Grid
 	{
 		Paint oldStroke = pGraphics.getStroke();
 		pGraphics.setStroke(GRID_COLOR);
-		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += GRID_SIZE)
+		int x1 = pBounds.getX();
+		int y1 = pBounds.getY();
+		int x2 = pBounds.getMaxX();
+		int y2 = pBounds.getMaxY();
+		for(int x = x1; x < x2; x += GRID_SIZE)
 		{
-			pGraphics.strokeLine(x, pBounds.getY(), x, pBounds.getMaxY());
+			ToolGraphics.strokeSharpLine(pGraphics, x, y1, x, y2);
 		}
-		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += GRID_SIZE)
+		for(int y = y1; y < y2; y += GRID_SIZE)
 		{
-			pGraphics.strokeLine(pBounds.getX(), y, pBounds.getMaxX(), y);
+			ToolGraphics.strokeSharpLine(pGraphics, x1, y, x2, y);
 		}
 		pGraphics.setStroke(oldStroke);
 	}

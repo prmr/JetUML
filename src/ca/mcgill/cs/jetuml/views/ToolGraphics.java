@@ -120,4 +120,20 @@ public final class ToolGraphics
 		pGraphics.setFill(oldFill);
 		pGraphics.setStroke(oldStroke);
 	}
+	
+	/**
+	 * Strokes a line, originally in integer coordinates, so that it aligns precisely
+	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
+	 * the documentation for javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pGraphics The graphics context on which to draw the lasso.
+	 * @param pX1 The x-coordinate of the first point.
+	 * @param pY1 The y-coordinate of the first point.
+	 * @param pX2 The x-coordinate of the second point.
+	 * @param pY2 The y-coordinate of the second point.
+	 */
+	public static void strokeSharpLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2)
+	{
+		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+	}
 }
