@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.canvas.GraphicsContext;
@@ -57,12 +55,6 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		return new Rectangle(node().position().getX(), node().position().getY(), aWidth, aHeight);
 	}
 	
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		return getBounds().contains(pPoint);
-	}
-
 	/**
 	 * @param pNewBounds The new bounds for this node.
 	 */
@@ -80,51 +72,6 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		pGraphics.setFill(BACKGROUND_COLOR);
 		pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 		pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-	}
-
-	/* 
-	 * Returns a point in the middle of the appropriate side of the node.
-	 * @see ca.mcgill.cs.jetuml.diagram.views.nodes.NodeView#getConnectionPoint(ca.mcgill.cs.jetuml.geom.Direction)
-	 */
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		double slope = (double) aHeight / (double) aWidth;
-		double ex = pDirection.getX();
-		double ey = pDirection.getY();
-		final Rectangle bounds = getBounds();
-		int x = bounds.getCenter().getX();
-		int y = bounds.getCenter().getY();
-      
-		if(ex != 0 && -slope <= ey / ex && ey / ex <= slope)
-		{  
-			// intersects at left or right boundary
-			if(ex > 0) 
-			{
-				x = bounds.getMaxX();
-				y += (bounds.getWidth() / 2) * ey / ex;
-			}
-			else
-			{
-				x = bounds.getX();
-				y -= (bounds.getWidth() / 2) * ey / ex;
-			}
-		}
-		else if(ey != 0)
-		{  
-			// intersects at top or bottom
-			if(ey > 0) 
-			{
-				x += (bounds.getHeight() / 2) * ex / ey;
-				y = bounds.getMaxY();
-			}
-			else
-			{
-				x -= (bounds.getHeight() / 2) * ex / ey;
-				y = bounds.getY();
-			}
-		}
-		return new Point(x, y);
 	}
 	
 	@Override

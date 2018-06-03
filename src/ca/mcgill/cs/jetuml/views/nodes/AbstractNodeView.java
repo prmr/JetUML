@@ -20,8 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -53,9 +55,63 @@ public abstract class AbstractNodeView implements NodeView
 		return aNode;
 	}
 	
+	/* 
+	 * The default behavior for containment is to return true if the point is
+	 * within the bounding box of the node view.
+	 * @see ca.mcgill.cs.jetuml.views.DiagramElementView#contains(ca.mcgill.cs.jetuml.geom.Point)
+	 */
 	@Override
-	public void layout(Diagram pGraph) {}
-
+	public boolean contains(Point pPoint)
+	{
+		return getBounds().contains(pPoint);
+	}
+	
+	/* 
+	 * The default behavior is to returns a point in the middle of the appropriate side of the bounding box 
+	 * of the node.
+	 * @see ca.mcgill.cs.jetuml.diagram.views.nodes.NodeView#getConnectionPoint(ca.mcgill.cs.jetuml.geom.Direction)
+	 */
+	@Override
+	public Point getConnectionPoint(Direction pDirection)
+	{
+		final Rectangle bounds = getBounds();
+		double slope = (double) bounds.getHeight() / (double) bounds.getWidth();
+		double ex = pDirection.getX();
+		double ey = pDirection.getY();
+		int x = bounds.getCenter().getX();
+		int y = bounds.getCenter().getY();
+      
+		if(ex != 0 && -slope <= ey / ex && ey / ex <= slope)
+		{  
+			// intersects at left or right boundary
+			if(ex > 0) 
+			{
+				x = bounds.getMaxX();
+				y += (bounds.getWidth() / 2) * ey / ex;
+			}
+			else
+			{
+				x = bounds.getX();
+				y -= (bounds.getWidth() / 2) * ey / ex;
+			}
+		}
+		else if(ey != 0)
+		{  
+			// intersects at top or bottom
+			if(ey > 0) 
+			{
+				x += (bounds.getHeight() / 2) * ex / ey;
+				y = bounds.getMaxY();
+			}
+			else
+			{
+				x -= (bounds.getHeight() / 2) * ex / ey;
+				y = bounds.getY();
+			}
+		}
+		return new Point(x, y);
+	}
+	
 	@Override
 	public void drawSelectionHandles(GraphicsContext pGraphics)
 	{

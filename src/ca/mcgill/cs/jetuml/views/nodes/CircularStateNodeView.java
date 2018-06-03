@@ -97,10 +97,4 @@ public class CircularStateNodeView extends AbstractNodeView
 	{
 		node().moveTo(Grid.snapped(getBounds()).getOrigin());
 	}
-
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		return getBounds().contains(pPoint);
-	}
 }

@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -57,6 +58,12 @@ public class PointNodeView extends AbstractNodeView
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		return node().position();
+	}
+	
+	@Override
+	public void layout(Diagram pGraph) 
+	{
+		// Do nothing, a point is not laid out.
 	}
 
 	@Override
