@@ -26,9 +26,9 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * An object to render a CircularStateNode.
@@ -36,7 +36,6 @@ import javafx.scene.paint.Paint;
 public class CircularStateNodeView extends AbstractNodeView
 {
 	private static final int DIAMETER = 20;
-	private static final int DEFAULT_GAP = 3;   
 	private final boolean aFinal;
 	
 	/**
@@ -52,26 +51,17 @@ public class CircularStateNodeView extends AbstractNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-		pGraphics.strokeOval(getBounds().getX(), getBounds().getY(), DIAMETER - 1, DIAMETER - 1);
-		
-		Paint oldFill = pGraphics.getFill();
-		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(LINE_WIDTH);
-		pGraphics.setFill(Color.BLACK);
-		if(aFinal)
+		if( aFinal )
 		{
-      		pGraphics.fillOval(node().position().getX() + DEFAULT_GAP, 
-      				node().position().getY() + DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP, DIAMETER - 2 * DEFAULT_GAP);
-      		pGraphics.strokeOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
-      	}
+			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.WHITE, true);
+			int innerDiameter = DIAMETER/2;
+			ViewUtils.drawCircle(pGraphics, getBounds().getX() + innerDiameter/2, 
+					getBounds().getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
+		}
 		else
 		{
-			pGraphics.fillOval(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
-		}      
-		pGraphics.setFill(oldFill);
-		pGraphics.setLineWidth(oldLineWidth);
+			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.BLACK, true);
+		}
 	}
 	
 	@Override

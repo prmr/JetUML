@@ -562,7 +562,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(640, 230, 20, 20), end.view().getBounds());
 		
 		assertEquals("A note\non two lines", note.getName());
-		assertEquals(new Rectangle(690, 320, 70, 40), note.view().getBounds());
+		assertEquals(new Rectangle(690, 320, 78, 40), note.view().getBounds());
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
 		

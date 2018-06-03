@@ -39,6 +39,7 @@ import javafx.scene.paint.Color;
 public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler
 {	
 	private static final double SIZE_RATIO = 0.65;
+	private static final double LINE_WIDTH = 0.6;
 	
 	private Diagram aDiagram;
 	private DiagramCanvasController aController;
@@ -52,6 +53,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public DiagramCanvas(Diagram pDiagram, Rectangle2D pScreenBoundaries)
 	{
 		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
+		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		aDiagram = pDiagram;
 	}
 	
