@@ -53,15 +53,31 @@ public final class ViewUtils
 	 */
 	public static void drawCircle(GraphicsContext pGraphics, int pX, int pY, int pDiameter, Paint pFill, boolean pShadow)
 	{
-		assert pDiameter > 0 && pFill != null && pGraphics != null;
+		drawOval( pGraphics, pX, pY, pDiameter, pDiameter, pFill, pShadow);
+	}
+	
+	/**
+	 * Draws a circle with default attributes, without a drop shadow.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pX The x-coordinate of the top-left of the circle.
+	 * @param pY The y-coordinate of the top-left of the circle.
+	 * @param pFill The color with which to fill the circle.
+	 * @param pWidth The width of the oval to draw
+	 * @param pHeight The height of the oval to draw.
+	 * @param pShadow True to include a drop shadow.
+	 */
+	public static void drawOval(GraphicsContext pGraphics, int pX, int pY, int pWidth, int pHeight, Paint pFill, boolean pShadow)
+	{
+		assert pWidth > 0 && pHeight > 0 && pFill != null && pGraphics != null;
 		Paint oldFill = pGraphics.getFill();
 		pGraphics.setFill(pFill);
 		if( pShadow )
 		{
 			pGraphics.setEffect(DROP_SHADOW);
 		}
-		pGraphics.fillOval(pX + 0.5, pY + 0.5, pDiameter, pDiameter);
-		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pDiameter, pDiameter);
+		pGraphics.fillOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.setFill(oldFill);
 		pGraphics.setEffect(null);
 	}

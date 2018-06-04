@@ -240,8 +240,8 @@ public class TestUsageScenariosUseCaseDiagram
 		}
 		assertTrue(new Rectangle(46, 57, 48, 88).equals(aActorNode1.view().getBounds()) || new Rectangle(46, 57, 48, 87).equals(aActorNode1.view().getBounds()));
 		assertTrue(new Rectangle(276, 57, 48, 88).equals(aActorNode2.view().getBounds()) || new Rectangle(276, 57, 48, 87).equals(aActorNode2.view().getBounds()));
-		assertEquals(new Rectangle(106, 57, 120, 40), aUseCaseNode1.view().getBounds());
-		assertEquals(new Rectangle(166, 57, 120, 40), aUseCaseNode2.view().getBounds());
+		assertEquals(new Rectangle(106, 57, 110, 40), aUseCaseNode1.view().getBounds());
+		assertEquals(new Rectangle(166, 57, 110, 40), aUseCaseNode2.view().getBounds());
 		assertEquals(new Rectangle(126, 137, 60, 40), noteNode.view().getBounds());
 		
 		// move a node connect to another node, edge should redraw accordingly,
@@ -423,7 +423,7 @@ public class TestUsageScenariosUseCaseDiagram
 
 		aController.paste();
 		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(0, 0, 120, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds()));
+		assertEquals(new Rectangle(0, 0, 110, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds()));
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
 	
