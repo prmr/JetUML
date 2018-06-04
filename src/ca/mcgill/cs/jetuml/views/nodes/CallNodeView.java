@@ -33,10 +33,9 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * An object to render a call node in a Sequence diagram.
@@ -45,9 +44,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 {
 	private static final int DEFAULT_WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
-	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
-	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
-	private static final double[] DASHES = new double[] {5, 5};
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -76,8 +72,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		double oldLineWidth = pGraphics.getLineWidth();
-		pGraphics.setLineWidth(LINE_WIDTH);
 		if(openBottom())
 		{
 			final Rectangle bounds = getBounds();
@@ -86,34 +80,17 @@ public class CallNodeView extends RectangleBoundedNodeView
 			int y1 = bounds.getY();
 			int y3 = bounds.getMaxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			pGraphics.strokeLine(x1, y1, x2, y1);
-			pGraphics.strokeLine(x1, y1, x1, y2);
-			pGraphics.strokeLine(x2, y1, x2, y2);
-			StrokeLineCap oldLineCap = pGraphics.getLineCap();
-			StrokeLineJoin oldLineJoin = pGraphics.getLineJoin();
-			double[] oldDashes = pGraphics.getLineDashes();
-			pGraphics.setLineCap(LINE_CAP);
-			pGraphics.setLineJoin(LINE_JOIN);
-			pGraphics.setLineDashes(DASHES);
-			
-			pGraphics.strokeLine(x1, y2, x1, y3);
-			pGraphics.strokeLine(x2, y2, x2, y3);
-			
-			pGraphics.setLineCap(oldLineCap);
-			pGraphics.setLineJoin(oldLineJoin);
-			pGraphics.setLineDashes(oldDashes);
+			ViewUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
+			ViewUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
+			ViewUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
+			ViewUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
+			ViewUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
 		}
 		else
 		{
-			Paint oldFill = pGraphics.getFill();
-			pGraphics.setFill(BACKGROUND_COLOR);
-			Rectangle bounds = getBounds();
-			pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-			pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-			pGraphics.setFill(oldFill);
+			ViewUtils.drawRectangle(pGraphics, getBounds());
 			
 		}
-		pGraphics.setLineWidth(oldLineWidth);
 	}
 	
 	@Override

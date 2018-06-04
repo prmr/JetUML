@@ -119,7 +119,7 @@ public final class ToolGraphics
 	 */
 	public static void drawLasso(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		drawSharpRectangle(pGraphics, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
+		ViewUtils.drawRectangle(pGraphics, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
 				pRectangle.getX(), pRectangle.getY(), pRectangle.getWidth(), pRectangle.getHeight());
 	}
 	
@@ -210,31 +210,5 @@ public final class ToolGraphics
 		pGraphics.setLineWidth(width);
 		pGraphics.setFill(fill);
 		pGraphics.setEffect(null);
-	}
-	
-	/**
-	 * Strokes and fills a rectangle, originally in integer coordinates, so that it aligns precisely
-	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
-	 * the documentation for javafx.scene.shape.Shape for details.
-	 * 
-	 * @param pGraphics The graphics context on which to draw the rectangle.
-	 * @param pStroke The stroke (border) color for the rectangle.
-	 * @param pFill The fill (background) color for the rectangle.
-	 * @param pX The x-coordinate of the origin.
-	 * @param pY The y-coordinate of the origin.
-	 * @param pWidth The width.
-	 * @param pHeight The height.
-	 */
-	public static void drawSharpRectangle(GraphicsContext pGraphics, Paint pStroke, Paint pFill, 
-			int pX, int pY, int pWidth, int pHeight)
-	{
-		Paint oldFill = pGraphics.getFill();
-		Paint oldStroke = pGraphics.getStroke();
-		pGraphics.setFill(pFill);
-		pGraphics.setStroke(pStroke);
-		pGraphics.fillRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		pGraphics.strokeRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
-		pGraphics.setFill(oldFill);
-		pGraphics.setStroke(oldStroke);
 	}
 }

@@ -100,4 +100,63 @@ public final class ViewUtils
 		pGraphics.strokeRoundRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, 
 				pRectangle.getWidth(), pRectangle.getHeight(), ARC_SIZE, ARC_SIZE);
 	}
+
+	/**
+	 * Strokes and fills a rectangle, originally in integer coordinates, so that it aligns precisely
+	 * with the JavaFX coordinate system, which is 0.5 away from the pixel. See
+	 * the documentation for javafx.scene.shape.Shape for details.
+	 * 
+	 * @param pGraphics The graphics context on which to draw the rectangle.
+	 * @param pStroke The stroke (border) color for the rectangle.
+	 * @param pFill The fill (background) color for the rectangle.
+	 * @param pX The x-coordinate of the origin.
+	 * @param pY The y-coordinate of the origin.
+	 * @param pWidth The width.
+	 * @param pHeight The height.
+	 */
+	public static void drawRectangle(GraphicsContext pGraphics, Paint pStroke, Paint pFill, 
+			int pX, int pY, int pWidth, int pHeight)
+	{
+		Paint oldFill = pGraphics.getFill();
+		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.setFill(pFill);
+		pGraphics.setStroke(pStroke);
+		pGraphics.fillRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		pGraphics.strokeRect(pX + 0.5, pY + 0.5, pWidth, pHeight);
+		pGraphics.setFill(oldFill);
+		pGraphics.setStroke(oldStroke);
+	}
+	
+	/**
+	 * Draws a rectangle with default attributes.
+	 * 
+	 * @param pGraphics The graphics context on which to draw the rectangle.
+	 * @param pRectangle The rectangle to draw.
+	 */
+	public static void drawRectangle( GraphicsContext pGraphics, Rectangle pRectangle)
+	{
+		assert pGraphics != null && pRectangle != null;
+		pGraphics.setEffect(DROP_SHADOW);
+		pGraphics.fillRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, pRectangle.getWidth(), pRectangle.getHeight());
+		pGraphics.setEffect(null);
+		pGraphics.strokeRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, pRectangle.getWidth(), pRectangle.getHeight());
+	}
+	
+	/**
+	 * Draws a line with default attributes and a specified line style.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pX1 The x-coordinate of the first point
+	 * @param pY1 The y-coordinate of the first point
+	 * @param pX2 The x-coordinate of the second point
+	 * @param pY2 The y-coordinate of the second point
+	 * @param pStyle The line style for the path.
+	 */
+	public static void drawLine(GraphicsContext pGraphics, int pX1, int pY1, int pX2, int pY2, LineStyle pStyle)
+	{
+		double[] oldDash = pGraphics.getLineDashes();
+		pGraphics.setLineDashes(pStyle.getLineDashes());
+		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
+		pGraphics.setLineDashes(oldDash);
+	}
 }

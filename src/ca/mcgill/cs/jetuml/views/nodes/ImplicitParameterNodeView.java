@@ -26,10 +26,10 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -39,9 +39,6 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final StrokeLineCap LINE_CAP = StrokeLineCap.ROUND;
-	private static final StrokeLineJoin LINE_JOIN = StrokeLineJoin.ROUND;
-	private static final double[] DASHES = new double[] {5, 5};
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
 	private int aTopHeight = DEFAULT_TOP_HEIGHT;
@@ -63,22 +60,10 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		Rectangle top = getTopRectangle();
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-		pGraphics.strokeRect(top.getX(), top.getY(), top.getWidth(), top.getHeight());
-		
+		ViewUtils.drawRectangle(pGraphics, top);
 		NAME_VIEWER.draw(name(), pGraphics, top);
 		int xmid = getBounds().getCenter().getX();
-		StrokeLineCap oldLineCap = pGraphics.getLineCap();
-		StrokeLineJoin oldLineJoin = pGraphics.getLineJoin();
-		double[] oldDashes = pGraphics.getLineDashes();
-		pGraphics.setLineCap(LINE_CAP);
-		pGraphics.setLineJoin(LINE_JOIN);
-		pGraphics.setLineDashes(DASHES);
-		pGraphics.strokeLine(xmid, top.getMaxY(), xmid, getBounds().getMaxY());
-		pGraphics.setLineCap(oldLineCap);
-		pGraphics.setLineJoin(oldLineJoin);
-		pGraphics.setLineDashes(oldDashes);
+		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
 	}
 	
 	@Override
