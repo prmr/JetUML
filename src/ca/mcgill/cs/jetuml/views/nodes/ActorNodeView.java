@@ -23,32 +23,36 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 
 /**
  * An object to render an actor in a use case diagram.
  */
-public class ActorNodeView extends RectangleBoundedNodeView
+public class ActorNodeView extends AbstractNodeView
 {
-	private static final int DEFAULT_WIDTH = 48;
-	private static final int DEFAULT_HEIGHT = 64;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
-	// Stick man
-	private static final int GAP_ABOVE = 4;
-	private static final int HEAD_SIZE = DEFAULT_WIDTH*4/12;
-	private static final int BODY_SIZE = DEFAULT_WIDTH*5/12;
-	private static final int LEG_SIZE  = DEFAULT_WIDTH*5/12;
-	private static final int ARMS_SIZE = DEFAULT_WIDTH*6/12; 
+	private static final int PADDING = 4;
+	private static final int HEAD_SIZE = 16;
+	private static final int BODY_SIZE = 20;
+	private static final int LEG_SIZE  = 20;
+	private static final int ARMS_SIZE = 24;
+	private static final int WIDTH = ARMS_SIZE * 2;
+	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
 	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public ActorNodeView(ActorNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -59,57 +63,52 @@ public class ActorNodeView extends RectangleBoundedNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle top = new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		Rectangle bot = NAME_VIEWER.getBounds(name());
+		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
 		return new Rectangle(node().position().getX(), node().position().getY(),
-            Math.max(top.getWidth(), bot.getWidth()), top.getHeight() + bot.getHeight());
+            Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
 	}
 
 	@Override
 	public void layout(Diagram pGraph)
-	{
-		setBounds(Grid.snapped(getBounds()));
-	}
+	{}
 
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{	
 		Rectangle bounds = getBounds();
-
-		// Draw stick person
-		pGraphics.beginPath();
-		float neckX = (float) (bounds.getX() + bounds.getWidth() / 2);
-		float neckY = (float) (bounds.getY() + HEAD_SIZE + GAP_ABOVE);
-		// head
-		pGraphics.moveTo(neckX, neckY);
-		pGraphics.quadraticCurveTo(neckX + HEAD_SIZE / 2, neckY, neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE / 2);
-		pGraphics.quadraticCurveTo(neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX, neckY - HEAD_SIZE);
-		pGraphics.quadraticCurveTo(neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX-HEAD_SIZE / 2, neckY - HEAD_SIZE / 2);
-		pGraphics.quadraticCurveTo(neckX - HEAD_SIZE / 2, neckY, neckX, neckY);
-		// body
-		float hipX = neckX;
-		float hipY = neckY + BODY_SIZE;
-		pGraphics.lineTo(hipX, hipY);
-		// arms
-		pGraphics.moveTo(neckX - ARMS_SIZE / 2, neckY + BODY_SIZE / 3);
-		pGraphics.lineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3);
-		// legs
+		Rectangle nameBox = NAME_VIEWER.getBounds(name());
+		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
+				bounds.getY() + HEIGHT, nameBox.getWidth(), nameBox.getHeight());
+		NAME_VIEWER.draw(name(), pGraphics, namebox);
+		ToolGraphics.strokeSharpPath(pGraphics, createSickManPath(), LineStyle.SOLID);
+	}
+	
+	private Path createSickManPath()
+	{
+		Path path = new Path();
+		
+		int neckX = node().position().getX() + WIDTH / 2;
+		int neckY = node().position().getY() + HEAD_SIZE + PADDING;
+		int hipX = neckX;
+		int hipY = neckY + BODY_SIZE;
 		float dx = (float) (LEG_SIZE / Math.sqrt(2));
 		float feetX1 = hipX - dx;
 		float feetX2 = hipX + dx + 1;
 		float feetY  = hipY + dx + 1;
-		pGraphics.moveTo(feetX1, feetY);
-		pGraphics.lineTo(hipX, hipY);
-		pGraphics.lineTo(feetX2, feetY);
-
-		pGraphics.stroke();
-
-		// Draw name
-		Rectangle nameBox = NAME_VIEWER.getBounds(name());
-
-		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
-				bounds.getY() + DEFAULT_HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		NAME_VIEWER.draw(name(), pGraphics, namebox);
+		
+		path.getElements().addAll(
+				new MoveTo(neckX, neckY),
+				new QuadCurveTo(neckX + HEAD_SIZE / 2, neckY, neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE / 2),
+				new QuadCurveTo(neckX + HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX, neckY - HEAD_SIZE),
+				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY - HEAD_SIZE, neckX-HEAD_SIZE / 2, neckY - HEAD_SIZE / 2),
+				new QuadCurveTo(neckX - HEAD_SIZE / 2, neckY, neckX, neckY),
+				new LineTo(hipX, hipY),
+				new MoveTo(neckX - ARMS_SIZE / 2, neckY + BODY_SIZE / 3),
+				new LineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3),
+				new MoveTo(feetX1, feetY),
+				new LineTo(hipX, hipY),
+				new LineTo(feetX2, feetY));
+		
+		return path;
 	}
-
 }
