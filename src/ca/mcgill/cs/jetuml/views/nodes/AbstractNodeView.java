@@ -20,10 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -116,5 +118,15 @@ public abstract class AbstractNodeView implements NodeView
 	public void drawSelectionHandles(GraphicsContext pGraphics)
 	{
 		ToolGraphics.drawHandles(pGraphics, getBounds());		
+	}
+	
+	/* 
+	 * The default layout operation is to snap the top left corner of the node to the grid.
+	 * @see ca.mcgill.cs.jetuml.views.nodes.NodeView#layout(ca.mcgill.cs.jetuml.diagram.Diagram)
+	 */
+	@Override
+	public void layout(Diagram pGraph)
+	{
+		node().moveTo(Grid.snapped(getBounds()).getOrigin());
 	}
 }

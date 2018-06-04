@@ -20,10 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
@@ -35,7 +33,7 @@ import javafx.scene.shape.Path;
 /**
  * An object to render a NoteNode.
  */
-public class NoteNodeView extends RectangleBoundedNodeView
+public class NoteNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
@@ -48,7 +46,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	 */
 	public NoteNodeView(NoteNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -61,7 +59,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	{
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR, true);
 		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE, false);
-		NOTE_VIEWER.draw(name(), pGraphics, getDefaultBounds());
+		NOTE_VIEWER.draw(name(), pGraphics, new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	private Path createNotePath()
@@ -95,26 +93,11 @@ public class NoteNodeView extends RectangleBoundedNodeView
 		return path;
 	}
 	
-	/**
-	 * Gets the smallest rectangle that bounds this node when not containing text.
-	 * @return the bounding rectangle
-	 */
-	public Rectangle getDefaultBounds()
-	{
-		return new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
-	
 	@Override
 	public Rectangle getBounds()
 	{
 		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
 		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
-	}
-	
-	@Override
-	public void layout(Diagram pGraph)
-	{
-		setBounds(Grid.snapped(getBounds()));
 	}
 }

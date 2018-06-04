@@ -58,10 +58,6 @@ public class UseCaseNodeView extends AbstractNodeView
 		return ((UseCaseNode)node()).getName();
 	}
 	
-	@Override	
-	public void layout(Diagram pGraph)
-	{}
-
 	@Override
 	public Rectangle getBounds()
 	{

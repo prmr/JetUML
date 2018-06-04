@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
@@ -67,10 +66,6 @@ public class ActorNodeView extends AbstractNodeView
 		return new Rectangle(node().position().getX(), node().position().getY(),
             Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
 	}
-
-	@Override
-	public void layout(Diagram pGraph)
-	{}
 
 	@Override
 	public void draw(GraphicsContext pGraphics)
