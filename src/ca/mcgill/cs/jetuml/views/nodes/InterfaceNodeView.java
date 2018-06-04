@@ -24,7 +24,9 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -59,20 +61,22 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
+		Rectangle bounds = getBounds();
+		ViewUtils.drawRectangle(pGraphics, bounds);	
+
 		int bottomHeight = computeBottom().getHeight();
 		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
 				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
 		NAME_VIEWER.draw(name(), pGraphics, top);		
 		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
-		if (middleHeight() > 0) 
+		if(middleHeight() > 0) 
 		{
-			pGraphics.strokeLine(top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY());
+			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY(), LineStyle.SOLID);
 		}
 		Rectangle bot = new Rectangle(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		if (bottomHeight > 0)
+		if(bottomHeight > 0)
 		{
-			pGraphics.strokeLine(top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY());
+			ViewUtils.drawLine(pGraphics, top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY(), LineStyle.SOLID);
 		}
 		METHOD_VIEWER.draw(methods(), pGraphics, bot);
 	}

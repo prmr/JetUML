@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.AbstractNodeView;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -638,18 +637,17 @@ public abstract class Diagram implements DiagramData
 				bounds = bounds.add(node.view().getBounds());
 			}
 		}
-		for (Edge edge : aEdges)
+		for(Edge edge : aEdges)
 		{
 			bounds = bounds.add(edge.view().getBounds());
 		}
-		if (bounds == null )
+		if(bounds == null )
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}
 		else
 		{
-			return new Rectangle(bounds.getX(), bounds.getY(), 
-					bounds.getWidth() + AbstractNodeView.SHADOW_GAP, bounds.getHeight() + AbstractNodeView.SHADOW_GAP);
+			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 		}
 	}
 

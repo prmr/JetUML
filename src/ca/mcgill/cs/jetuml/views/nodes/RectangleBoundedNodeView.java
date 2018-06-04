@@ -24,18 +24,14 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A view for nodes that are bounded by a rectangle.
  */
 public abstract class RectangleBoundedNodeView extends AbstractNodeView
 {
-	private static final int DEFAULT_WIDTH = 80;
-	private static final int DEFAULT_HEIGHT = 60;
-	
-	private int aWidth = DEFAULT_WIDTH;
-	private int aHeight = DEFAULT_HEIGHT;
+	private int aWidth;
+	private int aHeight;
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -63,15 +59,6 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		node().moveTo(pNewBounds.getOrigin());
 		aWidth = pNewBounds.getWidth();
 		aHeight = pNewBounds.getHeight();
-	}
-	
-	@Override
-	public void draw(GraphicsContext pGraphics) 
-	{
-		Rectangle bounds = getBounds();	
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-		pGraphics.strokeRect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
 	
 	@Override

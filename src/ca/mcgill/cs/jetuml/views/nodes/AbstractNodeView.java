@@ -28,17 +28,12 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * Basic services for drawing nodes.
  */
 public abstract class AbstractNodeView implements NodeView
 {
-	public static final int SHADOW_GAP = 4;
-	protected static final Color BACKGROUND_COLOR = Color.WHITE;
-	protected static final double LINE_WIDTH = 0.6;
-	
 	private Node aNode;
 	
 	/**

@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -79,13 +80,9 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
 		Rectangle bounds = getBounds();
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-		pGraphics.fillRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
-		pGraphics.strokeRect(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight());
-		pGraphics.strokeRect(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight());
+		ViewUtils.drawRectangle(pGraphics, new Rectangle(bounds.getX(), bounds.getY(), aTop.getWidth(), aTop.getHeight()));
+		ViewUtils.drawRectangle(pGraphics, new Rectangle(bounds.getX(), bounds.getY() + aTop.getHeight(), aBottom.getWidth(), aBottom.getHeight()));
 		int textX = bounds.getX() + NAME_GAP;
 		int textY = (int)(bounds.getY());
 		Rectangle nameRectangle = new Rectangle(textX, textY, (int)aTop.getWidth(), (int)aTop.getHeight());
