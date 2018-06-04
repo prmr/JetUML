@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -37,6 +38,7 @@ import javafx.scene.paint.Paint;
 public final class ViewUtils
 {
 	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
+	private static final int ARC_SIZE = 20;
 	
 	private ViewUtils()
 	{}
@@ -80,5 +82,22 @@ public final class ViewUtils
 		pGraphics.strokeOval(pX + 0.5, pY + 0.5, pWidth, pHeight);
 		pGraphics.setFill(oldFill);
 		pGraphics.setEffect(null);
+	}
+	
+	/**
+	 * Draws a white rounded rectangle with a drop shadow.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pRectangle The rectangle to draw.
+	 */
+	public static void drawRoundedRectangle(GraphicsContext pGraphics, Rectangle pRectangle)
+	{
+		assert pGraphics != null && pRectangle != null;
+		pGraphics.setEffect(DROP_SHADOW);
+		pGraphics.fillRoundRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, 
+				pRectangle.getWidth(), pRectangle.getHeight(), ARC_SIZE, ARC_SIZE );
+		pGraphics.setEffect(null);
+		pGraphics.strokeRoundRect(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5, 
+				pRectangle.getWidth(), pRectangle.getHeight(), ARC_SIZE, ARC_SIZE);
 	}
 }

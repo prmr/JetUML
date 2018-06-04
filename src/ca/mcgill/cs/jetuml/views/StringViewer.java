@@ -158,7 +158,7 @@ public final class StringViewer
 		
 		pGraphics.setFont(getFont());
 		Paint oldFill = pGraphics.getFill();
-		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
+		pGraphics.translate(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5);
 		pGraphics.setFill(Color.BLACK);
 		pGraphics.fillText(pString.trim(), textX, textY);
 		
@@ -189,7 +189,7 @@ public final class StringViewer
 				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
 			}
 		}
-		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
+		pGraphics.translate(-pRectangle.getX()-0.5, -pRectangle.getY()-0.5);
 		pGraphics.setFill(oldFill);
 	}
 }

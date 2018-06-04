@@ -20,21 +20,19 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a StateNode.
  */
-public class StateNodeView extends RectangleBoundedNodeView
+public class StateNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final int ARC_SIZE = 20;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	/**
@@ -42,7 +40,7 @@ public class StateNodeView extends RectangleBoundedNodeView
 	 */
 	public StateNodeView(StateNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -53,21 +51,15 @@ public class StateNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
-		pGraphics.setFill(BACKGROUND_COLOR);
-		pGraphics.fillRoundRect(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
-		pGraphics.strokeRoundRect(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
+		ViewUtils.drawRoundedRectangle(pGraphics, getBounds());
 		NAME_VIEWER.draw(name(), pGraphics, getBounds());
 	}
 	
-	@Override	
-	public void layout(Diagram pGraph)
+	@Override
+	public Rectangle getBounds()
 	{
 		Rectangle bounds = NAME_VIEWER.getBounds(name());
-		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
+		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(bounds));
 	}
 }
