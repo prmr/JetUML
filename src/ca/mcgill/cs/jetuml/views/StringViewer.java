@@ -24,8 +24,6 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -144,7 +142,7 @@ public final class StringViewer
 		
 		int textX = 0;
 		int textY = 0;
-		if (aAlignment == Align.CENTER) 
+		if(aAlignment == Align.CENTER) 
 		{
 			textX = pRectangle.getWidth()/2;
 			textY = pRectangle.getHeight()/2;
@@ -156,40 +154,26 @@ public final class StringViewer
 			textX = HORIZONTAL_TEXT_PADDING;
 		}
 		
-		pGraphics.setFont(getFont());
-		Paint oldFill = pGraphics.getFill();
-		pGraphics.translate(pRectangle.getX() + 0.5, pRectangle.getY() + 0.5);
-		pGraphics.setFill(Color.BLACK);
-		pGraphics.fillText(pString.trim(), textX, textY);
+		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
+		ViewUtils.drawText(pGraphics, textX, textY, pString.trim(), getFont());
 		
-		if (aUnderlined && pString.trim().length() > 0)
+		if(aUnderlined && pString.trim().length() > 0)
 		{
 			int xOffset = 0;
 			int yOffset = 0;
 			Bounds bounds = label.getLayoutBounds();
-			if (aAlignment == Align.CENTER)
+			if(aAlignment == Align.CENTER)
 			{
 				xOffset = (int) (bounds.getWidth()/2);
 				yOffset = (int) (getFont().getSize()/2) + 1;
 			}
-			else if (aAlignment == Align.RIGHT)
+			else if(aAlignment == Align.RIGHT)
 			{
 				xOffset = (int) bounds.getWidth();
 			}
 			
-			if (aBold) 
-			{
-				double oldWidth = pGraphics.getLineWidth();
-				pGraphics.setLineWidth(2);
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
-				pGraphics.setLineWidth(oldWidth);
-			}
-			else
-			{
-				pGraphics.strokeLine(textX-xOffset, textY+yOffset, textX-xOffset+bounds.getWidth(), textY+yOffset);
-			}
+			ViewUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, (int) (textX-xOffset+bounds.getWidth()), textY+yOffset, LineStyle.SOLID);
 		}
-		pGraphics.translate(-pRectangle.getX()-0.5, -pRectangle.getY()-0.5);
-		pGraphics.setFill(oldFill);
+		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 	}
 }

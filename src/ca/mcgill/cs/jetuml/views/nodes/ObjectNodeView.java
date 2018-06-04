@@ -28,7 +28,9 @@ import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -65,11 +67,13 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics);
+		Rectangle bounds = getBounds();
+		ViewUtils.drawRectangle(pGraphics, bounds);
 		Rectangle top = getTopRectangle();
-		if (top.getHeight() < getBounds().getHeight()) 
+		if(top.getHeight() < bounds.getHeight()) 
 		{
-			pGraphics.strokeLine(top.getX(), top.getMaxY(), top.getX() + top.getWidth(), top.getMaxY());
+			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX() + top.getWidth(), 
+					top.getMaxY(), LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(name(), pGraphics, top);
 	}

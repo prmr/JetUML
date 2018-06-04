@@ -25,6 +25,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 
 /**
  * A collection of utility methods to draw shapes on the canvas.
@@ -158,5 +159,24 @@ public final class ViewUtils
 		pGraphics.setLineDashes(pStyle.getLineDashes());
 		pGraphics.strokeLine(pX1 + 0.5, pY1 + 0.5, pX2 + 0.5, pY2 + 0.5);
 		pGraphics.setLineDashes(oldDash);
+	}
+	
+	/**
+	 * Draw pText in black with the given font, at point pX, pY.
+	 * 
+	 * @param pGraphics The graphics context.
+	 * @param pX The x-coordinate where to draw the text.
+	 * @param pY The y-coordinate where to draw the text.
+	 * @param pText The text to draw.
+	 * @param pFont The font to use.
+	 */
+	public static void drawText(GraphicsContext pGraphics, int pX, int pY, String pText, Font pFont)
+	{
+		Font font = pGraphics.getFont();
+		pGraphics.setFont(pFont);
+		pGraphics.setFill(Color.BLACK);
+		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
+		pGraphics.setFont(font);
+		pGraphics.setFill(Color.WHITE);
 	}
 }
