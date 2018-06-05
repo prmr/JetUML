@@ -44,6 +44,7 @@ import javafx.scene.paint.Color;
  */
 public final class ImageCreator 
 {
+	private static final double LINE_WIDTH = 0.6;
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
 	private static final int DIAGRAM_PADDING = 4;
@@ -85,6 +86,8 @@ public final class ImageCreator
 		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
+		context.setLineWidth(LINE_WIDTH);
+		context.setFill(Color.WHITE);
 		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
 		pDiagram.draw(context);
 		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
