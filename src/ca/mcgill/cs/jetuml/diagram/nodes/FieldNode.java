@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -55,24 +54,6 @@ public class FieldNode extends NamedNode implements ChildNode
 	public String getValue()
 	{
 		return aValue;
-	}
-
-	/**
-     * Gets the x-offset of the axis (the location
-     * of the = sign) from the left corner of the bounding rectangle.
-     * @return the x-offset of the axis
-	 */
-	public int obtainAxis()
-	{
-		return ((FieldNodeView)view()).getAxis();
-	}
-	
-	/**
-	 * @param pBounds The new bounds
-	 */
-	public void setBounds(Rectangle pBounds)
-	{
-		((FieldNodeView)view()).setBounds(pBounds);
 	}
 
 	@Override
