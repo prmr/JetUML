@@ -275,7 +275,6 @@ public class DiagramCanvasController
 		{
 			if(element instanceof Node)
 			{
-				aCanvas.getDiagram().removeAllEdgesConnectedTo((Node)element);
 				nodes.add((Node) element);
 			}
 			else if(element instanceof Edge)

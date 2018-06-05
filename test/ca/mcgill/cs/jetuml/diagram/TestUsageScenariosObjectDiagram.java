@@ -235,8 +235,8 @@ public class TestUsageScenariosObjectDiagram
 	
 		aObjectNode1.translate(3, 12);
 		noteNode.translate(40, 20);
-		assertEquals(new Rectangle(23, 32, 100, 100), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(63, 106, 51, 21), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(23, 32, 82, 90), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(58, 102, 42, 20), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
 	}
 	
@@ -271,8 +271,8 @@ public class TestUsageScenariosObjectDiagram
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertEquals(new Rectangle(46, 57, 100, 120), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(86, 125, 51, 21), aFieldNode1.view().getBounds());
+		assertEquals(new Rectangle(46, 57, 82, 115), aObjectNode1.view().getBounds());
+		assertEquals(new Rectangle(81, 127, 42, 20), aFieldNode1.view().getBounds());
 		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
 		// edges are redrawn accordingly
 		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
@@ -429,6 +429,20 @@ public class TestUsageScenariosObjectDiagram
 		assertEquals(2, aObjectNode1.getChildren().size());
 		assertEquals(3, aDiagram.getEdges().size());
 	}
+	
+	@Test
+	public void testDeleteNodeWithLinkedEdge()
+	{
+		aDiagram.restoreRootNode(aObjectNode1);
+		aDiagram.restoreRootNode(aObjectNode2);
+		aObjectNode1.addChild(aFieldNode1);
+		aObjectNode2.translate(100, 0);
+		aDiagram.restoreEdge(aReferenceEdge1, aFieldNode1, aObjectNode2);
+		aController.getSelectionModel().set(aObjectNode1);
+		aController.removeSelected();
+		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.getRootNodes().size());
+	}
 	/**
 	 * Below are methods testing copy and paste feature for object diagram
 	 * 
@@ -447,7 +461,7 @@ public class TestUsageScenariosObjectDiagram
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
-		assertEquals(new Rectangle(0, 0, 100, 100), 
+		assertEquals(new Rectangle(0, 0, 82, 90), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
 		
 		// paste a FieldNode itself is not allowed
@@ -476,7 +490,7 @@ public class TestUsageScenariosObjectDiagram
 		aDiagram.draw(aGraphics);
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
-		assertEquals(new Rectangle(0, 0, 100, 100), 
+		assertEquals(new Rectangle(0, 0, 82, 90), 
 				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 	

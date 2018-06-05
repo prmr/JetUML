@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -92,17 +91,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		GraphicsContext context = getGraphicsContext2D();
 		context.setFill(Color.WHITE); 
 		context.fillRect(0, 0, getWidth(), getHeight());
-		Bounds bounds = getBoundsInLocal();
-		Rectangle graphBounds = aDiagram.getBounds();
 		if(UserPreferences.instance().getBoolean(BooleanPreference.showGrid)) 
 		{
-			Grid.draw(context, new Rectangle(0, 0, Math.max((int) Math.round(bounds.getMaxX()), graphBounds.getMaxX()),
-					Math.max((int) Math.round(bounds.getMaxY()), graphBounds.getMaxY())));
+			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
 		aDiagram.draw(context);
 		aController.synchronizeSelectionModel();
 		aController.getSelectionModel().forEach( selected -> selected.view().drawSelectionHandles(context));
-
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}

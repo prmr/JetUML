@@ -42,7 +42,6 @@ public final class StringViewer
 	private static final Font FONT_BOLD = Font.font(FONT.getFamily(), FontWeight.BOLD, FONT.getSize());
 	
 	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
-	private static final Text LABEL = new Text();
 	private static final int HORIZONTAL_TEXT_PADDING = 3;
 	private static final int VERTICAL_TEXT_PADDING = 7;
 	
@@ -104,7 +103,7 @@ public final class StringViewer
 	
 	private Text getLabel(String pString)
 	{
-		Text label = LABEL;
+		Text label = new Text();
 		if (aUnderlined)
 		{
 			label.setUnderline(true);

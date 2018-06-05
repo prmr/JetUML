@@ -485,6 +485,9 @@ public abstract class Diagram implements DiagramData
 				removeNode(childNode);
 			}
 		}
+		
+		// Remove all edges connected to this node
+		removeAllEdgesConnectedTo(pNode);
 
 		// Notify all nodes that pNode is being removed.
 		for (Node node : aRootNodes)
