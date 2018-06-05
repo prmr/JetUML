@@ -633,7 +633,6 @@ public class TestPersistenceService
 		
 		FieldNode name = (FieldNode) children.get(0);
 		assertEquals(new Rectangle(253, 209, 60, 20), name.view().getBounds());
-		assertTrue(46 == name.obtainAxis() || 40 == name.obtainAxis());
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
@@ -647,19 +646,16 @@ public class TestPersistenceService
 		FieldNode name4 = (FieldNode) children.get(2);
 		
 		assertEquals(new Rectangle(446, 367, 60, 20), name2.view().getBounds());
-		assertTrue(52 == name2.obtainAxis() || 46 == name2.obtainAxis());
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		
 		assertEquals(new Rectangle(445, 388, 60, 20), name3.view().getBounds());
-		assertTrue(52 == name3.obtainAxis() || 46 == name3.obtainAxis());
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		
 		assertEquals(new Rectangle(445, 409, 60, 20), name4.view().getBounds());
-		assertTrue(52 == name4.obtainAxis() || 47 == name4.obtainAxis());
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());

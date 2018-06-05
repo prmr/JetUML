@@ -218,7 +218,7 @@ public class TestGraph
 	{
 		ClassDiagram graph = new ClassDiagram();
 		graph.addNode(aNode1, new Point(0,0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
+		assertEquals(new Rectangle(0,0,100,60), graph.getBounds());
 	}
 	
 	@Test
@@ -228,7 +228,7 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		aNode3.translate(20, 20);
 		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		assertEquals(new Rectangle(10,10,244,254), aGraph.getBounds());
+		assertEquals(new Rectangle(10,10,240,250), aGraph.getBounds());
 	}
 	
 	@Test
@@ -265,9 +265,9 @@ public class TestGraph
 		ClassNode node = new ClassNode();
 		graph.restoreRootNode(node);
 		node.translate(50, 50);
-		assertEquals(new Rectangle(50,50,104,64), graph.getBounds());
+		assertEquals(new Rectangle(50,50,100,60), graph.getBounds());
 		node.translate(-50, -50);
-		assertEquals(new Rectangle(0,0,104,64), graph.getBounds());
+		assertEquals(new Rectangle(0,0,100,60), graph.getBounds());
 	}
 	
 	/*
