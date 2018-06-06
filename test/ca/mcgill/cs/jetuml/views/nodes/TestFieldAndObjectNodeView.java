@@ -66,15 +66,6 @@ public class TestFieldAndObjectNodeView
 	}
 	
 	@Test
-	public void testDimensionsUnattachedNoStrings()
-	{
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(6, view.leftWidth());    // Just the length of the mid offset
-		assertEquals(36, view.rightWidth());  // Half the default width + mid offset.
-		assertEquals(20, view.getHeight());   // Default height
-	}
-	
-	@Test
 	public void testDimensionsUnattachedWithNameString()
 	{
 		aFieldNode1.setName("XXXXX");
@@ -125,6 +116,63 @@ public class TestFieldAndObjectNodeView
 		// x = half-point of the left side.
 		// y = half-point of the default height
 		assertEquals( new Point(55,10), view.getConnectionPoint(Direction.EAST));
+	}
+	
+	// NEW
+	
+	@Test
+	public void testDimensionsAttachedNoStrings()
+	{
+		aObjectNode1.addChild(aFieldNode1);
+		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
+		assertEquals(6, view.leftWidth());    // Just the length of the mid offset
+		assertEquals(36, view.rightWidth());  // Half the default width + mid offset.
+		assertEquals(20, view.getHeight());   // Default height
+	}
+	
+	@Test
+	public void testDimensionsAttachedObjectString()
+	{
+		aObjectNode1.addChild(aFieldNode1);
+		aObjectNode1.setName("XXXXXXXXXXXXXXXXXXX");
+		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
+		assertEquals(6, view.leftWidth());    // Just the length of the mid offset
+		assertEquals(36, view.rightWidth());  // Half the default width + mid offset.
+		assertEquals(20, view.getHeight());   // Default height
+	}
+	
+	@Test
+	public void testDimensionsAttachedWithNameString()
+	{
+		aObjectNode1.addChild(aFieldNode1);
+		aFieldNode1.setName("XXXXX");
+		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
+		assertEquals(47, view.leftWidth());    // The length of the string
+		assertEquals(36, view.rightWidth());   // Half the default width + mid offset.
+		assertEquals(22, view.getHeight());    // The height of the string
+	}
+	
+	@Test
+	public void testDimensionsAttachedWithValueString()
+	{
+		aObjectNode1.addChild(aFieldNode1);
+		aFieldNode1.setValue("XXXXX");
+		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
+		assertEquals(6, view.leftWidth());    	// Just the length of the mid offset
+		assertEquals(47, view.rightWidth());  	// The length of the string
+		assertEquals(22, view.getHeight());    	// The height of the string
+	}
+	
+	@Test
+	public void testGetBoundsAttachedNoStrings()
+	{
+		aObjectNode1.addChild(aFieldNode1);
+		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
+		// x = axis (41) - offset (6) = 35
+		// y = top node height
+		// w = left + right
+		// h = default height
+		assertEquals( new Rectangle(35,70,42,20), view.getBounds());
 	}
 	
 	@After
