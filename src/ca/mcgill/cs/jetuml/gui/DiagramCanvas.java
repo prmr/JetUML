@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -37,7 +36,6 @@ import javafx.scene.paint.Color;
  */
 public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler
 {	
-	private static final double SIZE_RATIO = 0.65;
 	private static final double LINE_WIDTH = 0.6;
 	
 	private Diagram aDiagram;
@@ -46,12 +44,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * Constructs the canvas, assigns the diagram to it.
 	 * 
-	 * @param pDiagram the graph managed by this panel.
-	 * @param pScreenBoundaries the boundaries of the user's screen. 
+	 * @param pDiagram the diagram drawn in this canvas.
+	 * @param pWidth The fixed width of the canvas.
+	 * @param pHeight The fixed height of the canvas.
 	 */
-	public DiagramCanvas(Diagram pDiagram, Rectangle2D pScreenBoundaries)
+	public DiagramCanvas(Diagram pDiagram, int pWidth, int pHeight)
 	{
-		super(pScreenBoundaries.getWidth()*SIZE_RATIO, pScreenBoundaries.getHeight()*SIZE_RATIO);
+		super(pWidth, pHeight);
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
 		aDiagram = pDiagram;

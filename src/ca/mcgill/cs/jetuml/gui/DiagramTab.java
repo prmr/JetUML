@@ -27,6 +27,7 @@ import java.io.File;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -50,7 +51,8 @@ public class DiagramTab extends Tab
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, Screen.getPrimary().getVisualBounds());
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+		aDiagramCanvas = new DiagramCanvas(pDiagram, (int) bounds.getWidth(), (int)bounds.getHeight());
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
 		aDiagramCanvas.setController(aDiagramCanvasController);

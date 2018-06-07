@@ -46,7 +46,6 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -86,7 +85,7 @@ public class TestUsageScenariosClassDiagram
 	{
 		aDiagram = new ClassDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, new Rectangle2D(0, 0, 0, 0));
+		aPanel = new DiagramCanvas(aDiagram, 0, 0);
 		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
 		aPanel.setController(aController);
 		aClassNode = new ClassNode();

@@ -44,7 +44,6 @@ import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import ca.mcgill.cs.jetuml.gui.SelectionModel;
-import javafx.geometry.Rectangle2D;
 
 /**
  * Tests various interactions normally triggered from the 
@@ -88,7 +87,7 @@ public class TestUsageScenarios
 		
 		Clipboard.instance().copy(selection);
 		
-		DiagramCanvas canvas = new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0));
+		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
 		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
 		canvas.setController(controller);
 		
@@ -122,7 +121,7 @@ public class TestUsageScenarios
 
 		Clipboard.instance().copy(selection);
 		
-		DiagramCanvas canvas = new DiagramCanvas(diagram, new Rectangle2D(0, 0, 0, 0));
+		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
 		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
 		canvas.setController(controller);
 		
