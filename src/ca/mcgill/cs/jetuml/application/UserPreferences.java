@@ -58,7 +58,6 @@ public final class UserPreferences
 	 */
 	public enum IntegerPreference
 	{
-		// 0 indicates none
 		diagramWidth(0), diagramHeight(0);
 		
 		private int aDefault;

@@ -172,16 +172,18 @@ public class EditorFrame extends BorderPane
 	private void createViewMenu(MenuBar pMenuBar) 
 	{
 		MenuFactory factory = new MenuFactory(RESOURCES);
-		pMenuBar.getMenus().add(factory.createMenu("view", true, 
+		pMenuBar.getMenus().add(factory.createMenu("view", false, 
 				
-				factory.createCheckMenuItem("view.show_grid", true, 
+				factory.createCheckMenuItem("view.show_grid", false, 
 				UserPreferences.instance().getBoolean(BooleanPreference.showGrid), 
 				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, ((CheckMenuItem) pEvent.getSource()).isSelected())),
 			
-				factory.createCheckMenuItem("view.show_hints", true, 
+				factory.createCheckMenuItem("view.show_hints", false, 
 				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
 				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
-						((CheckMenuItem) pEvent.getSource()).isSelected()))));
+						((CheckMenuItem) pEvent.getSource()).isSelected())),
+		
+				factory.createMenuItem("view.diagram_size", false, Event -> new DiagramSizeDialog(aMainStage).show())));
 	}
 	
 	private void createHelpMenu(MenuBar pMenuBar) 

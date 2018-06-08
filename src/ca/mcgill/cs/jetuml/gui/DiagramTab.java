@@ -97,12 +97,14 @@ public class DiagramTab extends Tab
 		});
 	}
 	
-	private int getDiagramWidth()
+	private static int getDiagramWidth()
 	{
 		int preferredWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
 		if( preferredWidth == 0 )
 		{
-			return GuiUtils.defaultDiagramWidth();
+			int width = GuiUtils.defaultDiagramWidth();
+			UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, width);
+			return width;
 		}
 		else
 		{
@@ -110,12 +112,14 @@ public class DiagramTab extends Tab
 		}
 	}
 	
-	private int getDiagramHeight()
+	private static int getDiagramHeight()
 	{
 		int preferredHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
 		if( preferredHeight == 0 )
 		{
-			return GuiUtils.defaultDiagramHeight();
+			int height = GuiUtils.defaultDiagramHeight();
+			UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, height);
+			return height;
 		}
 		else
 		{
