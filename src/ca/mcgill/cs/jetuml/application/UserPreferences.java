@@ -86,25 +86,11 @@ public final class UserPreferences
 		void preferenceChanged(BooleanPreference pPreference);
 	}
 	
-	/**
-	 * An object that can react to a change in user preference.
-	 */
-	public interface IntegerPreferenceChangeHandler
-	{
-		/**
-		 * Callback for change in preference values.
-		 * 
-		 * @param pPreference The preference that just changed.
-		 */
-		void preferenceChanged(IntegerPreference pPreference);
-	}
-	
 	private static final UserPreferences INSTANCE = new UserPreferences();
 	
 	private EnumMap<BooleanPreference, Boolean> aBooleanPreferences = new EnumMap<>(BooleanPreference.class);
 	private final List<BooleanPreferenceChangeHandler> aBooleanPreferenceChangeHandlers = new ArrayList<>();
 	private EnumMap<IntegerPreference, Integer> aIntegerPreferences = new EnumMap<>(IntegerPreference.class);
-	private final List<IntegerPreferenceChangeHandler> aIntegerPreferenceChangeHandlers = new ArrayList<>();
 	
 	private UserPreferences()
 	{
@@ -164,7 +150,6 @@ public final class UserPreferences
 	{
 		aIntegerPreferences.put(pPreference, pValue);
 		Preferences.userNodeForPackage(UMLEditor.class).put(pPreference.name(), Integer.toString(pValue));
-		aIntegerPreferenceChangeHandlers.forEach(handler -> handler.preferenceChanged(pPreference));
 	}
 	
 	/**
@@ -179,17 +164,6 @@ public final class UserPreferences
 	}
 	
 	/**
-	 * Adds a handler for a property change. Don't forget to remove handers if 
-	 * objects are removed, e.g., diagram Tabs.
-	 * 
-	 * @param pHandler A handler for a change in integer preferences.
-	 */
-	public void addIntegerPreferenceChangeHandler(IntegerPreferenceChangeHandler pHandler)
-	{
-		aIntegerPreferenceChangeHandlers.add(pHandler);
-	}
-	
-	/**
 	 * Removes a handler.
 	 * 
 	 * @param pHandler The handler to remove.
@@ -197,15 +171,5 @@ public final class UserPreferences
 	public void removeBooleanPreferenceChangeHandler(BooleanPreferenceChangeHandler pHandler)
 	{
 		aBooleanPreferenceChangeHandlers.remove(pHandler);
-	}
-	
-	/**
-	 * Removes a handler.
-	 * 
-	 * @param pHandler The handler to remove.
-	 */
-	public void removeIntegerPreferenceChangeHandler(IntegerPreferenceChangeHandler pHandler)
-	{
-		aIntegerPreferenceChangeHandlers.remove(pHandler);
 	}
 }
