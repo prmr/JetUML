@@ -58,8 +58,8 @@ public final class UserPreferences
 	 */
 	public enum IntegerPreference
 	{
-		// 65% of a 1920x1080 screen resolution
-		diagramWidth(1248), diagramHeight(706);
+		// 0 indicates none
+		diagramWidth(0), diagramHeight(0);
 		
 		private int aDefault;
 		
