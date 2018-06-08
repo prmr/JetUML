@@ -47,7 +47,6 @@ import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
 import ca.mcgill.cs.jetuml.gui.SelectionModel;
-import javafx.geometry.Rectangle2D;
 
 public class TestClipboard
 {

@@ -27,12 +27,10 @@ import java.io.File;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 
 /**
  *A tab holding a single diagram.
@@ -51,8 +49,7 @@ public class DiagramTab extends Tab
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-		aDiagramCanvas = new DiagramCanvas(pDiagram, (int) bounds.getWidth(), (int)bounds.getHeight());
+		aDiagramCanvas = new DiagramCanvas(pDiagram, GuiUtils.defaultDiagramWidth(), GuiUtils.defaultDiagramHeight());
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
 		aDiagramCanvas.setController(aDiagramCanvasController);
@@ -78,6 +75,12 @@ public class DiagramTab extends Tab
 		// We need to set the max size of the scroll pane so it do not expand to fill 
 		// the entire center region of the BorderPane, as dictated by this layout for
 		// resizable nodes.
+		// Note that the following strategy will result in a slight annoyance, namely
+		// that if one scrollbar is showing, the other one will automatically show
+		// because the extra space occupied by the scrollbar will cause the viewport to
+		// shrink in the other dimension and the max size property, required for 
+		// centering, will prevent allowing more space for it. We will have to tolerate
+		// this until a straightforward solution that retains canvas centering can be found.
 		final int buffer = 12; // (border insets + border width + 1)*2
 		scroll.setMaxSize(aDiagramCanvas.getWidth() + buffer, aDiagramCanvas.getHeight() + buffer);
 		layout.setCenter(scroll);

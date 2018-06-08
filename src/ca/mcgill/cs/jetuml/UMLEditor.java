@@ -26,16 +26,16 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.concurrent.CountDownLatch;
 
 import ca.mcgill.cs.jetuml.application.JavaVersion;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
+import ca.mcgill.cs.jetuml.gui.GuiUtils;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -44,8 +44,6 @@ import javafx.stage.Stage;
 public final class UMLEditor extends Application
 {
 	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(10, 0, 1);
-	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
-	
 	private static HostServices aHostServices; // Required to open a browser page.
 	
 	/**
@@ -92,13 +90,11 @@ public final class UMLEditor extends Application
 
 	private void setStageBoundaries(Stage pStage)
 	{
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-		int screenWidth = (int) primaryScreenBounds.getWidth();
-		int screenHeight = (int) primaryScreenBounds.getHeight();
-		pStage.setX(screenWidth / (MARGIN_SCREEN * 2));
-		pStage.setY(screenHeight / (MARGIN_SCREEN * 2));
-		pStage.setWidth((screenWidth * (MARGIN_SCREEN -1 )) / MARGIN_SCREEN);
-		pStage.setHeight((screenHeight * (MARGIN_SCREEN -1 ))/ MARGIN_SCREEN);
+		Rectangle defaultStageBounds = GuiUtils.defaultStageBounds();
+		pStage.setX(defaultStageBounds.getX());
+		pStage.setY(defaultStageBounds.getY());
+		pStage.setWidth(defaultStageBounds.getWidth());
+		pStage.setHeight(defaultStageBounds.getHeight());
 	}
 
 	/*
