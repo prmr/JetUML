@@ -26,6 +26,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.io.File;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -49,7 +50,7 @@ public class DiagramTab extends Tab
 	{
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, GuiUtils.defaultDiagramWidth(), GuiUtils.defaultDiagramHeight());
+		aDiagramCanvas = new DiagramCanvas(pDiagram, getDiagramWidth(), getDiagramHeight());
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
 		aDiagramCanvas.setController(aDiagramCanvasController);
@@ -94,6 +95,32 @@ public class DiagramTab extends Tab
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
+	}
+	
+	private int getDiagramWidth()
+	{
+		int preferredWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
+		if( preferredWidth == 0 )
+		{
+			return GuiUtils.defaultDiagramWidth();
+		}
+		else
+		{
+			return preferredWidth;
+		}
+	}
+	
+	private int getDiagramHeight()
+	{
+		int preferredHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
+		if( preferredHeight == 0 )
+		{
+			return GuiUtils.defaultDiagramHeight();
+		}
+		else
+		{
+			return preferredHeight;
+		}
 	}
 	
 	/**
