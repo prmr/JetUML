@@ -28,7 +28,7 @@ package ca.mcgill.cs.jetuml.gui;
  * then discarded. Both dimensions of the viewport must be equal to or
  * smaller than the canvas's.
  */
-public class ViewportProjection
+public final class ViewportProjection
 {
 	private final int aViewportWidth;
 	private final int aViewportHeight;
@@ -85,8 +85,7 @@ public class ViewportProjection
 	 */
 	public int getHiddenLeft()
 	{
-		int hiddenWidth = aCanvasWidth - aViewportWidth;
-		double hiddentLeft = hiddenWidth * aHValue;
+		double hiddentLeft = hiddenWidth() * aHValue;
 		return Math.round((float) hiddentLeft);
 	}
 	
@@ -96,8 +95,7 @@ public class ViewportProjection
 	 */
 	public int getHiddenRight()
 	{
-		int hiddenWidth = aCanvasWidth - aViewportWidth;
-		double hiddenRight = hiddenWidth * (1.0-aHValue);
+		double hiddenRight = hiddenWidth() * (1.0-aHValue);
 		return Math.round((float) hiddenRight);
 	}
 	
@@ -107,8 +105,7 @@ public class ViewportProjection
 	 */
 	public int getHiddenTop()
 	{
-		int hiddenHeight = aCanvasWidth - aViewportHeight;
-		double hiddenTop = hiddenHeight * aVValue;
+		double hiddenTop = hiddenHeight() * aVValue;
 		return Math.round((float) hiddenTop);
 	}
 	
@@ -118,9 +115,18 @@ public class ViewportProjection
 	 */
 	public int getHiddenBottom()
 	{
-		int hiddenHeight = aCanvasWidth - aViewportHeight;
-		double hiddenBottom = hiddenHeight * (1.0 - aVValue);
+		double hiddenBottom = hiddenHeight() * (1.0 - aVValue);
 		return Math.round((float) hiddenBottom); 
+	}
+	
+	private int hiddenHeight()
+	{
+		return aCanvasHeight - aViewportHeight;
+	}
+	
+	private int hiddenWidth()
+	{
+		return aCanvasWidth - aViewportWidth;
 	}
 	
 	/**
@@ -161,5 +167,47 @@ public class ViewportProjection
 	{
 		assert pY >=0 && pY <= aCanvasHeight;
 		return pY > aCanvasHeight - getHiddenBottom();
+	}
+	
+	/**
+	 * @param pX An x-coordinate to reveal.
+	 * @return A newly computed HValue that will ensure pX
+	 * is just visible in the viewport.
+	 */
+	public double getAdjustedHValueToRevealX(int pX)
+	{
+		if( isHiddenLeft(pX) )
+		{
+			return pX / (double) hiddenWidth();
+		}
+		else if( isHiddenRight(pX) )
+		{
+			return 1 - ((aCanvasWidth- pX) / (double) hiddenWidth());
+		}
+		else
+		{
+			return aHValue;
+		}
+	}
+	
+	/**
+	 * @param pY A y-coordinate to reveal.
+	 * @return A newly computed VValue that will ensure pY
+	 * is just visible in the viewport.
+	 */
+	public double getAdjustedVValueToRevealY(int pY)
+	{
+		if( isHiddenTop(pY) )
+		{
+			return pY / (double) hiddenHeight();
+		}
+		else if( isHiddenBottom(pY) )
+		{
+			return 1 - ((aCanvasWidth- pY) / (double) hiddenHeight());
+		}
+		else
+		{
+			return aVValue;
+		}
 	}
 }

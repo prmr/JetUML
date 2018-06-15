@@ -206,4 +206,65 @@ public class TestViewportProjection
 		assertTrue(projection.isHiddenBottom(751));
 	}
 	
+	@Test
+	public void testGetAdjustedHValueToRevealXNone()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 0, 0.343);
+		assertEquals(0, projection.getAdjustedHValueToRevealX(0), 0.0);
+		assertEquals(0, projection.getAdjustedHValueToRevealX(499), 0.0);
+		assertEquals(0, projection.getAdjustedHValueToRevealX(500), 0.0);
+	}
+	
+	@Test
+	public void testGetAdjustedHValueToRevealXMoveLeft()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 1, 0.343);
+		assertEquals(0, projection.getAdjustedHValueToRevealX(0), 0.0);
+		assertEquals(0.5, projection.getAdjustedHValueToRevealX(250), 0.0);
+		assertEquals(0.25, projection.getAdjustedHValueToRevealX(125), 0.0);
+		assertEquals(0.126, projection.getAdjustedHValueToRevealX(63), 0.0);
+	}
+	
+	@Test
+	public void testGetAdjustedHValueToRevealXMoveRight()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 0, 0.343);
+		assertEquals(0, projection.getAdjustedHValueToRevealX(0), 0.0);
+		assertEquals(1, projection.getAdjustedHValueToRevealX(1000), 0.0);
+		assertEquals(0.5, projection.getAdjustedHValueToRevealX(750), 0.0);
+		assertEquals(0.75, projection.getAdjustedHValueToRevealX(875), 0.0);
+		assertEquals(0.876, projection.getAdjustedHValueToRevealX(938), 0.0);
+	}
+	
+	@Test
+	public void testGetAdjustedVValueToRevealYNone()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 0.343, 0);
+		assertEquals(0, projection.getAdjustedVValueToRevealY(0), 0.0);
+		assertEquals(0, projection.getAdjustedVValueToRevealY(499), 0.0);
+		assertEquals(0, projection.getAdjustedVValueToRevealY(500), 0.0);
+	}
+	
+	@Test
+	public void testGetAdjustedVValueToRevealYMoveUp()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 0.343, 1);
+		assertEquals(0, projection.getAdjustedVValueToRevealY(0), 0.0);
+		assertEquals(0.5, projection.getAdjustedVValueToRevealY(250), 0.0);
+		assertEquals(0.25, projection.getAdjustedVValueToRevealY(125), 0.0);
+		assertEquals(0.126, projection.getAdjustedVValueToRevealY(63), 0.0);
+	}
+	
+	@Test
+	public void testGetAdjustedVValueToRevealYMoveDown()
+	{
+		ViewportProjection projection = new ViewportProjection(500, 500, 1000, 1000, 0.343, 0);
+		assertEquals(0, projection.getAdjustedVValueToRevealY(0), 0.0);
+		assertEquals(1, projection.getAdjustedVValueToRevealY(1000), 0.0);
+		assertEquals(0.5, projection.getAdjustedVValueToRevealY(750), 0.0);
+		assertEquals(0.75, projection.getAdjustedVValueToRevealY(875), 0.0);
+		assertEquals(0.876, projection.getAdjustedVValueToRevealY(938), 0.0);
+
+	}
+	
 }
