@@ -80,7 +80,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram = new SequenceDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aCanvas = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram));
+		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram), a ->  {});
 		aCanvas.setController(aController);
 		aList = new ArrayList<>();
 		aParameterNode1 = new ImplicitParameterNode();

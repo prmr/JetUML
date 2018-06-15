@@ -88,7 +88,7 @@ public class TestUsageScenarios
 		Clipboard.instance().copy(selection);
 		
 		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
-		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
 		canvas.setController(controller);
 		
 		Clipboard.instance().paste(controller);
@@ -122,7 +122,7 @@ public class TestUsageScenarios
 		Clipboard.instance().copy(selection);
 		
 		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
-		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram));
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
 		canvas.setController(controller);
 		
 		Clipboard.instance().paste(controller);

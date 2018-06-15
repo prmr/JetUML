@@ -38,7 +38,7 @@ public final class ViewportProjection
 	private final double aVValue;
 	
 	/**
-	 * Creates a new, immutable ViewportProjection.
+	 * Creates an immutable ViewportProjection.
 	 * 
 	 * @param pViewportWidth The width of the viewport.
 	 * @param pViewportHeight The height of the viewport.
@@ -203,11 +203,18 @@ public final class ViewportProjection
 		}
 		else if( isHiddenBottom(pY) )
 		{
-			return 1 - ((aCanvasWidth- pY) / (double) hiddenHeight());
+			return 1 - ((aCanvasHeight- pY) / (double) hiddenHeight());
 		}
 		else
 		{
 			return aVValue;
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[ViewportProjection: vp=%dx%d; canvas=%dx%d; pos=%.2f, %.2f]", aViewportWidth, aViewportHeight,
+				aCanvasWidth, aCanvasHeight, aHValue, aVValue);
 	}
 }

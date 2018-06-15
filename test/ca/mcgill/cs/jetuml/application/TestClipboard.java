@@ -91,7 +91,7 @@ public class TestClipboard
 		
 		aClassDiagramGraph = new ClassDiagram();
 		aPanel = new DiagramCanvas(aClassDiagramGraph, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aClassDiagramGraph));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aClassDiagramGraph), a ->  {});
 		aPanel.setController(aController);
 	}
 	

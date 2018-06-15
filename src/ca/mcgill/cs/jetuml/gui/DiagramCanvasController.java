@@ -80,14 +80,16 @@ public class DiagramCanvasController
 	private Point aMouseDownPoint;  
 	private UndoManager aUndoManager = new UndoManager();	
 	private boolean aModified = false;
+	private MouseDraggedGestureHandler aHandler;
 
 	
 	/**
 	 * Creates a new controller.
 	 * @param pCanvas The canvas being controlled
 	 * @param pToolBar The toolbar.
+	 * @param pHandler A handler for when the mouse is dragged
 	 */
-	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar)
+	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
 	{
 		aCanvas = pCanvas;
 		aSelectionModel = new SelectionModel(aCanvas);
@@ -95,6 +97,7 @@ public class DiagramCanvasController
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
 		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
+		aHandler = pHandler;
 	}
 	
 	/**
@@ -520,6 +523,8 @@ public class DiagramCanvasController
 
 	private void mouseDragged(MouseEvent pEvent)
 	{
+		Point mousePoint = getMousePoint(pEvent);
+		aHandler.interactionTo(mousePoint);
 		if(aDragMode == DragMode.DRAG_MOVE ) 
 		{
 			moveSelection(getMousePoint(pEvent));

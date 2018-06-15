@@ -82,7 +82,7 @@ public class TestUsageScenariosStateDiagram
 		aDiagram = new StateDiagram();
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aPanel = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram));
+		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram), a ->  {});
 		aPanel.setController(aController);
 		aStateNode1 = new StateNode();
 		aStateNode1.moveTo(new Point(50, 20));

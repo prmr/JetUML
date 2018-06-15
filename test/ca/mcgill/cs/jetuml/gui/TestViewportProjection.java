@@ -264,7 +264,13 @@ public class TestViewportProjection
 		assertEquals(0.5, projection.getAdjustedVValueToRevealY(750), 0.0);
 		assertEquals(0.75, projection.getAdjustedVValueToRevealY(875), 0.0);
 		assertEquals(0.876, projection.getAdjustedVValueToRevealY(938), 0.0);
-
+	}
+	
+	@Test
+	public void testGetAdjustedVValueToRevealYMoveDown2()
+	{
+		ViewportProjection projection = new ViewportProjection(1585, 407, 1588, 782, 0, 0);
+		assertEquals(0.152, projection.getAdjustedVValueToRevealY(464), 0.001);
 	}
 	
 }

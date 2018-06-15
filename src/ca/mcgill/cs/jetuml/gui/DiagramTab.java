@@ -28,6 +28,8 @@ import java.io.File;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.geom.Point;
+import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +38,7 @@ import javafx.scene.layout.StackPane;
 /**
  *A tab holding a single diagram.
  */
-public class DiagramTab extends Tab
+public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 {	
 	private DiagramCanvas aDiagramCanvas;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -52,7 +54,7 @@ public class DiagramTab extends Tab
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 		aDiagramCanvas = new DiagramCanvas(pDiagram, getDiagramWidth(), getDiagramHeight());
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
-		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar);
+		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar, this);
 		aDiagramCanvas.setController(aDiagramCanvasController);
 		aDiagramCanvas.paintPanel();
 		
@@ -282,5 +284,22 @@ public class DiagramTab extends Tab
 	{
 		aFile = pFile;
 		setTitle(false);
+	}
+
+	@Override
+	public void interactionTo(Point pTo)
+	{
+		ViewportProjection projection = getViewportProjection();
+		((ScrollPane)((BorderPane)getContent()).getCenter()).setHvalue(projection.getAdjustedHValueToRevealX(pTo.getX()));
+		((ScrollPane)((BorderPane)getContent()).getCenter()).setVvalue(projection.getAdjustedVValueToRevealY(pTo.getY()));
+	}
+	
+	private ViewportProjection getViewportProjection()
+	{
+		ScrollPane scrollPane = (ScrollPane)((BorderPane)getContent()).getCenter();
+		Bounds bounds = scrollPane.getViewportBounds();
+		return new ViewportProjection((int) bounds.getWidth(), (int) bounds.getHeight(), 
+				(int) aDiagramCanvas.getWidth(), (int) aDiagramCanvas.getHeight(), 
+				scrollPane.getHvalue(), scrollPane.getVvalue());
 	}
 }	        

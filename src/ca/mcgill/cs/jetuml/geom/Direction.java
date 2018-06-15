@@ -95,4 +95,10 @@ public class Direction
 	{
 		return aY;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[Direction: x=%.2f y=%.2f]", aX, aY);
+	}
 }
