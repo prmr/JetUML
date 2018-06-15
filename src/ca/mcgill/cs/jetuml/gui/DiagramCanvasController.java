@@ -524,14 +524,15 @@ public class DiagramCanvasController
 	private void mouseDragged(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		aHandler.interactionTo(mousePoint);
+		Point pointToReveal = mousePoint;
 		if(aDragMode == DragMode.DRAG_MOVE ) 
 		{
-			moveSelection(getMousePoint(pEvent));
+			pointToReveal = computePointToReveal(mousePoint);
+			moveSelection(mousePoint);
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
-			aLastMousePoint = getMousePoint(pEvent);
+			aLastMousePoint = mousePoint;
 			if( !pEvent.isControlDown() )
 			{
 				aSelectionModel.clearSelection();
@@ -540,9 +541,28 @@ public class DiagramCanvasController
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
-			aLastMousePoint = getMousePoint(pEvent);
+			aLastMousePoint = mousePoint;
 			aSelectionModel.activateRubberband(computeRubberband());
 		}
+		aHandler.interactionTo(pointToReveal);
+	}
+	
+	// finds the point to reveal based on the entire selection
+	private Point computePointToReveal(Point pMousePoint)
+	{
+		Rectangle bounds = aSelectionModel.getSelectionBounds();
+		int x = bounds.getMaxX();
+		int y = bounds.getMaxY();
+		
+		if( pMousePoint.getX() < aLastMousePoint.getX()) 	 // Going left, reverse coordinate
+		{
+			x = bounds.getX(); 
+		}
+		if( pMousePoint.getY() < aLastMousePoint.getY())	// Going up, reverse coordinate
+		{
+			y = bounds.getY(); 
+		}
+		return new Point(x, y);
 	}
 	
 	// TODO, include edges between selected nodes in the bounds check.
