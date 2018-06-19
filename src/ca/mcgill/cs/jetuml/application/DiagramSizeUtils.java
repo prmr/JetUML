@@ -27,7 +27,7 @@ package ca.mcgill.cs.jetuml.application;
 public final class DiagramSizeUtils
 {
 	public static final int MAX_SIZE = 5000;
-	public static final int MIN_SIZE = 100;
+	public static final int MIN_SIZE = 500;
 	
 	private DiagramSizeUtils()
 	{}
