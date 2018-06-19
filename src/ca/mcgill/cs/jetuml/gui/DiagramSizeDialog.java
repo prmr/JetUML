@@ -21,15 +21,23 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static ca.mcgill.cs.jetuml.application.DiagramSizeUtils.MIN_SIZE;
+
+import ca.mcgill.cs.jetuml.application.DiagramSizeUtils;
+
+import static ca.mcgill.cs.jetuml.application.DiagramSizeUtils.MAX_SIZE;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -44,8 +52,6 @@ import javafx.stage.Stage;
  */
 public class DiagramSizeDialog
 {
-	private static final int MAX_SIZE = 5000;
-	private static final int MIN_SIZE = 100;
 	private static final int SPACING = 10;
 	private static final int VSPACE = 20;
 	
@@ -105,9 +111,10 @@ public class DiagramSizeDialog
 		width.setSpacing(2);
 		aWidthField.setOnAction( pEvent -> 
 		{
-			if( !valid(aWidthField.getText()) )
+			if( !DiagramSizeUtils.isValid(aWidthField.getText()) )
 			{
 				aWidthField.setText(Integer.toString(getDiagramWidth()));
+				showInvalidSizeAlert();
 			}
 		});
 		
@@ -118,9 +125,10 @@ public class DiagramSizeDialog
 		height.setSpacing(2);
 		aHeightField.setOnAction( pEvent -> 
 		{
-			if( !valid(aHeightField.getText()) )
+			if( !DiagramSizeUtils.isValid(aHeightField.getText()) )
 			{
 				aHeightField.setText(Integer.toString(getDiagramHeight()));
+				showInvalidSizeAlert();
 			}
 		});
 		
@@ -167,15 +175,34 @@ public class DiagramSizeDialog
 		}
 	}
 	
+	private void showInvalidSizeAlert()
+	{
+		String content = RESOURCES.getString("dialog.diagram_size.error_content");
+		content = content.replace("#1", Integer.toString(MIN_SIZE));
+		content = content.replace("#2", Integer.toString(MAX_SIZE));
+		Alert alert = new Alert(AlertType.ERROR, content, ButtonType.OK);
+		alert.setTitle(RESOURCES.getString("alert.error.title"));
+		alert.setHeaderText(RESOURCES.getString("dialog.diagram_size.error_header"));
+		alert.initOwner(aStage);
+		alert.showAndWait();
+	}
+	
 	private Pane createButtons()
 	{
 		Button ok = new Button(RESOURCES.getString("dialog.diagram_size.ok"));
 		Button cancel = new Button(RESOURCES.getString("dialog.diagram_size.cancel"));
 		ok.setOnAction(pEvent -> 
 		{
-			UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, Integer.parseInt(aWidthField.getText()));
-			UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, Integer.parseInt(aHeightField.getText()));
-			aStage.close();
+			if( DiagramSizeUtils.isValid(aWidthField.getText()) && DiagramSizeUtils.isValid(aHeightField.getText()))
+			{
+				UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, Integer.parseInt(aWidthField.getText()));
+				UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, Integer.parseInt(aHeightField.getText()));
+				aStage.close();
+			}
+			else
+			{
+				showInvalidSizeAlert();
+			}
 		});
 		cancel.setOnAction( pEvent -> aStage.close() );
 
@@ -184,19 +211,6 @@ public class DiagramSizeDialog
 		box.setAlignment(Pos.CENTER_RIGHT);
 		box.setPadding(new Insets(VSPACE, 0, 0, 0));
 		return box;
-	}
-	
-	private static boolean valid(String pText)
-	{
-		try
-		{
-			int value = Integer.parseInt(pText);
-			return value >= MIN_SIZE && value <= MAX_SIZE;
-		}
-		catch( NumberFormatException pException )
-		{
-			return false;
-		}
 	}
 	
 	/**
