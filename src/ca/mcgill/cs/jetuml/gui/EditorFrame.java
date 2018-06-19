@@ -46,8 +46,10 @@ import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
@@ -218,6 +220,16 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			Diagram diagram2 = PersistenceService.read(new File(pName));
+			
+			Rectangle bounds = diagram2.getBounds();
+			int viewWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
+			int viewHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
+			if( bounds.getMaxX() > viewWidth || bounds.getMaxY() > viewHeight )
+			{
+				showDiagramViewTooSmallAlert(bounds, viewWidth, viewHeight);
+				return;
+			}
+			
 			DiagramTab frame2 = new DiagramTab(diagram2);
 			frame2.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
@@ -229,6 +241,20 @@ public class EditorFrame extends BorderPane
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
+	}
+	
+	private void showDiagramViewTooSmallAlert(Rectangle pBounds, int pWidth, int pHeight)
+	{
+		String content = RESOURCES.getString("dialog.open.size_error_content");
+		content = content.replace("#1", Integer.toString(pBounds.getMaxX()));
+		content = content.replace("#2", Integer.toString(pBounds.getMaxY()));
+		content = content.replace("#3", Integer.toString(pWidth));
+		content = content.replace("#4", Integer.toString(pHeight));
+		Alert alert = new Alert(AlertType.ERROR, content, ButtonType.OK);
+		alert.setTitle(RESOURCES.getString("alert.error.title"));
+		alert.setHeaderText(RESOURCES.getString("dialog.open.size_error_header"));
+		alert.initOwner(aMainStage);
+		alert.showAndWait();
 	}
 	
 	private List<NamedHandler> getOpenFileHandlers()
