@@ -43,7 +43,7 @@ import javafx.stage.Stage;
  */
 public final class UMLEditor extends Application
 {
-	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(10, 0, 1);
+	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(8, 0, 0);
 	private static HostServices aHostServices; // Required to open a browser page.
 	
 	/**
