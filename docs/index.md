@@ -23,7 +23,6 @@ classes in the `test` source folders can use reflection to get around accessibil
 The functional view is split by functional concern.
 
  * [Tab Management](functional/TabManagement.md)
- * [Graph management](functional/GraphManagement.md)
  * [Graph elements](functional/GraphElements.md)
  * [Tool bar](functional/toolbar.md)
  * [Graph element properties](functional/properties.md)
