@@ -8,18 +8,6 @@ This project is originally based on the [Violet Project](http://www.horstmann.co
 
 The goal of this document is to capture the major decisions related to the development of JetUML.
 
-## Stakeholders
-
-The development of JetUML recognizes the following categories stakeholders:
-
-* **Lead Developer:** Moves this project forward.
-* **Student Contributors:** Students who contribute to JetUML as part of a self-directed course.
-* **External Contributors:** Anyone else who contributes something to JetUML.
-* **Students:** Students learning to use UML, typically as part of a software design course.
-* **Instructors:** Instructors using UML to teach software design or something similar.
-* **Professional Users:** Anyone using JetUML as part of their work.
-* **Learners:** Anyone studying the JetUML project in the hopes of learning something about Java development.
-
 ## Architectural Principles
 
 The following principles guide the development of JetUML:
@@ -29,6 +17,7 @@ The following principles guide the development of JetUML:
 * **Violate Encapsulation for Testing:** To goal for the design is to support the highest possible level of encapsulation, and this implies the most restrictive access modifiers. When necessary, the 
 classes in the `test` source folders can use reflection to get around accessibility restrictions.
 * **No reflection:** To avoid fragile and hard-to-understand code, the project does not rely on any heavily-reflective framework, such as Javabeans. 
+* **No streaming:** The use of the [Java Streaming API](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html) is explicitly avoided. JetUML has few data-intensive operations, as diagrams typically have only a handful of elements. In this context, the downsides of streaming (harder to debug, problems with checked exceptions, dual-paradigm design) are deemed to outweigh the advantages (more compact code).
 
 ## Functional View
 The functional view is split by functional concern.
@@ -39,16 +28,3 @@ The functional view is split by functional concern.
  * [Tool bar](functional/toolbar.md)
  * [Graph element properties](functional/properties.md)
  
-## Glossary
-The glossary is limited to terms that are unique to JetUML or have a speific meaning in the context of the JetUML project.
-
-**Diagram Type** One of the types of UML diagrams supported by JetUML, e.g., Class Diagram.
-
-**Graph Frame** An internal frame that contains a UML diagram of any kind.
-
-**Internal Frame** Generally a GUI window frame that is controlled by and within the boundaries of the main application window. In JetUML this means either the *Welcome Tab* or a *Graph Frame*.
-
-**Tool Bar** The GUI component in charge of displaying a list of drawing tools and commands.
-
-**Welcome Tab** The tab that comes up by default when JetUML is launched. It contains diagram creation shortcuts and shortcuts to open recently opened files.
-
