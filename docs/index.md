@@ -24,6 +24,5 @@ The functional view is split by functional concern.
 
  * [Tab Management](functional/TabManagement.md)
  * [Diagram Elements](functional/DiagramElements.md)
- * [Tool bar](functional/toolbar.md)
  * [Graph element properties](functional/properties.md)
  
