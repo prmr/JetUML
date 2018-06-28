@@ -22,7 +22,7 @@ classes in the `test` source folders can use reflection to get around accessibil
 ## Functional View
 The functional view is split by functional concern.
 
- * [Frame management](functional/frameManagement.md)
+ * [Tab Management](functional/TabManagement.md)
  * [Graph management](functional/GraphManagement.md)
  * [Graph elements](functional/GraphElements.md)
  * [Tool bar](functional/toolbar.md)
