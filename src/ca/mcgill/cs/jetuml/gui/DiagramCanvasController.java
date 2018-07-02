@@ -398,10 +398,10 @@ public class DiagramCanvasController
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
-		boolean added = aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
-				(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
-		if(added)
+		if(aCanvas.getDiagram().canAdd(newNode, point))
 		{
+			 aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
+						(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
 			setModified(true);
 			aSelectionModel.set(newNode);
 		}

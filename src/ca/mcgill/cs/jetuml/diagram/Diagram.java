@@ -93,6 +93,18 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
+	 * True by default. Override to provide cases where this should be false.
+	 * 
+	 * @param pNode The node to add if possible. 
+	 * @param pRequestedPosition The requested position for the node.
+	 * @return True if it is possible to add pNode at position pPoint.
+	 */
+	public boolean canAdd(Node pNode, Point pRequestedPosition)
+	{
+		return true;
+	}
+	
+	/**
 	 * Notifies the listener, if applicable, of a change to a property
 	 * of one of the graph's elements.
 	 * 

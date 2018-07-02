@@ -103,6 +103,17 @@ public class ObjectDiagram extends Diagram
 		return true;
 	}
 	
+	@Override
+	public boolean canAdd(Node pNode, Point pRequestedPosition)
+	{
+		boolean result = true;
+		if( pNode instanceof FieldNode && findObject((FieldNode)pNode, pRequestedPosition) == null )
+		{
+			result = false;
+		}
+		return result;
+	}
+	
 	/* Find if the node to be added can be added to an object. Returns null if not. 
 	 * If a node is already the parent of the field (from a previously undone operation),
 	 * return this node. Otherwise, find if a node is at the point

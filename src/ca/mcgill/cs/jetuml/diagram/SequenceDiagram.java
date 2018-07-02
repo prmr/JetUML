@@ -77,6 +77,17 @@ public class SequenceDiagram extends Diagram
 		return true;
 	}
 	
+	@Override
+	public boolean canAdd(Node pNode, Point pRequestedPosition)
+	{
+		boolean result = true;
+		if(pNode instanceof CallNode && insideTargetArea(pRequestedPosition) == null)
+		{
+			result = false;
+		}
+		return result;
+	}
+	
 	/*
 	 * If pPoint is inside an ImplicitParameterNode but below its top
 	 * rectangle, returns that node. Otherwise, returns null.
