@@ -84,7 +84,7 @@ public class ObjectDiagram extends Diagram
 	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#add(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
 	 */
 	@Override
-	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
+	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		if( pNode instanceof FieldNode )
 		{
@@ -96,11 +96,10 @@ public class ObjectDiagram extends Diagram
 			}
 			else
 			{
-				return false;
+				return;
 			}
 		}
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
-		return true;
 	}
 	
 	@Override

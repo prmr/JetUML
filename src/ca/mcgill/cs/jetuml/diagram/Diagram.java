@@ -276,7 +276,7 @@ public abstract class Diagram implements DiagramData
 	 * @param pMaxHeight the maximum height of the panel
 	 * @return True if the node was added.
 	 */
-	public boolean addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
+	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
 		Rectangle bounds = pNode.view().getBounds();
 		int newX = pPoint.getX();
@@ -296,7 +296,6 @@ public abstract class Diagram implements DiagramData
 		}
 		notifyNodeAdded(pNode);
 		aNeedsLayout = true;
-		return true;
 	}
 	
 	/**
