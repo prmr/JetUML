@@ -26,6 +26,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -53,6 +54,11 @@ public class SequenceDiagram extends Diagram
 		IMPLICIT_PARAMETER_NODE.addChild(new CallNode());
 	}
 	
+	public SequenceDiagram()
+	{
+		aBuilder = new SequenceDiagramBuilder(this);
+	}
+	
 	/* 
 	 * Adds the node, ensuring that call nodes can only be added if the
 	 * point is inside the space of the related ImplicitParameterNode
@@ -76,22 +82,11 @@ public class SequenceDiagram extends Diagram
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
 	
-	@Override
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		boolean result = true;
-		if(pNode instanceof CallNode && insideTargetArea(pRequestedPosition) == null)
-		{
-			result = false;
-		}
-		return result;
-	}
-	
 	/*
 	 * If pPoint is inside an ImplicitParameterNode but below its top
 	 * rectangle, returns that node. Otherwise, returns null.
 	 */
-	private ImplicitParameterNode insideTargetArea(Point pPoint)
+	public ImplicitParameterNode insideTargetArea(Point pPoint)
 	{
 		for( Node node : getRootNodes() )
 		{

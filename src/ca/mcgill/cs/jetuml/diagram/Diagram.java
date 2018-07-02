@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -59,6 +60,7 @@ public abstract class Diagram implements DiagramData
 	protected transient ArrayList<Node> aNodesToBeRemoved;
 	protected transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
+	protected transient DiagramBuilder aBuilder;
 
 	/**
 	 * Constructs a graph with no nodes or edges.
@@ -99,9 +101,9 @@ public abstract class Diagram implements DiagramData
 	 * @param pRequestedPosition The requested position for the node.
 	 * @return True if it is possible to add pNode at position pPoint.
 	 */
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
+	public final boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
-		return true;
+		return aBuilder.canAdd(pNode, pRequestedPosition);
 	}
 	
 	/**

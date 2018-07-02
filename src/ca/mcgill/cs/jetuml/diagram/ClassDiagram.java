@@ -26,6 +26,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -56,6 +57,11 @@ public class ClassDiagram extends Diagram
 															  new AggregationEdge(AggregationEdge.Type.Composition),
 															  new NoteEdge()};
 
+	public ClassDiagram()
+	{
+		aBuilder = new DiagramBuilder(this);
+	}
+	
 	@Override
 	public Node[] getNodePrototypes()
 	{

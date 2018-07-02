@@ -25,6 +25,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.ArrayList;
 
+import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -56,6 +57,11 @@ public class ObjectDiagram extends Diagram
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
 	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
+	}
+	
+	public ObjectDiagram()
+	{
+		aBuilder = new ObjectDiagramBuilder(this);
 	}
 	
 	@Override
@@ -102,22 +108,11 @@ public class ObjectDiagram extends Diagram
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
 	
-	@Override
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		boolean result = true;
-		if( pNode instanceof FieldNode && findObject((FieldNode)pNode, pRequestedPosition) == null )
-		{
-			result = false;
-		}
-		return result;
-	}
-	
 	/* Find if the node to be added can be added to an object. Returns null if not. 
 	 * If a node is already the parent of the field (from a previously undone operation),
 	 * return this node. Otherwise, find if a node is at the point
 	 */
-	private ObjectNode findObject(FieldNode pNode, Point pPoint)
+	public ObjectNode findObject(FieldNode pNode, Point pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
 		for( Node node : aRootNodes )
