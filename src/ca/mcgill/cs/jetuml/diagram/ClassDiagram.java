@@ -23,16 +23,12 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -59,7 +55,7 @@ public class ClassDiagram extends Diagram
 
 	public ClassDiagram()
 	{
-		aBuilder = new DiagramBuilder(this);
+		aBuilder = new ClassDiagramBuilder(this);
 	}
 	
 	@Override
@@ -86,12 +82,6 @@ public class ClassDiagram extends Diagram
 		return RESOURCES.getString("classdiagram.file.name");
 	}
 
-	private static boolean canAddNodeAsChild(Node pPotentialChild)
-	{
-		return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
-					pPotentialChild instanceof PackageNode ;
-	}
-	
 	@Override
 	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
@@ -105,64 +95,6 @@ public class ClassDiagram extends Diagram
 		}
 		
 		return true;
-	}
-	
-	/* Find if the node to be added should be added to a package. Returns null if not. 
-	 * If packages overlap, select the last one added, which by default should be on
-	 * top. This could be fixed if we ever add a z coordinate to the graph.
-	 */
-	private PackageNode findContainer( List<Node> pNodes, Point pPoint)
-	{
-		PackageNode container = null;
-		for( Node node : pNodes )
-		{
-			if( node instanceof PackageNode && node.view().contains(pPoint) )
-			{
-				container = (PackageNode) node;
-			}
-		}
-		if( container == null )
-		{
-			return null;
-		}
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<Node> children = new ArrayList(container.getChildren());
-		if( children.size() == 0 )
-		{
-			return container;
-		}
-		else
-		{
-			PackageNode deeperContainer = findContainer( children, pPoint );
-			if( deeperContainer == null )
-			{
-				return container;
-			}
-			else
-			{
-				return deeperContainer;
-			}
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * See if, given its position, the node should be added as a child of
-	 * a PackageNode.
-	 * 
-	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#addNode(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
-	 */
-	@Override
-	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		if( canAddNodeAsChild(pNode))
-		{
-			PackageNode container = findContainer(aRootNodes, pPoint);
-			if( container != null )
-			{
-				container.addChild((ChildNode)pNode);
-			}
-		}
-		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
 }
 

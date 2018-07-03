@@ -31,7 +31,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -47,7 +46,6 @@ public class SequenceDiagram extends Diagram
 	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
-	private static final int CALL_NODE_YGAP = 5;
 	
 	static 
 	{
@@ -59,47 +57,6 @@ public class SequenceDiagram extends Diagram
 		aBuilder = new SequenceDiagramBuilder(this);
 	}
 	
-	/* 
-	 * Adds the node, ensuring that call nodes can only be added if the
-	 * point is inside the space of the related ImplicitParameterNode
-	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#add(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
-	 */
-	@Override
-	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		if(pNode instanceof CallNode) 
-		{
-			ImplicitParameterNode target = insideTargetArea(pPoint);
-			if( target != null )
-			{
-				target.addChild((ChildNode)pNode);
-			}
-			else
-			{
-				return;
-			}
-		}
-		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
-	}
-	
-	/*
-	 * If pPoint is inside an ImplicitParameterNode but below its top
-	 * rectangle, returns that node. Otherwise, returns null.
-	 */
-	public ImplicitParameterNode insideTargetArea(Point pPoint)
-	{
-		for( Node node : getRootNodes() )
-		{
-			if(node instanceof ImplicitParameterNode && node.view().contains(pPoint))
-			{
-				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
-				{
-					return (ImplicitParameterNode) node;
-				}
-			}
-		}
-		return null;
-	}
 	
 	@Override
 	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)

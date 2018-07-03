@@ -25,29 +25,70 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class SequenceDiagramBuilder extends DiagramBuilder
 {
+	private static final int CALL_NODE_YGAP = 5;
+	
 	public SequenceDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
 		assert pDiagram instanceof SequenceDiagram;
 	}
-	
-	private SequenceDiagram diagram()
-	{
-		return (SequenceDiagram) aDiagram;
-	}
-	
+
 	@Override
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		boolean result = true;
-		if(pNode instanceof CallNode && diagram().insideTargetArea(pRequestedPosition) == null)
+		if(pNode instanceof CallNode && insideTargetArea(pRequestedPosition) == null)
 		{
 			result = false;
 		}
 		return result;
+	}
+	
+	/* 
+	 * Adds the node, ensuring that call nodes can only be added if the
+	 * point is inside the space of the related ImplicitParameterNode
+	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#add(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
+	 */
+	@Override
+	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
+	{
+		if(pNode instanceof CallNode) 
+		{
+			ImplicitParameterNode target = insideTargetArea(pPoint);
+			if( target != null )
+			{
+				target.addChild((ChildNode)pNode);
+			}
+			else
+			{
+				return;
+			}
+		}
+		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
+	}
+	
+	/*
+	 * If pPoint is inside an ImplicitParameterNode but below its top
+	 * rectangle, returns that node. Otherwise, returns null.
+	 */
+	public ImplicitParameterNode insideTargetArea(Point pPoint)
+	{
+		for( Node node : aDiagram.getRootNodes() )
+		{
+			if(node instanceof ImplicitParameterNode && node.view().contains(pPoint))
+			{
+				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
+				{
+					return (ImplicitParameterNode) node;
+				}
+			}
+		}
+		return null;
 	}
 }

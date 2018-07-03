@@ -23,7 +23,10 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class DiagramBuilder
 {
@@ -44,5 +47,50 @@ public class DiagramBuilder
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		return true;
+	}
+	
+	/**
+	 * Adds a newly created node to the diagram, if it does not have a parent. If
+	 * the node has a parent, does not do anything.
+	 * 
+	 * @param pNode The node to add. Not null.
+	 * @param pRequestedPosition The desired position of the node in the diagram.
+	 * @param pMaxWidth the maximum width of the diagram.
+	 * @param pMaxHeight the maximum height of the diagram.
+	 */
+	public void addNode(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	{
+		assert pNode != null && pMaxWidth >= 0 && pMaxHeight >= 0;
+		Rectangle bounds = pNode.view().getBounds();
+		Point position = computePosition(bounds, pRequestedPosition, new Dimension(pMaxWidth, pMaxHeight));
+		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
+		if(!hasParent(pNode))
+		{
+			aDiagram.restoreRootNode(pNode);
+		}
+	}
+	
+	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)
+	{
+		int newX = pRequestedPosition.getX();
+		int newY = pRequestedPosition.getY();
+		if(newX + pBounds.getWidth() > pDiagramSize.getWidth())
+		{
+			newX = pDiagramSize.getWidth() - pBounds.getWidth();
+		}
+		if (newY + pBounds.getHeight() > pDiagramSize.getHeight())
+		{
+			newY = pDiagramSize.getHeight() - pBounds.getHeight();
+		}
+		return new Point(newX, newY);
+	}
+	
+	/**
+	 * @param pNode A node to check for parenthood.
+	 * @return True iif pNode has a non-null parent.
+	 */
+	protected boolean hasParent(Node pNode)
+	{
+		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
 	}
 }
