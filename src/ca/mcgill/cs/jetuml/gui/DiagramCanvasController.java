@@ -499,8 +499,9 @@ public class DiagramCanvasController
 		Edge newEdge = (Edge) ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
-			if( aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint) )
+			if( aCanvas.getDiagram().canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
+				aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint);
 				setModified(true);
 				aSelectionModel.set(newEdge);
 			}

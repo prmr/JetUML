@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -47,7 +47,7 @@ public class UseCaseDiagram extends Diagram
 
 	public UseCaseDiagram()
 	{
-		aBuilder = new DiagramBuilder(this);
+		aBuilder = new UseCaseDiagramBuilder(this);
 	}
 	
 	@Override

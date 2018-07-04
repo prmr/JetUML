@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
@@ -42,7 +42,7 @@ public class StateDiagram extends Diagram
 	
 	public StateDiagram()
 	{
-		aBuilder = new DiagramBuilder(this);
+		aBuilder = new StateDiagramBuilder(this);
 	}
 	
 	@Override
@@ -109,7 +109,7 @@ public class StateDiagram extends Diagram
 		return true;
 	} // CSON:
 	
-	private int numberOfSimilarEdges(Node pNode1, Node pNode2)
+	public int numberOfSimilarEdges(Node pNode1, Node pNode2)
 	{
 		int lReturn = 0;
 		for( Edge edge : getEdges() )

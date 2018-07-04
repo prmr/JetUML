@@ -106,6 +106,13 @@ public abstract class Diagram implements DiagramData
 		return aBuilder.canAdd(pNode, pRequestedPosition);
 	}
 	
+	public final boolean canAdd(Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		return aBuilder.canAdd(pEdge, pPoint1, pPoint2);
+	}
+	
+	
+	
 	/**
 	 * Notifies the listener, if applicable, of a change to a property
 	 * of one of the graph's elements.
@@ -418,7 +425,7 @@ public abstract class Diagram implements DiagramData
 	 * @return True if and only if there is an edge of type pType that
 	 * starts at node pStart and ends at node pEnd.
 	 */
-	protected boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	protected final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
 		for (Edge edge : getEdges())

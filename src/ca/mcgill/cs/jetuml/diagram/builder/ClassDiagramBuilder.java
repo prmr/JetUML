@@ -26,7 +26,9 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
@@ -102,5 +104,20 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				return deeperContainer;
 			}
 		}
+	}
+	
+	@Override
+	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	{
+		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
+		{
+			return false;
+		}
+		if( pEdge instanceof GeneralizationEdge && pNode1 == pNode2 )
+		{
+			return false;
+		}
+		
+		return true;
 	}
 }

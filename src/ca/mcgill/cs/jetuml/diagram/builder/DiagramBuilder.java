@@ -22,13 +22,16 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
-public class DiagramBuilder
+public abstract class DiagramBuilder
 {
 	protected final Diagram aDiagram;
 	
@@ -47,6 +50,83 @@ public class DiagramBuilder
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		return true;
+	}
+	
+	/**
+	 * @param pEdge The requested edge
+	 * @param pPoint1 A requested start point
+	 * @param pPoint2 A requested end point
+	 * @return True if it's possible to add an edge of this type given the requested points.
+	 */
+	public final boolean canAdd(Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		Node node1 = aDiagram.findNode(pPoint1);
+		if(node1 == null)
+		{
+			return false;
+		}
+		
+		Node node2 = aDiagram.findNode(pPoint2);
+		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			return true; // We can always create a point node.
+		}
+		return canConnect(pEdge, node1, node2, pPoint2);
+	}
+	
+	/**
+	 * Checks whether it is legal to connect pNode1 to pNode2 through
+	 * pEdge based strictly on the type of nodes and edges. 
+	 * This implementation only provides the logic valid across
+	 * all diagram types. Override for diagram-specific rules.
+	 * @param pEdge The edge to be added
+	 * @param pNode1 The first node
+	 * @param pNode2 The second node
+	 * @param pPoint2 The point where the edge is supposed to be terminated
+	 * @return True if the edge can legally connect node1 to node2
+	 */
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	{
+		if(pNode2 == null)
+		{
+			return false;
+		}
+		if(existsEdge(pEdge.getClass(), pNode1, pNode2))
+		{
+			return false;
+		}
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		{
+			return false;
+		}
+		if(pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns true iif there exists an edge of type pType between
+	 * nodes pStart and pEnd. The direction matter, and the type
+	 * testing is for the exact type pType, without using polymorphism.
+	 * @param pType The type of edge to check for.
+	 * @param pStart The start node.
+	 * @param pEnd The end node.
+	 * @return True if and only if there is an edge of type pType that
+	 * starts at node pStart and ends at node pEnd.
+	 */
+	protected final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	{
+		assert pType !=null && pStart != null && pEnd != null;
+		for(Edge edge : aDiagram.getEdges())
+		{
+			if (edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
