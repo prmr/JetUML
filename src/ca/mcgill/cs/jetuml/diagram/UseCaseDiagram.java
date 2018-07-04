@@ -31,7 +31,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * A UML use case diagram.
@@ -72,20 +71,5 @@ public class UseCaseDiagram extends Diagram
 	public String getDescription() 
 	{
 		return RESOURCES.getString("usecasediagram.file.name");
-	}
-	
-	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
-		{
-			return false;
-		}
-		if( pNode1 == pNode2 )
-		{	// Self-edges are not allowed in use case diagrams
-			return false;
-		}
-		
-		return true;
 	}
 }

@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * A UML state diagram.
@@ -68,46 +67,6 @@ public class StateDiagram extends Diagram
 	{
 		return RESOURCES.getString("statediagram.file.name");
 	}
-	
-	// CSOFF:
-	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		if( pNode2 == null )
-		{
-			return false;
-		}
-		if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
-		{
-			return false;
-		}
-		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
-		{
-			return false;
-		}
-		if(pNode1 != null)
-		{
-			if(pNode1 instanceof FinalStateNode)
-			{
-				if(!(pEdge instanceof NoteEdge))
-				{
-					return false;
-				}
-			}
-		}
-		if(pNode2 instanceof InitialStateNode)
-		{
-			if(!(pEdge instanceof NoteEdge))
-			{
-				return false;
-			}
-		}
-		return true;
-	} // CSON:
 	
 	public int numberOfSimilarEdges(Node pNode1, Node pNode2)
 	{

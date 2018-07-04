@@ -57,40 +57,6 @@ public class SequenceDiagram extends Diagram
 		aBuilder = new SequenceDiagramBuilder(this);
 	}
 	
-	
-	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		boolean lReturn = true;
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2 instanceof CallNode)
-		{
-			// The end node has to be the caller, and adding a return edge on the same object is not allowed.
-			lReturn = pNode2 == getCaller(pNode1) && 
-					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2).getParent());
-		}
-		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof ImplicitParameterNode )
-		{
-			lReturn = false;
-		}
-		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && getCaller(pNode2) != null)
-		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
-		}
-		return lReturn;
-	}
-	
 	/*
 	 * Returns true if pCalle is in the control-flow of pPotentialCaller
 	 */

@@ -33,7 +33,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  *  A UML class diagram.
@@ -80,21 +79,6 @@ public class ClassDiagram extends Diagram
 	public String getDescription() 
 	{
 		return RESOURCES.getString("classdiagram.file.name");
-	}
-
-	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
-		{
-			return false;
-		}
-		if( pEdge instanceof GeneralizationEdge && pNode1 == pNode2 )
-		{
-			return false;
-		}
-		
-		return true;
 	}
 }
 

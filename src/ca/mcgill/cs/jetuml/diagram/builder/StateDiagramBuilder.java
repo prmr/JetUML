@@ -21,22 +21,14 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import java.util.ArrayList;
-
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagram.StateDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class StateDiagramBuilder extends DiagramBuilder

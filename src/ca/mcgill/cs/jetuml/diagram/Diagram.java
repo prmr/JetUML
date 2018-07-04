@@ -233,12 +233,12 @@ public abstract class Diagram implements DiagramData
 	 * @param pPoint2 a point in the ending node
 	 * @return true if the edge was connected
 	 */
-	public final boolean addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
+	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		Node node1 = findNode(pPoint1);
-		if (node1 == null)
+		if(node1 == null)
 		{
-			return false;
+			return;
 		}
 		
 		Node node2 = findNode(pPoint2);
@@ -246,9 +246,9 @@ public abstract class Diagram implements DiagramData
 		{
 			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
 		}
-		if (!canConnect(pEdge, node1, node2, pPoint2))
+		if(!aBuilder.canConnect(pEdge, node1, node2, pPoint2))
 		{
-			return false;
+			return;
 		}
 
 		pEdge.connect(node1, node2, this);
@@ -266,7 +266,6 @@ public abstract class Diagram implements DiagramData
 		}
 		aNeedsLayout = true;
 		notifyEndingCompoundOperation();
-		return true;
 	}
 
 	/**
@@ -746,38 +745,6 @@ public abstract class Diagram implements DiagramData
 	{
 		pEdge.connect(pStart, pEnd, this);
 		aEdges.add(pEdge);
-	}
-
-	/**
-	 * Checks whether it is legal to connect pNode1 to pNode2 through
-	 * pEdge based strictly on the type of nodes and edges. 
-	 * This implementation only provides the logic valid across
-	 * all diagram types. Override for diagram-specific rules.
-	 * @param pEdge The edge to be added
-	 * @param pNode1 The first node
-	 * @param pNode2 The second node
-	 * @param pPoint2 The point where the edge is supposed to be terminated
-	 * @return True if the edge can legally connect node1 to node2
-	 */
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		if (pNode2 == null)
-		{
-			return false;
-		}
-		if (existsEdge(pEdge.getClass(), pNode1, pNode2))
-		{
-			return false;
-		}
-		if ((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if (pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
-		{
-			return false;
-		}
-		return true;
 	}
 }
 

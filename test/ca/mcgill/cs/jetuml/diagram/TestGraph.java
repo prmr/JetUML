@@ -110,13 +110,14 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		
 		// A failed connection between two points, the second not in a node
-		assertFalse(aGraph.addEdge(aEdge1, new Point(50, 30), new Point(1000, 1000)));
+		assertFalse(aGraph.canAdd(aEdge1, new Point(50, 30), new Point(1000, 1000)));
 		assertFalse(aGraph.contains(aEdge1));
 		assertNull(aEdge1.getStart());
 		assertNull(aEdge1.getEnd());
 		
 		// A correct connection between two points
-		assertTrue(aGraph.addEdge(aEdge1, new Point(200, 30), new Point(200, 200)));
+		assertTrue(aGraph.canAdd(aEdge1, new Point(200, 30), new Point(200, 200)));
+		aGraph.addEdge(aEdge1, new Point(200, 30), new Point(200, 200));
 		assertTrue(aGraph.contains(aEdge1));
 		assertTrue(aEdge1.getStart() == aNode1);
 		assertTrue(aEdge1.getEnd() == aNode2);
