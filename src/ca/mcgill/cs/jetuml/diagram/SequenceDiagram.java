@@ -56,21 +56,6 @@ public class SequenceDiagram extends Diagram
 	{
 		aBuilder = new SequenceDiagramBuilder(this);
 	}
-	
-	/*
-	 * Returns true if pCalle is in the control-flow of pPotentialCaller
-	 */
-	public final boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
-	{
-		for( CallNode caller = getCaller(pCallee); caller != null; caller = getCaller(caller))
-		{
-			if( caller == pPotentialCaller )
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 
 	@Override
 	public void removeEdge(Edge pEdge)

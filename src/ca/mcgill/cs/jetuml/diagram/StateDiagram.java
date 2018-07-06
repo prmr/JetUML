@@ -67,17 +67,4 @@ public class StateDiagram extends Diagram
 	{
 		return RESOURCES.getString("statediagram.file.name");
 	}
-	
-	public int numberOfSimilarEdges(Node pNode1, Node pNode2)
-	{
-		int lReturn = 0;
-		for( Edge edge : getEdges() )
-		{
-			if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
-			{
-				lReturn++;
-			}
-		}
-		return lReturn;
-	}
 }

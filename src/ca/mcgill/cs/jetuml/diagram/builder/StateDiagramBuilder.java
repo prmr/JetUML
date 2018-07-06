@@ -47,7 +47,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 			{
 				return false;
 			}
-			if( ((StateDiagram)aDiagram).numberOfSimilarEdges(pNode1, pNode2) > 1 )
+			if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
 			{
 				return false;
 			}
@@ -78,4 +78,17 @@ public class StateDiagramBuilder extends DiagramBuilder
 			}
 			return true;
 		} // CSON:
+		
+		private int numberOfSimilarEdges(Node pNode1, Node pNode2)
+		{
+			int lReturn = 0;
+			for( Edge edge : aDiagram.getEdges() )
+			{
+				if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
+				{
+					lReturn++;
+				}
+			}
+			return lReturn;
+		}
 }

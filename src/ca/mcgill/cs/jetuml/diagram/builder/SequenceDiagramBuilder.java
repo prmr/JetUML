@@ -41,6 +41,21 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		super( pDiagram );
 		assert pDiagram instanceof SequenceDiagram;
 	}
+	
+	/*
+	 * Returns true if pCalle is in the control-flow of pPotentialCaller
+	 */
+	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
+	{
+		for( CallNode caller = ((SequenceDiagram)aDiagram).getCaller(pCallee); caller != null; caller = ((SequenceDiagram)aDiagram).getCaller(caller))
+		{
+			if( caller == pPotentialCaller )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
@@ -116,7 +131,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 			else // Case 2
 			{
-				if( ((SequenceDiagram)aDiagram).isCallDominator(endAsCallNode, origin))
+				if( isCallDominator(endAsCallNode, origin))
 				{
 					CallNode newCallNode = new CallNode();
 					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
