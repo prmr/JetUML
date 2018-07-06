@@ -86,6 +86,61 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return lReturn;
 	}
 	
+	@Override
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		if( !(pOrigin instanceof CallNode) )
+		{
+			return;
+		}
+		CallNode origin = (CallNode) pOrigin;
+		if( pEdge instanceof ReturnEdge )
+		{
+			return;
+		}
+		Node end = pEdge.getEnd();
+		
+		// Case 1 End is on the same implicit parameter -> create a self call
+		// Case 2 End is on an existing call node on a different implicit parameter -> connect
+		// Case 3 End is on a different implicit parameter -> create a new call
+		// Case 4 End is on an implicit parameter top node -> creates node
+		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
+		if( end instanceof CallNode )
+		{
+			CallNode endAsCallNode = (CallNode) end;
+			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
+			{
+				CallNode newCallNode = new CallNode();
+				((ImplicitParameterNode)origin.getParent()).addChild(newCallNode, pPoint1);
+				pEdge.connect(origin, newCallNode, aDiagram);
+			}
+			else // Case 2
+			{
+				if( ((SequenceDiagram)aDiagram).isCallDominator(endAsCallNode, origin))
+				{
+					CallNode newCallNode = new CallNode();
+					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
+					pEdge.connect(origin, newCallNode, aDiagram);
+				}
+				// Simple connect
+			}
+		}
+		else if( end instanceof ImplicitParameterNode )
+		{
+			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
+			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
+			{
+				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
+			}
+			else // Case 3
+			{
+				CallNode newCallNode = new CallNode();
+				endAsImplicitParameterNode.addChild(newCallNode, pPoint1);
+				pEdge.connect(pOrigin, newCallNode, aDiagram);
+			}
+		}
+	}
+	
 	/* 
 	 * Adds the node, ensuring that call nodes can only be added if the
 	 * point is inside the space of the related ImplicitParameterNode

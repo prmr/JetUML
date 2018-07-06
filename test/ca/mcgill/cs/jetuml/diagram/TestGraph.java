@@ -235,15 +235,13 @@ public class TestGraph
 	@Test
 	public void testAddEdgeNode1Null()
 	{
-		aGraph.addEdge(aEdge1, new Point(500, 500), new Point(10, 10));
-		assertFalse(aGraph.getEdges().contains(aEdge1));
+		assertFalse(aGraph.canAdd(aEdge1, new Point(500, 500), new Point(10, 10)));
 	}
 	
 	@Test
 	public void testAddEdgeNode2Null()
 	{
-		aGraph.addEdge(aEdge1, new Point(10, 10), new Point(500, 500));
-		assertFalse(aGraph.getEdges().contains(aEdge1));
+		assertFalse(aGraph.canAdd(aEdge1, new Point(10, 10), new Point(500, 500)));
 	}
 	
 	@Test

@@ -147,11 +147,11 @@ public class TestUsageScenariosObjectDiagram
 		NoteEdge edge5 = new NoteEdge();
 		
 		// link NoteEdge from anywhere to anywhere except to NoteNode (not allowed)
-		aDiagram.addEdge(edge1, new Point(25, 25), new Point(55, 25));
-		aDiagram.addEdge(edge2, new Point(55, 25), new Point(155, 25));
-		aDiagram.addEdge(edge3, new Point(155, 25), new Point(255, 25));
-		aDiagram.addEdge(edge4, new Point(155, 25), new Point(55, 25));
-		aDiagram.addEdge(edge5, new Point(25, 25), new Point(255, 25));
+		assertFalse(aDiagram.canAdd(edge1, new Point(25, 25), new Point(55, 25)));
+		assertFalse(aDiagram.canAdd(edge2, new Point(55, 25), new Point(155, 25)));
+		assertFalse(aDiagram.canAdd(edge3, new Point(155, 25), new Point(255, 25)));
+		assertFalse(aDiagram.canAdd(edge4, new Point(155, 25), new Point(55, 25)));
+		assertFalse(aDiagram.canAdd(edge5, new Point(25, 25), new Point(255, 25)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
@@ -164,7 +164,7 @@ public class TestUsageScenariosObjectDiagram
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
 		edge1 = new NoteEdge();
 		edge2 = new NoteEdge();
-		aDiagram.addEdge(edge1, new Point(60, 80), new Point(80, 80));
+		assertFalse(aDiagram.canAdd(edge1, new Point(60, 80), new Point(80, 80)));
 		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
@@ -190,11 +190,11 @@ public class TestUsageScenariosObjectDiagram
 		
 		// create an association edge between NoteNode and ObjectNode (not allowed)
 		collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.addEdge(collaborationEdge1, new Point(25, 20), new Point(80, 80));
+		assertFalse(aDiagram.canAdd(collaborationEdge1, new Point(25, 20), new Point(80, 80)));
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		// create an ObjectRefEdge to a NoteNode. (not allowed)
-		aDiagram.addEdge(aReferenceEdge1, new Point(25, 20), new Point(80, 80));
+		assertFalse(aDiagram.canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		/* create an ObjectRefEdge to an ObjectNode itself. 

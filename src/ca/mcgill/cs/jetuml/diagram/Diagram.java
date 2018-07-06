@@ -121,7 +121,7 @@ public abstract class Diagram implements DiagramData
 	 * @param pProperty The name of the changed property.
 	 * @param pOldValue The value of the property before the change.
 	 */
-	protected void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
+	public final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
 	{
 		if (aModificationListener != null)
 		{
@@ -145,7 +145,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyEdgeAdded(Edge pEdge)
+	public final void notifyEdgeAdded(Edge pEdge)
 	{
 		if (aModificationListener != null)
 		{
@@ -161,7 +161,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyStartingCompoundOperation()
+	public final void notifyStartingCompoundOperation()
 	{
 		if (aModificationListener != null)
 		{
@@ -169,7 +169,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyEndingCompoundOperation()
+	public final void notifyEndingCompoundOperation()
 	{
 		if (aModificationListener != null)
 		{
@@ -210,7 +210,7 @@ public abstract class Diagram implements DiagramData
 	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
 	{}
 
-	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
+	public final PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
 	{
 		if (pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -235,37 +235,8 @@ public abstract class Diagram implements DiagramData
 	 */
 	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
-		Node node1 = findNode(pPoint1);
-		if(node1 == null)
-		{
-			return;
-		}
-		
-		Node node2 = findNode(pPoint2);
-		if (node1 instanceof NoteNode)
-		{
-			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
-		}
-		if(!aBuilder.canConnect(pEdge, node1, node2, pPoint2))
-		{
-			return;
-		}
-
-		pEdge.connect(node1, node2, this);
-			
-		// In case the down-call to addEdge introduces additional 
-		// operations that should be compounded with the edge addition
-		notifyStartingCompoundOperation();
-		completeEdgeAddition(node1, pEdge, pPoint1, pPoint2);
-		aEdges.add(pEdge);
-		notifyEdgeAdded(pEdge);
-		
-		if (!aRootNodes.contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode)
-		{
-			aRootNodes.add(pEdge.getEnd());
-		}
+		aBuilder.addEdge(pEdge, pPoint1, pPoint2);
 		aNeedsLayout = true;
-		notifyEndingCompoundOperation();
 	}
 
 	/**

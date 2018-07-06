@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -147,8 +148,8 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(6, aDiagram.getEdges().size());
 		
 		// connect nodes with NoteEdge (not allowed)
-		aDiagram.addEdge(new NoteEdge(),  new Point(80, 20), new Point(140, 20));
-		aDiagram.addEdge(new NoteEdge(),  new Point(20, 20), new Point(250, 20));
+		assertFalse(aDiagram.canAdd(new NoteEdge(),  new Point(80, 20), new Point(140, 20)));
+		assertFalse(aDiagram.canAdd(new NoteEdge(),  new Point(20, 20), new Point(250, 20)));
 		assertEquals(6, aDiagram.getEdges().size());
 	}
 	
@@ -170,7 +171,7 @@ public class TestUsageScenariosUseCaseDiagram
 		NoteEdge noteEdge3 = new NoteEdge();
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
-		aDiagram.addEdge(noteEdge1, new Point(9, 9), new Point(209, 162));
+		assertFalse(aDiagram.canAdd(noteEdge1, new Point(9, 9), new Point(209, 162)));
 		assertEquals(0, aDiagram.getEdges().size());
 		aDiagram.addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertEquals(1, aDiagram.getEdges().size());

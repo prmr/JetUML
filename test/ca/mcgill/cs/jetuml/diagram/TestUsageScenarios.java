@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -164,12 +165,14 @@ public class TestUsageScenarios
 		StateTransitionEdge edge4 = new StateTransitionEdge();
 		edge4.setMiddleLabel("Edge 4");
 		diagram.addEdge(edge4, new Point(35, 105), new Point(32, 202));
+		assertEquals(4, diagram.getEdges().size());
 		
 		NoteEdge noteEdge = new NoteEdge();
-		diagram.addEdge(noteEdge, new Point(6, 6), new Point(35, 35));
-		diagram.addEdge(noteEdge, new Point(35, 35), new Point(35, 105));
-		diagram.addEdge(noteEdge, new Point(35, 105), new Point(35, 35));
-		diagram.addEdge(noteEdge, new Point(35, 105), new Point(32, 202));
+		assertFalse(diagram.canAdd(noteEdge, new Point(6, 6), new Point(35, 35))); 
+		assertFalse(diagram.canAdd(noteEdge, new Point(35, 35), new Point(35, 105)));
+		assertFalse(diagram.canAdd(noteEdge, new Point(35, 105), new Point(35, 35)));
+		assertFalse(diagram.canAdd(noteEdge, new Point(35, 105), new Point(32, 202)));
+		assertEquals(4, diagram.getEdges().size());
 		
 		// VALIDATION NODES
 		assertEquals(4, diagram.getRootNodes().size());

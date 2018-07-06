@@ -45,6 +45,17 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		if( pOrigin instanceof FieldNode )
+		{
+			String oldValue = ((FieldNode)pOrigin).getValue();
+			((FieldNode)pOrigin).setValue("");
+			aDiagram.notifyPropertyChanged(pOrigin, "value", oldValue);
+		}
+	}
+	
+	@Override
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		boolean result = true;

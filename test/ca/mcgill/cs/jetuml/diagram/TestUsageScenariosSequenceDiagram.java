@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,9 +108,9 @@ public class TestUsageScenariosSequenceDiagram
 		CallEdge callEdge = new CallEdge();
 		ReturnEdge returnEdge = new ReturnEdge();
 		NoteEdge noteEdge = new NoteEdge();
-		aDiagram.addEdge(callEdge, new Point(7, 0), new Point(26, 0));
-		aDiagram.addEdge(returnEdge, new Point(7, 0), new Point(26, 0));
-		aDiagram.addEdge(noteEdge, new Point(7, 0), new Point(26, 0));
+		assertFalse(aDiagram.canAdd(callEdge, new Point(7, 0), new Point(26, 0))); 
+		assertFalse(aDiagram.canAdd(returnEdge, new Point(7, 0), new Point(26, 0)));
+		assertFalse(aDiagram.canAdd(noteEdge, new Point(7, 0), new Point(26, 0)));
 		assertEquals(0, aDiagram.getEdges().size());
 	}
 	
@@ -129,8 +130,8 @@ public class TestUsageScenariosSequenceDiagram
 		
 		ReturnEdge returnEdge = new ReturnEdge();
 		NoteEdge noteEdge = new NoteEdge();
-		aDiagram.addEdge(returnEdge, new Point(7, 75), new Point(26, 0));
-		aDiagram.addEdge(noteEdge, new Point(7, 75), new Point(26, 0));
+		assertFalse(aDiagram.canAdd(returnEdge, new Point(7, 75), new Point(26, 0)));
+		assertFalse(aDiagram.canAdd(noteEdge, new Point(7, 75), new Point(26, 0)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		aDiagram.addEdge(new CallEdge(), new Point(7, 75), new Point(26, 0));
@@ -237,9 +238,9 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(8, aDiagram.getRootNodes().size());
 		
 		// from ParameterNode to NoteNode
-		aDiagram.addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
+		assertFalse(aDiagram.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
 		// from CallNode to NoteNode 
-		aDiagram.addEdge(new NoteEdge(), new Point(10, 10), new Point(62, 68));
+		assertFalse(aDiagram.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
 		assertEquals(8, aDiagram.getRootNodes().size());
 	}
 	

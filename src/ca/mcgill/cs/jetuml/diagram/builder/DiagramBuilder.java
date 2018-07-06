@@ -27,6 +27,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -105,6 +106,52 @@ public abstract class DiagramBuilder
 		}
 		return true;
 	}
+	
+	/**
+	 * Adds an edge to the graph that joins the nodes containing
+	 * the given points. If the points aren't both inside nodes,
+	 * then no edge is added.
+	 * @param pEdge the edge to add
+	 * @param pPoint1 a point in the starting node
+	 * @param pPoint2 a point in the ending node
+	 * @return true if the edge was connected
+	 */
+	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		assert canAdd(pEdge, pPoint1, pPoint2);
+		Node node1 = aDiagram.findNode(pPoint1);
+		Node node2 = aDiagram.findNode(pPoint2);
+		if(node1 instanceof NoteNode)
+		{
+			node2 = aDiagram.createPointNodeIfAllowed(node1, pEdge, pPoint2);
+		}
+		pEdge.connect(node1, node2, aDiagram);
+			
+		// In case the down-call to addEdge introduces additional 
+		// operations that should be compounded with the edge addition
+		aDiagram.notifyStartingCompoundOperation();
+		completeEdgeAddition(node1, pEdge, pPoint1, pPoint2);
+		aDiagram.getEdges().add(pEdge);
+		aDiagram.notifyEdgeAdded(pEdge);
+		if(!aDiagram.getRootNodes().contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode)
+		{
+			aDiagram.getRootNodes().add(pEdge.getEnd());
+		}
+		aDiagram.notifyEndingCompoundOperation();
+	}
+	
+	/**
+	 * If certain types of diagrams require additional behavior
+	 * following the addition of an edge to a graph, they can
+	 * override this method to perform that behavior.
+	 * @param pOrigin The origin node 
+	 * @param pEdge The edge to add
+	 * @param pPoint1 a point in the starting node
+	 * @param pPoint2 a point in the end node.
+	 */
+	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
+	{}
+
 	
 	/**
 	 * Returns true iif there exists an edge of type pType between

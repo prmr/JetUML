@@ -60,7 +60,7 @@ public class SequenceDiagram extends Diagram
 	/*
 	 * Returns true if pCalle is in the control-flow of pPotentialCaller
 	 */
-	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
+	public final boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
 	{
 		for( CallNode caller = getCaller(pCallee); caller != null; caller = getCaller(caller))
 		{

@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -146,12 +147,13 @@ public class TestUsageScenariosStateDiagram
 		 *  link from StateNode to InitialNode, from FinalNode to StateNode
 		 *  and InitialNode are not allowed
 		 */
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20));
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20));
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20)); // Second
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20)); // Third
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20));
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25));
+		assertFalse(aDiagram.canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
+		assertFalse(aDiagram.canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
+		assertTrue(aDiagram.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
+		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
+		assertFalse(aDiagram.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
+		assertFalse(aDiagram.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
+		assertFalse(aDiagram.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
 		assertEquals(6, aDiagram.getEdges().size());
 		
 		// test labeling edges
@@ -180,11 +182,11 @@ public class TestUsageScenariosStateDiagram
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
 		
-		aDiagram.addEdge(noteEdge1, new Point(25, 25), new Point(55, 25));
-		aDiagram.addEdge(noteEdge2, new Point(55, 25), new Point(155, 25));
-		aDiagram.addEdge(noteEdge3, new Point(155, 25), new Point(255, 25));
-		aDiagram.addEdge(noteEdge4, new Point(155, 25), new Point(55, 25));
-		aDiagram.addEdge(noteEdge5, new Point(25, 25), new Point(255, 25));
+		assertFalse(aDiagram.canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
+		assertFalse(aDiagram.canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
+		assertFalse(aDiagram.canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
+		assertFalse(aDiagram.canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
+		assertFalse(aDiagram.canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
 		assertEquals(0, aDiagram.getEdges().size());
 	}
 	
@@ -232,9 +234,9 @@ public class TestUsageScenariosStateDiagram
 		aDiagram.addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
 		assertEquals(3, aDiagram.getEdges().size());
 		// invalid operations, cannot connect any StateNode with NoteEdges
-		aDiagram.addEdge(noteEdge4, new Point(20, 20), new Point(-20, 200));
-		aDiagram.addEdge(noteEdge5, new Point(150, 20), new Point(-50, 200));
-		aDiagram.addEdge(new NoteEdge(), new Point(20, 20), new Point(50, 49));
+		assertFalse(aDiagram.canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
+		assertFalse(aDiagram.canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
+		assertFalse(aDiagram.canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
 		assertEquals(3, aDiagram.getEdges().size());
 	}
 	
