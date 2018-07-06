@@ -197,18 +197,6 @@ public abstract class Diagram implements DiagramData
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
 	public abstract String getDescription();
-	
-	/**
-	 * If certain types of diagrams require additional behavior
-	 * following the addition of an edge to a graph, they can
-	 * override this method to perform that behavior.
-	 * @param pOrigin The origin node 
-	 * @param pEdge The edge to add
-	 * @param pPoint1 a point in the starting node
-	 * @param pPoint2 a point in the end node.
-	 */
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
-	{}
 
 	public final PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
 	{

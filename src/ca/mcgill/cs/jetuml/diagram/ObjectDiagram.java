@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  *  An UML-style object diagram that shows object references.
@@ -59,17 +58,6 @@ public class ObjectDiagram extends Diagram
 	public ObjectDiagram()
 	{
 		aBuilder = new ObjectDiagramBuilder(this);
-	}
-	
-	@Override
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		if( pOrigin instanceof FieldNode )
-		{
-			String oldValue = ((FieldNode)pOrigin).getValue();
-			((FieldNode)pOrigin).setValue("");
-			notifyPropertyChanged(pOrigin, "value", oldValue);
-		}
 	}
 	
 	@Override
