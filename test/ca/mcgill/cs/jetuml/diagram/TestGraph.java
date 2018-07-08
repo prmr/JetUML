@@ -54,7 +54,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
  */
 public class TestGraph
 {
-	private Diagram aGraph;
+	private Diagram aDiagram;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private ClassNode aNode3;
@@ -75,32 +75,32 @@ public class TestGraph
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagram();
+		aDiagram = new ClassDiagram();
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNode3 = new ClassNode();
 		aEdge1 = new DependencyEdge();
 		aEdge2 = new AggregationEdge();
 		aEdge3 = new AggregationEdge(AggregationEdge.Type.Composition);
-		aGraph.insertNode(aNode1);
-		aGraph.insertNode(aNode2);
-		aGraph.insertNode(aNode3);
+		aDiagram.insertNode(aNode1);
+		aDiagram.insertNode(aNode2);
+		aDiagram.insertNode(aNode3);
 	}
 	
 	@Test
 	public void testExistsEdge()
 	{
-		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		aGraph.restoreEdge(aEdge2, aNode1, aNode2);
-		aGraph.restoreEdge(aEdge3, aNode2, aNode1);
+		aDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aDiagram.restoreEdge(aEdge2, aNode1, aNode2);
+		aDiagram.restoreEdge(aEdge3, aNode2, aNode1);
 		
-		assertTrue(aGraph.existsEdge(DependencyEdge.class, aNode1, aNode2));
-		assertTrue(aGraph.existsEdge(AggregationEdge.class, aNode1, aNode2));
-		assertTrue(aGraph.existsEdge(AggregationEdge.class, aNode2, aNode1));
-		assertFalse(aGraph.existsEdge(DependencyEdge.class, aNode2, aNode1));
-		assertFalse(aGraph.existsEdge(GeneralizationEdge.class, aNode1, aNode2));
-		assertFalse(aGraph.existsEdge(DependencyEdge.class, aNode1, aNode3));
-		assertFalse(aGraph.existsEdge(DependencyEdge.class, aNode3, aNode1));
+		assertTrue(aDiagram.existsEdge(DependencyEdge.class, aNode1, aNode2));
+		assertTrue(aDiagram.existsEdge(AggregationEdge.class, aNode1, aNode2));
+		assertTrue(aDiagram.existsEdge(AggregationEdge.class, aNode2, aNode1));
+		assertFalse(aDiagram.existsEdge(DependencyEdge.class, aNode2, aNode1));
+		assertFalse(aDiagram.existsEdge(GeneralizationEdge.class, aNode1, aNode2));
+		assertFalse(aDiagram.existsEdge(DependencyEdge.class, aNode1, aNode3));
+		assertFalse(aDiagram.existsEdge(DependencyEdge.class, aNode3, aNode1));
 	}
 	
 	@Test
@@ -110,15 +110,15 @@ public class TestGraph
 		aNode2.translate(150, 200);
 		
 		// A failed connection between two points, the second not in a node
-		assertFalse(aGraph.canAdd(aEdge1, new Point(50, 30), new Point(1000, 1000)));
-		assertFalse(aGraph.contains(aEdge1));
+		assertFalse(aDiagram.builder().canAdd(aEdge1, new Point(50, 30), new Point(1000, 1000)));
+		assertFalse(aDiagram.contains(aEdge1));
 		assertNull(aEdge1.getStart());
 		assertNull(aEdge1.getEnd());
 		
 		// A correct connection between two points
-		assertTrue(aGraph.canAdd(aEdge1, new Point(200, 30), new Point(200, 200)));
-		aGraph.addEdge(aEdge1, new Point(200, 30), new Point(200, 200));
-		assertTrue(aGraph.contains(aEdge1));
+		assertTrue(aDiagram.builder().canAdd(aEdge1, new Point(200, 30), new Point(200, 200)));
+		aDiagram.addEdge(aEdge1, new Point(200, 30), new Point(200, 200));
+		assertTrue(aDiagram.contains(aEdge1));
 		assertTrue(aEdge1.getStart() == aNode1);
 		assertTrue(aEdge1.getEnd() == aNode2);
 	}
@@ -127,30 +127,30 @@ public class TestGraph
 	public void testInsertNodeChildNodeNullParent()
 	{
 		ClassNode classNode = new ClassNode();
-		aGraph.insertNode(classNode);
-		assertTrue(aGraph.contains(classNode));
-		assertTrue(aGraph.getRootNodes().contains(classNode));
+		aDiagram.insertNode(classNode);
+		assertTrue(aDiagram.contains(classNode));
+		assertTrue(aDiagram.getRootNodes().contains(classNode));
 	}
 	
 	@Test
 	public void testInsertNodeChildNodeNonNullParent()
 	{
 		PackageNode packageNode = new PackageNode();
-		aGraph.restoreRootNode(packageNode);
+		aDiagram.restoreRootNode(packageNode);
 		ClassNode classNode = new ClassNode();
 		classNode.setParent(packageNode);
-		aGraph.insertNode(classNode);
-		assertTrue(aGraph.contains(classNode));
-		assertFalse(aGraph.getRootNodes().contains(classNode));
+		aDiagram.insertNode(classNode);
+		assertTrue(aDiagram.contains(classNode));
+		assertFalse(aDiagram.getRootNodes().contains(classNode));
 	}
 	
 	@Test
 	public void testInsertNodeNotChildNode()
 	{
 		NoteNode note = new NoteNode();
-		aGraph.insertNode(note);
-		assertTrue(aGraph.contains(note));
-		assertTrue(aGraph.getRootNodes().contains(note));
+		aDiagram.insertNode(note);
+		assertTrue(aDiagram.contains(note));
+		assertTrue(aDiagram.getRootNodes().contains(note));
 	}
 	
 	@Test
@@ -173,20 +173,20 @@ public class TestGraph
 		aNode1.translate(10, 10);
 		aNode2.translate(150, 200);
 		aNode3.translate(20, 20);
-		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		assertEquals(new Rectangle(10,10,240,250), aGraph.getBounds());
+		aDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		assertEquals(new Rectangle(10,10,240,250), aDiagram.getBounds());
 	}
 	
 	@Test
 	public void testAddEdgeNode1Null()
 	{
-		assertFalse(aGraph.canAdd(aEdge1, new Point(500, 500), new Point(10, 10)));
+		assertFalse(aDiagram.builder().canAdd(aEdge1, new Point(500, 500), new Point(10, 10)));
 	}
 	
 	@Test
 	public void testAddEdgeNode2Null()
 	{
-		assertFalse(aGraph.canAdd(aEdge1, new Point(10, 10), new Point(500, 500)));
+		assertFalse(aDiagram.builder().canAdd(aEdge1, new Point(10, 10), new Point(500, 500)));
 	}
 	
 	@Test
@@ -194,10 +194,10 @@ public class TestGraph
 	{
 		NoteNode note = new NoteNode();
 		note.translate(50, 50);
-		aGraph.restoreRootNode(note);
+		aDiagram.restoreRootNode(note);
 		NoteEdge edge = new NoteEdge();
-		aGraph.addEdge(edge, new Point(60, 60), new Point(150, 150));
-		assertTrue(aGraph.getEdges().contains(edge));
+		aDiagram.addEdge(edge, new Point(60, 60), new Point(150, 150));
+		assertTrue(aDiagram.getEdges().contains(edge));
 		assertEquals(note, edge.getStart());
 		assertTrue(edge.getEnd() instanceof PointNode);
 	}

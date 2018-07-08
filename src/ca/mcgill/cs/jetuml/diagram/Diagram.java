@@ -71,6 +71,11 @@ public abstract class Diagram implements DiagramData
 		aNeedsLayout = true;
 	}
 	
+	public DiagramBuilder builder()
+	{
+		return aBuilder;
+	}
+	
 	@Override
 	public Iterable<DiagramElement> allElements()
 	{
@@ -90,25 +95,6 @@ public abstract class Diagram implements DiagramData
 	{
 		return aEdges;
 	}
-	
-	/**
-	 * True by default. Override to provide cases where this should be false.
-	 * 
-	 * @param pNode The node to add if possible. 
-	 * @param pRequestedPosition The requested position for the node.
-	 * @return True if it is possible to add pNode at position pPoint.
-	 */
-	public final boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		return aBuilder.canAdd(pNode, pRequestedPosition);
-	}
-	
-	public final boolean canAdd(Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		return aBuilder.canAdd(pEdge, pPoint1, pPoint2);
-	}
-	
-	
 	
 	/**
 	 * Notifies the listener, if applicable, of a change to a property

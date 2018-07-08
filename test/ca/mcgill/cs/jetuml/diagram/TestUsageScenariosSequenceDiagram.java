@@ -108,9 +108,9 @@ public class TestUsageScenariosSequenceDiagram
 		CallEdge callEdge = new CallEdge();
 		ReturnEdge returnEdge = new ReturnEdge();
 		NoteEdge noteEdge = new NoteEdge();
-		assertFalse(aDiagram.canAdd(callEdge, new Point(7, 0), new Point(26, 0))); 
-		assertFalse(aDiagram.canAdd(returnEdge, new Point(7, 0), new Point(26, 0)));
-		assertFalse(aDiagram.canAdd(noteEdge, new Point(7, 0), new Point(26, 0)));
+		assertFalse(aDiagram.builder().canAdd(callEdge, new Point(7, 0), new Point(26, 0))); 
+		assertFalse(aDiagram.builder().canAdd(returnEdge, new Point(7, 0), new Point(26, 0)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge, new Point(7, 0), new Point(26, 0)));
 		assertEquals(0, aDiagram.getEdges().size());
 	}
 	
@@ -130,8 +130,8 @@ public class TestUsageScenariosSequenceDiagram
 		
 		ReturnEdge returnEdge = new ReturnEdge();
 		NoteEdge noteEdge = new NoteEdge();
-		assertFalse(aDiagram.canAdd(returnEdge, new Point(7, 75), new Point(26, 0)));
-		assertFalse(aDiagram.canAdd(noteEdge, new Point(7, 75), new Point(26, 0)));
+		assertFalse(aDiagram.builder().canAdd(returnEdge, new Point(7, 75), new Point(26, 0)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge, new Point(7, 75), new Point(26, 0)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		aDiagram.addEdge(new CallEdge(), new Point(7, 75), new Point(26, 0));
@@ -238,9 +238,9 @@ public class TestUsageScenariosSequenceDiagram
 		assertEquals(8, aDiagram.getRootNodes().size());
 		
 		// from ParameterNode to NoteNode
-		assertFalse(aDiagram.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
 		// from CallNode to NoteNode 
-		assertFalse(aDiagram.canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(10, 10), new Point(62, 68)));
 		assertEquals(8, aDiagram.getRootNodes().size());
 	}
 	

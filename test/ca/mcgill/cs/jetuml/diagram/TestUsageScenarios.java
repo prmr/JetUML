@@ -168,10 +168,10 @@ public class TestUsageScenarios
 		assertEquals(4, diagram.getEdges().size());
 		
 		NoteEdge noteEdge = new NoteEdge();
-		assertFalse(diagram.canAdd(noteEdge, new Point(6, 6), new Point(35, 35))); 
-		assertFalse(diagram.canAdd(noteEdge, new Point(35, 35), new Point(35, 105)));
-		assertFalse(diagram.canAdd(noteEdge, new Point(35, 105), new Point(35, 35)));
-		assertFalse(diagram.canAdd(noteEdge, new Point(35, 105), new Point(32, 202)));
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(6, 6), new Point(35, 35))); 
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 35), new Point(35, 105)));
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 105), new Point(35, 35)));
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 105), new Point(32, 202)));
 		assertEquals(4, diagram.getEdges().size());
 		
 		// VALIDATION NODES

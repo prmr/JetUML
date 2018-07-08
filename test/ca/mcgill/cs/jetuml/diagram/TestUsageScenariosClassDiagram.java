@@ -146,9 +146,9 @@ public class TestUsageScenariosClassDiagram
 		aDiagram.addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		
 		// both start and end points are invalid
-		assertFalse(aDiagram.canAdd(aAggregationEdge, new Point(70, 70), new Point(170, 170)));
+		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(70, 70), new Point(170, 170)));
 		// one point is invalid
-		assertFalse(aDiagram.canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
+		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
 		
 		aDiagram.addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		aDiagram.addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
@@ -159,7 +159,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// not every edge is a valid self-edge
-		assertFalse(aDiagram.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
+		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(1, aDiagram.getEdges().size());
 		
 		// not every edge is a valid self-edge
-		assertFalse(aDiagram.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
+		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class TestUsageScenariosClassDiagram
 		NoteEdge noteEdge2 = new NoteEdge();
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
-		assertFalse(aDiagram.canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
 		aDiagram.addEdge(noteEdge1, new Point(9, 9), new Point(139,142));
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(noteEdge1.getStart(), aClassNode);
@@ -395,10 +395,10 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// new edges should not be added to the diagram's edges
-		assertFalse(aDiagram.canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
-		assertFalse(aDiagram.canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
-		assertFalse(aDiagram.canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
-		assertFalse(aDiagram.canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
+		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
 		assertEquals(4, aDiagram.getEdges().size());
 
 	}
@@ -423,10 +423,10 @@ public class TestUsageScenariosClassDiagram
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// new edges should not replace the current edges in the diagram
-		assertFalse(aDiagram.canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aDiagram.builder().canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
 		assertEquals(4, aDiagram.getEdges().size());
 		assertFalse(aDiagram.getEdges().contains(aSecondAggregationEdge));
 		assertFalse(aDiagram.getEdges().contains(aSecondAssociationEdge));

@@ -398,7 +398,7 @@ public class DiagramCanvasController
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
-		if(aCanvas.getDiagram().canAdd(newNode, point))
+		if(aCanvas.getDiagram().builder().canAdd(newNode, point))
 		{
 			 aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
 						(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
@@ -499,7 +499,7 @@ public class DiagramCanvasController
 		Edge newEdge = (Edge) ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
-			if( aCanvas.getDiagram().canAdd(newEdge, aMouseDownPoint, pMousePoint))
+			if( aCanvas.getDiagram().builder().canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
 				aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint);
 				setModified(true);
