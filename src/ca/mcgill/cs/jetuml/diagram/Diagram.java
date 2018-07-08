@@ -135,7 +135,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyNodeRemoved(Node pNode)
+	public void notifyNodeRemoved(Node pNode)
 	{
 		if (aModificationListener != null)
 		{
@@ -407,53 +407,22 @@ public abstract class Diagram implements DiagramData
 			}
 		}
 	}
+	
+	public List<Node> getNodesToBeRemoved()
+	{
+		return aNodesToBeRemoved;
+	}
 
 	/**
 	 * Removes a node and all edges that start or end with that node.
 	 * @param pNode the node to remove
 	 */
-	public void removeNode(Node pNode)
+	public final void removeNode(Node pNode)
 	{
-		if (aNodesToBeRemoved.contains(pNode))
-		{
-			return;
-		}
-		notifyStartingCompoundOperation();
-		aNodesToBeRemoved.add(pNode);
-		
-		if (pNode instanceof ParentNode)
-		{
-			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
-			//We create a shallow clone so deleting children does not affect the loop
-			for (Node childNode: children)
-			{
-				removeNode(childNode);
-			}
-		}
-		
-		// Remove all edges connected to this node
-		removeAllEdgesConnectedTo(pNode);
-
-		// Notify all nodes that pNode is being removed.
-		for (Node node : aRootNodes)
-		{
-			removeFromParent( node, pNode );
-		}
-		
-		// Notify all edges that pNode is being removed.
-		for (Edge edge : aEdges)
-		{
-			if(edge.getStart() == pNode || edge.getEnd() == pNode)
-			{
-				removeEdge(edge);
-			}
-		}
-		notifyNodeRemoved(pNode);
-		notifyEndingCompoundOperation();
-		aNeedsLayout = true;
+		aBuilder.removeNode(pNode);
 	}
 	
-	private static void removeFromParent(Node pParent, Node pToRemove)
+	public static void removeFromParent(Node pParent, Node pToRemove)
 	{
 		if (pParent instanceof ParentNode)
 		{

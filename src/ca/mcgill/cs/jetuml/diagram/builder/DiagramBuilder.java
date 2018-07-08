@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -29,6 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -64,6 +66,51 @@ public abstract class DiagramBuilder
 			removePointNodeIfApplicable(pEdge);
 			aDiagram.requestLayout();
 		}
+	}
+	
+	/**
+	 * Removes a node and all edges that start or end with that node.
+	 * @param pNode the node to remove
+	 */
+	public final void removeNode(Node pNode)
+	{
+		if(aDiagram.getNodesToBeRemoved().contains(pNode))
+		{
+			return;
+		}
+		aDiagram.notifyStartingCompoundOperation();
+		aDiagram.getNodesToBeRemoved().add(pNode);
+		
+		if(pNode instanceof ParentNode)
+		{
+			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
+			//We create a shallow clone so deleting children does not affect the loop
+			for (Node childNode: children)
+			{
+				removeNode(childNode);
+			}
+		}
+		
+		// Remove all edges connected to this node
+		aDiagram.removeAllEdgesConnectedTo(pNode);
+
+		// Notify all nodes that pNode is being removed.
+		for(Node node : aDiagram.getRootNodes())
+		{
+			Diagram.removeFromParent( node, pNode );
+		}
+		
+		// Notify all edges that pNode is being removed.
+		for(Edge edge : aDiagram.getEdges())
+		{
+			if(edge.getStart() == pNode || edge.getEnd() == pNode)
+			{
+				removeEdge(edge);
+			}
+		}
+		aDiagram.notifyNodeRemoved(pNode);
+		aDiagram.notifyEndingCompoundOperation();
+		aDiagram.requestLayout();
 	}
 	
 	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
