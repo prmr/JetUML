@@ -75,7 +75,7 @@ public class TestUsageScenarios
 		diagram.addNode(c2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		c2.translate(100, 0);
 		DependencyEdge edge = new DependencyEdge();
-		diagram.addEdge(edge, new Point(26, 26), new Point(131, 31));
+		diagram.builder().addEdge(edge, new Point(26, 26), new Point(131, 31));
 		assertEquals(1, diagram.getRootNodes().size());
 		assertEquals(2, p1.getChildren().size());
 		assertEquals(c1, edge.getStart());
@@ -110,7 +110,7 @@ public class TestUsageScenarios
 		diagram.addNode(c2, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		c2.translate(100, 0);
 		DependencyEdge edge = new DependencyEdge();
-		diagram.addEdge(edge, new Point(31, 31), new Point(130, 26));
+		diagram.builder().addEdge(edge, new Point(31, 31), new Point(130, 26));
 		assertEquals(1, diagram.getRootNodes().size());
 		assertEquals(2, p1.getChildren().size());
 		assertEquals(1, diagram.getEdges().size());
@@ -152,19 +152,19 @@ public class TestUsageScenarios
 		// Add edges between all of these, including back-and-forth between two states. 
 		StateTransitionEdge edge1 = new StateTransitionEdge();
 		edge1.setMiddleLabel("Edge 1");
-		diagram.addEdge(edge1, new Point(6, 6), new Point(35, 35));
+		diagram.builder().addEdge(edge1, new Point(6, 6), new Point(35, 35));
 		
 		StateTransitionEdge edge2 = new StateTransitionEdge();
 		edge2.setMiddleLabel("Edge 2");
-		diagram.addEdge(edge2, new Point(35, 35), new Point(35, 105));
+		diagram.builder().addEdge(edge2, new Point(35, 35), new Point(35, 105));
 		
 		StateTransitionEdge edge3 = new StateTransitionEdge();
 		edge3.setMiddleLabel("Edge 3");
-		diagram.addEdge(edge3, new Point(35, 105), new Point(35, 35));
+		diagram.builder().addEdge(edge3, new Point(35, 105), new Point(35, 35));
 		
 		StateTransitionEdge edge4 = new StateTransitionEdge();
 		edge4.setMiddleLabel("Edge 4");
-		diagram.addEdge(edge4, new Point(35, 105), new Point(32, 202));
+		diagram.builder().addEdge(edge4, new Point(35, 105), new Point(32, 202));
 		assertEquals(4, diagram.getEdges().size());
 		
 		NoteEdge noteEdge = new NoteEdge();
@@ -220,21 +220,21 @@ public class TestUsageScenarios
 		assertEquals(2, diagram.getRootNodes().size());
 		// Note edge with a point node not overlapping any nodes
 		NoteEdge edge1 = new NoteEdge();
-		diagram.addEdge(edge1, new Point(135,135), new Point(300,300));
+		diagram.builder().addEdge(edge1, new Point(135,135), new Point(300,300));
 		assertEquals(3, diagram.getRootNodes().size());
 		assertTrue(diagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
 		assertEquals(1, diagram.getEdges().size());
 		
 		// Note edge with a point node overlapping any nodes
 		NoteEdge edge2 = new NoteEdge();
-		diagram.addEdge(edge2, new Point(135,135), new Point(40,40));
+		diagram.builder().addEdge(edge2, new Point(135,135), new Point(40,40));
 		assertEquals(4, diagram.getRootNodes().size());
 		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
 		assertEquals(2, diagram.getEdges().size());
 		
 		// Note edge with a starting point on a node
 		NoteEdge edge3 = new NoteEdge();
-		diagram.addEdge(edge3, new Point(35,35), new Point(135,135));
+		diagram.builder().addEdge(edge3, new Point(35,35), new Point(135,135));
 		assertEquals(4, diagram.getRootNodes().size());
 		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
 		assertEquals(3, diagram.getEdges().size());

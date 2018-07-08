@@ -182,20 +182,6 @@ public abstract class Diagram implements DiagramData
 	public abstract String getDescription();
 	
 	/**
-	 * Adds an edge to the graph that joins the nodes containing
-	 * the given points. If the points aren't both inside nodes,
-	 * then no edge is added.
-	 * @param pEdge the edge to add
-	 * @param pPoint1 a point in the starting node
-	 * @param pPoint2 a point in the ending node
-	 * @return true if the edge was connected
-	 */
-	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		aBuilder.addEdge(pEdge, pPoint1, pPoint2);
-	}
-
-	/**
 	 * Adds a newly created node to the graph so that the top left corner of
 	 * the bounding rectangle is at the given point. This method
 	 * is intended to be used to add nodes that were never part

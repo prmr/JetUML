@@ -501,7 +501,7 @@ public class DiagramCanvasController
 		{
 			if( aCanvas.getDiagram().builder().canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
-				aCanvas.getDiagram().addEdge(newEdge, aMouseDownPoint, pMousePoint);
+				aCanvas.getDiagram().builder().addEdge(newEdge, aMouseDownPoint, pMousePoint);
 				setModified(true);
 				aSelectionModel.set(newEdge);
 			}

@@ -134,7 +134,7 @@ public class TestUsageScenariosSequenceDiagram
 		assertFalse(aDiagram.builder().canAdd(noteEdge, new Point(7, 75), new Point(26, 0)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aDiagram.addEdge(new CallEdge(), new Point(7, 75), new Point(26, 0));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(7, 75), new Point(26, 0));
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
@@ -148,12 +148,12 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(25, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(7, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		
-		aDiagram.addEdge(aCallEdge1, new Point(7, 75), new Point(25,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(7, 75), new Point(25,75));
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(1, aParameterNode2.getChildren().size());
 		aDiagram.draw(aGraphics);
 		
-		aDiagram.addEdge(new CallEdge(), new Point(64,88), new Point(62,85));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(64,88), new Point(62,85));
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals(2, aParameterNode2.getChildren().size());
 	}
@@ -168,10 +168,10 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point(5, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aParameterNode2, new Point(105, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(7, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new  Point(7, 75), new Point(8,85));
+		aDiagram.builder().addEdge(aCallEdge1, new  Point(7, 75), new Point(8,85));
 		aDiagram.draw(aGraphics);
 
-		aDiagram.addEdge(new CallEdge(), new Point(59, 110), new Point(116,0));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(59, 110), new Point(116,0));
 		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals("\u00ABcreate\u00BB", ((CallEdge) aDiagram.getEdges().toArray()[1]).getMiddleLabel());
@@ -188,22 +188,22 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(newParaNode, new Point(210, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
 		aDiagram.draw(aGraphics);
 		
 		ReturnEdge returnEdge1 = new ReturnEdge();
-		aDiagram.addEdge(returnEdge1, new Point(145,90), new Point(45, 90));
+		aDiagram.builder().addEdge(returnEdge1, new Point(145,90), new Point(45, 90));
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		// call edge from first CallNode to third ParameterNode life line
 		CallEdge callEdge2 = new CallEdge();
-		aDiagram.addEdge(callEdge2, new Point(45, 75), new Point(210,75));
+		aDiagram.builder().addEdge(callEdge2, new Point(45, 75), new Point(210,75));
 		aDiagram.draw(aGraphics);
 		assertEquals(3, aDiagram.getEdges().size());
 		
 		// call edge from first CallNode to third ParameterNode's top box
 		CallEdge callEdge3 = new CallEdge();
-		aDiagram.addEdge(callEdge3, new Point(45, 75), new Point(210,0));
+		aDiagram.builder().addEdge(callEdge3, new Point(45, 75), new Point(210,0));
 		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getEdges().size());
 	}
@@ -218,7 +218,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode2, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
 		aDiagram.draw(aGraphics);
 		
 		NoteNode noteNode = new NoteNode();
@@ -228,11 +228,11 @@ public class TestUsageScenariosSequenceDiagram
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
 		aDiagram.addNode(noteNode, new Point(55, 55), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(noteEdge1, new Point(60, 60), new Point(87,65));
-		aDiagram.addEdge(noteEdge2, new Point(62, 68), new Point(47,75));
-		aDiagram.addEdge(noteEdge3, new Point(63, 69), new Point(47,35));
-		aDiagram.addEdge(noteEdge4, new Point(64, 70), new Point(17,5));
-		aDiagram.addEdge(noteEdge5, new Point(65, 60), new Point(67,265));
+		aDiagram.builder().addEdge(noteEdge1, new Point(60, 60), new Point(87,65));
+		aDiagram.builder().addEdge(noteEdge2, new Point(62, 68), new Point(47,75));
+		aDiagram.builder().addEdge(noteEdge3, new Point(63, 69), new Point(47,35));
+		aDiagram.builder().addEdge(noteEdge4, new Point(64, 70), new Point(17,5));
+		aDiagram.builder().addEdge(noteEdge5, new Point(65, 60), new Point(67,265));
 		
 		assertEquals(6, aDiagram.getEdges().size());
 		assertEquals(8, aDiagram.getRootNodes().size());
@@ -255,7 +255,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode2, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
 		aDiagram.draw(aGraphics);
 
 		// testing moving ParameterNode, can only be moved horizontally
@@ -306,7 +306,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode2, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
 		aDiagram.draw(aGraphics);
 
 		aController.selectAll();
@@ -349,7 +349,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(15, 80), new Point(116,0));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(15, 80), new Point(116,0));
 		aDiagram.draw(aGraphics);
 		
 		aController.selectAll();
@@ -440,12 +440,12 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(newParameterNode, new Point(210, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
 		aDiagram.draw(aGraphics);
 		ReturnEdge returnEdge1 = new ReturnEdge();
-		aDiagram.addEdge(returnEdge1, new Point(145,90), new Point(45, 90));		
+		aDiagram.builder().addEdge(returnEdge1, new Point(145,90), new Point(45, 90));		
 		CallEdge callEdge2 = new CallEdge();
-		aDiagram.addEdge(callEdge2, new Point(45, 75), new Point(210,75));
+		aDiagram.builder().addEdge(callEdge2, new Point(45, 75), new Point(210,75));
 		aDiagram.draw(aGraphics);
 		
 		aController.getSelectionModel().addToSelection(aParameterNode1);
@@ -489,11 +489,11 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.draw(aGraphics);
 		
 		CallEdge callEdge1 = new CallEdge();
-		aDiagram.addEdge(callEdge1, new Point(43, 75), new Point(133,105));
+		aDiagram.builder().addEdge(callEdge1, new Point(43, 75), new Point(133,105));
 		aDiagram.draw(aGraphics);
 		
 		CallEdge callEdge2 = new CallEdge();
-		aDiagram.addEdge(callEdge2, new Point(43, 77), new Point(133,155));
+		aDiagram.builder().addEdge(callEdge2, new Point(43, 77), new Point(133,155));
 		aDiagram.draw(aGraphics);
 		
 		Edge[] edges = aDiagram.getEdges(caller).toArray(new Edge[aDiagram.getEdges(caller).size()]);
@@ -533,10 +533,10 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(new CallNode(), new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
+		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
 		aController.getSelectionModel().addToSelection(middleCallNode);
 		aController.removeSelected();
@@ -567,8 +567,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(new CallEdge(), new Point(18, 75), new Point(115,75));
-		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
 		aController.getSelectionModel().addToSelection(returnEdge);
 		aController.removeSelected();
@@ -593,8 +593,8 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(118,75));
-		aDiagram.addEdge(returnEdge, new Point(118, 75), new Point(18,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(118,75));
+		aDiagram.builder().addEdge(returnEdge, new Point(118, 75), new Point(18,75));
 		
 		aController.getSelectionModel().addToSelection(returnEdge);
 		aController.getSelectionModel().addToSelection(aCallEdge1);
@@ -686,10 +686,10 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(new CallNode(), new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
+		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
 		aController.selectAll();
 		aController.copy();
@@ -716,10 +716,10 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.addNode(endCallNode, new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-		aDiagram.addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-		aDiagram.addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
+		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
+		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
 		
 		aList.add(aCallNode1);
 		aList.add(middleCallNode);
@@ -756,7 +756,7 @@ public class TestUsageScenariosSequenceDiagram
 		aDiagram.addNode(aCallNode2, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(new Rectangle(115, 75,16,30), aCallNode2.view().getBounds());
 		
-		aDiagram.addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
+		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
 		assertEquals(new Rectangle(30,68,86,12), aCallEdge1.view().getBounds());
 		
 		aDiagram.draw(aGraphics);

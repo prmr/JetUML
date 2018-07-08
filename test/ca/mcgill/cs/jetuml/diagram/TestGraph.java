@@ -117,7 +117,7 @@ public class TestGraph
 		
 		// A correct connection between two points
 		assertTrue(aDiagram.builder().canAdd(aEdge1, new Point(200, 30), new Point(200, 200)));
-		aDiagram.addEdge(aEdge1, new Point(200, 30), new Point(200, 200));
+		aDiagram.builder().addEdge(aEdge1, new Point(200, 30), new Point(200, 200));
 		assertTrue(aDiagram.contains(aEdge1));
 		assertTrue(aEdge1.getStart() == aNode1);
 		assertTrue(aEdge1.getEnd() == aNode2);
@@ -196,7 +196,7 @@ public class TestGraph
 		note.translate(50, 50);
 		aDiagram.restoreRootNode(note);
 		NoteEdge edge = new NoteEdge();
-		aDiagram.addEdge(edge, new Point(60, 60), new Point(150, 150));
+		aDiagram.builder().addEdge(edge, new Point(60, 60), new Point(150, 150));
 		assertTrue(aDiagram.getEdges().contains(edge));
 		assertEquals(note, edge.getStart());
 		assertTrue(edge.getEnd() instanceof PointNode);

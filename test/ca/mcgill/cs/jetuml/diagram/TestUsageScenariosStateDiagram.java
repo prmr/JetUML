@@ -136,11 +136,11 @@ public class TestUsageScenariosStateDiagram
 		assertEquals(4, aDiagram.getRootNodes().size());
 		
 		// test creation of edges, directly link InitialNode to FinalNode is allowed
-		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(5, aDiagram.getEdges().size());
 		
 		/*
@@ -150,7 +150,7 @@ public class TestUsageScenariosStateDiagram
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
 		assertTrue(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
-		aDiagram.addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
+		aDiagram.builder().addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
@@ -205,11 +205,11 @@ public class TestUsageScenariosStateDiagram
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
 		
-		aDiagram.addEdge(noteEdge1, new Point(50, 200), new Point(55, 25));
-		aDiagram.addEdge(noteEdge2, new Point(50, 200), new Point(155, 25));
-		aDiagram.addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
-		aDiagram.addEdge(noteEdge4, new Point(50, 200), new Point(455, 125));
-		aDiagram.addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
+		aDiagram.builder().addEdge(noteEdge1, new Point(50, 200), new Point(55, 25));
+		aDiagram.builder().addEdge(noteEdge2, new Point(50, 200), new Point(155, 25));
+		aDiagram.builder().addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
+		aDiagram.builder().addEdge(noteEdge4, new Point(50, 200), new Point(455, 125));
+		aDiagram.builder().addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
 		assertEquals(5, aDiagram.getEdges().size());
 	}
 	
@@ -229,9 +229,9 @@ public class TestUsageScenariosStateDiagram
 		NoteEdge noteEdge5 = new NoteEdge();
 		
 		// valid operations
-		aDiagram.addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
-		aDiagram.addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
-		aDiagram.addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
+		aDiagram.builder().addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
+		aDiagram.builder().addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
+		aDiagram.builder().addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
 		assertEquals(3, aDiagram.getEdges().size());
 		// invalid operations, cannot connect any StateNode with NoteEdges
 		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
@@ -269,11 +269,11 @@ public class TestUsageScenariosStateDiagram
 	public void testNodesAndEdgesMovement()
 	{
 		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		
 		aController.getSelectionModel().addToSelection(aInitialNode);
 		aController.getSelectionModel().addToSelection(aStateNode1);
@@ -324,7 +324,7 @@ public class TestUsageScenariosStateDiagram
 	public void testRemoveStartNode()
 	{
 		createSampleDiagram(aInitialNode, aStateNode1);
-		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
 		aController.getSelectionModel().addToSelection(aInitialNode);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -345,7 +345,7 @@ public class TestUsageScenariosStateDiagram
 	public void testRemoveEndNode()
 	{
 		createSampleDiagram(aStateNode2, aFinalNode);
-		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
 		aController.getSelectionModel().addToSelection(aFinalNode);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -366,11 +366,11 @@ public class TestUsageScenariosStateDiagram
 	public void testRemoveStateNode()
 	{
 		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-		aDiagram.addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-		aDiagram.addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-		aDiagram.addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-		aDiagram.addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		aController.getSelectionModel().addToSelection(aStateNode2);
 		aController.removeSelected();
 		aDiagram.draw(aGraphics);
@@ -434,7 +434,7 @@ public class TestUsageScenariosStateDiagram
 	public void testCopyNodesWithEdge()
 	{
 		createSampleDiagram(aStateNode1, aStateNode2);
-		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		aController.selectAll();
 		aController.copy();
 		aController.paste();
@@ -454,7 +454,7 @@ public class TestUsageScenariosStateDiagram
 	public void testCutNodesWithEdge()
 	{
 		createSampleDiagram(aStateNode1, aStateNode2);
-		aDiagram.addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
 		
 		aController.selectAll();
 		aController.cut();
