@@ -64,7 +64,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void setController(DiagramCanvasController pController)
 	{
 		aController = pController;
-		aDiagram.setGraphModificationListener(pController.createGraphModificationListener());
+		aDiagram.builder().setGraphModificationListener(pController.createGraphModificationListener());
 	}
 	
 	@Override

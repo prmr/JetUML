@@ -75,7 +75,7 @@ public abstract class DiagramBuilder
 		if(!aDiagram.getEdgesToBeRemoved().contains(pEdge))
 		{
 			aDiagram.getEdgesToBeRemoved().add(pEdge);
-			aDiagram.notifyEdgeRemoved(pEdge);
+			notifyEdgeRemoved(pEdge);
 			removePointNodeIfApplicable(pEdge);
 			aDiagram.requestLayout();
 		}
@@ -119,7 +119,7 @@ public abstract class DiagramBuilder
 		{
 			return;
 		}
-		aDiagram.notifyStartingCompoundOperation();
+		notifyStartingCompoundOperation();
 		aDiagram.getNodesToBeRemoved().add(pNode);
 		
 		if(pNode instanceof ParentNode)
@@ -149,8 +149,8 @@ public abstract class DiagramBuilder
 				removeEdge(edge);
 			}
 		}
-		aDiagram.notifyNodeRemoved(pNode);
-		aDiagram.notifyEndingCompoundOperation();
+		notifyNodeRemoved(pNode);
+		notifyEndingCompoundOperation();
 		aDiagram.requestLayout();
 	}
 	
@@ -277,15 +277,15 @@ public abstract class DiagramBuilder
 			
 		// In case the down-call to addEdge introduces additional 
 		// operations that should be compounded with the edge addition
-		aDiagram.notifyStartingCompoundOperation();
+		notifyStartingCompoundOperation();
 		completeEdgeAddition(node1, pEdge, pPoint1, pPoint2);
 		aDiagram.getEdges().add(pEdge);
-		aDiagram.notifyEdgeAdded(pEdge);
+		notifyEdgeAdded(pEdge);
 		if(!aDiagram.getRootNodes().contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode)
 		{
 			aDiagram.getRootNodes().add(pEdge.getEnd());
 		}
-		aDiagram.notifyEndingCompoundOperation();
+		notifyEndingCompoundOperation();
 		aDiagram.requestLayout();
 	}
 	
@@ -352,7 +352,7 @@ public abstract class DiagramBuilder
 			aDiagram.restoreRootNode(pNode);
 		}
 		aDiagram.requestLayout();
-		aDiagram.notifyNodeAdded(pNode);
+		notifyNodeAdded(pNode);
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)
@@ -387,7 +387,7 @@ public abstract class DiagramBuilder
 	 * @param pProperty The name of the changed property.
 	 * @param pOldValue The value of the property before the change.
 	 */
-	public final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
+	protected final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
 	{
 		if (aModificationListener != null)
 		{
@@ -395,7 +395,7 @@ public abstract class DiagramBuilder
 		}
 	}
 	
-	public void notifyNodeAdded(Node pNode)
+	public final void notifyNodeAdded(Node pNode)
 	{
 		if (aModificationListener != null)
 		{
@@ -403,7 +403,7 @@ public abstract class DiagramBuilder
 		}
 	}
 	
-	public void notifyNodeRemoved(Node pNode)
+	private void notifyNodeRemoved(Node pNode)
 	{
 		if (aModificationListener != null)
 		{
@@ -419,7 +419,7 @@ public abstract class DiagramBuilder
 		}
 	}
 	
-	public void notifyEdgeRemoved(Edge pEdge)
+	private void notifyEdgeRemoved(Edge pEdge)
 	{
 		if (aModificationListener != null)
 		{
@@ -427,7 +427,7 @@ public abstract class DiagramBuilder
 		}
 	}
 	
-	public final void notifyStartingCompoundOperation()
+	private final void notifyStartingCompoundOperation()
 	{
 		if (aModificationListener != null)
 		{
@@ -435,7 +435,7 @@ public abstract class DiagramBuilder
 		}
 	}
 	
-	public final void notifyEndingCompoundOperation()
+	private final void notifyEndingCompoundOperation()
 	{
 		if (aModificationListener != null)
 		{

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -96,58 +95,6 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
-	 * Notifies the listener, if applicable, of a change to a property
-	 * of one of the graph's elements.
-	 * 
-	 * @param pElement The element whose property changed.
-	 * @param pProperty The name of the changed property.
-	 * @param pOldValue The value of the property before the change.
-	 */
-	public final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
-	{
-		aBuilder.notifyPropertyChanged(pElement, pProperty, pOldValue);
-	}
-	
-	public void notifyNodeAdded(Node pNode)
-	{
-		aBuilder.notifyNodeAdded(pNode);
-	}
-	
-	public void notifyNodeRemoved(Node pNode)
-	{
-		aBuilder.notifyNodeRemoved(pNode);
-	}
-	
-	public final void notifyEdgeAdded(Edge pEdge)
-	{
-		aBuilder.notifyEdgeAdded(pEdge);
-	}
-	
-	public void notifyEdgeRemoved(Edge pEdge)
-	{
-		aBuilder.notifyEdgeRemoved(pEdge);
-	}
-	
-	public final void notifyStartingCompoundOperation()
-	{
-		aBuilder.notifyStartingCompoundOperation();
-	}
-	
-	public final void notifyEndingCompoundOperation()
-	{
-		aBuilder.notifyEndingCompoundOperation();
-	}
-	
-	/**
-	 * Sets the modification listener.
-	 * @param pListener the single GraphModificationListener for this Diagram.
-	 */
-	public void setGraphModificationListener(GraphModificationListener pListener)
-	{
-		aBuilder.setGraphModificationListener(pListener);
-	}
-
-	/**
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */
@@ -179,7 +126,7 @@ public abstract class Diagram implements DiagramData
 			((ChildNode)pNode).getParent().addChild((ChildNode)pNode);
 		}
 		aNeedsLayout = true;
-		notifyNodeAdded(pNode);
+		aBuilder.notifyNodeAdded(pNode);
 	}
 
 	/**
@@ -490,7 +437,7 @@ public abstract class Diagram implements DiagramData
 	public void insertEdge(Edge pEdge)
 	{
 		aEdges.add(pEdge);
-		notifyEdgeAdded(pEdge);
+		aBuilder.notifyEdgeAdded(pEdge);
 	}
 	
 	/**

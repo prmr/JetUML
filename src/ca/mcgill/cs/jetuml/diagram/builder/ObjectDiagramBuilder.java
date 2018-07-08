@@ -51,7 +51,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 		{
 			String oldValue = ((FieldNode)pOrigin).getValue();
 			((FieldNode)pOrigin).setValue("");
-			aDiagram.notifyPropertyChanged(pOrigin, "value", oldValue);
+			notifyPropertyChanged(pOrigin, "value", oldValue);
 		}
 	}
 	
