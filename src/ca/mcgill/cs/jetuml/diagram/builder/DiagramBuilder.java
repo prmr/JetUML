@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import java.util.List;
+
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -51,6 +53,47 @@ public abstract class DiagramBuilder
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		return true;
+	}
+	
+	public void removeEdge(Edge pEdge)
+	{
+		if(!aDiagram.getEdgesToBeRemoved().contains(pEdge))
+		{
+			aDiagram.getEdgesToBeRemoved().add(pEdge);
+			aDiagram.notifyEdgeRemoved(pEdge);
+			removePointNodeIfApplicable(pEdge);
+			aDiagram.requestLayout();
+		}
+	}
+	
+	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
+	{
+		if (pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			PointNode lReturn = new PointNode();
+			lReturn.translate(pPoint2.getX(), pPoint2.getY());
+			return lReturn;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	private void removePointNodeIfApplicable(Edge pEdge)
+	{
+		List<Node> rootNodes = (List<Node>)aDiagram.getRootNodes();
+		for(int i = rootNodes.size() - 1; i >= 0; i--)
+		{
+			Node node = rootNodes.get(i);
+			if(node instanceof NoteNode)
+			{
+				if(pEdge.getStart() == node)
+				{
+					aDiagram.removeNode(pEdge.getEnd());
+				}
+			}
+		}
 	}
 	
 	/**
@@ -123,7 +166,7 @@ public abstract class DiagramBuilder
 		Node node2 = aDiagram.findNode(pPoint2);
 		if(node1 instanceof NoteNode)
 		{
-			node2 = aDiagram.createPointNodeIfAllowed(node1, pEdge, pPoint2);
+			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
 		}
 		pEdge.connect(node1, node2, aDiagram);
 			
@@ -138,6 +181,7 @@ public abstract class DiagramBuilder
 			aDiagram.getRootNodes().add(pEdge.getEnd());
 		}
 		aDiagram.notifyEndingCompoundOperation();
+		aDiagram.requestLayout();
 	}
 	
 	/**
@@ -195,6 +239,7 @@ public abstract class DiagramBuilder
 		{
 			aDiagram.restoreRootNode(pNode);
 		}
+		aDiagram.requestLayout();
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)

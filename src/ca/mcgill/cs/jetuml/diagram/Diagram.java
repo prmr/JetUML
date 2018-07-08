@@ -23,14 +23,12 @@ package ca.mcgill.cs.jetuml.diagram;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
@@ -153,7 +151,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyEdgeRemoved(Edge pEdge)
+	public void notifyEdgeRemoved(Edge pEdge)
 	{
 		if (aModificationListener != null)
 		{
@@ -197,20 +195,6 @@ public abstract class Diagram implements DiagramData
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
 	public abstract String getDescription();
-
-	public final PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
-	{
-		if (pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
-		{
-			PointNode lReturn = new PointNode();
-			lReturn.translate(pPoint2.getX(), pPoint2.getY());
-			return lReturn;
-		}
-		else
-		{
-			return null;
-		}
-	}
 	
 	/**
 	 * Adds an edge to the graph that joins the nodes containing
@@ -224,7 +208,6 @@ public abstract class Diagram implements DiagramData
 	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		aBuilder.addEdge(pEdge, pPoint1, pPoint2);
-		aNeedsLayout = true;
 	}
 
 	/**
@@ -247,7 +230,6 @@ public abstract class Diagram implements DiagramData
 	{
 		aBuilder.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 		notifyNodeAdded(pNode);
-		aNeedsLayout = true;
 	}
 	
 	/**
@@ -533,25 +515,14 @@ public abstract class Diagram implements DiagramData
 	 */
 	public void removeEdge(Edge pEdge)
 	{
-		if (aEdgesToBeRemoved.contains(pEdge))
-		{
-			return;
-		}
-		aEdgesToBeRemoved.add(pEdge);
-		notifyEdgeRemoved(pEdge);
-		for (int i = aRootNodes.size() - 1; i >= 0; i--)
-		{
-			Node node = aRootNodes.get(i);
-			if (node instanceof NoteNode)
-			{
-				if (pEdge.getStart() == node)
-				{
-					removeNode(pEdge.getEnd());
-				}
-			}
-		}
-		aNeedsLayout = true;
+		aBuilder.removeEdge(pEdge);
 	}
+	
+	public List<Edge> getEdgesToBeRemoved()
+	{
+		return aEdgesToBeRemoved;
+	}
+	
 
 	/**
 	 * Causes the layout of the graph to be recomputed.

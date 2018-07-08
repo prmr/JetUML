@@ -56,56 +56,8 @@ public class SequenceDiagram extends Diagram
 	{
 		aBuilder = new SequenceDiagramBuilder(this);
 	}
-
-	@Override
-	public void removeEdge(Edge pEdge)
-	{
-		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
-		{
-			removeNode(pEdge.getEnd());
-		}
-		
-		// Also delete the return edge, if it exists
-		if( pEdge instanceof CallEdge )
-		{
-			Edge returnEdge = null;
-			for( Edge edge : aEdges )
-			{
-				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
-				{
-					returnEdge = edge;
-					break;
-				}
-			}
-			if( returnEdge != null )
-			{
-				removeEdge(returnEdge);
-			}
-		}
-	}
 	
-	/**
-	 * @param pNode The node to check
-	 * @return True if pNode is a call node that does not have any outgoing
-	 * call edge.
-	 */
-	private boolean hasNoCallees(Node pNode)
-	{
-		if( !(pNode instanceof CallNode ))
-		{
-			return false;
-		}
-		assert pNode instanceof CallNode;
-		for( Edge edge : aEdges )
-		{
-			if( edge.getStart() == pNode )
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+
 	
 	/**
 	 * @param pNode The node to obtain the caller for.
