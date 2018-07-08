@@ -112,7 +112,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	private void notifyNodeAdded(Node pNode)
+	public void notifyNodeAdded(Node pNode)
 	{
 		if (aModificationListener != null)
 		{
@@ -180,28 +180,6 @@ public abstract class Diagram implements DiagramData
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
 	public abstract String getDescription();
-	
-	/**
-	 * Adds a newly created node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point. This method
-	 * is intended to be used to add nodes that were never part
-	 * of the graph, from the GUI. To add nodes recovered from
-	 * deserialization, use restoreNode. To add nodes recovered
-	 * from in-application operations such as undoing and pasting,
-	 * use insertNode. This method assumes the node does not
-	 * have a parent of a child.
-	 * 
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @param pMaxWidth the maximum width of the panel
-	 * @param pMaxHeight the maximum height of the panel
-	 * @return True if the node was added.
-	 */
-	public final void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		aBuilder.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
-		notifyNodeAdded(pNode);
-	}
 	
 	/**
 	 * Inserts a previously-created node back into a diagram.

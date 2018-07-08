@@ -70,9 +70,9 @@ public class TestUsageScenarios
 		PackageNode p1 = new PackageNode();
 		ClassNode c1 = new ClassNode();
 		ClassNode c2 = new ClassNode();
-		diagram.addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(c1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(c2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		c2.translate(100, 0);
 		DependencyEdge edge = new DependencyEdge();
 		diagram.builder().addEdge(edge, new Point(26, 26), new Point(131, 31));
@@ -105,9 +105,9 @@ public class TestUsageScenarios
 		PackageNode p1 = new PackageNode();
 		PackageNode c1 = new PackageNode();
 		PackageNode c2 = new PackageNode();
-		diagram.addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(c1, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(c2, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c1, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c2, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		c2.translate(100, 0);
 		DependencyEdge edge = new DependencyEdge();
 		diagram.builder().addEdge(edge, new Point(31, 31), new Point(130, 26));
@@ -143,10 +143,10 @@ public class TestUsageScenarios
 		node2.setName("Node 2");
 		InitialStateNode start = new InitialStateNode();
 		FinalStateNode end = new FinalStateNode();
-		diagram.addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(node2, new Point(30, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(start, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.addNode(end, new Point(30, 200), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(node2, new Point(30, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(start, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(end, new Point(30, 200), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(4, diagram.getRootNodes().size());
 		
 		// Add edges between all of these, including back-and-forth between two states. 
@@ -214,9 +214,9 @@ public class TestUsageScenarios
 		StateDiagram diagram = new StateDiagram();
 		StateNode node1 = new StateNode();
 		node1.setName("Node 1");
-		diagram.addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		NoteNode note = new NoteNode();
-		diagram.addNode(note, new Point(130,130), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(note, new Point(130,130), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		assertEquals(2, diagram.getRootNodes().size());
 		// Note edge with a point node not overlapping any nodes
 		NoteEdge edge1 = new NoteEdge();

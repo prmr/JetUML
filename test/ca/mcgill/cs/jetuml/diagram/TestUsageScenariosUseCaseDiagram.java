@@ -105,21 +105,21 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testCreateUseCaseDiagram()
 	{
 		// create an ActorNode
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aActorNode1.setName("Car");
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals("Car", aActorNode1.getName());
 		
 		// create some UseCaseNode
-		aDiagram.addNode(aUseCaseNode1, new Point(120, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(120, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aUseCaseNode1.setName("driving");
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals("driving", aUseCaseNode1.getName());
 
 		// create field nodes inside ObjectNode
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point(50, 50), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(50, 50), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		noteNode.setName("something...\nsomething");
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals("something...\nsomething", noteNode.getName());
@@ -131,10 +131,10 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testGeneralEdgeCreation()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
@@ -160,11 +160,11 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testNoteEdgeCreation()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
@@ -200,9 +200,9 @@ public class TestUsageScenariosUseCaseDiagram
 	public void testIndividualNodeMovement()
 	{
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 		aActorNode1.translate(3, 12);
 		aUseCaseNode1.translate(3, 2);
@@ -220,11 +220,11 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
@@ -260,7 +260,7 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testDeleteNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aController.getSelectionModel().addToSelection(aActorNode1);
 		aController.removeSelected();
 		aController.getSelectionModel().clearSelection();
@@ -271,7 +271,7 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
 		NoteNode noteNode = new NoteNode();
-		aDiagram.addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aController.getSelectionModel().addToSelection(noteNode);
 		aController.removeSelected();
 		aController.getSelectionModel().clearSelection();
@@ -280,7 +280,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aController.undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		
-		aDiagram.addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aController.getSelectionModel().addToSelection(aUseCaseNode1);
 		aController.removeSelected();
 		aController.getSelectionModel().clearSelection();
@@ -299,11 +299,11 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
@@ -335,11 +335,11 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
@@ -390,9 +390,9 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCopyNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aActorNode1.view().getBounds();
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		aController.getSelectionModel().addToSelection(aActorNode1);
 		aController.copy();
@@ -411,8 +411,8 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCutNode()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.draw(aGraphics);
 		
 		aController.getSelectionModel().addToSelection(aUseCaseNode1);
@@ -434,8 +434,8 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCopyNodesWithEdge()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aController.selectAll();
 		aController.copy();
@@ -453,10 +453,10 @@ public class TestUsageScenariosUseCaseDiagram
 	@Test
 	public void testCutNodesWithEdge()
 	{
-		aDiagram.addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
 		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
 		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));

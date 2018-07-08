@@ -314,13 +314,20 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Adds a newly created node to the diagram, if it does not have a parent. If
-	 * the node has a parent, does not do anything.
+	 * Adds a newly created node to the graph so that the top left corner of
+	 * the bounding rectangle is at the given point. This method
+	 * is intended to be used to add nodes that were never part
+	 * of the graph, from the GUI. To add nodes recovered from
+	 * deserialization, use restoreNode. To add nodes recovered
+	 * from in-application operations such as undoing and pasting,
+	 * use insertNode. This method assumes the node does not
+	 * have a parent of a child.
 	 * 
-	 * @param pNode The node to add. Not null.
-	 * @param pRequestedPosition The desired position of the node in the diagram.
-	 * @param pMaxWidth the maximum width of the diagram.
-	 * @param pMaxHeight the maximum height of the diagram.
+	 * @param pNode the node to add
+	 * @param pPoint the desired location
+	 * @param pMaxWidth the maximum width of the panel
+	 * @param pMaxHeight the maximum height of the panel
+	 * @return True if the node was added.
 	 */
 	public void addNode(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
 	{
@@ -333,6 +340,7 @@ public abstract class DiagramBuilder
 			aDiagram.restoreRootNode(pNode);
 		}
 		aDiagram.requestLayout();
+		aDiagram.notifyNodeAdded(pNode);
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)

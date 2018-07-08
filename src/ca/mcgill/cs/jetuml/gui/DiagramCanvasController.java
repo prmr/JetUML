@@ -400,7 +400,7 @@ public class DiagramCanvasController
 		Point point = getMousePoint(pEvent);
 		if(aCanvas.getDiagram().builder().canAdd(newNode, point))
 		{
-			 aCanvas.getDiagram().addNode(newNode, new Point(point.getX(), point.getY()), 
+			 aCanvas.getDiagram().builder().addNode(newNode, new Point(point.getX(), point.getY()), 
 						(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
 			setModified(true);
 			aSelectionModel.set(newNode);
