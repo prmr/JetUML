@@ -63,7 +63,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		super.removeEdge(pEdge);
 		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
 		{
-			aDiagram.removeNode(pEdge.getEnd());
+			removeNode(pEdge.getEnd());
 		}
 		
 		// Also delete the return edge, if it exists

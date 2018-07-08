@@ -44,7 +44,7 @@ public class AddNodeCommand extends GraphElementRelatedCommand
 	public void undo() 
 	{
 		assert aElement instanceof Node;
-		aGraph.removeNode((Node)aElement);
+		aGraph.builder().removeNode((Node)aElement);
 		aGraph.requestLayout();
 	}
 

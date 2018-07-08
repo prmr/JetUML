@@ -53,6 +53,6 @@ public class RemoveEdgeCommand extends GraphElementRelatedCommand
 	public void execute() 
 	{
 		assert aElement instanceof Edge;
-		aGraph.removeEdge((Edge)aElement);
+		aGraph.builder().removeEdge((Edge)aElement);
 	}
 }

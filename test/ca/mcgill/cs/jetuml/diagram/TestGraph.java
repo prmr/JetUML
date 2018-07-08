@@ -230,7 +230,7 @@ public class TestGraph
 		graph.restoreEdge(edge, node, point);
 		assertEquals(1, graph.getEdges().size());
 		assertEquals(2, graph.getRootNodes().size());
-		graph.removeEdge(edge);
+		graph.builder().removeEdge(edge);
 		graph.layout();
 		assertEquals(0, graph.getEdges().size());
 		Collection<Node> nodes = graph.getRootNodes();

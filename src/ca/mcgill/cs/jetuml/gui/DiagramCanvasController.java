@@ -282,12 +282,12 @@ public class DiagramCanvasController
 			}
 			else if(element instanceof Edge)
 			{
-				aCanvas.getDiagram().removeEdge((Edge) element);
+				aCanvas.getDiagram().builder().removeEdge((Edge) element);
 			}
 		}
 		while(!nodes.empty())
 		{
-			aCanvas.getDiagram().removeNode(nodes.pop());
+			aCanvas.getDiagram().builder().removeNode(nodes.pop());
 		}
 		aUndoManager.endTracking();
 		if(aSelectionModel.isEmpty())

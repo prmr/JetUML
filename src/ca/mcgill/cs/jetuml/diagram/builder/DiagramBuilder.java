@@ -183,7 +183,7 @@ public abstract class DiagramBuilder
 			{
 				if(pEdge.getStart() == node)
 				{
-					aDiagram.removeNode(pEdge.getEnd());
+					removeNode(pEdge.getEnd());
 				}
 			}
 		}

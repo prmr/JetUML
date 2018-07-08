@@ -335,15 +335,6 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
-	 * Removes a node and all edges that start or end with that node.
-	 * @param pNode the node to remove
-	 */
-	public final void removeNode(Node pNode)
-	{
-		aBuilder.removeNode(pNode);
-	}
-
-	/**
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
 	 */
@@ -382,15 +373,6 @@ public abstract class Diagram implements DiagramData
 		return false;
 	}
 
-	/**
-	 * Removes an edge from the graph.
-	 * @param pEdge the edge to remove
-	 */
-	public void removeEdge(Edge pEdge)
-	{
-		aBuilder.removeEdge(pEdge);
-	}
-	
 	public List<Edge> getEdgesToBeRemoved()
 	{
 		return aEdgesToBeRemoved;

@@ -44,7 +44,7 @@ public class AddEdgeCommand extends GraphElementRelatedCommand
 	public void undo() 
 	{
 		assert aElement instanceof Edge;
-		aGraph.removeEdge((Edge)aElement);
+		aGraph.builder().removeEdge((Edge)aElement);
 	}
 
 	/**

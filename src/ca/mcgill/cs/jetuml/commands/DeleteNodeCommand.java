@@ -51,6 +51,6 @@ public class DeleteNodeCommand extends GraphElementRelatedCommand
 	 */
 	public void execute() 
 	{
-		aGraph.removeNode((Node)aElement);
+		aGraph.builder().removeNode((Node)aElement);
 	}
 }
