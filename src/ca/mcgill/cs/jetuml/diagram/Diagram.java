@@ -51,7 +51,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class Diagram implements DiagramData
 {
-	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
 	protected ArrayList<Edge> aEdges;
 	protected transient ArrayList<Node> aNodesToBeRemoved;
@@ -106,58 +105,37 @@ public abstract class Diagram implements DiagramData
 	 */
 	public final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
-		}
+		aBuilder.notifyPropertyChanged(pElement, pProperty, pOldValue);
 	}
 	
 	public void notifyNodeAdded(Node pNode)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.nodeAdded(this, pNode);
-		}
+		aBuilder.notifyNodeAdded(pNode);
 	}
 	
 	public void notifyNodeRemoved(Node pNode)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.nodeRemoved(this, pNode);
-		}
+		aBuilder.notifyNodeRemoved(pNode);
 	}
 	
 	public final void notifyEdgeAdded(Edge pEdge)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.edgeAdded(this, pEdge);
-		}
+		aBuilder.notifyEdgeAdded(pEdge);
 	}
 	
 	public void notifyEdgeRemoved(Edge pEdge)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.edgeRemoved(this, pEdge);
-		}
+		aBuilder.notifyEdgeRemoved(pEdge);
 	}
 	
 	public final void notifyStartingCompoundOperation()
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.startingCompoundOperation();
-		}
+		aBuilder.notifyStartingCompoundOperation();
 	}
 	
 	public final void notifyEndingCompoundOperation()
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.finishingCompoundOperation();
-		}
+		aBuilder.notifyEndingCompoundOperation();
 	}
 	
 	/**
@@ -166,7 +144,7 @@ public abstract class Diagram implements DiagramData
 	 */
 	public void setGraphModificationListener(GraphModificationListener pListener)
 	{
-		aModificationListener = pListener;
+		aBuilder.setGraphModificationListener(pListener);
 	}
 
 	/**

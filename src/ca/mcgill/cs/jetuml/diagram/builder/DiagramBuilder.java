@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -40,10 +42,20 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public abstract class DiagramBuilder
 {
 	protected final Diagram aDiagram;
+	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
 	
 	public DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
+	}
+	
+	/**
+	 * Sets the modification listener.
+	 * @param pListener the single GraphModificationListener for this Diagram.
+	 */
+	public void setGraphModificationListener(GraphModificationListener pListener)
+	{
+		aModificationListener = pListener;
 	}
 	
 	/**
@@ -365,5 +377,69 @@ public abstract class DiagramBuilder
 	protected boolean hasParent(Node pNode)
 	{
 		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
+	}
+	
+	/**
+	 * Notifies the listener, if applicable, of a change to a property
+	 * of one of the graph's elements.
+	 * 
+	 * @param pElement The element whose property changed.
+	 * @param pProperty The name of the changed property.
+	 * @param pOldValue The value of the property before the change.
+	 */
+	public final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
+		}
+	}
+	
+	public void notifyNodeAdded(Node pNode)
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.nodeAdded(aDiagram, pNode);
+		}
+	}
+	
+	public void notifyNodeRemoved(Node pNode)
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.nodeRemoved(aDiagram, pNode);
+		}
+	}
+	
+	public final void notifyEdgeAdded(Edge pEdge)
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.edgeAdded(aDiagram, pEdge);
+		}
+	}
+	
+	public void notifyEdgeRemoved(Edge pEdge)
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.edgeRemoved(aDiagram, pEdge);
+		}
+	}
+	
+	public final void notifyStartingCompoundOperation()
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.startingCompoundOperation();
+		}
+	}
+	
+	public final void notifyEndingCompoundOperation()
+	{
+		if (aModificationListener != null)
+		{
+			aModificationListener.finishingCompoundOperation();
+		}
 	}
 }
