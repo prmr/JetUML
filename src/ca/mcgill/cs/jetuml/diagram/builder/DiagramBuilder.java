@@ -25,11 +25,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.GraphModificationListener;
+import ca.mcgill.cs.jetuml.application.UndoManager;
+import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
+import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
+import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
+import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
+import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -42,20 +48,16 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public abstract class DiagramBuilder
 {
 	protected final Diagram aDiagram;
-	protected GraphModificationListener aModificationListener; // Only access from notify* methods and setter
+	private UndoManager aUndoManager;
 	
 	public DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
 	}
 	
-	/**
-	 * Sets the modification listener.
-	 * @param pListener the single GraphModificationListener for this Diagram.
-	 */
-	public void setGraphModificationListener(GraphModificationListener pListener)
+	public void setUndoManager(UndoManager pManager)
 	{
-		aModificationListener = pListener;
+		aUndoManager = pManager;
 	}
 	
 	/**
@@ -389,57 +391,56 @@ public abstract class DiagramBuilder
 	 */
 	protected final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
 	{
-		if (aModificationListener != null)
-		{
-			aModificationListener.propertyChanged(pElement.properties().get(pProperty), pOldValue);
-		}
+		assert aUndoManager != null;
+		Property property = pElement.properties().get(pProperty);
+		aUndoManager.add(new ChangePropertyCommand(property, pOldValue, property.get()));
 	}
 	
 	public final void notifyNodeAdded(Node pNode)
 	{
-		if (aModificationListener != null)
+		if( aUndoManager != null )
 		{
-			aModificationListener.nodeAdded(aDiagram, pNode);
+			aUndoManager.add(new AddNodeCommand(aDiagram, pNode));
 		}
 	}
 	
 	private void notifyNodeRemoved(Node pNode)
 	{
-		if (aModificationListener != null)
+		if(aUndoManager != null)
 		{
-			aModificationListener.nodeRemoved(aDiagram, pNode);
+			aUndoManager.add(new DeleteNodeCommand(aDiagram, pNode));
 		}
 	}
 	
 	public final void notifyEdgeAdded(Edge pEdge)
 	{
-		if (aModificationListener != null)
+		if(aUndoManager != null)
 		{
-			aModificationListener.edgeAdded(aDiagram, pEdge);
+			aUndoManager.add(new AddEdgeCommand(aDiagram, pEdge));
 		}
 	}
 	
 	private void notifyEdgeRemoved(Edge pEdge)
 	{
-		if (aModificationListener != null)
+		if(aUndoManager != null)
 		{
-			aModificationListener.edgeRemoved(aDiagram, pEdge);
+			aUndoManager.add(new RemoveEdgeCommand(aDiagram, pEdge));
 		}
 	}
 	
 	private final void notifyStartingCompoundOperation()
 	{
-		if (aModificationListener != null)
+		if(aUndoManager != null)
 		{
-			aModificationListener.startingCompoundOperation();
+			aUndoManager.startTracking();
 		}
 	}
 	
 	private final void notifyEndingCompoundOperation()
 	{
-		if (aModificationListener != null)
+		if(aUndoManager != null)
 		{
-			aModificationListener.finishingCompoundOperation();
+			aUndoManager.endTracking();
 		}
 	}
 }

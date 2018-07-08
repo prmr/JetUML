@@ -28,21 +28,14 @@ import java.util.Set;
 import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.GraphModificationListener;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.UndoManager;
-import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
-import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
-import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -98,6 +91,11 @@ public class DiagramCanvasController
 		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
 		aHandler = pHandler;
+	}
+	
+	public UndoManager getUndoManager()
+	{
+		return aUndoManager;
 	}
 	
 	/**
@@ -586,58 +584,5 @@ public class DiagramCanvasController
 		}
 		aLastMousePoint = pMousePoint; 
 		aCanvas.paintPanel();
-	}
-	
-	/**
-	 * @return A graph modification listener.
-	 */
-	public GraphModificationListener createGraphModificationListener()
-	{
-		return new PanelGraphModificationListener();
-	}
-	
-	private class PanelGraphModificationListener implements GraphModificationListener
-	{
-		@Override
-		public void startingCompoundOperation() 
-		{
-			aUndoManager.startTracking();
-		}
-		
-		@Override
-		public void finishingCompoundOperation()
-		{
-			aUndoManager.endTracking();
-		}
-		
-		@Override
-		public void nodeAdded(Diagram pGraph, Node pNode)
-		{
-			aUndoManager.add(new AddNodeCommand(pGraph, pNode));
-		}
-		
-		@Override
-		public void nodeRemoved(Diagram pGraph, Node pNode)
-		{
-			aUndoManager.add(new DeleteNodeCommand(pGraph, pNode));
-		}
-		
-		@Override
-		public void edgeAdded(Diagram pGraph, Edge pEdge)
-		{
-			aUndoManager.add(new AddEdgeCommand(pGraph, pEdge));
-		}
-		
-		@Override
-		public void edgeRemoved(Diagram pGraph, Edge pEdge)
-		{
-			aUndoManager.add(new RemoveEdgeCommand(pGraph, pEdge));
-		}
-
-		@Override
-		public void propertyChanged(Property pProperty, Object pOldValue)
-		{
-			aUndoManager.add(new ChangePropertyCommand(pProperty, pOldValue, pProperty.get()));
-		}
 	}
 }
