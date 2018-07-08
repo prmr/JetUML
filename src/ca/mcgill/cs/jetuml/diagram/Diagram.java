@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.application.GraphModificationListener;
@@ -328,34 +327,6 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
-	 * Removes all edges in the graph that have pNode as a start
-	 * or end node. The edges are removed in an order that is the 
-	 * reverse of the one in which they were added, so that this
-	 * method can directly support the undo functionality. 
-	 * Note that layout() needs to be called before
-	 * the change has effect.
-	 * 
-	 * @param pNode The target node.
-	 */
-	public void removeAllEdgesConnectedTo(Node pNode)
-	{
-		assert pNode != null;
-		ArrayList<Edge> toRemove = new ArrayList<Edge>();
-		for (Edge edge : aEdges)
-		{
-			if ((edge.getStart() == pNode || edge.getEnd() == pNode) && !aEdgesToBeRemoved.contains(edge))
-			{
-				toRemove.add(edge);
-			}
-		}
-		Collections.reverse(toRemove);
-		for(Edge edge : toRemove)
-		{
-			removeEdge(edge);
-		}
-	}
-	
-	/**
 	 * Returns true iif there exists an edge of type pType between
 	 * nodes pStart and pEnd. The direction matter, and the type
 	 * testing is for the exact type pType, without using polymorphism.
@@ -420,23 +391,6 @@ public abstract class Diagram implements DiagramData
 	public final void removeNode(Node pNode)
 	{
 		aBuilder.removeNode(pNode);
-	}
-	
-	public static void removeFromParent(Node pParent, Node pToRemove)
-	{
-		if (pParent instanceof ParentNode)
-		{
-			if (pToRemove instanceof ChildNode && ((ChildNode) pToRemove).getParent() == pParent)
-			{
-				((ParentNode) pParent).getChildren().remove(pToRemove);
-				// We don't reassing the parent of the child to null in case the operation
-				// is undone, at which point we'll need to know who the parent was.
-			}
-			for (Node child : ((ParentNode) pParent).getChildren())
-			{
-				removeFromParent(child, pToRemove);
-			}
-		}
 	}
 
 	/**

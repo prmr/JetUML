@@ -154,61 +154,6 @@ public class TestGraph
 	}
 	
 	@Test
-	public void testRemoveAllEdgesConnectedToNoConnection()
-	{
-		aGraph.removeAllEdgesConnectedTo(aNode1);
-		assertTrue( aGraph.contains(aNode1 ));
-	}
-	
-	@Test
-	public void testRemoveAllEdgesConnectedToSingleConnection()
-	{
-		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		assertTrue( aGraph.contains(aEdge1 ));
-		aGraph.removeAllEdgesConnectedTo(aNode1);
-		// No layout
-		assertTrue( aGraph.contains(aNode1 ));
-		assertTrue( aGraph.contains(aNode2 ));
-		assertTrue( aGraph.contains(aEdge1 ));
-		aGraph.requestLayout();
-		aGraph.layout();
-		assertTrue( aGraph.contains(aNode1 ));
-		assertTrue( aGraph.contains(aNode2 ));
-		assertFalse( aGraph.contains(aEdge1 ));
-	}
-	
-	@Test
-	public void testRemoveAllEdgesConnectedToMultipleConnections()
-	{
-		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		aGraph.restoreEdge(aEdge2, aNode1, aNode3);
-		aGraph.restoreEdge(aEdge3, aNode3, aNode3);
-		assertTrue( aGraph.contains(aEdge1 ));
-		aGraph.removeAllEdgesConnectedTo(aNode1);
-		aGraph.requestLayout();
-		aGraph.layout();
-		assertTrue( aGraph.contains(aNode1 ));
-		assertTrue( aGraph.contains(aNode2 ));
-		assertFalse( aGraph.contains(aEdge1 ));
-		assertFalse( aGraph.contains(aEdge2 ));
-	}
-	
-	@Test
-	public void testRemoveAllEdgesConnectedToNoLayout1()
-	{
-		aGraph.restoreEdge(aEdge1, aNode1, aNode2);
-		aGraph.restoreEdge(aEdge2, aNode1, aNode3);
-		aGraph.removeEdge(aEdge1);
-		aGraph.removeAllEdgesConnectedTo(aNode1);
-		aGraph.requestLayout();
-		aGraph.layout();
-		assertTrue( aGraph.contains(aNode1 ));
-		assertTrue( aGraph.contains(aNode2 ));
-		assertFalse( aGraph.contains(aEdge1 ));
-		assertFalse( aGraph.contains(aEdge2 ));
-	}
-	
-	@Test
 	public void testGetBoundsEmpty()
 	{
 		assertEquals(new Rectangle(0, 0, 0, 0), new ClassDiagram().getBounds());
