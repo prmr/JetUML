@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.operations.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -54,6 +55,19 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			String oldValue = ((FieldNode)pOrigin).getValue();
 			((FieldNode)pOrigin).setValue("");
 			notifyPropertyChanged(pOrigin, "value", oldValue);
+		}
+	}
+	
+	@Override
+	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		assert pEdge.getStart() != null;
+		if( pEdge.getStart() instanceof FieldNode )
+		{
+			final FieldNode node = (FieldNode) pEdge.getStart();
+			final String oldValue = node.getValue();
+			pOperation.add(new SimpleOperation(()-> node.setValue(""),
+					()-> node.setValue(oldValue)));
 		}
 	}
 	

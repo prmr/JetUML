@@ -413,6 +413,31 @@ public abstract class DiagramBuilder
 				()-> aDiagram.atomicRemoveRootNode(pNode));
 	}
 	
+	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
+	{
+		assert canAdd(pEdge, pPoint1, pPoint2);
+		Node node1 = aDiagram.findNode(pPoint1);
+		Node node2 = aDiagram.findNode(pPoint2);
+		CompoundOperation result = new CompoundOperation();
+		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			node2 = new PointNode();
+			node2.translate(pPoint2.getX(), pPoint2.getY());
+			Node end = node2; // Effectively final to include in closure
+			result.add(new SimpleOperation(()-> aDiagram.atomicAddRootNode(end),
+					()-> aDiagram.atomicRemoveRootNode(end)));
+		}
+		assert node2 != null;
+		pEdge.connect(node1, node2, aDiagram);
+		addComplementaryEdgeAdditionOperations(result, pEdge, pPoint1, pPoint2);
+		result.add(new SimpleOperation(()-> aDiagram.atomicAddEdge(pEdge),
+				()-> aDiagram.atomicRemoveEdge(pEdge)));
+		return result;
+	}
+	
+	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pStart, Point pEnd)
+	{}
+
 	/**
 	 * Creates an operation to remove pNode. If the node is a root node,
 	 * then the node is removed from the diagram. If the node is a child
