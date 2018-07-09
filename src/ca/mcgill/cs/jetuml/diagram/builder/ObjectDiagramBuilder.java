@@ -34,6 +34,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
+import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class ObjectDiagramBuilder extends DiagramBuilder
@@ -155,4 +157,26 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 		}
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
+	
+	@Override
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	{
+		DiagramOperation result = null;
+		if( pNode instanceof FieldNode )
+		{
+			ObjectNode object = findObject((FieldNode)pNode, pRequestedPosition);
+			
+			if( object != null )
+			{
+				result = new SimpleOperation(()-> object.addChild((ChildNode)pNode),
+						()-> object.removeChild((ChildNode)pNode));
+			}
+		}
+		if( result == null )
+		{
+			result = super.createAddNodeOperation(pNode, pRequestedPosition, pMaxWidth, pMaxHeight);
+		}
+		return result;
+	}
+
 }

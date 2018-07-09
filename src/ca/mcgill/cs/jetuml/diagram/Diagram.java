@@ -456,6 +456,20 @@ public abstract class Diagram implements DiagramData
 		pEdge.connect(pStart, pEnd, this);
 		aEdges.add(pEdge);
 	}
+	
+	public void atomicAddRootNode(Node pNode)
+	{
+		assert pNode != null;
+		aRootNodes.add(pNode);
+		requestLayout(); // TODO: This will be removed with the layoutloop
+	}
+	
+	public void atomicRemoveRootNode(Node pNode)
+	{
+		assert pNode != null && aRootNodes.contains(pNode);
+		aRootNodes.remove(pNode);
+		requestLayout(); // TODO: This will be removed with the layoutloop
+	}
 }
 
 

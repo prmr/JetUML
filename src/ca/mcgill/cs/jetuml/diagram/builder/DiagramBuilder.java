@@ -41,6 +41,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
+import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
+import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -355,6 +357,24 @@ public abstract class DiagramBuilder
 		}
 		aDiagram.requestLayout();
 		notifyNodeAdded(pNode);
+	}
+	
+	/** 
+	 * The default behavior is to position the node so it entirely fits in the diagram, then 
+	 * add it as a root node.
+	 * @param pNode The node to add.
+	 * @param pRequestedPosition A point that is the requested position of the node.
+	 * @param pMaxWidth The maximum width, in pixels, of the diagram.
+	 * @param pMaxHeight The maximum height, in pixles, of the diagram.
+	 */
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	{
+		assert pNode != null && pRequestedPosition != null && pMaxWidth >= 0 && pMaxHeight >= 0;
+		Rectangle bounds = pNode.view().getBounds();
+		Point position = computePosition(bounds, pRequestedPosition, new Dimension(pMaxWidth, pMaxHeight));
+		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
+		return new SimpleOperation( ()-> aDiagram.atomicAddRootNode(pNode), 
+				()-> aDiagram.atomicRemoveRootNode(pNode));
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)

@@ -30,6 +30,8 @@ import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
+import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class SequenceDiagramBuilder extends DiagramBuilder
@@ -227,6 +229,26 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 		}
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
+	}
+	
+	@Override
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	{
+		DiagramOperation result = null;
+		if(pNode instanceof CallNode) 
+		{
+			ImplicitParameterNode target = insideTargetArea(pRequestedPosition);
+			if( target != null )
+			{
+				result = new SimpleOperation(()-> target.addChild((ChildNode)pNode),
+						()-> target.removeChild((ChildNode)pNode));
+			}
+		}
+		if( result == null )
+		{
+			result = super.createAddNodeOperation(pNode, pRequestedPosition, pMaxWidth, pMaxHeight);
+		}
+		return result;
 	}
 	
 	/*

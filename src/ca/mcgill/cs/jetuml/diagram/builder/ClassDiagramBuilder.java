@@ -33,6 +33,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
+import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class ClassDiagramBuilder extends DiagramBuilder
@@ -62,6 +64,28 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		}
 		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
+	
+	@Override
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	{
+		DiagramOperation result = null;
+		if( canAddNodeAsChild(pNode))
+		{
+			PackageNode container = findContainer((List<Node>)aDiagram.getRootNodes(), pRequestedPosition);
+			if( container != null )
+			{
+				// TODO: Reposition the node so that the laid out package fits in the diagram
+				result = new SimpleOperation( ()-> container.addChild((ChildNode)pNode),
+						()-> container.removeChild((ChildNode)pNode));
+			}
+		}
+		if( result == null )
+		{
+			result = super.createAddNodeOperation(pNode, pRequestedPosition, pMaxWidth, pMaxHeight);
+		}
+		return result;
+	}
+
 	
 	private static boolean canAddNodeAsChild(Node pPotentialChild)
 	{
