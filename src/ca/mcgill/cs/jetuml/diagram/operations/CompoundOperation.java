@@ -6,9 +6,9 @@ import java.util.List;
 
 public class CompoundOperation implements DiagramOperation
 {
-	private List<SimpleOperation> aOperations = new ArrayList<>();
+	private List<DiagramOperation> aOperations = new ArrayList<>();
 	
-	public void add(SimpleOperation pOperation)
+	public void add(DiagramOperation pOperation)
 	{
 		aOperations.add(pOperation);
 	}
@@ -16,7 +16,7 @@ public class CompoundOperation implements DiagramOperation
 	@Override
 	public void execute()
 	{
-		for( SimpleOperation operation : aOperations)
+		for( DiagramOperation operation : aOperations)
 		{
 			operation.execute();
 		}
@@ -25,12 +25,11 @@ public class CompoundOperation implements DiagramOperation
 	@Override
 	public void undo()
 	{
-		ArrayList<SimpleOperation> reverse = new ArrayList<>(aOperations);
+		ArrayList<DiagramOperation> reverse = new ArrayList<>(aOperations);
 		Collections.reverse(reverse);
-		for( SimpleOperation operation : reverse)
+		for( DiagramOperation operation : reverse)
 		{
 			operation.undo();
 		}
 	}
-
 }

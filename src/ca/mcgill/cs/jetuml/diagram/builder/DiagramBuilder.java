@@ -464,6 +464,25 @@ public abstract class DiagramBuilder
 		return result;
 	}
 	
+	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+	{
+		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.atomicRemoveEdge(pEdge),
+				()-> aDiagram.atomicAddEdge(pEdge));
+		if( pEdge.getEnd() instanceof PointNode )
+		{
+			CompoundOperation result = new CompoundOperation();
+			final Node end = pEdge.getEnd();
+			result.add( new SimpleOperation( ()-> aDiagram.atomicRemoveRootNode(end),
+					()-> aDiagram.atomicAddRootNode(end)));
+			result.add(remove);
+			return result;
+		}
+		else
+		{
+			return remove;
+		}
+	}
+	
 	private static boolean isChild(Node pNode)
 	{
 		return pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null;

@@ -61,6 +61,39 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
+	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+	{
+		CompoundOperation result = new CompoundOperation();
+		result.add(super.createRemoveEdgeOperation(pEdge));
+		
+		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
+		{
+			result.add(createRemoveNodeOperation(pEdge.getEnd()));
+		}
+		
+		// Also delete the return edge, if it exists
+		if( pEdge instanceof CallEdge )
+		{
+			Edge returnEdge = null;
+			for( Edge edge : aDiagram.getEdges() )
+			{
+				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
+				{
+					returnEdge = edge;
+					break;
+				}
+			}
+			if( returnEdge != null )
+			{
+				final Edge target = returnEdge;
+				result.add(new SimpleOperation( ()-> aDiagram.atomicRemoveEdge(target),
+						()-> aDiagram.atomicAddEdge(target)));
+			}
+		}
+		return result;
+	}
+	
+	@Override
 	public void removeEdge(Edge pEdge)
 	{
 		super.removeEdge(pEdge);
