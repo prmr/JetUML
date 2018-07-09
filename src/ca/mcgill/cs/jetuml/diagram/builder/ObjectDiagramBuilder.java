@@ -34,9 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.operations.CompoundOperation;
-import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
-import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class ObjectDiagramBuilder extends DiagramBuilder

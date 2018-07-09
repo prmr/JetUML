@@ -33,8 +33,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
-import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class ClassDiagramBuilder extends DiagramBuilder

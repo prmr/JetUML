@@ -30,9 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.operations.CompoundOperation;
-import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
-import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class SequenceDiagramBuilder extends DiagramBuilder

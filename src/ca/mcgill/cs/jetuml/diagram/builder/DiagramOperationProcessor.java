@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.diagram.operations;
+package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 import java.util.List;
