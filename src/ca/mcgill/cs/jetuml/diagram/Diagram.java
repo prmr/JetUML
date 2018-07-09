@@ -470,6 +470,19 @@ public abstract class Diagram implements DiagramData
 		aRootNodes.remove(pNode);
 		requestLayout(); // TODO: This will be removed with the layoutloop
 	}
+	
+	// The edge should be connected
+	public void atomicAddEdge(Edge pEdge)
+	{
+		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph() != null;
+		aEdges.add(pEdge);
+	}
+	
+	public void atomicRemoveEdge(Edge pEdge)
+	{
+		assert pEdge != null && aEdges.contains(pEdge);
+		aEdges.remove(pEdge);
+	}
 }
 
 

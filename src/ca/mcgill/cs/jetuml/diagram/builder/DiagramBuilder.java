@@ -41,6 +41,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
+import ca.mcgill.cs.jetuml.diagram.operations.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.operations.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.operations.SimpleOperation;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -111,6 +112,41 @@ public abstract class DiagramBuilder
 		{
 			removeEdge(edge);
 		}
+	}
+	
+	private CompoundOperation createRemoveAllEdgesConnectedToOperation(List<Node> pNodes)
+	{
+		assert pNodes != null;
+		ArrayList<Edge> toRemove = new ArrayList<Edge>();
+		for(Edge edge : aDiagram.getEdges())
+		{
+			if(pNodes.contains(edge.getStart() ) || pNodes.contains(edge.getEnd()))
+			{
+				toRemove.add(edge);
+			}
+		}
+		Collections.reverse(toRemove);
+		CompoundOperation result = new CompoundOperation();
+		for(Edge edge : toRemove)
+		{
+			result.add(new SimpleOperation(()-> aDiagram.atomicRemoveEdge(edge), 
+					()-> aDiagram.atomicAddEdge(edge)));
+		}
+		return result;
+	}
+	
+	private static List<Node> getNodeAndAllChildren(Node pNode)
+	{
+		List<Node> result = new ArrayList<>();
+		result.add(pNode);
+		if( pNode instanceof ParentNode )
+		{
+			for( ChildNode child : ((ParentNode)pNode).getChildren() )
+			{
+				result.addAll(getNodeAndAllChildren(child));
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -375,6 +411,37 @@ public abstract class DiagramBuilder
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 		return new SimpleOperation( ()-> aDiagram.atomicAddRootNode(pNode), 
 				()-> aDiagram.atomicRemoveRootNode(pNode));
+	}
+	
+	/**
+	 * Creates an operation to remove pNode. If the node is a root node,
+	 * then the node is removed from the diagram. If the node is a child
+	 * node, then it is detached from the parent. All edges connected to
+	 * pNode or one of its children are removed as a result.
+	 * 
+	 * @param pNode The node to remove.
+	 * @return An operation to remove the node and all connected edges.
+	 */
+	public DiagramOperation createRemoveNodeOperation(Node pNode)
+	{
+		assert pNode != null;
+		CompoundOperation result = createRemoveAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
+		if( isChild( pNode ))
+		{
+			result.add(new SimpleOperation(()-> ((ChildNode)pNode).getParent().removeChild((ChildNode)pNode),
+				()-> ((ChildNode)pNode).getParent().addChild((ChildNode)pNode)));
+		}
+		else
+		{
+			result.add(new SimpleOperation( ()-> aDiagram.atomicRemoveRootNode(pNode),
+					()-> aDiagram.atomicRemoveRootNode(pNode)));
+		}
+		return result;
+	}
+	
+	private static boolean isChild(Node pNode)
+	{
+		return pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null;
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)
