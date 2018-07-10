@@ -67,10 +67,26 @@ public final class Clipboard
 	public void copy(Iterable<DiagramElement> pSelection)
 	{
 		assert pSelection != null;
+		clear();
+		copyEdges(pSelection);
+		copyNodes(pSelection);
+		deleteDanglingEdges();
+	}
+	
+	/*
+	 * Empties the clipboard
+	 */
+	private void clear()
+	{
 		aNodes.clear();
 		aEdges.clear();
-		
-		// First copy the edges so we can assign their end-points when copying nodes.
+	}
+	
+	/*
+	 * Makes a clone of every edges in pSelection and copies it into the clipboard	 
+	 */
+	private void copyEdges(Iterable<DiagramElement> pSelection)
+	{
 		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Edge )
@@ -78,8 +94,14 @@ public final class Clipboard
 				aEdges.add((Edge)((Edge) element).clone());
 			}
 		}
-		
-		// Clone the nodes and re-route their edges
+	}
+	
+	/*
+	 * Makes a clone of every node in pSelection, copies it into the clipboard,
+	 * and reassigns its edges
+	 */
+	private void copyNodes(Iterable<DiagramElement> pSelection)
+	{
 		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Node )
@@ -93,8 +115,10 @@ public final class Clipboard
 				reassignEdges(aEdges, (Node)element, cloned);
 			}
 		}
-		
-		// Delete any edge whose parent is not in aNodes
+	}
+	
+	private void deleteDanglingEdges()
+	{
 		List<Edge> toDelete = new ArrayList<>();
 		for( Edge edge : aEdges )
 		{
