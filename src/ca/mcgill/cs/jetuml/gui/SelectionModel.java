@@ -318,16 +318,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 	}
 	
 	/**
-	 * @param pEdge The edge to test.
-	 * @return true iif the selection contains both end-points of pEdge, or their parent.
-	 */
-	public boolean capturesEdge(Edge pEdge)
-	{
-		return (contains(pEdge.getStart()) || containsParent(pEdge.getStart())) &&
-				(contains(pEdge.getEnd()) || containsParent(pEdge.getEnd()));
-	}
-	
-	/**
 	 * Removes pElement from the list of selected elements,
 	 * or does nothing if pElement is not selected.
 	 * Triggers a notification.

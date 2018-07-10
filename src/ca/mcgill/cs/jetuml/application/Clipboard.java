@@ -31,7 +31,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.SelectionModel;
 
 /**
  * Stores a graph subset for purpose of pasting. The clip-board does not
@@ -65,17 +64,16 @@ public final class Clipboard
 	 * Clones the selection in pPanel and stores it in the clip-board.
 	 * @param pSelection The elements to copy. Cannot be null.
 	 */
-	public void copy(SelectionModel pSelection)
+	public void copy(Iterable<DiagramElement> pSelection)
 	{
 		assert pSelection != null;
 		aNodes.clear();
 		aEdges.clear();
 		
 		// First copy the edges so we can assign their end-points when copying nodes.
-		// Do not include dangling edges.
 		for( DiagramElement element : pSelection )
 		{
-			if( element instanceof Edge && pSelection.capturesEdge((Edge)element ))
+			if( element instanceof Edge )
 			{	
 				aEdges.add((Edge)((Edge) element).clone());
 			}

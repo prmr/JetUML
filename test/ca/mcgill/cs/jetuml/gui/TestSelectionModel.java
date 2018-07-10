@@ -397,39 +397,6 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testCaptureEdgeTrueNoParent()
-	{
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
-		aModel.addToSelection(aNode1);
-		aModel.addToSelection(aNode2);
-		assertTrue(aModel.capturesEdge(aEdge1));
-	}
-	
-	@Test
-	public void testCaptureEdgeFalseNoParent()
-	{
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
-		aModel.addToSelection(aNode1);
-		assertFalse(aModel.capturesEdge(aEdge1));
-	}
-	
-	@Test
-	public void testCaptureEdgeTrueOneParent() 
-	{
-		aPackage1.addChild(aNode1);
-		aClassDiagram.restoreRootNode(aPackage1);
-		aClassDiagram.restoreRootNode(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
-		aModel.addToSelection(aPackage1);
-		aModel.addToSelection(aNode2);
-		assertTrue(aModel.capturesEdge(aEdge1));
-	}
-	
-	@Test
 	public void testSelectRootNodesAndEdges()
 	{
 		aClassDiagram.restoreRootNode(aNode1);
