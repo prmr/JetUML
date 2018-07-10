@@ -23,7 +23,9 @@ package ca.mcgill.cs.jetuml.application;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +63,45 @@ public class TestClipboard
 	private ClassDiagram aClassDiagramGraph;
 	private DiagramCanvas aPanel;
 	private DiagramCanvasController aController;
+	private Field aNodesField;
+	private Field aEdgesField;
+	
+	public TestClipboard() throws ReflectiveOperationException
+	{
+		aNodesField = Clipboard.class.getDeclaredField("aNodes");
+		aNodesField.setAccessible(true);
+		aEdgesField = Clipboard.class.getDeclaredField("aEdges");
+		aEdgesField.setAccessible(true);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Node> getClipboardNodes()
+	{
+		try 
+		{
+			return (List<Node>) aNodesField.get(aClipboard);
+		}
+		catch( ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Edge> getClipboardEdges()
+	{
+		try
+		{
+			return (List<Edge>) aEdgesField.get(aClipboard);
+		}
+		catch( ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+	}
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -100,17 +141,17 @@ public class TestClipboard
 	{
 		aSelectionList.addToSelection(aClass1);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertFalse(aClipboard.getNodes().contains(aClass1));
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
+		assertEquals(1, getClipboardNodes().size());
+		assertFalse(getClipboardNodes().contains(aClass1));
+		assertEquals("c1", ((ClassNode)getClipboardNodes().iterator().next()).getName().toString());
+		assertEquals(0, getClipboardEdges().size());
 		aSelectionList.clearSelection();
 		aSelectionList.set(aClass2);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertFalse(aClipboard.getNodes().contains(aClass2));
-		assertEquals("c2", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
+		assertEquals(1, getClipboardNodes().size());
+		assertFalse(getClipboardNodes().contains(aClass2));
+		assertEquals("c2", ((ClassNode)getClipboardNodes().iterator().next()).getName().toString());
+		assertEquals(0, getClipboardEdges().size());
 	}
 	
 	@Test
@@ -120,9 +161,9 @@ public class TestClipboard
 		aSelectionList.addToSelection(aClass1);
 		aSelectionList.addToSelection(aEdge1);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
+		assertEquals(1, getClipboardNodes().size());
+		assertEquals("c1", ((ClassNode)getClipboardNodes().iterator().next()).getName().toString());
+		assertEquals(0, getClipboardEdges().size());
 	}
 	
 	@Test
@@ -133,13 +174,13 @@ public class TestClipboard
 		aSelectionList.addToSelection(aEdge1);
 		aSelectionList.addToSelection(aClass2);
 		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		Iterator<Node> nodes = aClipboard.getNodes().iterator(); nodes.next();
+		assertEquals(2, getClipboardNodes().size());
+		assertEquals("c1", ((ClassNode)getClipboardNodes().iterator().next()).getName().toString());
+		Iterator<Node> nodes = getClipboardNodes().iterator(); nodes.next();
 		assertEquals("c2", ((ClassNode)nodes.next()).getName().toString());
-		assertEquals(1, aClipboard.getEdges().size());
-		assertEquals("e1", ((DependencyEdge)aClipboard.getEdges().iterator().next()).getMiddleLabel());
-		assertFalse( aEdge1 == aClipboard.getEdges().iterator().next());
+		assertEquals(1, getClipboardEdges().size());
+		assertEquals("e1", ((DependencyEdge)getClipboardEdges().iterator().next()).getMiddleLabel());
+		assertFalse( aEdge1 == getClipboardEdges().iterator().next());
 	}
 	
 	@Test
@@ -154,8 +195,8 @@ public class TestClipboard
 		aSelectionList.addToSelection(aEdge1);
 		aSelectionList.addToSelection(aEdge2);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		PackageNode p1Clone = (PackageNode)aClipboard.getNodes().iterator().next();
+		assertEquals(1, getClipboardNodes().size());
+		PackageNode p1Clone = (PackageNode)getClipboardNodes().iterator().next();
 		assertFalse( p1Clone == aPackage1);
 		List<ChildNode> children = p1Clone.getChildren();
 		assertEquals(1, children.size());
@@ -167,8 +208,8 @@ public class TestClipboard
 		ClassNode cc2 = (ClassNode) children2.get(1);
 		assertEquals("c1", cc1.getName().toString());
 		assertEquals("c2", cc2.getName().toString());
-		assertEquals(2, aClipboard.getEdges().size());
-		Iterator<Edge> edgesIt = aClipboard.getEdges().iterator();
+		assertEquals(2, getClipboardEdges().size());
+		Iterator<Edge> edgesIt = getClipboardEdges().iterator();
 		DependencyEdge clonedE1 = (DependencyEdge)edgesIt.next();
 		DependencyEdge clonedE2 = (DependencyEdge)edgesIt.next();
 		assertEquals("e1", clonedE1.getMiddleLabel());
@@ -201,8 +242,8 @@ public class TestClipboard
 		aSelectionList.addToSelection(aClass2);
 		aSelectionList.addToSelection(aEdge1);
 		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals(1, aClipboard.getEdges().size());
+		assertEquals(2, getClipboardNodes().size());
+		assertEquals(1, getClipboardEdges().size());
 		List<DiagramElement> list = aClipboard.paste(aController);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(2, rootNodes.size());
@@ -223,8 +264,8 @@ public class TestClipboard
 		aSelectionList.addToSelection(aPackage1);
 		aSelectionList.addToSelection(aEdge1);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertEquals(1, aClipboard.getEdges().size());
+		assertEquals(1, getClipboardNodes().size());
+		assertEquals(1, getClipboardEdges().size());
 		aClipboard.paste(aController);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(1, rootNodes.size());
@@ -248,8 +289,8 @@ public class TestClipboard
 		aSelectionList.addToSelection(aClass1);
 		aSelectionList.addToSelection(aClass2);
 		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals(0, aClipboard.getEdges().size());
+		assertEquals(2, getClipboardNodes().size());
+		assertEquals(0, getClipboardEdges().size());
 		aClipboard.paste(aController);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(2, rootNodes.size());
@@ -282,8 +323,8 @@ public class TestClipboard
 		edge.connect(aClass1, aClass2, aClassDiagramGraph);
 		aSelectionList.addToSelection(edge);
 		aClipboard.copy(aSelectionList);
-		assertEquals(1,aClipboard.getEdges().size());
-		assertEquals(2,aClipboard.getNodes().size());
+		assertEquals(1,getClipboardEdges().size());
+		assertEquals(2,getClipboardNodes().size());
 		List<DiagramElement> list = aClipboard.paste(aController);
 		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
 		assertEquals(0, rootNodes.size());

@@ -21,8 +21,6 @@
 package ca.mcgill.cs.jetuml.application;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -63,18 +61,6 @@ public final class Clipboard
 		return INSTANCE;
 	}
 	
-	/* For testing only */
-	Collection<Node> getNodes()
-	{
-		return Collections.unmodifiableCollection(aNodes);
-	}
-	
-	/* For testing only */
-	Collection<Edge> getEdges()
-	{
-		return Collections.unmodifiableCollection(aEdges);
-	}
-
 	/**
 	 * Clones the selection in pPanel and stores it in the clip-board.
 	 * @param pSelection The elements to copy. Cannot be null.
