@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
@@ -408,6 +409,39 @@ public abstract class DiagramBuilder
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 		return new SimpleOperation( ()-> aDiagram.atomicAddRootNode(pNode), 
 				()-> aDiagram.atomicRemoveRootNode(pNode));
+	}
+	
+	/**
+	 * Creates an operation that removes all the elements in pElement.
+	 * 
+	 * @param pElements The elements to remove.
+	 * @return The requested operation.
+	 * @pre pElements != null.
+	 */
+	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
+	{
+		// TODO In some cases a selection can include an edge that will trigger a node
+		// deletion, and the node itself (or vice versa). Something has to be done to ensure 
+		// The deletion is not consumed twice. Maybe this should be done in the selection model
+		assert pElements != null;
+		Stack<Node> nodes = new Stack<>();
+		CompoundOperation result = new CompoundOperation();
+		for(DiagramElement element : pElements)
+		{
+			if(element instanceof Node)
+			{
+				nodes.add((Node) element);
+			}
+			else if(element instanceof Edge)
+			{
+				result.add(createRemoveEdgeOperation((Edge) element));
+			}
+		}
+		while(!nodes.empty())
+		{
+			result.add(createRemoveNodeOperation(nodes.pop()));
+		}
+		return result;
 	}
 	
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)

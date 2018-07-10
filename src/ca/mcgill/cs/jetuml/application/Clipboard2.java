@@ -29,21 +29,28 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 
 /**
- * Stores a graph subset for purpose of pasting. The clipboard does not
- * accept edges unless both end-points are also being copied. The clipboard
- * does not accept nodes that need a parent that is not included in the selection
- * to copy.
+ * Stores a set of diagram elements for the purpose of pasting into a diagram.
+ * 
+ * Copying a list of elements into the clipboard results in a number of transformations
+ * to the list and its elements to render the elements suitable for pasting:
+ * - All elements are cloned
+ * - Dangling edges are removed
+ * - Nodes requiring a missing parent are removed
+ * - Dangling references to parents are removed
+ * - The nodes are repositioned so that the top left coordinate of the set of elements
+ *   is at the origin (0,0).
+ *   
+ * The list of elements stored into the clipboard is assumed to respect the non-redundancy 
+ * constraint that no element whose deletion leads to the deletion of a node is selected with the node.
  * 
  * The Clipboard is a singleton. This is necessary to allow copying elements
  * between diagrams of the same type.
  */
-public final class Clipboard 
+public final class Clipboard2 
 {
-	private static final Clipboard INSTANCE = new Clipboard();
+	private static final Clipboard2 INSTANCE = new Clipboard2();
 	
 	private List<Node> aNodes = new ArrayList<Node>();
 	private List<Edge> aEdges = new ArrayList<Edge>();
@@ -51,28 +58,48 @@ public final class Clipboard
 	/**
 	 * Creates an empty clip-board.
 	 */
-	private Clipboard() 
+	private Clipboard2() 
 	{}
 	
 	/**
 	 * @return The Singleton instance of the Clipboard.
 	 */
-	public static Clipboard instance()
+	public static Clipboard2 instance()
 	{
 		return INSTANCE;
 	}
 	
 	/**
-	 * Clones the selection in pPanel and stores it in the clip-board.
+	 * Copies the elements in pSelection into the clip board.  
+	 * The list of elements stored into the clipboard is assumed to 
+	 * respect the non-redundancy constraint that no element whose 
+	 * deletion leads to the deletion of a node is selected with the node.
+	 * The transformation described in the class documentation are applied.
+	 * 
 	 * @param pSelection The elements to copy. Cannot be null.
 	 */
 	public void copy(Iterable<DiagramElement> pSelection)
 	{
 		assert pSelection != null;
 		clear();
-		copyEdges(pSelection);
-		copyNodes(pSelection);
-		deleteDanglingEdges();
+		aEdges.addAll(copyEdges(pSelection));
+		aNodes.addAll(copyNodes(aEdges, pSelection));
+		removeDanglingEdges();
+		removeDanglingReferencesToParents();
+		updatePosition();
+	}
+	
+	/**
+	 * @return A list of clones of the elements in this clipboard.
+	 */
+	public Iterable<DiagramElement> getElements()
+	{
+		List<Edge> clonedEdges = copyEdges(new ArrayList<DiagramElement>(aEdges));
+		List<Node> clonedNodes = copyNodes(clonedEdges, new ArrayList<DiagramElement>(aNodes));
+		List<DiagramElement> result = new ArrayList<DiagramElement>();
+		result.addAll(clonedEdges);
+		result.addAll(clonedNodes);
+		return result;
 	}
 	
 	/*
@@ -87,23 +114,26 @@ public final class Clipboard
 	/*
 	 * Makes a clone of every edges in pSelection and copies it into the clipboard	 
 	 */
-	private void copyEdges(Iterable<DiagramElement> pSelection)
+	private List<Edge> copyEdges(Iterable<DiagramElement> pSelection)
 	{
+		List<Edge> result = new ArrayList<>();
 		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Edge )
 			{	
-				aEdges.add((Edge)((Edge) element).clone());
+				result.add((Edge)((Edge) element).clone());
 			}
 		}
+		return result;
 	}
 	
 	/*
 	 * Makes a clone of every node in pSelection, copies it into the clipboard,
 	 * and reassigns its edges
 	 */
-	private void copyNodes(Iterable<DiagramElement> pSelection)
+	private List<Node> copyNodes(List<Edge> pEdges, Iterable<DiagramElement> pSelection)
 	{
+		List<Node> result = new ArrayList<>();
 		for( DiagramElement element : pSelection )
 		{
 			if( element instanceof Node )
@@ -113,13 +143,14 @@ public final class Clipboard
 					continue;
 				}
 				Node cloned = ((Node) element).clone();
-				aNodes.add(cloned);
-				reassignEdges(aEdges, (Node)element, cloned);
+				result.add(cloned);
+				reassignEdges(pEdges, (Node)element, cloned);
 			}
 		}
+		return result;
 	}
 	
-	private void deleteDanglingEdges()
+	private void removeDanglingEdges()
 	{
 		List<Edge> toDelete = new ArrayList<>();
 		for( Edge edge : aEdges )
@@ -135,17 +166,19 @@ public final class Clipboard
 		}
 	}
 	
-	/**
-	 * Copies the selection list in the panel (as done by the copy method) and removes all
-	 * the nodes in the selection from the graph wrapped by this pPanel.
-	 * 
-	 * @param pController The controller.
-	 */
-	public void cut(DiagramCanvasController pController)
+	private void updatePosition()
 	{
-		assert pController != null;
-		copy(pController.getSelectionModel());	
-		pController.removeSelected();
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
+		for( Node node : aNodes )
+		{
+			minX = Math.min(minX, node.position().getX());
+			minY = Math.min(minY, node.position().getY());
+		}
+		for( Node node : aNodes )
+		{
+			node.translate(-minX, -minY);
+		}
 	}
 	
 	private boolean recursivelyContains(Node pNode)
@@ -219,88 +252,17 @@ public final class Clipboard
 		return pNode instanceof ChildNode && ((ChildNode)pNode).requiresParent() && !aNodes.contains(((ChildNode)pNode).getParent()) ;
 	}
 	
-	/**
-	 * Pastes the current selection into the pGraphPanel.
-	 * @param pController The current Diagram to paste contents to.
-	 * @return The elements to paste as a selectionList.
+	/*
+	 * Removes the reference to the parent of any node that
+	 * does not have a parent in the copied node list.
 	 */
-	// CSOFF: Fix in later release
-	public List<DiagramElement> paste(DiagramCanvasController pController)
+	private void removeDanglingReferencesToParents()
 	{
-		if( !validPaste(pController.getDiagram()))
-		{
-			return new ArrayList<>();
-		}
-		
-		pController.startCompoundGraphOperation();
-		List<Edge> clonedEdges = new ArrayList<>();
-		for( Edge edge : aEdges )
-		{
-			clonedEdges.add((Edge) edge.clone());
-		}
-		
-		List<Node> clonedRootNodes = new ArrayList<>();
-		Rectangle bounds = null;
-
 		for( Node node : aNodes )
-		{
-			Node cloned = node.clone();
-			clonedRootNodes.add(cloned);
-			reassignEdges(clonedEdges, node, cloned);
-			bounds = updateBounds(bounds, node);
-		}
-		
-		removeDanglingReferencesToParents(clonedRootNodes);
-		
-		for( Node node : clonedRootNodes )
-		{
-			pController.getDiagram().insertNode(node);
-		}
-		for( Edge edge : clonedEdges )
-		{
-			// Verify that the nodes were correctly added.
-			// It is possible that some nodes could not be 
-			// pasted (e.g., children nodes without their parent)
-			// so some edges might no longer be relevant.
-			if( pController.getDiagram().contains( edge.getStart() ) && pController.getDiagram().contains(edge.getEnd()))
-			{
-				pController.getDiagram().insertEdge(edge);
-			}
-		}
-		
-		// Reposition the graph
-		for( Edge edge : clonedEdges )
-		{
-			bounds = updateBounds(bounds, edge);
-		}
-		for( Node node : clonedRootNodes )
-		{
-			node.translate(-bounds.getX(), -bounds.getY());
-		}
-		// End graph repositioning
-		pController.finishCompoundGraphOperation();
-		
-		ArrayList<DiagramElement> selectionList  = new ArrayList<>();
-		for( Edge edge : clonedEdges )
-		{
-			selectionList.add(edge);
-		}
-		for( Node node : clonedRootNodes )
-		{
-			selectionList.add(node);
-		}
-		return selectionList;
-	} // CSON:
-	
-	// Goes through pNodes and removes the reference to the parent
-	// of any node who does not have a parent in the pNodes list
-	private static void removeDanglingReferencesToParents(List<Node> pNodes)
-	{
-		for( Node node : pNodes )
 		{
 			if( node instanceof ChildNode && ((ChildNode)node).getParent() != null )
 			{
-				if( !pNodes.contains(((ChildNode)node).getParent()))
+				if( !aNodes.contains(((ChildNode)node).getParent()))
 				{
 					((ChildNode)node).getParent().removeChild((ChildNode)node);
 				}
@@ -308,42 +270,11 @@ public final class Clipboard
 		}
 	}
 	
-	private static Rectangle updateBounds(Rectangle pBounds, DiagramElement pElement)
-	{
-		Rectangle bounds = pBounds;
-		if( bounds == null )
-		{
-			bounds = getBounds(pElement);
-		}
-		else
-		{
-			bounds = bounds.add( getBounds(pElement));
-		}
-		return bounds;
-	}
-	
-	private static Rectangle getBounds(DiagramElement pElement)
-	{
-		if( pElement instanceof Node )
-		{
-			return ((Node)pElement).view().getBounds();
-		}
-		else if( pElement instanceof Edge )
-		{
-			return ((Edge)pElement).view().getBounds();
-		}
-		else
-		{
-			assert false;
-			return null;
-		}
-	}
-	
-	/*
+	/**
 	 * Returns true only of all the nodes and edges in the selection 
-	 * are compatible with the target graph type.
+	 * are compatible with the type of the target diagram.
 	 */
-	private boolean validPaste(Diagram pGraph)
+	public boolean validPaste(Diagram pGraph)
 	{
 		for( Edge edge : aEdges )
 		{
