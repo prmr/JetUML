@@ -66,6 +66,7 @@ public class PropertySheet extends GridPane
 	private static final int LAYOUT_PADDING = 20;
 
 	private final PropertyChangeListener aListener;
+	private final DiagramElement aElement;
 
 	/**
 	 * Constructs a PropertySheet to show and support editing all the properties 
@@ -79,10 +80,11 @@ public class PropertySheet extends GridPane
 	{
 		assert pElement != null;
 		aListener = pListener;
+		aElement = pElement;
 		int row = 0;
-		for( Property property : pElement.properties() )
+		for( Property property : aElement.properties() )
 		{
-			Control editor = getEditorControl(pElement, property);
+			Control editor = getEditorControl(property);
 			if(property.isVisible() && editor != null )
 			{
 				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
@@ -100,14 +102,22 @@ public class PropertySheet extends GridPane
 	 */
 	public boolean isEmpty()
 	{
-		return this.getChildren().size() == 0;
+		return getChildren().isEmpty();
+	}
+	
+	/**
+	 * @return The element being edited.
+	 */
+	public DiagramElement getElement()
+	{
+		return aElement;
 	}
 
-	private Control getEditorControl(DiagramElement pElement, Property pProperty)   
+	private Control getEditorControl(Property pProperty)   
 	{      
 		if( pProperty.get() instanceof String )
 		{
-			if( extended(pElement, pProperty.getName()))
+			if( extended(pProperty.getName()))
 			{
 				return createExtendedStringEditor(pProperty);
 			}
@@ -130,12 +140,12 @@ public class PropertySheet extends GridPane
 	/*
 	 * Not the greatest but avoids over-engineering the rest of the properties API. CSOFF:
 	 */
-	private static boolean extended(DiagramElement pElement, String pProperty)
+	private boolean extended(String pProperty)
 	{
-		return 	pElement.getClass() == ClassNode.class ||
-				pElement.getClass() == InterfaceNode.class ||
-				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
-				pElement.getClass() == NoteNode.class;
+		return 	aElement.getClass() == ClassNode.class ||
+				aElement.getClass() == InterfaceNode.class ||
+				aElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
+				aElement.getClass() == NoteNode.class;
 	} // CSON:
 	
 	private Control createExtendedStringEditor(Property pProperty)

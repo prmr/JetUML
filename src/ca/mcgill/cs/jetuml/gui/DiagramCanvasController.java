@@ -194,10 +194,10 @@ public class DiagramCanvasController
 		window.setScene(scene);
 		window.setResizable(false);
 		window.initOwner(aCanvas.getScene().getWindow());
-		window.show();
+		window.showAndWait();
 		
 		CompoundCommand command = tracker.stopTracking();
-		if (command.size() > 0)
+		if(command.size() > 0)
 		{
 			aUndoManager.add(command);
 		}
