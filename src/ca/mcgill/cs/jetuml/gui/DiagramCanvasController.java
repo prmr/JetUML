@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +27,6 @@ import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
-import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -41,14 +38,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -57,8 +47,6 @@ import javafx.stage.Stage;
  */
 public class DiagramCanvasController
 {
-	private static final int LAYOUT_PADDING = 20;
-	
 	private enum DragMode 
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
@@ -156,52 +144,18 @@ public class DiagramCanvasController
 	public void editSelected()
 	{
 		Optional<DiagramElement> edited = aSelectionModel.getLastSelected();
-		if( !edited.isPresent() )
+		if( edited.isPresent() )
 		{
-			return;
-		}
-		PropertyChangeTracker tracker = new PropertyChangeTracker(edited.get());
-		tracker.startTracking();
-		PropertySheet sheet = new PropertySheet(edited.get(), new PropertySheet.PropertyChangeListener()
-		{
-			@Override
-			public void propertyChanged()
+			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)aCanvas.getScene().getWindow(), 
+					edited.get(), ()-> {aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); });
+			
+			CompoundCommand command = dialog.show();
+			if(command.size() > 0)
 			{
-				aCanvas.getDiagram().requestLayout();
-				aCanvas.paintPanel();
+				aUndoManager.add(command);
+				setModified(true);
 			}
-		});
-		if (sheet.isEmpty())
-		{
-			return;
 		}
-
-		Stage window = new Stage();
-		window.setTitle(RESOURCES.getString("dialog.properties"));
-		window.getIcons().add(new Image(RESOURCES.getString("application.icon")));
-		window.initModality(Modality.APPLICATION_MODAL);
-		
-		BorderPane layout = new BorderPane();
-		Button button = new Button("OK");
-		button.setOnAction(pEvent -> window.close());
-		BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
-		
-		layout.setPadding(new Insets(LAYOUT_PADDING));
-		layout.setCenter(sheet);
-		layout.setBottom(button);
-		
-		Scene scene = new Scene(layout);
-		window.setScene(scene);
-		window.setResizable(false);
-		window.initOwner(aCanvas.getScene().getWindow());
-		window.showAndWait();
-		
-		CompoundCommand command = tracker.stopTracking();
-		if(command.size() > 0)
-		{
-			aUndoManager.add(command);
-		}
-		setModified(true);
 	}
 	
 	/**
