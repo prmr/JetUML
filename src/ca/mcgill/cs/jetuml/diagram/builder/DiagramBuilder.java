@@ -412,7 +412,36 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Creates an operation that removes all the elements in pElement.
+	 * Creates an operation that adds all the elements in pElements
+	 * 
+	 * @param pElements The elements to add.
+	 * @return The requested operation
+	 * @pre pElements != null
+	 */
+	public final DiagramOperation createAddElementsOperation(Iterable<DiagramElement> pElements)
+	{
+		CompoundOperation operation = new CompoundOperation();
+		for( DiagramElement element : pElements)
+		{
+			if( element instanceof Node )
+			{
+				operation.add(new SimpleOperation(
+						()-> aDiagram.atomicAddRootNode((Node)element),
+						()-> aDiagram.atomicRemoveRootNode((Node)element)));
+			}
+			else if( element instanceof Edge)
+			{
+				operation.add(new SimpleOperation(
+						()-> aDiagram.atomicAddEdge((Edge)element),
+						()-> aDiagram.atomicRemoveEdge((Edge)element)));
+			}
+		}
+		
+		return operation;
+	}
+	
+	/**
+	 * Creates an operation that removes all the elements in pElements.
 	 * 
 	 * @param pElements The elements to remove.
 	 * @return The requested operation.
@@ -420,9 +449,6 @@ public abstract class DiagramBuilder
 	 */
 	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
 	{
-		// TODO In some cases a selection can include an edge that will trigger a node
-		// deletion, and the node itself (or vice versa). Something has to be done to ensure 
-		// The deletion is not consumed twice. Maybe this should be done in the selection model
 		assert pElements != null;
 		Stack<Node> nodes = new Stack<>();
 		CompoundOperation result = new CompoundOperation();
