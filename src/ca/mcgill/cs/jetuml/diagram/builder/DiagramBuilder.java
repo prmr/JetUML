@@ -471,6 +471,21 @@ public abstract class DiagramBuilder
 		return result;
 	}
 	
+	/**
+	 * Creates an operation to change the value of a property on a diagram element.
+	 * @param pProperty The property to change.
+	 * @param pNewValue The value to change to.
+	 * @return The requested operation.
+	 * @pre pProperty != null.
+	 * @pre pNewValue != null.
+	 */
+	public final DiagramOperation createPropertyChangeOperation(Property pProperty, Object pNewValue)
+	{
+		assert pProperty != null && pNewValue != null;
+		Object oldValue = pProperty.get();
+		return new SimpleOperation(()-> pProperty.set(pNewValue), ()-> pProperty.set(oldValue));
+	}
+	
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		assert canAdd(pEdge, pPoint1, pPoint2);
