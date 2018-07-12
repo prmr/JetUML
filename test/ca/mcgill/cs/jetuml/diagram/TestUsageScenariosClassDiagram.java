@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -46,6 +47,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
+import ca.mcgill.cs.jetuml.gui.SelectionModel;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -97,6 +99,75 @@ public class TestUsageScenariosClassDiagram
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
 		aList = new ArrayList<>();
+	}
+	
+	@Test
+	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
+	{
+		ClassDiagram diagram = new ClassDiagram();
+		PackageNode p1 = new PackageNode();
+		ClassNode c1 = new ClassNode();
+		ClassNode c2 = new ClassNode();
+		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		c2.translate(100, 0);
+		DependencyEdge edge = new DependencyEdge();
+		diagram.builder().addEdge(edge, new Point(26, 26), new Point(131, 31));
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(2, p1.getChildren().size());
+		assertEquals(c1, edge.getStart());
+		assertEquals(c2, edge.getEnd());
+		
+		SelectionModel selection = new SelectionModel( () -> {} );
+		selection.addToSelection(c1);
+		selection.addToSelection(c2);
+		selection.addToSelection(edge);
+		
+		Clipboard.instance().copy(selection);
+		
+		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
+		canvas.setController(controller);
+		
+		Clipboard.instance().paste(controller);
+		
+		assertEquals(3, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
+	}
+	
+	@Test
+	public void testClassDiagramCopyPackageNodesAndEdgesInsidePackageNode()
+	{
+		ClassDiagram diagram = new ClassDiagram();
+		PackageNode p1 = new PackageNode();
+		PackageNode c1 = new PackageNode();
+		PackageNode c2 = new PackageNode();
+		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c1, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(c2, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		c2.translate(100, 0);
+		DependencyEdge edge = new DependencyEdge();
+		diagram.builder().addEdge(edge, new Point(31, 31), new Point(130, 26));
+		assertEquals(1, diagram.getRootNodes().size());
+		assertEquals(2, p1.getChildren().size());
+		assertEquals(1, diagram.getEdges().size());
+		assertEquals(c1, edge.getStart());
+		assertEquals(c2, edge.getEnd());
+		
+		SelectionModel selection = new SelectionModel( () -> {} );		selection.addToSelection(p1);
+		selection.addToSelection(edge);
+
+		Clipboard.instance().copy(selection);
+		
+		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
+		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
+		canvas.setController(controller);
+		
+		Clipboard.instance().paste(controller);
+		
+		assertEquals(2, diagram.getRootNodes().size());
+		assertEquals(2, diagram.getEdges().size());
 	}
 	
 	/**

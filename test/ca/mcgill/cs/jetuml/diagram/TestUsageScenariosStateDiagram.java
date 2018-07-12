@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -98,6 +99,116 @@ public class TestUsageScenariosStateDiagram
 		aTransitionEdge3 = new StateTransitionEdge();
 		aTransitionEdge4 = new StateTransitionEdge();
 		aTransitionEdge5 = new StateTransitionEdge();
+	}
+	
+	@Test
+	public void testStateDiagramCreate()
+	{
+		// Create a state diagram with two state nodes, one start node, one end node
+		StateDiagram diagram = new StateDiagram();
+		StateNode node1 = new StateNode();
+		node1.setName("Node 1");
+		StateNode node2 = new StateNode();
+		node2.setName("Node 2");
+		InitialStateNode start = new InitialStateNode();
+		FinalStateNode end = new FinalStateNode();
+		diagram.builder().addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(node2, new Point(30, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(start, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		diagram.builder().addNode(end, new Point(30, 200), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		assertEquals(4, diagram.getRootNodes().size());
+		
+		// Add edges between all of these, including back-and-forth between two states. 
+		StateTransitionEdge edge1 = new StateTransitionEdge();
+		edge1.setMiddleLabel("Edge 1");
+		diagram.builder().addEdge(edge1, new Point(6, 6), new Point(35, 35));
+		
+		StateTransitionEdge edge2 = new StateTransitionEdge();
+		edge2.setMiddleLabel("Edge 2");
+		diagram.builder().addEdge(edge2, new Point(35, 35), new Point(35, 105));
+		
+		StateTransitionEdge edge3 = new StateTransitionEdge();
+		edge3.setMiddleLabel("Edge 3");
+		diagram.builder().addEdge(edge3, new Point(35, 105), new Point(35, 35));
+		
+		StateTransitionEdge edge4 = new StateTransitionEdge();
+		edge4.setMiddleLabel("Edge 4");
+		diagram.builder().addEdge(edge4, new Point(35, 105), new Point(32, 202));
+		assertEquals(4, diagram.getEdges().size());
+		
+		NoteEdge noteEdge = new NoteEdge();
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(6, 6), new Point(35, 35))); 
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 35), new Point(35, 105)));
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 105), new Point(35, 35)));
+		assertFalse(diagram.builder().canAdd(noteEdge, new Point(35, 105), new Point(32, 202)));
+		assertEquals(4, diagram.getEdges().size());
+		
+		// VALIDATION NODES
+		assertEquals(4, diagram.getRootNodes().size());
+		assertEquals(new Rectangle(30, 30, 80, 60), node1.view().getBounds());
+		assertEquals("Node 1", node1.getName());
+		assertEquals(new Rectangle(30, 100, 80, 60), node2.view().getBounds());
+		assertEquals("Node 2", node2.getName());
+		assertEquals(new Rectangle(5, 5, 20, 20), start.view().getBounds());
+		assertEquals(new Rectangle(30, 200, 20, 20), end.view().getBounds());
+		
+		// VALIDATION EDGES
+		assertEquals(4, diagram.getEdges().size());
+		
+		assertEquals(new Rectangle(21, 19, 18, 11), edge1.view().getBounds());
+		assertEquals("Edge 1", edge1.getMiddleLabel());
+		assertEquals(start, edge1.getStart());
+		assertEquals(node1, edge1.getEnd());
+		
+		assertEquals(new Rectangle(70, 88, 2, 12), edge2.view().getBounds());
+		assertEquals("Edge 2", edge2.getMiddleLabel());
+		assertEquals(node1, edge2.getStart());
+		assertEquals(node2, edge2.getEnd());
+		
+		assertEquals(new Rectangle(65, 88, 2, 12), edge3.view().getBounds());
+		assertEquals("Edge 3", edge3.getMiddleLabel());
+		assertEquals(node2, edge3.getStart());
+		assertEquals(node1, edge3.getEnd());
+		
+		assertEquals(new Rectangle(42, 158, 19, 43), edge4.view().getBounds());
+		assertEquals("Edge 4", edge4.getMiddleLabel());
+		assertEquals(node2, edge4.getStart());
+		assertEquals(end, edge4.getEnd());
+	}
+	
+	@Test
+	public void testStateDiagramCreateNotes() throws Exception
+	{
+		// Create a state diagram with two state nodes, one start node, one end node
+		StateDiagram diagram = new StateDiagram();
+		StateNode node1 = new StateNode();
+		node1.setName("Node 1");
+		diagram.builder().addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		NoteNode note = new NoteNode();
+		diagram.builder().addNode(note, new Point(130,130), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		assertEquals(2, diagram.getRootNodes().size());
+		// Note edge with a point node not overlapping any nodes
+		NoteEdge edge1 = new NoteEdge();
+		diagram.builder().addEdge(edge1, new Point(135,135), new Point(300,300));
+		assertEquals(3, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
+		assertEquals(1, diagram.getEdges().size());
+		
+		// Note edge with a point node overlapping any nodes
+		NoteEdge edge2 = new NoteEdge();
+		diagram.builder().addEdge(edge2, new Point(135,135), new Point(40,40));
+		assertEquals(4, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(2, diagram.getEdges().size());
+		
+		// Note edge with a starting point on a node
+		NoteEdge edge3 = new NoteEdge();
+		diagram.builder().addEdge(edge3, new Point(35,35), new Point(135,135));
+		assertEquals(4, diagram.getRootNodes().size());
+		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(3, diagram.getEdges().size());
+		assertEquals(node1, edge3.getStart());
+		assertEquals(note, edge3.getEnd());
 	}
 	
 	@Test

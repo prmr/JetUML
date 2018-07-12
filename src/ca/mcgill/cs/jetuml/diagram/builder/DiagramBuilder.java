@@ -412,7 +412,8 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Creates an operation that adds all the elements in pElements
+	 * Creates an operation that adds all the elements in pElements. Assumes all nodes
+	 * are root nodes and all edges are connected, and that there are no dangling references.
 	 * 
 	 * @param pElements The elements to add.
 	 * @return The requested operation
