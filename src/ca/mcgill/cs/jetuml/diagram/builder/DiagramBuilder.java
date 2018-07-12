@@ -486,6 +486,23 @@ public abstract class DiagramBuilder
 		return new SimpleOperation(()-> pProperty.set(pNewValue), ()-> pProperty.set(oldValue));
 	}
 	
+	/**
+	 * Create an operation to move a node.
+	 * 
+	 * @param pNode The node to move.
+	 * @param pX The amount to move the node in the x-coordinate.
+	 * @param pY The amount to move the node in the y-coordinate.
+ 	 * @return The requested operation.
+ 	 * @pre pNode != null.
+	 */
+	public final DiagramOperation createMoveNodeOperation(Node pNode, int pX, int pY)
+	{
+		return new SimpleOperation(
+				()-> pNode.translate(pX, pY),
+				()-> pNode.translate(-pX, -pY));
+				
+	}
+	
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		assert canAdd(pEdge, pPoint1, pPoint2);
@@ -532,7 +549,7 @@ public abstract class DiagramBuilder
 		else
 		{
 			result.add(new SimpleOperation( ()-> aDiagram.atomicRemoveRootNode(pNode),
-					()-> aDiagram.atomicRemoveRootNode(pNode)));
+					()-> aDiagram.atomicAddRootNode(pNode)));
 		}
 		return result;
 	}

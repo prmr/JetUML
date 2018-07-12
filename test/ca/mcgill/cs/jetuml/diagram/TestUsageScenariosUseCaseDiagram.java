@@ -21,9 +21,12 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -66,6 +69,8 @@ public class TestUsageScenariosUseCaseDiagram
 	private UseCaseAssociationEdge aAssociationEdge;
 	private UseCaseDependencyEdge aDependencyEdge;
 	private UseCaseGeneralizationEdge aGeneralEdge;
+	private NoteEdge aNoteEdge;
+	private List<DiagramElement> aSelection;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -97,6 +102,8 @@ public class TestUsageScenariosUseCaseDiagram
 		aAssociationEdge = new UseCaseAssociationEdge();
 		aDependencyEdge = new UseCaseDependencyEdge();
 		aGeneralEdge = new UseCaseGeneralizationEdge();
+		aNoteEdge = new NoteEdge();
+		aSelection = new ArrayList<>();
 	}
 	
 	private void addNode(Node pNode, Point pRequestedPosition)
@@ -109,9 +116,20 @@ public class TestUsageScenariosUseCaseDiagram
 		aProcessor.executeNewOperation(aDiagram.builder().createAddEdgeOperation(pEdge, pStart, pEnd));
 	}
 	
+	private void moveNode(Node pNode, int pX, int pY)
+	{
+		aProcessor.executeNewOperation(aDiagram.builder().createMoveNodeOperation(pNode, pX, pY));
+	}
+	
 	private void setProperty(Property pProperty, Object pValue)
 	{
 		aProcessor.executeNewOperation(aDiagram.builder().createPropertyChangeOperation(pProperty, pValue));
+	}
+	
+	private void removeSelected()
+	{
+		aProcessor.executeNewOperation(aDiagram.builder().createRemoveElementsOperation(aSelection));
+		aSelection.clear();
 	}
 	
 	@Test
@@ -223,106 +241,91 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(new Point(9,9), end.position());
 	}
 	
-	/**
-	 * Below are methods testing nodes movement.
-	 * 
-	 * 
-	 * 
-	 * Testing individual node movement.
-	 */
 	@Test
-	public void testIndividualNodeMovementOBSOLETE()
+	public void testIndividualNodeMovement()
 	{
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aUseCaseNode1, new Point(80, 20));
+		addNode(aNoteNode, new Point(100, 100));
 
-		aActorNode1.translate(3, 12);
-		aUseCaseNode1.translate(3, 2);
-		noteNode.translate(40, 20);
-		assertTrue(new Rectangle(23, 32, 48, 88).equals(aActorNode1.view().getBounds()) || new Rectangle(23, 32, 48, 87).equals(aActorNode1.view().getBounds()));
-		assertEquals(new Rectangle(83, 22, 110, 40), aUseCaseNode1.view().getBounds());
-		assertEquals(new Rectangle(140, 120, 60, 40), noteNode.view().getBounds());
+		moveNode(aActorNode1, 3, 12);
+		moveNode(aUseCaseNode1, 3, 12);
+		moveNode(aNoteNode, 40, 20);
+		
+		assertEquals( new Point(23,32), aActorNode1.position());
+		assertEquals( new Point(83,32), aUseCaseNode1.position());
+		assertEquals( new Point(140,120), aNoteNode.position());
 	}
 	
-	/**
-	 * Testing nodes and edges movement.
-	 */
 	@Test
-	public void testNodesAndEdgesMovementOBSOLETE()
+	public void testNodesAndEdgesMovement()
 	{
-		NoteNode noteNode = new NoteNode();
-		NoteEdge noteEdge1 = new NoteEdge();
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
-		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
-		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
-		aDiagram.builder().addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aActorNode2, new Point(250, 20));
+		addNode(aUseCaseNode1, new Point(80, 20));
+		addNode(aUseCaseNode2, new Point(140, 20));
+		addNode(aNoteNode, new Point(100, 100));
+		addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+		addEdge(aNoteEdge, new Point(85, 25), new Point(110, 110));
 
-		aController.selectAll();
-		for(DiagramElement element: aController.getSelectionModel())
+		for(DiagramElement element: aDiagram.allElements())
 		{
 			if(element instanceof Node)
 			{
 				((Node) element).translate(26, 37);
 			}
 		}
-		assertTrue(new Rectangle(46, 57, 48, 88).equals(aActorNode1.view().getBounds()) || new Rectangle(46, 57, 48, 87).equals(aActorNode1.view().getBounds()));
-		assertTrue(new Rectangle(276, 57, 48, 88).equals(aActorNode2.view().getBounds()) || new Rectangle(276, 57, 48, 87).equals(aActorNode2.view().getBounds()));
-		assertEquals(new Rectangle(106, 57, 110, 40), aUseCaseNode1.view().getBounds());
-		assertEquals(new Rectangle(166, 57, 110, 40), aUseCaseNode2.view().getBounds());
-		assertEquals(new Rectangle(126, 137, 60, 40), noteNode.view().getBounds());
-		
-		// move a node connect to another node, edge should redraw accordingly,
-		aActorNode1.translate(10, 20);
-		assertEquals(aActorNode1, aAssociationEdge.getStart());
-		assertEquals(aUseCaseNode2, aAssociationEdge.getEnd());
+		assertEquals(new Point(46, 57), aActorNode1.position());
+		assertEquals(new Point(276, 57), aActorNode2.position());
+		assertEquals(new Point(106, 57), aUseCaseNode1.position());
+		assertEquals(new Point(166, 57), aUseCaseNode2.position());
+		assertEquals(new Point(126, 137), aNoteNode.position());
 	}
 	
-	/**
-	 * Below are methods testing deletion and undo feature for Use Case diagram.
-	 * 
-	 * 
-	 * 
-	 * Testing delete an Node. 
-	 */
 	@Test
-	public void testDeleteNodeOBSOLETE()
+	public void testDeleteNode()
 	{
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aActorNode1);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		addNode(aActorNode1, new Point(20, 20));
+		assertTrue(aDiagram.contains(aActorNode1));
+		aSelection.add(aActorNode1);
+		removeSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aController.undo();
-		aDiagram.draw(aGraphics);
-		assertEquals(1, aDiagram.getRootNodes().size());
 		
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(noteNode);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		aProcessor.undoLastExecutedOperation();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		aController.undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.contains(aActorNode1));
 		
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(420, 420), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aUseCaseNode1);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		addNode(aNoteNode, new Point(75, 75));
 		assertEquals(2, aDiagram.getRootNodes().size());
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		assertTrue(aDiagram.contains(aNoteNode));
+		aSelection.add(aNoteNode);
+		removeSelected();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.contains(aActorNode1));
+		assertFalse(aDiagram.contains(aNoteNode));
+		aProcessor.undoLastExecutedOperation();
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.contains(aActorNode1));
+		assertTrue(aDiagram.contains(aNoteNode));
+
+		addNode(aUseCaseNode1, new Point(420, 420));
+		assertTrue(aDiagram.contains(aUseCaseNode1));
+		assertTrue(aDiagram.contains(aActorNode1));
+		aSelection.add(aActorNode1);
+		aSelection.add(aUseCaseNode1);
+		removeSelected();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertFalse(aDiagram.contains(aActorNode1));
+		assertTrue(aDiagram.contains(aNoteNode));
+		assertFalse(aDiagram.contains(aUseCaseNode1));
+
+		aProcessor.undoLastExecutedOperation();
 		assertEquals(3, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.contains(aActorNode1));
+		assertTrue(aDiagram.contains(aNoteNode));
+		assertTrue(aDiagram.contains(aUseCaseNode1));
 	}
 
 	/**
