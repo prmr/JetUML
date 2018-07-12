@@ -67,4 +67,9 @@ public class CompoundOperation implements DiagramOperation
 			operation.undo();
 		}
 	}
+	
+	public boolean isEmpty()
+	{
+		return aOperations.isEmpty();
+	}
 }

@@ -27,6 +27,8 @@ import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
 
 /**
  * Tracks modification to the properties of a DiagramElement.
@@ -51,7 +53,6 @@ public class PropertyChangeTracker
 
 	/**
 	 * Makes a snapshot of the properties values of the tracked element.
-	 * 
 	 */
 	public void startTracking()
 	{
@@ -79,5 +80,29 @@ public class PropertyChangeTracker
 			}
 		}
 		return command;
+	}
+	
+	/**
+	 * Creates and returns a CompoundOperation that represents any change
+	 * in properties detected between the time startTracking
+	 * and stopTracking were called.
+	 * 
+	 * @return A CompoundOperation describing the property changes.
+	 */
+	public CompoundOperation stopTracking2()
+	{
+		CompoundOperation operation = new CompoundOperation();
+		for( Property property : aProperties )
+		{
+			if( !aOldValues.get(property.getName()).equals(property.get()))
+			{
+				final Object newValue = property.get();
+				final Object oldValue = aOldValues.get(property.getName());
+				operation.add(new SimpleOperation(
+						()-> property.set(newValue),
+						()-> property.set(oldValue)));
+			}
+		}
+		return operation;
 	}
 }

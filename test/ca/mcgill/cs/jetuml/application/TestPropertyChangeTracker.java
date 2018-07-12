@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
@@ -35,6 +36,7 @@ import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
 import ca.mcgill.cs.jetuml.commands.Command;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
@@ -190,5 +192,56 @@ public class TestPropertyChangeTracker
 		assertEquals("y", property.getName());
 		assertEquals(0, getOldValue(inner));
 		assertEquals(10, getNewValue(inner));
+	}
+	
+	@Test
+	public void testNoChanges2()
+	{
+		aTracker.startTracking();
+		CompoundOperation operation = aTracker.stopTracking2();
+		assertTrue(operation.isEmpty());
+	}
+	
+	@Test
+	public void testOneChangeInteger2()
+	{
+		aTracker.startTracking();
+		aNode.moveTo(new Point(0,10));
+		CompoundOperation operation = aTracker.stopTracking2();
+		assertEquals(new Point(0,10), aNode.position());
+		operation.undo();
+		assertEquals(new Point(0,0), aNode.position());
+		operation.execute();
+		assertEquals(new Point(0,10), aNode.position());
+	}
+	
+	@Test
+	public void testOneChangeString2()
+	{
+		aTracker.startTracking();
+		aNode.setName("Foo");
+		CompoundOperation operation = aTracker.stopTracking2();
+		assertEquals("Foo", aNode.getName());
+		operation.undo();
+		assertEquals("", aNode.getName());
+		operation.execute();
+		assertEquals("Foo", aNode.getName());
+	}
+	
+	@Test
+	public void testTwoChanges2()
+	{
+		aTracker.startTracking();
+		aNode.moveTo(new Point(0,10));
+		aNode.setName("Foo");
+		CompoundOperation operation = aTracker.stopTracking2();
+		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Foo", aNode.getName());
+		operation.undo();
+		assertEquals(new Point(0,0), aNode.position());
+		assertEquals("", aNode.getName());
+		operation.execute();
+		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Foo", aNode.getName());
 	}
 }
