@@ -153,6 +153,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	@Override
 	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
 	{
+		assert canAdd(pNode, pPoint);
 		if( pNode instanceof FieldNode )
 		{
 			ObjectNode object = findObject((FieldNode)pNode, pPoint);
@@ -172,6 +173,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
 	{
+		assert canAdd(pNode, pRequestedPosition);
 		DiagramOperation result = null;
 		if( pNode instanceof FieldNode )
 		{

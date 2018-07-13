@@ -24,34 +24,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
-/**
- * Tests various interactions with Object Diagram normally triggered from the 
- * GUI. Here we use the API to simulate GUI Operation for Object Diagram.
- */
-public class TestUsageScenariosObjectDiagram 
+public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 {
-	private ObjectDiagram aDiagram;
-	private GraphicsContext aGraphics;
-	private DiagramCanvas aPanel;
-	private DiagramCanvasController aController;
 	private ObjectNode aObjectNode1;
 	private ObjectNode aObjectNode2;
 	private FieldNode aFieldNode1;
@@ -60,370 +43,234 @@ public class TestUsageScenariosObjectDiagram
 	private ObjectReferenceEdge aReferenceEdge1;
 	private ObjectReferenceEdge aReferenceEdge2;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
-	@BeforeClass
-	@SuppressWarnings("unused")
-	public static void setupClass()
-	{
-		JavaFXLoader loader = JavaFXLoader.instance();
-	}
-	
-	/**
-	 * General setup.
-	 */
 	@Before
 	public void setup()
 	{
+		super.setup();
 		aDiagram = new ObjectDiagram();
-		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram), a ->  {});
-		aPanel.setController(aController);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
 		aFieldNode2 = new FieldNode();
 		aFieldNode3 = new FieldNode();
-		
 		aReferenceEdge1 = new ObjectReferenceEdge();
 		aReferenceEdge2 = new ObjectReferenceEdge();
 	}
 	
-	/**
-	 * Below are methods testing basic nodes and edge creation
-	 * for a object diagram
-	 * 
-	 * 
-	 * Testing create a object diagram.
-	 */
 	@Test
 	public void testCreateStateDiagram()
 	{
-		// create an object node
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
-		aObjectNode1.setName("Car");
+		addNode(aObjectNode1, new Point(20, 20));
+		setProperty(aObjectNode1.properties().get("name"), "Car");
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals("Car", aObjectNode1.getName());
 		
-		// create field node outside an object node.(not allowed)
-		aDiagram.builder().addNode(aFieldNode1, new Point(120, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(230, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode3, new Point(-20, -20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(0, aObjectNode1.getChildren().size());
+		assertFalse(aDiagram.builder().canAdd(aFieldNode1, new Point(120, 80)));
 		
-		// create field nodes inside object node
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
+		addNode(aFieldNode3, new Point(40, 30));
 		assertEquals(3, aObjectNode1.getChildren().size());
+		assertEquals(1, aDiagram.getRootNodes().size());
 		
 	}
 	
-	/**
-	 * Testing connect NoteNode with Nodes in object diagram.
-	 */
 	@Test
 	public void testNoteNodeWithNoteEdges()
 	{
-		// adding one ObjectNode and one NoteNode
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);		
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
+		addNode(aFieldNode3, new Point(40, 30));
+		addNode(aNoteNode, new Point(80, 80));
 		assertEquals(3, aDiagram.getRootNodes().size());
 		
-		NoteEdge edge1 = new NoteEdge();
-		NoteEdge edge2 = new NoteEdge();
-		NoteEdge edge3 = new NoteEdge();
-		NoteEdge edge4 = new NoteEdge();
-		NoteEdge edge5 = new NoteEdge();
-		
-		// link NoteEdge from anywhere to anywhere except to NoteNode (not allowed)
-		assertFalse(aDiagram.builder().canAdd(edge1, new Point(25, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(edge2, new Point(55, 25), new Point(155, 25)));
-		assertFalse(aDiagram.builder().canAdd(edge3, new Point(155, 25), new Point(255, 25)));
-		assertFalse(aDiagram.builder().canAdd(edge4, new Point(155, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(edge5, new Point(25, 25), new Point(255, 25)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(25, 25), new Point(55, 25)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(55, 25), new Point(155, 25)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(155, 25), new Point(255, 25)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(155, 25), new Point(55, 25)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(25, 25), new Point(255, 25)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
-		edge1 = new NoteEdge();
-		edge2 = new NoteEdge();
-		aDiagram.builder().addEdge(edge1, new Point(80, 80), new Point(55, 25));
-		aDiagram.builder().addEdge(edge2, new Point(25, 25), new Point(80, 80));
+		aDiagram.builder().addEdge(new NoteEdge(), new Point(80, 80), new Point(55, 25));
+		aDiagram.builder().addEdge(new NoteEdge(), new Point(25, 25), new Point(80, 80));
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
-		edge1 = new NoteEdge();
-		edge2 = new NoteEdge();
-		assertFalse(aDiagram.builder().canAdd(edge1, new Point(60, 80), new Point(80, 80)));
-		assertEquals(2, aDiagram.getEdges().size());
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(60, 80), new Point(80, 80)));
 	}
 	
-	/**
-	 * Testing general edge creations in object diagram.
-	 */
 	@Test
 	public void testGeneralEdgeCreation()
 	{
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode3, new Point(40, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);	
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
+		addNode(aFieldNode3, new Point(40, 30));
+		addNode(aNoteNode, new Point(80, 80));
 		
 		// create an association edge between two ObjectNode
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
+		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		// create an association edge between NoteNode and ObjectNode (not allowed)
-		collaborationEdge1 = new ObjectCollaborationEdge();
-		assertFalse(aDiagram.builder().canAdd(collaborationEdge1, new Point(25, 20), new Point(80, 80)));
-		assertEquals(1, aDiagram.getEdges().size());
-		
-		// create an ObjectRefEdge to a NoteNode. (not allowed)
+		assertFalse(aDiagram.builder().canAdd(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80)));
 		assertFalse(aDiagram.builder().canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
-		assertEquals(1, aDiagram.getEdges().size());
 		
 		/* create an ObjectRefEdge to an ObjectNode itself. 
 		 * "value" text in field node will be erased and edge will be added.
 		 */
-		aReferenceEdge1 = new ObjectReferenceEdge();
-		aDiagram.builder().addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
+		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
 		assertEquals(2, aDiagram.getEdges().size());
 		assertEquals("", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
-		aDiagram.builder().addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
+		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 		assertEquals(3, aDiagram.getEdges().size());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		
 		// change the property of a field
-		aFieldNode3.setName("Car");
+		setProperty(aFieldNode3.properties().get("name"), "Car");
 		assertEquals("Car", aFieldNode3.getName());
 	}
 	
-	/**
-	 * Below are methods testing nodes movement.
-	 * 
-	 * 
-	 * 
-	 * Testing individual node movement.
-	 */
 	@Test
 	public void testIndividualNodeMovement()
 	{
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);	
-	
-		aObjectNode1.translate(3, 12);
-		noteNode.translate(40, 20);
-		assertEquals(new Rectangle(23, 32, 82, 90), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(58, 102, 42, 20), aFieldNode1.view().getBounds());
-		assertEquals(new Rectangle(120, 100, 60, 40), noteNode.view().getBounds());
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aNoteNode, new Point(80, 80));
+
+		moveNode(aObjectNode1, 3, 12);
+		moveNode(aNoteNode, 40, 20);
+
+		assertEquals(new Point(23, 32), aObjectNode1.position());
+		assertEquals(new Point(120, 100), aNoteNode.position());
 	}
 	
-	/**
-	 * Testing nodes and edges movement.
-	 */
 	@Test
 	public void testNodesAndEdgesMovement()
 	{
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(noteNode, new Point(80, 80), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);	
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
+		addNode(aNoteNode, new Point(80, 80));
 
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.builder().addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
-		aDiagram.builder().addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
-		aController.selectAll();
-
-		Rectangle referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
-		Rectangle referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
-		Rectangle collaborationEdge1Bounds = collaborationEdge1.view().getBounds();
-
-		for(DiagramElement element: aController.getSelectionModel())
-		{
-			if(element instanceof Node)
-			{
-				((Node) element).translate(26, 37);
-			}
-		}
-		assertEquals(new Rectangle(46, 57, 82, 115), aObjectNode1.view().getBounds());
-		assertEquals(new Rectangle(81, 127, 42, 20), aFieldNode1.view().getBounds());
-		assertEquals(new Rectangle(106, 117, 60, 40), noteNode.view().getBounds());
-		// edges are redrawn accordingly
-		assertEquals(aFieldNode1, aReferenceEdge1.getStart());
-		assertEquals(aObjectNode1, aReferenceEdge1.getEnd());
-		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
-		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
-		assertEquals(aObjectNode1, collaborationEdge1.getStart());
-		assertEquals(aObjectNode2, collaborationEdge1.getEnd());
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
-		assertFalse(collaborationEdge1Bounds == collaborationEdge1.view().getBounds());
+		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
+		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
+		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 		
-		referenceEdge1Bounds = aReferenceEdge1.view().getBounds();
-		referenceEdge2Bounds = aReferenceEdge2.view().getBounds();
-		aObjectNode1.translate(-5, -5);
-		assertFalse(referenceEdge1Bounds == aReferenceEdge1.view().getBounds());
-		assertFalse(referenceEdge2Bounds == aReferenceEdge2.view().getBounds());
+		selectAll();
+		moveSelection(26, 37);
+		
+		assertEquals(new Point(46, 57), aObjectNode1.position());
+		assertEquals(new Point(106, 117), aNoteNode.position());
 	}
 	
-	/**
-	 * Below are methods testing deletion and undo feature for object diagram.
-	 * 
-	 * 
-	 * 
-	 * Testing delete an ObjectNode and NoteNode.
-	 */
 	@Test
 	public void testDeleteObjectNodeAndNoteNode()
 	{
 		
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aObjectNode1);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		addNode(aObjectNode1, new Point(20, 20));
+		select(aObjectNode1);
+		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
-		NoteNode noteNode = new NoteNode();
-		aDiagram.builder().addNode(noteNode, new Point(75, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(noteNode);
-		aController.removeSelected();
-		aDiagram.draw(aGraphics);
+		addNode(aNoteNode, new Point(75, 75));
+		select(aNoteNode);
+		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 
-		aController.undo();
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
 	
-	/**
-	 * Testing delete a FieldNode
-	 */
 	@Test
 	public void testDeleteFieldNode()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aFieldNode1, new Point(20, 40));
 
-		aController.getSelectionModel().addToSelection(aFieldNode1);
-		aController.removeSelected();
-		aDiagram.draw(aGraphics);
+		select(aFieldNode1);
+		deleteSelected();
 		assertEquals(0, aObjectNode1.getChildren().size());
 
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		undo();
 		assertEquals(1, aObjectNode1.getChildren().size());
 	}
 	
-	/**
-	 * Testing delete an edge
-	 */
 	@Test
 	public void testDeleteEdge()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);	
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.builder().addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
-		aDiagram.builder().addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
+		addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
+		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aReferenceEdge2 and collaborationEdge1
-		aController.getSelectionModel().addToSelection(aReferenceEdge2);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		select(aReferenceEdge2);
+		deleteSelected();
 		assertEquals(2, aDiagram.getEdges().size());
-		aController.getSelectionModel().addToSelection(collaborationEdge1);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		
+		select(collaborationEdge1);
+		deleteSelected();
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		aController.undo();
+		undo();
 		assertEquals(2, aDiagram.getEdges().size());
-		aController.undo();
+		undo();
 		assertEquals(3, aDiagram.getEdges().size());
 	}
 	
-	/**
-	 * Testing delete a combination of node and edge
-	 */
 	@Test
 	public void testDeleteCombinationNodeAndEdge()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode2, new Point(30, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);	
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		addNode(aFieldNode2, new Point(30, 40));
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
-		aDiagram.builder().addEdge(aReferenceEdge1, new Point(65, 120), new Point(20, 20));
-		aDiagram.builder().addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
+		addEdge(aReferenceEdge1, new Point(65, 120), new Point(20, 20));
+		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
-		aController.getSelectionModel().addToSelection(aObjectNode1);
-		aController.getSelectionModel().addToSelection(assoEdge1);
-		aController.getSelectionModel().addToSelection(aReferenceEdge1);
-		aController.getSelectionModel().addToSelection(aReferenceEdge2);
+		select(aObjectNode1, assoEdge1, aReferenceEdge1, aReferenceEdge2);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(3, aDiagram.getEdges().size());
 		
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aController.undo();
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(3, aDiagram.getEdges().size());
 		
 		// now delete aFieldNode2 and as a result the reference edges
 		// connected to it: aReferenceEdge1 and aReferenceEdge2
-		aController.getSelectionModel().addToSelection(aFieldNode2);
-		aController.removeSelected();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
+		select(aFieldNode2);
+		deleteSelected();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aObjectNode1.getChildren().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		aController.undo();
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aObjectNode1.getChildren().size());
 		assertEquals(3, aDiagram.getEdges().size());
@@ -432,140 +279,99 @@ public class TestUsageScenariosObjectDiagram
 	@Test
 	public void testDeleteNodeWithLinkedEdge()
 	{
-		aDiagram.restoreRootNode(aObjectNode1);
-		aDiagram.restoreRootNode(aObjectNode2);
-		aObjectNode1.addChild(aFieldNode1);
-		aObjectNode2.translate(100, 0);
+		addNode(aObjectNode1, new Point(0,0));
+		addNode(aObjectNode2, new Point(100,0));
+		addNode(aFieldNode1, new Point(10,10));
 		aDiagram.restoreEdge(aReferenceEdge1, aFieldNode1, aObjectNode2);
-		aController.getSelectionModel().set(aObjectNode1);
-		aController.removeSelected();
+		select(aObjectNode1);
+		deleteSelected();
 		assertEquals(0, aDiagram.getEdges().size());
 		assertEquals(1, aDiagram.getRootNodes().size());
 	}
-	/**
-	 * Below are methods testing copy and paste feature for object diagram
-	 * 
-	 * 
-	 * Testing copy a Node
-	 */
+
 	@Test
 	public void testCopyNode()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aObjectNode1);
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		select(aObjectNode1);
+		copy();
+		paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[1]).getChildren().size());
-		assertEquals(new Rectangle(0, 0, 82, 90), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
+		assertEquals(new Point(0, 0), 
+				((ObjectNode) aDiagram.getRootNodes().toArray()[1]).position());
 		
 		// paste a FieldNode itself is not allowed
-		aController.getSelectionModel().clearSelection();
-		aController.getSelectionModel().addToSelection(aFieldNode1);
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		select(aFieldNode1);
+		copy();
+		paste();
 		assertEquals(2, aDiagram.getRootNodes().size());
 	}
 	
-	/**
-	 * 
-	 * Testing cut an object Node
-	 */
 	@Test
 	public void testCutObjectNodeWithFieldNode()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aObjectNode1);
-		aController.cut();
-		aDiagram.draw(aGraphics);
-		
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		select(aObjectNode1);
+		cut();
+		paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
-		assertEquals(new Rectangle(0, 0, 82, 90), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
+		assertEquals(new Point(0, 0), 
+				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).position());
 	}
 	
-	/**
-	 * 
-	 * Testing cut an object Node
-	 */
 	@Test
 	public void testCutFieldNode()
 	{
-		aDiagram.builder().addNode(aObjectNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aFieldNode1, new Point(20, 40), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aController.getSelectionModel().addToSelection(aFieldNode1);
-		aController.cut();
-		aDiagram.draw(aGraphics);
+		addNode(aObjectNode1, new Point(20, 20));
+		addNode(aFieldNode1, new Point(20, 40));
+		select(aFieldNode1);
+		cut();
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
-		assertEquals(new Rectangle(20, 20, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
+		assertEquals(new Point(20, 20), aObjectNode1.position());
 		
-		// a FieldNode will be cut, but will not be pasted
-		aController.paste();
+		// a FieldNode will not be pasted
+		paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).getChildren().size());
-		assertEquals(new Rectangle(20, 20, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 	
-	/**
-	 * 
-	 * Testing copy two Node with an edge
-	 */
 	@Test
 	public void testCopyNodesWithEdge()
 	{
-		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addNode(aObjectNode1, new Point(50, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
-		aDiagram.builder().addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
-		aController.selectAll();
-		aController.copy();
-		aController.paste();
+		addNode(aObjectNode1, new Point(50, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		addEdge(new ObjectCollaborationEdge(), new Point(55, 25), new Point(155, 25));
+		selectAll();
+		copy();
+		paste();
 
-		aDiagram.draw(aGraphics);
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds());
+		assertEquals(new Point(0, 0), ((ObjectNode) aDiagram.getRootNodes().toArray()[2]).position());
 	}
 	
-	/**
-	 * 
-	 * Testing copy two Node with an edge
-	 */
 	@Test
 	public void testCutNodesWithEdge()
 	{
-		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
-		aDiagram.builder().addNode(aObjectNode1, new Point(50, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aObjectNode2, new Point(150, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
-		aDiagram.builder().addEdge(collaborationEdge1, new Point(55, 25), new Point(155, 25));
+		addNode(aObjectNode1, new Point(50, 20));
+		addNode(aObjectNode2, new Point(150, 20));
+		aDiagram.builder().addEdge(new ObjectCollaborationEdge(), new Point(55, 25), new Point(155, 25));
 		
-		aController.selectAll();
-		aController.cut();
-		aDiagram.draw(aGraphics);
+		selectAll();
+		cut();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		paste();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(0, 0, 80, 60), 
-				((ObjectNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
+		assertEquals(new Point(0, 0), ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).position());
 	}
 }
