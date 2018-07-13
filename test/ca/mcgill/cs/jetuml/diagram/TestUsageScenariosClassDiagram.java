@@ -22,16 +22,11 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -39,433 +34,289 @@ import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import ca.mcgill.cs.jetuml.gui.SelectionModel;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
-/**
- * Tests various interactions with Class Diagram normally triggered from the 
- * GUI. Here we use the API to simulate GUI Operation for Class Diagram.
- */
-
-public class TestUsageScenariosClassDiagram 
+public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 {
-	private ClassDiagram aDiagram;
-	private GraphicsContext aGraphics;
-	private DiagramCanvas aPanel;
-	private DiagramCanvasController aController;
-	private ArrayList<DiagramElement> aList;
-	private ClassNode aClassNode = new ClassNode();
-	private InterfaceNode aInterfaceNode = new InterfaceNode();
-	private PackageNode aPackageNode = new PackageNode();
-	private NoteNode aNoteNode = new NoteNode();
-	private AggregationEdge aAggregationEdge = new AggregationEdge();
-	private AssociationEdge aAssociationEdge = new AssociationEdge();
-	private DependencyEdge aDependencyEdge = new DependencyEdge();
-	private GeneralizationEdge aGeneralizationEdge = new GeneralizationEdge();
-	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
-	@BeforeClass
-	@SuppressWarnings("unused")
-	public static void setupClass()
-	{
-		JavaFXLoader loader = JavaFXLoader.instance();
-	}
+	private ClassNode aClassNode1;
+	private ClassNode aClassNode2;
+	private InterfaceNode aInterfaceNode;
+	private PackageNode aPackageNode;
+	private AggregationEdge aAggregationEdge;
+	private AssociationEdge aAssociationEdge;
+	private DependencyEdge aDependencyEdge;
+	private GeneralizationEdge aGeneralizationEdge;
 	
 	@Before
 	public void setup()
 	{
+		super.setup();
 		aDiagram = new ClassDiagram();
-		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram), a ->  {});
-		aPanel.setController(aController);
-		aClassNode = new ClassNode();
+		aClassNode1 = new ClassNode();
+		aClassNode2 = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
 		aPackageNode = new PackageNode();
-		aNoteNode = new NoteNode();
 		aAggregationEdge = new AggregationEdge();
 		aAssociationEdge = new AssociationEdge();
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
-		aList = new ArrayList<>();
 	}
 	
 	@Test
 	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagram diagram = new ClassDiagram();
-		PackageNode p1 = new PackageNode();
-		ClassNode c1 = new ClassNode();
-		ClassNode c2 = new ClassNode();
-		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.builder().addNode(c1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.builder().addNode(c2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		c2.translate(100, 0);
-		DependencyEdge edge = new DependencyEdge();
-		diagram.builder().addEdge(edge, new Point(26, 26), new Point(131, 31));
-		assertEquals(1, diagram.getRootNodes().size());
-		assertEquals(2, p1.getChildren().size());
-		assertEquals(c1, edge.getStart());
-		assertEquals(c2, edge.getEnd());
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
+		moveNode(aClassNode2, 100, 0);
+
+		addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(2, aPackageNode.getChildren().size());
+		assertSame(aClassNode1, aDependencyEdge.getStart());
+		assertSame(aClassNode2, aDependencyEdge.getEnd());
 		
-		SelectionModel selection = new SelectionModel( () -> {} );
-		selection.addToSelection(c1);
-		selection.addToSelection(c2);
-		selection.addToSelection(edge);
-		
-		Clipboard.instance().copy(selection);
-		
-		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
-		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
-		canvas.setController(controller);
-		
-		Clipboard.instance().paste(controller);
-		
-		assertEquals(3, diagram.getRootNodes().size());
-		assertEquals(2, diagram.getEdges().size());
+		select(aClassNode1, aClassNode2, aDependencyEdge);
+		copy();
+		paste();
+
+		assertEquals(3, aDiagram.getRootNodes().size());
+		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
 	@Test
 	public void testClassDiagramCopyPackageNodesAndEdgesInsidePackageNode()
 	{
-		ClassDiagram diagram = new ClassDiagram();
-		PackageNode p1 = new PackageNode();
-		PackageNode c1 = new PackageNode();
-		PackageNode c2 = new PackageNode();
-		diagram.builder().addNode(p1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.builder().addNode(c1, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		diagram.builder().addNode(c2, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		c2.translate(100, 0);
-		DependencyEdge edge = new DependencyEdge();
-		diagram.builder().addEdge(edge, new Point(31, 31), new Point(130, 26));
-		assertEquals(1, diagram.getRootNodes().size());
-		assertEquals(2, p1.getChildren().size());
-		assertEquals(1, diagram.getEdges().size());
-		assertEquals(c1, edge.getStart());
-		assertEquals(c2, edge.getEnd());
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(30, 30));
+		addNode(aClassNode2, new Point(25, 25));
+		moveNode(aClassNode2, 100, 0);
+		addEdge(aDependencyEdge, new Point(31, 31), new Point(130, 26));
 		
-		SelectionModel selection = new SelectionModel( () -> {} );		selection.addToSelection(p1);
-		selection.addToSelection(edge);
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(2, aPackageNode.getChildren().size());
+		assertEquals(1, aDiagram.getEdges().size());
+		assertSame(aClassNode1, aDependencyEdge.getStart());
+		assertSame(aClassNode2, aDependencyEdge.getEnd());
 
-		Clipboard.instance().copy(selection);
-		
-		DiagramCanvas canvas = new DiagramCanvas(diagram, 0, 0);
-		DiagramCanvasController controller = new DiagramCanvasController(canvas, new DiagramTabToolBar(diagram), a ->  {});
-		canvas.setController(controller);
-		
-		Clipboard.instance().paste(controller);
-		
-		assertEquals(2, diagram.getRootNodes().size());
-		assertEquals(2, diagram.getEdges().size());
+		// Does nothing
+		select(aDependencyEdge);
+		copy();
+		paste(); 
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
-	/**
-	 * Below are methods testing basic nodes and edges creation for Class Diagram.
-	 * 
-	 * 
-	 * 
-	 * Testing basic Nodes creation.
-	 */
 	@Test
 	public void testBasicNode()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addNode(aNoteNode, new Point(134, 132));
 
 		assertEquals(4, aDiagram.getRootNodes().size());
 		
-		// set up the properties for the nodes
-		aClassNode.setName("truck");
-		aClassNode.setMethods("setDriver()");
-		aInterfaceNode.setName("vehicle");
-		aInterfaceNode.setMethods("getPrice()");
-		aPackageNode.setName("object");
-		aPackageNode.setContents("some stuff");
-		aNoteNode.setName("some text...");
-		
-		// test node properties
-		assertEquals(aClassNode.getName(), "truck");
-		assertEquals(aClassNode.getMethods(), "setDriver()");
+		setProperty(aClassNode1.properties().get("name"), "truck");
+		setProperty(aClassNode1.properties().get("methods"), "setDriver()");
+		setProperty(aInterfaceNode.properties().get("name"), "vehicle");
+		setProperty(aInterfaceNode.properties().get("methods"), "getPrice()");
+		setProperty(aPackageNode.properties().get("name"), "object");
+		setProperty(aPackageNode.properties().get("contents"), "some stuff");
+		setProperty(aNoteNode.properties().get("name"), "some text...");
+
+		assertEquals(aClassNode1.getName(), "truck");
+		assertEquals(aClassNode1.getMethods(), "setDriver()");
 		assertEquals(aInterfaceNode.getMethods(), "getPrice()");
 		assertEquals(aPackageNode.getName(), "object");
 		assertEquals(aPackageNode.getContents(), "some stuff");
 		assertEquals(aNoteNode.getName(), "some text...");
 	}
 	
-	/**
-	 * Testing basic edges creation.
-	 */
 	@Test
 	public void testEdgeCreation()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addNode(aNoteNode, new Point(134, 132));
 		
 		// both start and end points are invalid
 		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(70, 70), new Point(170, 170)));
 		// one point is invalid
 		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
 		
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		assertEquals(3, aDiagram.getEdges().size());
 		
-		aDiagram.builder().addEdge(new AssociationEdge(), new Point(47, 49), new Point(50, 49));
+		addEdge(new AssociationEdge(), new Point(47, 49), new Point(50, 49));
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// not every edge is a valid self-edge
 		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
-	/**
-	 * Testing self-edge creation.
-	 */
 	@Test 
 	public void testSelfEdgeCreation()
 	{
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(new AssociationEdge(), new Point(47, 49), new Point(50, 49));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(50, 49));
 		assertEquals(1, aDiagram.getEdges().size());
+		assertSame(aInterfaceNode, aAssociationEdge.getStart());
+		assertSame(aInterfaceNode, aAssociationEdge.getEnd());
 		
 		// not every edge is a valid self-edge
 		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
-	/**
-	 * Testing NodeEdge creation.
-	 */
 	@Test
 	public void testNoteEdgeCreation()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addNode(aNoteNode, new Point(134, 132));
 		
 		NoteEdge noteEdge1 = new NoteEdge();
 		NoteEdge noteEdge2 = new NoteEdge();
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
 		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
-		aDiagram.builder().addEdge(noteEdge1, new Point(9, 9), new Point(139,142));
+		addEdge(noteEdge1, new Point(9, 9), new Point(139,142));
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(noteEdge1.getStart(), aClassNode);
+		assertEquals(noteEdge1.getStart(), aClassNode1);
 		assertEquals(noteEdge1.getEnd(), aNoteNode);
 		
 		// if begin with a NoteNode, the end point can be anywhere
-		aDiagram.builder().addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
+		addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
 		assertEquals(noteEdge2.getStart(), aNoteNode);
 		assertEquals(noteEdge2.getEnd().getClass(), new PointNode().getClass());
 		assertEquals(2, aDiagram.getEdges().size());
 	}
 	
-	/**
-	 * Testing Single Node Movement.
-	 */
 	@Test
 	public void testSingleNodeMovement()
 	{
 		
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addNode(aNoteNode, new Point(134, 132));
 		
-		aClassNode.translate(5, 5);
-		aInterfaceNode.translate(11, 19);
-		aPackageNode.translate(32, -42);
-		aNoteNode.translate(-5, 19);
+		moveNode(aClassNode1, 5, 5);
+		moveNode(aInterfaceNode, 11, 19);
+		moveNode(aPackageNode, 32, -42);
+		moveNode(aNoteNode, -5, 19);
 		
-		assertEquals(new Rectangle(10, 10, 100, 60), aClassNode.view().getBounds());
-		assertEquals(new Rectangle(55, 63, 100, 60), aInterfaceNode.view().getBounds());
-		assertEquals(new Rectangle(119, 45, 100, 80), aPackageNode.view().getBounds());
-		assertEquals(new Rectangle(129, 151, 60, 40), aNoteNode.view().getBounds());
+		assertEquals(new Point(10, 10), aClassNode1.position());
+		assertEquals(new Point(55, 63), aInterfaceNode.position());
+		assertEquals(new Point(119, 45), aPackageNode.position());
+		assertEquals(new Point(129, 151), aNoteNode.position());
 	}
 	
-	/**
-	 * Testing moving a selection of nodes and edges,
-	 * edges will be redrawn automatically.
-	 */
 	@Test
 	public void testSelectionNodeAndEdges()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aNoteNode, new Point(134, 132), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addNode(aNoteNode, new Point(134, 132));
 		
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
-		aList.add(aClassNode);
-		aList.add(aAggregationEdge);
-		aList.add(aInterfaceNode);
-		Rectangle aggregationEdgeBounds = aAggregationEdge.view().getBounds();
-		for(DiagramElement element: aList)
-		{
-			if(element instanceof Node)
-			{
-				((Node) element).translate(10, 10);
-			}
-		}
-		assertEquals(new Rectangle(15, 15, 100, 60), aClassNode.view().getBounds());
-		assertEquals(new Rectangle(54, 54, 100, 60), aInterfaceNode.view().getBounds());
-		assertFalse(aggregationEdgeBounds == aAggregationEdge.view().getBounds());
-		assertTrue(aClassNode == aAggregationEdge.getStart());
-		assertTrue(aInterfaceNode == aAggregationEdge.getEnd());
+		select(aClassNode1, aAggregationEdge, aInterfaceNode);
+		moveSelection(10, 10);
+		assertEquals(new Point(15, 15), aClassNode1.position());
+		assertEquals(new Point(54, 54), aInterfaceNode.position());
+		assertSame(aClassNode1, aAggregationEdge.getStart());
+		assertSame(aInterfaceNode, aAggregationEdge.getEnd());
 	}
 	
-	/**
-	 * Testing move a node with self-edge,
-	 * edges will be redraw automatically.
-	 */
 	@Test
 	public void testMoveNodeWithSelfEdge()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 7), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(12, 9));
-		Rectangle oldAggregationEdgeBounds = aAggregationEdge.view().getBounds();
-		aList.add(aClassNode);
-		for(DiagramElement element: aList)
-		{
-			if(element instanceof Node)
-			{
-				((Node) element).translate(10, 10);
-			}
-		}
-		assertEquals(new Rectangle(15, 17, 100, 60), aClassNode.view().getBounds());
-		assertEquals(aClassNode, aAggregationEdge.getStart());
-		assertEquals(aClassNode, aAggregationEdge.getEnd());
-		assertFalse(oldAggregationEdgeBounds == aAggregationEdge.view().getBounds());
+		addNode(aClassNode1, new Point(5, 7));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(12, 9));
+		moveNode(aClassNode1, 10, 10);
+		
+		assertEquals(new Point(15, 17), aClassNode1.position());
+		assertSame(aClassNode1, aAggregationEdge.getStart());
+		assertSame(aClassNode1, aAggregationEdge.getEnd());
 	}
 	
-	/**
-	 * Testing move a node connect with another node.
-	 * Edge will be redraw automatically. The unselected note will remain unmoved.
-	 */
 	@Test
 	public void testMoveNodeConnectWithAnotherNode()
 	{
 	
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aPackageNode, new Point(87, 87), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addNode(aPackageNode, new Point(87, 87));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
-		Rectangle edge1Bounds = aAggregationEdge.view().getBounds();
-		Rectangle edge3Bounds = aDependencyEdge.view().getBounds();
-		Rectangle packageNodeBounds = aPackageNode.view().getBounds();
-		Rectangle interFaceNodeBounds = aInterfaceNode.view().getBounds();
+		moveNode(aClassNode1, 20, 20);
+		assertSame(aClassNode1, aAggregationEdge.getStart());
+		assertSame(aInterfaceNode, aAggregationEdge.getEnd());
 
-		aClassNode.translate(20, 20);
-		assertEquals(aClassNode, aAggregationEdge.getStart());
-		assertEquals(aInterfaceNode, aAggregationEdge.getEnd());
-		assertFalse(edge1Bounds == aAggregationEdge.view().getBounds());
-		assertEquals(interFaceNodeBounds, aInterfaceNode.view().getBounds());
-		
-		aInterfaceNode.translate(-19, 45);
-		assertEquals(aPackageNode, aDependencyEdge.getStart());
-		assertEquals(aInterfaceNode, aDependencyEdge.getEnd());
-		assertFalse(edge3Bounds == aDependencyEdge.view().getBounds());
-		assertEquals(packageNodeBounds, aPackageNode.view().getBounds());
+		moveNode(aInterfaceNode, -19, 45);
+		assertSame(aPackageNode, aDependencyEdge.getStart());
+		assertSame(aInterfaceNode, aDependencyEdge.getEnd());
 	}
 	
-	/**
-	 * Testing delete single node.
-	 */
 	@Test
 	public void testDeleteSingleNode()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
-		Rectangle classNodeBounds = aClassNode.view().getBounds();
-		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
-		
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(aClassNode);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.removeSelected();
-		list.clear();
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+				
+		select(aClassNode1);
+		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		
-		list.add(aInterfaceNode);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.removeSelected();
-		aList.clear();
-		aDiagram.draw(aGraphics);
+		select(aInterfaceNode);
+		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
-		aController.undo();
+		undo();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(interfaceNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[0])).view().getBounds());
-		aController.undo();
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).view().getBounds());
 	}
 	
-	/**
-	 * Testing delete single edge.
-	 */
 	@Test
 	public void testDeleteSingleEdge()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.draw(aGraphics);
-		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		
-		// test deletion
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(aAggregationEdge);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.removeSelected();
-		list.clear();
-		aDiagram.draw(aGraphics);
+		select(aAggregationEdge);
+		deleteSelected();
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		// test undo
-		aController.undo();
+		undo();
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
 	}
 	
-	/**
-	 * Testing multiple edges of the same type cannot exist between the same nodes.
-	 */
 	@Test
 	public void testMultipleEdgesSameTypeCanNotExist()
 	{		
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
-		aDiagram.builder().addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
+		addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
 		assertEquals(4, aDiagram.getEdges().size());
 		
-		// new edges should not be added to the diagram's edges
 		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aDiagram.builder().canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aDiagram.builder().canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
@@ -474,9 +325,6 @@ public class TestUsageScenariosClassDiagram
 
 	}
 	
-	/**
-	 * Testing new edges of the same type do not replace original edges.
-	 */
 	@Test
 	public void testNewEdgesSameTypeDoNotReplaceOriginalEdges()
 	{
@@ -485,12 +333,12 @@ public class TestUsageScenariosClassDiagram
 		DependencyEdge aSecondDependencyEdge = new DependencyEdge();
 		GeneralizationEdge aSecondGeneralizationEdge = new GeneralizationEdge();
 		
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
-		aDiagram.builder().addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
+		addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// new edges should not replace the current edges in the diagram
@@ -505,57 +353,44 @@ public class TestUsageScenariosClassDiagram
 		assertFalse(aDiagram.getEdges().contains(aSecondGeneralizationEdge));
 	}
 	
-	
-	/**
-	 * Testing delete an edge and node combination, selecting one node in the first case.
-	 */
 	@Test 
 	public void testDeleteNodeEdgeCombination1()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
-		Rectangle classNodeBounds = aClassNode.view().getBounds();
+		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(aClassNode);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.removeSelected();
-		aList.clear();
-		aDiagram.draw(aGraphics);
+		select(aClassNode1);
+		deleteSelected();
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aController.undo();
+		undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
 		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).view().getBounds());
 	}
 	
-	/**
-	 * Testing delete an edge and node combination, selecting all.
-	 */
 	@Test 
 	public void testDeleteNodeEdgeCombination2()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(44, 44), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(44, 44));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
-		Rectangle classNodeBounds = aClassNode.view().getBounds();
+		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 
-		aController.selectAll();
-		aController.removeSelected();
-		aDiagram.draw(aGraphics);
+		selectAll();
+		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
-		aController.undo();
+		
+		undo();
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
@@ -572,289 +407,175 @@ public class TestUsageScenariosClassDiagram
 		}
 	}
 	
-	/**
-	 * Testing delete one of ClassNode inside the PackageNode and undo the operation.
-	 */
 	@Test
 	public void testDeleteNodeInsidePackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(6, 8), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aPackageNode, new Point(5, 5));
+		addNode(aClassNode1, new Point(6, 8));
+		addNode(aClassNode2, new Point(11, 12));
 		
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(node2);
-		aController.getSelectionModel().setSelectionTo(list);
-		
-		aController.removeSelected();
-		aDiagram.draw(aGraphics);
+		select(aClassNode2);
+		deleteSelected();
+
 		assertEquals(1, aPackageNode.getChildren().size());
-		aController.undo();
+		undo();
 		assertEquals(2, aPackageNode.getChildren().size());
 	}
 
-	/**
-	 * Testing delete one of ClassNode inside the PackageNode
-	 * which is nested in another PackageNode, and undo the operation.
-	 */
 	@Test
 	public void testDeleteNodeInsideNestedPackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
 		PackageNode innerNode = new PackageNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(innerNode, new Point(10, 10), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(10, 13), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(11, 12), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(node2);
-		aController.getSelectionModel().setSelectionTo(list);
-		
-		aController.removeSelected();
-		aDiagram.draw(aGraphics);
+		addNode(aPackageNode, new Point(5, 5));
+		addNode(innerNode, new Point(10, 10));
+		addNode(aClassNode1, new Point(10, 13));
+		addNode(aClassNode2, new Point(11, 12));
+
+		select(aClassNode2);
+		deleteSelected();
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(1, innerNode.getChildren().size());
-		aController.undo();
+		undo();
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(2, innerNode.getChildren().size());
 	}
 	
-	/**
-	 * Testing copy and paste single node.
-	 */
 	@Test
 	public void testCopyPasteSingleNode()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aClassNode1, new Point(5, 5));
 		
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(aClassNode);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.copy();
-		aController.paste();
+		select(aClassNode1);
+		copy();
+		paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(new Rectangle(0, 0, 100, 60), 
-				((Node) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
+		assertEquals(new Point(0, 0), ((Node) aDiagram.getRootNodes().toArray()[1]).position());
 	}
 	
-	/**
-	 * Testing cut and paste single node.
-	 */
 	@Test
 	public void testCutPasteSingleNode()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		ArrayList<DiagramElement> list = new ArrayList<>();
-		list.add(aClassNode);
-		aController.getSelectionModel().setSelectionTo(list);
-		aController.cut();
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		select(aClassNode1);
+		cut();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		aController.paste();
+		paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(new Rectangle(0, 0, 100, 60), 
-				((Node) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
+		assertEquals(new Point(0, 0), ((Node) aDiagram.getRootNodes().toArray()[0]).position());
 	}
 	
-	/**
-	 * Testing copy and paste a combination of nodes and edge.
-	 */
 	@Test
 	public void testCopyPasteCombinationNodeAndEdge()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(45, 45), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(45, 45));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		
-		aController.selectAll();
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		selectAll();
+		copy();
+		paste();
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 		
-		Object[] nodes = aDiagram.getRootNodes().toArray();
-		boolean trigger1 = false;
-		boolean trigger2 = false;
-		for(int i = 2; i < nodes.length; i++)
-		{
-			if(nodes[i] instanceof ClassNode)
-			{
-				trigger1 = true;
-				assertEquals(new Rectangle(10, 10, 100, 60), 
-						((Node) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
-			}
-			else
-			{
-				trigger2 = true;
-			}
-		}
-		assertTrue(trigger1 && trigger2);
-		
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		
 	}
 	
-	/**
-	 * Testing cut and paste a combination of nodes and edge.
-	 */
 	@Test
 	public void testCutPasteCombinationNodeAndEdge()
 	{
-		aDiagram.builder().addNode(aClassNode, new Point(5, 5), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aInterfaceNode, new Point(45, 45), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		aDiagram.draw(aGraphics);
+		addNode(aClassNode1, new Point(5, 5));
+		addNode(aInterfaceNode, new Point(45, 45));
+		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		
-		aController.selectAll();
-		aController.cut();
-		aDiagram.draw(aGraphics);
+		selectAll();
+		cut();
+		paste();
 		
-		aController.paste();
-		aDiagram.draw(aGraphics);
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		Object[] nodes = aDiagram.getRootNodes().toArray();
-		boolean trigger1 = false;
-		boolean trigger2 = false;
-		for(int i = 0; i < nodes.length; i++)
-		{
-			if(nodes[i] instanceof ClassNode)
-			{
-				trigger1 = true;
-				assertEquals(new Rectangle(0, 0, 100, 60), 
-						((Node) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
-			}
-			else
-			{
-				trigger2 = true;
-			}
-		}
-		assertTrue(trigger1 && trigger2);
-		
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		undo();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
-		aController.undo();
-		aDiagram.draw(aGraphics);
+		
+		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
-	/** 
-	 * Testing Connect the inner nodes with edges.
-	 */
 	@Test
 	public void testAddNodesToPackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
-		PackageNode innerNode = new PackageNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(innerNode, new Point(35, 45), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
+		addNode(new PackageNode(), new Point(35, 45));
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(3, aPackageNode.getChildren().size());
 	}
 	
-	/** 
-	 * Testing add classNode to the inner PackageNode.
-	 */
 	@Test
 	public void testAddNodeToInnerPackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
 		PackageNode innerNode = new PackageNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(innerNode, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(26, 29), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(30, 31), Integer.MAX_VALUE, Integer.MAX_VALUE);
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(innerNode, new Point(25, 25));
+		addNode(aClassNode1, new Point(26, 29));
+		addNode(aClassNode2, new Point(30, 31));
 	
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(2, innerNode.getChildren().size());
 	}
 	
-	/** 
-	 * Testing Connect the inner nodes with edges.
-	 */
 	@Test
 	public void testConnectInnerNodeWithEdges()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		node2.translate(100, 0);
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
+		moveNode(aClassNode2, 30, 30);
+		addEdge(aDependencyEdge, new Point(26, 26), new Point(65, 31));
 	
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
-	/** 
-	 * Testing cut and paste PackageNode
-	 */
 	@Test
 	public void testCutNodesAndEdgesInsidePackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		node2.translate(100, 0);
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
+		moveNode(aClassNode2, 100, 0);
+		addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
 		
-		aController.selectAll();
-		aController.cut(); 
-		aDiagram.draw(aGraphics);
+		selectAll();
+		cut(); 
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 		
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(5, 5, 210, 90), 
-				((Node) aDiagram.getRootNodes().toArray()[0]).view().getBounds());
 	}
 	
-	/**
-	 * Testing copy and paste inside PackageNode
-	 */
 	@Test
 	public void testCopyNodesAndEdgesInsidePackageNode()
 	{
-		ClassNode node1 = new ClassNode();
-		ClassNode node2 = new ClassNode();
-		aDiagram.builder().addNode(aPackageNode, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node1, new Point(25, 25), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(node2, new Point(30, 30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		node2.translate(100, 0);
-		aDiagram.builder().addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
+		addNode(aPackageNode, new Point(20, 20));
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(130, 30));
+		addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
 		
-		aController.selectAll();
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
-		assertEquals(2, aDiagram.getRootNodes().size());
+		selectAll();
+		copy();
+		paste();
+		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertEquals(new Rectangle(5, 5, 210, 90), 
-				((Node) aDiagram.getRootNodes().toArray()[1]).view().getBounds());
 	}	
 }
