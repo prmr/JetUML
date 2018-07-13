@@ -26,6 +26,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -33,6 +34,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.Clipboard2;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
@@ -43,12 +45,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Tests various interactions with Use Case Diagram normally triggered from the 
@@ -58,9 +54,6 @@ public class TestUsageScenariosUseCaseDiagram
 {
 	private UseCaseDiagram aDiagram;
 	private DiagramOperationProcessor aProcessor;
-	private GraphicsContext aGraphics;
-	private DiagramCanvas aPanel;
-	private DiagramCanvasController aController;
 	private ActorNode aActorNode1;
 	private ActorNode aActorNode2;
 	private UseCaseNode aUseCaseNode1;
@@ -71,6 +64,7 @@ public class TestUsageScenariosUseCaseDiagram
 	private UseCaseGeneralizationEdge aGeneralEdge;
 	private NoteEdge aNoteEdge;
 	private List<DiagramElement> aSelection;
+	private Clipboard2 aClipboard;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -82,18 +76,11 @@ public class TestUsageScenariosUseCaseDiagram
 		JavaFXLoader loader = JavaFXLoader.instance();
 	}
 	
-	/**
-	 * General setup.
-	 */
 	@Before
 	public void setup()
 	{
 		aDiagram = new UseCaseDiagram();
 		aProcessor = new DiagramOperationProcessor();
-		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram), a ->  {});
-		aPanel.setController(aController);
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -104,6 +91,7 @@ public class TestUsageScenariosUseCaseDiagram
 		aGeneralEdge = new UseCaseGeneralizationEdge();
 		aNoteEdge = new NoteEdge();
 		aSelection = new ArrayList<>();
+		aClipboard = Clipboard2.instance();
 	}
 	
 	private void addNode(Node pNode, Point pRequestedPosition)
@@ -130,6 +118,35 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		aProcessor.executeNewOperation(aDiagram.builder().createDeleteElementsOperation(aSelection));
 		aSelection.clear();
+	}
+	
+	private void copy()
+	{
+		aClipboard.copy(aSelection);
+	}
+	
+	private void paste()
+	{
+		aProcessor.executeNewOperation(aDiagram.builder().createAddElementsOperation(aClipboard.getElements()));
+	}
+	
+	private void cut()
+	{
+		aClipboard.copy(aSelection);
+		aProcessor.executeNewOperation(aDiagram.builder().createDeleteElementsOperation(aSelection));
+	}
+	
+	private void select(DiagramElement... pElements)
+	{
+		aSelection.clear();
+		aSelection.addAll(Arrays.asList(pElements));
+	}
+	
+	private void selectAll()
+	{
+		aSelection.clear();
+		aSelection.addAll(aDiagram.getRootNodes());
+		aSelection.addAll(aDiagram.getEdges());
 	}
 	
 	@Test
@@ -289,7 +306,7 @@ public class TestUsageScenariosUseCaseDiagram
 	{
 		addNode(aActorNode1, new Point(20, 20));
 		assertTrue(aDiagram.contains(aActorNode1));
-		aSelection.add(aActorNode1);
+		select(aActorNode1);
 		removeSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
@@ -300,7 +317,7 @@ public class TestUsageScenariosUseCaseDiagram
 		addNode(aNoteNode, new Point(75, 75));
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.contains(aNoteNode));
-		aSelection.add(aNoteNode);
+		select(aNoteNode);
 		removeSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.contains(aActorNode1));
@@ -341,7 +358,7 @@ public class TestUsageScenariosUseCaseDiagram
 		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		addEdge(aNoteEdge, new Point(85, 25), new Point(110, 110));
 		
-		aSelection.add(aAssociationEdge);
+		select(aAssociationEdge);
 		removeSelected();
 		assertEquals(3, aDiagram.getEdges().size());
 		assertFalse(aDiagram.contains(aAssociationEdge));
@@ -359,56 +376,6 @@ public class TestUsageScenariosUseCaseDiagram
 		assertTrue(aDiagram.contains(aAssociationEdge));
 	}
 	
-//	@Test
-//	public void testDeleteCombinationNodeAndEdgeOBSOLETE()
-//	{
-//		NoteNode noteNode = new NoteNode();
-//		NoteEdge noteEdge1 = new NoteEdge();
-//		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(noteNode, new Point(100, 100), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
-//		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
-//		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
-//		aDiagram.builder().addEdge(noteEdge1, new Point(85, 25), new Point(110, 110));
-//
-//		// delete aActorNode1 and all 4 edges
-//		aController.getSelectionModel().addToSelection(aActorNode1);
-//		aController.getSelectionModel().addToSelection(aAssociationEdge);
-//		aController.getSelectionModel().addToSelection(aDependencyEdge);
-//		aController.getSelectionModel().addToSelection(aGeneralEdge);
-//		aController.getSelectionModel().addToSelection(noteEdge1);
-//
-//		aController.removeSelected();
-//		aController.getSelectionModel().clearSelection();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(4, aDiagram.getRootNodes().size());
-//		assertEquals(0, aDiagram.getEdges().size());
-//		
-//		aController.undo();
-//		assertEquals(5, aDiagram.getRootNodes().size());
-//		assertEquals(4, aDiagram.getEdges().size());
-//		
-//		/* now delete aUseCaseNode2, aActorNode2 and aGeneralEdge
-//		 * aAssociationEdge and aDependencyEdge will also be deleted
-//		 * since they are connected to aActorNode2
-//		 */
-//		aController.getSelectionModel().addToSelection(aUseCaseNode2);
-//		aController.getSelectionModel().addToSelection(aActorNode2);
-//		aController.getSelectionModel().addToSelection(aGeneralEdge);
-//		aController.removeSelected();
-//		aController.getSelectionModel().clearSelection();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(3, aDiagram.getRootNodes().size());
-//		assertEquals(1, aDiagram.getEdges().size());
-//		
-//		aController.undo();
-//		assertEquals(5, aDiagram.getRootNodes().size());
-//		assertEquals(4, aDiagram.getEdges().size());
-//	}
-	
 	@Test
 	public void testDeleteCombinationNodeAndEdge()
 	{
@@ -422,11 +389,7 @@ public class TestUsageScenariosUseCaseDiagram
 		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		addEdge(aNoteEdge, new Point(85, 25), new Point(110, 110));
 
-		aSelection.add(aActorNode1);
-		aSelection.add(aAssociationEdge);
-		aSelection.add(aDependencyEdge);
-		aSelection.add(aGeneralEdge);
-		aSelection.add(aNoteEdge);
+		select(aActorNode1, aAssociationEdge, aDependencyEdge, aGeneralEdge, aNoteEdge);
 		
 		removeSelected();
 		
@@ -458,102 +421,104 @@ public class TestUsageScenariosUseCaseDiagram
 		assertEquals(4, aDiagram.getEdges().size());
 	}
 	
-	/**
-	 * Below are methods testing copy and paste feature for Use Case Diagram.
-	 * 
-	 * 
-	 * 
-	 * Testing copy a Node.
-	 */
 	@Test
-	public void testCopyNodeOBSOLETE()
+	public void testCopyPasteNode()
 	{
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aActorNode1.view().getBounds();
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
-		aController.getSelectionModel().addToSelection(aActorNode1);
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aUseCaseNode1, new Point(80, 20));
+		select(aActorNode1);
+		
+		copy();
+		paste();
 	
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertTrue(new Rectangle(0, 0, 48, 88).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) ||
-			new Rectangle(0, 0, 48, 87).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())));
+		Node newNode = (Node) aDiagram.getRootNodes().toArray()[2];
+		assertTrue(newNode.getClass() == ActorNode.class);
+		assertEquals(new Point(0,0), newNode.position());
 	}
 	
-	/**
-	 * 
-	 * Testing cut a Node.
-	 */
 	@Test
-	public void testCutNodeOBSOLETE()
+	public void testCutNode()
 	{
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.draw(aGraphics);
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aUseCaseNode1, new Point(80, 20));
 		
-		aController.getSelectionModel().addToSelection(aUseCaseNode1);
-		aController.cut();
-		aController.getSelectionModel().clearSelection();
-		aDiagram.draw(aGraphics);
-		assertEquals(1, aDiagram.getRootNodes().size());
+		select(aUseCaseNode1);
+		cut();
 
-		aController.paste();
-		aDiagram.draw(aGraphics);
-		assertEquals(new Rectangle(0, 0, 110, 40), (((UseCaseNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds()));
+		assertEquals(1, aDiagram.getRootNodes().size());
+		
+		paste();
+
 		assertEquals(2, aDiagram.getRootNodes().size());
+		Node newNode = (Node) aDiagram.getRootNodes().toArray()[1];
+		assertTrue(newNode.getClass() == UseCaseNode.class);
+		assertEquals(new Point(0,0), newNode.position());
 	}
 	
-	/**
-	 * 
-	 * Testing copy two Node with an edge.
-	 */
 	@Test
-	public void testCopyNodesWithEdgeOBSOLETE()
+	public void testCopyNodesWithEdge()
 	{
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
-		aController.selectAll();
-		aController.copy();
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aActorNode2, new Point(250, 20));
+		addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		
+		selectAll();
+		copy();
+		paste();
+		
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
-		assertTrue(new Rectangle(0, 0, 48, 88).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) || new Rectangle(0, 0, 48, 87).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())));
 	}
 
-	/**
-	 * 
-	 * Testing cut two Node with an edge.
-	 */
+//	@Test
+//	public void testCutNodesWithEdgeOBSOLETE()
+//	{
+//		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+//		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+//		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+//		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
+//		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+//		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+//		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+//		
+//		aController.getSelectionModel().addToSelection(aActorNode1);
+//		aController.getSelectionModel().addToSelection(aUseCaseNode2);
+//		aController.getSelectionModel().addToSelection(aGeneralEdge);
+//		
+//		aController.cut();
+//		aDiagram.draw(aGraphics);
+//		assertEquals(2, aDiagram.getRootNodes().size());
+//		
+//		assertEquals(0, aDiagram.getEdges().size());
+//
+//		aController.paste();
+//		aDiagram.draw(aGraphics);
+//		assertEquals(4, aDiagram.getRootNodes().size());
+//		assertEquals(1, aDiagram.getEdges().size());
+//		assertTrue(new Rectangle(0, 0, 48, 88).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) || 
+//				new Rectangle(0, 0, 48, 87).equals(((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
+//	}
+	
 	@Test
-	public void testCutNodesWithEdgeOBSOLETE()
+	public void testCutNodesWithEdge()
 	{
-		aDiagram.builder().addNode(aActorNode1, new Point(20, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aActorNode2, new Point(250, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode1, new Point(80, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addNode(aUseCaseNode2, new Point(140, 20), Integer.MAX_VALUE, Integer.MAX_VALUE);
-		aDiagram.builder().addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
-		aDiagram.builder().addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
-		aDiagram.builder().addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
+		addNode(aActorNode1, new Point(20, 20));
+		addNode(aActorNode2, new Point(250, 20));
+		addNode(aUseCaseNode1, new Point(80, 20));
+		addNode(aUseCaseNode2, new Point(140, 20));
+		addEdge(aAssociationEdge,  new Point(20, 20), new Point(250, 20));
+		addEdge(aDependencyEdge,  new Point(80, 20), new Point(250, 20));
+		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		
-		aController.getSelectionModel().addToSelection(aActorNode1);
-		aController.getSelectionModel().addToSelection(aUseCaseNode2);
-		aController.getSelectionModel().addToSelection(aGeneralEdge);
-		
-		aController.cut();
-		aDiagram.draw(aGraphics);
+		select(aActorNode1, aUseCaseNode2, aGeneralEdge);
+		cut();
+
 		assertEquals(2, aDiagram.getRootNodes().size());
-		
 		assertEquals(0, aDiagram.getEdges().size());
 
-		aController.paste();
-		aDiagram.draw(aGraphics);
+		paste();
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());
-		assertTrue(new Rectangle(0, 0, 48, 88).equals((((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds())) || 
-				new Rectangle(0, 0, 48, 87).equals(((ActorNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
 	}
 }
