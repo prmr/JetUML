@@ -23,8 +23,8 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Stack;
 
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
@@ -442,31 +442,85 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
+	 * @param pElement The element to check.
+	 * @return The list of elements that have to be deleted with pElement.
+	 */
+	protected List<DiagramElement> findCoDeletions(DiagramElement pElement)
+	{
+		ArrayList<DiagramElement> result = new ArrayList<>();
+		if( pElement.getClass() == PointNode.class )
+		{
+			for( Edge edge : aDiagram.getEdges((Node)pElement))
+			{
+				result.add(edge);
+			}
+		}
+		if( pElement.getClass() == NoteEdge.class )
+		{
+			Edge edge = (Edge)pElement;
+			if( edge.getStart().getClass() == PointNode.class )
+			{
+				result.add(edge.getStart());
+			}
+			if( edge.getEnd().getClass() == PointNode.class )
+			{
+				result.add(edge.getEnd());
+			}
+		}
+		if( pElement instanceof Node )
+		{
+			List<Node> descendents = getNodeAndAllChildren((Node)pElement);
+			for(Edge edge : aDiagram.getEdges())
+			{
+				if(descendents.contains(edge.getStart() ) || descendents.contains(edge.getEnd()))
+				{
+					result.add(edge);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Creates an operation that removes all the elements in pElements.
 	 * 
 	 * @param pElements The elements to remove.
 	 * @return The requested operation.
 	 * @pre pElements != null.
 	 */
-	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
+	public final DiagramOperation createDeleteElementsOperation(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
-		Stack<Node> nodes = new Stack<>();
-		CompoundOperation result = new CompoundOperation();
-		for(DiagramElement element : pElements)
+		HashSet<DiagramElement> toDelete = new HashSet<>();
+		for( DiagramElement element : pElements)
 		{
-			if(element instanceof Node)
-			{
-				nodes.add((Node) element);
-			}
-			else if(element instanceof Edge)
-			{
-				result.add(createRemoveEdgeOperation((Edge) element));
-			}
+			toDelete.add(element);
+			toDelete.addAll(findCoDeletions(element));
 		}
-		while(!nodes.empty())
+		CompoundOperation result = new CompoundOperation();
+		for( DiagramElement element : toDelete)
 		{
-			result.add(createRemoveNodeOperation(nodes.pop()));
+			if( element instanceof Edge )
+			{
+				result.add(new SimpleOperation(
+						()-> aDiagram.atomicRemoveEdge((Edge)element),
+						()-> aDiagram.atomicAddEdge((Edge)element)));
+			}
+			else if( element instanceof Node )
+			{
+				if(hasParent((Node) element))
+				{
+					result.add(new SimpleOperation(
+						createDetachOperation((ChildNode)element),
+						createReinsertOperation((ChildNode)element)));
+				}
+				else
+				{
+					result.add(new SimpleOperation(
+						()-> aDiagram.atomicRemoveRootNode((Node)element),
+						()-> aDiagram.atomicAddRootNode((Node)element)));
+				}
+			}
 		}
 		return result;
 	}
@@ -500,11 +554,10 @@ public abstract class DiagramBuilder
 		return new SimpleOperation(
 				()-> pNode.translate(pX, pY),
 				()-> pNode.translate(-pX, -pY));
-				
 	}
 	
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
-	{
+	{ 
 		assert canAdd(pEdge, pPoint1, pPoint2);
 		Node node1 = aDiagram.findNode(pPoint1);
 		Node node2 = aDiagram.findNode(pPoint2);
@@ -544,7 +597,7 @@ public abstract class DiagramBuilder
 		if( isChild( pNode ))
 		{
 			result.add(new SimpleOperation(()-> ((ChildNode)pNode).getParent().removeChild((ChildNode)pNode),
-				()-> ((ChildNode)pNode).getParent().addChild((ChildNode)pNode)));
+				createReinsertOperation((ChildNode)pNode)));
 		}
 		else
 		{
@@ -552,6 +605,19 @@ public abstract class DiagramBuilder
 					()-> aDiagram.atomicAddRootNode(pNode)));
 		}
 		return result;
+	}
+	
+	private static Runnable createReinsertOperation(ChildNode pNode)
+	{
+		ParentNode parent = pNode.getParent();
+		int index = parent.getChildren().indexOf(pNode);
+		return ()-> parent.addChild(index, pNode);
+	}
+	
+	private static Runnable createDetachOperation(ChildNode pNode)
+	{
+		ParentNode parent = pNode.getParent();
+		return ()-> parent.removeChild(pNode);
 	}
 	
 	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
@@ -597,7 +663,7 @@ public abstract class DiagramBuilder
 	 * @param pNode A node to check for parenthood.
 	 * @return True iif pNode has a non-null parent.
 	 */
-	protected boolean hasParent(Node pNode)
+	protected static boolean hasParent(Node pNode)
 	{
 		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
 	}

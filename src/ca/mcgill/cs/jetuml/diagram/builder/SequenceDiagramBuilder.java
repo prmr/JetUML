@@ -21,7 +21,10 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import java.util.List;
+
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
@@ -55,6 +58,35 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	protected List<DiagramElement> findCoDeletions(DiagramElement pElement)
+	{
+		List<DiagramElement> result = super.findCoDeletions(pElement);
+		if( pElement instanceof CallEdge && hasNoCallees(((Edge)pElement).getEnd()))
+		{
+			result.add(((Edge)pElement).getEnd());
+		}
+		if( pElement instanceof CallEdge )
+		{
+			Edge returnEdge = null;
+			Edge input = (CallEdge) pElement;
+			for( Edge edge : aDiagram.getEdges() )
+			{
+				if( edge instanceof ReturnEdge && edge.getStart() == input.getEnd() && edge.getEnd() == input.getStart())
+				{
+					returnEdge = edge;
+					break;
+				}
+			}
+			if( returnEdge != null )
+			{
+				final Edge target = returnEdge;
+				result.add(target);
+			}
+		}
+		return result;
 	}
 	
 	@Override
