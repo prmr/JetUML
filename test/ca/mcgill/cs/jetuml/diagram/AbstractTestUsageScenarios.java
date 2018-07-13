@@ -28,6 +28,7 @@ import org.junit.BeforeClass;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard2;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -80,12 +81,25 @@ public class AbstractTestUsageScenarios
 		aProcessor.executeNewOperation(aDiagram.builder().createMoveNodeOperation(pNode, pX, pY));
 	}
 	
+	protected void moveSelection(int pX, int pY)
+	{
+		CompoundOperation operation = new CompoundOperation();
+		for( DiagramElement element : aSelection)
+		{
+			if( element instanceof Node)
+			{
+				operation.add(aDiagram.builder().createMoveNodeOperation((Node)element, pX, pY));
+			}
+		}
+		aProcessor.executeNewOperation(operation);
+	}
+	
 	protected void setProperty(Property pProperty, Object pValue)
 	{
 		aProcessor.executeNewOperation(aDiagram.builder().createPropertyChangeOperation(pProperty, pValue));
 	}
 	
-	protected void removeSelected()
+	protected void deleteSelected()
 	{
 		aProcessor.executeNewOperation(aDiagram.builder().createDeleteElementsOperation(aSelection));
 		aSelection.clear();

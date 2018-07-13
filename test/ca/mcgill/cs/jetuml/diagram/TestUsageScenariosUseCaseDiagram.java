@@ -220,7 +220,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		addNode(aActorNode1, new Point(20, 20));
 		assertTrue(aDiagram.contains(aActorNode1));
 		select(aActorNode1);
-		removeSelected();
+		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		
 		undo();
@@ -231,7 +231,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.contains(aNoteNode));
 		select(aNoteNode);
-		removeSelected();
+		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.contains(aActorNode1));
 		assertFalse(aDiagram.contains(aNoteNode));
@@ -244,7 +244,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertTrue(aDiagram.contains(aUseCaseNode1));
 		assertTrue(aDiagram.contains(aActorNode1));
 		select(aActorNode1, aUseCaseNode1);
-		removeSelected();
+		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertFalse(aDiagram.contains(aActorNode1));
 		assertTrue(aDiagram.contains(aNoteNode));
@@ -271,12 +271,12 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		addEdge(aNoteEdge, new Point(85, 25), new Point(110, 110));
 		
 		select(aAssociationEdge);
-		removeSelected();
+		deleteSelected();
 		assertEquals(3, aDiagram.getEdges().size());
 		assertFalse(aDiagram.contains(aAssociationEdge));
 		
 		select(aGeneralEdge);
-		removeSelected();
+		deleteSelected();
 		assertEquals(2, aDiagram.getEdges().size());
 		assertFalse(aDiagram.contains(aGeneralEdge));
 
@@ -303,7 +303,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 
 		select(aActorNode1, aAssociationEdge, aDependencyEdge, aGeneralEdge, aNoteEdge);
 		
-		removeSelected();
+		deleteSelected();
 		
 		assertEquals(4, aDiagram.getRootNodes().size());
 		assertFalse(aDiagram.contains(aActorNode1));
@@ -319,7 +319,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		 * since they are connected to aActorNode2
 		 */
 		select(aUseCaseNode2, aActorNode2, aGeneralEdge);
-		removeSelected();
+		deleteSelected();
 		
 		assertEquals(3, aDiagram.getRootNodes().size());
 		assertEquals(1, aDiagram.getEdges().size());

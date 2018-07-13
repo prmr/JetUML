@@ -22,35 +22,22 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 {
-	private GraphicsContext aGraphics;
-	private DiagramCanvas aPanel;
-	private DiagramCanvasController aController;
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
 	private InitialStateNode aInitialNode;
@@ -61,26 +48,15 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	private StateTransitionEdge aTransitionEdge4;
 	private StateTransitionEdge aTransitionEdge5;
 
-	/**
-	 * General setup.
-	 */
 	@Before
 	public void setup()
 	{
 		super.setup();
 		aDiagram = new StateDiagram();
-		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aPanel = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aPanel, new DiagramTabToolBar(aDiagram), a ->  {});
-		aPanel.setController(aController);
 		aStateNode1 = new StateNode();
-//		aStateNode1.moveTo(new Point(50, 20));
 		aStateNode2 = new StateNode();
-//		aStateNode2.moveTo(new Point(150, 20));
 		aInitialNode = new InitialStateNode();
-//		aInitialNode.moveTo(new Point(20, 20));
 		aFinalNode = new FinalStateNode();
-//		aFinalNode.moveTo(new Point(250, 20));
 		aTransitionEdge1 = new StateTransitionEdge();
 		aTransitionEdge2 = new StateTransitionEdge();
 		aTransitionEdge3 = new StateTransitionEdge();
@@ -91,7 +67,6 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	@Test
 	public void testStateDiagramCreate()
 	{
-		// Create a state diagram with two state nodes, one start node, one end node
 		aStateNode1.setName("Node 1");
 		aStateNode2.setName("Node 2");
 		addNode(aStateNode1, new Point(30,30));
@@ -100,7 +75,6 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aFinalNode, new Point(30, 200));
 		assertEquals(4, aDiagram.getRootNodes().size());
 		
-		// Add edges between all of these, including back-and-forth between two states. 
 		aTransitionEdge1.setMiddleLabel("Edge 1");
 		addEdge(aTransitionEdge1, new Point(6, 6), new Point(35, 35));
 		
@@ -146,418 +120,298 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertSame(aFinalNode, aTransitionEdge4.getEnd());
 	}
 	
-//	@Test
-//	public void testStateDiagramCreateNotes() throws Exception
-//	{
-//		// Create a state diagram with two state nodes, one start node, one end node
-//		StateDiagram diagram = new StateDiagram();
-//		StateNode node1 = new StateNode();
-//		node1.setName("Node 1");
-//		diagram.builder().addNode(node1, new Point(30,30), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		NoteNode note = new NoteNode();
-//		diagram.builder().addNode(note, new Point(130,130), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		assertEquals(2, diagram.getRootNodes().size());
-//		// Note edge with a point node not overlapping any nodes
-//		NoteEdge edge1 = new NoteEdge();
-//		diagram.builder().addEdge(edge1, new Point(135,135), new Point(300,300));
-//		assertEquals(3, diagram.getRootNodes().size());
-//		assertTrue(diagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
-//		assertEquals(1, diagram.getEdges().size());
-//		
-//		// Note edge with a point node overlapping any nodes
-//		NoteEdge edge2 = new NoteEdge();
-//		diagram.builder().addEdge(edge2, new Point(135,135), new Point(40,40));
-//		assertEquals(4, diagram.getRootNodes().size());
-//		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
-//		assertEquals(2, diagram.getEdges().size());
-//		
-//		// Note edge with a starting point on a node
-//		NoteEdge edge3 = new NoteEdge();
-//		diagram.builder().addEdge(edge3, new Point(35,35), new Point(135,135));
-//		assertEquals(4, diagram.getRootNodes().size());
-//		assertTrue(diagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
-//		assertEquals(3, diagram.getEdges().size());
-//		assertEquals(node1, edge3.getStart());
-//		assertEquals(note, edge3.getEnd());
-//	}
-//	
-//	@Test
-//	public void testReconnectStatesWithPreExistingHorizontalEdgeShouldNotInduceDivisionByZeroException()
-//	{
-//		createSampleDiagram(aStateNode1, aStateNode2);
-//		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
-//		aDiagram.draw(aGraphics);
-//		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aStateNode2);
-//		aDiagram.draw(aGraphics);
-//	}
-//
-//	@Test
-//	public void testDuplicateTransitionEdgeNotAllowed()
-//	{
-//		createSampleDiagram(aStateNode1, aFinalNode);
-//		assertEquals(0, aDiagram.getEdges().size());
-//		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aFinalNode);
-//		assertEquals(1, aDiagram.getEdges().size());
-//		aFinalNode.translate(0, 100);
-//		aDiagram.restoreEdge(new StateTransitionEdge(), aStateNode1, aFinalNode);
-//		assertEquals(2, aDiagram.getEdges().size());
-//	}
-//
-//	/**
-//	 * Below are methods testing basic nodes and edge creation
-//	 * for a state diagram.
-//	 *
-//	 * Testing create a state diagram.
-//	 */
-//	@Test
-//	public void testCreateStateDiagram()
-//	{
-//		// test creation of nodes
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-//		assertEquals(4, aDiagram.getRootNodes().size());
-//		
-//		// test creation of edges, directly link InitialNode to FinalNode is allowed
-//		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-//		assertEquals(5, aDiagram.getEdges().size());
-//		
-//		/*
-//		 *  link from StateNode to InitialNode, from FinalNode to StateNode
-//		 *  and InitialNode are not allowed
-//		 */
-//		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
-//		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
-//		assertTrue(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
-//		aDiagram.builder().addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
-//		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
-//		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
-//		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
-//		assertEquals(6, aDiagram.getEdges().size());
-//		
-//		// test labeling edges
-//		aTransitionEdge1.setMiddleLabel("start");
-//		aTransitionEdge2.setMiddleLabel("forward");
-//		aTransitionEdge3.setMiddleLabel("finish");
-//		aTransitionEdge4.setMiddleLabel("reverse");
-//		aTransitionEdge5.setMiddleLabel("crash");
-//		assertEquals("start", aTransitionEdge1.getMiddleLabel());
-//		assertEquals("forward", aTransitionEdge2.getMiddleLabel());
-//		assertEquals("finish", aTransitionEdge3.getMiddleLabel());
-//		assertEquals("reverse", aTransitionEdge4.getMiddleLabel());
-//		assertEquals("crash", aTransitionEdge5.getMiddleLabel());
-//	}
-//	
-//	/**
-//	 * Testing connect any StateNode with NoteEdge (not allowed).
-//	 */
-//	@Test
-//	public void testConnectStateNodeWithNoteEdge()
-//	{
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-//		NoteEdge noteEdge1 = new NoteEdge();
-//		NoteEdge noteEdge2 = new NoteEdge();
-//		NoteEdge noteEdge3 = new NoteEdge();
-//		NoteEdge noteEdge4 = new NoteEdge();
-//		NoteEdge noteEdge5 = new NoteEdge();
-//		
-//		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
-//		assertFalse(aDiagram.builder().canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
-//		assertFalse(aDiagram.builder().canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
-//		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
-//		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
-//		assertEquals(0, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing connect NoteNode with NoteEdge.
-//	 */
-//	@Test
-//	public void testConnectNoteNodeWithNoteEdge()
-//	{
-//		NoteNode note = new NoteNode();
-//		note.moveTo(new Point(50, 200));
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, note);
-//		NoteEdge noteEdge1 = new NoteEdge();
-//		NoteEdge noteEdge2 = new NoteEdge();
-//		NoteEdge noteEdge3 = new NoteEdge();
-//		NoteEdge noteEdge4 = new NoteEdge();
-//		NoteEdge noteEdge5 = new NoteEdge();
-//		
-//		aDiagram.builder().addEdge(noteEdge1, new Point(50, 200), new Point(55, 25));
-//		aDiagram.builder().addEdge(noteEdge2, new Point(50, 200), new Point(155, 25));
-//		aDiagram.builder().addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
-//		aDiagram.builder().addEdge(noteEdge4, new Point(50, 200), new Point(455, 125));
-//		aDiagram.builder().addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
-//		assertEquals(5, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing connect any StateNode with NoteNode
-//	 */
-//	@Test
-//	public void testConnectStateNodeWithNoteNode()
-//	{
-//		NoteNode note = new NoteNode();
-//		note.moveTo(new Point(50, 200));
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode, note);
-//		NoteEdge noteEdge1 = new NoteEdge();
-//		NoteEdge noteEdge2 = new NoteEdge();
-//		NoteEdge noteEdge3 = new NoteEdge();
-//		NoteEdge noteEdge4 = new NoteEdge();
-//		NoteEdge noteEdge5 = new NoteEdge();
-//		
-//		// valid operations
-//		aDiagram.builder().addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
-//		aDiagram.builder().addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
-//		aDiagram.builder().addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
-//		assertEquals(3, aDiagram.getEdges().size());
-//		// invalid operations, cannot connect any StateNode with NoteEdges
-//		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
-//		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
-//		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
-//		assertEquals(3, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Below are methods testing nodes movement.
-//	 * 
-//	 * 
-//	 * 
-//	 * Testing individual node movement.
-//	 */
-//	@Test
-//	public void testIndividualNodeMovement()
-//	{
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-//		aInitialNode.translate(3, 12);
-//		aStateNode1.translate(-5, 80);
-//		aStateNode2.translate(15, -30);
-//		aFinalNode.translate(40, 20);
-//		
-//		assertEquals(new Rectangle(23, 32, 20, 20), aInitialNode.view().getBounds());
-//		assertEquals(new Rectangle(45, 100, 80, 60), aStateNode1.view().getBounds());
-//		assertEquals(new Rectangle(165, -10, 80, 60), aStateNode2.view().getBounds());
-//		assertEquals(new Rectangle(290, 40, 20, 20), aFinalNode.view().getBounds());
-//	}
-//	
-//	/**
-//	 * Testing nodes and edge movement.
-//	 */
-//	@Test
-//	public void testNodesAndEdgesMovement()
-//	{
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-//		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-//		
-//		aController.getSelectionModel().addToSelection(aInitialNode);
-//		aController.getSelectionModel().addToSelection(aStateNode1);
-//		aController.getSelectionModel().addToSelection(aTransitionEdge1);
-//		aController.getSelectionModel().addToSelection(aTransitionEdge2);
-//		aController.getSelectionModel().addToSelection(aTransitionEdge3);
-//
-//		Rectangle aTransitionEdge1Bounds = aTransitionEdge1.view().getBounds();
-//		Rectangle aTransitionEdge2Bounds = aTransitionEdge2.view().getBounds();
-//		Rectangle aTransitionEdge3Bounds = aTransitionEdge3.view().getBounds();
-//
-//		for(DiagramElement element: aController.getSelectionModel())
-//		{
-//			if(element instanceof Node)
-//			{
-//				((Node) element).translate(26, 37);
-//			}
-//		}
-//		assertEquals(new Rectangle(46, 57, 20, 20), aInitialNode.view().getBounds());
-//		assertEquals(new Rectangle(76, 57, 80, 60), aStateNode1.view().getBounds());
-//		assertEquals(new Rectangle(150, 20, 80, 60), aStateNode2.view().getBounds());
-//		assertEquals(new Rectangle(250, 20, 20, 20), aFinalNode.view().getBounds());
-//		assertEquals(aInitialNode, aTransitionEdge1.getStart());
-//		assertEquals(aStateNode1, aTransitionEdge1.getEnd());
-//		assertEquals(aStateNode1, aTransitionEdge2.getStart());
-//		assertEquals(aStateNode2, aTransitionEdge2.getEnd());
-//
-//		/*
-//		 *  if either start or end node is moved,
-//		 *  the edge bounds would be changed
-//		 */
-//		assertFalse(aTransitionEdge1Bounds == aTransitionEdge1.view().getBounds());
-//		assertFalse(aTransitionEdge2Bounds == aTransitionEdge2.view().getBounds());
-//		/*
-//		 *  if both the start and end node are not moved,
-//		 *  the edge should have the same bounds
-//		 */
-//		assertEquals(aTransitionEdge3Bounds, aTransitionEdge3.view().getBounds());
-//	}
-//	
-//	/**
-//	 * Below are methods testing deletion and undo feature for state diagram.
-//	 * 
-//	 * 
-//	 * Testing delete a start node with an attached edge.
-//	 */
-//	@Test
-//	public void testRemoveStartNode()
-//	{
-//		createSampleDiagram(aInitialNode, aStateNode1);
-//		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-//		aController.getSelectionModel().addToSelection(aInitialNode);
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(1, aDiagram.getRootNodes().size());
-//		assertEquals(0, aDiagram.getEdges().size());
-//
-//		aController.undo();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(1, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing delete a end node with an attached edge.
-//	 */
-//	@Test
-//	public void testRemoveEndNode()
-//	{
-//		createSampleDiagram(aStateNode2, aFinalNode);
-//		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-//		aController.getSelectionModel().addToSelection(aFinalNode);
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(1, aDiagram.getRootNodes().size());
-//		assertEquals(0, aDiagram.getEdges().size());
-//
-//		aController.undo();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(1, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing delete a end node with an attached edge.
-//	 */
-//	@Test
-//	public void testRemoveStateNode()
-//	{
-//		createSampleDiagram(aInitialNode, aStateNode1, aStateNode2, aFinalNode);
-//		aDiagram.builder().addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
-//		aDiagram.builder().addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
-//		aController.getSelectionModel().addToSelection(aStateNode2);
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(3, aDiagram.getRootNodes().size());
-//		assertEquals(2, aDiagram.getEdges().size());
-//
-//		aController.undo();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(4, aDiagram.getRootNodes().size());
-//		assertEquals(5, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Below are methods testing copy and paste feature for state diagram.
-//	 * 
-//	 * 
-//	 * 
-//	 * Testing copy a StateNode.
-//	 */
-//	@Test
-//	public void testCopyStateNode()
-//	{
-//		createSampleDiagram(aStateNode1);
-//		aController.getSelectionModel().addToSelection(aStateNode1);
-//		aController.copy();
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(new Rectangle(0, 0, 80, 60),
-//				(((StateNode) aDiagram.getRootNodes().toArray()[1]).view().getBounds()));
-//	}
-//	
-//	/**
-//	 * 
-//	 * Testing cut a StateNode.
-//	 */
-//	@Test
-//	public void testCutStateNode()
-//	{
-//		createSampleDiagram(aStateNode1);
-//		aController.getSelectionModel().addToSelection(aStateNode1);
-//		aController.cut();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(0, aDiagram.getRootNodes().size());
-//		
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(1, aDiagram.getRootNodes().size());
-//		assertEquals(new Rectangle(0, 0, 80, 60),
-//				(((StateNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds()));
-//	}
-//	
-//	/**
-//	 * 
-//	 * Testing copy two Node with an edge.
-//	 */
-//	@Test
-//	public void testCopyNodesWithEdge()
-//	{
-//		createSampleDiagram(aStateNode1, aStateNode2);
-//		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-//		aController.selectAll();
-//		aController.copy();
-//		aController.paste();
-//
-//		aDiagram.draw(aGraphics);
-//		assertEquals(4, aDiagram.getRootNodes().size());
-//		assertEquals(2, aDiagram.getEdges().size());
-//		assertEquals(new Rectangle(0, 0, 80, 60),
-//				(((StateNode) aDiagram.getRootNodes().toArray()[2]).view().getBounds()));
-//	}
-//	
-//	/**
-//	 * 
-//	 * Testing cut and paste two nodes with an edge.
-//	 */
-//	@Test
-//	public void testCutNodesWithEdge()
-//	{
-//		createSampleDiagram(aStateNode1, aStateNode2);
-//		aDiagram.builder().addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
-//		
-//		aController.selectAll();
-//		aController.cut();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(0, aDiagram.getRootNodes().size());
-//		assertEquals(0, aDiagram.getEdges().size());
-//
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(1, aDiagram.getEdges().size());
-//		assertEquals(new Rectangle(0, 0, 80, 60),
-//				(((StateNode) aDiagram.getRootNodes().toArray()[0]).view().getBounds()));
-//	}
-//
-//	private void createSampleDiagram(AbstractNode... pNodes)
-//	{
-//		for (AbstractNode n : pNodes)
-//		{
-//			aDiagram.restoreRootNode(n);
-//		}
-//		aDiagram.draw(aGraphics);
-//	}
+	@Test
+	public void testStateDiagramCreateNotes()
+	{
+		aStateNode1.setName("Node 1");
+		addNode(aStateNode1, new Point(30,30));
+		addNode(aNoteNode, new Point(130,130));
+		
+		assertEquals(2, aDiagram.getRootNodes().size());
+		
+		// Note edge with a point node not overlapping any nodes
+		addEdge(aNoteEdge, new Point(135,135), new Point(300,300));
+		assertEquals(3, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
+		assertEquals(1, aDiagram.getEdges().size());
+		
+		// Note edge with a point node not overlapping any nodes
+		NoteEdge edge2 = new NoteEdge();
+		addEdge(edge2, new Point(135,135), new Point(40,40));
+		assertEquals(4, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(2, aDiagram.getEdges().size());
+		
+		// Note edge with a starting point on a node
+		NoteEdge edge3 = new NoteEdge();
+		addEdge(edge3, new Point(35,35), new Point(135,135));
+		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(aStateNode1, edge3.getStart());
+		assertEquals(aNoteNode, edge3.getEnd());
+	}
+	
+	@Test
+	public void testCreateStateDiagram()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
 
+		assertEquals(4, aDiagram.getRootNodes().size());
+		
+		// test creation of edges, directly link InitialNode to FinalNode is allowed
+		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		assertEquals(5, aDiagram.getEdges().size());
+		
+		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
+		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
+		assertTrue(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
+		aDiagram.builder().addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
+		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
+		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
+		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
+		assertEquals(6, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testConnectStateNodeWithNoteEdge()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		
+		NoteEdge noteEdge1 = new NoteEdge();
+		NoteEdge noteEdge2 = new NoteEdge();
+		NoteEdge noteEdge3 = new NoteEdge();
+		NoteEdge noteEdge4 = new NoteEdge();
+		NoteEdge noteEdge5 = new NoteEdge();
+		
+		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
+		assertEquals(0, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testConnectNoteNodeWithNoteEdge()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		addNode(aNoteNode, new Point(50, 200));
+		
+		NoteEdge noteEdge1 = new NoteEdge();
+		NoteEdge noteEdge2 = new NoteEdge();
+		NoteEdge noteEdge3 = new NoteEdge();
+		NoteEdge noteEdge4 = new NoteEdge();
+		NoteEdge noteEdge5 = new NoteEdge();
+		
+		addEdge(noteEdge1, new Point(50, 200), new Point(55, 25));
+		addEdge(noteEdge2, new Point(50, 200), new Point(155, 25));
+		addEdge(noteEdge3, new Point(50, 200), new Point(255, 25));
+		addEdge(noteEdge4, new Point(50, 200), new Point(455, 125));
+		addEdge(noteEdge5, new Point(50, 200), new Point(2255, -25));
+		assertEquals(5, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testConnectStateNodeWithNoteNode()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		addNode(aNoteNode, new Point(50, 200));
+		
+		NoteEdge noteEdge1 = new NoteEdge();
+		NoteEdge noteEdge2 = new NoteEdge();
+		NoteEdge noteEdge3 = new NoteEdge();
+		NoteEdge noteEdge4 = new NoteEdge();
+		NoteEdge noteEdge5 = new NoteEdge();
+		
+		// valid operations
+		aDiagram.builder().addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
+		aDiagram.builder().addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
+		aDiagram.builder().addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
+		assertEquals(3, aDiagram.getEdges().size());
+		// invalid operations, cannot connect any StateNode with NoteEdges
+		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
+		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
+		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
+		assertEquals(3, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testIndividualNodeMovement()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		
+		moveNode(aInitialNode, 3, 12);
+		moveNode(aStateNode1, -5, 80);
+		moveNode(aStateNode2, 15, -30);
+		moveNode(aFinalNode, 40, 20);
+		
+		assertEquals(new Point(23, 32), aInitialNode.position());
+		assertEquals(new Point(45, 100), aStateNode1.position());
+		assertEquals(new Point(165, -10), aStateNode2.position());
+		assertEquals(new Point(290, 40), aFinalNode.position());
+	}
+	
+	@Test
+	public void testNodesAndEdgesMovement()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		
+		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		
+		select(aInitialNode, aStateNode1, aTransitionEdge1, aTransitionEdge2, aTransitionEdge3);
+
+		moveSelection(26, 37);
+		
+		assertEquals(new Point(46, 57), aInitialNode.position());
+		assertEquals(new Point(76, 57), aStateNode1.position());
+		assertEquals(new Point(150, 20), aStateNode2.position());
+		assertEquals(new Point(250, 20), aFinalNode.position());
+	}
+	
+	@Test
+	public void testRemoveStartNode()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		
+		select(aInitialNode);
+		deleteSelected();
+		
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(0, aDiagram.getEdges().size());
+
+		undo();
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(1, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testRemoveEndNode()
+	{
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		
+		select(aFinalNode);
+		deleteSelected();
+		
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(0, aDiagram.getEdges().size());
+
+		undo();
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(1, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testRemoveStateNode()
+	{
+		addNode(aInitialNode, new Point(20,20));
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addNode(aFinalNode, new Point(250,20));
+		
+		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
+		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		addEdge(aTransitionEdge3, new Point(155, 25), new Point(255, 25));
+		addEdge(aTransitionEdge4, new Point(155, 25), new Point(55, 25));
+		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
+		
+		select(aStateNode2);
+		deleteSelected();
+		
+		assertEquals(3, aDiagram.getRootNodes().size());
+		assertEquals(2, aDiagram.getEdges().size());
+
+		undo();
+		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(5, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testCopyStateNode()
+	{
+		addNode(aStateNode1, new Point(50,20));
+		select(aStateNode1);
+		copy();
+		paste();
+		
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[1]).position()));
+	}
+	
+	@Test
+	public void testCutStateNode()
+	{
+		addNode(aStateNode1, new Point(50,20));
+		select(aStateNode1);
+		cut();
+		assertEquals(0, aDiagram.getRootNodes().size());
+		
+		paste();
+		
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[0]).position()));
+	}
+
+	@Test
+	public void testCopyNodesWithEdge()
+	{
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		
+		selectAll();
+		copy();
+		paste();
+
+		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[2]).position()));
+	}
+	
+	@Test
+	public void testCutNodesWithEdge()
+	{
+		addNode(aStateNode1, new Point(50,20));
+		addNode(aStateNode2, new Point(150,20));
+		addEdge(aTransitionEdge2, new Point(55, 25), new Point(155, 25));
+		
+		selectAll();
+		cut();
+		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, aDiagram.getEdges().size());
+
+		paste();
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[0]).position()));
+	}
 }
