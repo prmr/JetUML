@@ -52,7 +52,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
  * Tests for the methods of class Diagram as obtainable through
  * an instance of ClassDiagram
  */
-public class TestGraph
+public class TestDiagram
 {
 	private Diagram aDiagram;
 	private ClassNode aNode1;
