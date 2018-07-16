@@ -23,8 +23,6 @@ package ca.mcgill.cs.jetuml.application;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -33,7 +31,7 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import javafx.geometry.Rectangle2D;
 
 /**
- * Tracks the movement of a set of selected graph elements.
+ * Tracks the movement of a set of selected diagram elements.
  */
 public class MoveTracker
 {
@@ -65,36 +63,6 @@ public class MoveTracker
 	}
 
 	/**
-	 * Creates and returns a CompoundCommand that represents the movement
-	 * of all tracked nodes between the time where startTrackingMove was 
-	 * called and the time endTrackingMove was called.
-	 * 
-	 * @param pGraph The Diagram containing the selected elements.
-	 * @return A CompoundCommand describing the move.
-	 */
-	public CompoundCommand endTrackingMove(Diagram pGraph)
-	{
-		CompoundCommand command = new CompoundCommand();
-		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];
-		int i = 0;
-		for(Node node : aTrackedNodes)
-		{
-			selectionBounds2[i] = Conversions.toRectangle2D(node.view().getBounds());
-			i++;
-		}
-		for(i = 0; i < aOriginalBounds.size(); i++)
-		{
-			int dY = (int)(selectionBounds2[i].getMinY() - aOriginalBounds.get(i).getMinY());
-			int dX = (int)(selectionBounds2[i].getMinX() - aOriginalBounds.get(i).getMinX());
-			if(dX != 0 || dY != 0)
-			{
-				command.add(new MoveCommand(pGraph, aTrackedNodes.get(i), dX, dY));
-			}
-		}
-		return command;
-	}
-	
-	/**
 	 * Creates and returns a CompoundOperation that represents the movement
 	 * of all tracked nodes between the time where startTrackingMove was 
 	 * called and the time endTrackingMove was called.
@@ -102,7 +70,7 @@ public class MoveTracker
 	 * @param pDiagram The Diagram containing the selected elements.
 	 * @return A CompoundCommand describing the move.
 	 */
-	public CompoundOperation endTrackingMove2(Diagram pDiagram)
+	public CompoundOperation endTrackingMove(Diagram pDiagram)
 	{
 		CompoundOperation operation = new CompoundOperation();
 		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];

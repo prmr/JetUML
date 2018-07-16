@@ -24,22 +24,19 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
-import java.util.Stack;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.commands.Command;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.gui.SelectionModel;
@@ -48,14 +45,11 @@ public class TestMoveTracker
 {
 	private MoveTracker aMoveTracker;
 	private SelectionModel aSelection;
-	private ClassDiagram aGraph;
+	private ClassDiagram aDiagram;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
 	private DependencyEdge aEdge1;
-	private Field aCommandsField; 
-	private Field aDxField;
-	private Field aDyField;
-	private Field aNodeField;
+	private Field aOperationsField;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -68,25 +62,19 @@ public class TestMoveTracker
 	}
 	
 	@Before
-	public void setup() throws NoSuchFieldException, SecurityException
+	public void setup() throws ReflectiveOperationException
 	{
 		aMoveTracker = new MoveTracker();
 		aSelection = new SelectionModel( () -> {} );
-		aGraph = new ClassDiagram();
+		aDiagram = new ClassDiagram();
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);
 		aNode2 = new ClassNode();
 		aNode2.translate(400, 400);
 		aEdge1 = new DependencyEdge();
-		aGraph.restoreEdge(aEdge1, aNode1, aNode1);
-		aCommandsField = CompoundCommand.class.getDeclaredField("aCommands");
-		aCommandsField.setAccessible(true);
-		aDxField = MoveCommand.class.getDeclaredField("aDX");
-		aDxField.setAccessible(true);
-		aDyField = MoveCommand.class.getDeclaredField("aDY");
-		aDyField.setAccessible(true);
-		aNodeField = MoveCommand.class.getDeclaredField("aNode");
-		aNodeField.setAccessible(true);
+		aDiagram.restoreEdge(aEdge1, aNode1, aNode1);
+		aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
+		aOperationsField.setAccessible(true);
 	}
 
 	@Test
@@ -97,35 +85,44 @@ public class TestMoveTracker
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
 		aNode1.translate(50, 50);
-		CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(1, command.size());
-		MoveCommand mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(70, getDx(mc), 0.0001);
-		assertEquals(270, getDy(mc), 0.0001);
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagram);
+		assertEquals(1, getOperations(operation).size());
+		operation.undo();
+		assertEquals(150, aNode1.position().getX());
+		assertEquals(150, aNode1.position().getY());
+		operation.execute();
+		assertEquals(220, aNode1.position().getX());
+		assertEquals(420, aNode1.position().getY());
 		
 		// No change in selection, move only X
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(200, 0);
-		command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(1, command.size());
-		mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(200, getDx(mc), 0.0001);
-		assertEquals(0, getDy(mc), 0.0001);
+		operation = aMoveTracker.endTrackingMove(aDiagram);
+		assertEquals(1, getOperations(operation).size());
+		operation.undo();
+		assertEquals(220, aNode1.position().getX());
+		assertEquals(420, aNode1.position().getY());
+		operation.execute();
+		assertEquals(420, aNode1.position().getX());
+		assertEquals(420, aNode1.position().getY());
 		
 		// No change in selection, move only Y
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 200);
-		command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(1, command.size());
-		mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(0, getDx(mc), 0.0001);
-		assertEquals(200, getDy(mc), 0.0001);
+		operation = aMoveTracker.endTrackingMove(aDiagram);
+		assertEquals(1, getOperations(operation).size());
+		operation.undo();
+		assertEquals(420, aNode1.position().getX());
+		assertEquals(420, aNode1.position().getY());
+		operation.execute();
+		assertEquals(420, aNode1.position().getX());
+		assertEquals(620, aNode1.position().getY());
 		
 		// No change in selection, null move
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 0);
-		command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(0, command.size());
+		operation = aMoveTracker.endTrackingMove(aDiagram);
+		assertEquals(0, getOperations(operation).size());
 	}
 	
 	@Test
@@ -137,80 +134,72 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		CompoundCommand command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(2, command.size());
-		MoveCommand mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(20, getDx(mc), 0.0001);
-		assertEquals(20, getDy(mc), 0.0001);
-		assertTrue(aNode2 == getNode(mc));
-		mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(20, getDx(mc), 0.0001);
-		assertEquals(20, getDy(mc), 0.0001);
-		assertTrue(aNode1 == getNode(mc));
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagram);
+		List<DiagramOperation> operations = getOperations(operation);
+		assertEquals(2, operations.size());
 		
+		operations.get(0).undo();
+		assertEquals(150, aNode1.position().getX());
+		assertEquals(150, aNode1.position().getY());
+		assertEquals(420, aNode2.position().getX());
+		assertEquals(420, aNode2.position().getY());
+		operations.get(0).execute();
+		assertEquals(170, aNode1.position().getX());
+		assertEquals(170, aNode1.position().getY());
+		assertEquals(420, aNode2.position().getX());
+		assertEquals(420, aNode2.position().getY());
+		
+		operations.get(1).undo();
+		assertEquals(170, aNode1.position().getX());
+		assertEquals(170, aNode1.position().getY());
+		assertEquals(400, aNode2.position().getX());
+		assertEquals(400, aNode2.position().getY());
+		operations.get(1).execute();
+		assertEquals(170, aNode1.position().getX());
+		assertEquals(170, aNode1.position().getY());
+		assertEquals(420, aNode2.position().getX());
+		assertEquals(420, aNode2.position().getY());
+
 		// Second identical move
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		command = aMoveTracker.endTrackingMove(aGraph);
-		assertEquals(2, command.size());
-		mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(20, getDx(mc), 0.0001);
-		assertEquals(20, getDy(mc), 0.0001);
-		assertTrue(aNode2 == getNode(mc));
-		mc = (MoveCommand) getChildCommands(command).pop();
-		assertEquals(20, getDx(mc), 0.0001);
-		assertEquals(20, getDy(mc), 0.0001);
-		assertTrue(aNode1 == getNode(mc));
+		operation = aMoveTracker.endTrackingMove(aDiagram);
+		
+		operations = getOperations(operation);
+		assertEquals(2, operations.size());
+		
+		operations.get(0).undo();
+		assertEquals(170, aNode1.position().getX());
+		assertEquals(170, aNode1.position().getY());
+		assertEquals(440, aNode2.position().getX());
+		assertEquals(440, aNode2.position().getY());
+		operations.get(0).execute();
+		assertEquals(190, aNode1.position().getX());
+		assertEquals(190, aNode1.position().getY());
+		assertEquals(440, aNode2.position().getX());
+		assertEquals(440, aNode2.position().getY());
+		
+		operations.get(1).undo();
+		assertEquals(190, aNode1.position().getX());
+		assertEquals(190, aNode1.position().getY());
+		assertEquals(420, aNode2.position().getX());
+		assertEquals(420, aNode2.position().getY());
+		operations.get(1).execute();
+		assertEquals(190, aNode1.position().getX());
+		assertEquals(190, aNode1.position().getY());
+		assertEquals(440, aNode2.position().getX());
+		assertEquals(440, aNode2.position().getY());
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Stack<Command> getChildCommands(CompoundCommand pCommand)
+	private List<DiagramOperation> getOperations(CompoundOperation pOperation)
 	{
 		try
 		{
-			return (Stack<Command>)aCommandsField.get(pCommand);
+			return (List<DiagramOperation>)aOperationsField.get(pOperation);
 		}
-		catch( Exception pException )
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	private int getDx(MoveCommand pCommand)
-	{
-		try
-		{
-			return (int)aDxField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return 0;
-		}
-	}
-	
-	private int getDy(MoveCommand pCommand)
-	{
-		try
-		{
-			return (int)aDyField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return 0;
-		}
-	}
-	
-	private Node getNode(MoveCommand pCommand)
-	{
-		try
-		{
-			return (Node)aNodeField.get(pCommand);
-		}
-		catch( Exception pException )
+		catch( ReflectiveOperationException pException )
 		{
 			fail();
 			return null;

@@ -437,7 +437,7 @@ public class DiagramCanvasController
 		// For optimization purposes, some of the layouts are not done on every move event.
 		aCanvas.getDiagram().requestLayout();
 		setModified(true);
-		CompoundOperation operation = aMoveTracker.endTrackingMove2(aCanvas.getDiagram());
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
 		if(!operation.isEmpty())
 		{
 			aProcessor.storeAlreadyExecutedOperation(operation);
