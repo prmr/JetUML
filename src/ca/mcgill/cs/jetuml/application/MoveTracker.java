@@ -27,8 +27,7 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
-import ca.mcgill.cs.jetuml.geom.Conversions;
-import javafx.geometry.Rectangle2D;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
  * Tracks the movement of a set of selected diagram elements.
@@ -36,7 +35,7 @@ import javafx.geometry.Rectangle2D;
 public class MoveTracker
 {
 	private List<Node> aTrackedNodes = new ArrayList<>();
-	private List<Rectangle2D> aOriginalBounds = new ArrayList<>();
+	private List<Rectangle> aOriginalBounds = new ArrayList<>();
 
 	/**
 	 * Records the elements in pSelectedElements and their position at the 
@@ -57,7 +56,7 @@ public class MoveTracker
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).view().getBounds()));
+				aOriginalBounds.add(((Node)element).view().getBounds());
 			}
 		}
 	}
@@ -73,17 +72,17 @@ public class MoveTracker
 	public CompoundOperation endTrackingMove(Diagram pDiagram)
 	{
 		CompoundOperation operation = new CompoundOperation();
-		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];
+		Rectangle[] selectionBounds2 = new Rectangle[aOriginalBounds.size()];
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = Conversions.toRectangle2D(node.view().getBounds());
+			selectionBounds2[i] = node.view().getBounds();
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			int dY = (int)(selectionBounds2[i].getMinY() - aOriginalBounds.get(i).getMinY());
-			int dX = (int)(selectionBounds2[i].getMinX() - aOriginalBounds.get(i).getMinX());
+			int dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
+			int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
 			if(dX != 0 || dY != 0)
 			{
 				operation.add(pDiagram.builder().createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
