@@ -20,12 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Stack;
 
-import ca.mcgill.cs.jetuml.application.Clipboard;
+import ca.mcgill.cs.jetuml.application.Clipboard2;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
@@ -33,6 +34,8 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -59,7 +62,8 @@ public class DiagramCanvasController
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
-	private UndoManager aUndoManager = new UndoManager();	
+//	private UndoManager aUndoManager = new UndoManager();	
+	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private boolean aModified = false;
 	private MouseDraggedGestureHandler aHandler;
 
@@ -79,11 +83,6 @@ public class DiagramCanvasController
 		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
 		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
 		aHandler = pHandler;
-	}
-	
-	public UndoManager getUndoManager()
-	{
-		return aUndoManager;
 	}
 	
 	/**
@@ -149,33 +148,13 @@ public class DiagramCanvasController
 			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)aCanvas.getScene().getWindow(), 
 					edited.get(), ()-> {aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); });
 			
-			CompoundCommand command = dialog.show();
-			if(command.size() > 0)
+			CompoundOperation operation = dialog.show2();
+			if(!operation.isEmpty())
 			{
-				aUndoManager.add(command);
+				aProcessor.storeAlreadyExecutedOperation(operation);
 				setModified(true);
 			}
 		}
-	}
-	
-	/**
-	 * Indicate to the DiagramCanvas that is should 
-	 * consider all following operations on the graph
-	 * to be part of a single conceptual one.
-	 */
-	public void startCompoundGraphOperation()
-	{
-		aUndoManager.startTracking();
-	}
-	
-	/**
-	 * Indicate to the DiagramCanvas that is should 
-	 * stop considering all following operations on the graph
-	 * to be part of a single conceptual one.
-	 */
-	public void finishCompoundGraphOperation()
-	{
-		aUndoManager.endTracking();
 	}
 	
 	/**
@@ -183,7 +162,15 @@ public class DiagramCanvasController
 	 */
 	public void paste()
 	{
-		aSelectionModel.setSelectionTo(Clipboard.instance().paste(this));
+		Iterable<DiagramElement> newElements = Clipboard2.instance().getElements();
+		aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddElementsOperation(newElements));
+		List<DiagramElement> newElementList = new ArrayList<>();
+		for( DiagramElement element : newElementList )
+		{
+			newElementList.add(element);
+		}
+		aSelectionModel.setSelectionTo(newElementList);
+		aCanvas.paintPanel();
 	}
 	
 	/**
@@ -193,8 +180,11 @@ public class DiagramCanvasController
 	 */
 	public void undo()
 	{
-		aUndoManager.undoCommand();
-		aCanvas.paintPanel();
+		if( aProcessor.canUndo() )
+		{
+			aProcessor.undoLastExecutedOperation();
+			aCanvas.paintPanel();
+		}
 	}
 	
 	/**
@@ -204,8 +194,11 @@ public class DiagramCanvasController
 	 */
 	public void redo()
 	{
-		aUndoManager.redoCommand();
-		aCanvas.paintPanel();
+		if( aProcessor.canRedo() )
+		{
+			aProcessor.redoLastUndoneOperation();
+			aCanvas.paintPanel();
+		}
 	}
 	
 	/**
@@ -213,10 +206,7 @@ public class DiagramCanvasController
 	 */
 	public void copy()
 	{
-		if(!aSelectionModel.isEmpty())
-		{
-			Clipboard.instance().copy(aSelectionModel);
-		}
+		Clipboard2.instance().copy(aSelectionModel);
 	}
 	
 	/**
@@ -224,28 +214,8 @@ public class DiagramCanvasController
 	 */
 	public void removeSelected()
 	{
-		aUndoManager.startTracking();
-		Stack<Node> nodes = new Stack<>();
-		for(DiagramElement element : aSelectionModel)
-		{
-			if(element instanceof Node)
-			{
-				nodes.add((Node) element);
-			}
-			else if(element instanceof Edge)
-			{
-				aCanvas.getDiagram().builder().removeEdge((Edge) element);
-			}
-		}
-		while(!nodes.empty())
-		{
-			aCanvas.getDiagram().builder().removeNode(nodes.pop());
-		}
-		aUndoManager.endTracking();
-		if(aSelectionModel.isEmpty())
-		{
-			setModified(true);
-		}
+		aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createDeleteElementsOperation(aSelectionModel));
+		aSelectionModel.clearSelection();
 		aCanvas.paintPanel();
 	}
 	
@@ -255,10 +225,8 @@ public class DiagramCanvasController
 	 */
 	public void cut()
 	{
-		if(!aSelectionModel.isEmpty())
-		{
-			Clipboard.instance().cut(this);
-		}
+		Clipboard2.instance().copy(aSelectionModel);
+		removeSelected();
 	}
 	
 	private Line computeRubberband()
@@ -352,10 +320,11 @@ public class DiagramCanvasController
 		Point point = getMousePoint(pEvent);
 		if(aCanvas.getDiagram().builder().canAdd(newNode, point))
 		{
-			 aCanvas.getDiagram().builder().addNode(newNode, new Point(point.getX(), point.getY()), 
-						(int) aCanvas.getWidth(), (int) aCanvas.getHeight());
+			aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddNodeOperation(newNode, 
+					new Point(point.getX(), point.getY()), (int) aCanvas.getWidth(), (int) aCanvas.getHeight()));
 			setModified(true);
 			aSelectionModel.set(newNode);
+			aCanvas.paintPanel();
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
 		{
@@ -453,9 +422,11 @@ public class DiagramCanvasController
 		{
 			if( aCanvas.getDiagram().builder().canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
-				aCanvas.getDiagram().builder().addEdge(newEdge, aMouseDownPoint, pMousePoint);
+				aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddEdgeOperation(newEdge, 
+						aMouseDownPoint, pMousePoint));
 				setModified(true);
 				aSelectionModel.set(newEdge);
+				aCanvas.paintPanel();
 			}
 		}
 		aSelectionModel.deactivateRubberband();
@@ -466,10 +437,10 @@ public class DiagramCanvasController
 		// For optimization purposes, some of the layouts are not done on every move event.
 		aCanvas.getDiagram().requestLayout();
 		setModified(true);
-		CompoundCommand command = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
-		if(command.size() > 0)
+		CompoundOperation operation = aMoveTracker.endTrackingMove2(aCanvas.getDiagram());
+		if(!operation.isEmpty())
 		{
-			aUndoManager.add(command);
+			aProcessor.storeAlreadyExecutedOperation(operation);
 		}
 		aCanvas.paintPanel();
 	}

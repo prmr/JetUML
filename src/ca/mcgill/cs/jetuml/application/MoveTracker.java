@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.commands.MoveCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import javafx.geometry.Rectangle2D;
 
@@ -91,5 +92,35 @@ public class MoveTracker
 			}
 		}
 		return command;
+	}
+	
+	/**
+	 * Creates and returns a CompoundOperation that represents the movement
+	 * of all tracked nodes between the time where startTrackingMove was 
+	 * called and the time endTrackingMove was called.
+	 * 
+	 * @param pDiagram The Diagram containing the selected elements.
+	 * @return A CompoundCommand describing the move.
+	 */
+	public CompoundOperation endTrackingMove2(Diagram pDiagram)
+	{
+		CompoundOperation operation = new CompoundOperation();
+		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];
+		int i = 0;
+		for(Node node : aTrackedNodes)
+		{
+			selectionBounds2[i] = Conversions.toRectangle2D(node.view().getBounds());
+			i++;
+		}
+		for(i = 0; i < aOriginalBounds.size(); i++)
+		{
+			int dY = (int)(selectionBounds2[i].getMinY() - aOriginalBounds.get(i).getMinY());
+			int dX = (int)(selectionBounds2[i].getMinX() - aOriginalBounds.get(i).getMinX());
+			if(dX != 0 || dY != 0)
+			{
+				operation.add(pDiagram.builder().createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
+			}
+		}
+		return operation;
 	}
 }

@@ -64,7 +64,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void setController(DiagramCanvasController pController)
 	{
 		aController = pController;
-		aDiagram.builder().setUndoManager(aController.getUndoManager()); 
 	}
 	
 	@Override
