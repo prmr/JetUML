@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.application;
 
 import java.util.HashMap;
 
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
@@ -63,33 +61,13 @@ public class PropertyChangeTracker
 	}
 	
 	/**
-	 * Creates and returns a CompoundCommand that represents any change
-	 * in properties detected between the time startTracking
-	 * and stopTracking were called.
-	 * 
-	 * @return A CompoundCommand describing the property changes.
-	 */
-	public CompoundCommand stopTracking()
-	{
-		CompoundCommand command = new CompoundCommand();
-		for( Property property : aProperties )
-		{
-			if( !aOldValues.get(property.getName()).equals(property.get()))
-			{
-				command.add(new ChangePropertyCommand(property, aOldValues.get(property.getName()), property.get()));
-			}
-		}
-		return command;
-	}
-	
-	/**
 	 * Creates and returns a CompoundOperation that represents any change
 	 * in properties detected between the time startTracking
 	 * and stopTracking were called.
 	 * 
 	 * @return A CompoundOperation describing the property changes.
 	 */
-	public CompoundOperation stopTracking2()
+	public CompoundOperation stopTracking()
 	{
 		CompoundOperation operation = new CompoundOperation();
 		for( Property property : aProperties )

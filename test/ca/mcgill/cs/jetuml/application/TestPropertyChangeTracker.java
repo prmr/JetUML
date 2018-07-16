@@ -25,18 +25,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
-import java.util.Stack;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
-import ca.mcgill.cs.jetuml.commands.Command;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
@@ -44,10 +41,7 @@ public class TestPropertyChangeTracker
 {
 	private PropertyChangeTracker aTracker;
 	private ClassNode aNode;
-	private Field aCommandsField;
-	private Field aOldValueField;
-	private Field aNewValueField;
-	private Field aPropertyField;
+	private Field aOperationsField;
 	
 	/**
 	  * Load JavaFX toolkit and environment.
@@ -63,71 +57,12 @@ public class TestPropertyChangeTracker
 	{
 		try
 		{
-			aCommandsField = CompoundCommand.class.getDeclaredField("aCommands");
-			aCommandsField.setAccessible(true);
-			aOldValueField = ChangePropertyCommand.class.getDeclaredField("aOldValue");
-			aOldValueField.setAccessible(true);
-			aNewValueField = ChangePropertyCommand.class.getDeclaredField("aNewValue");
-			aNewValueField.setAccessible(true);
-			aPropertyField = ChangePropertyCommand.class.getDeclaredField("aProperty");
-			aPropertyField.setAccessible(true);
+			aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
+			aOperationsField.setAccessible(true);
 		}
-		catch( Exception pException )
+		catch( ReflectiveOperationException pException )
 		{
 			fail();
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private Stack<Command> commands(CompoundCommand pCommand)
-	{
-		try
-		{
-			return (Stack<Command>) aCommandsField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	private Property getProperty(ChangePropertyCommand pCommand)
-	{
-		try
-		{
-			return (Property) aPropertyField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	private Object getOldValue(ChangePropertyCommand pCommand)
-	{
-		try
-		{
-			return (Object) aOldValueField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	private Object getNewValue(ChangePropertyCommand pCommand)
-	{
-		try
-		{
-			return (Object) aNewValueField.get(pCommand);
-		}
-		catch( Exception pException )
-		{
-			fail();
-			return null;
 		}
 	}
 	
@@ -142,8 +77,8 @@ public class TestPropertyChangeTracker
 	public void testNoChanges()
 	{
 		aTracker.startTracking();
-		CompoundCommand command = aTracker.stopTracking();
-		assertEquals(0, command.size());
+		CompoundOperation operation = aTracker.stopTracking();
+		assertTrue(operation.isEmpty());
 	}
 	
 	@Test
@@ -151,13 +86,13 @@ public class TestPropertyChangeTracker
 	{
 		aTracker.startTracking();
 		aNode.moveTo(new Point(0,10));
-		CompoundCommand command = aTracker.stopTracking();
-		assertEquals(1, command.size());
-		ChangePropertyCommand inner = (ChangePropertyCommand) commands(command).pop();
-		Property property = getProperty(inner);
-		assertEquals("y", property.getName());
-		assertEquals(0, getOldValue(inner));
-		assertEquals(10, getNewValue(inner));
+		CompoundOperation operation = aTracker.stopTracking();
+		assertEquals(1, getOperations(operation).size());
+		
+		operation.undo();
+		assertEquals(new Point(0,0), aNode.position());
+		operation.execute();
+		assertEquals(new Point(0,10), aNode.position());
 	}
 	
 	@Test
@@ -165,13 +100,14 @@ public class TestPropertyChangeTracker
 	{
 		aTracker.startTracking();
 		aNode.setName("Foo");
-		CompoundCommand command = aTracker.stopTracking();
-		assertEquals(1, command.size());
-		ChangePropertyCommand inner = (ChangePropertyCommand) commands(command).pop();
-		Property property = getProperty(inner);
-		assertEquals("name", property.getName());
-		assertEquals("", getOldValue(inner));
-		assertEquals("Foo", getNewValue(inner));
+		CompoundOperation operation = aTracker.stopTracking();
+		
+		assertEquals(1, getOperations(operation).size());
+		
+		operation.undo();
+		assertEquals("", aNode.getName());
+		operation.execute();
+		assertEquals("Foo", aNode.getName());
 	}
 	
 	@Test
@@ -180,68 +116,38 @@ public class TestPropertyChangeTracker
 		aTracker.startTracking();
 		aNode.moveTo(new Point(0,10));
 		aNode.setName("Foo");
-		CompoundCommand command = aTracker.stopTracking();
-		assertEquals(2, command.size());
-		ChangePropertyCommand inner = (ChangePropertyCommand) commands(command).pop();
-		Property property = getProperty(inner);
-		assertEquals("name", property.getName());
-		assertEquals("", getOldValue(inner));
-		assertEquals("Foo", getNewValue(inner));
-		inner = (ChangePropertyCommand) commands(command).pop();
-		property = getProperty(inner);
-		assertEquals("y", property.getName());
-		assertEquals(0, getOldValue(inner));
-		assertEquals(10, getNewValue(inner));
-	}
-	
-	@Test
-	public void testNoChanges2()
-	{
-		aTracker.startTracking();
-		CompoundOperation operation = aTracker.stopTracking2();
-		assertTrue(operation.isEmpty());
-	}
-	
-	@Test
-	public void testOneChangeInteger2()
-	{
-		aTracker.startTracking();
-		aNode.moveTo(new Point(0,10));
-		CompoundOperation operation = aTracker.stopTracking2();
-		assertEquals(new Point(0,10), aNode.position());
-		operation.undo();
+		CompoundOperation command = aTracker.stopTracking();
+		List<DiagramOperation> operations = getOperations(command);
+		
+		assertEquals(2, operations.size());
+		
+		operations.get(0).undo();
 		assertEquals(new Point(0,0), aNode.position());
-		operation.execute();
+		assertEquals("Foo", aNode.getName());
+		operations.get(0).execute();
 		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Foo", aNode.getName());
+		
+		operations.get(1).undo();
+		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("", aNode.getName());
+		operations.get(1).execute();
+		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Foo", aNode.getName());
+		
 	}
 	
-	@Test
-	public void testOneChangeString2()
+	@SuppressWarnings("unchecked")
+	private List<DiagramOperation> getOperations(CompoundOperation pOperation)
 	{
-		aTracker.startTracking();
-		aNode.setName("Foo");
-		CompoundOperation operation = aTracker.stopTracking2();
-		assertEquals("Foo", aNode.getName());
-		operation.undo();
-		assertEquals("", aNode.getName());
-		operation.execute();
-		assertEquals("Foo", aNode.getName());
-	}
-	
-	@Test
-	public void testTwoChanges2()
-	{
-		aTracker.startTracking();
-		aNode.moveTo(new Point(0,10));
-		aNode.setName("Foo");
-		CompoundOperation operation = aTracker.stopTracking2();
-		assertEquals(new Point(0,10), aNode.position());
-		assertEquals("Foo", aNode.getName());
-		operation.undo();
-		assertEquals(new Point(0,0), aNode.position());
-		assertEquals("", aNode.getName());
-		operation.execute();
-		assertEquals(new Point(0,10), aNode.position());
-		assertEquals("Foo", aNode.getName());
+		try
+		{
+			return (List<DiagramOperation>)aOperationsField.get(pOperation);
+		}
+		catch( ReflectiveOperationException pException )
+		{
+			fail();
+			return null;
+		}
 	}
 }

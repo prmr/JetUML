@@ -148,7 +148,7 @@ public class DiagramCanvasController
 			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)aCanvas.getScene().getWindow(), 
 					edited.get(), ()-> {aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); });
 			
-			CompoundOperation operation = dialog.show2();
+			CompoundOperation operation = dialog.show();
 			if(!operation.isEmpty())
 			{
 				aProcessor.storeAlreadyExecutedOperation(operation);

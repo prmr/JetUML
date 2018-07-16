@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import javafx.geometry.Insets;
@@ -90,39 +89,19 @@ public class PropertyEditorDialog
 	{
 		return (PropertySheet)((BorderPane) aStage.getScene().getRoot()).getCenter();
 	}
-	
+
 	/**
 	 * Shows the dialog and blocks the remainder of the UI
 	 * until it is closed.
 	 */
-	public CompoundCommand show() 
+	public CompoundOperation show() 
 	{
 		if(!getPropertySheet().isEmpty())
 		{
 			PropertyChangeTracker tracker = new PropertyChangeTracker(getPropertySheet().getElement());
 			tracker.startTracking();
 			aStage.showAndWait();
-			CompoundCommand command = tracker.stopTracking();
-			return command;
-		}
-		else
-		{
-			return new CompoundCommand();
-		}
-    }
-	
-	/**
-	 * Shows the dialog and blocks the remainder of the UI
-	 * until it is closed.
-	 */
-	public CompoundOperation show2() 
-	{
-		if(!getPropertySheet().isEmpty())
-		{
-			PropertyChangeTracker tracker = new PropertyChangeTracker(getPropertySheet().getElement());
-			tracker.startTracking();
-			aStage.showAndWait();
-			return tracker.stopTracking2();
+			return tracker.stopTracking();
 		}
 		else
 		{
