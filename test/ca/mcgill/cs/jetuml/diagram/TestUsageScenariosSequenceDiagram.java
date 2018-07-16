@@ -27,18 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
 import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
 import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
@@ -113,44 +108,40 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
-//	/**
-//	 * Testing link CallNode to ParameterNode life line and other CallNode.
-//	 */
-//	@Test
-//	public void testLinkCallNodeToLifeLineAndCallNode()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(5, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(25, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(7, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(7, 75), new Point(25,75));
-//		assertEquals(1, aDiagram.getEdges().size());
-//		assertEquals(1, aParameterNode2.getChildren().size());
-//		aDiagram.draw(aGraphics);
-//		
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(64,88), new Point(62,85));
-//		assertEquals(2, aDiagram.getEdges().size());
-//		assertEquals(2, aParameterNode2.getChildren().size());
-//	}
-//	
-//	/**
-//	 * Testing link CallNode to ParameterNode's top box. A CallEdge with 
-//	 * "<<create>>" should appear.
-//	 */
-//	@Test
-//	public void testCreateCallEdgeWithCreateTag()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(5, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(105, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(7, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(aCallEdge1, new  Point(7, 75), new Point(8,85));
-//		aDiagram.draw(aGraphics);
-//
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(59, 110), new Point(116,0));
-//		aDiagram.draw(aGraphics);
-//		assertEquals(2, aDiagram.getEdges().size());
-//		assertEquals("\u00ABcreate\u00BB", ((CallEdge) aDiagram.getEdges().toArray()[1]).getMiddleLabel());
-//	}
+	private void refresh()
+	{
+		aDiagram.requestLayout();
+		aDiagram.draw(aGraphics);
+	}
+	
+	@Test
+	public void testLinkCallNodeToLifeLine()
+	{
+		addNode(aParameterNode1, new Point(5, 0));
+		addNode(aParameterNode2, new Point(125, 0));
+		refresh();
+		addNode(aCallNode1, new Point(11, 75));
+		refresh();
+		addEdge(aCallEdge1, new Point(43, 75), new Point(132,75));
+		refresh();
+		
+		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aParameterNode2.getChildren().size());
+	}
+	
+	@Test
+	public void testCreateCallEdgeWithCreateTag()
+	{
+		addNode(aParameterNode1, new Point(5, 0));
+		addNode(aParameterNode2, new Point(105, 0));
+		refresh();
+		addNode(aCallNode1, new Point(11, 75));
+		refresh();
+
+		addEdge(aCallEdge1, new Point(43, 75), new Point(116,2));
+		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals("\u00ABcreate\u00BB", aCallEdge1.getMiddleLabel());
+	}
 //	
 //	/**
 //	 * Testing adding more edges to the diagram.
