@@ -45,12 +45,12 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
  * The list of elements stored into the clipboard is assumed to respect the non-redundancy 
  * constraint that no element whose deletion leads to the deletion of a node is selected with the node.
  * 
- * The Clipboard is a singleton. This is necessary to allow copying elements
+ * The clipboard is a singleton. This is necessary to allow copying elements
  * between diagrams of the same type.
  */
-public final class Clipboard2 
+public final class Clipboard 
 {
-	private static final Clipboard2 INSTANCE = new Clipboard2();
+	private static final Clipboard INSTANCE = new Clipboard();
 	
 	private List<Node> aNodes = new ArrayList<Node>();
 	private List<Edge> aEdges = new ArrayList<Edge>();
@@ -58,13 +58,13 @@ public final class Clipboard2
 	/**
 	 * Creates an empty clip-board.
 	 */
-	private Clipboard2() 
+	private Clipboard() 
 	{}
 	
 	/**
 	 * @return The Singleton instance of the Clipboard.
 	 */
-	public static Clipboard2 instance()
+	public static Clipboard instance()
 	{
 		return INSTANCE;
 	}

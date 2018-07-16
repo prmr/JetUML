@@ -47,7 +47,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClipboard2
 {
-	private Clipboard2 aClipboard;
+	private Clipboard aClipboard;
 	private Field aNodesField;
 	private Field aEdgesField;
 	private ClassNode aNode1;
@@ -56,9 +56,9 @@ public class TestClipboard2
 	
 	public TestClipboard2() throws ReflectiveOperationException
 	{
-		aNodesField = Clipboard2.class.getDeclaredField("aNodes");
+		aNodesField = Clipboard.class.getDeclaredField("aNodes");
 		aNodesField.setAccessible(true);
-		aEdgesField = Clipboard2.class.getDeclaredField("aEdges");
+		aEdgesField = Clipboard.class.getDeclaredField("aEdges");
 		aEdgesField.setAccessible(true);
 	}
 	
@@ -104,7 +104,7 @@ public class TestClipboard2
 	@Before
 	public void setup()
 	{
-		aClipboard = Clipboard2.instance();		
+		aClipboard = Clipboard.instance();		
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aDiagram = new ClassDiagram();

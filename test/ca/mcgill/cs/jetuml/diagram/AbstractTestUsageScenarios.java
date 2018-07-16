@@ -27,7 +27,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.application.Clipboard2;
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -45,7 +45,7 @@ public class AbstractTestUsageScenarios
 	protected NoteNode aNoteNode;
 	protected NoteEdge aNoteEdge;
 	private List<DiagramElement> aSelection;
-	private Clipboard2 aClipboard;
+	private Clipboard aClipboard;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -63,7 +63,7 @@ public class AbstractTestUsageScenarios
 		aNoteNode = new NoteNode();
 		aNoteEdge = new NoteEdge();
 		aSelection = new ArrayList<>();
-		aClipboard = Clipboard2.instance();
+		aClipboard = Clipboard.instance();
 	}
 	
 	protected void addNode(Node pNode, Point pRequestedPosition)

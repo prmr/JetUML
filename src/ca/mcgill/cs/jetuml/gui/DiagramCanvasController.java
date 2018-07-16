@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import ca.mcgill.cs.jetuml.application.Clipboard2;
+import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.UndoManager;
 import ca.mcgill.cs.jetuml.commands.CompoundCommand;
@@ -162,7 +162,7 @@ public class DiagramCanvasController
 	 */
 	public void paste()
 	{
-		Iterable<DiagramElement> newElements = Clipboard2.instance().getElements();
+		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
 		aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElementList )
@@ -206,7 +206,7 @@ public class DiagramCanvasController
 	 */
 	public void copy()
 	{
-		Clipboard2.instance().copy(aSelectionModel);
+		Clipboard.instance().copy(aSelectionModel);
 	}
 	
 	/**
@@ -225,7 +225,7 @@ public class DiagramCanvasController
 	 */
 	public void cut()
 	{
-		Clipboard2.instance().copy(aSelectionModel);
+		Clipboard.instance().copy(aSelectionModel);
 		removeSelected();
 	}
 	
