@@ -94,8 +94,8 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
-		aDiagram.builder().addEdge(new NoteEdge(), new Point(80, 80), new Point(55, 25));
-		aDiagram.builder().addEdge(new NoteEdge(), new Point(25, 25), new Point(80, 80));
+		addEdge(new NoteEdge(), new Point(80, 80), new Point(55, 25));
+		addEdge(new NoteEdge(), new Point(25, 25), new Point(80, 80));
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
@@ -362,7 +362,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aObjectNode1, new Point(50, 20));
 		addNode(aObjectNode2, new Point(150, 20));
-		aDiagram.builder().addEdge(new ObjectCollaborationEdge(), new Point(55, 25), new Point(155, 25));
+		addEdge(new ObjectCollaborationEdge(), new Point(55, 25), new Point(155, 25));
 		
 		selectAll();
 		cut();

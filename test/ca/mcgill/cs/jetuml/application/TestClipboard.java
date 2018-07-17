@@ -45,7 +45,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
-public class TestClipboard2
+public class TestClipboard
 {
 	private Clipboard aClipboard;
 	private Field aNodesField;
@@ -54,7 +54,7 @@ public class TestClipboard2
 	private ClassNode aNode2;
 	private ClassDiagram aDiagram;
 	
-	public TestClipboard2() throws ReflectiveOperationException
+	public TestClipboard() throws ReflectiveOperationException
 	{
 		aNodesField = Clipboard.class.getDeclaredField("aNodes");
 		aNodesField.setAccessible(true);

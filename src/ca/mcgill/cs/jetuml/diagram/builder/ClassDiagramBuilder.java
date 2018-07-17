@@ -43,26 +43,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		assert pDiagram instanceof ClassDiagram;
 	}
 	
-	/* (non-Javadoc)
-	 * See if, given its position, the node should be added as a child of
-	 * a PackageNode.
-	 * 
-	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#addNode(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
-	 */
-	@Override
-	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		if( canAddNodeAsChild(pNode))
-		{
-			PackageNode container = findContainer((List<Node>)aDiagram.getRootNodes(), pPoint);
-			if( container != null )
-			{
-				container.addChild((ChildNode)pNode);
-			}
-		}
-		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
-	}
-	
 	@Override
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
 	{

@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -33,20 +32,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 /**
  *  A diagram consisting of nodes and edges.
- *  
- *  There are three modes for creating a diagram:
- *  
- *  - Restoring nodes or edges. This mode is used for loading serialized elements
- *    and does not trigger any notifications. It is intended to be used for deserialization
- *    only. See methods restore{Node|Edge}
- *    
- *  - Inserting nodes or edges. This mode is used for inserting elements that had been
- *    previously created by were temporarily removed from a diagram. This is indented to be used
- *    for functionality such as undoing and copy/pasting. See methods insert{Node|Edge},
- *    which trigger notifications.
- *    
- *  - Adding nodes or edges. This mode is used for adding completely new elements, typically
- *    through UI actions. See methods add{Node|Edge}, which trigger notifications.
  */
 public abstract class Diagram implements DiagramData
 {
@@ -106,29 +91,6 @@ public abstract class Diagram implements DiagramData
 	 */
 	public abstract String getDescription();
 	
-	/**
-	 * Inserts a previously-created node back into a diagram.
-	 * The node is expected to have a position and possibly a parent. 
-	 * Node insertion is intended to support operations such as undo/redo
-	 * and copy and paste. Calling this method results in a node
-	 * addition notification.
-	 * 
-	 * @param pNode The node to insert into the graph.
-	 */
-	public final void insertNode(Node pNode)
-	{	
-		if (!(pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null))
-		{	// The node does not have a parent, insert it as a root node
-			aRootNodes.add(pNode);
-		}
-		else
-		{	// Re-insert the node as a child of its parent
-			((ChildNode)pNode).getParent().addChild((ChildNode)pNode);
-		}
-		aNeedsLayout = true;
-		aBuilder.notifyNodeAdded(pNode);
-	}
-
 	/**
       * Finds a node containing the given point. Always returns
       * the deepest child and the last one in a list.
@@ -426,18 +388,6 @@ public abstract class Diagram implements DiagramData
 	public void restoreRootNode(Node pNode)
 	{
 		aRootNodes.add(pNode); 
-	}
-	
-	/**
-	 * Adds an edge to this graph. This method does no validation,
-	 * but triggers a notification.
-	 * 
-	 * @param pEdge the edge to insert.
-	 */
-	public void insertEdge(Edge pEdge)
-	{
-		aEdges.add(pEdge);
-		aBuilder.notifyEdgeAdded(pEdge);
 	}
 	
 	/**

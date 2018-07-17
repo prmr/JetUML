@@ -45,17 +45,6 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		if( pOrigin instanceof FieldNode )
-		{
-			String oldValue = ((FieldNode)pOrigin).getValue();
-			((FieldNode)pOrigin).setValue("");
-			notifyPropertyChanged(pOrigin, "value", oldValue);
-		}
-	}
-	
-	@Override
 	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		assert pEdge.getStart() != null;
@@ -142,32 +131,6 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 		{
 			return false;
 		}
-	}
-	
-	/* 
-	 * See if, given its position, the node should be added as a child of
-	 * an ObjectNode.
-
-	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#add(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
-	 */
-	@Override
-	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		assert canAdd(pNode, pPoint);
-		if( pNode instanceof FieldNode )
-		{
-			ObjectNode object = findObject((FieldNode)pNode, pPoint);
-			
-			if( object != null )
-			{
-				object.addChild((ChildNode)pNode); // Must be called before super.add so that the node's parent isn't null
-			}
-			else
-			{
-				return;
-			}
-		}
-		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
 	
 	@Override

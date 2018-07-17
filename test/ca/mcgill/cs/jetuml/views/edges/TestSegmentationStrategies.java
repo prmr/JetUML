@@ -72,11 +72,11 @@ public class TestSegmentationStrategies
 		aNode5 = new PackageNode();
 		aNode5.translate(200, 250);
 		aGraph = new ClassDiagram();
-		aGraph.insertNode(aNode1);
-		aGraph.insertNode(aNode2);
-		aGraph.insertNode(aNode3);
-		aGraph.insertNode(aNode4);
-		aGraph.insertNode(aNode5);
+		aGraph.atomicAddRootNode(aNode1);
+		aGraph.atomicAddRootNode(aNode2);
+		aGraph.atomicAddRootNode(aNode3);
+		aGraph.atomicAddRootNode(aNode4);
+		aGraph.atomicAddRootNode(aNode5);
 	}
 	
 	@Test
@@ -184,7 +184,7 @@ public class TestSegmentationStrategies
 	{
 		ClassNode node = (ClassNode) aNode3.clone();
 		node.translate(150, 5);
-		aGraph.insertNode(node);
+		aGraph.atomicAddRootNode(node);
 		Edge edge = new DependencyEdge();
 		aGraph.restoreEdge(edge, aNode3, node);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
@@ -276,8 +276,8 @@ public class TestSegmentationStrategies
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
 		node2.translate(200, 0);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		aGraph.restoreEdge(edge1, node1, node2);
@@ -304,8 +304,8 @@ public class TestSegmentationStrategies
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
 		node2.translate(0, 200);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		AssociationEdge edge3 = new AssociationEdge();
@@ -348,9 +348,9 @@ public class TestSegmentationStrategies
 		ClassNode node3 = new ClassNode();
 		node2.translate(200, 0);
 		node3.translate(200, 200);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
+		aGraph.atomicAddRootNode(node3);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		DependencyEdge edge3 = new DependencyEdge();
@@ -394,9 +394,9 @@ public class TestSegmentationStrategies
 		node1.translate(1000, 1000);
 		node2.translate(900, 500);
 		node3.translate(1100, 500);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
+		aGraph.atomicAddRootNode(node3);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		DependencyEdge edge3 = new DependencyEdge();
@@ -439,9 +439,9 @@ public class TestSegmentationStrategies
 		node1.translate(1000, 0);
 		node2.translate(900, 500);
 		node3.translate(1100, 500);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
+		aGraph.atomicAddRootNode(node3);
 		GeneralizationEdge edge1 = new GeneralizationEdge();
 		GeneralizationEdge edge2 = new GeneralizationEdge();
 		aGraph.restoreEdge(edge1, node2, node1);
@@ -487,11 +487,11 @@ public class TestSegmentationStrategies
 		node3.translate(1000, 1000);
 		node4.translate(1100, 500);
 		node5.translate(1500, 400);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
-		aGraph.insertNode(node4);
-		aGraph.insertNode(node5);
+		aGraph.atomicAddRootNode(node1);
+		aGraph.atomicAddRootNode(node2);
+		aGraph.atomicAddRootNode(node3);
+		aGraph.atomicAddRootNode(node4);
+		aGraph.atomicAddRootNode(node5);
 		GeneralizationEdge edge1 = new GeneralizationEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		GeneralizationEdge edge3 = new GeneralizationEdge();

@@ -122,34 +122,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return result;
 	}
 	
-	@Override
-	public void removeEdge(Edge pEdge)
-	{
-		super.removeEdge(pEdge);
-		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
-		{
-			removeNode(pEdge.getEnd());
-		}
-		
-		// Also delete the return edge, if it exists
-		if( pEdge instanceof CallEdge )
-		{
-			Edge returnEdge = null;
-			for( Edge edge : aDiagram.getEdges() )
-			{
-				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
-				{
-					returnEdge = edge;
-					break;
-				}
-			}
-			if( returnEdge != null )
-			{
-				removeEdge(returnEdge);
-			}
-		}
-	}
-	
 	/**
 	 * @param pNode The node to check
 	 * @return True if pNode is a call node that does not have any outgoing
@@ -217,61 +189,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		if( !(pOrigin instanceof CallNode) )
-		{
-			return;
-		}
-		CallNode origin = (CallNode) pOrigin;
-		if( pEdge instanceof ReturnEdge )
-		{
-			return;
-		}
-		Node end = pEdge.getEnd();
-		
-		// Case 1 End is on the same implicit parameter -> create a self call
-		// Case 2 End is on an existing call node on a different implicit parameter -> connect
-		// Case 3 End is on a different implicit parameter -> create a new call
-		// Case 4 End is on an implicit parameter top node -> creates node
-		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
-		if( end instanceof CallNode )
-		{
-			CallNode endAsCallNode = (CallNode) end;
-			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
-			{
-				CallNode newCallNode = new CallNode();
-				((ImplicitParameterNode)origin.getParent()).addChild(newCallNode, pPoint1);
-				pEdge.connect(origin, newCallNode, aDiagram);
-			}
-			else // Case 2
-			{
-				if( isCallDominator(endAsCallNode, origin))
-				{
-					CallNode newCallNode = new CallNode();
-					((ImplicitParameterNode)endAsCallNode.getParent()).addChild(newCallNode, pPoint1);
-					pEdge.connect(origin, newCallNode, aDiagram);
-				}
-				// Simple connect
-			}
-		}
-		else if( end instanceof ImplicitParameterNode )
-		{
-			ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
-			{
-				((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
-			}
-			else // Case 3
-			{
-				CallNode newCallNode = new CallNode();
-				endAsImplicitParameterNode.addChild(newCallNode, pPoint1);
-				pEdge.connect(pOrigin, newCallNode, aDiagram);
-			}
-		}
-	}
-	
-	@Override
 	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pPoint1, Point pPoint2)
 	{
 		if( !(pEdge.getStart() instanceof CallNode) )
@@ -333,29 +250,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 						()-> endAsImplicitParameterNode.removeChild(newCallNode)));
 			}
 		}
-	}
-	
-	/* 
-	 * Adds the node, ensuring that call nodes can only be added if the
-	 * point is inside the space of the related ImplicitParameterNode
-	 * @see ca.mcgill.cs.jetuml.diagram.Diagram#add(ca.mcgill.cs.jetuml.diagram.Node, java.awt.geom.Point2D)
-	 */
-	@Override
-	public void addNode(Node pNode, Point pPoint, int pMaxWidth, int pMaxHeight)
-	{
-		if(pNode instanceof CallNode) 
-		{
-			ImplicitParameterNode target = insideTargetArea(pPoint);
-			if( target != null )
-			{
-				target.addChild((ChildNode)pNode);
-			}
-			else
-			{
-				return;
-			}
-		}
-		super.addNode(pNode, pPoint, pMaxWidth, pMaxHeight);
 	}
 	
 	@Override

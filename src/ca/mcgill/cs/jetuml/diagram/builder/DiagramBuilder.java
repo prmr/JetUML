@@ -26,12 +26,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.application.UndoManager;
-import ca.mcgill.cs.jetuml.commands.AddEdgeCommand;
-import ca.mcgill.cs.jetuml.commands.AddNodeCommand;
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
-import ca.mcgill.cs.jetuml.commands.DeleteNodeCommand;
-import ca.mcgill.cs.jetuml.commands.RemoveEdgeCommand;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -49,16 +43,10 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public abstract class DiagramBuilder
 {
 	protected final Diagram aDiagram;
-	private UndoManager aUndoManager;
 	
 	public DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
-	}
-	
-	public void setUndoManager(UndoManager pManager)
-	{
-		aUndoManager = pManager;
 	}
 	
 	/**
@@ -71,45 +59,6 @@ public abstract class DiagramBuilder
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		return true;
-	}
-	
-	public void removeEdge(Edge pEdge)
-	{
-		if(!aDiagram.getEdgesToBeRemoved().contains(pEdge))
-		{
-			aDiagram.getEdgesToBeRemoved().add(pEdge);
-			notifyEdgeRemoved(pEdge);
-			removePointNodeIfApplicable(pEdge);
-			aDiagram.requestLayout();
-		}
-	}
-	
-	/**
-	 * Removes all edges in the graph that have pNode as a start
-	 * or end node. The edges are removed in an order that is the 
-	 * reverse of the one in which they were added, so that this
-	 * method can directly support the undo functionality. 
-	 * Note that layout() needs to be called before
-	 * the change has effect.
-	 * 
-	 * @param pNode The target node.
-	 */
-	public void removeAllEdgesConnectedTo(Node pNode)
-	{
-		assert pNode != null;
-		ArrayList<Edge> toRemove = new ArrayList<Edge>();
-		for(Edge edge : aDiagram.getEdges())
-		{
-			if ((edge.getStart() == pNode || edge.getEnd() == pNode) && !aDiagram.getEdgesToBeRemoved().contains(edge))
-			{
-				toRemove.add(edge);
-			}
-		}
-		Collections.reverse(toRemove);
-		for(Edge edge : toRemove)
-		{
-			removeEdge(edge);
-		}
 	}
 	
 	private CompoundOperation createRemoveAllEdgesConnectedToOperation(List<Node> pNodes)
@@ -147,51 +96,6 @@ public abstract class DiagramBuilder
 		return result;
 	}
 	
-	/**
-	 * Removes a node and all edges that start or end with that node.
-	 * @param pNode the node to remove
-	 */
-	public final void removeNode(Node pNode)
-	{
-		if(aDiagram.getNodesToBeRemoved().contains(pNode))
-		{
-			return;
-		}
-		notifyStartingCompoundOperation();
-		aDiagram.getNodesToBeRemoved().add(pNode);
-		
-		if(pNode instanceof ParentNode)
-		{
-			ArrayList<ChildNode> children = new ArrayList<ChildNode>(((ParentNode) pNode).getChildren());
-			//We create a shallow clone so deleting children does not affect the loop
-			for(Node childNode: children)
-			{
-				removeNode(childNode);
-			}
-		}
-		
-		// Remove all edges connected to this node
-		removeAllEdgesConnectedTo(pNode);
-
-		// Notify all nodes that pNode is being removed.
-		for(Node node : aDiagram.getRootNodes())
-		{
-			removeFromParent( node, pNode );
-		}
-		
-		// Notify all edges that pNode is being removed.
-		for(Edge edge : aDiagram.getEdges())
-		{
-			if(edge.getStart() == pNode || edge.getEnd() == pNode)
-			{
-				removeEdge(edge);
-			}
-		}
-		notifyNodeRemoved(pNode);
-		notifyEndingCompoundOperation();
-		aDiagram.requestLayout();
-	}
-	
 	public static void removeFromParent(Node pParent, Node pToRemove)
 	{
 		if(pParent instanceof ParentNode)
@@ -205,36 +109,6 @@ public abstract class DiagramBuilder
 			for (Node child : ((ParentNode) pParent).getChildren())
 			{
 				removeFromParent(child, pToRemove);
-			}
-		}
-	}
-	
-	private PointNode createPointNodeIfAllowed(Node pNode1, Edge pEdge, Point pPoint2)
-	{
-		if (pNode1 instanceof NoteNode && pEdge instanceof NoteEdge)
-		{
-			PointNode lReturn = new PointNode();
-			lReturn.translate(pPoint2.getX(), pPoint2.getY());
-			return lReturn;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	private void removePointNodeIfApplicable(Edge pEdge)
-	{
-		List<Node> rootNodes = (List<Node>)aDiagram.getRootNodes();
-		for(int i = rootNodes.size() - 1; i >= 0; i--)
-		{
-			Node node = rootNodes.get(i);
-			if(node instanceof NoteNode)
-			{
-				if(pEdge.getStart() == node)
-				{
-					removeNode(pEdge.getEnd());
-				}
 			}
 		}
 	}
@@ -294,53 +168,6 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Adds an edge to the graph that joins the nodes containing
-	 * the given points. If the points aren't both inside nodes,
-	 * then no edge is added.
-	 * @param pEdge the edge to add
-	 * @param pPoint1 a point in the starting node
-	 * @param pPoint2 a point in the ending node
-	 * @return true if the edge was connected
-	 */
-	public final void addEdge(Edge pEdge, Point pPoint1, Point pPoint2)
-	{
-		assert canAdd(pEdge, pPoint1, pPoint2);
-		Node node1 = aDiagram.findNode(pPoint1);
-		Node node2 = aDiagram.findNode(pPoint2);
-		if(node1 instanceof NoteNode)
-		{
-			node2 = createPointNodeIfAllowed(node1, pEdge, pPoint2);
-		}
-		pEdge.connect(node1, node2, aDiagram);
-			
-		// In case the down-call to addEdge introduces additional 
-		// operations that should be compounded with the edge addition
-		notifyStartingCompoundOperation();
-		completeEdgeAddition(node1, pEdge, pPoint1, pPoint2);
-		aDiagram.getEdges().add(pEdge);
-		notifyEdgeAdded(pEdge);
-		if(!aDiagram.getRootNodes().contains(pEdge.getEnd()) && pEdge.getEnd() instanceof PointNode)
-		{
-			aDiagram.getRootNodes().add(pEdge.getEnd());
-		}
-		notifyEndingCompoundOperation();
-		aDiagram.requestLayout();
-	}
-	
-	/**
-	 * If certain types of diagrams require additional behavior
-	 * following the addition of an edge to a graph, they can
-	 * override this method to perform that behavior.
-	 * @param pOrigin The origin node 
-	 * @param pEdge The edge to add
-	 * @param pPoint1 a point in the starting node
-	 * @param pPoint2 a point in the end node.
-	 */
-	protected void completeEdgeAddition(Node pOrigin, Edge pEdge, Point pPoint1, Point pPoint2)
-	{}
-
-	
-	/**
 	 * Returns true iif there exists an edge of type pType between
 	 * nodes pStart and pEnd. The direction matter, and the type
 	 * testing is for the exact type pType, without using polymorphism.
@@ -361,36 +188,6 @@ public abstract class DiagramBuilder
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Adds a newly created node to the graph so that the top left corner of
-	 * the bounding rectangle is at the given point. This method
-	 * is intended to be used to add nodes that were never part
-	 * of the graph, from the GUI. To add nodes recovered from
-	 * deserialization, use restoreNode. To add nodes recovered
-	 * from in-application operations such as undoing and pasting,
-	 * use insertNode. This method assumes the node does not
-	 * have a parent of a child.
-	 * 
-	 * @param pNode the node to add
-	 * @param pPoint the desired location
-	 * @param pMaxWidth the maximum width of the panel
-	 * @param pMaxHeight the maximum height of the panel
-	 * @return True if the node was added.
-	 */
-	public void addNode(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
-	{
-		assert pNode != null && pMaxWidth >= 0 && pMaxHeight >= 0;
-		Rectangle bounds = pNode.view().getBounds();
-		Point position = computePosition(bounds, pRequestedPosition, new Dimension(pMaxWidth, pMaxHeight));
-		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
-		if(!hasParent(pNode))
-		{
-			aDiagram.restoreRootNode(pNode);
-		}
-		aDiagram.requestLayout();
-		notifyNodeAdded(pNode);
 	}
 	
 	/** 
@@ -666,68 +463,5 @@ public abstract class DiagramBuilder
 	protected static boolean hasParent(Node pNode)
 	{
 		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
-	}
-	
-	/**
-	 * Notifies the listener, if applicable, of a change to a property
-	 * of one of the graph's elements.
-	 * 
-	 * @param pElement The element whose property changed.
-	 * @param pProperty The name of the changed property.
-	 * @param pOldValue The value of the property before the change.
-	 */
-	protected final void notifyPropertyChanged(DiagramElement pElement, String pProperty, Object pOldValue)
-	{
-		assert aUndoManager != null;
-		Property property = pElement.properties().get(pProperty);
-		aUndoManager.add(new ChangePropertyCommand(property, pOldValue, property.get()));
-	}
-	
-	public final void notifyNodeAdded(Node pNode)
-	{
-		if( aUndoManager != null )
-		{
-			aUndoManager.add(new AddNodeCommand(aDiagram, pNode));
-		}
-	}
-	
-	private void notifyNodeRemoved(Node pNode)
-	{
-		if(aUndoManager != null)
-		{
-			aUndoManager.add(new DeleteNodeCommand(aDiagram, pNode));
-		}
-	}
-	
-	public final void notifyEdgeAdded(Edge pEdge)
-	{
-		if(aUndoManager != null)
-		{
-			aUndoManager.add(new AddEdgeCommand(aDiagram, pEdge));
-		}
-	}
-	
-	private void notifyEdgeRemoved(Edge pEdge)
-	{
-		if(aUndoManager != null)
-		{
-			aUndoManager.add(new RemoveEdgeCommand(aDiagram, pEdge));
-		}
-	}
-	
-	private final void notifyStartingCompoundOperation()
-	{
-		if(aUndoManager != null)
-		{
-			aUndoManager.startTracking();
-		}
-	}
-	
-	private final void notifyEndingCompoundOperation()
-	{
-		if(aUndoManager != null)
-		{
-			aUndoManager.endTracking();
-		}
 	}
 }

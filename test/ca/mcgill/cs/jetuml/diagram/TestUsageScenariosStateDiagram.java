@@ -172,7 +172,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
 		assertTrue(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
-		aDiagram.builder().addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
+		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
 		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
@@ -240,9 +240,9 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge5 = new NoteEdge();
 		
 		// valid operations
-		aDiagram.builder().addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
-		aDiagram.builder().addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
-		aDiagram.builder().addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
+		addEdge(noteEdge1, new Point(20, 20), new Point(50, 200));
+		addEdge(noteEdge2, new Point(50, 20), new Point(50, 200));
+		addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
 		assertEquals(3, aDiagram.getEdges().size());
 		// invalid operations, cannot connect any StateNode with NoteEdges
 		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
