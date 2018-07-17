@@ -47,12 +47,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
 	{
 		DiagramOperation result = null;
-		if( canAddNodeAsChild(pNode))
+		if( validChild(pNode))
 		{
 			PackageNode container = findContainer((List<Node>)aDiagram.getRootNodes(), pRequestedPosition);
 			if( container != null )
 			{
-				// TODO: Reposition the node so that the laid out package fits in the diagram
 				result = new SimpleOperation( ()-> container.addChild((ChildNode)pNode),
 						()-> container.removeChild((ChildNode)pNode));
 			}
@@ -65,7 +64,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 
 	
-	private static boolean canAddNodeAsChild(Node pPotentialChild)
+	private static boolean validChild(Node pPotentialChild)
 	{
 		return pPotentialChild instanceof ClassNode || pPotentialChild instanceof InterfaceNode || 
 					pPotentialChild instanceof PackageNode ;
