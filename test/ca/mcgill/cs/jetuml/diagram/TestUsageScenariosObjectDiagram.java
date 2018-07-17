@@ -26,6 +26,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -48,6 +49,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new ObjectDiagram();
+		aBuilder = new ObjectDiagramBuilder(aDiagram);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
@@ -65,7 +67,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals("Car", aObjectNode1.getName());
 		
-		assertFalse(aDiagram.builder().canAdd(aFieldNode1, new Point(120, 80)));
+		assertFalse(aBuilder.canAdd(aFieldNode1, new Point(120, 80)));
 		
 		addNode(aFieldNode1, new Point(20, 40));
 		addNode(aFieldNode2, new Point(30, 40));
@@ -86,11 +88,11 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addNode(aNoteNode, new Point(80, 80));
 		assertEquals(3, aDiagram.getRootNodes().size());
 		
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(25, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(55, 25), new Point(155, 25)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(155, 25), new Point(255, 25)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(155, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(25, 25), new Point(255, 25)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(25, 25), new Point(55, 25)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(55, 25), new Point(155, 25)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(255, 25)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(55, 25)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(25, 25), new Point(255, 25)));
 		assertEquals(0, aDiagram.getEdges().size());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
@@ -99,7 +101,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertEquals(2, aDiagram.getEdges().size());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(60, 80), new Point(80, 80)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(60, 80), new Point(80, 80)));
 	}
 	
 	@Test
@@ -117,8 +119,8 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		assertEquals(1, aDiagram.getEdges().size());
 		
-		assertFalse(aDiagram.builder().canAdd(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80)));
-		assertFalse(aDiagram.builder().canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
+		assertFalse(aBuilder.canAdd(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80)));
+		assertFalse(aBuilder.canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
 		
 		/* create an ObjectRefEdge to an ObjectNode itself. 
 		 * "value" text in field node will be erased and edge will be added.

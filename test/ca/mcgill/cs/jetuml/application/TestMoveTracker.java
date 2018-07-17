@@ -35,7 +35,9 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
@@ -50,6 +52,7 @@ public class TestMoveTracker
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
 	private DependencyEdge aEdge1;
 	private Field aOperationsField;
+	private DiagramBuilder aBuilder;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -75,6 +78,7 @@ public class TestMoveTracker
 		aDiagram.restoreEdge(aEdge1, aNode1, aNode1);
 		aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
 		aOperationsField.setAccessible(true);
+		aBuilder = DiagramType.newBuilderInstanceFor(aDiagram);
 	}
 
 	@Test
@@ -85,7 +89,7 @@ public class TestMoveTracker
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
 		aNode1.translate(50, 50);
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagram);
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
 		assertEquals(1, getOperations(operation).size());
 		operation.undo();
 		assertEquals(150, aNode1.position().getX());
@@ -97,7 +101,7 @@ public class TestMoveTracker
 		// No change in selection, move only X
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(200, 0);
-		operation = aMoveTracker.endTrackingMove(aDiagram);
+		operation = aMoveTracker.endTrackingMove(aBuilder);
 		assertEquals(1, getOperations(operation).size());
 		operation.undo();
 		assertEquals(220, aNode1.position().getX());
@@ -109,7 +113,7 @@ public class TestMoveTracker
 		// No change in selection, move only Y
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 200);
-		operation = aMoveTracker.endTrackingMove(aDiagram);
+		operation = aMoveTracker.endTrackingMove(aBuilder);
 		assertEquals(1, getOperations(operation).size());
 		operation.undo();
 		assertEquals(420, aNode1.position().getX());
@@ -121,7 +125,7 @@ public class TestMoveTracker
 		// No change in selection, null move
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 0);
-		operation = aMoveTracker.endTrackingMove(aDiagram);
+		operation = aMoveTracker.endTrackingMove(aBuilder);
 		assertEquals(0, getOperations(operation).size());
 	}
 	
@@ -134,7 +138,7 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagram);
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
 		List<DiagramOperation> operations = getOperations(operation);
 		assertEquals(2, operations.size());
 		
@@ -164,7 +168,7 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		operation = aMoveTracker.endTrackingMove(aDiagram);
+		operation = aMoveTracker.endTrackingMove(aBuilder);
 		
 		operations = getOperations(operation);
 		assertEquals(2, operations.size());

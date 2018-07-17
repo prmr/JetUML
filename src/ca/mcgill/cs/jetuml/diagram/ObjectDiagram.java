@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -53,11 +52,6 @@ public class ObjectDiagram extends Diagram
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
 	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
-	}
-	
-	public ObjectDiagram()
-	{
-		aBuilder = new ObjectDiagramBuilder(this);
 	}
 	
 	@Override

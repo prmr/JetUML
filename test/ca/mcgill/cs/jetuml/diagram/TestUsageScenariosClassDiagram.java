@@ -27,6 +27,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -55,6 +56,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new ClassDiagram();
+		aBuilder = new ClassDiagramBuilder(aDiagram);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
@@ -145,9 +147,9 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aNoteNode, new Point(134, 132));
 		
 		// both start and end points are invalid
-		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(70, 70), new Point(170, 170)));
+		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(70, 70), new Point(170, 170)));
 		// one point is invalid
-		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
+		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
 		
 		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
 		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
@@ -158,7 +160,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// not every edge is a valid self-edge
-		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
+		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
 	@Test 
@@ -171,7 +173,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertSame(aInterfaceNode, aAssociationEdge.getEnd());
 		
 		// not every edge is a valid self-edge
-		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
+		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
 	}
 	
 	@Test
@@ -186,7 +188,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge2 = new NoteEdge();
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
-		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
+		assertFalse(aBuilder.canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
 		addEdge(noteEdge1, new Point(9, 9), new Point(139,142));
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(noteEdge1.getStart(), aClassNode1);
@@ -317,10 +319,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
 		assertEquals(4, aDiagram.getEdges().size());
 		
-		assertFalse(aDiagram.builder().canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
-		assertFalse(aDiagram.builder().canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
-		assertFalse(aDiagram.builder().canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
-		assertFalse(aDiagram.builder().canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
+		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
 		assertEquals(4, aDiagram.getEdges().size());
 
 	}
@@ -342,10 +344,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// new edges should not replace the current edges in the diagram
-		assertFalse(aDiagram.builder().canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.builder().canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.builder().canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aDiagram.builder().canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
+		assertFalse(aBuilder.canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
 		assertEquals(4, aDiagram.getEdges().size());
 		assertFalse(aDiagram.getEdges().contains(aSecondAggregationEdge));
 		assertFalse(aDiagram.getEdges().contains(aSecondAssociationEdge));

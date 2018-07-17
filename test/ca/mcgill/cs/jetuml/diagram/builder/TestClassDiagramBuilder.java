@@ -39,6 +39,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 public class TestClassDiagramBuilder
 {
 	private ClassDiagram aDiagram;
+	private ClassDiagramBuilder aBuilder;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -54,13 +55,14 @@ public class TestClassDiagramBuilder
 	public void setUp()
 	{
 		aDiagram = new ClassDiagram();
+		aBuilder = new ClassDiagramBuilder(aDiagram);
 	}
 	
 	@Test
 	public void testAddNodeSimple()
 	{
 		ClassNode node = new ClassNode();
-		DiagramOperation operation = aDiagram.builder().createAddNodeOperation(node, new Point(10,10), 500, 500);
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10), 500, 500);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -74,7 +76,7 @@ public class TestClassDiagramBuilder
 	public void testAddNodeReposition()
 	{
 		ClassNode node = new ClassNode();
-		DiagramOperation operation = aDiagram.builder().createAddNodeOperation(node, new Point(450,450), 500, 500);
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450,450), 500, 500);
 		assertEquals(0, aDiagram.getRootNodes().size());
 		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -94,13 +96,13 @@ public class TestClassDiagramBuilder
 	public void testCanAddNode()
 	{
 		ClassNode node = new ClassNode();
-		assertTrue(aDiagram.builder().canAdd(node, new Point(1000,1000)));
+		assertTrue(aBuilder.canAdd(node, new Point(1000,1000)));
 	}
 	
 	@Test
 	public void testCanAddEdgeNoFirstNode()
 	{
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(10,10), new Point(20,20)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(10,10), new Point(20,20)));
 	}
 	
 	@Test
@@ -109,8 +111,8 @@ public class TestClassDiagramBuilder
 		NoteNode node = new NoteNode();
 		aDiagram.atomicAddRootNode(node);
 		node.translate(10, 10);
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(100, 100)));
-		assertTrue(aDiagram.builder().canAdd(new NoteEdge(), new Point(15,15), new Point(100, 100)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(100, 100)));
+		assertTrue(aBuilder.canAdd(new NoteEdge(), new Point(15,15), new Point(100, 100)));
 	}
 	
 	@Test
@@ -119,7 +121,7 @@ public class TestClassDiagramBuilder
 		ClassNode node1 = new ClassNode();
 		node1.translate(10, 10);
 		aDiagram.atomicAddRootNode(node1);
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(150, 150)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(150, 150)));
 	}
 	
 	@Test
@@ -134,7 +136,7 @@ public class TestClassDiagramBuilder
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(node1, node2, aDiagram);
 		aDiagram.atomicAddEdge(edge);
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
 	}
 	
 	@Test
@@ -142,7 +144,7 @@ public class TestClassDiagramBuilder
 	{
 		NoteNode node = new NoteNode();
 		aDiagram.atomicAddRootNode(node);
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
 	}
 	
 	@Test
@@ -150,7 +152,7 @@ public class TestClassDiagramBuilder
 	{
 		NoteNode node = new NoteNode();
 		aDiagram.atomicAddRootNode(node);
-		assertFalse(aDiagram.builder().canAdd(new DependencyEdge(), new Point(205, 205), new Point(15,15)));
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(205, 205), new Point(15,15)));
 	}
 	
 	@Test
@@ -158,7 +160,7 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode node = new ClassNode();
 		aDiagram.atomicAddRootNode(node);
-		assertFalse(aDiagram.builder().canAdd(new GeneralizationEdge(), new Point(15, 15), new Point(15,15)));
+		assertFalse(aBuilder.canAdd(new GeneralizationEdge(), new Point(15, 15), new Point(15,15)));
 	}
 	
 	@Test
@@ -169,7 +171,7 @@ public class TestClassDiagramBuilder
 		ClassNode node2 = new ClassNode();
 		node2.translate(200, 200);
 		aDiagram.atomicAddRootNode(node2);
-		assertTrue(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(205,205)));
+		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205,205)));
 	}
 	
 	@Test
@@ -177,6 +179,6 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode node1 = new ClassNode();
 		aDiagram.atomicAddRootNode(node1);
-		assertTrue(aDiagram.builder().canAdd(new DependencyEdge(), new Point(15,15), new Point(15,15)));
+		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(15,15)));
 	}
 }

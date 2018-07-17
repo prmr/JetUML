@@ -29,6 +29,7 @@ import org.junit.BeforeClass;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -41,6 +42,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 public class AbstractTestUsageScenarios 
 {
 	protected Diagram aDiagram;
+	protected DiagramBuilder aBuilder;
 	private DiagramOperationProcessor aProcessor;
 	protected NoteNode aNoteNode;
 	protected NoteEdge aNoteEdge;
@@ -68,17 +70,17 @@ public class AbstractTestUsageScenarios
 	
 	protected void addNode(Node pNode, Point pRequestedPosition)
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createAddNodeOperation(pNode, pRequestedPosition, 1000, 1000));
+		aProcessor.executeNewOperation(aBuilder.createAddNodeOperation(pNode, pRequestedPosition, 1000, 1000));
 	}
 	
 	protected void addEdge(Edge pEdge, Point pStart, Point pEnd)
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createAddEdgeOperation(pEdge, pStart, pEnd));
+		aProcessor.executeNewOperation(aBuilder.createAddEdgeOperation(pEdge, pStart, pEnd));
 	}
 	
 	protected void moveNode(Node pNode, int pX, int pY)
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createMoveNodeOperation(pNode, pX, pY));
+		aProcessor.executeNewOperation(aBuilder.createMoveNodeOperation(pNode, pX, pY));
 	}
 	
 	protected void moveSelection(int pX, int pY)
@@ -88,7 +90,7 @@ public class AbstractTestUsageScenarios
 		{
 			if( element instanceof Node)
 			{
-				operation.add(aDiagram.builder().createMoveNodeOperation((Node)element, pX, pY));
+				operation.add(aBuilder.createMoveNodeOperation((Node)element, pX, pY));
 			}
 		}
 		aProcessor.executeNewOperation(operation);
@@ -96,12 +98,12 @@ public class AbstractTestUsageScenarios
 	
 	protected void setProperty(Property pProperty, Object pValue)
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createPropertyChangeOperation(pProperty, pValue));
+		aProcessor.executeNewOperation(aBuilder.createPropertyChangeOperation(pProperty, pValue));
 	}
 	
 	protected void deleteSelected()
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createDeleteElementsOperation(aSelection));
+		aProcessor.executeNewOperation(aBuilder.createDeleteElementsOperation(aSelection));
 		aSelection.clear();
 	}
 	
@@ -112,13 +114,13 @@ public class AbstractTestUsageScenarios
 	
 	protected void paste()
 	{
-		aProcessor.executeNewOperation(aDiagram.builder().createAddElementsOperation(aClipboard.getElements()));
+		aProcessor.executeNewOperation(aBuilder.createAddElementsOperation(aClipboard.getElements()));
 	}
 	
 	protected void cut()
 	{
 		aClipboard.copy(aSelection);
-		aProcessor.executeNewOperation(aDiagram.builder().createDeleteElementsOperation(aSelection));
+		aProcessor.executeNewOperation(aBuilder.createDeleteElementsOperation(aSelection));
 	}
 	
 	protected void select(DiagramElement... pElements)

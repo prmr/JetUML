@@ -20,23 +20,40 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import ca.mcgill.cs.jetuml.diagram.builder.*;
+
 /**
  * The different types of UML diagrams supported by 
  * this application.
  */
 public enum DiagramType
 {
-	CLASS(ClassDiagram.class), 
-	SEQUENCE(SequenceDiagram.class), 
-	STATE(StateDiagram.class), 
-	OBJECT(ObjectDiagram.class), 
-	USECASE(UseCaseDiagram.class);
+	CLASS(ClassDiagram.class, ClassDiagramBuilder.class), 
+	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class), 
+	STATE(StateDiagram.class, StateDiagramBuilder.class), 
+	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class), 
+	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class);
 	
 	private final Class<?> aClass;
+	private final Class<?> aBuilderClass;
 	
-	DiagramType(Class<?> pClass)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass)
 	{
 		aClass = pClass;
+		aBuilderClass = pBuilderClass;
+	}
+	
+	public static DiagramType typeOf(Diagram pDiagram)
+	{
+		for( DiagramType type : values())
+		{
+			if( pDiagram.getClass() == type.aClass )
+			{
+				return type;
+			}
+		}
+		assert false;
+		return null;
 	}
 	
 	/**
@@ -47,6 +64,22 @@ public enum DiagramType
 		try
 		{
 			return (Diagram) aClass.getDeclaredConstructor().newInstance();
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			assert false;
+			return null;
+		}
+	}
+	
+	/**
+	 * @return A new instance of a builder for this diagram type.
+	 */
+	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram)
+	{
+		try
+		{
+			return (DiagramBuilder) typeOf(pDiagram).aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
 		}
 		catch(ReflectiveOperationException exception)
 		{

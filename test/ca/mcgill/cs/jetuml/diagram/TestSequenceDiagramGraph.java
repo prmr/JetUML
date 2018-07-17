@@ -31,6 +31,7 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -38,7 +39,8 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestSequenceDiagramGraph
 {
-	 private SequenceDiagram aGraph;
+	 private SequenceDiagram aDiagram;
+	 private SequenceDiagramBuilder aBuilder;
 	 
 	 /**
 	  * Load JavaFX toolkit and environment.
@@ -53,46 +55,47 @@ public class TestSequenceDiagramGraph
 	 @Before
 	 public void setup()
 	 {
-		 aGraph = new SequenceDiagram();
+		 aDiagram = new SequenceDiagram();
+		 aBuilder = new SequenceDiagramBuilder(aDiagram);
 	 }
 	 
 	 @Test
 	 public void testDeepFindNodeNoChild()
 	 {
 		 ImplicitParameterNode param = new ImplicitParameterNode();
-		 aGraph.builder().createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
 		 CallNode node = new CallNode();
-		 aGraph.builder().createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		 aGraph.layout();
+		 aBuilder.createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aDiagram.layout();
 		 
 		 // Point outside the bounds
-		 assertNull(aGraph.deepFindNode(node, new Point(50, 0)));
-		 assertNull(aGraph.deepFindNode(node, new Point(60, 0)));
+		 assertNull(aDiagram.deepFindNode(node, new Point(50, 0)));
+		 assertNull(aDiagram.deepFindNode(node, new Point(60, 0)));
 		 
 		 // Point inside the bounds
-		 assertTrue(aGraph.deepFindNode(node, new Point(60, 100)) == node);
+		 assertTrue(aDiagram.deepFindNode(node, new Point(60, 100)) == node);
 	 }
 	 
 	 @Test
 	 public void testDeepFindNodeOneChild()
 	 {
 		 ImplicitParameterNode param = new ImplicitParameterNode();
-		 aGraph.builder().createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
 		 CallNode node = new CallNode();
-		 aGraph.builder().createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		 aGraph.layout();
+		 aBuilder.createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aDiagram.layout();
 		 CallNode callee = new CallNode();
 		 param.addChild(callee,new Point(60, 100));
 		 Edge callEdge = new CallEdge();
-		 aGraph.restoreEdge(callEdge, node, callee);
-		 aGraph.layout();
+		 aDiagram.restoreEdge(callEdge, node, callee);
+		 aDiagram.layout();
 	 
 		 // Point outside the bounds
-		 assertNull(aGraph.deepFindNode(node, new Point(50, 0)));
-		 assertNull(aGraph.deepFindNode(node, new Point(60, 0)));
+		 assertNull(aDiagram.deepFindNode(node, new Point(50, 0)));
+		 assertNull(aDiagram.deepFindNode(node, new Point(60, 0)));
 		 
 		// Point inside both the caller and the callee
-		assertTrue(aGraph.deepFindNode(node, new Point(64, 110)) == callee);
+		assertTrue(aDiagram.deepFindNode(node, new Point(64, 110)) == callee);
 	 }
 
 	@Test
@@ -110,89 +113,89 @@ public class TestSequenceDiagramGraph
 		 */
 	
 		ImplicitParameterNode param = new ImplicitParameterNode();
-		aGraph.builder().createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();
+		aBuilder.createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();
 
 		CallNode node = new CallNode();
-		aGraph.builder().createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();		
+		aBuilder.createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
-		aGraph.builder().createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();
+		aBuilder.createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();
 
 		CallNode node2 = new CallNode();
-		aGraph.builder().createAddNodeOperation(node2, new Point(382, 80), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();
+		aBuilder.createAddNodeOperation(node2, new Point(382, 80), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();
 
 		Edge callEdge = new CallEdge();
-		aGraph.restoreEdge(callEdge, node, node2);
-		aGraph.layout();
+		aDiagram.restoreEdge(callEdge, node, node2);
+		aDiagram.layout();
 
 		CallNode node3 = new CallNode();
-		aGraph.builder().createAddNodeOperation(node3, new Point(160, 125), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();		
+		aBuilder.createAddNodeOperation(node3, new Point(160, 125), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();		
 
 		Edge callEdge2 = new CallEdge();
-		aGraph.restoreEdge(callEdge2, node, node3);
-		aGraph.layout();
+		aDiagram.restoreEdge(callEdge2, node, node3);
+		aDiagram.layout();
 
 		// Point outside the bounds
-		assertNull(aGraph.deepFindNode(node, new Point(171, 71)));
+		assertNull(aDiagram.deepFindNode(node, new Point(171, 71)));
 		
 		// Point inside the bounds of the caller but not the self-call callee
-		assertTrue(aGraph.deepFindNode(node, new Point(157, 96)) == node);
+		assertTrue(aDiagram.deepFindNode(node, new Point(157, 96)) == node);
 		
 		// Point inside the bounds of the call node on the second implicit parameter
-		assertTrue(aGraph.deepFindNode(node, new Point(386, 96)) == node2);
+		assertTrue(aDiagram.deepFindNode(node, new Point(386, 96)) == node2);
 
 		// Point inside both caller and self-call callee
-		assertTrue(aGraph.deepFindNode(node, new Point(161, 139)) == node3);
+		assertTrue(aDiagram.deepFindNode(node, new Point(161, 139)) == node3);
 	}
 	
 	@Test
 	public void testDeepFindNodeCreateNode()
 	{
 		ImplicitParameterNode param = new ImplicitParameterNode();
-		aGraph.builder().createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();
+		aBuilder.createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();
 	
 		CallNode node = new CallNode();
-		aGraph.builder().createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();		
+		aBuilder.createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
-		aGraph.builder().createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();
+		aBuilder.createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();
 		
 		Edge callEdge = new CallEdge();
-		aGraph.restoreEdge(callEdge, node, param2);
-		aGraph.layout();
+		aDiagram.restoreEdge(callEdge, node, param2);
+		aDiagram.layout();
 		
 		CallNode node2 = new CallNode();
-		aGraph.builder().createAddNodeOperation(node2, new Point(160, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
-		aGraph.layout();		
+		aBuilder.createAddNodeOperation(node2, new Point(160, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aDiagram.layout();		
 
 		Edge callEdge2 = new CallEdge();
-		aGraph.restoreEdge(callEdge2, node, node2);
-		aGraph.layout();
+		aDiagram.restoreEdge(callEdge2, node, node2);
+		aDiagram.layout();
 		
 		// Point outside the bounds
-		assertNull(aGraph.deepFindNode(node, new Point(50, 50)));
+		assertNull(aDiagram.deepFindNode(node, new Point(50, 50)));
 		
 		// Point inside the bounds of the caller but not the self-call callee
-		assertTrue(aGraph.deepFindNode(node, new Point(155, 80)) == node);
+		assertTrue(aDiagram.deepFindNode(node, new Point(155, 80)) == node);
 		
 		// Point inside both caller and self-call callee
-		assertTrue(aGraph.deepFindNode(node, new Point(165, 140)) == node2);
+		assertTrue(aDiagram.deepFindNode(node, new Point(165, 140)) == node2);
 		
 		// Point inside the bounds of the first param
-		assertTrue(aGraph.deepFindNode(param, new Point(125, 10)) == param);
+		assertTrue(aDiagram.deepFindNode(param, new Point(125, 10)) == param);
 		
 		// Point inside the bounds of the second param
 		// Note that this assert passes because containment for ImplicitParameterNode
 		// only check whether the point is in the column induced by the right and left sides 
 		// of the rectangular node.
-		assertTrue(aGraph.deepFindNode(param2, new Point(355, 10)) == param2);
+		assertTrue(aDiagram.deepFindNode(param2, new Point(355, 10)) == param2);
 	}
 }

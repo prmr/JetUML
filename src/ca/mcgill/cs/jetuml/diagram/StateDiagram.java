@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
@@ -38,11 +37,6 @@ public class StateDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
-	
-	public StateDiagram()
-	{
-		aBuilder = new StateDiagramBuilder(this);
-	}
 	
 	@Override
 	public Node[] getNodePrototypes()

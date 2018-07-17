@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -53,6 +54,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new UseCaseDiagram();
+		aBuilder = new UseCaseDiagramBuilder(aDiagram);
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();
@@ -130,8 +132,8 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertEquals(5, aDiagram.getEdges().size());
 		
 		// connect nodes with NoteEdge (not allowed)
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(),  new Point(80, 20), new Point(140, 20)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(),  new Point(20, 20), new Point(250, 20)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(),  new Point(80, 20), new Point(140, 20)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(),  new Point(20, 20), new Point(250, 20)));
 	}
 	
 	@Test
@@ -151,7 +153,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge2 = new NoteEdge();
 		NoteEdge noteEdge3 = new NoteEdge();
 		
-		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(9, 9), new Point(209, 162)));
+		assertFalse(aBuilder.canAdd(noteEdge1, new Point(9, 9), new Point(209, 162)));
 		addEdge(noteEdge1, new Point(20, 20), new Point(100, 100));
 		assertTrue(aDiagram.contains(noteEdge1));
 		assertSame(noteEdge1.getStart(), aActorNode1);

@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.diagram;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -37,7 +36,6 @@ public abstract class Diagram implements DiagramData
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
 	protected ArrayList<Edge> aEdges;
 	private transient boolean aNeedsLayout;
-	protected transient DiagramBuilder aBuilder;
 
 	/**
 	 * Constructs a diagram with no nodes or edges.
@@ -47,11 +45,6 @@ public abstract class Diagram implements DiagramData
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
 		aNeedsLayout = true;
-	}
-	
-	public DiagramBuilder builder()
-	{
-		return aBuilder;
 	}
 	
 	@Override
@@ -158,29 +151,6 @@ public abstract class Diagram implements DiagramData
 		return null;
 	}
 	
-	/**
-	 * Returns true iif there exists an edge of type pType between
-	 * nodes pStart and pEnd. The direction matter, and the type
-	 * testing is for the exact type pType, without using polymorphism.
-	 * @param pType The type of edge to check for.
-	 * @param pStart The start node.
-	 * @param pEnd The end node.
-	 * @return True if and only if there is an edge of type pType that
-	 * starts at node pStart and ends at node pEnd.
-	 */
-	protected final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
-	{
-		assert pType !=null && pStart != null && pEnd != null;
-		for (Edge edge : getEdges())
-		{
-			if (edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * Draws the graph.
 	 * @param pGraphics the graphics context

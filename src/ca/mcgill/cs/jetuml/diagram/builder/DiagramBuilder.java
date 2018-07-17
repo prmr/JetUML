@@ -44,7 +44,7 @@ public abstract class DiagramBuilder
 {
 	protected final Diagram aDiagram;
 	
-	public DiagramBuilder( Diagram pDiagram )
+	protected DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
 	}

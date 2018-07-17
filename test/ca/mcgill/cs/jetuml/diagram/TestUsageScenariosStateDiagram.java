@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
@@ -53,6 +54,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new StateDiagram();
+		aBuilder = new StateDiagramBuilder(aDiagram);
 		aStateNode1 = new StateNode();
 		aStateNode2 = new StateNode();
 		aInitialNode = new InitialStateNode();
@@ -88,10 +90,10 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge4, new Point(35, 105), new Point(32, 202));
 		assertEquals(4, aDiagram.getEdges().size());
 		
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(6, 6), new Point(35, 35))); 
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(35, 35), new Point(35, 105)));
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(35, 105), new Point(35, 35)));
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(35, 105), new Point(32, 202)));
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(6, 6), new Point(35, 35))); 
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 35), new Point(35, 105)));
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 105), new Point(35, 35)));
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 105), new Point(32, 202)));
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		assertEquals(4, aDiagram.getRootNodes().size());
@@ -169,13 +171,13 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(aTransitionEdge5, new Point(25, 25), new Point(255, 25));
 		assertEquals(5, aDiagram.getEdges().size());
 		
-		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
-		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
-		assertTrue(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 20), new Point(20, 20)));
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(155, 25), new Point(20, 20)));
+		assertTrue(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Second
 		addEdge(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20));
-		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
-		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
-		assertFalse(aDiagram.builder().canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(50, 25), new Point(155, 20))); // Third
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(155, 20)));
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(255, 25), new Point(25, 25)));
 		assertEquals(6, aDiagram.getEdges().size());
 	}
 	
@@ -193,11 +195,11 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		NoteEdge noteEdge4 = new NoteEdge();
 		NoteEdge noteEdge5 = new NoteEdge();
 		
-		assertFalse(aDiagram.builder().canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
-		assertFalse(aDiagram.builder().canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
-		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
-		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
+		assertFalse(aBuilder.canAdd(noteEdge1, new Point(25, 25), new Point(55, 25)));
+		assertFalse(aBuilder.canAdd(noteEdge2, new Point(55, 25), new Point(155, 25)));
+		assertFalse(aBuilder.canAdd(noteEdge3, new Point(155, 25), new Point(255, 25)));
+		assertFalse(aBuilder.canAdd(noteEdge4, new Point(155, 25), new Point(55, 25)));
+		assertFalse(aBuilder.canAdd(noteEdge5, new Point(25, 25), new Point(255, 25)));
 		assertEquals(0, aDiagram.getEdges().size());
 	}
 	
@@ -245,9 +247,9 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge3, new Point(250, 20), new Point(50, 200));
 		assertEquals(3, aDiagram.getEdges().size());
 		// invalid operations, cannot connect any StateNode with NoteEdges
-		assertFalse(aDiagram.builder().canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
-		assertFalse(aDiagram.builder().canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
-		assertFalse(aDiagram.builder().canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
+		assertFalse(aBuilder.canAdd(noteEdge4, new Point(20, 20), new Point(-20, 200)));
+		assertFalse(aBuilder.canAdd(noteEdge5, new Point(150, 20), new Point(-50, 200)));
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(20, 20), new Point(50, 49)));
 		assertEquals(3, aDiagram.getEdges().size());
 	}
 	

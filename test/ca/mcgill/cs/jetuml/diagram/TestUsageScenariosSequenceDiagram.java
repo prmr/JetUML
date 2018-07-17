@@ -29,6 +29,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
@@ -58,6 +59,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		super.setup();
 		aDiagram = new SequenceDiagram();
+		aBuilder = new SequenceDiagramBuilder(aDiagram);
 		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
 		aCanvas = new DiagramCanvas(aDiagram, 0, 0);
 		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram), a ->  {});
@@ -83,9 +85,9 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals("client", aParameterNode1.getName());
 		assertEquals("platform", aParameterNode2.getName());
 		
-		assertFalse(aDiagram.builder().canAdd(aCallEdge1, new Point(7, 0), new Point(26, 0))); 
-		assertFalse(aDiagram.builder().canAdd(aReturnEdge, new Point(7, 0), new Point(26, 0)));
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(7, 0), new Point(26, 0)));
+		assertFalse(aBuilder.canAdd(aCallEdge1, new Point(7, 0), new Point(26, 0))); 
+		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 0), new Point(26, 0)));
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 0), new Point(26, 0)));
 	}
 	
 	@Test
@@ -101,8 +103,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aParameterNode1.getChildren().size());
 		
-		assertFalse(aDiagram.builder().canAdd(aReturnEdge, new Point(7, 75), new Point(26, 0)));
-		assertFalse(aDiagram.builder().canAdd(aNoteEdge, new Point(7, 75), new Point(26, 0)));
+		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 75), new Point(26, 0)));
+		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 75), new Point(26, 0)));
 		
 		addEdge(aCallEdge1, new Point(43, 75), new Point(130, 0));
 		assertEquals(1, aDiagram.getEdges().size());

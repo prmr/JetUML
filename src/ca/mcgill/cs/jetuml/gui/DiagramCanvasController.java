@@ -30,9 +30,11 @@ import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -56,11 +58,11 @@ public class DiagramCanvasController
 	private final SelectionModel aSelectionModel;
 	private final MoveTracker aMoveTracker = new MoveTracker();
 	private final DiagramCanvas aCanvas;
+	private final DiagramBuilder aDiagramBuilder;
 	private final DiagramTabToolBar aToolBar;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
-//	private UndoManager aUndoManager = new UndoManager();	
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private boolean aModified = false;
 	private MouseDraggedGestureHandler aHandler;
@@ -75,6 +77,7 @@ public class DiagramCanvasController
 	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
 	{
 		aCanvas = pCanvas;
+		aDiagramBuilder = DiagramType.newBuilderInstanceFor(aCanvas.getDiagram());
 		aSelectionModel = new SelectionModel(aCanvas);
 		aToolBar = pToolBar;
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
@@ -161,7 +164,7 @@ public class DiagramCanvasController
 	public void paste()
 	{
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddElementsOperation(newElements));
+		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElementList )
 		{
@@ -212,7 +215,7 @@ public class DiagramCanvasController
 	 */
 	public void removeSelected()
 	{
-		aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createDeleteElementsOperation(aSelectionModel));
+		aProcessor.executeNewOperation(aDiagramBuilder.createDeleteElementsOperation(aSelectionModel));
 		aSelectionModel.clearSelection();
 		aCanvas.paintPanel();
 	}
@@ -316,9 +319,9 @@ public class DiagramCanvasController
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
 		Point point = getMousePoint(pEvent);
-		if(aCanvas.getDiagram().builder().canAdd(newNode, point))
+		if(aDiagramBuilder.canAdd(newNode, point))
 		{
-			aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddNodeOperation(newNode, 
+			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, 
 					new Point(point.getX(), point.getY()), (int) aCanvas.getWidth(), (int) aCanvas.getHeight()));
 			setModified(true);
 			aSelectionModel.set(newNode);
@@ -418,9 +421,9 @@ public class DiagramCanvasController
 		Edge newEdge = (Edge) ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
-			if( aCanvas.getDiagram().builder().canAdd(newEdge, aMouseDownPoint, pMousePoint))
+			if( aDiagramBuilder.canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
-				aProcessor.executeNewOperation(aCanvas.getDiagram().builder().createAddEdgeOperation(newEdge, 
+				aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, 
 						aMouseDownPoint, pMousePoint));
 				setModified(true);
 				aSelectionModel.set(newEdge);
@@ -435,7 +438,7 @@ public class DiagramCanvasController
 		// For optimization purposes, some of the layouts are not done on every move event.
 		aCanvas.getDiagram().requestLayout();
 		setModified(true);
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aCanvas.getDiagram());
+		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagramBuilder);
 		if(!operation.isEmpty())
 		{
 			aProcessor.storeAlreadyExecutedOperation(operation);

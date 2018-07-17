@@ -26,7 +26,6 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -51,13 +50,6 @@ public class SequenceDiagram extends Diagram
 	{
 		IMPLICIT_PARAMETER_NODE.addChild(new CallNode());
 	}
-	
-	public SequenceDiagram()
-	{
-		aBuilder = new SequenceDiagramBuilder(this);
-	}
-	
-
 	
 	/**
 	 * @param pNode The node to obtain the caller for.
