@@ -133,7 +133,8 @@ public class TestClassDiagramBuilder
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
 		InterfaceNode node2 = new InterfaceNode();
-		aBuilder.createAddNodeOperation(node2, new Point(10,10)).execute();
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node2, new Point(10,10));
+		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.getRootNodes().contains(node));
 		assertEquals(new Point(0,0), node.position());
@@ -141,6 +142,33 @@ public class TestClassDiagramBuilder
 		assertEquals(1, node.getChildren().size());
 		assertSame(node2, node.getChildren().get(0));
 		assertEquals(new Point(10,10), node2.position());
+		
+		operation.undo();
+		assertEquals(0, node.getChildren().size());
+	}
+	
+	@Test
+	public void testCreateAddNodeOperationValidSubChildAddition()
+	{
+		PackageNode bottom = new PackageNode();
+		aDiagram.addRootNode(bottom);
+		
+		PackageNode middle = new PackageNode();
+		aBuilder.createAddNodeOperation(middle, new Point(10,10)).execute();
+		
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertSame(bottom, aDiagram.getRootNodes().toArray()[0]);
+		assertEquals(1, bottom.getChildren().size());
+		assertSame(middle, bottom.getChildren().get(0));
+		
+		InterfaceNode top = new InterfaceNode();
+		aBuilder.createAddNodeOperation(top, new Point(20,20)).execute();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertSame(bottom, aDiagram.getRootNodes().toArray()[0]);
+		assertEquals(1, bottom.getChildren().size());
+		assertSame(middle, bottom.getChildren().get(0));
+		assertEquals(1, middle.getChildren().size());
+		assertSame(top, middle.getChildren().get(0));
 	}
 	
 	@Test
@@ -232,4 +260,11 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(node1);
 		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(15,15)));
 	}
+	
+	@Test
+	public void testCanConnectEndNull()
+	{
+		assertFalse(aBuilder.canConnect(new DependencyEdge(), new ClassNode(), null, new Point(10,10)));
+	}
+	
 }

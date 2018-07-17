@@ -74,7 +74,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	
 	/* Find if the node to be added should be added to a package. Returns null if not. 
 	 * If packages overlap, select the last one added, which by default should be on
-	 * top. This could be fixed if we ever add a z coordinate to the graph.
+	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
 	private PackageNode findContainer( List<Node> pNodes, Point pPoint)
 	{
