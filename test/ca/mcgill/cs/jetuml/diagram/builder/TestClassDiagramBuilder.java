@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -100,7 +101,7 @@ public class TestClassDiagramBuilder
 	 * of the diagram, so, no over any other node.
 	 */
 	@Test
-	public void testCreateAddNodeInvalidChildNotOverNode()
+	public void testCreateAddNodeOperationInvalidChildNotOverNode()
 	{
 		NoteNode node = new NoteNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50));
@@ -115,7 +116,7 @@ public class TestClassDiagramBuilder
 	 * can be a parent.
 	 */
 	@Test
-	public void testCreateAddNodeInvalidChildOverNode()
+	public void testCreateAddNodeOperationInvalidChildOverNode()
 	{
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
@@ -124,6 +125,22 @@ public class TestClassDiagramBuilder
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.getRootNodes().contains(node2));
 		assertEquals(new Point(20,20), node2.position());
+	}
+	
+	@Test
+	public void testCreateAddNodeOperationValidChildAddition()
+	{
+		PackageNode node = new PackageNode();
+		aDiagram.addRootNode(node);
+		InterfaceNode node2 = new InterfaceNode();
+		aBuilder.createAddNodeOperation(node2, new Point(10,10)).execute();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(new Point(0,0), node.position());
+		
+		assertEquals(1, node.getChildren().size());
+		assertSame(node2, node.getChildren().get(0));
+		assertEquals(new Point(10,10), node2.position());
 	}
 	
 	@Test

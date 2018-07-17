@@ -326,6 +326,7 @@ public class DiagramCanvasController
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			setModified(true);
 			aSelectionModel.set(newNode);
+			aCanvas.getDiagram().requestLayout();
 			aCanvas.paintPanel();
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point

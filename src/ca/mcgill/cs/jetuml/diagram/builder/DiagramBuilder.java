@@ -198,9 +198,7 @@ public abstract class DiagramBuilder
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
-		Rectangle bounds = pNode.view().getBounds();
-		Point position = computePosition(bounds, pRequestedPosition, aCanvasDimension);
-		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
+		positionNode(pNode, pRequestedPosition);
 		return new SimpleOperation( ()-> aDiagram.addRootNode(pNode), 
 				()-> aDiagram.removeRootNode(pNode));
 	}
@@ -423,19 +421,34 @@ public abstract class DiagramBuilder
 		return pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null;
 	}
 	
-	private Point computePosition(Rectangle pBounds, Point pRequestedPosition, Dimension pDiagramSize)
+	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)
 	{
 		int newX = pRequestedPosition.getX();
 		int newY = pRequestedPosition.getY();
-		if(newX + pBounds.getWidth() > pDiagramSize.getWidth())
+		if(newX + pBounds.getWidth() > aCanvasDimension.getWidth())
 		{
-			newX = pDiagramSize.getWidth() - pBounds.getWidth();
+			newX = aCanvasDimension.getWidth() - pBounds.getWidth();
 		}
-		if (newY + pBounds.getHeight() > pDiagramSize.getHeight())
+		if (newY + pBounds.getHeight() > aCanvasDimension.getHeight())
 		{
-			newY = pDiagramSize.getHeight() - pBounds.getHeight();
+			newY = aCanvasDimension.getHeight() - pBounds.getHeight();
 		}
 		return new Point(newX, newY);
+	}
+	
+	/**
+	 * Positions pNode as close to the requested position as possible.
+	 * 
+	 * @param pNode The node to position. 
+	 * @param pRequestedPosition The requested position.
+	 * @pre pNode != null && pRequestedPosition != null
+	 */
+	protected void positionNode(Node pNode, Point pRequestedPosition)
+	{
+		assert pNode != null && pRequestedPosition != null;
+		Rectangle bounds = pNode.view().getBounds();
+		Point position = computePosition(bounds, pRequestedPosition);
+		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 	}
 	
 	/**
