@@ -61,9 +61,9 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected List<DiagramElement> findCoDeletions(DiagramElement pElement)
+	protected List<DiagramElement> findCoRemovals(DiagramElement pElement)
 	{
-		List<DiagramElement> result = super.findCoDeletions(pElement);
+		List<DiagramElement> result = super.findCoRemovals(pElement);
 		if( pElement instanceof CallEdge && hasNoCallees(((Edge)pElement).getEnd()))
 		{
 			result.add(((Edge)pElement).getEnd());
@@ -90,14 +90,14 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	public DiagramOperation createDeleteEdgeOperation(Edge pEdge)
+	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
 	{
 		CompoundOperation result = new CompoundOperation();
-		result.add(super.createDeleteEdgeOperation(pEdge));
+		result.add(super.createRemoveEdgeOperation(pEdge));
 		
 		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
 		{
-			result.add(createDeleteNodeOperation(pEdge.getEnd()));
+			result.add(createRemoveNodeOperation(pEdge.getEnd()));
 		}
 		
 		// Also delete the return edge, if it exists

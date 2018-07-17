@@ -60,7 +60,7 @@ public abstract class DiagramBuilder
 		return true;
 	}
 	
-	private CompoundOperation createDeleteAllEdgesConnectedToOperation(List<Node> pNodes)
+	private CompoundOperation createRemoveAllEdgesConnectedToOperation(List<Node> pNodes)
 	{
 		assert pNodes != null;
 		ArrayList<Edge> toRemove = new ArrayList<Edge>();
@@ -222,9 +222,9 @@ public abstract class DiagramBuilder
 	
 	/**
 	 * @param pElement The element to check.
-	 * @return The list of elements that have to be deleted with pElement.
+	 * @return The list of elements that have to be removed with pElement.
 	 */
-	protected List<DiagramElement> findCoDeletions(DiagramElement pElement)
+	protected List<DiagramElement> findCoRemovals(DiagramElement pElement)
 	{
 		ArrayList<DiagramElement> result = new ArrayList<>();
 		if( pElement.getClass() == PointNode.class )
@@ -267,14 +267,14 @@ public abstract class DiagramBuilder
 	 * @return The requested operation.
 	 * @pre pElements != null.
 	 */
-	public final DiagramOperation createDeleteElementsOperation(Iterable<DiagramElement> pElements)
+	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
 		HashSet<DiagramElement> toDelete = new HashSet<>();
 		for( DiagramElement element : pElements)
 		{
 			toDelete.add(element);
-			toDelete.addAll(findCoDeletions(element));
+			toDelete.addAll(findCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
 		for( DiagramElement element : toDelete)
@@ -354,10 +354,10 @@ public abstract class DiagramBuilder
 	 * @param pNode The node to remove.
 	 * @return An operation to remove the node and all connected edges.
 	 */
-	public DiagramOperation createDeleteNodeOperation(Node pNode)
+	public DiagramOperation createRemoveNodeOperation(Node pNode)
 	{
 		assert pNode != null;
-		CompoundOperation result = createDeleteAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
+		CompoundOperation result = createRemoveAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
 		if( isChild( pNode ))
 		{
 			result.add(new SimpleOperation(()-> ((ChildNode)pNode).getParent().removeChild((ChildNode)pNode),
@@ -384,7 +384,7 @@ public abstract class DiagramBuilder
 		return ()-> parent.removeChild(pNode);
 	}
 	
-	public DiagramOperation createDeleteEdgeOperation(Edge pEdge)
+	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
 	{
 		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.removeEdge(pEdge),
 				()-> aDiagram.addEdge(pEdge));

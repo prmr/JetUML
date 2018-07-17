@@ -105,7 +105,7 @@ public class AbstractTestUsageScenarios
 	
 	protected void deleteSelected()
 	{
-		aProcessor.executeNewOperation(aBuilder.createDeleteElementsOperation(aSelection));
+		aProcessor.executeNewOperation(aBuilder.createRemoveElementsOperation(aSelection));
 		aSelection.clear();
 	}
 	
@@ -122,7 +122,7 @@ public class AbstractTestUsageScenarios
 	protected void cut()
 	{
 		aClipboard.copy(aSelection);
-		aProcessor.executeNewOperation(aBuilder.createDeleteElementsOperation(aSelection));
+		aProcessor.executeNewOperation(aBuilder.createRemoveElementsOperation(aSelection));
 	}
 	
 	protected void select(DiagramElement... pElements)

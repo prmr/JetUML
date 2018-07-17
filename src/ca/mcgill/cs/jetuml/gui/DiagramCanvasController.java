@@ -215,7 +215,7 @@ public class DiagramCanvasController
 	 */
 	public void removeSelected()
 	{
-		aProcessor.executeNewOperation(aDiagramBuilder.createDeleteElementsOperation(aSelectionModel));
+		aProcessor.executeNewOperation(aDiagramBuilder.createRemoveElementsOperation(aSelectionModel));
 		aSelectionModel.clearSelection();
 		aCanvas.paintPanel();
 	}
