@@ -91,7 +91,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	 * If a node is already the parent of the field (from a previously undone operation),
 	 * return this node. Otherwise, find if a node is at the point
 	 */
-	public ObjectNode findObject(FieldNode pNode, Point pPoint)
+	private ObjectNode findObject(FieldNode pNode, Point pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
 		for( Node node : aDiagram.getRootNodes() )

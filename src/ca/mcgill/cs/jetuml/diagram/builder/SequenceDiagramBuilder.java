@@ -46,7 +46,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Returns true if pCalle is in the control-flow of pPotentialCaller
+	 * Returns true if pCallee is in the control-flow of pPotentialCaller
 	 */
 	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
 	{
@@ -90,14 +90,14 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+	public DiagramOperation createDeleteEdgeOperation(Edge pEdge)
 	{
 		CompoundOperation result = new CompoundOperation();
-		result.add(super.createRemoveEdgeOperation(pEdge));
+		result.add(super.createDeleteEdgeOperation(pEdge));
 		
 		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
 		{
-			result.add(createRemoveNodeOperation(pEdge.getEnd()));
+			result.add(createDeleteNodeOperation(pEdge.getEnd()));
 		}
 		
 		// Also delete the return edge, if it exists
@@ -276,7 +276,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 * If pPoint is inside an ImplicitParameterNode but below its top
 	 * rectangle, returns that node. Otherwise, returns null.
 	 */
-	public ImplicitParameterNode insideTargetArea(Point pPoint)
+	private ImplicitParameterNode insideTargetArea(Point pPoint)
 	{
 		for( Node node : aDiagram.getRootNodes() )
 		{

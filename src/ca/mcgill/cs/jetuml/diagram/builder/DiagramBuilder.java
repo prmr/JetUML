@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -61,7 +60,7 @@ public abstract class DiagramBuilder
 		return true;
 	}
 	
-	private CompoundOperation createRemoveAllEdgesConnectedToOperation(List<Node> pNodes)
+	private CompoundOperation createDeleteAllEdgesConnectedToOperation(List<Node> pNodes)
 	{
 		assert pNodes != null;
 		ArrayList<Edge> toRemove = new ArrayList<Edge>();
@@ -94,23 +93,6 @@ public abstract class DiagramBuilder
 			}
 		}
 		return result;
-	}
-	
-	public static void removeFromParent(Node pParent, Node pToRemove)
-	{
-		if(pParent instanceof ParentNode)
-		{
-			if (pToRemove instanceof ChildNode && ((ChildNode) pToRemove).getParent() == pParent)
-			{
-				((ParentNode) pParent).getChildren().remove(pToRemove);
-				// We don't reassing the parent of the child to null in case the operation
-				// is undone, at which point we'll need to know who the parent was.
-			}
-			for (Node child : ((ParentNode) pParent).getChildren())
-			{
-				removeFromParent(child, pToRemove);
-			}
-		}
 	}
 	
 	/**
@@ -177,7 +159,7 @@ public abstract class DiagramBuilder
 	 * @return True if and only if there is an edge of type pType that
 	 * starts at node pStart and ends at node pEnd.
 	 */
-	protected final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	private final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
 		for(Edge edge : aDiagram.getEdges())
@@ -323,21 +305,6 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Creates an operation to change the value of a property on a diagram element.
-	 * @param pProperty The property to change.
-	 * @param pNewValue The value to change to.
-	 * @return The requested operation.
-	 * @pre pProperty != null.
-	 * @pre pNewValue != null.
-	 */
-	public final DiagramOperation createPropertyChangeOperation(Property pProperty, Object pNewValue)
-	{
-		assert pProperty != null && pNewValue != null;
-		Object oldValue = pProperty.get();
-		return new SimpleOperation(()-> pProperty.set(pNewValue), ()-> pProperty.set(oldValue));
-	}
-	
-	/**
 	 * Create an operation to move a node.
 	 * 
 	 * @param pNode The node to move.
@@ -387,10 +354,10 @@ public abstract class DiagramBuilder
 	 * @param pNode The node to remove.
 	 * @return An operation to remove the node and all connected edges.
 	 */
-	public DiagramOperation createRemoveNodeOperation(Node pNode)
+	public DiagramOperation createDeleteNodeOperation(Node pNode)
 	{
 		assert pNode != null;
-		CompoundOperation result = createRemoveAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
+		CompoundOperation result = createDeleteAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
 		if( isChild( pNode ))
 		{
 			result.add(new SimpleOperation(()-> ((ChildNode)pNode).getParent().removeChild((ChildNode)pNode),
@@ -417,7 +384,7 @@ public abstract class DiagramBuilder
 		return ()-> parent.removeChild(pNode);
 	}
 	
-	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+	public DiagramOperation createDeleteEdgeOperation(Edge pEdge)
 	{
 		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.atomicRemoveEdge(pEdge),
 				()-> aDiagram.atomicAddEdge(pEdge));
@@ -460,7 +427,7 @@ public abstract class DiagramBuilder
 	 * @param pNode A node to check for parenthood.
 	 * @return True iif pNode has a non-null parent.
 	 */
-	protected static boolean hasParent(Node pNode)
+	private static boolean hasParent(Node pNode)
 	{
 		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
 	}

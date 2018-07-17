@@ -31,6 +31,7 @@ import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
+import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -98,7 +99,8 @@ public class AbstractTestUsageScenarios
 	
 	protected void setProperty(Property pProperty, Object pValue)
 	{
-		aProcessor.executeNewOperation(aBuilder.createPropertyChangeOperation(pProperty, pValue));
+		Object oldValue = pProperty.get();
+		aProcessor.executeNewOperation(new SimpleOperation(()-> pProperty.set(pValue), ()-> pProperty.set(oldValue)));
 	}
 	
 	protected void deleteSelected()
