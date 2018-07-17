@@ -41,11 +41,27 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public abstract class DiagramBuilder
 {
+	// Arbitrary default value, used to simplify the testing code
+	private static final int DEFAULT_DIMENSION = 1000;
+	
 	protected final Diagram aDiagram;
+	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
 	protected DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
+	}
+	
+	/**
+	 * Provide information to this builder about the size
+	 * of the canvas the diagram is built on.
+	 * 
+	 * @param pDimension The canvas size.
+	 * @pre pDimension != null.
+	 */
+	public void setCanvasDimension(Dimension pDimension)
+	{
+		aCanvasDimension = pDimension;
 	}
 	
 	/**
@@ -177,14 +193,13 @@ public abstract class DiagramBuilder
 	 * add it as a root node.
 	 * @param pNode The node to add.
 	 * @param pRequestedPosition A point that is the requested position of the node.
-	 * @param pMaxWidth The maximum width, in pixels, of the diagram.
-	 * @param pMaxHeight The maximum height, in pixles, of the diagram.
+	 * @pre pNode != null && pRequestedPosition != null
 	 */
-	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
-		assert pNode != null && pRequestedPosition != null && pMaxWidth >= 0 && pMaxHeight >= 0;
+		assert pNode != null && pRequestedPosition != null;
 		Rectangle bounds = pNode.view().getBounds();
-		Point position = computePosition(bounds, pRequestedPosition, new Dimension(pMaxWidth, pMaxHeight));
+		Point position = computePosition(bounds, pRequestedPosition, aCanvasDimension);
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 		return new SimpleOperation( ()-> aDiagram.addRootNode(pNode), 
 				()-> aDiagram.removeRootNode(pNode));

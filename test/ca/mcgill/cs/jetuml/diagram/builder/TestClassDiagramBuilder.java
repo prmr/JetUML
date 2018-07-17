@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClassDiagramBuilder
@@ -63,7 +64,7 @@ public class TestClassDiagramBuilder
 	public void testcreateAddNodeOperationSimple()
 	{
 		ClassNode node = new ClassNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10), 500, 500);
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
 		assertEquals(0, aDiagram.getRootNodes().size());
 		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -77,7 +78,8 @@ public class TestClassDiagramBuilder
 	public void testcreateAddNodeOperationReposition()
 	{
 		ClassNode node = new ClassNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450,450), 500, 500);
+		aBuilder.setCanvasDimension(new Dimension(500,500));
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450,450));
 		assertEquals(0, aDiagram.getRootNodes().size());
 		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
@@ -101,7 +103,7 @@ public class TestClassDiagramBuilder
 	public void testCreateAddNodeInvalidChildNotOverNode()
 	{
 		NoteNode node = new NoteNode();
-		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50), 500, 500);
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50));
 		operation.execute();
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.getRootNodes().contains(node));
@@ -118,7 +120,7 @@ public class TestClassDiagramBuilder
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
 		NoteNode node2 = new NoteNode();
-		aBuilder.createAddNodeOperation(node2, new Point(20,20), 500, 500).execute();
+		aBuilder.createAddNodeOperation(node2, new Point(20,20)).execute();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertTrue(aDiagram.getRootNodes().contains(node2));
 		assertEquals(new Point(20,20), node2.position());

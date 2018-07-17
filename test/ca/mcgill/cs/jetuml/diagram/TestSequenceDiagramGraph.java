@@ -63,9 +63,9 @@ public class TestSequenceDiagramGraph
 	 public void testDeepFindNodeNoChild()
 	 {
 		 ImplicitParameterNode param = new ImplicitParameterNode();
-		 aBuilder.createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(param, new Point(20,0)).execute();
 		 CallNode node = new CallNode();
-		 aBuilder.createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(node, new Point(40, 90)).execute();
 		 aDiagram.layout();
 		 
 		 // Point outside the bounds
@@ -80,9 +80,9 @@ public class TestSequenceDiagramGraph
 	 public void testDeepFindNodeOneChild()
 	 {
 		 ImplicitParameterNode param = new ImplicitParameterNode();
-		 aBuilder.createAddNodeOperation(param, new Point(20,0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(param, new Point(20,0)).execute();
 		 CallNode node = new CallNode();
-		 aBuilder.createAddNodeOperation(node, new Point(40, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		 aBuilder.createAddNodeOperation(node, new Point(40, 90)).execute();
 		 aDiagram.layout();
 		 CallNode callee = new CallNode();
 		 param.addChild(callee,new Point(60, 100));
@@ -113,19 +113,19 @@ public class TestSequenceDiagramGraph
 		 */
 	
 		ImplicitParameterNode param = new ImplicitParameterNode();
-		aBuilder.createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(param, new Point(118, 0)).execute();
 		aDiagram.layout();
 
 		CallNode node = new CallNode();
-		aBuilder.createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(node, new Point(152, 70)).execute();
 		aDiagram.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
-		aBuilder.createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(param2, new Point(347, 0)).execute();
 		aDiagram.layout();
 
 		CallNode node2 = new CallNode();
-		aBuilder.createAddNodeOperation(node2, new Point(382, 80), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(node2, new Point(382, 80)).execute();
 		aDiagram.layout();
 
 		Edge callEdge = new CallEdge();
@@ -133,7 +133,7 @@ public class TestSequenceDiagramGraph
 		aDiagram.layout();
 
 		CallNode node3 = new CallNode();
-		aBuilder.createAddNodeOperation(node3, new Point(160, 125), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(node3, new Point(160, 125)).execute();
 		aDiagram.layout();		
 
 		Edge callEdge2 = new CallEdge();
@@ -157,15 +157,15 @@ public class TestSequenceDiagramGraph
 	public void testDeepFindNodeCreateNode()
 	{
 		ImplicitParameterNode param = new ImplicitParameterNode();
-		aBuilder.createAddNodeOperation(param, new Point(118, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(param, new Point(118, 0)).execute();
 		aDiagram.layout();
 	
 		CallNode node = new CallNode();
-		aBuilder.createAddNodeOperation(node, new Point(152, 70), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(node, new Point(152, 70)).execute();
 		aDiagram.layout();		
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
-		aBuilder.createAddNodeOperation(param2, new Point(347, 0), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(param2, new Point(347, 0)).execute();
 		aDiagram.layout();
 		
 		Edge callEdge = new CallEdge();
@@ -173,7 +173,7 @@ public class TestSequenceDiagramGraph
 		aDiagram.layout();
 		
 		CallNode node2 = new CallNode();
-		aBuilder.createAddNodeOperation(node2, new Point(160, 90), Integer.MAX_VALUE, Integer.MAX_VALUE).execute();
+		aBuilder.createAddNodeOperation(node2, new Point(160, 90)).execute();
 		aDiagram.layout();		
 
 		Edge callEdge2 = new CallEdge();

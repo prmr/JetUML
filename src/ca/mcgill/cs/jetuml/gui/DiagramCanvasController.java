@@ -38,6 +38,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -78,6 +79,7 @@ public class DiagramCanvasController
 	{
 		aCanvas = pCanvas;
 		aDiagramBuilder = DiagramType.newBuilderInstanceFor(aCanvas.getDiagram());
+		aDiagramBuilder.setCanvasDimension(new Dimension((int) aCanvas.getWidth(), (int)aCanvas.getHeight()));
 		aSelectionModel = new SelectionModel(aCanvas);
 		aToolBar = pToolBar;
 		aCanvas.setOnMousePressed(e -> mousePressed(e));
@@ -321,8 +323,7 @@ public class DiagramCanvasController
 		Point point = getMousePoint(pEvent);
 		if(aDiagramBuilder.canAdd(newNode, point))
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, 
-					new Point(point.getX(), point.getY()), (int) aCanvas.getWidth(), (int) aCanvas.getHeight()));
+			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			setModified(true);
 			aSelectionModel.set(newNode);
 			aCanvas.paintPanel();

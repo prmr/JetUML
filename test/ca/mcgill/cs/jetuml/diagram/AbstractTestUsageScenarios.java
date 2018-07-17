@@ -71,7 +71,7 @@ public class AbstractTestUsageScenarios
 	
 	protected void addNode(Node pNode, Point pRequestedPosition)
 	{
-		aProcessor.executeNewOperation(aBuilder.createAddNodeOperation(pNode, pRequestedPosition, 1000, 1000));
+		aProcessor.executeNewOperation(aBuilder.createAddNodeOperation(pNode, pRequestedPosition));
 	}
 	
 	protected void addEdge(Edge pEdge, Point pStart, Point pEnd)

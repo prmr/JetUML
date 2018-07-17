@@ -44,7 +44,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition, int pMaxWidth, int pMaxHeight)
+	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
 		DiagramOperation result = null;
 		if( validChild(pNode))
@@ -58,7 +58,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		}
 		if( result == null )
 		{
-			result = super.createAddNodeOperation(pNode, pRequestedPosition, pMaxWidth, pMaxHeight);
+			result = super.createAddNodeOperation(pNode, pRequestedPosition);
 		}
 		return result;
 	}
