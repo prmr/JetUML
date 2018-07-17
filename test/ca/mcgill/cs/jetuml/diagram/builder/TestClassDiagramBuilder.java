@@ -337,4 +337,32 @@ public class TestClassDiagramBuilder
 		assertEquals(0, aDiagram.getRootNodes().size());
 		assertEquals(0, aDiagram.getEdges().size());
 	}
+	
+	@Test
+	public void testCreateRemoveElementsOperationEmpty()
+	{
+		DiagramOperation operation = aBuilder.createRemoveElementsOperation(new ArrayList<>());
+		operation.execute();
+		assertEquals(0, aDiagram.getRootNodes().size());
+		operation.undo();
+		assertEquals(0, aDiagram.getRootNodes().size());
+	}
+	
+	@Test
+	public void testCreateRemoveElementsOperationSingleNode()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		node2.moveTo(new Point(100,100));
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		ArrayList<DiagramElement> selection = new ArrayList<>();
+		selection.add(node1);
+		DiagramOperation operation = aBuilder.createRemoveElementsOperation(selection);
+		operation.execute();
+		assertEquals(1, aDiagram.getRootNodes().size());
+		assertSame(node2, aDiagram.getRootNodes().toArray()[0]);
+		operation.undo();
+		assertEquals(2, aDiagram.getRootNodes().size());
+	}
 }
