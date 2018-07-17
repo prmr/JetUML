@@ -69,7 +69,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{

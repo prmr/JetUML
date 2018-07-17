@@ -23,12 +23,16 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -219,11 +223,36 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeFromNoteNodeNotNodeEdge()
+	public void testCanAddEdgeFromNoteNodeNotNoteEdge()
 	{
 		NoteNode node = new NoteNode();
+		NoteNode end = new NoteNode();
+		end.moveTo(new Point(100,100));
 		aDiagram.addRootNode(node);
-		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
+		aDiagram.addRootNode(end);
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
+	}
+	
+	@Test
+	public void testCanAddEdgeFromNoteNodeNotNoteEdge2()
+	{
+		NoteNode node = new NoteNode();
+		ClassNode end = new ClassNode();
+		end.moveTo(new Point(100,100));
+		aDiagram.addRootNode(node);
+		aDiagram.addRootNode(end);
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
+	}
+	
+	@Test
+	public void testCanAddEdgeFromNoteNodeNotNoteEdge3()
+	{
+		ClassNode node = new ClassNode();
+		NoteNode end = new NoteNode();
+		end.moveTo(new Point(100,100));
+		aDiagram.addRootNode(node);
+		aDiagram.addRootNode(end);
+		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(105, 105)));
 	}
 	
 	@Test
@@ -262,9 +291,50 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanConnectEndNull()
+	public void testCanAddNoteEdgeNoNoteNode()
 	{
-		assertFalse(aBuilder.canConnect(new DependencyEdge(), new ClassNode(), null, new Point(10,10)));
+		ClassNode start = new ClassNode();
+		ClassNode end = new ClassNode();
+		end.moveTo(new Point(150, 150));
+		aDiagram.addRootNode(start);
+		aDiagram.addRootNode(end);
+		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(5,5), new Point(155,155)));
 	}
 	
+	@Test
+	public void testCreateAddElementsOperationNothing()
+	{
+		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
+		operation.execute();
+		assertTrue(aDiagram.getRootNodes().isEmpty());
+		assertTrue(aDiagram.getEdges().isEmpty());
+		operation.undo();
+		assertTrue(aDiagram.getRootNodes().isEmpty());
+		assertTrue(aDiagram.getEdges().isEmpty());
+	}
+	
+	@Test
+	public void testCreateAddElementsOperationNodesAndEdges()
+	{
+		ArrayList<DiagramElement> elements = new ArrayList<>();
+		ClassNode node1 = new ClassNode();
+		node1.moveTo(new Point(10,10));
+		ClassNode node2 = new ClassNode();
+		node2.moveTo(new Point(100,100));
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node1, node2, aDiagram);
+		elements.addAll(Arrays.asList(new DiagramElement[]{edge, node1, node2}));
+		
+		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
+		operation.execute();
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(1, aDiagram.getEdges().size());
+		assertSame(node1, aDiagram.getRootNodes().toArray()[0]);
+		assertSame(node2, aDiagram.getRootNodes().toArray()[1]);
+		assertSame(edge, aDiagram.getEdges().toArray()[0]);
+		
+		operation.undo();
+		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, aDiagram.getEdges().size());
+	}
 }

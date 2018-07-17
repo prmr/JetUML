@@ -41,7 +41,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 	
 	// CSOFF:
 		@Override
-		public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+		protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 		{
 			if( pNode2 == null )
 			{

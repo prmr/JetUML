@@ -144,7 +144,7 @@ public abstract class DiagramBuilder
 	 * @param pPoint2 The point where the edge is supposed to be terminated
 	 * @return True if the edge can legally connect node1 to node2
 	 */
-	public boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if(pNode2 == null)
 		{
