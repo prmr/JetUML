@@ -115,8 +115,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			if( returnEdge != null )
 			{
 				final Edge target = returnEdge;
-				result.add(new SimpleOperation( ()-> aDiagram.atomicRemoveEdge(target),
-						()-> aDiagram.atomicAddEdge(target)));
+				result.add(new SimpleOperation( ()-> aDiagram.removeEdge(target),
+						()-> aDiagram.addEdge(target)));
 			}
 		}
 		return result;

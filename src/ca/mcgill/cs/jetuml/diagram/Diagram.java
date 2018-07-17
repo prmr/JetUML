@@ -356,28 +356,56 @@ public abstract class Diagram implements DiagramData
 		aEdges.add(pEdge);
 	}
 	
-	public void atomicAddRootNode(Node pNode)
+	/**
+	 * Adds pNode as a root node in this diagram. Callers of this method 
+	 * must ensure that the addition respects the integrity of the diagram.
+	 * 
+	 * @param pNode The node to add.
+	 * @pre pNode != null
+	 */
+	public void addRootNode(Node pNode)
 	{
 		assert pNode != null;
 		aRootNodes.add(pNode);
 		requestLayout(); // TODO: This will be removed with the layoutloop
 	}
 	
-	public void atomicRemoveRootNode(Node pNode)
+	/**
+	 * Removes pNode from the list of root nodes in this
+	 * diagram. Callers must ensure that the removal preserves
+	 * the integrity of the diagram.
+	 * 
+	 * @param pNode The node to remove.
+	 * @pre pNode != null && pNode is contained as a root node.
+	 */
+	public void removeRootNode(Node pNode)
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
 		aRootNodes.remove(pNode);
 		requestLayout(); // TODO: This will be removed with the layoutloop
 	}
 	
-	// The edge should be connected
-	public void atomicAddEdge(Edge pEdge)
+	/**
+	 * Adds pEdge to the diagram. pEdge should already be connected to its 
+	 * start and end nodes.
+	 * 
+	 * @param pEdge The edge to add.
+	 * @pre pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph != null
+	 */
+	public void addEdge(Edge pEdge)
 	{
 		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph() != null;
 		aEdges.add(pEdge);
 	}
 	
-	public void atomicRemoveEdge(Edge pEdge)
+	/**
+	 * Removes pEdge from this diagram. Callers must ensure that the removal
+	 * preserves the integrity of the diagram.
+	 * 
+	 * @param pEdge The edge to remove. 
+	 * @pre pEdge != null && pEdge is contained in the diagram
+	 */
+	public void removeEdge(Edge pEdge)
 	{
 		assert pEdge != null && aEdges.contains(pEdge);
 		aEdges.remove(pEdge);

@@ -75,8 +75,8 @@ public abstract class DiagramBuilder
 		CompoundOperation result = new CompoundOperation();
 		for(Edge edge : toRemove)
 		{
-			result.add(new SimpleOperation(()-> aDiagram.atomicRemoveEdge(edge), 
-					()-> aDiagram.atomicAddEdge(edge)));
+			result.add(new SimpleOperation(()-> aDiagram.removeEdge(edge), 
+					()-> aDiagram.addEdge(edge)));
 		}
 		return result;
 	}
@@ -186,8 +186,8 @@ public abstract class DiagramBuilder
 		Rectangle bounds = pNode.view().getBounds();
 		Point position = computePosition(bounds, pRequestedPosition, new Dimension(pMaxWidth, pMaxHeight));
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
-		return new SimpleOperation( ()-> aDiagram.atomicAddRootNode(pNode), 
-				()-> aDiagram.atomicRemoveRootNode(pNode));
+		return new SimpleOperation( ()-> aDiagram.addRootNode(pNode), 
+				()-> aDiagram.removeRootNode(pNode));
 	}
 	
 	/**
@@ -206,14 +206,14 @@ public abstract class DiagramBuilder
 			if( element instanceof Node )
 			{
 				operation.add(new SimpleOperation(
-						()-> aDiagram.atomicAddRootNode((Node)element),
-						()-> aDiagram.atomicRemoveRootNode((Node)element)));
+						()-> aDiagram.addRootNode((Node)element),
+						()-> aDiagram.removeRootNode((Node)element)));
 			}
 			else if( element instanceof Edge)
 			{
 				operation.add(new SimpleOperation(
-						()-> aDiagram.atomicAddEdge((Edge)element),
-						()-> aDiagram.atomicRemoveEdge((Edge)element)));
+						()-> aDiagram.addEdge((Edge)element),
+						()-> aDiagram.removeEdge((Edge)element)));
 			}
 		}
 		
@@ -282,8 +282,8 @@ public abstract class DiagramBuilder
 			if( element instanceof Edge )
 			{
 				result.add(new SimpleOperation(
-						()-> aDiagram.atomicRemoveEdge((Edge)element),
-						()-> aDiagram.atomicAddEdge((Edge)element)));
+						()-> aDiagram.removeEdge((Edge)element),
+						()-> aDiagram.addEdge((Edge)element)));
 			}
 			else if( element instanceof Node )
 			{
@@ -296,8 +296,8 @@ public abstract class DiagramBuilder
 				else
 				{
 					result.add(new SimpleOperation(
-						()-> aDiagram.atomicRemoveRootNode((Node)element),
-						()-> aDiagram.atomicAddRootNode((Node)element)));
+						()-> aDiagram.removeRootNode((Node)element),
+						()-> aDiagram.addRootNode((Node)element)));
 				}
 			}
 		}
@@ -331,14 +331,14 @@ public abstract class DiagramBuilder
 			node2 = new PointNode();
 			node2.translate(pPoint2.getX(), pPoint2.getY());
 			Node end = node2; // Effectively final to include in closure
-			result.add(new SimpleOperation(()-> aDiagram.atomicAddRootNode(end),
-					()-> aDiagram.atomicRemoveRootNode(end)));
+			result.add(new SimpleOperation(()-> aDiagram.addRootNode(end),
+					()-> aDiagram.removeRootNode(end)));
 		}
 		assert node2 != null;
 		pEdge.connect(node1, node2, aDiagram);
 		addComplementaryEdgeAdditionOperations(result, pEdge, pPoint1, pPoint2);
-		result.add(new SimpleOperation(()-> aDiagram.atomicAddEdge(pEdge),
-				()-> aDiagram.atomicRemoveEdge(pEdge)));
+		result.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
+				()-> aDiagram.removeEdge(pEdge)));
 		return result;
 	}
 	
@@ -365,8 +365,8 @@ public abstract class DiagramBuilder
 		}
 		else
 		{
-			result.add(new SimpleOperation( ()-> aDiagram.atomicRemoveRootNode(pNode),
-					()-> aDiagram.atomicAddRootNode(pNode)));
+			result.add(new SimpleOperation( ()-> aDiagram.removeRootNode(pNode),
+					()-> aDiagram.addRootNode(pNode)));
 		}
 		return result;
 	}
@@ -386,14 +386,14 @@ public abstract class DiagramBuilder
 	
 	public DiagramOperation createDeleteEdgeOperation(Edge pEdge)
 	{
-		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.atomicRemoveEdge(pEdge),
-				()-> aDiagram.atomicAddEdge(pEdge));
+		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.removeEdge(pEdge),
+				()-> aDiagram.addEdge(pEdge));
 		if( pEdge.getEnd() instanceof PointNode )
 		{
 			CompoundOperation result = new CompoundOperation();
 			final Node end = pEdge.getEnd();
-			result.add( new SimpleOperation( ()-> aDiagram.atomicRemoveRootNode(end),
-					()-> aDiagram.atomicAddRootNode(end)));
+			result.add( new SimpleOperation( ()-> aDiagram.removeRootNode(end),
+					()-> aDiagram.addRootNode(end)));
 			result.add(remove);
 			return result;
 		}

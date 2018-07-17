@@ -109,7 +109,7 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeFromNoteNode()
 	{
 		NoteNode node = new NoteNode();
-		aDiagram.atomicAddRootNode(node);
+		aDiagram.addRootNode(node);
 		node.translate(10, 10);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(100, 100)));
 		assertTrue(aBuilder.canAdd(new NoteEdge(), new Point(15,15), new Point(100, 100)));
@@ -120,7 +120,7 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode node1 = new ClassNode();
 		node1.translate(10, 10);
-		aDiagram.atomicAddRootNode(node1);
+		aDiagram.addRootNode(node1);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(150, 150)));
 	}
 	
@@ -131,11 +131,11 @@ public class TestClassDiagramBuilder
 		node1.translate(10, 10);
 		ClassNode node2 = new ClassNode();
 		node2.translate(200, 200);
-		aDiagram.atomicAddRootNode(node1);
-		aDiagram.atomicAddRootNode(node2);
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(node1, node2, aDiagram);
-		aDiagram.atomicAddEdge(edge);
+		aDiagram.addEdge(edge);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
 	}
 	
@@ -143,7 +143,7 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeFromNoteNodeNotNodeEdge()
 	{
 		NoteNode node = new NoteNode();
-		aDiagram.atomicAddRootNode(node);
+		aDiagram.addRootNode(node);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205, 205)));
 	}
 	
@@ -151,7 +151,7 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeToNoteNodeNotNodeEdge()
 	{
 		NoteNode node = new NoteNode();
-		aDiagram.atomicAddRootNode(node);
+		aDiagram.addRootNode(node);
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(205, 205), new Point(15,15)));
 	}
 	
@@ -159,7 +159,7 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeSelfGeneralization()
 	{
 		ClassNode node = new ClassNode();
-		aDiagram.atomicAddRootNode(node);
+		aDiagram.addRootNode(node);
 		assertFalse(aBuilder.canAdd(new GeneralizationEdge(), new Point(15, 15), new Point(15,15)));
 	}
 	
@@ -167,10 +167,10 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeNonSelfDependency()
 	{
 		ClassNode node1 = new ClassNode();
-		aDiagram.atomicAddRootNode(node1);
+		aDiagram.addRootNode(node1);
 		ClassNode node2 = new ClassNode();
 		node2.translate(200, 200);
-		aDiagram.atomicAddRootNode(node2);
+		aDiagram.addRootNode(node2);
 		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(205,205)));
 	}
 	
@@ -178,7 +178,7 @@ public class TestClassDiagramBuilder
 	public void testCanAddEdgeSelfDependency()
 	{
 		ClassNode node1 = new ClassNode();
-		aDiagram.atomicAddRootNode(node1);
+		aDiagram.addRootNode(node1);
 		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(15,15)));
 	}
 }
