@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -37,20 +36,16 @@ public abstract class Diagram implements DiagramData
 {
 	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
 	protected ArrayList<Edge> aEdges;
-	protected transient ArrayList<Node> aNodesToBeRemoved;
-	protected transient ArrayList<Edge> aEdgesToBeRemoved;
 	private transient boolean aNeedsLayout;
 	protected transient DiagramBuilder aBuilder;
 
 	/**
-	 * Constructs a graph with no nodes or edges.
+	 * Constructs a diagram with no nodes or edges.
 	 */
 	public Diagram()
 	{
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
-		aNodesToBeRemoved = new ArrayList<>();
-		aEdgesToBeRemoved = new ArrayList<>();
 		aNeedsLayout = true;
 	}
 	
@@ -216,11 +211,6 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
-	public List<Node> getNodesToBeRemoved()
-	{
-		return aNodesToBeRemoved;
-	}
-
 	/**
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
@@ -260,12 +250,6 @@ public abstract class Diagram implements DiagramData
 		return false;
 	}
 
-	public List<Edge> getEdgesToBeRemoved()
-	{
-		return aEdgesToBeRemoved;
-	}
-	
-
 	/**
 	 * Causes the layout of the graph to be recomputed.
 	 */
@@ -285,12 +269,7 @@ public abstract class Diagram implements DiagramData
 		{
 			return;
 		}
-		aRootNodes.removeAll(aNodesToBeRemoved);
-		aEdges.removeAll(aEdgesToBeRemoved);
-		aNodesToBeRemoved.clear();
-		aEdgesToBeRemoved.clear();
-
-		for (Node node : aRootNodes)
+		for(Node node : aRootNodes)
 		{
 			node.view().layout(this);
 		}
