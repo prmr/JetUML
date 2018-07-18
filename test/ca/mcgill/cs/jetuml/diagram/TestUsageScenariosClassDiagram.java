@@ -75,7 +75,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode2, new Point(30, 30));
 		moveNode(aClassNode2, 100, 0);
 
-		addEdge(aDependencyEdge, new Point(26, 26), new Point(131, 31));
+		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(2, aPackageNode.getChildren().size());
 		assertSame(aClassNode1, aDependencyEdge.getStart());
@@ -94,9 +94,9 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aPackageNode, new Point(20, 20));
 		addNode(aClassNode1, new Point(30, 30));
-		addNode(aClassNode2, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
 		moveNode(aClassNode2, 100, 0);
-		addEdge(aDependencyEdge, new Point(31, 31), new Point(130, 26));
+		addEdge(aDependencyEdge, new Point(31, 31), new Point(135, 30));
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(2, aPackageNode.getChildren().size());
@@ -151,8 +151,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		// one point is invalid
 		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
 		
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		assertEquals(3, aDiagram.getEdges().size());
 		
@@ -189,7 +189,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		// if begin with a non-NoteNode type, both point needs to be valid
 		assertFalse(aBuilder.canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
-		addEdge(noteEdge1, new Point(9, 9), new Point(139,142));
+		addEdge(noteEdge1, new Point(10, 10), new Point(139,142));
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(noteEdge1.getStart(), aClassNode1);
 		assertEquals(noteEdge1.getEnd(), aNoteNode);
@@ -229,8 +229,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aPackageNode, new Point(87, 87));
 		addNode(aNoteNode, new Point(134, 132));
 		
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
 		select(aClassNode1, aAggregationEdge, aInterfaceNode);
@@ -245,7 +245,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	public void testMoveNodeWithSelfEdge()
 	{
 		addNode(aClassNode1, new Point(5, 7));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(12, 9));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(12, 10));
 		moveNode(aClassNode1, 10, 10);
 		
 		assertEquals(new Point(15, 17), aClassNode1.position());
@@ -260,8 +260,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addNode(aPackageNode, new Point(87, 87));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(9, 17));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
 		moveNode(aClassNode1, 20, 20);
@@ -298,7 +298,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		
 		select(aAggregationEdge);
 		deleteSelected();
@@ -313,10 +313,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{		
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
-		addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
+		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
@@ -337,10 +337,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(8, 10), new Point(45, 48));
-		addEdge(aDependencyEdge, new Point(8, 10), new Point(45, 48)); 
-		addEdge(aGeneralizationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
+		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
+		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
 		assertEquals(4, aDiagram.getEdges().size());
 		
 		// new edges should not replace the current edges in the diagram
@@ -360,7 +360,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		
@@ -382,7 +382,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
@@ -472,7 +472,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(45, 45));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		
 		selectAll();
 		copy();
@@ -490,7 +490,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(45, 45));
-		addEdge(aAggregationEdge, new Point(8, 10), new Point(45, 48));
+		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		
 		selectAll();
 		cut();

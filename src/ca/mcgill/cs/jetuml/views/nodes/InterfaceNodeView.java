@@ -20,7 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
+import static ca.mcgill.cs.jetuml.geom.Util.max;
+
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -32,7 +33,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an interface in a class diagram.
  */
-public class InterfaceNodeView extends RectangleBoundedNodeView
+public class InterfaceNodeView extends AbstractNodeView
 {
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
@@ -45,7 +46,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	 */
 	public InterfaceNodeView(InterfaceNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -144,21 +145,22 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 		return false;
 	}
 	
-	@Override
-	public void layout(Diagram pGraph)
-	{
-		Rectangle top = computeTop();
-		Rectangle bottom = computeBottom();
-		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				Math.max(Math.max(top.getWidth(), middleWidth()), bottom.getWidth()), top.getHeight() + middleHeight() + bottom.getHeight());
-		setBounds(Grid.snapped(bounds));
-	}
-	
 	/**
 	 * @return True if the node requires a bottom compartment.
 	 */
 	protected boolean needsBottomCompartment()
 	{
 		return methods().length() > 0;
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle top = computeTop();
+		Rectangle bottom = computeBottom();
+		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
+		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
+		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
+		return Grid.snapped(bounds);
 	}
 }

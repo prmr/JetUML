@@ -33,7 +33,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
@@ -41,7 +40,6 @@ public class TestClassViewNode
 {
 	private ClassNode aNode1;
 	private Graphics2D aGraphics;
-	private ClassDiagram aGraph;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -58,7 +56,6 @@ public class TestClassViewNode
 	{
 		aNode1 = new ClassNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aGraph= new ClassDiagram();
 	}
 	
 	@After
@@ -143,32 +140,5 @@ public class TestClassViewNode
 		
 		aNode1.setMethods("");
 		assertEquals(new Rectangle(0,0,100,40), ((ClassNodeView)aNode1.view()).computeTop());
-	}
-	
-	@Test
-	public void testLayout()
-	{
-		// Test layout with no snapping (grid size is 10)
-		aNode1.translate(10, 10);
-		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,60), aNode1.view().getBounds());
-		
-		aNode1.setName("X\nX\nX\nX");
-		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
-		
-		aNode1.setMethods("X\nX");
-		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,120), aNode1.view().getBounds());
-		
-		aNode1.setName("X");
-		aNode1.setMethods("X");
-		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
-		
-		// Test layout with snapping
-		aNode1.translate(-4, -4);
-		aNode1.view().layout(aGraph);
-		assertEquals(new Rectangle(10,10,100,80), aNode1.view().getBounds());
 	}
 }

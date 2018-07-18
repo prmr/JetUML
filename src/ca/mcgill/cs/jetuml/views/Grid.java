@@ -73,9 +73,9 @@ public final class Grid
 	{
 		assert pRectangle != null;
 		int x = (int)(Math.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE);
-		int width = (int)(Math.ceil(pRectangle.getWidth() / (2 * GRID_SIZE)) * (2 * GRID_SIZE));
+		int width = (int)(Math.ceil(pRectangle.getWidth() / GRID_SIZE) * GRID_SIZE);
 		int y = (int)(Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
-		int height = (int)(Math.ceil(pRectangle.getHeight() / (2 * GRID_SIZE)) * (2 * GRID_SIZE));
+		int height = (int)(Math.ceil(pRectangle.getHeight() / GRID_SIZE) * GRID_SIZE);
 		return new Rectangle(x, y, width, height);
 	}
 }
