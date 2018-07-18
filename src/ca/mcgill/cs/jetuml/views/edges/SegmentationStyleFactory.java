@@ -120,7 +120,7 @@ public final class SegmentationStyleFactory
 	{
 		if( pNode instanceof PackageNode )
 		{
-			return ((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner();
+			return Conversions.toPoint2D(((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner());
 		}
 		else
 		{

@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
+import static ca.mcgill.cs.jetuml.geom.Util.max;
+
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -30,7 +32,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -95,9 +96,9 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	 * @return The point that corresponds to the actual top right
 	 * corner of the figure (as opposed to bounds).
 	 */
-	public Point2D getTopRightCorner()
+	public Point getTopRightCorner()
 	{
-		return new Point2D(aBottom.getMaxX(), aBottom.getY());
+		return new Point(aBottom.getMaxX(), aBottom.getY());
 	}
 	
 	@Override
@@ -127,8 +128,8 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	public void layout(Diagram pGraph)
 	{
 		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
-		int topWidth = (int)Math.max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		int topHeight = (int)Math.max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
+		int topWidth = max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topHeight = max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
 		
 		Rectangle childBounds = null;
 		for( ChildNode child : children() )
@@ -149,14 +150,14 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		if( childBounds == null ) // no children; leave (x,y) as is and place default rectangle below.
 		{
 			setBounds( new Rectangle(getBounds().getX(), getBounds().getY(), 
-					(int)computeWidth(topWidth, contentsBounds.getWidth(), 0.0),
-					(int)computeHeight(topHeight, contentsBounds.getHeight(), 0.0)));
+					computeWidth(topWidth, contentsBounds.getWidth(), 0),
+					computeHeight(topHeight, contentsBounds.getHeight(), 0)));
 		}
 		else
 		{
 			setBounds( new Rectangle(childBounds.getX() - XGAP, (int)(childBounds.getY() - topHeight - YGAP), 
-					(int)computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
-					(int)computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
+					computeWidth(topWidth, contentsBounds.getWidth(), childBounds.getWidth() + 2 * XGAP),
+					computeHeight(topHeight, contentsBounds.getHeight(), childBounds.getHeight() + 2 * YGAP)));	
 		}
 		
 		Rectangle b = getBounds();
@@ -182,27 +183,13 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		aBottom = aBottom.translated(pX, pY);
 	}
 	
-	private double computeWidth(double pTopWidth, double pContentWidth, double pChildrenWidth)
+	private int computeWidth(int pTopWidth, int pContentWidth, int pChildrenWidth)
 	{
 		return max( DEFAULT_WIDTH, pTopWidth + DEFAULT_WIDTH - DEFAULT_TOP_WIDTH, pContentWidth, pChildrenWidth);
 	}
 	
-	private double computeHeight(double pTopHeight, double pContentHeight, double pChildrenHeight)
+	private int computeHeight(int pTopHeight, int pContentHeight, int pChildrenHeight)
 	{
 		return pTopHeight + max( DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, pContentHeight, pChildrenHeight);
 	}
-	
-	private static double max(double ... pNumbers)
-	{
-		double maximum = Double.MIN_VALUE;
-		for(double number : pNumbers)
-		{
-			if(number > maximum)
-			{
-				maximum = number;
-			}
-		}
-		return maximum;
-	}
-
 }
