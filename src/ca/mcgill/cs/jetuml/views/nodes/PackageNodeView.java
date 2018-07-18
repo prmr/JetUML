@@ -23,10 +23,12 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import static ca.mcgill.cs.jetuml.geom.Util.max;
 
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -39,8 +41,10 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class PackageNodeView extends RectangleBoundedNodeView
 {
+	private static final int PADDING = 10;
 	private static final int DEFAULT_WIDTH = 100;
 	private static final int DEFAULT_HEIGHT = 80;
+	private static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int DEFAULT_TOP_HEIGHT = 20;
 	private static final int NAME_GAP = 3;
@@ -52,7 +56,6 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private Rectangle aTop;
 	private Rectangle aBottom;
 
-	
 	/**
 	 * @param pNode The node to wrap.
 	 */
@@ -164,7 +167,7 @@ public class PackageNodeView extends RectangleBoundedNodeView
 		aTop = new Rectangle(b.getX(), b.getY(), topWidth, topHeight);
 		aBottom = new Rectangle(b.getX(), b.getY() + topHeight, b.getWidth(), b.getHeight() - topHeight);
 	}
-	
+
 	/**
 	 * @param pX the new X coordinate.
 	 * @param pY the new Y coordinate.
@@ -191,5 +194,69 @@ public class PackageNodeView extends RectangleBoundedNodeView
 	private int computeHeight(int pTopHeight, int pContentHeight, int pChildrenHeight)
 	{
 		return pTopHeight + max( DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT, pContentHeight, pChildrenHeight);
+	}
+	
+	/* ================= NEW ==================== */
+	
+	/*
+	 * Computes the bounding box that encompasses all children.
+	 */
+	private Optional<Rectangle> getChildrenBounds()
+	{
+		if( children().isEmpty() )
+		{
+			return Optional.empty();
+		}
+		Rectangle childBounds = null;
+		for( ChildNode child : children() )
+		{
+			if( childBounds == null )
+			{
+				childBounds = child.view().getBounds();
+			}
+			else
+			{
+				childBounds = childBounds.add(child.view().getBounds());
+			}
+		}
+		assert childBounds != null;
+		return Optional.of(childBounds);
+	}
+	
+	
+	/*
+	 * The node's position might have to get adjusted if there are children
+	 * whose position is to the left or up of the node's position.
+	 */
+	private Point getPosition(Optional<Rectangle> pChildrenBounds)
+	{
+		if( !pChildrenBounds.isPresent() )
+		{
+			return node().position();
+		}
+		int x = Math.min(node().position().getX(), pChildrenBounds.get().getX() - PADDING);
+		int y = Math.min(node().position().getY(), pChildrenBounds.get().getY() - PADDING);
+		return new Point(x,y);
+	}
+	
+	private Dimension getTopDimension()
+	{
+		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
+		int topWidth = max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topHeight = max(nameBounds.getHeight(), DEFAULT_TOP_HEIGHT);
+		return new Dimension(topWidth, topHeight);
+	}
+	
+	private Dimension getBottomDimension(Optional<Rectangle> pChildrenBounds)
+	{
+		Rectangle contentsBounds = CONTENTS_VIEWER.getBounds(contents());
+		int width = contentsBounds.getWidth() + 2 * PADDING;
+		int height = contentsBounds.getHeight() + 2 * PADDING;
+		if( pChildrenBounds.isPresent() )
+		{
+			width = max( width, pChildrenBounds.get().getWidth() + 2 * PADDING, DEFAULT_WIDTH);
+			height = max( height, pChildrenBounds.get().getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
+		}
+		return new Dimension(width, height);
 	}
 }
