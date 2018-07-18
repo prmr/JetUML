@@ -50,9 +50,10 @@ public class ClassNodeView extends InterfaceNodeView
 	{
 		super.draw(pGraphics); 
 		int bottomHeight = computeBottom().getHeight();
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - middleHeight() - bottomHeight));
-		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(middleHeight()));
+		Rectangle bounds = getBounds();
+		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
+				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
+		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
 		STRING_VIEWER.draw(attributes(), pGraphics, mid);
 	}
 	

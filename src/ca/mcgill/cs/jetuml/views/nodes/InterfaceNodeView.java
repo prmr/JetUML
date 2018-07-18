@@ -66,8 +66,8 @@ public class InterfaceNodeView extends AbstractNodeView
 		ViewUtils.drawRectangle(pGraphics, bounds);	
 
 		int bottomHeight = computeBottom().getHeight();
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
+		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
+				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
 		NAME_VIEWER.draw(name(), pGraphics, top);		
 		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
 		if(middleHeight() > 0) 
