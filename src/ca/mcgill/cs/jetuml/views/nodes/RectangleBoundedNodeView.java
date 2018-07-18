@@ -20,10 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
 
 /**
  * A view for nodes that are bounded by a rectangle.
@@ -59,14 +57,5 @@ public abstract class RectangleBoundedNodeView extends AbstractNodeView
 		node().moveTo(pNewBounds.getOrigin());
 		aWidth = pNewBounds.getWidth();
 		aHeight = pNewBounds.getHeight();
-	}
-	
-	@Override
-	public void layout(Diagram pGraph)
-	{
-		Rectangle snapped = Grid.snapped(getBounds());
-		node().moveTo(snapped.getOrigin());
-		aWidth = snapped.getWidth();
-		aHeight = snapped.getHeight();
 	}
 }
