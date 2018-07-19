@@ -76,8 +76,6 @@ public class PackageNode extends AbstractNode implements ParentNode, ChildNode
 	{
 		super.translate(pDeltaX, pDeltaY);
 		
-		((PackageNodeView)view()).translateTop(pDeltaX,  pDeltaY);
-		((PackageNodeView)view()).translateBottom(pDeltaX, pDeltaY);
 		for(Node childNode : getChildren())
         {
         	childNode.translate(pDeltaX, pDeltaY);

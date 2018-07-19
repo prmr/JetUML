@@ -577,7 +577,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		copy();
 		paste();
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aDiagram.getEdges().size());
 	}	
 }

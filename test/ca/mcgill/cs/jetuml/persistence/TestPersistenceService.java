@@ -277,7 +277,7 @@ public class TestPersistenceService
 		PackageNode p2 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p2"));
 		PackageNode p3 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p3"));
 		
-		assertEquals(new Rectangle(315, 235, 100, 80), p1.view().getBounds());
+		assertEquals(new Rectangle(310, 230, 120, 100), p1.view().getBounds());
 		assertEquals("p1", p1.getName().toString());
 		
 		List<ChildNode> children = p1.getChildren();
@@ -293,12 +293,12 @@ public class TestPersistenceService
 		assertEquals(0, children.size());
 
 		assertEquals("p3", p3.getName().toString());
-		assertEquals(new Rectangle(630, 280, 100, 80), p3.view().getBounds());
+		assertEquals(new Rectangle(620, 270, 310, 140), p3.view().getBounds());
 		children = p3.getChildren();
 		assertEquals(1,children.size());
 		PackageNode p4 = (PackageNode) children.get(0);
 		assertEquals("p4", p4.getName().toString());
-		assertEquals(new Rectangle(635, 305, 100, 80), p4.view().getBounds());
+		assertEquals(new Rectangle(630, 300, 290, 100), p4.view().getBounds());
 		
 		children = p4.getChildren();
 		assertEquals(2,children.size());
@@ -380,7 +380,7 @@ public class TestPersistenceService
 		assertEquals("", node6.getContents());
 		assertEquals("Package", node6.getName());
 		assertNull(node6.getParent());
-		assertEquals(new Rectangle(275, 345, 100, 80), node6.view().getBounds()); // needs a layout to compute correct size
+		assertEquals(new Rectangle(270, 340, 120, 100), node6.view().getBounds());
 
 		assertEquals("", node7.getAttributes());
 		assertEquals("", node7.getMethods());
