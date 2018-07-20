@@ -24,7 +24,10 @@ import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
+import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 /**
  * Abstract edge in the new hierarchy.
@@ -50,7 +53,16 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
-		aGraph = pGraph;		
+		aGraph = pGraph;
+		// Special case: CallNodeViews need to have a reference to the diagram.
+		if( pStart instanceof CallNode )
+		{
+			((CallNodeView)pStart.view()).setDiagram((SequenceDiagram) pGraph);
+		}
+		if( pEnd instanceof CallNode )
+		{
+			((CallNodeView)pEnd.view()).setDiagram((SequenceDiagram) pGraph);
+		}
 	}
 
 	@Override

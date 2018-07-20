@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,40 +111,23 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
-	private void refresh()
-	{
-		aDiagram.requestLayout();
-		aDiagram.draw(aGraphics);
-	}
-	
 	@Test
 	public void testLinkCallNodeToLifeLine()
 	{
 		addNode(aParameterNode1, new Point(5, 0));
 		addNode(aParameterNode2, new Point(125, 0));
-		refresh();
+		System.out.println(aParameterNode2.view().getBounds());
 		addNode(aCallNode1, new Point(11, 75));
-		refresh();
+		System.out.println(aCallNode1.view().getBounds());
+		
+		assertSame(aCallNode1, aParameterNode1.getChildren().get(0));
+		
 		addEdge(aCallEdge1, new Point(43, 75), new Point(132,75));
-		refresh();
 		
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(1, aParameterNode2.getChildren().size());
 	}
 	
-	@Test
-	public void testCreateCallEdgeWithCreateTag()
-	{
-		addNode(aParameterNode1, new Point(5, 0));
-		addNode(aParameterNode2, new Point(105, 0));
-		refresh();
-		addNode(aCallNode1, new Point(11, 75));
-		refresh();
-
-		addEdge(aCallEdge1, new Point(43, 75), new Point(116,2));
-		assertEquals(1, aDiagram.getEdges().size());
-		assertEquals("\u00ABcreate\u00BB", aCallEdge1.getMiddleLabel());
-	}
 //	
 //	/**
 //	 * Testing adding more edges to the diagram.

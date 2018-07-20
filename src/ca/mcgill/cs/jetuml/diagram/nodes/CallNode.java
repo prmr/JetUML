@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -35,7 +34,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 public class CallNode extends AbstractNode implements ChildNode
 {
 	public static final int CALL_YGAP = 20;
-	private static final int MIN_YGAP = 10;
 
 	private ImplicitParameterNode aImplicitParameter;
 	private boolean aOpenBottom;
@@ -44,23 +42,6 @@ public class CallNode extends AbstractNode implements ChildNode
 	protected NodeView generateView()
 	{
 		return new CallNodeView(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see ca.mcgill.cs.jetuml.diagram.RectangularNode#translate(int, int)
-	 */
-	@Override
-	public void translate(int pDeltaX, int pDeltaY)
-	{
-		super.translate(pDeltaX, pDeltaY);
-		// Prevent going above the ImplicitParameterNode
-		// TODO Remove first clause once XML serialization is replaced.
-		if( aImplicitParameter != null && view().getBounds().getY() < aImplicitParameter.getTopRectangle().getMaxY() + MIN_YGAP)
-		{
-			((CallNodeView)view()).setBounds(new Rectangle(view().getBounds().getX(), 
-					Math.round(aImplicitParameter.getTopRectangle().getMaxY()) + MIN_YGAP, 
-					view().getBounds().getWidth(), view().getBounds().getHeight()));
-		}
 	}
 
 	/**

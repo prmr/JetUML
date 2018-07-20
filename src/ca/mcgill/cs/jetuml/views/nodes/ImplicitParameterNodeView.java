@@ -20,12 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
+import static ca.mcgill.cs.jetuml.geom.Util.max;
+
+import java.util.List;
+
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -34,26 +37,29 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  */
-public class ImplicitParameterNodeView extends RectangleBoundedNodeView
+public class ImplicitParameterNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
-	private static final int DEFAULT_TOP_HEIGHT = 60;
+	private static final int TOP_HEIGHT = 60;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
-	private int aTopHeight = DEFAULT_TOP_HEIGHT;
-	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public ImplicitParameterNodeView(ImplicitParameterNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
 	{
 		return ((ImplicitParameterNode)node()).getName();
+	}
+	
+	private List<ChildNode> children()
+	{
+		return ((ImplicitParameterNode)node()).getChildren();
 	}
 	
 	@Override
@@ -62,7 +68,7 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		Rectangle top = getTopRectangle();
 		ViewUtils.drawRectangle(pGraphics, top);
 		NAME_VIEWER.draw(name(), pGraphics, top);
-		int xmid = getBounds().getCenter().getX();
+		int xmid = top.getCenter().getX();
 		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
 	}
 	
@@ -76,31 +82,28 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
+		Rectangle bounds = getBounds();
 		if(pDirection.getX() > 0)
 		{
-			return new Point(getBounds().getMaxX(), getBounds().getY() + aTopHeight / 2);
+			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
 		}
 		else
 		{
-			return new Point(getBounds().getX(), getBounds().getY() + aTopHeight / 2);
+			return new Point(bounds.getX(), bounds.getY() + TOP_HEIGHT / 2);
 		}
 	}
 	
-	@Override
-	public void setBounds(Rectangle pNewBounds)
+	private Point getMaxXYofChildren()
 	{
-		super.setBounds(pNewBounds);
-	}
-
-	@Override
-	public void layout(Diagram pGraph)
-	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
-		Rectangle snappedTop = Grid.snapped(top);
-		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
-		aTopHeight = top.getHeight();
+		int maxY = 0;
+		int maxX = 0;
+		for( ChildNode child : children() )
+		{
+			Rectangle bounds = child.view().getBounds();
+			maxX = Math.max(maxX,  bounds.getMaxX());
+			maxY = Math.max(maxY, bounds.getMaxY());
+		}
+		return new Point(maxX, maxY);
 	}
 	
 	/**
@@ -109,6 +112,17 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	 */
 	public Rectangle getTopRectangle()
 	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		int width = Math.max(NAME_VIEWER.getBounds(name()).getWidth(), DEFAULT_WIDTH); 
+		return new Rectangle(node().position().getX(), 0, width, TOP_HEIGHT);
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle topRectangle = getTopRectangle();
+		Point childrenMaxXY = getMaxXYofChildren();
+		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - node().position().getX());
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY());
+		return new Rectangle(node().position().getX(), 0, width, height);
 	}
 }

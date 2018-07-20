@@ -30,10 +30,12 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -104,30 +106,30 @@ public class SequenceDiagram extends Diagram
 		return null;
 	}
  
-	@Override
-	public void layout()
-	{
-		super.layout();
-
-		ArrayList<Node> topLevelCalls = new ArrayList<>();
-		ArrayList<Node> objects = new ArrayList<>();
-		
-		for( Node rootNode : aRootNodes )
-		{
-			if( rootNode instanceof ImplicitParameterNode )
-			{
-				objects.add(rootNode);
-				for( Node callNode : ((ImplicitParameterNode) rootNode).getChildren())
-				{
-					if( getCaller(callNode) == null )
-					{
-						topLevelCalls.add(callNode);
-					}
-				}
-			}
-		}
-		heightObjectLayout(topLevelCalls, objects);
-	}
+//	@Override
+//	public void layout()
+//	{
+//		super.layout();
+//
+//		ArrayList<Node> topLevelCalls = new ArrayList<>();
+//		ArrayList<Node> objects = new ArrayList<>();
+//		
+//		for( Node rootNode : aRootNodes )
+//		{
+//			if( rootNode instanceof ImplicitParameterNode )
+//			{
+//				objects.add(rootNode);
+//				for( Node callNode : ((ImplicitParameterNode) rootNode).getChildren())
+//				{
+//					if( getCaller(callNode) == null )
+//					{
+//						topLevelCalls.add(callNode);
+//					}
+//				}
+//			}
+//		}
+//		heightObjectLayout(topLevelCalls, objects);
+//	}
 	
 	/*
 	 * Find the max of the heights of the objects
@@ -135,40 +137,40 @@ public class SequenceDiagram extends Diagram
 	 * @param pObjects an ArrayList of Nodes to work with.
 	 * @param pGrid Grid from layout call.
 	 */
-	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects)
-	{
-		double top = 0;
-		for(Node node : pObjects)
-		{
-			node.translate(0, -node.view().getBounds().getY());
-			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
-		}
-
-		for(Node node : pTopLevelCalls )
-		{
-			node.view().layout(this);
-		}
-
-		for(Node node : aRootNodes )
-		{
-			if( node instanceof ImplicitParameterNode )
-			{
-				for( Node callNode : ((ImplicitParameterNode) node).getChildren())
-				{
-					top = Math.max(top, callNode.view().getBounds().getY() + callNode.view().getBounds().getHeight());
-				}
-			}
-		}
-
-		top += CallNode.CALL_YGAP;
-
-		for( Node node : pObjects )
-		{
-			Rectangle bounds = node.view().getBounds();
-			((ImplicitParameterNode)node).setBounds(new Rectangle(bounds.getX(), 
-					bounds.getY(), bounds.getWidth(), (int)top - bounds.getY()));         
-		}
-	}
+//	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects)
+//	{
+//		double top = 0;
+//		for(Node node : pObjects)
+//		{
+//			node.translate(0, -node.view().getBounds().getY());
+//			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
+//		}
+//
+//		for(Node node : pTopLevelCalls )
+//		{
+//			node.view().layout(this);
+//		}
+//
+//		for(Node node : aRootNodes )
+//		{
+//			if( node instanceof ImplicitParameterNode )
+//			{
+//				for( Node callNode : ((ImplicitParameterNode) node).getChildren())
+//				{
+//					top = Math.max(top, callNode.view().getBounds().getY() + callNode.view().getBounds().getHeight());
+//				}
+//			}
+//		}
+//
+//		top += CallNode.CALL_YGAP;
+//
+//		for( Node node : pObjects )
+//		{
+//			Rectangle bounds = node.view().getBounds();
+//			((ImplicitParameterNode)node).setBounds(new Rectangle(bounds.getX(), 
+//					bounds.getY(), bounds.getWidth(), (int)top - bounds.getY()));         
+//		}
+//	}
 
 	@Override
 	public void draw(GraphicsContext pGraphics)

@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -29,6 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -40,17 +42,30 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a call node in a Sequence diagram.
  */
-public class CallNodeView extends RectangleBoundedNodeView
+public class CallNodeView extends AbstractNodeView
 {
-	private static final int DEFAULT_WIDTH = 16;
+	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
+	private static final int Y_GAP_BIG = 20;
+	private static final int Y_GAP_SMALL = 10;
+	
+	private SequenceDiagram aDiagram = null;
 	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public CallNodeView(CallNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
+	}
+	
+	/**
+	 * @param pDiagram The diagram to set.
+	 * @pre pDiagram != null
+	 */
+	public void setDiagram(SequenceDiagram pDiagram)
+	{
+		aDiagram = pDiagram;
 	}
 	
 	private boolean openBottom()
@@ -61,12 +76,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 	private ImplicitParameterNode implicitParameter()
 	{
 		return (ImplicitParameterNode)((CallNode)node()).getParent();
-	}
-	
-	@Override
-	public void setBounds(Rectangle pNewBounds)
-	{
-		super.setBounds(pNewBounds);
 	}
 	
 	@Override
@@ -93,94 +102,6 @@ public class CallNodeView extends RectangleBoundedNodeView
 		}
 	}
 	
-	@Override
-	public void layout(Diagram pGraph)
-	{
-		assert implicitParameter() != null;
-		assert pGraph instanceof SequenceDiagram;
-		SequenceDiagram graph = (SequenceDiagram) pGraph;
-
-		// Shift the node to its proper place on the X axis.
-		node().translate(computeMidX(pGraph) - getBounds().getCenter().getX(), 0);
-
-		// Compute the Y coordinate of the bottom of the node
-		int bottomY = computeBottomY(graph);
-
-		final Rectangle bounds = getBounds();
-
-		int minHeight = DEFAULT_HEIGHT;
-		Edge returnEdge = graph.findEdge(node(), graph.getCaller(node()));
-		if(returnEdge != null)
-		{
-			minHeight = Math.max(minHeight, returnEdge.view().getBounds().getHeight());         
-		}
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), Math.max(minHeight, bottomY - bounds.getY())));
-	}
-	
-	/*
-	 * @return The X coordinate that should be the middle
-	 * of this call node. Takes into account nested calls.
-	 */
-	private int computeMidX(Diagram pGraph)
-	{
-		int xmid = implicitParameter().view().getBounds().getCenter().getX();
-
-		// Calculate a shift for each caller with the same implicit parameter
-		for(CallNode node = ((SequenceDiagram)pGraph).getCaller(node()); node != null && node != node(); 
-				node = ((SequenceDiagram)pGraph).getCaller(node))
-		{
-			if(((CallNode)node).getParent() == implicitParameter())
-			{
-				xmid += getBounds().getWidth() / 2;
-			}
-		}
-		return xmid;
-	}
-
-	/*
-	 * Compute the Y coordinate of the bottom of the CallNode. This 
-	 * triggers the layout of all callee nodes.
-	 */
-	private int computeBottomY(SequenceDiagram pGraph)
-	{
-		// Compute the Y coordinate of the bottom of the node
-		int bottomY = getBounds().getY() + CallNode.CALL_YGAP;
-
-		for(Node node : getCallees(pGraph))
-		{
-			if(node instanceof ImplicitParameterNode) // <<create>>
-			{
-				node.translate(0, bottomY - ((ImplicitParameterNode) node).getTopRectangle().getCenter().getY());
-				bottomY += ((ImplicitParameterNode)node).getTopRectangle().getHeight() / 2 + CallNode.CALL_YGAP;
-			}
-			else if(node instanceof CallNode)
-			{  
-				Edge callEdge = pGraph.findEdge(node(), node);
-				// compute height of call edge
-				if(callEdge != null)
-				{
-					bottomY += callEdge.view().getBounds().getHeight() - CallNode.CALL_YGAP;
-				}
-
-				node.translate(0, bottomY - node.view().getBounds().getY());
-				node.view().layout(pGraph);
-				if(((CallNode) node).isSignaled(pGraph))
-				{
-					bottomY += CallNode.CALL_YGAP;
-				}
-				else
-				{
-					bottomY += node.view().getBounds().getHeight() + CallNode.CALL_YGAP;
-				}
-			}
-		}
-		if(openBottom())
-		{
-			bottomY += 2 * CallNode.CALL_YGAP;
-		}
-		return bottomY;
-	}
-	
 	/*
 	 * @param pGraph
 	 * @return All the nodes (CallNodes or ImplicitParameterNodes) that have a calledge
@@ -194,14 +115,7 @@ public class CallNodeView extends RectangleBoundedNodeView
 		{
 			if( edge.getStart() == node() && edge instanceof CallEdge )
 			{
-				if( edge.getEnd() instanceof ImplicitParameterNode )
-				{
-					callees.add(0, edge.getEnd());
-				}
-				else
-				{
-					callees.add(edge.getEnd());
-				}
+				callees.add(edge.getEnd());
 			}
 		}
 		return callees;
@@ -219,4 +133,134 @@ public class CallNodeView extends RectangleBoundedNodeView
 			return new Point(getBounds().getX(), getBounds().getY());
 		}
 	}
+	
+	// ========================= New ==============================================
+	
+	/*
+	 * @return The number of callers on the same ImplicitParameterNode
+	 */
+	private int getNestingDepth()
+	{
+		int result = 0;
+		if( aDiagram == null)
+		{
+			return 0;
+		}
+		for(CallNode node = aDiagram.getCaller(node()); node != null && node != node(); 
+				node = aDiagram.getCaller(node))
+		{
+			if(node.getParent() == implicitParameter())
+			{
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	/*
+	 * The x position is a function of the position of the implicit parameter
+	 * node and the nesting depth of the call node.
+	 */
+	private int getX()
+	{
+		if(implicitParameter() != null )
+		{
+			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getCenter().getX() -
+					WIDTH / 2 + getNestingDepth() * WIDTH/2;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	/*
+	 * If the node has a caller, the Y coordinate is a gap below the last return Y value
+	 * of the caller. If not, it's simply a set distance below the previous call node.
+	 */
+	private int getY()
+	{
+		CallNode caller = null;
+		if( aDiagram != null )
+		{
+			caller = aDiagram.getCaller(node());
+		}
+		if( caller == null )
+		{
+			Optional<CallNode> previous = getPreviousCallNode();
+			if( previous.isPresent() )
+			{
+				return ((CallNodeView)previous.get().view()).getMaxY() + Y_GAP_BIG;
+			}
+			else if( implicitParameter() != null )
+			{
+				return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getMaxY() + Y_GAP_BIG;
+			}
+			else
+			{
+				return DEFAULT_HEIGHT;
+			}
+		}
+		else
+		{
+			return ((CallNodeView)caller.view()).getY() + Y_GAP_SMALL;
+		}
+	}
+	
+	/**
+	 * @return If there's no callee, returns a fixed offset from the y position.
+	 * Otherwise, return with a gap from last callee.
+	 */
+	public int getMaxY()
+	{
+		List<Node> callees = new ArrayList<>();
+		if( aDiagram != null )
+		{
+			callees = getCallees(aDiagram);
+		}
+		if( callees.isEmpty() )
+		{
+			return getY() + DEFAULT_HEIGHT;
+		}
+		else
+		{
+			return ((CallNodeView)callees.get(callees.size()-1).view()).getMaxY() + Y_GAP_SMALL;
+		}
+	}
+	
+	private Optional<CallNode> getPreviousCallNode()
+	{
+		List<ChildNode> callNodes = new ArrayList<>();
+		if( implicitParameter() != null )
+		{
+			callNodes = implicitParameter().getChildren();
+		}
+		if( callNodes.size() < 2 )
+		{
+			return Optional.empty();
+		}
+		if( callNodes.get(0) == node())
+		{
+			return Optional.empty();
+		}
+		CallNode previous = (CallNode) callNodes.get(0);
+		for(int i = 1; i < callNodes.size(); i++ )
+		{
+			CallNode current = (CallNode)callNodes.get(i);
+			if( current == node())
+			{
+				break;
+			}
+			previous = current;
+		}
+		return Optional.of(previous);
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		int y = getY();
+		return new Rectangle(getX(), y, WIDTH, getMaxY() - y);
+	}
+	
 }

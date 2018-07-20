@@ -119,12 +119,4 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	{
 		return ((ImplicitParameterNodeView)view()).getTopRectangle();
 	}
-	
-	/**
-	 * @param pNewBounds The new bounds.
-	 */
-	public void setBounds(Rectangle pNewBounds)
-	{
-		((ImplicitParameterNodeView)view()).setBounds(pNewBounds);
-	}
 }
