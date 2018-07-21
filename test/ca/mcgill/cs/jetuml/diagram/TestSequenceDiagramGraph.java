@@ -21,8 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,6 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestSequenceDiagramGraph
 {
@@ -114,31 +114,34 @@ public class TestSequenceDiagramGraph
 	
 		ImplicitParameterNode param = new ImplicitParameterNode();
 		aBuilder.createAddNodeOperation(param, new Point(118, 0)).execute();
-		aDiagram.layout();
 
 		CallNode node = new CallNode();
 		aBuilder.createAddNodeOperation(node, new Point(152, 70)).execute();
-		aDiagram.layout();		
+		
+		// node is the first call node of param
+		assertEquals(1, param.getChildren().size());
 
 		ImplicitParameterNode param2 = new ImplicitParameterNode();
 		aBuilder.createAddNodeOperation(param2, new Point(347, 0)).execute();
-		aDiagram.layout();
 
 		CallNode node2 = new CallNode();
 		aBuilder.createAddNodeOperation(node2, new Point(382, 80)).execute();
-		aDiagram.layout();
+		
+		// node2 is the first call node of param2
+		assertEquals(1, param2.getChildren().size());
 
 		Edge callEdge = new CallEdge();
 		aDiagram.restoreEdge(callEdge, node, node2);
-		aDiagram.layout();
 
 		CallNode node3 = new CallNode();
 		aBuilder.createAddNodeOperation(node3, new Point(160, 125)).execute();
-		aDiagram.layout();		
+		
+		// node 3 is nested in node
+		assertEquals(2, param.getChildren().size());
+		assertSame(node3, param.getChildren().get(1));
 
 		Edge callEdge2 = new CallEdge();
 		aDiagram.restoreEdge(callEdge2, node, node3);
-		aDiagram.layout();
 
 		// Point outside the bounds
 		assertNull(aDiagram.deepFindNode(node, new Point(171, 71)));
@@ -150,6 +153,9 @@ public class TestSequenceDiagramGraph
 		assertTrue(aDiagram.deepFindNode(node, new Point(386, 96)) == node2);
 
 		// Point inside both caller and self-call callee
-		assertTrue(aDiagram.deepFindNode(node, new Point(161, 139)) == node3);
+		assertEquals( new Rectangle(150,80, 16, 50),node.view().getBounds());
+		assertEquals( new Rectangle(158,90, 16, 30),node3.view().getBounds());
+		Point point = new Point(160, 95);
+		assertSame(node3, aDiagram.deepFindNode(node, new Point(160, 95)));
 	}
 }

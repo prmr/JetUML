@@ -97,17 +97,14 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(aParameterNode1, new Point(5, 0));
 		addNode(aParameterNode2, new Point(125, 0));
 		addNode(aCallNode1, new Point(7, 75));
-
-		aDiagram.requestLayout();
-		aDiagram.draw(aGraphics);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aParameterNode1.getChildren().size());
-		
+
 		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 75), new Point(26, 0)));
 		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 75), new Point(26, 0)));
 		
-		addEdge(aCallEdge1, new Point(43, 75), new Point(130, 0));
+		addEdge(aCallEdge1, new Point(43, 85), new Point(130, 85));
 		assertEquals(1, aDiagram.getEdges().size());
 	}
 	
@@ -116,13 +113,11 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		addNode(aParameterNode1, new Point(5, 0));
 		addNode(aParameterNode2, new Point(125, 0));
-		System.out.println(aParameterNode2.view().getBounds());
 		addNode(aCallNode1, new Point(11, 75));
-		System.out.println(aCallNode1.view().getBounds());
 		
 		assertSame(aCallNode1, aParameterNode1.getChildren().get(0));
 		
-		addEdge(aCallEdge1, new Point(43, 75), new Point(132,75));
+		addEdge(aCallEdge1, new Point(43, 85), new Point(132,75));
 		
 		assertEquals(1, aDiagram.getEdges().size());
 		assertEquals(1, aParameterNode2.getChildren().size());

@@ -175,7 +175,7 @@ public abstract class DiagramBuilder
 	 * @return True if and only if there is an edge of type pType that
 	 * starts at node pStart and ends at node pEnd.
 	 */
-	private final boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
+	private boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
 		for(Edge edge : aDiagram.getEdges())
