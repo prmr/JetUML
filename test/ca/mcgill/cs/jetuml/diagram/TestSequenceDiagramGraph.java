@@ -153,9 +153,9 @@ public class TestSequenceDiagramGraph
 		assertTrue(aDiagram.deepFindNode(node, new Point(386, 96)) == node2);
 
 		// Point inside both caller and self-call callee
-		assertEquals( new Rectangle(150,80, 16, 50),node.view().getBounds());
-		assertEquals( new Rectangle(158,90, 16, 30),node3.view().getBounds());
+		assertEquals( new Rectangle(150,80, 16, 60),node.view().getBounds());
+		assertEquals( new Rectangle(158,100, 16, 30),node3.view().getBounds());
 		Point point = new Point(160, 95);
-		assertSame(node3, aDiagram.deepFindNode(node, new Point(160, 95)));
+		assertSame(node3, aDiagram.deepFindNode(node, new Point(160, 105)));
 	}
 }

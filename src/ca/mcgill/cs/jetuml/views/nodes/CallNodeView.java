@@ -203,7 +203,12 @@ public class CallNodeView extends AbstractNodeView
 		}
 		else
 		{
-			return ((CallNodeView)caller.view()).getY() + Y_GAP_SMALL;
+			int gap = Y_GAP_SMALL;
+			if( caller.getParent() == ((CallNode)node()).getParent())
+			{
+				gap = Y_GAP_BIG;
+			}
+			return ((CallNodeView)caller.view()).getY() + gap;
 		}
 	}
 	
