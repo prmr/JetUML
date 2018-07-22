@@ -198,7 +198,7 @@ public class CallNodeView extends AbstractNodeView
 			}
 			else
 			{
-				return DEFAULT_HEIGHT;
+				return 0; // Only used for the image creator
 			}
 		}
 		else
