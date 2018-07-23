@@ -75,7 +75,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aStateNode2, new Point(30, 100));
 		addNode(aInitialNode, new Point(5, 5));
 		addNode(aFinalNode, new Point(30, 200));
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		
 		aTransitionEdge1.setMiddleLabel("Edge 1");
 		addEdge(aTransitionEdge1, new Point(6, 6), new Point(35, 35));
@@ -96,7 +96,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(35, 105), new Point(32, 202)));
 		assertEquals(4, aDiagram.numberOfEdges());
 		
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		assertEquals(new Point(30, 30), aStateNode1.position());
 		assertEquals("Node 1", aStateNode1.getName());
 		assertEquals(new Point(30, 100), aStateNode2.position());
@@ -129,25 +129,25 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aStateNode1, new Point(30,30));
 		addNode(aNoteNode, new Point(130,130));
 		
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		
 		// Note edge with a point node not overlapping any nodes
 		addEdge(aNoteEdge, new Point(135,135), new Point(300,300));
-		assertEquals(3, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().toArray(new Node[4])[2] instanceof PointNode);
+		assertEquals(3, numberOfRootNodes());
+		assertTrue(getRootNode(2) instanceof PointNode);
 		assertEquals(1, aDiagram.numberOfEdges());
 		
 		// Note edge with a point node not overlapping any nodes
 		NoteEdge edge2 = new NoteEdge();
 		addEdge(edge2, new Point(135,135), new Point(40,40));
-		assertEquals(4, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().toArray(new Node[4])[3] instanceof PointNode);
+		assertEquals(4, numberOfRootNodes());
+		assertTrue(getRootNode(3) instanceof PointNode);
 		assertEquals(2, aDiagram.numberOfEdges());
 		
 		// Note edge with a starting point on a node
 		NoteEdge edge3 = new NoteEdge();
 		addEdge(edge3, new Point(35,35), new Point(135,135));
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		assertEquals(3, aDiagram.numberOfEdges());
 		assertEquals(aStateNode1, edge3.getStart());
 		assertEquals(aNoteNode, edge3.getEnd());
@@ -161,7 +161,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aStateNode2, new Point(150,20));
 		addNode(aFinalNode, new Point(250,20));
 
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		
 		// test creation of edges, directly link InitialNode to FinalNode is allowed
 		addEdge(aTransitionEdge1, new Point(25, 25), new Point(55, 25));
@@ -306,11 +306,11 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		select(aInitialNode);
 		deleteSelected();
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 
 		undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -324,11 +324,11 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		select(aFinalNode);
 		deleteSelected();
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 
 		undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -349,11 +349,11 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		select(aStateNode2);
 		deleteSelected();
 		
-		assertEquals(3, aDiagram.getRootNodes().size());
+		assertEquals(3, numberOfRootNodes());
 		assertEquals(2, aDiagram.numberOfEdges());
 
 		undo();
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		assertEquals(5, aDiagram.numberOfEdges());
 	}
 	
@@ -365,8 +365,8 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 		
-		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[1]).position()));
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(new Point(0, 0), (((StateNode) getRootNode(1)).position()));
 	}
 	
 	@Test
@@ -375,12 +375,12 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		addNode(aStateNode1, new Point(50,20));
 		select(aStateNode1);
 		cut();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		
 		paste();
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[0]).position()));
+		assertEquals(1, numberOfRootNodes());
+		assertEquals(new Point(0, 0), (((StateNode) getRootNode(0)).position()));
 	}
 
 	@Test
@@ -394,9 +394,9 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		assertEquals(2, aDiagram.numberOfEdges());
-		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[2]).position()));
+		assertEquals(new Point(0, 0), (((StateNode) getRootNode(2)).position()));
 	}
 	
 	@Test
@@ -408,12 +408,12 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		
 		selectAll();
 		cut();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 
 		paste();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
-		assertEquals(new Point(0, 0), (((StateNode) aDiagram.getRootNodes().toArray()[0]).position()));
+		assertEquals(new Point(0, 0), (((StateNode) getRootNode(0)).position()));
 	}
 }

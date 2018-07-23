@@ -76,7 +76,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		moveNode(aClassNode2, 100, 0);
 
 		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
 		assertSame(aClassNode1, aDependencyEdge.getStart());
 		assertSame(aClassNode2, aDependencyEdge.getEnd());
@@ -85,7 +85,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 
-		assertEquals(3, aDiagram.getRootNodes().size());
+		assertEquals(3, numberOfRootNodes());
 		assertEquals(2, aDiagram.numberOfEdges());
 	}
 	
@@ -98,7 +98,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		moveNode(aClassNode2, 100, 0);
 		addEdge(aDependencyEdge, new Point(31, 31), new Point(135, 30));
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
 		assertEquals(1, aDiagram.numberOfEdges());
 		assertSame(aClassNode1, aDependencyEdge.getStart());
@@ -108,7 +108,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		select(aDependencyEdge);
 		copy();
 		paste(); 
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -120,7 +120,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aPackageNode, new Point(87, 87));
 		addNode(aNoteNode, new Point(134, 132));
 
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		
 		setProperty(aClassNode1.properties().get("name"), "truck");
 		setProperty(aClassNode1.properties().get("methods"), "setDriver()");
@@ -281,16 +281,16 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 				
 		select(aClassNode1);
 		deleteSelected();
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		
 		select(aInterfaceNode);
 		deleteSelected();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		
 		undo();
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 	}
 	
 	@Test
@@ -367,13 +367,13 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		select(aClassNode1);
 		deleteSelected();
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 
 		undo();
 		assertEquals(1, aDiagram.numberOfEdges());
-		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).view().getBounds());
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(classNodeBounds, getRootNode(1).view().getBounds());
 	}
 	
 	@Test 
@@ -388,13 +388,13 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 
 		selectAll();
 		deleteSelected();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(1, aDiagram.numberOfEdges());
-		assertEquals(2, aDiagram.getRootNodes().size());
-		for(Node node: aDiagram.getRootNodes())
+		assertEquals(2, numberOfRootNodes());
+		for(Node node: aDiagram.rootNodes())
 		{
 			if(node instanceof ClassNode)
 			{
@@ -449,8 +449,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 		
-		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(new Point(0, 0), ((Node) aDiagram.getRootNodes().toArray()[1]).position());
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(new Point(0, 0), getRootNode(1).position());
 	}
 	
 	@Test
@@ -459,10 +459,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		select(aClassNode1);
 		cut();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		paste();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(new Point(0, 0), ((Node) aDiagram.getRootNodes().toArray()[0]).position());
+		assertEquals(1, numberOfRootNodes());
+		assertEquals(new Point(0, 0), getRootNode(0).position());
 	}
 	
 	@Test
@@ -475,11 +475,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		copy();
 		paste();
-		assertEquals(4, aDiagram.getRootNodes().size());
+		assertEquals(4, numberOfRootNodes());
 		assertEquals(2, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -494,15 +494,15 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		cut();
 		paste();
 		
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -514,7 +514,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode2, new Point(30, 30));
 		addNode(new PackageNode(), new Point(35, 45));
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(3, aPackageNode.getChildren().size());
 	}
 	
@@ -527,7 +527,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(26, 29));
 		addNode(aClassNode2, new Point(30, 31));
 	
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, aPackageNode.getChildren().size());
 		assertEquals(2, innerNode.getChildren().size());
 	}
@@ -541,7 +541,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		moveNode(aClassNode2, 30, 30);
 		addEdge(aDependencyEdge, new Point(26, 26), new Point(65, 31));
 	
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -556,11 +556,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		selectAll();
 		cut(); 
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 		
 		paste();
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
@@ -575,7 +575,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		copy();
 		paste();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(2, aDiagram.numberOfEdges());
 	}	
 }

@@ -97,9 +97,9 @@ final class PersistenceTestUtils
 		return found;
 	}
 	
-	static Node findRootNode(Diagram pGraph, Class<?> pClass, Properties pProperties)
+	static Node findRootNode(Diagram pDiagram, Class<?> pClass, Properties pProperties)
 	{
-		for( Node node : pGraph.getRootNodes() )
+		for( Node node : pDiagram.rootNodes() )
 		{
 			if( node.getClass() == pClass )
 			{

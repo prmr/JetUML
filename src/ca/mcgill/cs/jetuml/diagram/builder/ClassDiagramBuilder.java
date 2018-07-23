@@ -49,7 +49,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		DiagramOperation result = null;
 		if( validChild(pNode))
 		{
-			PackageNode container = findContainer((List<Node>)aDiagram.getRootNodes(), pRequestedPosition);
+			PackageNode container = findContainer(aDiagram.rootNodes(), pRequestedPosition);
 			if( container != null )
 			{
 				positionNode(pNode, pRequestedPosition);
@@ -75,7 +75,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
-	private PackageNode findContainer( List<Node> pNodes, Point pPoint)
+	private PackageNode findContainer( Iterable<Node> pNodes, Point pPoint)
 	{
 		PackageNode container = null;
 		for( Node node : pNodes )

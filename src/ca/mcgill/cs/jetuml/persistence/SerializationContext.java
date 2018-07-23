@@ -62,7 +62,7 @@ public class SerializationContext extends AbstractContext
 	
 	private void getAllNodes(Diagram pGraph)
 	{
-		for( Node node : pGraph.getRootNodes() )
+		for( Node node : pGraph.rootNodes() )
 		{
 			addNode(node);
 			if( node instanceof ParentNode )

@@ -278,7 +278,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 */
 	private ImplicitParameterNode insideTargetArea(Point pPoint)
 	{
-		for( Node node : aDiagram.getRootNodes() )
+		for( Node node : aDiagram.rootNodes() )
 		{
 			if(node instanceof ImplicitParameterNode && node.view().contains(pPoint))
 			{

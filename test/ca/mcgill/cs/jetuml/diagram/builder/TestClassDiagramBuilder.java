@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,6 +34,7 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -65,18 +67,41 @@ public class TestClassDiagramBuilder
 		aBuilder = new ClassDiagramBuilder(aDiagram);
 	}
 	
+	private int numberOfRootNodes()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
+	private Node getRootNode(int pIndex)
+	{
+		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
+		int i = 0;
+		Node node = iterator.next();
+		while( i < pIndex )
+		{
+			i++;
+			node = iterator.next();
+		}
+		return node;
+	}
+	
 	@Test
 	public void testcreateAddNodeOperationSimple()
 	{
 		ClassNode node = new ClassNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(10,10), node.position());
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 	}
 	
 	@Test
@@ -85,19 +110,19 @@ public class TestClassDiagramBuilder
 		ClassNode node = new ClassNode();
 		aBuilder.setCanvasDimension(new Dimension(500,500));
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(450,450));
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(400,440), node.position());
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(400,440), node.position());
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 	}
 	
 	/*
@@ -110,8 +135,8 @@ public class TestClassDiagramBuilder
 		NoteNode node = new NoteNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50));
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(50,50), node.position());
 	}
 	
@@ -126,8 +151,8 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(node);
 		NoteNode node2 = new NoteNode();
 		aBuilder.createAddNodeOperation(node2, new Point(20,20)).execute();
-		assertEquals(2, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node2));
+		assertEquals(2, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node2));
 		assertEquals(new Point(20,20), node2.position());
 	}
 	
@@ -139,8 +164,8 @@ public class TestClassDiagramBuilder
 		InterfaceNode node2 = new InterfaceNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node2, new Point(10,10));
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertTrue(aDiagram.getRootNodes().contains(node));
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
 		assertEquals(new Point(0,0), node.position());
 		
 		assertEquals(1, node.getChildren().size());
@@ -160,15 +185,15 @@ public class TestClassDiagramBuilder
 		PackageNode middle = new PackageNode();
 		aBuilder.createAddNodeOperation(middle, new Point(10,10)).execute();
 		
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertSame(bottom, aDiagram.getRootNodes().toArray()[0]);
+		assertEquals(1, numberOfRootNodes());
+		assertSame(bottom, getRootNode(0));
 		assertEquals(1, bottom.getChildren().size());
 		assertSame(middle, bottom.getChildren().get(0));
 		
 		InterfaceNode top = new InterfaceNode();
 		aBuilder.createAddNodeOperation(top, new Point(20,20)).execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertSame(bottom, aDiagram.getRootNodes().toArray()[0]);
+		assertEquals(1, numberOfRootNodes());
+		assertSame(bottom, getRootNode(0));
 		assertEquals(1, bottom.getChildren().size());
 		assertSame(middle, bottom.getChildren().get(0));
 		assertEquals(1, middle.getChildren().size());
@@ -306,10 +331,10 @@ public class TestClassDiagramBuilder
 	{
 		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
 		operation.execute();
-		assertTrue(aDiagram.getRootNodes().isEmpty());
+		assertTrue(numberOfRootNodes() == 0);
 		assertTrue(aDiagram.numberOfEdges() == 0);
 		operation.undo();
-		assertTrue(aDiagram.getRootNodes().isEmpty());
+		assertTrue(numberOfRootNodes() == 0);
 		assertTrue(aDiagram.numberOfEdges() == 0);
 	}
 	
@@ -327,13 +352,13 @@ public class TestClassDiagramBuilder
 		
 		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
 		operation.execute();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, aDiagram.numberOfEdges());
-		assertSame(node1, aDiagram.getRootNodes().toArray()[0]);
-		assertSame(node2, aDiagram.getRootNodes().toArray()[1]);
+		assertSame(node1, getRootNode(0));
+		assertSame(node2, getRootNode(1));
 		
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		assertEquals(0, aDiagram.numberOfEdges());
 	}
 	
@@ -342,9 +367,9 @@ public class TestClassDiagramBuilder
 	{
 		DiagramOperation operation = aBuilder.createRemoveElementsOperation(new ArrayList<>());
 		operation.execute();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 	}
 	
 	@Test
@@ -359,9 +384,9 @@ public class TestClassDiagramBuilder
 		selection.add(node1);
 		DiagramOperation operation = aBuilder.createRemoveElementsOperation(selection);
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
-		assertSame(node2, aDiagram.getRootNodes().toArray()[0]);
+		assertEquals(1, numberOfRootNodes());
+		assertSame(node2, getRootNode(0));
 		operation.undo();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 	}
 }

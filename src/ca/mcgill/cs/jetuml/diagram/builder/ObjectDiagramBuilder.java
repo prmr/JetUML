@@ -94,7 +94,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	private ObjectNode findObject(FieldNode pNode, Point pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
-		for( Node node : aDiagram.getRootNodes() )
+		for( Node node : aDiagram.rootNodes() )
 		{
 			if( node == pNode )
 			{

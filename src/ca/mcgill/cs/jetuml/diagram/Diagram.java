@@ -268,13 +268,6 @@ public abstract class Diagram implements DiagramData
 	public abstract Edge[] getEdgePrototypes();
 
 	/**
-	 * Gets the nodes of this graph.
-	 * @return an unmodifiable collection of the nodes
-	 */
-	public Collection<Node> getRootNodes()
-	{ return aRootNodes; }
-
-	/**
 	 * @return The number of edges in the diagram.
 	 */
 	public int numberOfEdges()

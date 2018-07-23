@@ -24,11 +24,14 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
@@ -72,6 +75,29 @@ public class TestSequenceDiagramBuilder
 		aCallEdge2 = new CallEdge();
 	}
 	
+	private int numberOfRootNodes()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
+	private Node getRootNode(int pIndex)
+	{
+		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
+		int i = 0;
+		Node node = iterator.next();
+		while( i < pIndex )
+		{
+			i++;
+			node = iterator.next();
+		}
+		return node;
+	}
+	
 	/*
 	 * Add without the default call node. 
 	 */
@@ -80,11 +106,11 @@ public class TestSequenceDiagramBuilder
 	{
 		DiagramOperation operation = aBuilder.createAddNodeOperation(aImplicitParameterNode1, new Point(10,10));
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(new Point(10,10), aImplicitParameterNode1.position());
 		
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 	}
 	
 	@Test
@@ -93,12 +119,12 @@ public class TestSequenceDiagramBuilder
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		DiagramOperation operation = aBuilder.createAddNodeOperation(aImplicitParameterNode1, new Point(10,10));
 		operation.execute();
-		assertEquals(1, aDiagram.getRootNodes().size());
+		assertEquals(1, numberOfRootNodes());
 		assertEquals(new Point(10,10), aImplicitParameterNode1.position());
 		assertEquals(1, aImplicitParameterNode1.getChildren().size());
 		
 		operation.undo();
-		assertEquals(0, aDiagram.getRootNodes().size());
+		assertEquals(0, numberOfRootNodes());
 	}
 	
 	@Test
@@ -133,7 +159,7 @@ public class TestSequenceDiagramBuilder
 		
 		DiagramOperation operation = aBuilder.createAddNodeOperation(aCallNode1, new Point(30, 135));
 		operation.execute();
-		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(2, numberOfRootNodes());
 		assertEquals(2, aImplicitParameterNode1.getChildren().size());
 		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
 		assertSame(aCallNode1, aImplicitParameterNode1.getChildren().get(1));

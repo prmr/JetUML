@@ -25,6 +25,9 @@ import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+
+import java.util.Iterator;
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -33,6 +36,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
@@ -83,11 +87,13 @@ public class TestJsonEncodingClassDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		ClassDiagram graph = (ClassDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		ClassDiagram diagram = (ClassDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		assertEquals(1, graph.getRootNodes().size());
+		Iterator<Node> iter = diagram.rootNodes().iterator();
+		iter.next();
+		assertFalse(iter.hasNext());
 		
-		PackageNode p = (PackageNode) findRootNode(graph, PackageNode.class, build("name", "package"));
+		PackageNode p = (PackageNode) findRootNode(diagram, PackageNode.class, build("name", "package"));
 
 		assertEquals(1, p.getChildren().size());
 		

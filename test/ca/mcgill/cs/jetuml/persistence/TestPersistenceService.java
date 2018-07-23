@@ -28,7 +28,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,6 +79,16 @@ public class TestPersistenceService
 	public static void setupClass()
 	{
 		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
+	private int numberOfRootNodes(Diagram pDiagram)
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Node node : pDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
 	}
 	
 	@Test
@@ -168,8 +177,7 @@ public class TestPersistenceService
 	
 	private void verifyUseCaseDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		assertEquals(9, nodes.size());
+		assertEquals(9, numberOfRootNodes(pDiagram));
 		UseCaseNode u1 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 1"));
 		UseCaseNode u2 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 2"));
 		UseCaseNode u3 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 3"));
@@ -269,8 +277,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram2(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		assertEquals(4, nodes.size());
+		assertEquals(4, numberOfRootNodes(pDiagram));
 		
 		PackageNode p1 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p1"));
 		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p2"));
@@ -334,9 +341,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		
-		assertEquals(7, nodes.size());
+		assertEquals(7, numberOfRootNodes(pDiagram));
 		
 		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class1"));
 		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
@@ -438,8 +443,7 @@ public class TestPersistenceService
 	
 	private void verifySequenceDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		assertEquals(5, nodes.size());
+		assertEquals(5, numberOfRootNodes(pDiagram));
 		
 		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", "object1:Type1"));
 		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", ":Type2"));
@@ -532,8 +536,7 @@ public class TestPersistenceService
 	
 	private void verifyStateDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		assertEquals(7, nodes.size());
+		assertEquals(7, numberOfRootNodes(pDiagram));
 		
 		StateNode s1 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S1"));
 		StateNode s2 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S2"));
@@ -608,8 +611,7 @@ public class TestPersistenceService
 	
 	private void verifyObjectDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pDiagram.getRootNodes();
-		assertEquals(7, nodes.size());
+		assertEquals(7, numberOfRootNodes(pDiagram));
 		
 		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ":Type1"));
 		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ""));

@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -140,5 +141,28 @@ public class AbstractTestUsageScenarios
 	protected void undo()
 	{
 		aProcessor.undoLastExecutedOperation();
+	}
+	
+	protected int numberOfRootNodes()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
+	protected Node getRootNode(int pIndex)
+	{
+		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
+		int i = 0;
+		Node node = iterator.next();
+		while( i < pIndex )
+		{
+			i++;
+			node = iterator.next();
+		}
+		return node;
 	}
 }
