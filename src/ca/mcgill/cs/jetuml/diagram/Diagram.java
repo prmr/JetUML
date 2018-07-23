@@ -88,7 +88,8 @@ public abstract class Diagram implements DiagramData
       * @param pPoint a point
       * @return a node containing pPoint or null if no nodes contain pPoint
       */
-	public Node findNode(Point pPoint)
+	@Deprecated
+	public final Node findNode(Point pPoint)
 	{
 		Node result = null;
 		for (Node node : aRootNodes)
@@ -112,6 +113,7 @@ public abstract class Diagram implements DiagramData
 	 * or null if pPoint is not contained by pNode or 
 	 * any of its children.
 	 */
+	@Deprecated
 	protected Node deepFindNode(Node pNode, Point pPoint)
 	{
 		Node node = null;
@@ -142,7 +144,8 @@ public abstract class Diagram implements DiagramData
 	 * @param pPoint a point
 	 * @return an edge containing p or null if no edges contain p
 	 */
-	public Edge findEdge(Point pPoint)
+	@Deprecated
+	public final Edge findEdge(Point pPoint)
 	{
 		for (Edge edge : aEdges)
 		{
@@ -158,7 +161,8 @@ public abstract class Diagram implements DiagramData
 	 * Draws the diagram.
 	 * @param pGraphics the graphics context
 	 */
-	public void draw(GraphicsContext pGraphics)
+	@Deprecated
+	public final void draw(GraphicsContext pGraphics)
 	{
 		for(Node node : aRootNodes)
 		{
@@ -171,6 +175,7 @@ public abstract class Diagram implements DiagramData
 		}
 	}
 	
+	@Deprecated
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		pNode.view().draw(pGraphics);
@@ -227,7 +232,8 @@ public abstract class Diagram implements DiagramData
 	 * 
 	 * @return the bounding rectangle
 	 */
-	public Rectangle getBounds()
+	@Deprecated
+	public final Rectangle getBounds()
 	{
 		Rectangle bounds = null;
 		for (Node node : aRootNodes )

@@ -71,7 +71,7 @@ public class SequenceDiagram extends Diagram
 	 * @return All Nodes pointed to by an outgoing edge starting
 	 * at pNode, or null if there are none.
 	 */
-	private List<Node> getCallees(Node pNode)
+	public final List<Node> getCallees(Node pNode)
 	{
 		List<Node> callees = new ArrayList<Node>();
 		for(Edge edge : edges() )
@@ -157,6 +157,7 @@ public class SequenceDiagram extends Diagram
 	}
 
 	@Override
+	@Deprecated
 	protected Node deepFindNode( Node pNode, Point pPoint )
 	{		
 		if( pNode instanceof CallNode )
