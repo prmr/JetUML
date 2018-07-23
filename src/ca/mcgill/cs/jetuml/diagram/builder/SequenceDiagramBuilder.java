@@ -72,7 +72,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			Edge returnEdge = null;
 			Edge input = (CallEdge) pElement;
-			for( Edge edge : aDiagram.getEdges() )
+			for( Edge edge : aDiagram.edges() )
 			{
 				if( edge instanceof ReturnEdge && edge.getStart() == input.getEnd() && edge.getEnd() == input.getStart())
 				{
@@ -104,7 +104,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		if( pEdge instanceof CallEdge )
 		{
 			Edge returnEdge = null;
-			for( Edge edge : aDiagram.getEdges() )
+			for( Edge edge : aDiagram.edges() )
 			{
 				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
 				{
@@ -134,7 +134,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			return false;
 		}
 		assert pNode instanceof CallNode;
-		for( Edge edge : aDiagram.getEdges() )
+		for( Edge edge : aDiagram.edges() )
 		{
 			if( edge.getStart() == pNode )
 			{

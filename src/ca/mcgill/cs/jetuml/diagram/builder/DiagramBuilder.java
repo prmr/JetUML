@@ -80,7 +80,7 @@ public abstract class DiagramBuilder
 	{
 		assert pNodes != null;
 		ArrayList<Edge> toRemove = new ArrayList<Edge>();
-		for(Edge edge : aDiagram.getEdges())
+		for(Edge edge : aDiagram.edges())
 		{
 			if(pNodes.contains(edge.getStart() ) || pNodes.contains(edge.getEnd()))
 			{
@@ -178,7 +178,7 @@ public abstract class DiagramBuilder
 	private boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
 		assert pType !=null && pStart != null && pEnd != null;
-		for(Edge edge : aDiagram.getEdges())
+		for(Edge edge : aDiagram.edges())
 		{
 			if (edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
 			{
@@ -262,7 +262,7 @@ public abstract class DiagramBuilder
 		if( pElement instanceof Node )
 		{
 			List<Node> descendents = getNodeAndAllChildren((Node)pElement);
-			for(Edge edge : aDiagram.getEdges())
+			for(Edge edge : aDiagram.edges())
 			{
 				if(descendents.contains(edge.getStart() ) || descendents.contains(edge.getEnd()))
 				{

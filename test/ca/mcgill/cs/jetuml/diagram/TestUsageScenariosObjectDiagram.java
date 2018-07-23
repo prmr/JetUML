@@ -93,12 +93,12 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(255, 25)));
 		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(155, 25), new Point(55, 25)));
 		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(25, 25), new Point(255, 25)));
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		// create NoteEdge from NoteNode to anywhere and from ObjectNode to NoteNode
 		addEdge(new NoteEdge(), new Point(80, 80), new Point(55, 25));
 		addEdge(new NoteEdge(), new Point(25, 25), new Point(80, 80));
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		
 		// create NoteEdge from FieldNode to NoteNode (not allowed)
 		assertFalse(aBuilder.canAdd(new NoteEdge(), new Point(60, 80), new Point(80, 80)));
@@ -117,7 +117,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		// create an association edge between two ObjectNode
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		
 		assertFalse(aBuilder.canAdd(new ObjectCollaborationEdge(), new Point(25, 20), new Point(80, 80)));
 		assertFalse(aBuilder.canAdd(aReferenceEdge1, new Point(25, 20), new Point(80, 80)));
@@ -126,12 +126,12 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		 * "value" text in field node will be erased and edge will be added.
 		 */
 		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		assertEquals("", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
 		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 		assertEquals(aFieldNode2, aReferenceEdge2.getStart());
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		
@@ -225,16 +225,16 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		// delete aReferenceEdge2 and collaborationEdge1
 		select(aReferenceEdge2);
 		deleteSelected();
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		
 		select(collaborationEdge1);
 		deleteSelected();
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		undo();
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -254,15 +254,15 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		select(aObjectNode1, assoEdge1, aReferenceEdge1, aReferenceEdge2);
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 		
 		deleteSelected();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 		
 		// now delete aFieldNode2 and as a result the reference edges
 		// connected to it: aReferenceEdge1 and aReferenceEdge2
@@ -270,12 +270,12 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		deleteSelected();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(1, aObjectNode1.getChildren().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
 		assertEquals(2, aObjectNode1.getChildren().size());
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -287,7 +287,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		aDiagram.restoreEdge(aReferenceEdge1, aFieldNode1, aObjectNode2);
 		select(aObjectNode1);
 		deleteSelected();
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		assertEquals(1, aDiagram.getRootNodes().size());
 	}
 
@@ -355,7 +355,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		paste();
 
 		assertEquals(4, aDiagram.getRootNodes().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		assertEquals(new Point(0, 0), ((ObjectNode) aDiagram.getRootNodes().toArray()[2]).position());
 	}
 	
@@ -369,11 +369,11 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		cut();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 
 		paste();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertEquals(new Point(0, 0), ((ObjectNode) aDiagram.getRootNodes().toArray()[0]).position());
 	}
 }

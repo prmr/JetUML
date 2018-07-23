@@ -166,19 +166,19 @@ public class TestPersistenceService
 		tmp.delete();
 	}
 	
-	private void verifyUseCaseDiagram(Diagram pGraph)
+	private void verifyUseCaseDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		assertEquals(9, nodes.size());
-		UseCaseNode u1 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 1"));
-		UseCaseNode u2 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 2"));
-		UseCaseNode u3 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 3"));
-		ActorNode a1 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor"));
-		ActorNode a2 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor2"));
-		NoteNode n1 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
-		PointNode p1 = (PointNode) findRootNode(pGraph, PointNode.class, build());
-		UseCaseNode u4 = (UseCaseNode) findRootNode(pGraph, UseCaseNode.class, build("name", "Use case 4"));
-		ActorNode a3 = (ActorNode) findRootNode(pGraph, ActorNode.class, build("name", "Actor3"));
+		UseCaseNode u1 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 1"));
+		UseCaseNode u2 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 2"));
+		UseCaseNode u3 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 3"));
+		ActorNode a1 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor"));
+		ActorNode a2 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor2"));
+		NoteNode n1 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
+		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build());
+		UseCaseNode u4 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 4"));
+		ActorNode a3 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor3"));
 		
 		assertEquals(new Rectangle(440, 40, 110, 40), u1.view().getBounds());
 		assertEquals("Use case 1", u1.getName().toString());
@@ -206,9 +206,8 @@ public class TestPersistenceService
 		assertTrue(new Rectangle(190, 140, 48, 88).equals(a3.view().getBounds()) || new Rectangle(190, 140, 48, 87).equals(a3.view().getBounds()));
 		assertEquals("Actor3", a3.getName().toString());
 		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(10, edges.size());
-		Iterator<Edge> eIt = edges.iterator();
+		assertEquals(10, pDiagram.numberOfEdges());
+		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		
 		NoteEdge cr1 = (NoteEdge) eIt.next();
 		UseCaseGeneralizationEdge cr2 = (UseCaseGeneralizationEdge) eIt.next();
@@ -268,14 +267,14 @@ public class TestPersistenceService
 		assertTrue( cr10.getEnd() == u4 );
  	}
 	
-	private void verifyClassDiagram2(Diagram pGraph)
+	private void verifyClassDiagram2(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		assertEquals(4, nodes.size());
 		
-		PackageNode p1 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p1"));
-		PackageNode p2 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p2"));
-		PackageNode p3 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "p3"));
+		PackageNode p1 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p1"));
+		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p2"));
+		PackageNode p3 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p3"));
 		
 		assertEquals(new Rectangle(310, 230, 120, 100), p1.view().getBounds());
 		assertEquals("p1", p1.getName().toString());
@@ -308,13 +307,12 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(810, 330, 100, 60), c2.view().getBounds());
 		assertEquals("C2", c2.getName().toString());
 		
-		NoteNode n1 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
+		NoteNode n1 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		assertEquals(new Rectangle(490, 160, 60, 40), n1.view().getBounds());
 		assertEquals("n1", n1.getName().toString());
 
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(3, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
+		assertEquals(3, pDiagram.numberOfEdges());
+		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		DependencyEdge e1 = (DependencyEdge) eIterator.next();
 		DependencyEdge e2 = (DependencyEdge) eIterator.next();
@@ -334,19 +332,19 @@ public class TestPersistenceService
 		assertEquals( p2, e3.getEnd());
 	}
 	
-	private void verifyClassDiagram(Diagram pGraph)
+	private void verifyClassDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		
 		assertEquals(7, nodes.size());
 		
-		ClassNode node1 = (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class1"));
-		InterfaceNode node2 = (InterfaceNode) findRootNode(pGraph, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
-		ClassNode node3 = (ClassNode) (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class2"));
-		ClassNode node4 = (ClassNode) findRootNode(pGraph, ClassNode.class, build("name", "Class3"));
-		PackageNode node6 = (PackageNode) findRootNode(pGraph, PackageNode.class, build("name", "Package"));
-		NoteNode node5 = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
-		PointNode node8 = (PointNode) findRootNode(pGraph, PointNode.class, build());
+		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class1"));
+		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
+		ClassNode node3 = (ClassNode) (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class2"));
+		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class3"));
+		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "Package"));
+		NoteNode node5 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
+		PointNode node8 = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
 		assertEquals("", node1.getAttributes());
 		assertEquals("", node1.getMethods());
@@ -390,9 +388,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(694, 409, 0, 0), node8.view().getBounds());
 		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(6, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
+		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		NoteEdge edge5 = (NoteEdge) eIterator.next();
 		assertEquals(new Rectangle(692, 407, 32, 123), edge5.view().getBounds());
@@ -440,16 +436,16 @@ public class TestPersistenceService
 		assertEquals("", edge4.getStartLabel());
 	}
 	
-	private void verifySequenceDiagram(Diagram pGraph)
+	private void verifySequenceDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		assertEquals(5, nodes.size());
 		
-		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", "object1:Type1"));
-		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", ":Type2"));
-		ImplicitParameterNode object3 = (ImplicitParameterNode) findRootNode(pGraph, ImplicitParameterNode.class, build("name", "object3:"));
-		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
-		PointNode point = (PointNode) findRootNode(pGraph, PointNode.class, build());
+		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", "object1:Type1"));
+		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", ":Type2"));
+		ImplicitParameterNode object3 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", "object3:"));
+		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
+		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
 		assertEquals(new Rectangle(160,0,80,200), object1.view().getBounds());
 		List<ChildNode> o1children = object1.getChildren();
@@ -491,9 +487,8 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(409,189,0,0), point.view().getBounds());
 	
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(6, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
+		assertEquals(6, pDiagram.numberOfEdges());
+		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		CallEdge self = (CallEdge) eIterator.next(); 
 		CallEdge signal = (CallEdge) eIterator.next(); 
@@ -535,18 +530,18 @@ public class TestPersistenceService
 		assertEquals(note, nedge.getStart());
 	}
 	
-	private void verifyStateDiagram(Diagram pGraph)
+	private void verifyStateDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		assertEquals(7, nodes.size());
 		
-		StateNode s1 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S1"));
-		StateNode s2 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S2"));
-		StateNode s3 = (StateNode) findRootNode(pGraph, StateNode.class, build("name", "S3"));
-		InitialStateNode start = (InitialStateNode) findRootNode(pGraph, InitialStateNode.class, build());
-		FinalStateNode end = (FinalStateNode) findRootNode(pGraph, FinalStateNode.class, build());
-		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
-		PointNode point = (PointNode) findRootNode(pGraph, PointNode.class, build());
+		StateNode s1 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S1"));
+		StateNode s2 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S2"));
+		StateNode s3 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S3"));
+		InitialStateNode start = (InitialStateNode) findRootNode(pDiagram, InitialStateNode.class, build());
+		FinalStateNode end = (FinalStateNode) findRootNode(pDiagram, FinalStateNode.class, build());
+		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
+		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
 		assertEquals(new Rectangle(250, 100, 80, 60), s1.view().getBounds());
 		assertEquals("S1", s1.getName().toString());
@@ -566,9 +561,8 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
 		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(7, edges.size());
-		Iterator<Edge> eIterator = edges.iterator();
+		assertEquals(7, pDiagram.numberOfEdges());
+		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		NoteEdge ne = (NoteEdge) eIterator.next();
 		StateTransitionEdge fromStart = (StateTransitionEdge) eIterator.next(); 
@@ -612,19 +606,19 @@ public class TestPersistenceService
 		assertEquals("", toS3.getMiddleLabel().toString());
 	}
 	
-	private void verifyObjectDiagram(Diagram pGraph)
+	private void verifyObjectDiagram(Diagram pDiagram)
 	{
-		Collection<Node> nodes = pGraph.getRootNodes();
+		Collection<Node> nodes = pDiagram.getRootNodes();
 		assertEquals(7, nodes.size());
 		
-		ObjectNode type1 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ":Type1"));
-		ObjectNode blank = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ""));
-		ObjectNode object2 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", "object2:"));
-		ObjectNode type3 = (ObjectNode) findRootNode(pGraph, ObjectNode.class, build("name", ":Type3"));
+		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ":Type1"));
+		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ""));
+		ObjectNode object2 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", "object2:"));
+		ObjectNode type3 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ":Type3"));
 
-		NoteNode note = (NoteNode) findRootNode(pGraph, NoteNode.class, build());
-		PointNode p1 = (PointNode) findRootNode(pGraph, PointNode.class, build("x", 281));
-		PointNode p2 = (PointNode) findRootNode(pGraph, PointNode.class, build("x", 474));
+		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
+		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 281));
+		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 474));
 		
 		assertEquals(new Rectangle(240, 130, 90, 90), type1.view().getBounds());
 		List<ChildNode> children = type1.getChildren();
@@ -677,9 +671,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(474, 339, 0, 0), p2.view().getBounds());
 		
-		Collection<Edge> edges = pGraph.getEdges();
-		assertEquals(6, edges.size());
-		Iterator<Edge> eIt = edges.iterator();
+		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		
 		ObjectReferenceEdge o1 = (ObjectReferenceEdge) eIt.next();
 		ObjectReferenceEdge o2 = (ObjectReferenceEdge) eIt.next();

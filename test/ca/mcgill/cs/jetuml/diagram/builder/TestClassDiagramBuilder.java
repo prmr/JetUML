@@ -307,10 +307,10 @@ public class TestClassDiagramBuilder
 		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
 		operation.execute();
 		assertTrue(aDiagram.getRootNodes().isEmpty());
-		assertTrue(aDiagram.getEdges().isEmpty());
+		assertTrue(aDiagram.numberOfEdges() == 0);
 		operation.undo();
 		assertTrue(aDiagram.getRootNodes().isEmpty());
-		assertTrue(aDiagram.getEdges().isEmpty());
+		assertTrue(aDiagram.numberOfEdges() == 0);
 	}
 	
 	@Test
@@ -328,14 +328,13 @@ public class TestClassDiagramBuilder
 		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
 		operation.execute();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertSame(node1, aDiagram.getRootNodes().toArray()[0]);
 		assertSame(node2, aDiagram.getRootNodes().toArray()[1]);
-		assertSame(edge, aDiagram.getEdges().toArray()[0]);
 		
 		operation.undo();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 	}
 	
 	@Test

@@ -86,7 +86,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		paste();
 
 		assertEquals(3, aDiagram.getRootNodes().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
 		assertEquals(2, aPackageNode.getChildren().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertSame(aClassNode1, aDependencyEdge.getStart());
 		assertSame(aClassNode2, aDependencyEdge.getEnd());
 
@@ -109,7 +109,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste(); 
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -154,10 +154,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
 		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
-		assertEquals(3, aDiagram.getEdges().size());
+		assertEquals(3, aDiagram.numberOfEdges());
 		
 		addEdge(new AssociationEdge(), new Point(47, 49), new Point(50, 49));
-		assertEquals(4, aDiagram.getEdges().size());
+		assertEquals(4, aDiagram.numberOfEdges());
 		
 		// not every edge is a valid self-edge
 		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
@@ -168,7 +168,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAssociationEdge, new Point(47, 49), new Point(50, 49));
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertSame(aInterfaceNode, aAssociationEdge.getStart());
 		assertSame(aInterfaceNode, aAssociationEdge.getEnd());
 		
@@ -190,7 +190,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		// if begin with a non-NoteNode type, both point needs to be valid
 		assertFalse(aBuilder.canAdd(noteEdge1, new Point(9, 9), new Point(209,162)));
 		addEdge(noteEdge1, new Point(10, 10), new Point(139,142));
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertEquals(noteEdge1.getStart(), aClassNode1);
 		assertEquals(noteEdge1.getEnd(), aNoteNode);
 		
@@ -198,7 +198,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
 		assertEquals(noteEdge2.getStart(), aNoteNode);
 		assertEquals(noteEdge2.getEnd().getClass(), new PointNode().getClass());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -302,10 +302,10 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		
 		select(aAggregationEdge);
 		deleteSelected();
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -317,13 +317,13 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
 		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
 		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
-		assertEquals(4, aDiagram.getEdges().size());
+		assertEquals(4, aDiagram.numberOfEdges());
 		
 		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
 		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
-		assertEquals(4, aDiagram.getEdges().size());
+		assertEquals(4, aDiagram.numberOfEdges());
 
 	}
 	
@@ -341,18 +341,18 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
 		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
 		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
-		assertEquals(4, aDiagram.getEdges().size());
+		assertEquals(4, aDiagram.numberOfEdges());
 		
 		// new edges should not replace the current edges in the diagram
 		assertFalse(aBuilder.canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
-		assertEquals(4, aDiagram.getEdges().size());
-		assertFalse(aDiagram.getEdges().contains(aSecondAggregationEdge));
-		assertFalse(aDiagram.getEdges().contains(aSecondAssociationEdge));
-		assertFalse(aDiagram.getEdges().contains(aSecondDependencyEdge));
-		assertFalse(aDiagram.getEdges().contains(aSecondGeneralizationEdge));
+		assertEquals(4, aDiagram.numberOfEdges());
+		assertFalse(aDiagram.contains(aSecondAggregationEdge));
+		assertFalse(aDiagram.contains(aSecondAssociationEdge));
+		assertFalse(aDiagram.contains(aSecondDependencyEdge));
+		assertFalse(aDiagram.contains(aSecondGeneralizationEdge));
 	}
 	
 	@Test 
@@ -368,12 +368,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		deleteSelected();
 		
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 
 		undo();
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
 		assertEquals(classNodeBounds, ((Node) (aDiagram.getRootNodes().toArray()[1])).view().getBounds());
 	}
 	
@@ -390,12 +389,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(edgeBounds, ((Edge) (aDiagram.getEdges().toArray()[0])).view().getBounds());
 		for(Node node: aDiagram.getRootNodes())
 		{
 			if(node instanceof ClassNode)
@@ -478,11 +476,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 		assertEquals(4, aDiagram.getRootNodes().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -497,15 +495,15 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		paste();
 		
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		undo();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -544,7 +542,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addEdge(aDependencyEdge, new Point(26, 26), new Point(65, 31));
 	
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -559,11 +557,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		selectAll();
 		cut(); 
 		assertEquals(0, aDiagram.getRootNodes().size());
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 		
 		paste();
 		assertEquals(1, aDiagram.getRootNodes().size());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -578,6 +576,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		paste();
 		assertEquals(2, aDiagram.getRootNodes().size());
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 	}	
 }

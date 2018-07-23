@@ -275,11 +275,12 @@ public abstract class Diagram implements DiagramData
 	{ return aRootNodes; }
 
 	/**
-	 * Gets the edges of this graph.
-	 * @return an unmodifiable collection of the edges
+	 * @return The number of edges in the diagram.
 	 */
-	public Collection<Edge> getEdges() 
-	{ return aEdges; }
+	public int numberOfEdges()
+	{
+		return aEdges.size();
+	}
 	
 	/**
 	 * @param pNode the node to test for

@@ -82,7 +82,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 		private int numberOfSimilarEdges(Node pNode1, Node pNode2)
 		{
 			int lReturn = 0;
-			for( Edge edge : aDiagram.getEdges() )
+			for( Edge edge : aDiagram.edges() )
 			{
 				if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
 				{

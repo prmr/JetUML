@@ -123,9 +123,9 @@ final class PersistenceTestUtils
 		return null;
 	}
 	
-	static Edge findEdge(Diagram pGraph, Class<?> pClass, Properties pProperties)
+	static Edge findEdge(Diagram pDiagram, Class<?> pClass, Properties pProperties)
 	{
-		for( Edge edge : pGraph.getEdges() )
+		for( Edge edge : pDiagram.edges() )
 		{
 			if( edge.getClass() == pClass )
 			{

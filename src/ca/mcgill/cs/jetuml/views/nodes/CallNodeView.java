@@ -117,7 +117,7 @@ public class CallNodeView extends AbstractNodeView
 	private List<Node> getCallees(Diagram pGraph)
 	{
 		List<Node> callees = new ArrayList<>();
-		for( Edge edge : pGraph.getEdges())
+		for( Edge edge : pGraph.edges())
 		{
 			if( edge.getStart() == node() && edge instanceof CallEdge )
 			{

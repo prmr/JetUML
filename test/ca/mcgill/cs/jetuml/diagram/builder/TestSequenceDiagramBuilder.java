@@ -114,10 +114,10 @@ public class TestSequenceDiagramBuilder
 		operation.execute();
 		assertSame(aDefaultCallNode1, aCallEdge1.getStart());
 		assertSame(aDefaultCallNode2, aCallEdge1.getEnd());
-		assertEquals(1, aDiagram.getEdges().size());
+		assertEquals(1, aDiagram.numberOfEdges());
 		
 		operation.undo();
-		assertEquals(0, aDiagram.getEdges().size());
+		assertEquals(0, aDiagram.numberOfEdges());
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class TestSequenceDiagramBuilder
 		
 		DiagramOperation operation = aBuilder.createAddEdgeOperation(aCallEdge2, new Point(35,85), new Point(235, 145));
 		operation.execute();
-		assertEquals(2, aDiagram.getEdges().size());
+		assertEquals(2, aDiagram.numberOfEdges());
 		assertSame(aDefaultCallNode1, aCallEdge2.getStart());
 		assertSame(aCallNode1, aCallEdge2.getEnd());
 	}
