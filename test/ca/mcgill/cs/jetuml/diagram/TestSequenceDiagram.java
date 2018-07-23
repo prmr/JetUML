@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
-public class TestSequenceDiagramGraph
+public class TestSequenceDiagram
 {
 	 private SequenceDiagram aDiagram;
 	 private SequenceDiagramBuilder aBuilder;

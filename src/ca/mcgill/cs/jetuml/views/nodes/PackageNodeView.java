@@ -157,7 +157,7 @@ public class PackageNodeView extends AbstractNodeView
 		}
 		int x = Math.min(node().position().getX(), pChildrenBounds.get().getX() - PADDING);
 		int y = Math.min(node().position().getY(), pChildrenBounds.get().getY() - PADDING - TOP_HEIGHT);
-		return new Point(x,y);
+		return new Point(x, y);
 	}
 	
 	private Dimension getTopDimension()

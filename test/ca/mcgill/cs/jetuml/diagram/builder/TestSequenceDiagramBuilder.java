@@ -21,30 +21,18 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
@@ -57,7 +45,6 @@ public class TestSequenceDiagramBuilder
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
 	private CallNode aCallNode1;
-	private CallNode aCallNode2;
 	private CallEdge aCallEdge1;
 	private CallEdge aCallEdge2;
 	
@@ -81,7 +68,6 @@ public class TestSequenceDiagramBuilder
 		aDefaultCallNode1 = new CallNode();
 		aDefaultCallNode2 = new CallNode();
 		aCallNode1 = new CallNode();
-		aCallNode2 = new CallNode();
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
 	}

@@ -149,7 +149,10 @@ public class DiagramCanvasController
 		if( edited.isPresent() )
 		{
 			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)aCanvas.getScene().getWindow(), 
-					edited.get(), ()-> {aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); });
+					edited.get(), ()-> 
+			{
+				aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); 
+			});
 			
 			CompoundOperation operation = dialog.show();
 			if(!operation.isEmpty())

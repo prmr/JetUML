@@ -24,9 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,23 +35,15 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvas;
-import ca.mcgill.cs.jetuml.gui.DiagramCanvasController;
-import ca.mcgill.cs.jetuml.gui.DiagramTabToolBar;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenarios
 {
-	private GraphicsContext aGraphics;
-	private DiagramCanvas aCanvas;
-	private DiagramCanvasController aController;
-	private List<DiagramElement> aList;
 	private ImplicitParameterNode aParameterNode1;
 	private ImplicitParameterNode aParameterNode2;
 	private CallNode aCallNode1;
 	private CallNode aCallNode2;
 	private CallEdge aCallEdge1;
+	private CallEdge aCallEdge2;
 	private ReturnEdge aReturnEdge;
 	
 	@Before
@@ -63,16 +52,12 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		super.setup();
 		aDiagram = new SequenceDiagram();
 		aBuilder = new SequenceDiagramBuilder(aDiagram);
-		aGraphics = new Canvas(256, 256).getGraphicsContext2D();
-		aCanvas = new DiagramCanvas(aDiagram, 0, 0);
-		aController = new DiagramCanvasController(aCanvas, new DiagramTabToolBar(aDiagram), a ->  {});
-		aCanvas.setController(aController);
-		aList = new ArrayList<>();
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
 		aCallNode1 = new CallNode();
 		aCallNode2 = new CallNode();
 		aCallEdge1 = new CallEdge();
+		aCallEdge2 = new CallEdge();
 		aReturnEdge = new ReturnEdge();
 	}
 	
@@ -208,7 +193,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aCallNode1, new Point(15, 65));
 		select(aParameterNode1);
-		aController.removeSelected();
 		deleteSelected();
 		assertEquals(0, aDiagram.getRootNodes().size());
 		undo();
@@ -287,8 +271,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 				
 		Edge[] edges = aDiagram.getEdges(caller).toArray(new Edge[aDiagram.getEdges(caller).size()]);
 		assertEquals(2, edges.length);
-		assertEquals(callEdge1, edges[0]);
-		assertEquals(callEdge2, edges[1]);
 		
 		select(caller);
 		deleteSelected();
@@ -298,255 +280,150 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(1, newParameterNode1.getChildren().size());
 		edges = aDiagram.getEdges(caller).toArray(new Edge[aDiagram.getEdges(caller).size()]);
 		assertEquals(2, edges.length);
-		assertEquals(callEdge1, edges[0]);
-		assertEquals(callEdge2, edges[1]);
 	}
 	
-//	@Test
-//	public void testDeleteMiddleCallNode()
-//	{
-//		// set up 
-//		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
-//		CallNode middleCallNode = new CallNode();
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(newParameterNode, new Point(210, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(new CallNode(), new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-//		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
-//		
-//		aController.getSelectionModel().addToSelection(middleCallNode);
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(1, aParameterNode1.getChildren().size()); 
-//		assertEquals(0, aParameterNode2.getChildren().size()); 
-//		assertEquals(0, newParameterNode.getChildren().size()); 
-//		assertEquals(0, aDiagram.getEdges().size());
-//		
-//		aController.undo();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(1, aParameterNode1.getChildren().size()); 
-//		assertEquals(1, aParameterNode2.getChildren().size()); 
-//		assertEquals(2, newParameterNode.getChildren().size()); 
-//		assertEquals(4, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing delete a return edge.
-//	 */
-//	@Test
-//	public void testDeleteReturnEdge()
-//	{
-//		CallNode middleCallNode = new CallNode();
-//		ReturnEdge returnEdge = new ReturnEdge();
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(18, 75), new Point(115,75));
-//		aDiagram.builder().addEdge(returnEdge, new Point(118, 75), new Point(18,75));
-//		
-//		aController.getSelectionModel().addToSelection(returnEdge);
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(1, aParameterNode1.getChildren().size()); 
-//		assertEquals(1, aParameterNode2.getChildren().size()); 
-//		assertEquals(1, aDiagram.getEdges().size());
-//		
-//		aController.undo();
-//		assertEquals(2, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing delete a CallNode with both incoming and return edge.
-//	 */
-//	@Test
-//	public void testDeleteCallNodeWithIncomingAndReturnEdge()
-//	{
-//		CallNode middleCallNode = new CallNode();
-//		ReturnEdge returnEdge = new ReturnEdge();
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(118,75));
-//		aDiagram.builder().addEdge(returnEdge, new Point(118, 75), new Point(18,75));
-//		
-//		aController.getSelectionModel().addToSelection(returnEdge);
-//		aController.getSelectionModel().addToSelection(aCallEdge1);
-//		aController.getSelectionModel().addToSelection(middleCallNode);
-//
-//		aController.removeSelected();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(1, aParameterNode1.getChildren().size()); 
-//		assertEquals(0, aParameterNode2.getChildren().size()); 
-//		assertEquals(0, aDiagram.getEdges().size());
-//		
-//		aController.undo();
-//		assertEquals(1, aParameterNode2.getChildren().size()); 
-//		assertEquals(2, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Below are methods testing the copy and paste feature
-//	 * for sequence diagram.
-//	 * 
-//	 * 
-//	 * Testing copy and paste single Parameter Node.
-//	 */
-//	@Test
-//	public void testCopyPasteParameterNode()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aController.getSelectionModel().addToSelection(aParameterNode1);
-//		aController.copy();
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(new Rectangle(0, 0, 80, 80),
-//				((Node)(aDiagram.getRootNodes().toArray()[1])).view().getBounds());
-//	}
-//	
-//	/**
-//	 * Testing cut and paste single Parameter Node.
-//	 */
-//	@Test
-//	public void testCutPasteParameterNode()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aController.getSelectionModel().addToSelection(aParameterNode1);
-//		aController.cut();
-//		aDiagram.draw(aGraphics);
-//		assertEquals(0, aDiagram.getRootNodes().size());
-//
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(1, aDiagram.getRootNodes().size());
-//		assertEquals(new Rectangle(0, 0, 80, 80),
-//				((Node)(aDiagram.getRootNodes().toArray()[0])).view().getBounds());
-//	}
-//	
-//	/**
-//	 * Testing copy and paste Parameter Node with Call Node.
-//	 */
-//	@Test
-//	public void testCopyPasteParameterNodeWithCallNode()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aController.getSelectionModel().addToSelection(aParameterNode1);
-//		aController.copy();
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(2, aDiagram.getRootNodes().size());
-//		assertEquals(new Rectangle(10, 0, 80, 125),
-//				((Node)(aDiagram.getRootNodes().toArray()[0])).view().getBounds());
-//		assertEquals(1, (((ImplicitParameterNode)(aDiagram.getRootNodes().toArray()[1])).getChildren().size()));
-//	}
-//	
-//	/**
-//	 * Testing copy and paste a whole diagram.
-//	 */
-//	@Test
-//	public void testCopyPasteSequenceDiagram()
-//	{
-//		// test case set up 
-//		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
-//		CallNode middleCallNode = new CallNode();
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(newParameterNode, new Point(210, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(new CallNode(), new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-//		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
-//		
-//		aController.selectAll();
-//		aController.copy();
-//		aController.paste();
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(6, aDiagram.getRootNodes().size());
-//		assertEquals(8, aDiagram.getEdges().size());
-//	}
-//	
-//	/**
-//	 * Testing copy and paste a whole diagram.
-//	 */
-//	@Test
-//	public void testCopyPartialGraph()
-//	{
-//		// set up 
-//		ImplicitParameterNode newParaNode = new ImplicitParameterNode();
-//		CallNode middleCallNode = new CallNode();
-//		CallNode endCallNode = new CallNode();
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(newParaNode, new Point(210, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(middleCallNode, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addNode(endCallNode, new Point(215, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(115,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(215,75));
-//		aDiagram.builder().addEdge(new ReturnEdge(), new Point(118, 75), new Point(18,75));
-//		aDiagram.builder().addEdge(new CallEdge(), new Point(118, 75), new Point(210,115));
-//		
-//		aList.add(aCallNode1);
-//		aList.add(middleCallNode);
-//		aList.add(endCallNode);
-//		for(Edge edge: aDiagram.getEdges())
-//		{
-//			aList.add(edge);
-//		}
-//		aController.getSelectionModel().setSelectionTo(aList);
-//		aController.copy();
-//		SequenceDiagram tempDiagram = new SequenceDiagram();
-//		aController.paste();
-//		tempDiagram.draw(aGraphics);
-//		
-//		assertEquals(0, tempDiagram.getRootNodes().size());
-//		assertEquals(0, tempDiagram.getEdges().size());
-//	}
-//
-//	/**
-//	 * Tests the creation of a basic diagram.
-//	 */
-//	@Test
-//	public void testCreateBasicGraph()
-//	{
-//		aDiagram.builder().addNode(aParameterNode1, new Point(10, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		assertEquals(new Rectangle(10,0,80,120), aParameterNode1.view().getBounds());
-//		
-//		aDiagram.builder().addNode(aParameterNode2, new Point(110, 0), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		assertEquals(new Rectangle(110,0,80,120), aParameterNode2.view().getBounds());
-//
-//		aDiagram.builder().addNode(aCallNode1, new Point(15, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		assertEquals(new Rectangle(15,75,16,30), aCallNode1.view().getBounds());
-//
-//		aDiagram.builder().addNode(aCallNode2, new Point(115, 75), Integer.MAX_VALUE, Integer.MAX_VALUE);
-//		assertEquals(new Rectangle(115, 75,16,30), aCallNode2.view().getBounds());
-//		
-//		aDiagram.builder().addEdge(aCallEdge1, new Point(18, 75), new Point(120,75));
-//		assertEquals(new Rectangle(30,68,86,12), aCallEdge1.view().getBounds());
-//		
-//		aDiagram.draw(aGraphics);
-//		
-//		assertEquals(new Rectangle(10,0,80,157), aParameterNode1.view().getBounds());
-//		assertEquals(new Rectangle(110,0,80,157), aParameterNode2.view().getBounds());
-//		assertEquals(new Rectangle(42,75,16,62), aCallNode1.view().getBounds());
-//		assertEquals(new Rectangle(142,87,16,30), aCallNode2.view().getBounds());
-//		assertEquals(new Rectangle(57,80,86,12), aCallEdge1.view().getBounds());
-//	}	
+	@Test
+	public void testDeleteMiddleCallNode()
+	{
+		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
+		CallNode middleCallNode = new CallNode();
+		aParameterNode1.translate(10, 0);
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode2.translate(110, 0);
+		aDiagram.addRootNode(aParameterNode2);
+		newParameterNode.translate(210, 0);
+		aDiagram.addRootNode(newParameterNode);
+		aParameterNode1.addChild(aCallNode1);
+		aParameterNode2.addChild(middleCallNode);
+		CallNode end = new CallNode();
+		newParameterNode.addChild(end);
+		
+		aCallEdge1.connect(aCallNode1, middleCallNode, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		
+		CallEdge edge = new CallEdge();
+		edge.connect(middleCallNode, end, aDiagram);
+		aDiagram.addEdge(edge);
+		
+		ReturnEdge redge = new ReturnEdge();
+		redge.connect(middleCallNode, aCallNode1, aDiagram);
+		aDiagram.addEdge(redge);
+		
+		select(middleCallNode);
+		deleteSelected();
+		
+		assertEquals(1, aParameterNode1.getChildren().size()); 
+		assertEquals(0, aParameterNode2.getChildren().size()); 
+		assertEquals(1, newParameterNode.getChildren().size()); 
+		assertEquals(0, aDiagram.getEdges().size());
+		
+		undo();
+		assertEquals(1, aParameterNode1.getChildren().size()); 
+		assertEquals(1, aParameterNode2.getChildren().size()); 
+		assertEquals(1, newParameterNode.getChildren().size()); 
+		assertEquals(3, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testDeleteReturnEdge()
+	{
+		CallNode middleCallNode = new CallNode();
+		ReturnEdge returnEdge = new ReturnEdge();
+		aParameterNode1.translate(10, 0);
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode2.translate(110, 0);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode1.addChild(aCallNode1);
+		aParameterNode2.addChild(middleCallNode);
+		CallEdge callEdge = new CallEdge();
+		callEdge.connect(aCallNode1, middleCallNode, aDiagram);
+		aDiagram.addEdge(callEdge);
+		returnEdge.connect(middleCallNode, aCallNode1, aDiagram);
+		aDiagram.addEdge(returnEdge);
+		
+		select(returnEdge);
+		deleteSelected();
+
+		assertEquals(1, aParameterNode1.getChildren().size()); 
+		assertEquals(1, aParameterNode2.getChildren().size()); 
+		assertEquals(1, aDiagram.getEdges().size());
+		
+		undo();
+		assertEquals(2, aDiagram.getEdges().size());
+	}
+	
+	@Test
+	public void testCopyPasteParameterNode()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		
+		select(aParameterNode1);
+		copy();
+		paste();
+
+		assertEquals(2, aDiagram.getRootNodes().size());
+	}
+	
+	@Test
+	public void testCutPasteParameterNode()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		
+		select(aParameterNode1);
+		
+		cut();
+		assertEquals(0, aDiagram.getRootNodes().size());
+
+		paste();
+		
+		assertEquals(1, aDiagram.getRootNodes().size());
+	}
+	
+	@Test
+	public void testCopyPasteParameterNodeWithCallNode()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode1.addChild(aCallNode1);
+		
+		select(aParameterNode1);
+		
+		copy();
+		paste();
+		
+		assertEquals(2, aDiagram.getRootNodes().size());
+		assertEquals(1, (((ImplicitParameterNode)(aDiagram.getRootNodes().toArray()[1])).getChildren().size()));
+	}
+	
+	@Test
+	public void testCopyPasteSequenceDiagram()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode2.translate(110, 0);
+		aDiagram.addRootNode(aParameterNode2);
+		
+		ImplicitParameterNode newParameterNode = new ImplicitParameterNode();
+		newParameterNode.translate(200, 0);
+		aDiagram.addRootNode(newParameterNode);
+		
+		aParameterNode1.addChild(aCallNode1);
+		CallNode middleCallNode = new CallNode();
+		aParameterNode2.addChild(middleCallNode);
+		newParameterNode.addChild(aCallNode2);
+		
+		aCallEdge1.connect(aCallNode1, middleCallNode, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		
+		aCallEdge2.connect(middleCallNode, aCallNode2, aDiagram);
+		aDiagram.addEdge(aCallEdge2);
+		
+		aReturnEdge.connect(middleCallNode, aCallNode1, aDiagram);
+		aDiagram.addEdge(aReturnEdge);
+		
+		selectAll();
+		copy();
+		paste();
+	
+		assertEquals(6, aDiagram.getRootNodes().size());
+		assertEquals(6, aDiagram.getEdges().size());
+	}
 }
