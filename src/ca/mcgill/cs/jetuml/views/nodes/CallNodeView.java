@@ -68,14 +68,20 @@ public class CallNodeView extends AbstractNodeView
 		aDiagram = pDiagram;
 	}
 	
+	@Override
+	protected CallNode node()
+	{
+		return (CallNode)super.node();
+	}
+	
 	private boolean openBottom()
 	{
-		return ((CallNode)node()).isOpenBottom();
+		return node().isOpenBottom();
 	}
 	
 	private ImplicitParameterNode implicitParameter()
 	{
-		return (ImplicitParameterNode)((CallNode)node()).getParent();
+		return (ImplicitParameterNode)node().getParent();
 	}
 	
 	@Override
@@ -201,14 +207,24 @@ public class CallNodeView extends AbstractNodeView
 				return 0; // Only used for the image creator
 			}
 		}
-		else
+		else // there are four cases here: nested call (y/n) and first callee (y/n) TODO
 		{
-			int gap = Y_GAP_SMALL;
-			if( caller.getParent() == ((CallNode)node()).getParent())
+			if( aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()))
 			{
-				gap = Y_GAP_BIG;
+				return ((CallNodeView)caller.view()).getY() + Y_GAP_BIG;
 			}
-			return ((CallNodeView)caller.view()).getY() + gap;
+			if( aDiagram.isNested(node()) && !aDiagram.isFirstCallee(node()) )
+			{
+				return ((CallNodeView)aDiagram.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+			}
+			if( !aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()) )
+			{
+				return ((CallNodeView)caller.view()).getY() + Y_GAP_SMALL;
+			}
+			else
+			{
+				return ((CallNodeView)aDiagram.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+			}
 		}
 	}
 	

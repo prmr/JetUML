@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
@@ -34,17 +35,26 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestCallNodeView
 {
 	private ImplicitParameterNode aImplicitParameterNode1;
-	private CallNode aCallNode1;
+	private ImplicitParameterNode aImplicitParameterNode2;
 	private SequenceDiagram aDiagram;
+	private CallNode aDefaultCallNode1;
+	private CallNode aDefaultCallNode2;
+	private CallNode aCallNode1;
+	private CallNode aCallNode2;
+	private CallEdge aCallEdge1;
+	private CallEdge aCallEdge2;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -61,26 +71,38 @@ public class TestCallNodeView
 	{
 		aDiagram = new SequenceDiagram();
 		aImplicitParameterNode1 = new ImplicitParameterNode();
+		aImplicitParameterNode2 = new ImplicitParameterNode();
+		aDefaultCallNode1 = new CallNode();
+		aDefaultCallNode2 = new CallNode();
 		aCallNode1 = new CallNode();
-		aDiagram.addRootNode(aImplicitParameterNode1);
-		aImplicitParameterNode1.addChild(aCallNode1);
+		aCallNode2 = new CallNode();
+		aCallEdge1 = new CallEdge();
+		aCallEdge2 = new CallEdge();
 	}
 	
 	@Test
 	public void testGetBoundsSingleCallNode()
 	{
-		assertEquals(new Rectangle(32,80,16,30), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(0,0,16,30), aCallNode1.view().getBounds());
 	}
 	
 	@Test
-	public void testGetBoundsSelfCall()
+	public void testGetBoundsSecondCalleeOfCaller()
 	{
-		CallNode inner = new CallNode();
-		aImplicitParameterNode1.addChild(inner);
-		CallEdge edge = new CallEdge();
-		edge.connect(aCallNode1, inner, aDiagram);
-		aDiagram.addEdge(edge);
-		assertEquals(new Rectangle(32,80,16,60), aCallNode1.view().getBounds());
-		assertEquals(new Rectangle(40,100,16,30), inner.view().getBounds());
-	}
+		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aImplicitParameterNode2.translate(200, 0);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		
+		aImplicitParameterNode2.addChild(aCallNode1);
+		assertEquals(new Rectangle(232,140,16,30), aCallNode1.view().getBounds());
+		
+		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
+		aDiagram.addEdge(aCallEdge2);
+		
+		assertEquals(new Rectangle(232, 140, 16, 30), aDefaultCallNode2.view().getBounds());
+	}	
 }

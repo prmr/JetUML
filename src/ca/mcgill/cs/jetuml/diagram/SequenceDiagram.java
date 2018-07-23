@@ -105,7 +105,80 @@ public class SequenceDiagram extends Diagram
 		}
 		return null;
 	}
- 
+	
+	/**
+	 * @param pNode The node to check. 
+	 * @return All the call nodes that have the same caller as pNode, including pNode.
+	 * Only returns pNode itself if there is not caller.
+	 * @pre pNode != null
+	 */
+	public List<CallNode> getSiblings(CallNode pNode)
+	{
+		List<CallNode> result = new ArrayList<>();
+		CallNode caller = getCaller(pNode);
+		if( caller == null )
+		{
+			result.add(pNode);
+		}
+		else
+		{
+			for( Node callee : getCallees(caller))
+			{
+				result.add((CallNode)callee);
+			}
+		}
+		assert result.contains(pNode);
+		return result;
+	}
+	
+	/**
+	 * @param pNode The node to test.
+	 * @return True if pNode has a caller on the same implicit parameter node, false otherwise.
+	 * @pre pNode != null
+	 */
+	public boolean isNested(CallNode pNode)
+	{
+		assert pNode != null;
+		CallNode caller = getCaller(pNode);
+		if( caller == null || pNode.getParent() == null )
+		{
+			return false;
+		}
+		return caller.getParent() == pNode.getParent();
+	}
+	
+	/**
+	 * @param pNode The node to test. Must have a caller. Can't be null
+	 * @return true iif pNode is the first callee of its parent
+	 */
+	public boolean isFirstCallee(CallNode pNode)
+	{
+		assert pNode != null;
+		CallNode caller = getCaller(pNode);
+		assert caller != null;
+		List<Node> callees = getCallees(caller);
+		return callees.get(0) == pNode;
+	}
+	
+	/**
+	 * @param pNode The node to check.
+	 * @return The node called before pNode by the parent. 
+	 * @pre pNode !=null
+	 * @pre getCaller(pNode) != null
+	 * @pre !isFirstCallee(pNode)
+	 */
+	public CallNode getPreviousCallee(CallNode pNode)
+	{
+		assert pNode != null;
+		CallNode caller = getCaller(pNode);
+		assert caller != null;
+		assert !isFirstCallee(pNode);
+		List<Node> callees = getCallees(caller);
+		int index = callees.indexOf(pNode);
+		assert index >= 1;
+		return (CallNode) callees.get(index-1);
+	}
+	
 //	@Override
 //	public void layout()
 //	{
