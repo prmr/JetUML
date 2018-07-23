@@ -268,14 +268,6 @@ public abstract class Diagram implements DiagramData
 	public abstract Edge[] getEdgePrototypes();
 
 	/**
-	 * @return The number of edges in the diagram.
-	 */
-	public int numberOfEdges()
-	{
-		return aEdges.size();
-	}
-	
-	/**
 	 * @param pNode the node to test for
 	 * @return All the edges connected to pNode
 	 * pNode not null

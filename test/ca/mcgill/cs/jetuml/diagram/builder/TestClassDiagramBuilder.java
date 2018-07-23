@@ -34,6 +34,7 @@ import org.junit.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
@@ -71,6 +72,16 @@ public class TestClassDiagramBuilder
 	{
 		int sum = 0;
 		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
+	private int numberOfEdges()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
 		{
 			sum++;
 		}
@@ -332,10 +343,10 @@ public class TestClassDiagramBuilder
 		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
 		operation.execute();
 		assertTrue(numberOfRootNodes() == 0);
-		assertTrue(aDiagram.numberOfEdges() == 0);
+		assertTrue(numberOfEdges() == 0);
 		operation.undo();
 		assertTrue(numberOfRootNodes() == 0);
-		assertTrue(aDiagram.numberOfEdges() == 0);
+		assertTrue(numberOfEdges() == 0);
 	}
 	
 	@Test
@@ -353,13 +364,13 @@ public class TestClassDiagramBuilder
 		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
 		operation.execute();
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, numberOfEdges());
 		assertSame(node1, getRootNode(0));
 		assertSame(node2, getRootNode(1));
 		
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, numberOfEdges());
 	}
 	
 	@Test

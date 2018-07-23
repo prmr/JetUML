@@ -153,6 +153,16 @@ public class AbstractTestUsageScenarios
 		return sum;
 	}
 	
+	protected int numberOfEdges()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
 	protected Node getRootNode(int pIndex)
 	{
 		Iterator<Node> iterator = aDiagram.rootNodes().iterator();

@@ -129,7 +129,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertSame(aActorNode1, useCaseDependencyEdge2.getStart());
 		assertSame(aUseCaseNode2, useCaseDependencyEdge2.getEnd());
 		
-		assertEquals(5, aDiagram.numberOfEdges());
+		assertEquals(5, numberOfEdges());
 		
 		// connect nodes with NoteEdge (not allowed)
 		assertFalse(aBuilder.canAdd(new NoteEdge(),  new Point(80, 20), new Point(140, 20)));
@@ -274,19 +274,19 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		
 		select(aAssociationEdge);
 		deleteSelected();
-		assertEquals(3, aDiagram.numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		assertFalse(aDiagram.contains(aAssociationEdge));
 		
 		select(aGeneralEdge);
 		deleteSelected();
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, numberOfEdges());
 		assertFalse(aDiagram.contains(aGeneralEdge));
 
 		undo();
-		assertEquals(3, aDiagram.numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		assertTrue(aDiagram.contains(aGeneralEdge));
 		undo();
-		assertEquals(4, aDiagram.numberOfEdges());
+		assertEquals(4, numberOfEdges());
 		assertTrue(aDiagram.contains(aAssociationEdge));
 	}
 	
@@ -309,12 +309,12 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(4, numberOfRootNodes());
 		assertFalse(aDiagram.contains(aActorNode1));
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, numberOfEdges());
 		
 		undo();
 		assertEquals(5, numberOfRootNodes());
 		assertTrue(aDiagram.contains(aActorNode1));
-		assertEquals(4, aDiagram.numberOfEdges());
+		assertEquals(4, numberOfEdges());
 		
 		/* now delete aUseCaseNode2, aActorNode2 and aGeneralEdge
 		 * aAssociationEdge and aDependencyEdge will also be deleted
@@ -324,13 +324,13 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		deleteSelected();
 		
 		assertEquals(3, numberOfRootNodes());
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, numberOfEdges());
 		assertFalse(aDiagram.contains(aAssociationEdge));
 		assertFalse(aDiagram.contains(aDependencyEdge));
 		
 		undo();
 		assertEquals(5, numberOfRootNodes());
-		assertEquals(4, aDiagram.numberOfEdges());
+		assertEquals(4, numberOfEdges());
 	}
 	
 	@Test
@@ -380,7 +380,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		paste();
 		
 		assertEquals(4, numberOfRootNodes());
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, numberOfEdges());
 	}
 
 	@Test
@@ -398,10 +398,10 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		cut();
 
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, numberOfEdges());
 
 		paste();
 		assertEquals(4, numberOfRootNodes());
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, numberOfEdges());
 	}
 }

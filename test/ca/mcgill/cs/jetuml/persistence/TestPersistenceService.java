@@ -91,6 +91,16 @@ public class TestPersistenceService
 		return sum;
 	}
 	
+	private int numberOfEdges(Diagram pDiagram)
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Edge edge : pDiagram.edges() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
 	@Test
 	public void testClassDiagram() throws Exception
 	{
@@ -214,7 +224,7 @@ public class TestPersistenceService
 		assertTrue(new Rectangle(190, 140, 48, 88).equals(a3.view().getBounds()) || new Rectangle(190, 140, 48, 87).equals(a3.view().getBounds()));
 		assertEquals("Actor3", a3.getName().toString());
 		
-		assertEquals(10, pDiagram.numberOfEdges());
+		assertEquals(10,  numberOfEdges(pDiagram));
 		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		
 		NoteEdge cr1 = (NoteEdge) eIt.next();
@@ -318,7 +328,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(490, 160, 60, 40), n1.view().getBounds());
 		assertEquals("n1", n1.getName().toString());
 
-		assertEquals(3, pDiagram.numberOfEdges());
+		assertEquals(3, numberOfEdges(pDiagram));
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		DependencyEdge e1 = (DependencyEdge) eIterator.next();
@@ -491,7 +501,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(409,189,0,0), point.view().getBounds());
 	
-		assertEquals(6, pDiagram.numberOfEdges());
+		assertEquals(6, numberOfEdges(pDiagram));
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		CallEdge self = (CallEdge) eIterator.next(); 
@@ -564,7 +574,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
 		
-		assertEquals(7, pDiagram.numberOfEdges());
+		assertEquals(7,  numberOfEdges(pDiagram));
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		NoteEdge ne = (NoteEdge) eIterator.next();

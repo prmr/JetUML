@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
@@ -79,6 +80,16 @@ public class TestSequenceDiagramBuilder
 	{
 		int sum = 0;
 		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
+		{
+			sum++;
+		}
+		return sum;
+	}
+	
+	private int numberOfEdges()
+	{
+		int sum = 0;
+		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
 		{
 			sum++;
 		}
@@ -140,10 +151,10 @@ public class TestSequenceDiagramBuilder
 		operation.execute();
 		assertSame(aDefaultCallNode1, aCallEdge1.getStart());
 		assertSame(aDefaultCallNode2, aCallEdge1.getEnd());
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, numberOfEdges());
 		
 		operation.undo();
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, numberOfEdges());
 	}
 	
 	@Test
@@ -181,7 +192,7 @@ public class TestSequenceDiagramBuilder
 		
 		DiagramOperation operation = aBuilder.createAddEdgeOperation(aCallEdge2, new Point(35,85), new Point(235, 145));
 		operation.execute();
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, numberOfEdges());
 		assertSame(aDefaultCallNode1, aCallEdge2.getStart());
 		assertSame(aCallNode1, aCallEdge2.getEnd());
 	}
