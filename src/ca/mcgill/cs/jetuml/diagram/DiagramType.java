@@ -20,7 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.builder.*;
+import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
 
 /**
  * The different types of UML diagrams supported by 
@@ -43,8 +48,14 @@ public enum DiagramType
 		aBuilderClass = pBuilderClass;
 	}
 	
+	/**
+	 * @param pDiagram The diagram whose type we want to check.
+	 * @return The type of pDiagram.
+	 * @pre pDiagram != null
+	 */
 	public static DiagramType typeOf(Diagram pDiagram)
 	{
+		assert pDiagram != null;
 		for( DiagramType type : values())
 		{
 			if( pDiagram.getClass() == type.aClass )
@@ -73,10 +84,13 @@ public enum DiagramType
 	}
 	
 	/**
+	 * @param pDiagram The diagram for which we want to build a builder.
 	 * @return A new instance of a builder for this diagram type.
+	 * @pre pDiagram != null
 	 */
 	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram)
 	{
+		assert pDiagram != null;
 		try
 		{
 			return (DiagramBuilder) typeOf(pDiagram).aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);

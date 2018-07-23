@@ -30,13 +30,9 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A UML sequence diagram.
@@ -89,49 +85,6 @@ public class SequenceDiagram extends Diagram
 	}
 	
 	/**
-	 * @param pStart The starting node.
-	 * @param pEnd The end node.
-	 * @return The edge that starts at node pStart and ends at node pEnd, or null if there is no 
-	 * such edge.
-	 */
-	public Edge findEdge(Node pStart, Node pEnd)
-	{
-		for( Edge edge : aEdges )
-		{
-			if(edge.getStart() == pStart && edge.getEnd() == pEnd)
-			{
-				return edge;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * @param pNode The node to check. 
-	 * @return All the call nodes that have the same caller as pNode, including pNode.
-	 * Only returns pNode itself if there is not caller.
-	 * @pre pNode != null
-	 */
-	public List<CallNode> getSiblings(CallNode pNode)
-	{
-		List<CallNode> result = new ArrayList<>();
-		CallNode caller = getCaller(pNode);
-		if( caller == null )
-		{
-			result.add(pNode);
-		}
-		else
-		{
-			for( Node callee : getCallees(caller))
-			{
-				result.add((CallNode)callee);
-			}
-		}
-		assert result.contains(pNode);
-		return result;
-	}
-	
-	/**
 	 * @param pNode The node to test.
 	 * @return True if pNode has a caller on the same implicit parameter node, false otherwise.
 	 * @pre pNode != null
@@ -179,79 +132,6 @@ public class SequenceDiagram extends Diagram
 		return (CallNode) callees.get(index-1);
 	}
 	
-//	@Override
-//	public void layout()
-//	{
-//		super.layout();
-//
-//		ArrayList<Node> topLevelCalls = new ArrayList<>();
-//		ArrayList<Node> objects = new ArrayList<>();
-//		
-//		for( Node rootNode : aRootNodes )
-//		{
-//			if( rootNode instanceof ImplicitParameterNode )
-//			{
-//				objects.add(rootNode);
-//				for( Node callNode : ((ImplicitParameterNode) rootNode).getChildren())
-//				{
-//					if( getCaller(callNode) == null )
-//					{
-//						topLevelCalls.add(callNode);
-//					}
-//				}
-//			}
-//		}
-//		heightObjectLayout(topLevelCalls, objects);
-//	}
-	
-	/*
-	 * Find the max of the heights of the objects
-	 * @param pTopLevelCalls an ArrayList of Nodes in the topLevel of Calls.
-	 * @param pObjects an ArrayList of Nodes to work with.
-	 * @param pGrid Grid from layout call.
-	 */
-//	private void heightObjectLayout(ArrayList<Node> pTopLevelCalls, ArrayList<Node> pObjects)
-//	{
-//		double top = 0;
-//		for(Node node : pObjects)
-//		{
-//			node.translate(0, -node.view().getBounds().getY());
-//			top = Math.max(top, ((ImplicitParameterNode)node).getTopRectangle().getHeight());
-//		}
-//
-//		for(Node node : pTopLevelCalls )
-//		{
-//			node.view().layout(this);
-//		}
-//
-//		for(Node node : aRootNodes )
-//		{
-//			if( node instanceof ImplicitParameterNode )
-//			{
-//				for( Node callNode : ((ImplicitParameterNode) node).getChildren())
-//				{
-//					top = Math.max(top, callNode.view().getBounds().getY() + callNode.view().getBounds().getHeight());
-//				}
-//			}
-//		}
-//
-//		top += CallNode.CALL_YGAP;
-//
-//		for( Node node : pObjects )
-//		{
-//			Rectangle bounds = node.view().getBounds();
-//			((ImplicitParameterNode)node).setBounds(new Rectangle(bounds.getX(), 
-//					bounds.getY(), bounds.getWidth(), (int)top - bounds.getY()));         
-//		}
-//	}
-
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		layout();
-		super.draw(pGraphics);
-	}
-
 	@Override
 	public Node[] getNodePrototypes()
 	{
@@ -279,11 +159,10 @@ public class SequenceDiagram extends Diagram
 	@Override
 	protected Node deepFindNode( Node pNode, Point pPoint )
 	{		
-		if ( pNode instanceof CallNode )
+		if( pNode instanceof CallNode )
 		{
-			for (Node child : getCallees(pNode))
+			for(Node child : getCallees(pNode))
 			{
-			
 				if ( child != null )
 				{
 					Node node = deepFindNode(child, pPoint);

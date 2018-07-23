@@ -149,10 +149,7 @@ public class DiagramCanvasController
 		if( edited.isPresent() )
 		{
 			PropertyEditorDialog dialog = new PropertyEditorDialog((Stage)aCanvas.getScene().getWindow(), 
-					edited.get(), ()-> 
-			{
-				aCanvas.getDiagram().requestLayout(); aCanvas.paintPanel(); 
-			});
+					edited.get(), ()-> aCanvas.paintPanel());
 			
 			CompoundOperation operation = dialog.show();
 			if(!operation.isEmpty())
@@ -329,7 +326,6 @@ public class DiagramCanvasController
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			setModified(true);
 			aSelectionModel.set(newNode);
-			aCanvas.getDiagram().requestLayout();
 			aCanvas.paintPanel();
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
@@ -440,8 +436,6 @@ public class DiagramCanvasController
 	
 	private void releaseMove()
 	{
-		// For optimization purposes, some of the layouts are not done on every move event.
-		aCanvas.getDiagram().requestLayout();
 		setModified(true);
 		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagramBuilder);
 		if(!operation.isEmpty())

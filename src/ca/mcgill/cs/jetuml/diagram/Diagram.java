@@ -33,9 +33,13 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class Diagram implements DiagramData
 {
-	protected ArrayList<Node> aRootNodes; // Only nodes without a parent are tracked by the graph.
+	/*
+	 * Only root nodes are explicitly tracked by a diagram object. Nodes
+	 * that are children of their parent should be managed and accessed
+	 * through their parent node.
+	 */
+	protected ArrayList<Node> aRootNodes;
 	protected ArrayList<Edge> aEdges;
-	private transient boolean aNeedsLayout;
 
 	/**
 	 * Constructs a diagram with no nodes or edges.
@@ -44,7 +48,6 @@ public abstract class Diagram implements DiagramData
 	{
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
-		aNeedsLayout = true;
 	}
 	
 	@Override
@@ -101,7 +104,7 @@ public abstract class Diagram implements DiagramData
 	
 	/**
 	 * Find the "deepest" child that contains pPoint,
-	 * where depth in measure in terms of distance from
+	 * where depth is measured in terms of distance from
 	 * pNode along the parent-child relation.
 	 * @param pNode The starting node for the search.
 	 * @param pPoint The point to test for.
@@ -152,18 +155,17 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
-	 * Draws the graph.
+	 * Draws the diagram.
 	 * @param pGraphics the graphics context
 	 */
 	public void draw(GraphicsContext pGraphics)
 	{
-		layout();
-		for (Node node : aRootNodes)
+		for(Node node : aRootNodes)
 		{
 			drawNode(node, pGraphics);
 		}
 		
-		for (Edge edge : aEdges)
+		for(Edge edge : aEdges)
 		{
 			edge.view().draw(pGraphics);
 		}
@@ -172,9 +174,9 @@ public abstract class Diagram implements DiagramData
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		pNode.view().draw(pGraphics);
-		if (pNode instanceof ParentNode)
+		if(pNode instanceof ParentNode)
 		{
-			for (Node node : ((ParentNode) pNode).getChildren())
+			for(Node node : ((ParentNode) pNode).getChildren())
 			{
 				drawNode(node, pGraphics);
 			}
@@ -218,32 +220,6 @@ public abstract class Diagram implements DiagramData
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Causes the layout of the graph to be recomputed.
-	 */
-	public void requestLayout()
-	{
-		aNeedsLayout = true;
-	}
-
-	/**
-	 * Computes the layout of the graph.
-	 * If you override this method, you must first call 
-	 * <code>super.layout</code>.
-	 */
-	protected void layout()
-	{
-		if (!aNeedsLayout)
-		{
-			return;
-		}
-		for(Node node : aRootNodes)
-		{
-			node.view().layout(this);
-		}
-		aNeedsLayout = false;
 	}
 
 	/**
@@ -367,7 +343,6 @@ public abstract class Diagram implements DiagramData
 	{
 		assert pNode != null;
 		aRootNodes.add(pNode);
-		requestLayout(); // TODO: This will be removed with the layoutloop
 	}
 	
 	/**
@@ -382,7 +357,6 @@ public abstract class Diagram implements DiagramData
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
 		aRootNodes.remove(pNode);
-		requestLayout(); // TODO: This will be removed with the layoutloop
 	}
 	
 	/**

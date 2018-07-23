@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -113,8 +112,4 @@ public abstract class AbstractNodeView implements NodeView
 	{
 		ToolGraphics.drawHandles(pGraphics, getBounds());		
 	}
-	
-	@Override
-	public void layout(Diagram pGraph)
-	{}
 }

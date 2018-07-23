@@ -75,8 +75,3 @@ public class ClassDiagram extends Diagram
 		return RESOURCES.getString("classdiagram.file.name");
 	}
 }
-
-
-
-
-

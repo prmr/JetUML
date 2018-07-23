@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.views.DiagramElementView;
@@ -39,10 +38,4 @@ public interface NodeView extends DiagramElementView
      * @return the recommended connection point
 	 */
 	Point getConnectionPoint(Direction pDirection);
-
-	/**
-     * Lays out the node and its children.
-     * @param pGraph the ambient graph
-	 */
-	void layout(Diagram pGraph);
 }

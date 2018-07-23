@@ -66,7 +66,6 @@ public class TestSequenceDiagram
 		 aBuilder.createAddNodeOperation(param, new Point(20,0)).execute();
 		 CallNode node = new CallNode();
 		 aBuilder.createAddNodeOperation(node, new Point(40, 90)).execute();
-		 aDiagram.layout();
 		 
 		 // Point outside the bounds
 		 assertNull(aDiagram.deepFindNode(node, new Point(50, 0)));
@@ -83,12 +82,10 @@ public class TestSequenceDiagram
 		 aBuilder.createAddNodeOperation(param, new Point(20,0)).execute();
 		 CallNode node = new CallNode();
 		 aBuilder.createAddNodeOperation(node, new Point(40, 90)).execute();
-		 aDiagram.layout();
 		 CallNode callee = new CallNode();
 		 param.addChild(callee,new Point(60, 100));
 		 Edge callEdge = new CallEdge();
 		 aDiagram.restoreEdge(callEdge, node, callee);
-		 aDiagram.layout();
 	 
 		 // Point outside the bounds
 		 assertNull(aDiagram.deepFindNode(node, new Point(50, 0)));

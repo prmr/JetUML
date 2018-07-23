@@ -237,9 +237,6 @@ public class TestSelectionModel
 		aClassDiagram.restoreRootNode(aNode2);
 		aPackage1.translate(100, 100);
 		aNode2.translate(300, 0);
-		Method layoutMethod = Diagram.class.getDeclaredMethod("layout");
-		layoutMethod.setAccessible(true);
-		layoutMethod.invoke(aClassDiagram);
 		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
 		assertContent(aPackage1, aNode2);
 	}
@@ -256,9 +253,6 @@ public class TestSelectionModel
 		ClassNode extraNode = new ClassNode();
 		extraNode.translate(1000, 1000);
 		aClassDiagram.restoreRootNode(extraNode);
-		Method layoutMethod = Diagram.class.getDeclaredMethod("layout");
-		layoutMethod.setAccessible(true);
-		layoutMethod.invoke(aClassDiagram);
 		aModel.set(extraNode);
 		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
 		assertContent(extraNode, aPackage1, aNode2);
@@ -271,9 +265,6 @@ public class TestSelectionModel
 		aPackage1.addChild(aNode1);
 		aClassDiagram.restoreRootNode(aPackage1);
 		aPackage1.translate(100, 100);
-		Method layoutMethod = Diagram.class.getDeclaredMethod("layout");
-		layoutMethod.setAccessible(true);
-		layoutMethod.invoke(aClassDiagram);
 		aModel.activateLasso(new Rectangle(99,99,102,102), aClassDiagram);
 		assertContent(aNode1);
 	}
