@@ -38,8 +38,8 @@ public abstract class Diagram implements DiagramData
 	 * that are children of their parent should be managed and accessed
 	 * through their parent node.
 	 */
-	protected ArrayList<Node> aRootNodes;
-	protected ArrayList<Edge> aEdges;
+	private ArrayList<Node> aRootNodes;
+	private ArrayList<Edge> aEdges;
 
 	/**
 	 * Constructs a diagram with no nodes or edges.

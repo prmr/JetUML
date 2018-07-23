@@ -56,7 +56,7 @@ public class SequenceDiagram extends Diagram
 	 */
 	public CallNode getCaller(Node pNode)
 	{
-		for( Edge edge : aEdges )
+		for( Edge edge : edges() )
 		{
 			if( edge.getEnd() == pNode  && edge instanceof CallEdge )
 			{
@@ -74,7 +74,7 @@ public class SequenceDiagram extends Diagram
 	private List<Node> getCallees(Node pNode)
 	{
 		List<Node> callees = new ArrayList<Node>();
-		for (Edge edge : aEdges )
+		for(Edge edge : edges() )
 		{
 			if ( edge.getStart() == pNode && edge instanceof CallEdge )
 			{
