@@ -103,6 +103,8 @@ public class TestCallNodeView
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge2);
 		
-		assertEquals(new Rectangle(232, 140, 16, 30), aDefaultCallNode2.view().getBounds());
+		assertEquals(new Rectangle(32, 80, 16, 90), aDefaultCallNode1.view().getBounds());
+		assertEquals(new Rectangle(232, 90, 16, 30), aDefaultCallNode2.view().getBounds());
+		assertEquals(new Rectangle(232, 130, 16, 30), aCallNode1.view().getBounds());
 	}	
 }
