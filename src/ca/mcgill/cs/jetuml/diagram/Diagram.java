@@ -272,7 +272,7 @@ public abstract class Diagram implements DiagramData
 	 * @return All the edges connected to pNode
 	 * pNode not null
 	 */
-	public Collection<Edge> getEdges(Node pNode)
+	public Collection<Edge> edgesConnectedTo(Node pNode)
 	{
 		assert pNode != null;
 		Collection<Edge> lReturn = new ArrayList<>();

@@ -215,7 +215,7 @@ public final class SegmentationStyleFactory
 	
 	private static boolean hasSelfEdge(Node pNode, Diagram pGraph)
 	{
-		for( Edge edge : pGraph.getEdges(pNode))
+		for( Edge edge : pGraph.edgesConnectedTo(pNode))
 		{
 			if( edge.getStart() == edge.getEnd())
 			{
@@ -308,7 +308,7 @@ public final class SegmentationStyleFactory
 	private static List<Edge> getAllEdgesForSide(Diagram pGraph, Node pTarget, Side pSide)
 	{
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
-		for( Edge edge : pGraph.getEdges(pTarget))
+		for( Edge edge : pGraph.edgesConnectedTo(pTarget))
 		{
 			if( otherNode(edge, pTarget) == pTarget)
 			{

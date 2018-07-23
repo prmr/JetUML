@@ -339,7 +339,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	{
 		assert edge().getGraph() != null;
 		int lReturn = 0;
-		for( Edge edge : edge().getGraph().getEdges(edge().getStart()))
+		for( Edge edge : edge().getGraph().edgesConnectedTo(edge().getStart()))
 		{
 			if( edge.getStart() == edge().getStart() && edge.getEnd() == edge().getEnd())
 			{

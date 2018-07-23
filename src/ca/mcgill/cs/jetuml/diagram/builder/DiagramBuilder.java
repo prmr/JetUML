@@ -242,7 +242,7 @@ public abstract class DiagramBuilder
 		ArrayList<DiagramElement> result = new ArrayList<>();
 		if( pElement.getClass() == PointNode.class )
 		{
-			for( Edge edge : aDiagram.getEdges((Node)pElement))
+			for( Edge edge : aDiagram.edgesConnectedTo((Node)pElement))
 			{
 				result.add(edge);
 			}

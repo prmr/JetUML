@@ -82,7 +82,7 @@ public class CallNode extends AbstractNode implements ChildNode
 	 */
 	public boolean isSignaled(Diagram pGraph)
 	{
-		for( Edge edge : pGraph.getEdges(this))
+		for( Edge edge : pGraph.edgesConnectedTo(this))
 		{
 			if( edge instanceof CallEdge && edge.getEnd() == this && ((CallEdge)edge).isSignal())
 			{
