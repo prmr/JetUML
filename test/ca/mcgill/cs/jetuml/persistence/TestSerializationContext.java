@@ -73,9 +73,9 @@ public class TestSerializationContext
 	
 	private void loadNodes()
 	{
-		aGraph.restoreRootNode(aPackage1);
-		aGraph.restoreRootNode(aClassNode1);
-		aGraph.restoreRootNode(aNoteNode);
+		aGraph.addRootNode(aPackage1);
+		aGraph.addRootNode(aClassNode1);
+		aGraph.addRootNode(aNoteNode);
 	}
 	
 	@Test

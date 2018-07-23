@@ -25,7 +25,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +35,6 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -138,7 +136,7 @@ public class TestSelectionModel
 	@Test
 	public void testActivateLassoOneNode()
 	{
-		aClassDiagram.restoreRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode1);
 		aNode1.translate(10, 10);
 		aModel.activateLasso(new Rectangle(5,5,5,5), aClassDiagram);
 		assertTrue(aModel.getLasso().isPresent());
@@ -157,9 +155,10 @@ public class TestSelectionModel
 		// aNode1: [x=0, y=0, w=100, h=60]
 		// aNode2: [x=200, y=0, w=100, h=60]
 		// aEdge1: [x=99, y=23, w=102, h=12]
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aClassDiagram.addRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode2);
+		aEdge1.connect(aNode1, aNode2, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		aNode2.translate(200, 0);
 		
 		// Just Node 1
@@ -194,12 +193,13 @@ public class TestSelectionModel
 		// aNode1: [x=0, y=0, w=100, h=60]
 		// aNode2: [x=200, y=0, w=100, h=60]
 		// aEdge1: [x=99, y=23, w=102, h=12]
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
+		aClassDiagram.addRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode2);
 		ClassNode extraNode = new ClassNode();
 		extraNode.translate(1000, 1000);
-		aClassDiagram.restoreRootNode(extraNode);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aClassDiagram.addRootNode(extraNode);
+		aEdge1.connect(aNode1, aNode2, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		aNode2.translate(200, 0);
 		
 		aModel.set(extraNode);
@@ -233,8 +233,8 @@ public class TestSelectionModel
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
-		aClassDiagram.restoreRootNode(aPackage1);
-		aClassDiagram.restoreRootNode(aNode2);
+		aClassDiagram.addRootNode(aPackage1);
+		aClassDiagram.addRootNode(aNode2);
 		aPackage1.translate(100, 100);
 		aNode2.translate(300, 0);
 		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
@@ -246,13 +246,13 @@ public class TestSelectionModel
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
-		aClassDiagram.restoreRootNode(aPackage1);
-		aClassDiagram.restoreRootNode(aNode2);
+		aClassDiagram.addRootNode(aPackage1);
+		aClassDiagram.addRootNode(aNode2);
 		aPackage1.translate(100, 100);
 		aNode2.translate(300, 0);
 		ClassNode extraNode = new ClassNode();
 		extraNode.translate(1000, 1000);
-		aClassDiagram.restoreRootNode(extraNode);
+		aClassDiagram.addRootNode(extraNode);
 		aModel.set(extraNode);
 		aModel.activateLasso(new Rectangle(0,0,400,200), aClassDiagram);
 		assertContent(extraNode, aPackage1, aNode2);
@@ -263,7 +263,7 @@ public class TestSelectionModel
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
-		aClassDiagram.restoreRootNode(aPackage1);
+		aClassDiagram.addRootNode(aPackage1);
 		aPackage1.translate(100, 100);
 		aModel.activateLasso(new Rectangle(99,99,102,102), aClassDiagram);
 		assertContent(aNode1);
@@ -294,7 +294,8 @@ public class TestSelectionModel
 		List<DiagramElement> list = new ArrayList<>();
 		list.add(aNode1);
 		list.add(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aEdge1.connect(aNode1, aNode2, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		list.add(aEdge1);
 		aModel.setSelectionTo(list);
 		assertContent(aNode1, aNode2, aEdge1);
@@ -329,8 +330,8 @@ public class TestSelectionModel
 	@Test
 	public void testSelectAllRootNodesOnly()
 	{
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
+		aClassDiagram.addRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode2);
 		aModel.selectAll(aClassDiagram);
 		assertEquals(2, size());
 		assertContent(aNode1, aNode2);
@@ -340,7 +341,7 @@ public class TestSelectionModel
 	public void testSelectAllRootAndChildNode()
 	{
 		aPackage1.addChild(aNode1);
-		aClassDiagram.restoreRootNode(aPackage1);
+		aClassDiagram.addRootNode(aPackage1);
 		aModel.selectAll(aClassDiagram);
 		assertEquals(1, size());
 		assertContent(aPackage1);
@@ -372,7 +373,8 @@ public class TestSelectionModel
 		aModel.addToSelection(aNode2);
 		aNode1.translate(10, 10);
 		aNode2.translate(100, 100);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aEdge1.connect(aNode1, aNode2, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		aModel.addToSelection(aEdge1);
 		assertSelectionBounds(10, 10, 190, 150); 
 	}
@@ -381,7 +383,8 @@ public class TestSelectionModel
 	public void testGetSelectionBoundsSelfEdge()
 	{
 		aModel.addToSelection(aNode1);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode1);
+		aEdge1.connect(aNode1, aNode1, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		aModel.addToSelection(aEdge1);
 		aNode1.translate(100,100);
 		assertSelectionBounds(100, 79, 121, 81); 
@@ -390,9 +393,10 @@ public class TestSelectionModel
 	@Test
 	public void testSelectRootNodesAndEdges()
 	{
-		aClassDiagram.restoreRootNode(aNode1);
-		aClassDiagram.restoreRootNode(aNode2);
-		aClassDiagram.restoreEdge(aEdge1, aNode1, aNode2);
+		aClassDiagram.addRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode2);
+		aEdge1.connect(aNode1, aNode2, aClassDiagram);
+		aClassDiagram.addEdge(aEdge1);
 		aModel.selectAll(aClassDiagram);
 		assertEquals(3, size());
 		assertContent(aNode1, aNode2, aEdge1);

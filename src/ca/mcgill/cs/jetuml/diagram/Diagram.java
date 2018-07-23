@@ -293,38 +293,6 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
-	 * Restores a root node to this graph. It is assume that
-	 * restoring the node is a valid operation, and that the 
-	 * node properties store its proper position. The root node
-	 * restored should be already linked to all its children (for
-	 * instance by a deserializer). This operation does not 
-	 * trigger any notifications.
-	 * 
-	 * @param pNode The node to restore
-	 */
-	public void restoreRootNode(Node pNode)
-	{
-		aRootNodes.add(pNode); 
-	}
-	
-	/**
-	 * Restores an edge to this graph. It is assume that
-	 * restoring the edge is a valid operation. This operation does not 
-	 * trigger any notifications. Note that we pass the edge's
-	 * two endpoint because these values are not serializable
-	 * due to the absence of set methods for them in the Edge interface.
-	 * 
-	 * @param pEdge The edge to restore
-	 * @param pStart The starting node for the edge
-	 * @param pEnd Then end 
-	 */
-	public void restoreEdge(Edge pEdge, Node pStart, Node pEnd)
-	{
-		pEdge.connect(pStart, pEnd, this);
-		aEdges.add(pEdge);
-	}
-	
-	/**
 	 * Adds pNode as a root node in this diagram. Callers of this method 
 	 * must ensure that the addition respects the integrity of the diagram.
 	 * 

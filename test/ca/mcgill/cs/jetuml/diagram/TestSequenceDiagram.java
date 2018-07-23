@@ -85,7 +85,8 @@ public class TestSequenceDiagram
 		 CallNode callee = new CallNode();
 		 param.addChild(callee,new Point(60, 100));
 		 Edge callEdge = new CallEdge();
-		 aDiagram.restoreEdge(callEdge, node, callee);
+		 callEdge.connect(node, callee, aDiagram);
+		 aDiagram.addEdge(callEdge);
 	 
 		 // Point outside the bounds
 		 assertNull(aDiagram.deepFindNode(node, new Point(50, 0)));
@@ -128,7 +129,8 @@ public class TestSequenceDiagram
 		assertEquals(1, param2.getChildren().size());
 
 		Edge callEdge = new CallEdge();
-		aDiagram.restoreEdge(callEdge, node, node2);
+		callEdge.connect(node, node2, aDiagram);
+		aDiagram.addEdge(callEdge);
 
 		CallNode node3 = new CallNode();
 		aBuilder.createAddNodeOperation(node3, new Point(160, 125)).execute();
@@ -138,7 +140,8 @@ public class TestSequenceDiagram
 		assertSame(node3, param.getChildren().get(1));
 
 		Edge callEdge2 = new CallEdge();
-		aDiagram.restoreEdge(callEdge2, node, node3);
+		callEdge2.connect(node, node3, aDiagram);
+		aDiagram.addEdge(callEdge2);
 
 		// Point outside the bounds
 		assertNull(aDiagram.deepFindNode(node, new Point(171, 71)));

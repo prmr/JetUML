@@ -70,7 +70,7 @@ public class TestJsonEncodingClassDiagram
 		ClassNode c = new ClassNode();
 		c.setName("class");
 		p.addChild(c);
-		aGraph.restoreRootNode(p);
+		aGraph.addRootNode(p);
 	}
 	
 	@Test

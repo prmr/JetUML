@@ -72,11 +72,12 @@ public class TestJsonEncodingUseCaseDiagram
 		UseCaseNode useCase = new UseCaseNode();
 		useCase.setName("Do it");
 		
-		aGraph.restoreRootNode(actor);
-		aGraph.restoreRootNode(useCase);
+		aGraph.addRootNode(actor);
+		aGraph.addRootNode(useCase);
 		
 		UseCaseAssociationEdge edge = new UseCaseAssociationEdge();
-		aGraph.restoreEdge(edge, actor, useCase);
+		edge.connect(actor, useCase, aGraph);
+		aGraph.addEdge(edge);
 	}
 	
 	/*
@@ -90,12 +91,13 @@ public class TestJsonEncodingUseCaseDiagram
 		UseCaseNode node2 = new UseCaseNode();
 		node2.setName("Node2");
 		
-		aGraph.restoreRootNode(node1);
-		aGraph.restoreRootNode(node2);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
 		
 		UseCaseDependencyEdge edge = new UseCaseDependencyEdge();
 		edge.setType(UseCaseDependencyEdge.Type.Extend);
-		aGraph.restoreEdge(edge, node1, node2);
+		edge.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge);
 	}
 	
 	@Test
@@ -111,7 +113,7 @@ public class TestJsonEncodingUseCaseDiagram
 	@Test
 	public void testSingleNode()
 	{
-		aGraph.restoreRootNode(new NoteNode());
+		aGraph.addRootNode(new NoteNode());
 		
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");

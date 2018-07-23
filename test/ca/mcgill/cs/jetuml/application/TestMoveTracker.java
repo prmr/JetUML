@@ -75,7 +75,8 @@ public class TestMoveTracker
 		aNode2 = new ClassNode();
 		aNode2.translate(400, 400);
 		aEdge1 = new DependencyEdge();
-		aDiagram.restoreEdge(aEdge1, aNode1, aNode1);
+		aEdge1.connect(aNode1, aNode1, aDiagram);
+		aDiagram.addEdge(aEdge1);
 		aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
 		aOperationsField.setAccessible(true);
 		aBuilder = DiagramType.newBuilderInstanceFor(aDiagram);

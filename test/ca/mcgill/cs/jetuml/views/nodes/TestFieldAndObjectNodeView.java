@@ -62,7 +62,7 @@ public class TestFieldAndObjectNodeView
 		aFieldNode1 = new FieldNode();
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aDiagram = new ObjectDiagram();
-		aDiagram.restoreRootNode(aObjectNode1);
+		aDiagram.addRootNode(aObjectNode1);
 	}
 	
 	@Test

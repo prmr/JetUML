@@ -57,9 +57,10 @@ public class TestDependencyEdgeView
 		aEdge = new DependencyEdge();
 		aDiagram = new ClassDiagram();
 		
-		aDiagram.restoreRootNode(aNode1);
-		aDiagram.restoreRootNode(aNode2);
-		aDiagram.restoreEdge(aEdge, aNode1, aNode2);
+		aDiagram.addRootNode(aNode1);
+		aDiagram.addRootNode(aNode2);
+		aEdge.connect(aNode1, aNode2, aDiagram);
+		aDiagram.addEdge(aEdge);
 		
 		aNode2.translate(200, 0);
 	}
