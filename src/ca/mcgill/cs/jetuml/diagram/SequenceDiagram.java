@@ -52,6 +52,7 @@ public class SequenceDiagram extends Diagram
 	 * @param pNode The node to obtain the caller for.
 	 * @return The CallNode that has a outgoing edge terminated
 	 * at pNode, or null if there are none.
+	 * @pre pNode != null
 	 */
 	public CallNode getCaller(Node pNode)
 	{
@@ -69,9 +70,11 @@ public class SequenceDiagram extends Diagram
 	 * @param pNode The node to obtain the callees for.
 	 * @return All Nodes pointed to by an outgoing edge starting
 	 * at pNode, or null if there are none.
+	 * @pre pNode != null
 	 */
-	public final List<Node> getCallees(Node pNode)
+	public List<Node> getCallees(Node pNode)
 	{
+		assert pNode != null;
 		List<Node> callees = new ArrayList<Node>();
 		for(Edge edge : edges() )
 		{
@@ -100,8 +103,9 @@ public class SequenceDiagram extends Diagram
 	}
 	
 	/**
-	 * @param pNode The node to test. Must have a caller. Can't be null
+	 * @param pNode The node to test. Must have a caller. 
 	 * @return true iif pNode is the first callee of its parent
+	 * @pre pNode != null && getCaller(pNode) != null
 	 */
 	public boolean isFirstCallee(CallNode pNode)
 	{

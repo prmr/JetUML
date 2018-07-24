@@ -269,17 +269,12 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		callEdge2.connect(caller, callee2, aDiagram);
 		aDiagram.addEdge(callEdge2);
 				
-		Edge[] edges = aDiagram.edgesConnectedTo(caller).toArray(new Edge[aDiagram.edgesConnectedTo(caller).size()]);
-		assertEquals(2, edges.length);
-		
 		select(caller);
 		deleteSelected();
 		assertEquals(0, newParameterNode1.getChildren().size());
 		
 		undo();
 		assertEquals(1, newParameterNode1.getChildren().size());
-		edges = aDiagram.edgesConnectedTo(caller).toArray(new Edge[aDiagram.edgesConnectedTo(caller).size()]);
-		assertEquals(2, edges.length);
 	}
 	
 	@Test

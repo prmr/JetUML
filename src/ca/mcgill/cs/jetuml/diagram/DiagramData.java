@@ -27,18 +27,18 @@ package ca.mcgill.cs.jetuml.diagram;
 public interface DiagramData
 {
 	/**
-	 * @return A stream of all the elements tracked
+	 * @return An iterable of all the elements tracked
 	 * by the diagram, namely, edges and root nodes.
 	 */
 	Iterable<DiagramElement> allElements();
 	
 	/**
-	 * @return A stream of all the root nodes of the diagram.
+	 * @return An iterable of all the root nodes of the diagram.
 	 */
 	Iterable<Node> rootNodes();
 	
 	/**
-	 * @return A stream of all the edges in the diagram.
+	 * @return An iterable of all the edges in the diagram.
 	 */
 	Iterable<Edge> edges();
 }

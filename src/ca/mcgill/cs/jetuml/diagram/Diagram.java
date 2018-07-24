@@ -26,7 +26,13 @@ import java.util.Collection;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
- *  A diagram consisting of nodes and edges.
+ *  Stores the logical structure of a diagram. This class hierarchy
+ *  is only concerned with maintaining information about the logical
+ *  structure of a graph (nodes and edges). Specifically, it should 
+ *  not encode any business rules about the valid construction of diagrams
+ *  (handled by DiagramBuilder), or of computing the geometry of 
+ *  a diagram (handled by DiagramView). DiagramData provides immutable
+ *  access to the information stored in the diagram.
  */
 public abstract class Diagram implements DiagramData
 {
@@ -39,7 +45,7 @@ public abstract class Diagram implements DiagramData
 	private ArrayList<Edge> aEdges;
 
 	/**
-	 * Constructs a diagram with no nodes or edges.
+	 * Creates an empty diagram.
 	 */
 	public Diagram()
 	{
@@ -80,18 +86,24 @@ public abstract class Diagram implements DiagramData
 	public abstract String getDescription();
 	
 	/**
-	 * @param pElement The element we want to check is in the graph.
-	 * @return True if pElement is a node or edge in this graph.
+	 * Checks whether pElement is in the diagram. If pElement
+	 * is a node, the method returns true if it is a root node,
+	 * or any of its parent is a root node.
+	 * 
+	 * @param pElement The element we want to check is in the diagram.
+	 * @return True if pElement is a node or edge in this diagram.
+	 * @pre pElement != null
 	 */
 	public boolean contains(DiagramElement pElement)
 	{	
-		if (aEdges.contains( pElement ))
+		assert pElement != null;
+		if(aEdges.contains( pElement ))
 		{
 			return true;
 		}
-		for (Node node : aRootNodes)
+		for(Node node : aRootNodes)
 		{
-			if (containsNode( node, pElement))
+			if(containsNode( node, pElement))
 			{
 				return true;
 			}
@@ -101,15 +113,15 @@ public abstract class Diagram implements DiagramData
 	
 	private boolean containsNode(Node pTest, DiagramElement pTarget)
 	{
-		if (pTest == pTarget)
+		if(pTest == pTarget)
 		{
 			return true;
 		}
-		else if (pTest instanceof ParentNode)
+		else if(pTest instanceof ParentNode)
 		{
-			for (Node node : ((ParentNode) pTest).getChildren())
+			for(Node node : ((ParentNode) pTest).getChildren())
 			{
-				if (containsNode(node, pTarget))
+				if(containsNode(node, pTarget))
 				{
 					return true;
 				}
@@ -119,13 +131,13 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
-	 * Gets the node types of a particular graph type.
-	 * @return an array of node prototypes
+	 * Gets the node types of a particular diagram type.
+	 * @return An array of node prototypes
 	 */   
 	public abstract Node[] getNodePrototypes();
 
 	/**
-	 * Gets the edge types of a particular graph type.
+	 * Gets the edge types of a particular diagram type.
 	 * @return an array of edge prototypes
 	 */   
 	public abstract Edge[] getEdgePrototypes();
@@ -133,9 +145,9 @@ public abstract class Diagram implements DiagramData
 	/**
 	 * @param pNode the node to test for
 	 * @return All the edges connected to pNode
-	 * pNode not null
+	 * @pre pNode != null
 	 */
-	public Collection<Edge> edgesConnectedTo(Node pNode)
+	public Iterable<Edge> edgesConnectedTo(Node pNode)
 	{
 		assert pNode != null;
 		Collection<Edge> lReturn = new ArrayList<>();
@@ -202,5 +214,3 @@ public abstract class Diagram implements DiagramData
 		aEdges.remove(pEdge);
 	}
 }
-
-
