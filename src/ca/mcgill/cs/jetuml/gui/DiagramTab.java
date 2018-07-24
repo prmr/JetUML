@@ -211,15 +211,6 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	}
 	
 	/**
-     * Gets the graph panel that is contained in this frame.
-     * @return the graph panel
-	 */
-	public DiagramCanvas getGraphPanel()
-   	{
-		return aDiagramCanvas;
-   	}
-	
-	/**
 	 * Sets the title of the frame as the file name if there
 	 * is a file name. 
 	 * 

@@ -332,7 +332,7 @@ public class EditorFrame extends BorderPane
 	public void copyToClipboard() 
 	{
 		DiagramTab frame = getSelectedDiagramTab();
-		final Image image = ImageCreator.createImage(frame.getGraphPanel().getDiagram());
+		final Image image = ImageCreator.createImage(frame.getDiagram());
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
@@ -524,7 +524,7 @@ public class EditorFrame extends BorderPane
 		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
-			BufferedImage image = getBufferedImage(frame.getGraphPanel()); 
+			BufferedImage image = getBufferedImage(frame.getDiagram()); 
 			if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
@@ -597,15 +597,14 @@ public class EditorFrame extends BorderPane
 	/*
 	 * Return the image corresponding to the graph.
 	 * 
-	 * @param pGraph The graph to convert to an image.
+	 * @param pDiagram The graph to convert to an image.
 	 * 
 	 * @return bufferedImage. To convert it into an image, use the syntax :
 	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
 	 */
-	private static BufferedImage getBufferedImage(DiagramCanvas pGraphPanel) 
+	private static BufferedImage getBufferedImage(Diagram pDiagram) 
 	{
-		BufferedImage image = SwingFXUtils.fromFXImage(ImageCreator.createImage(pGraphPanel.getDiagram()), null);
-		return image;
+		return SwingFXUtils.fromFXImage(ImageCreator.createImage(pDiagram), null);
 	}
 	
 	private int getNumberOfDirtyDiagrams()
