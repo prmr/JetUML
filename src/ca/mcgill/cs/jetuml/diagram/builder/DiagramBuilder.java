@@ -28,6 +28,7 @@ import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -38,6 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.DiagramView;
 
 public abstract class DiagramBuilder
 {
@@ -45,11 +47,22 @@ public abstract class DiagramBuilder
 	private static final int DEFAULT_DIMENSION = 1000;
 	
 	protected final Diagram aDiagram;
+	private final DiagramView aDiagramView;
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
 	protected DiagramBuilder( Diagram pDiagram )
 	{
 		aDiagram = pDiagram;
+		aDiagramView = DiagramType.newViewInstanceFor(aDiagram);
+	}
+	
+	/**
+	 * @return The DiagramView used by this builder to compute
+	 * the diagram geometry.
+	 */
+	public DiagramView getView()
+	{
+		return aDiagramView;
 	}
 	
 	/**

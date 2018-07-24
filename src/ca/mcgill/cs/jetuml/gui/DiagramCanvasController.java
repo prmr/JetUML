@@ -248,7 +248,7 @@ public class DiagramCanvasController
 	private DiagramElement getSelectedElement(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		DiagramElement element = aCanvas.getDiagram().findEdge(mousePoint);
+		DiagramElement element = aDiagramBuilder.getView().findEdge(mousePoint);
 		if (element == null)
 		{
 			element = aCanvas.getDiagram().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 

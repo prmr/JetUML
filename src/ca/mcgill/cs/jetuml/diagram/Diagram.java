@@ -138,25 +138,6 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
-	 * Finds an edge containing the given point.
-	 * 
-	 * @param pPoint a point
-	 * @return an edge containing p or null if no edges contain p
-	 */
-	@Deprecated
-	public final Edge findEdge(Point pPoint)
-	{
-		for (Edge edge : aEdges)
-		{
-			if (edge.view().contains(pPoint))
-			{
-				return edge;
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.
 	 */
