@@ -26,7 +26,6 @@ import java.util.Collection;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  *  A diagram consisting of nodes and edges.
@@ -155,37 +154,6 @@ public abstract class Diagram implements DiagramData
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Draws the diagram.
-	 * @param pGraphics the graphics context
-	 */
-	@Deprecated
-	public final void draw(GraphicsContext pGraphics)
-	{
-		for(Node node : aRootNodes)
-		{
-			drawNode(node, pGraphics);
-		}
-		
-		for(Edge edge : aEdges)
-		{
-			edge.view().draw(pGraphics);
-		}
-	}
-	
-	@Deprecated
-	private void drawNode(Node pNode, GraphicsContext pGraphics)
-	{
-		pNode.view().draw(pGraphics);
-		if(pNode instanceof ParentNode)
-		{
-			for(Node node : ((ParentNode) pNode).getChildren())
-			{
-				drawNode(node, pGraphics);
-			}
-		}
 	}
 	
 	/**

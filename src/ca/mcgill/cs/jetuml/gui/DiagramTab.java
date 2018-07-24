@@ -28,7 +28,9 @@ import java.io.File;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.views.DiagramView;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -41,6 +43,7 @@ import javafx.scene.layout.StackPane;
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 {	
 	private DiagramCanvas aDiagramCanvas;
+	private DiagramView aDiagramView;
 	private final DiagramCanvasController aDiagramCanvasController;
 	private File aFile; // The file associated with this diagram
 	
@@ -50,9 +53,10 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	 */
 	public DiagramTab(Diagram pDiagram)
 	{
+		aDiagramView = DiagramType.newViewInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, getDiagramWidth(), getDiagramHeight());
+		aDiagramCanvas = new DiagramCanvas(aDiagramView, getDiagramWidth(), getDiagramHeight());
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar, this);
 		aDiagramCanvas.setController(aDiagramCanvasController);
@@ -143,7 +147,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	 */
 	public Diagram getDiagram()
 	{
-		return aDiagramCanvas.getDiagram();
+		return aDiagramView.getDiagram();
 	}
 	
 	/**

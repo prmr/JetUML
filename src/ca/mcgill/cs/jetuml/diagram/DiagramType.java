@@ -27,25 +27,31 @@ import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
 
+import ca.mcgill.cs.jetuml.views.DiagramView;
+import ca.mcgill.cs.jetuml.views.SequenceDiagramView;
+
+
 /**
  * The different types of UML diagrams supported by 
  * this application.
  */
 public enum DiagramType
 {
-	CLASS(ClassDiagram.class, ClassDiagramBuilder.class), 
-	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class), 
-	STATE(StateDiagram.class, StateDiagramBuilder.class), 
-	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class), 
-	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class);
+	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, DiagramView.class), 
+	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, SequenceDiagramView.class), 
+	STATE(StateDiagram.class, StateDiagramBuilder.class, DiagramView.class), 
+	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, DiagramView.class), 
+	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, DiagramView.class);
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
+	private final Class<?> aViewClass;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, Class<?> pViewClass)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
+		aViewClass = pViewClass;
 	}
 	
 	/**
@@ -94,6 +100,25 @@ public enum DiagramType
 		try
 		{
 			return (DiagramBuilder) typeOf(pDiagram).aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			assert false;
+			return null;
+		}
+	}
+	
+	/**
+	 * @param pDiagram The diagram for which we want to create a view.
+	 * @return A new instance of a view for this diagram type.
+	 * @pre pDiagram != null
+	 */
+	public static DiagramView newViewInstanceFor(Diagram pDiagram)
+	{
+		assert pDiagram != null;
+		try
+		{
+			return (DiagramView) typeOf(pDiagram).aViewClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
 		}
 		catch(ReflectiveOperationException exception)
 		{

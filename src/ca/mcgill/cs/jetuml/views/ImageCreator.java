@@ -24,6 +24,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
@@ -89,7 +90,7 @@ public final class ImageCreator
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(Color.WHITE);
 		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
-		pDiagram.draw(context);
+		DiagramType.newViewInstanceFor(pDiagram).draw(context);
 		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);

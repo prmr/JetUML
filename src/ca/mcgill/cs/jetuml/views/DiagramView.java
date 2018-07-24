@@ -48,6 +48,14 @@ public class DiagramView
 	}
 	
 	/**
+	 * @return The diagram wrapped by this view.
+	 */
+	public Diagram getDiagram()
+	{
+		return aDiagram;
+	}
+	
+	/**
 	 * Draws the diagram onto pGraphics.
 	 * 
 	 * @param pGraphics the graphics context where the
