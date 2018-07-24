@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
  *  A diagram consisting of nodes and edges.
@@ -117,40 +116,6 @@ public abstract class Diagram implements DiagramData
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Gets the smallest rectangle enclosing the graph.
-	 * 
-	 * @return the bounding rectangle
-	 */
-	@Deprecated
-	public final Rectangle getBounds()
-	{
-		Rectangle bounds = null;
-		for (Node node : aRootNodes )
-		{
-			if (bounds == null)
-			{
-				bounds = node.view().getBounds();
-			}
-			else
-			{
-				bounds = bounds.add(node.view().getBounds());
-			}
-		}
-		for(Edge edge : aEdges)
-		{
-			bounds = bounds.add(edge.view().getBounds());
-		}
-		if(bounds == null )
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-		else
-		{
-			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-		}
 	}
 
 	/**

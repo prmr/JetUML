@@ -221,7 +221,7 @@ public class EditorFrame extends BorderPane
 		{
 			Diagram diagram2 = PersistenceService.read(new File(pName));
 			
-			Rectangle bounds = diagram2.getBounds();
+			Rectangle bounds = DiagramType.newViewInstanceFor(diagram2).getBounds();
 			int viewWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
 			int viewHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
 			if( bounds.getMaxX() > viewWidth || bounds.getMaxY() > viewHeight )
