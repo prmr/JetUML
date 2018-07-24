@@ -132,13 +132,13 @@ public abstract class DiagramBuilder
 	 */
 	public final boolean canAdd(Edge pEdge, Point pPoint1, Point pPoint2)
 	{
-		Node node1 = aDiagram.findNode(pPoint1);
+		Node node1 = aDiagramView.findNode(pPoint1);
 		if(node1 == null)
 		{
 			return false;
 		}
 		
-		Node node2 = aDiagram.findNode(pPoint2);
+		Node node2 = aDiagramView.findNode(pPoint2);
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			return true; // We can always create a point node.
@@ -349,8 +349,8 @@ public abstract class DiagramBuilder
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
 	{ 
 		assert canAdd(pEdge, pPoint1, pPoint2);
-		Node node1 = aDiagram.findNode(pPoint1);
-		Node node2 = aDiagram.findNode(pPoint2);
+		Node node1 = aDiagramView.findNode(pPoint1);
+		Node node2 = aDiagramView.findNode(pPoint2);
 		CompoundOperation result = new CompoundOperation();
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{

@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * A UML sequence diagram.
@@ -154,26 +153,5 @@ public class SequenceDiagram extends Diagram
 	public String getDescription() 
 	{
 		return RESOURCES.getString("sequencediagram.file.name");
-	}
-
-	@Override
-	@Deprecated
-	protected Node deepFindNode( Node pNode, Point pPoint )
-	{		
-		if( pNode instanceof CallNode )
-		{
-			for(Node child : getCallees(pNode))
-			{
-				if ( child != null )
-				{
-					Node node = deepFindNode(child, pPoint);
-					if ( node != null )
-					{
-						return node;
-					}
-				}
-			}
-		}
-		return super.deepFindNode(pNode, pPoint);
 	}
 }

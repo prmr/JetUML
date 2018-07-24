@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
@@ -81,62 +80,6 @@ public abstract class Diagram implements DiagramData
 	 */
 	public abstract String getDescription();
 	
-	/**
-      * Finds a node containing the given point. Always returns
-      * the deepest child and the last one in a list.
-      * @param pPoint a point
-      * @return a node containing pPoint or null if no nodes contain pPoint
-      */
-	@Deprecated
-	public final Node findNode(Point pPoint)
-	{
-		Node result = null;
-		for (Node node : aRootNodes)
-		{
-			Node temp = deepFindNode(node, pPoint);
-			if (temp != null)
-			{
-				result = temp;
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * Find the "deepest" child that contains pPoint,
-	 * where depth is measured in terms of distance from
-	 * pNode along the parent-child relation.
-	 * @param pNode The starting node for the search.
-	 * @param pPoint The point to test for.
-	 * @return The deepest child containing pPoint,
-	 * or null if pPoint is not contained by pNode or 
-	 * any of its children.
-	 */
-	@Deprecated
-	protected Node deepFindNode(Node pNode, Point pPoint)
-	{
-		Node node = null;
-		if (pNode instanceof ParentNode)
-		{
-			for (Node child : ((ParentNode) pNode).getChildren())
-			{
-				node = deepFindNode(child, pPoint);
-				if(node != null)
-				{
-					return node;
-				}
-			}
-		}
-		if (pNode.view().contains(pPoint))
-		{
-			return pNode;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
 	/**
 	 * @param pElement The element we want to check is in the graph.
 	 * @return True if pElement is a node or edge in this graph.

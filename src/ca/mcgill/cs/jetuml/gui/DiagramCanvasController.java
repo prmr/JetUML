@@ -251,7 +251,7 @@ public class DiagramCanvasController
 		DiagramElement element = aDiagramBuilder.getView().findEdge(mousePoint);
 		if (element == null)
 		{
-			element = aCanvas.getDiagram().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
+			element = aDiagramBuilder.getView().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}
