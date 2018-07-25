@@ -375,6 +375,8 @@ public class TestSelectionModel
 		aNode2.translate(100, 100);
 		aEdge1.connect(aNode1, aNode2, aClassDiagram);
 		aClassDiagram.addEdge(aEdge1);
+		aClassDiagram.addRootNode(aNode1);
+		aClassDiagram.addRootNode(aNode2);
 		aModel.addToSelection(aEdge1);
 		assertSelectionBounds(10, 10, 190, 150); 
 	}

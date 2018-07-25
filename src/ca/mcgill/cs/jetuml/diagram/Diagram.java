@@ -146,12 +146,13 @@ public abstract class Diagram implements DiagramData
 	 * @param pNode the node to test for
 	 * @return All the edges connected to pNode
 	 * @pre pNode != null
+	 * @pre contains(pNode)
 	 */
 	public Iterable<Edge> edgesConnectedTo(Node pNode)
 	{
-		assert pNode != null;
+		assert pNode != null && contains(pNode);
 		Collection<Edge> lReturn = new ArrayList<>();
-		for (Edge edge : aEdges)
+		for(Edge edge : aEdges)
 		{
 			if (edge.getStart() == pNode || edge.getEnd() == pNode)
 			{
