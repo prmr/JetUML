@@ -25,6 +25,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -36,7 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 /**
  * A UML sequence diagram.
  */
-public class SequenceDiagram extends Diagram
+public final class SequenceDiagram extends Diagram
 {
 	private static final ImplicitParameterNode IMPLICIT_PARAMETER_NODE = new ImplicitParameterNode();
 	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};
@@ -51,26 +52,27 @@ public class SequenceDiagram extends Diagram
 	/**
 	 * @param pNode The node to obtain the caller for.
 	 * @return The CallNode that has a outgoing edge terminated
-	 * at pNode, or null if there are none.
-	 * @pre pNode != null
+	 * at pNode, if there is one.
+	 * @pre pNode != null && contains(pNode)
 	 */
-	public CallNode getCaller(Node pNode)
+	public Optional<CallNode> getCaller(Node pNode)
 	{
+		assert pNode != null && contains(pNode);
 		for( Edge edge : edges() )
 		{
 			if( edge.getEnd() == pNode  && edge instanceof CallEdge )
 			{
-				return (CallNode) edge.getStart();
+				return Optional.of((CallNode) edge.getStart());
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 	
 	/**
 	 * @param pNode The node to obtain the callees for.
 	 * @return All Nodes pointed to by an outgoing edge starting
 	 * at pNode, or null if there are none.
-	 * @pre pNode != null
+	 * @pre pNode != null && contains(pNode)
 	 */
 	public List<Node> getCallees(Node pNode)
 	{
@@ -89,30 +91,30 @@ public class SequenceDiagram extends Diagram
 	/**
 	 * @param pNode The node to test.
 	 * @return True if pNode has a caller on the same implicit parameter node, false otherwise.
-	 * @pre pNode != null
+	 * @pre pNode != null && contains(pNode) && pNode.getParent() != null
 	 */
 	public boolean isNested(CallNode pNode)
 	{
 		assert pNode != null;
-		CallNode caller = getCaller(pNode);
-		if( caller == null || pNode.getParent() == null )
+		Optional<CallNode> caller = getCaller(pNode);
+		if( !caller.isPresent() )
 		{
 			return false;
 		}
-		return caller.getParent() == pNode.getParent();
+		return caller.get().getParent() == pNode.getParent();
 	}
 	
 	/**
 	 * @param pNode The node to test. Must have a caller. 
 	 * @return true iif pNode is the first callee of its parent
-	 * @pre pNode != null && getCaller(pNode) != null
+	 * @pre pNode != null && getCaller(pNode).isPresent() && contains(pNode)
 	 */
 	public boolean isFirstCallee(CallNode pNode)
 	{
 		assert pNode != null;
-		CallNode caller = getCaller(pNode);
-		assert caller != null;
-		List<Node> callees = getCallees(caller);
+		Optional<CallNode> caller = getCaller(pNode);
+		assert caller.isPresent();
+		List<Node> callees = getCallees(caller.get());
 		return callees.get(0) == pNode;
 	}
 	
@@ -120,16 +122,17 @@ public class SequenceDiagram extends Diagram
 	 * @param pNode The node to check.
 	 * @return The node called before pNode by the parent. 
 	 * @pre pNode !=null
-	 * @pre getCaller(pNode) != null
+	 * @pre getCaller(pNode).isPresent()
 	 * @pre !isFirstCallee(pNode)
+	 * @pre contains(pNode)
 	 */
 	public CallNode getPreviousCallee(CallNode pNode)
 	{
 		assert pNode != null;
-		CallNode caller = getCaller(pNode);
-		assert caller != null;
+		Optional<CallNode> caller = getCaller(pNode);
+		assert caller.isPresent();
 		assert !isFirstCallee(pNode);
-		List<Node> callees = getCallees(caller);
+		List<Node> callees = getCallees(caller.get());
 		int index = callees.indexOf(pNode);
 		assert index >= 1;
 		return (CallNode) callees.get(index-1);

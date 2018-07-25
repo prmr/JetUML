@@ -33,7 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 /**
  *  An UML-style object diagram that shows object references.
  */
-public class ObjectDiagram extends Diagram
+public final class ObjectDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];

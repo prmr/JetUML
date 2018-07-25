@@ -34,7 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 /**
  * A UML use case diagram.
  */
-public class UseCaseDiagram extends Diagram
+public final class UseCaseDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new UseCaseAssociationEdge(),

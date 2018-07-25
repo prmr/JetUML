@@ -152,10 +152,10 @@ public class CallNodeView extends AbstractNodeView
 		{
 			return 0;
 		}
-		for(CallNode node = aDiagram.getCaller(node()); node != null && node != node(); 
-				node = aDiagram.getCaller(node))
+		for(Optional<CallNode> node = aDiagram.getCaller(node()); node.isPresent() && node.get() != node(); 
+				node = aDiagram.getCaller(node.get()))
 		{
-			if(node.getParent() == implicitParameter())
+			if(node.get().getParent() == implicitParameter())
 			{
 				result++;
 			}
@@ -186,12 +186,12 @@ public class CallNodeView extends AbstractNodeView
 	 */
 	private int getY()
 	{
-		CallNode caller = null;
+		Optional<CallNode> caller = Optional.empty();
 		if( aDiagram != null )
 		{
 			caller = aDiagram.getCaller(node());
 		}
-		if( caller == null )
+		if( !caller.isPresent() )
 		{
 			Optional<CallNode> previous = getPreviousCallNode();
 			if( previous.isPresent() )
@@ -211,7 +211,7 @@ public class CallNodeView extends AbstractNodeView
 		{
 			if( aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()))
 			{
-				return ((CallNodeView)caller.view()).getY() + Y_GAP_BIG;
+				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
 			}
 			if( aDiagram.isNested(node()) && !aDiagram.isFirstCallee(node()) )
 			{
@@ -219,7 +219,7 @@ public class CallNodeView extends AbstractNodeView
 			}
 			if( !aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()) )
 			{
-				return ((CallNodeView)caller.view()).getY() + Y_GAP_SMALL;
+				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
 			}
 			else
 			{

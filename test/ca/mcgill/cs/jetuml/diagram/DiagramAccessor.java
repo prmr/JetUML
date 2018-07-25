@@ -44,4 +44,10 @@ public class DiagramAccessor
 		}
 		return result;
 	}
+	
+	public void connectAndAdd(Edge pEdge, Node pStart, Node pEnd)
+	{
+		pEdge.connect(pStart, pEnd, aDiagram);
+		aDiagram.addEdge(pEdge);
+	}
 }

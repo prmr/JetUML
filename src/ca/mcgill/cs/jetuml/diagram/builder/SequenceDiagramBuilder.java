@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -50,9 +51,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 */
 	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
 	{
-		for( CallNode caller = ((SequenceDiagram)aDiagram).getCaller(pCallee); caller != null; caller = ((SequenceDiagram)aDiagram).getCaller(caller))
+		for( Optional<CallNode> caller = ((SequenceDiagram)aDiagram).getCaller(pCallee); 
+				caller.isPresent(); caller = ((SequenceDiagram)aDiagram).getCaller(caller.get()))
 		{
-			if( caller == pPotentialCaller )
+			if( caller.get() == pPotentialCaller )
 			{
 				return true;
 			}
@@ -166,7 +168,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2 instanceof CallNode)
 		{
 			// The end node has to be the caller, and adding a return edge on the same object is not allowed.
-			lReturn = pNode2 == ((SequenceDiagram)aDiagram).getCaller(pNode1) && 
+			lReturn = pNode2 == ((SequenceDiagram)aDiagram).getCaller(pNode1).get() && 
 					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2).getParent());
 		}
 		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
