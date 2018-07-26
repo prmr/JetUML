@@ -126,4 +126,12 @@ public class TestCompoundOperation
 		aOperation.undo();
 		assertEquals("ABCDE54321", aBuilder.toString());
 	}
+	
+	@Test
+	public void testIsEmpty()
+	{
+		assertTrue(aOperation.isEmpty());
+		aOperation.add(new SimpleOperation(()-> aBuilder.append("A"), ()->aBuilder.append("1")));
+		assertFalse(aOperation.isEmpty());
+	}
 }

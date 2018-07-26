@@ -28,7 +28,7 @@ import java.util.List;
  * An operation that is composed of other operations, following
  * the Composite Design Pattern.
  * 
- * Executing a compound operation executes all the sub-operation
+ * Executing a compound operation executes all the sub-operations
  * in the order they were added. Undoing a compound operation
  * undoes all the sub-operation in the reverse order in which 
  * they were added.
@@ -68,6 +68,10 @@ public class CompoundOperation implements DiagramOperation
 		}
 	}
 	
+	/**
+	 * @return True if this CompoundOperation contains
+	 * no sub-operation.
+	 */
 	public boolean isEmpty()
 	{
 		return aOperations.isEmpty();
