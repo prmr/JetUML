@@ -63,9 +63,9 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected List<DiagramElement> findCoRemovals(DiagramElement pElement)
+	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
-		List<DiagramElement> result = super.findCoRemovals(pElement);
+		List<DiagramElement> result = super.getCoRemovals(pElement);
 		if( pElement instanceof CallEdge && hasNoCallees(((Edge)pElement).getEnd()))
 		{
 			result.add(((Edge)pElement).getEnd());
@@ -183,7 +183,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			lReturn = false;
 		}
-		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && pNode2 instanceof ImplicitParameterNode && ((SequenceDiagram)aDiagram).getCaller(pNode2) != null)
+		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && 
+				pNode2 instanceof ImplicitParameterNode && ((SequenceDiagram)aDiagram).getCaller(pNode2) != null)
 		{
 			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
 		}

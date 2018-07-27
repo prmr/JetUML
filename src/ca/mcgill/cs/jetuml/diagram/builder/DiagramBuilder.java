@@ -41,6 +41,14 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.DiagramView;
 
+/**
+ * Wrapper around a Diagram that provides the logic for converting
+ * requests to creates or remove nodes and edges, and convert these
+ * requests into operation. An object of this class should perform
+ * read-only access to the diagram. However, executing the operations
+ * created by methods of this class will change the state of the 
+ * diagram.
+ */
 public abstract class DiagramBuilder
 {
 	// Arbitrary default value, used to simplify the testing code
@@ -50,8 +58,15 @@ public abstract class DiagramBuilder
 	private final DiagramView aDiagramView;
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
+	/**
+	 * Creates a builder for pDiagram.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	protected DiagramBuilder( Diagram pDiagram )
 	{
+		assert pDiagram != null;
 		aDiagram = pDiagram;
 		aDiagramView = DiagramType.newViewInstanceFor(aDiagram);
 	}
@@ -74,15 +89,19 @@ public abstract class DiagramBuilder
 	 */
 	public void setCanvasDimension(Dimension pDimension)
 	{
+		assert pDimension != null;
 		aCanvasDimension = pDimension;
 	}
 	
 	/**
-	 * True by default. Override to provide cases where this should be false.
+	 * Returns whether adding pNode at pRequestedPosition is a valid
+	 * operation on the diagram. True by default. 
+	 * Override to provide cases where this should be false.
 	 * 
 	 * @param pNode The node to add if possible. 
 	 * @param pRequestedPosition The requested position for the node.
 	 * @return True if it is possible to add pNode at position pPoint.
+	 * @pre pNode != null && pRequestedPosition != null
 	 */
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
@@ -125,25 +144,30 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
+	 * Returns whether adding pEdge between pStart and pEnd
+	 * is a valid operation on the diagram. 
+	 * 
 	 * @param pEdge The requested edge
-	 * @param pPoint1 A requested start point
-	 * @param pPoint2 A requested end point
+	 * @param pStart A requested start point
+	 * @param pEnd A requested end point
 	 * @return True if it's possible to add an edge of this type given the requested points.
+	 * @pre pEdge != null && pStart = null && pEnd != null
 	 */
-	public final boolean canAdd(Edge pEdge, Point pPoint1, Point pPoint2)
+	public final boolean canAdd(Edge pEdge, Point pStart, Point pEnd)
 	{
-		Node node1 = aDiagramView.findNode(pPoint1);
-		if(node1 == null)
+		assert pEdge != null && pStart != null && pEnd != null;
+		Node startNode = aDiagramView.findNode(pStart);
+		if(startNode == null)
 		{
 			return false;
 		}
 		
-		Node node2 = aDiagramView.findNode(pPoint2);
-		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
+		Node endNode = aDiagramView.findNode(pEnd);
+		if(startNode instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			return true; // We can always create a point node.
 		}
-		return canConnect(pEdge, node1, node2, pPoint2);
+		return canConnect(pEdge, startNode, endNode, pEnd);
 	}
 	
 	/**
@@ -151,27 +175,30 @@ public abstract class DiagramBuilder
 	 * pEdge based strictly on the type of nodes and edges. 
 	 * This implementation only provides the logic valid across
 	 * all diagram types. Override for diagram-specific rules.
+	 * 
 	 * @param pEdge The edge to be added
-	 * @param pNode1 The first node
-	 * @param pNode2 The second node
-	 * @param pPoint2 The point where the edge is supposed to be terminated
+	 * @param pStartNode The first node
+	 * @param pEndNode The second node
+	 * @param pEndPoint The point where the edge is supposed to be terminated
 	 * @return True if the edge can legally connect node1 to node2
+	 * @pre pEdge != null && pStartNode != null && pEndPoint != null
 	 */
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		if(pNode2 == null)
+		assert pEdge != null && pStartNode != null && pEndPoint != null;
+		if(pEndNode == null)
 		{
 			return false;
 		}
-		if(existsEdge(pEdge.getClass(), pNode1, pNode2))
+		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode))
 		{
 			return false;
 		}
-		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		if((pEndNode instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
-		if(pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
+		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode instanceof NoteNode))
 		{
 			return false;
 		}
@@ -190,10 +217,10 @@ public abstract class DiagramBuilder
 	 */
 	private boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
 	{
-		assert pType !=null && pStart != null && pEnd != null;
+		assert pType != null && pStart != null && pEnd != null;
 		for(Edge edge : aDiagram.edges())
 		{
-			if (edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
+			if(edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
 			{
 				return true;
 			}
@@ -206,11 +233,14 @@ public abstract class DiagramBuilder
 	 * add it as a root node.
 	 * @param pNode The node to add.
 	 * @param pRequestedPosition A point that is the requested position of the node.
+	 * @return The requested operation
 	 * @pre pNode != null && pRequestedPosition != null
+	 * @pre canAdd(pNode, pRequestedPosition)
 	 */
 	public DiagramOperation createAddNodeOperation(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
+		assert canAdd(pNode, pRequestedPosition);
 		positionNode(pNode, pRequestedPosition);
 		return new SimpleOperation( ()-> aDiagram.addRootNode(pNode), 
 				()-> aDiagram.removeRootNode(pNode));
@@ -247,11 +277,16 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * @param pElement The element to check.
+	 * Finds the elements that should be removed if pElement is removed,
+	 * to preserve the integrity of the diagram.
+	 * 
+	 * @param pElement The element to remove.
 	 * @return The list of elements that have to be removed with pElement.
+	 * @pre pElement != null && aDiagram.contains(pElement);
 	 */
-	protected List<DiagramElement> findCoRemovals(DiagramElement pElement)
+	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
+		assert pElement != null && aDiagram.contains(pElement);
 		ArrayList<DiagramElement> result = new ArrayList<>();
 		if( pElement.getClass() == PointNode.class )
 		{
@@ -274,10 +309,10 @@ public abstract class DiagramBuilder
 		}
 		if( pElement instanceof Node )
 		{
-			List<Node> descendents = getNodeAndAllChildren((Node)pElement);
+			List<Node> descendants = getNodeAndAllChildren((Node)pElement);
 			for(Edge edge : aDiagram.edges())
 			{
-				if(descendents.contains(edge.getStart() ) || descendents.contains(edge.getEnd()))
+				if(descendants.contains(edge.getStart() ) || descendants.contains(edge.getEnd()))
 				{
 					result.add(edge);
 				}
@@ -300,7 +335,7 @@ public abstract class DiagramBuilder
 		for( DiagramElement element : pElements)
 		{
 			toDelete.add(element);
-			toDelete.addAll(findCoRemovals(element));
+			toDelete.addAll(getCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
 		for( DiagramElement element : toDelete)
@@ -346,28 +381,45 @@ public abstract class DiagramBuilder
 				()-> pNode.translate(-pX, -pY));
 	}
 	
-	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pPoint1, Point pPoint2)
+	/**
+	 * Create an operation to add and edge.
+	 * 
+	 * @param pEdge The edge to add.
+	 * @param pStart The starting point.
+	 * @param pEnd The end point.
+	 * @return The requested operation.
+	 */
+	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
-		assert canAdd(pEdge, pPoint1, pPoint2);
-		Node node1 = aDiagramView.findNode(pPoint1);
-		Node node2 = aDiagramView.findNode(pPoint2);
+		assert canAdd(pEdge, pStart, pEnd);
+		Node node1 = aDiagramView.findNode(pStart);
+		Node node2 = aDiagramView.findNode(pEnd);
 		CompoundOperation result = new CompoundOperation();
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			node2 = new PointNode();
-			node2.translate(pPoint2.getX(), pPoint2.getY());
+			node2.translate(pEnd.getX(), pEnd.getY());
 			Node end = node2; // Effectively final to include in closure
 			result.add(new SimpleOperation(()-> aDiagram.addRootNode(end),
 					()-> aDiagram.removeRootNode(end)));
 		}
 		assert node2 != null;
 		pEdge.connect(node1, node2, aDiagram);
-		addComplementaryEdgeAdditionOperations(result, pEdge, pPoint1, pPoint2);
+		addComplementaryEdgeAdditionOperations(result, pEdge, pStart, pEnd);
 		result.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
 		return result;
 	}
 	
+	/**
+	 * Creates any sub-operation that must occur when pEdge is added, and adds them to
+	 * pOperation.
+	 * 
+	 * @param pOperation The operation to complete.
+	 * @param pEdge The edge to add as part of the operation.
+	 * @param pStart The starting point.
+	 * @param pEnd The end point.
+	 */
 	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pStart, Point pEnd)
 	{}
 
@@ -410,8 +462,16 @@ public abstract class DiagramBuilder
 		return ()-> parent.removeChild(pNode);
 	}
 	
+	/**
+	 * Creates an operation to remove an edge from the diagram.
+	 * 
+	 * @param pEdge The edge to remove.
+	 * @return The requested operation.
+	 * @pre pEdge != null && aDiagram.contains(pEdge)
+	 */
 	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
 	{
+		assert pEdge != null && aDiagram.contains(pEdge);
 		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.removeEdge(pEdge),
 				()-> aDiagram.addEdge(pEdge));
 		if( pEdge.getEnd() instanceof PointNode )

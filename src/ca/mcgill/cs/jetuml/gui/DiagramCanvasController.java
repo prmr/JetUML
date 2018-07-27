@@ -156,6 +156,10 @@ public class DiagramCanvasController
 	 */
 	public void paste()
 	{
+		if( !Clipboard.instance().validPaste(aDiagramBuilder.getView().getDiagram()))
+		{
+			return;
+		}
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();

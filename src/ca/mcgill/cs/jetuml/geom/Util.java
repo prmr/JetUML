@@ -21,6 +21,9 @@
 
 package ca.mcgill.cs.jetuml.geom;
 
+/**
+ * A collection of utility methods.
+ */
 public final class Util
 {
 	private Util()

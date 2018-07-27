@@ -46,11 +46,17 @@ public class Dimension
 		return String.format("[Dimension: w=%d x h=%d]", aWidth, aHeight);
 	}
 	
+	/**
+	 * @return The width component of this dimension.
+	 */
 	public int getWidth()
 	{
 		return aWidth;
 	}
 	
+	/**
+	 * @return The height component of this dimension.
+	 */
 	public int getHeight()
 	{
 		return aHeight;

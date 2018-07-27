@@ -273,19 +273,24 @@ public final class Clipboard
 	/**
 	 * Returns true only of all the nodes and edges in the selection 
 	 * are compatible with the type of the target diagram.
+	 * 
+	 * @param pDiagram The diagram to paste into.
+	 * 
+	 * @return True if and only if it is possible to paste the content
+	 * of the clipboard into pDiagram.
 	 */
-	public boolean validPaste(Diagram pGraph)
+	public boolean validPaste(Diagram pDiagram)
 	{
 		for( Edge edge : aEdges )
 		{
-			if( !validEdgeFor(edge, pGraph ))
+			if( !validEdgeFor(edge, pDiagram ))
 			{
 				return false;
 			}
 		}
 		for( Node node : aNodes )
 		{
-			if( !validNodeFor(node, pGraph ))
+			if( !validNodeFor(node, pDiagram ))
 			{
 				return false;
 			}

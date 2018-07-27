@@ -49,6 +49,8 @@ public class PropertyEditorDialog
 	 * Creates a new dialog.
 	 * 
 	 * @param pOwner The stage that owns this stage.
+	 * @param pElement The element to edit with this dialog.
+	 * @param pPropertyChangeListener A callback to run whenever a property changes.
 	 */
 	public PropertyEditorDialog( Stage pOwner, DiagramElement pElement, 
 			PropertySheet.PropertyChangeListener pPropertyChangeListener )
@@ -93,6 +95,9 @@ public class PropertyEditorDialog
 	/**
 	 * Shows the dialog and blocks the remainder of the UI
 	 * until it is closed.
+	 * 
+	 * @return A compound operation that represents the modification of
+	 * each property modified through this dialog.
 	 */
 	public CompoundOperation show() 
 	{

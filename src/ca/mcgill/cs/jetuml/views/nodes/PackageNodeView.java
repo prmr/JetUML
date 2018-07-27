@@ -79,8 +79,10 @@ public class PackageNodeView extends AbstractNodeView
 		Rectangle bottomBounds = getBottomBounds();
 		ViewUtils.drawRectangle(pGraphics, topBounds );
 		ViewUtils.drawRectangle(pGraphics, bottomBounds );
-		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
-		CONTENTS_VIEWER.draw(contents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
+				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
+		CONTENTS_VIEWER.draw(contents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, 
+				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
 	}
 	
 	/**
