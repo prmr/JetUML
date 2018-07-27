@@ -44,17 +44,20 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 		assert pDiagram instanceof UseCaseDiagram;
 	}
 	
+	/* 
+	 * Additional constraint:
+	 * - Self edges are not valid in use case diagrams.
+	 */
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
+		if( pStartNode == pEndNode )
+		{	
+			return false;
+		}
+		else
 		{
-			return false;
+			return super.canConnect(pEdge, pStartNode, pEndNode, pEndPoint);
 		}
-		if( pNode1 == pNode2 )
-		{	// Self-edges are not allowed in use case diagrams
-			return false;
-		}
-		return true;
 	}
 }
