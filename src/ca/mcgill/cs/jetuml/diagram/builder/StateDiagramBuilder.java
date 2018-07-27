@@ -31,8 +31,18 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
+/**
+ * A builder for state diagrams.
+ *
+ */
 public class StateDiagramBuilder extends DiagramBuilder
 {
+	/**
+	 * Creates a new builder for state diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	public StateDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );

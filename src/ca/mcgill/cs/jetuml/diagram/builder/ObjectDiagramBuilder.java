@@ -36,8 +36,17 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
+/**
+ * A builder for object diagram.
+ */
 public class ObjectDiagramBuilder extends DiagramBuilder
 {
+	/**
+	 * Creates a new builder for object diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	public ObjectDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );

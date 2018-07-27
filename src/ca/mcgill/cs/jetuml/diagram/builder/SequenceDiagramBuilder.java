@@ -36,10 +36,19 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
+/**
+ * A builder for sequence diagrams.
+ */
 public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
 	
+	/**
+	 * Creates a new builder for sequence diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	public SequenceDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );

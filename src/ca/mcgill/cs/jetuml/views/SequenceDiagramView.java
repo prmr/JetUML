@@ -22,13 +22,10 @@
 package ca.mcgill.cs.jetuml.views;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A wrapper for a sequence diagram that can draw the diagram on a graphics context

@@ -41,7 +41,6 @@ public class TestCallNodeView
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
 	private CallNode aCallNode1;
-	private CallNode aCallNode2;
 	private CallEdge aCallEdge1;
 	private CallEdge aCallEdge2;
 	
@@ -64,7 +63,6 @@ public class TestCallNodeView
 		aDefaultCallNode1 = new CallNode();
 		aDefaultCallNode2 = new CallNode();
 		aCallNode1 = new CallNode();
-		aCallNode2 = new CallNode();
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
 	}

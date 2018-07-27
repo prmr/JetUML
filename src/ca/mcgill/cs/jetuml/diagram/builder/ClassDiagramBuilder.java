@@ -35,8 +35,17 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
+/**
+ * A builder for class diagram.
+ */
 public class ClassDiagramBuilder extends DiagramBuilder
 {
+	/**
+	 * Creates a new builder for class diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	public ClassDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );

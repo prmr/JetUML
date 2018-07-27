@@ -361,7 +361,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		
 		select(aClassNode1);
@@ -382,7 +381,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle edgeBounds = aAggregationEdge.view().getBounds();
 		Rectangle classNodeBounds = aClassNode1.view().getBounds();
 		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
 

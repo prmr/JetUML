@@ -27,8 +27,17 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.geom.Point;
 
+/**
+ * A builder for use case diagram.
+ */
 public class UseCaseDiagramBuilder extends DiagramBuilder
 {
+	/**
+	 * Creates a new builder for use case diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null;
+	 */
 	public UseCaseDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );

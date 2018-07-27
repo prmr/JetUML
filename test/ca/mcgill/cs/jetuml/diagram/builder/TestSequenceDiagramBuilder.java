@@ -24,8 +24,6 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import java.util.Iterator;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -94,19 +92,6 @@ public class TestSequenceDiagramBuilder
 			sum++;
 		}
 		return sum;
-	}
-	
-	private Node getRootNode(int pIndex)
-	{
-		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
-		int i = 0;
-		Node node = iterator.next();
-		while( i < pIndex )
-		{
-			i++;
-			node = iterator.next();
-		}
-		return node;
 	}
 	
 	/*

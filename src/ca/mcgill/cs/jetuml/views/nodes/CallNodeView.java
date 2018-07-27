@@ -183,6 +183,7 @@ public class CallNodeView extends AbstractNodeView
 	/*
 	 * If the node has a caller, the Y coordinate is a gap below the last return Y value
 	 * of the caller. If not, it's simply a set distance below the previous call node.
+	 * CSOFF:
 	 */
 	private int getY()
 	{
@@ -207,7 +208,7 @@ public class CallNodeView extends AbstractNodeView
 				return 0; // Only used for the image creator
 			}
 		}
-		else // there are four cases here: nested call (y/n) and first callee (y/n) TODO
+		else // there are four cases here: nested call (y/n) and first callee (y/n) 
 		{
 			if( aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()))
 			{
@@ -226,7 +227,7 @@ public class CallNodeView extends AbstractNodeView
 				return ((CallNodeView)aDiagram.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
 			}
 		}
-	}
+	} // CSON:
 	
 	/**
 	 * @return If there's no callee, returns a fixed offset from the y position.
