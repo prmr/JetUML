@@ -136,4 +136,100 @@ public class TestStateDiagramBuilder
 		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(110,110), new Point(10,10)));
 		assertFalse(aBuilder.canAdd(aEdge1, new Point(110,110), new Point(10,10)));
 	}
+	
+	@Test
+	public void testCanAddEdgeFinalNoteToFrom()
+	{
+		aDiagram.addRootNode(aFinal);
+		aDiagram.addRootNode(aNoteNode);
+		aNoteNode.moveTo(new Point(100,100));
+		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(10,10), new Point(110,110)));
+		assertFalse(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+		assertTrue(aBuilder.canAdd(aNoteEdge, new Point(110,110), new Point(10,10)));
+		assertFalse(aBuilder.canAdd(aEdge1, new Point(110,110), new Point(10,10)));
+	}
+	
+	@Test
+	public void testCanAddEdgeInitialStateTo()
+	{
+		aDiagram.addRootNode(aInitial);
+		aDiagram.addRootNode(aStateNode1);
+		aStateNode1.moveTo(new Point(100,100));
+		assertTrue(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge1, aInitial, aStateNode1);
+		assertTrue(aBuilder.canAdd(aEdge2, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge2, aInitial, aStateNode1);
+		assertFalse(aBuilder.canAdd(aEdge3, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeInitialStateFrom()
+	{
+		aDiagram.addRootNode(aInitial);
+		aDiagram.addRootNode(aStateNode1);
+		aInitial.moveTo(new Point(100,100));
+		assertFalse(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeFinalStateTo()
+	{
+		aDiagram.addRootNode(aFinal);
+		aDiagram.addRootNode(aStateNode1);
+		aFinal.moveTo(new Point(100,100));
+		assertTrue(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge1, aStateNode1, aFinal);
+		assertTrue(aBuilder.canAdd(aEdge2, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge2, aStateNode1, aFinal);
+		assertFalse(aBuilder.canAdd(aEdge3, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeFinalStateFrom()
+	{
+		aDiagram.addRootNode(aFinal);
+		aDiagram.addRootNode(aStateNode1);
+		aStateNode1.moveTo(new Point(100,100));
+		assertFalse(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeInitialFinalTo()
+	{
+		aDiagram.addRootNode(aInitial);
+		aDiagram.addRootNode(aFinal);
+		aFinal.moveTo(new Point(100,100));
+		assertTrue(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge1, aInitial, aFinal);
+		assertTrue(aBuilder.canAdd(aEdge2, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge2, aInitial, aFinal);
+		assertFalse(aBuilder.canAdd(aEdge3, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeInitialFinalFrom()
+	{
+		aDiagram.addRootNode(aInitial);
+		aDiagram.addRootNode(aFinal);
+		aInitial.moveTo(new Point(100,100));
+		assertFalse(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+	}
+	
+	@Test
+	public void testCanAddEdgeStateStateToFrom()
+	{
+		aDiagram.addRootNode(aStateNode1);
+		aDiagram.addRootNode(aStateNode2);
+		aStateNode2.moveTo(new Point(100,100));
+		assertTrue(aBuilder.canAdd(aEdge1, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge1, aStateNode1, aStateNode2);
+		assertTrue(aBuilder.canAdd(aEdge2, new Point(10,10), new Point(110,110)));
+		connectAndAdd(aEdge2, aStateNode1, aStateNode2);
+		assertFalse(aBuilder.canAdd(aEdge3, new Point(10,10), new Point(110,110)));
+		assertTrue(aBuilder.canAdd(aEdge3, new Point(110,110), new Point(10,10)));
+		connectAndAdd(aEdge3, aStateNode2, aStateNode1);
+		assertTrue(aBuilder.canAdd(new StateTransitionEdge(), new Point(110,110), new Point(10,10)));
+		connectAndAdd(new StateTransitionEdge(), aStateNode2, aStateNode1);
+		assertFalse(aBuilder.canAdd(new StateTransitionEdge(), new Point(110,110), new Point(10,10)));
+	}
 }
