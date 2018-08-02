@@ -33,7 +33,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * A builder for state diagrams.
- *
  */
 public class StateDiagramBuilder extends DiagramBuilder
 {
@@ -48,57 +47,57 @@ public class StateDiagramBuilder extends DiagramBuilder
 		super( pDiagram );
 		assert pDiagram instanceof StateDiagram;
 	}
-	
+
 	// CSOFF:
-		@Override
-		protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	@Override
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	{
+		if( pNode2 == null )
 		{
-			if( pNode2 == null )
-			{
-				return false;
-			}
-			if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
-			{
-				return false;
-			}
-			if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-			{
-				return false;
-			}
-			if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
-			{
-				return false;
-			}
-			if(pNode1 != null)
-			{
-				if(pNode1 instanceof FinalStateNode)
-				{
-					if(!(pEdge instanceof NoteEdge))
-					{
-						return false;
-					}
-				}
-			}
-			if(pNode2 instanceof InitialStateNode)
+			return false;
+		}
+		if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
+		{
+			return false;
+		}
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		{
+			return false;
+		}
+		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
+		{
+			return false;
+		}
+		if(pNode1 != null)
+		{
+			if(pNode1 instanceof FinalStateNode)
 			{
 				if(!(pEdge instanceof NoteEdge))
 				{
 					return false;
 				}
 			}
-			return true;
-		} // CSON:
-		
-		private int numberOfSimilarEdges(Node pNode1, Node pNode2)
-		{
-			int lReturn = 0;
-			for( Edge edge : aDiagram.edges() )
-			{
-				if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
-				{
-					lReturn++;
-				}
-			}
-			return lReturn;
 		}
+		if(pNode2 instanceof InitialStateNode)
+		{
+			if(!(pEdge instanceof NoteEdge))
+			{
+				return false;
+			}
+		}
+		return true;
+	} // CSON:
+
+	private int numberOfSimilarEdges(Node pNode1, Node pNode2)
+	{
+		int lReturn = 0;
+		for( Edge edge : aDiagram.edges() )
+		{
+			if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
+			{
+				lReturn++;
+			}
+		}
+		return lReturn;
+	}
 }
