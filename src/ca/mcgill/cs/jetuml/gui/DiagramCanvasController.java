@@ -246,14 +246,11 @@ public class DiagramCanvasController
 		return new Point((int)pEvent.getX(), (int)pEvent.getY());
 	}
 
-	/*
-	 * Will return null if nothing is selected.
-	 */
-	private DiagramElement getSelectedElement(MouseEvent pEvent)
+	private Optional<? extends DiagramElement> getSelectedElement(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		DiagramElement element = aDiagramBuilder.getView().findEdge(mousePoint);
-		if (element == null)
+		Optional<? extends DiagramElement> element = aDiagramBuilder.getView().findEdge(mousePoint);
+		if(!element.isPresent())
 		{
 			element = aDiagramBuilder.getView().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
@@ -262,31 +259,31 @@ public class DiagramCanvasController
 
 	private void handleSelection(MouseEvent pEvent)
 	{
-		DiagramElement element = getSelectedElement(pEvent);
-		if (element != null) // Something is selected
+		Optional<? extends DiagramElement> element = getSelectedElement(pEvent);
+		if(element.isPresent()) 
 		{
-			if (pEvent.isControlDown())
+			if(pEvent.isControlDown())
 			{
-				if (!aSelectionModel.contains(element))
+				if(!aSelectionModel.contains(element.get()))
 				{
-					aSelectionModel.addToSelection(element);
+					aSelectionModel.addToSelection(element.get());
 				}
 				else
 				{
-					aSelectionModel.removeFromSelection(element);
+					aSelectionModel.removeFromSelection(element.get());
 				}
 			}
-			else if (!aSelectionModel.contains(element))
+			else if(!aSelectionModel.contains(element.get()))
 			{
 				// The test is necessary to ensure we don't undo multiple selections
-				aSelectionModel.set(element);
+				aSelectionModel.set(element.get());
 			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
 		}
 		else // Nothing is selected
 		{
-			if (!pEvent.isControlDown()) 
+			if(!pEvent.isControlDown()) 
 			{
 				aSelectionModel.clearSelection();
 			}
@@ -331,8 +328,8 @@ public class DiagramCanvasController
 
 	private void handleEdgeStart(MouseEvent pEvent)
 	{
-		DiagramElement element = getSelectedElement(pEvent);
-		if(element != null && element instanceof Node) 
+		Optional<? extends DiagramElement> element = getSelectedElement(pEvent);
+		if(element.isPresent() && element.get() instanceof Node) 
 		{
 			aDragMode = DragMode.DRAG_RUBBERBAND;
 		}
@@ -349,13 +346,13 @@ public class DiagramCanvasController
 	private Optional<DiagramElement> getTool(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
-		DiagramElement selected = getSelectedElement(pEvent);
+		Optional<? extends DiagramElement> selected = getSelectedElement(pEvent);
 
 		if( tool.isPresent() && tool.get() instanceof Node)
 		{
-			if(selected != null && selected instanceof Node)
+			if(selected.isPresent() && selected.get() instanceof Node)
 			{
-				if(!(tool.get() instanceof ChildNode && selected instanceof ParentNode))
+				if(!(tool.get() instanceof ChildNode && selected.get() instanceof ParentNode))
 				{
 					aToolBar.setToolToBeSelect();
 					tool = Optional.empty();

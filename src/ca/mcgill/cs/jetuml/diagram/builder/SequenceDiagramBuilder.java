@@ -167,24 +167,24 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Optional<Node> pNode2, Point pPoint2)
 	{
 		boolean lReturn = true;
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
 			lReturn = false;
 		}
-		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2 instanceof CallNode)
+		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2.get() instanceof CallNode)
 		{
 			// The end node has to be the caller, and adding a return edge on the same object is not allowed.
-			lReturn = pNode2 == ((SequenceDiagram)aDiagram).getCaller(pNode1).get() && 
-					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2).getParent());
+			lReturn = pNode2.get() == ((SequenceDiagram)aDiagram).getCaller(pNode1).get() && 
+					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2.get()).getParent());
 		}
 		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
 		{
 			lReturn = false;
 		}
-		else if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
+		else if(pNode1 instanceof CallNode && !(pNode2.get() instanceof CallNode) && !(pNode2.get() instanceof ImplicitParameterNode ))
 		{
 			lReturn = false;
 		}
@@ -193,9 +193,9 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			lReturn = false;
 		}
 		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && 
-				pNode2 instanceof ImplicitParameterNode && ((SequenceDiagram)aDiagram).getCaller(pNode2) != null)
+				pNode2.get() instanceof ImplicitParameterNode && ((SequenceDiagram)aDiagram).getCaller(pNode2.get()) != null)
 		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
+			lReturn = !((ImplicitParameterNode)pNode2.get()).getTopRectangle().contains(pPoint2);
 		}
 		return lReturn;
 	}

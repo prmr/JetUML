@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -156,18 +157,18 @@ public abstract class DiagramBuilder
 	public final boolean canAdd(Edge pEdge, Point pStart, Point pEnd)
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
-		Node startNode = aDiagramView.findNode(pStart);
-		if(startNode == null)
+		Optional<Node> startNode = aDiagramView.findNode(pStart);
+		if(!startNode.isPresent())
 		{
 			return false;
 		}
 		
-		Node endNode = aDiagramView.findNode(pEnd);
-		if(startNode instanceof NoteNode && pEdge instanceof NoteEdge)
+		Optional<Node> endNode = aDiagramView.findNode(pEnd);
+		if(startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			return true; // We can always create a point node.
 		}
-		return canConnect(pEdge, startNode, endNode, pEnd);
+		return canConnect(pEdge, startNode.get(), endNode, pEnd);
 	}
 	
 	/**
@@ -183,22 +184,22 @@ public abstract class DiagramBuilder
 	 * @return True if the edge can legally connect node1 to node2
 	 * @pre pEdge != null && pStartNode != null && pEndPoint != null
 	 */
-	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
+	protected boolean canConnect(Edge pEdge, Node pStartNode, Optional<Node> pEndNode, Point pEndPoint)
 	{
 		assert pEdge != null && pStartNode != null && pEndPoint != null;
-		if(pEndNode == null)
+		if(!pEndNode.isPresent())
 		{
 			return false;
 		}
-		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode))
+		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode.get()))
 		{
 			return false;
 		}
-		if((pEndNode instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
+		if((pEndNode.get() instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
-		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode instanceof NoteNode))
+		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode.get() instanceof NoteNode))
 		{
 			return false;
 		}
@@ -392,8 +393,13 @@ public abstract class DiagramBuilder
 	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
-		Node node1 = aDiagramView.findNode(pStart);
-		Node node2 = aDiagramView.findNode(pEnd);
+		Node node1 = aDiagramView.findNode(pStart).get();
+		Optional<Node> node2in = aDiagramView.findNode(pEnd);
+		Node node2 = null;
+		if( node2in.isPresent() )
+		{
+			node2 = node2in.get();
+		}
 		CompoundOperation result = new CompoundOperation();
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{

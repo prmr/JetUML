@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.views;
 
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -86,17 +88,17 @@ public class DiagramView
 	 * @return An edge containing pPoint or null if no edge contains pPoint
 	 * @pre pPoint != null
 	 */
-	public final Edge findEdge(Point pPoint)
+	public final Optional<Edge> findEdge(Point pPoint)
 	{
 		assert pPoint != null;
 		for(Edge edge : aDiagram.edges())
 		{
 			if(edge.view().contains(pPoint))
 			{
-				return edge;
+				return Optional.of(edge);
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 	
 	/**
@@ -106,7 +108,7 @@ public class DiagramView
      * @return a node containing pPoint or null if no nodes contain pPoint
      * @pre pPoint != null.
      */
-	public final Node findNode(Point pPoint)
+	public final Optional<Node> findNode(Point pPoint)
 	{
 		Node result = null;
 		for(Node node : aDiagram.rootNodes())
@@ -117,7 +119,7 @@ public class DiagramView
 				result = temp;
 			}
 		}
-		return result;
+		return Optional.ofNullable(result);
 	}
 	
 	/**

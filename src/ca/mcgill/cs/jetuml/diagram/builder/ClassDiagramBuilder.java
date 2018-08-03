@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -118,13 +119,13 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Optional<Node> pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
 			return false;
 		}
-		if( pEdge instanceof GeneralizationEdge && pNode1 == pNode2 )
+		if( pEdge instanceof GeneralizationEdge && pNode1 == pNode2.get() )
 		{
 			return false;
 		}
