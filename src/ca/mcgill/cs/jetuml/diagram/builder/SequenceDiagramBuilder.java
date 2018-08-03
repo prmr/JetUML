@@ -62,7 +62,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
 	{
 		return new ConstraintSet(
-			EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
+			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 			SequenceDiagramEdgeConstraints.noEdgesFromParameter(pStart),
 			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram)
 		);

@@ -71,11 +71,14 @@ public final class EdgeConstraints
 	}
 	
 	/*
-	 * Only one edge of a given type can be added between two nodes.
+	 * Only pNumber of edges of the same type are allowed in one direction between two nodes
 	 */
-	public static Constraint existence(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
+	public static Constraint maxEdges(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram, int pNumber)
 	{
-		return ()-> { return !existsEdge(pEdge.getClass(), pStart, pEnd, pDiagram); };
+		return ()->
+		{
+			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber-1;
+		};
 	}
 	
 	/*
@@ -85,27 +88,21 @@ public final class EdgeConstraints
 	{
 		return ()-> { return pStart != pEnd; };
 	}
-	
-	/**
-	 * Returns true iif there exists an edge of type pType between
-	 * nodes pStart and pEnd. The direction matter, and the type
-	 * testing is for the exact type pType, without using polymorphism.
-	 * @param pType The type of edge to check for.
-	 * @param pStart The start node.
-	 * @param pEnd The end node.
-	 * @return True if and only if there is an edge of type pType that
-	 * starts at node pStart and ends at node pEnd.
+
+	/*
+	 * Returns the number of edges of type pType between pStart and pEnd
 	 */
-	private static boolean existsEdge(Class<?> pType, Node pStart, Node pEnd, Diagram pDiagram)
+	private static int numberOfEdges(Class<? extends Edge> pType, Node pStart, Node pEnd, Diagram pDiagram)
 	{
-		assert pType != null && pStart != null && pEnd != null;
+		assert pType != null && pStart != null && pEnd != null && pDiagram != null;
+		int result = 0;
 		for(Edge edge : pDiagram.edges())
 		{
 			if(edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
 			{
-				return true;
+				result++;
 			}
 		}
-		return false;
+		return result;
 	}
 }

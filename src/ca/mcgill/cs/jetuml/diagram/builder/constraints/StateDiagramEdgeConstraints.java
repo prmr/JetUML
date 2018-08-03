@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -35,17 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 public final class StateDiagramEdgeConstraints
 {
 	private StateDiagramEdgeConstraints() {}
-	
-	/*
-	 * A maximum of two edges going from one node to the next is allowed.
-	 */
-	public static Constraint maxTwoEdgesBetweenNodes(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
-	{
-		return ()->
-		{
-			return numberOfSimilarEdges(pStart, pEnd, pDiagram) <= 1;
-		};
-	}
 	
 	/*
 	 * No edges are allowed into an Initial Node
@@ -67,18 +55,5 @@ public final class StateDiagramEdgeConstraints
 		{
 			return !(pStart.getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class );
 		};
-	}
-	
-	private static int numberOfSimilarEdges(Node pNode1, Node pNode2, Diagram pDiagram)
-	{
-		int lReturn = 0;
-		for( Edge edge : pDiagram.edges() )
-		{
-			if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
-			{
-				lReturn++;
-			}
-		}
-		return lReturn;
 	}
 }

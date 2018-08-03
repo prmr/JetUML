@@ -79,7 +79,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
 	{
 		return new ConstraintSet(
-				EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
+				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd)
 		);
 	}
