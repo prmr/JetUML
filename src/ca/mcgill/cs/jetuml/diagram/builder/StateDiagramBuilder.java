@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import java.util.Optional;
-
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -52,21 +50,17 @@ public class StateDiagramBuilder extends DiagramBuilder
 
 	// CSOFF:
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Optional<Node> pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
-		if( !pNode2.isPresent() )
+		if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
 		{
 			return false;
 		}
-		if( numberOfSimilarEdges(pNode1, pNode2.get()) > 1 )
+		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
-		if((pNode2.get() instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2.get() instanceof NoteNode))
+		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
 		{
 			return false;
 		}
@@ -80,7 +74,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 				}
 			}
 		}
-		if(pNode2.get() instanceof InitialStateNode)
+		if(pNode2 instanceof InitialStateNode)
 		{
 			if(!(pEdge instanceof NoteEdge))
 			{

@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -79,7 +78,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Optional<Node> pNode2, Point pPoint2)
+	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
 	{
 		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
 		{
@@ -87,12 +86,12 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 		}
 		if( pNode1 instanceof ObjectNode )
 		{
-			return (pEdge instanceof ObjectCollaborationEdge && pNode2.get() instanceof ObjectNode) ||
-					(pEdge instanceof NoteEdge && pNode2.get() instanceof NoteNode);
+			return (pEdge instanceof ObjectCollaborationEdge && pNode2 instanceof ObjectNode) ||
+					(pEdge instanceof NoteEdge && pNode2 instanceof NoteNode);
 		}
 		if( pNode1 instanceof FieldNode )
 		{
-			return pEdge instanceof ObjectReferenceEdge && pNode2.get() instanceof ObjectNode;
+			return pEdge instanceof ObjectReferenceEdge && pNode2 instanceof ObjectNode;
 		}
 		return true;
 	}

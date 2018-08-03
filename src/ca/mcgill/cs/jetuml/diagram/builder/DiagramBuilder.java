@@ -158,17 +158,17 @@ public abstract class DiagramBuilder
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
 		Optional<Node> startNode = aDiagramView.findNode(pStart);
-		if(!startNode.isPresent())
+		Optional<Node> endNode = aDiagramView.findNode(pEnd);
+		
+		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
+		{
+			return true; // Special case: we can always create a point node.
+		}
+		if(!startNode.isPresent() || !endNode.isPresent() )
 		{
 			return false;
 		}
-		
-		Optional<Node> endNode = aDiagramView.findNode(pEnd);
-		if(startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
-		{
-			return true; // We can always create a point node.
-		}
-		return canConnect(pEdge, startNode.get(), endNode, pEnd);
+		return canConnect(pEdge, startNode.get(), endNode.get(), pEnd);
 	}
 	
 	/**
@@ -184,22 +184,19 @@ public abstract class DiagramBuilder
 	 * @return True if the edge can legally connect node1 to node2
 	 * @pre pEdge != null && pStartNode != null && pEndPoint != null
 	 */
-	protected boolean canConnect(Edge pEdge, Node pStartNode, Optional<Node> pEndNode, Point pEndPoint)
+	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		assert pEdge != null && pStartNode != null && pEndPoint != null;
-		if(!pEndNode.isPresent())
+		assert pEdge != null && pStartNode != null && pEndNode != null && pEndPoint != null;
+
+		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode))
 		{
 			return false;
 		}
-		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode.get()))
+		if((pEndNode instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
 		{
 			return false;
 		}
-		if((pEndNode.get() instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode.get() instanceof NoteNode))
+		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode instanceof NoteNode))
 		{
 			return false;
 		}

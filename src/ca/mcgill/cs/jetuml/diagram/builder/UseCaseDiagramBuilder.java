@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import java.util.Optional;
-
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -51,9 +49,9 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	 * - Self edges are not valid in use case diagrams.
 	 */
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pStartNode, Optional<Node> pEndNode, Point pEndPoint)
+	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		if( pStartNode == pEndNode.get() )
+		if( pStartNode == pEndNode )
 		{	
 			return false;
 		}
