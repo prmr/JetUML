@@ -29,6 +29,9 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
@@ -53,6 +56,16 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		super( pDiagram );
 		assert pDiagram instanceof SequenceDiagram;
+	}
+	
+	@Override
+	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	{
+		return new ConstraintSet(
+			EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
+			SequenceDiagramEdgeConstraints.noEdgesFromParameter(pStart),
+			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram)
+		);
 	}
 	
 	/*
@@ -164,40 +177,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			result = false;
 		}
 		return result;
-	}
-	
-	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		boolean lReturn = true;
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof CallNode && pEdge instanceof ReturnEdge && pNode2 instanceof CallNode)
-		{
-			// The end node has to be the caller, and adding a return edge on the same object is not allowed.
-			lReturn = pNode2 == ((SequenceDiagram)aDiagram).getCaller(pNode1).get() && 
-					!(((CallNode)pNode1).getParent() == ((CallNode)pNode2).getParent());
-		}
-		else if(pNode1 instanceof CallNode && !(pEdge instanceof CallEdge))
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof CallNode && !(pNode2 instanceof CallNode) && !(pNode2 instanceof ImplicitParameterNode ))
-		{
-			lReturn = false;
-		}
-		else if(pNode1 instanceof ImplicitParameterNode )
-		{
-			lReturn = false;
-		}
-		else if( pNode1 instanceof CallNode && pEdge instanceof CallEdge && 
-				pNode2 instanceof ImplicitParameterNode && ((SequenceDiagram)aDiagram).getCaller(pNode2) != null)
-		{
-			lReturn = !((ImplicitParameterNode)pNode2).getTopRectangle().contains(pPoint2);
-		}
-		return lReturn;
 	}
 	
 	@Override

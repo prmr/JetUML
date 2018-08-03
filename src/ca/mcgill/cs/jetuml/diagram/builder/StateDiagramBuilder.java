@@ -25,11 +25,8 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.StateDiagram;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
 
 /**
  * A builder for state diagrams.
@@ -47,53 +44,14 @@ public class StateDiagramBuilder extends DiagramBuilder
 		super( pDiagram );
 		assert pDiagram instanceof StateDiagram;
 	}
-
-	// CSOFF:
+	
 	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
+	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
 	{
-		if( numberOfSimilarEdges(pNode1, pNode2) > 1 )
-		{
-			return false;
-		}
-		if((pNode2 instanceof NoteNode || pNode1 instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if( pEdge instanceof NoteEdge && !(pNode1 instanceof NoteNode || pNode2 instanceof NoteNode))
-		{
-			return false;
-		}
-		if(pNode1 != null)
-		{
-			if(pNode1 instanceof FinalStateNode)
-			{
-				if(!(pEdge instanceof NoteEdge))
-				{
-					return false;
-				}
-			}
-		}
-		if(pNode2 instanceof InitialStateNode)
-		{
-			if(!(pEdge instanceof NoteEdge))
-			{
-				return false;
-			}
-		}
-		return true;
-	} // CSON:
-
-	private int numberOfSimilarEdges(Node pNode1, Node pNode2)
-	{
-		int lReturn = 0;
-		for( Edge edge : aDiagram.edges() )
-		{
-			if( edge.getStart() == pNode1 && edge.getEnd() == pNode2 )
-			{
-				lReturn++;
-			}
-		}
-		return lReturn;
+		return new ConstraintSet(
+			StateDiagramEdgeConstraints.maxTwoEdgesBetweenNodes(pEdge, pStart, pEnd, aDiagram),
+			StateDiagramEdgeConstraints.noEdgeFromFinalNode(pEdge, pStart),
+			StateDiagramEdgeConstraints.noEdgeToInitialNode(pEdge, pEnd)
+		);
 	}
 }

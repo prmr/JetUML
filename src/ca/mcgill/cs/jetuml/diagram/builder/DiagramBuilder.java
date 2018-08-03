@@ -32,6 +32,8 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -168,63 +170,23 @@ public abstract class DiagramBuilder
 		{
 			return false;
 		}
-		return canConnect(pEdge, startNode.get(), endNode.get(), pEnd);
+		
+		ConstraintSet constraints = new ConstraintSet(
+				EdgeConstraints.noteEdge(pEdge, startNode.get(), endNode.get()),
+				EdgeConstraints.noteNode(pEdge, startNode.get(), endNode.get())
+		);
+		constraints.merge(getAdditionalAddEdgeConstraints(pEdge, startNode.get(), endNode.get()));
+		return constraints.satisfied();
 	}
 	
 	/**
-	 * Checks whether it is legal to connect pNode1 to pNode2 through
-	 * pEdge based strictly on the type of nodes and edges. 
-	 * This implementation only provides the logic valid across
-	 * all diagram types. Override for diagram-specific rules.
-	 * 
-	 * @param pEdge The edge to be added
-	 * @param pStartNode The first node
-	 * @param pEndNode The second node
-	 * @param pEndPoint The point where the edge is supposed to be terminated
-	 * @return True if the edge can legally connect node1 to node2
-	 * @pre pEdge != null && pStartNode != null && pEndPoint != null
-	 */
-	protected boolean canConnect(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint)
-	{
-		assert pEdge != null && pStartNode != null && pEndNode != null && pEndPoint != null;
-
-		if(existsEdge(pEdge.getClass(), pStartNode, pEndNode))
-		{
-			return false;
-		}
-		if((pEndNode instanceof NoteNode || pStartNode instanceof NoteNode) && !(pEdge instanceof NoteEdge))
-		{
-			return false;
-		}
-		if(pEdge instanceof NoteEdge && !(pStartNode instanceof NoteNode || pEndNode instanceof NoteNode))
-		{
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Returns true iif there exists an edge of type pType between
-	 * nodes pStart and pEnd. The direction matter, and the type
-	 * testing is for the exact type pType, without using polymorphism.
-	 * @param pType The type of edge to check for.
+	 * @param pEdge The edge to add.
 	 * @param pStart The start node.
 	 * @param pEnd The end node.
-	 * @return True if and only if there is an edge of type pType that
-	 * starts at node pStart and ends at node pEnd.
+	 * @return Additional, diagram type-specific constraints for adding edges.
+	 * @pre pEdge != null && pStart != null && pEnd != null
 	 */
-	private boolean existsEdge(Class<?> pType, Node pStart, Node pEnd)
-	{
-		assert pType != null && pStart != null && pEnd != null;
-		for(Edge edge : aDiagram.edges())
-		{
-			if(edge.getClass() == pType && edge.getStart() == pStart && edge.getEnd() == pEnd)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+	protected abstract ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd);
 	
 	/** 
 	 * The default behavior is to position the node so it entirely fits in the diagram, then 

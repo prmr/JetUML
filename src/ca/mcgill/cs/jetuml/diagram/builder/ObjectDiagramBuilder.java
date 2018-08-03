@@ -27,12 +27,11 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
@@ -51,6 +50,16 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	{
 		super( pDiagram );
 		assert pDiagram instanceof ObjectDiagram;
+	}
+	
+	@Override
+	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	{
+		return new ConstraintSet(
+			EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
+			ObjectDiagramEdgeConstraints.collaboration(pEdge, pStart, pEnd),
+			ObjectDiagramEdgeConstraints.reference(pEdge, pStart, pEnd)
+		);
 	}
 	
 	@Override
@@ -75,25 +84,6 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			result = false;
 		}
 		return result;
-	}
-	
-	@Override
-	protected boolean canConnect(Edge pEdge, Node pNode1, Node pNode2, Point pPoint2)
-	{
-		if( !super.canConnect(pEdge, pNode1, pNode2, pPoint2) )
-		{
-			return false;
-		}
-		if( pNode1 instanceof ObjectNode )
-		{
-			return (pEdge instanceof ObjectCollaborationEdge && pNode2 instanceof ObjectNode) ||
-					(pEdge instanceof NoteEdge && pNode2 instanceof NoteNode);
-		}
-		if( pNode1 instanceof FieldNode )
-		{
-			return pEdge instanceof ObjectReferenceEdge && pNode2 instanceof ObjectNode;
-		}
-		return true;
 	}
 	
 	/* Find if the node to be added can be added to an object. Returns null if not. 

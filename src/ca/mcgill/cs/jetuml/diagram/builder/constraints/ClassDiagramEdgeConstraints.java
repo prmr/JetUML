@@ -19,38 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.diagram.builder;
+package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 
 /**
- * A builder for use case diagram.
+ * Methods to create edge addition constraints that only apply to
+ * class diagrams. CSOFF:
  */
-public class UseCaseDiagramBuilder extends DiagramBuilder
+public final class ClassDiagramEdgeConstraints
 {
-	/**
-	 * Creates a new builder for use case diagrams.
-	 * 
-	 * @param pDiagram The diagram to wrap around.
-	 * @pre pDiagram != null;
-	 */
-	public UseCaseDiagramBuilder( Diagram pDiagram )
-	{
-		super( pDiagram );
-		assert pDiagram instanceof UseCaseDiagram;
-	}
+	private ClassDiagramEdgeConstraints() {}
 	
-	@Override
-	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	/*
+	 * Self edges are not allowed for Generalization edges.
+	 */
+	public static Constraint noSelfGeneralization(Edge pEdge, Node pStart, Node pEnd)
 	{
-		return new ConstraintSet(
-				EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
-				EdgeConstraints.noSelfEdge(pStart, pEnd)
-		);
+		return ()-> 
+		{
+			return !( pEdge.getClass() == GeneralizationEdge.class && pStart == pEnd );
+		};
 	}
 }

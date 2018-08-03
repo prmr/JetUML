@@ -19,38 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.diagram.builder;
-
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
 /**
- * A builder for use case diagram.
+ * Represents a generic constraint.
  */
-public class UseCaseDiagramBuilder extends DiagramBuilder
+public interface Constraint
 {
 	/**
-	 * Creates a new builder for use case diagrams.
-	 * 
-	 * @param pDiagram The diagram to wrap around.
-	 * @pre pDiagram != null;
+	 * Indicates if the constraint is satisfied.
+	 * @return True if this constraint is satisfied.
 	 */
-	public UseCaseDiagramBuilder( Diagram pDiagram )
-	{
-		super( pDiagram );
-		assert pDiagram instanceof UseCaseDiagram;
-	}
-	
-	@Override
-	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
-	{
-		return new ConstraintSet(
-				EdgeConstraints.existence(pEdge, pStart, pEnd, aDiagram),
-				EdgeConstraints.noSelfEdge(pStart, pEnd)
-		);
-	}
+	boolean satisfied();
 }
