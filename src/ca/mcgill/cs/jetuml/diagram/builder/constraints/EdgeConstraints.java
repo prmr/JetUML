@@ -43,16 +43,10 @@ public final class EdgeConstraints
 	 */
 	public static Constraint noteEdge(Edge pEdge, Node pStart, Node pEnd)
 	{
-		return ()->
-		{
-			if( pEdge.getClass() == NoteEdge.class && 
-					!((pStart.getClass() == NoteNode.class && pEnd.getClass() == PointNode.class) ||
-					  (pEnd.getClass() == NoteNode.class)))
-			{
-				return false;
-			}
-			return true;
-		};
+		return ()-> !( pEdge.getClass() == NoteEdge.class && 
+						!((pStart.getClass() == NoteNode.class && pEnd.getClass() == PointNode.class) ||
+								(pEnd.getClass() == NoteNode.class)));
+		
 	}
 	
 	/* 
