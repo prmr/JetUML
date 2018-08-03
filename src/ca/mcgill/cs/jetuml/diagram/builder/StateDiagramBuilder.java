@@ -46,7 +46,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalAddEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
 	{
 		return new ConstraintSet(
 			StateDiagramEdgeConstraints.maxTwoEdgesBetweenNodes(pEdge, pStart, pEnd, aDiagram),
