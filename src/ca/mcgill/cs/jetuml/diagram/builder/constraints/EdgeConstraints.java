@@ -69,6 +69,7 @@ public final class EdgeConstraints
 	 */
 	public static Constraint maxEdges(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram, int pNumber)
 	{
+		assert pNumber > 0;
 		return ()->
 		{
 			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber-1;
