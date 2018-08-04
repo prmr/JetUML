@@ -21,10 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import static org.junit.Assert.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -209,5 +207,19 @@ public class TestEdgeConstraints
 		aEdge1.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(aEdge1);
 		assertTrue(EdgeConstraints.maxEdges(new NoteEdge(), aNode1, aNode2, aDiagram, 1).satisfied());
+	}
+	
+	@Test
+	public void testNodeSelfEdgeTrue()
+	{
+		createDiagram();
+		assertTrue(EdgeConstraints.noSelfEdge(aNode1, aNode2).satisfied());
+	}
+	
+	@Test
+	public void testNodeSelfEdgeFalse()
+	{
+		createDiagram();
+		assertFalse(EdgeConstraints.noSelfEdge(aNode1, aNode1).satisfied());
 	}
 }
