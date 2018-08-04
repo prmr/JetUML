@@ -30,7 +30,7 @@ for a diagram element.
 * A *setter* for the property.
 * A *getter* for the property.
 
-The getter and setter are references to objects whose method will obtain (`get`) or set (`accept`) the value of the property. These are intended to be supplied through lambda expressions. With this design, a separate object (the property) thus becomes a proxy for a small part of the state of a graph element. Although technically the getter and setter used to initialize a `Property` instance could be defined to get and set values on *different* objects, this is not an intended use: a given property should always get and set values *on the same object*. The following object diagram shows a `Property` instance to represent the X-coordinate of a `ClassNode`.
+The getter and setter are references to objects whose method will obtain (`get`) or set (`accept`) the value of the property. These are intended to be supplied through lambda expressions. With this design, a separate object (the property) thus becomes a proxy for a small part of the state of a diagram element. Although technically the getter and setter used to initialize a `Property` instance could be defined to get and set values on *different* objects, this is not an intended use: a given property should always get and set values *on the same object*. The following object diagram shows a `Property` instance to represent the X-coordinate of a `ClassNode`.
 
 ![JetUML Class Diagram](properties1o.png)
 
@@ -50,7 +50,7 @@ Note that this example uses autoboxing.
 
 ### Initializing Properties
 
-Initializing properties is a bit tricky because instances of `DiagramElement` must be `Cloneable`, which rules out exclusive constructor-based initialization. The protocol for creating a `Properties` object for a `DiagramElement` is thus triggered by a call to `buildProperties()`, which is called by both the constructor and `clone()` method of `AbstractGraphElement`. The idea is that `buildProperties()` is overridden by subclasses, which however call `super.buildProperties()` as the first statement of the method. The call chain thus propagates up to `AbstractGraphElement.buildProperties()`, which initializes a fresh (empty) `Properties` object, and then back down into the method of each subclass, which can then add the properties that correspond to the fields defined in the subclass.
+Initializing properties is a bit tricky because instances of `DiagramElement` must be `Cloneable`, which rules out exclusive constructor-based initialization. The protocol for creating a `Properties` object for a `DiagramElement` is thus triggered by a call to `buildProperties()`, which is called by both the constructor and `clone()` method of `AbstractDiagramElement`. The idea is that `buildProperties()` is overridden by subclasses, which however call `super.buildProperties()` as the first statement of the method. The call chain thus propagates up to `AbstractDiagramElement.buildProperties()`, which initializes a fresh (empty) `Properties` object, and then back down into the method of each subclass, which can then add the properties that correspond to the fields defined in the subclass.
 
 The following code, in class `InterfaceNode`, illustrates this protocol:
 

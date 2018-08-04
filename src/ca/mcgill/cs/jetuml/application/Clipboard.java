@@ -225,11 +225,11 @@ public final class Clipboard
 		{
 			if( edge.getStart() == pOld )
 			{
-				edge.connect(pNew, edge.getEnd(), edge.getGraph());
+				edge.connect(pNew, edge.getEnd(), edge.getDiagram());
 			}
 			if( edge.getEnd() == pOld)
 			{
-				edge.connect(edge.getStart(), pNew, edge.getGraph());
+				edge.connect(edge.getStart(), pNew, edge.getDiagram());
 			}
 		}
 		if( pOld instanceof ParentNode )

@@ -192,7 +192,7 @@ public class SegmentedEdgeView extends AbstractEdgeView
 	
 	private Point2D[] getPoints()
 	{
-		return aStyle.getPath(edge(), edge().getGraph());
+		return aStyle.getPath(edge(), edge().getDiagram());
 	}
 
 	@Override

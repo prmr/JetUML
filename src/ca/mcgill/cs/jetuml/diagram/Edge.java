@@ -24,35 +24,33 @@ package ca.mcgill.cs.jetuml.diagram;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
- * An edge in a graph.
+ * An edge in a diagram.
  */
 public interface Edge extends DiagramElement
 {
    /**
     * Connect this edge to two nodes.
     * @param pStart the starting node
-    * @param pEnd the ending node
-    * @param pGraph the graph where the two connected nodes 
+    * @param pEnd the end node
+    * @param pDiagram the graph where the two connected nodes 
     * exists. Can be null.
   	 */
-  void connect(Node pStart, Node pEnd, Diagram pGraph);
+  void connect(Node pStart, Node pEnd, Diagram pDiagram);
 
    	/**
-     * Gets the starting node.
-     * @return the starting node
+     * @return The start node for this edge.
      */
    	Node getStart();
 
    	/**
-     * Gets the ending node.
-     * @return the ending node
+     * @return The end node for this edge.
    	 */
    	Node getEnd();
    	
    	/**
-   	 * @return The graph2 that contains this edge.
+   	 * @return The diagram that contains this edge.
    	 */
-   	Diagram getGraph();
+   	Diagram getDiagram();
 
    	/**
    	 * @return A clone of this edge, with shallow cloning

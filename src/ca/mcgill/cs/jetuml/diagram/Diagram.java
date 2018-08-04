@@ -198,7 +198,7 @@ public abstract class Diagram implements DiagramData
 	 */
 	public void addEdge(Edge pEdge)
 	{
-		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph() != null;
+		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getDiagram() != null;
 		aEdges.add(pEdge);
 	}
 	

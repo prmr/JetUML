@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
-  * A node in a graph.
+  * A node in a diagram.
   */
 public interface Node extends DiagramElement
 {

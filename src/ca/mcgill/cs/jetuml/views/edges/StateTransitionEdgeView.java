@@ -204,7 +204,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		}
 		
 		// Additional gap to make sure the labels don't overlap
-		if( edge().getGraph() != null && getPosition() > 1 )
+		if( edge().getDiagram() != null && getPosition() > 1 )
 		{
 			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
 			delta = bounds.getHeight() - delta*RADIANS_TO_PIXELS;
@@ -337,9 +337,9 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	 */
 	private int getPosition()
 	{
-		assert edge().getGraph() != null;
+		assert edge().getDiagram() != null;
 		int lReturn = 0;
-		for( Edge edge : edge().getGraph().edgesConnectedTo(edge().getStart()))
+		for( Edge edge : edge().getDiagram().edgesConnectedTo(edge().getStart()))
 		{
 			if( edge.getStart() == edge().getStart() && edge.getEnd() == edge().getEnd())
 			{
@@ -397,7 +397,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 	{
 		Line line = getConnectionPoints();
 		double tangent = Math.tan(Math.toRadians(DEGREES_10));
-		if( edge().getGraph() != null && getPosition() > 1 )
+		if( edge().getDiagram() != null && getPosition() > 1 )
 		{
 			tangent = Math.tan(Math.toRadians(DEGREES_20));
 		}
@@ -436,7 +436,7 @@ public class StateTransitionEdgeView extends AbstractEdgeView
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;
-		if( edge().getGraph() != null && getPosition() > 1 )
+		if( edge().getDiagram() != null && getPosition() > 1 )
 		{
 			turn = DEGREES_20;
 		}

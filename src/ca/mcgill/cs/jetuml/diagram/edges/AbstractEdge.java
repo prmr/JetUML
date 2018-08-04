@@ -78,7 +78,7 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	}
 
 	@Override
-	public Diagram getGraph()
+	public Diagram getDiagram()
 	{
 		return aGraph;
 	}
