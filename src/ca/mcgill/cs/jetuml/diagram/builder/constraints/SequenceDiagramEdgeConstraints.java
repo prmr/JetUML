@@ -59,6 +59,7 @@ public final class SequenceDiagramEdgeConstraints
 			return !(pEdge.getClass() == ReturnEdge.class && 
 					(pStart.getClass() != CallNode.class ||
 					 pEnd.getClass() != CallNode.class ||
+					 !((SequenceDiagram)pDiagram).getCaller(pStart).isPresent() ||
 					 pEnd != ((SequenceDiagram)pDiagram).getCaller(pStart).get() ||
 					 ((CallNode)pStart).getParent() == ((CallNode)pEnd).getParent()));
 		};

@@ -37,7 +37,7 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	protected EdgeView aView;
 	private Node aStart;
 	private Node aEnd;
-	private Diagram aGraph;
+	private Diagram aDiagram;
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this edge.
@@ -48,20 +48,20 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	}
 	
 	@Override
-	public void connect(Node pStart, Node pEnd, Diagram pGraph)
+	public void connect(Node pStart, Node pEnd, Diagram pDiagram)
 	{
 		assert pStart != null && pEnd != null;
 		aStart = pStart;
 		aEnd = pEnd;
-		aGraph = pGraph;
+		aDiagram = pDiagram;
 		// Special case: CallNodeViews need to have a reference to the diagram.
 		if( pStart instanceof CallNode )
 		{
-			((CallNodeView)pStart.view()).setDiagram((SequenceDiagram) pGraph);
+			((CallNodeView)pStart.view()).setDiagram((SequenceDiagram) pDiagram);
 		}
 		if( pEnd instanceof CallNode )
 		{
-			((CallNodeView)pEnd.view()).setDiagram((SequenceDiagram) pGraph);
+			((CallNodeView)pEnd.view()).setDiagram((SequenceDiagram) pDiagram);
 		}
 	}
 
@@ -80,7 +80,7 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	@Override
 	public Diagram getDiagram()
 	{
-		return aGraph;
+		return aDiagram;
 	}
 
 	/**
