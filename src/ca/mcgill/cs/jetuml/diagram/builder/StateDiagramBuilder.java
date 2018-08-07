@@ -52,7 +52,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 		return new ConstraintSet(
 			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 2),
 			StateDiagramEdgeConstraints.noEdgeFromFinalNode(pEdge, pStart),
-			StateDiagramEdgeConstraints.noEdgeToInitialNode(pEdge, pEnd)
+			StateDiagramEdgeConstraints.noEdgeToInitialNode(pEnd)
 		);
 	}
 }

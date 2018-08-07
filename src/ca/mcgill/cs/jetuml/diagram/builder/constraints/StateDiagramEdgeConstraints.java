@@ -38,7 +38,7 @@ public final class StateDiagramEdgeConstraints
 	/*
 	 * No edges are allowed into an Initial Node
 	 */
-	public static Constraint noEdgeToInitialNode(Edge pEdge, Node pEnd)
+	public static Constraint noEdgeToInitialNode(Node pEnd)
 	{
 		return ()->
 		{

@@ -29,17 +29,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestSequenceDiagramEdgeConstraints
 {
@@ -151,7 +145,5 @@ public class TestSequenceDiagramEdgeConstraints
 		aCallEdge.connect(aCallNode1, aCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge);
 		assertTrue(SequenceDiagramEdgeConstraints.returnEdge(aReturnEdge, aCallNode2, aCallNode1, aDiagram).satisfied());
-	}
-	
-	
+	}	
 }
