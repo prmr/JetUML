@@ -76,7 +76,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint)
 	{
 		return new ConstraintSet(
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),

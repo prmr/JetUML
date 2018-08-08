@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 
 /**
@@ -46,7 +47,7 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint)
 	{
 		return new ConstraintSet(
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),

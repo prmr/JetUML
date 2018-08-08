@@ -175,7 +175,7 @@ public abstract class DiagramBuilder
 				EdgeConstraints.noteEdge(pEdge, startNode.get(), endNode.get()),
 				EdgeConstraints.noteNode(pEdge, startNode.get(), endNode.get())
 		);
-		constraints.merge(getAdditionalEdgeConstraints(pEdge, startNode.get(), endNode.get()));
+		constraints.merge(getAdditionalEdgeConstraints(pEdge, startNode.get(), endNode.get(), pEnd));
 		return constraints.satisfied();
 	}
 	
@@ -183,10 +183,11 @@ public abstract class DiagramBuilder
 	 * @param pEdge The edge to add.
 	 * @param pStart The start node.
 	 * @param pEnd The end node.
+	 * @param pEndPoint the point in the end node.
 	 * @return Additional, diagram type-specific constraints for adding edges.
-	 * @pre pEdge != null && pStart != null && pEnd != null
+	 * @pre pEdge != null && pStart != null && pEnd != null && pEndPoint != null
 	 */
-	protected abstract ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd);
+	protected abstract ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint);
 	
 	/** 
 	 * The default behavior is to position the node so it entirely fits in the diagram, then 

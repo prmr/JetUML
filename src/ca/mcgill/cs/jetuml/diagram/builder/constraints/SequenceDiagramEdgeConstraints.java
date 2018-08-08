@@ -25,9 +25,12 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -64,5 +67,17 @@ public final class SequenceDiagramEdgeConstraints
 					 ((CallNode)pStart).getParent() == ((CallNode)pEnd).getParent()));
 		};
 	}
-
+	
+	/*
+	 * Call edges that land on a parameter node must land on the lifeline part.
+	 */
+	public static Constraint callEdgeEnd(Edge pEdge, Node pEndNode, Point pEndPoint)
+	{
+		return ()->
+		{
+			return !(pEdge.getClass() == CallEdge.class && 
+					 pEndNode.getClass() == ImplicitParameterNode.class &&
+					 ((ImplicitParameterNodeView)((ImplicitParameterNode)pEndNode).view()).getTopRectangle().contains(pEndPoint));
+		};
+	}
 }

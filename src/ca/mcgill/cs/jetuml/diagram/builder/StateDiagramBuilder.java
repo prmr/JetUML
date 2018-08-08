@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.diagram.StateDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * A builder for state diagrams.
@@ -47,7 +48,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint)
 	{
 		return new ConstraintSet(
 			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 2),

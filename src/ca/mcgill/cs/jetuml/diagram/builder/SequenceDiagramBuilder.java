@@ -59,12 +59,13 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint)
 	{
 		return new ConstraintSet(
 			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 			SequenceDiagramEdgeConstraints.noEdgesFromParameter(pStart),
-			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram)
+			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
+			SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)
 		);
 	}
 	
