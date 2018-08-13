@@ -47,7 +47,7 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pEndPoint)
+	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
 	{
 		return new ConstraintSet(
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),

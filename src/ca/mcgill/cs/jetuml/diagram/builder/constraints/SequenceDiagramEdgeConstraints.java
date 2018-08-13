@@ -43,11 +43,12 @@ public final class SequenceDiagramEdgeConstraints
 	/*
 	 * No edge is allowed to start in a parameter node.
 	 */
-	public static Constraint noEdgesFromParameter(Node pStart)
+	public static Constraint noEdgesFromParameterTop(Node pStart, Point pStartPoint)
 	{
 		return ()->
 		{
-			return pStart.getClass() != ImplicitParameterNode.class;
+			return !(pStart.getClass() == ImplicitParameterNode.class && 
+					((ImplicitParameterNode)pStart).getTopRectangle().contains(pStartPoint));
 		};
 	}
 	

@@ -28,9 +28,9 @@ import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
- * A method call node in a sequence diagram. In addition to edges,
- * the node is linked to it callee and callers.
-*/
+ * A method call node in a sequence diagram. Call nodes are
+ * not intended to be manipulated by users. 
+ */
 public class CallNode extends AbstractNode implements ChildNode
 {
 	public static final int CALL_YGAP = 20;
