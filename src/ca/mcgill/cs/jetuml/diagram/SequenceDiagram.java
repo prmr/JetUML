@@ -39,15 +39,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
  */
 public final class SequenceDiagram extends Diagram
 {
-	private static final ImplicitParameterNode IMPLICIT_PARAMETER_NODE = new ImplicitParameterNode();
-	private static final Node[] NODE_PROTOTYPES = new Node[]{IMPLICIT_PARAMETER_NODE, new CallNode(), new NoteNode()};
+	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
-	
-	
-	static 
-	{
-		IMPLICIT_PARAMETER_NODE.addChild(new CallNode());
-	}
 	
 	/**
 	 * @param pNode The node to obtain the caller for.
