@@ -351,7 +351,7 @@ public abstract class DiagramBuilder
 	 * @param pEnd The end point.
 	 * @return The requested operation.
 	 */
-	public DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
+	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
 		Node node1 = aDiagramView.findNode(pStart).get();
@@ -371,25 +371,30 @@ public abstract class DiagramBuilder
 					()-> aDiagram.removeRootNode(end)));
 		}
 		assert node2 != null;
-		pEdge.connect(node1, node2, aDiagram);
-		addComplementaryEdgeAdditionOperations(result, pEdge, pStart, pEnd);
-		result.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
-				()-> aDiagram.removeEdge(pEdge)));
+		completeEdgeAdditionOperation(result, pEdge, node1, node2, pStart, pEnd);
 		return result;
 	}
 	
 	/**
-	 * Creates any sub-operation that must occur when pEdge is added, and adds them to
-	 * pOperation.
+	 * Finishes the addition operation. By default, this just connects the edge to the nodes
+	 * and adds the edge to the diagram.
 	 * 
-	 * @param pOperation The operation to complete.
-	 * @param pEdge The edge to add as part of the operation.
-	 * @param pStart The starting point.
-	 * @param pEnd The end point.
+	 * @param pOperation The operation being constructed. 
+	 * @param pEdge The edge to add.
+	 * @param pStartNode The start node.
+	 * @param pEndNode The end node.
+	 * @param pStartPoint The start point.
+	 * @param pEndPoint The end point.
+	 * @pre No null references as arguments.
 	 */
-	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pStart, Point pEnd)
-	{}
-
+	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+			Point pStartPoint, Point pEndPoint)
+	{
+		pEdge.connect(pStartNode, pEndNode, aDiagram);
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
+				()-> aDiagram.removeEdge(pEdge)));
+	}
+	
 	/**
 	 * Creates an operation to remove pNode. If the node is a root node,
 	 * then the node is removed from the diagram. If the node is a child

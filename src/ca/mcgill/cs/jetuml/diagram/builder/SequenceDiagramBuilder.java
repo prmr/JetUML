@@ -29,8 +29,8 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -181,18 +181,20 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pPoint1, Point pPoint2)
+	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+			Point pStartPoint, Point pEndPoint)
 	{
-		if( !(pEdge.getStart() instanceof CallNode) )
+		super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+		if( pStartNode.getClass() != CallNode.class )
 		{
 			return;
 		}
-		final CallNode origin = (CallNode) pEdge.getStart();
+		final CallNode origin = (CallNode) pStartNode;
 		if( pEdge instanceof ReturnEdge )
 		{
 			return;
 		}
-		final Node end = pEdge.getEnd();
+		final Node end = pEndNode;
 		
 		// Case 1 End is on the same implicit parameter -> create a self call
 		// Case 2 End is on an existing call node on a different implicit parameter -> connect
@@ -207,7 +209,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				CallNode newCallNode = new CallNode();
 				pEdge.connect(origin, newCallNode, aDiagram);
 				final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-				pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pPoint1),
+				pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
 						()-> parent.removeChild(newCallNode)));
 						
 			}
@@ -218,7 +220,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 					CallNode newCallNode = new CallNode();
 					pEdge.connect(origin, newCallNode, aDiagram);
 					final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-					pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pPoint1),
+					pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
 							()-> parent.removeChild(newCallNode)));
 				}
 				// Simple connect
@@ -227,7 +229,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		else if( end instanceof ImplicitParameterNode )
 		{
 			final ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(pPoint2)) // Case 4
+			if(endAsImplicitParameterNode.getTopRectangle().contains(pEndPoint)) // Case 4
 			{
 				final CallEdge edge = (CallEdge)pEdge;
 				final String label = edge.getMiddleLabel();
@@ -238,7 +240,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			{
 				CallNode newCallNode = new CallNode();
 				pEdge.connect(pEdge.getStart(), newCallNode, aDiagram);
-				pOperation.add(new SimpleOperation(()-> endAsImplicitParameterNode.addChild(newCallNode, pPoint1),
+				pOperation.add(new SimpleOperation(()-> endAsImplicitParameterNode.addChild(newCallNode, pStartPoint),
 						()-> endAsImplicitParameterNode.removeChild(newCallNode)));
 			}
 		}

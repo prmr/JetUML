@@ -63,12 +63,13 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected void addComplementaryEdgeAdditionOperations(CompoundOperation pOperation, Edge pEdge, Point pPoint1, Point pPoint2)
+	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+			Point pStartPoint, Point pEndPoint)
 	{
-		assert pEdge.getStart() != null;
-		if( pEdge.getStart() instanceof FieldNode )
+		super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+		if( pStartNode.getClass() == FieldNode.class )
 		{
-			final FieldNode node = (FieldNode) pEdge.getStart();
+			final FieldNode node = (FieldNode) pStartNode;
 			final String oldValue = node.getValue();
 			pOperation.add(new SimpleOperation(()-> node.setValue(""),
 					()-> node.setValue(oldValue)));
