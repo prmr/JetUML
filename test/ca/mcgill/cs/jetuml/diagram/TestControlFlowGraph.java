@@ -41,10 +41,11 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
  * This class is used to test the methods of SequenceDiagram
  * to the exclusion of the method in the superclass Diagram.
  */
-public class TestSequenceDiagram
+public class TestControlFlowGraph
 {
 	private Diagram aDiagram;
 	private DiagramAccessor aDiagramAccessor;
+	private ControlFlowGraph aFlow;
 	
 	private ImplicitParameterNode aParameter1;
 	private ImplicitParameterNode aParameter2;
@@ -77,6 +78,7 @@ public class TestSequenceDiagram
 	{
 		aDiagram = new SequenceDiagram();
 		aDiagramAccessor = new DiagramAccessor(aDiagram);
+		aFlow = new ControlFlowGraph((SequenceDiagram)aDiagram);
 		
 		aParameter1 = new ImplicitParameterNode();
 		aParameter2 = new ImplicitParameterNode();
@@ -94,11 +96,6 @@ public class TestSequenceDiagram
 		aCallEdge5 = new CallEdge();
 		aReturnEdge = new ReturnEdge();
 		createSampleDiagram1();
-	}
-	
-	private SequenceDiagram diagram()
-	{
-		return (SequenceDiagram) aDiagram;
 	}
 	
 	/*
@@ -131,40 +128,40 @@ public class TestSequenceDiagram
 	@Test
 	public void testGetCallerNoCaller()
 	{
-		assertFalse( diagram().getCaller(aCall1).isPresent());
+		assertFalse( aFlow.getCaller(aCall1).isPresent());
 	}
 	
 	@Test
 	public void testGetCallerSameParameter()
 	{
-		assertSame( aCall1, diagram().getCaller(aCall2).get());
+		assertSame( aCall1, aFlow.getCaller(aCall2).get());
 	}
 	
 	@Test
 	public void testGetCallerDifferentParameter()
 	{
-		assertSame( aCall1, diagram().getCaller(aCall3).get());
-		assertSame( aCall2, diagram().getCaller(aCall4).get());
-		assertSame( aCall4, diagram().getCaller(aCall5).get());
-		assertSame( aCall1, diagram().getCaller(aCall6).get());
+		assertSame( aCall1, aFlow.getCaller(aCall3).get());
+		assertSame( aCall2, aFlow.getCaller(aCall4).get());
+		assertSame( aCall4, aFlow.getCaller(aCall5).get());
+		assertSame( aCall1, aFlow.getCaller(aCall6).get());
 	}
 	
 	@Test
 	public void testGetCalleesEmpty()
 	{
-		assertTrue( diagram().getCallees(aCall3).isEmpty());
-		assertTrue( diagram().getCallees(aCall5).isEmpty());
-		assertTrue( diagram().getCallees(aCall6).isEmpty());
+		assertTrue( aFlow.getCallees(aCall3).isEmpty());
+		assertTrue( aFlow.getCallees(aCall5).isEmpty());
+		assertTrue( aFlow.getCallees(aCall6).isEmpty());
 	}
 	
 	@Test
 	public void testGetCalleesSingle()
 	{
-		List<Node> callees = diagram().getCallees(aCall2);
+		List<Node> callees = aFlow.getCallees(aCall2);
 		assertEquals(1, callees.size());
 		assertSame(aCall4, callees.get(0));
 		
-		callees = diagram().getCallees(aCall4);
+		callees = aFlow.getCallees(aCall4);
 		assertEquals(1, callees.size());
 		assertSame(aCall5, callees.get(0));
 	}
@@ -172,7 +169,7 @@ public class TestSequenceDiagram
 	@Test
 	public void testGetCalleesMultiple()
 	{
-		List<Node> callees = diagram().getCallees(aCall1);
+		List<Node> callees = aFlow.getCallees(aCall1);
 		assertEquals(3, callees.size());
 		assertTrue( callees.contains(aCall2));
 		assertTrue( callees.contains(aCall3));
@@ -182,43 +179,43 @@ public class TestSequenceDiagram
 	@Test
 	public void testGetCalleesIsNestedNoCaller()
 	{
-		assertFalse(diagram().isNested(aCall1));
+		assertFalse(aFlow.isNested(aCall1));
 	}
 	
 	@Test
 	public void testGetCalleesIsNestedTrue()
 	{
-		assertTrue(diagram().isNested(aCall2));
+		assertTrue(aFlow.isNested(aCall2));
 	}
 	
 	@Test
 	public void testGetCalleesIsNestedFalse()
 	{
-		assertFalse(diagram().isNested(aCall3));
-		assertFalse(diagram().isNested(aCall4));
-		assertFalse(diagram().isNested(aCall5));
-		assertFalse(diagram().isNested(aCall6));
+		assertFalse(aFlow.isNested(aCall3));
+		assertFalse(aFlow.isNested(aCall4));
+		assertFalse(aFlow.isNested(aCall5));
+		assertFalse(aFlow.isNested(aCall6));
 	}
 	
 	@Test
 	public void testIsFirstCalleeTrue()
 	{
-		assertTrue(diagram().isFirstCallee(aCall3));
-		assertTrue(diagram().isFirstCallee(aCall4));
-		assertTrue(diagram().isFirstCallee(aCall5));
+		assertTrue(aFlow.isFirstCallee(aCall3));
+		assertTrue(aFlow.isFirstCallee(aCall4));
+		assertTrue(aFlow.isFirstCallee(aCall5));
 	}
 	
 	@Test
 	public void testIsFirstCalleeFalse()
 	{
-		assertFalse(diagram().isFirstCallee(aCall2));
-		assertFalse(diagram().isFirstCallee(aCall6));
+		assertFalse(aFlow.isFirstCallee(aCall2));
+		assertFalse(aFlow.isFirstCallee(aCall6));
 	}
 	
 	@Test
 	public void testGetPreviousCallee()
 	{
-		assertSame(aCall3, diagram().getPreviousCallee(aCall2));
-		assertSame(aCall2, diagram().getPreviousCallee(aCall6));
+		assertSame(aCall3, aFlow.getPreviousCallee(aCall2));
+		assertSame(aCall2, aFlow.getPreviousCallee(aCall6));
 	}
 }

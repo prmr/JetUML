@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
+import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -58,13 +59,14 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint returnEdge(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
 	{
+		ControlFlowGraph flow = new ControlFlowGraph((SequenceDiagram)pDiagram);
 		return ()->
 		{
 			return !(pEdge.getClass() == ReturnEdge.class && 
 					(pStart.getClass() != CallNode.class ||
 					 pEnd.getClass() != CallNode.class ||
-					 !((SequenceDiagram)pDiagram).getCaller(pStart).isPresent() ||
-					 pEnd != ((SequenceDiagram)pDiagram).getCaller(pStart).get() ||
+					 !flow.getCaller(pStart).isPresent() ||
+					 pEnd != flow.getCaller(pStart).get() ||
 					 ((CallNode)pStart).getParent() == ((CallNode)pEnd).getParent()));
 		};
 	}

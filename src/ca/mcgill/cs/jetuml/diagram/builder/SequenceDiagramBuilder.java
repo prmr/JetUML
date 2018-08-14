@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import java.util.List;
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -69,13 +70,19 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		);
 	}
 	
+	private ControlFlowGraph controlFlow()
+	{
+		return new ControlFlowGraph((SequenceDiagram)aDiagram);
+	}
+	
 	/*
 	 * Returns true if pCallee is in the control-flow of pPotentialCaller
 	 */
 	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
 	{
-		for( Optional<CallNode> caller = ((SequenceDiagram)aDiagram).getCaller(pCallee); 
-				caller.isPresent(); caller = ((SequenceDiagram)aDiagram).getCaller(caller.get()))
+		ControlFlowGraph flow = controlFlow();
+		for( Optional<CallNode> caller = flow.getCaller(pCallee); 
+				caller.isPresent(); caller = flow.getCaller(caller.get()))
 		{
 			if( caller.get() == pPotentialCaller )
 			{

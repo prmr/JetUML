@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -140,29 +141,6 @@ public class CallNodeView extends AbstractNodeView
 		}
 	}
 	
-	// ========================= New ==============================================
-	
-	/*
-	 * @return The number of callers on the same ImplicitParameterNode
-	 */
-	private int getNestingDepth()
-	{
-		int result = 0;
-		if( aDiagram == null)
-		{
-			return 0;
-		}
-		for(Optional<CallNode> node = aDiagram.getCaller(node()); node.isPresent() && node.get() != node(); 
-				node = aDiagram.getCaller(node.get()))
-		{
-			if(node.get().getParent() == implicitParameter())
-			{
-				result++;
-			}
-		}
-		return result;
-	}
-	
 	/*
 	 * The x position is a function of the position of the implicit parameter
 	 * node and the nesting depth of the call node.
@@ -171,8 +149,13 @@ public class CallNodeView extends AbstractNodeView
 	{
 		if(implicitParameter() != null )
 		{
+			int depth = 0;
+			if( aDiagram != null )
+			{
+				depth = new ControlFlowGraph(aDiagram).getNestingDepth(node());
+			}
 			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getCenter().getX() -
-					WIDTH / 2 + getNestingDepth() * WIDTH/2;
+					WIDTH / 2 + depth * WIDTH/2;
 		}
 		else
 		{
@@ -190,7 +173,8 @@ public class CallNodeView extends AbstractNodeView
 		Optional<CallNode> caller = Optional.empty();
 		if( aDiagram != null )
 		{
-			caller = aDiagram.getCaller(node());
+			ControlFlowGraph flow = new ControlFlowGraph(aDiagram);
+			caller = flow.getCaller(node());
 		}
 		if( !caller.isPresent() )
 		{
@@ -210,21 +194,22 @@ public class CallNodeView extends AbstractNodeView
 		}
 		else // there are four cases here: nested call (y/n) and first callee (y/n) 
 		{
-			if( aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()))
+			ControlFlowGraph flow = new ControlFlowGraph(aDiagram);
+			if( flow.isNested(node()) && flow.isFirstCallee(node()))
 			{
 				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
 			}
-			if( aDiagram.isNested(node()) && !aDiagram.isFirstCallee(node()) )
+			if( flow.isNested(node()) && !flow.isFirstCallee(node()) )
 			{
-				return ((CallNodeView)aDiagram.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+				return ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
 			}
-			if( !aDiagram.isNested(node()) && aDiagram.isFirstCallee(node()) )
+			if( !flow.isNested(node()) && flow.isFirstCallee(node()) )
 			{
 				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
 			}
 			else
 			{
-				return ((CallNodeView)aDiagram.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+				return ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
 			}
 		}
 	} // CSON:
