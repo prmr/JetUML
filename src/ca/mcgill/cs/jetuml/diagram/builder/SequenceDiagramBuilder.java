@@ -22,9 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.List;
-import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -34,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
@@ -66,30 +65,9 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
 			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-			SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)
+			SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint),
+			SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
 		);
-	}
-	
-	private ControlFlowGraph controlFlow()
-	{
-		return new ControlFlowGraph((SequenceDiagram)aDiagram);
-	}
-	
-	/*
-	 * Returns true if pCallee is in the control-flow of pPotentialCaller
-	 */
-	private boolean isCallDominator(CallNode pPotentialCaller, CallNode pCallee)
-	{
-		ControlFlowGraph flow = controlFlow();
-		for( Optional<CallNode> caller = flow.getCaller(pCallee); 
-				caller.isPresent(); caller = flow.getCaller(caller.get()))
-		{
-			if( caller.get() == pPotentialCaller )
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	@Override
@@ -187,70 +165,107 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return result;
 	}
 	
+//	@Override
+//	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+//			Point pStartPoint, Point pEndPoint)
+//	{
+//		super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+//		if( pStartNode.getClass() != CallNode.class )
+//		{
+//			return;
+//		}
+//		final CallNode origin = (CallNode) pStartNode;
+//		if( pEdge instanceof ReturnEdge )
+//		{
+//			return;
+//		}
+//		final Node end = pEndNode;
+//		
+//		// Case 1 End is on the same implicit parameter -> create a self call
+//		// Case 2 End is on an existing call node on a different implicit parameter -> connect
+//		// Case 3 End is on a different implicit parameter -> create a new call
+//		// Case 4 End is on an implicit parameter top node -> creates node
+//		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
+//		if( end instanceof CallNode )
+//		{
+//			CallNode endAsCallNode = (CallNode) end;
+//			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
+//			{
+//				CallNode newCallNode = new CallNode();
+//				pEdge.connect(origin, newCallNode, aDiagram);
+//				final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
+//				pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
+//						()-> parent.removeChild(newCallNode)));
+//						
+//			}
+//			else // Case 2
+//			{
+//				if( isCallDominator(endAsCallNode, origin))
+//				{
+//					CallNode newCallNode = new CallNode();
+//					pEdge.connect(origin, newCallNode, aDiagram);
+//					final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
+//					pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
+//							()-> parent.removeChild(newCallNode)));
+//				}
+//				// Simple connect
+//			}
+//		}
+//		else if( end instanceof ImplicitParameterNode )
+//		{
+//			final ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
+//			if(endAsImplicitParameterNode.getTopRectangle().contains(pEndPoint)) // Case 4
+//			{
+//				final CallEdge edge = (CallEdge)pEdge;
+//				final String label = edge.getMiddleLabel();
+//				pOperation.add(new SimpleOperation(()-> edge.setMiddleLabel("\u00ABcreate\u00BB"),
+//						()-> edge.setMiddleLabel(label)));
+//			}
+//			else // Case 3
+//			{
+//				CallNode newCallNode = new CallNode();
+//				pEdge.connect(pEdge.getStart(), newCallNode, aDiagram);
+//				pOperation.add(new SimpleOperation(()-> endAsImplicitParameterNode.addChild(newCallNode, pStartPoint),
+//						()-> endAsImplicitParameterNode.removeChild(newCallNode)));
+//			}
+//		}
+//	}
+	
 	@Override
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
-		super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
-		if( pStartNode.getClass() != CallNode.class )
+		if( pEdge.getClass() == NoteEdge.class )
 		{
+			super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
 			return;
 		}
-		final CallNode origin = (CallNode) pStartNode;
-		if( pEdge instanceof ReturnEdge )
+		Node start = pStartNode;
+		if( start.getClass() == ImplicitParameterNode.class )
 		{
-			return;
+			CallNode newCallNode = new CallNode();
+			ImplicitParameterNode parent = (ImplicitParameterNode) pStartNode;
+			pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
+					()-> parent.removeChild(newCallNode)));
+			start = newCallNode;
 		}
-		final Node end = pEndNode;
-		
-		// Case 1 End is on the same implicit parameter -> create a self call
-		// Case 2 End is on an existing call node on a different implicit parameter -> connect
-		// Case 3 End is on a different implicit parameter -> create a new call
-		// Case 4 End is on an implicit parameter top node -> creates node
-		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
-		if( end instanceof CallNode )
+		ImplicitParameterNode endParent = null;
+		if( pEndNode.getClass() == ImplicitParameterNode.class )
 		{
-			CallNode endAsCallNode = (CallNode) end;
-			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
-			{
-				CallNode newCallNode = new CallNode();
-				pEdge.connect(origin, newCallNode, aDiagram);
-				final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-				pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
-						()-> parent.removeChild(newCallNode)));
-						
-			}
-			else // Case 2
-			{
-				if( isCallDominator(endAsCallNode, origin))
-				{
-					CallNode newCallNode = new CallNode();
-					pEdge.connect(origin, newCallNode, aDiagram);
-					final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-					pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
-							()-> parent.removeChild(newCallNode)));
-				}
-				// Simple connect
-			}
+			endParent = (ImplicitParameterNode) pEndNode;
 		}
-		else if( end instanceof ImplicitParameterNode )
+		else
 		{
-			final ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-			if(endAsImplicitParameterNode.getTopRectangle().contains(pEndPoint)) // Case 4
-			{
-				final CallEdge edge = (CallEdge)pEdge;
-				final String label = edge.getMiddleLabel();
-				pOperation.add(new SimpleOperation(()-> edge.setMiddleLabel("\u00ABcreate\u00BB"),
-						()-> edge.setMiddleLabel(label)));
-			}
-			else // Case 3
-			{
-				CallNode newCallNode = new CallNode();
-				pEdge.connect(pEdge.getStart(), newCallNode, aDiagram);
-				pOperation.add(new SimpleOperation(()-> endAsImplicitParameterNode.addChild(newCallNode, pStartPoint),
-						()-> endAsImplicitParameterNode.removeChild(newCallNode)));
-			}
+			assert pEndNode.getClass() == CallNode.class;
+			endParent = (ImplicitParameterNode)((CallNode)pEndNode).getParent();
 		}
+		CallNode newCallNode = new CallNode();
+		final ImplicitParameterNode parent = endParent;
+		pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
+				()-> parent.removeChild(newCallNode)));
+		pEdge.connect(start, newCallNode, aDiagram);
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
+				()-> aDiagram.removeEdge(pEdge)));
 	}
 	
 	@Override

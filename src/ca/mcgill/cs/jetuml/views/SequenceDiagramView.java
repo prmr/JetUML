@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.views;
 
-import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
+import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
@@ -47,7 +47,7 @@ public class SequenceDiagramView extends DiagramView
 	@Override
 	protected Node deepFindNode( Node pNode, Point pPoint )
 	{		
-		ControlFlowGraph flow = new ControlFlowGraph((SequenceDiagram)aDiagram);
+		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
 		if( pNode instanceof CallNode )
 		{
 			for(Node child : flow.getCallees(pNode))

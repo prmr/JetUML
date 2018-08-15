@@ -27,23 +27,25 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 
 /**
  * An immutable wrapper around a SequenceDiagram that can answer
  * various queries about the control-flow represented by 
  * the wrapped sequence diagram.
  */
-public final class ControlFlowGraph
+public final class ControlFlow
 {
 	private final SequenceDiagram aDiagram;
 	
 	/**
-	 * Creates a new ControlFlowGraph to query pDiagram.
+	 * Creates a new ControlFlow to query pDiagram.
 	 * 
 	 * @param pDiagram The diagram to wrap.
 	 * @pre pDiagram != null.
 	 */
-	public ControlFlowGraph(SequenceDiagram pDiagram)
+	public ControlFlow(SequenceDiagram pDiagram)
 	{
 		assert pDiagram != null;
 		aDiagram = pDiagram;
@@ -132,6 +134,35 @@ public final class ControlFlowGraph
 	
 	/**
 	 * @param pNode The node to test.
+	 * @return The top level node immediately above pNode, if it exists.
+	 */
+	public Optional<CallNode> getPreviousTopLevelCallNode(CallNode pNode)
+	{
+		Optional<CallNode> result = Optional.empty();
+		if( pNode.getParent() != null )
+		{
+			List<CallNode> callNodes = getTopLevelCallSequence((ImplicitParameterNode)pNode.getParent());
+			if( callNodes.size() >= 2 && callNodes.get(0) != pNode )
+			{
+				CallNode previous = (CallNode) callNodes.get(0);
+				for(int i = 1; i < callNodes.size(); i++ )
+				{
+					CallNode current = (CallNode)callNodes.get(i);
+					if( current == pNode)
+					{
+						break;
+					}
+					previous = current;
+				}
+				result = Optional.of(previous);
+			}
+		}
+		return result;
+	}
+
+	
+	/**
+	 * @param pNode The node to test.
 	 * @return True if pNode has a caller on the same implicit parameter node, false otherwise.
 	 * @pre pNode != null && contains(pNode) && pNode.getParent() != null
 	 */
@@ -165,5 +196,41 @@ public final class ControlFlowGraph
 			node = getCaller(node.get());
 		}
 		return result;
+	}
+	
+	/**
+	 * Get the children of pNode that have a nesting depth of 0,
+	 * in the order of the calls.
+	 * 
+	 * @param pNode The node to test.
+	 * @return The list of top level nodes.
+	 * @pre pNode != null;
+	 */
+	public List<CallNode> getTopLevelCallSequence(ImplicitParameterNode pNode)
+	{
+		List<CallNode> result = new ArrayList<>();
+		for(ChildNode child : pNode.getChildren() )
+		{
+			if( getNestingDepth((CallNode)child) == 0 )
+			{
+				result.add((CallNode)child);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * @return True if there is at least one call node in the diagram.
+	 */
+	public boolean hasEntryPoint()
+	{
+		for( Node node : aDiagram.rootNodes() )
+		{
+			if( node.getClass() == ImplicitParameterNode.class && !((ImplicitParameterNode)node).getChildren().isEmpty())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

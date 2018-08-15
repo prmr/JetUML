@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -83,10 +82,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		addNode(aParameterNode1, new Point(5, 0));
 		addNode(aParameterNode2, new Point(125, 0));
-		addNode(aCallNode1, new Point(7, 75));
 		
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, aParameterNode1.getChildren().size());
 
 		assertFalse(aBuilder.canAdd(aReturnEdge, new Point(7, 75), new Point(26, 0)));
 		assertFalse(aBuilder.canAdd(aNoteEdge, new Point(7, 75), new Point(26, 0)));
@@ -94,22 +91,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addEdge(aCallEdge1, new Point(43, 85), new Point(130, 85));
 		assertEquals(1, numberOfEdges());
 	}
-	
-	@Test
-	public void testLinkCallNodeToLifeLine()
-	{
-		addNode(aParameterNode1, new Point(5, 0));
-		addNode(aParameterNode2, new Point(125, 0));
-		addNode(aCallNode1, new Point(11, 75));
-		
-		assertSame(aCallNode1, aParameterNode1.getChildren().get(0));
-		
-		addEdge(aCallEdge1, new Point(43, 85), new Point(132,75));
-		
-		assertEquals(1, numberOfEdges());
-		assertEquals(1, aParameterNode2.getChildren().size());
-	}
-	
 	
 	/**
 	 * Testing adding more edges to the diagram.
@@ -121,8 +102,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aParameterNode2, new Point(110, 0));
 		addNode(newParaNode, new Point(210, 0));
-		addNode(aCallNode1, new Point(15, 85));
-		assertEquals(1, aParameterNode1.getChildren().size());
 		addEdge(aCallEdge1, new Point(45, 85), new Point(115,75));
 		assertEquals(1, numberOfEdges());
 		
@@ -140,8 +119,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aParameterNode2, new Point(110, 0));
-		addNode(aCallNode1, new Point(15, 75)); 
-		addNode(aCallNode2, new Point(115, 75)); 
 		addEdge(aCallEdge1, new Point(45, 85), new Point(145,85));
 		
 		NoteNode noteNode = new NoteNode();
@@ -172,8 +149,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aParameterNode2, new Point(110, 0));
-		addNode(aCallNode1, new Point(15, 75));
-		addNode(aCallNode2, new Point(115, 75));
 		addEdge(aCallEdge1, new Point(42, 85), new Point(142,85));
 
 		aParameterNode1.translate(5, 15);
@@ -222,7 +197,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aParameterNode2, new Point(110, 0));
 		addNode(newParameterNode, new Point(210, 0));
-		addNode(aCallNode1, new Point(15, 75));
 		addEdge(aCallEdge1, new Point(45, 85), new Point(115,85));
 		ReturnEdge returnEdge1 = new ReturnEdge();
 		addEdge(returnEdge1, new Point(145,90), new Point(45, 90));		

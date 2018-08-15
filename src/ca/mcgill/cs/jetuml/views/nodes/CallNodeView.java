@@ -24,14 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -108,25 +104,6 @@ public class CallNodeView extends AbstractNodeView
 			
 		}
 	}
-	
-	/*
-	 * @param pGraph
-	 * @return All the nodes (CallNodes or ImplicitParameterNodes) that have a calledge
-	 * originating at this CallNode. If an ImplicitParameterNode is in the list, it's always
-	 * returned first.
-	 */
-	private List<Node> getCallees(Diagram pGraph)
-	{
-		List<Node> callees = new ArrayList<>();
-		for( Edge edge : pGraph.edges())
-		{
-			if( edge.getStart() == node() && edge instanceof CallEdge )
-			{
-				callees.add(edge.getEnd());
-			}
-		}
-		return callees;
-	}
 
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
@@ -152,7 +129,7 @@ public class CallNodeView extends AbstractNodeView
 			int depth = 0;
 			if( aDiagram != null )
 			{
-				depth = new ControlFlowGraph(aDiagram).getNestingDepth(node());
+				depth = new ControlFlow(aDiagram).getNestingDepth(node());
 			}
 			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getCenter().getX() -
 					WIDTH / 2 + depth * WIDTH/2;
@@ -165,54 +142,43 @@ public class CallNodeView extends AbstractNodeView
 	
 	/*
 	 * If the node has a caller, the Y coordinate is a gap below the last return Y value
-	 * of the caller. If not, it's simply a set distance below the previous call node.
-	 * CSOFF:
+	 * of the caller or a set distance before the previous call node, whatever is lower.
+	 * If not, it's simply a set distance below the previous call node.
 	 */
 	private int getY()
 	{
-		Optional<CallNode> caller = Optional.empty();
-		if( aDiagram != null )
+		if( implicitParameter() == null || aDiagram == null )
 		{
-			ControlFlowGraph flow = new ControlFlowGraph(aDiagram);
-			caller = flow.getCaller(node());
+			return 0; // Only used for the ImageCreator
 		}
-		if( !caller.isPresent() )
+		ControlFlow flow = new ControlFlow(aDiagram);
+		Optional<CallNode> caller = flow.getCaller(node());
+		if( caller.isPresent() )
 		{
-			Optional<CallNode> previous = getPreviousCallNode();
-			if( previous.isPresent() )
-			{
-				return ((CallNodeView)previous.get().view()).getMaxY() + Y_GAP_BIG;
-			}
-			else if( implicitParameter() != null )
-			{
-				return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getMaxY() + Y_GAP_BIG;
-			}
-			else
-			{
-				return 0; // Only used for the image creator
-			}
-		}
-		else // there are four cases here: nested call (y/n) and first callee (y/n) 
-		{
-			ControlFlowGraph flow = new ControlFlowGraph(aDiagram);
+			int result = 0;
 			if( flow.isNested(node()) && flow.isFirstCallee(node()))
 			{
-				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
+				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
 			}
-			if( flow.isNested(node()) && !flow.isFirstCallee(node()) )
+			else if( flow.isNested(node()) && !flow.isFirstCallee(node()) )
 			{
-				return ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
 			}
-			if( !flow.isNested(node()) && flow.isFirstCallee(node()) )
+			else if( !flow.isNested(node()) && flow.isFirstCallee(node()) )
 			{
-				return ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
+				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
 			}
 			else
 			{
-				return ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
 			}
+			return result;
 		}
-	} // CSON:
+		else
+		{
+			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getMaxY() + Y_GAP_SMALL;
+		}
+	} 
 	
 	/**
 	 * @return If there's no callee, returns a fixed offset from the y position.
@@ -223,7 +189,7 @@ public class CallNodeView extends AbstractNodeView
 		List<Node> callees = new ArrayList<>();
 		if( aDiagram != null )
 		{
-			callees = getCallees(aDiagram);
+			callees = new ControlFlow(aDiagram).getCallees(node());
 		}
 		if( callees.isEmpty() )
 		{
@@ -235,34 +201,6 @@ public class CallNodeView extends AbstractNodeView
 		}
 	}
 	
-	private Optional<CallNode> getPreviousCallNode()
-	{
-		List<ChildNode> callNodes = new ArrayList<>();
-		if( implicitParameter() != null )
-		{
-			callNodes = implicitParameter().getChildren();
-		}
-		if( callNodes.size() < 2 )
-		{
-			return Optional.empty();
-		}
-		if( callNodes.get(0) == node())
-		{
-			return Optional.empty();
-		}
-		CallNode previous = (CallNode) callNodes.get(0);
-		for(int i = 1; i < callNodes.size(); i++ )
-		{
-			CallNode current = (CallNode)callNodes.get(i);
-			if( current == node())
-			{
-				break;
-			}
-			previous = current;
-		}
-		return Optional.of(previous);
-	}
-
 	@Override
 	public Rectangle getBounds()
 	{

@@ -29,14 +29,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestSequenceDiagramBuilder
 {
@@ -48,7 +46,6 @@ public class TestSequenceDiagramBuilder
 	private CallNode aDefaultCallNode2;
 	private CallNode aCallNode1;
 	private CallEdge aCallEdge1;
-	private CallEdge aCallEdge2;
 	
 	/**
 	 * Load JavaFX toolkit and environment.
@@ -71,23 +68,12 @@ public class TestSequenceDiagramBuilder
 		aDefaultCallNode2 = new CallNode();
 		aCallNode1 = new CallNode();
 		aCallEdge1 = new CallEdge();
-		aCallEdge2 = new CallEdge();
 	}
 	
 	private int numberOfRootNodes()
 	{
 		int sum = 0;
 		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
-		{
-			sum++;
-		}
-		return sum;
-	}
-	
-	private int numberOfEdges()
-	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
 		{
 			sum++;
 		}
@@ -124,25 +110,6 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddEdgeOperationCallNodeCallNode1()
-	{
-		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aImplicitParameterNode2.translate(200, 0);
-		aDiagram.addRootNode(aImplicitParameterNode1);
-		aDiagram.addRootNode(aImplicitParameterNode2);
-		
-		DiagramOperation operation = aBuilder.createAddEdgeOperation(aCallEdge1, new Point(35, 85), new Point(235, 85));
-		operation.execute();
-		assertSame(aDefaultCallNode1, aCallEdge1.getStart());
-		assertSame(aDefaultCallNode2, aCallEdge1.getEnd());
-		assertEquals(1, numberOfEdges());
-		
-		operation.undo();
-		assertEquals(0, numberOfEdges());
-	}
-	
-	@Test
 	public void testcreateAddNodeOperationSecondCallNode()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
@@ -159,26 +126,5 @@ public class TestSequenceDiagramBuilder
 		assertEquals(2, aImplicitParameterNode1.getChildren().size());
 		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
 		assertSame(aCallNode1, aImplicitParameterNode1.getChildren().get(1));
-	}
-	
-	@Test
-	public void testcreateAddEdgeOperationFromImplicitParameterThatAlreadyHasACallee()
-	{
-		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		aImplicitParameterNode2.addChild(aDefaultCallNode2);
-		aImplicitParameterNode2.translate(200, 0);
-		aDiagram.addRootNode(aImplicitParameterNode1);
-		aDiagram.addRootNode(aImplicitParameterNode2);
-		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
-		aDiagram.addEdge(aCallEdge1);
-		
-		aImplicitParameterNode2.addChild(aCallNode1);
-		assertEquals(new Rectangle(232,140,16,30), aCallNode1.view().getBounds());
-		
-		DiagramOperation operation = aBuilder.createAddEdgeOperation(aCallEdge2, new Point(35,85), new Point(235, 145));
-		operation.execute();
-		assertEquals(2, numberOfEdges());
-		assertSame(aDefaultCallNode1, aCallEdge2.getStart());
-		assertSame(aCallNode1, aCallEdge2.getEnd());
 	}
 }

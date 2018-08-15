@@ -21,7 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import ca.mcgill.cs.jetuml.diagram.ControlFlowGraph;
+import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -59,7 +59,7 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint returnEdge(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
 	{
-		ControlFlowGraph flow = new ControlFlowGraph((SequenceDiagram)pDiagram);
+		ControlFlow flow = new ControlFlow((SequenceDiagram)pDiagram);
 		return ()->
 		{
 			return !(pEdge.getClass() == ReturnEdge.class && 
@@ -81,6 +81,20 @@ public final class SequenceDiagramEdgeConstraints
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEndNode.getClass() == ImplicitParameterNode.class &&
 					 ((ImplicitParameterNodeView)((ImplicitParameterNode)pEndNode).view()).getTopRectangle().contains(pEndPoint));
+		};
+	}
+	
+	/*
+	 * It's only legal to start an interaction on a parameter node if there are no existing activations
+	 * in the diagram.
+	 */
+	public static Constraint singleEntryPoint(Edge pEdge, Node pStartNode, Diagram pDiagram)
+	{
+		return ()->
+		{
+			return !(pEdge.getClass() == CallEdge.class && 
+					pStartNode.getClass() == ImplicitParameterNode.class &&
+					new ControlFlow((SequenceDiagram)pDiagram).hasEntryPoint());
 		};
 	}
 }

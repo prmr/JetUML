@@ -41,11 +41,11 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
  * This class is used to test the methods of SequenceDiagram
  * to the exclusion of the method in the superclass Diagram.
  */
-public class TestControlFlowGraph
+public class TestControlFlow
 {
 	private Diagram aDiagram;
 	private DiagramAccessor aDiagramAccessor;
-	private ControlFlowGraph aFlow;
+	private ControlFlow aFlow;
 	
 	private ImplicitParameterNode aParameter1;
 	private ImplicitParameterNode aParameter2;
@@ -78,7 +78,7 @@ public class TestControlFlowGraph
 	{
 		aDiagram = new SequenceDiagram();
 		aDiagramAccessor = new DiagramAccessor(aDiagram);
-		aFlow = new ControlFlowGraph((SequenceDiagram)aDiagram);
+		aFlow = new ControlFlow((SequenceDiagram)aDiagram);
 		
 		aParameter1 = new ImplicitParameterNode();
 		aParameter2 = new ImplicitParameterNode();
