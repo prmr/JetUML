@@ -201,4 +201,29 @@ public final class ControlFlow
 		}
 		return false;
 	}
+	
+	/**
+	 * @param pNode The node to check
+	 * @return True if pNode is a call node that does not have any outgoing
+	 * call edge.
+	 */
+	public boolean hasNoCallees(CallNode pNode)
+	{
+		assert pNode != null;
+		return getCallees(pNode).isEmpty();
+	}
+	
+	/**
+	 * @param pNode The node to check.
+	 * @param pCallee The edge to check.
+	 * @return True if pNode has no caller and only pEdge as callee.
+	 */
+	public boolean onlyConnectedToOneCall(CallNode pNode, CallEdge pCallee)
+	{
+		List<CallEdge> calls = getCalls(pNode);
+		return !getCaller(pNode).isPresent() &&
+				calls.size() == 1 &&
+				calls.contains(pCallee);
+	}
+
 }

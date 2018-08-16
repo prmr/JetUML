@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -71,34 +70,19 @@ public class ImplicitParameterNode extends NamedNode implements ParentNode
 	@Override
 	public void addChild(int pIndex, ChildNode pNode)
 	{
+		addChild(pNode);
+	}
+	
+	@Override
+	public void addChild(ChildNode pNode)
+	{
 		ParentNode oldParent = pNode.getParent();
 		if (oldParent != null)
 		{
 			oldParent.removeChild(pNode);
 		}
-		aCallNodes.add(pIndex, pNode);
+		aCallNodes.add(pNode);
 		pNode.setParent(this);
-	}
-	
-	/**
-	 * Adds a child in the right sequence in the list of calls.
-	 * @param pChild The child to add
-	 * @param pPoint The point selected.
-	 */
-	public void addChild(ChildNode pChild, Point pPoint)
-	{
-		int i = 0;
-		while(i < aCallNodes.size() && aCallNodes.get(i).view().getBounds().getY() <= pPoint.getY())
-		{
-			i++;
-		}
-		addChild(i, pChild);
-	}
-
-	@Override
-	public void addChild(ChildNode pNode)
-	{
-		addChild(aCallNodes.size(), pNode);
 	}
 
 	@Override

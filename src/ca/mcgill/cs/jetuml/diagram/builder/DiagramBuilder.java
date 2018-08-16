@@ -404,7 +404,7 @@ public abstract class DiagramBuilder
 	 * @param pNode The node to remove.
 	 * @return An operation to remove the node and all connected edges.
 	 */
-	public DiagramOperation createRemoveNodeOperation(Node pNode)
+	protected DiagramOperation createRemoveNodeOperation(Node pNode)
 	{
 		assert pNode != null;
 		CompoundOperation result = createRemoveAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));

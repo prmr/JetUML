@@ -71,14 +71,60 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		);
 	}
 	
-	@Override
-	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
+	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
-		List<DiagramElement> result = super.getCoRemovals(pElement);
-		if( pElement instanceof CallEdge && hasNoCallees(((Edge)pElement).getEnd()))
+		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		if( pTarget instanceof CallEdge && flow.hasNoCallees((CallNode)((Edge)pTarget).getEnd()))
 		{
-			result.add(((Edge)pElement).getEnd());
+			Node end = ((Edge)pTarget).getEnd();
+			pElements.add(end);
 		}
+	}
+
+	private void addEdgeStartIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pTarget)
+	{
+		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)((Edge)pTarget).getStart(), (CallEdge) pTarget))
+		{
+			Node start = ((Edge)pTarget).getStart();
+			pElements.add(start);
+		}
+	}
+	
+	private void addNodeCallerIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
+	{
+		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		if( pElement instanceof CallNode )
+		{
+			Optional<CallNode> caller = flow.getCaller((Node)pElement);
+			if( caller.isPresent() )
+			{
+				List<CallEdge> calls = flow.getCalls(caller.get());
+				if( !flow.getCaller(caller.get()).isPresent() && calls.size() == 1 && calls.get(0).getEnd() == pElement )
+				{
+					pElements.add(caller.get());
+				}
+			}
+		}
+	}
+	
+	private void addNodeCalleesIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
+	{
+		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		if( pElement instanceof CallNode )
+		{
+			for( Node callee : flow.getCallees((Node)pElement))
+			{
+				if( flow.hasNoCallees((CallNode)callee))
+				{
+					pElements.add(callee);
+				}
+			}
+		}
+	}
+	
+	private void addCorrespondingReturnEdge(List<DiagramElement> pElements, DiagramElement pElement)
+	{
 		if( pElement instanceof CallEdge )
 		{
 			Edge returnEdge = null;
@@ -94,66 +140,60 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			if( returnEdge != null )
 			{
 				final Edge target = returnEdge;
-				result.add(target);
+				pElements.add(target);
 			}
 		}
-		return result;
 	}
 	
 	@Override
-	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
-		CompoundOperation result = new CompoundOperation();
-		result.add(super.createRemoveEdgeOperation(pEdge));
-		
-		if(pEdge instanceof CallEdge && hasNoCallees(pEdge.getEnd())) 
-		{
-			result.add(createRemoveNodeOperation(pEdge.getEnd()));
-		}
-		
-		// Also delete the return edge, if it exists
-		if( pEdge instanceof CallEdge )
-		{
-			Edge returnEdge = null;
-			for( Edge edge : aDiagram.edges() )
-			{
-				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
-				{
-					returnEdge = edge;
-					break;
-				}
-			}
-			if( returnEdge != null )
-			{
-				final Edge target = returnEdge;
-				result.add(new SimpleOperation( ()-> aDiagram.removeEdge(target),
-						()-> aDiagram.addEdge(target)));
-			}
-		}
+		List<DiagramElement> result = super.getCoRemovals(pElement);
+		addEdgeEndIfItHasNoCallees(result, pElement);
+		addEdgeStartIfItHasNoOtherFlow(result, pElement);
+		addNodeCallerIfItHasNoOtherFlow(result, pElement);
+		addCorrespondingReturnEdge(result, pElement);
+		addNodeCalleesIfItHasNoOtherFlow(result, pElement);
 		return result;
 	}
 	
-	/**
-	 * @param pNode The node to check
-	 * @return True if pNode is a call node that does not have any outgoing
-	 * call edge.
-	 */
-	private boolean hasNoCallees(Node pNode)
-	{
-		if( !(pNode instanceof CallNode ))
-		{
-			return false;
-		}
-		assert pNode instanceof CallNode;
-		for( Edge edge : aDiagram.edges() )
-		{
-			if( edge.getStart() == pNode )
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+//	@Override
+//	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
+//	{
+//		CompoundOperation result = new CompoundOperation();
+//		result.add(super.createRemoveEdgeOperation(pEdge));
+//		
+//		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+//		if(pEdge instanceof CallEdge && flow.hasNoCallees((CallNode) pEdge.getEnd())) 
+//		{
+//			result.add(createRemoveNodeOperation(pEdge.getEnd()));
+//		}
+//		if( pEdge instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)pEdge.getStart(), (CallEdge) pEdge))
+//		{
+//			result.add(createRemoveNodeOperation(pEdge.getStart()));
+//		}
+//		
+//		// Also delete the return edge, if it exists
+//		if( pEdge instanceof CallEdge )
+//		{
+//			Edge returnEdge = null;
+//			for( Edge edge : aDiagram.edges() )
+//			{
+//				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
+//				{
+//					returnEdge = edge;
+//					break;
+//				}
+//			}
+//			if( returnEdge != null )
+//			{
+//				final Edge target = returnEdge;
+//				result.add(new SimpleOperation( ()-> aDiagram.removeEdge(target),
+//						()-> aDiagram.addEdge(target)));
+//			}
+//		}
+//		return result;
+//	}
 
 	@Override
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
