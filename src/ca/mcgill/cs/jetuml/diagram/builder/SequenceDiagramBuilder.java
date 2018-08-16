@@ -235,7 +235,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
-		if( pEdge.getClass() == NoteEdge.class )
+		if( pEdge.getClass() != CallEdge.class )
 		{
 			super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
 			return;
