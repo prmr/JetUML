@@ -203,6 +203,20 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
+	 * Adds pEdge to the list of edges so that it is placed immediately 
+	 * after pAnchor in the list.
+	 * 
+	 * @param pAnchor The anchor.
+	 * @param pEdge The edge to add.
+	 * @pre pAnchor != null && pEdge != null && contains(pAnchor)
+	 */
+	public void addEdgeBefore(Edge pAnchor, Edge pEdge)
+	{
+		assert pAnchor != null && pEdge != null && contains(pAnchor);
+		aEdges.add(aEdges.indexOf(pAnchor), pEdge);
+	}
+	
+	/**
 	 * Removes pEdge from this diagram. Callers must ensure that the removal
 	 * preserves the integrity of the diagram.
 	 * 

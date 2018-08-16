@@ -22,7 +22,9 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.List;
+import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -32,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
@@ -263,9 +264,31 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
 				()-> parent.removeChild(newCallNode)));
+		Optional<Edge> anchor = computeEdgeAnchor(start, pStartPoint.getY());
 		pEdge.connect(start, newCallNode, aDiagram);
-		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
-				()-> aDiagram.removeEdge(pEdge)));
+		if( anchor.isPresent() )
+		{
+			pOperation.add(new SimpleOperation(()-> aDiagram.addEdgeBefore(anchor.get(), pEdge),
+					()-> aDiagram.removeEdge(pEdge)));
+		}
+		else
+		{
+			pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
+					()-> aDiagram.removeEdge(pEdge)));
+		}
+	}
+	
+	private Optional<Edge> computeEdgeAnchor(Node pCaller, int pY)
+	{
+		Optional<Edge> result = Optional.empty();
+		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
+		{
+			if( callee.view().getConnectionPoints().getY1() > pY )
+			{
+				result = Optional.of(callee);
+			}
+		}
+		return result;
 	}
 	
 	@Override

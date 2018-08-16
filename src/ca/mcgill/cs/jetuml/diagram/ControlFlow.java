@@ -74,6 +74,25 @@ public final class ControlFlow
 	}
 	
 	/**
+	 * @param pCaller The caller node.
+	 * @return The list of call edges starting at pCaller
+	 * @pre pCaller != null
+	 */
+	public List<CallEdge> getCalls(Node pCaller)
+	{
+		assert pCaller != null;
+		ArrayList<CallEdge> result = new ArrayList<>();
+		for( Edge edge : aDiagram.edges() )
+		{
+			if( edge.getClass() == CallEdge.class && edge.getStart() == pCaller )
+			{
+				result.add((CallEdge)edge);
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Returns the caller of a node, if it exists.
 	 * 
 	 * @param pNode The node to obtain the caller for.
