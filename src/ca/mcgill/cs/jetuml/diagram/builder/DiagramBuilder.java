@@ -22,8 +22,12 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -35,7 +39,9 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -261,6 +267,49 @@ public abstract class DiagramBuilder
 		return result;
 	}
 	
+	/*
+	 * Organize the elements to delete so that they can be reinserted properly
+	 */
+	private List<DiagramElement> tweakOrder(HashSet<DiagramElement> pElements)
+	{
+		List<DiagramElement> result = new ArrayList<>();
+		Map<ObjectNode, List<FieldNode>> fields = new HashMap<>();
+		for( DiagramElement element : pElements)
+		{
+			if( element.getClass() != FieldNode.class )
+			{
+				result.add(element);
+			}
+			else
+			{
+				FieldNode field = (FieldNode) element;
+				if( !fields.containsKey((ObjectNode)field.getParent()))
+				{
+					fields.put((ObjectNode)field.getParent(), new ArrayList<>());
+				}
+				fields.get((ObjectNode)field.getParent()).add(field);
+			}
+		}
+		for( ObjectNode object : fields.keySet() )
+		{
+			List<FieldNode> nodes = fields.get(object);
+			Collections.sort(nodes, new Comparator<FieldNode>()
+			{
+				@Override
+				public int compare(FieldNode pField1, FieldNode pField2)
+				{
+					return pField2.getParent().getChildren().indexOf(pField2) - 
+							pField1.getParent().getChildren().indexOf(pField1);
+				}
+			});
+			for( FieldNode node : nodes )
+			{
+				result.add(node);
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * Creates an operation that removes all the elements in pElements.
 	 * 
@@ -278,7 +327,8 @@ public abstract class DiagramBuilder
 			toDelete.addAll(getCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
-		for( DiagramElement element : toDelete)
+		
+		for( DiagramElement element : tweakOrder(toDelete))
 		{
 			if( element instanceof Edge )
 			{
