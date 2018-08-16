@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -109,27 +108,6 @@ public abstract class DiagramBuilder
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
 		return true;
-	}
-	
-	private CompoundOperation createRemoveAllEdgesConnectedToOperation(List<Node> pNodes)
-	{
-		assert pNodes != null;
-		ArrayList<Edge> toRemove = new ArrayList<Edge>();
-		for(Edge edge : aDiagram.edges())
-		{
-			if(pNodes.contains(edge.getStart() ) || pNodes.contains(edge.getEnd()))
-			{
-				toRemove.add(edge);
-			}
-		}
-		Collections.reverse(toRemove);
-		CompoundOperation result = new CompoundOperation();
-		for(Edge edge : toRemove)
-		{
-			result.add(new SimpleOperation(()-> aDiagram.removeEdge(edge), 
-					()-> aDiagram.addEdge(edge)));
-		}
-		return result;
 	}
 	
 	private static List<Node> getNodeAndAllChildren(Node pNode)
@@ -395,32 +373,6 @@ public abstract class DiagramBuilder
 				()-> aDiagram.removeEdge(pEdge)));
 	}
 	
-	/**
-	 * Creates an operation to remove pNode. If the node is a root node,
-	 * then the node is removed from the diagram. If the node is a child
-	 * node, then it is detached from the parent. All edges connected to
-	 * pNode or one of its children are removed as a result.
-	 * 
-	 * @param pNode The node to remove.
-	 * @return An operation to remove the node and all connected edges.
-	 */
-	protected DiagramOperation createRemoveNodeOperation(Node pNode)
-	{
-		assert pNode != null;
-		CompoundOperation result = createRemoveAllEdgesConnectedToOperation(getNodeAndAllChildren(pNode));
-		if( isChild( pNode ))
-		{
-			result.add(new SimpleOperation(()-> ((ChildNode)pNode).getParent().removeChild((ChildNode)pNode),
-				createReinsertOperation((ChildNode)pNode)));
-		}
-		else
-		{
-			result.add(new SimpleOperation( ()-> aDiagram.removeRootNode(pNode),
-					()-> aDiagram.addRootNode(pNode)));
-		}
-		return result;
-	}
-	
 	private static Runnable createReinsertOperation(ChildNode pNode)
 	{
 		ParentNode parent = pNode.getParent();
@@ -432,38 +384,6 @@ public abstract class DiagramBuilder
 	{
 		ParentNode parent = pNode.getParent();
 		return ()-> parent.removeChild(pNode);
-	}
-	
-	/**
-	 * Creates an operation to remove an edge from the diagram.
-	 * 
-	 * @param pEdge The edge to remove.
-	 * @return The requested operation.
-	 * @pre pEdge != null && aDiagram.contains(pEdge)
-	 */
-	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
-	{
-		assert pEdge != null && aDiagram.contains(pEdge);
-		SimpleOperation remove = new SimpleOperation( ()-> aDiagram.removeEdge(pEdge),
-				()-> aDiagram.addEdge(pEdge));
-		if( pEdge.getEnd() instanceof PointNode )
-		{
-			CompoundOperation result = new CompoundOperation();
-			final Node end = pEdge.getEnd();
-			result.add( new SimpleOperation( ()-> aDiagram.removeRootNode(end),
-					()-> aDiagram.addRootNode(end)));
-			result.add(remove);
-			return result;
-		}
-		else
-		{
-			return remove;
-		}
-	}
-	
-	private static boolean isChild(Node pNode)
-	{
-		return pNode instanceof ChildNode && ((ChildNode)pNode).getParent() != null;
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)
