@@ -307,7 +307,33 @@ public abstract class DiagramBuilder
 				result.add(node);
 			}
 		}
-		return result;
+		ArrayList<DiagramElement> result2 = new ArrayList<>();
+		ArrayList<Edge> edges = new ArrayList<>();
+		for( DiagramElement element : result)
+		{
+			if( element instanceof Edge)
+			{
+				edges.add((Edge)element);
+			}
+			else
+			{
+				result2.add(element);
+			}
+		}
+		Collections.sort(edges, new Comparator<Edge>() 
+		{
+			@Override
+			public int compare(Edge pEdge1, Edge pEdge2)
+			{
+				return aDiagram.indexOf(pEdge2) - aDiagram.indexOf(pEdge1);
+			}
+			
+		});
+		for( Edge edge : edges)
+		{
+			result2.add(edge);
+		}
+		return result2;
 	}
 	
 	/**
@@ -332,9 +358,10 @@ public abstract class DiagramBuilder
 		{
 			if( element instanceof Edge )
 			{
+				int index = aDiagram.indexOf((Edge)element);
 				result.add(new SimpleOperation(
 						()-> aDiagram.removeEdge((Edge)element),
-						()-> aDiagram.addEdge((Edge)element)));
+						()-> aDiagram.addEdge(index, (Edge)element)));
 			}
 			else if( element instanceof Node )
 			{

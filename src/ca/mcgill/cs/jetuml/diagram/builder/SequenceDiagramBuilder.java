@@ -305,18 +305,34 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
 				()-> parent.removeChild(newCallNode)));
 		Optional<Edge> anchor = computeEdgeAnchor(start, pStartPoint.getY());
+		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
 		pEdge.connect(start, newCallNode, aDiagram);
-		if( anchor.isPresent() )
-		{
-			pOperation.add(new SimpleOperation(()-> aDiagram.addEdgeBefore(anchor.get(), pEdge),
-					()-> aDiagram.removeEdge(pEdge)));
-		}
-		else
-		{
-			pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
-					()-> aDiagram.removeEdge(pEdge)));
-		}
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
+				()-> aDiagram.removeEdge(pEdge)));
+//		if( anchor.isPresent() )
+//		{
+//			pOperation.add(new SimpleOperation(()-> aDiagram.addEdgeBefore(anchor.get(), pEdge),
+//					()-> aDiagram.removeEdge(pEdge)));
+//		}
+//		else
+//		{
+//			pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
+//					()-> aDiagram.removeEdge(pEdge)));
+//		}
 	}
+	
+	private int computeInsertionIndex( Node pCaller, int pY)
+	{
+		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
+		{
+			if( callee.view().getConnectionPoints().getY1() > pY )
+			{
+				return aDiagram.indexOf(callee);
+			}
+		}
+		return Math.max(0, aDiagram.numberOfEdges()-1);
+	}
+	
 	
 	private Optional<Edge> computeEdgeAnchor(Node pCaller, int pY)
 	{
