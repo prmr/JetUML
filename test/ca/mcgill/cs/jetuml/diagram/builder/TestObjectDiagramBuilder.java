@@ -21,7 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
 
@@ -30,25 +31,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.DiagramAccessor;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestObjectDiagramBuilder
 {
 	private ObjectDiagram aDiagram;
-	private DiagramAccessor aAccessor;
 	private ObjectDiagramBuilder aBuilder;
 	private ObjectNode aObjectNode1;
 	private FieldNode aFieldNode1;
@@ -69,7 +58,6 @@ public class TestObjectDiagramBuilder
 	{
 		aDiagram = new ObjectDiagram();
 		aBuilder = new ObjectDiagramBuilder(aDiagram);
-		aAccessor = new DiagramAccessor(aDiagram);
 		aObjectNode1 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
 		aFieldNode1.setName("Field1");
@@ -134,6 +122,28 @@ public class TestObjectDiagramBuilder
 		assertSame(aFieldNode2, aObjectNode1.getChildren().get(1));
 
 		DiagramOperation operation = aBuilder.createRemoveElementsOperation(Arrays.asList(aFieldNode1, aFieldNode2));
+		operation.execute();
+		
+		assertEquals(0, aObjectNode1.getChildren().size());
+		
+		operation.undo();
+		
+		assertEquals(2, aObjectNode1.getChildren().size());
+		assertSame(aFieldNode1, aObjectNode1.getChildren().get(0));
+		assertSame(aFieldNode2, aObjectNode1.getChildren().get(1));
+	}
+	
+	@Test
+	public void testCreateRemoveElementsOperationTwoOfTwoInReverseOrder()
+	{
+		aDiagram.addRootNode(aObjectNode1);
+		aObjectNode1.addChild(aFieldNode1);
+		aObjectNode1.addChild(aFieldNode2);
+		assertEquals(2, aObjectNode1.getChildren().size());
+		assertSame(aFieldNode1, aObjectNode1.getChildren().get(0));
+		assertSame(aFieldNode2, aObjectNode1.getChildren().get(1));
+
+		DiagramOperation operation = aBuilder.createRemoveElementsOperation(Arrays.asList(aFieldNode2, aFieldNode1));
 		operation.execute();
 		
 		assertEquals(0, aObjectNode1.getChildren().size());

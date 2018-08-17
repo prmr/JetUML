@@ -157,44 +157,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return result;
 	}
 	
-//	@Override
-//	public DiagramOperation createRemoveEdgeOperation(Edge pEdge)
-//	{
-//		CompoundOperation result = new CompoundOperation();
-//		result.add(super.createRemoveEdgeOperation(pEdge));
-//		
-//		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
-//		if(pEdge instanceof CallEdge && flow.hasNoCallees((CallNode) pEdge.getEnd())) 
-//		{
-//			result.add(createRemoveNodeOperation(pEdge.getEnd()));
-//		}
-//		if( pEdge instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)pEdge.getStart(), (CallEdge) pEdge))
-//		{
-//			result.add(createRemoveNodeOperation(pEdge.getStart()));
-//		}
-//		
-//		// Also delete the return edge, if it exists
-//		if( pEdge instanceof CallEdge )
-//		{
-//			Edge returnEdge = null;
-//			for( Edge edge : aDiagram.edges() )
-//			{
-//				if( edge instanceof ReturnEdge && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart())
-//				{
-//					returnEdge = edge;
-//					break;
-//				}
-//			}
-//			if( returnEdge != null )
-//			{
-//				final Edge target = returnEdge;
-//				result.add(new SimpleOperation( ()-> aDiagram.removeEdge(target),
-//						()-> aDiagram.addEdge(target)));
-//			}
-//		}
-//		return result;
-//	}
-
 	@Override
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
@@ -205,72 +167,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		return result;
 	}
-	
-//	@Override
-//	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
-//			Point pStartPoint, Point pEndPoint)
-//	{
-//		super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
-//		if( pStartNode.getClass() != CallNode.class )
-//		{
-//			return;
-//		}
-//		final CallNode origin = (CallNode) pStartNode;
-//		if( pEdge instanceof ReturnEdge )
-//		{
-//			return;
-//		}
-//		final Node end = pEndNode;
-//		
-//		// Case 1 End is on the same implicit parameter -> create a self call
-//		// Case 2 End is on an existing call node on a different implicit parameter -> connect
-//		// Case 3 End is on a different implicit parameter -> create a new call
-//		// Case 4 End is on an implicit parameter top node -> creates node
-//		// Case 5 End is on an implicit parameter node in the same call graph -> new callnode.
-//		if( end instanceof CallNode )
-//		{
-//			CallNode endAsCallNode = (CallNode) end;
-//			if( endAsCallNode.getParent() == origin.getParent() ) // Case 1
-//			{
-//				CallNode newCallNode = new CallNode();
-//				pEdge.connect(origin, newCallNode, aDiagram);
-//				final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-//				pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
-//						()-> parent.removeChild(newCallNode)));
-//						
-//			}
-//			else // Case 2
-//			{
-//				if( isCallDominator(endAsCallNode, origin))
-//				{
-//					CallNode newCallNode = new CallNode();
-//					pEdge.connect(origin, newCallNode, aDiagram);
-//					final ImplicitParameterNode parent = (ImplicitParameterNode)origin.getParent();
-//					pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode, pStartPoint),
-//							()-> parent.removeChild(newCallNode)));
-//				}
-//				// Simple connect
-//			}
-//		}
-//		else if( end instanceof ImplicitParameterNode )
-//		{
-//			final ImplicitParameterNode endAsImplicitParameterNode = (ImplicitParameterNode) end;
-//			if(endAsImplicitParameterNode.getTopRectangle().contains(pEndPoint)) // Case 4
-//			{
-//				final CallEdge edge = (CallEdge)pEdge;
-//				final String label = edge.getMiddleLabel();
-//				pOperation.add(new SimpleOperation(()-> edge.setMiddleLabel("\u00ABcreate\u00BB"),
-//						()-> edge.setMiddleLabel(label)));
-//			}
-//			else // Case 3
-//			{
-//				CallNode newCallNode = new CallNode();
-//				pEdge.connect(pEdge.getStart(), newCallNode, aDiagram);
-//				pOperation.add(new SimpleOperation(()-> endAsImplicitParameterNode.addChild(newCallNode, pStartPoint),
-//						()-> endAsImplicitParameterNode.removeChild(newCallNode)));
-//			}
-//		}
-//	}
 	
 	@Override
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
@@ -304,21 +200,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
 				()-> parent.removeChild(newCallNode)));
-		Optional<Edge> anchor = computeEdgeAnchor(start, pStartPoint.getY());
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
 		pEdge.connect(start, newCallNode, aDiagram);
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
-//		if( anchor.isPresent() )
-//		{
-//			pOperation.add(new SimpleOperation(()-> aDiagram.addEdgeBefore(anchor.get(), pEdge),
-//					()-> aDiagram.removeEdge(pEdge)));
-//		}
-//		else
-//		{
-//			pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
-//					()-> aDiagram.removeEdge(pEdge)));
-//		}
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
@@ -331,20 +216,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 		}
 		return Math.max(0, aDiagram.numberOfEdges()-1);
-	}
-	
-	
-	private Optional<Edge> computeEdgeAnchor(Node pCaller, int pY)
-	{
-		Optional<Edge> result = Optional.empty();
-		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
-		{
-			if( callee.view().getConnectionPoints().getY1() > pY )
-			{
-				result = Optional.of(callee);
-			}
-		}
-		return result;
 	}
 	
 	@Override

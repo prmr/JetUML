@@ -28,7 +28,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 /**
  *  Stores the logical structure of a diagram. This class hierarchy
  *  is only concerned with maintaining information about the logical
- *  structure of a graph (nodes and edges). Specifically, it should 
+ *  structure of a diagram (nodes and edges). Specifically, it should 
  *  not encode any business rules about the valid construction of diagrams
  *  (handled by DiagramBuilder), or of computing the geometry of 
  *  a diagram (handled by DiagramView). DiagramData provides immutable
@@ -233,20 +233,6 @@ public abstract class Diagram implements DiagramData
 	public int numberOfEdges()
 	{
 		return aEdges.size();
-	}
-	
-	/**
-	 * Adds pEdge to the list of edges so that it is placed immediately 
-	 * after pAnchor in the list.
-	 * 
-	 * @param pAnchor The anchor.
-	 * @param pEdge The edge to add.
-	 * @pre pAnchor != null && pEdge != null && contains(pAnchor)
-	 */
-	public void addEdgeBefore(Edge pAnchor, Edge pEdge)
-	{
-		assert pAnchor != null && pEdge != null && contains(pAnchor);
-		aEdges.add(aEdges.indexOf(pAnchor), pEdge);
 	}
 	
 	/**
