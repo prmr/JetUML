@@ -35,7 +35,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a UML dependency
  *  between use cases.
  */
-public class UseCaseDependencyEdge extends AbstractEdge
+public final class UseCaseDependencyEdge extends AbstractEdge
 {
 	private static final String LABEL_INCLUDE = "\u00ABinclude\u00BB";
 	private static final String LABEL_EXTEND = "\u00ABextend\u00BB";

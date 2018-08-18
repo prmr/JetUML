@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a UML association, with optional 
  *  labels and directionality.
  */
-public class AssociationEdge extends ClassRelationshipEdge
+public final class AssociationEdge extends ClassRelationshipEdge
 {
 	/**
 	 * Possible directionalities for an association.

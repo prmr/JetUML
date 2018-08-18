@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a dynamic collaboration between
  *  two objects in an object diagram, with optional labels.
  */
-public class ObjectCollaborationEdge extends ClassRelationshipEdge
+public final class ObjectCollaborationEdge extends ClassRelationshipEdge
 {
 	@Override
 	protected EdgeView generateView()

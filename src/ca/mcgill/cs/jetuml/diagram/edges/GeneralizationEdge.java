@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a UML generalization (inheritance
  *  or implementation), with optional labels.
  */
-public class GeneralizationEdge extends ClassRelationshipEdge
+public final class GeneralizationEdge extends ClassRelationshipEdge
 {
 	/**
 	 * Type of UML generalization relation.

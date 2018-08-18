@@ -38,7 +38,7 @@ import javafx.geometry.Point2D;
 /**
  *  An edge that joins two call nodes.
  */
-public class ReturnEdge extends SingleLabelEdge
+public final class ReturnEdge extends SingleLabelEdge
 {
 	@Override
 	protected EdgeView generateView()

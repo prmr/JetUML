@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.edges.NoteEdgeView;
 /**
  *  A dotted line that connects a note to its attachment.
  */
-public class NoteEdge extends AbstractEdge
+public final class NoteEdge extends AbstractEdge
 {
 	@Override
 	protected EdgeView generateView()

@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.views.edges.StateTransitionEdgeView;
  *  edge has two natures, either a self-edge, or a inter-node 
  *  edge.
  */
-public class StateTransitionEdge extends SingleLabelEdge
+public final class StateTransitionEdge extends SingleLabelEdge
 {
 	@Override
 	protected EdgeView generateView()

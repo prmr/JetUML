@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
  */
-public class AggregationEdge extends ClassRelationshipEdge
+public final class AggregationEdge extends ClassRelationshipEdge
 {
 	/**
 	 * Type of aggregation relation.

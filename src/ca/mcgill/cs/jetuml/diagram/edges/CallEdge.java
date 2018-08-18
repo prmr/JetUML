@@ -42,7 +42,7 @@ import javafx.geometry.Point2D;
 /**
  *   An edge that joins two call nodes.
  */
-public class CallEdge extends SingleLabelEdge
+public final class CallEdge extends SingleLabelEdge
 {
 	private boolean aSignal;
 	

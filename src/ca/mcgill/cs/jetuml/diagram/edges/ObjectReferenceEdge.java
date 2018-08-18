@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView;
 /**
  * An S- or C-shaped edge with an arrowhead.
  */
-public class ObjectReferenceEdge extends AbstractEdge
+public final class ObjectReferenceEdge extends AbstractEdge
 {
 	@Override
 	protected EdgeView generateView()

@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  *  An edge that that represents a UML dependency
  *  with optional labels.
  */
-public class DependencyEdge extends ClassRelationshipEdge
+public final class DependencyEdge extends ClassRelationshipEdge
 {
 	@Override
 	protected EdgeView generateView()
