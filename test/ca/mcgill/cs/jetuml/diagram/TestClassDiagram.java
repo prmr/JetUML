@@ -85,6 +85,76 @@ public class TestClassDiagram
 	}
 	
 	@Test
+	public void testNumberOfEdgesEmpty()
+	{
+		assertEquals(0, aDiagram.numberOfEdges());
+	}
+	
+	@Test
+	public void testNumberOfEdgesNotEmpty()
+	{
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aDiagram.addEdge(aEdge1);
+		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aDiagram.addEdge(aEdge2);
+		assertEquals(2, aDiagram.numberOfEdges());
+	}
+	
+	@Test
+	public void testIndexOf()
+	{
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aDiagram.addEdge(aEdge1);
+		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aDiagram.addEdge(aEdge2);
+		assertEquals(0, aDiagram.indexOf(aEdge1));
+		assertEquals(1, aDiagram.indexOf(aEdge2));
+	}
+	
+	@Test
+	public void testAddEdgeIndexEmpty()
+	{
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aDiagram.addEdge(0, aEdge1);
+		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(0, aDiagram.indexOf(aEdge1));
+	}
+	
+	@Test
+	public void testAddEdgeIndexBefore()
+	{
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aDiagram.addEdge(aEdge1);
+		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aDiagram.addEdge(0, aEdge2);
+		assertEquals(2, aDiagram.numberOfEdges());
+		assertSame(aEdge2, aDiagramAccessor.getEdges().get(0));
+		assertSame(aEdge1, aDiagramAccessor.getEdges().get(1));
+	}
+	
+	@Test
+	public void testAddEdgeIndexAfter()
+	{
+		aDiagram.addRootNode(aClassNode1);
+		aDiagram.addRootNode(aClassNode2);
+		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
+		aDiagram.addEdge(aEdge1);
+		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
+		aDiagram.addEdge(1, aEdge2);
+		assertEquals(2, aDiagram.numberOfEdges());
+		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
+		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
+	}
+	
+	@Test
 	public void testAddRemoveRootNode()
 	{
 		aDiagram.addRootNode(aClassNode1);
