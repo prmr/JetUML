@@ -31,7 +31,7 @@ import javafx.scene.paint.Color;
 /**
  * An object to render a CircularStateNode.
  */
-public class CircularStateNodeView extends AbstractNodeView
+public final class CircularStateNodeView extends AbstractNodeView
 {
 	private static final int DIAMETER = 20;
 	private final boolean aFinal;

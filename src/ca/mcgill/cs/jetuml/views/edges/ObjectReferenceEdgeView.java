@@ -39,7 +39,7 @@ import javafx.scene.shape.Shape;
 /**
  * An S- or C-shaped edge with an arrowhead.
  */
-public class ObjectReferenceEdgeView extends AbstractEdgeView
+public final class ObjectReferenceEdgeView extends AbstractEdgeView
 {
 	private static final int ENDSIZE = 10;
 	

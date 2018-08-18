@@ -33,7 +33,7 @@ import javafx.scene.shape.Path;
 /**
  * An object to render a NoteNode.
  */
-public class NoteNodeView extends AbstractNodeView
+public final class NoteNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;

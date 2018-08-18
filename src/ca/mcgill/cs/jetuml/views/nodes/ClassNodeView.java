@@ -28,7 +28,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an interface in a class diagram.
  */
-public class ClassNodeView extends InterfaceNodeView
+public final class ClassNodeView extends InterfaceNodeView
 {
 	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	

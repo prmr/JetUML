@@ -31,7 +31,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a FieldNode.
  */
-public class FieldNodeView extends AbstractNodeView
+public final class FieldNodeView extends AbstractNodeView
 {
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;

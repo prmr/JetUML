@@ -50,7 +50,7 @@ import javafx.scene.text.TextAlignment;
 /**
  * An edge view specialized for state transitions.
  */
-public class StateTransitionEdgeView extends AbstractEdgeView
+public final class StateTransitionEdgeView extends AbstractEdgeView
 {
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final int DEGREES_5 = 5;

@@ -39,7 +39,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a call node in a Sequence diagram.
  */
-public class CallNodeView extends AbstractNodeView
+public final class CallNodeView extends AbstractNodeView
 {
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;

@@ -37,7 +37,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  */
-public class ImplicitParameterNodeView extends AbstractNodeView
+public final class ImplicitParameterNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;

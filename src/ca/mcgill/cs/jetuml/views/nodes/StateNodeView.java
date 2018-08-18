@@ -29,7 +29,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a StateNode.
  */
-public class StateNodeView extends AbstractNodeView
+public final class StateNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;

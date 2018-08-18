@@ -33,7 +33,7 @@ import javafx.scene.shape.Shape;
 /**
  * A straight dotted line.
  */
-public class NoteEdgeView extends AbstractEdgeView
+public final class NoteEdgeView extends AbstractEdgeView
 {
 	/**
 	 * @param pEdge The edge to wrap.

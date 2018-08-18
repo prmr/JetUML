@@ -34,7 +34,7 @@ import javafx.scene.shape.QuadCurveTo;
 /**
  * An object to render an actor in a use case diagram.
  */
-public class ActorNodeView extends AbstractNodeView
+public final class ActorNodeView extends AbstractNodeView
 {
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	

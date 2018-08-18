@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
 /**
  * An object to render a UseCaseNode.
  */
-public class UseCaseNodeView extends AbstractNodeView
+public final class UseCaseNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;

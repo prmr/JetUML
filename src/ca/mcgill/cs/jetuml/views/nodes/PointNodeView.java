@@ -29,7 +29,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a PointNode.
  */
-public class PointNodeView extends AbstractNodeView
+public final class PointNodeView extends AbstractNodeView
 {
 	private static final int SELECTION_DISTANCE = 5;
 	

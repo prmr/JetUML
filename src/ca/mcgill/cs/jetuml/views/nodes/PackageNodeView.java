@@ -38,7 +38,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a package in a class diagram.
  */
-public class PackageNodeView extends AbstractNodeView
+public final class PackageNodeView extends AbstractNodeView
 {
 	private static final int PADDING = 10;
 	private static final int TOP_HEIGHT = 20;
