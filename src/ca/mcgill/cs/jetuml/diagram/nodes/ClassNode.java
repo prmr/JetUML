@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends InterfaceNode
+public final class ClassNode extends InterfaceNode
 {
 	private String aAttributes = "";
 	

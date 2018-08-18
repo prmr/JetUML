@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.UseCaseNodeView;
 /**
  *  A use case node in a use case diagram.
  */
-public class UseCaseNode extends NamedNode
+public final class UseCaseNode extends NamedNode
 {
 	@Override
 	protected NodeView generateView()

@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 /**
  *  A field node in an object diagram.
  */
-public class FieldNode extends NamedNode implements ChildNode
+public final class FieldNode extends NamedNode implements ChildNode
 {
 	private String aValue = "";
 	private ObjectNode aObject; // The object defining this field

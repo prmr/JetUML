@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public class ImplicitParameterNode extends NamedNode implements ParentNode
+public final class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
 

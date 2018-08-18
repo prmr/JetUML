@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.StateNodeView;
 /**
    A state node in a state diagram.
 */
-public class StateNode extends NamedNode
+public final class StateNode extends NamedNode
 {
 	@Override
 	protected NodeView generateView()

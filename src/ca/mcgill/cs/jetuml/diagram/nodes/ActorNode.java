@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 /**
  *  An actor node in a use case diagram.
  */
-public class ActorNode extends NamedNode
+public final class ActorNode extends NamedNode
 {
 	private static final String DEFAULT_NAME = "Actor";
 	

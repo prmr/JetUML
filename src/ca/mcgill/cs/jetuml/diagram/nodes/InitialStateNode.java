@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 /**
  * An initial in a state diagram.
  */
-public class InitialStateNode extends AbstractNode
+public final class InitialStateNode extends AbstractNode
 {
 	@Override
 	protected NodeView generateView()
