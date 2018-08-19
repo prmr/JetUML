@@ -182,4 +182,32 @@ public class TestSequenceDiagramEdgeConstraints
 		createDiagram();
 		assertFalse(SequenceDiagramEdgeConstraints.callEdgeEnd(aCallEdge, aParameter2, new Point(0,5)).satisfied());
 	}	
+	
+	@Test
+	public void testSingleEntryPointNotACallEdge()
+	{
+		createDiagram();
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint(aReturnEdge, aParameter1, aDiagram).satisfied());
+	}	
+	
+	@Test
+	public void testSingleEntryPointNotStartingOnAParameterNode()
+	{
+		createDiagram();
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint(aCallEdge, aCallNode1, aDiagram).satisfied());
+	}	
+	
+	@Test
+	public void testSingleEntryPointStartingOnParameterNodeNotSatisfied()
+	{
+		createDiagram();
+		assertFalse(SequenceDiagramEdgeConstraints.singleEntryPoint(aCallEdge, aParameter1, aDiagram).satisfied());
+	}	
+	
+	@Test
+	public void testSingleEntryPointStartingOnParameterNodeSatisfied()
+	{
+		aDiagram.addRootNode(aParameter1);
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint(aCallEdge, aParameter1, aDiagram).satisfied());
+	}	
 }
