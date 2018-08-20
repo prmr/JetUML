@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * An object to render a call node in a Sequence diagram.
@@ -86,6 +87,9 @@ public final class CallNodeView extends AbstractNodeView
 	{
 		if(openBottom())
 		{
+			pGraphics.setStroke(Color.WHITE);
+			ViewUtils.drawRectangle(pGraphics, getBounds());
+			pGraphics.setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds();
 			int x1 = bounds.getX();
 			int x2 = bounds.getMaxX();
