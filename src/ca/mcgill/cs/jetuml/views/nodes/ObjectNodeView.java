@@ -64,13 +64,13 @@ public final class ObjectNodeView extends AbstractNodeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		Rectangle bounds = getBounds();
-		Rectangle topBounds = getTopRectangle();
+		int dividerPosition = getTopRectangle().getMaxY();
 		ViewUtils.drawRectangle(pGraphics, bounds);
 		if( children().size() > 0 ) 
 		{
-			ViewUtils.drawLine(pGraphics, bounds.getX(), topBounds.getMaxY(), bounds.getMaxX(), topBounds.getMaxY(), LineStyle.SOLID);
+			ViewUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
 		}
-		NAME_VIEWER.draw(name(), pGraphics, topBounds);
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), getTopRectangle().getHeight()));
 	}
 	
 	private Rectangle getTopRectangle()
