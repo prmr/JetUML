@@ -17,5 +17,5 @@ You need [Java 8 or later](https://www.java.com/en/). Download the jar file of t
 
 ## Privacy Policy and Feedback
 
-JetUML collects no information whatsoever. We rely on you to estimate usage levels and receive feedback. If use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
+JetUML collects no information whatsoever. We rely on you to estimate usage levels and receive feedback. If you use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
 
