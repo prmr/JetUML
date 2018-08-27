@@ -197,7 +197,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		// if begin with a NoteNode, the end point can be anywhere
 		addEdge(noteEdge2, new Point(138, 140), new Point(9,9));
 		assertEquals(noteEdge2.getStart(), aNoteNode);
-		assertEquals(noteEdge2.getEnd().getClass(), new PointNode().getClass());
+		assertEquals(noteEdge2.getEnd().getClass(), PointNode.class);
 		assertEquals(2, numberOfEdges());
 	}
 	
