@@ -24,7 +24,6 @@ import static ca.mcgill.cs.jetuml.geom.Util.max;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -161,6 +160,7 @@ public class InterfaceNodeView extends AbstractNodeView
 		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
 		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
 		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
-		return Grid.snapped(bounds);
+//		return Grid.snapped(bounds); TODO improve snapping
+		return bounds;
 	}
 }

@@ -198,8 +198,8 @@ public class TestSegmentationStrategies
 		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D(120,60), points[0]);
-		assertEquals( new Point2D(170,60), points[1]);
+		assertEquals( new Point2D(120,55), points[0]);
+		assertEquals( new Point2D(170,55), points[1]);
 	}
 	
 	@Test

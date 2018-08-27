@@ -376,7 +376,7 @@ public class TestPersistenceService
 		assertEquals("bar", node3.getMethods());
 		assertEquals("Class2", node3.getName());
 		assertNull(node3.getParent());
-		assertEquals(new Rectangle(460, 520, 100, 70), node3.view().getBounds());
+		assertEquals(new Rectangle(460, 520, 100, 69), node3.view().getBounds());
 		
 		assertEquals("", node4.getAttributes());
 		assertEquals("", node4.getMethods());
@@ -443,7 +443,7 @@ public class TestPersistenceService
 		assertEquals("1", edge3.getStartLabel());
 		
 		AggregationEdge edge4 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(559, 399, 72, 156), edge4.view().getBounds());
+		assertEquals(new Rectangle(559, 399, 72, 155), edge4.view().getBounds());
 		assertEquals(node3, edge4.getEnd());
 		assertEquals("", edge4.getEndLabel());
 		assertEquals("e5", edge4.getMiddleLabel());
