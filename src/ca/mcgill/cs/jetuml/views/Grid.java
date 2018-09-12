@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.views;
 
+import ca.mcgill.cs.jetuml.geom.Dimension;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -77,5 +79,54 @@ public final class Grid
 		int y = (int)(Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
 		int height = (int)(Math.ceil(pRectangle.getHeight() / GRID_SIZE) * GRID_SIZE);
 		return new Rectangle(x, y, width, height);
+	}
+	
+	/**
+	 * Returns the point on the grid that is closest to pPoint.
+	 * 
+	 * @param pPoint The original point.
+	 * @return The snapped point.
+	 * @pre pPoint != null
+	 */
+	public static Point snapped(Point pPoint)
+	{
+		assert pPoint != null;
+		int x = (int)(Math.round(pPoint.getX() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(Math.round(pPoint.getY() / GRID_SIZE) * GRID_SIZE);
+		return new Point(x, y);
+	}
+	
+	/**
+	 * Creates a point that represents a distance to the origin which, when added to 
+	 * pDimension, will correspond to a dimension that is rounded to align to the grid.
+	 * 
+	 * @param pDimension The original dimension.
+	 * @return An aligned dimension.
+	 * @pre pDimension != null
+	 */
+	public static Point toSnap(Dimension pDimension)
+	{
+		assert pDimension != null;
+		final int size = (int) GRID_SIZE;
+		int xRemainder = pDimension.getWidth() % size;
+		if( xRemainder < size/2 )
+		{
+			xRemainder = -xRemainder;
+		}
+		else
+		{
+			xRemainder = size - xRemainder;
+		}
+		
+		int yRemainder = pDimension.getHeight() % size;
+		if( yRemainder < size/2 )
+		{
+			yRemainder = -yRemainder;
+		}
+		else
+		{
+			yRemainder = size - yRemainder;
+		}
+		return new Point(xRemainder, yRemainder);
 	}
 }

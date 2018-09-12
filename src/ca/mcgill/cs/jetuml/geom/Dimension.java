@@ -61,4 +61,33 @@ public class Dimension
 	{
 		return aHeight;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + aHeight;
+		result = prime * result + aWidth;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object pObject)
+	{
+		if(this == pObject)
+		{
+			return true;
+		}
+		if(pObject == null)
+		{
+			return false;
+		}
+		if(getClass() != pObject.getClass())
+		{
+			return false;
+		}
+		Dimension other = (Dimension) pObject;
+		return aHeight == other.aHeight && aWidth == other.aWidth;
+	}
 }
