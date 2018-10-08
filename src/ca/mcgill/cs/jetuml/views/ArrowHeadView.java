@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -28,10 +28,12 @@ import static ca.mcgill.cs.jetuml.views.ArrowHead.NONE;
 import static ca.mcgill.cs.jetuml.views.ArrowHead.TRIANGLE;
 import static ca.mcgill.cs.jetuml.views.ArrowHead.V;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 /**
  * Defines how to draw arrow heads.
@@ -55,36 +57,31 @@ public final class ArrowHeadView
 	
 	/**
 	 * Draws the arrowhead.
-	 * @param pGraphics2D the graphics context
+	 * @param pGraphics the graphics context
 	 * @param pPoint1 a point on the axis of the arrow head
 	 * @param pEnd the end point of the arrow head
 	 */
-	public void draw(Graphics2D pGraphics2D, Point2D pPoint1, Point2D pEnd)
+	public void draw(GraphicsContext pGraphics, Point2D pPoint1, Point2D pEnd)
 	{
-		GeneralPath path = getPath(pPoint1, pEnd);
-		Color oldColor = pGraphics2D.getColor();
 		if(aArrowHead == ArrowHead.BLACK_DIAMOND || aArrowHead == BLACK_TRIANGLE) 
 		{
-			pGraphics2D.setColor(Color.BLACK);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pPoint1, pEnd), Color.BLACK, false);
 		}
 		else 
 		{
-			pGraphics2D.setColor(Color.WHITE);
+			ToolGraphics.strokeAndFillSharpPath(pGraphics, getPath(pPoint1, pEnd), Color.WHITE, false);
 		}
-		pGraphics2D.fill(path);
-		pGraphics2D.setColor(oldColor);
-		pGraphics2D.draw(path);
 	}
 	
    	/**
-     *  Gets the path of the arrowhead.
+     * Gets the path of the arrowhead.
      * @param pPoint1 a point on the axis of the arrow head
      * @param pEnd the end point of the arrow head
      * @return the path
      */
-   	public GeneralPath getPath(Point2D pPoint1, Point2D pEnd)
+   	public Path getPath(Point2D pPoint1, Point2D pEnd)
    	{
-   		GeneralPath path = new GeneralPath();
+   		Path path = new Path();
    		if(aArrowHead == NONE) 
    		{
    			return path;
@@ -98,25 +95,29 @@ public final class ArrowHeadView
    		double x2 = pEnd.getX() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE);
    		double y2 = pEnd.getY() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE);
 
-   		path.moveTo((float)pEnd.getX(), (float)pEnd.getY());
-   		path.lineTo((float)x1, (float)y1);
+   		MoveTo moveToOrigin = new MoveTo(pEnd.getX(), pEnd.getY());
+   		LineTo lineTo1 = new LineTo(x1, y1);
+   		path.getElements().addAll(moveToOrigin, lineTo1);
    		if(aArrowHead == V)
    		{
-   			path.moveTo((float)x2, (float)y2);
-   			path.lineTo((float)pEnd.getX(), (float)pEnd.getY());
+   			MoveTo moveTo2 = new MoveTo(x2, y2);
+   			LineTo lineTo2 = new LineTo(pEnd.getX(), pEnd.getY());
+   			path.getElements().addAll(moveTo2, lineTo2);
    		}
    		else if(aArrowHead == TRIANGLE || aArrowHead == BLACK_TRIANGLE)
    		{
-   			path.lineTo((float)x2, (float)y2);
-   			path.closePath();                  
+   			LineTo lineTo3 = new LineTo(x2, y2); 
+   			LineTo lineTo4 = new LineTo(moveToOrigin.getX(), moveToOrigin.getY());
+   			path.getElements().addAll(lineTo3, lineTo4);
    		}
    		else if(aArrowHead == DIAMOND || aArrowHead == BLACK_DIAMOND)
    		{
    			double x3 = x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE);
    			double y3 = y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE);
-   			path.lineTo((float)x3, (float)y3);
-   			path.lineTo((float)x2, (float)y2);
-   			path.closePath();         
+   			LineTo lineTo5 = new LineTo(x3, y3);
+   			LineTo lineTo6 = new LineTo(x2, y2);
+   			LineTo lineTo7 = new LineTo(moveToOrigin.getX(), moveToOrigin.getY());
+   			path.getElements().addAll(lineTo5, lineTo6, lineTo7);
    		}      
    		return path;
    	}

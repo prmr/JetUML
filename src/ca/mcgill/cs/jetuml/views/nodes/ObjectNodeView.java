@@ -20,25 +20,21 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an object in an object diagram.
- * 
- * @author Martin P. Robillard
- *
  */
-public class ObjectNodeView extends RectangleBoundedNodeView
+public final class ObjectNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -46,14 +42,12 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	private static final int YGAP = 5;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, true, true);
 	
-	private int aTopHeight;
-	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public ObjectNodeView(ObjectNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -67,61 +61,65 @@ public class ObjectNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
-		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		pGraphics2D.draw(Conversions.toRectangle2D(getBounds()));
-		NAME_VIEWER.draw(name(), pGraphics2D, top);
+		Rectangle bounds = getBounds();
+		int dividerPosition = getTopRectangle().getMaxY();
+		ViewUtils.drawRectangle(pGraphics, bounds);
+		if( children().size() > 0 ) 
+		{
+			ViewUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
+		}
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), getTopRectangle().getHeight()));
+	}
+	
+	private Rectangle getTopRectangle()
+	{
+		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
+		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		return bounds.translated(node().position().getX(), node().position().getY());
 	}
 	
 	@Override
-	public void layout(Graph pGraph)
+	public Rectangle getBounds()
 	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - YGAP));
+		Rectangle bounds = getTopRectangle();
 		int leftWidth = 0;
 		int rightWidth = 0;
 		int height = 0;
-		if( children().size() != 0 )
+		if( children().size() > 0 )
 		{
 			height = YGAP;
 		}
 		for(ChildNode field : children())
 		{
-			field.view().layout(pGraph);
-			Rectangle b2 = field.view().getBounds();
-			height += b2.getHeight() + YGAP;   
-			int axis = ((FieldNode)field).obtainAxis();
-			leftWidth = Math.max(leftWidth, axis);
-			rightWidth = Math.max(rightWidth, b2.getWidth() - axis);
+			FieldNodeView view = (FieldNodeView) field.view();
+			height += view.getHeight() + YGAP;   
+			leftWidth = Math.max(leftWidth, view.leftWidth());
+			rightWidth = Math.max(rightWidth, view.rightWidth());
 		}
-		int width = (int) (2 * Math.max(leftWidth, rightWidth) + 2 * XGAP);
-		width = Math.max(width, bounds.getWidth());
-		width = Math.max(width, DEFAULT_WIDTH);
-		bounds = new Rectangle(getBounds().getX(), getBounds().getY(), width, bounds.getHeight() + height);
-		Rectangle snappedBounds = Grid.snapped(bounds);
-		setBounds(snappedBounds);
-		bounds = snappedBounds;
-		aTopHeight = bounds.getHeight() - height;
-		int ytop = (int)(bounds.getY() + aTopHeight + YGAP);
-		int xmid = bounds.getCenter().getX();
-		for(ChildNode field : children())
-		{
-			Rectangle b2 = field.view().getBounds();
-			((FieldNode)field).setBounds(new Rectangle((int)(xmid - ((FieldNode)field).obtainAxis()), 
-					ytop, ((FieldNode)field).obtainAxis() + rightWidth, b2.getHeight()));
-			ytop += field.view().getBounds().getHeight() + YGAP;
-		}
+		int width = Math.max(bounds.getWidth(), 2 * Math.max(leftWidth, rightWidth) + 2 * XGAP);
+		return new Rectangle(bounds.getX(), bounds.getY(), width, bounds.getHeight() + height);
 	}
 	
 	/**
-	 * Returns the rectangle at the top of the object node.
-	 * @return the top rectangle
+	 * @param pNode The node whose position to compute.
+	 * @return The y position of a child node.
 	 */
-	private Rectangle getTopRectangle()
+	public int getYPosition(FieldNode pNode)
 	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		assert children().contains(pNode);
+		Rectangle bounds = getTopRectangle();
+		int yPosition = bounds.getMaxY() + YGAP; 
+		for( ChildNode field : children() )
+		{
+			yPosition += YGAP;
+			if( field == pNode )
+			{
+				return yPosition;
+			}
+			yPosition += ((FieldNodeView)field.view()).getHeight();
+		}
+		return yPosition;
 	}
 }

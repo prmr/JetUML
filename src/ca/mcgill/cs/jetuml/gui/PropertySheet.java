@@ -21,44 +21,34 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.AWTKeyStroke;
-import java.awt.Component;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Property;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 
 /**
- *  A GUI component that can present the properties of a GraphElement
+ *  A layout that presents the properties of a DiagramElement
  *  and allow editing them.
- *  
- *  @author Martin P. Robillard
  */
-@SuppressWarnings("serial")
-public class PropertySheet extends JPanel
+public class PropertySheet extends GridPane
 {
 	/**
 	 * A handler for whenever a property is being detected
@@ -72,18 +62,12 @@ public class PropertySheet extends JPanel
 	}
 	
 	private static final int TEXT_FIELD_WIDTH = 10;
-	private static Set<AWTKeyStroke> tab = new HashSet<>(1);
-	private static Set<AWTKeyStroke> shiftTab = new HashSet<>(1);
-	private static ResourceBundle aPropertyNames = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.graph.GraphElementProperties");
+	private static final int LAYOUT_SPACING = 10;
+	private static final int LAYOUT_PADDING = 20;
 
 	private final PropertyChangeListener aListener;
-	
-	static
-	{  
-		tab.add(KeyStroke.getKeyStroke("TAB" ));
-		shiftTab.add(KeyStroke.getKeyStroke( "shift TAB" ));
-	}
-	
+	private final DiagramElement aElement;
+
 	/**
 	 * Constructs a PropertySheet to show and support editing all the properties 
 	 * for pElement.
@@ -92,20 +76,25 @@ public class PropertySheet extends JPanel
 	 * @param pListener An object that responds to property change events.
 	 * @pre pElement != null
 	 */
-	public PropertySheet(GraphElement pElement, PropertyChangeListener pListener)
+	public PropertySheet(DiagramElement pElement, PropertyChangeListener pListener)
 	{
 		assert pElement != null;
 		aListener = pListener;
-		setLayout(new FormLayout());
-		for( Property property : pElement.properties() )
+		aElement = pElement;
+		int row = 0;
+		for( Property property : aElement.properties() )
 		{
-			Component editor = getEditorComponent(pElement, property);
+			Control editor = getEditorControl(property);
 			if(property.isVisible() && editor != null )
 			{
-				add(new JLabel(getPropertyName(pElement.getClass(), property.getName())));
-				add(editor);
+				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
+				add(editor, 1, row);
+				row++;
 			}
 		}
+		setVgap(LAYOUT_SPACING);
+		setHgap(LAYOUT_SPACING);
+		setPadding(new Insets(LAYOUT_PADDING));
 	}
 	
 	/**
@@ -113,14 +102,22 @@ public class PropertySheet extends JPanel
 	 */
 	public boolean isEmpty()
 	{
-		return getComponentCount() == 0;
+		return getChildren().isEmpty();
 	}
 	
-	private Component getEditorComponent(GraphElement pElement, Property pProperty)   
+	/**
+	 * @return The element being edited.
+	 */
+	public DiagramElement getElement()
+	{
+		return aElement;
+	}
+
+	private Control getEditorControl(Property pProperty)   
 	{      
 		if( pProperty.get() instanceof String )
 		{
-			if( extended(pElement, pProperty.getName()))
+			if( extended(pProperty.getName()))
 			{
 				return createExtendedStringEditor(pProperty);
 			}
@@ -143,82 +140,92 @@ public class PropertySheet extends JPanel
 	/*
 	 * Not the greatest but avoids over-engineering the rest of the properties API. CSOFF:
 	 */
-	private static boolean extended(GraphElement pElement, String pProperty)
+	private boolean extended(String pProperty)
 	{
-		return 	pElement.getClass() == ClassNode.class ||
-				pElement.getClass() == InterfaceNode.class ||
-				pElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
-				pElement.getClass() == NoteNode.class;
+		return 	aElement.getClass() == ClassNode.class ||
+				aElement.getClass() == InterfaceNode.class ||
+				aElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
+				aElement.getClass() == NoteNode.class;
 	} // CSON:
 	
-	private Component createExtendedStringEditor(Property pProperty)
+	private Control createExtendedStringEditor(Property pProperty)
 	{
 		final int rows = 5;
 		final int columns = 30;
-		final JTextArea textArea = new JTextArea(rows, columns);
+		final TextArea textArea = new TextArea();
+		textArea.setPrefRowCount(rows);
+		textArea.setPrefColumnCount(columns);
 
-		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, tab);
-		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, shiftTab);
+		textArea.addEventFilter(KeyEvent.KEY_PRESSED, pKeyEvent ->
+		{
+			final String aFocusEventText = "TAB_TO_FOCUS_EVENT";
+			
+			if (!KeyCode.TAB.equals(pKeyEvent.getCode()))
+	        {
+	            return;
+	        }
+	        if (pKeyEvent.isAltDown() || pKeyEvent.isMetaDown() || pKeyEvent.isShiftDown() || !(pKeyEvent.getSource() instanceof TextArea))
+	        {
+	            return;
+	        }
+	        final TextArea textAreaSource = (TextArea) pKeyEvent.getSource();
+	        if (pKeyEvent.isControlDown())
+	        {
+	            if (!aFocusEventText.equalsIgnoreCase(pKeyEvent.getText()))
+	            {
+	            	pKeyEvent.consume();
+	                textAreaSource.replaceSelection("\t");
+	            }
+	        }
+	        else
+	        {
+	        	pKeyEvent.consume();
+	            final KeyEvent tabControlEvent = new KeyEvent(pKeyEvent.getSource(), pKeyEvent.getTarget(), pKeyEvent.getEventType(), 
+	            		pKeyEvent.getCharacter(), aFocusEventText, pKeyEvent.getCode(), pKeyEvent.isShiftDown(), true, pKeyEvent.isAltDown(),
+	            		pKeyEvent.isMetaDown());
+	            textAreaSource.fireEvent(tabControlEvent);
+	        }
+	    });
 
 		textArea.setText((String) pProperty.get());
-		textArea.getDocument().addDocumentListener(new DocumentListener()
+		textArea.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
 		{
-			public void insertUpdate(DocumentEvent pEvent) 
-			{
-				pProperty.set(textArea.getText());
-				aListener.propertyChanged();
-			}
-			public void removeUpdate(DocumentEvent pEvent) 
-			{
-				pProperty.set(textArea.getText());
-				aListener.propertyChanged();
-			}
-			public void changedUpdate(DocumentEvent pEvent) 
-			{}
+		   pProperty.set(textArea.getText());
+		   aListener.propertyChanged();
 		});
-		return new JScrollPane(textArea);
+		
+		return new ScrollPane(textArea);
 	}
 	
-	private Component createStringEditor(Property pProperty)
+	private Control createStringEditor(Property pProperty)
 	{
-		JTextField textField = new JTextField((String) pProperty.get(), TEXT_FIELD_WIDTH);
-		textField.getDocument().addDocumentListener(new DocumentListener()
-        	{
-				public void insertUpdate(DocumentEvent pEvent) 
-				{
-					pProperty.set(textField.getText());
-					aListener.propertyChanged();
-				}
-				public void removeUpdate(DocumentEvent pEvent) 
-				{
-					pProperty.set(textField.getText());
-					aListener.propertyChanged();
-				}
-				public void changedUpdate(DocumentEvent pEvent) 
-				{}
-        	});
+		TextField textField = new TextField((String) pProperty.get());
+		textField.setPrefColumnCount(TEXT_FIELD_WIDTH);
+		
+		textField.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
+		{
+			pProperty.set(textField.getText());
+			aListener.propertyChanged();
+		});
+
 		return textField;
 	}
 	
-	private Component createEnumEditor(Property pProperty)
+	private Control createEnumEditor(Property pProperty)
 	{
 		Enum<?> value = (Enum<?>)pProperty.get();
 		try 
 		{
-			final JComboBox<Enum<?>> comboBox = new JComboBox<Enum<?>>((Enum<?>[])value.getClass().getMethod("values").invoke(null));
-			comboBox.setSelectedItem(value);
-			comboBox.addItemListener(new ItemListener()
+			Enum<?>[] enumValues = (Enum<?>[])value.getClass().getMethod("values").invoke(null);
+			final ComboBox<Enum<?>> comboBox = new ComboBox<Enum<?>>(FXCollections.observableArrayList(enumValues));
+			
+			comboBox.getSelectionModel().select(value);
+			comboBox.valueProperty().addListener((pObservable, pOldValue, pNewValue) -> 
 			{
-					@Override
-					public void itemStateChanged(ItemEvent pEvent)
-					{
-						if(pEvent.getStateChange() == ItemEvent.SELECTED)
-						{
-							pProperty.set(comboBox.getSelectedItem().toString());
-							aListener.propertyChanged();
-						}
-					}
-	        	});
+				pProperty.set(pNewValue.toString());
+				aListener.propertyChanged();
+			});
+		
 			return comboBox;
 		}
 		catch(NoSuchMethodException | InvocationTargetException | IllegalAccessException e) 
@@ -227,19 +234,16 @@ public class PropertySheet extends JPanel
 		}
 	}
 	
-	private Component createBooleanEditor(Property pProperty)
+	private Control createBooleanEditor(Property pProperty)
 	{
-		JCheckBox checkBox = new JCheckBox();
+		CheckBox checkBox = new CheckBox();
 		checkBox.setSelected((boolean)pProperty.get());
-		checkBox.addActionListener(new ActionListener()
+		checkBox.selectedProperty().addListener((pObservable, pOldValue, pNewValue) -> 
 		{
-			@Override
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				pProperty.set(checkBox.isSelected());
-				aListener.propertyChanged();
-			}
+			pProperty.set(pNewValue);
+			aListener.propertyChanged();
 		});
+
 		return checkBox;
 	}
 
@@ -258,13 +262,13 @@ public class PropertySheet extends JPanel
 			return pProperty;
 		}
 		String key = pClass.getSimpleName() + "." + pProperty;
-		if( !aPropertyNames.containsKey(key) )
+		if( !RESOURCES.containsKey(key) )
 		{
 			return getPropertyName(pClass.getSuperclass(), pProperty);
 		}
 		else
 		{
-			return aPropertyNames.getString(key);
+			return RESOURCES.getString(key);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -20,228 +20,103 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
+import java.util.List;
+
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
- * @author JoelChev
- * This class instantiates the Welcome Tab that is the default Tab in JetUML.
- *
+ * A tab that allow users to open new diagrams of the different types
+ * or open recently saved diagrams.
  */
-@SuppressWarnings("serial")
-public class WelcomeTab extends JInternalFrame
+public class WelcomeTab extends Tab
 {
-	private static final int BORDER_MARGIN = 45;
-	private static final int ALTERNATIVE_BORDER_MARGIN = 30;
-	private static final int FOOT_BORDER_MARGIN = 10;
-	private static final int FONT_SIZE = 25;
-	private ResourceBundle aWelcomeResources;
-    private JPanel aFootTextPanel;
-    private JPanel aRightTitlePanel;
-    private JPanel aLeftTitlePanel;
-    private JPanel aLeftPanel;
-    private JPanel aRightPanel;
-    private JMenu aNewFileMenu;
-    private JMenu aRecentFileMenu;
-    private ImageIcon aLeftPanelIcon;
-    private ImageIcon aRightPanelIcon;
-    private String aFootText;
+	/* CSS classes of the different GUI elements in the welcome tab. See UMLEditorStyle.css for the styling */
+	private static final String CLASS_WELCOME_TAB_PANEL = "welcome-tab-panel"; 	// One column in the welcome tab
+	private static final String CLASS_PANEL_TITLE = "panel-title"; 				// The title/header above each of the two columns
+	private static final String CLASS_FOOTER = "welcome-tab-footer"; 						// The footer with the copyright information
     
 	/**
-	 * @param pNewFileMenu The NewFileMenu to link to the WelcomeTab.
-	 * @param pRecentFileMenu The RecentFileMenu to link to the WelcomeTab.
+	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams. The name 
+	 * is expected to be the simple name of a concrete diagram, all in lower case.
 	 */
-	public WelcomeTab(JMenu pNewFileMenu, JMenu pRecentFileMenu)
+	public WelcomeTab(List<NewDiagramHandler> pNewDiagramHandlers)
 	{
-		aWelcomeResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-		aLeftPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.create.icon")));
-		aRightPanelIcon = new ImageIcon(getClass().getClassLoader().getResource(aWelcomeResources.getString("welcome.open.icon"))); 
-	    setOpaque(false);
-	    setLayout(new BorderLayout());
+		super(RESOURCES.getString("welcome.title"));
+		setClosable(false);
+		
+		BorderPane layout = new BorderPane();
+		
+		HBox shortcutPanel = new HBox();
+		shortcutPanel.setAlignment(Pos.CENTER);
+		shortcutPanel.getChildren().addAll(createDiagramPanel(pNewDiagramHandlers), createFilePanel());
+		layout.setCenter(shortcutPanel);
+		layout.setBottom(createFootTextPanel());
 	    
-	    BasicInternalFrameUI ui = (BasicInternalFrameUI)getUI();
-	    Container north = ui.getNorthPane();
-	    north.remove(0);
-	    north.validate();
-	    north.repaint();
-	
-	    aNewFileMenu = pNewFileMenu;
-	    aRecentFileMenu = pRecentFileMenu;
-	    JPanel panel = new JPanel();
-	    panel.setLayout(new GridBagLayout());
-	    panel.setOpaque(false);
-	
-	    JPanel shortcutPanel = new JPanel();
-	    shortcutPanel.setOpaque(false);
-	    shortcutPanel.setLayout(new GridLayout(2, 2));
-	    shortcutPanel.add(getLeftTitlePanel());
-	    shortcutPanel.add(getRightTitlePanel());
-	    shortcutPanel.add(getLeftPanel());
-	    shortcutPanel.add(getRightPanel());
-	    GridBagConstraints c = new GridBagConstraints();
-	    c.anchor = GridBagConstraints.NORTH;
-	    c.weightx = 1;
-	    c.gridx = 0;
-	    c.gridy = 1;
-	    panel.add(shortcutPanel, c);
-	
-	    add(panel, BorderLayout.NORTH);
-	    add(getFootTextPanel(), BorderLayout.SOUTH);
-	    setComponentPopupMenu( null ); // Removes the system pop-up menu full of disabled buttons.
+	    setContent(layout);
+	}
+		
+	private VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers)
+	{
+		HBox titleBox = new HBox();
+		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
+		titleBox.getChildren().addAll(new Label(RESOURCES.getString("welcome.create.text")));
+
+		VBox diagramBox = new VBox();
+		diagramBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
+		diagramBox.getChildren().add(titleBox);
+		for(NewDiagramHandler handler : pNewDiagramHandlers)
+		{
+			Button newDiagramShortcut = new Button(RESOURCES.getString(handler.getDiagramType().getName() + ".text"));
+			newDiagramShortcut.setOnAction(handler);
+			diagramBox.getChildren().add(newDiagramShortcut);
+		}
+		return diagramBox;
 	}
 	
-	private JPanel getLeftPanel()
+	/**
+	 * Loads the links to recent files into the panel.
+	 * 
+	 * @param pFileOpenHanders The file handlers.
+	 */
+	public void loadRecentFileLinks(List<NamedHandler> pFileOpenHanders)
 	{
-		if(aLeftPanel == null)
+		VBox filesNode = (VBox) ((HBox)((BorderPane) getContent()).getCenter()).getChildren().get(1);
+		filesNode.getChildren().remove(1, filesNode.getChildren().size());
+		for(NamedHandler handler : pFileOpenHanders)
 		{
-			aLeftPanel = new JPanel();
-			aLeftPanel.setOpaque(false);
-			aLeftPanel.setLayout(new BoxLayout(aLeftPanel, BoxLayout.Y_AXIS));
-			aLeftPanel.setBorder(new EmptyBorder(0, 0, 0, BORDER_MARGIN));
-
-			for(int i = 0; i < aNewFileMenu.getItemCount(); i++)
-			{
-				final JMenuItem item = aNewFileMenu.getItem(i);
-				String label = item.getText();
-				JButton newDiagramShortcut = new JButton(label.toLowerCase());
-				newDiagramShortcut.setUI(new WelcomeButtonUI());
-				newDiagramShortcut.setAlignmentX(Component.RIGHT_ALIGNMENT);
-				newDiagramShortcut.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent pEvent)
-					{
-						item.doClick();
-					}
-				});
-				aLeftPanel.add(newDiagramShortcut);
-			}
+			Button fileShortcut = new Button(handler.getName());
+			fileShortcut.setOnAction(handler);
+			filesNode.getChildren().add(fileShortcut);
 		}
-		return aLeftPanel;
+	}
+	
+	private VBox createFilePanel()
+	{
+		HBox titleBox = new HBox();
+		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
+		titleBox.getChildren().add(new Label(RESOURCES.getString("welcome.open.text")));
+
+		VBox fileBox = new VBox();
+		fileBox.getStyleClass().add(CLASS_WELCOME_TAB_PANEL);
+		fileBox.getChildren().add(titleBox);
+
+		return fileBox;
 	}
 
-	private JPanel getRightPanel()
+
+	private HBox createFootTextPanel()
 	{
-		if(aRightPanel == null)
-		{
-			aRightPanel = new JPanel();
-			aRightPanel.setOpaque(false);
-			aRightPanel.setLayout(new BoxLayout(aRightPanel, BoxLayout.Y_AXIS));
-			aRightPanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, 0, BORDER_MARGIN));
-
-			for(int i = 0; i < aRecentFileMenu.getItemCount(); i++)
-			{
-				final JMenuItem item = aRecentFileMenu.getItem(i);
-				String label = item.getText().substring(2);
-				JButton fileShortcut = new JButton(label.toLowerCase());
-				fileShortcut.setUI(new WelcomeButtonUI());
-				fileShortcut.setAlignmentX(Component.LEFT_ALIGNMENT);
-				fileShortcut.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent pEvent)
-					{
-						item.doClick();
-					}
-				});
-				aRightPanel.add(fileShortcut);
-			}
-
-		}
-		return this.aRightPanel;
+		HBox footTextPanel = new HBox();
+		footTextPanel.getStyleClass().add(CLASS_FOOTER);
+		footTextPanel.getChildren().add(new Label(RESOURCES.getString("application.copyright")));
+		return footTextPanel;
 	}
-
-	private JPanel getLeftTitlePanel()
-	{
-		if(aLeftTitlePanel == null)
-		{
-			JLabel icon = new JLabel();
-			icon.setIcon(this.aLeftPanelIcon);
-
-			JLabel title = new JLabel(aNewFileMenu.getText().toLowerCase());
-			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-			title.setForeground(Color.DARK_GRAY);
-			title.setBorder(new EmptyBorder(0, ALTERNATIVE_BORDER_MARGIN, 0, 0));
-
-			JPanel panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-			panel.add(icon);
-			panel.add(title);
-			panel.setOpaque(false);
-
-			aLeftTitlePanel = new JPanel();
-			aLeftTitlePanel.setOpaque(false);
-			aLeftTitlePanel.setLayout(new BorderLayout());
-			aLeftTitlePanel.add(panel, BorderLayout.EAST);
-			aLeftTitlePanel.setBorder(new EmptyBorder(0, 0, ALTERNATIVE_BORDER_MARGIN, BORDER_MARGIN));
-		}
-		return aLeftTitlePanel;
-	}
-
-	private JPanel getRightTitlePanel()
-	{
-		if(aRightTitlePanel == null)
-		{
-			JLabel icon = new JLabel();
-			icon.setIcon(this.aRightPanelIcon);
-			icon.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-			JLabel title = new JLabel(aRecentFileMenu.getText().toLowerCase());
-			title.setFont(new Font("Arial", Font.PLAIN, FONT_SIZE));
-			title.setForeground(Color.DARK_GRAY);
-			title.setBorder(new EmptyBorder(0, 0, 0, ALTERNATIVE_BORDER_MARGIN));
-
-			JPanel panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-			panel.add(title);
-			panel.add(icon);
-			panel.setOpaque(false);
-
-			aRightTitlePanel = new JPanel();
-			aRightTitlePanel.setOpaque(false);
-			aRightTitlePanel.setLayout(new BorderLayout());
-			aRightTitlePanel.add(panel, BorderLayout.WEST);
-			aRightTitlePanel.setBorder(new EmptyBorder(0, BORDER_MARGIN, ALTERNATIVE_BORDER_MARGIN, 0));
-		}
-		return aRightTitlePanel;
-	}
-
-	private JPanel getFootTextPanel()
-	{
-		if(aFootTextPanel == null)
-		{
-			aFootText = aWelcomeResources.getString("welcome.copyright");
-			aFootTextPanel = new JPanel();
-			aFootTextPanel.setOpaque(false);
-			aFootTextPanel.setBorder(new EmptyBorder(0, 0, FOOT_BORDER_MARGIN, 0));
-			aFootTextPanel.setLayout(new BoxLayout(this.aFootTextPanel, BoxLayout.Y_AXIS));
-			aFootTextPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-			JLabel text = new JLabel(this.aFootText);
-			text.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-			aFootTextPanel.add(text);
-		}
-
-		return aFootTextPanel;
-	}
-
 }	

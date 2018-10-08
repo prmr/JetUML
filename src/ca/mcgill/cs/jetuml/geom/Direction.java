@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -94,5 +94,11 @@ public class Direction
 	public double getY()
 	{
 		return aY;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[Direction: x=%.2f y=%.2f]", aX, aY);
 	}
 }

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,1166 +21,678 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.application.ExtensionFilter;
+import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
+import ca.mcgill.cs.jetuml.views.ImageCreator;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 /**
- * This desktop frame contains panes that show graphs.
- * 
- * @author Cay S. Horstmann - Original code
- * @author Martin P. Robillard - Refactorings, file handling, menu management.
+ * The main frame that contains panes that contain diagrams.
  */
-@SuppressWarnings("serial")
-public class EditorFrame extends JFrame
+public class EditorFrame extends BorderPane
 {
-	private static final int FRAME_GAP = 20;
-	private static final int ESTIMATED_FRAMES = 5;
-	private static final int MAX_RECENT_FILES = 8;
-	private static final int MARGIN_SCREEN = 8; // Fraction of the screen to leave around the sides
-	private static final int MARGIN_IMAGE = 2; // Number of pixels to leave around the graph when exporting it as an image
-	private static final int HELP_MENU_TEXT_WIDTH = 10; //Number of pixels to give to the width of the  text area of the Help Menu.
-	private static final int HELP_MENU_TEXT_HEIGHT = 40; //Number of pixels to give to the height of the text area of the Help Menu.
-	
-	private MenuFactory aAppFactory;
-	private ResourceBundle aAppResources;
-	private ResourceBundle aVersionResources;
-	private ResourceBundle aEditorResources;
-	private JTabbedPane aTabbedPane;
-	private ArrayList<JInternalFrame> aTabs = new ArrayList<>();
-	private JMenu aNewMenu;
-	
+	private Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
-	private JMenu aRecentFilesMenu;
-	
+	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-	
-	// Menus or menu items that must be disabled if there is no current diagram.
-	private final List<JMenuItem> aDiagramRelevantMenus = new ArrayList<>();
 
 	/**
-	 * Constructs a blank frame with a desktop pane
-     * but no graph windows.
-     * @param pAppClass the fully qualified app class name.
-     * It is expected that the resources are appClassName + "Strings"
-     * and appClassName + "Version" (the latter for version-specific
-     * resources)
-     */
-	public EditorFrame(Class<?> pAppClass)
-	{  
-		String appClassName = pAppClass.getName();
-		aAppResources = ResourceBundle.getBundle(appClassName + "Strings");
-		aAppFactory = new MenuFactory(aAppResources);
-		aVersionResources = ResourceBundle.getBundle(appClassName + "Version");
-		aEditorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");      
-		MenuFactory factory = new MenuFactory(aEditorResources);
-		
-		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
-      
-		setTitle(aAppResources.getString("app.name"));
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
-
-		setBounds(screenWidth / (MARGIN_SCREEN*2), screenHeight / (MARGIN_SCREEN*2), (screenWidth * (MARGIN_SCREEN-1)) / MARGIN_SCREEN, 
-				(screenHeight * (MARGIN_SCREEN-1))/MARGIN_SCREEN);
-
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-            public void windowClosing(WindowEvent pEvent)
-            {
-               exit();
-            }
-		});
-
-		aTabbedPane = new JTabbedPane();
-		aTabbedPane.addChangeListener(new ChangeListener()
-		{
-			@Override
-			public void stateChanged(ChangeEvent pEven)
-			{
-				boolean noGraphFrame = noCurrentGraphFrame();
-				for( JMenuItem menuItem : aDiagramRelevantMenus )
-				{
-					menuItem.setEnabled(!noGraphFrame);
-				}
-			}
-		});
-		setContentPane(aTabbedPane);
-
-     	setJMenuBar(new JMenuBar());
-     	
-		createFileMenu(factory);
-		createEditMenu(factory);
-		createViewMenu(factory);
-     	createHelpMenu(factory);
-	}
-	
-	private void createFileMenu(MenuFactory pFactory)
-	{
-		JMenuBar menuBar = getJMenuBar();
-     	JMenu fileMenu = pFactory.createMenu("file");
-     	menuBar.add(fileMenu);
-
-     	aNewMenu = pFactory.createMenu("file.new");
-     	fileMenu.add(aNewMenu);
-
-     	JMenuItem fileOpenItem = pFactory.createMenuItem("file.open", this, "openFile"); 
-     	fileMenu.add(fileOpenItem); 
-
-     	aRecentFilesMenu = pFactory.createMenu("file.recent");
-     	buildRecentFilesMenu();
-     	fileMenu.add(aRecentFilesMenu);
-     	
-     	JMenuItem closeFileItem = pFactory.createMenuItem("file.close", this, "close");
-     	fileMenu.add(closeFileItem);
-     	aDiagramRelevantMenus.add(closeFileItem);
-     	closeFileItem.setEnabled(!noCurrentGraphFrame());
-      
-     	JMenuItem fileSaveItem = pFactory.createMenuItem("file.save", this, "save"); 
-     	fileMenu.add(fileSaveItem);
-     	aDiagramRelevantMenus.add(fileSaveItem);
-     	fileSaveItem.setEnabled(!noCurrentGraphFrame());
-     	
-     	JMenuItem fileSaveAsItem = pFactory.createMenuItem("file.save_as", this, "saveAs");
-     	fileMenu.add(fileSaveAsItem);
-     	aDiagramRelevantMenus.add(fileSaveAsItem);
-     	fileSaveAsItem.setEnabled(!noCurrentGraphFrame());
-
-     	JMenuItem fileExportItem = pFactory.createMenuItem("file.export_image", this, "exportImage"); 
-     	fileMenu.add(fileExportItem);
-     	aDiagramRelevantMenus.add(fileExportItem);
-     	fileExportItem.setEnabled(!noCurrentGraphFrame());
-     	
-     	JMenuItem fileCopyToClipboard = pFactory.createMenuItem("file.copy_to_clipboard", this, "copyToClipboard"); 
-     	fileMenu.add(fileCopyToClipboard);
-     	aDiagramRelevantMenus.add(fileCopyToClipboard);
-     	fileCopyToClipboard.setEnabled(!noCurrentGraphFrame());
-     	
-     	fileMenu.addSeparator();
-
-     	JMenuItem fileExitItem = pFactory.createMenuItem("file.exit", this, "exit");
-     	fileMenu.add(fileExitItem);
-	}
-	
-	private void createEditMenu(MenuFactory pFactory)
-	{
-		JMenuBar menuBar = getJMenuBar();
-		JMenu editMenu = pFactory.createMenu("edit");
-     	menuBar.add(editMenu);
-     	aDiagramRelevantMenus.add(editMenu);
-     	editMenu.setEnabled(!noCurrentGraphFrame());
-     	
-     	editMenu.add(pFactory.createMenuItem("edit.undo", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-     		{
-     			if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().undo();
-     		}
-     	}));
-     	
-     	editMenu.add(pFactory.createMenuItem("edit.redo", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-     		{
-     			if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().redo();
-     		}
-     	}));
-     	
-     	editMenu.add(pFactory.createMenuItem("edit.selectall", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-            {
-     			if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().selectAll();
-            }
-         }));
-     	
-     	editMenu.add(pFactory.createMenuItem("edit.properties", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-            {
-     			if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().editSelected();
-            }
-         }));
-     	
-     	editMenu.add(pFactory.createMenuItem("edit.cut", this, "cut"));
-     	editMenu.add(pFactory.createMenuItem("edit.paste", this, "paste"));
-     	editMenu.add(pFactory.createMenuItem("edit.copy", this, "copy"));
-     	
-
-     	editMenu.add(pFactory.createMenuItem("edit.delete", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-            	if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().removeSelected();
-            }
-     	}));
-	}
-	
-	private void createViewMenu(MenuFactory pFactory)
-	{
-		JMenuBar menuBar = getJMenuBar();
-		
-		JMenu viewMenu = pFactory.createMenu("view");
-     	menuBar.add(viewMenu);
-     	aDiagramRelevantMenus.add(viewMenu);
-     	viewMenu.setEnabled(!noCurrentGraphFrame());
-
-     	viewMenu.add(pFactory.createMenuItem("view.zoom_out", new ActionListener()
-     	{
-     		public void actionPerformed(ActionEvent pEvent)
-     		{
-     			if( noCurrentGraphFrame() )
-     			{
-     				return;
-     			}
-     			((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(-1);
-     		}
-         }));
-
-     	viewMenu.add(pFactory.createMenuItem("view.zoom_in", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-            	if( noCurrentGraphFrame() )
-            	{
-            		return;
-            	}
-            	((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().changeZoom(1);
-            }
-     	}));
-      
-     	final JCheckBoxMenuItem hideGridItem  = (JCheckBoxMenuItem) pFactory.createCheckBoxMenuItem("view.hide_grid", new ActionListener()
-     	{
-            public void actionPerformed(ActionEvent pEvent)
-            {
-            	if( noCurrentGraphFrame() )
-            	{
-            		return;
-            	}
-            	GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-            	GraphPanel panel = frame.getGraphPanel();
-            	JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) pEvent.getSource();               
-            	panel.setHideGrid(menuItem.isSelected());
-            }
-        });
-     	viewMenu.add(hideGridItem);
-
-     	viewMenu.addMenuListener(new MenuListener()
-     	{
-     		public void menuSelected(MenuEvent pEvent)
-            {
-	     		if(aTabbedPane.getSelectedComponent() instanceof WelcomeTab)
-	     		{
-	     			return;
-	     		}	
-     			GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-                if(frame == null)
-				{
-					return;
-				}
-                GraphPanel panel = frame.getGraphPanel();
-                hideGridItem.setSelected(panel.getHideGrid());  
-            }
-     		public void menuDeselected(MenuEvent pEvent)
-            {}
-            public void menuCanceled(MenuEvent pEvent)
-            {}
-     	});
-	}
-	
-	
-	private void createHelpMenu(MenuFactory pFactory)
-	{
-		JMenuBar menuBar = getJMenuBar();
-		JMenu helpMenu = pFactory.createMenu("help");
-		menuBar.add(helpMenu);
-		
-		helpMenu.add(pFactory.createMenuItem("help.about", this, "showAboutDialog"));
-		helpMenu.add(pFactory.createMenuItem("help.license", new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-			{
-				try
-				{
-					BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("license.txt")));
-					JTextArea text = new JTextArea(HELP_MENU_TEXT_WIDTH, HELP_MENU_TEXT_HEIGHT);
-					String line;
-					while ((line = reader.readLine()) != null)
-					{
-						text.append(line);
-						text.append("\n");
-					}   
-					text.setCaretPosition(0);
-					text.setEditable(false);
-					JOptionPane.showInternalMessageDialog(aTabbedPane, new JScrollPane(text), 
-							aEditorResources.getString("dialog.license.title"), JOptionPane.PLAIN_MESSAGE);
-				}
-				catch(IOException exception) 
-				{}
-			}
-		}));
-	}
-	
-	/**
-     * Adds a graph type to the File->New menu.
-     * @param pResourceName the name of the menu item resource
-     * @param pGraphClass the class object for the graph
-     */
-	public void addGraphType(String pResourceName, final Class<?> pGraphClass)
-	{
-		aNewMenu.add(aAppFactory.createMenuItem(pResourceName, new ActionListener()
-		{
-			public void actionPerformed(ActionEvent pEvent)
-            {
-               try
-               {
-                  GraphFrame frame = new GraphFrame((Graph) pGraphClass.newInstance(), aTabbedPane);
-                  addTab(frame);
-               }
-               catch (Exception exception)
-               {
-                  exception.printStackTrace();
-               }
-            }
-         }));
-	}
-	
-	/**
-	 * Sets the TaskBar icon for the JetUML application.
+	 * Constructs a blank frame with a desktop pane but no diagram window.
+	 * 
+	 * @param pMainStage The main stage used by the UMLEditor
 	 */
-	public void setIcon()
-    {
-    	try
-		{
-			java.net.URL url = getClass().getClassLoader().getResource(aAppResources.getString("app.icon"));
-			Toolkit kit = Toolkit.getDefaultToolkit();
-			Image img = kit.createImage(url);
-			setIconImage(img);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-    }
-
-   	/**
-     * Reads the command line arguments.
-     * @param pArgs the command line arguments
-   	 */
-	public void readArgs(String[] pArgs)
+	public EditorFrame(Stage pMainStage) 
 	{
-	   if(pArgs.length != 0)
-	   {	
-		   for(String argument : pArgs)
-		   {
-			   open(argument);
-		   }
-	   } 
-	   /*@JoelChev may be needed later*/
-	   //setTitle();
-   	}
-   
-   /*
-    * Opens a file with the given name, or switches to the frame if it is already open.
-    * @param pName the file name
-    */
-	private void open(String pName)
-	{	
-		for(int i = 0; i < aTabs.size(); i++)
+		aMainStage = pMainStage;
+		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
+
+		MenuBar menuBar = new MenuBar();
+		setTop(menuBar);
+		
+		TabPane tabPane = new TabPane();
+		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
+		setCenter( tabPane );
+	
+		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
+		createFileMenu(menuBar, newDiagramHandlers);
+		createEditMenu(menuBar);
+		createViewMenu(menuBar);
+		createHelpMenu(menuBar);
+		setMenuVisibility();
+		
+		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
+		showWelcomeTabIfNecessary();
+	}
+	
+	/*
+	 * Traverses all menu items up to the second level (top level
+	 * menus and their immediate sub-menus), that have "true" in their user data,
+	 * indicating that they should only be enabled if there is a diagram 
+	 * present. Then, sets their visibility to the boolean value that
+	 * indicates whether there is a diagram present.
+	 * 
+	 * This method assumes that any sub-menu beyond the second level (sub-menus of
+	 * top menus) will NOT be diagram-specific.
+	 */
+	private void setMenuVisibility()
+	{
+			((MenuBar)getTop()).getMenus().stream() // All top level menus
+				.flatMap(menu -> Stream.concat(Stream.of(menu), menu.getItems().stream())) // All menus and immediate sub-menus
+				.filter( item -> Boolean.TRUE.equals(item.getUserData())) // Retain only diagram-relevant menu items
+				.forEach( item -> item.setDisable(isWelcomeTabShowing()));
+	}
+	
+	// Returns the new menu
+	private void createFileMenu(MenuBar pMenuBar, List<NewDiagramHandler> pNewDiagramHandlers) 
+	{
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		
+		// Special menu items whose creation can't be inlined in the factory call.
+		Menu newMenu = factory.createMenu("file.new", false);
+		for( NewDiagramHandler handler : pNewDiagramHandlers )
 		{
-			if(aTabbedPane.getComponentAt(i) instanceof GraphFrame)
+			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName(), false, handler));
+		}
+		
+		aRecentFilesMenu = factory.createMenu("file.recent", false);
+		buildRecentFilesMenu();
+		
+		// Standard factory invocation
+		pMenuBar.getMenus().add(factory.createMenu("file", false, 
+				newMenu,
+				factory.createMenuItem("file.open", false, pEvent -> openFile()),
+				aRecentFilesMenu,
+				factory.createMenuItem("file.close", true, pEvent -> close()),
+				factory.createMenuItem("file.save", true, pEvent -> save()),
+				factory.createMenuItem("file.save_as", true, pEvent -> saveAs()),
+				factory.createMenuItem("file.export_image", true, pEvent -> exportImage()),
+				factory.createMenuItem("file.copy_to_clipboard", true, pEvent -> copyToClipboard()),
+				new SeparatorMenuItem(),
+				factory.createMenuItem("file.exit", false, pEvent -> exit())));
+	}
+	
+	private void createEditMenu(MenuBar pMenuBar) 
+	{
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("edit", true, 
+				factory.createMenuItem("edit.undo", true, pEvent -> getSelectedDiagramTab().undo()),
+				factory.createMenuItem("edit.redo", true, pEvent -> getSelectedDiagramTab().redo()),
+				factory.createMenuItem("edit.selectall", true, pEvent -> getSelectedDiagramTab().selectAll()),
+				factory.createMenuItem("edit.properties", true, pEvent -> getSelectedDiagramTab().editSelected()),
+				factory.createMenuItem("edit.cut", true, pEvent -> getSelectedDiagramTab().cut()),
+				factory.createMenuItem("edit.paste", true, pEvent -> getSelectedDiagramTab().paste()),
+				factory.createMenuItem("edit.copy", true, pEvent -> getSelectedDiagramTab().copy()),
+				factory.createMenuItem("edit.delete", true, pEvent -> getSelectedDiagramTab().removeSelected() )));
+	}
+	
+	private void createViewMenu(MenuBar pMenuBar) 
+	{
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("view", false, 
+				
+				factory.createCheckMenuItem("view.show_grid", false, 
+				UserPreferences.instance().getBoolean(BooleanPreference.showGrid), 
+				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, ((CheckMenuItem) pEvent.getSource()).isSelected())),
+			
+				factory.createCheckMenuItem("view.show_hints", false, 
+				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
+				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
+						((CheckMenuItem) pEvent.getSource()).isSelected())),
+		
+				factory.createMenuItem("view.diagram_size", false, Event -> new DiagramSizeDialog(aMainStage).show())));
+	}
+	
+	private void createHelpMenu(MenuBar pMenuBar) 
+	{
+		MenuFactory factory = new MenuFactory(RESOURCES);
+		pMenuBar.getMenus().add(factory.createMenu("help", false,
+				factory.createMenuItem("help.about", false, pEvent -> new AboutDialog(aMainStage).show())));
+	}
+	
+	/*
+	 * Opens a file with the given name, or switches to the frame if it is already
+	 * open.
+	 * 
+	 * @param pName the file name
+	 */
+	private void open(String pName) 
+	{
+		for( Tab tab : tabs() )
+		{
+			if(tab instanceof DiagramTab)
 			{
-				GraphFrame frame = (GraphFrame)aTabbedPane.getComponentAt(i);
-				if(frame.getFileName() != null && frame.getFileName().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
+				if(((DiagramTab) tab).getFile() != null	&& 
+						((DiagramTab) tab).getFile().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
 				{
-					try
-					{
-						frame.toFront();
-						frame.setSelected(true); 
-						addRecentFile(new File(pName).getPath());
-					}
-					catch(PropertyVetoException exception)
-					{}
+					tabPane().getSelectionModel().select(tab);
+					addRecentFile(new File(pName).getPath());
 					return;
 				}
 			}
-		}	      
-		try
-		{	              
-			Graph graph = PersistenceService.read(new File(pName));
-			GraphFrame frame = new GraphFrame(graph, aTabbedPane);
-			frame.setFile(new File(pName).getAbsoluteFile());    
-			addRecentFile(new File(pName).getPath());
-			addTab(frame);
 		}
-		catch(IOException | DeserializationException exception )
+		
+		try 
 		{
-			JOptionPane.showMessageDialog(aTabbedPane, exception.getMessage(), 
-    			  aEditorResources.getString("file.open.text"), JOptionPane.ERROR_MESSAGE);
-		}      
-	}   
+			Diagram diagram2 = PersistenceService.read(new File(pName));
+			
+			Rectangle bounds = DiagramType.newViewInstanceFor(diagram2).getBounds();
+			int viewWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
+			int viewHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
+			if( bounds.getMaxX() > viewWidth || bounds.getMaxY() > viewHeight )
+			{
+				showDiagramViewTooSmallAlert(bounds, viewWidth, viewHeight);
+				return;
+			}
+			
+			DiagramTab frame2 = new DiagramTab(diagram2);
+			frame2.setFile(new File(pName).getAbsoluteFile());
+			addRecentFile(new File(pName).getPath());
+			insertGraphFrameIntoTabbedPane(frame2);
+		}
+		catch (IOException | DeserializationException exception2) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
+	}
+	
+	private void showDiagramViewTooSmallAlert(Rectangle pBounds, int pWidth, int pHeight)
+	{
+		String content = RESOURCES.getString("dialog.open.size_error_content");
+		content = content.replace("#1", Integer.toString(pBounds.getMaxX()));
+		content = content.replace("#2", Integer.toString(pBounds.getMaxY()));
+		content = content.replace("#3", Integer.toString(pWidth));
+		content = content.replace("#4", Integer.toString(pHeight));
+		Alert alert = new Alert(AlertType.ERROR, content, ButtonType.OK);
+		alert.setTitle(RESOURCES.getString("alert.error.title"));
+		alert.setHeaderText(RESOURCES.getString("dialog.open.size_error_header"));
+		alert.initOwner(aMainStage);
+		alert.showAndWait();
+	}
+	
+	private List<NamedHandler> getOpenFileHandlers()
+	{
+		List<NamedHandler> result = new ArrayList<>();
+		for( File file : aRecentFiles )
+   		{
+			result.add(new NamedHandler(file.getName(), pEvent -> open(file.getAbsolutePath())));
+   		}
+		return Collections.unmodifiableList(result);
+	}
+	
+	private List<NewDiagramHandler> createNewDiagramHandlers()
+	{
+		List<NewDiagramHandler> result = new ArrayList<>();
+		for( DiagramType diagramType : DiagramType.values() )
+		{
+			result.add(new NewDiagramHandler(diagramType, pEvent ->
+			{
+				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance()));
+			}));
+		}
+		return Collections.unmodifiableList(result);
+	}
 
 	/*
-     * Adds an InternalFrame to the list of Tabs.
-     * @param c the component to display in the internal frame
-     * @param t the title of the internal frame.
-    */
-   private void addTab(final JInternalFrame pInternalFrame)
-   {  
-	   int frameCount = aTabbedPane.getComponentCount();   
-	   BasicInternalFrameUI ui = (BasicInternalFrameUI)pInternalFrame.getUI();
-	   Container north = ui.getNorthPane();
-	   north.remove(0);
-	   north.validate();
-	   north.repaint();
-	   aTabbedPane.add(setTitle(pInternalFrame), pInternalFrame);
-	   int i = aTabs.size();
-	   aTabbedPane.setTabComponentAt(i,
-               new ButtonTabComponent(this, pInternalFrame, aTabbedPane));
-	   aTabs.add(pInternalFrame);
-	   // position frame
-	   int emptySpace = FRAME_GAP * Math.max(ESTIMATED_FRAMES, frameCount);
-	   int width = Math.max(aTabbedPane.getWidth() / 2, aTabbedPane.getWidth() - emptySpace);            
-	   int height = Math.max(aTabbedPane.getHeight() / 2, aTabbedPane.getHeight() - emptySpace);
-
-	   pInternalFrame.reshape(frameCount * FRAME_GAP, frameCount * FRAME_GAP, width, height);
-	   pInternalFrame.show(); 
-	   int last = aTabs.size();
-	   aTabbedPane.setSelectedIndex(last-1);
-	   if(aTabbedPane.getComponentAt(0) instanceof WelcomeTab)
-	   {
-		   removeWelcomeTab();
-	   }
-
-   	}
-
-   	/**
-   	 * @param pInternalFrame The current frame to give a Title in its tab.
-   	 * @return The title of a given tab.
-   	 */
-   	private String setTitle(JInternalFrame pInternalFrame)
-   	{
-   		String appName = aAppResources.getString("app.name");
-   		String diagramName;
-   		
-   		if(pInternalFrame == null || !(pInternalFrame instanceof GraphFrame ))
-   		{
-   			return appName;
-   		}
-   		else
-   		{
-   			GraphFrame frame = (GraphFrame)pInternalFrame;
-   			File file = frame.getFileName();
-   			if( file == null )
-   			{
-   				Graph graphType = frame.getGraph();
-   				if(graphType instanceof ClassDiagramGraph)
-   				{
-   					diagramName = "Class Diagram";
-   				}
-   				else if(graphType instanceof ObjectDiagramGraph)
-   				{
-   					diagramName = "Object Diagram";
-   				}
-   				else if(graphType instanceof UseCaseDiagramGraph)
-   				{
-   					diagramName = "Use Case Diagram";
-   				}
-   				else if(graphType instanceof StateDiagramGraph)
-   				{
-   					diagramName = "State Diagram";
-   				}
-   				else
-   				{
-   					diagramName =  "Sequence Diagram";
-   				}
-   				return diagramName;
-   			}
-   			else
-   			{
-   				return file.getName();
-   			}
-   		}
-   }
-   	
-   	/**
-   	 * This adds a WelcomeTab to the tabs. This is only done if all other tabs have been previously closed.
-   	 */
-   	public void addWelcomeTab()
-   	{
-   		aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
-     	aTabbedPane.add("Welcome", aWelcomeTab);
-     	aTabs.add(aWelcomeTab);
-   	}
-   
-   	
-   	/**
-   	 * This method removes the WelcomeTab after a file has been opened or a diagram starts being created.
-   	 */
-   	public void removeWelcomeTab()
-   	{
-   		if(aWelcomeTab !=null)
-   		{
-   			aTabbedPane.remove(0);
-   			aTabs.remove(0);
-   		}
-   	}
-   	
-   	/**
-   	 * @param pInternalFrame The JInternalFrame to remove.
-   	 * Calling this metod will remove a given JInternalFrame.
-   	 */
-   	public void removeTab(final JInternalFrame pInternalFrame)
-    {
-        if (!aTabs.contains(pInternalFrame))
-        {
-            return;
-        }
-        JTabbedPane tp = aTabbedPane;
-        int pos = aTabs.indexOf(pInternalFrame);
-        tp.remove(pos);
-        aTabs.remove(pInternalFrame);
-        if(aTabs.size() == 0)
-        {
-        	aWelcomeTab = new WelcomeTab(aNewMenu, aRecentFilesMenu);
-        	aTabbedPane.add("Welcome", aWelcomeTab);
-        	aTabs.add(aWelcomeTab);
-        }
-    }
-   	
-   	/*
-   	 * Adds a file name to the "recent files" list and rebuilds the "recent files" menu. 
-   	 * @param pNewFile the file name to add
-   	 */
-   	private void addRecentFile(String pNewFile)
-   	{
-   		aRecentFiles.add(pNewFile);
-   		buildRecentFilesMenu();
-   	}
-   
+	 * Adds a file name to the "recent files" list and rebuilds the "recent files"
+	 * menu.
+	 * 
+	 * @param pNewFile the file name to add
+	 */
+	private void addRecentFile(String pNewFile) 
+	{
+		aRecentFiles.add(pNewFile);
+		buildRecentFilesMenu();
+	}
+	
    	/*
    	 * Rebuilds the "recent files" menu. Only works if the number of
-   	 * recent files is less than 8. Otherwise, additional logic will need
-   	 * to be added to 0-index the mnemonics for files 1-9
+   	 * recent files is less than 10. Otherwise, additional logic will need
+   	 * to be added to 0-index the mnemonics for files 1-9.
    	 */
    	private void buildRecentFilesMenu()
    	{ 
-   		assert aRecentFiles.size() <= MAX_RECENT_FILES;
-   		aRecentFilesMenu.removeAll();
-   		aRecentFilesMenu.setEnabled(aRecentFiles.size() > 0);
+   		aRecentFilesMenu.getItems().clear();
+   		aRecentFilesMenu.setDisable(!(aRecentFiles.size() > 0));
    		int i = 1;
    		for( File file : aRecentFiles )
    		{
-   			String name = i + " " + file.getName();
+   			String name = "_" + i + " " + file.getName();
    			final String fileName = file.getAbsolutePath();
-   			JMenuItem item = new JMenuItem(name);
-   			item.setMnemonic('0'+i);
-   			aRecentFilesMenu.add(item);
-            item.addActionListener(new ActionListener()
-            {
-           	 	public void actionPerformed(ActionEvent pEvent)
-           	 	{
-           	 		open(fileName);
-           	 	}
-            });
+   			MenuItem item = new MenuItem(name);
+   			aRecentFilesMenu.getItems().add(item);
+   			item.setOnAction(pEvent -> open(fileName));
             i++;
-   		}     
+   		}
    }
 
-   	/**
-     * Asks the user to open a graph file.
-   	 */
-   	public void openFile()
-   	{  
-		JFileChooser fileChooser = new JFileChooser(aRecentFiles.getMostRecentDirectory());
-		fileChooser.setFileFilter(new ExtensionFilter(aAppResources.getString("files.name"), aAppResources.getString("files.extension")));
-   			// TODO This Editor frame should keep a list of graph types to make this operation not hard-code them
-		ExtensionFilter[] filters = new ExtensionFilter[]{
-			new ExtensionFilter(aAppResources.getString("state.name"), 
-					aAppResources.getString("state.extension") + aAppResources.getString("files.extension")),
-   			new ExtensionFilter(aAppResources.getString("object.name"), 
-   						aAppResources.getString("object.extension") + aAppResources.getString("files.extension")),
-   			new ExtensionFilter(aAppResources.getString("class.name"), 
-   						aAppResources.getString("class.extension") + aAppResources.getString("files.extension")),
-   			new ExtensionFilter(aAppResources.getString("usecase.name"), 
-   						aAppResources.getString("usecase.extension") + aAppResources.getString("files.extension")),
-   			new ExtensionFilter(aAppResources.getString("sequence.name"), 
-   						aAppResources.getString("sequence.extension") + aAppResources.getString("files.extension"))
-   		};
-   		for(ExtensionFilter filter: filters)
-		{
-			fileChooser.addChoosableFileFilter(filter);
-		}
-		if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) 
-		{
-			File file = fileChooser.getSelectedFile();
-   			open(file.getAbsolutePath());
-		}
-   	}
-   	
-   	/**
-   	 * Cuts the current selection of the current panel and 
-   	 * puts the content into the application-specific clipboard.
-   	 */
-   	public void cut()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
-   		panel.cut();		
-   		panel.repaint();
-   	}
-   	
-   	/**
-   	 * Copies the current selection of the current panel and 
-   	 * puts the content into the application-specific clipboard.
-   	 */
-   	public void copy()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel().copy();
-   	}
-   	
-   	/**
-   	 * Pastes a past selection from the application-specific Clipboard into current panel. All the
-   	 * logic is done in the application-specific CutPasteBehavior. 
-   	 * 
-   	 */
-   	public void paste()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphPanel panel = ((GraphFrame) aTabbedPane.getSelectedComponent()).getGraphPanel();
-   		panel.paste();
-   		panel.repaint();
-   	}
-   	
-   	/**
-   	 * Copies the current image to the clipboard.
-   	 */
-   	public void copyToClipboard()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		final BufferedImage image = getImage(frame.getGraph());
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Transferable()
-		{
-			@Override
-			public boolean isDataFlavorSupported(DataFlavor pFlavor)
-			{
-				return DataFlavor.imageFlavor.equals(pFlavor);
-			}
-			
-			@Override
-			public DataFlavor[] getTransferDataFlavors()
-			{
-				return new DataFlavor[] { DataFlavor.imageFlavor };
-			}
-			
-			@Override
-			public Object getTransferData(DataFlavor pFlavor) throws UnsupportedFlavorException, IOException
-			{
-				if(DataFlavor.imageFlavor.equals(pFlavor))
-		        {
-		            return image;
-		        }
-		        else
-		        {
-		            throw new UnsupportedFlavorException(pFlavor);
-		        }
-			}
-		}, null);
-   		JOptionPane.showInternalMessageDialog(aTabbedPane, aEditorResources.getString("dialog.to_clipboard.message"), 
-   				aEditorResources.getString("dialog.to_clipboard.title"), JOptionPane.INFORMATION_MESSAGE);
-   	}
-   	
-   	private boolean noCurrentGraphFrame()
-   	{
-   		return aTabbedPane.getSelectedComponent() == null || !(aTabbedPane.getSelectedComponent() instanceof GraphFrame);
-   	}
-   	
-   	/**
-   	 * If a user confirms that they want to close their modified graph, this method will
-   	 * remove it from the current list of tabs.
-   	 */
-   	public void close()
-   	{
-   		if(noCurrentGraphFrame())
-   		{
-   			return;
-   		}
-        JInternalFrame curFrame = (JInternalFrame)aTabbedPane.getSelectedComponent();
-        if(curFrame != null)
-        {
-        	GraphFrame openFrame = (GraphFrame) curFrame;
-        	// we only want to check attempts to close a frame
-			if(openFrame.getGraphPanel().isModified())
-			{                   
-				// ask user if it is ok to close
-				if(JOptionPane.showConfirmDialog(openFrame, 
-						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
-				{
-					removeTab(curFrame);
-				}
-				return;
-			}
-			else
-			{
-				removeTab(curFrame);
-			}
-        }
-    }
-   	
-   	/**
-   	 * If a user confirms that they want to close their modified graph, this method will
-   	 * remove it from the current list of tabs.
-   	 * @param pJInternalFrame  The current JInternalFrame that one wishes to close.
-   	 */
-   	public void close(JInternalFrame pJInternalFrame)
-   	{
-        JInternalFrame curFrame = pJInternalFrame;
-        if (curFrame != null)
-        {
-        	GraphFrame openFrame = (GraphFrame) curFrame;
-        	// we only want to check attempts to close a frame
-			if(openFrame.getGraphPanel().isModified())
-			{              
-				if(JOptionPane.showConfirmDialog(openFrame, 
-						aEditorResources.getString("dialog.close.ok"), null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
-				{
-					removeTab(curFrame);
-				}
-				return;
-			}
-			removeTab(curFrame);
-        }
-    }
-   	
-   	/**
-   	 * Save a file. Called by reflection. 
-   	 */
-   	public void save()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		File file = frame.getFileName(); 
-   		if(file == null) 
-   		{	
-   			saveAs(); 
-   			return; 
-   		}
-   		try
-   		{
-   			PersistenceService.save(frame.getGraph(), file);
-   			frame.getGraphPanel().setModified(false);
-   		}        
-   		catch(Exception exception)
-   		{
-   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
-   		}        
-   	}
-   
-   	/**
-     * Saves the current graph as a new file.
-   	 */
-   	public void saveAs()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		Graph graph = frame.getGraph();    
-   		try
-   		{
-   			File result = null;
-   			
-   	   		JFileChooser fileChooser = new JFileChooser();
-   			fileChooser.setFileFilter(new ExtensionFilter(graph.getDescription(), 
-					graph.getFileExtension() + aAppResources.getString("files.extension")));
-   			fileChooser.setCurrentDirectory(new File("."));
-   			
-   			if(frame.getFileName() != null)
-   			{           
-   				fileChooser.setSelectedFile(frame.getFileName());
-   			}
-   			else 
-   			{
-   				fileChooser.setSelectedFile(new File(""));
-   			}
-   			int response = fileChooser.showSaveDialog(this);         
-   			if(response == JFileChooser.APPROVE_OPTION)
-   			{
-   				File f = fileChooser.getSelectedFile();
-   				if( !fileChooser.getFileFilter().accept(f))
-   				{
-   					f = new File(f.getPath() + graph.getFileExtension() + aAppResources.getString("files.extension"));
-   				}
+	private void openFile() 
+	{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
+		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 
-   				if(!f.exists()) 
-   				{
-   					result = f;
-   				}
-   				else
-   				{
-   	        		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-   	        		int theresult = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), 
-   	        				null, JOptionPane.YES_NO_OPTION);
-   	        		if(theresult == JOptionPane.YES_OPTION) 
-   	        		{
-   	        			result = f;
-   	        		}
-   				}
-   			}
-   			
-   			if(result != null)
-   			{
-   				PersistenceService.save(graph, result);
-   				addRecentFile(result.getAbsolutePath());
-   				frame.setFile(result);
-   				aTabbedPane.setTitleAt(aTabbedPane.getSelectedIndex(), frame.getFileName().getName());
-   				frame.getGraphPanel().setModified(false);
-   			}
-   		}
-   		catch(IOException exception)
-   		{
-   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
-   		}
-   	}
+		File selectedFile = fileChooser.showOpenDialog(aMainStage);
+		if (selectedFile != null) 
+		{
+			open(selectedFile.getAbsolutePath());
+		}
+	}
 
 	/**
-   	 * Edits the file path so that the pToBeRemoved extension, if found, is replaced 
-   	 * with pDesired.
-   	 * @param pOriginal the file to use as a starting point
-     * @param pToBeRemoved the extension that is to be removed before adding the desired extension.
-   	 * @param pDesired the desired extension (e.g. ".png")
-   	 * @return original if it already has the desired extension, or a new file with the edited file path
-   	 */
-	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired)
+	 * Copies the current image to the clipboard.
+	 */
+	public void copyToClipboard() 
+	{
+		DiagramTab frame = getSelectedDiagramTab();
+		final Image image = ImageCreator.createImage(frame.getDiagram());
+		final Clipboard clipboard = Clipboard.getSystemClipboard();
+	    final ClipboardContent content = new ClipboardContent();
+	    content.putImage(image);
+	    clipboard.setContent(content);
+		Alert alert = new Alert(AlertType.INFORMATION, RESOURCES.getString("dialog.to_clipboard.message"), ButtonType.OK);
+		alert.initOwner(aMainStage);
+		alert.setHeaderText(RESOURCES.getString("dialog.to_clipboard.title"));
+		alert.showAndWait();
+	}
+
+	/* @pre there is a selected diagram tab, not just the welcome tab */
+	private DiagramTab getSelectedDiagramTab()
+	{
+		Tab tab = ((TabPane) getCenter()).getSelectionModel().getSelectedItem();
+		assert tab instanceof DiagramTab; // implies a null check.
+		return (DiagramTab) tab;
+	}
+
+	private void close() 
+	{
+		DiagramTab openFrame = getSelectedDiagramTab();
+		// we only want to check attempts to close a frame
+		if (openFrame.isModified()) 
+		{
+			// ask user if it is ok to close
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(RESOURCES.getString("dialog.close.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			alert.showAndWait();
+
+			if (alert.getResult() == ButtonType.YES) 
+			{
+				removeGraphFrameFromTabbedPane(openFrame);
+			}
+			return;
+		} 
+		else 
+		{
+			removeGraphFrameFromTabbedPane(openFrame);
+		}
+	}
+
+	/**
+	 * If a user confirms that they want to close their modified graph, this method
+	 * will remove it from the current list of tabs.
+	 * 
+	 * @param pDiagramTab The current Tab that one wishes to close.
+	 */
+	public void close(DiagramTab pDiagramTab) 
+	{
+		if(pDiagramTab.isModified()) 
+		{
+			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(RESOURCES.getString("dialog.close.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.close.title"));
+			alert.showAndWait();
+
+			if (alert.getResult() == ButtonType.YES) 
+			{
+				removeGraphFrameFromTabbedPane(pDiagramTab);
+			}
+		}
+		else
+		{
+			removeGraphFrameFromTabbedPane(pDiagramTab);
+		}
+	}
+
+	private void save() 
+	{
+		DiagramTab frame = getSelectedDiagramTab();
+		File file = frame.getFile();
+		if(file == null) 
+		{
+			saveAs();
+			return;
+		}
+		try 
+		{
+			PersistenceService.save(frame.getDiagram(), file);
+			frame.setModified(false);
+		} 
+		catch(IOException exception) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
+	}
+
+	private void saveAs() 
+	{
+		DiagramTab frame = (DiagramTab) getSelectedDiagramTab();
+		Diagram diagram = frame.getDiagram();
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
+
+		if (frame.getFile() != null) 
+		{
+			fileChooser.setInitialDirectory(frame.getFile().getParentFile());
+			fileChooser.setInitialFileName(frame.getFile().getName());
+		} 
+		else 
+		{
+			fileChooser.setInitialDirectory(new File("."));
+			fileChooser.setInitialFileName("");
+		}
+
+		try 
+		{
+			File result = fileChooser.showSaveDialog(aMainStage);
+			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
+			{
+				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
+			}
+			if(result != null) 
+			{
+				PersistenceService.save(diagram, result);
+				addRecentFile(result.getAbsolutePath());
+				frame.setFile(result);
+				frame.setText(frame.getFile().getName());
+				frame.setModified(false);
+			}
+		} 
+		catch (IOException exception) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
+	}
+
+	/**
+	 * Edits the file path so that the pToBeRemoved extension, if found, is replaced
+	 * with pDesired.
+	 * 
+	 * @param pOriginal
+	 *            the file to use as a starting point
+	 * @param pToBeRemoved
+	 *            the extension that is to be removed before adding the desired
+	 *            extension.
+	 * @param pDesired
+	 *            the desired extension (e.g. ".png")
+	 * @return original if it already has the desired extension, or a new file with
+	 *         the edited file path
+	 */
+	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired) 
 	{
 		assert pOriginal != null && pToBeRemoved != null && pDesired != null;
-	
-		if(pOriginal.endsWith(pToBeRemoved))
+
+		if (pOriginal.endsWith(pToBeRemoved)) 
 		{
 			return pOriginal.substring(0, pOriginal.length() - pToBeRemoved.length()) + pDesired;
 		}
-		else
+		else 
 		{
 			return pOriginal;
 		}
 	}
-   	
-   	/**
-     * Exports the current graph to an image file.
-   	 */	
-   	public void exportImage()
-   	{
-   		if( noCurrentGraphFrame() )
-   		{
-   			return;
-   		}
-   		GraphFrame frame = (GraphFrame) aTabbedPane.getSelectedComponent();
-   		
-   		File file = chooseFileToExportTo();
-   		if( file == null )
-   		{
-   			return;
-   		}
-   		
-   		// Validate the file format
-   		String fileName = file.getPath();
-		String format  = fileName.substring(fileName.lastIndexOf(".") + 1);
-		if(!ImageIO.getImageWritersByFormatName(format).hasNext())
+
+	/**
+	 * Exports the current graph to an image file.
+	 */
+	private void exportImage() 
+	{
+		FileChooser fileChooser = getImageFileChooser();
+		File file = fileChooser.showSaveDialog(aMainStage);
+		if(file == null) 
 		{
-			JOptionPane.showInternalMessageDialog(aTabbedPane, aEditorResources.getString("error.unsupported_image"),
-					aEditorResources.getString("error.unsupported_image.title"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Validate the file format
+		String fileName = file.getPath();
+		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
+		{
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.unsupported_image"),	ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.setHeaderText(RESOURCES.getString("error.unsupported_image.title"));
+			alert.showAndWait();
 			return;
 		}
 		
-		confirmFileOverwrite(file);
-   		
-   		try( OutputStream out = new FileOutputStream(file))
-   		{
-   			ImageIO.write(getImage(frame.getGraph()), format, out);
-   		}
-   		catch(IOException exception)
-   		{
-   			JOptionPane.showInternalMessageDialog(aTabbedPane, exception);
-   		}      
-   	}
-   	
-   	private static String[] getAllSupportedImageWriterFormats()
-   	{
-   		String[] names = ImageIO.getWriterFormatNames();
-   		HashSet<String> formats = new HashSet<String>();
-   		for( String name : names )
-   		{
-   			formats.add(name.toLowerCase());
-   		}
-   		String[] lReturn = formats.toArray(new String[formats.size()]);
-   		Arrays.sort(lReturn);
-   		return lReturn;
-   	}
-   	
-   	/* Creates a file filter for pFomat, where pFormat is in all-lowercases */
-   	private FileFilter createFileFilter(final String pFormat)
-   	{
-   		return new FileFilter()
+		DiagramTab frame = getSelectedDiagramTab();
+		try (OutputStream out = new FileOutputStream(file)) 
 		{
-			@Override
-			public String getDescription()
+			BufferedImage image = getBufferedImage(frame.getDiagram()); 
+			if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
-				return pFormat.toUpperCase() + " " + aEditorResources.getString("files.image.name");
+				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
+				Graphics2D graphics = imageRGB.createGraphics();
+				graphics.drawImage(image, 0,  0, null);
+				ImageIO.write(imageRGB, format, out);
+				graphics.dispose();
 			}
-			
-			@Override
-			public boolean accept(File pFile)
+			else if (format.equals("bmp"))	// to correct the BufferedImage type
 			{
-				return pFile.isDirectory() || (pFile.getName().endsWith("." +pFormat.toLowerCase()) || 
-						pFile.getName().endsWith("." +pFormat.toUpperCase()));
+				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+				Graphics2D graphics = imageRGB.createGraphics();
+				graphics.drawImage(image, 0, 0, Color.WHITE, null);
+				ImageIO.write(imageRGB, format, out);
+				graphics.dispose();
 			}
-			
-			/*
-			 * It is important that toString returns exactly the format string
-			 * because the chooseFileToExportTo method relies on this convention. 
-			 */
-			@Override
-			public String toString()
+			else
 			{
-				return pFormat;
+				ImageIO.write(image, format, out);
 			}
-		};
-   	}
+		} 
+		catch (IOException exception) 
+		{
+			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
+			alert.initOwner(aMainStage);
+			alert.showAndWait();
+		}
+	}
 
-   	/*
-   	 * Can return null if no file is selected.
-   	 */
-   	private File chooseFileToExportTo()
-   	{
-   		GraphFrame frame = (GraphFrame)aTabbedPane.getSelectedComponent();
-   		assert frame != null;
- 
-   		// Initialize the file chooser widget
-	   	JFileChooser fileChooser = new JFileChooser();
-	   	for( String format : getAllSupportedImageWriterFormats() )
-	   	{
-	   		fileChooser.addChoosableFileFilter(createFileFilter(format));
-	   	}
-		fileChooser.setCurrentDirectory(new File("."));
-		
+	private static String[] getAllSupportedImageWriterFormats() 
+	{
+		String[] names = ImageIO.getWriterFormatNames();
+		HashSet<String> formats = new HashSet<String>();
+		for (String name : names) 
+		{
+			formats.add(name.toLowerCase());
+		}
+		String[] lReturn = formats.toArray(new String[formats.size()]);
+		Arrays.sort(lReturn);
+		return lReturn;
+	}
+
+	private FileChooser getImageFileChooser() 
+	{
+		DiagramTab frame = getSelectedDiagramTab();
+
+		// Initialize the file chooser widget
+		FileChooser fileChooser = new FileChooser();
+		for (String format : getAllSupportedImageWriterFormats()) 
+		{
+			if (format.equals("wbmp"))	// no supported conversion available
+			{
+				continue;
+			}
+			fileChooser.getExtensionFilters()
+				.add(new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format));
+		}
+		fileChooser.setInitialDirectory(new File("."));
+
 		// If the file was previously saved, use that to suggest a file name root.
-		if(frame.getFileName() != null)
+		if (frame.getFile() != null) 
 		{
-			File f = new File(replaceExtension(frame.getFileName().getAbsolutePath(), 
-					aAppResources.getString("files.extension"), ""));                  
-			fileChooser.setSelectedFile(f);
+			File file = new File(replaceExtension(frame.getFile().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
+			fileChooser.setInitialDirectory(file.getParentFile());
+			fileChooser.setInitialFileName(file.getName());
 		}
-		
-		File file = null;
-		if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
+		return fileChooser;
+	}
+
+	/*
+	 * Return the image corresponding to the graph.
+	 * 
+	 * @param pDiagram The graph to convert to an image.
+	 * 
+	 * @return bufferedImage. To convert it into an image, use the syntax :
+	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
+	 */
+	private static BufferedImage getBufferedImage(Diagram pDiagram) 
+	{
+		return SwingFXUtils.fromFXImage(ImageCreator.createImage(pDiagram), null);
+	}
+	
+	private int getNumberOfDirtyDiagrams()
+	{
+		return (int) tabs().stream()
+			.filter( tab -> tab instanceof DiagramTab ) 
+			.filter( frame -> ((DiagramTab) frame).isModified())
+			.count();
+	}
+
+	/**
+	 * Exits the program if no graphs have been modified or if the user agrees to
+	 * abandon modified graphs.
+	 */
+	public void exit() 
+	{
+		final int modcount = getNumberOfDirtyDiagrams();
+		if (modcount > 0) 
 		{
-			file = fileChooser.getSelectedFile();	
-			FileFilter selectedFilter = fileChooser.getFileFilter();
-			
-			if( !selectedFilter.accept(file) && selectedFilter != fileChooser.getAcceptAllFileFilter())
+			Alert alert = new Alert(AlertType.CONFIRMATION, 
+					MessageFormat.format(RESOURCES.getString("dialog.exit.ok"), new Object[] { Integer.valueOf(modcount) }),
+					ButtonType.YES, 
+					ButtonType.NO);
+			alert.initOwner(aMainStage);
+			alert.setTitle(RESOURCES.getString("dialog.exit.title"));
+			alert.setHeaderText(RESOURCES.getString("dialog.exit.title"));
+			alert.showAndWait();
+
+			if (alert.getResult() == ButtonType.YES) 
 			{
-				file = new File(file.getPath() + "." + 
-						selectedFilter.getDescription().substring(0, selectedFilter.toString().length()).toLowerCase());
+				Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
+				System.exit(0);
 			}
 		}
-		return file;
-   	}
-   	
-   	/* Checks if pFile would be overwritten and, if yes, asks for a confirmation.
-   	 * If the confirmation is denied, returns null.
-   	 */
-   	private File confirmFileOverwrite(File pFile)
-   	{
-   		if(!pFile.exists()) 
+		else 
 		{
-			return pFile;
+			Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
+			System.exit(0);
 		}
-		
-		ResourceBundle editorResources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-		int result = JOptionPane.showConfirmDialog(this, editorResources.getString("dialog.overwrite"), null, JOptionPane.YES_NO_OPTION);
-		if(result == JOptionPane.YES_OPTION) 
+	}		
+	
+	private List<Tab> tabs()
+	{
+		return ((TabPane) getCenter()).getTabs();
+	}
+	
+	private TabPane tabPane()
+	{
+		return (TabPane) getCenter();
+	}
+	
+	private boolean isWelcomeTabShowing()
+	{
+		return aWelcomeTab != null && 
+				tabs().size() == 1 && 
+				tabs().get(0) instanceof WelcomeTab;
+	}
+	
+	/* Insert a graph frame into the tabbedpane */ 
+	private void insertGraphFrameIntoTabbedPane(DiagramTab pGraphFrame) 
+	{
+		if( isWelcomeTabShowing() )
 		{
-			return pFile;	     
+			tabs().remove(0);
 		}
-		else
+		tabs().add(pGraphFrame);
+		tabPane().getSelectionModel().selectLast();
+	}
+	
+	/*
+	 * Shows the welcome tab if there are no other tabs.
+	 */
+	private void showWelcomeTabIfNecessary() 
+	{
+		if( tabs().size() == 0)
 		{
-			return null;
+			aWelcomeTab.loadRecentFileLinks(getOpenFileHandlers());
+			tabs().add(aWelcomeTab);
 		}
-   	}
-
-   
-   	/*
-     * Return the image corresponding to the graph.
-     * 
-     * @param pGraph The graph to convert to an image.
-     * @return bufferedImage. To convert it into an image, use the syntax :
-     *         Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
-     */
-    private static BufferedImage getImage(Graph pGraph)
-    {
-        Rectangle bounds = pGraph.getBounds();
-        BufferedImage image = new BufferedImage((int) (bounds.getWidth() + MARGIN_IMAGE*2), 
-        		(int) (bounds.getHeight() + MARGIN_IMAGE*2), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = (Graphics2D) image.getGraphics();
-        g2.translate(-bounds.getX(), -bounds.getY());
-        g2.setColor(Color.WHITE);
-        g2.fill(new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth() + MARGIN_IMAGE*2, bounds.getHeight() + MARGIN_IMAGE*2));
-        g2.translate(MARGIN_IMAGE, MARGIN_IMAGE);
-        g2.setColor(Color.BLACK);
-        g2.setBackground(Color.WHITE);
-        pGraph.draw(g2);
-        return image;
-    }
-    
-   	/**
-     * Displays the About dialog box.
-   	 */
-   	public void showAboutDialog()
-   	{
-   		MessageFormat formatter = new MessageFormat(aEditorResources.getString("dialog.about.version"));
-   		JOptionPane.showInternalMessageDialog(aTabbedPane, formatter.format(new Object[] { 
-               aAppResources.getString("app.name"),
-               aVersionResources.getString("version.number"),
-               aVersionResources.getString("version.date"),
-               aAppResources.getString("app.copyright"),
-               aEditorResources.getString("dialog.about.license")}),
-               new MessageFormat(aEditorResources.getString("dialog.about.title")).format(new Object[] { 
-                       aAppResources.getString("app.name")}),
-               JOptionPane.INFORMATION_MESSAGE,
-               new ImageIcon(getClass().getClassLoader().getResource(aAppResources.getString("app.icon")))); 
-   		
-   	}
-
-   	/**
-     * Exits the program if no graphs have been modified
-     * or if the user agrees to abandon modified graphs.
-   	 */
-   	public void exit()
-   	{
-   		int modcount = 0;
-   		for(int i = 0; i < aTabs.size(); i++)
-   		{
-   			if(aTabs.get(i) instanceof GraphFrame)
-   			{	
-				GraphFrame frame = (GraphFrame) aTabs.get(i);
-				if(frame.getGraphPanel().isModified()) 
-				{
-					modcount++;
-				}
-   			}	
-   		}
-   		if(modcount > 0)
-   		{
-   			// ask user if it is ok to close
-   			int result = JOptionPane.showInternalConfirmDialog(aTabbedPane, MessageFormat.format(aEditorResources.getString("dialog.exit.ok"),
-                     new Object[] { new Integer(modcount) }), null, JOptionPane.YES_NO_OPTION);
-         
-   			// if the user doesn't agree, veto the close
-   			if(result != JOptionPane.YES_OPTION) 
-   			{
-   				return;
-   			}
-   		}
-   		Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
-   		System.exit(0);
-   	}
+	}
+	
+	/*
+	 * Removes the graph frame from the tabbed pane
+	 */
+	private void removeGraphFrameFromTabbedPane(DiagramTab pTab) 
+	{
+		pTab.close();
+		tabs().remove(pTab);
+		showWelcomeTabIfNecessary();
+	}
 }

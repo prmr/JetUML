@@ -20,19 +20,18 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.Property;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * Converts a graph to JSON notation. The notation includes:
@@ -40,9 +39,6 @@ import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
  * * The graph type
  * * An array of node encodings
  * * An array of edge encodings
- * 
- * @author Martin P. Robillard
- *
  */
 public final class JsonEncoder
 {
@@ -52,12 +48,12 @@ public final class JsonEncoder
 	 * @param pGraph The graph to serialize.
 	 * @return A JSON object that encodes the graph.
 	 */
-	public static JSONObject encode(Graph pGraph)
+	public static JSONObject encode(Diagram pGraph)
 	{
 		assert pGraph != null;
 		
 		JSONObject object = new JSONObject();
-		object.put("version", ResourceBundle.getBundle(UMLEditor.class.getName() + "Version").getString("version.number"));
+		object.put("version", RESOURCES.getString("application.version.number"));
 		object.put("diagram", pGraph.getClass().getSimpleName());
 		SerializationContext context = new SerializationContext(pGraph);
 		object.put("nodes", encodeNodes(context));
@@ -100,7 +96,7 @@ public final class JsonEncoder
 	private static JSONArray encodeEdges(AbstractContext pContext)
 	{
 		JSONArray edges = new JSONArray();
-		for( Edge edge : pContext.getGraph().getEdges() ) 
+		for( Edge edge : pContext.getGraph().edges() ) 
 		{
 			JSONObject object = toJSONObject(edge.properties());
 			object.put("type", edge.getClass().getSimpleName());

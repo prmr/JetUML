@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -20,26 +20,22 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.commands.MoveCommand;
-import ca.mcgill.cs.jetuml.geom.Conversions;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
- * Tracks the movement of a set of selected graph elements.
- * 
- * @author Martin P. Robillard
+ * Tracks the movement of a set of selected diagram elements.
  */
-public class MoveTracker 
+public class MoveTracker
 {
 	private List<Node> aTrackedNodes = new ArrayList<>();
-	private List<Rectangle2D> aOriginalBounds = new ArrayList<>();
+	private List<Rectangle> aOriginalBounds = new ArrayList<>();
 
 	/**
 	 * Records the elements in pSelectedElements and their position at the 
@@ -47,51 +43,53 @@ public class MoveTracker
 	 * 
 	 * @param pSelectedElements The elements that are being moved. Not null.
 	 */
-	public void startTrackingMove(SelectionList pSelectedElements)
+	public void startTrackingMove(Iterable<DiagramElement> pSelectedElements)
 	{
 		assert pSelectedElements != null;
 		
 		aTrackedNodes.clear();
 		aOriginalBounds.clear();
 		
-		for(GraphElement element : pSelectedElements)
+		for(DiagramElement element : pSelectedElements)
 		{
 			assert element != null;
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(Conversions.toRectangle2D(((Node)element).view().getBounds()));
+				aOriginalBounds.add(((Node)element).view().getBounds());
 			}
 		}
 	}
 
 	/**
-	 * Creates and returns a CompoundCommand that represents the movement
+	 * Creates and returns a CompoundOperation that represents the movement
 	 * of all tracked nodes between the time where startTrackingMove was 
 	 * called and the time endTrackingMove was called.
 	 * 
-	 * @param pGraph The Graph containing the selected elements.
+	 * @param pDiagramBuilder The Diagram containing the selected elements.
 	 * @return A CompoundCommand describing the move.
+	 * @pre pDiagramBuilder != null
 	 */
-	public CompoundCommand endTrackingMove(Graph pGraph)
+	public CompoundOperation endTrackingMove(DiagramBuilder pDiagramBuilder)
 	{
-		CompoundCommand command = new CompoundCommand();
-		Rectangle2D[] selectionBounds2 = new Rectangle2D[aOriginalBounds.size()];
+		assert pDiagramBuilder != null;
+		CompoundOperation operation = new CompoundOperation();
+		Rectangle[] selectionBounds2 = new Rectangle[aOriginalBounds.size()];
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = Conversions.toRectangle2D(node.view().getBounds());
+			selectionBounds2[i] = node.view().getBounds();
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)
 		{
-			int dY = (int)(selectionBounds2[i].getY() - aOriginalBounds.get(i).getY());
-			int dX = (int)(selectionBounds2[i].getX() - aOriginalBounds.get(i).getX());
+			int dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
+			int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
 			if(dX != 0 || dY != 0)
 			{
-				command.add(new MoveCommand(pGraph, aTrackedNodes.get(i), dX, dY));
+				operation.add(pDiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
 			}
 		}
-		return command;
+		return operation;
 	}
 }

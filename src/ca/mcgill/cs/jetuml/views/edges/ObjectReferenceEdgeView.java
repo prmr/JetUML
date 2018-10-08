@@ -20,22 +20,26 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.shape.Shape;
 
 /**
  * An S- or C-shaped edge with an arrowhead.
  */
-public class ObjectReferenceEdgeView extends AbstractEdgeView
+public final class ObjectReferenceEdgeView extends AbstractEdgeView
 {
 	private static final int ENDSIZE = 10;
 	
@@ -56,28 +60,30 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 		double y2 = line.getY2();
 		double xmid = (line.getX1() + line.getX2()) / 2;
 		double ymid = (line.getY1() + line.getY2()) / 2;
-		GeneralPath path = new GeneralPath();
+		Path path = new Path();
 		if(isSShaped())
 		{
 			double x1 = line.getX1() + ENDSIZE;
 			double x2 = line.getX2() - ENDSIZE;
          
-			path.moveTo((float)line.getX1(), (float)y1);
-			path.lineTo((float)x1, (float)y1);
-			path.quadTo((float)((x1 + xmid) / 2), (float)y1, (float)xmid, (float)ymid);
-			path.quadTo((float)((x2 + xmid) / 2), (float)y2, (float)x2, (float)y2);
-			path.lineTo((float)line.getX2(), (float)y2);
+			MoveTo moveTo = new MoveTo(line.getX1(), y1);
+			LineTo lineTo1 = new LineTo(x1, y1);
+			QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
+			QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
+			LineTo lineTo2 = new LineTo(line.getX2(), y2);
+			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
 		}
 		else // reverse C shaped
 		{
 			double x1 = Math.max(line.getX1(), line.getX2()) + ENDSIZE;
 			double x2 = x1 + ENDSIZE;
-			path.moveTo((float)line.getX1(), (float)y1);
-			path.lineTo((float)x1, (float)y1);
-			path.quadTo((float)x2, (float)y1, (float)x2, (float)ymid);
-			path.quadTo((float)x2, (float)y2, (float)x1, (float)y2);
-			path.lineTo((float)line.getX2(), (float)y2);
-		}
+			MoveTo moveTo = new MoveTo(line.getX1(), y1);
+			LineTo lineTo1 = new LineTo(x1, y1);
+			QuadCurveTo quadTo1 = new QuadCurveTo(x2, y1, x2, ymid);
+			QuadCurveTo quadTo2 = new QuadCurveTo(x2, y2, x1, y2);
+			LineTo lineTo2 = new LineTo(line.getX2(), y2);
+			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
+		}			
 		return path;
 	}
 	
@@ -93,14 +99,14 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 	}
 
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		pGraphics2D.draw(getShape());
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.SOLID);
 		Line line = getConnectionPoints();
 		double x1;
 		double x2 = line.getX2();
 		double y = line.getY2();
-		if (isSShaped())
+		if(isSShaped())
 		{
 			x1 = x2 - ENDSIZE;
 		}
@@ -108,7 +114,7 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 		{
 			x1 = x2 + ENDSIZE;
 		}
-		ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics2D, new Point2D.Double(x1, y), new Point2D.Double(x2, y));      
+		ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, new Point2D(x1, y), new Point2D(x2, y));      
 	}
 
 	@Override
@@ -124,5 +130,4 @@ public class ObjectReferenceEdgeView extends AbstractEdgeView
 			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.EAST));
 		}
 	}
-
 }

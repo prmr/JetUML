@@ -22,17 +22,15 @@ package ca.mcgill.cs.jetuml.application;
 
 import java.util.HashMap;
 
-import ca.mcgill.cs.jetuml.commands.ChangePropertyCommand;
-import ca.mcgill.cs.jetuml.commands.CompoundCommand;
-import ca.mcgill.cs.jetuml.graph.GraphElement;
-import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.Property;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
 
 /**
- * Tracks modification to the properties of a GraphElement.
+ * Tracks modification to the properties of a DiagramElement.
  * Should be discarded after a call to stopTracking().
- * 
- * @author Martin P. Robillard
  */
 public class PropertyChangeTracker 
 {
@@ -45,7 +43,7 @@ public class PropertyChangeTracker
 	 * @param pEdited The element to track.
 	 * @pre pEdited != null;
 	 */
-	public PropertyChangeTracker(GraphElement pEdited)
+	public PropertyChangeTracker(DiagramElement pEdited)
 	{
 		assert pEdited != null;
 		aProperties = pEdited.properties();
@@ -53,7 +51,6 @@ public class PropertyChangeTracker
 
 	/**
 	 * Makes a snapshot of the properties values of the tracked element.
-	 * 
 	 */
 	public void startTracking()
 	{
@@ -64,22 +61,26 @@ public class PropertyChangeTracker
 	}
 	
 	/**
-	 * Creates and returns a CompoundCommand that represents any change
+	 * Creates and returns a CompoundOperation that represents any change
 	 * in properties detected between the time startTracking
 	 * and stopTracking were called.
 	 * 
-	 * @return A CompoundCommand describing the property changes.
+	 * @return A CompoundOperation describing the property changes.
 	 */
-	public CompoundCommand stopTracking()
+	public CompoundOperation stopTracking()
 	{
-		CompoundCommand command = new CompoundCommand();
+		CompoundOperation operation = new CompoundOperation();
 		for( Property property : aProperties )
 		{
 			if( !aOldValues.get(property.getName()).equals(property.get()))
 			{
-				command.add(new ChangePropertyCommand(property, aOldValues.get(property.getName()), property.get()));
+				final Object newValue = property.get();
+				final Object oldValue = aOldValues.get(property.getName());
+				operation.add(new SimpleOperation(
+						()-> property.set(newValue),
+						()-> property.set(oldValue)));
 			}
 		}
-		return command;
+		return operation;
 	}
 }

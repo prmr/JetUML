@@ -20,38 +20,33 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a FieldNode.
- * 
- * @author Martin P. Robillard
- *
  */
-public class FieldNodeView extends RectangleBoundedNodeView
+public final class FieldNodeView extends AbstractNodeView
 {
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
-	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
-	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.RIGHT, false, false);
+	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final int MID_OFFSET = EQUALS_VIEWER.getBounds(EQUALS).getWidth() / 2;
 	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public FieldNodeView(FieldNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -64,72 +59,67 @@ public class FieldNodeView extends RectangleBoundedNodeView
 		return ((FieldNode)node()).getValue();
 	}
 	
-	/**
-	 * @param pNewBounds The new bounds for this node.
-	 */
-	public void setBounds(Rectangle pNewBounds)
+	@Override
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.setBounds(pNewBounds);
+		final Rectangle bounds = getBounds();
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(bounds.getX() + leftWidth() - MID_OFFSET, 
+				bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
+		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(bounds.getMaxX() - rightWidth() + MID_OFFSET, bounds.getY(), 
+				rightWidth(), bounds.getHeight()));
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public Rectangle getBounds()
 	{
-		super.draw(pGraphics2D);
-		final Rectangle bounds = getBounds();
-		NAME_VIEWER.draw(name(), pGraphics2D, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics2D, new Rectangle(bounds.getX() + leftWidth(), bounds.getY(), midWidth(), bounds.getHeight()));
-		VALUE_VIEWER.draw(value(), pGraphics2D, new Rectangle(bounds.getMaxX() - rightWidth(), bounds.getY(), rightWidth(), bounds.getHeight()));
+		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
+		int yPosition = 0;
+		int axis = DEFAULT_WIDTH / 2;
+		if( parent != null )
+		{
+			yPosition = ((ObjectNodeView)parent.view()).getYPosition((FieldNode)node());
+			Rectangle parentBounds = ((ObjectNode)((FieldNode)node()).getParent()).view().getBounds();
+			axis = (parentBounds.getX() + parentBounds.getMaxX())/2;
+		}
+		
+		return new Rectangle(axis - leftWidth(), yPosition, leftWidth() + rightWidth(), getHeight());
 	}
 	
-	private int leftWidth()
+	/**
+	 * @return The width of the left (name) part of the node.
+	 */
+	public int leftWidth()
 	{
-		return NAME_VIEWER.getBounds(name()).getWidth();
+		return NAME_VIEWER.getBounds(name()).getWidth() + MID_OFFSET;
 	}
 	
-	private int midWidth()
-	{
-		return EQUALS_VIEWER.getBounds(EQUALS).getWidth();
-	}
-	
-	private int rightWidth()
+	/**
+	 * @return The width of the right (value) part of the node.
+	 */
+	public int rightWidth()
 	{
 		int rightWidth = VALUE_VIEWER.getBounds(value()).getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		return rightWidth;
+		return rightWidth + MID_OFFSET;
 	}
 	
-	@Override
-	public void layout(Graph pGraph)
+	/**
+	 * @return The height of this node.
+	 */
+	public int getHeight()
 	{
-		final int width = leftWidth() + midWidth() + rightWidth();
-		final int height = Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 
-				Math.max(VALUE_VIEWER.getBounds(value()).getHeight(), EQUALS_VIEWER.getBounds(EQUALS).getHeight()));
-		final Rectangle bounds = getBounds();
-		setBounds(new Rectangle(bounds.getX(), bounds.getY(), width, height));
+		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 
+				Math.max(VALUE_VIEWER.getBounds(value()).getHeight(), EQUALS_VIEWER.getBounds(EQUALS).getHeight())));
 	}
 	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		Rectangle bounds = getBounds();
-		return new Point((bounds.getMaxX() + bounds.getX() + getAxis()) / 2, bounds.getCenter().getY());
-	}
-	
-	/**
-	 * @return The axis.
-	 */
-	public int getAxis()
-	{
-		return leftWidth() + midWidth() / 2;
-	}
-	
-	@Override
-	public Shape getShape()
-	{
-		return new Rectangle2D.Double();
+		return new Point((bounds.getMaxX() + bounds.getX() + bounds.getWidth()/2) / 2, bounds.getCenter().getY());
 	}
 }

@@ -22,21 +22,21 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.geom.Point2D;
-
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.AssociationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge.Type;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge.Type;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import javafx.geometry.Point2D;
 
 public class TestSegmentationStrategies 
 {
@@ -45,7 +45,17 @@ public class TestSegmentationStrategies
 	private ClassNode aNode3;
 	private ClassNode aNode4;
 	private PackageNode aNode5;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()
@@ -61,112 +71,120 @@ public class TestSegmentationStrategies
 		aNode4.translate(110, 20);
 		aNode5 = new PackageNode();
 		aNode5.translate(200, 250);
-		aGraph = new ClassDiagramGraph();
-		aGraph.insertNode(aNode1);
-		aGraph.insertNode(aNode2);
-		aGraph.insertNode(aNode3);
-		aGraph.insertNode(aNode4);
-		aGraph.insertNode(aNode5);
+		aGraph = new ClassDiagram();
+		aGraph.addRootNode(aNode1);
+		aGraph.addRootNode(aNode2);
+		aGraph.addRootNode(aNode3);
+		aGraph.addRootNode(aNode4);
+		aGraph.addRootNode(aNode5);
 	}
 	
 	@Test
 	public void testSelfEdge1()
 	{
 		DependencyEdge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode1, aNode1);
+		edge.connect(aNode1, aNode1, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 5, points.length );
-		assertEquals( new Point2D.Double(110,50), points[0]);
-		assertEquals( new Point2D.Double(110,30), points[1]);
-		assertEquals( new Point2D.Double(150,30), points[2]);
-		assertEquals( new Point2D.Double(150,70), points[3]);
-		assertEquals( new Point2D.Double(130,70), points[4]);
+		assertEquals( new Point2D(110,50), points[0]);
+		assertEquals( new Point2D(110,30), points[1]);
+		assertEquals( new Point2D(150,30), points[2]);
+		assertEquals( new Point2D(150,70), points[3]);
+		assertEquals( new Point2D(130,70), points[4]);
 	}
 	
 	@Test
 	public void testSelfEdge2()
 	{
 		DependencyEdge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode3, aNode3);
+		edge.connect(aNode3, aNode3, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 5, points.length );
-		assertEquals( new Point2D.Double(100,20), points[0]);
-		assertEquals( new Point2D.Double(100,0), points[1]);
-		assertEquals( new Point2D.Double(140,0), points[2]);
-		assertEquals( new Point2D.Double(140,40), points[3]);
-		assertEquals( new Point2D.Double(120,40), points[4]);
+		assertEquals( new Point2D(100,20), points[0]);
+		assertEquals( new Point2D(100,0), points[1]);
+		assertEquals( new Point2D(140,0), points[2]);
+		assertEquals( new Point2D(140,40), points[3]);
+		assertEquals( new Point2D(120,40), points[4]);
 	}
 	
 	@Test
 	public void testStraight1a()
 	{
 		Edge edge1 = new DependencyEdge();
-		aGraph.restoreEdge(edge1, aNode1, aNode2);
+		edge1.connect(aNode1, aNode2, aGraph);
+		aGraph.addEdge(edge1);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(200,140), points[1]);
+		assertEquals( new Point2D(130,70), points[0]);
+		assertEquals( new Point2D(200,140), points[1]);
 	}
 	
 	@Test
 	public void testStraight1b()
 	{
 		Edge edge2 = new DependencyEdge();
-		aGraph.restoreEdge(edge2, aNode2, aNode1);
+		edge2.connect(aNode2, aNode1, aGraph);
+		aGraph.addEdge(edge2);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(130,70), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D(130,70), points[1]);
+		assertEquals( new Point2D(200,140), points[0]);
 	}
 	
 	@Test
 	public void testStraight2()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode3, aNode4);
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(120,50), points[0]);
-		assertEquals( new Point2D.Double(110,50), points[1]);
+		assertEquals( new Point2D(120,50), points[0]);
+		assertEquals( new Point2D(110,50), points[1]);
 	}
 	
 	@Test
 	public void testHVH1a()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode1, aNode2);
+		edge.connect(aNode1, aNode2, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(165,70), points[1]);
-		assertEquals( new Point2D.Double(165,140), points[2]);
-		assertEquals( new Point2D.Double(200,140), points[3]);
+		assertEquals( new Point2D(130,70), points[0]);
+		assertEquals( new Point2D(165,70), points[1]);
+		assertEquals( new Point2D(165,140), points[2]);
+		assertEquals( new Point2D(200,140), points[3]);
 	}
 	
 	@Test
 	public void testHVH1b()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode2, aNode1);
+		edge.connect(aNode2, aNode1, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[3]);
-		assertEquals( new Point2D.Double(165,70), points[2]);
-		assertEquals( new Point2D.Double(165,140), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D(130,70), points[3]);
+		assertEquals( new Point2D(165,70), points[2]);
+		assertEquals( new Point2D(165,140), points[1]);
+		assertEquals( new Point2D(200,140), points[0]);
 	}
 	
 	@Test
 	public void testHVH2()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode3, aNode4);
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(120,50), points[0]);
-		assertEquals( new Point2D.Double(110,50), points[1]);
+		assertEquals( new Point2D(120,50), points[0]);
+		assertEquals( new Point2D(110,50), points[1]);
 	}
 	
 	@Test
@@ -174,61 +192,66 @@ public class TestSegmentationStrategies
 	{
 		ClassNode node = (ClassNode) aNode3.clone();
 		node.translate(150, 5);
-		aGraph.insertNode(node);
+		aGraph.addRootNode(node);
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode3, node);
+		edge.connect(aNode3, node, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createHVHStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(120,55), points[0]);
-		assertEquals( new Point2D.Double(170,55), points[1]);
+		assertEquals( new Point2D(120,55), points[0]);
+		assertEquals( new Point2D(170,55), points[1]);
 	}
 	
 	@Test
 	public void testVHV1a()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode1, aNode2);
+		edge.connect(aNode1, aNode2, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[0]);
-		assertEquals( new Point2D.Double(165,70), points[1]);
-		assertEquals( new Point2D.Double(165,140), points[2]);
-		assertEquals( new Point2D.Double(200,140), points[3]);
+		assertEquals( new Point2D(130,70), points[0]);
+		assertEquals( new Point2D(165,70), points[1]);
+		assertEquals( new Point2D(165,140), points[2]);
+		assertEquals( new Point2D(200,140), points[3]);
 	}
 	
 	@Test
 	public void testVHV1b()
 	{
 		Edge edge2 = new DependencyEdge();
-		aGraph.restoreEdge(edge2, aNode2, aNode1);
+		edge2.connect(aNode2, aNode1, aGraph);
+		aGraph.addEdge(edge2);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge2, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(130,70), points[3]);
-		assertEquals( new Point2D.Double(165,70), points[2]);
-		assertEquals( new Point2D.Double(165,140), points[1]);
-		assertEquals( new Point2D.Double(200,140), points[0]);
+		assertEquals( new Point2D(130,70), points[3]);
+		assertEquals( new Point2D(165,70), points[2]);
+		assertEquals( new Point2D(165,140), points[1]);
+		assertEquals( new Point2D(200,140), points[0]);
 	}
 	
 	@Test
 	public void testVHV2()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode3, aNode4);
+		edge.connect(aNode3, aNode4, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(120,50), points[0]);
-		assertEquals( new Point2D.Double(110,50), points[1]);
+		assertEquals( new Point2D(120,50), points[0]);
+		assertEquals( new Point2D(110,50), points[1]);
 	}
 	
 	@Test
 	public void testVHV3a()
 	{
 		Edge edge = new DependencyEdge();
-		aGraph.restoreEdge(edge, aNode2, aNode5);
+		edge.connect(aNode2, aNode5, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(250,180), points[0]);
-		assertEquals( new Point2D.Double(250,250), points[1]);
+		assertEquals( new Point2D(250,180), points[0]);
+		assertEquals( new Point2D(250,250), points[1]);
 	}
 	
 	@Test
@@ -236,24 +259,26 @@ public class TestSegmentationStrategies
 	{
 		Edge edge = new AggregationEdge();
 		aNode5.translate(100,0);
-		aGraph.restoreEdge(edge, aNode2, aNode5);
+		edge.connect(aNode2, aNode5, aGraph);
+		aGraph.addEdge(edge);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge, aGraph);
 		assertEquals( 4, points.length );
-		assertEquals( new Point2D.Double(250,180), points[0]);
-		assertEquals( new Point2D.Double(250,215), points[1]);
-		assertEquals( new Point2D.Double(350,215), points[2]);
-		assertEquals( new Point2D.Double(350,250), points[3]);
+		assertEquals( new Point2D(250,180), points[0]);
+		assertEquals( new Point2D(250,215), points[1]);
+		assertEquals( new Point2D(350,215), points[2]);
+		assertEquals( new Point2D(350,250), points[3]);
 	}
 	
 	@Test
 	public void testVHV3c()
 	{
 		Edge edge2 = new AggregationEdge();
-		aGraph.restoreEdge(edge2, aNode5, aNode2);
+		edge2.connect(aNode5, aNode2, aGraph);
+		aGraph.addEdge(edge2);
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(250,250), points[0]);
-		assertEquals( new Point2D.Double(250,180), points[1]);
+		assertEquals( new Point2D(250,250), points[0]);
+		assertEquals( new Point2D(250,180), points[1]);
 	}
 	
 	/*
@@ -266,22 +291,24 @@ public class TestSegmentationStrategies
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
 		node2.translate(200, 0);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
-		aGraph.restoreEdge(edge1, node1, node2);
-		aGraph.restoreEdge(edge2, node2, node1);
+		edge1.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node2, node1, aGraph);
+		aGraph.addEdge(edge2);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(100,25), points[0]);
-		assertEquals( new Point2D.Double(200,25), points[1]);
+		assertEquals( new Point2D(100,25), points[0]);
+		assertEquals( new Point2D(200,25), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(200,36), points[0]);
-		assertEquals( new Point2D.Double(100,36), points[1]);
+		assertEquals( new Point2D(200,36), points[0]);
+		assertEquals( new Point2D(100,36), points[1]);
 	}
 	
 	/*
@@ -294,36 +321,40 @@ public class TestSegmentationStrategies
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
 		node2.translate(0, 200);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		AssociationEdge edge3 = new AssociationEdge();
 		AssociationEdge edge4 = new AssociationEdge();
-		aGraph.restoreEdge(edge1, node1, node2);
-		aGraph.restoreEdge(edge2, node2, node1);
-		aGraph.restoreEdge(edge3, node1, node2);
-		aGraph.restoreEdge(edge4, node2, node1);
+		edge1.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node2, node1, aGraph);
+		aGraph.addEdge(edge2);
+		edge3.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge3);
+		edge4.connect(node2, node1, aGraph);
+		aGraph.addEdge(edge4);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(56,60), points[0]);
-		assertEquals( new Point2D.Double(56,200), points[1]);
+		assertEquals( new Point2D(56,60), points[0]);
+		assertEquals( new Point2D(56,200), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(67,200), points[0]);
-		assertEquals( new Point2D.Double(67,60), points[1]);
+		assertEquals( new Point2D(67,200), points[0]);
+		assertEquals( new Point2D(67,60), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge3, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(34,60), points[0]);
-		assertEquals( new Point2D.Double(34,200), points[1]);
+		assertEquals( new Point2D(34,60), points[0]);
+		assertEquals( new Point2D(34,200), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge4, aGraph);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D.Double(45,200), points[0]);
-		assertEquals( new Point2D.Double(45,60), points[1]);
+		assertEquals( new Point2D(45,200), points[0]);
+		assertEquals( new Point2D(45,60), points[1]);
 	}
 	
 	/*
@@ -338,23 +369,26 @@ public class TestSegmentationStrategies
 		ClassNode node3 = new ClassNode();
 		node2.translate(200, 0);
 		node3.translate(200, 200);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
+		aGraph.addRootNode(node3);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		DependencyEdge edge3 = new DependencyEdge();
-		aGraph.restoreEdge(edge1, node1, node1);
-		aGraph.restoreEdge(edge2, node1, node2);
-		aGraph.restoreEdge(edge3, node1, node3);
+		edge1.connect(node1, node1, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge2);
+		edge3.connect(node1, node3, aGraph);
+		aGraph.addEdge(edge3);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
 		assertEquals( 5, points.length );
-		assertEquals( new Point2D.Double(80,0), points[0]);
-		assertEquals( new Point2D.Double(80,-20), points[1]);
-		assertEquals( new Point2D.Double(120,-20), points[2]);
-		assertEquals( new Point2D.Double(120,20), points[3]);
-		assertEquals( new Point2D.Double(100,20), points[4]);
+		assertEquals( new Point2D(80,0), points[0]);
+		assertEquals( new Point2D(80,-20), points[1]);
+		assertEquals( new Point2D(120,-20), points[2]);
+		assertEquals( new Point2D(120,20), points[3]);
+		assertEquals( new Point2D(100,20), points[4]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
@@ -384,23 +418,26 @@ public class TestSegmentationStrategies
 		node1.translate(1000, 1000);
 		node2.translate(900, 500);
 		node3.translate(1100, 500);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
+		aGraph.addRootNode(node3);
 		DependencyEdge edge1 = new DependencyEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		DependencyEdge edge3 = new DependencyEdge();
-		aGraph.restoreEdge(edge1, node1, node1);
-		aGraph.restoreEdge(edge2, node1, node2);
-		aGraph.restoreEdge(edge3, node1, node3);
+		edge1.connect(node1, node1, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node1, node2, aGraph);
+		aGraph.addEdge(edge2);
+		edge3.connect(node1, node3, aGraph);
+		aGraph.addEdge(edge3);
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1, aGraph);
 		assertEquals( 5, points.length );
-		assertEquals( new Point2D.Double(1080,1000), points[0]);
-		assertEquals( new Point2D.Double(1080,980), points[1]);
-		assertEquals( new Point2D.Double(1120,980), points[2]);
-		assertEquals( new Point2D.Double(1120,1020), points[3]);
-		assertEquals( new Point2D.Double(1100,1020), points[4]);
+		assertEquals( new Point2D(1080,1000), points[0]);
+		assertEquals( new Point2D(1080,980), points[1]);
+		assertEquals( new Point2D(1120,980), points[2]);
+		assertEquals( new Point2D(1120,1020), points[3]);
+		assertEquals( new Point2D(1100,1020), points[4]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2, aGraph);
 		assertEquals( 2, points.length );
@@ -429,13 +466,15 @@ public class TestSegmentationStrategies
 		node1.translate(1000, 0);
 		node2.translate(900, 500);
 		node3.translate(1100, 500);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
+		aGraph.addRootNode(node3);
 		GeneralizationEdge edge1 = new GeneralizationEdge();
 		GeneralizationEdge edge2 = new GeneralizationEdge();
-		aGraph.restoreEdge(edge1, node2, node1);
-		aGraph.restoreEdge(edge2, node3, node1);
+		edge1.connect(node2, node1, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node3, node1, aGraph);
+		aGraph.addEdge(edge2);
 		
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge1, aGraph);
 		assertEquals( 4, points.length );
@@ -477,20 +516,24 @@ public class TestSegmentationStrategies
 		node3.translate(1000, 1000);
 		node4.translate(1100, 500);
 		node5.translate(1500, 400);
-		aGraph.insertNode(node1);
-		aGraph.insertNode(node2);
-		aGraph.insertNode(node3);
-		aGraph.insertNode(node4);
-		aGraph.insertNode(node5);
+		aGraph.addRootNode(node1);
+		aGraph.addRootNode(node2);
+		aGraph.addRootNode(node3);
+		aGraph.addRootNode(node4);
+		aGraph.addRootNode(node5);
 		GeneralizationEdge edge1 = new GeneralizationEdge();
 		DependencyEdge edge2 = new DependencyEdge();
 		GeneralizationEdge edge3 = new GeneralizationEdge();
 		GeneralizationEdge edge4 = new GeneralizationEdge();
 		edge4.setType(Type.Implementation);
-		aGraph.restoreEdge(edge1, node2, node1);
-		aGraph.restoreEdge(edge2, node3, node1);
-		aGraph.restoreEdge(edge3, node4, node1);
-		aGraph.restoreEdge(edge4, node5, node1);
+		edge1.connect(node2, node1, aGraph);
+		aGraph.addEdge(edge1);
+		edge2.connect(node3, node1, aGraph);
+		aGraph.addEdge(edge2);
+		edge3.connect(node4, node1, aGraph);
+		aGraph.addEdge(edge3);
+		edge4.connect(node5, node1, aGraph);
+		aGraph.addEdge(edge4);
 		
 		Point2D[] points = SegmentationStyleFactory.createVHVStrategy().getPath(edge1, aGraph);
 		assertEquals( 4, points.length );

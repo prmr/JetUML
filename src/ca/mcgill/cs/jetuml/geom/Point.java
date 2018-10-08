@@ -23,8 +23,6 @@ package ca.mcgill.cs.jetuml.geom;
 /**
  * A framework independent representation of a point in 
  * integer space. 
- * 
- * @author Martin P. Robillard
  */
 public final class Point implements Cloneable
 {
@@ -95,8 +93,6 @@ public final class Point implements Cloneable
 	@Override
 	public Point clone()
 	{
-//		aCreations++;
-//		System.out.println(aCreations);
 		try
 		{
 			return (Point) super.clone();

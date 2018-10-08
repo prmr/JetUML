@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,30 +21,27 @@
 
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ClassRelationshipEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge.Type;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.ClassRelationshipEdge;
-import ca.mcgill.cs.jetuml.graph.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.graph.edges.AggregationEdge.Type;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle.Side;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
+import javafx.geometry.Point2D;
 
 /**
  * A class for creating line segmentation strategies.
- * 
- * @author Martin P. Robillard
- *
  */
 public final class SegmentationStyleFactory
 {
@@ -109,8 +106,8 @@ public final class SegmentationStyleFactory
 		double x5 = topRight.getX();
 		double y5 = y4;
 		
-		return new Point2D[] {new Point2D.Double(x1, y1), new Point2D.Double(x2, y2),
-							  new Point2D.Double(x3, y3), new Point2D.Double(x4, y4), new Point2D.Double(x5, y5)};
+		return new Point2D[] {new Point2D(x1, y1), new Point2D(x2, y2),
+							  new Point2D(x3, y3), new Point2D(x4, y4), new Point2D(x5, y5)};
 	}
 	
 	/*
@@ -123,11 +120,11 @@ public final class SegmentationStyleFactory
 	{
 		if( pNode instanceof PackageNode )
 		{
-			return ((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner();
+			return Conversions.toPoint2D(((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner());
 		}
 		else
 		{
-			return new Point2D.Double(pNode.view().getBounds().getMaxX(), pNode.view().getBounds().getY());
+			return new Point2D(pNode.view().getBounds().getMaxX(), pNode.view().getBounds().getY());
 		}
 	}
 	
@@ -162,7 +159,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			if( pEdge.getStart() == pEdge.getEnd() )
 			{
@@ -183,15 +180,14 @@ public final class SegmentationStyleFactory
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
 			}
 			
-		    return new Point2D[] {Conversions.toPoint2D(start), 
-		    		Conversions.toPoint2D(end) };
+		    return new Point2D[] {Conversions.toPoint2D(start), Conversions.toPoint2D(end) };
 		}		
 	}
 	
 	/*
 	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
 	 */
-	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Graph pGraph)
+	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Diagram pGraph)
 	{
 		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
 		Point start = pNode.view().getConnectionPoint(pSide.getDirection());
@@ -217,9 +213,9 @@ public final class SegmentationStyleFactory
 		}
 	}
 	
-	private static boolean hasSelfEdge(Node pNode, Graph pGraph)
+	private static boolean hasSelfEdge(Node pNode, Diagram pGraph)
 	{
-		for( Edge edge : pGraph.getEdges(pNode))
+		for( Edge edge : pGraph.edgesConnectedTo(pNode))
 		{
 			if( edge.getStart() == edge.getEnd())
 			{
@@ -235,22 +231,22 @@ public final class SegmentationStyleFactory
 	 * The position is given in terms of top-bottom for sides, and left-to-right
 	 * for top and bottom. 
 	 * @param pEdge The edge containing the node for which a connection is being calculated
-	 * @param pSide The side of the node for which a connection is being calculated
+	 * @param pStartSide The side of the node for which a connection is being calculated
 	 * @param pGraph The graph storing the node.
 	 * @param pForward true if this is the calculation for the start node of the edge
 	 * @return The position on the side of the node where the edge should be connected.
 	 */
-	private static Position computePosition(Edge pEdge, Side pSide, Graph pGraph, boolean pForward)
+	private static Position computePosition(Edge pEdge, Side pStartSide, Diagram pGraph, boolean pForward)
 	{
-		assert pEdge != null && pSide != null && pGraph != null;
+		assert pEdge != null && pStartSide != null && pGraph != null;
 		Node tempTarget = pEdge.getStart();
 		if( !pForward )
 		{
 			tempTarget = pEdge.getEnd();
 		}
 		final Node target = tempTarget;
-		List<Edge> edgesOnSelectedSide = getAllEdgesForSide(pGraph, target, pSide);
-		sortPositions(edgesOnSelectedSide, target, pSide);
+		List<Edge> edgesOnSelectedSide = getAllEdgesForSide(pGraph, target, pStartSide);
+		sortPositions(edgesOnSelectedSide, target, pStartSide);
 		
 		// Group identical edge ends
 		List<Edge> finalPositions = new ArrayList<>();
@@ -309,10 +305,10 @@ public final class SegmentationStyleFactory
 	} // CSON:
 	
 	// TODO Fix this
-	private static List<Edge> getAllEdgesForSide(Graph pGraph, Node pTarget, Side pSide)
+	private static List<Edge> getAllEdgesForSide(Diagram pGraph, Node pTarget, Side pSide)
 	{
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
-		for( Edge edge : pGraph.getEdges(pTarget))
+		for( Edge edge : pGraph.edgesConnectedTo(pTarget))
 		{
 			if( otherNode(edge, pTarget) == pTarget)
 			{
@@ -450,7 +446,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			assert pEdge != null;
 			
@@ -493,14 +489,14 @@ public final class SegmentationStyleFactory
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
 	  		{
-	  			return new Point2D[] {new Point2D.Double(start.getX(), end.getY()), new Point2D.Double(end.getX(), end.getY()) };
+	  			return new Point2D[] {new Point2D(start.getX(), end.getY()), new Point2D(end.getX(), end.getY()) };
 	  		}
 	  		else
 	  		{
-	  			return new Point2D[] { new Point2D.Double(start.getX(), start.getY()), 
-	  								   new Point2D.Double((start.getX() + end.getX()) / 2, start.getY()),
-	  								   new Point2D.Double((start.getX() + end.getX()) / 2, end.getY()), 
-	  								   new Point2D.Double(end.getX(), end.getY())};
+	  			return new Point2D[] { new Point2D(start.getX(), start.getY()), 
+	  								   new Point2D((start.getX() + end.getX()) / 2, start.getY()),
+	  								   new Point2D((start.getX() + end.getX()) / 2, end.getY()), 
+	  								   new Point2D(end.getX(), end.getY())};
 	  		}
 		}
 	}
@@ -586,7 +582,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Graph pGraph)
+		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
 		{
 			assert pEdge != null;
 			
@@ -630,14 +626,14 @@ public final class SegmentationStyleFactory
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
 	  		{
-	  			return new Point2D[] {new Point2D.Double(end.getX(), start.getY()), new Point2D.Double(end.getX(), end.getY())};
+	  			return new Point2D[] {new Point2D(end.getX(), start.getY()), new Point2D(end.getX(), end.getY())};
 	  		}
 	  		else
 	  		{
-	  			return new Point2D[] {new Point2D.Double(start.getX(), start.getY()), 
-	  								  new Point2D.Double(start.getX(), (start.getY() + end.getY()) / 2), 
-	  								  new Point2D.Double(end.getX(), (start.getY() + end.getY()) / 2), 
-	  								  new Point2D.Double(end.getX(), end.getY())};
+	  			return new Point2D[] {new Point2D(start.getX(), start.getY()), 
+	  								  new Point2D(start.getX(), (start.getY() + end.getY()) / 2), 
+	  								  new Point2D(end.getX(), (start.getY() + end.getY()) / 2), 
+	  								  new Point2D(end.getX(), end.getY())};
 	  		}
 		}
 	}

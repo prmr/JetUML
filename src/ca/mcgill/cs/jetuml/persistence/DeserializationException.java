@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.persistence;
 
 /**
  * Represents a problem retrieving a graph from serialized form.
- * 
- * @author Martin P. Robillard
  */
 @SuppressWarnings("serial")
 public class DeserializationException extends RuntimeException

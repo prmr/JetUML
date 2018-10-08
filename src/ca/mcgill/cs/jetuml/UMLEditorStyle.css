@@ -1,0 +1,33 @@
+
+.welcome-tab-panel
+{
+	-fx-padding: 20px;
+}
+
+.welcome-tab-panel .panel-title
+{
+	-fx-padding: 0px 0px 3px 0px;
+	-fx-font-size: 20pt;
+	-fx-border-width: 0 0 3 0; 
+	-fx-border-color: black; 
+	-fx-border-insets: 0 0 15px 15px;
+}
+
+.welcome-tab-panel .button
+{
+	-fx-background-color: transparent;
+	-fx-font-size: 17pt;
+	-fx-text-fill: dimgrey;
+}
+
+.welcome-tab-panel .button:hover
+{
+	-fx-text-fill: black;
+	-fx-font-size: 17pt;
+}
+
+.welcome-tab-footer
+{
+	-fx-alignment: center;	
+	-fx-padding: 0 0 10px 0;
+}

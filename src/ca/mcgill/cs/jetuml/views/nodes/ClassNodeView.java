@@ -20,19 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an interface in a class diagram.
- * 
- * @author Martin P. Robillard
- *
  */
-public class ClassNodeView extends InterfaceNodeView
+public final class ClassNodeView extends InterfaceNodeView
 {
 	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
@@ -50,14 +46,15 @@ public class ClassNodeView extends InterfaceNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D); 
+		super.draw(pGraphics); 
 		int bottomHeight = computeBottom().getHeight();
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), (int) Math.round(getBounds().getHeight() - middleHeight() - bottomHeight));
-		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), (int) Math.round(middleHeight()));
-		STRING_VIEWER.draw(attributes(), pGraphics2D, mid);
+		Rectangle bounds = getBounds();
+		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
+				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
+		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
+		STRING_VIEWER.draw(attributes(), pGraphics, mid);
 	}
 	
 	/**

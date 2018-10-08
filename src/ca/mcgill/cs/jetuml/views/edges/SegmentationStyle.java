@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,18 +21,14 @@
 
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.geom.Point2D;
-
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
+import javafx.geometry.Point2D;
 
 /**
  * A strategy for drawing a segmented line between two nodes.
- * 
- * @author Martin P. Robillard
- *
  */
 public interface SegmentationStyle
 {
@@ -98,7 +94,7 @@ public interface SegmentationStyle
      * @return an array list of points at which to bend the
      * segmented line representing the edge. Never null.
 	 */
-	Point2D[] getPath(Edge pEdge, Graph pGraph);
+	Point2D[] getPath(Edge pEdge, Diagram pGraph);
 	
 	/**
 	 * Returns which side of the node attached to

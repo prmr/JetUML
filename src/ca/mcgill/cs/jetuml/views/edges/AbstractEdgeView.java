@@ -20,25 +20,32 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.BasicStroke;
-import java.awt.Shape;
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Edge;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.geometry.Bounds;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 
 /**
  * Provides shared services for rendering an edge.
- * 
- * @author Martin P. Robillard
- *
  */
 public abstract class AbstractEdgeView implements EdgeView
 {
-	private static final int MAX_DISTANCE = 3;
+	protected static final int MAX_DISTANCE = 3;
+	private static final Text SIZE_TESTER = new Text();
+	
+	static
+	{
+		SIZE_TESTER.setFont(FONT);
+	}
+	
 	private static final int DEGREES_180 = 180;
 	
 	private Edge aEdge;
@@ -57,6 +64,18 @@ public abstract class AbstractEdgeView implements EdgeView
 	protected abstract Shape getShape();
 	
 	/**
+	 * @param pText Some text to test.
+	 * @return A bounds object to be used as
+	 * metrics for the size of the string when rendered
+	 * in the application font.
+	 */
+	protected static Bounds textBounds( String pText )
+	{
+		SIZE_TESTER.setText(pText);
+		return SIZE_TESTER.getBoundsInLocal();
+	}
+	
+	/**
 	 * @return The wrapped edge.
 	 */
 	protected Edge edge()
@@ -73,14 +92,16 @@ public abstract class AbstractEdgeView implements EdgeView
 			return false;
 		}
 
-		Shape fatPath = new BasicStroke((float)(2 * MAX_DISTANCE)).createStrokedShape(getShape());
-		return fatPath.contains(Conversions.toPoint2D(pPoint));
+		Shape fatPath = getShape();
+		fatPath.setStrokeWidth(2 * MAX_DISTANCE);
+		return fatPath.contains(pPoint.getX(), pPoint.getY());
 	}
 	
 	@Override
 	public Rectangle getBounds()
 	{
-		return Conversions.toRectangle(getShape().getBounds()); 
+		Bounds bounds = getShape().getBoundsInLocal();
+		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
 	/** 
@@ -101,21 +122,10 @@ public abstract class AbstractEdgeView implements EdgeView
 		return new Line(edge().getStart().view().getConnectionPoint(toEnd), 
 				edge().getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
 	}
-	
-	/**
-	 * Wrap the string in an html container and 
-	 * escape the angle brackets.
-	 * @param pRawLabel The initial string.
-	 * @pre pRawLabel != null;
-	 * @return The string prepared for rendering as HTML
-	 */
-	protected static String toHtml(String pRawLabel)
+
+	@Override
+	public void drawSelectionHandles(GraphicsContext pGraphics)
 	{
-		assert pRawLabel != null;
-		StringBuilder lReturn = new StringBuilder();
-		lReturn.append("<html>");
-		lReturn.append(pRawLabel.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
-		lReturn.append("</html>");
-		return lReturn.toString();
+		ToolGraphics.drawHandles(pGraphics, getConnectionPoints());		
 	}
 }

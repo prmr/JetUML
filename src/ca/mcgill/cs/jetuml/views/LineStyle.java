@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,26 +21,27 @@
 
 package ca.mcgill.cs.jetuml.views;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
-
 /**
- *   Defines line styles of various shapes.
+ * Line styles and their properties.
  */
 public enum LineStyle
 {
-	SOLID, DOTTED;
+	SOLID( new double[] {} ), DOTTED( new double[] {3, 3} );
 	
-	private static final Stroke[] STROKES = new Stroke[] {
-			new BasicStroke(),
-			new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10, new float[] { 3, 3 }, 0)
-	};
+	// The LineDashes StrokeAttribute. See Canvas API documentation.
+	private final double[] aLineDashes;
+	
+	LineStyle(double[] pDashes)
+	{
+		aLineDashes = pDashes;
+	}
 	
 	/**
-	 * @return The stroke with which to draw this line style.
+	 * @return The LineDashes stroke attribute for 
+	 * this line style.
 	 */
-	public Stroke getStroke()
+	public double[] getLineDashes()
 	{
-		return STROKES[ordinal()];
+		return aLineDashes;
 	}
 }

@@ -20,16 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
  * A deserialization context allows clients to incrementally build
  * up the context. The identifiers that correspond to objects must be 
  * specified explicitly. 
- * 
- * @author Martin P. Robillard
- *
  */
 public class DeserializationContext extends AbstractContext
 {
@@ -40,7 +37,7 @@ public class DeserializationContext extends AbstractContext
 	 * @param pGraph The graph associated with the context.
 	 * @pre pGraph != null.
 	 */
-	public DeserializationContext(Graph pGraph)
+	public DeserializationContext(Diagram pGraph)
 	{
 		super( pGraph );
 	}

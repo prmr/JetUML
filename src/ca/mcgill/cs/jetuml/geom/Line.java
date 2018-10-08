@@ -22,8 +22,6 @@ package ca.mcgill.cs.jetuml.geom;
 
 /**
  * An immutable pair of points in the integer space.
- * 
- * @author Martin P. Robillard
  */
 public class Line implements Cloneable
 {

@@ -20,43 +20,37 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
+import static ca.mcgill.cs.jetuml.geom.Util.max;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
+import java.util.List;
+
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
- * 
- * @author Martin P. Robillard
- *
  */
-public class ImplicitParameterNodeView extends RectangleBoundedNodeView
+public final class ImplicitParameterNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
-	private static final int DEFAULT_TOP_HEIGHT = 60;
-	private static final Stroke STROKE = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[] { 5, 5 }, 0);
+	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
+	private static final int TOP_HEIGHT = 60;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 
-	private int aTopHeight = DEFAULT_TOP_HEIGHT;
-	
 	/**
 	 * @param pNode The node to wrap.
 	 */
 	public ImplicitParameterNodeView(ImplicitParameterNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -64,18 +58,19 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 		return ((ImplicitParameterNode)node()).getName();
 	}
 	
-	@Override
-	public void draw(Graphics2D pGraphics2D)
+	private List<ChildNode> children()
 	{
-		super.draw(pGraphics2D);
+		return ((ImplicitParameterNode)node()).getChildren();
+	}
+	
+	@Override
+	public void draw(GraphicsContext pGraphics)
+	{
 		Rectangle top = getTopRectangle();
-		pGraphics2D.draw(Conversions.toRectangle2D(top));
-		NAME_VIEWER.draw(name(), pGraphics2D, top);
-		int xmid = getBounds().getCenter().getX();
-		Stroke oldStroke = pGraphics2D.getStroke();
-		pGraphics2D.setStroke(STROKE);
-		pGraphics2D.draw(new Line2D.Double(xmid, top.getMaxY(), xmid, getBounds().getMaxY()));
-		pGraphics2D.setStroke(oldStroke);
+		ViewUtils.drawRectangle(pGraphics, top);
+		NAME_VIEWER.draw(name(), pGraphics, top);
+		int xmid = top.getCenter().getX();
+		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
 	}
 	
 	@Override
@@ -86,37 +81,30 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	}
 
 	@Override
-	public Shape getShape()
-	{ return Conversions.toRectangle2D(getTopRectangle()); }
-   
-	@Override
 	public Point getConnectionPoint(Direction pDirection)
 	{
+		Rectangle bounds = getBounds();
 		if(pDirection.getX() > 0)
 		{
-			return new Point(getBounds().getMaxX(), getBounds().getY() + aTopHeight / 2);
+			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
 		}
 		else
 		{
-			return new Point(getBounds().getX(), getBounds().getY() + aTopHeight / 2);
+			return new Point(bounds.getX(), bounds.getY() + TOP_HEIGHT / 2);
 		}
 	}
 	
-	@Override
-	public void setBounds(Rectangle pNewBounds)
+	private Point getMaxXYofChildren()
 	{
-		super.setBounds(pNewBounds);
-	}
-
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_TOP_HEIGHT));      
-		Rectangle top = new Rectangle(getBounds().getX(), getBounds().getY(), bounds.getWidth(), bounds.getHeight());
-		Rectangle snappedTop = Grid.snapped(top);
-		setBounds(new Rectangle(snappedTop.getX(), snappedTop.getY(), snappedTop.getWidth(), getBounds().getHeight()));
-		aTopHeight = top.getHeight();
+		int maxY = 0;
+		int maxX = 0;
+		for( ChildNode child : children() )
+		{
+			Rectangle bounds = child.view().getBounds();
+			maxX = Math.max(maxX,  bounds.getMaxX());
+			maxY = Math.max(maxY, bounds.getMaxY());
+		}
+		return new Point(maxX, maxY);
 	}
 	
 	/**
@@ -125,6 +113,17 @@ public class ImplicitParameterNodeView extends RectangleBoundedNodeView
 	 */
 	public Rectangle getTopRectangle()
 	{
-		return new Rectangle(getBounds().getX(), getBounds().getY(), getBounds().getWidth(), aTopHeight);
+		int width = Math.max(NAME_VIEWER.getBounds(name()).getWidth(), DEFAULT_WIDTH); 
+		return new Rectangle(node().position().getX(), 0, width, TOP_HEIGHT);
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle topRectangle = getTopRectangle();
+		Point childrenMaxXY = getMaxXYofChildren();
+		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - node().position().getX());
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);
+		return new Rectangle(node().position().getX(), 0, width, height);
 	}
 }

@@ -24,24 +24,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Property;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * Converts a JSONObject to a graph.
- *
- * @author Martin P. Robillard
- *
  */
 public final class JsonDecoder
 {
-	private static final String PREFIX_DIAGRAMS = "ca.mcgill.cs.jetuml.diagrams.";
-	private static final String PREFIX_NODES = "ca.mcgill.cs.jetuml.graph.nodes.";
-	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.graph.edges.";
+	private static final String PREFIX_DIAGRAMS = "ca.mcgill.cs.jetuml.diagram.";
+	private static final String PREFIX_NODES = "ca.mcgill.cs.jetuml.diagram.nodes.";
+	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.diagram.edges.";
 	
 	private JsonDecoder() {}
 	
@@ -50,13 +47,13 @@ public final class JsonDecoder
 	 * @return The decoded graph.
 	 * @throws DeserializationException If it's not possible to decode the object into a valid graph.
 	 */
-	public static Graph decode(JSONObject pGraph)
+	public static Diagram decode(JSONObject pGraph)
 	{
 		assert pGraph != null;
 		try
 		{
 			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pGraph.getString("diagram"));
-			Graph graph = (Graph) diagramClass.newInstance();
+			Diagram graph = (Diagram) diagramClass.getDeclaredConstructor().newInstance();
 			DeserializationContext context = new DeserializationContext(graph);
 			decodeNodes(context, pGraph);
 			restoreChildren(context, pGraph);
@@ -64,7 +61,7 @@ public final class JsonDecoder
 			decodeEdges(context, pGraph);
 			return graph;
 		}
-		catch( ClassNotFoundException | IllegalAccessException | InstantiationException | JSONException exception )
+		catch( JSONException | ReflectiveOperationException exception )
 		{
 			throw new DeserializationException("Cannot decode serialized object", exception);
 		}
@@ -84,14 +81,14 @@ public final class JsonDecoder
 			{
 				JSONObject object = nodes.getJSONObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
-				Node node = (Node) nodeClass.newInstance();
+				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
 				for( Property property : node.properties() )
 				{
 					property.set(object.get(property.getName()));
 				}
 				pContext.addNode(node, object.getInt("id"));
 			}
-			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
+			catch( ReflectiveOperationException exception )
 			{
 				throw new DeserializationException("Cannot instantiate serialized object", exception);
 			}
@@ -107,7 +104,7 @@ public final class JsonDecoder
 		{
 			if( !(node instanceof ChildNode) || ((ChildNode)node).getParent() == null )
 			{
-				pContext.getGraph().restoreRootNode(node);
+				pContext.getGraph().addRootNode(node);
 			}
 		}
 	}
@@ -148,15 +145,16 @@ public final class JsonDecoder
 			{
 				JSONObject object = edges.getJSONObject(i);
 				Class<?> edgeClass = Class.forName(PREFIX_EDGES + object.getString("type"));
-				Edge edge = (Edge) edgeClass.newInstance();
+				Edge edge = (Edge) edgeClass.getDeclaredConstructor().newInstance();
 				
 				for( Property property : edge.properties())
 				{
 					property.set(object.get(property.getName()));
 				}
-				pContext.getGraph().restoreEdge(edge, pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")));
+				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")), pContext.getGraph());
+				pContext.getGraph().addEdge(edge);
 			}
-			catch( ClassNotFoundException | IllegalAccessException | InstantiationException exception )
+			catch( ReflectiveOperationException exception )
 			{
 				throw new DeserializationException("Cannot instantiate serialized object", exception);
 			}

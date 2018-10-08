@@ -20,25 +20,21 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.GeneralPath;
-
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.graph.Edge;
+import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
 
 /**
  * A straight dotted line.
- * 
- * @author Martin P. Robillard
  */
-public class NoteEdgeView extends AbstractEdgeView
+public final class NoteEdgeView extends AbstractEdgeView
 {
-	private static final Stroke DOTTED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, 
-			  BasicStroke.JOIN_ROUND, 0.0f, new float[] { 3.0f, 3.0f }, 0.0f);
-		
 	/**
 	 * @param pEdge The edge to wrap.
 	 */
@@ -48,22 +44,20 @@ public class NoteEdgeView extends AbstractEdgeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		Stroke oldStroke = pGraphics2D.getStroke();
-		pGraphics2D.setStroke(DOTTED_STROKE);
-		pGraphics2D.draw(getShape());
-		pGraphics2D.setStroke(oldStroke);
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.DOTTED);
 	}
 	
 	
 	@Override
 	protected Shape getShape()
 	{
-		GeneralPath path = new GeneralPath();
+		Path path = new Path();
 		Line conn = getConnectionPoints();
-		path.moveTo((float)conn.getX1(), (float)conn.getY1());
-		path.lineTo((float)conn.getX2(), (float)conn.getY2());
+		MoveTo moveTo = new MoveTo((float)conn.getX1(), (float)conn.getY1());
+		LineTo lineTo = new LineTo((float)conn.getX2(), (float)conn.getY2());
+		path.getElements().addAll(moveTo, lineTo);
 		return path;
 	}
 }

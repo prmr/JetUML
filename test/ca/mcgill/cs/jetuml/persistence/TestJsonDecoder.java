@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,10 +21,24 @@
 package ca.mcgill.cs.jetuml.persistence;
 
 import org.json.JSONObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 
 public class TestJsonDecoder
 {
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
 	/*
 	 * Try to decode a valid but empty
 	 * JSON object.
@@ -45,7 +59,7 @@ public class TestJsonDecoder
 	{
 		JSONObject object = new JSONObject();
 		object.put("version", "1.2");
-		object.put("diagram", "StateDiagramGraph");
+		object.put("diagram", "StateDiagram");
 		JsonDecoder.decode(object);
 	}
 }

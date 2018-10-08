@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2017 by the contributors of the JetUML project.
+ * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -21,13 +21,12 @@
 
 package ca.mcgill.cs.jetuml.views;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-
+import ca.mcgill.cs.jetuml.geom.Dimension;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * A grid to which points and rectangles can be "snapped". The
@@ -35,47 +34,35 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
  */
 public final class Grid
 {
-	private static final Color GRID_COLOR = new Color(220, 220, 220); 
+	private static final Color GRID_COLOR = Color.rgb(220, 220, 220);
 	private static final double GRID_SIZE = 10;
 	
 	private Grid() {}
 	
 	/**
      * Draws this grid inside a rectangle.
-     * @param pGraphics2D the graphics context
+     * @param pGraphics the graphics context
      * @param pBounds the bounding rectangle
      */
-	public static void draw(Graphics2D pGraphics2D, Rectangle2D pBounds)
+	public static void draw(GraphicsContext pGraphics, Rectangle pBounds)
 	{
-		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(GRID_COLOR);
-		Stroke oldStroke = pGraphics2D.getStroke();
-		for(double x = pBounds.getX(); x < pBounds.getMaxX(); x += GRID_SIZE)
+		Paint oldStroke = pGraphics.getStroke();
+		pGraphics.setStroke(GRID_COLOR);
+		int x1 = pBounds.getX();
+		int y1 = pBounds.getY();
+		int x2 = pBounds.getMaxX();
+		int y2 = pBounds.getMaxY();
+		for(int x = x1; x < x2; x += GRID_SIZE)
 		{
-			pGraphics2D.draw(new Line2D.Double(x, pBounds.getY(), x, pBounds.getMaxY()));
+			ToolGraphics.strokeSharpLine(pGraphics, x, y1, x, y2);
 		}
-		for(double y = pBounds.getY(); y < pBounds.getMaxY(); y += GRID_SIZE)
+		for(int y = y1; y < y2; y += GRID_SIZE)
 		{
-			pGraphics2D.draw(new Line2D.Double(pBounds.getX(), y, pBounds.getMaxX(), y));
+			ToolGraphics.strokeSharpLine(pGraphics, x1, y, x2, y);
 		}
-		pGraphics2D.setStroke(oldStroke);
-		pGraphics2D.setColor(oldColor);
+		pGraphics.setStroke(oldStroke);
 	}
 
-//	/**
-//     * Snaps a rectangle to the nearest grid points.
-//     * @param pRectangle the rectangle to snap. After the call, the 
-//     * coordinates of r are changed so that all of its corners
-//     * falls on the grid.
-//	 */
-//	public void snapDeprecated(Rectangle2D pRectangle)
-//	{
-//		double x = Math.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE;
-//		double w = Math.ceil(pRectangle.getWidth() / (2 * GRID_SIZE)) * (2 * GRID_SIZE);
-//		double y = Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE;
-//		double h = Math.ceil(pRectangle.getHeight() / (2 * GRID_SIZE)) * (2 * GRID_SIZE);
-//		pRectangle.setFrame(x, y, w, h);      
-//	}
 	
 	/**
      * Creates a rectangle that is the original rectangle, snapped to
@@ -88,9 +75,58 @@ public final class Grid
 	{
 		assert pRectangle != null;
 		int x = (int)(Math.round(pRectangle.getX() / GRID_SIZE) * GRID_SIZE);
-		int width = (int)(Math.ceil(pRectangle.getWidth() / (2 * GRID_SIZE)) * (2 * GRID_SIZE));
+		int width = (int)(Math.ceil(pRectangle.getWidth() / GRID_SIZE) * GRID_SIZE);
 		int y = (int)(Math.round(pRectangle.getY() / GRID_SIZE) * GRID_SIZE);
-		int height = (int)(Math.ceil(pRectangle.getHeight() / (2 * GRID_SIZE)) * (2 * GRID_SIZE));
+		int height = (int)(Math.ceil(pRectangle.getHeight() / GRID_SIZE) * GRID_SIZE);
 		return new Rectangle(x, y, width, height);
+	}
+	
+	/**
+	 * Returns the point on the grid that is closest to pPoint.
+	 * 
+	 * @param pPoint The original point.
+	 * @return The snapped point.
+	 * @pre pPoint != null
+	 */
+	public static Point snapped(Point pPoint)
+	{
+		assert pPoint != null;
+		int x = (int)(Math.round(pPoint.getX() / GRID_SIZE) * GRID_SIZE);
+		int y = (int)(Math.round(pPoint.getY() / GRID_SIZE) * GRID_SIZE);
+		return new Point(x, y);
+	}
+	
+	/**
+	 * Creates a point that represents a distance to the origin which, when added to 
+	 * pDimension, will correspond to a dimension that is rounded to align to the grid.
+	 * 
+	 * @param pDimension The original dimension.
+	 * @return An aligned dimension.
+	 * @pre pDimension != null
+	 */
+	public static Point toSnap(Dimension pDimension)
+	{
+		assert pDimension != null;
+		final int size = (int) GRID_SIZE;
+		int xRemainder = pDimension.getWidth() % size;
+		if( xRemainder < size/2 )
+		{
+			xRemainder = -xRemainder;
+		}
+		else
+		{
+			xRemainder = size - xRemainder;
+		}
+		
+		int yRemainder = pDimension.getHeight() % size;
+		if( yRemainder < size/2 )
+		{
+			yRemainder = -yRemainder;
+		}
+		else
+		{
+			yRemainder = size - yRemainder;
+		}
+		return new Point(xRemainder, yRemainder);
 	}
 }

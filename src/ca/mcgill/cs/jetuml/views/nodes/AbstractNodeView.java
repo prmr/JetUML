@@ -20,24 +20,18 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Basic services for drawing nodes.
- * 
- * @author Martin P. Robillard
- *
  */
 public abstract class AbstractNodeView implements NodeView
 {
-	public static final int SHADOW_GAP = 4;
-	private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
-	
 	private Node aNode;
 	
 	/**
@@ -49,33 +43,73 @@ public abstract class AbstractNodeView implements NodeView
 	}
 	
 	/**
-	 * @return The wrapped edge.
+	 * @return The wrapped node.
 	 */
 	protected Node node()
 	{
 		return aNode;
 	}
 	
+	/* 
+	 * The default behavior for containment is to return true if the point is
+	 * within the bounding box of the node view.
+	 * @see ca.mcgill.cs.jetuml.views.DiagramElementView#contains(ca.mcgill.cs.jetuml.geom.Point)
+	 */
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public boolean contains(Point pPoint)
 	{
-		Shape shape = getShape();
-		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.translate(SHADOW_GAP, SHADOW_GAP);      
-		pGraphics2D.setColor(SHADOW_COLOR);
-		pGraphics2D.fill(shape);
-		pGraphics2D.translate(-SHADOW_GAP, -SHADOW_GAP);
-		pGraphics2D.setColor(pGraphics2D.getBackground());
-		pGraphics2D.fill(shape);      
-		pGraphics2D.setColor(oldColor);
+		return getBounds().contains(pPoint);
 	}
 	
-	/**
-     *  @return the shape to be used for computing the drop shadow
-    */
-	protected abstract Shape getShape();
-
+	/* 
+	 * The default behavior is to returns a point in the middle of the appropriate side of the bounding box 
+	 * of the node.
+	 * @see ca.mcgill.cs.jetuml.diagram.views.nodes.NodeView#getConnectionPoint(ca.mcgill.cs.jetuml.geom.Direction)
+	 */
 	@Override
-	public void layout(Graph pGraph)
-	{}
+	public Point getConnectionPoint(Direction pDirection)
+	{
+		final Rectangle bounds = getBounds();
+		double slope = (double) bounds.getHeight() / (double) bounds.getWidth();
+		double ex = pDirection.getX();
+		double ey = pDirection.getY();
+		int x = bounds.getCenter().getX();
+		int y = bounds.getCenter().getY();
+      
+		if(ex != 0 && -slope <= ey / ex && ey / ex <= slope)
+		{  
+			// intersects at left or right boundary
+			if(ex > 0) 
+			{
+				x = bounds.getMaxX();
+				y += (bounds.getWidth() / 2) * ey / ex;
+			}
+			else
+			{
+				x = bounds.getX();
+				y -= (bounds.getWidth() / 2) * ey / ex;
+			}
+		}
+		else if(ey != 0)
+		{  
+			// intersects at top or bottom
+			if(ey > 0) 
+			{
+				x += (bounds.getHeight() / 2) * ex / ey;
+				y = bounds.getMaxY();
+			}
+			else
+			{
+				x -= (bounds.getHeight() / 2) * ex / ey;
+				y = bounds.getY();
+			}
+		}
+		return new Point(x, y);
+	}
+	
+	@Override
+	public void drawSelectionHandles(GraphicsContext pGraphics)
+	{
+		ToolGraphics.drawHandles(pGraphics, getBounds());		
+	}
 }

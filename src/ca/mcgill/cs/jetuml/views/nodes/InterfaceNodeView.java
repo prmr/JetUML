@@ -20,23 +20,19 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import static ca.mcgill.cs.jetuml.geom.Util.max;
 
-import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.views.Grid;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render an interface in a class diagram.
- * 
- * @author Martin P. Robillard
- *
  */
-public class InterfaceNodeView extends RectangleBoundedNodeView
+public class InterfaceNodeView extends AbstractNodeView
 {
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
@@ -49,7 +45,7 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	 */
 	public InterfaceNodeView(InterfaceNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -63,19 +59,26 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
+		Rectangle bounds = getBounds();
+		ViewUtils.drawRectangle(pGraphics, bounds);	
+
 		int bottomHeight = computeBottom().getHeight();
-		Rectangle2D top = new Rectangle2D.Double(getBounds().getX(), getBounds().getY(), 
-				getBounds().getWidth(), getBounds().getHeight() - middleHeight() - bottomHeight);
-		pGraphics2D.draw(top);
-		NAME_VIEWER.draw(name(), pGraphics2D, Conversions.toRectangle(top));
-		Rectangle2D mid = new Rectangle2D.Double(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
-		pGraphics2D.draw(mid);
-		Rectangle2D bot = new Rectangle2D.Double(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		pGraphics2D.draw(bot);
-		METHOD_VIEWER.draw(methods(), pGraphics2D, Conversions.toRectangle(bot));
+		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
+				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
+		NAME_VIEWER.draw(name(), pGraphics, top);		
+		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
+		if(middleHeight() > 0) 
+		{
+			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY(), LineStyle.SOLID);
+		}
+		Rectangle bot = new Rectangle(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
+		if(bottomHeight > 0)
+		{
+			ViewUtils.drawLine(pGraphics, top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY(), LineStyle.SOLID);
+		}
+		METHOD_VIEWER.draw(methods(), pGraphics, bot);
 	}
 	
 	/**
@@ -141,22 +144,23 @@ public class InterfaceNodeView extends RectangleBoundedNodeView
 		return false;
 	}
 	
-	@Override
-	public void layout(Graph pGraph)
-	{
-		Rectangle top = computeTop();
-		Rectangle bottom = computeBottom();
-
-		Rectangle bounds = new Rectangle(getBounds().getX(), getBounds().getY(), 
-				Math.max(Math.max(top.getWidth(), middleWidth()), bottom.getWidth()), top.getHeight() + middleHeight() + bottom.getHeight());
-		setBounds(Grid.snapped(bounds));
-	}
-	
 	/**
 	 * @return True if the node requires a bottom compartment.
 	 */
 	protected boolean needsBottomCompartment()
 	{
 		return methods().length() > 0;
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle top = computeTop();
+		Rectangle bottom = computeBottom();
+		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
+		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
+		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
+//		return Grid.snapped(bounds); TODO improve snapping
+		return bounds;
 	}
 }

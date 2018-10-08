@@ -23,22 +23,19 @@ package ca.mcgill.cs.jetuml.persistence;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
  * Base class for serialization and deserialization contexts. A context 
  * is a mapping between nodes and arbitrary identifiers. The only constraint
  * on identifiers is that they consistently preserve mapping between objects and
  * their identity.
- * 
- * @author Martin P. Robillard
- *
  */
 public abstract class AbstractContext implements Iterable<Node>
 {
 	protected final HashMap<Node, Integer> aNodes = new HashMap<>();
-	private final Graph aGraph;
+	private final Diagram aGraph;
 	
 	/**
 	 * Initializes the context with a graph.
@@ -46,7 +43,7 @@ public abstract class AbstractContext implements Iterable<Node>
 	 * @param pGraph The graph that corresponds to the context.
 	 * @pre pGraph != null.
 	 */
-	protected AbstractContext(Graph pGraph)
+	protected AbstractContext(Diagram pGraph)
 	{
 		assert pGraph != null;
 		aGraph = pGraph;
@@ -55,7 +52,7 @@ public abstract class AbstractContext implements Iterable<Node>
 	/**
 	 * @return The graph associated with this context. Never null.
 	 */
-	public Graph getGraph()
+	public Diagram getGraph()
 	{
 		return aGraph;
 	}

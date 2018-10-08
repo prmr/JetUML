@@ -20,18 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 
 /**
  * Conversion utilities.
- * 
- * @author Martin P. Robillard
  */
 public final class Conversions
 {
-	private Conversions()
-	{}
+	private Conversions() {}
 	
 	/**
 	 * @param pPoint2D The point to convert.
@@ -53,7 +50,7 @@ public final class Conversions
 	public static Point2D toPoint2D(Point pPoint)
 	{
 		assert pPoint != null;
-		return new Point2D.Double(pPoint.getX(), pPoint.getY());
+		return new Point2D(pPoint.getX(), pPoint.getY());
 	}
 	
 	/**
@@ -65,8 +62,8 @@ public final class Conversions
 	public static Rectangle toRectangle(Rectangle2D pRectangle2D)
 	{
 		assert pRectangle2D != null;
-		return new Rectangle( (int)Math.round(pRectangle2D.getX()),
-							  (int)Math.round(pRectangle2D.getY()),
+		return new Rectangle( (int)Math.round(pRectangle2D.getMinX()),
+							  (int)Math.round(pRectangle2D.getMinY()),
 							  (int)Math.round(pRectangle2D.getWidth()),
 							  (int)Math.round(pRectangle2D.getHeight()));
 	}
@@ -80,7 +77,7 @@ public final class Conversions
 	public static Rectangle2D toRectangle2D(Rectangle pRectangle)
 	{
 		assert pRectangle != null;
-		return new Rectangle2D.Double( pRectangle.getX(),
+		return new Rectangle2D( pRectangle.getX(),
 							  pRectangle.getY(),
 							  pRectangle.getWidth(),
 							  pRectangle.getHeight());

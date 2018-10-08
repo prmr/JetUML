@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2017 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2018 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -24,21 +24,33 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PointNode;
 
 public class TestNoteEdgeView
 {
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()
@@ -51,7 +63,7 @@ public class TestNoteEdgeView
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
 		
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 	}
 	
 	@Test
@@ -69,7 +81,7 @@ public class TestNoteEdgeView
 	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
-		assertEquals(new Rectangle(60,20,40,0), aNoteEdge.view().getBounds());
+		assertEquals(new Rectangle(59,19,42,2), aNoteEdge.view().getBounds());
 		
 		Line connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
@@ -79,7 +91,7 @@ public class TestNoteEdgeView
 		
 		
 		aPointNode.translate(20, 0);
-		assertEquals(new Rectangle(60,20,60,0), aNoteEdge.view().getBounds());
+		assertEquals(new Rectangle(59,19,62,2), aNoteEdge.view().getBounds());
 		
 		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());
@@ -90,10 +102,10 @@ public class TestNoteEdgeView
 		
 		aPointNode.translate(0, 20); // Now at x=120, y = 40
 		
-		// The edge should intersect the note edge at x=26, y=60
+		// The edge should intersect the note edge at x=58, y=24
 		// (basic correspondence of proportions between triangles)
-		// yielding bounds of [x=60,y=26,width=60,height=14]
-		assertEquals(new Rectangle(60,26,60,14), aNoteEdge.view().getBounds());
+		// yielding bounds of [x=58,y=24,width=62,height=16]
+		assertEquals(new Rectangle(58,24,62,16), aNoteEdge.view().getBounds());
 		
 		connectionPoints = aNoteEdge.view().getConnectionPoints();
 		assertEquals( 60, connectionPoints.getX1());

@@ -25,23 +25,39 @@ import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+
+import java.util.Iterator;
 
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 public class TestJsonEncodingClassDiagram
 {
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
 	
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 	}
 	
 	/*
@@ -54,7 +70,7 @@ public class TestJsonEncodingClassDiagram
 		ClassNode c = new ClassNode();
 		c.setName("class");
 		p.addChild(c);
-		aGraph.restoreRootNode(p);
+		aGraph.addRootNode(p);
 	}
 	
 	@Test
@@ -62,7 +78,7 @@ public class TestJsonEncodingClassDiagram
 	{
 		JSONObject object = JsonEncoder.encode(aGraph);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
-		assertEquals("ClassDiagramGraph", object.getString("diagram"));
+		assertEquals("ClassDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
 		assertEquals(0, object.getJSONArray("edges").length());				
 	}
@@ -71,11 +87,13 @@ public class TestJsonEncodingClassDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		ClassDiagramGraph graph = (ClassDiagramGraph) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		ClassDiagram diagram = (ClassDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		assertEquals(1, graph.getRootNodes().size());
+		Iterator<Node> iter = diagram.rootNodes().iterator();
+		iter.next();
+		assertFalse(iter.hasNext());
 		
-		PackageNode p = (PackageNode) findRootNode(graph, PackageNode.class, build("name", "package"));
+		PackageNode p = (PackageNode) findRootNode(diagram, PackageNode.class, build("name", "package"));
 
 		assertEquals(1, p.getChildren().size());
 		

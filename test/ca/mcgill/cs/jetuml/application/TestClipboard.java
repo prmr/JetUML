@@ -22,253 +22,191 @@ package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.edges.CallEdge;
-import ca.mcgill.cs.jetuml.graph.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.graph.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.gui.GraphPanel;
-import ca.mcgill.cs.jetuml.gui.ToolBar;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClipboard
 {
 	private Clipboard aClipboard;
-	private PackageNode aPackage1;
-	private PackageNode aPackage2;
-	private ClassNode aClass1;
-	private ClassNode aClass2;
-	private DependencyEdge aEdge1;
-	private DependencyEdge aEdge2;
-	private SelectionList aSelectionList;
-	private ClassDiagramGraph aClassDiagramGraph;
-	private GraphPanel aPanel;
+	private Field aNodesField;
+	private Field aEdgesField;
+	private ClassNode aNode1;
+	private ClassNode aNode2;
+	private ClassDiagram aDiagram;
+	
+	public TestClipboard() throws ReflectiveOperationException
+	{
+		aNodesField = Clipboard.class.getDeclaredField("aNodes");
+		aNodesField.setAccessible(true);
+		aEdgesField = Clipboard.class.getDeclaredField("aEdges");
+		aEdgesField.setAccessible(true);
+	}
+	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Node> getClipboardNodes()
+	{
+		try 
+		{
+			return (List<Node>) aNodesField.get(aClipboard);
+		}
+		catch( ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Edge> getClipboardEdges()
+	{
+		try
+		{
+			return (List<Edge>) aEdgesField.get(aClipboard);
+		}
+		catch( ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+	}
 	
 	@Before
 	public void setup()
 	{
-		aClipboard = Clipboard.instance();
-		aSelectionList = new SelectionList();
-		aClass1 = new ClassNode();
-		aClass1.setName("c1");
-		aClass2 = new ClassNode();
-		aClass2.setName("c2");
-		aEdge1 = new DependencyEdge();
-		aEdge1.setMiddleLabel("e1");
-		aEdge2 = new DependencyEdge();
-		aEdge2.setMiddleLabel("e2");
-		
-		aPackage1 = new PackageNode();
-		aPackage2 = new PackageNode();
-		
-		aClassDiagramGraph = new ClassDiagramGraph();
-		aPanel = new GraphPanel(aClassDiagramGraph, new ToolBar(aClassDiagramGraph));
+		aClipboard = Clipboard.instance();		
+		aNode1 = new ClassNode();
+		aNode2 = new ClassNode();
+		aDiagram = new ClassDiagram();
 	}
 	
 	@Test
-	public void testCopySingleNode()
+	public void testCopySingleNodeNoReposition()
 	{
-		aSelectionList.add(aClass1);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertFalse(aClipboard.getNodes().contains(aClass1));
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
-		aSelectionList.clearSelection();
-		aSelectionList.set(aClass2);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertFalse(aClipboard.getNodes().contains(aClass2));
-		assertEquals("c2", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
+		aClipboard.copy(Arrays.asList(aNode1));
+		assertEquals(1, getClipboardNodes().size());
+		assertFalse(getClipboardNodes().contains(aNode1)); // Clone
+		assertEquals(new Point(0,0), getClipboardNodes().get(0).position());
 	}
 	
 	@Test
-	public void testCopyDanglingEdge()
+	public void testCopySingleNodeReposition()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aSelectionList.add(aClass1);
-		aSelectionList.add(aEdge1);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		assertEquals(0, aClipboard.getEdges().size());
+		aNode1.translate(10, 10);
+		aClipboard.copy(Arrays.asList(aNode1));
+		assertEquals(1, getClipboardNodes().size());
+		assertFalse(getClipboardNodes().contains(aNode1)); // Clone
+		assertEquals(new Point(0,0), getClipboardNodes().get(0).position());
 	}
 	
 	@Test
-	public void testCopyCapturedEdgeTopLevel()
+	public void testCopyTwoNodesOneEdgeFlat()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aSelectionList.add(aClass1);
-		aSelectionList.add(aEdge1);
-		aSelectionList.add(aClass2);
-		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals("c1", ((ClassNode)aClipboard.getNodes().iterator().next()).getName().toString());
-		Iterator<Node> nodes = aClipboard.getNodes().iterator(); nodes.next();
-		assertEquals("c2", ((ClassNode)nodes.next()).getName().toString());
-		assertEquals(1, aClipboard.getEdges().size());
-		assertEquals("e1", ((DependencyEdge)aClipboard.getEdges().iterator().next()).getMiddleLabel());
-		assertFalse( aEdge1 == aClipboard.getEdges().iterator().next());
-	}
-	
-	@Test
-	public void testCopyDeepEdgeReassignment()
-	{
-		aPackage1.addChild(aPackage2);
-		aPackage2.addChild(aClass1);
-		aPackage2.addChild(aClass2);
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aEdge2.connect(aClass2, aClass1, aClassDiagramGraph);
-		aSelectionList.add(aPackage1);
-		aSelectionList.add(aEdge1);
-		aSelectionList.add(aEdge2);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		PackageNode p1Clone = (PackageNode)aClipboard.getNodes().iterator().next();
-		assertFalse( p1Clone == aPackage1);
-		List<ChildNode> children = p1Clone.getChildren();
-		assertEquals(1, children.size());
-		PackageNode p2Clone = (PackageNode) children.get(0);
-		assertFalse( p2Clone == aPackage2);
-		List<ChildNode> children2 = p2Clone.getChildren();
-		assertEquals(2, children2.size());
-		ClassNode cc1 = (ClassNode) children2.get(0);
-		ClassNode cc2 = (ClassNode) children2.get(1);
-		assertEquals("c1", cc1.getName().toString());
-		assertEquals("c2", cc2.getName().toString());
-		assertEquals(2, aClipboard.getEdges().size());
-		Iterator<Edge> edgesIt = aClipboard.getEdges().iterator();
-		DependencyEdge clonedE1 = (DependencyEdge)edgesIt.next();
-		DependencyEdge clonedE2 = (DependencyEdge)edgesIt.next();
-		assertEquals("e1", clonedE1.getMiddleLabel());
-		assertEquals("e2", clonedE2.getMiddleLabel());
-		assertEquals(cc1, clonedE1.getStart());
-		assertEquals(cc2, clonedE1.getEnd());
-		assertEquals(cc2, clonedE2.getStart());
-		assertEquals(cc1, clonedE2.getEnd());
-	}
-	
-	@Test
-	public void testPasteSingleNode()
-	{
-		aSelectionList.add(aClass1);
-		aClipboard.copy(aSelectionList);
-		SelectionList list = aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(1, rootNodes.size());
-		ClassNode node = (ClassNode)rootNodes.iterator().next();
-		assertEquals("c1", node.getName().toString());
-		assertEquals(1, list.size());
-		assertTrue(list.iterator().next() == node);
-	}
-	
-	@Test
-	public void testPasteNodeAndEdgesNoContainment()
-	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aSelectionList.add(aClass1);
-		aSelectionList.add(aClass2);
-		aSelectionList.add(aEdge1);
-		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals(1, aClipboard.getEdges().size());
-		SelectionList list = aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(2, rootNodes.size());
-		ClassNode node = (ClassNode)rootNodes.iterator().next();
-		assertEquals("c1", node.getName().toString());
-		assertEquals(3, list.size());
-		Collection<Edge> edges = aClassDiagramGraph.getEdges();
+		aNode1.translate(10, 10);
+		aNode2.translate(200, 200);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2, aDiagram);
+		aClipboard.copy(Arrays.asList(aNode1, aNode2, edge));
+		List<Node> nodes = getClipboardNodes();
+		assertEquals(2, nodes.size());
+		assertEquals(new Point(0,0), nodes.get(0).position());
+		assertEquals(new Point(190,190), nodes.get(1).position());
+		List<Edge> edges = getClipboardEdges();
 		assertEquals(1, edges.size());
-		assertEquals("e1", ((DependencyEdge)edges.iterator().next()).getMiddleLabel());
+		assertTrue(edges.get(0).getStart() == nodes.get(0));
+		assertTrue(edges.get(0).getEnd() == nodes.get(1));
 	}
 	
 	@Test
-	public void testPasteNodeAndEdgesWithContainment()
+	public void testCopyDanglingEdgeFlat()
 	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aPackage1.addChild(aClass1);
-		aPackage1.addChild(aClass2);
-		aSelectionList.add(aPackage1);
-		aSelectionList.add(aEdge1);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1, aClipboard.getNodes().size());
-		assertEquals(1, aClipboard.getEdges().size());
-		aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(1, rootNodes.size());
-		PackageNode packageNode = (PackageNode)rootNodes.iterator().next();
-		ClassNode class1Clone = (ClassNode)packageNode.getChildren().get(0);
-		assertEquals("c1", class1Clone.getName().toString());
-		ClassNode class2Clone = (ClassNode)packageNode.getChildren().get(1);
-		assertEquals("c2", class2Clone.getName().toString());
-		Collection<Edge> edges = aClassDiagramGraph.getEdges();
-		DependencyEdge edge1Clone = (DependencyEdge)edges.iterator().next();
-		assertEquals(class1Clone, edge1Clone.getStart());
-		assertEquals(class2Clone, edge1Clone.getEnd());
-	}
-	
-	@Test
-	public void testPasteNodeWithMissingParent()
-	{
-		aEdge1.connect(aClass1, aClass2, aClassDiagramGraph);
-		aPackage1.addChild(aClass1);
-		aPackage1.addChild(aClass2);
-		aSelectionList.add(aClass1);
-		aSelectionList.add(aClass2);
-		aClipboard.copy(aSelectionList);
-		assertEquals(2, aClipboard.getNodes().size());
-		assertEquals(0, aClipboard.getEdges().size());
-		aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(2, rootNodes.size());
-		Iterator<Node> it = rootNodes.iterator();
-		ClassNode class1Clone = ((ClassNode)it.next());
-		ClassNode class2Clone = ((ClassNode)it.next());
-		assertEquals("c1", class1Clone.getName().toString());
-		assertEquals("c2", class2Clone.getName().toString());
-		Collection<Edge> edges = aClassDiagramGraph.getEdges();
+		aNode1.translate(10, 10);
+		aNode2.translate(200, 200);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode2, aDiagram);
+		aClipboard.copy(Arrays.asList(aNode1, edge));
+		List<Node> nodes = getClipboardNodes();
+		assertEquals(1, nodes.size());
+		assertEquals(new Point(0,0), nodes.get(0).position());
+		List<Edge> edges = getClipboardEdges();
 		assertEquals(0, edges.size());
 	}
-		
+	
 	@Test
-	public void testInvalidPasteWithNodes()
+	public void testCopyNodeWithOneChild()
 	{
-		aSelectionList.add(new ImplicitParameterNode());
-		aClipboard.copy(aSelectionList);
-		SelectionList list = aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(0, rootNodes.size());
-		assertEquals(0, list.size());
+		PackageNode pn = new PackageNode();
+		pn.addChild(aNode1);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode1, aDiagram);
+		aClipboard.copy(Arrays.asList(pn));
+		List<Node> nodes = getClipboardNodes();
+		assertEquals(1, nodes.size());
+		PackageNode node = (PackageNode)nodes.get(0);
+		assertEquals(1, node.getChildren().size());
+		assertEquals(new Point(0,0), nodes.get(0).position());
+		List<Edge> edges = getClipboardEdges();
+		assertEquals(0, edges.size());
 	}
 	
 	@Test
-	public void testInvalidPasteWithEdges()
+	public void testCopyNodeWithOneParent()
 	{
-		aSelectionList.add(aClass1);
-		aSelectionList.add(aClass2);
-		CallEdge edge = new CallEdge();
-		edge.connect(aClass1, aClass2, aClassDiagramGraph);
-		aSelectionList.add(edge);
-		aClipboard.copy(aSelectionList);
-		assertEquals(1,aClipboard.getEdges().size());
-		assertEquals(2,aClipboard.getNodes().size());
-		SelectionList list = aClipboard.paste(aPanel);
-		Collection<Node> rootNodes = aClassDiagramGraph.getRootNodes();
-		assertEquals(0, rootNodes.size());
-		assertEquals(0, list.size());
+		PackageNode pn = new PackageNode();
+		pn.addChild(aNode1);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(aNode1, aNode1, aDiagram);
+		aClipboard.copy(Arrays.asList(aNode1));
+		List<Node> nodes = getClipboardNodes();
+		assertEquals(1, nodes.size());
+		ClassNode node = (ClassNode)nodes.get(0);
+		assertNull(node.getParent());
+		assertEquals(new Point(0,0), nodes.get(0).position());
+		List<Edge> edges = getClipboardEdges();
+		assertEquals(0, edges.size());
+	}
+	
+	@Test
+	public void testCopyNodeMissingParent()
+	{
+		ObjectNode node = new ObjectNode();
+		FieldNode field = new FieldNode();
+		field.setName("Foo");
+		field.setValue("Bar");
+		node.addChild(field);
+		
+		aClipboard.copy(Arrays.asList(field));
+		List<Node> nodes = getClipboardNodes();
+		assertEquals(0, nodes.size());
 	}
 }

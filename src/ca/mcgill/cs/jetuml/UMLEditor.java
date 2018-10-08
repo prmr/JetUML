@@ -21,162 +21,118 @@
 
 package ca.mcgill.cs.jetuml;
 
-import java.util.ResourceBundle;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
+import java.util.concurrent.CountDownLatch;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.ObjectDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.SequenceDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.StateDiagramGraph;
-import ca.mcgill.cs.jetuml.diagrams.UseCaseDiagramGraph;
+import ca.mcgill.cs.jetuml.application.JavaVersion;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
+import ca.mcgill.cs.jetuml.gui.GuiUtils;
+import javafx.application.Application;
+import javafx.application.HostServices;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
- * A program for editing UML diagrams.
+ * Entry point for launching JetUML.
  */
-public final class UMLEditor
+public final class UMLEditor extends Application
 {
-	private static final int JAVA_MAJOR_VERSION = 7;
-	private static final int JAVA_MINOR_VERSION = 0;
-	
-	private UMLEditor() {}
+	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(8, 0, 0);
+	private static HostServices aHostServices; // Required to open a browser page.
 	
 	/**
-	 * @param pArgs Each argument is a file to open upon launch.
-	 * Can be empty.
+	 * @param pArgs Not used.
 	 */
 	public static void main(String[] pArgs)
 	{
-		// checkVersion(); 
-		try
-		{
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-		}
-		catch (SecurityException ex)
-		{
-			// well, we tried...
-		}
-		final String[] arguments = pArgs;
-		
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				setLookAndFeel();
-				EditorFrame frame = new EditorFrame(UMLEditor.class);
-				frame.addGraphType("class_diagram", ClassDiagramGraph.class);
-				frame.addGraphType("sequence_diagram", SequenceDiagramGraph.class);
-				frame.addGraphType("state_diagram", StateDiagramGraph.class);
-			    frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
-			    frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-				frame.setVisible(true);
-				frame.readArgs(arguments);
-				frame.addWelcomeTab();
-				frame.setIcon();
-			}
-		});
-   }
+		checkVersion(); 
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		launch(pArgs);
+	}
 	
-	private static void setLookAndFeel()
+	@Override
+	public void start(Stage pStage) throws Exception 
 	{
-		try
+		aHostServices = getHostServices();
+		setStageBoundaries(pStage);
+
+		pStage.setTitle(RESOURCES.getString("application.name"));
+		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
+
+		pStage.setScene(new Scene(new EditorFrame(pStage)));
+		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
+
+		pStage.setOnCloseRequest(pWindowEvent -> 
 		{
-			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) 
-			{
-				if("Nimbus".equals(info.getName())) 
-				{
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} 
-		catch(UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException e) 
-		{
-		    // Nothing: We revert to the default LAF
-		}
+			pWindowEvent.consume();
+			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
+		});
+		pStage.show();
 	}
 	
 	/**
-	 *  Checks if the current VM has at least the given
-	 *  version, and exits the program with an error dialog if not.
+	 * Open pUrl in the default system browser.
+	 * 
+	 * @param pUrl The url to open.
+	 * @pre pUrl != null
 	 */
-	@SuppressWarnings("unused")
+	public static void openBrowser(String pUrl)
+	{
+		assert pUrl != null;
+		aHostServices.showDocument(pUrl);
+	}
+
+	private void setStageBoundaries(Stage pStage)
+	{
+		Rectangle defaultStageBounds = GuiUtils.defaultStageBounds();
+		pStage.setX(defaultStageBounds.getX());
+		pStage.setY(defaultStageBounds.getY());
+		pStage.setWidth(defaultStageBounds.getWidth());
+		pStage.setHeight(defaultStageBounds.getHeight());
+	}
+
+	/*
+	 * Verifies that the current version of Java is equal to or 
+	 * higher than the required version, and exits with an error
+	 * message if it is not. 
+	 */
 	private static void checkVersion()
 	{
-		String version = obtainJavaVersion();
-		if( version == null || !isOKJVMVersion(version))
+		final JavaVersion currentVersion = new JavaVersion();
+		if( currentVersion.compareTo(MINIMAL_JAVA_VERSION) < 0 )
 		{
-			ResourceBundle resources = ResourceBundle.getBundle("ca.mcgill.cs.jetuml.gui.EditorStrings");
-			String minor = "";
-			int minorVersion = JAVA_MINOR_VERSION;
-			if( minorVersion > 0 )
+			final CountDownLatch wait = new CountDownLatch(1);
+			Platform.runLater(() -> 
 			{
-				minor = "." + JAVA_MINOR_VERSION;
+				createVersionNotSupportedDialog(currentVersion).showAndWait();
+				wait.countDown();
+			});
+			try
+			{
+				wait.await();
 			}
-			JOptionPane.showMessageDialog(null, resources.getString("error.version") + 
-					"1." + JAVA_MAJOR_VERSION + minor);
+			catch(InterruptedException exception)
+			{} // Nothing, we want to exit anyways
 			System.exit(1);
 		}
 	}
-	
-	static String obtainJavaVersion()
+
+	private static Alert createVersionNotSupportedDialog(JavaVersion pCurrentVersion)
 	{
-		String version = System.getProperty("java.version");
-		if( version == null )
-		{
-			version = System.getProperty("java.runtime.version");
-		}
-		return version;
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(RESOURCES.getString("alert.error.title"));
+		alert.setHeaderText(RESOURCES.getString("alert.version.header"));
+		alert.setContentText(String.format("%s %s. %s %s.",
+				RESOURCES.getString("alert.version.required"),
+				MINIMAL_JAVA_VERSION,
+				RESOURCES.getString("alert.version.detected"),
+				pCurrentVersion));
+		return alert;
 	}
-	
-	/**
-	 * @return True is the JVM version is higher than the 
-	 * versions specified as constants.
-	 */
-	static boolean isOKJVMVersion(String pVersion)
-	{
-		assert pVersion != null;
-		String[] components = pVersion.split("\\.|_");
-		boolean lReturn = true;
-		
-		try
-		{
-			int systemMajor = Integer.parseInt(String.valueOf(components[1]));
-			int systemMinor = Integer.parseInt(String.valueOf(components[2]));
-			if( systemMajor > JAVA_MAJOR_VERSION )
-			{
-				lReturn = true;
-			}
-			else if( systemMajor < JAVA_MAJOR_VERSION )
-			{
-				lReturn = false;
-			}
-			else // major Equals
-			{
-				if( systemMinor > JAVA_MINOR_VERSION )
-				{
-					lReturn = true;
-				}
-				else if( systemMinor < JAVA_MINOR_VERSION )
-				{
-					lReturn = false;
-				}
-				else // minor equals
-				{
-					lReturn = true;
-				}
-			}
-        }
-		catch( NumberFormatException e)
-		{
-			lReturn = false;
-		}
-		return lReturn;
-    }
 }

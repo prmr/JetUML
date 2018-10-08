@@ -27,18 +27,15 @@ import static org.junit.Assert.fail;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.graph.Edge;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.Properties;
-import ca.mcgill.cs.jetuml.graph.Property;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.Property;
 
 /**
  * Utilities to facilitate writing tests for the persistence
  * classes.
- * 
- * @author Martin P. Robillard
- *
  */
 final class PersistenceTestUtils
 {
@@ -100,9 +97,9 @@ final class PersistenceTestUtils
 		return found;
 	}
 	
-	static Node findRootNode(Graph pGraph, Class<?> pClass, Properties pProperties)
+	static Node findRootNode(Diagram pDiagram, Class<?> pClass, Properties pProperties)
 	{
-		for( Node node : pGraph.getRootNodes() )
+		for( Node node : pDiagram.rootNodes() )
 		{
 			if( node.getClass() == pClass )
 			{
@@ -126,9 +123,9 @@ final class PersistenceTestUtils
 		return null;
 	}
 	
-	static Edge findEdge(Graph pGraph, Class<?> pClass, Properties pProperties)
+	static Edge findEdge(Diagram pDiagram, Class<?> pClass, Properties pProperties)
 	{
-		for( Edge edge : pGraph.getEdges() )
+		for( Edge edge : pDiagram.edges() )
 		{
 			if( edge.getClass() == pClass )
 			{

@@ -24,24 +24,36 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 public class TestDeserializationContext
 {
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	private DeserializationContext aContext;
 	private ClassNode aClassNode1; 
 	private ClassNode aClassNode2; 
 	private ClassNode aClassNode3; 
 
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aClassNode3 = new ClassNode();

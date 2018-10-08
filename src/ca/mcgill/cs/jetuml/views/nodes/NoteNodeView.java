@@ -20,30 +20,25 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.graph.Graph;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 /**
  * An object to render a NoteNode.
- * 
- * @author Martin P. Robillard
- *
  */
-public class NoteNodeView extends RectangleBoundedNodeView
+public final class NoteNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
-	private static final int FOLD_X = 8;
-	private static final int FOLD_Y = 8;
-	private static final Color DEFAULT_COLOR = new Color(0.9f, 0.9f, 0.6f); // Pale yellow
+	private static final int FOLD_LENGTH = 8;
+	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
 	private static final StringViewer NOTE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	
 	/**
@@ -51,7 +46,7 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	 */
 	public NoteNodeView(NoteNode pNode)
 	{
-		super(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		super(pNode);
 	}
 	
 	private String name()
@@ -60,52 +55,49 @@ public class NoteNodeView extends RectangleBoundedNodeView
 	}
 	
 	@Override
-	public void draw(Graphics2D pGraphics2D)
+	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics2D);
-		Color oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(DEFAULT_COLOR);
-
-		Shape path = getShape();
-		pGraphics2D.fill(path);
-		pGraphics2D.setColor(oldColor);
-		pGraphics2D.draw(path);
-
-		final Rectangle bounds = getBounds();
-		GeneralPath fold = new GeneralPath();
-		fold.moveTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		fold.lineTo((float)bounds.getMaxX() - FOLD_X, (float)bounds.getY() + FOLD_X);
-		fold.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		fold.closePath();
-		oldColor = pGraphics2D.getColor();
-		pGraphics2D.setColor(pGraphics2D.getBackground());
-		pGraphics2D.fill(fold);
-		pGraphics2D.setColor(oldColor);      
-		pGraphics2D.draw(fold);      
-      
-		NOTE_VIEWER.draw(name(), pGraphics2D, getBounds());
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR, true);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE, false);
+		NOTE_VIEWER.draw(name(), pGraphics, new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
-	@Override
-	public Shape getShape()
+	private Path createNotePath()
+	{
+		Path path = new Path();
+		Rectangle bounds = getBounds();		
+		path.getElements().addAll(
+				new MoveTo(bounds.getX(), bounds.getY()),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX(), bounds.getMaxY()),
+				new LineTo(bounds.getX(), bounds.getMaxY()),
+				new LineTo(bounds.getX(), bounds.getY()));
+		return path;
+	}
+	
+	/**
+	 * Fills in note fold.
+	 * @param pGraphics GraphicsContext in which to fill the fold
+	 */
+	private Path createFoldPath()
 	{
 		Rectangle bounds = getBounds();
-		GeneralPath path = new GeneralPath();
-		path.moveTo((float)bounds.getX(), (float)bounds.getY());
-		path.lineTo((float)(bounds.getMaxX() - FOLD_X), (float)bounds.getY());
-		path.lineTo((float)bounds.getMaxX(), (float)(bounds.getY() + FOLD_Y));
-		path.lineTo((float)bounds.getMaxX(), (float)bounds.getMaxY());
-		path.lineTo((float)bounds.getX(), (float)bounds.getMaxY());
-		path.closePath();
+		Path path = new Path();
+		path.getElements().addAll(
+				new MoveTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY())
+		);
 		return path;
 	}
 	
 	@Override
-	public void layout(Graph pGraph)
+	public Rectangle getBounds()
 	{
-		Rectangle b = NOTE_VIEWER.getBounds(name()); 
-		Rectangle bounds = getBounds();
-		b = new Rectangle(bounds.getX(), bounds.getY(), Math.max(b.getWidth(), DEFAULT_WIDTH), Math.max(b.getHeight(), DEFAULT_HEIGHT));
-		setBounds(Grid.snapped(b));
+		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
+		return new Rectangle(node().position().getX(), node().position().getY(), 
+				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
 	}
 }

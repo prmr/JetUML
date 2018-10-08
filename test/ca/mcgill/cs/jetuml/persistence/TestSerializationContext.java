@@ -20,21 +20,25 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagrams.ClassDiagramGraph;
-import ca.mcgill.cs.jetuml.graph.Node;
-import ca.mcgill.cs.jetuml.graph.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.graph.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.graph.nodes.PackageNode;
-
-import static org.junit.Assert.*;
+import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 public class TestSerializationContext
 {
 	private SerializationContext aContext;
-	private ClassDiagramGraph aGraph;
+	private ClassDiagram aGraph;
 	private PackageNode aPackage1; // Root
 	private PackageNode aPackage2; // Child of aPackage1
 	private ClassNode aClassNode1; // Root
@@ -42,10 +46,20 @@ public class TestSerializationContext
 	private ClassNode aClassNode3; // Child of aPackage2
 	private NoteNode aNoteNode; // Root
 	
+	/**
+	 * Load JavaFX toolkit and environment.
+	 */
+	@BeforeClass
+	@SuppressWarnings("unused")
+	public static void setupClass()
+	{
+		JavaFXLoader loader = JavaFXLoader.instance();
+	}
+	
 	@Before
 	public void setup()
 	{
-		aGraph = new ClassDiagramGraph();
+		aGraph = new ClassDiagram();
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aClassNode1 = new ClassNode();
@@ -59,9 +73,9 @@ public class TestSerializationContext
 	
 	private void loadNodes()
 	{
-		aGraph.restoreRootNode(aPackage1);
-		aGraph.restoreRootNode(aClassNode1);
-		aGraph.restoreRootNode(aNoteNode);
+		aGraph.addRootNode(aPackage1);
+		aGraph.addRootNode(aClassNode1);
+		aGraph.addRootNode(aNoteNode);
 	}
 	
 	@Test
