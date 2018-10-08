@@ -85,8 +85,8 @@ public final class ViewportProjection
 	 */
 	public int getHiddenLeft()
 	{
-		double hiddentLeft = hiddenWidth() * aHValue;
-		return Math.round((float) hiddentLeft);
+		double hiddenLeft = hiddenWidth() * aHValue;
+		return Math.round((float) hiddenLeft);
 	}
 	
 	/**

@@ -33,7 +33,7 @@ public interface DiagramElement extends Cloneable
 	Properties properties();
 	
 	/**
-   	 * @return The view for this edge.
+   	 * @return The view for this diagram element.
    	 */
    	DiagramElementView view();
 }

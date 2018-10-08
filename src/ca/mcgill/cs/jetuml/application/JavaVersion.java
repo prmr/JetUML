@@ -67,7 +67,7 @@ public class JavaVersion implements Comparable<JavaVersion>
 		String[] tokens = versionString.split("\\.");
 		if( tokens.length < 1 || tokens.length > 3 )
 		{
-			throw new JavaVersionNotDetectedException("Canot parse version string: " + versionString);
+			throw new JavaVersionNotDetectedException("Cannot parse version string: " + versionString);
 		}
 		try
 		{
@@ -91,7 +91,7 @@ public class JavaVersion implements Comparable<JavaVersion>
 		}
 		catch( NumberFormatException exception)
 		{
-			throw new JavaVersionNotDetectedException("Canot parse version string: " + versionString);
+			throw new JavaVersionNotDetectedException("Cannot parse version string: " + versionString);
 		}
 	}
 	
