@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -41,6 +42,7 @@ import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -312,7 +314,7 @@ public class DiagramCanvasController
 	{
 		assert aToolBar.getCreationPrototype().isPresent();
 		Node newNode = ((Node) aToolBar.getCreationPrototype().get()).clone();
-		Point point = getMousePoint(pEvent);
+		Point point = Grid.snapped(getMousePoint(pEvent));
 		if(aDiagramBuilder.canAdd(newNode, point))
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
@@ -399,6 +401,7 @@ public class DiagramCanvasController
 		}
 		else if(aDragMode == DragMode.DRAG_MOVE)
 		{
+			alignMoveToGrid(getMousePoint(pEvent));
 			releaseMove();
 		}
 		else if( aDragMode == DragMode.DRAG_LASSO )
@@ -406,6 +409,28 @@ public class DiagramCanvasController
 			aSelectionModel.deactivateLasso();
 		}
 		aDragMode = DragMode.DRAG_NONE;
+	}
+	
+	/*
+	 * Move by a delta that will align the result of the move gesture with the grid.
+	 */
+	private void alignMoveToGrid(Point pMousePoint)
+	{
+		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
+		if( selectedNodes.hasNext() )
+		{
+			// Pick one node in the selection model, arbitrarily
+			Node firstSelected = selectedNodes.next();
+			Point position = firstSelected.position();
+			Point snappedPosition = Grid.snapped(position);
+			final int dx = snappedPosition.getX() - position.getX();
+			final int dy = snappedPosition.getY() - position.getY();
+			for(Node selected : aSelectionModel.getSelectedNodes())
+			{
+				selected.translate(dx, dy);
+			}
+			aCanvas.paintPanel();
+		}
 	}
 	
 	private void releaseRubberband(Point pMousePoint)
