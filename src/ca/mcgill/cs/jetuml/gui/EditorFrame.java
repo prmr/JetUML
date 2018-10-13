@@ -444,7 +444,7 @@ public class EditorFrame extends BorderPane
 		} 
 		else 
 		{
-			fileChooser.setInitialDirectory(new File("."));
+			fileChooser.setInitialDirectory(getLastDir(KEY_LAST_SAVEAS_DIR));
 			fileChooser.setInitialFileName("");
 		}
 
@@ -462,6 +462,11 @@ public class EditorFrame extends BorderPane
 				frame.setFile(result);
 				frame.setText(frame.getFile().getName());
 				frame.setModified(false);
+				File dir = result.getParentFile();
+				if( dir != null )
+				{
+					setLastDir(KEY_LAST_SAVEAS_DIR, dir);
+				}
 			}
 		} 
 		catch (IOException exception) 
@@ -500,9 +505,9 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	private File getLastExportDir()
+	private File getLastDir(String pKey)
 	{
-		String dir = Preferences.userNodeForPackage(UMLEditor.class).get(KEY_LAST_EXPORT_DIR, ".");
+		String dir = Preferences.userNodeForPackage(UMLEditor.class).get(pKey, ".");
 		File result = new File(dir);
 		if( !(result.exists() && result.isDirectory()))
 		{
@@ -511,9 +516,9 @@ public class EditorFrame extends BorderPane
 		return result;
 	}
 	
-	private void setLastExportDir(File pLastExportDir)
+	private void setLastDir(String pKey, File pLastExportDir)
 	{
-		Preferences.userNodeForPackage(UMLEditor.class).put(KEY_LAST_EXPORT_DIR, pLastExportDir.getAbsolutePath().toString());
+		Preferences.userNodeForPackage(UMLEditor.class).put(pKey, pLastExportDir.getAbsolutePath().toString());
 	}
 	
 	/**
@@ -521,7 +526,7 @@ public class EditorFrame extends BorderPane
 	 */
 	private void exportImage() 
 	{
-		FileChooser fileChooser = getImageFileChooser(getLastExportDir());
+		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR));
 		File file = fileChooser.showSaveDialog(aMainStage);
 		if(file == null) 
 		{
@@ -543,7 +548,7 @@ public class EditorFrame extends BorderPane
 		File dir = file.getParentFile();
 		if( dir != null )
 		{
-			setLastExportDir(dir);
+			setLastDir(KEY_LAST_EXPORT_DIR, dir);
 		}
 		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
