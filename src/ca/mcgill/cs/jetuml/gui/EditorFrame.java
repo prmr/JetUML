@@ -34,7 +34,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.stream.Stream;
@@ -79,12 +78,15 @@ public class EditorFrame extends BorderPane
 {
 	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
 	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
+	private static final String KEY_LAST_IMAGE_FORMAT = "lastImageFormat";
+	
+	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
 	
 	private Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
 	private WelcomeTab aWelcomeTab;
-
+	
 	/**
 	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
@@ -111,6 +113,22 @@ public class EditorFrame extends BorderPane
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTabIfNecessary();
+	}
+	
+	/* Returns the subset of pDesiredFormats for which a registered image writer 
+	 * claims to recognized the format */
+	private static String[] validFormats(String... pDesiredFormats)
+	{
+		List<String> recognizedWriters = Arrays.asList(ImageIO.getWriterFormatNames());
+		List<String> validFormats = new ArrayList<>();
+		for( String format : pDesiredFormats )
+		{
+			if( recognizedWriters.contains(format))
+			{
+				validFormats.add(format);
+			}
+		}
+		return validFormats.toArray(new String[validFormats.size()]);
 	}
 	
 	/*
@@ -533,18 +551,9 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 
-		// Validate the file format
 		String fileName = file.getPath();
 		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-		if (!ImageIO.getImageWritersByFormatName(format).hasNext())
-		{
-			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.unsupported_image"),	ButtonType.OK);
-			alert.initOwner(aMainStage);
-			alert.setHeaderText(RESOURCES.getString("error.unsupported_image.title"));
-			alert.showAndWait();
-			return;
-		}
-		
+				
 		File dir = file.getParentFile();
 		if( dir != null )
 		{
@@ -554,7 +563,7 @@ public class EditorFrame extends BorderPane
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
 			BufferedImage image = getBufferedImage(frame.getDiagram()); 
-			if (format.equals("jpg") || format.equals("jpeg"))	// to correct the display of JPEG/JPG images (removes red hue)
+			if(format.equals("jpg"))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
 				Graphics2D graphics = imageRGB.createGraphics();
@@ -562,7 +571,7 @@ public class EditorFrame extends BorderPane
 				ImageIO.write(imageRGB, format, out);
 				graphics.dispose();
 			}
-			else if (format.equals("bmp"))	// to correct the BufferedImage type
+			else if(format.equals("bmp"))	// to correct the BufferedImage type
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = imageRGB.createGraphics();
@@ -575,47 +584,29 @@ public class EditorFrame extends BorderPane
 				ImageIO.write(image, format, out);
 			}
 		} 
-		catch (IOException exception) 
+		catch(IOException exception) 
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
 	}
-
-	private static String[] getAllSupportedImageWriterFormats() 
-	{
-		String[] names = ImageIO.getWriterFormatNames();
-		HashSet<String> formats = new HashSet<String>();
-		for (String name : names) 
-		{
-			formats.add(name.toLowerCase());
-		}
-		String[] lReturn = formats.toArray(new String[formats.size()]);
-		Arrays.sort(lReturn);
-		return lReturn;
-	}
-
+	
 	private FileChooser getImageFileChooser(File pInitialDirectory) 
 	{
 		assert pInitialDirectory.exists() && pInitialDirectory.isDirectory();
 		DiagramTab frame = getSelectedDiagramTab();
 
-		// Initialize the file chooser widget
 		FileChooser fileChooser = new FileChooser();
-		for (String format : getAllSupportedImageWriterFormats()) 
+		for(String format : IMAGE_FORMATS ) 
 		{
-			if (format.equals("wbmp"))	// no supported conversion available
-			{
-				continue;
-			}
 			fileChooser.getExtensionFilters()
 				.add(new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format));
 		}
 		fileChooser.setInitialDirectory(pInitialDirectory);
 
 		// If the file was previously saved, use that to suggest a file name root.
-		if (frame.getFile() != null) 
+		if(frame.getFile() != null) 
 		{
 			File file = new File(replaceExtension(frame.getFile().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
 			fileChooser.setInitialDirectory(file.getParentFile());
