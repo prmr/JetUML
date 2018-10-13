@@ -544,7 +544,8 @@ public class EditorFrame extends BorderPane
 	 */
 	private void exportImage() 
 	{
-		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR));
+		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR), 
+				Preferences.userNodeForPackage(UMLEditor.class).get(KEY_LAST_IMAGE_FORMAT, "png"));
 		File file = fileChooser.showSaveDialog(aMainStage);
 		if(file == null) 
 		{
@@ -553,6 +554,7 @@ public class EditorFrame extends BorderPane
 
 		String fileName = file.getPath();
 		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+		Preferences.userNodeForPackage(UMLEditor.class).put(KEY_LAST_IMAGE_FORMAT, format);
 				
 		File dir = file.getParentFile();
 		if( dir != null )
@@ -592,7 +594,7 @@ public class EditorFrame extends BorderPane
 		}
 	}
 	
-	private FileChooser getImageFileChooser(File pInitialDirectory) 
+	private FileChooser getImageFileChooser(File pInitialDirectory, String pInitialFormat) 
 	{
 		assert pInitialDirectory.exists() && pInitialDirectory.isDirectory();
 		DiagramTab frame = getSelectedDiagramTab();
@@ -600,8 +602,12 @@ public class EditorFrame extends BorderPane
 		FileChooser fileChooser = new FileChooser();
 		for(String format : IMAGE_FORMATS ) 
 		{
-			fileChooser.getExtensionFilters()
-				.add(new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format));
+			ExtensionFilter filter = new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format);
+			fileChooser.getExtensionFilters().add(filter);
+			if( format.equals(pInitialFormat ))
+			{
+				fileChooser.setSelectedExtensionFilter(filter);
+			}
 		}
 		fileChooser.setInitialDirectory(pInitialDirectory);
 
