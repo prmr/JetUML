@@ -77,6 +77,9 @@ import javafx.stage.Stage;
  */
 public class EditorFrame extends BorderPane
 {
+	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
+	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
+	
 	private Stage aMainStage;
 	private RecentFilesQueue aRecentFiles = new RecentFilesQueue();
 	private Menu aRecentFilesMenu;
@@ -497,12 +500,28 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
+	private File getLastExportDir()
+	{
+		String dir = Preferences.userNodeForPackage(UMLEditor.class).get(KEY_LAST_EXPORT_DIR, ".");
+		File result = new File(dir);
+		if( !(result.exists() && result.isDirectory()))
+		{
+			result = new File(".");
+		}
+		return result;
+	}
+	
+	private void setLastExportDir(File pLastExportDir)
+	{
+		Preferences.userNodeForPackage(UMLEditor.class).put(KEY_LAST_EXPORT_DIR, pLastExportDir.getAbsolutePath().toString());
+	}
+	
 	/**
 	 * Exports the current graph to an image file.
 	 */
 	private void exportImage() 
 	{
-		FileChooser fileChooser = getImageFileChooser();
+		FileChooser fileChooser = getImageFileChooser(getLastExportDir());
 		File file = fileChooser.showSaveDialog(aMainStage);
 		if(file == null) 
 		{
@@ -521,6 +540,11 @@ public class EditorFrame extends BorderPane
 			return;
 		}
 		
+		File dir = file.getParentFile();
+		if( dir != null )
+		{
+			setLastExportDir(dir);
+		}
 		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
@@ -567,8 +591,9 @@ public class EditorFrame extends BorderPane
 		return lReturn;
 	}
 
-	private FileChooser getImageFileChooser() 
+	private FileChooser getImageFileChooser(File pInitialDirectory) 
 	{
+		assert pInitialDirectory.exists() && pInitialDirectory.isDirectory();
 		DiagramTab frame = getSelectedDiagramTab();
 
 		// Initialize the file chooser widget
@@ -582,7 +607,7 @@ public class EditorFrame extends BorderPane
 			fileChooser.getExtensionFilters()
 				.add(new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format));
 		}
-		fileChooser.setInitialDirectory(new File("."));
+		fileChooser.setInitialDirectory(pInitialDirectory);
 
 		// If the file was previously saved, use that to suggest a file name root.
 		if (frame.getFile() != null) 
