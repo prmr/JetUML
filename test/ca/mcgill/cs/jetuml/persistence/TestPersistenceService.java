@@ -461,38 +461,38 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
-		assertEquals(new Rectangle(160,0,80,190), object1.view().getBounds());
+		assertEquals(new Rectangle(160,0,80,250), object1.view().getBounds());
 		List<ChildNode> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
 		CallNode init = (CallNode) o1children.get(0);
 		CallNode selfCall = (CallNode) o1children.get(1);
 		
-		assertEquals(new Rectangle(370,0,80,170), object2.view().getBounds());
+		assertEquals(new Rectangle(370,0,80,210), object2.view().getBounds());
 		List<ChildNode> o2children = object2.getChildren();
 		assertEquals(1, o2children.size());
 		assertEquals(":Type2", object2.getName().toString());
 		CallNode o2Call = (CallNode) o2children.get(0);
 		
-		assertEquals(new Rectangle(590,0,80,160), object3.view().getBounds());
+		assertEquals(new Rectangle(590,0,80,190), object3.view().getBounds());
 		List<ChildNode> o3children = object3.getChildren();
 		assertEquals(1, o3children.size());
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle(192,70,16,100), init.view().getBounds());
+		assertEquals(new Rectangle(192,80,16,150), init.view().getBounds());
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle(200,90,16,70), selfCall.view().getBounds());
+		assertEquals(new Rectangle(200,100,16,110), selfCall.view().getBounds());
 		assertEquals(object1, selfCall.getParent());
 		assertFalse(selfCall.isOpenBottom());
 		
-		assertEquals(new Rectangle(402,100,16,50), o2Call.view().getBounds());
+		assertEquals(new Rectangle(402,120,16,70), o2Call.view().getBounds());
 		assertEquals(object2, o2Call.getParent());
 		assertFalse(o2Call.isOpenBottom());
 		
-		assertEquals(new Rectangle(622,110,16,30), o3Call.view().getBounds());
+		assertEquals(new Rectangle(622,140,16,30), o3Call.view().getBounds());
 		assertEquals(object3, o3Call.getParent());
 		assertFalse(o3Call.isOpenBottom());
 		
@@ -511,30 +511,30 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(207, 66, 73, 30), self.view().getBounds());
+		assertEquals(new Rectangle(207, 76, 73, 30), self.view().getBounds());
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle(215, 81, 188, 19), signal.view().getBounds());
+		assertEquals(new Rectangle(215, 101, 188, 19), signal.view().getBounds());
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
 		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle(417, 91, 206, 24), call1.view().getBounds());
+		assertEquals(new Rectangle(417, 121, 206, 24), call1.view().getBounds());
 		assertEquals(o3Call, call1.getEnd());
 		assertEquals("call1()", call1.getMiddleLabel());
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle(416, 121, 206, 24), ret1.view().getBounds());
+		assertEquals(new Rectangle(416, 151, 206, 24), ret1.view().getBounds());
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
 		
-		assertEquals(new Rectangle(214, 143, 188, 12), retC.view().getBounds());
+		assertEquals(new Rectangle(214, 183, 188, 12), retC.view().getBounds());
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());

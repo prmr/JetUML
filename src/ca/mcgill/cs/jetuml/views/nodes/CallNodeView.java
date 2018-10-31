@@ -45,7 +45,7 @@ public final class CallNodeView extends AbstractNodeView
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
 	private static final int Y_GAP_BIG = 20;
-	private static final int Y_GAP_SMALL = 10;
+	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
 	
 	private SequenceDiagram aDiagram = null;
 	

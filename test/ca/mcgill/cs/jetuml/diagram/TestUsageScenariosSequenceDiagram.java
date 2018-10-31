@@ -106,7 +106,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(1, numberOfEdges());
 		
 		ReturnEdge returnEdge1 = new ReturnEdge();
-		addEdge(returnEdge1, new Point(145,90), new Point(45, 90));
+		addEdge(returnEdge1, new Point(145,105), new Point(45, 90));
 		assertEquals(2, numberOfEdges());
 		
 		// call edge from first CallNode to third ParameterNode life line
@@ -199,7 +199,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(newParameterNode, new Point(210, 0));
 		addEdge(aCallEdge1, new Point(45, 85), new Point(115,85));
 		ReturnEdge returnEdge1 = new ReturnEdge();
-		addEdge(returnEdge1, new Point(145,90), new Point(45, 90));		
+		addEdge(returnEdge1, new Point(145,105), new Point(45, 90));		
 		CallEdge callEdge2 = new CallEdge();
 		addEdge(callEdge2, new Point(45, 85), new Point(210,75));
 		
