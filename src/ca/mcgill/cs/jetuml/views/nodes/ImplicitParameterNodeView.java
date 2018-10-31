@@ -41,6 +41,7 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
+	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final int TOP_HEIGHT = 60;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
@@ -113,7 +114,7 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 	 */
 	public Rectangle getTopRectangle()
 	{
-		int width = Math.max(NAME_VIEWER.getBounds(name()).getWidth(), DEFAULT_WIDTH); 
+		int width = Math.max(NAME_VIEWER.getBounds(name()).getWidth()+ HORIZONTAL_PADDING, DEFAULT_WIDTH); 
 		return new Rectangle(node().position().getX(), 0, width, TOP_HEIGHT);
 	}
 

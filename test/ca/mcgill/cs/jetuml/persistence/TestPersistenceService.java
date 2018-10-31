@@ -461,7 +461,7 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
-		assertEquals(new Rectangle(160,0,80,250), object1.view().getBounds());
+		assertEquals(new Rectangle(160,0,90,250), object1.view().getBounds());
 		List<ChildNode> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
@@ -480,11 +480,11 @@ public class TestPersistenceService
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle(192,80,16,150), init.view().getBounds());
+		assertEquals(new Rectangle(197,80,16,150), init.view().getBounds());
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle(200,100,16,110), selfCall.view().getBounds());
+		assertEquals(new Rectangle(205,100,16,110), selfCall.view().getBounds());
 		assertEquals(object1, selfCall.getParent());
 		assertFalse(selfCall.isOpenBottom());
 		
@@ -511,13 +511,13 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(207, 76, 73, 30), self.view().getBounds());
+		assertEquals(new Rectangle(212, 76, 73, 30), self.view().getBounds());
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle(215, 101, 188, 19), signal.view().getBounds());
+		assertEquals(new Rectangle(220, 101, 183, 19), signal.view().getBounds());
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
@@ -534,7 +534,7 @@ public class TestPersistenceService
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
 		
-		assertEquals(new Rectangle(214, 183, 188, 12), retC.view().getBounds());
+		assertEquals(new Rectangle(219, 183, 183, 12), retC.view().getBounds());
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());
