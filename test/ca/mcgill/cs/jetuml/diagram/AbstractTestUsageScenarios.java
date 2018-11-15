@@ -70,6 +70,11 @@ public class AbstractTestUsageScenarios
 		aClipboard = Clipboard.instance();
 	}
 	
+	protected Iterable<DiagramElement> getClipboardContent()
+	{
+		return aClipboard.getElements();
+	}
+	
 	protected void addNode(Node pNode, Point pRequestedPosition)
 	{
 		aProcessor.executeNewOperation(aBuilder.createAddNodeOperation(pNode, pRequestedPosition));

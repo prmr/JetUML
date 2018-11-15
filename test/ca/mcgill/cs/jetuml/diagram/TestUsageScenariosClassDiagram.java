@@ -24,10 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -65,6 +68,34 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		aAssociationEdge = new AssociationEdge();
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
+	}
+	
+	@Test
+	public void testPasteIntoDifferentDiagram()
+	{
+		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode2, new Point(30, 30));
+		moveNode(aClassNode2, 100, 0);
+		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
+		assertSame( aClassNode1, aDependencyEdge.getStart());
+		assertSame( aClassNode2, aDependencyEdge.getEnd());
+		assertSame( aDiagram, aDependencyEdge.getDiagram() );
+		
+		select(aClassNode1, aClassNode2, aDependencyEdge);
+		copy();
+		
+		ClassDiagram diagram2 = new ClassDiagram();
+		ClassDiagramBuilder builder2 = new ClassDiagramBuilder(diagram2);
+		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
+		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));
+		
+		Iterator<Node> nodes = diagram2.rootNodes().iterator();
+		Node node1 = nodes.next();
+		Node node2 = nodes.next();
+		Edge edge = diagram2.edges().iterator().next();
+		assertSame(node1, edge.getStart());
+		assertSame(node2, edge.getEnd());
+		assertSame(diagram2, edge.getDiagram());
 	}
 	
 	@Test

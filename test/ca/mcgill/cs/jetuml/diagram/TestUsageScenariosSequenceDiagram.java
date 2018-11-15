@@ -22,10 +22,16 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Field;
+import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -34,6 +40,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenarios
 {
@@ -361,6 +368,44 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, (((ImplicitParameterNode)(getRootNode(1))).getChildren().size()));
+	}
+	
+	private static SequenceDiagram getDiagram(CallNode pCallNode)
+	{
+		try
+		{
+			Field diagramField = CallNodeView.class.getDeclaredField("aDiagram");
+			diagramField.setAccessible(true);
+			return (SequenceDiagram) diagramField.get(pCallNode.view());
+		}
+		catch( ReflectiveOperationException exception )
+		{
+			fail();
+			return null;
+		}
+	}
+	
+	@Test
+	public void testCopyPasteDifferentDiagrams()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aParameterNode1.addChild(aCallNode1);
+		((CallNodeView)aCallNode1.view()).setDiagram((SequenceDiagram)aDiagram);
+		assertSame( aDiagram, getDiagram(aCallNode1));
+		
+		select(aParameterNode1);
+		copy();
+		
+		SequenceDiagram diagram2 = new SequenceDiagram();
+		SequenceDiagramBuilder builder2 = new SequenceDiagramBuilder(diagram2);
+		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
+		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));
+		
+		Iterator<Node> nodes = diagram2.rootNodes().iterator();
+		Node node1 = nodes.next();
+		CallNode callNode = (CallNode)((ImplicitParameterNode)node1).getChildren().get(0);
+		assertSame(node1, callNode.getParent());
+		assertSame( diagram2, callNode);
 	}
 	
 	@Test
