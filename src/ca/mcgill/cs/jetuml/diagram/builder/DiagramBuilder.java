@@ -213,8 +213,17 @@ public abstract class DiagramBuilder
 			}
 			else if( element instanceof Edge)
 			{
+				/* We need to re-connect the edge to set the correct value for the
+				 * reference to the diagram, to cover the cases where elements might 
+				 * be added by being copied from one diagram and pasted into another.
+				 */
 				operation.add(new SimpleOperation(
-						()-> aDiagram.addEdge((Edge)element),
+						()-> 
+						{ 
+							Edge edge = (Edge) element;
+							aDiagram.addEdge(edge); 
+							edge.connect(edge.getStart(), edge.getEnd(), aDiagram);	
+						},
 						()-> aDiagram.removeEdge((Edge)element)));
 			}
 		}

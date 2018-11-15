@@ -389,11 +389,20 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	public void testCopyPasteDifferentDiagrams()
 	{
 		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aParameterNode2);
+		aParameterNode2.translate(110, 0);
+		
 		aParameterNode1.addChild(aCallNode1);
-		((CallNodeView)aCallNode1.view()).setDiagram((SequenceDiagram)aDiagram);
+		aParameterNode2.addChild(aCallNode2);
+		
+		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		
+		assertSame(aCallNode1, aCallEdge1.getStart());
+		assertSame(aCallNode2, aCallEdge1.getEnd());
 		assertSame( aDiagram, getDiagram(aCallNode1));
 		
-		select(aParameterNode1);
+		select(aParameterNode1, aParameterNode2, aCallEdge1);
 		copy();
 		
 		SequenceDiagram diagram2 = new SequenceDiagram();
@@ -405,7 +414,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		Node node1 = nodes.next();
 		CallNode callNode = (CallNode)((ImplicitParameterNode)node1).getChildren().get(0);
 		assertSame(node1, callNode.getParent());
-		assertSame( diagram2, callNode);
+		assertSame( diagram2, getDiagram(callNode));
 	}
 	
 	@Test
