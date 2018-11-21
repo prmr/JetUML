@@ -340,7 +340,7 @@ public class TestClassDiagramBuilder
 	@Test
 	public void testCreateAddElementsOperationNothing()
 	{
-		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
+		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>(), new Point(0,0));
 		operation.execute();
 		assertTrue(numberOfRootNodes() == 0);
 		assertTrue(numberOfEdges() == 0);
@@ -361,7 +361,7 @@ public class TestClassDiagramBuilder
 		edge.connect(node1, node2, aDiagram);
 		elements.addAll(Arrays.asList(new DiagramElement[]{edge, node1, node2}));
 		
-		DiagramOperation operation = aBuilder.createAddElementsOperation(elements);
+		DiagramOperation operation = aBuilder.createAddElementsOperation(elements, new Point(0,0));
 		operation.execute();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());

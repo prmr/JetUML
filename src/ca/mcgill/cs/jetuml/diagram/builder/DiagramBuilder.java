@@ -197,16 +197,18 @@ public abstract class DiagramBuilder
 	 * are root nodes and all edges are connected, and that there are no dangling references.
 	 * 
 	 * @param pElements The elements to add.
+	 * @param pShift Point representing the amount to shift nodes by to prevent overlapping.
 	 * @return The requested operation
 	 * @pre pElements != null
 	 */
-	public final DiagramOperation createAddElementsOperation(Iterable<DiagramElement> pElements)
+	public final DiagramOperation createAddElementsOperation(Iterable<DiagramElement> pElements, Point pShift)
 	{
 		CompoundOperation operation = new CompoundOperation();
 		for( DiagramElement element : pElements)
 		{
 			if( element instanceof Node )
 			{
+				((Node)element).translate(pShift.getX(), pShift.getY());
 				operation.add(new SimpleOperation(
 						()-> aDiagram.addRootNode((Node)element),
 						()-> aDiagram.removeRootNode((Node)element)));

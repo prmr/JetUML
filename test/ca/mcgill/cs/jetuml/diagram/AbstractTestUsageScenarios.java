@@ -117,7 +117,7 @@ public class AbstractTestUsageScenarios
 	
 	protected void paste()
 	{
-		aProcessor.executeNewOperation(aBuilder.createAddElementsOperation(aClipboard.getElements()));
+		aProcessor.executeNewOperation(aBuilder.createAddElementsOperation(aClipboard.getElements(), new Point(0,0)));
 	}
 	
 	protected void cut()

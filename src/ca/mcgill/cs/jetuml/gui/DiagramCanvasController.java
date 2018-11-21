@@ -56,6 +56,7 @@ public class DiagramCanvasController
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
+	private static final int GRID_SIZE = 10;
 	
 	private final SelectionModel aSelectionModel;
 	private final MoveTracker aMoveTracker = new MoveTracker();
@@ -162,8 +163,15 @@ public class DiagramCanvasController
 		{
 			return;
 		}
+		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
+		Set<Point> positionsOfCurrentNodes = getNodePositions(aDiagramBuilder.getView().getDiagram().allElements());
+		Set<Point> positionsOfNewNodes = getNodePositions(newElements);
+		
+		int shiftAmount = determineStagger(positionsOfCurrentNodes, positionsOfNewNodes);
+		Point pastePoint = new Point(shiftAmount, shiftAmount);
+		
+		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements, pastePoint));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElementList )
 		{
@@ -171,6 +179,50 @@ public class DiagramCanvasController
 		}
 		aSelectionModel.setSelectionTo(newElementList);
 		aCanvas.paintPanel();
+	}
+	
+	private Set<Point> getNodePositions(Iterable<DiagramElement> pElements)
+	{
+		Set<Point> positions = new HashSet<Point>();
+		for (DiagramElement element : pElements) 
+		{
+			if (element instanceof Node) 
+			{
+				positions.add(((Node)element).position());
+			}
+		}
+		return positions;	
+	}
+	
+	/**
+	 * Determines the shift amount needed to stagger new nodes so they do not overlap existing nodes.
+	 * If the new nodes being added would directly cover existing nodes, a shift is required.
+	 * @param pCurrentNodePositions Positions of all nodes currently in the diagram.
+	 * @param pNewNodePositions Positions of all nodes to be added to the diagram.
+	 * @return The amount to shift new nodes
+	 */
+	private int determineStagger(Set<Point> pCurrentNodePositions, Set<Point> pNewNodePositions) 
+	{
+		Set<Point> remaining = new HashSet<Point>(pCurrentNodePositions);
+		Set<Point> newNodePositions = pNewNodePositions;
+		remaining.removeAll(newNodePositions);
+		
+		int shifts = 0;
+		while(pCurrentNodePositions.size() - newNodePositions.size() == remaining.size()) 
+		{
+			// shift positions of new nodes
+			Set<Point> newPoints = new HashSet<>();
+			for(Point p : newNodePositions) 
+			{
+				Point newPoint = new Point(p.getX()+GRID_SIZE, p.getY()+GRID_SIZE);
+				newPoints.add(newPoint);
+			}
+			newNodePositions = newPoints;
+			remaining = new HashSet<Point>(pCurrentNodePositions);
+			remaining.removeAll(newNodePositions);
+			shifts++;
+		}		
+		return shifts*GRID_SIZE;
 	}
 	
 	/**
