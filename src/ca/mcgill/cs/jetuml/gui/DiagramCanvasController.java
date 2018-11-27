@@ -208,10 +208,11 @@ public class DiagramCanvasController
 		remaining.removeAll(newNodePositions);
 		
 		int shifts = 0;
-		if (!newNodePositions.isEmpty()) 
+		if (newNodePositions.isEmpty()) 
 		{
 			return shifts;
 		}
+		
 		while(pCurrentNodePositions.size() - newNodePositions.size() == remaining.size()) 
 		{
 			// shift positions of new nodes
