@@ -169,9 +169,9 @@ public class DiagramCanvasController
 		Set<Point> positionsOfNewNodes = getNodePositions(newElements);
 		
 		int shiftAmount = determineStagger(positionsOfCurrentNodes, positionsOfNewNodes);
-		Point pastePoint = new Point(shiftAmount, shiftAmount);
-		
-		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements, pastePoint));
+		shiftElements(newElements, shiftAmount);
+
+		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElementList )
 		{
@@ -208,6 +208,10 @@ public class DiagramCanvasController
 		remaining.removeAll(newNodePositions);
 		
 		int shifts = 0;
+		if (!newNodePositions.isEmpty()) 
+		{
+			return shifts;
+		}
 		while(pCurrentNodePositions.size() - newNodePositions.size() == remaining.size()) 
 		{
 			// shift positions of new nodes
@@ -223,6 +227,21 @@ public class DiagramCanvasController
 			shifts++;
 		}		
 		return shifts*GRID_SIZE;
+	}
+	
+	/**
+	 * @param pElements The elements to shift.
+	 * @param pShiftAmount Amount to shift elements by to prevent overlapping.
+	 */
+	private void shiftElements(Iterable<DiagramElement> pElements, int pShiftAmount) 
+	{
+		for (DiagramElement element: pElements) 
+		{
+			if(element instanceof Node) 
+			{
+				((Node)element).translate(pShiftAmount, pShiftAmount);
+			}
+		}
 	}
 	
 	/**
