@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
 /**
  * Stores a set of diagram elements for the purpose of pasting into a diagram.
@@ -302,7 +303,7 @@ public final class Clipboard
 	{
 		for( Node node : pGraph.getNodePrototypes() )
 		{
-			if( pNode.getClass() == node.getClass() )
+			if( pNode.getClass() == node.getClass() || pNode.getClass() == PointNode.class )
 			{
 				return true;
 			}
