@@ -168,8 +168,6 @@ public class DiagramCanvasController
 		Set<Point> positionsOfCurrentNodes = getNodePositions(aDiagramBuilder.getView().getDiagram().allElements());
 		Set<Point> positionsOfNewNodes = getNodePositions(newElements);
 		
-		System.out.println(positionsOfCurrentNodes);
-		
 		int shiftAmount = determineStagger(positionsOfCurrentNodes, positionsOfNewNodes);
 		shiftElements(newElements, shiftAmount);
 
