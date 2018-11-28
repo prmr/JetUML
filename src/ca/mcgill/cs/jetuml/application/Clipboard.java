@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
 /**
  * Stores a set of diagram elements for the purpose of pasting into a diagram.
@@ -300,6 +301,11 @@ public final class Clipboard
 	
 	private static boolean validNodeFor( Node pNode, Diagram pGraph )
 	{
+		// PointNodes are allowed in all diagrams despite not being contained in node prototypes.
+		if ( pNode.getClass() == PointNode.class ) 
+		{
+			return true;
+		}
 		for( Node node : pGraph.getNodePrototypes() )
 		{
 			if( pNode.getClass() == node.getClass() )
