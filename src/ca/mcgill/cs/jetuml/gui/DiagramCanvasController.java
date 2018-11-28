@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -165,12 +166,11 @@ public class DiagramCanvasController
 		}
 		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		Set<Point> positionsOfCurrentNodes = getNodePositions(aDiagramBuilder.getView().getDiagram().allElements());
-		Set<Point> positionsOfNewNodes = getNodePositions(newElements);
+		if(!aSelectionModel.isEmpty() && isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+		{
+			shiftElements(newElements, GRID_SIZE);
+		}
 		
-		int shiftAmount = determineStagger(positionsOfCurrentNodes, positionsOfNewNodes);
-		shiftElements(newElements, shiftAmount);
-
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElements )
@@ -178,56 +178,56 @@ public class DiagramCanvasController
 			newElementList.add(element);
 		}
 		aSelectionModel.setSelectionTo(newElementList);
+		Clipboard.instance().copy(newElements);
 		aCanvas.paintPanel();
 	}
 	
-	private Set<Point> getNodePositions(Iterable<DiagramElement> pElements)
+	/**
+	 * Determines whether the current selection bounds completely overlaps the new elements.
+	 * @param pCurrentSelectionBounds The current selection bounds
+	 * @param pNewElements Elements to be pasted
+	 * @return Is the current selection bounds completely overlapping the new elements
+	 */
+	private boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements) 
 	{
-		Set<Point> positions = new HashSet<Point>();
-		for (DiagramElement element : pElements) 
+		Rectangle newElementBounds = null;
+		for (DiagramElement element : pNewElements) 
 		{
-			if (element instanceof Node) 
+			if (newElementBounds == null) 
 			{
-				positions.add(((Node)element).position());
+				newElementBounds = element.view().getBounds();
 			}
+			newElementBounds = newElementBounds.add(element.view().getBounds());
 		}
-		return positions;	
+		if (pCurrentSelectionBounds.equals(newElementBounds)) 
+		{
+			return true;
+		}
+		return isOverlappingSequenceDiagrams(pCurrentSelectionBounds, newElementBounds);
 	}
 	
 	/**
-	 * Determines the shift amount needed to stagger new nodes so they do not overlap existing nodes.
-	 * If the new nodes being added would directly cover existing nodes, a shift is required.
-	 * @param pCurrentNodePositions Positions of all nodes currently in the diagram.
-	 * @param pNewNodePositions Positions of all nodes to be added to the diagram.
-	 * @return The amount to shift new nodes
+	 * Determines whether the current selection bounds in a sequence diagram overlaps the bounds of the new elements.
+	 * For sequence diagrams the height between the selection bounds and the bounds of the new elements may vary, but 
+	 * the height is irrelevant to determining overlap in sequence diagrams.
+	 * 
+	 * @param pCurrentSelectionBounds The current selection bounds
+	 * @param pNewElementBounds Bounds of the elements to be pasted
+	 * @return Is the current selection bounds overlapping the new elements
 	 */
-	private int determineStagger(Set<Point> pCurrentNodePositions, Set<Point> pNewNodePositions) 
+	private boolean isOverlappingSequenceDiagrams(Rectangle pCurrentSelectionBounds, Rectangle pNewElementBounds) 
 	{
-		Set<Point> remaining = new HashSet<Point>(pCurrentNodePositions);
-		Set<Point> newNodePositions = pNewNodePositions;
-		remaining.removeAll(newNodePositions);
-		
-		int shifts = 0;
-		if (newNodePositions.isEmpty()) 
+		if (!(aCanvas.getDiagram() instanceof SequenceDiagram) || pNewElementBounds == null)
 		{
-			return shifts;
+			return false;
 		}
-		
-		while(pCurrentNodePositions.size() - newNodePositions.size() == remaining.size()) 
+		if (pCurrentSelectionBounds.getX() == pNewElementBounds.getX() && 
+				pCurrentSelectionBounds.getY() == pNewElementBounds.getY() && 
+				pCurrentSelectionBounds.getWidth() == pNewElementBounds.getWidth())
 		{
-			// shift positions of new nodes
-			Set<Point> newPoints = new HashSet<>();
-			for(Point p : newNodePositions) 
-			{
-				Point newPoint = new Point(p.getX()+GRID_SIZE, p.getY()+GRID_SIZE);
-				newPoints.add(newPoint);
-			}
-			newNodePositions = newPoints;
-			remaining = new HashSet<Point>(pCurrentNodePositions);
-			remaining.removeAll(newNodePositions);
-			shifts++;
-		}		
-		return shifts*GRID_SIZE;
+			return true;
+		}
+		return false;
 	}
 	
 	/**
