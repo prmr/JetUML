@@ -38,11 +38,13 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClipboard
@@ -208,5 +210,22 @@ public class TestClipboard
 		aClipboard.copy(Arrays.asList(field));
 		List<Node> nodes = getClipboardNodes();
 		assertEquals(0, nodes.size());
+	}
+	
+	@Test
+	public void testValidPasteOfPointNode() 
+	{
+		PointNode node = new PointNode();
+		aClipboard.copy(Arrays.asList(node));
+		assertTrue(aClipboard.validPaste(new ClassDiagram()));
+	}
+	
+	@Test
+	public void testValidPasteForDifferentDiagramTypes() 
+	{
+		ClassNode classNode = new ClassNode();
+		aClipboard.copy(Arrays.asList(classNode));
+		assertTrue(aClipboard.validPaste(new ClassDiagram()));
+		assertFalse(aClipboard.validPaste(new SequenceDiagram()));
 	}
 }
