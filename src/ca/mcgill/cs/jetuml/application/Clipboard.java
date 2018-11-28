@@ -301,9 +301,14 @@ public final class Clipboard
 	
 	private static boolean validNodeFor( Node pNode, Diagram pGraph )
 	{
+		// PointNodes are allowed in all diagrams despite not being contained in node prototypes.
+		if ( pNode.getClass() == PointNode.class ) 
+		{
+			return true;
+		}
 		for( Node node : pGraph.getNodePrototypes() )
 		{
-			if( pNode.getClass() == node.getClass() || pNode.getClass() == PointNode.class )
+			if( pNode.getClass() == node.getClass() )
 			{
 				return true;
 			}
