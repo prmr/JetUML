@@ -303,7 +303,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, ((ObjectNode) getRootNode(1)).getChildren().size());
-		assertEquals(new Point(0, 0), 
+		assertEquals(new Point(20, 20), 
 				((ObjectNode) getRootNode(1)).position());
 		
 		// paste a FieldNode itself is not allowed
@@ -323,7 +323,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		paste();
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, ((ObjectNode) getRootNode(0)).getChildren().size());
-		assertEquals(new Point(0, 0), 
+		assertEquals(new Point(20, 20), 
 				((ObjectNode) getRootNode(0)).position());
 	}
 	
@@ -357,7 +357,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(2, numberOfEdges());
-		assertEquals(new Point(0, 0), ((ObjectNode) getRootNode(2)).position());
+		assertEquals(new Point(50, 20), ((ObjectNode) getRootNode(2)).position());
 	}
 	
 	@Test
@@ -375,6 +375,6 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		paste();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
-		assertEquals(new Point(0, 0), ((ObjectNode) getRootNode(0)).position());
+		assertEquals(new Point(50, 20), ((ObjectNode) getRootNode(0)).position());
 	}
 }

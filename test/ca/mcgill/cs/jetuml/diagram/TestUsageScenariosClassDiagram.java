@@ -448,7 +448,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		paste();
 		
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(new Point(0, 0), getRootNode(1).position());
+		assertEquals(new Point(5, 5), getRootNode(1).position());
 	}
 	
 	@Test
@@ -460,7 +460,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertEquals(0, numberOfRootNodes());
 		paste();
 		assertEquals(1, numberOfRootNodes());
-		assertEquals(new Point(0, 0), getRootNode(0).position());
+		assertEquals(new Point(5, 5), getRootNode(0).position());
 	}
 	
 	@Test

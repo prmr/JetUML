@@ -366,7 +366,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		paste();
 		
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(new Point(0, 0), (((StateNode) getRootNode(1)).position()));
+		assertEquals(new Point(50,20), (((StateNode) getRootNode(1)).position()));
 	}
 	
 	@Test
@@ -380,7 +380,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		paste();
 		
 		assertEquals(1, numberOfRootNodes());
-		assertEquals(new Point(0, 0), (((StateNode) getRootNode(0)).position()));
+		assertEquals(new Point(50,20), (((StateNode) getRootNode(0)).position()));
 	}
 
 	@Test
@@ -396,7 +396,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 
 		assertEquals(4, numberOfRootNodes());
 		assertEquals(2, numberOfEdges());
-		assertEquals(new Point(0, 0), (((StateNode) getRootNode(2)).position()));
+		assertEquals(new Point(50,20), (((StateNode) getRootNode(2)).position()));
 	}
 	
 	@Test
@@ -414,6 +414,6 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		paste();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
-		assertEquals(new Point(0, 0), (((StateNode) getRootNode(0)).position()));
+		assertEquals(new Point(50,20), (((StateNode) getRootNode(0)).position()));
 	}
 }

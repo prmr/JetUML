@@ -126,7 +126,7 @@ public class TestClipboard
 		aClipboard.copy(Arrays.asList(aNode1));
 		assertEquals(1, getClipboardNodes().size());
 		assertFalse(getClipboardNodes().contains(aNode1)); // Clone
-		assertEquals(new Point(0,0), getClipboardNodes().get(0).position());
+		assertEquals(new Point(10,10), getClipboardNodes().get(0).position());
 	}
 	
 	@Test
@@ -139,8 +139,8 @@ public class TestClipboard
 		aClipboard.copy(Arrays.asList(aNode1, aNode2, edge));
 		List<Node> nodes = getClipboardNodes();
 		assertEquals(2, nodes.size());
-		assertEquals(new Point(0,0), nodes.get(0).position());
-		assertEquals(new Point(190,190), nodes.get(1).position());
+		assertEquals(new Point(10,10), nodes.get(0).position());
+		assertEquals(new Point(200,200), nodes.get(1).position());
 		List<Edge> edges = getClipboardEdges();
 		assertEquals(1, edges.size());
 		assertTrue(edges.get(0).getStart() == nodes.get(0));
@@ -157,7 +157,7 @@ public class TestClipboard
 		aClipboard.copy(Arrays.asList(aNode1, edge));
 		List<Node> nodes = getClipboardNodes();
 		assertEquals(1, nodes.size());
-		assertEquals(new Point(0,0), nodes.get(0).position());
+		assertEquals(new Point(10,10), nodes.get(0).position());
 		List<Edge> edges = getClipboardEdges();
 		assertEquals(0, edges.size());
 	}
