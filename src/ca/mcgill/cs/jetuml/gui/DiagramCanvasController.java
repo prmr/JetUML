@@ -33,7 +33,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -166,7 +165,7 @@ public class DiagramCanvasController
 		}
 		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		if(!aSelectionModel.isEmpty() && isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+		if(!aSelectionModel.isEmpty() && aDiagramBuilder.getView().isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
@@ -180,54 +179,6 @@ public class DiagramCanvasController
 		aSelectionModel.setSelectionTo(newElementList);
 		Clipboard.instance().copy(newElements);
 		aCanvas.paintPanel();
-	}
-	
-	/**
-	 * Determines whether the current selection bounds completely overlaps the new elements.
-	 * @param pCurrentSelectionBounds The current selection bounds
-	 * @param pNewElements Elements to be pasted
-	 * @return Is the current selection bounds completely overlapping the new elements
-	 */
-	private boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements) 
-	{
-		Rectangle newElementBounds = null;
-		for (DiagramElement element : pNewElements) 
-		{
-			if (newElementBounds == null) 
-			{
-				newElementBounds = element.view().getBounds();
-			}
-			newElementBounds = newElementBounds.add(element.view().getBounds());
-		}
-		if (pCurrentSelectionBounds.equals(newElementBounds)) 
-		{
-			return true;
-		}
-		return isOverlappingSequenceDiagrams(pCurrentSelectionBounds, newElementBounds);
-	}
-	
-	/**
-	 * Determines whether the current selection bounds in a sequence diagram overlaps the bounds of the new elements.
-	 * For sequence diagrams the height between the selection bounds and the bounds of the new elements may vary, but 
-	 * the height is irrelevant to determining overlap in sequence diagrams.
-	 * 
-	 * @param pCurrentSelectionBounds The current selection bounds
-	 * @param pNewElementBounds Bounds of the elements to be pasted
-	 * @return Is the current selection bounds overlapping the new elements
-	 */
-	private boolean isOverlappingSequenceDiagrams(Rectangle pCurrentSelectionBounds, Rectangle pNewElementBounds) 
-	{
-		if (!(aCanvas.getDiagram() instanceof SequenceDiagram) || pNewElementBounds == null)
-		{
-			return false;
-		}
-		if (pCurrentSelectionBounds.getX() == pNewElementBounds.getX() && 
-				pCurrentSelectionBounds.getY() == pNewElementBounds.getY() && 
-				pCurrentSelectionBounds.getWidth() == pNewElementBounds.getWidth())
-		{
-			return true;
-		}
-		return false;
 	}
 	
 	/**

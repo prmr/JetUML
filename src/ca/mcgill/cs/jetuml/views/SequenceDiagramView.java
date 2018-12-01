@@ -23,10 +23,12 @@ package ca.mcgill.cs.jetuml.views;
 
 import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
  * A wrapper for a sequence diagram that can draw the diagram on a graphics context
@@ -63,5 +65,39 @@ public class SequenceDiagramView extends DiagramView
 			}
 		}
 		return super.deepFindNode(pNode, pPoint);
+	}
+	
+	/**
+	 * Used during pasting to determine whether the current selection bounds completely overlaps the new elements.
+	 * For sequence diagrams the height between the selection bounds and the bounds of the new elements may vary, but 
+	 * the height is irrelevant to determining overlap.
+	 * 
+	 * @param pCurrentSelectionBounds The current selection bounds
+	 * @param pNewElements Elements to be pasted
+	 * @return Is the current selection bounds overlapping the new elements
+	 */
+	@Override
+	public boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements) 
+	{
+		Rectangle newElementBounds = null;
+		for (DiagramElement element : pNewElements) 
+		{
+			if (newElementBounds == null) 
+			{
+				newElementBounds = element.view().getBounds();
+			}
+			newElementBounds = newElementBounds.add(element.view().getBounds());
+		}
+		if (newElementBounds == null)
+		{
+			return false;
+		}
+		if (pCurrentSelectionBounds.getX() == newElementBounds.getX() && 
+				pCurrentSelectionBounds.getY() == newElementBounds.getY() && 
+				pCurrentSelectionBounds.getWidth() == newElementBounds.getWidth())
+		{
+			return true;
+		}
+		return false;
 	}
 }

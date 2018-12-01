@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.views;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -189,5 +190,29 @@ public class DiagramView
 		{
 			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 		}
+	}
+	
+	/**
+	 * Used during pasting to determine whether the current selection bounds completely overlaps the new elements.
+	 * @param pCurrentSelectionBounds The current selection bounds
+	 * @param pNewElements Elements to be pasted
+	 * @return Is the current selection bounds completely overlapping the new elements
+	 */
+	public boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements) 
+	{
+		Rectangle newElementBounds = null;
+		for (DiagramElement element : pNewElements) 
+		{
+			if (newElementBounds == null) 
+			{
+				newElementBounds = element.view().getBounds();
+			}
+			newElementBounds = newElementBounds.add(element.view().getBounds());
+		}
+		if (pCurrentSelectionBounds.equals(newElementBounds)) 
+		{
+			return true;
+		}
+		return false;
 	}
 }
