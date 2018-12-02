@@ -87,7 +87,6 @@ public final class Clipboard
 		aNodes.addAll(copyNodes(aEdges, pSelection));
 		removeDanglingEdges();
 		removeDanglingReferencesToParents();
-		updatePosition();
 	}
 	
 	/**
@@ -164,21 +163,6 @@ public final class Clipboard
 		for( Edge edge : toDelete )
 		{
 			aEdges.remove(edge);
-		}
-	}
-	
-	private void updatePosition()
-	{
-		int minX = Integer.MAX_VALUE;
-		int minY = Integer.MAX_VALUE;
-		for( Node node : aNodes )
-		{
-			minX = Math.min(minX, node.position().getX());
-			minY = Math.min(minY, node.position().getY());
-		}
-		for( Node node : aNodes )
-		{
-			node.translate(-minX, -minY);
 		}
 	}
 	

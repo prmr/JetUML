@@ -346,7 +346,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertEquals(3, numberOfRootNodes());
 		Node newNode = getRootNode(2);
 		assertTrue(newNode.getClass() == ActorNode.class);
-		assertEquals(new Point(0,0), newNode.position());
+		assertEquals(new Point(20,20), newNode.position());
 	}
 	
 	@Test
@@ -365,7 +365,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		assertEquals(2, numberOfRootNodes());
 		Node newNode = getRootNode(1);
 		assertTrue(newNode.getClass() == UseCaseNode.class);
-		assertEquals(new Point(0,0), newNode.position());
+		assertEquals(new Point(80,20), newNode.position());
 	}
 	
 	@Test

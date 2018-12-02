@@ -56,6 +56,7 @@ public class DiagramCanvasController
 	{ DRAG_NONE, DRAG_MOVE, DRAG_RUBBERBAND, DRAG_LASSO }
 	
 	private static final int CONNECT_THRESHOLD = 8;
+	private static final int GRID_SIZE = 10;
 	
 	private final SelectionModel aSelectionModel;
 	private final MoveTracker aMoveTracker = new MoveTracker();
@@ -162,15 +163,37 @@ public class DiagramCanvasController
 		{
 			return;
 		}
+		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
+		if(!aSelectionModel.isEmpty() && aDiagramBuilder.getView().isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+		{
+			shiftElements(newElements, GRID_SIZE);
+		}
+		
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
-		for( DiagramElement element : newElementList )
+		for( DiagramElement element : newElements )
 		{
 			newElementList.add(element);
 		}
 		aSelectionModel.setSelectionTo(newElementList);
+		Clipboard.instance().copy(newElements);
 		aCanvas.paintPanel();
+	}
+	
+	/**
+	 * @param pElements The elements to shift.
+	 * @param pShiftAmount Amount to shift elements by to prevent overlapping.
+	 */
+	private void shiftElements(Iterable<DiagramElement> pElements, int pShiftAmount) 
+	{
+		for (DiagramElement element: pElements) 
+		{
+			if(element instanceof Node) 
+			{
+				((Node)element).translate(pShiftAmount, pShiftAmount);
+			}
+		}
 	}
 	
 	/**
