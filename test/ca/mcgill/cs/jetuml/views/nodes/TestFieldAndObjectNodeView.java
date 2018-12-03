@@ -168,11 +168,11 @@ public class TestFieldAndObjectNodeView
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		// x = axis (41) - offset (6) = 35
+		// x = axis (45) - offset (6) = 39
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(35,70,42,20), view.getBounds());
+		assertEquals( new Rectangle(39,70,42,20), view.getBounds());
 	}
 	
 	@After

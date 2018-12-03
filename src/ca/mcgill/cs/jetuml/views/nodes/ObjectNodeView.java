@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -38,6 +39,7 @@ public final class ObjectNodeView extends AbstractNodeView
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
+	private static final int TEXT_HORIZONTAL_MARGIN = 5;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, true, true);
@@ -75,7 +77,7 @@ public final class ObjectNodeView extends AbstractNodeView
 	
 	private Rectangle getTopRectangle()
 	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name()); 
+		Rectangle bounds = NAME_VIEWER.getBounds(name() + TEXT_HORIZONTAL_MARGIN); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		return bounds.translated(node().position().getX(), node().position().getY());
 	}
@@ -99,7 +101,8 @@ public final class ObjectNodeView extends AbstractNodeView
 			rightWidth = Math.max(rightWidth, view.rightWidth());
 		}
 		int width = Math.max(bounds.getWidth(), 2 * Math.max(leftWidth, rightWidth) + 2 * XGAP);
-		return new Rectangle(bounds.getX(), bounds.getY(), width, bounds.getHeight() + height);
+		width = Grid.toMultiple(width);
+		return new Rectangle(bounds.getX(), bounds.getY(), width, Grid.toMultiple(bounds.getHeight() + height));
 	}
 	
 	/**

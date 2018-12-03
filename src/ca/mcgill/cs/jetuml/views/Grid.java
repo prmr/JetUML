@@ -97,6 +97,17 @@ public final class Grid
 	}
 	
 	/**
+	 * @param pCoordinate A coordinate to place on the grid.
+	 * @return The next int that lies on the grid (i.e., is a multiple of the grid size).
+	 * @pre pCoordinate >= 0;
+	 */
+	public static int toMultiple(int pCoordinate)
+	{
+		assert pCoordinate >= 0;
+		return (int)(Math.ceil(pCoordinate / GRID_SIZE) * GRID_SIZE);
+	}
+	
+	/**
 	 * Creates a point that represents a distance to the origin which, when added to 
 	 * pDimension, will correspond to a dimension that is rounded to align to the grid.
 	 * 

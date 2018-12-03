@@ -27,6 +27,32 @@ public class TestGrid
 	}
 	
 	@Test
+	public void testToMultiple()
+	{
+		assertEquals(0,Grid.toMultiple(0));
+		assertEquals(10,Grid.toMultiple(1));
+		assertEquals(10,Grid.toMultiple(2));
+		assertEquals(10,Grid.toMultiple(3));
+		assertEquals(10,Grid.toMultiple(4));
+		assertEquals(10,Grid.toMultiple(5));
+		assertEquals(10,Grid.toMultiple(6));
+		assertEquals(10,Grid.toMultiple(7));
+		assertEquals(10,Grid.toMultiple(8));
+		assertEquals(10,Grid.toMultiple(9));
+		assertEquals(10,Grid.toMultiple(10));
+		assertEquals(20,Grid.toMultiple(11));
+		assertEquals(20,Grid.toMultiple(12));
+		assertEquals(20,Grid.toMultiple(13));
+		assertEquals(20,Grid.toMultiple(14));
+		assertEquals(20,Grid.toMultiple(15));
+		assertEquals(20,Grid.toMultiple(16));
+		assertEquals(20,Grid.toMultiple(17));
+		assertEquals(20,Grid.toMultiple(18));
+		assertEquals(20,Grid.toMultiple(19));
+		assertEquals(20,Grid.toMultiple(20));
+	}
+	
+	@Test
 	public void testSnapped_ToTopRight()
 	{
 		assertEquals(new Point(0,0), Grid.snapped(new Point(0,4)));
