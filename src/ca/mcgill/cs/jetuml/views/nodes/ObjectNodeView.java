@@ -82,6 +82,20 @@ public final class ObjectNodeView extends AbstractNodeView
 		return bounds.translated(node().position().getX(), node().position().getY());
 	}
 	
+	/**
+	 * @return The position that represents the split between the name and value fields.
+	 */
+	public int getSplitPosition()
+	{
+		int leftWidth = 0;
+		for(ChildNode field : children())
+		{
+			FieldNodeView view = (FieldNodeView) field.view();
+			leftWidth = Math.max(leftWidth, view.leftWidth());
+		}
+		return node().position().getX() + leftWidth + XGAP;
+	}
+	
 	@Override
 	public Rectangle getBounds()
 	{
@@ -100,7 +114,7 @@ public final class ObjectNodeView extends AbstractNodeView
 			leftWidth = Math.max(leftWidth, view.leftWidth());
 			rightWidth = Math.max(rightWidth, view.rightWidth());
 		}
-		int width = Math.max(bounds.getWidth(), 2 * Math.max(leftWidth, rightWidth) + 2 * XGAP);
+		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
 		width = Grid.toMultiple(width);
 		return new Rectangle(bounds.getX(), bounds.getY(), width, Grid.toMultiple(bounds.getHeight() + height));
 	}

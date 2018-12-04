@@ -36,6 +36,7 @@ public final class FieldNodeView extends AbstractNodeView
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
+	private static final int XGAP = 5;
 	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
@@ -63,27 +64,36 @@ public final class FieldNodeView extends AbstractNodeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		final Rectangle bounds = getBounds();
-		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(bounds.getX() + leftWidth() - MID_OFFSET, 
-				bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
-		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(bounds.getMaxX() - rightWidth() + MID_OFFSET, bounds.getY(), 
-				rightWidth(), bounds.getHeight()));
+		int split = getSplitPosition();
+		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(split - leftWidth(), bounds.getY(), leftWidth(), bounds.getHeight()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - MID_OFFSET, bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
+		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(), bounds.getHeight()));
+	}
+	
+	private int getSplitPosition()
+	{
+		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
+		if( parent != null )
+		{
+			return ((ObjectNodeView)parent.view()).getSplitPosition();
+		}
+		else
+		{
+			return DEFAULT_WIDTH / 2;
+		}
 	}
 	
 	@Override
 	public Rectangle getBounds()
 	{
 		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
-		int yPosition = 0;
-		int axis = DEFAULT_WIDTH / 2;
 		if( parent != null )
 		{
-			yPosition = ((ObjectNodeView)parent.view()).getYPosition((FieldNode)node());
+			int yPosition = ((ObjectNodeView)parent.view()).getYPosition((FieldNode)node());
 			Rectangle parentBounds = ((ObjectNode)((FieldNode)node()).getParent()).view().getBounds();
-			axis = (parentBounds.getX() + parentBounds.getMaxX())/2;
+			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, getHeight());
 		}
-		
-		return new Rectangle(axis - leftWidth(), yPosition, leftWidth() + rightWidth(), getHeight());
+		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth(), 0, leftWidth() + rightWidth(), getHeight());
 	}
 	
 	/**
@@ -120,6 +130,6 @@ public final class FieldNodeView extends AbstractNodeView
 	public Point getConnectionPoint(Direction pDirection)
 	{
 		Rectangle bounds = getBounds();
-		return new Point((bounds.getMaxX() + bounds.getX() + bounds.getWidth()/2) / 2, bounds.getCenter().getY());
+		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
 	}
 }

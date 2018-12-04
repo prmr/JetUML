@@ -113,9 +113,9 @@ public class TestFieldAndObjectNodeView
 	public void testGetConnectionPointsUnattached()
 	{
 		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		// x = half-point of the left side.
+		// x = max x of the node bounds - x gap
 		// y = half-point of the default height
-		assertEquals( new Point(55,10), view.getConnectionPoint(Direction.EAST));
+		assertEquals( new Point(61,10), view.getConnectionPoint(Direction.EAST));
 	}
 	
 	// NEW
@@ -172,7 +172,7 @@ public class TestFieldAndObjectNodeView
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(39,70,42,20), view.getBounds());
+		assertEquals( new Rectangle(5,70,70,20), view.getBounds());
 	}
 	
 	@After

@@ -638,12 +638,12 @@ public class TestPersistenceService
 		assertEquals(":Type1", type1.getName().toString());
 		
 		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(245, 200, 76, 20), name.view().getBounds());
+		assertEquals(new Rectangle(245, 200, 80, 20), name.view().getBounds());
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
 
-		assertEquals(new Rectangle(440, 290, 110, 150), blank.view().getBounds());
+		assertEquals(new Rectangle(440, 290, 100, 150), blank.view().getBounds());
 		children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertEquals("", blank.getName().toString());
@@ -651,17 +651,17 @@ public class TestPersistenceService
 		FieldNode name3 = (FieldNode) children.get(1);
 		FieldNode name4 = (FieldNode) children.get(2);
 		
-		assertEquals(new Rectangle(449, 360, 85, 23), name2.view().getBounds());
+		assertEquals(new Rectangle(445, 360, 90, 23), name2.view().getBounds());
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		
-		assertEquals(new Rectangle(449, 388, 85, 23), name3.view().getBounds());
+		assertEquals(new Rectangle(445, 388, 90, 23), name3.view().getBounds());
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		
-		assertEquals(new Rectangle(448, 416, 83, 23), name4.view().getBounds());
+		assertEquals(new Rectangle(445, 416, 90, 23), name4.view().getBounds());
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
@@ -692,22 +692,22 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle(301, 174, 50, 37),o1.view().getBounds());
+		assertEquals(new Rectangle(319, 174, 32, 37),o1.view().getBounds());
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle(301, 209, 140, 157),o2.view().getBounds());
+		assertEquals(new Rectangle(319, 209, 122, 157),o2.view().getBounds());
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle(493, 208, 87, 82), cr1.view().getBounds());
+		assertEquals(new Rectangle(488, 208, 92, 82), cr1.view().getBounds());
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("", cr1.getEndLabel());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
 		assertEquals("", cr1.getStartLabel().toString());
 		
-		assertEquals(new Rectangle(509, 329, 102, 99), o3.view().getBounds());
+		assertEquals(new Rectangle(529, 329, 82, 99), o3.view().getBounds());
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		
