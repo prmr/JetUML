@@ -250,7 +250,7 @@ public class PropertySheet extends GridPane
 	/*
 	 * Obtains the externalized name of a property and takes account
 	 * of property inheritance: if a property is not found on a class,
-	 * looks for the property name is superclasses. We do not use the actual
+	 * looks for the property name in superclasses. We do not use the actual
 	 * property names to decouple visual representation (which can eventually
 	 * be translated) from names in the design space.
 	 */
