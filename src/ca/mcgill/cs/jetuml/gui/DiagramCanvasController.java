@@ -489,8 +489,10 @@ public class DiagramCanvasController
 	{
 		Point mousePoint = getMousePoint(pEvent);
 		Point pointToReveal = mousePoint;
-		if(aDragMode == DragMode.DRAG_MOVE ) 
+		if(aDragMode == DragMode.DRAG_MOVE && !aSelectionModel.isEmpty() ) 
 		{
+			// The second condition in the if is necessary in the case where a single 
+			// element is selected with the Ctrl button is down, which immediately deselects it.
 			pointToReveal = computePointToReveal(mousePoint);
 			moveSelection(mousePoint);
 		}
@@ -533,6 +535,8 @@ public class DiagramCanvasController
 	// This will be doable by collecting all edges connected to a transitively selected node.
 	private void moveSelection(Point pMousePoint)
 	{
+		assert !aSelectionModel.isEmpty();
+		
 		int dx = (int)(pMousePoint.getX() - aLastMousePoint.getX());
 		int dy = (int)(pMousePoint.getY() - aLastMousePoint.getY());
 
