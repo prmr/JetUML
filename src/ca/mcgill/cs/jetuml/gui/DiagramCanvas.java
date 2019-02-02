@@ -24,6 +24,7 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.DiagramView;
 import ca.mcgill.cs.jetuml.views.Grid;
@@ -46,12 +47,12 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * Constructs the canvas, assigns the diagram view to it.
 	 * 
 	 * @param pDiagramView Rhe diagram view to draw on this canvas.
-	 * @param pWidth The fixed width of the canvas.
-	 * @param pHeight The fixed height of the canvas.
+	 * @param pDimension The width and height of the canvas.
+	 * @pre pDimension != null;
 	 */
-	public DiagramCanvas(DiagramView pDiagramView, int pWidth, int pHeight)
+	public DiagramCanvas(DiagramView pDiagramView, Dimension pDimension)
 	{
-		super(pWidth, pHeight);
+		super(pDimension.getWidth(), pDimension.getHeight());
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
 		aDiagramView = pDiagramView;

@@ -29,7 +29,9 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.DiagramView;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
@@ -42,6 +44,11 @@ import javafx.scene.layout.StackPane;
  */
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 {	
+	/* The number of pixels to leave around a diagram when the canvas size
+	 * is automatically increased to accommodate a diagram larger than the 
+	 * preferred size. */
+	private static final int DIMENSION_BUFFER = 20;
+	
 	private DiagramCanvas aDiagramCanvas;
 	private DiagramView aDiagramView;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -56,7 +63,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		aDiagramView = DiagramType.newViewInstanceFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(aDiagramView, getDiagramWidth(), getDiagramHeight());
+		aDiagramCanvas = new DiagramCanvas(aDiagramView, getDiagramCanvasWidth(aDiagramView));
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar, this);
 		aDiagramCanvas.setController(aDiagramCanvasController);
@@ -103,7 +110,20 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		});
 	}
 	
-	private static int getDiagramWidth()
+	/*
+	 * If the diagram is smaller than the preferred dimension, return
+	 * the preferred dimension. Otherwise, grow the dimensions to accomodate
+	 * the diagram.
+	 */
+	private static Dimension getDiagramCanvasWidth(DiagramView pView)
+	{
+		Rectangle bounds = pView.getBounds();
+		return new Dimension(
+				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
+				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
+	}
+	
+	private static int getPreferredDiagramWidth()
 	{
 		int preferredWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
 		if( preferredWidth == 0 )
@@ -118,7 +138,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		}
 	}
 	
-	private static int getDiagramHeight()
+	private static int getPreferredDiagramHeight()
 	{
 		int preferredHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
 		if( preferredHeight == 0 )

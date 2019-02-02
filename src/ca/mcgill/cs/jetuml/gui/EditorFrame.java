@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
@@ -45,10 +46,8 @@ import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
-import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
@@ -217,6 +216,26 @@ public class EditorFrame extends BorderPane
 	}
 	
 	/*
+	 * @return The diagram tab whose corresponding file is pFile,
+	 * or empty if there are none.
+	 */
+	private Optional<DiagramTab> findTabFor(File pFile)
+	{
+		for( Tab tab : tabs() )
+		{
+			if(tab instanceof DiagramTab)
+			{
+				if(((DiagramTab) tab).getFile() != null	&& 
+						((DiagramTab) tab).getFile().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
+				{
+					return Optional.of((DiagramTab)tab);
+				}
+			}
+		}
+		return Optional.empty();
+	}
+	
+	/*
 	 * Opens a file with the given name, or switches to the frame if it is already
 	 * open.
 	 * 
@@ -224,58 +243,27 @@ public class EditorFrame extends BorderPane
 	 */
 	private void open(String pName) 
 	{
-		for( Tab tab : tabs() )
+		Optional<DiagramTab> tab = findTabFor(new File(pName));
+		if( tab.isPresent() )
 		{
-			if(tab instanceof DiagramTab)
-			{
-				if(((DiagramTab) tab).getFile() != null	&& 
-						((DiagramTab) tab).getFile().getAbsoluteFile().equals(new File(pName).getAbsoluteFile())) 
-				{
-					tabPane().getSelectionModel().select(tab);
-					addRecentFile(new File(pName).getPath());
-					return;
-				}
-			}
+			tabPane().getSelectionModel().select(tab.get());
+			addRecentFile(new File(pName).getPath());
+			return;
 		}
 		
 		try 
 		{
-			Diagram diagram2 = PersistenceService.read(new File(pName));
-			
-			Rectangle bounds = DiagramType.newViewInstanceFor(diagram2).getBounds();
-			int viewWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
-			int viewHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
-			if( bounds.getMaxX() > viewWidth || bounds.getMaxY() > viewHeight )
-			{
-				showDiagramViewTooSmallAlert(bounds, viewWidth, viewHeight);
-				return;
-			}
-			
-			DiagramTab frame2 = new DiagramTab(diagram2);
-			frame2.setFile(new File(pName).getAbsoluteFile());
+			DiagramTab frame = new DiagramTab(PersistenceService.read(new File(pName)));
+			frame.setFile(new File(pName).getAbsoluteFile());
 			addRecentFile(new File(pName).getPath());
-			insertGraphFrameIntoTabbedPane(frame2);
+			insertGraphFrameIntoTabbedPane(frame);
 		}
-		catch (IOException | DeserializationException exception2) 
+		catch(IOException | DeserializationException exception) 
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
 		}
-	}
-	
-	private void showDiagramViewTooSmallAlert(Rectangle pBounds, int pWidth, int pHeight)
-	{
-		String content = RESOURCES.getString("dialog.open.size_error_content");
-		content = content.replace("#1", Integer.toString(pBounds.getMaxX()));
-		content = content.replace("#2", Integer.toString(pBounds.getMaxY()));
-		content = content.replace("#3", Integer.toString(pWidth));
-		content = content.replace("#4", Integer.toString(pHeight));
-		Alert alert = new Alert(AlertType.ERROR, content, ButtonType.OK);
-		alert.setTitle(RESOURCES.getString("alert.error.title"));
-		alert.setHeaderText(RESOURCES.getString("dialog.open.size_error_header"));
-		alert.initOwner(aMainStage);
-		alert.showAndWait();
 	}
 	
 	private List<NamedHandler> getOpenFileHandlers()
