@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.gui;
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.io.File;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
@@ -52,7 +53,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	private DiagramCanvas aDiagramCanvas;
 	private DiagramView aDiagramView;
 	private final DiagramCanvasController aDiagramCanvasController;
-	private File aFile; // The file associated with this diagram
+	private Optional<File> aFile = Optional.empty(); // The file associated with this diagram
 	
 	/**
      * Constructs a diagram tab initialized with pDiagram.
@@ -243,9 +244,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	 */
 	public void setTitle(boolean pModified)
 	{
-		if(aFile != null)
+		if(aFile.isPresent())
 		{
-			String title = aFile.getName();
+			String title = aFile.get().getName();
 			if(pModified)
 			{
 				if(!getText().endsWith("*"))
@@ -260,7 +261,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		}
 		else
 		{
-			setText(RESOURCES.getString(getDiagram().getClass().getSimpleName().toLowerCase() + ".text"));
+			setText(RESOURCES.getString(DiagramType.typeOf(getDiagram()).getName() + ".text"));
 		}
 	}
 	
@@ -284,9 +285,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 
 	/**
      * Gets the file property.
-     * @return the file associated with this graph
+     * @return the file associated with this diagram, if available.
 	 */
-	public File getFile()
+	public Optional<File> getFile()
 	{
 		return aFile;
 	}
@@ -297,7 +298,8 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	 */
 	public void setFile(File pFile)
 	{
-		aFile = pFile;
+		assert pFile != null;
+		aFile = Optional.of(pFile);
 		setTitle(false);
 	}
 

@@ -224,9 +224,9 @@ public class EditorFrame extends BorderPane
 		for( Tab tab : tabs() )
 		{
 			if(tab instanceof DiagramTab)
-			{
-				if(((DiagramTab) tab).getFile() != null	&& 
-						((DiagramTab) tab).getFile().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
+			{	
+				if(((DiagramTab) tab).getFile().isPresent()	&& 
+						((DiagramTab) tab).getFile().get().getAbsoluteFile().equals(pFile.getAbsoluteFile())) 
 				{
 					return Optional.of((DiagramTab)tab);
 				}
@@ -415,15 +415,15 @@ public class EditorFrame extends BorderPane
 	private void save() 
 	{
 		DiagramTab frame = getSelectedDiagramTab();
-		File file = frame.getFile();
-		if(file == null) 
+		Optional<File> file = frame.getFile();
+		if(!file.isPresent()) 
 		{
 			saveAs();
 			return;
 		}
 		try 
 		{
-			PersistenceService.save(frame.getDiagram(), file);
+			PersistenceService.save(frame.getDiagram(), file.get());
 			frame.setModified(false);
 		} 
 		catch(IOException exception) 
@@ -443,10 +443,10 @@ public class EditorFrame extends BorderPane
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
 
-		if (frame.getFile() != null) 
+		if(frame.getFile().isPresent()) 
 		{
-			fileChooser.setInitialDirectory(frame.getFile().getParentFile());
-			fileChooser.setInitialFileName(frame.getFile().getName());
+			fileChooser.setInitialDirectory(frame.getFile().get().getParentFile());
+			fileChooser.setInitialFileName(frame.getFile().get().getName());
 		} 
 		else 
 		{
@@ -460,13 +460,10 @@ public class EditorFrame extends BorderPane
 			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
 			{
 				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
-			}
-			if(result != null) 
-			{
 				PersistenceService.save(diagram, result);
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
-				frame.setText(frame.getFile().getName());
+				frame.setText(frame.getFile().get().getName());
 				frame.setModified(false);
 				File dir = result.getParentFile();
 				if( dir != null )
@@ -600,9 +597,9 @@ public class EditorFrame extends BorderPane
 		fileChooser.setInitialDirectory(pInitialDirectory);
 
 		// If the file was previously saved, use that to suggest a file name root.
-		if(frame.getFile() != null) 
+		if(frame.getFile().isPresent()) 
 		{
-			File file = new File(replaceExtension(frame.getFile().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
+			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}
