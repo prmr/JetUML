@@ -239,23 +239,24 @@ public class EditorFrame extends BorderPane
 	 * Opens a file with the given name, or switches to the frame if it is already
 	 * open.
 	 * 
-	 * @param pName the file name
+	 * @param pName the file to open. Not null.
 	 */
-	private void open(String pName) 
+	private void open(File pFile) 
 	{
-		Optional<DiagramTab> tab = findTabFor(new File(pName));
+		assert pFile != null;
+		Optional<DiagramTab> tab = findTabFor(pFile);
 		if( tab.isPresent() )
 		{
 			tabPane().getSelectionModel().select(tab.get());
-			addRecentFile(new File(pName).getPath());
+			addRecentFile(pFile.getPath());
 			return;
 		}
 		
 		try 
 		{
-			DiagramTab frame = new DiagramTab(PersistenceService.read(new File(pName)));
-			frame.setFile(new File(pName).getAbsoluteFile());
-			addRecentFile(new File(pName).getPath());
+			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile));
+			frame.setFile(pFile.getAbsoluteFile());
+			addRecentFile(pFile.getPath());
 			insertGraphFrameIntoTabbedPane(frame);
 		}
 		catch(IOException | DeserializationException exception) 
@@ -271,7 +272,7 @@ public class EditorFrame extends BorderPane
 		List<NamedHandler> result = new ArrayList<>();
 		for( File file : aRecentFiles )
    		{
-			result.add(new NamedHandler(file.getName(), pEvent -> open(file.getAbsolutePath())));
+			result.add(new NamedHandler(file.getName(), pEvent -> open(file)));
    		}
 		return Collections.unmodifiableList(result);
 	}
@@ -314,10 +315,9 @@ public class EditorFrame extends BorderPane
    		for( File file : aRecentFiles )
    		{
    			String name = "_" + i + " " + file.getName();
-   			final String fileName = file.getAbsolutePath();
    			MenuItem item = new MenuItem(name);
    			aRecentFilesMenu.getItems().add(item);
-   			item.setOnAction(pEvent -> open(fileName));
+   			item.setOnAction(pEvent -> open(file));
             i++;
    		}
    }
@@ -329,9 +329,9 @@ public class EditorFrame extends BorderPane
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 
 		File selectedFile = fileChooser.showOpenDialog(aMainStage);
-		if (selectedFile != null) 
+		if(selectedFile != null) 
 		{
-			open(selectedFile.getAbsolutePath());
+			open(selectedFile);
 		}
 	}
 
