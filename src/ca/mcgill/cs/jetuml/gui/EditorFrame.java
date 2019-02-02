@@ -460,6 +460,9 @@ public class EditorFrame extends BorderPane
 			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
 			{
 				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
+			}
+			if( result != null )
+			{
 				PersistenceService.save(diagram, result);
 				addRecentFile(result.getAbsolutePath());
 				frame.setFile(result);
