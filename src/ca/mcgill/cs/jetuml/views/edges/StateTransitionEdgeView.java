@@ -103,18 +103,18 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 			Point connectionPoint2 = getSelfEdgeConnectionPoints().getPoint2();
 			if( getPosition() == 1 )
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point2D(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), getConnectionPoints().getPoint2());
 			}
 			else
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point2D(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET), getConnectionPoints().getPoint2());
 			}
 		}
 		else
 		{
-			ArrowHead.V.view().draw(pGraphics, getControlPoint(), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+			ArrowHead.V.view().draw(pGraphics, Conversions.toPoint(getControlPoint()), getConnectionPoints().getPoint2());
 		}
 	}
 	

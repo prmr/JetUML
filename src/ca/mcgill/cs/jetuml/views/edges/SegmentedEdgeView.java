@@ -120,8 +120,13 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 	{
 		Point2D[] points = getPoints();		
 		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(), aLineStyleSupplier.get());
-		aArrowStartSupplier.get().view().draw(pGraphics, points[1], points[0]);
-		aArrowEndSupplier.get().view().draw(pGraphics, points[points.length - 2], points[points.length - 1]);
+		aArrowStartSupplier.get().view().draw(pGraphics, 
+				Conversions.toPoint(points[1]), 
+				Conversions.toPoint(points[0]));
+		
+		aArrowEndSupplier.get().view().draw(pGraphics, 
+				Conversions.toPoint(points[points.length - 2]), 
+				Conversions.toPoint(points[points.length - 1]));
 
 		drawString(pGraphics, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
 		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
@@ -176,7 +181,9 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 			}
 			if(pArrow != null)
 			{
-				Bounds arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBoundsInLocal();
+				Bounds arrowBounds = pArrow.view().getPath(
+						Conversions.toPoint(pEndPoint1), 
+						Conversions.toPoint(pEndPoint2)).getBoundsInLocal();
 				if(pEndPoint1.getX() < pEndPoint2.getX())
 				{
 					xoff -= arrowBounds.getWidth();
@@ -208,8 +215,12 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 	{
 		Path path = getSegmentPath();
 		Point2D[] points = getPoints();
-		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(points[1], points[0]).getElements());
-		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]).getElements());
+		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(
+				Conversions.toPoint(points[1]),
+				Conversions.toPoint(points[0])).getElements());
+		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(
+				Conversions.toPoint(points[points.length - 2]), 
+				Conversions.toPoint(points[points.length - 1])).getElements());
 		return path;
 	}
 

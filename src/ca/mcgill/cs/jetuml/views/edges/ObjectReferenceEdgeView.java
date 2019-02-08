@@ -28,7 +28,6 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -123,14 +122,14 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 		if(isSShaped())
 		{
 			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
-					new Point2D(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
-					new Point2D(connectionPoints.getX2(), connectionPoints.getY2()));      
+					new Point(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
+					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
 		else
 		{
 			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
-					new Point2D(connectionPoints.getX2() + ENDSIZE, connectionPoints.getY2()), 
-					new Point2D(connectionPoints.getX2(), connectionPoints.getY2()));      
+					new Point(connectionPoints.getX2() + ENDSIZE, connectionPoints.getY2()), 
+					new Point(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
 	}
 
