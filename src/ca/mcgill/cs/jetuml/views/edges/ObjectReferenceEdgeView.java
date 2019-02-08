@@ -66,18 +66,17 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 	
 	private Path getSShape(Line pConnectionPoints)
 	{
-		double y1 = pConnectionPoints.getY1();
-		double y2 = pConnectionPoints.getY2();
-		double xmid = (pConnectionPoints.getX1() + pConnectionPoints.getX2()) / 2;
-		double ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
-		double x1 = pConnectionPoints.getX1() + ENDSIZE;
-		double x2 = pConnectionPoints.getX2() - ENDSIZE;
+		final int x1 = pConnectionPoints.getX1() + ENDSIZE;
+		final int y1 = pConnectionPoints.getY1();
+		final int x2 = pConnectionPoints.getX2() - ENDSIZE;
+		final int y2 = pConnectionPoints.getY2();
+		final int xmid = (pConnectionPoints.getX1() + pConnectionPoints.getX2()) / 2;
+		final int ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
      
 		MoveTo moveTo = new MoveTo(pConnectionPoints.getX1(), y1);
 		LineTo lineTo1 = new LineTo(x1, y1);
 		QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
 		QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
-		
 		LineTo lineTo2 = new LineTo(pConnectionPoints.getX2(), y2);
 		
 		Path path = new Path();
@@ -87,17 +86,19 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 	
 	private Path getCShape(Line pConnectionPoints)
 	{
-		double y1 = pConnectionPoints.getY1();
-		double y2 = pConnectionPoints.getY2();
-		double ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
-		Path path = new Path();
-		double x1 = Math.max(pConnectionPoints.getX1(), pConnectionPoints.getX2()) + ENDSIZE;
-		double x2 = x1 + ENDSIZE;
+		final int x1 = Math.max(pConnectionPoints.getX1(), pConnectionPoints.getX2()) + ENDSIZE;
+		final int y1 = pConnectionPoints.getY1();
+		final int x2 = x1 + ENDSIZE;
+		final int y2 = pConnectionPoints.getY2();
+		final int ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
+		
 		MoveTo moveTo = new MoveTo(pConnectionPoints.getX1(), y1);
 		LineTo lineTo1 = new LineTo(x1, y1);
 		QuadCurveTo quadTo1 = new QuadCurveTo(x2, y1, x2, ymid);
 		QuadCurveTo quadTo2 = new QuadCurveTo(x2, y2, x1, y2);
 		LineTo lineTo2 = new LineTo(pConnectionPoints.getX2(), y2);
+		
+		Path path = new Path();
 		path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
 		return path;
 	}
