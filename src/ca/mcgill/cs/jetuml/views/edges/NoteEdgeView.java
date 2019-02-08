@@ -53,11 +53,10 @@ public final class NoteEdgeView extends AbstractEdgeView
 	@Override
 	protected Shape getShape()
 	{
+		Line endPoints = getConnectionPoints();
 		Path path = new Path();
-		Line conn = getConnectionPoints();
-		MoveTo moveTo = new MoveTo((float)conn.getX1(), (float)conn.getY1());
-		LineTo lineTo = new LineTo((float)conn.getX2(), (float)conn.getY2());
-		path.getElements().addAll(moveTo, lineTo);
+		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
+				new LineTo(endPoints.getX2(), endPoints.getY2()));
 		return path;
 	}
 }
