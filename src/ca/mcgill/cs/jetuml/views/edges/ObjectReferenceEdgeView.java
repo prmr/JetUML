@@ -118,19 +118,20 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.SOLID);
-		Line line = getConnectionPoints();
-		double x1;
-		double x2 = line.getX2();
-		double y = line.getY2();
+		Line connectionPoints = getConnectionPoints();
+		
 		if(isSShaped())
 		{
-			x1 = x2 - ENDSIZE;
+			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
+					new Point2D(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
+					new Point2D(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
 		else
 		{
-			x1 = x2 + ENDSIZE;
+			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
+					new Point2D(connectionPoints.getX2() + ENDSIZE, connectionPoints.getY2()), 
+					new Point2D(connectionPoints.getX2(), connectionPoints.getY2()));      
 		}
-		ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, new Point2D(x1, y), new Point2D(x2, y));      
 	}
 
 	@Override
