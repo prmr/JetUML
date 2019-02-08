@@ -58,20 +58,11 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 
 		double y1 = line.getY1();
 		double y2 = line.getY2();
-		double xmid = (line.getX1() + line.getX2()) / 2;
 		double ymid = (line.getY1() + line.getY2()) / 2;
 		Path path = new Path();
 		if(isSShaped())
 		{
-			double x1 = line.getX1() + ENDSIZE;
-			double x2 = line.getX2() - ENDSIZE;
-         
-			MoveTo moveTo = new MoveTo(line.getX1(), y1);
-			LineTo lineTo1 = new LineTo(x1, y1);
-			QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
-			QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
-			LineTo lineTo2 = new LineTo(line.getX2(), y2);
-			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
+			return getSShape(getConnectionPoints());
 		}
 		else // reverse C shaped
 		{
@@ -84,6 +75,27 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 			LineTo lineTo2 = new LineTo(line.getX2(), y2);
 			path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
 		}			
+		return path;
+	}
+	
+	private Path getSShape(Line pConnectionPoints)
+	{
+		double y1 = pConnectionPoints.getY1();
+		double y2 = pConnectionPoints.getY2();
+		double xmid = (pConnectionPoints.getX1() + pConnectionPoints.getX2()) / 2;
+		double ymid = (pConnectionPoints.getY1() + pConnectionPoints.getY2()) / 2;
+		double x1 = pConnectionPoints.getX1() + ENDSIZE;
+		double x2 = pConnectionPoints.getX2() - ENDSIZE;
+     
+		MoveTo moveTo = new MoveTo(pConnectionPoints.getX1(), y1);
+		LineTo lineTo1 = new LineTo(x1, y1);
+		QuadCurveTo quadTo1 = new QuadCurveTo((x1 + xmid) / 2, y1, xmid, ymid);
+		QuadCurveTo quadTo2 = new QuadCurveTo((x2 + xmid) / 2, y2, x2, y2);
+		
+		LineTo lineTo2 = new LineTo(pConnectionPoints.getX2(), y2);
+		
+		Path path = new Path();
+		path.getElements().addAll(moveTo, lineTo1, quadTo1, quadTo2, lineTo2);
 		return path;
 	}
 	
