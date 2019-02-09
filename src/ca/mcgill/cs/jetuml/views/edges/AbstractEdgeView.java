@@ -30,6 +30,9 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
@@ -59,9 +62,20 @@ public abstract class AbstractEdgeView implements EdgeView
 	}
 	
 	/**
-	 * @return The shape.
+	 * The default behavior is to draw a straight line between
+	 * the connections points oriented in the direction of each 
+	 * other node.
+	 * 
+	 * @return The shape. 
 	 */
-	protected abstract Shape getShape();
+	protected Shape getShape()
+	{
+		Line endPoints = getConnectionPoints();
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
+				new LineTo(endPoints.getX2(), endPoints.getY2()));
+		return path;
+	}
 	
 	/**
 	 * @param pText Some text to test.

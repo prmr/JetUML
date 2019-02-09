@@ -31,14 +31,14 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 /**
- * A straight dotted line.
+ * A view for the different edges in a use case diagram.
  */
-public final class NoteEdgeView extends AbstractEdgeView
+public final class UseCaseEdgeView extends AbstractEdgeView
 {
 	/**
 	 * @param pEdge The edge to wrap.
 	 */
-	public NoteEdgeView(Edge pEdge)
+	public UseCaseEdgeView(Edge pEdge)
 	{
 		super(pEdge);
 	}
@@ -47,5 +47,16 @@ public final class NoteEdgeView extends AbstractEdgeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.DOTTED);
+	}
+	
+	
+	@Override
+	protected Shape getShape()
+	{
+		Line endPoints = getConnectionPoints();
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
+				new LineTo(endPoints.getX2(), endPoints.getY2()));
+		return path;
 	}
 }
