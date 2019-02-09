@@ -84,20 +84,4 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 				() -> LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
 				() -> "", () -> aType.getLabel(), () -> "");
 	}
-	
-	/**
-	 * @return The type of dependency relation.
-	 */
-	public Type getType()
-	{
-		return aType;
-	}
-	
-	/**
-	 * @param pType The type of dependency relation.
-	 */
-	public void setType(Type pType)
-	{
-		aType = pType;
-	}
 }
