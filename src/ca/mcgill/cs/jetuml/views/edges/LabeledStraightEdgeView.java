@@ -64,7 +64,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		super.draw(pGraphics);
 		Line connectionPoints = getConnectionPoints();
 		drawString(pGraphics, Conversions.toPoint2D(connectionPoints.getPoint1()), 
-				Conversions.toPoint2D(connectionPoints.getPoint2()), null, aLabelSupplier.get(), true);
+				Conversions.toPoint2D(connectionPoints.getPoint2()), null, aLabelSupplier.get());
 	}
 	
 	/**
@@ -76,13 +76,13 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	 * @param pCenter true if the string should be centered along the segment
 	 */
 	private static void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrowHead, String pString, boolean pCenter)
+			ArrowHead pArrowHead, String pString)
 	{
 		if (pString == null || pString.length() == 0)
 		{
 			return;
 		}
-		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
+		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString);
 		
 		Paint oldFill = pGraphics.getFill();
 		VPos oldVPos = pGraphics.getTextBaseline();
@@ -91,13 +91,12 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		pGraphics.setFill(Color.BLACK);
 		int textX = 0;
 		int textY = 0;
-		if(pCenter) 
-		{
-			textX = bounds.getWidth()/2;
-			textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
-			pGraphics.setTextBaseline(VPos.CENTER);
-			pGraphics.setTextAlign(TextAlignment.CENTER);
-		}
+		
+		textX = bounds.getWidth()/2;
+		textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
+		pGraphics.setTextBaseline(VPos.CENTER);
+		pGraphics.setTextAlign(TextAlignment.CENTER);
+
 		pGraphics.fillText(pString, textX, textY);
 		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
 		pGraphics.setFill(oldFill);
@@ -114,7 +113,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	 * @return the rectangle enclosing the string
 	 */
 	private static Rectangle getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrow, String pString, boolean pCenter)
+			ArrowHead pArrow, String pString)
 	{
 		if (pString == null || pString.equals(""))
 		{
@@ -126,7 +125,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		int width = (int) Math.round(bounds.getWidth());
 		int height = (int) Math.round(bounds.getHeight());
 		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
-		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
+		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
 				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
 	}
@@ -136,62 +135,34 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	 * @param pEndPoint1 an endpoint of the segment along which to draw the string
 	 * @param pEndPoint2 the other endpoint of the segment along which to draw the string
 	 * @param b the bounds of the string to draw
-	 * @param pCenter true if the string should be centered along the segment
 	 * @return the point at which to draw the string
 	 */
 	private static Point2D getAttachmentPoint(Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrow, Rectangle pDimension, boolean pCenter)
+			ArrowHead pArrow, Rectangle pDimension)
 	{    
 		final int gap = 3;
 		double xoff = gap;
 		double yoff = -gap - pDimension.getHeight();
 		Point2D attach = pEndPoint2;
-		if (pCenter)
-		{
-			if (pEndPoint1.getX() > pEndPoint2.getX()) 
-			{ 
-				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
-			}
-			attach = new Point2D((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
-					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
-			if (pEndPoint1.getY() < pEndPoint2.getY())
-			{
-				yoff =  -gap-pDimension.getHeight();
-			}
-			else if (pEndPoint1.getY() == pEndPoint2.getY())
-			{
-				xoff = -pDimension.getWidth() / 2;
-			}
-			else
-			{
-				yoff = gap;
-			}	
+		
+		if (pEndPoint1.getX() > pEndPoint2.getX()) 
+		{ 
+			return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension); 
 		}
-		else 
+		attach = new Point2D((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
+				(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
+		if (pEndPoint1.getY() < pEndPoint2.getY())
 		{
-			if(pEndPoint1.getX() < pEndPoint2.getX())
-			{
-				xoff = -gap - pDimension.getWidth();
-			}
-			if(pEndPoint1.getY() > pEndPoint2.getY())
-			{
-				yoff = gap;
-			}
-			if(pArrow != null)
-			{
-				Bounds arrowBounds = pArrow.view().getPath(
-						Conversions.toPoint(pEndPoint1), 
-						Conversions.toPoint(pEndPoint2)).getBoundsInLocal();
-				if(pEndPoint1.getX() < pEndPoint2.getX())
-				{
-					xoff -= arrowBounds.getWidth();
-				}
-				else
-				{
-					xoff += arrowBounds.getWidth();
-				}
-			}
+			yoff =  -gap-pDimension.getHeight();
 		}
+		else if (pEndPoint1.getY() == pEndPoint2.getY())
+		{
+			xoff = -pDimension.getWidth() / 2;
+		}
+		else
+		{
+			yoff = gap;
+		}	
 		return new Point2D(attach.getX() + xoff, attach.getY() + yoff);
 	}
 	
@@ -201,7 +172,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		Rectangle bounds = super.getBounds();
 		Line connectionPoints = getConnectionPoints();
 		bounds = bounds.add(getStringBounds(Conversions.toPoint2D(connectionPoints.getPoint1()), 
-				Conversions.toPoint2D(connectionPoints.getPoint2()), null, aLabelSupplier.get(), true));
+				Conversions.toPoint2D(connectionPoints.getPoint2()), null, aLabelSupplier.get()));
 		return bounds;
 	}	
 }
