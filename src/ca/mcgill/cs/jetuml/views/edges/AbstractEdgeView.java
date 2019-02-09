@@ -100,6 +100,7 @@ public abstract class AbstractEdgeView implements EdgeView
 	@Override
 	public boolean contains(Point pPoint)
 	{
+		// Purposefully does not include the arrow head and labels, which create large bounds.
 		Line conn = getConnectionPoints();
 		if(pPoint.distance(conn.getPoint1()) <= MAX_DISTANCE || pPoint.distance(conn.getPoint2()) <= MAX_DISTANCE)
 		{

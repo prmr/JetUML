@@ -21,7 +21,9 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -34,7 +36,7 @@ import javafx.scene.shape.Path;
  * other. The LineStyle and end ArrowHead can be customized. The 
  * start ArrowHead is NONE. There is no label.
  */
-public final class StraightEdgeView extends AbstractEdgeView
+public class StraightEdgeView extends AbstractEdgeView
 {	
 	private final LineStyle aLineStyle;
 	private final ArrowHead aArrowHead;
@@ -60,5 +62,18 @@ public final class StraightEdgeView extends AbstractEdgeView
 		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
 		Line connectionPoints = getConnectionPoints();
 		aArrowHead.view().draw(pGraphics, connectionPoints.getPoint1(), connectionPoints.getPoint2());
+	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle bounds = super.getBounds();
+		if( aArrowHead != ArrowHead.NONE )
+		{
+			Line connectionPoints = getConnectionPoints();
+			bounds = bounds.add(Conversions.toRectangle(aArrowHead.view().getPath(connectionPoints.getPoint1(), 
+					connectionPoints.getPoint2()).getBoundsInLocal()));
+		}
+		return bounds;
 	}
 }
