@@ -37,14 +37,21 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  */
 public final class UseCaseDependencyEdge extends AbstractEdge
 {
-	private static final String LABEL_INCLUDE = "\u00ABinclude\u00BB";
-	private static final String LABEL_EXTEND = "\u00ABextend\u00BB";
-	
 	/**
-	 * Type of use case dependency.
+	 * Type of use case dependency with corresponding edge label.
 	 */
 	public enum Type 
-	{None, Include, Extend}
+	{
+		None(""), Include("\u00ABinclude\u00BB"), Extend("\u00ABextend\u00BB");
+		
+		private final String aLabel;
+		
+		Type(String pLabel)
+		{ aLabel = pLabel; }
+		
+		String getLabel()
+		{ return aLabel; }
+	}
 	
 	private Type aType = Type.None;
 	
@@ -75,7 +82,7 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	{
 		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
 				() -> LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
-				() -> "", () -> obtainMiddleLabel(), () -> "");
+				() -> "", () -> aType.getLabel(), () -> "");
 	}
 	
 	/**
@@ -92,21 +99,5 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	public void setType(Type pType)
 	{
 		aType = pType;
-	}
-
-	private String obtainMiddleLabel()
-	{
-		if( aType == Type.Include )
-		{
-			return LABEL_INCLUDE;
-		}
-		else if( aType == Type.Extend )
-		{
-			return LABEL_EXTEND;
-		}
-		else
-		{
-			return "";
-		}
 	}
 }
