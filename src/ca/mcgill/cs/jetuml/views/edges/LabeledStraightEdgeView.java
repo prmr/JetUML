@@ -69,22 +69,20 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		}
 	}
 	
-	private static void drawString(GraphicsContext pGraphics, Point pEndPoint1, Point pEndPoint2, String pString)
+	private static void drawString(GraphicsContext pGraphics, Point pStart, Point pEnd, String pString)
 	{
 		assert pString != null && pString.length() > 0;
 
-		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pString);
+		Rectangle bounds = getStringBounds(pStart, pEnd, pString);
 		
 		Paint oldFill = pGraphics.getFill();
 		VPos oldVPos = pGraphics.getTextBaseline();
 		TextAlignment oldAlign = pGraphics.getTextAlign();
 		pGraphics.translate(bounds.getX(), bounds.getY());
 		pGraphics.setFill(Color.BLACK);
-		int textX = 0;
-		int textY = 0;
-		
-		textX = bounds.getWidth()/2;
-		textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
+			
+		int textX = bounds.getWidth()/2;
+		int textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
 		pGraphics.setTextBaseline(VPos.CENTER);
 		pGraphics.setTextAlign(TextAlignment.CENTER);
 
