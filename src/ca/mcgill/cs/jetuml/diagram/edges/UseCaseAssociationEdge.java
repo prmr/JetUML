@@ -39,8 +39,5 @@ public final class UseCaseAssociationEdge extends AbstractEdge
 	protected EdgeView generateView()
 	{
 		return new StraightEdgeView(this, LineStyle.SOLID, ArrowHead.NONE);
-//		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-//				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.NONE,
-//				() -> "", () -> "", () -> "");
 	}
 }

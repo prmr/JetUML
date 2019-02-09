@@ -242,7 +242,7 @@ public class TestPersistenceService
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
-		assertTrue(new Rectangle(207,87,63,53).equals(cr2.view().getBounds()) || new Rectangle(236,135,53,43).equals(cr2.view().getBounds()));
+		assertEquals(new Rectangle(236, 118, 34, 38), cr2.view().getBounds());
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
@@ -266,7 +266,7 @@ public class TestPersistenceService
 		assertTrue( cr6.getStart() == a2 );
 		assertTrue( cr6.getEnd() == u3 );
 		
-		assertEquals(new Rectangle(487,78,23,52),cr7.view().getBounds());
+		assertEquals(new Rectangle(497,78,13,52),cr7.view().getBounds());
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
