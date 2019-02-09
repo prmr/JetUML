@@ -22,41 +22,43 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
 
 /**
- * A view for the different edges in a use case diagram.
+ * Can draw an edge as a straight line between the connection
+ * points of the start and end nodes that are closest to each
+ * other. The LineStyle and end ArrowHead can be customized. The 
+ * start ArrowHead is NONE. There is no label.
  */
-public final class UseCaseEdgeView extends AbstractEdgeView
-{
+public final class StraightEdgeView extends AbstractEdgeView
+{	
+	private final LineStyle aLineStyle;
+	private final ArrowHead aArrowHead;
+	
 	/**
+	 * Creates a new view with the required LineStyle and ArrowHead.
+	 * 
 	 * @param pEdge The edge to wrap.
+	 * @param pLineStyle The line style for the edge.
+	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
 	 */
-	public UseCaseEdgeView(Edge pEdge)
+	public StraightEdgeView(Edge pEdge, LineStyle pLineStyle, ArrowHead pArrowHead)
 	{
 		super(pEdge);
+		aLineStyle = pLineStyle;
+		aArrowHead = pArrowHead;
 	}
 	
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.DOTTED);
-	}
-	
-	
-	@Override
-	protected Shape getShape()
-	{
-		Line endPoints = getConnectionPoints();
-		Path path = new Path();
-		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
-				new LineTo(endPoints.getX2(), endPoints.getY2()));
-		return path;
+		Path shape = (Path) getShape();
+		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
+		Line connectionPoints = getConnectionPoints();
+		aArrowHead.view().draw(pGraphics, connectionPoints.getPoint1(), connectionPoints.getPoint2());
 	}
 }
