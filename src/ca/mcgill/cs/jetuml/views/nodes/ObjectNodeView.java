@@ -25,6 +25,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
@@ -77,9 +78,9 @@ public final class ObjectNodeView extends AbstractNodeView
 	
 	private Rectangle getTopRectangle()
 	{
-		Rectangle bounds = NAME_VIEWER.getDimension(name() + TEXT_HORIZONTAL_MARGIN); 
-		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		return bounds.translated(node().position().getX(), node().position().getY());
+		Dimension bounds = NAME_VIEWER.getDimension(name() + TEXT_HORIZONTAL_MARGIN); 
+		bounds = bounds.include(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		return new Rectangle(0, 0, bounds.getWidth(), bounds.getHeight()).translated(node().position().getX(), node().position().getY());
 	}
 	
 	/**

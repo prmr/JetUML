@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import static ca.mcgill.cs.jetuml.geom.Util.max;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
@@ -98,19 +99,17 @@ public class InterfaceNodeView extends AbstractNodeView
 	}
 	
 	/**
-	 * @return The area of the bottom compartment. The x and y values
-	 * are meaningless.
+	 * @return The area of the bottom compartment.
 	 */
-	protected Rectangle computeBottom()
+	protected Dimension computeBottom()
 	{
 		if( !needsBottomCompartment() )
 		{
-			return new Rectangle(0, 0, 0, 0);
+			return Dimension.NULL;
 		}
 			
-		Rectangle bottom = METHOD_VIEWER.getDimension(methods());
-		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
-		return bottom;
+		Dimension bottom = METHOD_VIEWER.getDimension(methods());
+		return bottom.include(DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT);
 	}
 	
 	/**
@@ -118,9 +117,9 @@ public class InterfaceNodeView extends AbstractNodeView
 	 * node size.
 	 * @return The area of the top compartment
 	 */
-	protected Rectangle computeTop()
+	protected Dimension computeTop()
 	{
-		Rectangle top = NAME_VIEWER.getDimension(name()); 
+		Dimension top = NAME_VIEWER.getDimension(name()); 
 		
 		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
 		if(!needsMiddleCompartment() && !needsBottomCompartment() )
@@ -131,9 +130,7 @@ public class InterfaceNodeView extends AbstractNodeView
 		{
 			minHeight = 2 * DEFAULT_COMPARTMENT_HEIGHT;
 		}
-		top = top.add(new Rectangle(0, 0, DEFAULT_WIDTH, minHeight));
-
-		return top;
+		return top.include(DEFAULT_WIDTH, minHeight);
 	}
 	
 	/**
@@ -155,12 +152,11 @@ public class InterfaceNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle top = computeTop();
-		Rectangle bottom = computeBottom();
+		Dimension top = computeTop();
+		Dimension bottom = computeBottom();
 		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
 		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
 		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
-//		return Grid.snapped(bounds); TODO improve snapping
 		return bounds;
 	}
 }

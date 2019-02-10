@@ -34,7 +34,7 @@ import org.junit.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 
 public class TestInterfaceNodeView
 {
@@ -88,41 +88,41 @@ public class TestInterfaceNodeView
 	@Test
 	public void testComputeBottom()
 	{
-		assertEquals(new Rectangle(0,0,0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
+		assertEquals(new Dimension(0,0), ((InterfaceNodeView)aNode1.view()).computeBottom());
 		aNode1.setMethods("Foo");
-		assertTrue(new Rectangle(0,0,100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
-				new Rectangle(0,0,100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
+		assertTrue(new Dimension(100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Dimension(100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("Foo\nFoo");
-		assertTrue(new Rectangle(0,0,100,39).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
-				new Rectangle(0,0,100,40).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
+		assertTrue(new Dimension(100,39).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Dimension(100,40).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("Foo");
-		assertTrue(new Rectangle(0,0,100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
-				new Rectangle(0,0,100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
+		assertTrue(new Dimension(100,23).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Dimension(100,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 		aNode1.setMethods("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertTrue(new Rectangle(0,0,310,22).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
-				new Rectangle(0,0,310,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
+		assertTrue(new Dimension(310,22).equals(((InterfaceNodeView)aNode1.view()).computeBottom())||
+				new Dimension(310,24).equals(((InterfaceNodeView)aNode1.view()).computeBottom()));
 	}
 	
 	@Test
 	public void testComputeTop()
 	{
-		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertEquals(new Dimension(100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		aNode1.setName("X\nX\nX\nX");
-		assertTrue(new Rectangle(0,0,100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
-					new Rectangle(0,0,100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
+		assertTrue(new Dimension(100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+					new Dimension(100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 		aNode1.setName("");
-		assertEquals(new Rectangle(0,0,100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertEquals(new Dimension(100,60), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setMethods("X");
-		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertEquals(new Dimension(100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		aNode1.setMethods("X\nX\nX");
-		assertEquals(new Rectangle(0,0,100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
+		assertEquals(new Dimension(100,40), ((InterfaceNodeView)aNode1.view()).computeTop());
 		
 		aNode1.setName("X\nX\nX");
-		assertTrue(new Rectangle(0,0,100,54).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
-					new Rectangle(0,0,100,56).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
+		assertTrue(new Dimension(100,54).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+					new Dimension(100,56).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 		aNode1.setName("X\nX\nX\nX");
-		assertTrue(new Rectangle(0,0,100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
-				new Rectangle(0,0,100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
+		assertTrue(new Dimension(100,70).equals(((InterfaceNodeView)aNode1.view()).computeTop()) ||
+				new Dimension(100,72).equals(((InterfaceNodeView)aNode1.view()).computeTop()));
 	}
 }

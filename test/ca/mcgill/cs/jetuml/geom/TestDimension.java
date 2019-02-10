@@ -62,15 +62,15 @@ public class TestDimension
 	@Test
 	public void testInclude_Zero()
 	{
-		assertEquals(new Dimension(0,0), DIM_0.include(DIM_0));
-		assertEquals(new Dimension(10,10), DIM_1.include(DIM_0));
-		assertEquals(new Dimension(5,5), DIM_2.include(DIM_0));
+		assertEquals(new Dimension(0,0), DIM_0.include(0, 0));
+		assertEquals(new Dimension(10,10), DIM_1.include(0, 0));
+		assertEquals(new Dimension(5,5), DIM_2.include(0, 0));
 	}
 	
 	@Test
 	public void testInclude_Grow()
 	{
-		assertEquals(new Dimension(10,10), DIM_2.include(DIM_1));
-		assertEquals(new Dimension(5,10), DIM_2.include(DIM_4));
+		assertEquals(new Dimension(10,10), DIM_2.include(10, 10));
+		assertEquals(new Dimension(5,10), DIM_2.include(5, 10));
 	}
 }

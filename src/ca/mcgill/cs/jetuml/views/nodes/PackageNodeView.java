@@ -164,7 +164,7 @@ public final class PackageNodeView extends AbstractNodeView
 	
 	private Dimension getTopDimension()
 	{
-		Rectangle nameBounds = NAME_VIEWER.getDimension(name());
+		Dimension nameBounds = NAME_VIEWER.getDimension(name());
 		int topWidth = max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
 		return new Dimension(topWidth, TOP_HEIGHT);
 	}
@@ -185,7 +185,7 @@ public final class PackageNodeView extends AbstractNodeView
 	
 	private Rectangle getBottomBounds()
 	{
-		Rectangle contentsBounds = CONTENTS_VIEWER.getDimension(contents());
+		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(contents());
 		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
 		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
 		

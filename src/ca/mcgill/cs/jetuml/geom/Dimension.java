@@ -28,6 +28,8 @@ import static java.lang.Math.max;
  */
 public class Dimension
 {
+	public static final Dimension NULL = new Dimension(0, 0);
+	
 	private final int aWidth;
 	private final int aHeight;
 	
@@ -52,15 +54,16 @@ public class Dimension
 	 * Creates a dimension that is the maximum of this dimension
 	 * and pDimension for both width and height.
 	 * 
-	 * @param pDimension The dimension to include.
+	 * @param pWidth The minimum width to include.
+	 * @param pHeight The minimum height to include.
 	 * @return A new dimension object that has the maximum
 	 * width and height of either dimensions.
-	 * @pre pDimension != null.
+	 * @pre pWidth >= 0 && pHeight >= 0;
 	 */
-	public Dimension include(Dimension pDimension)
+	public Dimension include(int pWidth, int pHeight)
 	{
-		assert pDimension != null;
-		return new Dimension( max(aWidth, pDimension.aWidth), max(aHeight, pDimension.aHeight) );
+		assert pWidth >= 0 && pHeight >= 0;
+		return new Dimension( max(aWidth, pWidth), max(aHeight, pHeight) );
 	}
 	
 	/**

@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.views.edges;
 import java.util.function.Supplier;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -70,7 +71,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	{
 		String label = aLabelSupplier.get();
 		assert label != null && label.length() > 0;
-		Rectangle dimensions = STRING_VIEWER.getDimension(label);
+		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints().spanning().getCenter();
 		return new Rectangle(center.getX()-dimensions.getWidth()/2, center.getY() + SHIFT, dimensions.getWidth(), dimensions.getHeight());
 	}
