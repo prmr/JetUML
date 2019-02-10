@@ -34,7 +34,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
  */
-public final class LabeledStraightEdgeView extends StraightEdgeView
+public class LabeledStraightEdgeView extends StraightEdgeView
 {	
 	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	private static final int SHIFT = -10;

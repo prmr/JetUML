@@ -526,12 +526,12 @@ public class TestPersistenceService
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle(416, 152, 206, 23), ret1.view().getBounds());
+		assertEquals(new Rectangle(416, 160, 207, 23), ret1.view().getBounds());
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
 		
-		assertEquals(new Rectangle(219, 183, 183, 12), retC.view().getBounds());
+		assertEquals(new Rectangle(219, 183, 184, 12), retC.view().getBounds());
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());
