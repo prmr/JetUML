@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.geom;
 
+import static java.lang.Math.max;
+
 /**
  * Represents an immutable pair of width and height.
  */
@@ -44,6 +46,21 @@ public class Dimension
 	public String toString()
 	{
 		return String.format("[Dimension: w=%d x h=%d]", aWidth, aHeight);
+	}
+	
+	/**
+	 * Creates a dimension that is the maximum of this dimension
+	 * and pDimension for both width and height.
+	 * 
+	 * @param pDimension The dimension to include.
+	 * @return A new dimension object that has the maximum
+	 * width and height of either dimensions.
+	 * @pre pDimension != null.
+	 */
+	public Dimension include(Dimension pDimension)
+	{
+		assert pDimension != null;
+		return new Dimension( max(aWidth, pDimension.aWidth), max(aHeight, pDimension.aHeight) );
 	}
 	
 	/**
