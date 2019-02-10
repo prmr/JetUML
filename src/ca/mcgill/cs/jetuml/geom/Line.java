@@ -120,6 +120,14 @@ public class Line implements Cloneable
 		return aPoint2;
 	}
 	
+	/**
+	 * @return The rectangle spanning this line.
+	 */
+	public Rectangle spanning()
+	{
+		return new Rectangle(getX1(), getY1(), getX2() - getX1(), getY2() - getY1());
+	}
+	
 	/* 
 	 * Shallow clone since points are immutable.
 	 * @see java.lang.Object#clone()

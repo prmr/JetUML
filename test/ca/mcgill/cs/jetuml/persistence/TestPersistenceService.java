@@ -246,7 +246,7 @@ public class TestPersistenceService
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(new Rectangle(236, 205, 74, 44), cr3.view().getBounds());
+		assertEquals(new Rectangle(233, 205, 53, 44), cr3.view().getBounds());
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
@@ -267,12 +267,12 @@ public class TestPersistenceService
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertEquals(new Rectangle(508,169,60,62),cr8.view().getBounds());
+		assertEquals(new Rectangle(488,169,55,62),cr8.view().getBounds());
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Include);
 		
-		assertEquals(new Rectangle(568,141,93,27),cr9.view().getBounds());
+		assertEquals(new Rectangle(568,149,82,23),cr9.view().getBounds());
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);

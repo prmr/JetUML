@@ -23,24 +23,21 @@ package ca.mcgill.cs.jetuml.views.edges;
 import java.util.function.Supplier;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.geom.Dimension;
-import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import javafx.geometry.Bounds;
-import javafx.geometry.VPos;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
  */
 public final class LabeledStraightEdgeView extends StraightEdgeView
 {	
+	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final int SHIFT = -10;
+	
 	private final Supplier<String> aLabelSupplier;
 	
 	/**
@@ -62,86 +59,30 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		super.draw(pGraphics);
-		Line connectionPoints = getConnectionPoints();
 		String label = aLabelSupplier.get();
 		if( label.length() > 0 )
 		{
-			drawString(pGraphics, connectionPoints.getPoint1(), connectionPoints.getPoint2(), label);
+			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints().spanning().translated(0, SHIFT));
 		}
 	}
 	
-	private static void drawString(GraphicsContext pGraphics, Point pStart, Point pEnd, String pString)
+	private Rectangle getStringBounds()
 	{
-		assert pString != null && pString.length() > 0;
-
-		Rectangle bounds = getStringBounds(pStart, pEnd, pString);
-		
-		Paint oldFill = pGraphics.getFill();
-		VPos oldVPos = pGraphics.getTextBaseline();
-		TextAlignment oldAlign = pGraphics.getTextAlign();
-		pGraphics.translate(bounds.getX(), bounds.getY());
-		pGraphics.setFill(Color.BLACK);
-			
-		int textX = bounds.getWidth()/2;
-		int textY = (int) (bounds.getHeight() - textDimensions(pString).getHeight()/2);
-		pGraphics.setTextBaseline(VPos.CENTER);
-		pGraphics.setTextAlign(TextAlignment.CENTER);
-
-		pGraphics.fillText(pString, textX, textY);
-		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
-		pGraphics.setFill(oldFill);
-		pGraphics.setTextBaseline(oldVPos);
-		pGraphics.setTextAlign(oldAlign);
-	}
-	
-	private static Rectangle getStringBounds(Point pEndPoint1, Point pEndPoint2, String pString)
-	{
-		assert pString != null && pString.length() > 0;
-		Dimension textDimensions = textDimensions(pString);
-		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.getWidth(), textDimensions.getHeight());
-		Point anchor = getAttachmentPoint(pEndPoint1, pEndPoint2, stringDimensions);
-		return new Rectangle((int)Math.round(anchor.getX()), (int)Math.round(anchor.getY()),
-				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
-	}
-	
-	private static Point getAttachmentPoint(Point pEndPoint1, Point pEndPoint2, Rectangle pDimension)
-	{    
-		final int gap = 3;
-		int xoff = gap;
-		int yoff = -gap - pDimension.getHeight();
-		Point attach = pEndPoint2;
-		
-		if (pEndPoint1.getX() > pEndPoint2.getX()) 
-		{ 
-			return getAttachmentPoint(pEndPoint2, pEndPoint1, pDimension); 
-		}
-		attach = new Point((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
-				(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
-		if (pEndPoint1.getY() < pEndPoint2.getY())
-		{
-			yoff =  -gap-pDimension.getHeight();
-		}
-		else if (pEndPoint1.getY() == pEndPoint2.getY())
-		{
-			xoff = -pDimension.getWidth() / 2;
-		}
-		else
-		{
-			yoff = gap;
-		}	
-		return new Point(attach.getX() + xoff, attach.getY() + yoff);
+		String label = aLabelSupplier.get();
+		assert label != null && label.length() > 0;
+		Rectangle dimensions = STRING_VIEWER.getBounds(label);
+		Point center = getConnectionPoints().spanning().getCenter();
+		return new Rectangle(center.getX()-dimensions.getWidth()/2, center.getY() + SHIFT, dimensions.getWidth(), dimensions.getHeight());
 	}
 	
 	@Override
 	public Rectangle getBounds()
 	{
 		Rectangle bounds = super.getBounds();
-		Line connectionPoints = getConnectionPoints();
 		String label = aLabelSupplier.get();
 		if( label.length() > 0 )
 		{
-			bounds = bounds.add(getStringBounds(connectionPoints.getPoint1(), 
-					connectionPoints.getPoint2(), label));
+			bounds = bounds.add(getStringBounds());
 		}
 		return bounds;
 	}	
