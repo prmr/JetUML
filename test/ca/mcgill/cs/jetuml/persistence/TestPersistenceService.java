@@ -697,12 +697,10 @@ public class TestPersistenceService
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle(488, 208, 92, 82), cr1.view().getBounds());
+		assertEquals(new Rectangle(524, 208, 41, 82), cr1.view().getBounds());
 		assertEquals(object2, cr1.getEnd());
-		assertEquals("", cr1.getEndLabel());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
-		assertEquals("", cr1.getStartLabel().toString());
 		
 		assertEquals(new Rectangle(529, 329, 82, 99), o3.view().getBounds());
 		assertEquals(name4, o3.getStart());

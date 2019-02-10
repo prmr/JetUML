@@ -28,29 +28,17 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.LabeledStraightEdgeView;
 
 /**
  *  An edge that that represents a dynamic collaboration between
- *  two objects in an object diagram, with optional labels.
+ *  two objects in an object diagram, with optional label.
  */
-public final class ObjectCollaborationEdge extends ClassRelationshipEdge
+public final class ObjectCollaborationEdge extends SingleLabelEdge
 {
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, obtainSegmentationStyle(),
-				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.NONE,
-				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
+		return new LabeledStraightEdgeView(this, LineStyle.SOLID, ArrowHead.NONE, () -> getMiddleLabel());
 	}
-	
-	@Override
-	public SegmentationStyle obtainSegmentationStyle() 
-	{
-		return SegmentationStyleFactory.createStraightStrategy();
-	}
-
-
 }
