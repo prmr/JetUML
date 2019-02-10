@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.views.edges;
 import java.util.function.Supplier;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -82,7 +83,7 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 		pGraphics.setFill(Color.BLACK);
 			
 		int textX = bounds.getWidth()/2;
-		int textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
+		int textY = (int) (bounds.getHeight() - textDimensions(pString).getHeight()/2);
 		pGraphics.setTextBaseline(VPos.CENTER);
 		pGraphics.setTextAlign(TextAlignment.CENTER);
 
@@ -96,12 +97,10 @@ public final class LabeledStraightEdgeView extends StraightEdgeView
 	private static Rectangle getStringBounds(Point pEndPoint1, Point pEndPoint2, String pString)
 	{
 		assert pString != null && pString.length() > 0;
-		Bounds bounds = textBounds(pString);
-		int width = (int) Math.round(bounds.getWidth());
-		int height = (int) Math.round(bounds.getHeight());
-		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
-		Point a = getAttachmentPoint(pEndPoint1, pEndPoint2, stringDimensions);
-		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
+		Dimension textDimensions = textDimensions(pString);
+		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.getWidth(), textDimensions.getHeight());
+		Point anchor = getAttachmentPoint(pEndPoint1, pEndPoint2, stringDimensions);
+		return new Rectangle((int)Math.round(anchor.getX()), (int)Math.round(anchor.getY()),
 				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
 	}
 	

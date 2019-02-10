@@ -272,7 +272,7 @@ public class TestPersistenceService
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Include);
 		
-		assertEquals(new Rectangle(568,140,93,28),cr9.view().getBounds());
+		assertEquals(new Rectangle(568,141,93,27),cr9.view().getBounds());
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
@@ -408,7 +408,7 @@ public class TestPersistenceService
 		assertEquals(node8, edge5.getEnd());
 		
 		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(378, 381, 82, 24), edge6.view().getBounds());
+		assertEquals(new Rectangle(378, 382, 82, 23), edge6.view().getBounds());
 		assertEquals(node7, edge6.getEnd());
 		assertEquals("", edge6.getEndLabel());
 		assertEquals("e1", edge6.getMiddleLabel());
@@ -416,7 +416,7 @@ public class TestPersistenceService
 		assertEquals("", edge6.getStartLabel());
 		
 		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 308, 23, 62), edge1.view().getBounds());
+		assertEquals(new Rectangle(503, 308, 22, 62), edge1.view().getBounds());
 		assertEquals(node2, edge1.getEnd());
 		assertEquals("", edge1.getEndLabel());
 		assertEquals("e2", edge1.getMiddleLabel());
@@ -424,7 +424,7 @@ public class TestPersistenceService
 		assertEquals("", edge1.getStartLabel());
 		
 		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 428, 23, 92), edge2.view().getBounds());
+		assertEquals(new Rectangle(503, 428, 22, 92), edge2.view().getBounds());
 		assertEquals(node1, edge2.getEnd());
 		assertEquals("", edge2.getEndLabel());
 		assertEquals("e3", edge2.getMiddleLabel());
@@ -432,7 +432,7 @@ public class TestPersistenceService
 		assertEquals("", edge2.getStartLabel());
 		
 		AggregationEdge edge3 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(558, 376, 72, 24), edge3.view().getBounds());
+		assertEquals(new Rectangle(558, 377, 72, 23), edge3.view().getBounds());
 		assertEquals(node4, edge3.getEnd());
 		assertEquals("*", edge3.getEndLabel());
 		assertEquals("e4", edge3.getMiddleLabel());
@@ -508,25 +508,25 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(212, 76, 73, 30), self.view().getBounds());
+		assertEquals(new Rectangle(212, 77, 72, 29), self.view().getBounds());
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle(220, 101, 183, 19), signal.view().getBounds());
+		assertEquals(new Rectangle(220, 102, 183, 18), signal.view().getBounds());
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
 		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle(417, 121, 206, 24), call1.view().getBounds());
+		assertEquals(new Rectangle(417, 122, 206, 23), call1.view().getBounds());
 		assertEquals(o3Call, call1.getEnd());
 		assertEquals("call1()", call1.getMiddleLabel());
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle(416, 151, 206, 24), ret1.view().getBounds());
+		assertEquals(new Rectangle(416, 152, 206, 23), ret1.view().getBounds());
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());

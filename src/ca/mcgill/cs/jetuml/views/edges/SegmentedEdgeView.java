@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -104,7 +105,7 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 		if(pCenter) 
 		{
 			textX = bounds.getWidth()/2;
-			textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
+			textY = (int) (bounds.getHeight() - textDimensions(pString).getHeight()/2);
 			pGraphics.setTextBaseline(VPos.CENTER);
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
@@ -257,10 +258,8 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		
-		Bounds bounds = textBounds(pString);
-		int width = (int) Math.round(bounds.getWidth());
-		int height = (int) Math.round(bounds.getHeight());
-		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
+		Dimension textDimensions = textDimensions(pString);
+		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.getWidth(), textDimensions.getHeight());
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
 				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));

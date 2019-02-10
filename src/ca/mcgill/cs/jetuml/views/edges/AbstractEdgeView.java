@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.views.edges;
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -79,14 +80,13 @@ public abstract class AbstractEdgeView implements EdgeView
 	
 	/**
 	 * @param pText Some text to test.
-	 * @return A bounds object to be used as
-	 * metrics for the size of the string when rendered
-	 * in the application font.
+	 * @return The width and height of the text.
 	 */
-	protected static Bounds textBounds( String pText )
+	protected static Dimension textDimensions( String pText )
 	{
 		SIZE_TESTER.setText(pText);
-		return SIZE_TESTER.getBoundsInLocal();
+		Bounds bounds = SIZE_TESTER.getBoundsInLocal();
+		return new Dimension((int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
 	/**
