@@ -96,7 +96,7 @@ public final class NoteNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
+		Rectangle textBounds = NOTE_VIEWER.getDimension(name()); 
 		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
 	}

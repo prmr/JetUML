@@ -114,7 +114,7 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 	 */
 	public Rectangle getTopRectangle()
 	{
-		int width = Math.max(NAME_VIEWER.getBounds(name()).getWidth()+ HORIZONTAL_PADDING, DEFAULT_WIDTH); 
+		int width = Math.max(NAME_VIEWER.getDimension(name()).getWidth()+ HORIZONTAL_PADDING, DEFAULT_WIDTH); 
 		return new Rectangle(node().position().getX(), 0, width, TOP_HEIGHT);
 	}
 

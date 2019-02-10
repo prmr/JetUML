@@ -84,12 +84,13 @@ public final class StringViewer
 	}
 	
 	/**
-     * Gets the bounding rectangle for pString.
-     * @param pString The input string. Cannot be null.
-     * @return the bounding rectangle (with top left corner (0,0))
+     * Gets the width and height required to show pString, including
+     * padding around the string.
+     * @param pString The input string. 
+     * @return The dimension pString will use on the screen.
      * @pre pString != null.
 	 */
-	public Rectangle getBounds(String pString)
+	public Rectangle getDimension(String pString)
 	{
 		assert pString != null;
 		if(pString.length() == 0) 

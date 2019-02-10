@@ -58,7 +58,7 @@ public final class StateNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name());
+		Rectangle bounds = NAME_VIEWER.getDimension(name());
 		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
 	}

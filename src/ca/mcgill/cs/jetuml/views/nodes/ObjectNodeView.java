@@ -77,7 +77,7 @@ public final class ObjectNodeView extends AbstractNodeView
 	
 	private Rectangle getTopRectangle()
 	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name() + TEXT_HORIZONTAL_MARGIN); 
+		Rectangle bounds = NAME_VIEWER.getDimension(name() + TEXT_HORIZONTAL_MARGIN); 
 		bounds = bounds.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		return bounds.translated(node().position().getX(), node().position().getY());
 	}

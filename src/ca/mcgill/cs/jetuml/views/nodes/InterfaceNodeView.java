@@ -108,7 +108,7 @@ public class InterfaceNodeView extends AbstractNodeView
 			return new Rectangle(0, 0, 0, 0);
 		}
 			
-		Rectangle bottom = METHOD_VIEWER.getBounds(methods());
+		Rectangle bottom = METHOD_VIEWER.getDimension(methods());
 		bottom = bottom.add(new Rectangle(0, 0, DEFAULT_WIDTH, DEFAULT_COMPARTMENT_HEIGHT));
 		return bottom;
 	}
@@ -120,7 +120,7 @@ public class InterfaceNodeView extends AbstractNodeView
 	 */
 	protected Rectangle computeTop()
 	{
-		Rectangle top = NAME_VIEWER.getBounds(name()); 
+		Rectangle top = NAME_VIEWER.getDimension(name()); 
 		
 		int minHeight = DEFAULT_COMPARTMENT_HEIGHT;
 		if(!needsMiddleCompartment() && !needsBottomCompartment() )

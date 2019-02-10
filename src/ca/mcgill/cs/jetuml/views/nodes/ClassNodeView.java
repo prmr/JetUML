@@ -75,7 +75,7 @@ public final class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(STRING_VIEWER.getBounds(attributes()).getWidth(), DEFAULT_WIDTH);
+			return Math.max(STRING_VIEWER.getDimension(attributes()).getWidth(), DEFAULT_WIDTH);
 		}
 	}
 	
@@ -88,7 +88,7 @@ public final class ClassNodeView extends InterfaceNodeView
 		}
 		else
 		{
-			return Math.max(STRING_VIEWER.getBounds(attributes()).getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
+			return Math.max(STRING_VIEWER.getDimension(attributes()).getHeight(), DEFAULT_COMPARTMENT_HEIGHT);
 		}
 	}
 }

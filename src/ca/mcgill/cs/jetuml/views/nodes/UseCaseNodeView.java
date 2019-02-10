@@ -61,7 +61,7 @@ public final class UseCaseNodeView extends AbstractNodeView
 	public Rectangle getBounds()
 	{
 		return new Rectangle(node().position().getX(), node().position().getY(), 
-				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getBounds(name()).getWidth()), 
-				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getBounds(name()).getHeight()));
+				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(name()).getWidth()), 
+				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(name()).getHeight()));
 	}
 }

@@ -62,7 +62,7 @@ public final class ActorNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle nameBounds = NAME_VIEWER.getBounds(name());
+		Rectangle nameBounds = NAME_VIEWER.getDimension(name());
 		return new Rectangle(node().position().getX(), node().position().getY(),
             Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
 	}
@@ -71,7 +71,7 @@ public final class ActorNodeView extends AbstractNodeView
 	public void draw(GraphicsContext pGraphics)
 	{	
 		Rectangle bounds = getBounds();
-		Rectangle nameBox = NAME_VIEWER.getBounds(name());
+		Rectangle nameBox = NAME_VIEWER.getDimension(name());
 		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
 				bounds.getY() + HEIGHT, nameBox.getWidth(), nameBox.getHeight());
 		NAME_VIEWER.draw(name(), pGraphics, namebox);
