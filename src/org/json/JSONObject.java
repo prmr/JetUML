@@ -693,50 +693,6 @@ public class JSONObject {
     }
 
     /**
-     * Determine if two JSONObjects are similar.
-     * They must contain the same set of names which must be associated with
-     * similar values.
-     *
-     * @param other The other JSONObject
-     * @return true if they are equal
-     */
-    public boolean similar(Object other) {
-        try {
-            if (!(other instanceof JSONObject)) {
-                return false;
-            }
-            if (!this.keySet().equals(((JSONObject)other).keySet())) {
-                return false;
-            }
-            for (final Entry<String,?> entry : this.entrySet()) {
-                String name = entry.getKey();
-                Object valueThis = entry.getValue();
-                Object valueOther = ((JSONObject)other).get(name);
-                if(valueThis == valueOther) {
-                	continue;
-                }
-                if(valueThis == null) {
-                	return false;
-                }
-                if (valueThis instanceof JSONObject) {
-                    if (!((JSONObject)valueThis).similar(valueOther)) {
-                        return false;
-                    }
-                } else if (valueThis instanceof JSONArray) {
-                    if (!((JSONArray)valueThis).similar(valueOther)) {
-                        return false;
-                    }
-                } else if (!valueThis.equals(valueOther)) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (Throwable exception) {
-            return false;
-        }
-    }
-    
-    /**
      * Tests if the value should be tried as a decimal. It makes no test if there are actual digits.
      * 
      * @param val value to test

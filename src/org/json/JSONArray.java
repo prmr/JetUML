@@ -204,31 +204,6 @@ public class JSONArray implements Iterable<Object>
     }
 
     /**
-     * Get the boolean value associated with an index. The string values "true"
-     * and "false" are converted to boolean.
-     *
-     * @param index
-     *            The index must be between 0 and length() - 1.
-     * @return The truth.
-     * @throws JSONException
-     *             If there is no value for the index or if the value is not
-     *             convertible to boolean.
-     */
-    public boolean getBoolean(int index) throws JSONException {
-        Object object = this.get(index);
-        if (object.equals(Boolean.FALSE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("false"))) {
-            return false;
-        } else if (object.equals(Boolean.TRUE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("true"))) {
-            return true;
-        }
-        throw new JSONException("JSONArray[" + index + "] is not a boolean.");
-    }
-
-     /**
      * Get the int value associated with an index.
      *
      * @param index
@@ -327,45 +302,6 @@ public class JSONArray implements Iterable<Object>
     public JSONArray put(Object value) {
         this.myArrayList.add(value);
         return this;
-    }
-
-    /**
-     * Determine if two JSONArrays are similar.
-     * They must contain similar sequences.
-     *
-     * @param other The other JSONArray
-     * @return true if they are equal
-     */
-    public boolean similar(Object other) {
-        if (!(other instanceof JSONArray)) {
-            return false;
-        }
-        int len = this.length();
-        if (len != ((JSONArray)other).length()) {
-            return false;
-        }
-        for (int i = 0; i < len; i += 1) {
-            Object valueThis = this.myArrayList.get(i);
-            Object valueOther = ((JSONArray)other).myArrayList.get(i);
-            if(valueThis == valueOther) {
-            	continue;
-            }
-            if(valueThis == null) {
-            	return false;
-            }
-            if (valueThis instanceof JSONObject) {
-                if (!((JSONObject)valueThis).similar(valueOther)) {
-                    return false;
-                }
-            } else if (valueThis instanceof JSONArray) {
-                if (!((JSONArray)valueThis).similar(valueOther)) {
-                    return false;
-                }
-            } else if (!valueThis.equals(valueOther)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
