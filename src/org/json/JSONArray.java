@@ -79,66 +79,65 @@ import java.util.List;
  */
 public class JSONArray implements Iterable<Object>
 {
-    /**
-     * The arrayList where the JSONArray's properties are kept.
-     */
-    private final ArrayList<Object> myArrayList;
+    private final ArrayList<Object> aElements;
 
     /**
      * Construct an empty JSONArray.
      */
-    public JSONArray() {
-        this.myArrayList = new ArrayList<Object>();
+    public JSONArray() 
+    {
+        aElements = new ArrayList<>();
     }
 
     /**
      * Construct a JSONArray from a JSONTokener.
      *
-     * @param x
-     *            A JSONTokener
-     * @throws JSONException
-     *             If there is a syntax error.
+     * @param pTokener A JSONTokener
+     * @throws JSONException If there is a syntax error.
      */
-    public JSONArray(JSONTokener x) throws JSONException {
+    public JSONArray(JSONTokener pTokener) 
+    {
         this();
-        if (x.nextClean() != '[') {
-            throw x.syntaxError("A JSONArray text must start with '['");
+        if(pTokener.nextClean() != '[')
+        {
+            throw pTokener.syntaxError("A JSONArray text must start with '['");
         }
         
-        char nextChar = x.nextClean();
-        if (nextChar == 0) {
+        char nextChar = pTokener.nextClean();
+        if(nextChar == 0) 
+        {
             // array is unclosed. No ']' found, instead EOF
-            throw x.syntaxError("Expected a ',' or ']'");
+            throw pTokener.syntaxError("Expected a ',' or ']'");
         }
         if (nextChar != ']') {
-            x.back();
+            pTokener.back();
             for (;;) {
-                if (x.nextClean() == ',') {
-                    x.back();
-                    this.myArrayList.add(JSONObject.NULL);
+                if (pTokener.nextClean() == ',') {
+                    pTokener.back();
+                    this.aElements.add(JSONObject.NULL);
                 } else {
-                    x.back();
-                    this.myArrayList.add(x.nextValue());
+                    pTokener.back();
+                    this.aElements.add(pTokener.nextValue());
                 }
-                switch (x.nextClean()) {
+                switch (pTokener.nextClean()) {
                 case 0:
                     // array is unclosed. No ']' found, instead EOF
-                    throw x.syntaxError("Expected a ',' or ']'");
+                    throw pTokener.syntaxError("Expected a ',' or ']'");
                 case ',':
-                    nextChar = x.nextClean();
+                    nextChar = pTokener.nextClean();
                     if (nextChar == 0) {
                         // array is unclosed. No ']' found, instead EOF
-                        throw x.syntaxError("Expected a ',' or ']'");
+                        throw pTokener.syntaxError("Expected a ',' or ']'");
                     }
                     if (nextChar == ']') {
                         return;
                     }
-                    x.back();
+                    pTokener.back();
                     break;
                 case ']':
                     return;
                 default:
-                    throw x.syntaxError("Expected a ',' or ']'");
+                    throw pTokener.syntaxError("Expected a ',' or ']'");
                 }
             }
         }
@@ -152,11 +151,11 @@ public class JSONArray implements Iterable<Object>
      */
     public JSONArray(Collection<?> collection) {
         if (collection == null) {
-            this.myArrayList = new ArrayList<Object>();
+            this.aElements = new ArrayList<Object>();
         } else {
-            this.myArrayList = new ArrayList<Object>(collection.size());
+            this.aElements = new ArrayList<Object>(collection.size());
         	for (Object o: collection){
-        		this.myArrayList.add(JSONObject.wrap(o));
+        		this.aElements.add(JSONObject.wrap(o));
         	}
         }
     }
@@ -171,7 +170,7 @@ public class JSONArray implements Iterable<Object>
         this();
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
-            this.myArrayList.ensureCapacity(length);
+            this.aElements.ensureCapacity(length);
             for (int i = 0; i < length; i += 1) {
                 this.put(JSONObject.wrap(Array.get(array, i)));
             }
@@ -183,7 +182,7 @@ public class JSONArray implements Iterable<Object>
 
     @Override
     public Iterator<Object> iterator() {
-        return this.myArrayList.iterator();
+        return this.aElements.iterator();
     }
 
     /**
@@ -263,7 +262,7 @@ public class JSONArray implements Iterable<Object>
      * @return The length (or size).
      */
     public int length() {
-        return this.myArrayList.size();
+        return this.aElements.size();
     }
 
     /**
@@ -274,7 +273,7 @@ public class JSONArray implements Iterable<Object>
      * @return An object value, or null if there is no object at that index.
      */
     public Object opt(int index) {
-        return (index < 0 || index >= this.length()) ? null : this.myArrayList
+        return (index < 0 || index >= this.length()) ? null : this.aElements
                 .get(index);
     }
 
@@ -300,7 +299,7 @@ public class JSONArray implements Iterable<Object>
      * @return this.
      */
     public JSONArray put(Object value) {
-        this.myArrayList.add(value);
+        this.aElements.add(value);
         return this;
     }
 
@@ -396,7 +395,7 @@ public class JSONArray implements Iterable<Object>
 
             if (length == 1) {
                 try {
-                    JSONObject.writeValue(writer, this.myArrayList.get(0),
+                    JSONObject.writeValue(writer, this.aElements.get(0),
                             indentFactor, indent);
                 } catch (Exception e) {
                     throw new JSONException("Unable to write JSONArray value at index: 0", e);
@@ -413,7 +412,7 @@ public class JSONArray implements Iterable<Object>
                     }
                     JSONObject.indent(writer, newindent);
                     try {
-                        JSONObject.writeValue(writer, this.myArrayList.get(i),
+                        JSONObject.writeValue(writer, this.aElements.get(i),
                                 indentFactor, newindent);
                     } catch (Exception e) {
                         throw new JSONException("Unable to write JSONArray value at index: " + i, e);
@@ -442,8 +441,8 @@ public class JSONArray implements Iterable<Object>
      * @return a java.util.List containing the elements of this array
      */
     public List<Object> toList() {
-        List<Object> results = new ArrayList<Object>(this.myArrayList.size());
-        for (Object element : this.myArrayList) {
+        List<Object> results = new ArrayList<Object>(this.aElements.size());
+        for (Object element : this.aElements) {
             if (element == null || JSONObject.NULL.equals(element)) {
                 results.add(null);
             } else if (element instanceof JSONArray) {
