@@ -898,7 +898,7 @@ public class JSONObject {
                 return NULL;
             }
             if (object instanceof JSONObject || object instanceof JSONArray
-                    || NULL.equals(object) || object instanceof JSONString
+                    || NULL.equals(object)
                     || object instanceof Byte || object instanceof Character
                     || object instanceof Short || object instanceof Integer
                     || object instanceof Long || object instanceof Boolean
@@ -933,52 +933,47 @@ public class JSONObject {
         }
     }
 
-    static final Writer writeValue(Writer writer, Object value,
-            int indentFactor, int indent) throws JSONException, IOException {
-        if (value == null || value.equals(null)) {
-            writer.write("null");
-        } else if (value instanceof JSONString) {
-            Object o;
-            try {
-                o = ((JSONString) value).toJSONString();
-            } catch (Exception e) {
-                throw new JSONException(e);
-            }
-            writer.write(o != null ? o.toString() : quote(value.toString()));
-        } else if (value instanceof Number) {
-            // not all Numbers may match actual JSON Numbers. i.e. fractions or Imaginary
-            final String numberAsString = numberToString((Number) value);
-            try {
-                // Use the BigDecimal constructor for it's parser to validate the format.
-                @SuppressWarnings("unused")
-                BigDecimal testNum = new BigDecimal(numberAsString);
-                // Close enough to a JSON number that we will use it unquoted
-                writer.write(numberAsString);
-            } catch (NumberFormatException ex){
-                // The Number value is not a valid JSON number.
-                // Instead we will quote it as a string
-                quote(numberAsString, writer);
-            }
-        } else if (value instanceof Boolean) {
-            writer.write(value.toString());
-        } else if (value instanceof Enum<?>) {
-            writer.write(quote(((Enum<?>)value).name()));
-        } else if (value instanceof JSONObject) {
-            ((JSONObject) value).write(writer, indentFactor, indent);
-        } else if (value instanceof JSONArray) {
-            ((JSONArray) value).write(writer, indentFactor, indent);
-        } else if (value instanceof Map) {
-            Map<?, ?> map = (Map<?, ?>) value;
-            new JSONObject(map).write(writer, indentFactor, indent);
-        } else if (value instanceof Collection) {
-            Collection<?> coll = (Collection<?>) value;
-            new JSONArray(coll).write(writer, indentFactor, indent);
-        } else if (value.getClass().isArray()) {
-            new JSONArray(value).write(writer, indentFactor, indent);
-        } else {
-            quote(value.toString(), writer);
-        }
-        return writer;
+    static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException 
+    {
+    	if (value == null || value.equals(null)) 
+    	{
+    		writer.write("null");
+    	} 
+    	else if (value instanceof Number) 
+    	{
+    		// not all Numbers may match actual JSON Numbers. i.e. fractions or Imaginary
+    		final String numberAsString = numberToString((Number) value);
+    		try {
+    			// Use the BigDecimal constructor for it's parser to validate the format.
+    			@SuppressWarnings("unused")
+    			BigDecimal testNum = new BigDecimal(numberAsString);
+    			// Close enough to a JSON number that we will use it unquoted
+    			writer.write(numberAsString);
+    		} catch (NumberFormatException ex){
+    			// The Number value is not a valid JSON number.
+    			// Instead we will quote it as a string
+    			quote(numberAsString, writer);
+    		}
+    	} else if (value instanceof Boolean) {
+    		writer.write(value.toString());
+    	} else if (value instanceof Enum<?>) {
+    		writer.write(quote(((Enum<?>)value).name()));
+    	} else if (value instanceof JSONObject) {
+    		((JSONObject) value).write(writer, indentFactor, indent);
+    	} else if (value instanceof JSONArray) {
+    		((JSONArray) value).write(writer, indentFactor, indent);
+    	} else if (value instanceof Map) {
+    		Map<?, ?> map = (Map<?, ?>) value;
+    		new JSONObject(map).write(writer, indentFactor, indent);
+    	} else if (value instanceof Collection) {
+    		Collection<?> coll = (Collection<?>) value;
+    		new JSONArray(coll).write(writer, indentFactor, indent);
+    	} else if (value.getClass().isArray()) {
+    		new JSONArray(value).write(writer, indentFactor, indent);
+    	} else {
+    		quote(value.toString(), writer);
+    	}
+    	return writer;
     }
 
     static final void indent(Writer writer, int indent) throws IOException {

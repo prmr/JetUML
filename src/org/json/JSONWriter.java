@@ -321,21 +321,11 @@ public class JSONWriter {
      * @throws JSONException
      *             If the value is or contains an invalid number.
      */
-    public static String valueToString(Object value) throws JSONException {
-        if (value == null || value.equals(null)) {
+    public static String valueToString(Object value) throws JSONException
+    {
+        if (value == null || value.equals(null)) 
+        {
             return "null";
-        }
-        if (value instanceof JSONString) {
-            Object object;
-            try {
-                object = ((JSONString) value).toJSONString();
-            } catch (Exception e) {
-                throw new JSONException(e);
-            }
-            if (object instanceof String) {
-                return (String) object;
-            }
-            throw new JSONException("Bad value from toJSONString: " + object);
         }
         if (value instanceof Number) {
             // not all Numbers may match actual JSON Numbers. i.e. Fractions or Complex
