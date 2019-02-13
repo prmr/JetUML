@@ -130,15 +130,9 @@ public final class CallEdgeView extends AbstractEdgeView
 		}
 	}
 
-	private boolean isSelfEdge()
-	{
-		return edge().getEnd() instanceof CallNode && ((CallNode)edge().getEnd()).getParent() == 
-				((CallNode)edge().getStart()).getParent();
-	}
-	
 	private void drawLabel(GraphicsContext pGraphics, String pLabel)
 	{
-		if( isSelfEdge() )
+		if( edge().isSelfEdge() )
 		{
 			Point[] points = getPoints();
 			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
@@ -157,8 +151,7 @@ public final class CallEdgeView extends AbstractEdgeView
 		Rectangle start = edge().getStart().view().getBounds();
 		Rectangle end = edge().getEnd().view().getBounds();
       
-		if(edge().getEnd() instanceof CallNode && ((CallNode)edge().getEnd()).getParent() == 
-				((CallNode)edge().getStart()).getParent())
+		if( edge().isSelfEdge() )
 		{
 			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
 			Point q = new Point(end.getMaxX(), end.getY());
