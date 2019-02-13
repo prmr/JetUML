@@ -71,8 +71,6 @@ public class PropertyEditorDialog
 	
 	private Scene createScene(PropertySheet.PropertyChangeListener pPropertyChangeListener) 
 	{
-		PropertyChangeTracker tracker = new PropertyChangeTracker(aElement);
-		tracker.startTracking();
 		PropertySheet sheet = new PropertySheet(aElement, pPropertyChangeListener);
 				
 		BorderPane layout = new BorderPane();
