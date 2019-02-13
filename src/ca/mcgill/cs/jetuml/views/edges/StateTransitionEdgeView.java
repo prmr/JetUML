@@ -25,6 +25,7 @@ import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -32,7 +33,6 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -103,18 +103,18 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 			Point connectionPoint2 = getSelfEdgeConnectionPoints().getPoint2();
 			if( getPosition() == 1 )
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point2D(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()+SELF_EDGE_OFFSET, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET/4), getConnectionPoints().getPoint2());
 			}
 			else
 			{
-				ArrowHead.V.view().draw(pGraphics, new Point2D(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
-						connectionPoint2.getY()-SELF_EDGE_OFFSET), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+				ArrowHead.V.view().draw(pGraphics, new Point(connectionPoint2.getX()-SELF_EDGE_OFFSET/4, 
+						connectionPoint2.getY()-SELF_EDGE_OFFSET), getConnectionPoints().getPoint2());
 			}
 		}
 		else
 		{
-			ArrowHead.V.view().draw(pGraphics, getControlPoint(), Conversions.toPoint2D(getConnectionPoints().getPoint2()));
+			ArrowHead.V.view().draw(pGraphics, Conversions.toPoint(getControlPoint()), getConnectionPoints().getPoint2());
 		}
 	}
 	
@@ -176,14 +176,14 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
 		adjustLabelFont();
-		Rectangle bounds = getLabelBounds(aLabel);
+		Dimension textDimensions = getLabelBounds(aLabel);
 
 		int gap = 3;
 		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
 				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
 		{
 			// The label is centered if the edge is (mostly) horizontal
-			x -= bounds.getWidth() / 2;
+			x -= textDimensions.getWidth() / 2;
 		}
 		else if( line.getY1() <= line.getY2() )
 		{
@@ -191,12 +191,12 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 		}
 		else
 		{
-			x -= bounds.getWidth() + gap;
+			x -= textDimensions.getWidth() + gap;
 		}
 		
 		if( line.getX1() <= line.getX2() )
 		{
-			y -= bounds.getHeight() + gap;
+			y -= textDimensions.getHeight() + gap;
 		}
 		else
 		{
@@ -207,7 +207,7 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 		if( edge().getDiagram() != null && getPosition() > 1 )
 		{
 			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
-			delta = bounds.getHeight() - delta*RADIANS_TO_PIXELS;
+			delta = textDimensions.getHeight() - delta*RADIANS_TO_PIXELS;
 			if( line.getX1() <= line.getX2() )
 			{
 				y -= delta;
@@ -217,7 +217,7 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 				y += delta;
 			}
 		}
-		return new Rectangle2D(x, y, bounds.getWidth(), bounds.getHeight());
+		return new Rectangle2D(x, y, textDimensions.getWidth(), textDimensions.getHeight());
 }   
 	
 	/*
@@ -229,35 +229,31 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 	{
 		Line line = getConnectionPoints();
 		adjustLabelFont();
-		Rectangle dimension = getLabelBounds(aLabel);
+		Dimension textDimensions = getLabelBounds(aLabel);
 		if( getPosition() == 1 )
 		{
-			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - dimension.getWidth()/2,	
-					line.getY1() - SELF_EDGE_OFFSET*2, dimension.getWidth(), dimension.getHeight());
+			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.getWidth()/2,	
+					line.getY1() - SELF_EDGE_OFFSET*2, textDimensions.getWidth(), textDimensions.getHeight());
 		}
 		else
 		{
-			return new Rectangle2D(line.getX1() - dimension.getWidth()/2,	
-					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, dimension.getWidth(), dimension.getHeight());
+			return new Rectangle2D(line.getX1() - textDimensions.getWidth()/2,	
+					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, textDimensions.getWidth(), textDimensions.getHeight());
 		}
 	}   
 	
 	/**
-     * Gets the bounding rectangle for pString.
-     * @param pString The input string. Cannot be null.
-     * @return the bounding rectangle (with top left corner (0,0))
+     * Gets the dimensions for pString.
+     * @param pString The input string. Can be null.
+     * @return The dimensions of the string.
 	 */
-	public Rectangle getLabelBounds(String pString)
+	public Dimension getLabelBounds(String pString)
 	{
 		if(pString == null || pString.length() == 0) 
 		{
-			return new Rectangle(0, 0, 0, 0);
+			return new Dimension(0, 0);
 		}
-		
-		Bounds bounds = textBounds(pString);
-		int width = (int) Math.round(bounds.getWidth());
-		int height = (int) Math.round(bounds.getHeight());
-		return new Rectangle(0, 0, width, height);
+		return textDimensions(pString);
 	}
 	
 	private void adjustLabelFont()

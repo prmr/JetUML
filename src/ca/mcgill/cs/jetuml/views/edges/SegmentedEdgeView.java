@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -104,7 +105,7 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 		if(pCenter) 
 		{
 			textX = bounds.getWidth()/2;
-			textY = (int) (bounds.getHeight() - textBounds(pString).getHeight()/2);
+			textY = (int) (bounds.getHeight() - textDimensions(pString).getHeight()/2);
 			pGraphics.setTextBaseline(VPos.CENTER);
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
@@ -120,8 +121,13 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 	{
 		Point2D[] points = getPoints();		
 		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(), aLineStyleSupplier.get());
-		aArrowStartSupplier.get().view().draw(pGraphics, points[1], points[0]);
-		aArrowEndSupplier.get().view().draw(pGraphics, points[points.length - 2], points[points.length - 1]);
+		aArrowStartSupplier.get().view().draw(pGraphics, 
+				Conversions.toPoint(points[1]), 
+				Conversions.toPoint(points[0]));
+		
+		aArrowEndSupplier.get().view().draw(pGraphics, 
+				Conversions.toPoint(points[points.length - 2]), 
+				Conversions.toPoint(points[points.length - 1]));
 
 		drawString(pGraphics, points[1], points[0], aArrowStartSupplier.get(), aStartLabelSupplier.get(), false);
 		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelSupplier.get(), true);
@@ -176,7 +182,9 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 			}
 			if(pArrow != null)
 			{
-				Bounds arrowBounds = pArrow.view().getPath(pEndPoint1, pEndPoint2).getBoundsInLocal();
+				Bounds arrowBounds = pArrow.view().getPath(
+						Conversions.toPoint(pEndPoint1), 
+						Conversions.toPoint(pEndPoint2)).getBoundsInLocal();
 				if(pEndPoint1.getX() < pEndPoint2.getX())
 				{
 					xoff -= arrowBounds.getWidth();
@@ -208,8 +216,12 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 	{
 		Path path = getSegmentPath();
 		Point2D[] points = getPoints();
-		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(points[1], points[0]).getElements());
-		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(points[points.length - 2], points[points.length - 1]).getElements());
+		path.getElements().addAll(aArrowStartSupplier.get().view().getPath(
+				Conversions.toPoint(points[1]),
+				Conversions.toPoint(points[0])).getElements());
+		path.getElements().addAll(aArrowEndSupplier.get().view().getPath(
+				Conversions.toPoint(points[points.length - 2]), 
+				Conversions.toPoint(points[points.length - 1])).getElements());
 		return path;
 	}
 
@@ -246,10 +258,8 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 					(int)Math.round(pEndPoint2.getY()), 0, 0);
 		}
 		
-		Bounds bounds = textBounds(pString);
-		int width = (int) Math.round(bounds.getWidth());
-		int height = (int) Math.round(bounds.getHeight());
-		Rectangle stringDimensions = new Rectangle(0, 0, width, height);
+		Dimension textDimensions = textDimensions(pString);
+		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.getWidth(), textDimensions.getHeight());
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
 				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));

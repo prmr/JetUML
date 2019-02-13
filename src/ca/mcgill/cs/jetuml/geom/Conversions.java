@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
@@ -51,6 +52,17 @@ public final class Conversions
 	{
 		assert pPoint != null;
 		return new Point2D(pPoint.getX(), pPoint.getY());
+	}
+	
+	/**
+	 * @param pBounds An input bounds object.
+	 * @return A rectangle that corresponds to pBounds.
+	 * @pre pBounds != null;
+	 */
+	public static Rectangle toRectangle(Bounds pBounds)
+	{
+		assert pBounds != null;
+		return new Rectangle((int)pBounds.getMinX(), (int)pBounds.getMinY(), (int)pBounds.getWidth(), (int)pBounds.getHeight());
 	}
 	
 	/**

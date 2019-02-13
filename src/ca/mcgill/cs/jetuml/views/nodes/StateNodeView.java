@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -58,7 +59,7 @@ public final class StateNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle bounds = NAME_VIEWER.getBounds(name());
+		Dimension bounds = NAME_VIEWER.getDimension(name());
 		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
 	}

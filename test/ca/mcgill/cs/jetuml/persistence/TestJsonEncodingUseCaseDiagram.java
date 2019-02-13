@@ -94,8 +94,7 @@ public class TestJsonEncodingUseCaseDiagram
 		aGraph.addRootNode(node1);
 		aGraph.addRootNode(node2);
 		
-		UseCaseDependencyEdge edge = new UseCaseDependencyEdge();
-		edge.setType(UseCaseDependencyEdge.Type.Extend);
+		UseCaseDependencyEdge edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
 		edge.connect(node1, node2, aGraph);
 		aGraph.addEdge(edge);
 	}

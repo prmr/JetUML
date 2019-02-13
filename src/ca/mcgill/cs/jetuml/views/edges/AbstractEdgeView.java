@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.views.edges;
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -30,6 +31,9 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
@@ -59,20 +63,30 @@ public abstract class AbstractEdgeView implements EdgeView
 	}
 	
 	/**
-	 * @return The shape.
+	 * The default behavior is to draw a straight line between
+	 * the connections points oriented in the direction of each 
+	 * other node.
+	 * 
+	 * @return The shape. 
 	 */
-	protected abstract Shape getShape();
+	protected Shape getShape()
+	{
+		Line endPoints = getConnectionPoints();
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(endPoints.getX1(), endPoints.getY1()), 
+				new LineTo(endPoints.getX2(), endPoints.getY2()));
+		return path;
+	}
 	
 	/**
 	 * @param pText Some text to test.
-	 * @return A bounds object to be used as
-	 * metrics for the size of the string when rendered
-	 * in the application font.
+	 * @return The width and height of the text.
 	 */
-	protected static Bounds textBounds( String pText )
+	protected static Dimension textDimensions( String pText )
 	{
 		SIZE_TESTER.setText(pText);
-		return SIZE_TESTER.getBoundsInLocal();
+		Bounds bounds = SIZE_TESTER.getBoundsInLocal();
+		return new Dimension((int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	
 	/**
@@ -86,6 +100,7 @@ public abstract class AbstractEdgeView implements EdgeView
 	@Override
 	public boolean contains(Point pPoint)
 	{
+		// Purposefully does not include the arrow head and labels, which create large bounds.
 		Line conn = getConnectionPoints();
 		if(pPoint.distance(conn.getPoint1()) <= MAX_DISTANCE || pPoint.distance(conn.getPoint2()) <= MAX_DISTANCE)
 		{

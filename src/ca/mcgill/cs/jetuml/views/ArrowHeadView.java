@@ -28,7 +28,7 @@ import static ca.mcgill.cs.jetuml.views.ArrowHead.NONE;
 import static ca.mcgill.cs.jetuml.views.ArrowHead.TRIANGLE;
 import static ca.mcgill.cs.jetuml.views.ArrowHead.V;
 
-import javafx.geometry.Point2D;
+import ca.mcgill.cs.jetuml.geom.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -61,7 +61,7 @@ public final class ArrowHeadView
 	 * @param pPoint1 a point on the axis of the arrow head
 	 * @param pEnd the end point of the arrow head
 	 */
-	public void draw(GraphicsContext pGraphics, Point2D pPoint1, Point2D pEnd)
+	public void draw(GraphicsContext pGraphics, Point pPoint1, Point pEnd)
 	{
 		if(aArrowHead == ArrowHead.BLACK_DIAMOND || aArrowHead == BLACK_TRIANGLE) 
 		{
@@ -79,24 +79,24 @@ public final class ArrowHeadView
      * @param pEnd the end point of the arrow head
      * @return the path
      */
-   	public Path getPath(Point2D pPoint1, Point2D pEnd)
+   	public Path getPath(Point pPoint1, Point pEnd)
    	{
-   		Path path = new Path();
    		if(aArrowHead == NONE) 
    		{
-   			return path;
+   			return new Path();
    		}
    		
-   		double dx = pEnd.getX() - pPoint1.getX();
-   		double dy = pEnd.getY() - pPoint1.getY();
-   		double angle = Math.atan2(dy, dx);
-   		double x1 = pEnd.getX() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE);
-   		double y1 = pEnd.getY() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE);
-   		double x2 = pEnd.getX() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE);
-   		double y2 = pEnd.getY() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE);
+   		int dx = pEnd.getX() - pPoint1.getX();
+   		int dy = pEnd.getY() - pPoint1.getY();
+   		final double angle = Math.atan2(dy, dx);
+   		int x1 = (int) Math.round(pEnd.getX() - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   		int y1 = (int) Math.round(pEnd.getY() - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
+   		int x2 = (int) Math.round(pEnd.getX() - ARROW_LENGTH * Math.cos(angle - ARROW_ANGLE));
+   		int y2 = (int) Math.round(pEnd.getY() - ARROW_LENGTH * Math.sin(angle - ARROW_ANGLE));
 
    		MoveTo moveToOrigin = new MoveTo(pEnd.getX(), pEnd.getY());
    		LineTo lineTo1 = new LineTo(x1, y1);
+   		Path path = new Path();
    		path.getElements().addAll(moveToOrigin, lineTo1);
    		if(aArrowHead == V)
    		{
@@ -112,8 +112,8 @@ public final class ArrowHeadView
    		}
    		else if(aArrowHead == DIAMOND || aArrowHead == BLACK_DIAMOND)
    		{
-   			double x3 = x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE);
-   			double y3 = y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE);
+   			final int x3 = (int) Math.round( x2 - ARROW_LENGTH * Math.cos(angle + ARROW_ANGLE));
+   			final int y3 = (int) Math.round( y2 - ARROW_LENGTH * Math.sin(angle + ARROW_ANGLE));
    			LineTo lineTo5 = new LineTo(x3, y3);
    			LineTo lineTo6 = new LineTo(x2, y2);
    			LineTo lineTo7 = new LineTo(moveToOrigin.getX(), moveToOrigin.getY());

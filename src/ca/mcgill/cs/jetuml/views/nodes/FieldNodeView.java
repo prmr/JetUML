@@ -40,7 +40,7 @@ public final class FieldNodeView extends AbstractNodeView
 	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
-	private static final int MID_OFFSET = EQUALS_VIEWER.getBounds(EQUALS).getWidth() / 2;
+	private static final int MID_OFFSET = EQUALS_VIEWER.getDimension(EQUALS).getWidth() / 2;
 	
 	/**
 	 * @param pNode The node to wrap.
@@ -101,7 +101,7 @@ public final class FieldNodeView extends AbstractNodeView
 	 */
 	public int leftWidth()
 	{
-		return NAME_VIEWER.getBounds(name()).getWidth() + MID_OFFSET;
+		return NAME_VIEWER.getDimension(name()).getWidth() + MID_OFFSET;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public final class FieldNodeView extends AbstractNodeView
 	 */
 	public int rightWidth()
 	{
-		int rightWidth = VALUE_VIEWER.getBounds(value()).getWidth();
+		int rightWidth = VALUE_VIEWER.getDimension(value()).getWidth();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
@@ -122,8 +122,8 @@ public final class FieldNodeView extends AbstractNodeView
 	 */
 	public int getHeight()
 	{
-		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getBounds(name()).getHeight(), 
-				Math.max(VALUE_VIEWER.getBounds(value()).getHeight(), EQUALS_VIEWER.getBounds(EQUALS).getHeight())));
+		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getDimension(name()).getHeight(), 
+				Math.max(VALUE_VIEWER.getDimension(value()).getHeight(), EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
 	}
 	
 	@Override

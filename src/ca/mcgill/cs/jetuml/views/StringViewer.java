@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
@@ -41,7 +42,7 @@ public final class StringViewer
 	public static final Font FONT = Font.font("System", 12);
 	private static final Font FONT_BOLD = Font.font(FONT.getFamily(), FontWeight.BOLD, FONT.getSize());
 	
-	private static final Rectangle EMPTY = new Rectangle(0, 0, 0, 0);
+	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int HORIZONTAL_TEXT_PADDING = 3;
 	private static final int VERTICAL_TEXT_PADDING = 7;
 	
@@ -84,12 +85,13 @@ public final class StringViewer
 	}
 	
 	/**
-     * Gets the bounding rectangle for pString.
-     * @param pString The input string. Cannot be null.
-     * @return the bounding rectangle (with top left corner (0,0))
+     * Gets the width and height required to show pString, including
+     * padding around the string.
+     * @param pString The input string. 
+     * @return The dimension pString will use on the screen.
      * @pre pString != null.
 	 */
-	public Rectangle getBounds(String pString)
+	public Dimension getDimension(String pString)
 	{
 		assert pString != null;
 		if(pString.length() == 0) 
@@ -97,7 +99,7 @@ public final class StringViewer
 			return EMPTY;
 		}
 		Bounds bounds = getLabel(pString).getLayoutBounds(); 
-		return new Rectangle(0, 0, (int) Math.round(bounds.getWidth() + HORIZONTAL_TEXT_PADDING*2), 
+		return new Dimension((int) Math.round(bounds.getWidth() + HORIZONTAL_TEXT_PADDING*2), 
 				(int) Math.round(bounds.getHeight() + VERTICAL_TEXT_PADDING*2));
 	}
 	

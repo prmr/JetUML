@@ -22,31 +22,20 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import ca.mcgill.cs.jetuml.diagram.Properties;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge.Type;
 
 public class TestUseCaseDependencyEdge
 {
-	private UseCaseDependencyEdge aEdge;
-	
-	@Before
-	public void setup()
-	{
-		aEdge = new UseCaseDependencyEdge();
-	}
-	
 	@Test
 	public void testGetProperties()
 	{
-		Properties properties = aEdge.properties();
-		
-		assertEquals(Type.None, properties.get("Dependency Type").get());
-		aEdge.setType(Type.Extend);
-		properties = aEdge.properties();
-		assertEquals(Type.Extend, properties.get("Dependency Type").get());
+		UseCaseDependencyEdge edge = new UseCaseDependencyEdge();
+		assertEquals(Type.None, edge.properties().get("Dependency Type").get());
+		edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
+		assertEquals(Type.Extend, edge.properties().get("Dependency Type").get());
+		edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include);
+		assertEquals(Type.Include, edge.properties().get("Dependency Type").get());
 	}
 }

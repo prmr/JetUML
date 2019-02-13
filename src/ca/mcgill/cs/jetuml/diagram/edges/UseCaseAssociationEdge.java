@@ -28,8 +28,7 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.StraightEdgeView;
 
 /**
  *  An edge that that represents a association between use cases.
@@ -39,8 +38,6 @@ public final class UseCaseAssociationEdge extends AbstractEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				() -> LineStyle.SOLID, () -> ArrowHead.NONE, () -> ArrowHead.NONE,
-				() -> "", () -> "", () -> "");
+		return new StraightEdgeView(this, LineStyle.SOLID, ArrowHead.NONE);
 	}
 }

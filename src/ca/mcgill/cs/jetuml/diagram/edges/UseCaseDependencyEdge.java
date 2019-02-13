@@ -28,8 +28,7 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.LabeledStraightEdgeView;
 
 /**
  *  An edge that that represents a UML dependency
@@ -37,14 +36,21 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  */
 public final class UseCaseDependencyEdge extends AbstractEdge
 {
-	private static final String LABEL_INCLUDE = "\u00ABinclude\u00BB";
-	private static final String LABEL_EXTEND = "\u00ABextend\u00BB";
-	
 	/**
-	 * Type of use case dependency.
+	 * Type of use case dependency with corresponding edge label.
 	 */
 	public enum Type 
-	{None, Include, Extend}
+	{
+		None(""), Include("\u00ABinclude\u00BB"), Extend("\u00ABextend\u00BB");
+		
+		private final String aLabel;
+		
+		Type(String pLabel)
+		{ aLabel = pLabel; }
+		
+		String getLabel()
+		{ return aLabel; }
+	}
 	
 	private Type aType = Type.None;
 	
@@ -73,40 +79,6 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				() -> LineStyle.DOTTED, () -> ArrowHead.NONE,  () -> ArrowHead.V,
-				() -> "", () -> obtainMiddleLabel(), () -> "");
-	}
-	
-	/**
-	 * @return The type of dependency relation.
-	 */
-	public Type getType()
-	{
-		return aType;
-	}
-	
-	/**
-	 * @param pType The type of dependency relation.
-	 */
-	public void setType(Type pType)
-	{
-		aType = pType;
-	}
-
-	private String obtainMiddleLabel()
-	{
-		if( aType == Type.Include )
-		{
-			return LABEL_INCLUDE;
-		}
-		else if( aType == Type.Extend )
-		{
-			return LABEL_EXTEND;
-		}
-		else
-		{
-			return "";
-		}
+		return new LabeledStraightEdgeView(this, LineStyle.DOTTED, ArrowHead.V, () -> aType.getLabel());
 	}
 }

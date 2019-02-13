@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
+import static java.lang.Math.min;
+import static java.lang.Math.abs;
+
 /**
  * An immutable pair of points in the integer space.
  */
@@ -118,6 +121,15 @@ public class Line implements Cloneable
 	public Point getPoint2()
 	{
 		return aPoint2;
+	}
+	
+	/**
+	 * @return The rectangle spanning this line.
+	 */
+	public Rectangle spanning()
+	{
+		return new Rectangle(min(getX1(), getX2()), min(getY1(), getY2()), 
+				abs(getX2() - getX1()), abs(getY2() - getY1()));
 	}
 	
 	/* 

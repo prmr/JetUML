@@ -21,14 +21,10 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
 
 /**
  * A straight dotted line.
@@ -47,17 +43,5 @@ public final class NoteEdgeView extends AbstractEdgeView
 	public void draw(GraphicsContext pGraphics)
 	{
 		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(), LineStyle.DOTTED);
-	}
-	
-	
-	@Override
-	protected Shape getShape()
-	{
-		Path path = new Path();
-		Line conn = getConnectionPoints();
-		MoveTo moveTo = new MoveTo((float)conn.getX1(), (float)conn.getY1());
-		LineTo lineTo = new LineTo((float)conn.getX2(), (float)conn.getY2());
-		path.getElements().addAll(moveTo, lineTo);
-		return path;
 	}
 }

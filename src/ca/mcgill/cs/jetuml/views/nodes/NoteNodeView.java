@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -96,7 +97,7 @@ public final class NoteNodeView extends AbstractNodeView
 	@Override
 	public Rectangle getBounds()
 	{
-		Rectangle textBounds = NOTE_VIEWER.getBounds(name()); 
+		Dimension textBounds = NOTE_VIEWER.getDimension(name()); 
 		return new Rectangle(node().position().getX(), node().position().getY(), 
 				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
 	}
