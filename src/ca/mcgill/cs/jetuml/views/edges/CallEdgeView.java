@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
+import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -47,7 +48,9 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeView extends AbstractEdgeView
 {	
-	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final StringViewer CENTERED_STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+
 	private static final int SHIFT = -10;
 	
 	/**
@@ -88,7 +91,7 @@ public final class CallEdgeView extends AbstractEdgeView
 	@Override // Syntactic sugar: covariant return type.
 	public CallEdge edge()
 	{
-		return (CallEdge) edge();
+		return (CallEdge) super.edge();
 	}
 	
 	private ArrowHeadView getArrowHeadView()
@@ -102,6 +105,16 @@ public final class CallEdgeView extends AbstractEdgeView
 			return ArrowHead.V.view();
 		}
 	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		Rectangle bounds = super.getBounds();
+		Line connectionPoints = getConnectionPoints();
+		bounds = bounds.add(Conversions.toRectangle(getArrowHeadView().getPath(connectionPoints.getPoint1(), 
+					connectionPoints.getPoint2()).getBoundsInLocal()));
+		return bounds;
+	}
 
 	@Override
 	public void draw(GraphicsContext pGraphics)
@@ -113,7 +126,27 @@ public final class CallEdgeView extends AbstractEdgeView
 		String label = edge().getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints().spanning().translated(0, SHIFT));
+			drawLabel(pGraphics, label);
+		}
+	}
+
+	private boolean isSelfEdge()
+	{
+		return edge().getEnd() instanceof CallNode && ((CallNode)edge().getEnd()).getParent() == 
+				((CallNode)edge().getStart()).getParent();
+	}
+	
+	private void drawLabel(GraphicsContext pGraphics, String pLabel)
+	{
+		if( isSelfEdge() )
+		{
+			Point[] points = getPoints();
+			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pGraphics, bounds);
+		}
+		else
+		{
+			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getConnectionPoints().spanning().translated(0, SHIFT));
 		}
 	}
 	
@@ -131,6 +164,7 @@ public final class CallEdgeView extends AbstractEdgeView
 			Point q = new Point(end.getMaxX(), end.getY());
 			Point s = new Point(q.getX() + end.getWidth(), q.getY());
 			Point r = new Point(s.getX(), p.getY());
+
 			points.add(p);
 			points.add(r);
 			points.add(s);

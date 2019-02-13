@@ -33,10 +33,9 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.edges.CallEdgeView;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 import javafx.geometry.Point2D;
 
 /**
@@ -57,8 +56,9 @@ public final class CallEdge extends SingleLabelEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.SOLID,
-				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
+		return new CallEdgeView(this);
+//		return new SegmentedEdgeView(this, createSegmentationStyle(), () -> LineStyle.SOLID,
+//				() -> ArrowHead.NONE, ()->getEndArrowHead(), ()->"", ()->getMiddleLabel(), ()->"");
 	}
 	
 	/**
