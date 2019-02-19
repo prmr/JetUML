@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ContextMenu;
@@ -89,9 +90,8 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			add(new SelectableToolButton(ImageCreator.createImage(edgeTypes[i]), 
-					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
-					pToggleGroup, edgeTypes[i]));
+			add(new SelectableToolButton(RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
+					pToggleGroup, edgeTypes[i]), edgeTypes[i].view().createIcon());
 		}
 	}
 	
@@ -133,12 +133,12 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	 * 
 	 * @param pButton The button to add.
 	 */
-	private void add(ButtonBase pButton, javafx.scene.Node pImage)
+	private void add(ButtonBase pButton, Canvas pIcon)
 	{
 		assert pButton != null;
 		getItems().add( pButton );
 		MenuItem item = new MenuItem(pButton.getTooltip().getText());
-		item.setGraphic(pImage);
+		item.setGraphic(pIcon);
 		item.setOnAction(pButton.getOnAction());
 		aPopupMenu.getItems().add(item);
 	}

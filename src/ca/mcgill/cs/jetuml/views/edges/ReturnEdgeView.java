@@ -29,6 +29,12 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 /**
  * Labeled, straight edge with customized code to compute connection points.
@@ -64,5 +70,20 @@ public final class ReturnEdgeView extends LabeledStraightEdgeView
 		{
 			return new Line(new Point(start.getX(), start.getMaxY()), new Point(end.getMaxX(), start.getMaxY()));
 		}
+	}
+	
+	@Override
+	public Canvas createIcon()
+	{
+		final float scale = 0.6f;
+		final int offset = 25;
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		canvas.getGraphicsContext2D().scale(scale, scale);
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
+		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.DOTTED);
+		ArrowHead.V.view().draw(graphics, new Point((int)(BUTTON_SIZE*(1/scale)-1), offset), new Point(1, offset));
+		return canvas;
 	}
 }

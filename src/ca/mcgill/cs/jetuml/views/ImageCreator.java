@@ -23,11 +23,7 @@ package ca.mcgill.cs.jetuml.views;
 import java.util.concurrent.RejectedExecutionException;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -53,28 +49,6 @@ public final class ImageCreator
 	private ImageCreator() {}
 	
 	/**
-	 * Creates a new image to represent the given type of graph element.
-	 * 
-	 * @param pElement The element whose class to get an icon for.
-	 * @return An image for the element.
-	 * @pre pElement != null;
-	 */
-	public static Image createImage(DiagramElement pElement)
-	{
-		assert pElement != null;
-		
-		if( pElement instanceof Node )
-		{
-			return createNodeImage((Node)pElement);
-		}
-		else
-		{
-			assert pElement instanceof Edge;
-			return createEdgeImage((Edge)pElement);
-		}
-	}
-	
-	/**
 	 * Creates an image of an entire diagram, with a white border around.
 	 * @param pDiagram The diagram to create an image off.
 	 * @return An image of the diagram.
@@ -97,103 +71,6 @@ public final class ImageCreator
 		canvas.snapshot(null, image);
 		return image;
 	}
-	
-	private static Image createNodeImage( Node pNode )
-	{
-		Rectangle bounds = pNode.view().getBounds();
-		int width = bounds.getWidth();
-		int height = bounds.getHeight();
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-		double scale = Math.min(scaleX, scaleY);
-		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		graphics.scale(scale, scale);
-		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
-		graphics.setFill(Color.WHITE);
-		graphics.setStroke(Color.BLACK);
-		pNode.view().draw(graphics);
-		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
-		SnapshotParameters parameters = new SnapshotParameters();
-		parameters.setFill(Color.TRANSPARENT);
-		Platform.runLater(() -> 
-		{
-			try 
-			{
-				new Scene(new Pane(canvas));
-				canvas.snapshot(parameters, image);
-			}
-			catch (NullPointerException | RejectedExecutionException e)
-			{
-				// should only be caught in JUnit tests
-			}
-		});
-		return image;
-	}
-
-	private static Image createEdgeImage( final Edge pEdge )
-	{
-		PointNode pointNode = new PointNode();
-		pointNode.translate(OFFSET, OFFSET);
-		PointNode destination = new PointNode();
-		destination.translate(BUTTON_SIZE - OFFSET, BUTTON_SIZE - OFFSET);
-		pEdge.connect(pointNode, destination, null);
-		Rectangle bounds = new Rectangle(0, 0, 0, 0);
-		bounds = bounds.add(pointNode.view().getBounds());
-		bounds = bounds.add(destination.view().getBounds());
-		bounds = bounds.add(pEdge.view().getBounds());
-		int width = bounds.getWidth();
-		int height = bounds.getHeight();
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-		double scale = Math.min(scaleX, scaleY);
-		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		graphics.scale(scale, scale);
-		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-		graphics.setStroke(Color.BLACK);
-		pEdge.view().draw(graphics);
-		WritableImage image = new WritableImage(BUTTON_SIZE, BUTTON_SIZE);
-		SnapshotParameters parameters = new SnapshotParameters();
-		parameters.setFill(Color.TRANSPARENT);
-		Platform.runLater(() -> 
-		{
-			try 
-			{
-				new Scene(new Pane(canvas));
-				canvas.snapshot(parameters, image);
-			}
-			catch (NullPointerException | RejectedExecutionException e)
-			{
-				// should only be caught in JUnit tests
-			}
-		});
-		return image;
-	}
-	
-	/**
-	 * Creates an new icon by drawing the pView on a new canvas.
-	 * 
-	 * @param pView The view to draw to represent the icon.
-	 * @return A new instance of a Canvas with a drawing of the icon.
-	 */
-//	public static Canvas createIcon(DiagramElementView pView)
-//	{
-//		Rectangle bounds = pView.getBounds();
-//		int width = bounds.getWidth();
-//		int height = bounds.getHeight();
-//		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-//		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-//		double scale = Math.min(scaleX, scaleY);
-//		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-//		GraphicsContext graphics = canvas.getGraphicsContext2D();
-//		graphics.scale(scale, scale);
-//		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
-//		graphics.setFill(Color.WHITE);
-//		graphics.setStroke(Color.BLACK);
-//		pView.createIcon(graphics);
-//		return canvas;
-//	}
 	
 	/**
 	 * @return An image that represents the selection tool.

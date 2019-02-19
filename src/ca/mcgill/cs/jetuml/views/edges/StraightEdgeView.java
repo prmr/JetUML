@@ -23,11 +23,15 @@ package ca.mcgill.cs.jetuml.views.edges;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
@@ -75,5 +79,16 @@ public class StraightEdgeView extends AbstractEdgeView
 					connectionPoints.getPoint2()).getBoundsInLocal()));
 		}
 		return bounds;
+	}
+	
+	@Override
+	public Canvas createIcon()
+	{
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
+		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyle);
+		aArrowHead.view().draw(canvas.getGraphicsContext2D(), new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
+		return canvas;
 	}
 }

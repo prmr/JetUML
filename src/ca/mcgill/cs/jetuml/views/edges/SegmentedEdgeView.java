@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
@@ -33,6 +34,7 @@ import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -275,5 +277,19 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], 
 				aArrowEndSupplier.get(), aEndLabelSupplier.get(), false));
 		return bounds;
+	}
+	
+	@Override
+	public Canvas createIcon() 
+	{
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
+		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyleSupplier.get());
+		aArrowEndSupplier.get().view().draw(canvas.getGraphicsContext2D(), 
+				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
+		aArrowStartSupplier.get().view().draw(canvas.getGraphicsContext2D(), 
+				new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET), new Point(OFFSET, OFFSET));
+		return canvas;
 	}
 }

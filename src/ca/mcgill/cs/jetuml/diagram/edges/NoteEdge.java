@@ -21,8 +21,10 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.NoteEdgeView;
+import ca.mcgill.cs.jetuml.views.edges.StraightEdgeView;
 
 /**
  *  A dotted line that connects a note to its attachment.
@@ -32,6 +34,6 @@ public final class NoteEdge extends AbstractEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new NoteEdgeView(this);
+		return new StraightEdgeView(this, LineStyle.DOTTED, ArrowHead.NONE);
 	}
 }

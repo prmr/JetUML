@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -145,5 +146,17 @@ public final class ObjectReferenceEdgeView extends AbstractEdgeView
 		{
 			return new Line(point, edge().getEnd().view().getConnectionPoint(Direction.EAST));
 		}
+	}
+	
+	@Override
+	public Canvas createIcon()
+	{   //CSOFF: Magic numbers
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.scale(0.6, 0.6);
+		Path path = getCShape(new Line(new Point(5, 5), new Point(15,25)));
+		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
+		ArrowHead.BLACK_TRIANGLE.view().draw(graphics, new Point(20,25), new Point(15, 25));
+		return canvas;
 	}
 }

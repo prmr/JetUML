@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.views.ArrowHeadView;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -184,5 +185,20 @@ public final class CallEdgeView extends AbstractEdgeView
 			points.add(endPoint);
 		}
 		return points.toArray(new Point[points.size()]);
+	}
+	
+	@Override
+	public Canvas createIcon()
+	{
+		final float scale = 0.6f;
+		final int offset = 15;
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		canvas.getGraphicsContext2D().scale(scale, scale);
+		Path path = new Path();
+		path.getElements().addAll(new MoveTo(1, offset), new LineTo(BUTTON_SIZE*(1/scale)-1, offset));
+		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
+		ArrowHead.V.view().draw(graphics, new Point(1, offset), new Point((int)(BUTTON_SIZE*(1/scale)-1), offset));
+		return canvas;
 	}
 }

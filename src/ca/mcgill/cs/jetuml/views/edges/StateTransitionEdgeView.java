@@ -35,6 +35,7 @@ import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -439,5 +440,27 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
 		return new Line(edge().getStart().view().getConnectionPoint(d1), edge().getEnd().view().getConnectionPoint(d2));
+	}
+	
+	@Override
+	public Canvas createIcon()
+	{   //CSOFF: Magic numbers
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.scale(0.6, 0.6);
+		Line line = new Line(new Point(2,2), new Point(40,40));
+		final double tangent = Math.tan(Math.toRadians(DEGREES_10));
+		double dx = (line.getX2() - line.getX1()) / 2;
+		double dy = (line.getY2() - line.getY1()) / 2;
+		Point control = new Point((int)((line.getX1() + line.getX2()) / 2 + tangent * dy), (int)((line.getY1() + line.getY2()) / 2 - tangent * dx));         
+		
+		Path path = new Path();
+		MoveTo moveTo = new MoveTo(line.getPoint1().getX(), line.getPoint1().getY());
+		QuadCurveTo curveTo = new QuadCurveTo(control.getX(), control.getY(), line.getPoint2().getX(), line.getPoint2().getY());
+		path.getElements().addAll(moveTo, curveTo);
+		
+		ToolGraphics.strokeSharpPath(graphics, path, LineStyle.SOLID);
+		ArrowHead.V.view().draw(graphics, control, new Point(40, 40));
+		return canvas;
 	}
 }

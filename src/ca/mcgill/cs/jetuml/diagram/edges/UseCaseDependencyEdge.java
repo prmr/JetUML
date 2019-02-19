@@ -25,10 +25,13 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.LabeledStraightEdgeView;
+import javafx.scene.canvas.Canvas;
 
 /**
  *  An edge that that represents a UML dependency
@@ -79,6 +82,24 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	@Override
 	protected EdgeView generateView()
 	{
-		return new LabeledStraightEdgeView(this, LineStyle.DOTTED, ArrowHead.V, () -> aType.getLabel());
+		// Anonymous customization to distinguish between the two types of dependencies in the tool icon
+		return new LabeledStraightEdgeView(this, LineStyle.DOTTED, ArrowHead.V, () -> aType.getLabel()) 
+		{
+			@Override
+			public Canvas createIcon()
+			{
+				Canvas canvas = super.createIcon();
+				final float scale = 0.75f;
+				canvas.getGraphicsContext2D().scale(scale, scale);
+				new StringViewer(StringViewer.Align.CENTER, false, false)
+				  .draw(getIconTag(), canvas.getGraphicsContext2D(), new Rectangle(1, BUTTON_SIZE, 1, 1));
+				return canvas;
+			}
+		};
+	}
+	
+	private String getIconTag()
+	{
+		return aType.getLabel().substring(1, 2).toUpperCase();
 	}
 }

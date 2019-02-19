@@ -86,5 +86,5 @@ public class LabeledStraightEdgeView extends StraightEdgeView
 			bounds = bounds.add(getStringBounds());
 		}
 		return bounds;
-	}	
+	}
 }
