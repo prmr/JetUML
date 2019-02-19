@@ -28,56 +28,32 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
- * A selectable button in the DiagramTabToolBar. 
+ * A selectable button that wraps a creation tool represented by an 
+ * object prototype.
  */
 public class SelectableToolButton extends ToggleButton
 {
-	// If empty, indicates the "Select" tool
-	private final Optional<DiagramElement> aPrototype;
+	private static final String BUTTON_STYLE_CSS = "-fx-background-radius: 0";
+	
+	private Optional<DiagramElement> aPrototype = Optional.empty(); // If empty, indicates the "Select" tool
 	
 	/**
-	 * Creates a button to represent the "select" tool.
+	 * Creates a button with an empty tool prototype.
 	 *
-	 * @param pImage The image representing the tool.
-	 * @param pToolTip A short sentence describing the tool.
+	 * @param pIcon The button's icon.
+	 * @param pToolTip A short sentence describing the button.
 	 * @param pToggleGroup The toggle group this button is part of.
 	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
 	 */
-	public SelectableToolButton(Canvas pImage, String pToolTip, ToggleGroup pToggleGroup)
+	public SelectableToolButton(Canvas pIcon, String pToolTip, ToggleGroup pToggleGroup)
 	{
-		assert pImage != null && pToolTip != null && pToggleGroup != null;
-		setStyle("-fx-background-radius: 0");
-		aPrototype = Optional.empty();
-		setGraphic(pImage);
+		assert pIcon != null && pToolTip != null && pToggleGroup != null;
+		setStyle(BUTTON_STYLE_CSS);
+		setGraphic(pIcon);
 		setToggleGroup(pToggleGroup);
 		setSelected(true);
-		setTooltip(new Tooltip(pToolTip));
-		setAlignment(Pos.BASELINE_LEFT);
-		setOnAction( pEvent -> setSelected(true) );
-	}
-	
-	/**
-	 * Creates a button to represent a node or edge creation tool.
-	 *
-	 * @param pImage The image representing the tool.
-	 * @param pToolTip A short sentence describing the tool.
-	 * @param pToggleGroup The toggle group this button is part of.
-	 * @param pPrototype The object prototype for the creation.
-	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
-	 */
-	public SelectableToolButton(Image pImage, String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
-	{
-		// Note: we don't use a this(...) constructor call here to be able to set aPrototype to final.
-		assert pImage != null && pToolTip != null && pToggleGroup != null;
-		setStyle("-fx-background-radius: 0");
-		aPrototype = Optional.of(pPrototype);
-		setGraphic(new ImageView(pImage));
-		setToggleGroup(pToggleGroup);
-		setSelected(false);
 		setTooltip(new Tooltip(pToolTip));
 		setAlignment(Pos.BASELINE_LEFT);
 		setOnAction( pEvent -> setSelected(true) );
@@ -93,16 +69,9 @@ public class SelectableToolButton extends ToggleButton
 	 */
 	public SelectableToolButton(String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
 	{
-		// Note: we don't use a this(...) constructor call here to be able to set aPrototype to final.
-		assert pToolTip != null && pToggleGroup != null;
-		setStyle("-fx-background-radius: 0");
+		this(pPrototype.view().createIcon(), pToolTip, pToggleGroup);
 		aPrototype = Optional.of(pPrototype);
-		setGraphic(pPrototype.view().createIcon());
-		setToggleGroup(pToggleGroup);
 		setSelected(false);
-		setTooltip(new Tooltip(pToolTip));
-		setAlignment(Pos.BASELINE_LEFT);
-		setOnAction( pEvent -> setSelected(true) );
 	}
 	
 	/**
