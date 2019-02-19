@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
@@ -163,11 +162,6 @@ public final class CallEdgeView extends AbstractEdgeView
 			points.add(r);
 			points.add(s);
 			points.add(q);
-		}
-		else if(edge().getEnd() instanceof PointNode) // show nicely in tool bar
-		{
-			points.add(new Point(start.getMaxX(), start.getY()));
-			points.add(new Point(end.getX(), start.getY()));
 		}
 		else     
 		{

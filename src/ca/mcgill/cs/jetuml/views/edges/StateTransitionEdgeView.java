@@ -394,7 +394,7 @@ public final class StateTransitionEdgeView extends AbstractEdgeView
 	{
 		Line line = getConnectionPoints();
 		double tangent = Math.tan(Math.toRadians(DEGREES_10));
-		if( edge().getDiagram() != null && getPosition() > 1 )
+		if( getPosition() > 1 )
 		{
 			tangent = Math.tan(Math.toRadians(DEGREES_20));
 		}
