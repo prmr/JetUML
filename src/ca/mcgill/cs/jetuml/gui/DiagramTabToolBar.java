@@ -31,11 +31,14 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.views.ImageCreator;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.DiagramElementView;
+import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ContextMenu;
@@ -74,9 +77,19 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	
 	private void installSelectionTool(ToggleGroup pToggleGroup)
 	{
-		add(new SelectableToolButton(ImageCreator.createSelectionImage(), 
+		add(new SelectableToolButton(createSelectionIcon(), 
 									 RESOURCES.getString("toolbar.select.tooltip"), 
-									 pToggleGroup));
+									 pToggleGroup), createSelectionIcon());
+	}
+	
+	private static Canvas createSelectionIcon()
+	{
+		int offset = DiagramElementView.OFFSET + 3;
+		Canvas canvas = new Canvas(DiagramElementView.BUTTON_SIZE, DiagramElementView.BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		ToolGraphics.drawHandles(graphics, new Rectangle(offset, offset, 
+				DiagramElementView.BUTTON_SIZE - (offset*2), DiagramElementView.BUTTON_SIZE-(offset*2) ));
+		return canvas;
 	}
 	
 	private void installNodesAndEdgesTools(Diagram pGraph, ToggleGroup pToggleGroup)

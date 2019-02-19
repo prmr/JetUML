@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import javafx.geometry.Pos;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -46,12 +47,12 @@ public class SelectableToolButton extends ToggleButton
 	 * @param pToggleGroup The toggle group this button is part of.
 	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
 	 */
-	public SelectableToolButton(Image pImage, String pToolTip, ToggleGroup pToggleGroup)
+	public SelectableToolButton(Canvas pImage, String pToolTip, ToggleGroup pToggleGroup)
 	{
 		assert pImage != null && pToolTip != null && pToggleGroup != null;
 		setStyle("-fx-background-radius: 0");
 		aPrototype = Optional.empty();
-		setGraphic(new ImageView(pImage));
+		setGraphic(pImage);
 		setToggleGroup(pToggleGroup);
 		setSelected(true);
 		setTooltip(new Tooltip(pToolTip));
