@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -75,6 +76,28 @@ public class SelectableToolButton extends ToggleButton
 		setStyle("-fx-background-radius: 0");
 		aPrototype = Optional.of(pPrototype);
 		setGraphic(new ImageView(pImage));
+		setToggleGroup(pToggleGroup);
+		setSelected(false);
+		setTooltip(new Tooltip(pToolTip));
+		setAlignment(Pos.BASELINE_LEFT);
+		setOnAction( pEvent -> setSelected(true) );
+	}
+	
+	/**
+	 * Creates a button to represent a node or edge creation tool.
+	 *
+	 * @param pToolTip A short sentence describing the tool.
+	 * @param pToggleGroup The toggle group this button is part of.
+	 * @param pPrototype The object prototype for the creation.
+	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
+	 */
+	public SelectableToolButton(String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
+	{
+		// Note: we don't use a this(...) constructor call here to be able to set aPrototype to final.
+		assert pToolTip != null && pToggleGroup != null;
+		setStyle("-fx-background-radius: 0");
+		aPrototype = Optional.of(pPrototype);
+		setGraphic(ImageCreator.createIcon(pPrototype.view()));
 		setToggleGroup(pToggleGroup);
 		setSelected(false);
 		setTooltip(new Tooltip(pToolTip));

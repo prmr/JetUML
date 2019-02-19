@@ -44,6 +44,12 @@ public interface DiagramElementView
    	void draw(GraphicsContext pGraphics);
    	
    	/**
+   	 * Draw an icon that represents the element.
+     * @param pGraphics the graphics context
+   	 */
+   	void drawIcon(GraphicsContext pGraphics);
+   	
+   	/**
      * Draw selection handles around the element.
      * @param pGraphics the graphics context
 	 */

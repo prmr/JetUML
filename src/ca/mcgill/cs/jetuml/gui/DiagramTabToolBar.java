@@ -83,9 +83,8 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			add(new SelectableToolButton(ImageCreator.createImage(nodeTypes[i]), 
-					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
-					pToggleGroup, nodeTypes[i]));
+			add(new SelectableToolButton(RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
+					pToggleGroup, nodeTypes[i]), ImageCreator.createIcon(nodeTypes[i].view()));
 		}
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
@@ -125,6 +124,21 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		getItems().add( pButton );
 		MenuItem item = new MenuItem(pButton.getTooltip().getText());
 		item.setGraphic(new ImageView(((ImageView)pButton.getGraphic()).getImage()));
+		item.setOnAction(pButton.getOnAction());
+		aPopupMenu.getItems().add(item);
+	}
+	
+	/**
+	 * Adds the button to this toolbar and the corresponding context menu.
+	 * 
+	 * @param pButton The button to add.
+	 */
+	private void add(ButtonBase pButton, javafx.scene.Node pImage)
+	{
+		assert pButton != null;
+		getItems().add( pButton );
+		MenuItem item = new MenuItem(pButton.getTooltip().getText());
+		item.setGraphic(pImage);
 		item.setOnAction(pButton.getOnAction());
 		aPopupMenu.getItems().add(item);
 	}

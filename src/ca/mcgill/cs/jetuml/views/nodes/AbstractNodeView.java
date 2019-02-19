@@ -32,6 +32,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class AbstractNodeView implements NodeView
 {
+	
 	private Node aNode;
 	
 	/**
@@ -111,5 +112,11 @@ public abstract class AbstractNodeView implements NodeView
 	public void drawSelectionHandles(GraphicsContext pGraphics)
 	{
 		ToolGraphics.drawHandles(pGraphics, getBounds());		
+	}
+	
+	@Override
+	public void drawIcon(GraphicsContext pGraphics)
+	{
+		draw(pGraphics);
 	}
 }

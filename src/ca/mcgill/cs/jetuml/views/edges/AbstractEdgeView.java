@@ -143,4 +143,10 @@ public abstract class AbstractEdgeView implements EdgeView
 	{
 		ToolGraphics.drawHandles(pGraphics, getConnectionPoints());		
 	}
+	
+	@Override
+	public void drawIcon(GraphicsContext pGraphics)
+	{
+		draw(pGraphics);
+	}
 }
