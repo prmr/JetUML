@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -145,8 +146,8 @@ public abstract class AbstractEdgeView implements EdgeView
 	}
 	
 	@Override
-	public void drawIcon(GraphicsContext pGraphics)
+	public Canvas createIcon()
 	{
-		draw(pGraphics);
+		return null;
 	}
 }

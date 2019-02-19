@@ -177,23 +177,23 @@ public final class ImageCreator
 	 * @param pView The view to draw to represent the icon.
 	 * @return A new instance of a Canvas with a drawing of the icon.
 	 */
-	public static Canvas createIcon(DiagramElementView pView)
-	{
-		Rectangle bounds = pView.getBounds();
-		int width = bounds.getWidth();
-		int height = bounds.getHeight();
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-		double scale = Math.min(scaleX, scaleY);
-		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		graphics.scale(scale, scale);
-		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
-		graphics.setFill(Color.WHITE);
-		graphics.setStroke(Color.BLACK);
-		pView.drawIcon(graphics);
-		return canvas;
-	}
+//	public static Canvas createIcon(DiagramElementView pView)
+//	{
+//		Rectangle bounds = pView.getBounds();
+//		int width = bounds.getWidth();
+//		int height = bounds.getHeight();
+//		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
+//		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+//		double scale = Math.min(scaleX, scaleY);
+//		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+//		GraphicsContext graphics = canvas.getGraphicsContext2D();
+//		graphics.scale(scale, scale);
+//		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
+//		graphics.setFill(Color.WHITE);
+//		graphics.setStroke(Color.BLACK);
+//		pView.createIcon(graphics);
+//		return canvas;
+//	}
 	
 	/**
 	 * @return An image that represents the selection tool.

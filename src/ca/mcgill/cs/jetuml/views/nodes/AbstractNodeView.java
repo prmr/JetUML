@@ -25,7 +25,9 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * Basic services for drawing nodes.
@@ -115,8 +117,21 @@ public abstract class AbstractNodeView implements NodeView
 	}
 	
 	@Override
-	public void drawIcon(GraphicsContext pGraphics)
+	public Canvas createIcon()
 	{
-		draw(pGraphics);
+		Rectangle bounds = getBounds();
+		int width = bounds.getWidth();
+		int height = bounds.getHeight();
+		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
+		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+		double scale = Math.min(scaleX, scaleY);
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.scale(scale, scale);
+		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
+		graphics.setFill(Color.WHITE);
+		graphics.setStroke(Color.BLACK);
+		draw(canvas.getGraphicsContext2D());
+		return canvas;
 	}
 }

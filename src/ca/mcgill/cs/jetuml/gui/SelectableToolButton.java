@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -97,7 +96,7 @@ public class SelectableToolButton extends ToggleButton
 		assert pToolTip != null && pToggleGroup != null;
 		setStyle("-fx-background-radius: 0");
 		aPrototype = Optional.of(pPrototype);
-		setGraphic(ImageCreator.createIcon(pPrototype.view()));
+		setGraphic(pPrototype.view().createIcon());
 		setToggleGroup(pToggleGroup);
 		setSelected(false);
 		setTooltip(new Tooltip(pToolTip));

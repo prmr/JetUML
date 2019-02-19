@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.views;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -30,6 +31,9 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface DiagramElementView
 {
+	int BUTTON_SIZE = 25;
+	int OFFSET = 3;
+	
 	/**
      * Gets the smallest rectangle that bounds this element.
      * The bounding rectangle contains all labels.
@@ -44,10 +48,10 @@ public interface DiagramElementView
    	void draw(GraphicsContext pGraphics);
    	
    	/**
-   	 * Draw an icon that represents the element.
-     * @param pGraphics the graphics context
+   	 * Returns an icon that represents the element.
+     * @return A canvas object on which the icon is painted.
    	 */
-   	void drawIcon(GraphicsContext pGraphics);
+   	Canvas createIcon();
    	
    	/**
      * Draw selection handles around the element.
