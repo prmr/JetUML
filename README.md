@@ -13,7 +13,7 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 ## Download and Installation
 
-You need [Java 8 or later](https://www.java.com/en/). Download the jar file of the [latest release](https://github.com/prmr/JetUML/releases). If your OS environment supports executable jars, simply double-click the jar file to start the application. If this is not possible, your can start it from the command line with `java -jar file.jar` (where `file.jar` is the name of the JetUML jar you downloaded).
+Download the jar file of the [latest release](https://github.com/prmr/JetUML/releases). If your OS environment supports executable jars, simply double-click the jar file to start the application. If this is not possible, your can start it from the command line with `java -jar file.jar` (where `file.jar` is the name of the JetUML jar you downloaded). **JetUML requires at least Java 8** and is not yet tested with versions 9 and above.
 
 ## Privacy Policy and Feedback
 
