@@ -23,18 +23,12 @@ package ca.mcgill.cs.jetuml;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import java.util.concurrent.CountDownLatch;
-
-import ca.mcgill.cs.jetuml.application.JavaVersion;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import ca.mcgill.cs.jetuml.gui.GuiUtils;
 import javafx.application.Application;
 import javafx.application.HostServices;
-import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -43,7 +37,6 @@ import javafx.stage.Stage;
  */
 public final class UMLEditor extends Application
 {
-	private static final JavaVersion MINIMAL_JAVA_VERSION = new JavaVersion(8, 0, 0);
 	private static HostServices aHostServices; // Required to open a browser page.
 	
 	/**
@@ -51,7 +44,6 @@ public final class UMLEditor extends Application
 	 */
 	public static void main(String[] pArgs)
 	{
-		checkVersion(); 
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		launch(pArgs);
 	}
@@ -95,44 +87,5 @@ public final class UMLEditor extends Application
 		pStage.setY(defaultStageBounds.getY());
 		pStage.setWidth(defaultStageBounds.getWidth());
 		pStage.setHeight(defaultStageBounds.getHeight());
-	}
-
-	/*
-	 * Verifies that the current version of Java is equal to or 
-	 * higher than the required version, and exits with an error
-	 * message if it is not. 
-	 */
-	private static void checkVersion()
-	{
-		final JavaVersion currentVersion = new JavaVersion();
-		if( currentVersion.compareTo(MINIMAL_JAVA_VERSION) < 0 )
-		{
-			final CountDownLatch wait = new CountDownLatch(1);
-			Platform.runLater(() -> 
-			{
-				createVersionNotSupportedDialog(currentVersion).showAndWait();
-				wait.countDown();
-			});
-			try
-			{
-				wait.await();
-			}
-			catch(InterruptedException exception)
-			{} // Nothing, we want to exit anyways
-			System.exit(1);
-		}
-	}
-
-	private static Alert createVersionNotSupportedDialog(JavaVersion pCurrentVersion)
-	{
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(RESOURCES.getString("alert.error.title"));
-		alert.setHeaderText(RESOURCES.getString("alert.version.header"));
-		alert.setContentText(String.format("%s %s. %s %s.",
-				RESOURCES.getString("alert.version.required"),
-				MINIMAL_JAVA_VERSION,
-				RESOURCES.getString("alert.version.detected"),
-				pCurrentVersion));
-		return alert;
 	}
 }
