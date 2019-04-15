@@ -75,6 +75,10 @@ public class PropertyEditorDialog
 				
 		BorderPane layout = new BorderPane();
 		Button button = new Button(RESOURCES.getString("dialog.diagram_size.ok"));
+		
+		// The line below allows to click the button by using the "Enter" key, 
+		// by making it the default button, but only when it has the focus.
+		button.defaultButtonProperty().bind(button.focusedProperty());
 		button.setOnAction(pEvent -> aStage.close());
 		BorderPane.setAlignment(button, Pos.CENTER_RIGHT);
 		
