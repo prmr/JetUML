@@ -100,7 +100,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		scroll.setMaxSize(aDiagramCanvas.getWidth() + buffer, aDiagramCanvas.getHeight() + buffer);
 		layout.setCenter(scroll);
 		
-		setTitle(false);
+		setTitle();
 		setContent(layout);
 
 		setOnCloseRequest(pEvent -> 
@@ -239,25 +239,13 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	 * Sets the title of the frame as the file name if there
 	 * is a file name. 
 	 * 
-	 * @param pModified If the file is in modified (unsaved) state,
-	 * appends an asterisk to the frame title.
 	 */
-	public void setTitle(boolean pModified)
+	public void setTitle()
 	{
 		if(aFile.isPresent())
 		{
 			String title = aFile.get().getName();
-			if(pModified)
-			{
-				if(!getText().endsWith("*"))
-				{
-					setText(title + "*");
-				}
-			}
-			else
-			{
-				setText(title);
-			}
+			setText(title); 
 		}
 		else
 		{
@@ -299,7 +287,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	{
 		assert pFile != null;
 		aFile = Optional.of(pFile);
-		setTitle(false);
+		setTitle();
 	}
 
 	@Override

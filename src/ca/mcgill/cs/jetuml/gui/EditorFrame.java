@@ -622,7 +622,7 @@ public class EditorFrame extends BorderPane
 		return SwingFXUtils.fromFXImage(ImageCreator.createImage(pDiagram), null);
 	}
 	
-	private int getNumberOfDirtyDiagrams()
+	private int getNumberOfUsavedDiagrams()
 	{
 		return (int) tabs().stream()
 			.filter( tab -> tab instanceof DiagramTab ) 
@@ -636,7 +636,7 @@ public class EditorFrame extends BorderPane
 	 */
 	public void exit() 
 	{
-		final int modcount = getNumberOfDirtyDiagrams();
+		final int modcount = getNumberOfUsavedDiagrams();
 		if (modcount > 0) 
 		{
 			Alert alert = new Alert(AlertType.CONFIRMATION, 
