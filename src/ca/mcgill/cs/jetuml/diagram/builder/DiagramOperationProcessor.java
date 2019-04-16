@@ -23,16 +23,18 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Responsible for executing and undoing operations,
- * and managing the collection of previously executed
- * and undone operations.
+ * Responsible for executing and undoing operations, and managing the collection 
+ * of previously executed and undone operations. Can also compute whether a 
+ * diagram has unsaved modifications.
  */
 public class DiagramOperationProcessor
 {
 	private final List<DiagramOperation> aExecutedOperations = new ArrayList<>();
 	private final List<DiagramOperation> aUndoneOperations = new ArrayList<>();
+	private Optional<DiagramOperation> aLastSavedOperation = Optional.empty();
 	
 	/**
 	 * Executes pOperation and adds it to the list of executed
@@ -46,6 +48,45 @@ public class DiagramOperationProcessor
 		assert pOperation != null;
 		pOperation.execute();
 		aExecutedOperations.add(pOperation);
+	}
+	
+	/**
+	 * @return True if the diagram has operations that have not been saved yet.
+	 */
+	public boolean hasUnsavedOperations()
+	{
+		if( aLastSavedOperation.isPresent() )
+		{
+			if( aExecutedOperations.isEmpty() )
+			{
+				return true;
+			}
+			else
+			{
+				return aLastSavedOperation.get() != peek();
+			}
+		}
+		else
+		{
+			return !aExecutedOperations.isEmpty();
+		}
+	}
+	
+	private DiagramOperation peek()
+	{
+		return aExecutedOperations.get(aExecutedOperations.size()-1);
+	}
+	
+	/**
+	 * Indicates that the diagram managed by this processor has been saved.
+	 */
+	public void diagramSaved()
+	{
+		aLastSavedOperation = Optional.empty();
+		if( aExecutedOperations.size() > 0 )
+		{
+			aLastSavedOperation = Optional.of(peek());
+		}
 	}
 	
 	/**

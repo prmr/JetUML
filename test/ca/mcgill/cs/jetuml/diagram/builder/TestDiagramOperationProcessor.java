@@ -134,4 +134,148 @@ public class TestDiagramOperationProcessor
 		assertFalse(aProcessor.canRedo());
 		assertEquals("ABC", aBuilder.toString());
 	}
+	
+	@Test
+	public void testHasUnsavedOperations_Empty()
+	{
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testHasUnsavedOperations_False_OperationsNoSave()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testHasUnsavedOperations_False_WithSave()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.diagramSaved();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testHasUnsavedOperations_True_WithSave()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.diagramSaved();
+		assertFalse(aProcessor.hasUnsavedOperations());
+		aProcessor.executeNewOperation(createOperation('D'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testDiagramSaved_Empty()
+	{
+		aProcessor.diagramSaved();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testDiagramSaved_UndoEverything()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testDiagramSaved_UndoToSynchPoint()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.diagramSaved();
+		assertFalse(aProcessor.hasUnsavedOperations());
+		aProcessor.executeNewOperation(createOperation('B'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.executeNewOperation(createOperation('C'));
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
+	
+	
+	/*
+	 * The processor undoes one more operation than what was saved,
+	 * so technically the diagram is modified. 
+	 */
+	@Test
+	public void testDiagramSaved_UndoPastSynchPoint()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		aProcessor.diagramSaved();
+		aProcessor.executeNewOperation(createOperation('D'));
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	/*
+	 * The processor undoes more operations than what was saved,
+	 * so technically the diagram is modified even if we reach 
+	 * the bottom of the stack.
+	 */
+	@Test
+	public void testDiagramSaved_UndoPastSynchPointToEmpty()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		aProcessor.diagramSaved();
+		aProcessor.undoLastExecutedOperation();
+		aProcessor.undoLastExecutedOperation();
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testDiagramSaved_RedoFromSynchPoint()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		aProcessor.diagramSaved();
+		aProcessor.executeNewOperation(createOperation('D'));
+		aProcessor.undoLastExecutedOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+		aProcessor.redoLastUndoneOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+	}
+	
+	@Test
+	public void testDiagramSaved_RedoToSynchPoint()
+	{
+		aProcessor.executeNewOperation(createOperation('A'));
+		aProcessor.executeNewOperation(createOperation('B'));
+		aProcessor.executeNewOperation(createOperation('C'));
+		aProcessor.diagramSaved();
+		aProcessor.executeNewOperation(createOperation('D'));
+		aProcessor.undoLastExecutedOperation();
+		aProcessor.undoLastExecutedOperation();
+		assertTrue(aProcessor.hasUnsavedOperations());
+		aProcessor.redoLastUndoneOperation();
+		assertFalse(aProcessor.hasUnsavedOperations());
+	}
 }
