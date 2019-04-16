@@ -17,7 +17,7 @@ The following principles guide the development of JetUML:
 * **Violate Encapsulation for Testing:** To goal for the design is to support the highest possible level of encapsulation, and this implies the most restrictive access modifiers. When necessary, the 
 classes in the `test` source folders can use reflection to get around accessibility restrictions.
 * **No reflection:** To avoid fragile and hard-to-understand code, the project does not rely on any heavily-reflective framework, such as Javabeans. 
-* **No streaming:** The use of the [Java Streaming API](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html) is explicitly avoided. JetUML has few data-intensive operations, as diagrams typically have only a handful of elements. In this context, the downsides of streaming (harder to debug, problems with checked exceptions, dual-paradigm design) are deemed to outweigh the advantages (more compact code).
+* **No streaming:** The use of [streaming](https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html) is explicitly avoided in the interface of classes. JetUML has few data-intensive operations, as diagrams typically have only a handful of elements. In this context, the downsides of streaming (harder to debug, problems with checked exceptions, dual-paradigm design) are deemed to outweigh the advantages (more compact code). When appropriate, use of streams provided by API classes can be used if limited to the scope of a method.
 
 ## Functional View
 The functional view is split by functional concern.

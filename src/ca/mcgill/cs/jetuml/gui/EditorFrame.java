@@ -362,9 +362,9 @@ public class EditorFrame extends BorderPane
 
 	private void close() 
 	{
-		DiagramTab openFrame = getSelectedDiagramTab();
+		DiagramTab diagramTab = getSelectedDiagramTab();
 		// we only want to check attempts to close a frame
-		if (openFrame.isModified()) 
+		if( diagramTab.hasUnsavedChanges() ) 
 		{
 			// ask user if it is ok to close
 			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
@@ -375,13 +375,13 @@ public class EditorFrame extends BorderPane
 
 			if (alert.getResult() == ButtonType.YES) 
 			{
-				removeGraphFrameFromTabbedPane(openFrame);
+				removeGraphFrameFromTabbedPane(diagramTab);
 			}
 			return;
 		} 
 		else 
 		{
-			removeGraphFrameFromTabbedPane(openFrame);
+			removeGraphFrameFromTabbedPane(diagramTab);
 		}
 	}
 
@@ -393,7 +393,7 @@ public class EditorFrame extends BorderPane
 	 */
 	public void close(DiagramTab pDiagramTab) 
 	{
-		if(pDiagramTab.isModified()) 
+		if(pDiagramTab.hasUnsavedChanges()) 
 		{
 			Alert alert = new Alert(AlertType.CONFIRMATION, RESOURCES.getString("dialog.close.ok"), ButtonType.YES, ButtonType.NO);
 			alert.initOwner(aMainStage);
@@ -414,8 +414,8 @@ public class EditorFrame extends BorderPane
 
 	private void save() 
 	{
-		DiagramTab frame = getSelectedDiagramTab();
-		Optional<File> file = frame.getFile();
+		DiagramTab diagramTab = getSelectedDiagramTab();
+		Optional<File> file = diagramTab.getFile();
 		if(!file.isPresent()) 
 		{
 			saveAs();
@@ -423,8 +423,8 @@ public class EditorFrame extends BorderPane
 		}
 		try 
 		{
-			PersistenceService.save(frame.getDiagram(), file.get());
-			frame.setModified(false);
+			PersistenceService.save(diagramTab.getDiagram(), file.get());
+			diagramTab.diagramSaved();
 		} 
 		catch(IOException exception) 
 		{
@@ -436,17 +436,17 @@ public class EditorFrame extends BorderPane
 
 	private void saveAs() 
 	{
-		DiagramTab frame = (DiagramTab) getSelectedDiagramTab();
-		Diagram diagram = frame.getDiagram();
+		DiagramTab diagramTab = getSelectedDiagramTab();
+		Diagram diagram = diagramTab.getDiagram();
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
 		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
 
-		if(frame.getFile().isPresent()) 
+		if(diagramTab.getFile().isPresent()) 
 		{
-			fileChooser.setInitialDirectory(frame.getFile().get().getParentFile());
-			fileChooser.setInitialFileName(frame.getFile().get().getName());
+			fileChooser.setInitialDirectory(diagramTab.getFile().get().getParentFile());
+			fileChooser.setInitialFileName(diagramTab.getFile().get().getName());
 		} 
 		else 
 		{
@@ -465,9 +465,9 @@ public class EditorFrame extends BorderPane
 			{
 				PersistenceService.save(diagram, result);
 				addRecentFile(result.getAbsolutePath());
-				frame.setFile(result);
-				frame.setText(frame.getFile().get().getName());
-				frame.setModified(false);
+				diagramTab.setFile(result);
+				diagramTab.setText(diagramTab.getFile().get().getName());
+				diagramTab.diagramSaved();
 				File dir = result.getParentFile();
 				if( dir != null )
 				{
@@ -626,7 +626,7 @@ public class EditorFrame extends BorderPane
 	{
 		return (int) tabs().stream()
 			.filter( tab -> tab instanceof DiagramTab ) 
-			.filter( frame -> ((DiagramTab) frame).isModified())
+			.filter( frame -> ((DiagramTab) frame).hasUnsavedChanges())
 			.count();
 	}
 

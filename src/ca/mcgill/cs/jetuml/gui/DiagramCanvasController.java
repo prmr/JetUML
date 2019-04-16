@@ -67,7 +67,6 @@ public class DiagramCanvasController
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
-	private boolean aModified = false;
 	private MouseDraggedGestureHandler aHandler;
 
 	
@@ -117,21 +116,20 @@ public class DiagramCanvasController
 	}
 	
 	/**
-	 * Checks whether this graph has been modified since it was last saved.
-	 * @return true if the graph has been modified
+	 * Notify the controller that its diagram has been saved.
 	 */
-	public boolean isModified()
-	{	
-		return aModified;
-	}
-
-	/**
-	 * Sets or resets the modified flag for this graph.
-	 * @param pModified true to indicate that the graph has been modified
-	 */
-	public void setModified(boolean pModified)
+	public void diagramSaved()
 	{
-		aModified = pModified;
+		aProcessor.diagramSaved();
+	}
+	
+	/**
+	 * @return True if the diagram controlled by this controller 
+	 * has unsaved changes.
+	 */
+	public boolean hasUnsavedChanges()
+	{
+		return aProcessor.hasUnsavedOperations();
 	}
 	
 	/**
@@ -149,7 +147,6 @@ public class DiagramCanvasController
 			if(!operation.isEmpty())
 			{
 				aProcessor.storeAlreadyExecutedOperation(operation);
-				setModified(true);
 			}
 		}
 	}
@@ -341,7 +338,6 @@ public class DiagramCanvasController
 		if(aDiagramBuilder.canAdd(newNode, point))
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
-			setModified(true);
 			aSelectionModel.set(newNode);
 			aCanvas.paintPanel();
 		}
@@ -466,7 +462,6 @@ public class DiagramCanvasController
 			{
 				aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, 
 						aMouseDownPoint, pMousePoint));
-				setModified(true);
 				aSelectionModel.set(newEdge);
 				aCanvas.paintPanel();
 			}
@@ -476,7 +471,6 @@ public class DiagramCanvasController
 	
 	private void releaseMove()
 	{
-		setModified(true);
 		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagramBuilder);
 		if(!operation.isEmpty())
 		{

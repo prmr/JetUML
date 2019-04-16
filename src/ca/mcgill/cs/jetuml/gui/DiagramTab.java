@@ -266,21 +266,20 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	}
 	
 	/**
-	 * @return True if the diagram is flagged as modified.
+	 * Notify the tab that its diagram has been saved.
 	 */
-	public boolean isModified()
+	public void diagramSaved()
 	{
-		return aDiagramCanvasController.isModified();
+		aDiagramCanvasController.diagramSaved();
 	}
 	
 	/**
-	 * Sets whether the corresponding diagram should be flagged as modified.
-	 * 
-	 * @param pModified True if the diagram should be flagged as modified.
+	 * @return True if the diagram in this tab
+	 * has unsaved changes.
 	 */
-	public void setModified(boolean pModified)
+	public boolean hasUnsavedChanges()
 	{
-		aDiagramCanvasController.setModified(pModified);
+		return aDiagramCanvasController.hasUnsavedChanges();
 	}
 
 	/**
