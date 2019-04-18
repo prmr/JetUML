@@ -204,6 +204,11 @@ public class EditorFrame extends BorderPane
 				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
 				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
 						((CheckMenuItem) pEvent.getSource()).isSelected())),
+				
+				factory.createCheckMenuItem("view.autoedit_node", false, 
+						UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode),
+						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
+								((CheckMenuItem) event.getSource()).isSelected())),
 		
 				factory.createMenuItem("view.diagram_size", false, Event -> new DiagramSizeDialog(aMainStage).show())));
 	}

@@ -29,6 +29,8 @@ import java.util.Set;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
 import ca.mcgill.cs.jetuml.application.MoveTracker;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -340,6 +342,10 @@ public class DiagramCanvasController
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			aSelectionModel.set(newNode);
 			aCanvas.paintPanel();
+			if( UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode))
+			{
+				editSelected();
+			}
 		}
 		else // Special behavior, if we can't add a node, we select any element at the point
 		{
