@@ -85,9 +85,9 @@ public class DiagramCanvasController
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) aCanvas.getWidth(), (int)aCanvas.getHeight()));
 		aSelectionModel = new SelectionModel(aCanvas);
 		aToolBar = pToolBar;
-		aCanvas.setOnMousePressed(e -> mousePressed(e));
-		aCanvas.setOnMouseReleased(e -> mouseReleased(e));
-		aCanvas.setOnMouseDragged( e -> mouseDragged(e));
+		aCanvas.setOnMousePressed(this::mousePressed);
+		aCanvas.setOnMouseReleased(this::mouseReleased);
+		aCanvas.setOnMouseDragged(this::mouseDragged);
 		aHandler = pHandler;
 	}
 	
