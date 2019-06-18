@@ -19,3 +19,6 @@ Download the jar file of the [latest release](https://github.com/prmr/JetUML/rel
 
 JetUML collects no information whatsoever. We rely on you to estimate usage levels and receive feedback. If you use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
 
+## Contributing to JetUML
+
+If you are interested in getting involved in the JetUML project, please see the [Contributing Guidelines](docs/CONTRIBUTING.md).
