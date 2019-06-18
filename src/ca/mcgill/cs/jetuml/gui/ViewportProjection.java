@@ -50,7 +50,8 @@ public final class ViewportProjection
 	public ViewportProjection(int pViewportWidth, int pViewportHeight, int pCanvasWidth, int pCanvasHeight, double pHValue, double pVValue)
 	{
 		assert pViewportWidth >= 0 && pViewportHeight >=0 && pCanvasWidth >=0 && pCanvasHeight >= 0;
-		assert pViewportWidth <= pCanvasWidth && pViewportHeight <= pCanvasHeight;
+		assert pViewportWidth <= pCanvasWidth;
+		assert pViewportHeight <= pCanvasHeight;
 		assert pHValue >=0 && pHValue <= 1;
 		assert pVValue >=0 && pVValue <= 1;
 		aViewportWidth = pViewportWidth;
@@ -135,7 +136,7 @@ public final class ViewportProjection
 	 */
 	public boolean isHiddenLeft(int pX)
 	{
-		assert pX >=0 && pX <= aCanvasWidth;
+		assert pX >=0 && pX <= aCanvasWidth : "Argument expected to be between 0 and " + aCanvasWidth + " but was " + pX;
 		return pX < getHiddenLeft();
 	}
 	

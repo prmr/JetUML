@@ -302,7 +302,12 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 	{
 		ScrollPane scrollPane = (ScrollPane)((BorderPane)getContent()).getCenter();
 		Bounds bounds = scrollPane.getViewportBounds();
-		return new ViewportProjection((int) bounds.getWidth(), (int) bounds.getHeight(), 
+		// Because, when the scrollbars are not displayed, the Scrollpane will increase
+		// the viewport size beyond the canvas size, it's necessary to max out the dimensions
+		// at the size of the canvas.
+		int viewportWidth = Math.min((int) bounds.getWidth(), (int) aDiagramCanvas.getWidth());
+		int viewportHeight = Math.min((int) bounds.getHeight(), (int) aDiagramCanvas.getHeight());
+		return new ViewportProjection(viewportWidth, viewportHeight, 
 				(int) aDiagramCanvas.getWidth(), (int) aDiagramCanvas.getHeight(), 
 				scrollPane.getHvalue(), scrollPane.getVvalue());
 	}
