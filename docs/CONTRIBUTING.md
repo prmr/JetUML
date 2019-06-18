@@ -23,3 +23,22 @@ If you think you have discovered a problem with JetUML, please proceed as follow
 5. Select the label `bug` (blue tag). Leave the rest of the issue attributes empty.
 6. Complete the bug report.
 7. Click "Submit new issue".
+
+Issue reports in the JetUML project are tagged according to the following system:
+
+* **Blue** tags indicate the **type of issue**, namely whether the issue report documents a bug, requests a feature, suggests a refactoring, etc.
+* **Green** tags indicate the area of the project that is targeted by the report: test, main (production code), configuration files and resources, etc.
+* **Red** tags draw attention to certain issue reports, e.g., to flag them as questions, of issues that can use extra help.
+* **Gray** tags indicate a problem with the issue report itself.
+
+## Contributing Minor Fixes
+
+If you would like to contribute a *minor fix*, you can directly submit a [pull request](https://help.github.com/en/articles/about-pull-requests) for it. A minor fix is a code change that is very short (a few lines maximum), typically located in a single place, and that has a well-isolated impact (i.e., does not require changing anything else). Examples of minor fixes include:
+
+* Corrections of typos or inconsistencies in the documentation; 
+* Small, localized bug fixes;
+* Localized code improvements;
+ 
+## Tackling Bigger Changes
+ 
+ If you are considering contributing more than a minor fix, please comment on the corresponding issue first to share your ideas.
