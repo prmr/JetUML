@@ -20,14 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.util.Iterator;
 
 import org.junit.Test;
-
-import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 
 public class TestRecentFilesQueue 
 {

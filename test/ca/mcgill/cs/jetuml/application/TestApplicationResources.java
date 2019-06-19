@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 
