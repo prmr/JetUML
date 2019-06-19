@@ -73,31 +73,26 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		BorderPane layout = new BorderPane();
 		layout.setRight(sideBar);
 
-		// We put the diagram in a stack pane for the sole
-		// purpose of being able to decorate it with CSS
+		// We put the diagram in a fixed-size StackPane for the sole purpose of being able to
+		// decorate it with CSS. The StackPane needs to have a fixed size so the border fits the 
+		// canvas and not the parent container.
 		StackPane pane = new StackPane(aDiagramCanvas);
-		final String cssDefault = "-fx-border-color: grey;\n"
-				+ "-fx-border-insets: 4;\n"
-				+ "-fx-border-width: 1;\n"
-				+ "-fx-border-style: solid;\n";
+		final int buffer = 12; // (border insets + border width + 1)*2
+		pane.setMaxSize(aDiagramCanvas.getWidth() + buffer, aDiagramCanvas.getHeight() + buffer);
+		final String cssDefault = "-fx-border-color: grey; -fx-border-insets: 4;"
+				+ "-fx-border-width: 1; -fx-border-style: solid;";
 		pane.setStyle(cssDefault);
-		ScrollPane scroll = new ScrollPane(pane);
+		
+		// We wrap pane within an additional, resizable StackPane that can grow to fit the parent
+		// ScrollPane and thus center the decorated canvas.
+		ScrollPane scroll = new ScrollPane(new StackPane(pane));
 		
 		// The call below is necessary to removes the focus highlight around the Canvas
 		// See issue #250
 		scroll.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 
-		// We need to set the max size of the scroll pane so it do not expand to fill 
-		// the entire center region of the BorderPane, as dictated by this layout for
-		// resizable nodes.
-		// Note that the following strategy will result in a slight annoyance, namely
-		// that if one scrollbar is showing, the other one will automatically show
-		// because the extra space occupied by the scrollbar will cause the viewport to
-		// shrink in the other dimension and the max size property, required for 
-		// centering, will prevent allowing more space for it. We will have to tolerate
-		// this until a straightforward solution that retains canvas centering can be found.
-		final int buffer = 12; // (border insets + border width + 1)*2
-		scroll.setMaxSize(aDiagramCanvas.getWidth() + buffer, aDiagramCanvas.getHeight() + buffer);
+		scroll.setFitToWidth(true);
+		scroll.setFitToHeight(true);
 		layout.setCenter(scroll);
 		
 		setTitle();
