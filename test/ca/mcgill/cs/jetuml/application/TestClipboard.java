@@ -30,9 +30,9 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
@@ -67,7 +67,7 @@ public class TestClipboard
 	/**
 	 * Load JavaFX toolkit and environment.
 	 */
-	@BeforeClass
+	@BeforeAll
 	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
@@ -103,7 +103,7 @@ public class TestClipboard
 		}
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aClipboard = Clipboard.instance();		
