@@ -21,21 +21,22 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestApplicationResources 
 {
 	@Test
 	public void testStringFound()
 	{
-		assertEquals("JetUML", RESOURCES.getString("application.name"));
+		assertThat(RESOURCES.getString("application.name"), equalTo("JetUML"));
 	}
 	
 	@Test
 	public void testStringNotFound()
 	{
-		assertEquals("[Resource cannot be found]", RESOURCES.getString("zzzzzzzzzzzzzz"));
+		assertThat(RESOURCES.getString("zzzzzzzzzzzzzz"), equalTo("[Resource cannot be found]"));
 	}
 }
