@@ -20,14 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Iterator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -54,7 +54,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	private DependencyEdge aDependencyEdge;
 	private GeneralizationEdge aGeneralizationEdge;
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		super.setup();

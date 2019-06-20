@@ -20,15 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ca.mcgill.cs.jetuml.diagram.Properties;
-import ca.mcgill.cs.jetuml.diagram.Property;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestProperties
 {
@@ -36,7 +35,7 @@ public class TestProperties
 	private Stub aStub;
 	private Properties aProperties;
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aStub = new Stub();

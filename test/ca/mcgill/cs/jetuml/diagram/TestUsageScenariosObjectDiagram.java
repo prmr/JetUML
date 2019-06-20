@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -44,7 +44,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	private ObjectReferenceEdge aReferenceEdge1;
 	private ObjectReferenceEdge aReferenceEdge2;
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		super.setup();

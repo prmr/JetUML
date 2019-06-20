@@ -20,11 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ca.mcgill.cs.jetuml.diagram.Property;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 public class TestProperty
 {
