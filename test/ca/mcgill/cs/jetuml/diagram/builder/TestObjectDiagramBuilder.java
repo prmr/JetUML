@@ -57,14 +57,10 @@ public class TestObjectDiagramBuilder
 	private ObjectCollaborationEdge aCollaboration1;
 	private ObjectReferenceEdge aReference1;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

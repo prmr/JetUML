@@ -42,15 +42,11 @@ public class TestClassNode
 	private ClassNode aNode1;
 	private Graphics2D aGraphics;
 	
-	/**
-	  * Load JavaFX toolkit and environment.
-	  */
-	 @BeforeClass
-	 @SuppressWarnings("unused")
-	 public static void setupClass()
-	 {
-		 JavaFXLoader loader = JavaFXLoader.instance();
-	 }
+	@BeforeClass
+	public static void setupClass()
+	{
+		JavaFXLoader.load();
+	}
 	
 	@Before
 	public void setup()

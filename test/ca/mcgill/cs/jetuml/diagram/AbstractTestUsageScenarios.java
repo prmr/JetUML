@@ -51,14 +51,10 @@ public class AbstractTestUsageScenarios
 	private List<DiagramElement> aSelection;
 	private Clipboard aClipboard;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	protected void setup()

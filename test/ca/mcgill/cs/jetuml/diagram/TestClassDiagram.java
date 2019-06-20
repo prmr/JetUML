@@ -53,14 +53,10 @@ public class TestClassDiagram
 	private DependencyEdge aEdge2;
 	private DependencyEdge aEdge3;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

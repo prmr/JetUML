@@ -43,14 +43,10 @@ public class TestClassDiagramEdgeConstraints
 	private DependencyEdge aEdge1;
 	private GeneralizationEdge aGen1;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

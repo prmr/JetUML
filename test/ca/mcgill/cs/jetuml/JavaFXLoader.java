@@ -23,18 +23,15 @@ package ca.mcgill.cs.jetuml;
 import javafx.embed.swing.JFXPanel;
 
 /**
- * Loads JavaFX toolkit and environment.
+ * Loading this class into the JVM ensures the JavaFX toolkit
+ * is available.
  */
 @SuppressWarnings("unused")
-public class JavaFXLoader 
+public final class JavaFXLoader 
 {
-	private final static JavaFXLoader INSTANCE = new JavaFXLoader();
 	private static JFXPanel aJFXPanel = new JFXPanel();
 	
 	private JavaFXLoader() {}
 	
-	public static JavaFXLoader instance()
-	{
-		return INSTANCE;
-	}
+	public static void load() {}
 }

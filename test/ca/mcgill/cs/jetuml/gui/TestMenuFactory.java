@@ -62,13 +62,10 @@ public class TestMenuFactory
 		}
 	}
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
 	public static void setupClass()
 	{
-		JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

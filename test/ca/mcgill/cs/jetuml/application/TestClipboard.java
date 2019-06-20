@@ -64,14 +64,10 @@ public class TestClipboard
 		aEdgesField.setAccessible(true);
 	}
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeAll
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@SuppressWarnings("unchecked")

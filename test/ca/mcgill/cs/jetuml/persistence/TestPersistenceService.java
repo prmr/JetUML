@@ -71,14 +71,10 @@ public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	private int numberOfRootNodes(Diagram pDiagram)

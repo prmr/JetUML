@@ -41,14 +41,10 @@ public class TestObjectNode
 	private FieldNode aField1;
 	private FieldNode aField2;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

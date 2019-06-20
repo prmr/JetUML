@@ -46,14 +46,10 @@ public class TestSerializationContext
 	private ClassNode aClassNode3; // Child of aPackage2
 	private NoteNode aNoteNode; // Root
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

@@ -54,14 +54,10 @@ public class TestMoveTracker
 	private Field aOperationsField;
 	private DiagramBuilder aBuilder;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeAll
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@BeforeEach

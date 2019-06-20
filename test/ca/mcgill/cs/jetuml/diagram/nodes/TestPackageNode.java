@@ -43,15 +43,11 @@ public class TestPackageNode
 	private ClassNode aClass2;
 	private ClassNode aClass3;
 	
-	/**
-	  * Load JavaFX toolkit and environment.
-	  */
-	 @BeforeClass
-	 @SuppressWarnings("unused")
-	 public static void setupClass()
-	 {
-		 JavaFXLoader loader = JavaFXLoader.instance();
-	 }
+	@BeforeClass
+	public static void setupClass()
+	{
+		JavaFXLoader.load();
+	}
 	
 	@Before
 	public void setup()

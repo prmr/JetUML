@@ -40,14 +40,10 @@ public class TestDeserializationContext
 	private ClassNode aClassNode2; 
 	private ClassNode aClassNode3; 
 
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

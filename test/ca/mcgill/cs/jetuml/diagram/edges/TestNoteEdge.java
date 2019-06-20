@@ -20,15 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
@@ -39,17 +38,13 @@ public class TestNoteEdge
 	private NoteEdge aNoteEdge;
 	private ClassDiagram aGraph;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
-	@BeforeClass
-	@SuppressWarnings("unused")
+	@BeforeAll
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		// Bounds [x=0.0,y=0.0,w=60.0,h=40.0]

@@ -47,10 +47,9 @@ public class TestPropertyChangeTracker
 	  * Load JavaFX toolkit and environment.
 	  */
 	 @BeforeAll
-	 @SuppressWarnings("unused")
 	 public static void setupClass()
 	 {
-		 JavaFXLoader loader = JavaFXLoader.instance();
+		 JavaFXLoader.load();
 	 }
 	
 	public TestPropertyChangeTracker()

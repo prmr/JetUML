@@ -41,14 +41,10 @@ public class TestInterfaceNodeView
 	private InterfaceNode aNode1;
 	private Graphics2D aGraphics;
 	
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

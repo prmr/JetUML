@@ -44,14 +44,10 @@ public class TestStateDiagramEdgeConstraints
 	private FinalStateNode aFinalNode;
 	private StateTransitionEdge aEdge;
 
-	/**
-	 * Load JavaFX toolkit and environment.
-	 */
 	@BeforeClass
-	@SuppressWarnings("unused")
 	public static void setupClass()
 	{
-		JavaFXLoader loader = JavaFXLoader.instance();
+		JavaFXLoader.load();
 	}
 	
 	@Before

@@ -20,14 +20,22 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge.Type;
 
 public class TestUseCaseDependencyEdge
 {
+	@BeforeAll
+	public static void setupClass()
+	{
+		JavaFXLoader.load();
+	}
+	
 	@Test
 	public void testGetProperties()
 	{
