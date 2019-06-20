@@ -20,11 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.everyItem;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
@@ -38,21 +36,24 @@ public class TestFileExtensions
 	public void testGetAll() 
 	{
 		List<ExtensionFilter> filters = FileExtensions.getAll();
-		assertThat(filters.size(), equalTo(7));
-		assertThat(filters, everyItem(notNullValue(ExtensionFilter.class)));
+		assertEquals(7, filters.size());
+		for( ExtensionFilter filter : filters )
+		{
+			assertNotNull(filter);
+		}
 	}
 	
 	@Test
 	public void testGetOnValidInput() 
 	{
-		assertThat(FileExtensions.get("Class Diagram Files"), notNullValue());
-		assertThat(FileExtensions.get("JetUML Files"), notNullValue());
-		assertThat(FileExtensions.get("All Files"), notNullValue());
+		assertNotNull(FileExtensions.get("Class Diagram Files"));
+		assertNotNull(FileExtensions.get("JetUML Files"));
+		assertNotNull(FileExtensions.get("All Files"));
 	}
 	
 	@Test
 	public void testGetOnInvalidInput() 
 	{
-		assertThat(FileExtensions.get(""), nullValue());
+		assertNull(FileExtensions.get(""));
 	}
 }
