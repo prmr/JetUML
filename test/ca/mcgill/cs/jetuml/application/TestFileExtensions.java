@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -43,12 +45,11 @@ public class TestFileExtensions
 		}
 	}
 	
-	@Test
-	public void testGetOnValidInput() 
+	@ParameterizedTest
+	@ValueSource(strings = {"Class Diagram Files", "JetUML Files", "All Files"})
+	public void testGetOnValidInput(String pExtensionDescription) 
 	{
-		assertNotNull(FileExtensions.get("Class Diagram Files"));
-		assertNotNull(FileExtensions.get("JetUML Files"));
-		assertNotNull(FileExtensions.get("All Files"));
+		assertNotNull(FileExtensions.get(pExtensionDescription));
 	}
 	
 	@Test
