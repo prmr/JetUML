@@ -21,8 +21,8 @@
 
 package ca.mcgill.cs.jetuml.geom;
 
-import static org.junit.Assert.*;
 import static ca.mcgill.cs.jetuml.geom.Util.max;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 

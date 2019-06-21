@@ -20,12 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
-
-import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.geom.Point;
+import org.junit.jupiter.api.Test;
 
 public class TestLine
 {
