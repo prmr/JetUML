@@ -22,17 +22,17 @@ package ca.mcgill.cs.jetuml.persistence;
 
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -71,7 +71,7 @@ public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();

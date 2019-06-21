@@ -20,13 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
@@ -46,13 +46,13 @@ public class TestSerializationContext
 	private ClassNode aClassNode3; // Child of aPackage2
 	private NoteNode aNoteNode; // Root
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aGraph = new ClassDiagram();

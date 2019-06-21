@@ -23,16 +23,16 @@ package ca.mcgill.cs.jetuml.persistence;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.assertHasKeys;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Iterator;
 
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
@@ -44,13 +44,13 @@ public class TestJsonEncodingClassDiagram
 {
 	private ClassDiagram aGraph;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aGraph = new ClassDiagram();

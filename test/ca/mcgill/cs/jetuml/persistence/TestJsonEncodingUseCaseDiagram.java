@@ -25,14 +25,14 @@ import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.find;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findEdge;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
@@ -46,13 +46,13 @@ public class TestJsonEncodingUseCaseDiagram
 {
 	private UseCaseDiagram aGraph;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aGraph = new UseCaseDiagram();
