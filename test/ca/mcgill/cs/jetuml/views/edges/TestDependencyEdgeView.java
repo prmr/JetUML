@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
@@ -39,13 +39,13 @@ public class TestDependencyEdgeView
 	private DependencyEdge aEdge;
 	private ClassDiagram aDiagram;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aNode1 = new ClassNode(); // Bounds [x=0,y=0, w=100, h=60]

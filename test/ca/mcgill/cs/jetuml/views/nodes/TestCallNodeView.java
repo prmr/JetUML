@@ -20,11 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
@@ -44,13 +44,13 @@ public class TestCallNodeView
 	private CallEdge aCallEdge1;
 	private CallEdge aCallEdge2;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aDiagram = new SequenceDiagram();

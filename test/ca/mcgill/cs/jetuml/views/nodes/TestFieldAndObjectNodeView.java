@@ -20,15 +20,15 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.nodes;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
@@ -45,13 +45,13 @@ public class TestFieldAndObjectNodeView
 	private Graphics2D aGraphics;
 	private ObjectDiagram aDiagram;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aObjectNode1 = new ObjectNode();
@@ -171,7 +171,7 @@ public class TestFieldAndObjectNodeView
 		assertEquals( new Rectangle(5,70,70,20), view.getBounds());
 	}
 	
-	@After
+	@AfterEach
 	public void teardown()
 	{
 		aGraphics.dispose();
