@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.nodes;
-import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.diagram.Properties;
-import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 
 public class TestCallNode
 {
 	private CallNode aNode;
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		aNode = new CallNode();
