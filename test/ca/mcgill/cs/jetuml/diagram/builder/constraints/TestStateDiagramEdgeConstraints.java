@@ -21,12 +21,12 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.StateDiagram;
@@ -44,13 +44,13 @@ public class TestStateDiagramEdgeConstraints
 	private FinalStateNode aFinalNode;
 	private StateTransitionEdge aEdge;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setUp()
 	{
 		aDiagram = new StateDiagram();
