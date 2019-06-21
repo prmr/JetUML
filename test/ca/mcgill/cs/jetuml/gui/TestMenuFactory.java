@@ -20,16 +20,16 @@
  *******************************************************************************/
 package 	ca.mcgill.cs.jetuml.gui;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.ApplicationResources;
@@ -62,13 +62,13 @@ public class TestMenuFactory
 		}
 	}
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception
 	{
 		Constructor<?> defaultConstructor = ApplicationResources.class.getDeclaredConstructor();
