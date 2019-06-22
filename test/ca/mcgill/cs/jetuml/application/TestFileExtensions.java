@@ -20,7 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.assertThat;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasNoNullElements;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -38,11 +40,8 @@ public class TestFileExtensions
 	public void testGetAll() 
 	{
 		List<ExtensionFilter> filters = FileExtensions.getAll();
-		assertEquals(7, filters.size());
-		for( ExtensionFilter filter : filters )
-		{
-			assertNotNull(filter);
-		}
+		assertThat(filters, hasSize, 7);
+		assertThat(filters, hasNoNullElements );
 	}
 	
 	@ParameterizedTest
