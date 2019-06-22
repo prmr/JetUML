@@ -18,13 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-/**
- * 
- */
 package ca.mcgill.cs.jetuml.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -87,7 +85,9 @@ public class TestMoveTracker
 		aNode1.translate(0, 200);
 		aNode1.translate(50, 50);
 		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
-		assertEquals(1, getOperations(operation).size());
+		
+		assertThat(getOperations(operation), hasSize, 1);
+		
 		operation.undo();
 		assertEquals(150, aNode1.position().getX());
 		assertEquals(150, aNode1.position().getY());
@@ -99,7 +99,7 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(200, 0);
 		operation = aMoveTracker.endTrackingMove(aBuilder);
-		assertEquals(1, getOperations(operation).size());
+		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
 		assertEquals(220, aNode1.position().getX());
 		assertEquals(420, aNode1.position().getY());
@@ -111,7 +111,7 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 200);
 		operation = aMoveTracker.endTrackingMove(aBuilder);
-		assertEquals(1, getOperations(operation).size());
+		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
 		assertEquals(420, aNode1.position().getX());
 		assertEquals(420, aNode1.position().getY());
@@ -123,7 +123,7 @@ public class TestMoveTracker
 		aMoveTracker.startTrackingMove(aSelection);
 		aNode1.translate(0, 0);
 		operation = aMoveTracker.endTrackingMove(aBuilder);
-		assertEquals(0, getOperations(operation).size());
+		assertThat(getOperations(operation), isEmpty );
 	}
 	
 	@Test
@@ -137,7 +137,7 @@ public class TestMoveTracker
 		aNode2.translate(20, 20);
 		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
 		List<DiagramOperation> operations = getOperations(operation);
-		assertEquals(2, operations.size());
+		assertThat(operations, hasSize, 2);
 		
 		operations.get(0).undo();
 		assertEquals(150, aNode1.position().getX());
@@ -168,7 +168,7 @@ public class TestMoveTracker
 		operation = aMoveTracker.endTrackingMove(aBuilder);
 		
 		operations = getOperations(operation);
-		assertEquals(2, operations.size());
+		assertThat(operations, hasSize, 2);
 		
 		operations.get(0).undo();
 		assertEquals(170, aNode1.position().getX());
