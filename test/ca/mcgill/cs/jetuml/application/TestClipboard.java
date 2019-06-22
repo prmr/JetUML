@@ -20,7 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.assertThat;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.doesNotContain;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.extract;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsEqualTo;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsSameAs;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -112,9 +118,9 @@ public class TestClipboard
 	public void testCopySingleNodeNoReposition()
 	{
 		aClipboard.copy(Arrays.asList(aNode1));
-		assertEquals(1, getClipboardNodes().size());
-		assertFalse(getClipboardNodes().contains(aNode1)); // Clone
-		assertEquals(new Point(0,0), getClipboardNodes().get(0).position());
+		List<Node> clipboardNodes = getClipboardNodes();
+		assertThat(extract(clipboardNodes, Node::position), hasElementsEqualTo, new Point(0,0));
+		assertThat(clipboardNodes, doesNotContain, aNode1 ); // Because it's a clone
 	}
 	
 	@Test
@@ -122,9 +128,9 @@ public class TestClipboard
 	{
 		aNode1.translate(10, 10);
 		aClipboard.copy(Arrays.asList(aNode1));
-		assertEquals(1, getClipboardNodes().size());
-		assertFalse(getClipboardNodes().contains(aNode1)); // Clone
-		assertEquals(new Point(10,10), getClipboardNodes().get(0).position());
+		List<Node> clipboardNodes = getClipboardNodes();
+		assertThat(extract(clipboardNodes, Node::position), hasElementsEqualTo, new Point(10,10));
+		assertThat(clipboardNodes, doesNotContain, aNode1); // Because it's a clone
 	}
 	
 	@Test
@@ -135,14 +141,13 @@ public class TestClipboard
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aClipboard.copy(Arrays.asList(aNode1, aNode2, edge));
+		
 		List<Node> nodes = getClipboardNodes();
-		assertEquals(2, nodes.size());
-		assertEquals(new Point(10,10), nodes.get(0).position());
-		assertEquals(new Point(200,200), nodes.get(1).position());
+		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(10,10), new Point(200,200));
+
 		List<Edge> edges = getClipboardEdges();
-		assertEquals(1, edges.size());
-		assertTrue(edges.get(0).getStart() == nodes.get(0));
-		assertTrue(edges.get(0).getEnd() == nodes.get(1));
+		assertThat(extract(edges, Edge::getStart), hasElementsSameAs, nodes.get(0));
+		assertThat(extract(edges, Edge::getEnd), hasElementsSameAs, nodes.get(1));
 	}
 	
 	@Test
@@ -153,11 +158,11 @@ public class TestClipboard
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aClipboard.copy(Arrays.asList(aNode1, edge));
+		
 		List<Node> nodes = getClipboardNodes();
-		assertEquals(1, nodes.size());
-		assertEquals(new Point(10,10), nodes.get(0).position());
-		List<Edge> edges = getClipboardEdges();
-		assertEquals(0, edges.size());
+		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(10,10));
+
+		assertThat(getClipboardEdges(), isEmpty );
 	}
 	
 	@Test
@@ -168,13 +173,15 @@ public class TestClipboard
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode1, aDiagram);
 		aClipboard.copy(Arrays.asList(pn));
+		
 		List<Node> nodes = getClipboardNodes();
-		assertEquals(1, nodes.size());
+		assertThat(nodes, hasSize, 1);
+		
 		PackageNode node = (PackageNode)nodes.get(0);
-		assertEquals(1, node.getChildren().size());
-		assertEquals(new Point(0,0), nodes.get(0).position());
-		List<Edge> edges = getClipboardEdges();
-		assertEquals(0, edges.size());
+		assertThat(node.getChildren(), hasSize, 1);
+		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(0,0));
+		
+		assertThat(getClipboardEdges(), isEmpty );
 	}
 	
 	@Test
@@ -185,13 +192,15 @@ public class TestClipboard
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode1, aDiagram);
 		aClipboard.copy(Arrays.asList(aNode1));
+		
 		List<Node> nodes = getClipboardNodes();
-		assertEquals(1, nodes.size());
+		assertThat( nodes, hasSize, 1 );
+		
 		ClassNode node = (ClassNode)nodes.get(0);
 		assertNull(node.getParent());
-		assertEquals(new Point(0,0), nodes.get(0).position());
-		List<Edge> edges = getClipboardEdges();
-		assertEquals(0, edges.size());
+		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(0,0));
+		
+		assertThat(getClipboardEdges(), isEmpty );
 	}
 	
 	@Test
@@ -204,8 +213,7 @@ public class TestClipboard
 		node.addChild(field);
 		
 		aClipboard.copy(Arrays.asList(field));
-		List<Node> nodes = getClipboardNodes();
-		assertEquals(0, nodes.size());
+		assertThat( getClipboardNodes(), isEmpty ); 
 	}
 	
 	@Test
