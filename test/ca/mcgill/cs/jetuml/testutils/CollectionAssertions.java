@@ -11,12 +11,28 @@ import java.util.stream.Collectors;
  */
 public enum CollectionAssertions
 {	
+	
+	/** True is the collection is empty. Does not require any argument. */
 	isEmpty( CollectionAssertions::isEmpty ),
+	
+	/** True if the collection has the size expressed in the single argument. */
 	hasSize( CollectionAssertions::hasSize ),
+	
+	/** True if there are no null elements in the collection. */
 	hasNoNullElements( CollectionAssertions::hasNoNullElements),
+	
+	/** True if the collection contains the single argument. */
 	contains( CollectionAssertions::contains ),
+	
+	/** True if the collection does not contain the single argument. */
 	doesNotContain( CollectionAssertions::doesNotContain ),
+	
+	/** True if the elements in the collection are equal to the elements provided 
+	 * as arguments, in the same sequence */
 	hasElementsEqualTo( CollectionAssertions::hasElementsEqualTo ),
+	
+	/** True if the elements in the collection are the same as the elements provided 
+	 * as arguments, in the same sequence */
 	hasElementsSameAs( CollectionAssertions::hasElementsSameAs );
 	
 	private final BiConsumer<Collection<?>, Object[]> aAssertionMethod;
@@ -26,10 +42,18 @@ public enum CollectionAssertions
 		aAssertionMethod = pAssertionMethod;
 	}
 	
+	/**
+	 * Checks that pAssertion holds for pArguments. If it does, nothing happends
+	 * If the assertion does not hold, throws an AssertionError.
+	 * 
+	 * @param pCollection The collection to test.
+	 * @param pAssertion A descriptor for the assertion
+	 * @param pArguments The argument needed to check the assertion.
+	 */
 	public static void assertThat(Collection<?> pCollection, CollectionAssertions 
-			pAssertion, Object... pArgument) 
+			pAssertion, Object... pArguments) 
 	{
-		pAssertion.aAssertionMethod.accept(pCollection, pArgument);
+		pAssertion.aAssertionMethod.accept(pCollection, pArguments);
 	}
 	
 	private static void isEmpty(Collection<?> pCollection, Object[] pArguments)
@@ -149,8 +173,19 @@ public enum CollectionAssertions
 		return pObject1.equals(pObject2);
 	}
 	
+	/**
+	 * A convenience method to map the elements in the collection to a value 
+	 * and create a new collection from the extracted values.
+	 * 
+	 * @param <T> The type of the elements in the original collection.
+	 * @param <U> The type of the elements to extract.
+	 * @param pCollection The input collection/
+	 * @param pExtractor A function to extract the desired elements from the collection elements.
+	 * @return A collection of elements mapped from the elements in the input collection.
+	 */
 	public static <T,U> Collection<U> extract(Collection<T> pCollection, Function<T,U> pExtractor)
 	{
+		assert pCollection != null && pExtractor != null;
 		return pCollection.stream().map(pExtractor).collect(Collectors.toList());
 	}
 	
