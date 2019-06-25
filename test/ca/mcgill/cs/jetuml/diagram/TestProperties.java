@@ -20,11 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.assertThat;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.extract;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +46,14 @@ public class TestProperties
 	{
 		aStub = new Stub();
 		aProperties = new Properties();
+	}
+	
+	/* Convenience accessor */
+	private List<Property> getProperties()
+	{
+		return StreamSupport
+			.stream(aProperties.spliterator(), false)
+			.collect(Collectors.toList());
 	}
 	
 	@Test
@@ -144,10 +158,7 @@ public class TestProperties
 	{
 		aProperties.add("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertEquals(2, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test2", iterator.next().getName());
-		assertEquals("test1", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test2", "test1");
 	}
 	
 	@Test
@@ -155,10 +166,7 @@ public class TestProperties
 	{
 		aProperties.add("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertEquals(2, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test1", iterator.next().getName());
-		assertEquals("test2", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test1", "test2");
 	}
 	
 	@Test
@@ -167,11 +175,7 @@ public class TestProperties
 		aProperties.add("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test3", () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertEquals(3, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test3", iterator.next().getName());
-		assertEquals("test1", iterator.next().getName());
-		assertEquals("test2", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test3", "test1", "test2");
 	}
 	
 	@Test
@@ -180,11 +184,7 @@ public class TestProperties
 		aProperties.add("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test3", () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertEquals(3, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test1", iterator.next().getName());
-		assertEquals("test3", iterator.next().getName());
-		assertEquals("test2", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test1", "test3", "test2");
 	}
 	
 	@Test
@@ -193,11 +193,7 @@ public class TestProperties
 		aProperties.add("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test3", () -> aStub.aValue, val -> aStub.aValue = (String) val, 2);
-		assertEquals(3, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test1", iterator.next().getName());
-		assertEquals("test2", iterator.next().getName());
-		assertEquals("test3", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test1", "test2", "test3");
 	}
 	
 	@Test
@@ -207,12 +203,7 @@ public class TestProperties
 		aProperties.add("test2", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt("test3", () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
 		aProperties.add("test4", () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		assertEquals(4, size());
-		Iterator<Property> iterator = aProperties.iterator();
-		assertEquals("test1", iterator.next().getName());
-		assertEquals("test3", iterator.next().getName());
-		assertEquals("test2", iterator.next().getName());
-		assertEquals("test4", iterator.next().getName());
+		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test1", "test3", "test2", "test4");
 	}
 	
 	@Test
