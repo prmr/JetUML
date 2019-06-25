@@ -22,8 +22,8 @@ package ca.mcgill.cs.jetuml.views.edges;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
@@ -53,7 +53,7 @@ public class TestSegmentationStrategies
 		JavaFXLoader.load();
 	}
 	
-	@Before
+	@BeforeEach
 	public void setup()
 	{
 		// Default-sized node rooted at (30,30)
