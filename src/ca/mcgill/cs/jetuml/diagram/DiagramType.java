@@ -147,4 +147,15 @@ public enum DiagramType
 	{
 		return aViewer;
 	}
+	
+	/**
+	 * @param pDiagram The diagram for which we want a viewer.
+	 * @return The DiagramViewer instance registered for this type of diagram.
+	 * @pre pDiagram != null;
+	 */
+	public static DiagramViewer viewerFor(Diagram pDiagram) 
+	{
+		assert pDiagram != null;
+		return typeOf(pDiagram).viewer();
+	}
 }

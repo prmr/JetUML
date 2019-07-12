@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +34,6 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
@@ -47,7 +48,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.DiagramView;
+import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
 /**
  * Wrapper around a Diagram that provides the logic for converting
@@ -63,7 +64,6 @@ public abstract class DiagramBuilder
 	private static final int DEFAULT_DIMENSION = 1000;
 	
 	protected final Diagram aDiagram;
-	private final DiagramView aDiagramView;
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
 	/**
@@ -76,16 +76,14 @@ public abstract class DiagramBuilder
 	{
 		assert pDiagram != null;
 		aDiagram = pDiagram;
-		aDiagramView = DiagramType.newViewInstanceFor(aDiagram);
 	}
 	
 	/**
-	 * @return The DiagramView used by this builder to compute
-	 * the diagram geometry.
+	 * @return The diagram wrapped by this builder.
 	 */
-	public DiagramView getView()
+	public final Diagram getDiagram()
 	{
-		return aDiagramView;
+		return aDiagram;
 	}
 	
 	/**
@@ -143,8 +141,10 @@ public abstract class DiagramBuilder
 	public final boolean canAdd(Edge pEdge, Point pStart, Point pEnd)
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
-		Optional<Node> startNode = aDiagramView.findNode(pStart);
-		Optional<Node> endNode = aDiagramView.findNode(pEnd);
+		
+		final DiagramViewer viewer = viewerFor(aDiagram);
+		Optional<Node> startNode = viewer.findNode(aDiagram, pStart);
+		Optional<Node> endNode = viewer.findNode(aDiagram, pEnd);
 		
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -418,8 +418,10 @@ public abstract class DiagramBuilder
 	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
-		Node node1 = aDiagramView.findNode(pStart).get();
-		Optional<Node> node2in = aDiagramView.findNode(pEnd);
+		DiagramViewer viewer = viewerFor(aDiagram);
+		
+		Node node1 = viewer.findNode(aDiagram, pStart).get();
+		Optional<Node> node2in = viewer.findNode(aDiagram, pEnd);
 		Node node2 = null;
 		if( node2in.isPresent() )
 		{

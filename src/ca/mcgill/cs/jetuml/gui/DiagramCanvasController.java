@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -158,13 +160,13 @@ public class DiagramCanvasController
 	 */
 	public void paste()
 	{
-		if( !Clipboard.instance().validPaste(aDiagramBuilder.getView().getDiagram()))
+		if( !Clipboard.instance().validPaste(aDiagramBuilder.getDiagram()))
 		{
 			return;
 		}
 		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		if(!aSelectionModel.isEmpty() && aDiagramBuilder.getView().isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+		if(!aSelectionModel.isEmpty() && viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
@@ -273,10 +275,11 @@ public class DiagramCanvasController
 	private Optional<? extends DiagramElement> getSelectedElement(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		Optional<? extends DiagramElement> element = aDiagramBuilder.getView().findEdge(mousePoint);
+		Optional<? extends DiagramElement> element = viewerFor(aDiagramBuilder.getDiagram()).findEdge(aDiagramBuilder.getDiagram(), mousePoint);
 		if(!element.isPresent())
 		{
-			element = aDiagramBuilder.getView().findNode(new Point(mousePoint.getX(), mousePoint.getY())); 
+			element = viewerFor(aDiagramBuilder.getDiagram())
+					.findNode(aDiagramBuilder.getDiagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}
