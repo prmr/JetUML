@@ -24,9 +24,9 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.DiagramView;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.Canvas;
@@ -40,22 +40,23 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 {	
 	private static final double LINE_WIDTH = 0.6;
 	
-	private DiagramView aDiagramView;
+	private final Diagram aDiagram;
 	private DiagramCanvasController aController;
 	
 	/**
-	 * Constructs the canvas, assigns the diagram view to it.
+	 * Constructs the canvas, assigns the diagram to it.
 	 * 
-	 * @param pDiagramView Rhe diagram view to draw on this canvas.
+	 * @param pDiagram The diagram to draw on this canvas.
 	 * @param pDimension The width and height of the canvas.
-	 * @pre pDimension != null;
+	 * @pre pDiagram != null && pDimension != null;
 	 */
-	public DiagramCanvas(DiagramView pDiagramView, Dimension pDimension)
+	public DiagramCanvas(Diagram pDiagram, Dimension pDimension)
 	{
 		super(pDimension.getWidth(), pDimension.getHeight());
+		assert pDiagram != null && pDimension != null;
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
-		aDiagramView = pDiagramView;
+		aDiagram = pDiagram;
 	}
 	
 	/**
@@ -79,7 +80,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public Diagram getDiagram()
 	{
-		return aDiagramView.getDiagram();
+		return aDiagram;
 	}
 	
 	/**
@@ -95,7 +96,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		aDiagramView.draw(context);
+		DiagramType.viewerFor(aDiagram).draw(aDiagram, context);
 		aController.synchronizeSelectionModel();
 		aController.getSelectionModel().forEach( selected -> selected.view().drawSelectionHandles(context));
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
