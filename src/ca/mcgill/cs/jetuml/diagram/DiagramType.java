@@ -26,9 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
-import ca.mcgill.cs.jetuml.views.DiagramView;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
-import ca.mcgill.cs.jetuml.views.SequenceDiagramView;
 import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 
 
@@ -38,22 +36,20 @@ import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
  */
 public enum DiagramType
 {
-	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
-	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, SequenceDiagramView.class, new SequenceDiagramViewer()), 
-	STATE(StateDiagram.class, StateDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
-	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
-	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, DiagramView.class, new DiagramViewer());
+	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, new DiagramViewer()), 
+	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, new SequenceDiagramViewer()), 
+	STATE(StateDiagram.class, StateDiagramBuilder.class, new DiagramViewer()), 
+	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, new DiagramViewer()), 
+	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, new DiagramViewer());
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
-	private final Class<?> aViewClass;
 	private final DiagramViewer aViewer;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, Class<?> pViewClass, DiagramViewer pViewer)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
-		aViewClass = pViewClass;
 		aViewer = pViewer;
 	}
 	
@@ -112,40 +108,12 @@ public enum DiagramType
 	}
 	
 	/**
-	 * @param pDiagram The diagram for which we want to create a view.
-	 * @return A new instance of a view for this diagram type.
-	 * @pre pDiagram != null
-	 */
-	public static DiagramView newViewInstanceFor(Diagram pDiagram)
-	{
-		assert pDiagram != null;
-		try
-		{
-			return (DiagramView) typeOf(pDiagram).aViewClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			assert false;
-			return null;
-		}
-	}
-	
-	/**
 	 * @return The name of the handler, which is the simple name of the corresponding
 	 * class in all lower case.
 	 */
 	public String getName()
 	{
 		return aClass.getSimpleName().toLowerCase();
-	}
-	
-	/**
-	 * @return A DiagramViewer object that can be used with this type
-	 * of diagram.
-	 */
-	public DiagramViewer viewer()
-	{
-		return aViewer;
 	}
 	
 	/**
@@ -156,6 +124,6 @@ public enum DiagramType
 	public static DiagramViewer viewerFor(Diagram pDiagram) 
 	{
 		assert pDiagram != null;
-		return typeOf(pDiagram).viewer();
+		return typeOf(pDiagram).aViewer;
 	}
 }
