@@ -26,9 +26,10 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
-
 import ca.mcgill.cs.jetuml.views.DiagramView;
+import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.SequenceDiagramView;
+import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 
 
 /**
@@ -37,21 +38,23 @@ import ca.mcgill.cs.jetuml.views.SequenceDiagramView;
  */
 public enum DiagramType
 {
-	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, DiagramView.class), 
-	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, SequenceDiagramView.class), 
-	STATE(StateDiagram.class, StateDiagramBuilder.class, DiagramView.class), 
-	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, DiagramView.class), 
-	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, DiagramView.class);
+	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
+	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, SequenceDiagramView.class, new SequenceDiagramViewer()), 
+	STATE(StateDiagram.class, StateDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
+	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, DiagramView.class, new DiagramViewer()), 
+	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, DiagramView.class, new DiagramViewer());
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final Class<?> aViewClass;
+	private final DiagramViewer aViewer;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, Class<?> pViewClass)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, Class<?> pViewClass, DiagramViewer pViewer)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewClass = pViewClass;
+		aViewer = pViewer;
 	}
 	
 	/**
@@ -134,5 +137,14 @@ public enum DiagramType
 	public String getName()
 	{
 		return aClass.getSimpleName().toLowerCase();
+	}
+	
+	/**
+	 * @return A DiagramViewer object that can be used with this type
+	 * of diagram.
+	 */
+	public DiagramViewer viewer()
+	{
+		return aViewer;
 	}
 }
