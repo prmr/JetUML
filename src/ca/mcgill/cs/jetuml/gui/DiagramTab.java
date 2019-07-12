@@ -22,18 +22,14 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
 
 import java.io.File;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
-import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -45,11 +41,6 @@ import javafx.scene.layout.StackPane;
  */
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 {	
-	/* The number of pixels to leave around a diagram when the canvas size
-	 * is automatically increased to accommodate a diagram larger than the 
-	 * preferred size. */
-	private static final int DIMENSION_BUFFER = 20;
-	
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -64,7 +55,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		aDiagram = pDiagram;
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, getDiagramCanvasWidth(pDiagram));
+		aDiagramCanvas = new DiagramCanvas(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar, this);
 		aDiagramCanvas.setController(aDiagramCanvasController);
@@ -104,49 +95,6 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
-	}
-	
-	/*
-	 * If the diagram is smaller than the preferred dimension, return
-	 * the preferred dimension. Otherwise, grow the dimensions to accomodate
-	 * the diagram.
-	 */
-	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
-	{
-		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
-		return new Dimension(
-				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
-				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
-	}
-	
-	private static int getPreferredDiagramWidth()
-	{
-		int preferredWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
-		if( preferredWidth == 0 )
-		{
-			int width = GuiUtils.defaultDiagramWidth();
-			UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, width);
-			return width;
-		}
-		else
-		{
-			return preferredWidth;
-		}
-	}
-	
-	private static int getPreferredDiagramHeight()
-	{
-		int preferredHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
-		if( preferredHeight == 0 )
-		{
-			int height = GuiUtils.defaultDiagramHeight();
-			UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, height);
-			return height;
-		}
-		else
-		{
-			return preferredHeight;
-		}
 	}
 	
 	/**

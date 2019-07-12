@@ -20,9 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
+
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -39,6 +42,10 @@ import javafx.scene.paint.Color;
 public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler
 {	
 	private static final double LINE_WIDTH = 0.6;
+	/* The number of pixels to leave around a diagram when the canvas size
+	 * is automatically increased to accommodate a diagram larger than the 
+	 * preferred size. */
+	private static final int DIMENSION_BUFFER = 20;
 	
 	private final Diagram aDiagram;
 	private DiagramCanvasController aController;
@@ -47,13 +54,14 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * Constructs the canvas, assigns the diagram to it.
 	 * 
 	 * @param pDiagram The diagram to draw on this canvas.
-	 * @param pDimension The width and height of the canvas.
-	 * @pre pDiagram != null && pDimension != null;
+	 * @pre pDiagram != null;
 	 */
-	public DiagramCanvas(Diagram pDiagram, Dimension pDimension)
+	public DiagramCanvas(Diagram pDiagram)
 	{
-		super(pDimension.getWidth(), pDimension.getHeight());
-		assert pDiagram != null && pDimension != null;
+		assert pDiagram != null;
+		Dimension dimension = getDiagramCanvasWidth(pDiagram);
+		setWidth(dimension.getWidth());
+		setHeight(dimension.getHeight());
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
 		aDiagram = pDiagram;
@@ -115,6 +123,49 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		if( pPreference == BooleanPreference.showGrid )
 		{
 			paintPanel();
+		}
+	}
+	
+	/*
+	 * If the diagram is smaller than the preferred dimension, return
+	 * the preferred dimension. Otherwise, grow the dimensions to accomodate
+	 * the diagram.
+	 */
+	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
+	{
+		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
+		return new Dimension(
+				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
+				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
+	}
+	
+	private static int getPreferredDiagramWidth()
+	{
+		int preferredWidth = UserPreferences.instance().getInteger(IntegerPreference.diagramWidth);
+		if( preferredWidth == 0 )
+		{
+			int width = GuiUtils.defaultDiagramWidth();
+			UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, width);
+			return width;
+		}
+		else
+		{
+			return preferredWidth;
+		}
+	}
+	
+	private static int getPreferredDiagramHeight()
+	{
+		int preferredHeight = UserPreferences.instance().getInteger(IntegerPreference.diagramHeight);
+		if( preferredHeight == 0 )
+		{
+			int height = GuiUtils.defaultDiagramHeight();
+			UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, height);
+			return height;
+		}
+		else
+		{
+			return preferredHeight;
 		}
 	}
 }
