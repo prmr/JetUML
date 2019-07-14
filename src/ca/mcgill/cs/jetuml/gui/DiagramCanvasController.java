@@ -429,7 +429,7 @@ public class DiagramCanvasController
 		}
 		else if(aDragMode == DragMode.DRAG_MOVE)
 		{
-			alignMoveToGrid(getMousePoint(pEvent));
+			alignMoveToGrid();
 			releaseMove();
 		}
 		else if( aDragMode == DragMode.DRAG_LASSO )
@@ -442,7 +442,7 @@ public class DiagramCanvasController
 	/*
 	 * Move by a delta that will align the result of the move gesture with the grid.
 	 */
-	private void alignMoveToGrid(Point pMousePoint)
+	private void alignMoveToGrid()
 	{
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
 		if( selectedNodes.hasNext() )
