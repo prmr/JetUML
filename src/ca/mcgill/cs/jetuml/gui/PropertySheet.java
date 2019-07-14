@@ -217,7 +217,7 @@ public class PropertySheet extends GridPane
 		try 
 		{
 			Enum<?>[] enumValues = (Enum<?>[])value.getClass().getMethod("values").invoke(null);
-			final ComboBox<Enum<?>> comboBox = new ComboBox<Enum<?>>(FXCollections.observableArrayList(enumValues));
+			final ComboBox<Enum<?>> comboBox = new ComboBox<>(FXCollections.observableArrayList(enumValues));
 			
 			comboBox.getSelectionModel().select(value);
 			comboBox.valueProperty().addListener((pObservable, pOldValue, pNewValue) -> 

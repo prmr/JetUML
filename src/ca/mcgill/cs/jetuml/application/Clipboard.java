@@ -53,8 +53,8 @@ public final class Clipboard
 {
 	private static final Clipboard INSTANCE = new Clipboard();
 	
-	private List<Node> aNodes = new ArrayList<Node>();
-	private List<Edge> aEdges = new ArrayList<Edge>();
+	private List<Node> aNodes = new ArrayList<>();
+	private List<Edge> aEdges = new ArrayList<>();
 
 	/**
 	 * Creates an empty clip-board.
@@ -94,9 +94,9 @@ public final class Clipboard
 	 */
 	public Iterable<DiagramElement> getElements()
 	{
-		List<Edge> clonedEdges = copyEdges(new ArrayList<DiagramElement>(aEdges));
-		List<Node> clonedNodes = copyNodes(clonedEdges, new ArrayList<DiagramElement>(aNodes));
-		List<DiagramElement> result = new ArrayList<DiagramElement>();
+		List<Edge> clonedEdges = copyEdges(new ArrayList<>(aEdges));
+		List<Node> clonedNodes = copyNodes(clonedEdges, new ArrayList<>(aNodes));
+		List<DiagramElement> result = new ArrayList<>();
 		result.addAll(clonedEdges);
 		result.addAll(clonedNodes);
 		return result;

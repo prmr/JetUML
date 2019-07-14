@@ -62,7 +62,7 @@ public final class ControlFlow
 	public List<Node> getCallees(Node pNode)
 	{
 		assert pNode != null && aDiagram.contains(pNode);
-		List<Node> callees = new ArrayList<Node>();
+		List<Node> callees = new ArrayList<>();
 		for(Edge edge : aDiagram.edges() )
 		{
 			if ( edge.getStart() == pNode && edge.getClass() == CallEdge.class )
