@@ -261,10 +261,10 @@ public class DiagramCanvasController
 	
 	private Rectangle computeLasso()
 	{
-		return new Rectangle((int) Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
-						     (int) Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
-						     (int) Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()) , 
-						     (int) Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
+		return new Rectangle(Math.min(aMouseDownPoint.getX(), aLastMousePoint.getX()), 
+						     Math.min(aMouseDownPoint.getY(), aLastMousePoint.getY()), 
+						     Math.abs(aMouseDownPoint.getX() - aLastMousePoint.getX()) , 
+						     Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
 	}
 	
 	private Point getMousePoint(MouseEvent pEvent)
@@ -464,7 +464,7 @@ public class DiagramCanvasController
 	private void releaseRubberband(Point pMousePoint)
 	{
 		assert aToolBar.getCreationPrototype().isPresent();
-		Edge newEdge = (Edge) ((Edge) aToolBar.getCreationPrototype().get()).clone();
+		Edge newEdge = ((Edge) aToolBar.getCreationPrototype().get()).clone();
 		if(pMousePoint.distance(aMouseDownPoint) > CONNECT_THRESHOLD )
 		{
 			if( aDiagramBuilder.canAdd(newEdge, aMouseDownPoint, pMousePoint))
@@ -540,8 +540,8 @@ public class DiagramCanvasController
 	{
 		assert !aSelectionModel.isEmpty();
 		
-		int dx = (int)(pMousePoint.getX() - aLastMousePoint.getX());
-		int dy = (int)(pMousePoint.getY() - aLastMousePoint.getY());
+		int dx = pMousePoint.getX() - aLastMousePoint.getX();
+		int dy = pMousePoint.getY() - aLastMousePoint.getY();
 
 		// Ensure the selection does not exceed the canvas bounds
 		Rectangle bounds = aSelectionModel.getSelectionBounds();

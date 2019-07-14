@@ -344,11 +344,11 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return (int)(otherNode1.view().getBounds().getCenter().getY() - otherNode2.view().getBounds().getCenter().getY());
+				return otherNode1.view().getBounds().getCenter().getY() - otherNode2.view().getBounds().getCenter().getY();
 			}
 			else
 			{
-				return (int)(otherNode1.view().getBounds().getCenter().getX() - otherNode2.view().getBounds().getCenter().getX());
+				return otherNode1.view().getBounds().getCenter().getX() - otherNode2.view().getBounds().getCenter().getX();
 			}
 		});
 	}

@@ -121,7 +121,7 @@ public final class Clipboard
 		{
 			if( element instanceof Edge )
 			{	
-				result.add((Edge)((Edge) element).clone());
+				result.add(((Edge) element).clone());
 			}
 		}
 		return result;

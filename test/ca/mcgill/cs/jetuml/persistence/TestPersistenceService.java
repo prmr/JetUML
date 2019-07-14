@@ -348,7 +348,7 @@ public class TestPersistenceService
 		
 		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class1"));
 		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
-		ClassNode node3 = (ClassNode) (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class2"));
+		ClassNode node3 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class2"));
 		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class3"));
 		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "Package"));
 		NoteNode node5 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());

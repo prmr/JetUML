@@ -128,7 +128,7 @@ public abstract class AbstractNodeView implements NodeView
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(scale, scale);
-		graphics.translate((int) Math.max((height - width) / 2, 0), (int)Math.max((width - height) / 2, 0));
+		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
 		draw(canvas.getGraphicsContext2D());

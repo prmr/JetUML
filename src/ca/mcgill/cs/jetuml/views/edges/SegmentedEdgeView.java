@@ -107,7 +107,7 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 		if(pCenter) 
 		{
 			textX = bounds.getWidth()/2;
-			textY = (int) (bounds.getHeight() - textDimensions(pString).getHeight()/2);
+			textY = bounds.getHeight() - textDimensions(pString).getHeight()/2;
 			pGraphics.setTextBaseline(VPos.CENTER);
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
@@ -264,7 +264,7 @@ public final class SegmentedEdgeView extends AbstractEdgeView
 		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.getWidth(), textDimensions.getHeight());
 		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
-				(int) Math.round(stringDimensions.getWidth()), (int)Math.round(stringDimensions.getHeight()));
+				Math.round(stringDimensions.getWidth()), Math.round(stringDimensions.getHeight()));
 	}
 	
 	@Override

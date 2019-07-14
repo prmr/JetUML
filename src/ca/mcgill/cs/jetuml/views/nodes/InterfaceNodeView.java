@@ -69,7 +69,7 @@ public class InterfaceNodeView extends AbstractNodeView
 		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
 				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
 		NAME_VIEWER.draw(name(), pGraphics, top);		
-		Rectangle mid = new Rectangle((int) top.getX(), (int) top.getMaxY(), (int) top.getWidth(), middleHeight());
+		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
 		if(middleHeight() > 0) 
 		{
 			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY(), LineStyle.SOLID);

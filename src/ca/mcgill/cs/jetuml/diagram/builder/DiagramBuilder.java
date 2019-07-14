@@ -292,11 +292,11 @@ public abstract class DiagramBuilder
 			else
 			{
 				FieldNode field = (FieldNode) element;
-				if( !fields.containsKey((ObjectNode)field.getParent()))
+				if( !fields.containsKey(field.getParent()))
 				{
 					fields.put((ObjectNode)field.getParent(), new ArrayList<>());
 				}
-				fields.get((ObjectNode)field.getParent()).add(field);
+				fields.get(field.getParent()).add(field);
 			}
 		}
 		for( ObjectNode object : fields.keySet() )
