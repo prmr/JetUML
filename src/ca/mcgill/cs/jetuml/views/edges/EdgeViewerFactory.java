@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
@@ -34,6 +35,14 @@ import javafx.scene.canvas.Canvas;
 public final class EdgeViewerFactory
 {
 	private EdgeViewerFactory() {}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with NoteEdge instances.
+	 */
+	public static EdgeViewer createNoteEdgeViewer()
+	{
+		return new StraightEdgeViewer(LineStyle.DOTTED, ArrowHead.NONE);
+	}
 	
 	/**
 	 * @return A new EdgeViewer instance to be used with UseCaseAssociationEdge instances.
@@ -79,10 +88,19 @@ public final class EdgeViewerFactory
 	}
 	
 	/**
-	 * @return A new EdgeViewer instance to be used with UseCaseGeneralizationEdge instances.
+	 * @return A new EdgeViewer instance to be used with ObjectReferenceEdge instances.
 	 */
 	public static EdgeViewer createObjectReferenceEdgeViewer()
 	{
 		return new ObjectReferenceEdgeViewer();
+	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with ObjectCollaborationEdge instances.
+	 */
+	public static EdgeViewer createObjectCollaborationEdgeViewer()
+	{
+		return new LabeledStraightEdgeViewer(LineStyle.SOLID, ArrowHead.NONE, 
+				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
 	}
 }
