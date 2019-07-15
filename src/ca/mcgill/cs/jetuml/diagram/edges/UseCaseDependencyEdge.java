@@ -51,7 +51,7 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 		Type(String pLabel)
 		{ aLabel = pLabel; }
 		
-		String getLabel()
+		public String getLabel()
 		{ return aLabel; }
 	}
 	
@@ -70,6 +70,14 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	public UseCaseDependencyEdge(Type pType)
 	{
 		aType = pType;
+	}
+	
+	/**
+	 * @return The type of this dependency edge.
+	 */
+	public Type getType()
+	{
+		return aType;
 	}
 	
 	@Override
