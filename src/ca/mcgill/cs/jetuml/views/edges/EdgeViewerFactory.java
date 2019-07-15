@@ -77,4 +77,12 @@ public final class EdgeViewerFactory
 			}
 		};
 	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with UseCaseGeneralizationEdge instances.
+	 */
+	public static EdgeViewer createObjectReferenceEdgeViewer()
+	{
+		return new ObjectReferenceEdgeViewer();
+	}
 }
