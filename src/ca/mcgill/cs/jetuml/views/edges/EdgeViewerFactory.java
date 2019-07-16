@@ -103,4 +103,12 @@ public final class EdgeViewerFactory
 		return new LabeledStraightEdgeViewer(LineStyle.SOLID, ArrowHead.NONE, 
 				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
 	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with StateTransitionEdge instances.
+	 */
+	public static EdgeViewer createStateTransitionEdgeViewer()
+	{
+		return new StateTransitionEdgeViewer();
+	}
 }
