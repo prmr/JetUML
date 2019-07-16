@@ -111,4 +111,20 @@ public final class EdgeViewerFactory
 	{
 		return new StateTransitionEdgeViewer();
 	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with ReturnEdge instances.
+	 */
+	public static EdgeViewer createReturnEdgeViewer()
+	{
+		return new ReturnEdgeViewer();
+	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with CallEdge instances.
+	 */
+	public static EdgeViewer createCallEdgeViewer()
+	{
+		return new CallEdgeViewer();
+	}
 }
