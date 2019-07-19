@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
@@ -162,5 +163,15 @@ public final class EdgeViewerFactory
 				e -> ((GeneralizationEdge)e).getLineStyle(), e -> ArrowHead.NONE, e -> ArrowHead.TRIANGLE,
 				e -> ((GeneralizationEdge)e).getStartLabel(), e -> ((GeneralizationEdge)e).getMiddleLabel(), 
 				e -> ((GeneralizationEdge)e).getEndLabel());
+	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with AggregationEdge instances.
+	 */
+	public static EdgeViewer createAggregationEdgeViewer()
+	{
+		return new SegmentedEdgeViewer(SegmentationStyleFactory.createHVHStrategy(),
+				e -> LineStyle.SOLID, e -> ((AggregationEdge)e).getStartArrowHead(), e -> ArrowHead.NONE,
+				e -> ((AggregationEdge)e).getStartLabel(), e -> ((AggregationEdge)e).getMiddleLabel(), e -> ((AggregationEdge)e).getEndLabel());
 	}
 }

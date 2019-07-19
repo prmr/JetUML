@@ -93,7 +93,10 @@ public final class AggregationEdge extends ClassRelationshipEdge
 		properties().add("Aggregation Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 	
-	private ArrowHead getStartArrowHead()
+	/**
+	 * @return The start arrow head
+	 */
+	public ArrowHead getStartArrowHead()
 	{
 		if( aType == Type.Composition )
 		{
