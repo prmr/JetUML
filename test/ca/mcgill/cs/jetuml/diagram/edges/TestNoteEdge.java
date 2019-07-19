@@ -22,11 +22,9 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
@@ -37,12 +35,6 @@ public class TestNoteEdge
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
 	private ClassDiagram aGraph;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
 	
 	@BeforeEach
 	public void setup()
