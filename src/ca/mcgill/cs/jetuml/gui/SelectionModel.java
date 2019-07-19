@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.views.ViewerUtilities;
 
 /**
  * Encapsulates all state related to the selection feature of a diagram canvas.
@@ -83,10 +84,10 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		Optional<DiagramElement> lastSelected = getLastSelected();
 		assert lastSelected.isPresent();
-		Rectangle bounds = lastSelected.get().view().getBounds();
+		Rectangle bounds = ViewerUtilities.getBounds(lastSelected.get());
 		for(DiagramElement selected : aSelected )
 		{
-			bounds = bounds.add(selected.view().getBounds());
+			bounds = bounds.add(ViewerUtilities.getBounds(selected));
 		}
 		return bounds;
 	}

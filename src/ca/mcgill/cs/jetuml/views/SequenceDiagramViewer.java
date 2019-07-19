@@ -73,9 +73,9 @@ public class SequenceDiagramViewer extends DiagramViewer
 		{
 			if (newElementBounds == null) 
 			{
-				newElementBounds = element.view().getBounds();
+				newElementBounds = ViewerUtilities.getBounds(element);
 			}
-			newElementBounds = newElementBounds.add(element.view().getBounds());
+			newElementBounds = newElementBounds.add(ViewerUtilities.getBounds(element));
 		}
 		if (newElementBounds == null)
 		{

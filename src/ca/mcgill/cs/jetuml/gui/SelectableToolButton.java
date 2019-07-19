@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.views.ViewerUtilities;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ToggleButton;
@@ -69,7 +70,7 @@ public class SelectableToolButton extends ToggleButton
 	 */
 	public SelectableToolButton(String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
 	{
-		this(pPrototype.view().createIcon(), pToolTip, pToggleGroup);
+		this(ViewerUtilities.createIcon(pPrototype), pToolTip, pToggleGroup);
 		aPrototype = Optional.of(pPrototype);
 		setSelected(false);
 	}
