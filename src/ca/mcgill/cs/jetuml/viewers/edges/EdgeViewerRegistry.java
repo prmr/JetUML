@@ -30,19 +30,19 @@ public final class EdgeViewerRegistry
 	
 	private EdgeViewerRegistry() 
 	{
-		aRegistry.put(NoteEdge.class, EdgeViewerFactory.createNoteEdgeViewer());
-		aRegistry.put(UseCaseAssociationEdge.class, EdgeViewerFactory.createUseCaseAssociationEdgeViewer());
-		aRegistry.put(UseCaseGeneralizationEdge.class, EdgeViewerFactory.createUseCaseGeneralizationEdgeViewer());
-		aRegistry.put(UseCaseDependencyEdge.class, EdgeViewerFactory.createUseCaseDependencyEdgeViewer());
-		aRegistry.put(ObjectReferenceEdge.class, EdgeViewerFactory.createObjectReferenceEdgeViewer());
-		aRegistry.put(ObjectCollaborationEdge.class, EdgeViewerFactory.createObjectCollaborationEdgeViewer());
-		aRegistry.put(StateTransitionEdge.class, EdgeViewerFactory.createStateTransitionEdgeViewer());
-		aRegistry.put(ReturnEdge.class, EdgeViewerFactory.createReturnEdgeViewer());
-		aRegistry.put(CallEdge.class, EdgeViewerFactory.createCallEdgeViewer());
-		aRegistry.put(DependencyEdge.class, EdgeViewerFactory.createDependencyEdgeViewer());
-		aRegistry.put(AssociationEdge.class, EdgeViewerFactory.createAssociationEdgeViewer());
-		aRegistry.put(GeneralizationEdge.class, EdgeViewerFactory.createGeneralizationEdgeViewer());
-		aRegistry.put(AggregationEdge.class, EdgeViewerFactory.createAggregationEdgeViewer());
+		aRegistry.put(NoteEdge.class, new NoteEdgeViewer());
+		aRegistry.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
+		aRegistry.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
+		aRegistry.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
+		aRegistry.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
+		aRegistry.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
+		aRegistry.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
+		aRegistry.put(ReturnEdge.class, new ReturnEdgeViewer());
+		aRegistry.put(CallEdge.class, new CallEdgeViewer());
+		aRegistry.put(DependencyEdge.class, new DependencyEdgeViewer());
+		aRegistry.put(AssociationEdge.class,  new AssociationEdgeViewer());
+		aRegistry.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());
+		aRegistry.put(AggregationEdge.class, new AggregationEdgeViewer());
 	}
 	
 	/**

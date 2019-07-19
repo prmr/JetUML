@@ -47,7 +47,7 @@ import javafx.scene.text.TextAlignment;
 /**
  * Renders edges as a path consisting of straight line segments.
  */
-public final class SegmentedEdgeViewer extends AbstractEdgeViewer
+public class SegmentedEdgeViewer extends AbstractEdgeViewer
 {
 	private Function<Edge, LineStyle> aLineStyleExtractor;
 	private Function<Edge, ArrowHead> aArrowStartExtractor;
