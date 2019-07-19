@@ -39,7 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 
 /**
  * A builder for sequence diagrams.

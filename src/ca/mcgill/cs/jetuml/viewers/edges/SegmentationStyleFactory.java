@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.views.edges;
+package ca.mcgill.cs.jetuml.viewers.edges;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle.Side;
+import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle.Side;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 import javafx.geometry.Point2D;
 

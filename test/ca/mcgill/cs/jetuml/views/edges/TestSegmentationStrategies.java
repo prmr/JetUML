@@ -36,6 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge.Type;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 import javafx.geometry.Point2D;
 
 public class TestSegmentationStrategies 

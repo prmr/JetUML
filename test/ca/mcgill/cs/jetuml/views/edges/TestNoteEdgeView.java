@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

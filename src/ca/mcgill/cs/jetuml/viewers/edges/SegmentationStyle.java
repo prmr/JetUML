@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.views.edges;
+package ca.mcgill.cs.jetuml.viewers.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;

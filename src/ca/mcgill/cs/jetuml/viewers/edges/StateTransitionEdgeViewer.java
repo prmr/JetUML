@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views.edges;
+package ca.mcgill.cs.jetuml.viewers.edges;
 
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 

@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import static ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;

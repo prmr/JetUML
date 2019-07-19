@@ -25,8 +25,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
+import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle;
+import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 
 /**
  *  An edge that that represents a UML dependency

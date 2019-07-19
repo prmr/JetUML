@@ -31,6 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 
 public class TestDependencyEdgeView
 {

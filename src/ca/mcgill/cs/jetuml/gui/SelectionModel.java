@@ -33,8 +33,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ViewerUtilities;
-import ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry;
 
 /**
  * Encapsulates all state related to the selection feature of a diagram canvas.

@@ -20,9 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
-import static ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;

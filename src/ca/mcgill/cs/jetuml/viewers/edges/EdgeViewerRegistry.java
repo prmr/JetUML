@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.views.edges;
+package ca.mcgill.cs.jetuml.viewers.edges;
 
 import java.util.IdentityHashMap;
 
