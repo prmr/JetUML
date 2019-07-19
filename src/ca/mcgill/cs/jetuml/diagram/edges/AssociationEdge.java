@@ -78,7 +78,10 @@ public final class AssociationEdge extends ClassRelationshipEdge
 				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
 	}
 	
-	private ArrowHead getStartArrowHead()
+	/**
+	 * @return The arrow end at the start of this edge.
+	 */
+	public ArrowHead getStartArrowHead()
 	{
 		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
 		{
@@ -90,7 +93,10 @@ public final class AssociationEdge extends ClassRelationshipEdge
 		}
 	}
 	
-	private ArrowHead getEndArrowHead()
+	/**
+	 * @return The arrow end at the end of this edge.
+	 */
+	public ArrowHead getEndArrowHead()
 	{
 		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
 		{
