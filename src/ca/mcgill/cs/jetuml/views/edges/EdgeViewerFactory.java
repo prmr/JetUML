@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.views.edges;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -126,5 +127,17 @@ public final class EdgeViewerFactory
 	public static EdgeViewer createCallEdgeViewer()
 	{
 		return new CallEdgeViewer();
+	}
+	
+	/**
+	 * @return A new EdgeViewer instance to be used with DependencyEdge instances.
+	 */
+	public static EdgeViewer createDependencyEdgeViewer()
+	{
+		return new SegmentedEdgeViewer(SegmentationStyleFactory.createStraightStrategy(),
+				e -> LineStyle.DOTTED, e -> ArrowHead.NONE, e -> ArrowHead.V,
+				e -> ((DependencyEdge)e).getStartLabel(), 
+				e -> ((DependencyEdge)e).getMiddleLabel(), 
+				e -> ((DependencyEdge)e).getEndLabel());
 	}
 }
