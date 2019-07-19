@@ -21,7 +21,9 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge.Type;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.views.LineStyle;
 
 /**
  * A straight solid line with triangle arrow decoration.
@@ -34,8 +36,23 @@ public final class GeneralizationEdgeViewer extends SegmentedEdgeViewer
 	public GeneralizationEdgeViewer()
 	{
 		super(SegmentationStyleFactory.createVHVStrategy(),
-				e -> ((GeneralizationEdge)e).getLineStyle(), e -> ArrowHead.NONE, e -> ArrowHead.TRIANGLE,
+				e -> getLineStyle((GeneralizationEdge)e), e -> ArrowHead.NONE, e -> ArrowHead.TRIANGLE,
 				e -> ((GeneralizationEdge)e).getStartLabel(), e -> ((GeneralizationEdge)e).getMiddleLabel(), 
 				e -> ((GeneralizationEdge)e).getEndLabel());
+	}
+	
+	/**
+	 * @return The line style for this edge.
+	 */
+	private static LineStyle getLineStyle(GeneralizationEdge pEdge)
+	{
+		if( pEdge.getType() == Type.Implementation )
+		{
+			return LineStyle.DOTTED;
+		}
+		else
+		{
+			return LineStyle.SOLID;
+		}
 	}
 }

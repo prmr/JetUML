@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge.Type;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 
@@ -35,7 +36,22 @@ public final class AggregationEdgeViewer extends SegmentedEdgeViewer
 	public AggregationEdgeViewer()
 	{
 		super(SegmentationStyleFactory.createHVHStrategy(),
-				e -> LineStyle.SOLID, e -> ((AggregationEdge)e).getStartArrowHead(), e -> ArrowHead.NONE,
+				e -> LineStyle.SOLID, e -> getStartArrowHead((AggregationEdge)e), e -> ArrowHead.NONE,
 				e -> ((AggregationEdge)e).getStartLabel(), e -> ((AggregationEdge)e).getMiddleLabel(), e -> ((AggregationEdge)e).getEndLabel());
+	}
+	
+	/**
+	 * @return The start arrow head
+	 */
+	private static ArrowHead getStartArrowHead(AggregationEdge pEdge)
+	{
+		if( pEdge.getType() == Type.Composition )
+		{
+			return ArrowHead.BLACK_DIAMOND;
+		}
+		else
+		{
+			return ArrowHead.DIAMOND;
+		}
 	}
 }

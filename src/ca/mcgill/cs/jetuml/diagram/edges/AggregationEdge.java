@@ -25,8 +25,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-
 /**
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
@@ -78,20 +76,5 @@ public final class AggregationEdge extends ThreeLabelEdge
 	{
 		super.buildProperties();
 		properties().add("Aggregation Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
-	}
-	
-	/**
-	 * @return The start arrow head
-	 */
-	public ArrowHead getStartArrowHead()
-	{
-		if( aType == Type.Composition )
-		{
-			return ArrowHead.BLACK_DIAMOND;
-		}
-		else
-		{
-			return ArrowHead.DIAMOND;
-		}
 	}
 }

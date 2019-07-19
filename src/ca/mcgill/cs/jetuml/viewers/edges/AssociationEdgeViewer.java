@@ -21,6 +21,8 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge.Directionality;
+import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 
 /**
@@ -34,7 +36,37 @@ public final class AssociationEdgeViewer extends SegmentedEdgeViewer
 	public AssociationEdgeViewer()
 	{
 		super(SegmentationStyleFactory.createHVHStrategy(),
-				e -> LineStyle.SOLID, e -> ((AssociationEdge)e).getStartArrowHead(), e -> ((AssociationEdge)e).getEndArrowHead(),
+				e -> LineStyle.SOLID, e -> getStartArrowHead((AssociationEdge)e), e -> getEndArrowHead((AssociationEdge)e),
 				e -> ((AssociationEdge)e).getStartLabel(), e -> ((AssociationEdge)e).getMiddleLabel(), e -> ((AssociationEdge)e).getEndLabel());
+	}
+	
+	/**
+	 * @return The arrow end at the start of this edge.
+	 */
+	private static ArrowHead getStartArrowHead(AssociationEdge pEdge)
+	{
+		if( pEdge.getDirectionality() == Directionality.Both || pEdge.getDirectionality() == Directionality.Start )
+		{
+			return ArrowHead.V;
+		}
+		else
+		{
+			return ArrowHead.NONE;
+		}
+	}
+	
+	/**
+	 * @return The arrow end at the end of this edge.
+	 */
+	private static ArrowHead getEndArrowHead(AssociationEdge pEdge)
+	{
+		if( pEdge.getDirectionality() == Directionality.Both || pEdge.getDirectionality() == Directionality.End )
+		{
+			return ArrowHead.V;
+		}
+		else
+		{
+			return ArrowHead.NONE;
+		}
 	}
 }

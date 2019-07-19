@@ -25,8 +25,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-
 /**
  *  An edge that that represents a UML association, with optional 
  *  labels and directionality.
@@ -63,35 +61,5 @@ public final class AssociationEdge extends ThreeLabelEdge
 		super.buildProperties();
 		properties().add("directionality", () -> aDirectionality, 
 				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
-	}
-	
-	/**
-	 * @return The arrow end at the start of this edge.
-	 */
-	public ArrowHead getStartArrowHead()
-	{
-		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.Start )
-		{
-			return ArrowHead.V;
-		}
-		else
-		{
-			return ArrowHead.NONE;
-		}
-	}
-	
-	/**
-	 * @return The arrow end at the end of this edge.
-	 */
-	public ArrowHead getEndArrowHead()
-	{
-		if( aDirectionality == Directionality.Both || aDirectionality == Directionality.End )
-		{
-			return ArrowHead.V;
-		}
-		else
-		{
-			return ArrowHead.NONE;
-		}
 	}
 }

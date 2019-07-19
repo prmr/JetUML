@@ -25,8 +25,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.LineStyle;
-
 /**
  *  An edge that that represents a UML generalization (inheritance
  *  or implementation), with optional labels.
@@ -79,20 +77,5 @@ public final class GeneralizationEdge extends ThreeLabelEdge
 	{
 		super.buildProperties();
 		properties().add("Generalization Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
-	}
-	
-	/**
-	 * @return The line style for this edge.
-	 */
-	public LineStyle getLineStyle()
-	{
-		if( aType == Type.Implementation )
-		{
-			return LineStyle.DOTTED;
-		}
-		else
-		{
-			return LineStyle.SOLID;
-		}
 	}
 }
