@@ -65,7 +65,7 @@ public class TestDependencyEdgeView
 	@Test
 	public void testEdgeViewBounds()
 	{
-		assertEquals(new Rectangle(99,23,102,12), EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(aEdge).getBounds(aEdge));
+		assertEquals(new Rectangle(99,23,102,12), EdgeViewerRegistry.getBounds(aEdge));
 
 	}
 }

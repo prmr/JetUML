@@ -16,6 +16,11 @@ import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
+import ca.mcgill.cs.jetuml.geom.Line;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Keeps track of the association between and edge type and the viewer
@@ -23,7 +28,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
  */
 public final class EdgeViewerRegistry
 {	
-	public static final EdgeViewerRegistry EDGE_VIEWER_REGISTRY = new EdgeViewerRegistry();
+	private static final EdgeViewerRegistry INSTANCE = new EdgeViewerRegistry();
 	
 	private IdentityHashMap<Class<? extends Edge>, EdgeViewer> aRegistry = 
 			new IdentityHashMap<>();
@@ -50,9 +55,78 @@ public final class EdgeViewerRegistry
 	 * @return A viewer for pEdge
 	 * @pre pEdge != null;
 	 */
-	public EdgeViewer viewerFor(Edge pEdge)
+	private EdgeViewer viewerFor(Edge pEdge)
 	{
 		assert pEdge != null && aRegistry.containsKey(pEdge.getClass());
 		return aRegistry.get(pEdge.getClass());
 	}
+	
+   	/**
+     * Tests whether pEdge contains a point.
+     * @param pEdge the edge to test
+     * @param pPoint the point to test
+     * @return true if this element contains aPoint
+     */
+	public static boolean contains(Edge pEdge, Point pPoint)
+	{
+		return INSTANCE.viewerFor(pEdge).contains(pEdge, pPoint);
+	}
+	
+  	/**
+   	 * Returns an icon that represents pEdge.
+   	 * @param pEdge The edge for which we need an icon.
+     * @return A canvas object on which the icon is painted.
+     * @pre pEdge != null
+   	 */
+   	public static Canvas createIcon(Edge pEdge)
+   	{
+   		return INSTANCE.viewerFor(pEdge).createIcon(pEdge);
+   	}
+   	
+	/**
+     * Draws pEdge.
+     * @param pEdge The edge to draw.
+     * @param pGraphics the graphics context
+     * @pre pEdge != null
+	 */
+   	public static void draw(Edge pEdge, GraphicsContext pGraphics)
+   	{
+   		INSTANCE.viewerFor(pEdge).draw(pEdge, pGraphics);
+   	}
+   	
+   	/**
+     * Draw selection handles around pEdge.
+     * @param pEdge The target edge
+     * @param pGraphics the graphics context
+     * @pre pEdge != null && pGraphics != null
+	 */
+   	public static void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics)
+   	{
+   		INSTANCE.viewerFor(pEdge).drawSelectionHandles(pEdge, pGraphics);
+   	}
+   	
+	/**
+     * Gets the smallest rectangle that bounds pEdge.
+     * The bounding rectangle contains all labels.
+     * @param pEdge The edge whose bounds we wish to compute.
+     * @return the bounding rectangle
+     * @pre pEdge != null
+   	 */
+	public static Rectangle getBounds(Edge pEdge)
+	{
+		return INSTANCE.viewerFor(pEdge).getBounds(pEdge);
+	}
+	
+  	/**
+     * Gets the points at which pEdge is connected to
+     * its nodes.
+     * @param pEdge The target edge
+     * @return a line joining the two connection points
+     * @pre pEdge != null
+     * 
+     */
+   	public static Line getConnectionPoints(Edge pEdge)
+   	{
+		return INSTANCE.viewerFor(pEdge).getConnectionPoints(pEdge);
+   	}
 }

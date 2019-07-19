@@ -20,12 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
-import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
-
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -53,7 +52,7 @@ public final class ViewerUtilities
 		else
 		{
 			assert pElement instanceof Edge;
-			EDGE_VIEWER_REGISTRY.viewerFor((Edge)pElement).drawSelectionHandles((Edge)pElement, pContext);
+			EdgeViewerRegistry.drawSelectionHandles((Edge)pElement, pContext);
 		}
 	}
 	
@@ -74,7 +73,7 @@ public final class ViewerUtilities
 		else
 		{
 			assert pElement instanceof Edge;
-			return EDGE_VIEWER_REGISTRY.viewerFor((Edge)pElement).getBounds((Edge)pElement);
+			return EdgeViewerRegistry.getBounds((Edge)pElement);
 		}
 	}
 	
@@ -93,7 +92,7 @@ public final class ViewerUtilities
 		else
 		{
 			assert pElement instanceof Edge;
-			return EDGE_VIEWER_REGISTRY.viewerFor((Edge)pElement).createIcon((Edge)pElement);
+			return EdgeViewerRegistry.createIcon((Edge)pElement);
 		}
 	}
 }

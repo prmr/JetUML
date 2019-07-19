@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.persistence;
 
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
-import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.getBounds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -76,11 +76,6 @@ public class TestPersistenceService
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
-	}
-	
-	private static Rectangle getBounds(Edge pEdge)
-	{
-		return EDGE_VIEWER_REGISTRY.viewerFor(pEdge).getBounds(pEdge);
 	}
 	
 	private int numberOfRootNodes(Diagram pDiagram)

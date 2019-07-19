@@ -146,7 +146,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	private void selectEdge(Edge pEdge, Rectangle pLasso )
 	{
-		if(pLasso.contains(EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(pEdge).getBounds(pEdge)))
+		if(pLasso.contains(EdgeViewerRegistry.getBounds(pEdge)))
 		{
 			internalAddToSelection(pEdge);
 		}		

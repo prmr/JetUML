@@ -211,7 +211,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
 		{
-			if( EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(callee).getConnectionPoints(callee).getY1() > pY )
+			if( EdgeViewerRegistry.getConnectionPoints(callee).getY1() > pY )
 			{
 				return aDiagram.indexOf(callee);
 			}

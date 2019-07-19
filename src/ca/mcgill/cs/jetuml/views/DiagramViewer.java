@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.views;
 
-import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
-
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -32,6 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -53,7 +52,7 @@ public class DiagramViewer
 	{
 		assert pDiagram != null && pGraphics != null;
 		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		pDiagram.edges().forEach(edge -> EDGE_VIEWER_REGISTRY.viewerFor(edge).draw(edge, pGraphics));
+		pDiagram.edges().forEach(edge -> EdgeViewerRegistry.draw(edge, pGraphics));
 	}
 	
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
@@ -79,7 +78,7 @@ public class DiagramViewer
 		assert pDiagram != null && pPoint != null;
 		for(Edge edge : pDiagram.edges())
 		{
-			if(EDGE_VIEWER_REGISTRY.viewerFor(edge).contains(edge, pPoint))
+			if(EdgeViewerRegistry.contains(edge, pPoint))
 			{
 				return Optional.of(edge);
 			}
@@ -171,7 +170,7 @@ public class DiagramViewer
 		}
 		for(Edge edge : pDiagram.edges())
 		{
-			bounds = bounds.add(EDGE_VIEWER_REGISTRY.viewerFor(edge).getBounds(edge));
+			bounds = bounds.add(EdgeViewerRegistry.getBounds(edge));
 		}
 		if(bounds == null )
 		{

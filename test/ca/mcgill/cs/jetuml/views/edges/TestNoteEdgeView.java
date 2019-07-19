@@ -20,7 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views.edges;
 
-import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.getBounds;
+import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.getConnectionPoints;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,7 +31,6 @@ import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
@@ -62,16 +62,6 @@ public class TestNoteEdgeView
 		aNoteEdge = new NoteEdge();
 		
 		aGraph = new ClassDiagram();
-	}
-	
-	private static Rectangle getBounds(Edge pEdge)
-	{
-		return EDGE_VIEWER_REGISTRY.viewerFor(pEdge).getBounds(pEdge);
-	}
-	
-	private static Line getConnectionPoints(Edge pEdge)
-	{
-		return EDGE_VIEWER_REGISTRY.viewerFor(pEdge).getConnectionPoints(pEdge);
 	}
 	
 	@Test
