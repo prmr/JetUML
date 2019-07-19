@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ViewerUtilities;
+import ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry;
 
 /**
  * Encapsulates all state related to the selection feature of a diagram canvas.
@@ -145,7 +146,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	private void selectEdge(Edge pEdge, Rectangle pLasso )
 	{
-		if(pLasso.contains(pEdge.view().getBounds()))
+		if(pLasso.contains(EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(pEdge).getBounds(pEdge)))
 		{
 			internalAddToSelection(pEdge);
 		}		

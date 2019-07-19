@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-
 /**
  * An edge in a diagram.
  */
@@ -58,10 +56,5 @@ public interface Edge extends DiagramElement
    	 * nodes are not cloned).
    	 */
    	Edge clone();
-   	
- 	/**
-   	 * @return The view for this edge.
-   	 */
-   	EdgeView view();
 }
 

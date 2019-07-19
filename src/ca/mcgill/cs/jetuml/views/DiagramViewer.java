@@ -79,7 +79,7 @@ public class DiagramViewer
 		assert pDiagram != null && pPoint != null;
 		for(Edge edge : pDiagram.edges())
 		{
-			if(edge.view().contains(pPoint))
+			if(EDGE_VIEWER_REGISTRY.viewerFor(edge).contains(edge, pPoint))
 			{
 				return Optional.of(edge);
 			}
@@ -171,7 +171,7 @@ public class DiagramViewer
 		}
 		for(Edge edge : pDiagram.edges())
 		{
-			bounds = bounds.add(edge.view().getBounds());
+			bounds = bounds.add(EDGE_VIEWER_REGISTRY.viewerFor(edge).getBounds(edge));
 		}
 		if(bounds == null )
 		{

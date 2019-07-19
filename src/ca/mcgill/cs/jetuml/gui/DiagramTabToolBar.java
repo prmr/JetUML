@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.DiagramElementView;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -104,7 +105,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
 			add(new SelectableToolButton(RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
-					pToggleGroup, edgeTypes[i]), edgeTypes[i].view().createIcon());
+					pToggleGroup, edgeTypes[i]), EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(edgeTypes[i]).createIcon(edgeTypes[i]));
 		}
 	}
 	

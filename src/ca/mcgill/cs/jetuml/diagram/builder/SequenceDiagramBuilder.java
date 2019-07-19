@@ -39,6 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry;
 
 /**
  * A builder for sequence diagrams.
@@ -210,7 +211,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
 		{
-			if( callee.view().getConnectionPoints().getY1() > pY )
+			if( EdgeViewerRegistry.EDGE_VIEWER_REGISTRY.viewerFor(callee).getConnectionPoints(callee).getY1() > pY )
 			{
 				return aDiagram.indexOf(callee);
 			}

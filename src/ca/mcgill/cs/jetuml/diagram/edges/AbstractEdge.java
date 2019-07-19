@@ -101,12 +101,6 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	}
 	
 	@Override
-	public EdgeView view()
-	{
-		return aView;
-	}
-	
-	@Override
 	public String toString()
 	{
 		return getClass().getSimpleName() + " " + getStart() + " -> " + getEnd();
