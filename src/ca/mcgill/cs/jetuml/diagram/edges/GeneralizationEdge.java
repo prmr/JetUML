@@ -25,12 +25,9 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
@@ -61,14 +58,6 @@ public final class GeneralizationEdge extends ClassRelationshipEdge
 	 */
 	public GeneralizationEdge()
 	{}
-	
-	@Override
-	protected EdgeView generateView()
-	{
-		return new SegmentedEdgeView(this, obtainSegmentationStyle(),
-				() -> getLineStyle(), () -> ArrowHead.NONE, () -> ArrowHead.TRIANGLE,
-				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
-	}
 	
 	/**
 	 * @return The type of generalization.

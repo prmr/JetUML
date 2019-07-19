@@ -25,19 +25,9 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.StraightEdgeView;
-
 /**
  *  An edge that that represents a generalization of a use case.
  */
 public final class UseCaseGeneralizationEdge extends AbstractEdge
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new StraightEdgeView(this, LineStyle.SOLID, ArrowHead.TRIANGLE);
-	}
-}
+{}
+

@@ -21,19 +21,10 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.StateTransitionEdgeView;
-
 /**
  *  A curved edge for a state transition in a state diagram. The
  *  edge has two natures, either a self-edge, or a inter-node 
  *  edge.
  */
 public final class StateTransitionEdge extends SingleLabelEdge
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new StateTransitionEdgeView(this);
-	}
-}
+{}

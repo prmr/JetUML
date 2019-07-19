@@ -26,7 +26,6 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 /**
@@ -34,18 +33,9 @@ import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
  */
 public abstract class AbstractEdge extends AbstractDiagramElement implements Edge
 {
-	protected EdgeView aView;
 	private Node aStart;
 	private Node aEnd;
 	private Diagram aDiagram;
-	
-	/**
-	 * Calls an abstract delegate to generate the view for this edge.
-	 */
-	protected AbstractEdge()
-	{
-		aView = generateView();
-	}
 	
 	@Override
 	public void connect(Node pStart, Node pEnd, Diagram pDiagram)
@@ -83,20 +73,10 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 		return aDiagram;
 	}
 
-	/**
-	 * Generates a view for this edge. Because of cloning, this cannot
-	 * be done in the constructor, because when an edge is clone a new 
-	 * wrapper view must be produced for the clone.
-	 * 
-	 * @return The view that wraps this edge.
-	 */
-	protected abstract EdgeView generateView();
-	
 	@Override
 	public AbstractEdge clone()
 	{
 		AbstractEdge clone = (AbstractEdge) super.clone();
-		clone.aView = clone.generateView();
 		return clone;
 	}
 	

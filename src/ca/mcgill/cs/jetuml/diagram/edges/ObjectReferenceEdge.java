@@ -21,17 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.ObjectReferenceEdgeView;
-
 /**
  * An S- or C-shaped edge with an arrowhead.
  */
 public final class ObjectReferenceEdge extends AbstractEdge
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new ObjectReferenceEdgeView(this);
-	}
-}
+{}

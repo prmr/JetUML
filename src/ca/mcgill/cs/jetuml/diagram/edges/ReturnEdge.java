@@ -21,17 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.ReturnEdgeView;
-
 /**
  *  An edge that joins two call nodes.
  */
 public final class ReturnEdge extends SingleLabelEdge
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new ReturnEdgeView(this, () -> getMiddleLabel());
-	}
-}
+{}

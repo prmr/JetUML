@@ -25,20 +25,9 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
-import ca.mcgill.cs.jetuml.views.edges.LabeledStraightEdgeView;
-
 /**
  *  An edge that that represents a dynamic collaboration between
  *  two objects in an object diagram, with optional label.
  */
 public final class ObjectCollaborationEdge extends SingleLabelEdge
-{
-	@Override
-	protected EdgeView generateView()
-	{
-		return new LabeledStraightEdgeView(this, LineStyle.SOLID, ArrowHead.NONE, () -> getMiddleLabel());
-	}
-}
+{}

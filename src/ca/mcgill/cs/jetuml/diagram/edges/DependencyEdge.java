@@ -25,12 +25,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML dependency
@@ -38,14 +34,6 @@ import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
  */
 public final class DependencyEdge extends ClassRelationshipEdge
 {
-	@Override
-	protected EdgeView generateView()
-	{
-		return new SegmentedEdgeView(this, SegmentationStyleFactory.createStraightStrategy(),
-				() -> LineStyle.DOTTED, () -> ArrowHead.NONE, () -> ArrowHead.V,
-				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
-	}
-	
 	@Override
 	public SegmentationStyle obtainSegmentationStyle()
 	{

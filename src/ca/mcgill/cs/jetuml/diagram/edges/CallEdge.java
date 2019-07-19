@@ -22,8 +22,6 @@
 package ca.mcgill.cs.jetuml.diagram.edges;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.views.edges.CallEdgeView;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 
 /**
  *   An edge that joins two call nodes.
@@ -38,12 +36,6 @@ public final class CallEdge extends SingleLabelEdge
 	public CallEdge()
 	{
 		setSignal(false);
-	}
-	
-	@Override
-	protected EdgeView generateView()
-	{
-		return new CallEdgeView(this);
 	}
 	
 	@Override

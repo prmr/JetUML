@@ -26,11 +26,8 @@
 package ca.mcgill.cs.jetuml.diagram.edges;
 
 import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.edges.EdgeView;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyle;
 import ca.mcgill.cs.jetuml.views.edges.SegmentationStyleFactory;
-import ca.mcgill.cs.jetuml.views.edges.SegmentedEdgeView;
 
 /**
  *  An edge that that represents a UML aggregation or 
@@ -62,14 +59,6 @@ public final class AggregationEdge extends ClassRelationshipEdge
 	public AggregationEdge()
 	{}
 	
-	@Override
-	protected EdgeView generateView()
-	{
-		return new SegmentedEdgeView(this, SegmentationStyleFactory.createHVHStrategy(),
-				() -> LineStyle.SOLID, () -> getStartArrowHead(), () -> ArrowHead.NONE,
-				() -> getStartLabel(), () -> getMiddleLabel(), () -> getEndLabel());
-	}
-
 	/**
 	 * @return The type of aggregation relation.
 	 */
