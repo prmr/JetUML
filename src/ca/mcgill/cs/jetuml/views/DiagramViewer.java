@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.views;
 
+import static ca.mcgill.cs.jetuml.views.edges.EdgeViewerRegistry.EDGE_VIEWER_REGISTRY;
+
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
@@ -51,7 +53,7 @@ public class DiagramViewer
 	{
 		assert pDiagram != null && pGraphics != null;
 		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		pDiagram.edges().forEach(edge -> edge.view().draw(pGraphics));
+		pDiagram.edges().forEach(edge -> EDGE_VIEWER_REGISTRY.viewerFor(edge).draw(edge, pGraphics));
 	}
 	
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
