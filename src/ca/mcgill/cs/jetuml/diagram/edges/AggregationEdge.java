@@ -25,15 +25,13 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 
 /**
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
  */
-public final class AggregationEdge extends ClassRelationshipEdge
+public final class AggregationEdge extends ThreeLabelEdge
 {
 	/**
 	 * Type of aggregation relation.
@@ -95,11 +93,5 @@ public final class AggregationEdge extends ClassRelationshipEdge
 		{
 			return ArrowHead.DIAMOND;
 		}
-	}
-
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createHVHStrategy();
 	}
 }

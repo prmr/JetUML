@@ -25,18 +25,9 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
-
 /**
  *  An edge that that represents a UML dependency
  *  with optional labels.
  */
-public final class DependencyEdge extends ClassRelationshipEdge
-{
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createStraightStrategy();
-	}
-}
+public final class DependencyEdge extends ThreeLabelEdge
+{}

@@ -22,7 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.edges;
 
 /**
- *  A dotted line that connects a note to its attachment.
+ *  A line that connects a note to its attachment.
  */
 public final class NoteEdge extends AbstractEdge
 {}

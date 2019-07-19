@@ -24,14 +24,16 @@ package ca.mcgill.cs.jetuml.viewers.edges;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ClassRelationshipEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge.Type;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
@@ -304,7 +306,6 @@ public final class SegmentationStyleFactory
 		}
 	} // CSON:
 	
-	// TODO Fix this
 	private static List<Edge> getAllEdgesForSide(Diagram pGraph, Node pTarget, Side pSide)
 	{
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
@@ -314,17 +315,38 @@ public final class SegmentationStyleFactory
 			{
 				continue; // Do not count self-edges
 			}
-			if( !(edge instanceof ClassRelationshipEdge))
+			if( !(isClassRelationshipEdge(edge)))
 			{
 				continue;
 			}
-			if( edge instanceof ClassRelationshipEdge && 
-					((ClassRelationshipEdge)edge).obtainSegmentationStyle().getAttachedSide(edge, pTarget) == pSide )
-			{
-				edgesOnSelectedSide.add(edge);
-			}
+			getAttachedSide(edge, pTarget).filter( side -> side == pSide ).ifPresent( side -> edgesOnSelectedSide.add(edge) );
 		}
 		return edgesOnSelectedSide;
+	}
+	
+	private static boolean isClassRelationshipEdge(Edge pEdge)
+	{
+		return pEdge instanceof DependencyEdge ||
+			   pEdge instanceof AssociationEdge ||
+			   pEdge instanceof AggregationEdge ||
+			   pEdge instanceof GeneralizationEdge;
+	}
+	
+	private static Optional<Side> getAttachedSide(Edge pEdge, Node pTarget )
+	{
+		if( pEdge instanceof AggregationEdge || pEdge instanceof AssociationEdge )
+		{
+			return Optional.of(SegmentationStyleFactory.createHVHStrategy().getAttachedSide(pEdge, pTarget));
+		}
+		else if( pEdge instanceof GeneralizationEdge )
+		{
+			return Optional.of(SegmentationStyleFactory.createVHVStrategy().getAttachedSide(pEdge, pTarget));
+		}
+		else if( pEdge instanceof DependencyEdge )
+		{
+			return Optional.of(SegmentationStyleFactory.createStraightStrategy().getAttachedSide(pEdge, pTarget));
+		}
+		return Optional.empty();
 	}
 	
 	// Sort in terms of the position of the other node

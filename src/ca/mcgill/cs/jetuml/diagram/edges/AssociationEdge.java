@@ -25,15 +25,13 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 
 /**
  *  An edge that that represents a UML association, with optional 
  *  labels and directionality.
  */
-public final class AssociationEdge extends ClassRelationshipEdge
+public final class AssociationEdge extends ThreeLabelEdge
 {
 	/**
 	 * Possible directionalities for an association.
@@ -95,11 +93,5 @@ public final class AssociationEdge extends ClassRelationshipEdge
 		{
 			return ArrowHead.NONE;
 		}
-	}
-	
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createHVHStrategy();
 	}
 }

@@ -25,15 +25,13 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle;
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
  *  or implementation), with optional labels.
  */
-public final class GeneralizationEdge extends ClassRelationshipEdge
+public final class GeneralizationEdge extends ThreeLabelEdge
 {
 	/**
 	 * Type of UML generalization relation.
@@ -96,11 +94,5 @@ public final class GeneralizationEdge extends ClassRelationshipEdge
 		{
 			return LineStyle.SOLID;
 		}
-	}
-	
-	@Override
-	public SegmentationStyle obtainSegmentationStyle()
-	{
-		return SegmentationStyleFactory.createVHVStrategy();
 	}
 }

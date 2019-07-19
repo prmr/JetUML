@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 /**
- * Abstract edge in the new hierarchy.
+ * Groups the functionality common to all edges.
  */
 public abstract class AbstractEdge extends AbstractDiagramElement implements Edge
 {

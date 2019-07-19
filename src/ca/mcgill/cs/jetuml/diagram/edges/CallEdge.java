@@ -24,7 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 
 /**
- *   An edge that joins two call nodes.
+ * An edge that joins two call nodes.
  */
 public final class CallEdge extends SingleLabelEdge
 {
