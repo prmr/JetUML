@@ -94,7 +94,10 @@ public final class GeneralizationEdge extends ClassRelationshipEdge
 		properties().add("Generalization Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 	
-	private LineStyle getLineStyle()
+	/**
+	 * @return The line style for this edge.
+	 */
+	public LineStyle getLineStyle()
 	{
 		if( aType == Type.Implementation )
 		{
