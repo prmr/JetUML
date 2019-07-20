@@ -20,7 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.testutils;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -53,7 +55,14 @@ public enum CollectionAssertions
 	
 	/** True if the elements in the collection are the same as the elements provided 
 	 * as arguments, in the same sequence */
-	hasElementsSameAs( CollectionAssertions::hasElementsSameAs );
+	hasElementsSameAs( CollectionAssertions::hasElementsSameAs ),
+	
+	/**
+	 * True if the set of elements in the collection is exactly the same as the 
+	 * set of elements provided as arguments (i.e., irrespective of order), using
+	 * object equality to test membership.
+	 */
+	hasSetOfElementsEqualsTo( CollectionAssertions::hasSetOfElementsEqualTo );
 	
 	private final BiConsumer<Collection<?>, Object[]> aAssertionMethod;
 	
@@ -154,6 +163,25 @@ public enum CollectionAssertions
 			{
 				throw new AssertionError(String.format("Mismatch at position %d: expected %s but got %s ",
 						i, pArguments[i], elements[i]));
+			}
+		}
+	}
+	
+	private static void hasSetOfElementsEqualTo(Collection<?> pCollection, Object[] pArguments)
+	{
+		HashSet<Object> target = new HashSet<>(Arrays.asList(pArguments));
+		for( Object element : pCollection )
+		{
+			if( !target.contains(element) )
+			{
+				throw new AssertionError(String.format("Element not expected: %s", element));
+			}
+		}
+		for( Object element : target )
+		{
+			if( !pCollection.contains(element))
+			{
+				throw new AssertionError(String.format("Element missing: %s", element));
 			}
 		}
 	}

@@ -83,6 +83,11 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " " + getStart() + " -> " + getEnd();
+		String result = getClass().getSimpleName();
+		if( getStart() != null && getEnd() != null )
+		{
+			result += " " + getStart() + " -> " + getEnd();
+		}
+		return result;
 	}
 }
