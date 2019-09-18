@@ -41,9 +41,10 @@ import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.PointNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.StateNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
-import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView;
 import javafx.scene.canvas.GraphicsContext;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.StateNode;
 
 /**
  * A strategy for drawing a diagram and computing geometric properties of a 
@@ -102,6 +103,10 @@ public class DiagramViewer
 		else if( pNode instanceof InitialStateNode )
 		{
 			new CircularStateNodeViewer(false).draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof StateNode )
+		{
+			new StateNodeViewer().draw(pNode, pGraphics);
 		}
 		else
 		{
