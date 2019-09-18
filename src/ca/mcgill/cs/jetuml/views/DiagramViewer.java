@@ -28,12 +28,14 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -78,6 +80,10 @@ public class DiagramViewer
 		else if( pNode instanceof ActorNode )
 		{
 			new ActorNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof NoteNode )
+		{
+			new NoteNodeViewer().draw(pNode, pGraphics);
 		}
 		else
 		{
