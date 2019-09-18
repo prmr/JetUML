@@ -28,9 +28,11 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
@@ -39,7 +41,9 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.PointNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.StateNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
@@ -107,6 +111,14 @@ public class DiagramViewer
 		else if( pNode instanceof StateNode )
 		{
 			new StateNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof ObjectNode )
+		{
+			new ObjectNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof FieldNode )
+		{
+			new FieldNodeViewer().draw(pNode, pGraphics);
 		}
 		else
 		{
