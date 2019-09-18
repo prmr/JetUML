@@ -28,9 +28,11 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -57,10 +59,23 @@ public class DiagramViewer
 	
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
-		pNode.view().draw(pGraphics);
+		drawNodeUtil(pNode, pGraphics);
 		if(pNode instanceof ParentNode)
 		{
-			((ParentNode)pNode).getChildren().forEach(node -> drawNode(node, pGraphics));
+			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics));
+		}
+	}
+	
+	/* Temporary convenience method during the transition to NodeViewer */
+	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics)
+	{
+		if( pNode instanceof UseCaseNode )
+		{
+			new UseCaseNodeViewer().draw(pNode, pGraphics);
+		}
+		else
+		{
+			pNode.view().draw(pGraphics);
 		}
 	}
 	
