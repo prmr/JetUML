@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -46,6 +47,7 @@ import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CallNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.ClassNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.InterfaceNodeViewer;
@@ -138,6 +140,10 @@ public class DiagramViewer
 		else if( pNode instanceof InterfaceNode )
 		{
 			new InterfaceNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof ClassNode )
+		{
+			new ClassNodeViewer().draw(pNode, pGraphics);
 		}
 		else
 		{
