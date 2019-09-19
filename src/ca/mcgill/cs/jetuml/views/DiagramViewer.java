@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NodeInContext;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
@@ -47,6 +48,7 @@ import ca.mcgill.cs.jetuml.viewers.nodes.CallNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.InterfaceNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.PointNodeViewer;
@@ -132,6 +134,10 @@ public class DiagramViewer
 		else if( pNode instanceof CallNode )
 		{
 			new CallNodeViewer().draw(new NodeInContext(pNode, pDiagram), pGraphics);
+		}
+		else if( pNode instanceof InterfaceNode )
+		{
+			new InterfaceNodeViewer().draw(pNode, pGraphics);
 		}
 		else
 		{
