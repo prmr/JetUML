@@ -28,9 +28,12 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NodeInContext;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -40,8 +43,10 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.CallNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.PointNodeViewer;
@@ -68,21 +73,21 @@ public class DiagramViewer
 	public final void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
-		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics, pDiagram));
 		pDiagram.edges().forEach(edge -> EdgeViewerRegistry.draw(edge, pGraphics));
 	}
 	
-	private void drawNode(Node pNode, GraphicsContext pGraphics)
+	private void drawNode(Node pNode, GraphicsContext pGraphics, Diagram pDiagram)
 	{
-		drawNodeUtil(pNode, pGraphics);
+		drawNodeUtil(pNode, pGraphics, pDiagram);
 		if(pNode instanceof ParentNode)
 		{
-			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics));
+			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics, pDiagram));
 		}
 	}
 	
 	/* Temporary convenience method during the transition to NodeViewer */
-	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics)
+	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics, Diagram pDiagram)
 	{
 		if( pNode instanceof UseCaseNode )
 		{
@@ -119,6 +124,14 @@ public class DiagramViewer
 		else if( pNode instanceof FieldNode )
 		{
 			new FieldNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof ImplicitParameterNode )
+		{
+			new ImplicitParameterNodeViewer().draw(pNode, pGraphics);
+		}
+		else if( pNode instanceof CallNode )
+		{
+			new CallNodeViewer().draw(new NodeInContext(pNode, pDiagram), pGraphics);
 		}
 		else
 		{
