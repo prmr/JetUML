@@ -23,7 +23,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Keeps track of the association between and edge type and the viewer
+ * Keeps track of the association between an edge type and the viewer
  * that needs to be used to view it.
  */
 public final class EdgeViewerRegistry
