@@ -48,7 +48,7 @@ public final class ViewerUtilities
 		assert pElement != null && pContext != null;
 		if( pElement instanceof Node )
 		{
-			((Node)pElement).view().drawSelectionHandles(pContext);
+			NodeViewerRegistry.drawSelectionHandles((Node) pElement, pContext);
 		}
 		else
 		{

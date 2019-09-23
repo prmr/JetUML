@@ -42,12 +42,6 @@ public interface NodeView
 	Rectangle getBounds();
    	
    	/**
-     * Draw selection handles around the element.
-     * @param pGraphics the graphics context
-	 */
-   	void drawSelectionHandles(GraphicsContext pGraphics);
-   	
-   	/**
      * Tests whether the element contains a point.
      * @param pPoint the point to test
      * @return true if this element contains aPoint

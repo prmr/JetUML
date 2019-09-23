@@ -107,10 +107,4 @@ public abstract class AbstractNodeView implements NodeView
 		}
 		return new Point(x, y);
 	}
-	
-	@Override
-	public void drawSelectionHandles(GraphicsContext pGraphics)
-	{
-		ToolGraphics.drawHandles(pGraphics, getBounds());		
-	}
 }
