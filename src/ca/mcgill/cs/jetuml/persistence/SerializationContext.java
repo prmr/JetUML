@@ -26,22 +26,22 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * A serialization context automatically finds all the nodes
- * in a graph, including children nodes, and creates a new map between
+ * in a diagram, including children nodes, and creates a new map between
  * nodes and identifiers.
  */
 public class SerializationContext extends AbstractContext
 {
 	/**
-	 * Automatically creates the map between nodes in pGraph
+	 * Automatically creates the map between nodes in pDiagram
 	 * and fresh identifiers.
 	 * 
-	 * @param pGraph The graph to load into the context.
-	 * @pre pGraph != null.
+	 * @param pDiagram The diagram to load into the context.
+	 * @pre pDiagram != null.
 	 */
-	public SerializationContext(Diagram pGraph)
+	public SerializationContext(Diagram pDiagram)
 	{
-		super(pGraph);
-		getAllNodes(pGraph);
+		super(pDiagram);
+		getAllNodes(pDiagram);
 	}
 	
 	/**
@@ -60,9 +60,9 @@ public class SerializationContext extends AbstractContext
 		aNodes.put(pNode, aNodes.size());
 	}
 	
-	private void getAllNodes(Diagram pGraph)
+	private void getAllNodes(Diagram pDiagram)
 	{
-		for( Node node : pGraph.rootNodes() )
+		for( Node node : pDiagram.rootNodes() )
 		{
 			addNode(node);
 			if( node instanceof ParentNode )

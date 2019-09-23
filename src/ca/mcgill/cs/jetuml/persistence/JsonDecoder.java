@@ -105,7 +105,7 @@ public final class JsonDecoder
 		{
 			if( !(node instanceof ChildNode) || ((ChildNode)node).getParent() == null )
 			{
-				pContext.getGraph().addRootNode(node);
+				pContext.pDiagram().addRootNode(node);
 			}
 		}
 	}
@@ -152,8 +152,8 @@ public final class JsonDecoder
 				{
 					property.set(object.get(property.getName()));
 				}
-				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")), pContext.getGraph());
-				pContext.getGraph().addEdge(edge);
+				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")), pContext.pDiagram());
+				pContext.pDiagram().addEdge(edge);
 			}
 			catch( ReflectiveOperationException exception )
 			{

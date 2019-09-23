@@ -35,26 +35,26 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 public abstract class AbstractContext implements Iterable<Node>
 {
 	protected final HashMap<Node, Integer> aNodes = new HashMap<>();
-	private final Diagram aGraph;
+	private final Diagram aDiagram;
 	
 	/**
-	 * Initializes the context with a graph.
+	 * Initializes the context with a diagram.
 	 * 
-	 * @param pGraph The graph that corresponds to the context.
-	 * @pre pGraph != null.
+	 * @param pDiagram The diagram that corresponds to the context.
+	 * @pre pDiagram != null.
 	 */
-	protected AbstractContext(Diagram pGraph)
+	protected AbstractContext(Diagram pDiagram)
 	{
-		assert pGraph != null;
-		aGraph = pGraph;
+		assert pDiagram != null;
+		aDiagram = pDiagram;
 	}
 	
 	/**
-	 * @return The graph associated with this context. Never null.
+	 * @return The diagram associated with this context. Never null.
 	 */
-	public Diagram getGraph()
+	public Diagram pDiagram()
 	{
-		return aGraph;
+		return aDiagram;
 	}
 	
 	/**

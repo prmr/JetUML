@@ -32,14 +32,14 @@ public class DeserializationContext extends AbstractContext
 {
 	/**
 	 * Initializes an empty context and associates it with
-	 * pGraph.
+	 * pDiagram.
 	 * 
-	 * @param pGraph The graph associated with the context.
-	 * @pre pGraph != null.
+	 * @param pDiagram The diagram associated with the context.
+	 * @pre pDiagram != null.
 	 */
-	public DeserializationContext(Diagram pGraph)
+	public DeserializationContext(Diagram pDiagram)
 	{
-		super( pGraph );
+		super( pDiagram );
 	}
 	
 	/**
@@ -47,9 +47,9 @@ public class DeserializationContext extends AbstractContext
 	 */
 	public void attachNodes()
 	{
-		for( Node node : aNodes.keySet() )
+		for( Node node : this )
 		{
-			node.attach(getGraph());
+			node.attach(pDiagram());
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class DeserializationContext extends AbstractContext
 	 */
 	public Node getNode(int pId)
 	{
-		for( Node node : aNodes.keySet() )
+		for( Node node : this )
 		{
 			if( aNodes.get(node) == pId )
 			{
