@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
@@ -58,4 +60,23 @@ public interface Node extends DiagramElement
 	 * @return The view for this node.
 	 */
 	NodeView view();
+	
+	/**
+	 * Attaches this node to a diagram.
+	 * 
+	 * @param pDiagram The diagram attached to the node.
+	 * @pre pDiagram != null
+	 */
+	void attach(Diagram pDiagram);
+	
+	/**
+	 * Detaches this node from its current diagram.
+	 */
+	void detach();
+	
+	/**
+	 * @return The diagram this node is attached to,
+	 * or empty() if the node is not attached.
+	 */
+	Optional<Diagram> getDiagram();
 }

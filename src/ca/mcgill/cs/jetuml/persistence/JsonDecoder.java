@@ -43,23 +43,24 @@ public final class JsonDecoder
 	private JsonDecoder() {}
 	
 	/**
-	 * @param pGraph A JSON object that encodes the graph.
-	 * @return The decoded graph.
-	 * @throws DeserializationException If it's not possible to decode the object into a valid graph.
+	 * @param pDiagram A JSON object that encodes the diagram.
+	 * @return The decoded diagram.
+	 * @throws DeserializationException If it's not possible to decode the object into a valid diagram.
 	 */
-	public static Diagram decode(JSONObject pGraph)
+	public static Diagram decode(JSONObject pDiagram)
 	{
-		assert pGraph != null;
+		assert pDiagram != null;
 		try
 		{
-			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pGraph.getString("diagram"));
-			Diagram graph = (Diagram) diagramClass.getDeclaredConstructor().newInstance();
-			DeserializationContext context = new DeserializationContext(graph);
-			decodeNodes(context, pGraph);
-			restoreChildren(context, pGraph);
+			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pDiagram.getString("diagram"));
+			Diagram diagram = (Diagram) diagramClass.getDeclaredConstructor().newInstance();
+			DeserializationContext context = new DeserializationContext(diagram);
+			decodeNodes(context, pDiagram);
+			restoreChildren(context, pDiagram);
 			restoreRootNodes(context);
-			decodeEdges(context, pGraph);
-			return graph;
+			decodeEdges(context, pDiagram);
+			context.attachNodes();
+			return diagram;
 		}
 		catch( JSONException | ReflectiveOperationException exception )
 		{

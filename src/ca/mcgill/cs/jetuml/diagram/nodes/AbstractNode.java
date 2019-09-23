@@ -20,7 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
@@ -32,6 +35,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 {
 	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
+	private Optional<Diagram> aDiagram = Optional.empty();
 	
 	/**
 	 * Calls an abstract delegate to generate the view for this node
@@ -95,5 +99,24 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 		super.buildProperties();
 		properties().addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
 		properties().addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
+	}
+	
+	@Override
+	public void attach(Diagram pDiagram)
+	{
+		assert pDiagram != null;
+		aDiagram = Optional.of(pDiagram);
+	}
+
+	@Override
+	public void detach()
+	{
+		aDiagram = Optional.empty();
+	}
+
+	@Override
+	public Optional<Diagram> getDiagram()
+	{
+		return aDiagram;
 	}
 }

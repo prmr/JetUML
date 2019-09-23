@@ -172,6 +172,7 @@ public abstract class Diagram implements DiagramData
 	public void addRootNode(Node pNode)
 	{
 		assert pNode != null;
+		pNode.attach(this);
 		aRootNodes.add(pNode);
 	}
 	
@@ -186,6 +187,7 @@ public abstract class Diagram implements DiagramData
 	public void removeRootNode(Node pNode)
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
+		pNode.detach();
 		aRootNodes.remove(pNode);
 	}
 	

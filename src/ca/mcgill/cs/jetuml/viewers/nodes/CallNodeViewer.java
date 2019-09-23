@@ -29,7 +29,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NodeInContext;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -52,9 +51,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
-		assert pNode.getClass() == NodeInContext.class;
-		final CallNode callNode = (CallNode)((NodeInContext)pNode).getNode();
-		if(callNode.isOpenBottom())
+		if(((CallNode)pNode).isOpenBottom())
 		{
 			pGraphics.setStroke(Color.WHITE);
 			ViewUtils.drawRectangle(pGraphics, getBounds(pNode));
@@ -80,7 +77,6 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		assert pNode.getClass() == NodeInContext.class;
 		if(pDirection.getX() > 0)
 		{
 			return new Point(getBounds(pNode).getMaxX(), getBounds(pNode).getY());
@@ -97,16 +93,14 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	private int getX(Node pNode)
 	{
-		assert pNode.getClass() == NodeInContext.class;
-		final SequenceDiagram diagram = (SequenceDiagram)((NodeInContext)pNode).getDiagram();
-		final CallNode callNode = (CallNode)((NodeInContext)pNode).getNode();
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
+		final SequenceDiagram diagram = (SequenceDiagram)pNode.getDiagram().get();
+		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) ((CallNode)pNode).getParent();
 		if(implicitParameterNode != null )
 		{
 			int depth = 0;
 			if( diagram != null )
 			{
-				depth = new ControlFlow(diagram).getNestingDepth(callNode);
+				depth = new ControlFlow(diagram).getNestingDepth((CallNode)pNode);
 			}
 			return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getCenter().getX() -
 					WIDTH / 2 + depth * WIDTH/2;
@@ -124,10 +118,9 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	private int getY(Node pNode)
 	{
-		assert pNode.getClass() == NodeInContext.class;
-		final CallNode callNode = (CallNode)((NodeInContext)pNode).getNode();
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode)callNode.getParent();
-		final SequenceDiagram diagram = (SequenceDiagram)((NodeInContext)pNode).getDiagram();
+		final CallNode callNode = (CallNode) pNode;
+		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
+		final SequenceDiagram diagram = (SequenceDiagram) callNode.getDiagram().get();
 		
 		if( implicitParameterNode == null || diagram == null )
 		{
@@ -140,19 +133,19 @@ public final class CallNodeViewer extends AbstractNodeViewer
 			int result = 0;
 			if( flow.isNested(callNode) && flow.isFirstCallee(callNode))
 			{
-				result = getY(new NodeInContext(caller.get(), diagram)) + Y_GAP_BIG;
+				result = getY(caller.get()) + Y_GAP_BIG;
 			}
 			else if( flow.isNested(callNode) && !flow.isFirstCallee(callNode) )
 			{
-				result = getMaxY(new NodeInContext(flow.getPreviousCallee(callNode), diagram)) + Y_GAP_SMALL;
+				result = getMaxY(flow.getPreviousCallee(callNode)) + Y_GAP_SMALL;
 			}
 			else if( !flow.isNested(callNode) && flow.isFirstCallee(callNode) )
 			{
-				result = getY(new NodeInContext(caller.get(), diagram)) + Y_GAP_SMALL;
+				result = getY(caller.get()) + Y_GAP_SMALL;
 			}
 			else
 			{
-				result = getMaxY(new NodeInContext(flow.getPreviousCallee(callNode), diagram)) + Y_GAP_SMALL;
+				result = getMaxY(flow.getPreviousCallee(callNode)) + Y_GAP_SMALL;
 			}
 			return result;
 		}
@@ -169,9 +162,8 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	public int getMaxY(Node pNode)
 	{
-		assert pNode.getClass() == NodeInContext.class;
-		final CallNode callNode = (CallNode)((NodeInContext)pNode).getNode();
-		final SequenceDiagram diagram = (SequenceDiagram)((NodeInContext)pNode).getDiagram();
+		final CallNode callNode = (CallNode) pNode;
+		final SequenceDiagram diagram = (SequenceDiagram) callNode.getDiagram().get();
 		List<Node> callees = new ArrayList<>();
 		if( diagram != null )
 		{
@@ -179,18 +171,17 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		}
 		if( callees.isEmpty() )
 		{
-			return getY(new NodeInContext(callNode, diagram)) + DEFAULT_HEIGHT;
+			return getY(callNode) + DEFAULT_HEIGHT;
 		}
 		else
 		{
-			return getMaxY(new NodeInContext(callees.get(callees.size()-1), diagram)) + Y_GAP_SMALL;
+			return getMaxY(callees.get(callees.size()-1)) + Y_GAP_SMALL;
 		}
 	}
 	
 	@Override
 	public Rectangle getBounds(Node pNode)
 	{
-		assert pNode.getClass() == NodeInContext.class;
 		int y = getY(pNode);
 		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);
 	}

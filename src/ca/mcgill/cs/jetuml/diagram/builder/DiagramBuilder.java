@@ -461,17 +461,25 @@ public abstract class DiagramBuilder
 				()-> aDiagram.removeEdge(pEdge)));
 	}
 	
-	private static Runnable createReinsertOperation(ChildNode pNode)
+	private Runnable createReinsertOperation(ChildNode pNode)
 	{
 		ParentNode parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);
-		return ()-> parent.addChild(index, pNode);
+		return ()-> 
+		{
+			parent.addChild(index, pNode);
+			pNode.attach(aDiagram);
+		};
 	}
 	
-	private static Runnable createDetachOperation(ChildNode pNode)
+	private Runnable createDetachOperation(ChildNode pNode)
 	{
 		ParentNode parent = pNode.getParent();
-		return ()-> parent.removeChild(pNode);
+		return ()-> 
+		{ 
+			pNode.detach(); 
+			parent.removeChild(pNode); 
+		};
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)

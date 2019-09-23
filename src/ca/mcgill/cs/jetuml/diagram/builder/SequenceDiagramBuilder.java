@@ -228,8 +228,16 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			ImplicitParameterNode target = insideTargetArea(pRequestedPosition);
 			if( target != null )
 			{
-				result = new SimpleOperation(()-> target.addChild((ChildNode)pNode),
-						()-> target.removeChild((ChildNode)pNode));
+				result = new SimpleOperation(()-> 
+				{ 
+					pNode.attach(aDiagram);
+					target.addChild((ChildNode)pNode); 
+				},
+				()-> 
+				{
+					pNode.detach();
+					target.removeChild((ChildNode)pNode);
+				});
 			}
 		}
 		if( result == null )

@@ -43,6 +43,17 @@ public class DeserializationContext extends AbstractContext
 	}
 	
 	/**
+	 * Attach all deserialized nodes to their diagram.
+	 */
+	public void attachNodes()
+	{
+		for( Node node : aNodes.keySet() )
+		{
+			node.attach(getGraph());
+		}
+	}
+	
+	/**
 	 * Adds a node to the context.
 	 * 
 	 * @param pNode The node to add.

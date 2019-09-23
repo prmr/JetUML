@@ -35,7 +35,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NodeInContext;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
@@ -79,21 +78,21 @@ public class DiagramViewer
 	public final void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
-		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics, pDiagram));
+		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
 		pDiagram.edges().forEach(edge -> EdgeViewerRegistry.draw(edge, pGraphics));
 	}
 	
-	private void drawNode(Node pNode, GraphicsContext pGraphics, Diagram pDiagram)
+	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
-		drawNodeUtil(pNode, pGraphics, pDiagram);
+		drawNodeUtil(pNode, pGraphics);
 		if(pNode instanceof ParentNode)
 		{
-			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics, pDiagram));
+			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics));
 		}
 	}
 	
 	/* Temporary convenience method during the transition to NodeViewer */
-	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics, Diagram pDiagram)
+	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics)
 	{
 		if( pNode instanceof UseCaseNode )
 		{
@@ -137,7 +136,7 @@ public class DiagramViewer
 		}
 		else if( pNode instanceof CallNode )
 		{
-			new CallNodeViewer().draw(new NodeInContext(pNode, pDiagram), pGraphics);
+			new CallNodeViewer().draw(pNode, pGraphics);
 		}
 		else if( pNode.getClass() == InterfaceNode.class )
 		{

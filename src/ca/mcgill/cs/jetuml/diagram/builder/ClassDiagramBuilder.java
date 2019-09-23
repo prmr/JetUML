@@ -64,8 +64,16 @@ public class ClassDiagramBuilder extends DiagramBuilder
 			if( container != null )
 			{
 				positionNode(pNode, pRequestedPosition);
-				result = new SimpleOperation( ()-> container.addChild((ChildNode)pNode),
-						()-> container.removeChild((ChildNode)pNode));
+				result = new SimpleOperation( ()->  
+				{ 
+					pNode.attach(aDiagram);
+					container.addChild((ChildNode)pNode); 
+				},
+				()-> 
+				{ 
+					pNode.detach();
+					container.removeChild((ChildNode)pNode); 
+				});
 			}
 		}
 		if( result == null )
