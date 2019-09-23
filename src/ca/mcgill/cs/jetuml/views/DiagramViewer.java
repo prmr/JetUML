@@ -27,38 +27,12 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.CallNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.ClassNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.InterfaceNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.PointNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.StateNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import javafx.scene.canvas.GraphicsContext;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StateNode;
 
 /**
  * A strategy for drawing a diagram and computing geometric properties of a 
@@ -84,75 +58,10 @@ public class DiagramViewer
 	
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
-		drawNodeUtil(pNode, pGraphics);
+		NodeViewerRegistry.draw(pNode, pGraphics);
 		if(pNode instanceof ParentNode)
 		{
-			((ParentNode)pNode).getChildren().forEach(node -> drawNodeUtil(node, pGraphics));
-		}
-	}
-	
-	/* Temporary convenience method during the transition to NodeViewer */
-	private static void drawNodeUtil(Node pNode, GraphicsContext pGraphics)
-	{
-		if( pNode instanceof UseCaseNode )
-		{
-			new UseCaseNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof ActorNode )
-		{
-			new ActorNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof NoteNode )
-		{
-			new NoteNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof PointNode )
-		{
-			new PointNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof FinalStateNode )
-		{
-			new CircularStateNodeViewer(true).draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof InitialStateNode )
-		{
-			new CircularStateNodeViewer(false).draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof StateNode )
-		{
-			new StateNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof ObjectNode )
-		{
-			new ObjectNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof FieldNode )
-		{
-			new FieldNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof ImplicitParameterNode )
-		{
-			new ImplicitParameterNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof CallNode )
-		{
-			new CallNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode.getClass() == InterfaceNode.class )
-		{
-			new InterfaceNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof ClassNode )
-		{
-			new ClassNodeViewer().draw(pNode, pGraphics);
-		}
-		else if( pNode instanceof PackageNode )
-		{
-			new PackageNodeViewer().draw(pNode, pGraphics);
-		}
-		else
-		{
-			assert false;
+			((ParentNode)pNode).getChildren().forEach(node -> NodeViewerRegistry.draw(node, pGraphics));
 		}
 	}
 	

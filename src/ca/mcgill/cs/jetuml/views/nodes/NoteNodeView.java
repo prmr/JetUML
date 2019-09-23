@@ -55,13 +55,13 @@ public final class NoteNodeView extends AbstractNodeView
 		return ((NoteNode)node()).getName();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR, true);
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE, false);
-		NOTE_VIEWER.draw(name(), pGraphics, new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(), NOTE_COLOR, true);
+//		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(), Color.WHITE, false);
+//		NOTE_VIEWER.draw(name(), pGraphics, new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
+//	}
 	
 	private Path createNotePath()
 	{

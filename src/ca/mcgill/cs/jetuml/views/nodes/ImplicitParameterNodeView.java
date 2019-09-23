@@ -64,15 +64,15 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 		return ((ImplicitParameterNode)node()).getChildren();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		Rectangle top = getTopRectangle();
-		ViewUtils.drawRectangle(pGraphics, top);
-		NAME_VIEWER.draw(name(), pGraphics, top);
-		int xmid = top.getCenter().getX();
-		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		Rectangle top = getTopRectangle();
+//		ViewUtils.drawRectangle(pGraphics, top);
+//		NAME_VIEWER.draw(name(), pGraphics, top);
+//		int xmid = top.getCenter().getX();
+//		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
+//	}
 	
 	@Override
 	public boolean contains(Point pPoint)

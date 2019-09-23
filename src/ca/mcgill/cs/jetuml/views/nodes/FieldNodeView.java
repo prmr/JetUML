@@ -60,15 +60,15 @@ public final class FieldNodeView extends AbstractNodeView
 		return ((FieldNode)node()).getValue();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		final Rectangle bounds = getBounds();
-		int split = getSplitPosition();
-		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(split - leftWidth(), bounds.getY(), leftWidth(), bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - MID_OFFSET, bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
-		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(), bounds.getHeight()));
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		final Rectangle bounds = getBounds();
+//		int split = getSplitPosition();
+//		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(split - leftWidth(), bounds.getY(), leftWidth(), bounds.getHeight()));
+//		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - MID_OFFSET, bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
+//		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(), bounds.getHeight()));
+//	}
 	
 	private int getSplitPosition()
 	{

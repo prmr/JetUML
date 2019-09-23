@@ -59,28 +59,28 @@ public class InterfaceNodeView extends AbstractNodeView
 		return ((InterfaceNode)node()).getMethods();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		Rectangle bounds = getBounds();
-		ViewUtils.drawRectangle(pGraphics, bounds);	
-
-		int bottomHeight = computeBottom().getHeight();
-		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
-				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
-		NAME_VIEWER.draw(name(), pGraphics, top);		
-		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
-		if(middleHeight() > 0) 
-		{
-			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY(), LineStyle.SOLID);
-		}
-		Rectangle bot = new Rectangle(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
-		if(bottomHeight > 0)
-		{
-			ViewUtils.drawLine(pGraphics, top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY(), LineStyle.SOLID);
-		}
-		METHOD_VIEWER.draw(methods(), pGraphics, bot);
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		Rectangle bounds = getBounds();
+//		ViewUtils.drawRectangle(pGraphics, bounds);	
+//
+//		int bottomHeight = computeBottom().getHeight();
+//		Rectangle top = new Rectangle(bounds.getX(), bounds.getY(), 
+//				bounds.getWidth(), bounds.getHeight() - middleHeight() - bottomHeight);
+//		NAME_VIEWER.draw(name(), pGraphics, top);		
+//		Rectangle mid = new Rectangle(top.getX(), top.getMaxY(), top.getWidth(), middleHeight());
+//		if(middleHeight() > 0) 
+//		{
+//			ViewUtils.drawLine(pGraphics, top.getX(), top.getMaxY(), top.getX()+top.getWidth(), top.getMaxY(), LineStyle.SOLID);
+//		}
+//		Rectangle bot = new Rectangle(top.getX(), mid.getMaxY(), top.getWidth(), bottomHeight);
+//		if(bottomHeight > 0)
+//		{
+//			ViewUtils.drawLine(pGraphics, top.getX(), mid.getMaxY(), top.getX()+top.getWidth(), mid.getMaxY(), LineStyle.SOLID);
+//		}
+//		METHOD_VIEWER.draw(methods(), pGraphics, bot);
+//	}
 	
 	/**
 	 * @return The width of the middle compartment.

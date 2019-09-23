@@ -46,21 +46,21 @@ public final class CircularStateNodeView extends AbstractNodeView
 		aFinal = pFinal;
 	}
 
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		if( aFinal )
-		{
-			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.WHITE, true);
-			int innerDiameter = DIAMETER/2;
-			ViewUtils.drawCircle(pGraphics, getBounds().getX() + innerDiameter/2, 
-					getBounds().getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
-		}
-		else
-		{
-			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.BLACK, true);
-		}
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		if( aFinal )
+//		{
+//			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.WHITE, true);
+//			int innerDiameter = DIAMETER/2;
+//			ViewUtils.drawCircle(pGraphics, getBounds().getX() + innerDiameter/2, 
+//					getBounds().getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
+//		}
+//		else
+//		{
+//			ViewUtils.drawCircle(pGraphics, getBounds().getX(), getBounds().getY(), DIAMETER, Color.BLACK, true);
+//		}
+//	}
 	
 	@Override
 	public Point getConnectionPoint(Direction pDirection)

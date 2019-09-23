@@ -82,32 +82,32 @@ public final class CallNodeView extends AbstractNodeView
 		return (ImplicitParameterNode)node().getParent();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		if(openBottom())
-		{
-			pGraphics.setStroke(Color.WHITE);
-			ViewUtils.drawRectangle(pGraphics, getBounds());
-			pGraphics.setStroke(Color.BLACK);
-			final Rectangle bounds = getBounds();
-			int x1 = bounds.getX();
-			int x2 = bounds.getMaxX();
-			int y1 = bounds.getY();
-			int y3 = bounds.getMaxY();
-			int y2 = y3 - CallNode.CALL_YGAP;
-			ViewUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
-			ViewUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
-		}
-		else
-		{
-			ViewUtils.drawRectangle(pGraphics, getBounds());
-			
-		}
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		if(openBottom())
+//		{
+//			pGraphics.setStroke(Color.WHITE);
+//			ViewUtils.drawRectangle(pGraphics, getBounds());
+//			pGraphics.setStroke(Color.BLACK);
+//			final Rectangle bounds = getBounds();
+//			int x1 = bounds.getX();
+//			int x2 = bounds.getMaxX();
+//			int y1 = bounds.getY();
+//			int y3 = bounds.getMaxY();
+//			int y2 = y3 - CallNode.CALL_YGAP;
+//			ViewUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
+//			ViewUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
+//			ViewUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
+//			ViewUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
+//			ViewUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
+//		}
+//		else
+//		{
+//			ViewUtils.drawRectangle(pGraphics, getBounds());
+//			
+//		}
+//	}
 
 	@Override
 	public Point getConnectionPoint(Direction pDirection)

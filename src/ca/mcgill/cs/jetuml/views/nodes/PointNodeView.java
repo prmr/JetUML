@@ -59,9 +59,9 @@ public final class PointNodeView extends AbstractNodeView
 		return node().position();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics) 
-	{
-		// Do nothing, a point is invisible.
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics) 
+//	{
+//		// Do nothing, a point is invisible.
+//	}
 }

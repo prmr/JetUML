@@ -49,12 +49,12 @@ public final class StateNodeView extends AbstractNodeView
 		return ((StateNode)node()).getName();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		ViewUtils.drawRoundedRectangle(pGraphics, getBounds());
-		NAME_VIEWER.draw(name(), pGraphics, getBounds());
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		ViewUtils.drawRoundedRectangle(pGraphics, getBounds());
+//		NAME_VIEWER.draw(name(), pGraphics, getBounds());
+//	}
 	
 	@Override
 	public Rectangle getBounds()

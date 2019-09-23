@@ -24,6 +24,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -131,7 +132,7 @@ public abstract class AbstractNodeView implements NodeView
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		draw(canvas.getGraphicsContext2D());
+		NodeViewerRegistry.draw(node(), canvas.getGraphicsContext2D());
 		return canvas;
 	}
 }

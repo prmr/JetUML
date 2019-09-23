@@ -63,18 +63,18 @@ public final class ObjectNodeView extends AbstractNodeView
 		return ((ObjectNode)node()).getChildren();
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		Rectangle bounds = getBounds();
-		int dividerPosition = getTopRectangle().getMaxY();
-		ViewUtils.drawRectangle(pGraphics, bounds);
-		if( children().size() > 0 ) 
-		{
-			ViewUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
-		}
-		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), getTopRectangle().getHeight()));
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		Rectangle bounds = getBounds();
+//		int dividerPosition = getTopRectangle().getMaxY();
+//		ViewUtils.drawRectangle(pGraphics, bounds);
+//		if( children().size() > 0 ) 
+//		{
+//			ViewUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
+//		}
+//		NAME_VIEWER.draw(name(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), getTopRectangle().getHeight()));
+//	}
 	
 	private Rectangle getTopRectangle()
 	{

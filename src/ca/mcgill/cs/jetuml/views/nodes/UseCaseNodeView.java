@@ -44,13 +44,13 @@ public final class UseCaseNodeView extends AbstractNodeView
 		super(pNode);
 	}
 	
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{
-		Rectangle bounds = getBounds();
-		ViewUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
-		NAME_VIEWER.draw(name(), pGraphics, getBounds());
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{
+//		Rectangle bounds = getBounds();
+//		ViewUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
+//		NAME_VIEWER.draw(name(), pGraphics, getBounds());
+//	}
 	
 	private String name()
 	{

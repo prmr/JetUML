@@ -68,16 +68,16 @@ public final class ActorNodeView extends AbstractNodeView
             Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
 	}
 
-	@Override
-	public void draw(GraphicsContext pGraphics)
-	{	
-		Rectangle bounds = getBounds();
-		Dimension nameBox = NAME_VIEWER.getDimension(name());
-		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
-				bounds.getY() + HEIGHT, nameBox.getWidth(), nameBox.getHeight());
-		NAME_VIEWER.draw(name(), pGraphics, namebox);
-		ToolGraphics.strokeSharpPath(pGraphics, createSickManPath(), LineStyle.SOLID);
-	}
+//	@Override
+//	public void draw(GraphicsContext pGraphics)
+//	{	
+//		Rectangle bounds = getBounds();
+//		Dimension nameBox = NAME_VIEWER.getDimension(name());
+//		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
+//				bounds.getY() + HEIGHT, nameBox.getWidth(), nameBox.getHeight());
+//		NAME_VIEWER.draw(name(), pGraphics, namebox);
+//		ToolGraphics.strokeSharpPath(pGraphics, createSickManPath(), LineStyle.SOLID);
+//	}
 	
 	private Path createSickManPath()
 	{
