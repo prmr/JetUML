@@ -33,8 +33,8 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.views.DiagramElementView;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -85,11 +85,11 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	
 	private static Canvas createSelectionIcon()
 	{
-		int offset = DiagramElementView.OFFSET + 3;
-		Canvas canvas = new Canvas(DiagramElementView.BUTTON_SIZE, DiagramElementView.BUTTON_SIZE);
+		int offset = NodeView.OFFSET + 3;
+		Canvas canvas = new Canvas(NodeView.BUTTON_SIZE, NodeView.BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		ToolGraphics.drawHandles(graphics, new Rectangle(offset, offset, 
-				DiagramElementView.BUTTON_SIZE - (offset*2), DiagramElementView.BUTTON_SIZE-(offset*2) ));
+				NodeView.BUTTON_SIZE - (offset*2), NodeView.BUTTON_SIZE-(offset*2) ));
 		return canvas;
 	}
 	

@@ -22,13 +22,50 @@ package ca.mcgill.cs.jetuml.views.nodes;
 
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.DiagramElementView;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Services to query the visual properties of a node.
  */
-public interface NodeView extends DiagramElementView
+public interface NodeView
 {
+	int BUTTON_SIZE = 25;
+	int OFFSET = 3;
+	
+	/**
+     * Gets the smallest rectangle that bounds this element.
+     * The bounding rectangle contains all labels.
+     * @return the bounding rectangle
+   	 */
+	Rectangle getBounds();
+   	
+	/**
+     * Draw the element.
+     * @param pGraphics the graphics context
+	 */
+   	void draw(GraphicsContext pGraphics);
+   	
+   	/**
+   	 * Returns an icon that represents the element.
+     * @return A canvas object on which the icon is painted.
+   	 */
+   	Canvas createIcon();
+   	
+   	/**
+     * Draw selection handles around the element.
+     * @param pGraphics the graphics context
+	 */
+   	void drawSelectionHandles(GraphicsContext pGraphics);
+   	
+   	/**
+     * Tests whether the element contains a point.
+     * @param pPoint the point to test
+     * @return true if this element contains aPoint
+     */
+   	boolean contains(Point pPoint);
+	
 	/**
      * Get the best connection point to connect this node 
      * with another node. This should be a point on the boundary
