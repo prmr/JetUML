@@ -24,11 +24,8 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * Basic services for drawing nodes.
@@ -115,24 +112,5 @@ public abstract class AbstractNodeView implements NodeView
 	public void drawSelectionHandles(GraphicsContext pGraphics)
 	{
 		ToolGraphics.drawHandles(pGraphics, getBounds());		
-	}
-	
-	@Override
-	public Canvas createIcon()
-	{
-		Rectangle bounds = getBounds();
-		int width = bounds.getWidth();
-		int height = bounds.getHeight();
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-		double scale = Math.min(scaleX, scaleY);
-		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		graphics.scale(scale, scale);
-		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-		graphics.setFill(Color.WHITE);
-		graphics.setStroke(Color.BLACK);
-		NodeViewerRegistry.draw(node(), canvas.getGraphicsContext2D());
-		return canvas;
 	}
 }

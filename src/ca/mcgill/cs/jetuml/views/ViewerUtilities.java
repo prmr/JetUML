@@ -25,6 +25,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -84,10 +85,14 @@ public final class ViewerUtilities
 	 */
 	public static Canvas createIcon(DiagramElement pElement)
 	{
+		/* 
+		 * This method exists to cover the case where we wish to create an icon 
+		 * for a diagram element without knowing whether it's a node or an edge.
+		 */
 		assert pElement != null;
 		if( pElement instanceof Node )
 		{
-			return ((Node)pElement).view().createIcon();
+			return NodeViewerRegistry.createIcon((Node)pElement);
 		}
 		else
 		{

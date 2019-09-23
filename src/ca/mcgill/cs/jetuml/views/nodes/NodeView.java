@@ -42,12 +42,6 @@ public interface NodeView
 	Rectangle getBounds();
    	
    	/**
-   	 * Returns an icon that represents the element.
-     * @return A canvas object on which the icon is painted.
-   	 */
-   	Canvas createIcon();
-   	
-   	/**
      * Draw selection handles around the element.
      * @param pGraphics the graphics context
 	 */
