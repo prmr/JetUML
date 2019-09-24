@@ -431,6 +431,7 @@ public abstract class DiagramBuilder
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			node2 = new PointNode();
+			node2.attach(aDiagram);
 			node2.translate(pEnd.getX(), pEnd.getY());
 			Node end = node2; // Effectively final to include in closure
 			result.add(new SimpleOperation(()-> aDiagram.addRootNode(end),

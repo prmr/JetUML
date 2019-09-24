@@ -46,6 +46,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 
@@ -112,6 +113,25 @@ public class TestClassDiagramBuilder
 		assertEquals(new Point(10,10), node.position());
 		operation.undo();
 		assertEquals(0, numberOfRootNodes());
+	}
+	
+	@Test
+	public void testcreateAddEdgeOperationNoteNode() // TODO: here
+	{
+		NoteNode node = new NoteNode();
+		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
+		operation.execute();
+		assertSame(aDiagram, node.getDiagram().get());
+		assertEquals(1, numberOfRootNodes());
+		assertTrue(aDiagram.contains(node));
+		assertEquals(new Point(10,10), node.position());
+		NoteEdge edge = new NoteEdge();
+		aBuilder.createAddEdgeOperation(edge, new Point(11,11), new Point(100,100)).execute();
+		assertEquals(1, aDiagram.numberOfEdges());
+		assertSame(node, edge.getStart());
+		assertSame(aDiagram, node.getDiagram().get());
+		PointNode end = (PointNode) edge.getEnd();
+		assertSame(aDiagram, end.getDiagram().get());
 	}
 	
 	@Test

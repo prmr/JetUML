@@ -23,8 +23,6 @@ package ca.mcgill.cs.jetuml.views.nodes;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Services to query the visual properties of a node.
@@ -40,13 +38,6 @@ public interface NodeView
      * @return the bounding rectangle
    	 */
 	Rectangle getBounds();
-   	
-   	/**
-     * Tests whether the element contains a point.
-     * @param pPoint the point to test
-     * @return true if this element contains aPoint
-     */
-   	boolean contains(Point pPoint);
 	
 	/**
      * Get the best connection point to connect this node 

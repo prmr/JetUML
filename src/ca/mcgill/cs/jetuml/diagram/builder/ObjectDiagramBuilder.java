@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * A builder for object diagram.
@@ -104,7 +105,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			{
 				return (ObjectNode)node;
 			}
-			else if( node.view().contains(pPoint) && canAddNodeAsChild(node, pNode))
+			else if( NodeViewerRegistry.contains(node, pPoint) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}

@@ -36,6 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * A builder for class diagram.
@@ -107,7 +108,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		PackageNode container = null;
 		for( Node node : pNodes )
 		{
-			if( node instanceof PackageNode && node.view().contains(pPoint) )
+			if( node instanceof PackageNode && NodeViewerRegistry.contains(node, pPoint) )
 			{
 				container = (PackageNode) node;
 			}

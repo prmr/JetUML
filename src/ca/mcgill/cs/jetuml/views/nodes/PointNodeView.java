@@ -47,11 +47,11 @@ public final class PointNodeView extends AbstractNodeView
 		return new Rectangle(node().position().getX(), node().position().getY(), 0, 0);
 	}
 
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		return node().position().distance(pPoint) < SELECTION_DISTANCE;
-	}
+//	@Override
+//	public boolean contains(Point pPoint)
+//	{
+//		return node().position().distance(pPoint) < SELECTION_DISTANCE;
+//	}
 
 	@Override
 	public Point getConnectionPoint(Direction pDirection)

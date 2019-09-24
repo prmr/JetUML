@@ -74,12 +74,12 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 //		ViewUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds().getMaxY(), LineStyle.DOTTED);
 //	}
 	
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		final Rectangle bounds = getBounds();
-		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
-	}
+//	@Override
+//	public boolean contains(Point pPoint)
+//	{
+//		final Rectangle bounds = getBounds();
+//		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
+//	}
 
 	@Override
 	public Point getConnectionPoint(Direction pDirection)

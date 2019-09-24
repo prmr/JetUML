@@ -137,7 +137,7 @@ public class DiagramViewer
 				}
 			}
 		}
-		if (pNode.view().contains(pPoint))
+		if( NodeViewerRegistry.contains(pNode, pPoint))
 		{
 			return pNode;
 		}

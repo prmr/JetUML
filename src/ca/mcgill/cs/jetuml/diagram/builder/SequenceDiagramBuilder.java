@@ -40,6 +40,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * A builder for sequence diagrams.
@@ -183,8 +184,15 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			CallNode newCallNode = new CallNode();
 			ImplicitParameterNode parent = (ImplicitParameterNode) pStartNode;
-			pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
-					()-> parent.removeChild(newCallNode)));
+			pOperation.add(new SimpleOperation(() -> 
+			{
+				newCallNode.attach(aDiagram);
+				parent.addChild(newCallNode);
+			}, () -> 
+			{
+				newCallNode.detach();
+				parent.removeChild(newCallNode);
+			}));
 			start = newCallNode;
 		}
 		ImplicitParameterNode endParent = null;
@@ -199,8 +207,17 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		CallNode newCallNode = new CallNode();
 		final ImplicitParameterNode parent = endParent;
-		pOperation.add(new SimpleOperation(()-> parent.addChild(newCallNode),
-				()-> parent.removeChild(newCallNode)));
+		pOperation.add(new SimpleOperation(()-> 
+		{
+			newCallNode.attach(aDiagram);
+			parent.addChild(newCallNode);
+		},
+		()-> 
+		{
+			newCallNode.detach();
+			parent.removeChild(newCallNode);
+		}
+		));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
 		pEdge.connect(start, newCallNode, aDiagram);
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
@@ -255,7 +272,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( Node node : aDiagram.rootNodes() )
 		{
-			if(node instanceof ImplicitParameterNode && node.view().contains(pPoint))
+			if(node instanceof ImplicitParameterNode && NodeViewerRegistry.contains(node, pPoint))
 			{
 				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
 				{

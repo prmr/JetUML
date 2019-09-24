@@ -56,11 +56,11 @@ public abstract class AbstractNodeView implements NodeView
 	 * within the bounding box of the node view.
 	 * @see ca.mcgill.cs.jetuml.views.DiagramElementView#contains(ca.mcgill.cs.jetuml.geom.Point)
 	 */
-	@Override
-	public boolean contains(Point pPoint)
-	{
-		return getBounds().contains(pPoint);
-	}
+//	@Override
+//	public boolean contains(Point pPoint)
+//	{
+//		return getBounds().contains(pPoint);
+//	}
 	
 	/* 
 	 * The default behavior is to returns a point in the middle of the appropriate side of the bounding box 
