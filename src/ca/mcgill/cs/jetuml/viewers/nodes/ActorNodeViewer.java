@@ -91,8 +91,7 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 				new LineTo(neckX + ARMS_SIZE / 2, neckY + BODY_SIZE / 3),
 				new MoveTo(feetX1, feetY),
 				new LineTo(hipX, hipY),
-				new LineTo(feetX2, feetY));
-		
+				new LineTo(feetX2, feetY));	
 		return path;
 	}
 }

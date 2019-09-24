@@ -43,13 +43,13 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public Point position()
+	public final Point position()
 	{
 		return aPosition;
 	}
 	
 	@Override
-	public void moveTo(Point pPoint)
+	public final void moveTo(Point pPoint)
 	{
 		aPosition = pPoint;
 	}
@@ -62,7 +62,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public String toString()
+	public final String toString()
 	{
 		return getClass().getSimpleName() + " " + NodeViewerRegistry.getBounds(this);
 	}
@@ -76,20 +76,20 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public void attach(Diagram pDiagram)
+	public final void attach(Diagram pDiagram)
 	{
 		assert pDiagram != null;
 		aDiagram = Optional.of(pDiagram);
 	}
 
 	@Override
-	public void detach()
+	public final void detach()
 	{
 		aDiagram = Optional.empty();
 	}
 
 	@Override
-	public Optional<Diagram> getDiagram()
+	public final Optional<Diagram> getDiagram()
 	{
 		return aDiagram;
 	}
