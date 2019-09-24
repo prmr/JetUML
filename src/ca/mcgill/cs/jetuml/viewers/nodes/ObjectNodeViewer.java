@@ -44,6 +44,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, true, true);
+	private static final FieldNodeViewer FIELD_NODE_VIEWER = new FieldNodeViewer();
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
@@ -75,8 +76,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		int leftWidth = 0;
 		for(ChildNode field : ((ObjectNode)pNode).getChildren())
 		{
-			FieldNodeView view = (FieldNodeView) field.view();
-			leftWidth = Math.max(leftWidth, view.leftWidth());
+			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
 		}
 		return pNode.position().getX() + leftWidth + XGAP;
 	}
@@ -94,10 +94,9 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		}
 		for(ChildNode field : ((ObjectNode)pNode).getChildren())
 		{
-			FieldNodeView view = (FieldNodeView) field.view();
-			height += view.getHeight() + YGAP;   
-			leftWidth = Math.max(leftWidth, view.leftWidth());
-			rightWidth = Math.max(rightWidth, view.rightWidth());
+			height += FIELD_NODE_VIEWER.getHeight(field) + YGAP;   
+			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
+			rightWidth = Math.max(rightWidth, FIELD_NODE_VIEWER.rightWidth(field));
 		}
 		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
 		width = Grid.toMultiple(width);
@@ -121,7 +120,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 			{
 				return yPosition;
 			}
-			yPosition += ((FieldNodeView)field.view()).getHeight();
+			yPosition += FIELD_NODE_VIEWER.getHeight(field);
 		}
 		return yPosition;
 	}

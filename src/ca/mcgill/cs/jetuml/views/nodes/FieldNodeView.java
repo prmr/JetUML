@@ -70,18 +70,18 @@ public final class FieldNodeView extends AbstractNodeView
 //		VALUE_VIEWER.draw(value(), pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(), bounds.getHeight()));
 //	}
 	
-	private int getSplitPosition()
-	{
-		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
-		if( parent != null )
-		{
-			return ((ObjectNodeView)parent.view()).getSplitPosition();
-		}
-		else
-		{
-			return DEFAULT_WIDTH / 2;
-		}
-	}
+//	private int getSplitPosition()
+//	{
+//		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
+//		if( parent != null )
+//		{
+//			return ((ObjectNodeView)parent.view()).getSplitPosition();
+//		}
+//		else
+//		{
+//			return DEFAULT_WIDTH / 2;
+//		}
+//	}
 	
 //	@Override
 //	public Rectangle getBounds()

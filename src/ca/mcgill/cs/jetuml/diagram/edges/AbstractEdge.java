@@ -24,9 +24,6 @@ import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
-import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 /**
  * Groups the functionality common to all edges.
@@ -44,15 +41,6 @@ public abstract class AbstractEdge extends AbstractDiagramElement implements Edg
 		aStart = pStart;
 		aEnd = pEnd;
 		aDiagram = pDiagram;
-		// Special case: CallNodeViews need to have a reference to the diagram.
-		if( pStart instanceof CallNode )
-		{
-			((CallNodeView)pStart.view()).setDiagram((SequenceDiagram) pDiagram);
-		}
-		if( pEnd instanceof CallNode )
-		{
-			((CallNodeView)pEnd.view()).setDiagram((SequenceDiagram) pDiagram);
-		}
 	}
 
 	@Override

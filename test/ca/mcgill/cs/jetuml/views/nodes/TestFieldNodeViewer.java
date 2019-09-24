@@ -37,14 +37,16 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
-public class TestFieldAndObjectNodeView
+public class TestFieldNodeViewer
 {
 	private ObjectNode aObjectNode1;
 	private FieldNode aFieldNode1;
 	private Graphics2D aGraphics;
 	private ObjectDiagram aDiagram;
+	private FieldNodeViewer aFieldNodeViewer = new FieldNodeViewer();
 	
 	@BeforeAll
 	public static void setupClass()
@@ -66,20 +68,18 @@ public class TestFieldAndObjectNodeView
 	public void testDimensionsUnattachedWithNameString()
 	{
 		aFieldNode1.setName("XXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(47, view.leftWidth());    // The length of the string
-		assertEquals(36, view.rightWidth());   // Half the default width + mid offset.
-		assertEquals(22, view.getHeight());    // The height of the string
+		assertEquals(47, aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(36, aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(22, aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
 	public void testDimensionsUnattachedWithValueString()
 	{
 		aFieldNode1.setValue("XXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(6, view.leftWidth());    	// Just the length of the mid offset
-		assertEquals(47, view.rightWidth());  	// The length of the string
-		assertEquals(22, view.getHeight());    	// The height of the string
+		assertEquals(6, aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(47, aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(22, aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test
@@ -118,10 +118,9 @@ public class TestFieldAndObjectNodeView
 	public void testDimensionsAttachedNoStrings()
 	{
 		aObjectNode1.addChild(aFieldNode1);
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(6, view.leftWidth());    // Just the length of the mid offset
-		assertEquals(36, view.rightWidth());  // Half the default width + mid offset.
-		assertEquals(20, view.getHeight());   // Default height
+		assertEquals(6, aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(36, aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(20, aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
@@ -129,10 +128,9 @@ public class TestFieldAndObjectNodeView
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aObjectNode1.setName("XXXXXXXXXXXXXXXXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(6, view.leftWidth());    // Just the length of the mid offset
-		assertEquals(36, view.rightWidth());  // Half the default width + mid offset.
-		assertEquals(20, view.getHeight());   // Default height
+		assertEquals(6, aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(36, aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(20, aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
@@ -140,10 +138,9 @@ public class TestFieldAndObjectNodeView
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setName("XXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(47, view.leftWidth());    // The length of the string
-		assertEquals(36, view.rightWidth());   // Half the default width + mid offset.
-		assertEquals(22, view.getHeight());    // The height of the string
+		assertEquals(47, aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(36, aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(22, aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
@@ -151,10 +148,9 @@ public class TestFieldAndObjectNodeView
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setValue("XXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
-		assertEquals(6, view.leftWidth());    	// Just the length of the mid offset
-		assertEquals(47, view.rightWidth());  	// The length of the string
-		assertEquals(22, view.getHeight());    	// The height of the string
+		assertEquals(6, aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(47, aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(22, aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test

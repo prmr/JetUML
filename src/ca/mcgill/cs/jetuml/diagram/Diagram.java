@@ -172,8 +172,32 @@ public abstract class Diagram implements DiagramData
 	public void addRootNode(Node pNode)
 	{
 		assert pNode != null;
-		pNode.attach(this);
+		recursiveAttach(pNode);
 		aRootNodes.add(pNode);
+	}
+	
+	private void recursiveAttach(Node pNode)
+	{
+		pNode.attach(this);
+		if( pNode instanceof ParentNode )
+		{
+			for( Node child : ((ParentNode)pNode).getChildren())
+			{
+				recursiveAttach(child);
+			}
+		}
+	}
+	
+	private void recursiveDetch(Node pNode)
+	{
+		pNode.detach();
+		if( pNode instanceof ParentNode )
+		{
+			for( Node child : ((ParentNode)pNode).getChildren())
+			{
+				recursiveDetch(child);
+			}
+		}
 	}
 	
 	/**
@@ -187,7 +211,7 @@ public abstract class Diagram implements DiagramData
 	public void removeRootNode(Node pNode)
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
-		pNode.detach();
+		recursiveDetch(pNode);
 		aRootNodes.remove(pNode);
 	}
 	

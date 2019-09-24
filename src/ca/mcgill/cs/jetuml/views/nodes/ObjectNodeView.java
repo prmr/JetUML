@@ -86,17 +86,17 @@ public final class ObjectNodeView extends AbstractNodeView
 	/**
 	 * @return The position that represents the split between the name and value fields.
 	 */
-	public int getSplitPosition()
-	{
-		int leftWidth = 0;
-		for(ChildNode field : children())
-		{
-			FieldNodeView view = (FieldNodeView) field.view();
-			leftWidth = Math.max(leftWidth, view.leftWidth());
-		}
-		return node().position().getX() + leftWidth + XGAP;
-	}
-	
+//	public int getSplitPosition()
+//	{
+//		int leftWidth = 0;
+//		for(ChildNode field : children())
+//		{
+//			FieldNodeView view = (FieldNodeView) field.view();
+//			leftWidth = Math.max(leftWidth, view.leftWidth());
+//		}
+//		return node().position().getX() + leftWidth + XGAP;
+//	}
+//	
 //	@Override
 //	public Rectangle getBounds()
 //	{
@@ -124,20 +124,20 @@ public final class ObjectNodeView extends AbstractNodeView
 	 * @param pNode The node whose position to compute.
 	 * @return The y position of a child node.
 	 */
-	public int getYPosition(FieldNode pNode)
-	{
-		assert children().contains(pNode);
-		Rectangle bounds = getTopRectangle();
-		int yPosition = bounds.getMaxY() + YGAP; 
-		for( ChildNode field : children() )
-		{
-			yPosition += YGAP;
-			if( field == pNode )
-			{
-				return yPosition;
-			}
-			yPosition += ((FieldNodeView)field.view()).getHeight();
-		}
-		return yPosition;
-	}
+//	public int getYPosition(FieldNode pNode)
+//	{
+//		assert children().contains(pNode);
+//		Rectangle bounds = getTopRectangle();
+//		int yPosition = bounds.getMaxY() + YGAP; 
+//		for( ChildNode field : children() )
+//		{
+//			yPosition += YGAP;
+//			if( field == pNode )
+//			{
+//				return yPosition;
+//			}
+//			yPosition += ((FieldNodeView)field.view()).getHeight();
+//		}
+//		return yPosition;
+//	}
 }

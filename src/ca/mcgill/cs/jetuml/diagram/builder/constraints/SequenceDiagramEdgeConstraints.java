@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -39,6 +39,8 @@ import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
  */
 public final class SequenceDiagramEdgeConstraints
 {
+	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
+	
 	private SequenceDiagramEdgeConstraints() {}
 	
 	/*
@@ -49,7 +51,7 @@ public final class SequenceDiagramEdgeConstraints
 		return ()->
 		{
 			return !(pStart.getClass() == ImplicitParameterNode.class && 
-					((ImplicitParameterNode)pStart).getTopRectangle().contains(pStartPoint));
+					IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pStart).contains(pStartPoint));
 		};
 	}
 	
@@ -80,7 +82,7 @@ public final class SequenceDiagramEdgeConstraints
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEndNode.getClass() == ImplicitParameterNode.class &&
-					 ((ImplicitParameterNodeView)((ImplicitParameterNode)pEndNode).view()).getTopRectangle().contains(pEndPoint));
+							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint));
 		};
 	}
 	

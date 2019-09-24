@@ -126,84 +126,84 @@ public final class CallNodeView extends AbstractNodeView
 	 * The x position is a function of the position of the implicit parameter
 	 * node and the nesting depth of the call node.
 	 */
-	private int getX()
-	{
-		if(implicitParameter() != null )
-		{
-			int depth = 0;
-			if( aDiagram != null )
-			{
-				depth = new ControlFlow(aDiagram).getNestingDepth(node());
-			}
-			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getCenter().getX() -
-					WIDTH / 2 + depth * WIDTH/2;
-		}
-		else
-		{
-			return 0;
-		}
-	}
+//	private int getX()
+//	{
+//		if(implicitParameter() != null )
+//		{
+//			int depth = 0;
+//			if( aDiagram != null )
+//			{
+//				depth = new ControlFlow(aDiagram).getNestingDepth(node());
+//			}
+//			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getCenter().getX() -
+//					WIDTH / 2 + depth * WIDTH/2;
+//		}
+//		else
+//		{
+//			return 0;
+//		}
+//	}
 	
 	/*
 	 * If the node has a caller, the Y coordinate is a gap below the last return Y value
 	 * of the caller or a set distance before the previous call node, whatever is lower.
 	 * If not, it's simply a set distance below the previous call node.
 	 */
-	private int getY()
-	{
-		if( implicitParameter() == null || aDiagram == null )
-		{
-			return 0; // Only used for the ImageCreator
-		}
-		ControlFlow flow = new ControlFlow(aDiagram);
-		Optional<CallNode> caller = flow.getCaller(node());
-		if( caller.isPresent() )
-		{
-			int result = 0;
-			if( flow.isNested(node()) && flow.isFirstCallee(node()))
-			{
-				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
-			}
-			else if( flow.isNested(node()) && !flow.isFirstCallee(node()) )
-			{
-				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
-			}
-			else if( !flow.isNested(node()) && flow.isFirstCallee(node()) )
-			{
-				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
-			}
-			else
-			{
-				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
-			}
-			return result;
-		}
-		else
-		{
-			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getMaxY() + Y_GAP_SMALL;
-		}
-	} 
+//	private int getY()
+//	{
+//		if( implicitParameter() == null || aDiagram == null )
+//		{
+//			return 0; // Only used for the ImageCreator
+//		}
+//		ControlFlow flow = new ControlFlow(aDiagram);
+//		Optional<CallNode> caller = flow.getCaller(node());
+//		if( caller.isPresent() )
+//		{
+//			int result = 0;
+//			if( flow.isNested(node()) && flow.isFirstCallee(node()))
+//			{
+//				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_BIG;
+//			}
+//			else if( flow.isNested(node()) && !flow.isFirstCallee(node()) )
+//			{
+//				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+//			}
+//			else if( !flow.isNested(node()) && flow.isFirstCallee(node()) )
+//			{
+//				result = ((CallNodeView)caller.get().view()).getY() + Y_GAP_SMALL;
+//			}
+//			else
+//			{
+//				result = ((CallNodeView)flow.getPreviousCallee(node()).view()).getMaxY() + Y_GAP_SMALL;
+//			}
+//			return result;
+//		}
+//		else
+//		{
+//			return ((ImplicitParameterNodeView)implicitParameter().view()).getTopRectangle().getMaxY() + Y_GAP_SMALL;
+//		}
+//	} 
 	
 	/**
 	 * @return If there's no callee, returns a fixed offset from the y position.
 	 * Otherwise, return with a gap from last callee.
 	 */
-	public int getMaxY()
-	{
-		List<Node> callees = new ArrayList<>();
-		if( aDiagram != null )
-		{
-			callees = new ControlFlow(aDiagram).getCallees(node());
-		}
-		if( callees.isEmpty() )
-		{
-			return getY() + DEFAULT_HEIGHT;
-		}
-		else
-		{
-			return ((CallNodeView)callees.get(callees.size()-1).view()).getMaxY() + Y_GAP_SMALL;
-		}
-	}
+//	public int getMaxY()
+//	{
+//		List<Node> callees = new ArrayList<>();
+//		if( aDiagram != null )
+//		{
+//			callees = new ControlFlow(aDiagram).getCallees(node());
+//		}
+//		if( callees.isEmpty() )
+//		{
+//			return getY() + DEFAULT_HEIGHT;
+//		}
+//		else
+//		{
+//			return ((CallNodeView)callees.get(callees.size()-1).view()).getMaxY(callees.get(callees.size()-1)) + Y_GAP_SMALL;
+//		}
+//	}
 	
 //	@Override
 //	public Rectangle getBounds()

@@ -34,18 +34,8 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
  */
 public abstract class AbstractNode extends AbstractDiagramElement implements Node
 {
-	private NodeView aView;
 	private Point aPosition = new Point(0, 0);
 	private Optional<Diagram> aDiagram = Optional.empty();
-	
-	/**
-	 * Calls an abstract delegate to generate the view for this node
-	 * and positions the node at (0,0).
-	 */
-	protected AbstractNode()
-	{
-		aView = generateView();
-	}
 	
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
@@ -63,12 +53,6 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	protected abstract NodeView generateView();
 	
 	@Override
-	public NodeView view()
-	{
-		return aView;
-	}
-	
-	@Override
 	public Point position()
 	{
 		return aPosition;
@@ -84,7 +68,6 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	public AbstractNode clone()
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
-		clone.aView = clone.generateView();
 		return clone;
 	}
 	

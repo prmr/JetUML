@@ -40,6 +40,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
@@ -48,6 +49,7 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
+	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
 	
 	/**
 	 * Creates a new builder for sequence diagrams.
@@ -274,7 +276,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			if(node instanceof ImplicitParameterNode && NodeViewerRegistry.contains(node, pPoint))
 			{
-				if( !(pPoint.getY() < ((ImplicitParameterNode)node).getTopRectangle().getMaxY() + CALL_NODE_YGAP))
+				if( !(pPoint.getY() < IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).getMaxY() + CALL_NODE_YGAP))
 				{
 					return (ImplicitParameterNode) node;
 				}

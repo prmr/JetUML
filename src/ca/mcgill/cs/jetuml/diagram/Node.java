@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.diagram;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
   * A node in a diagram.
@@ -55,11 +54,6 @@ public interface Node extends DiagramElement
 	 * @return A clone of the node.
 	 */
 	Node clone();
-	
-	/**
-	 * @return The view for this node.
-	 */
-	NodeView view();
 	
 	/**
 	 * Attaches this node to a diagram.

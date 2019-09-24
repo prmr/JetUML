@@ -370,21 +370,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		assertEquals(1, (((ImplicitParameterNode)(getRootNode(1))).getChildren().size()));
 	}
 	
-	private static SequenceDiagram getDiagram(CallNode pCallNode)
-	{
-		try
-		{
-			Field diagramField = CallNodeView.class.getDeclaredField("aDiagram");
-			diagramField.setAccessible(true);
-			return (SequenceDiagram) diagramField.get(pCallNode.view());
-		}
-		catch( ReflectiveOperationException exception )
-		{
-			fail();
-			return null;
-		}
-	}
-	
 	@Test
 	public void testCopyPasteDifferentDiagrams()
 	{
@@ -394,13 +379,15 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		
 		aParameterNode1.addChild(aCallNode1);
 		aParameterNode2.addChild(aCallNode2);
+		aCallNode1.attach(aDiagram);
+		aCallNode2.attach(aDiagram);
 		
 		aCallEdge1.connect(aCallNode1, aCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
 		
 		assertSame(aCallNode1, aCallEdge1.getStart());
 		assertSame(aCallNode2, aCallEdge1.getEnd());
-		assertSame( aDiagram, getDiagram(aCallNode1));
+		assertSame( aDiagram, aCallNode1.getDiagram().get());
 		
 		select(aParameterNode1, aParameterNode2, aCallEdge1);
 		copy();
@@ -414,7 +401,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		Node node1 = nodes.next();
 		CallNode callNode = (CallNode)((ImplicitParameterNode)node1).getChildren().get(0);
 		assertSame(node1, callNode.getParent());
-		assertSame( diagram2, getDiagram(callNode));
+		assertSame( diagram2, callNode.getDiagram().get());
 	}
 	
 	@Test

@@ -95,12 +95,4 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 		aCallNodes.remove(pNode);
 		pNode.setParent(null);
 	}
-	
-	/**
-	 * @return The bounds of the top rectangle.
-	 */
-	public Rectangle getTopRectangle()
-	{
-		return ((ImplicitParameterNodeView)view()).getTopRectangle();
-	}
 }

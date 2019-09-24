@@ -86,7 +86,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 * @param pNode The node
 	 * @return The width of the left (name) part of the node.
 	 */
-	private int leftWidth(Node pNode)
+	public int leftWidth(Node pNode)
 	{
 		return NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).getWidth() + MID_OFFSET;
 	}
@@ -95,7 +95,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 * @param pNode The node.
 	 * @return The width of the right (value) part of the node.
 	 */
-	private int rightWidth(Node pNode)
+	public int rightWidth(Node pNode)
 	{
 		int rightWidth = VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getWidth();
 		if(rightWidth == 0)
@@ -109,7 +109,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 * @param pNode The node
 	 * @return The height of this node.
 	 */
-	private int getHeight(Node pNode)
+	public int getHeight(Node pNode)
 	{
 		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).getHeight(), 
 				Math.max(VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getHeight(), EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
