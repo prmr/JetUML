@@ -57,11 +57,11 @@ public final class UseCaseNodeView extends AbstractNodeView
 		return ((UseCaseNode)node()).getName();
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		return new Rectangle(node().position().getX(), node().position().getY(), 
-				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(name()).getWidth()), 
-				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(name()).getHeight()));
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		return new Rectangle(node().position().getX(), node().position().getY(), 
+//				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(name()).getWidth()), 
+//				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(name()).getHeight()));
+//	}
 }

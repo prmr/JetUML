@@ -117,8 +117,8 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle startBounds = pEdge.getStart().view().getBounds();
-		Rectangle endBounds = pEdge.getEnd().view().getBounds();
+		Rectangle startBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
+		Rectangle endBounds = NodeViewerRegistry.getBounds(pEdge.getEnd());
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);

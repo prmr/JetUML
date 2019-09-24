@@ -83,18 +83,18 @@ public final class FieldNodeView extends AbstractNodeView
 		}
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
-		if( parent != null )
-		{
-			int yPosition = ((ObjectNodeView)parent.view()).getYPosition((FieldNode)node());
-			Rectangle parentBounds = ((ObjectNode)((FieldNode)node()).getParent()).view().getBounds();
-			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, getHeight());
-		}
-		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth(), 0, leftWidth() + rightWidth(), getHeight());
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		ObjectNode parent = (ObjectNode)((FieldNode)node()).getParent();
+//		if( parent != null )
+//		{
+//			int yPosition = ((ObjectNodeView)parent.view()).getYPosition((FieldNode)node());
+//			Rectangle parentBounds = ((ObjectNode)((FieldNode)node()).getParent()).view().getBounds();
+//			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, getHeight());
+//		}
+//		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth(), 0, leftWidth() + rightWidth(), getHeight());
+//	}
 	
 	/**
 	 * @return The width of the left (name) part of the node.

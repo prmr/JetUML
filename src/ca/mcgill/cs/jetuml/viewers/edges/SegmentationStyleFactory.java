@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle.Side;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
+import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
 import javafx.geometry.Point2D;
 
 /**
@@ -123,11 +123,11 @@ public final class SegmentationStyleFactory
 	{
 		if( pNode instanceof PackageNode )
 		{
-			return Conversions.toPoint2D(((PackageNodeView)((PackageNode)pNode).view()).getTopRightCorner());
+			return Conversions.toPoint2D(new PackageNodeViewer().getTopRightCorner(pNode)); // TODO reuse object
 		}
 		else
 		{
-			return new Point2D(pNode.view().getBounds().getMaxX(), pNode.view().getBounds().getY());
+			return new Point2D(NodeViewerRegistry.getBounds(pNode).getMaxX(), NodeViewerRegistry.getBounds(pNode).getY());
 		}
 	}
 	
@@ -196,21 +196,21 @@ public final class SegmentationStyleFactory
 		Point start = NodeViewerRegistry.getConnectionPoints(pNode, pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
-			double yPosition = start.getY()+ pPosition.computeNudge(pNode.view().getBounds().getHeight()); // Default
+			double yPosition = start.getY()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getHeight()); // Default
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.EAST )
 			{
-				double increment = (pNode.view().getBounds().getHeight() - MARGIN) / (pPosition.aTotal+1);
-				yPosition = pNode.view().getBounds().getY() + MARGIN + pPosition.getIndex() * increment;
+				double increment = (NodeViewerRegistry.getBounds(pNode).getHeight() - MARGIN) / (pPosition.aTotal+1);
+				yPosition = NodeViewerRegistry.getBounds(pNode).getY() + MARGIN + pPosition.getIndex() * increment;
 			}
 			return new Point( start.getX(), (int) Math.round(yPosition));	
 		}
 		else
 		{
-			double xPosition = start.getX()+ pPosition.computeNudge(pNode.view().getBounds().getWidth());
+			double xPosition = start.getX()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getWidth());
 			if( hasSelfEdge(pNode, pGraph) && pSide == Side.NORTH )
 			{
-				double increment = (pNode.view().getBounds().getWidth() - MARGIN) / (pPosition.aTotal+1);
-				xPosition = pNode.view().getBounds().getX() + pPosition.getIndex() * increment;
+				double increment = (NodeViewerRegistry.getBounds(pNode).getWidth() - MARGIN) / (pPosition.aTotal+1);
+				xPosition = NodeViewerRegistry.getBounds(pNode).getX() + pPosition.getIndex() * increment;
 			}
 			return new Point( (int) Math.round(xPosition), start.getY());
 		}
@@ -367,11 +367,11 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return otherNode1.view().getBounds().getCenter().getY() - otherNode2.view().getBounds().getCenter().getY();
+				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getY() - NodeViewerRegistry.getBounds(otherNode2).getCenter().getY();
 			}
 			else
 			{
-				return otherNode1.view().getBounds().getCenter().getX() - otherNode2.view().getBounds().getCenter().getX();
+				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getX() - NodeViewerRegistry.getBounds(otherNode2).getCenter().getX();
 			}
 		});
 	}

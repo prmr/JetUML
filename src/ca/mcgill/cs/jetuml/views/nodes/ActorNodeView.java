@@ -60,13 +60,13 @@ public final class ActorNodeView extends AbstractNodeView
 		return ((ActorNode)node()).getName();
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		Dimension nameBounds = NAME_VIEWER.getDimension(name());
-		return new Rectangle(node().position().getX(), node().position().getY(),
-            Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Dimension nameBounds = NAME_VIEWER.getDimension(name());
+//		return new Rectangle(node().position().getX(), node().position().getY(),
+//            Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
+//	}
 
 //	@Override
 //	public void draw(GraphicsContext pGraphics)

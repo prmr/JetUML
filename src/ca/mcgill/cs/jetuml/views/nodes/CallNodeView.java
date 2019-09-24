@@ -205,11 +205,11 @@ public final class CallNodeView extends AbstractNodeView
 		}
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		int y = getY();
-		return new Rectangle(getX(), y, WIDTH, getMaxY() - y);
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		int y = getY();
+//		return new Rectangle(getX(), y, WIDTH, getMaxY() - y);
+//	}
 	
 }

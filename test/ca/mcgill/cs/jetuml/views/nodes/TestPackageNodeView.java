@@ -33,12 +33,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
 
 public class TestPackageNodeView
 {
+	private PackageNodeViewer aViewer = new PackageNodeViewer();
 	private PackageNode aPackageNode1;
 	private Graphics2D aGraphics;
 	private Method aGetTopBoundsMethod;
@@ -46,9 +50,9 @@ public class TestPackageNodeView
 	
 	public TestPackageNodeView() throws ReflectiveOperationException
 	{
-		aGetTopBoundsMethod = PackageNodeView.class.getDeclaredMethod("getTopBounds");
+		aGetTopBoundsMethod = PackageNodeViewer.class.getDeclaredMethod("getTopBounds", Node.class);
 		aGetTopBoundsMethod.setAccessible(true);
-		aGetBottomBoundsMethod = PackageNodeView.class.getDeclaredMethod("getBottomBounds");
+		aGetBottomBoundsMethod = PackageNodeViewer.class.getDeclaredMethod("getBottomBounds", Node.class);
 		aGetBottomBoundsMethod.setAccessible(true);
 	}
 	
@@ -56,7 +60,7 @@ public class TestPackageNodeView
 	{
 		try
 		{
-			return (Rectangle) aGetTopBoundsMethod.invoke(pNode.view());
+			return (Rectangle) aGetTopBoundsMethod.invoke(aViewer, pNode);
 		}
 		catch( ReflectiveOperationException e)
 		{
@@ -69,7 +73,7 @@ public class TestPackageNodeView
 	{
 		try
 		{
-			return (Rectangle) aGetBottomBoundsMethod.invoke(pNode.view());
+			return (Rectangle) aGetBottomBoundsMethod.invoke(aViewer, pNode);
 		}
 		catch( ReflectiveOperationException e)
 		{
@@ -100,21 +104,21 @@ public class TestPackageNodeView
 	@Test
 	public void testGetBoundsDefault()
 	{
-		assertEqualRectangles(0,0,100,80, aPackageNode1.view().getBounds());
+		assertEqualRectangles(0,0,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
 	}
 	
 	@Test
 	public void testGetBoundsOffset()
 	{
 		aPackageNode1.moveTo(new Point(25,25));
-		assertEqualRectangles(25,25,100,80, aPackageNode1.view().getBounds());
+		assertEqualRectangles(25,25,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
 	}
 	
 	@Test
 	public void testGetBoundsNameNoContent()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0,100,80, aPackageNode1.view().getBounds());
+		assertEqualRectangles(0,0,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
 	}
 	
 	@Test

@@ -62,7 +62,7 @@ public class TestPackageNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 100, 80), aPackage1.view().getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), NodeViewerRegistry.getBounds(aPackage1));
 		assertEquals(0,aPackage1.getChildren().size());
 		assertEquals(new Point(100,40), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.EAST));
 		assertEquals(new Point(0,40), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.WEST));
@@ -138,7 +138,7 @@ public class TestPackageNode
 	{
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
-		assertEquals(new Rectangle(0, 0, 100, 80), clone.view().getBounds());
+		assertEquals(new Rectangle(0, 0, 100, 80), NodeViewerRegistry.getBounds(clone));
 		assertEquals(0,clone.getChildren().size());
 		assertEquals(new Point(100,40), NodeViewerRegistry.getConnectionPoints(clone, Direction.EAST));
 		assertEquals(new Point(0,40), NodeViewerRegistry.getConnectionPoints(clone, Direction.WEST));

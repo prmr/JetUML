@@ -67,6 +67,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestPersistenceService
 {
@@ -195,30 +196,30 @@ public class TestPersistenceService
 		UseCaseNode u4 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 4"));
 		ActorNode a3 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor3"));
 		
-		assertEquals(new Rectangle(440, 40, 110, 40), u1.view().getBounds());
+		assertEquals(new Rectangle(440, 40, 110, 40), NodeViewerRegistry.getBounds(u1));
 		assertEquals("Use case 1", u1.getName().toString());
 		
-		assertEquals(new Rectangle(460, 130, 110, 40), u2.view().getBounds());
+		assertEquals(new Rectangle(460, 130, 110, 40), NodeViewerRegistry.getBounds(u2));
 		assertEquals("Use case 2", u2.getName().toString());
 		
-		assertEquals(new Rectangle(460, 230, 110, 40), u3.view().getBounds());
+		assertEquals(new Rectangle(460, 230, 110, 40), NodeViewerRegistry.getBounds(u3));
 		assertEquals("Use case 3", u3.getName().toString());
 		
-		assertTrue(new Rectangle(270, 50, 48, 88).equals(a1.view().getBounds()) || new Rectangle(270, 50, 48, 87).equals(a1.view().getBounds()));
+		assertTrue(new Rectangle(270, 50, 48, 88).equals(NodeViewerRegistry.getBounds(a1)) || new Rectangle(270, 50, 48, 87).equals(NodeViewerRegistry.getBounds(a1)));
 		assertEquals("Actor", a1.getName().toString());
 		
-		assertTrue(new Rectangle(280, 230, 48, 88).equals(a2.view().getBounds()) || new Rectangle(280, 230, 48, 87).equals(a2.view().getBounds()));
+		assertTrue(new Rectangle(280, 230, 48, 88).equals(NodeViewerRegistry.getBounds(a2)) || new Rectangle(280, 230, 48, 87).equals(NodeViewerRegistry.getBounds(a2)));
 		assertEquals("Actor2", a2.getName().toString());
 		
 		assertEquals("A note", n1.getName());
-		assertEquals(new Rectangle(700, 50, 60, 40), n1.view().getBounds());
+		assertEquals(new Rectangle(700, 50, 60, 40), NodeViewerRegistry.getBounds(n1));
 		
-		assertEquals(new Rectangle(567, 56, 0, 0), p1.view().getBounds());
+		assertEquals(new Rectangle(567, 56, 0, 0), NodeViewerRegistry.getBounds(p1));
 		
-		assertEquals(new Rectangle(650, 150, 110, 40), u4.view().getBounds());
+		assertEquals(new Rectangle(650, 150, 110, 40), NodeViewerRegistry.getBounds(u4));
 		assertEquals("Use case 4", u4.getName().toString());
 		
-		assertTrue(new Rectangle(190, 140, 48, 88).equals(a3.view().getBounds()) || new Rectangle(190, 140, 48, 87).equals(a3.view().getBounds()));
+		assertTrue(new Rectangle(190, 140, 48, 88).equals(NodeViewerRegistry.getBounds(a3)) || new Rectangle(190, 140, 48, 87).equals(NodeViewerRegistry.getBounds(a3)));
 		assertEquals("Actor3", a3.getName().toString());
 		
 		assertEquals(10,  numberOfEdges(pDiagram));
@@ -287,39 +288,39 @@ public class TestPersistenceService
 		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p2"));
 		PackageNode p3 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p3"));
 		
-		assertEquals(new Rectangle(310, 230, 120, 100), p1.view().getBounds());
+		assertEquals(new Rectangle(310, 230, 120, 100), NodeViewerRegistry.getBounds(p1));
 		assertEquals("p1", p1.getName().toString());
 		
 		List<ChildNode> children = p1.getChildren();
 		assertEquals(1, children.size());
 		ClassNode c1 = (ClassNode) children.get(0);
-		assertEquals(new Rectangle(320, 260, 100, 60), c1.view().getBounds());
+		assertEquals(new Rectangle(320, 260, 100, 60), NodeViewerRegistry.getBounds(c1));
 		assertEquals(p1, c1.getParent());
 		assertEquals("C1", c1.getName().toString());
 
 		assertEquals("p2", p2.getName().toString());
-		assertEquals(new Rectangle(477, 130, 100, 80), p2.view().getBounds());
+		assertEquals(new Rectangle(477, 130, 100, 80), NodeViewerRegistry.getBounds(p2));
 		children = p2.getChildren();
 		assertEquals(0, children.size());
 
 		assertEquals("p3", p3.getName().toString());
-		assertEquals(new Rectangle(620, 270, 310, 140), p3.view().getBounds());
+		assertEquals(new Rectangle(620, 270, 310, 140), NodeViewerRegistry.getBounds(p3));
 		children = p3.getChildren();
 		assertEquals(1,children.size());
 		PackageNode p4 = (PackageNode) children.get(0);
 		assertEquals("p4", p4.getName().toString());
-		assertEquals(new Rectangle(630, 300, 290, 100), p4.view().getBounds());
+		assertEquals(new Rectangle(630, 300, 290, 100), NodeViewerRegistry.getBounds(p4));
 		
 		children = p4.getChildren();
 		assertEquals(2,children.size());
 		InterfaceNode i1 = (InterfaceNode) children.get(0);
-		assertEquals(new Rectangle(640, 330, 100, 60), i1.view().getBounds());
+		assertEquals(new Rectangle(640, 330, 100, 60), NodeViewerRegistry.getBounds(i1));
 		ClassNode c2 = (ClassNode) children.get(1);
-		assertEquals(new Rectangle(810, 330, 100, 60), c2.view().getBounds());
+		assertEquals(new Rectangle(810, 330, 100, 60), NodeViewerRegistry.getBounds(c2));
 		assertEquals("C2", c2.getName().toString());
 		
 		NoteNode n1 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
-		assertEquals(new Rectangle(490, 160, 60, 40), n1.view().getBounds());
+		assertEquals(new Rectangle(490, 160, 60, 40), NodeViewerRegistry.getBounds(n1));
 		assertEquals("n1", n1.getName().toString());
 
 		assertEquals(3, numberOfEdges(pDiagram));
@@ -359,27 +360,27 @@ public class TestPersistenceService
 		assertEquals("", node1.getMethods());
 		assertEquals("Class1", node1.getName());
 		assertNull(node1.getParent());
-		assertEquals(new Rectangle(460, 370, 100, 60), node1.view().getBounds());
+		assertEquals(new Rectangle(460, 370, 100, 60), NodeViewerRegistry.getBounds(node1));
 		
 		assertEquals("", node2.getMethods());
 		assertEquals("\u00ABinterface\u00BB\n", node2.getName());
 		assertNull(node2.getParent());
-		assertEquals(new Rectangle(460, 250, 100, 60), node2.view().getBounds());
+		assertEquals(new Rectangle(460, 250, 100, 60), NodeViewerRegistry.getBounds(node2));
 		
 		assertEquals("foo", node3.getAttributes());
 		assertEquals("bar", node3.getMethods());
 		assertEquals("Class2", node3.getName());
 		assertNull(node3.getParent());
-		assertEquals(new Rectangle(460, 520, 100, 69), node3.view().getBounds());
+		assertEquals(new Rectangle(460, 520, 100, 86), NodeViewerRegistry.getBounds(node3));
 		
 		assertEquals("", node4.getAttributes());
 		assertEquals("", node4.getMethods());
 		assertEquals("Class3", node4.getName());
 		assertNull(node4.getParent());
-		assertEquals(new Rectangle(630, 370, 100, 60), node4.view().getBounds());
+		assertEquals(new Rectangle(630, 370, 100, 60), NodeViewerRegistry.getBounds(node4));
 		
 		assertEquals("A note", node5.getName());
-		assertEquals(new Rectangle(700, 530, 60, 40), node5.view().getBounds());
+		assertEquals(new Rectangle(700, 530, 60, 40), NodeViewerRegistry.getBounds(node5));
 		
 		List<ChildNode> children = node6.getChildren();
 		assertEquals(1, children.size());
@@ -387,15 +388,15 @@ public class TestPersistenceService
 		assertEquals("", node6.getContents());
 		assertEquals("Package", node6.getName());
 		assertNull(node6.getParent());
-		assertEquals(new Rectangle(270, 340, 120, 100), node6.view().getBounds());
+		assertEquals(new Rectangle(270, 340, 120, 100), NodeViewerRegistry.getBounds(node6));
 
 		assertEquals("", node7.getAttributes());
 		assertEquals("", node7.getMethods());
 		assertEquals("Class", node7.getName());
 		assertEquals(node6,node7.getParent());
-		assertEquals(new Rectangle(280, 370, 100, 60), node7.view().getBounds());
+		assertEquals(new Rectangle(280, 370, 100, 60), NodeViewerRegistry.getBounds(node7));
 		
-		assertEquals(new Rectangle(694, 409, 0, 0), node8.view().getBounds());
+		assertEquals(new Rectangle(694, 409, 0, 0), NodeViewerRegistry.getBounds(node8));
 		
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
@@ -455,45 +456,45 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
-		assertEquals(new Rectangle(160,0,90,250), object1.view().getBounds());
+		assertEquals(new Rectangle(160,0,90,250), NodeViewerRegistry.getBounds(object1));
 		List<ChildNode> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
 		CallNode init = (CallNode) o1children.get(0);
 		CallNode selfCall = (CallNode) o1children.get(1);
 		
-		assertEquals(new Rectangle(370,0,80,210), object2.view().getBounds());
+		assertEquals(new Rectangle(370,0,80,210), NodeViewerRegistry.getBounds(object2));
 		List<ChildNode> o2children = object2.getChildren();
 		assertEquals(1, o2children.size());
 		assertEquals(":Type2", object2.getName().toString());
 		CallNode o2Call = (CallNode) o2children.get(0);
 		
-		assertEquals(new Rectangle(590,0,80,190), object3.view().getBounds());
+		assertEquals(new Rectangle(590,0,80,190), NodeViewerRegistry.getBounds(object3));
 		List<ChildNode> o3children = object3.getChildren();
 		assertEquals(1, o3children.size());
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle(197,80,16,150), init.view().getBounds());
+		assertEquals(new Rectangle(197,80,16,150), NodeViewerRegistry.getBounds(init));
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
-		assertEquals(new Rectangle(205,100,16,110), selfCall.view().getBounds());
+		assertEquals(new Rectangle(205,100,16,110), NodeViewerRegistry.getBounds(selfCall));
 		assertEquals(object1, selfCall.getParent());
 		assertFalse(selfCall.isOpenBottom());
 		
-		assertEquals(new Rectangle(402,120,16,70), o2Call.view().getBounds());
+		assertEquals(new Rectangle(402,120,16,70), NodeViewerRegistry.getBounds(o2Call));
 		assertEquals(object2, o2Call.getParent());
 		assertFalse(o2Call.isOpenBottom());
 		
-		assertEquals(new Rectangle(622,140,16,30), o3Call.view().getBounds());
+		assertEquals(new Rectangle(622,140,16,30), NodeViewerRegistry.getBounds(o3Call));
 		assertEquals(object3, o3Call.getParent());
 		assertFalse(o3Call.isOpenBottom());
 		
-		assertEquals(new Rectangle(440,200,60,40), note.view().getBounds());
+		assertEquals(new Rectangle(440,200,60,40), NodeViewerRegistry.getBounds(note));
 		assertEquals("A note", note.getName().toString());
 		
-		assertEquals(new Rectangle(409,189,0,0), point.view().getBounds());
+		assertEquals(new Rectangle(409,189,0,0), NodeViewerRegistry.getBounds(point));
 	
 		assertEquals(6, numberOfEdges(pDiagram));
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
@@ -550,23 +551,23 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
-		assertEquals(new Rectangle(250, 100, 80, 60), s1.view().getBounds());
+		assertEquals(new Rectangle(250, 100, 80, 60), NodeViewerRegistry.getBounds(s1));
 		assertEquals("S1", s1.getName().toString());
 		
-		assertEquals(new Rectangle(510, 100, 80, 60), s2.view().getBounds());
+		assertEquals(new Rectangle(510, 100, 80, 60), NodeViewerRegistry.getBounds(s2));
 		assertEquals("S2", s2.getName().toString());
 		
-		assertEquals(new Rectangle(520, 310, 80, 60), s3.view().getBounds());
+		assertEquals(new Rectangle(520, 310, 80, 60), NodeViewerRegistry.getBounds(s3));
 		assertEquals("S3", s3.getName().toString());
 		
-		assertEquals(new Rectangle(150, 70, 20, 20), start.view().getBounds());
+		assertEquals(new Rectangle(150, 70, 20, 20), NodeViewerRegistry.getBounds(start));
 		
-		assertEquals(new Rectangle(640, 230, 20, 20), end.view().getBounds());
+		assertEquals(new Rectangle(640, 230, 20, 20), NodeViewerRegistry.getBounds(end));
 		
 		assertEquals("A note\non two lines", note.getName());
-		assertEquals(new Rectangle(690, 320, 78, 40), note.view().getBounds());
+		assertEquals(new Rectangle(690, 320, 78, 40), NodeViewerRegistry.getBounds(note));
 		
-		assertEquals(new Rectangle(576, 339, 0, 0), point.view().getBounds());
+		assertEquals(new Rectangle(576, 339, 0, 0), NodeViewerRegistry.getBounds(point));
 		
 		assertEquals(7,  numberOfEdges(pDiagram));
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
@@ -626,18 +627,18 @@ public class TestPersistenceService
 		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 281));
 		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 474));
 		
-		assertEquals(new Rectangle(240, 130, 90, 90), type1.view().getBounds());
+		assertEquals(new Rectangle(240, 130, 90, 90), NodeViewerRegistry.getBounds(type1));
 		List<ChildNode> children = type1.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(":Type1", type1.getName().toString());
 		
 		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(245, 200, 80, 20), name.view().getBounds());
+		assertEquals(new Rectangle(245, 200, 80, 20), NodeViewerRegistry.getBounds(name));
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
 
-		assertEquals(new Rectangle(440, 290, 100, 150), blank.view().getBounds());
+		assertEquals(new Rectangle(440, 290, 100, 150), NodeViewerRegistry.getBounds(blank));
 		children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertEquals("", blank.getName().toString());
@@ -645,37 +646,37 @@ public class TestPersistenceService
 		FieldNode name3 = (FieldNode) children.get(1);
 		FieldNode name4 = (FieldNode) children.get(2);
 		
-		assertEquals(new Rectangle(445, 360, 90, 23), name2.view().getBounds());
+		assertEquals(new Rectangle(445, 360, 90, 23), NodeViewerRegistry.getBounds(name2));
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		
-		assertEquals(new Rectangle(445, 388, 90, 23), name3.view().getBounds());
+		assertEquals(new Rectangle(445, 388, 90, 23), NodeViewerRegistry.getBounds(name3));
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		
-		assertEquals(new Rectangle(445, 416, 90, 23), name4.view().getBounds());
+		assertEquals(new Rectangle(445, 416, 90, 23), NodeViewerRegistry.getBounds(name4));
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
 
-		assertEquals(new Rectangle(540, 150, 80, 60), object2.view().getBounds());
+		assertEquals(new Rectangle(540, 150, 80, 60), NodeViewerRegistry.getBounds(object2));
 		children = object2.getChildren();
 		assertEquals(0, children.size());
 		assertEquals("object2:", object2.getName().toString());
 		
-		assertEquals(new Rectangle(610, 300, 80, 60), type3.view().getBounds());
+		assertEquals(new Rectangle(610, 300, 80, 60), NodeViewerRegistry.getBounds(type3));
 		children = type3.getChildren();
 		assertEquals(0, children.size());
 		assertEquals(":Type3", type3.getName().toString());
 
 		assertEquals("A note", note.getName());
-		assertEquals(new Rectangle(280, 330, 60, 40), note.view().getBounds());
+		assertEquals(new Rectangle(280, 330, 60, 40), NodeViewerRegistry.getBounds(note));
 		
-		assertEquals(new Rectangle(281, 216, 0, 0), p1.view().getBounds());
+		assertEquals(new Rectangle(281, 216, 0, 0), NodeViewerRegistry.getBounds(p1));
 		
-		assertEquals(new Rectangle(474, 339, 0, 0), p2.view().getBounds());
+		assertEquals(new Rectangle(474, 339, 0, 0), NodeViewerRegistry.getBounds(p2));
 		
 		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		

@@ -82,7 +82,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		int maxX = 0;
 		for( ChildNode child : ((ImplicitParameterNode)pNode).getChildren() )
 		{
-			Rectangle bounds = child.view().getBounds();
+			Rectangle bounds = NodeViewerRegistry.getBounds(child);
 			maxX = Math.max(maxX,  bounds.getMaxX());
 			maxY = Math.max(maxY, bounds.getMaxY());
 		}

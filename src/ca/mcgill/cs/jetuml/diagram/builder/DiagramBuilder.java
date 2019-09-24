@@ -48,6 +48,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
 /**
@@ -508,7 +509,7 @@ public abstract class DiagramBuilder
 	protected void positionNode(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
-		Rectangle bounds = pNode.view().getBounds();
+		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
 		Point position = computePosition(bounds, pRequestedPosition);
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 	}

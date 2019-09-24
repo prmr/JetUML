@@ -41,11 +41,11 @@ public final class PointNodeView extends AbstractNodeView
 		super(pNode);
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		return new Rectangle(node().position().getX(), node().position().getY(), 0, 0);
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		return new Rectangle(node().position().getX(), node().position().getY(), 0, 0);
+//	}
 
 //	@Override
 //	public boolean contains(Point pPoint)

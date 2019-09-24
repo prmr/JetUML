@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestInterfaceNode
 {
@@ -65,7 +66,7 @@ public class TestInterfaceNode
 		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), aNode1.view().getBounds());
+		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(aNode1));
 		assertNull(aNode1.getParent());
 	}
 	
@@ -98,8 +99,8 @@ public class TestInterfaceNode
 		assertEquals("\u00ABinterface\u00BB\n", clone.getName());
 		String methods = clone.getMethods();
 		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), clone.view().getBounds());
-		assertTrue(clone.view().getBounds().equals(aNode1.view().getBounds()));
+		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(clone));
+		assertTrue(NodeViewerRegistry.getBounds(clone).equals(NodeViewerRegistry.getBounds(aNode1)));
 		assertTrue(clone.getParent().equals(aNode1.getParent()));
 	}
 }

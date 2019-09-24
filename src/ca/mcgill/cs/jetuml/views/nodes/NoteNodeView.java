@@ -63,42 +63,42 @@ public final class NoteNodeView extends AbstractNodeView
 //		NOTE_VIEWER.draw(name(), pGraphics, new Rectangle(node().position().getX(), node().position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
 //	}
 	
-	private Path createNotePath()
-	{
-		Path path = new Path();
-		Rectangle bounds = getBounds();		
-		path.getElements().addAll(
-				new MoveTo(bounds.getX(), bounds.getY()),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
-				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX(), bounds.getMaxY()),
-				new LineTo(bounds.getX(), bounds.getMaxY()),
-				new LineTo(bounds.getX(), bounds.getY()));
-		return path;
-	}
+//	private Path createNotePath()
+//	{
+//		Path path = new Path();
+//		Rectangle bounds = getBounds();		
+//		path.getElements().addAll(
+//				new MoveTo(bounds.getX(), bounds.getY()),
+//				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+//				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+//				new LineTo(bounds.getMaxX(), bounds.getMaxY()),
+//				new LineTo(bounds.getX(), bounds.getMaxY()),
+//				new LineTo(bounds.getX(), bounds.getY()));
+//		return path;
+//	}
 	
 	/**
 	 * Fills in note fold.
 	 * @param pGraphics GraphicsContext in which to fill the fold
 	 */
-	private Path createFoldPath()
-	{
-		Rectangle bounds = getBounds();
-		Path path = new Path();
-		path.getElements().addAll(
-				new MoveTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
-				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY())
-		);
-		return path;
-	}
+//	private Path createFoldPath()
+//	{
+//		Rectangle bounds = getBounds();
+//		Path path = new Path();
+//		path.getElements().addAll(
+//				new MoveTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY()),
+//				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY() + FOLD_LENGTH),
+//				new LineTo(bounds.getMaxX(), bounds.getY() + FOLD_LENGTH),
+//				new LineTo(bounds.getMaxX() - FOLD_LENGTH, bounds.getY())
+//		);
+//		return path;
+//	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		Dimension textBounds = NOTE_VIEWER.getDimension(name()); 
-		return new Rectangle(node().position().getX(), node().position().getY(), 
-				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Dimension textBounds = NOTE_VIEWER.getDimension(name()); 
+//		return new Rectangle(node().position().getX(), node().position().getY(), 
+//				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
+//	}
 }

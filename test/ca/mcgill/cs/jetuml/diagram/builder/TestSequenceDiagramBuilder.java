@@ -92,24 +92,12 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationImplicitParameterNodeWithDefaultCallNode()
-	{
-		aImplicitParameterNode1.addChild(aDefaultCallNode1);
-		DiagramOperation operation = aBuilder.createAddNodeOperation(aImplicitParameterNode1, new Point(10,10));
-		operation.execute();
-		assertEquals(1, numberOfRootNodes());
-		assertEquals(new Point(10,10), aImplicitParameterNode1.position());
-		assertEquals(1, aImplicitParameterNode1.getChildren().size());
-		
-		operation.undo();
-		assertEquals(0, numberOfRootNodes());
-	}
-	
-	@Test
 	public void testcreateAddNodeOperationSecondCallNode()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDefaultCallNode1.attach(aDiagram);
+		aDefaultCallNode2.attach(aDiagram);
 		aImplicitParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);

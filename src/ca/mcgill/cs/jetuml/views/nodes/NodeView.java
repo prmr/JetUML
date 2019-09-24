@@ -37,7 +37,7 @@ public interface NodeView
      * The bounding rectangle contains all labels.
      * @return the bounding rectangle
    	 */
-	Rectangle getBounds();
+//	Rectangle getBounds();
 	
 	/**
      * Get the best connection point to connect this node 

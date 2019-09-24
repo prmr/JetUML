@@ -56,11 +56,11 @@ public final class StateNodeView extends AbstractNodeView
 //		NAME_VIEWER.draw(name(), pGraphics, getBounds());
 //	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		Dimension bounds = NAME_VIEWER.getDimension(name());
-		return new Rectangle(node().position().getX(), node().position().getY(), 
-				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Dimension bounds = NAME_VIEWER.getDimension(name());
+//		return new Rectangle(node().position().getX(), node().position().getY(), 
+//				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
+//	}
 }

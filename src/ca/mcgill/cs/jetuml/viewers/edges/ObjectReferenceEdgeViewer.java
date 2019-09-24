@@ -102,7 +102,7 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	 */
 	private static boolean isSShaped(Edge pEdge)
 	{
-		Rectangle b = pEdge.getEnd().view().getBounds();
+		Rectangle b = NodeViewerRegistry.getBounds(pEdge.getEnd());
 		Point p = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}

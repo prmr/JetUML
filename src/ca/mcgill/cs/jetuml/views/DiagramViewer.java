@@ -162,11 +162,11 @@ public class DiagramViewer
 		{
 			if(bounds == null)
 			{
-				bounds = node.view().getBounds();
+				bounds = NodeViewerRegistry.getBounds(node);
 			}
 			else
 			{
-				bounds = bounds.add(node.view().getBounds());
+				bounds = bounds.add(NodeViewerRegistry.getBounds(node));
 			}
 		}
 		for(Edge edge : pDiagram.edges())

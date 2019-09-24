@@ -349,18 +349,18 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(pEdge.getStart().view().getBounds().getMaxX() - SELF_EDGE_OFFSET, 
-					pEdge.getStart().view().getBounds().getY());
-			Point2D point2 = new Point2D(pEdge.getStart().view().getBounds().getMaxX(), 
-					pEdge.getStart().view().getBounds().getY() + SELF_EDGE_OFFSET);
+			Point2D point1 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
+					NodeViewerRegistry.getBounds(pEdge.getStart()).getY());
+			Point2D point2 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getMaxX(), 
+					NodeViewerRegistry.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D point1 = new Point2D(pEdge.getStart().view().getBounds().getX(), 
-					pEdge.getStart().view().getBounds().getY() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(pEdge.getStart().view().getBounds().getX() + SELF_EDGE_OFFSET, 
-					pEdge.getStart().view().getBounds().getY());
+			Point2D point1 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getX(), 
+					NodeViewerRegistry.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point2 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
+					NodeViewerRegistry.getBounds(pEdge.getStart()).getY());
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 	}
@@ -419,8 +419,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private Line getNormalEdgeConnectionsPoints(Edge pEdge)
 	{
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
+		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
+		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;

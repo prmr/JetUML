@@ -114,11 +114,11 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 		{
 			if( childBounds == null )
 			{
-				childBounds = child.view().getBounds();
+				childBounds = NodeViewerRegistry.getBounds(child);
 			}
 			else
 			{
-				childBounds = childBounds.add(child.view().getBounds());
+				childBounds = childBounds.add(NodeViewerRegistry.getBounds(child));
 			}
 		}
 		assert childBounds != null;

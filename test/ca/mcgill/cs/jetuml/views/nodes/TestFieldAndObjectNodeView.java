@@ -85,12 +85,11 @@ public class TestFieldAndObjectNodeView
 	@Test
 	public void testGetBoundsUnattachedNoStrings()
 	{
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
 		// x = axis (30) - offset (6)
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(24,0,42,20), view.getBounds());
+		assertEquals( new Rectangle(24,0,42,20), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -98,12 +97,11 @@ public class TestFieldAndObjectNodeView
 	{
 		aFieldNode1.setName("XXXXX");
 		aFieldNode1.setValue("XXXXX");
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
 		// x = axis (30) - offset + length (47)  = -17
 		// y = 0
 		// w = 47 * 2
 		// h = text height 22
-		assertEquals( new Rectangle(-17,0,94,22), view.getBounds());
+		assertEquals( new Rectangle(-17,0,94,22), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -163,12 +161,11 @@ public class TestFieldAndObjectNodeView
 	public void testGetBoundsAttachedNoStrings()
 	{
 		aObjectNode1.addChild(aFieldNode1);
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
 		// x = axis (45) - offset (6) = 39
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(5,70,70,20), view.getBounds());
+		assertEquals( new Rectangle(5,70,70,20), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@AfterEach

@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * Tracks the movement of a set of selected diagram elements.
@@ -56,7 +57,7 @@ public class MoveTracker
 			if(element instanceof Node)
 			{
 				aTrackedNodes.add((Node) element);
-				aOriginalBounds.add(((Node)element).view().getBounds());
+				aOriginalBounds.add(NodeViewerRegistry.getBounds((Node)element));
 			}
 		}
 	}
@@ -78,7 +79,7 @@ public class MoveTracker
 		int i = 0;
 		for(Node node : aTrackedNodes)
 		{
-			selectionBounds2[i] = node.view().getBounds();
+			selectionBounds2[i] = NodeViewerRegistry.getBounds(node);
 			i++;
 		}
 		for(i = 0; i < aOriginalBounds.size(); i++)

@@ -85,15 +85,15 @@ public final class PackageNodeView extends AbstractNodeView
 //				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
 //	}
 	
-	/**
-	 * @return The point that corresponds to the actual top right
-	 * corner of the figure (as opposed to bounds).
-	 */
-	public Point getTopRightCorner()
-	{
-		Rectangle bottomBounds = getBottomBounds();
-		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
-	}
+//	/**
+//	 * @return The point that corresponds to the actual top right
+//	 * corner of the figure (as opposed to bounds).
+//	 */
+//	public Point getTopRightCorner()
+//	{
+//		Rectangle bottomBounds = getBottomBounds();
+//		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
+//	}
 	
 //	@Override
 //	public Point getConnectionPoint(Direction pDirection)
@@ -125,27 +125,27 @@ public final class PackageNodeView extends AbstractNodeView
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */
-	private Optional<Rectangle> getChildrenBounds()
-	{
-		if( children().isEmpty() )
-		{
-			return Optional.empty();
-		}
-		Rectangle childBounds = null;
-		for( ChildNode child : children() )
-		{
-			if( childBounds == null )
-			{
-				childBounds = child.view().getBounds();
-			}
-			else
-			{
-				childBounds = childBounds.add(child.view().getBounds());
-			}
-		}
-		assert childBounds != null;
-		return Optional.of(childBounds);
-	}
+//	private Optional<Rectangle> getChildrenBounds()
+//	{
+//		if( children().isEmpty() )
+//		{
+//			return Optional.empty();
+//		}
+//		Rectangle childBounds = null;
+//		for( ChildNode child : children() )
+//		{
+//			if( childBounds == null )
+//			{
+//				childBounds = child.view().getBounds();
+//			}
+//			else
+//			{
+//				childBounds = childBounds.add(child.view().getBounds());
+//			}
+//		}
+//		assert childBounds != null;
+//		return Optional.of(childBounds);
+//	}
 	
 	/*
 	 * The node's position might have to get adjusted if there are children
@@ -169,40 +169,40 @@ public final class PackageNodeView extends AbstractNodeView
 		return new Dimension(topWidth, TOP_HEIGHT);
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		return getTopBounds().add(getBottomBounds());
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		return getTopBounds().add(getBottomBounds());
+//	}
+//	
+//	private Rectangle getTopBounds()
+//	{
+//		Optional<Rectangle> childrenBounds = getChildrenBounds();
+//		Point position = getPosition(childrenBounds);
+//		Dimension topDimension = getTopDimension();
+//		return new Rectangle(position.getX(), position.getY(), topDimension.getWidth(), topDimension.getHeight());
+//	}
 	
-	private Rectangle getTopBounds()
-	{
-		Optional<Rectangle> childrenBounds = getChildrenBounds();
-		Point position = getPosition(childrenBounds);
-		Dimension topDimension = getTopDimension();
-		return new Rectangle(position.getX(), position.getY(), topDimension.getWidth(), topDimension.getHeight());
-	}
-	
-	private Rectangle getBottomBounds()
-	{
-		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(contents());
-		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
-		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
-		
-		Optional<Rectangle> childrenBounds = getChildrenBounds();
-		Point position = getPosition(childrenBounds);
-		
-		Dimension topDimension = getTopDimension();
-		
-		if( childrenBounds.isPresent() )
-		{
-			width = max( width, childrenBounds.get().getMaxX() + PADDING - position.getX());
-			height = max( height, childrenBounds.get().getMaxY() + PADDING - position.getY() - topDimension.getHeight());
-		}
-		
-		width = max( width, topDimension.getWidth()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
-		
-		return new Rectangle(position.getX(), position.getY() + topDimension.getHeight(), 
-				width, height);
-	}
+//	private Rectangle getBottomBounds()
+//	{
+//		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(contents());
+//		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
+//		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
+//		
+//		Optional<Rectangle> childrenBounds = getChildrenBounds();
+//		Point position = getPosition(childrenBounds);
+//		
+//		Dimension topDimension = getTopDimension();
+//		
+//		if( childrenBounds.isPresent() )
+//		{
+//			width = max( width, childrenBounds.get().getMaxX() + PADDING - position.getX());
+//			height = max( height, childrenBounds.get().getMaxY() + PADDING - position.getY() - topDimension.getHeight());
+//		}
+//		
+//		width = max( width, topDimension.getWidth()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
+//		
+//		return new Rectangle(position.getX(), position.getY() + topDimension.getHeight(), 
+//				width, height);
+//	}
 }

@@ -134,8 +134,8 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	private Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
+		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
+		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
       
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{

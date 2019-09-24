@@ -58,7 +58,7 @@ public class TestObjectNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 80, 60), aObject1.view().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 60), NodeViewerRegistry.getBounds(aObject1));
 		assertEquals(0,aObject1.getChildren().size());
 		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.EAST));
 		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.WEST));
@@ -145,7 +145,7 @@ public class TestObjectNode
 	{
 		aObject1.setName("o1");
 		ObjectNode clone = aObject1.clone();
-		assertEquals(new Rectangle(0, 0, 80, 60), clone.view().getBounds());
+		assertEquals(new Rectangle(0, 0, 80, 60), NodeViewerRegistry.getBounds(clone));
 		assertEquals(0,clone.getChildren().size());
 		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(clone, Direction.EAST));
 		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(clone, Direction.WEST));

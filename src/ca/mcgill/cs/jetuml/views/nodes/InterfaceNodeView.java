@@ -149,14 +149,14 @@ public class InterfaceNodeView extends AbstractNodeView
 		return methods().length() > 0;
 	}
 
-	@Override
-	public Rectangle getBounds()
-	{
-		Dimension top = computeTop();
-		Dimension bottom = computeBottom();
-		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
-		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
-		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
-		return bounds;
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Dimension top = computeTop();
+//		Dimension bottom = computeBottom();
+//		final int width = max(top.getWidth(), middleWidth(), bottom.getWidth(), DEFAULT_WIDTH);
+//		final int height = max( top.getHeight() + middleHeight() + bottom.getHeight(), DEFAULT_HEIGHT);
+//		Rectangle bounds = new Rectangle(node().position().getX(), node().position().getY(), width, height);
+//		return bounds;
+//	}
 }

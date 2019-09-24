@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ViewerUtilities;
 
 /**
@@ -131,7 +132,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	private void selectNode(Node pNode, Rectangle pLasso)
 	{
-		if(pLasso.contains(pNode.view().getBounds())) 
+		if(pLasso.contains(NodeViewerRegistry.getBounds(pNode)))
 		{
 			internalAddToSelection(pNode);
 		}

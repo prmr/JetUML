@@ -84,9 +84,9 @@ public final class CircularStateNodeView extends AbstractNodeView
 //		}
 //	}   	 
 
-	@Override
-	public Rectangle getBounds()
-	{
-		return new Rectangle(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		return new Rectangle(node().position().getX(), node().position().getY(), DIAMETER, DIAMETER);
+//	}
 }

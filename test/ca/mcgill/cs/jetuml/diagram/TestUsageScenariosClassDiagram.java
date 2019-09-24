@@ -42,6 +42,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 {
@@ -392,7 +393,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle classNodeBounds = aClassNode1.view().getBounds();
+		Rectangle classNodeBounds = NodeViewerRegistry.getBounds(aClassNode1);
 		
 		select(aClassNode1);
 		deleteSelected();
@@ -403,7 +404,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		undo();
 		assertEquals(1, numberOfEdges());
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(classNodeBounds, getRootNode(1).view().getBounds());
+		assertEquals(classNodeBounds, NodeViewerRegistry.getBounds(getRootNode(1)));
 	}
 	
 	@Test 
@@ -412,8 +413,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle classNodeBounds = aClassNode1.view().getBounds();
-		Rectangle interfaceNodeBounds = aInterfaceNode.view().getBounds();
+		Rectangle classNodeBounds = NodeViewerRegistry.getBounds(aClassNode1);
+		Rectangle interfaceNodeBounds = NodeViewerRegistry.getBounds(aInterfaceNode);
 
 		selectAll();
 		deleteSelected();
@@ -427,11 +428,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		{
 			if(node instanceof ClassNode)
 			{
-				assertEquals(classNodeBounds,node.view().getBounds());
+				assertEquals(classNodeBounds, NodeViewerRegistry.getBounds(node));
 			}
 			else
 			{
-				assertEquals(interfaceNodeBounds,node.view().getBounds());
+				assertEquals(interfaceNodeBounds, NodeViewerRegistry.getBounds(node));
 			}
 		}
 	}

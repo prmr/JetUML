@@ -95,18 +95,18 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 //		}
 //	}
 	
-	private Point getMaxXYofChildren()
-	{
-		int maxY = 0;
-		int maxX = 0;
-		for( ChildNode child : children() )
-		{
-			Rectangle bounds = child.view().getBounds();
-			maxX = Math.max(maxX,  bounds.getMaxX());
-			maxY = Math.max(maxY, bounds.getMaxY());
-		}
-		return new Point(maxX, maxY);
-	}
+//	private Point getMaxXYofChildren()
+//	{
+//		int maxY = 0;
+//		int maxX = 0;
+//		for( ChildNode child : children() )
+//		{
+//			Rectangle bounds = child.view().getBounds();
+//			maxX = Math.max(maxX,  bounds.getMaxX());
+//			maxY = Math.max(maxY, bounds.getMaxY());
+//		}
+//		return new Point(maxX, maxY);
+//	}
 	
 	/**
      * Returns the rectangle at the top of the object node.
@@ -118,13 +118,13 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 		return new Rectangle(node().position().getX(), 0, width, TOP_HEIGHT);
 	}
 
-	@Override
-	public Rectangle getBounds()
-	{
-		Rectangle topRectangle = getTopRectangle();
-		Point childrenMaxXY = getMaxXYofChildren();
-		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - node().position().getX());
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);
-		return new Rectangle(node().position().getX(), 0, width, height);
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Rectangle topRectangle = getTopRectangle();
+//		Point childrenMaxXY = getMaxXYofChildren();
+//		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - node().position().getX());
+//		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);
+//		return new Rectangle(node().position().getX(), 0, width, height);
+//	}
 }

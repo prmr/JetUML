@@ -69,7 +69,7 @@ public final class ViewerUtilities
 		assert pElement != null;
 		if( pElement instanceof Node )
 		{
-			return ((Node)pElement).view().getBounds();
+			return NodeViewerRegistry.getBounds((Node)pElement);
 		}
 		else
 		{

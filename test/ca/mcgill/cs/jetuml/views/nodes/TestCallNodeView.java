@@ -32,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestCallNodeView
 {
@@ -64,16 +65,12 @@ public class TestCallNodeView
 	}
 	
 	@Test
-	public void testGetBoundsSingleCallNode()
-	{
-		assertEquals(new Rectangle(0,0,16,30), aCallNode1.view().getBounds());
-	}
-	
-	@Test
 	public void testGetBoundsSecondCalleeOfCaller()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aDefaultCallNode1.attach(aDiagram);
 		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDefaultCallNode2.attach(aDiagram);
 		aImplicitParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
@@ -81,11 +78,12 @@ public class TestCallNodeView
 		aDiagram.addEdge(aCallEdge1);
 		
 		aImplicitParameterNode2.addChild(aCallNode1);
+		aCallNode1.attach(aDiagram);
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge2);
 		
-		assertEquals(new Rectangle(32, 80, 16, 120), aDefaultCallNode1.view().getBounds());
-		assertEquals(new Rectangle(232, 100, 16, 30), aDefaultCallNode2.view().getBounds());
-		assertEquals(new Rectangle(232, 150, 16, 30), aCallNode1.view().getBounds());
+		assertEquals(new Rectangle(32, 80, 16, 120), NodeViewerRegistry.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(232, 100, 16, 30), NodeViewerRegistry.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(232, 150, 16, 30), NodeViewerRegistry.getBounds(aCallNode1));
 	}	
 }

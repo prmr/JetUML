@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -52,8 +53,8 @@ public final class ReturnEdgeViewer extends LabeledStraightEdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle start = pEdge.getStart().view().getBounds();
-		Rectangle end = pEdge.getEnd().view().getBounds();
+		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
+		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
 		
 		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{

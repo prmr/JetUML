@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
@@ -90,7 +91,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	@Override
 	public String toString()
 	{
-		return getClass().getSimpleName() + " " + view().getBounds();
+		return getClass().getSimpleName() + " " + NodeViewerRegistry.getBounds(this);
 	}
 	
 	@Override

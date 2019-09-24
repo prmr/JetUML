@@ -97,28 +97,28 @@ public final class ObjectNodeView extends AbstractNodeView
 		return node().position().getX() + leftWidth + XGAP;
 	}
 	
-	@Override
-	public Rectangle getBounds()
-	{
-		Rectangle bounds = getTopRectangle();
-		int leftWidth = 0;
-		int rightWidth = 0;
-		int height = 0;
-		if( children().size() > 0 )
-		{
-			height = YGAP;
-		}
-		for(ChildNode field : children())
-		{
-			FieldNodeView view = (FieldNodeView) field.view();
-			height += view.getHeight() + YGAP;   
-			leftWidth = Math.max(leftWidth, view.leftWidth());
-			rightWidth = Math.max(rightWidth, view.rightWidth());
-		}
-		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
-		width = Grid.toMultiple(width);
-		return new Rectangle(bounds.getX(), bounds.getY(), width, Grid.toMultiple(bounds.getHeight() + height));
-	}
+//	@Override
+//	public Rectangle getBounds()
+//	{
+//		Rectangle bounds = getTopRectangle();
+//		int leftWidth = 0;
+//		int rightWidth = 0;
+//		int height = 0;
+//		if( children().size() > 0 )
+//		{
+//			height = YGAP;
+//		}
+//		for(ChildNode field : children())
+//		{
+//			FieldNodeView view = (FieldNodeView) field.view();
+//			height += view.getHeight() + YGAP;   
+//			leftWidth = Math.max(leftWidth, view.leftWidth());
+//			rightWidth = Math.max(rightWidth, view.rightWidth());
+//		}
+//		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
+//		width = Grid.toMultiple(width);
+//		return new Rectangle(bounds.getX(), bounds.getY(), width, Grid.toMultiple(bounds.getHeight() + height));
+//	}
 	
 	/**
 	 * @param pNode The node whose position to compute.
