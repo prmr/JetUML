@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 
 /**
  *   A package node in a UML diagram.
@@ -37,12 +35,6 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	private String aContents = "";
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
 	private ParentNode aContainer;
-	
-	@Override
-	protected NodeView generateView()
-	{
-		return new PackageNodeView(this);
-	}
 	
 	/**
      * Sets the name property value.

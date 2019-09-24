@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * Common elements for the Node hierarchy.
@@ -42,15 +41,6 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		aPosition = new Point( aPosition.getX() + pDeltaX, aPosition.getY() + pDeltaY );
 	}
-	
-	/**
-	 * Generates a view for this node. Because of cloning, this cannot
-	 * be done in the constructor, because when a node is cloned a new 
-	 * wrapper view must be produced for the clone.
-	 * 
-	 * @return The view that wraps this node.
-	 */
-	protected abstract NodeView generateView();
 	
 	@Override
 	public Point position()

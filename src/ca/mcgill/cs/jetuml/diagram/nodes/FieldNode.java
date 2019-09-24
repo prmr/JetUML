@@ -21,9 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  *  A field node in an object diagram.
  */
@@ -31,12 +28,6 @@ public final class FieldNode extends NamedNode implements ChildNode
 {
 	private String aValue = "";
 	private ObjectNode aObject; // The object defining this field
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new FieldNodeView(this);
-	}
 
 	/**
      * Sets the value property value.

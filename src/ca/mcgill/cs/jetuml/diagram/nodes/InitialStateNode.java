@@ -21,18 +21,9 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.CircularStateNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  * An initial in a state diagram.
  */
 public final class InitialStateNode extends AbstractNode
-{
-	@Override
-	protected NodeView generateView()
-	{
-		return new CircularStateNodeView(this, false);
-	}
-}
+{}
 

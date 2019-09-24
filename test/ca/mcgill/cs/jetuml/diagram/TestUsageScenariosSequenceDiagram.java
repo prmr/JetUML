@@ -23,9 +23,7 @@ package ca.mcgill.cs.jetuml.diagram;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +38,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
 
 public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenarios
 {

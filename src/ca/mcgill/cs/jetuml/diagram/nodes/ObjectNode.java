@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-import ca.mcgill.cs.jetuml.views.nodes.ObjectNodeView;
 
 /**
  *  An object node in an object diagram.
@@ -34,12 +32,6 @@ import ca.mcgill.cs.jetuml.views.nodes.ObjectNodeView;
 public final class ObjectNode extends NamedNode implements ParentNode
 {
 	private ArrayList<ChildNode> aFields = new ArrayList<>();
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new ObjectNodeView(this);
-	}
 
 	/* 
  	 * Translate the children as well. 

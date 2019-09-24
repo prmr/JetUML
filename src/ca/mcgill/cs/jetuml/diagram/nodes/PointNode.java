@@ -21,19 +21,10 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-import ca.mcgill.cs.jetuml.views.nodes.PointNodeView;
-
 /**
  *  An invisible node that is used in the toolbar to draw an
  *  edge, and in notes to serve as an end point of the node
  *  connector.
  */
 public final class PointNode extends AbstractNode
-{
-	@Override
-	protected NodeView generateView()
-	{
-		return new PointNodeView(this);
-	}
-}
+{}

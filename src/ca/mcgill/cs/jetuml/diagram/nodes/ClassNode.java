@@ -21,9 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.ClassNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  * A class node in a class diagram.
  */
@@ -37,12 +34,6 @@ public final class ClassNode extends InterfaceNode
 	public ClassNode()
 	{
 		setName("");
-	}
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new ClassNodeView(this);
 	}
 
 	/**

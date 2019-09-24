@@ -24,8 +24,6 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.views.nodes.CallNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 
 /**
  * A method call node in a sequence diagram. Call nodes are
@@ -37,12 +35,6 @@ public class CallNode extends AbstractNode implements ChildNode
 
 	private ImplicitParameterNode aImplicitParameter;
 	private boolean aOpenBottom;
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new CallNodeView(this);
-	}
 
 	/**
 	 * Gets the openBottom property.

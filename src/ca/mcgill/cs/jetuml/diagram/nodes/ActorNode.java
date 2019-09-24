@@ -21,9 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.ActorNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  *  An actor node in a use case diagram.
  */
@@ -37,11 +34,5 @@ public final class ActorNode extends NamedNode
 	public ActorNode()
 	{
 		setName(DEFAULT_NAME);
-	}
-	
-	@Override
-	protected NodeView generateView()
-	{
-		return new ActorNodeView(this);
 	}
 }

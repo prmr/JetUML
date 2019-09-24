@@ -24,10 +24,6 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.nodes.ImplicitParameterNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  * An implicit parameter node in a sequence diagram. The 
  * visual portion of this node includes the top rectangle (object) and
@@ -39,12 +35,6 @@ import ca.mcgill.cs.jetuml.views.nodes.NodeView;
 public final class ImplicitParameterNode extends NamedNode implements ParentNode
 {
 	private List<ChildNode> aCallNodes = new ArrayList<>();
-
-	@Override
-	protected NodeView generateView()
-	{
-		return new ImplicitParameterNodeView(this);
-	}
 
 	@Override
 	public ImplicitParameterNode clone()

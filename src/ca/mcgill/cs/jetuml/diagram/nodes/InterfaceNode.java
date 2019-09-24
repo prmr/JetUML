@@ -21,9 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.InterfaceNodeView;
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-
 /**
  * An interface node in a class diagram that can be composed
  * of three compartments: top (for the name), middle (for attributes,
@@ -42,12 +39,6 @@ public class InterfaceNode extends NamedNode implements ChildNode
 		setName("\u00ABinterface\u00BB\n");
 	}
 	
-	@Override
-	protected NodeView generateView()
-	{
-		return new InterfaceNodeView(this);
-	}
-
 	/**
      * Sets the methods property value.
      * @param pMethods the methods of this interface

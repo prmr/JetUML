@@ -21,17 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.views.nodes.NodeView;
-import ca.mcgill.cs.jetuml.views.nodes.StateNodeView;
-
 /**
    A state node in a state diagram.
 */
 public final class StateNode extends NamedNode
-{
-	@Override
-	protected NodeView generateView()
-	{
-		return new StateNodeView(this);
-	}
-}
+{}

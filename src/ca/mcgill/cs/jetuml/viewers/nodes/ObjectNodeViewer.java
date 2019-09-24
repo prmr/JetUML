@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
-import ca.mcgill.cs.jetuml.views.nodes.FieldNodeView;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
