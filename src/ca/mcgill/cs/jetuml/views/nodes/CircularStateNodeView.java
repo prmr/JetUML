@@ -62,27 +62,27 @@ public final class CircularStateNodeView extends AbstractNodeView
 //		}
 //	}
 	
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		Rectangle bounds = getBounds();
-		double a = bounds.getWidth() / 2;
-		double b = bounds.getHeight() / 2;
-		double x = pDirection.getX();
-		double y = pDirection.getY();
-		double cx = bounds.getCenter().getX();
-		double cy = bounds.getCenter().getY();
-      
-		if(a != 0 && b != 0 && !(x == 0 && y == 0))
-		{
-			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
-			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
-		}
-		else
-		{
-			return new Point((int) Math.round(cx), (int) Math.round(cy));
-		}
-	}   	 
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		Rectangle bounds = getBounds();
+//		double a = bounds.getWidth() / 2;
+//		double b = bounds.getHeight() / 2;
+//		double x = pDirection.getX();
+//		double y = pDirection.getY();
+//		double cx = bounds.getCenter().getX();
+//		double cy = bounds.getCenter().getY();
+//      
+//		if(a != 0 && b != 0 && !(x == 0 && y == 0))
+//		{
+//			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
+//			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
+//		}
+//		else
+//		{
+//			return new Point((int) Math.round(cx), (int) Math.round(cy));
+//		}
+//	}   	 
 
 	@Override
 	public Rectangle getBounds()

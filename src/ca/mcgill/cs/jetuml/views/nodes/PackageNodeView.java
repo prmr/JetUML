@@ -95,32 +95,32 @@ public final class PackageNodeView extends AbstractNodeView
 		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
 	}
 	
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		Rectangle topBounds = getTopBounds();
-		Rectangle bottomBounds = getBottomBounds();
-		Rectangle bounds = topBounds.add(bottomBounds);
-		
-		Point connectionPoint = super.getConnectionPoint(pDirection);
-		if( connectionPoint.getY() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.getX() )
-		{
-			// The connection point falls in the empty top-right corner, re-compute it so
-			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			int delta = topBounds.getHeight() * (connectionPoint.getX() - bounds.getCenter().getX()) * 2 / 
-					bounds.getHeight();
-			int newX = connectionPoint.getX() - delta;
-			if( newX < topBounds.getMaxX() )
-			{
-				newX = topBounds.getMaxX() + 1;
-			}
-			return new Point(newX, bottomBounds.getY());	
-		}
-		else
-		{
-			return connectionPoint;
-		}
-	}
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		Rectangle topBounds = getTopBounds();
+//		Rectangle bottomBounds = getBottomBounds();
+//		Rectangle bounds = topBounds.add(bottomBounds);
+//		
+//		Point connectionPoint = super.getConnectionPoint(pDirection);
+//		if( connectionPoint.getY() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.getX() )
+//		{
+//			// The connection point falls in the empty top-right corner, re-compute it so
+//			// it intersects the top of the bottom rectangle (basic triangle proportions)
+//			int delta = topBounds.getHeight() * (connectionPoint.getX() - bounds.getCenter().getX()) * 2 / 
+//					bounds.getHeight();
+//			int newX = connectionPoint.getX() - delta;
+//			if( newX < topBounds.getMaxX() )
+//			{
+//				newX = topBounds.getMaxX() + 1;
+//			}
+//			return new Point(newX, bottomBounds.getY());	
+//		}
+//		else
+//		{
+//			return connectionPoint;
+//		}
+//	}
 
 	/*
 	 * Computes the bounding box that encompasses all children.

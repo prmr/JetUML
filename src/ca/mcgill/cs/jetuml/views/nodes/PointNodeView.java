@@ -53,11 +53,11 @@ public final class PointNodeView extends AbstractNodeView
 //		return node().position().distance(pPoint) < SELECTION_DISTANCE;
 //	}
 
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		return node().position();
-	}
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		return node().position();
+//	}
 	
 //	@Override
 //	public void draw(GraphicsContext pGraphics) 

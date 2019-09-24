@@ -126,10 +126,10 @@ public final class FieldNodeView extends AbstractNodeView
 				Math.max(VALUE_VIEWER.getDimension(value()).getHeight(), EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
 	}
 	
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		Rectangle bounds = getBounds();
-		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
-	}
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		Rectangle bounds = getBounds();
+//		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
+//	}
 }

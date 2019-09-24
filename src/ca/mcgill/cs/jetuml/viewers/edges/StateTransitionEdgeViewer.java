@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -429,7 +430,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
-		return new Line(pEdge.getStart().view().getConnectionPoint(d1), pEdge.getEnd().view().getConnectionPoint(d2));
+		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), d1), NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), d2));
 	}
 	
 	@Override

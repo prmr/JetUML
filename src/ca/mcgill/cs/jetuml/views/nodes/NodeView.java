@@ -47,5 +47,5 @@ public interface NodeView
      * of the bounding rectangle towards the boundary 
      * @return the recommended connection point
 	 */
-	Point getConnectionPoint(Direction pDirection);
+//	Point getConnectionPoint(Direction pDirection);
 }

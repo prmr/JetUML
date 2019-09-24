@@ -25,6 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -102,7 +103,7 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	private static boolean isSShaped(Edge pEdge)
 	{
 		Rectangle b = pEdge.getEnd().view().getBounds();
-		Point p = pEdge.getStart().view().getConnectionPoint(Direction.EAST);
+		Point p = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
@@ -129,14 +130,14 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Point point = pEdge.getStart().view().getConnectionPoint(Direction.EAST);
+		Point point = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		if (isSShaped(pEdge))
 		{
-			return new Line(point, pEdge.getEnd().view().getConnectionPoint(Direction.WEST));
+			return new Line(point, NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, pEdge.getEnd().view().getConnectionPoint(Direction.EAST));
+			return new Line(point, NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST));
 		}
 	}
 	

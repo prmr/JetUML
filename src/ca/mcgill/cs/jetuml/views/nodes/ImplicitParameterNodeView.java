@@ -81,19 +81,19 @@ public final class ImplicitParameterNodeView extends AbstractNodeView
 //		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 //	}
 
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		Rectangle bounds = getBounds();
-		if(pDirection.getX() > 0)
-		{
-			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
-		}
-		else
-		{
-			return new Point(bounds.getX(), bounds.getY() + TOP_HEIGHT / 2);
-		}
-	}
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		Rectangle bounds = getBounds();
+//		if(pDirection.getX() > 0)
+//		{
+//			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
+//		}
+//		else
+//		{
+//			return new Point(bounds.getX(), bounds.getY() + TOP_HEIGHT / 2);
+//		}
+//	}
 	
 	private Point getMaxXYofChildren()
 	{

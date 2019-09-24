@@ -31,6 +31,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestImplicitParameterNode
 {
@@ -59,10 +60,10 @@ public class TestImplicitParameterNode
 	{
 		assertEquals(new Rectangle(0, 0, 80, 120), aObject1.view().getBounds());
 		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.EAST));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.WEST));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.NORTH));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.SOUTH));
 		assertEquals("", aObject1.getName().toString());
 	}
 	
@@ -110,10 +111,10 @@ public class TestImplicitParameterNode
 		ImplicitParameterNode clone = aObject1.clone();
 		assertEquals(new Rectangle(0, 0, 80, 120), clone.view().getBounds());
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(80,30), aObject1.view().getConnectionPoint(Direction.EAST));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.WEST));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.NORTH));
-		assertEquals(new Point(0,30), aObject1.view().getConnectionPoint(Direction.SOUTH));
+		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.EAST));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.WEST));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.NORTH));
+		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.SOUTH));
 		assertEquals("o1", clone.getName().toString());
 		
 		aObject1.addChild(aCall1);

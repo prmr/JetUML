@@ -37,6 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestFieldAndObjectNodeView
 {
@@ -108,10 +109,9 @@ public class TestFieldAndObjectNodeView
 	@Test
 	public void testGetConnectionPointsUnattached()
 	{
-		FieldNodeView view = (FieldNodeView) aFieldNode1.view();
 		// x = max x of the node bounds - x gap
 		// y = half-point of the default height
-		assertEquals( new Point(61,10), view.getConnectionPoint(Direction.EAST));
+		assertEquals( new Point(61,10), NodeViewerRegistry.getConnectionPoints(aFieldNode1, Direction.EAST));
 	}
 	
 	// NEW

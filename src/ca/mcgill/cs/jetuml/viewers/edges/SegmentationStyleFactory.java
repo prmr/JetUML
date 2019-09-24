@@ -39,6 +39,7 @@ import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle.Side;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.nodes.PackageNodeView;
 import javafx.geometry.Point2D;
 
@@ -139,10 +140,10 @@ public final class SegmentationStyleFactory
 			double shortestDistance = Double.MAX_VALUE;
 			for( Side side : Side.values() )
 			{
-				Point start = pNode.view().getConnectionPoint(side.getDirection());
+				Point start = NodeViewerRegistry.getConnectionPoints(pNode, side.getDirection());
 				for( Side inner : Side.values() )
 				{
-					Point end = otherNode(pEdge, pNode).view().getConnectionPoint(inner.getDirection());
+					Point end = NodeViewerRegistry.getConnectionPoints(otherNode(pEdge, pNode), inner.getDirection());
 					double distance = start.distance(end);
 					if( distance < shortestDistance )
 					{
@@ -169,14 +170,14 @@ public final class SegmentationStyleFactory
 			}
 			
 			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
-			Point start = pEdge.getStart().view().getConnectionPoint(startSide.getDirection());
+			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), startSide.getDirection());
 			if( pGraph != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
-			Point end = pEdge.getEnd().view().getConnectionPoint(endSide.getDirection());
+			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), endSide.getDirection());
 			if( pGraph != null )
 			{
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
@@ -192,7 +193,7 @@ public final class SegmentationStyleFactory
 	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Diagram pGraph)
 	{
 		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
-		Point start = pNode.view().getConnectionPoint(pSide.getDirection());
+		Point start = NodeViewerRegistry.getConnectionPoints(pNode, pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
 			double yPosition = start.getY()+ pPosition.computeNudge(pNode.view().getBounds().getHeight()); // Default
@@ -447,8 +448,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingEast(Edge pEdge)
 		{
-			return pEdge.getStart().view().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
-					pEdge.getEnd().view().getConnectionPoint(Direction.WEST).getX();
+			return NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST).getX();
 		}
 		
 		/*
@@ -457,8 +458,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingWest(Edge pEdge)
 		{
-			return pEdge.getEnd().view().getConnectionPoint(Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
-					pEdge.getStart().view().getConnectionPoint(Direction.WEST).getX();
+			return NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.WEST).getX();
 		}
 		
 		@Override
@@ -489,8 +490,8 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point start = pEdge.getStart().view().getConnectionPoint(Direction.EAST);
-			Point end = pEdge.getEnd().view().getConnectionPoint(Direction.WEST);
+			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST);
 			Side startSide = Side.EAST;
 			
 			if( goingEast(pEdge) )
@@ -499,8 +500,8 @@ public final class SegmentationStyleFactory
 			else if( goingWest(pEdge) )
 			{ 	// The segment goes in the other direction
 				startSide = Side.WEST;	
-				start = pEdge.getStart().view().getConnectionPoint(Direction.WEST);
-				end = pEdge.getEnd().view().getConnectionPoint(Direction.EAST);
+				start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.WEST);
+				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST);
 			}
 						
 			if( pGraph != null )
@@ -583,8 +584,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingSouth(Edge pEdge)
 		{
-			return pEdge.getStart().view().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
-					pEdge.getEnd().view().getConnectionPoint(Direction.NORTH).getY();
+			return NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.NORTH).getY();
 		}
 		
 		/*
@@ -593,8 +594,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingNorth(Edge pEdge)
 		{
-			return pEdge.getEnd().view().getConnectionPoint(Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
-					pEdge.getStart().view().getConnectionPoint(Direction.NORTH).getY();
+			return NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY();
 		}
 		
 		@Override
@@ -625,19 +626,19 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point start = pEdge.getStart().view().getConnectionPoint(Direction.SOUTH);
-			Point end = pEdge.getEnd().view().getConnectionPoint(Direction.NORTH);
+			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.SOUTH);
+			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.NORTH);
 			Side startSide = Side.SOUTH;
 			
 			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( pEdge.getEnd().view().getConnectionPoint(Direction.SOUTH).getY() + 
-					2 * MIN_SEGMENT <= pEdge.getStart().view().getConnectionPoint(Direction.NORTH).getY() )
+			else if( NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 
+					2 * MIN_SEGMENT <= NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY() )
 			{ 	// The segment goes in the other direction
 				startSide = Side.NORTH;
-				start = pEdge.getStart().view().getConnectionPoint(Direction.NORTH);
-				end = pEdge.getEnd().view().getConnectionPoint(Direction.SOUTH);
+				start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH);
+				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH);
 			}
 			
 			if( pGraph != null )

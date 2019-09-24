@@ -109,18 +109,18 @@ public final class CallNodeView extends AbstractNodeView
 //		}
 //	}
 
-	@Override
-	public Point getConnectionPoint(Direction pDirection)
-	{
-		if(pDirection.getX() > 0)
-		{
-			return new Point(getBounds().getMaxX(), getBounds().getY());
-		}
-		else
-		{
-			return new Point(getBounds().getX(), getBounds().getY());
-		}
-	}
+//	@Override
+//	public Point getConnectionPoint(Direction pDirection)
+//	{
+//		if(pDirection.getX() > 0)
+//		{
+//			return new Point(getBounds().getMaxX(), getBounds().getY());
+//		}
+//		else
+//		{
+//			return new Point(getBounds().getX(), getBounds().getY());
+//		}
+//	}
 	
 	/*
 	 * The x position is a function of the position of the implicit parameter

@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.ArrowHeadView;
 import ca.mcgill.cs.jetuml.views.LineStyle;
@@ -151,7 +152,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		else     
 		{
 			Direction direction = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = pEdge.getEnd().view().getConnectionPoint(direction);
+			Point endPoint = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{

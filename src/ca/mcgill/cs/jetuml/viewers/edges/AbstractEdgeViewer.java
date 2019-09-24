@@ -28,6 +28,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
@@ -121,8 +122,8 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
-		return new Line(pEdge.getStart().view().getConnectionPoint(toEnd), 
-				pEdge.getEnd().view().getConnectionPoint(toEnd.turn(DEGREES_180)));
+		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), toEnd), 
+				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.turn(DEGREES_180)));
 	}
 
 	@Override
