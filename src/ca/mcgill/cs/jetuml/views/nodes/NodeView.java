@@ -29,8 +29,8 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
  */
 public interface NodeView
 {
-	int BUTTON_SIZE = 25;
-	int OFFSET = 3;
+//	int BUTTON_SIZE = 25;
+//	int OFFSET = 3;
 	
 	/**
      * Gets the smallest rectangle that bounds this element.

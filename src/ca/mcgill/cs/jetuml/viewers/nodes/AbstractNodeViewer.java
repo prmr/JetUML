@@ -34,8 +34,8 @@ import javafx.scene.paint.Color;
  */
 public abstract class AbstractNodeViewer implements NodeViewer
 {
-	protected static final int BUTTON_SIZE = 25;
-	protected static final int OFFSET = 3;
+	public static final int BUTTON_SIZE = 25;
+	public static final int OFFSET = 3;
 	
 	/* 
 	 * The default behavior for containment is to return true if the point is
