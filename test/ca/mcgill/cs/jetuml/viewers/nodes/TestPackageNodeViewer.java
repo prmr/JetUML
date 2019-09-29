@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views.nodes;
+package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
 
-public class TestPackageNodeView
+public class TestPackageNodeViewer
 {
 	private PackageNodeViewer aViewer = new PackageNodeViewer();
 	private PackageNode aPackageNode1;
@@ -48,7 +48,7 @@ public class TestPackageNodeView
 	private Method aGetTopBoundsMethod;
 	private Method aGetBottomBoundsMethod;
 	
-	public TestPackageNodeView() throws ReflectiveOperationException
+	public TestPackageNodeViewer() throws ReflectiveOperationException
 	{
 		aGetTopBoundsMethod = PackageNodeViewer.class.getDeclaredMethod("getTopBounds", Node.class);
 		aGetTopBoundsMethod.setAccessible(true);

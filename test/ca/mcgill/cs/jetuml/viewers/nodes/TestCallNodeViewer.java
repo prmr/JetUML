@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views.nodes;
+package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,7 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
-public class TestCallNodeView
+public class TestCallNodeViewer
 {
 	private ImplicitParameterNode aImplicitParameterNode1;
 	private ImplicitParameterNode aImplicitParameterNode2;
