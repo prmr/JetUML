@@ -22,22 +22,14 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 
 public class TestActorNode
 {
 	private ActorNode aNode;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
 	
 	@BeforeEach
 	public void setup()
