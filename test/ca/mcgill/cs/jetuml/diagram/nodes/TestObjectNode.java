@@ -21,17 +21,9 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestObjectNode
 {
@@ -40,12 +32,6 @@ public class TestObjectNode
 	private FieldNode aField1;
 	private FieldNode aField2;
 	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
 	@BeforeEach
 	public void setup()
 	{
@@ -53,18 +39,6 @@ public class TestObjectNode
 		aObject2 = new ObjectNode();
 		aField1 = new FieldNode();
 		aField2 = new FieldNode();
-	}
-	
-	@Test
-	public void testDefault()
-	{
-		assertEquals(new Rectangle(0, 0, 80, 60), NodeViewerRegistry.getBounds(aObject1));
-		assertEquals(0,aObject1.getChildren().size());
-		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.EAST));
-		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.WEST));
-		assertEquals(new Point(40,0), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.NORTH));
-		assertEquals(new Point(40,60), NodeViewerRegistry.getConnectionPoints(aObject1, Direction.SOUTH));
-		assertEquals("", aObject1.getName().toString());
 	}
 	
 	@Test
@@ -138,36 +112,5 @@ public class TestObjectNode
 		assertEquals(200, aField1.position().getY());
 		assertEquals(100, aField2.position().getX());
 		assertEquals(200, aField2.position().getY());
-	}
-	
-	@Test 
-	public void testClone()
-	{
-		aObject1.setName("o1");
-		ObjectNode clone = aObject1.clone();
-		assertEquals(new Rectangle(0, 0, 80, 60), NodeViewerRegistry.getBounds(clone));
-		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(80,30), NodeViewerRegistry.getConnectionPoints(clone, Direction.EAST));
-		assertEquals(new Point(0,30), NodeViewerRegistry.getConnectionPoints(clone, Direction.WEST));
-		assertEquals(new Point(40,0), NodeViewerRegistry.getConnectionPoints(clone, Direction.NORTH));
-		assertEquals(new Point(40,60), NodeViewerRegistry.getConnectionPoints(clone, Direction.SOUTH));
-		assertEquals("o1", clone.getName().toString());
-		
-		aField1.setName("f1");
-		aField2.setName("f2");
-		
-		aObject1.addChild(aField1);
-		aObject1.addChild(aField2);
-		
-		clone = aObject1.clone();
-		assertEquals(2, clone.getChildren().size());
-		
-		FieldNode cf1 = (FieldNode) clone.getChildren().get(0);
-		FieldNode cf2 = (FieldNode) clone.getChildren().get(1);
-
-		assertEquals("f1", cf1.getName().toString());
-		assertEquals("f2", cf2.getName().toString());
-		assertFalse( cf1 == aField1 );
-		assertFalse( cf2 == aField2 );
 	}
 }
