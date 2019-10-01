@@ -48,15 +48,16 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
-		Rectangle bounds = getBounds(pNode);
-		int dividerPosition = getTopRectangle(pNode).getMaxY();
+		final Rectangle bounds = getBounds(pNode);
+		final Rectangle topRectangle = getTopRectangle(pNode);
+		int dividerPosition = topRectangle.getMaxY();
 		ViewUtils.drawRectangle(pGraphics, bounds);
 		if( ((ObjectNode)pNode).getChildren().size() > 0 ) 
 		{
 			ViewUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)pNode).getName(), pGraphics, 
-				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), getTopRectangle(pNode).getHeight()));
+				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), topRectangle.getHeight()));
 	}
 	
 	private Rectangle getTopRectangle(Node pNode)
