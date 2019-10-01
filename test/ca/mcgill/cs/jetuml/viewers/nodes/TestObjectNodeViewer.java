@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestObjectNodeViewer
 {
@@ -79,30 +81,67 @@ public class TestObjectNodeViewer
 		assertEquals(52, aViewer.getSplitPosition(aNode));
 	}
 	
-//	@Test
-//	public void testGetBounds_NoName()
-//	{
-//		aNode.setName("");
-//		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-//		assertEquals(110, aViewer.getBounds(aNode).getWidth());
-//		assertEquals(40, aViewer.getBounds(aNode).getHeight());
-//	}
-//	
-//	@Test
-//	public void testGetBounds_ShortName()
-//	{
-//		aNode.setName("X");
-//		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-//		assertEquals(110, aViewer.getBounds(aNode).getWidth());
-//		assertEquals(40, aViewer.getBounds(aNode).getHeight());
-//	}
-//	
-//	@Test
-//	public void testGetBounds_LongName()
-//	{
-//		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-//		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-//		assertTrue(aViewer.getBounds(aNode).getWidth() > 110);
-//		assertEquals(40, aViewer.getBounds(aNode).getHeight());
-//	}
+	@Test
+	public void testGetYPosition_OneField()
+	{
+		aNode.addChild(aField1);
+		assertEquals(70, aViewer.getYPosition(aNode, aField1));
+	}
+	
+	@Test
+	public void testGetYPosition_TwoFields()
+	{
+		aNode.addChild(aField1);
+		aNode.addChild(aField2);
+		assertEquals(70, aViewer.getYPosition(aNode, aField1));
+		assertEquals(95, aViewer.getYPosition(aNode, aField2));
+	}
+	
+	@Test
+	public void testGetBounds_NoFieldNoName()
+	{
+		aNode.setName("");
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(80, aViewer.getBounds(aNode).getWidth());
+		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+	}
+	
+	@Test
+	public void testGetBounds_shortNameNoField()
+	{
+		aNode.setName("X");
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(80, aViewer.getBounds(aNode).getWidth());
+		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+	}
+	
+	@Test
+	public void testGetBounds_LongNameNoField()
+	{
+		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertTrue(aViewer.getBounds(aNode).getWidth() > 80);
+		assertEquals(60, aViewer.getBounds(aNode).getHeight());
+	}
+	
+	@Test
+	public void testGetBounds_OneFieldNoName()
+	{
+		aNode.setName("");
+		aNode.addChild(aField1);
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(80, aViewer.getBounds(aNode).getWidth());
+		assertEquals(90, aViewer.getBounds(aNode).getHeight());
+	}
+	
+	@Test
+	public void testGetBounds_TwoFieldsShortName()
+	{
+		aNode.setName("X");
+		aNode.addChild(aField1);
+		aNode.addChild(aField2);
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(80, aViewer.getBounds(aNode).getWidth());
+		assertEquals(120, aViewer.getBounds(aNode).getHeight());
+	}
 }
