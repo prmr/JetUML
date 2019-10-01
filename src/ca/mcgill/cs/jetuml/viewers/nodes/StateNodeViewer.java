@@ -40,8 +40,9 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
-		ViewUtils.drawRoundedRectangle(pGraphics, getBounds(pNode));
-		NAME_VIEWER.draw(((StateNode)pNode).getName(), pGraphics, getBounds(pNode));
+		final Rectangle bounds = getBounds(pNode);
+		ViewUtils.drawRoundedRectangle(pGraphics, bounds);
+		NAME_VIEWER.draw(((StateNode)pNode).getName(), pGraphics, bounds);
 	}
 	
 	@Override
