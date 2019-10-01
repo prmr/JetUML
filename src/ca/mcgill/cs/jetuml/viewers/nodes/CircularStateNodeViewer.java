@@ -29,7 +29,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * An object to render a CircularStateNode.
+ * An object to render a initial or final node.
  */
 public final class CircularStateNodeViewer extends AbstractNodeViewer
 {
@@ -37,7 +37,7 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	private final boolean aFinal;
 	
 	/**
-	 * @param pFinal true if this is a final node, false if it's an initial node.
+	 * @param pFinal true if this is a final node, false if it is an initial node.
 	 */
 	public CircularStateNodeViewer(boolean pFinal)
 	{
@@ -47,23 +47,24 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
+		final Rectangle bounds = getBounds(pNode);
 		if( aFinal )
 		{
-			ViewUtils.drawCircle(pGraphics, getBounds(pNode).getX(), getBounds(pNode).getY(), DIAMETER, Color.WHITE, true);
+			ViewUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.WHITE, true);
 			int innerDiameter = DIAMETER/2;
-			ViewUtils.drawCircle(pGraphics, getBounds(pNode).getX() + innerDiameter/2, 
-					getBounds(pNode).getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
+			ViewUtils.drawCircle(pGraphics, bounds.getX() + innerDiameter/2, 
+					bounds.getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
 		}
 		else
 		{
-			ViewUtils.drawCircle(pGraphics, getBounds(pNode).getX(), getBounds(pNode).getY(), DIAMETER, Color.BLACK, true);
+			ViewUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.BLACK, true);
 		}
 	}
 	
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		Rectangle bounds = getBounds(pNode);
+		final Rectangle bounds = getBounds(pNode);
 		double a = bounds.getWidth() / 2;
 		double b = bounds.getHeight() / 2;
 		double x = pDirection.getX();
