@@ -48,9 +48,10 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		int split = getSplitPosition(pNode);
+		final int split = getSplitPosition(pNode);
+		final int leftWidth = leftWidth(pNode);
 		NAME_VIEWER.draw(((FieldNode)pNode).getName(), pGraphics, 
-				new Rectangle(split - leftWidth(pNode), bounds.getY(), leftWidth(pNode), bounds.getHeight()));
+				new Rectangle(split - leftWidth, bounds.getY(), leftWidth, bounds.getHeight()));
 		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - MID_OFFSET, bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
 		VALUE_VIEWER.draw(((FieldNode)pNode).getValue(), 
 				pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(pNode), bounds.getHeight()));
@@ -73,13 +74,15 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	public Rectangle getBounds(Node pNode)
 	{
 		ObjectNode parent = (ObjectNode)((FieldNode)pNode).getParent();
+		final int leftWidth = leftWidth(pNode);
+		final int height = getHeight(pNode);
 		if( parent != null )
 		{
 			int yPosition = OBJECT_NODE_VIEWER.getYPosition(parent, (FieldNode) pNode);
 			Rectangle parentBounds = OBJECT_NODE_VIEWER.getBounds(parent);
-			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, getHeight(pNode));
+			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, height);
 		}
-		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth(pNode), 0, leftWidth(pNode) + rightWidth(pNode), getHeight(pNode));
+		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth, 0, leftWidth + rightWidth(pNode), height);
 	}
 	
 	/**
@@ -118,7 +121,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		Rectangle bounds = getBounds(pNode);
+		final Rectangle bounds = getBounds(pNode);
 		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
 	}
 }
