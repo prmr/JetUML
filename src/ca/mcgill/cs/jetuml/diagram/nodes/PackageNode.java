@@ -27,7 +27,7 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
- *   A package node in a UML diagram.
+ * A package node in a UML diagram.
  */
 public final class PackageNode extends AbstractNode implements ParentNode, ChildNode
 {

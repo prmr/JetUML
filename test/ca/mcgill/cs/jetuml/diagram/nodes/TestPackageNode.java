@@ -24,15 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.geom.Direction;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestPackageNode
 {
@@ -41,12 +34,6 @@ public class TestPackageNode
 	private ClassNode aClass1;
 	private ClassNode aClass2;
 	private ClassNode aClass3;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
 	
 	@BeforeEach
 	public void setup()
@@ -62,12 +49,7 @@ public class TestPackageNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals(new Rectangle(0, 0, 100, 80), NodeViewerRegistry.getBounds(aPackage1));
 		assertEquals(0,aPackage1.getChildren().size());
-		assertEquals(new Point(100,40), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.EAST));
-		assertEquals(new Point(0,40), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.WEST));
-		assertEquals(new Point(50,0), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.NORTH));
-		assertEquals(new Point(50,80), NodeViewerRegistry.getConnectionPoints(aPackage1, Direction.SOUTH));
 		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
 		assertNull(aPackage1.getParent());
@@ -138,12 +120,7 @@ public class TestPackageNode
 	{
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
-		assertEquals(new Rectangle(0, 0, 100, 80), NodeViewerRegistry.getBounds(clone));
 		assertEquals(0,clone.getChildren().size());
-		assertEquals(new Point(100,40), NodeViewerRegistry.getConnectionPoints(clone, Direction.EAST));
-		assertEquals(new Point(0,40), NodeViewerRegistry.getConnectionPoints(clone, Direction.WEST));
-		assertEquals(new Point(50,0), NodeViewerRegistry.getConnectionPoints(clone, Direction.NORTH));
-		assertEquals(new Point(50,80), NodeViewerRegistry.getConnectionPoints(clone, Direction.SOUTH));
 		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
 		assertNull(clone.getParent());
