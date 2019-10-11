@@ -24,40 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestInterfaceNode
 {
 	private InterfaceNode aNode1;
-	private Graphics2D aGraphics;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
 	
 	@BeforeEach
 	public void setup()
 	{
 		aNode1 = new InterfaceNode();
-		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-	}
-	
-	@AfterEach
-	public void teardown()
-	{
-		aGraphics.dispose();
 	}
 	
 	@Test
@@ -66,7 +43,6 @@ public class TestInterfaceNode
 		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(aNode1));
 		assertNull(aNode1.getParent());
 	}
 	
@@ -88,19 +64,5 @@ public class TestInterfaceNode
 		assertTrue( aNode1.getParent() == package2 );
 		aNode1.setParent(null);
 		assertNull( aNode1.getParent() );
-	}
-	
-	@Test
-	public void testClone()
-	{
-		PackageNode package1 = new PackageNode();
-		aNode1.setParent(package1);
-		InterfaceNode clone = (InterfaceNode) aNode1.clone();
-		assertEquals("\u00ABinterface\u00BB\n", clone.getName());
-		String methods = clone.getMethods();
-		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(clone));
-		assertTrue(NodeViewerRegistry.getBounds(clone).equals(NodeViewerRegistry.getBounds(aNode1)));
-		assertTrue(clone.getParent().equals(aNode1.getParent()));
 	}
 }
