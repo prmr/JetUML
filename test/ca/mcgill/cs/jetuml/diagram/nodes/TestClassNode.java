@@ -22,42 +22,20 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestClassNode
 {
 	private ClassNode aNode1;
-	private Graphics2D aGraphics;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
 	
 	@BeforeEach
 	public void setup()
 	{
 		aNode1 = new ClassNode();
-		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-	}
-	
-	@AfterEach
-	public void teardown()
-	{
-		aGraphics.dispose();
 	}
 	
 	@Test
@@ -66,7 +44,6 @@ public class TestClassNode
 		assertEquals("", aNode1.getName());
 		String attributes = aNode1.getAttributes();
 		assertEquals("", attributes);
-		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(aNode1));
 		assertNull(aNode1.getParent());
 	}
 	
@@ -91,17 +68,28 @@ public class TestClassNode
 	}
 	
 	@Test
-	public void testClone()
+	public void testClone_PropertiesCopied()
+	{
+		aNode1.setName("FOO");
+		aNode1.setMethods("FOO1");
+		aNode1.setAttributes("FIELDS");
+		ClassNode clone = (ClassNode) aNode1.clone();
+		assertEquals("FOO", clone.getName());
+		assertEquals("FOO1", clone.getMethods());
+		assertEquals("FIELDS", clone.getAttributes());
+	}
+	
+	/**
+	 * Copying a class node makes a shallow copy of the parent.
+	 */
+	@Test
+	public void testClone_ParentCopied()
 	{
 		PackageNode package1 = new PackageNode();
+		package1.setName("Foo");
 		aNode1.setParent(package1);
 		ClassNode clone = (ClassNode) aNode1.clone();
-		String name = clone.getName();
-		assertEquals("", name);
-		String methods = clone.getMethods();
-		assertEquals("", methods);
-		assertEquals(new Rectangle(0,0,100,60), NodeViewerRegistry.getBounds(clone));
-		assertTrue(NodeViewerRegistry.getBounds(clone).equals(NodeViewerRegistry.getBounds(aNode1)));
-		assertTrue(clone.getParent().equals(aNode1.getParent()));
+		assertEquals("Foo", ((PackageNode)clone.getParent()).getName());
+		assertSame(package1, clone.getParent());
 	}
 }

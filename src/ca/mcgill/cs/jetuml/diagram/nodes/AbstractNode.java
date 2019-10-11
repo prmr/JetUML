@@ -26,7 +26,6 @@ import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * Common elements for the Node hierarchy.
@@ -64,7 +63,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	@Override
 	public final String toString()
 	{
-		return getClass().getSimpleName() + " " + NodeViewerRegistry.getBounds(this);
+		return getClass().getSimpleName() + " at " + position();
 	}
 	
 	@Override

@@ -22,8 +22,8 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 /**
-   A node with a name.
-*/
+ * A node with a name.
+ */
 public abstract class NamedNode extends AbstractNode
 {
 	private String aName = "";
