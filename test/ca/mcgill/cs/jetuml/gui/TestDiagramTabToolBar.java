@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -69,6 +70,21 @@ public class TestDiagramTabToolBar
 		return null;
 	}
 	
+	private SelectableToolButton invokeGetSelectedTool()
+	{
+		try
+		{
+			Method method = DiagramTabToolBar.class.getDeclaredMethod("getSelectedTool");
+			method.setAccessible(true);
+			return (SelectableToolButton) method.invoke(aToolbar);
+		}
+		catch( ReflectiveOperationException exception )
+		{
+			fail();
+		}
+		return null;
+	}
+	
 	/*
 	 * Tests that an object has the selection tool as the first 
 	 * button, and that it is selected.
@@ -79,5 +95,19 @@ public class TestDiagramTabToolBar
 		SelectableToolButton firstButton = getButtonAtPosition(0);
 		assertEquals(RESOURCES.getString("toolbar.select.tooltip"), firstButton.getTooltip().getText());
 		assertTrue(firstButton.isSelected());
+	}
+	
+	/*
+	 * Tests that firing a tool button selects it, and that
+	 * getSelectedTool returns the correct selection.
+	 */
+	@Test
+	public void testSelection()
+	{
+		SelectableToolButton thirdButton = getButtonAtPosition(2);
+		assert !thirdButton.isSelected();
+		thirdButton.fire();
+		assertTrue(thirdButton.isSelected());
+		assertSame(thirdButton, invokeGetSelectedTool());
 	}
 }
