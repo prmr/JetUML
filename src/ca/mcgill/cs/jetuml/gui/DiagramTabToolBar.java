@@ -71,17 +71,22 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		ToggleGroup toggleGroup = new ToggleGroup();
-		installSelectionTool(toggleGroup);
+		// Method setToolToBeSelect assumes the selection tool will always be the first button in the toggle group.
+		installSelectionTool(toggleGroup); 
 		installNodesAndEdgesTools(pDiagram, toggleGroup);
 		installCopyToClipboard();
     	showButtonLabels( UserPreferences.instance().getBoolean(BooleanPreference.showToolHints ));
+    	setToolToBeSelect();
 	}
 	
+	// Note: it is not possible to select the Selection tool in this 
+	// method because adding new toggle buttons to a toggle group has the effect
+	// of eliminating the current selection.
 	private void installSelectionTool(ToggleGroup pToggleGroup)
 	{
-		add(new SelectableToolButton(createSelectionIcon(), 
-									 RESOURCES.getString("toolbar.select.tooltip"), 
-									 pToggleGroup), createSelectionIcon());
+		SelectableToolButton selectionButton = new SelectableToolButton(createSelectionIcon(), 
+				RESOURCES.getString("toolbar.select.tooltip"), pToggleGroup);
+		add(selectionButton, createSelectionIcon());
 	}
 	
 	private static Canvas createSelectionIcon()
@@ -199,7 +204,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	}
 	
 	/**
-	 * Overrides the currently selected tool to be the grabber tool instead.
+	 * Overrides the currently selected tool to be the selection tool instead.
 	 */
 	public void setToolToBeSelect()
 	{
