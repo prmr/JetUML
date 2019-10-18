@@ -158,10 +158,13 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		aPopupMenu.getItems().add(item);
 	}
 	
-	private ToggleButton getSelectedTool()
+	private SelectableToolButton getSelectedTool()
 	{
 		assert getItems().size() > 0;
-		return (ToggleButton) ((ToggleButton)getItems().get(0)).getToggleGroup().getSelectedToggle();
+		ToggleButton button = (ToggleButton) ((ToggleButton) getItems().get(0)).getToggleGroup().getSelectedToggle();
+		assert button != null;
+		assert button.getClass() == SelectableToolButton.class;
+		return (SelectableToolButton) button;
 	}
 	
 	/**
@@ -172,9 +175,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	 */
 	public Optional<DiagramElement> getCreationPrototype()
 	{
-		assert getItems().size() > 0;
-		return ((SelectableToolButton)((ToggleButton) getItems().get(0)).
-				getToggleGroup().getSelectedToggle()).getPrototype();
+		return getSelectedTool().getPrototype();
 	}
 	
 	private void copyToClipboard()
