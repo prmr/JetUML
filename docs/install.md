@@ -2,13 +2,13 @@
 
 JetUML can be run most easily on Java 8, the last long-term support (LTS) Java release that bundles JavaFX with the run-time environment. JetUML can also be executed with later releases of Java, but this requires a bit more work.
 
-*To contribute instructions for other system configurations, please sumbit a pull request.*
+*To contribute instructions for other system configurations, please submit a pull request.*
 
 ## Download JetUML
 
 Download the latest version from the [releases page](https://github.com/prmr/JetUML/releases).
 
-## Install Denpendencies
+## Install Dependencies
 
 ### Java 8 (Cross-Platform)
 
