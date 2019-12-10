@@ -104,13 +104,15 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		Node[] nodeTypes = pGraph.getNodePrototypes();
 		for(int i = 0; i < nodeTypes.length; i++)
 		{
-			add(new SelectableToolButton(RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
+			add(new SelectableToolButton(
+					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
 					pToggleGroup, nodeTypes[i]), NodeViewerRegistry.createIcon(nodeTypes[i]));
 		}
 		Edge[] edgeTypes = pGraph.getEdgePrototypes();
 		for(int i = 0; i < edgeTypes.length; i++)
 		{
-			add(new SelectableToolButton(RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
+			add(new SelectableToolButton(
+					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
 					pToggleGroup, edgeTypes[i]), EdgeViewerRegistry.createIcon(edgeTypes[i]));
 		}
 	}

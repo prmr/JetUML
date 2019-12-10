@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016-2019 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2019 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -22,45 +22,67 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 /**
- * A class node in a class diagram.
+ * A type that can represent either classes or interfaces. A type node 
+ * always has at least methods.
  */
-public final class ClassNode extends TypeNode
+public abstract class TypeNode extends NamedNode implements ChildNode
 {
-	private String aAttributes = "";
+	private String aMethods = ""; 
+	private ParentNode aContainer;
+
+	/**
+     * Sets the methods property value.
+     * @param pMethods the methods of this type node.
+     * @pre pMethods != null;
+	 */
+	public void setMethods(String pMethods)
+	{
+		assert pMethods != null;
+		aMethods = pMethods;
+	}
 	
 	/**
-	 * Constructs a new ClassNode with an empty name and no
-	 * attributes or methods.
+     * Gets the methods property value.
+     * @return the methods of this interface
 	 */
-	public ClassNode()
+	public String getMethods()
 	{
-		setName("");
+		return aMethods;
 	}
-
-	/**
-     * Sets the attributes property value.
-     * @param pNewValue the attributes of this class
-     * @pre pNewValue != null
-	 */
-	public void setAttributes(String pNewValue)
-	{
-		assert pNewValue != null;
-		aAttributes = pNewValue;
-	}
-
+	
 	/**
      * Gets the attributes property value.
+     * By default, this is the empty string.
      * @return the attributes of this class
 	 */
 	public String getAttributes()
 	{
-		return aAttributes;
+		return "";
 	}
 
+	@Override
+	public ParentNode getParent()
+	{
+		return aContainer;
+	}
+
+	@Override
+	public void setParent(ParentNode pNode)
+	{
+		assert pNode instanceof PackageNode || pNode == null;
+		aContainer = pNode;
+	}
+	
+	@Override
+	public boolean requiresParent()
+	{
+		return false;
+	}
+	
 	@Override
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 3);
+		properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
 	}
 }

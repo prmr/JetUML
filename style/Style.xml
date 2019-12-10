@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Check Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!--
     This configuration file was written by the eclipse-cs plugin configuration editor
@@ -11,7 +11,6 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
-    <property name="tabWidth" value="4"/>
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
       <property name="allowUndeclaredRTE" value="true"/>
@@ -28,9 +27,7 @@
     <module name="JavadocStyle"/>
     <module name="ConstantName"/>
     <module name="LocalFinalVariableName"/>
-    <module name="LocalVariableName">
-      <property name="tokens" value="VARIABLE_DEF"/>
-    </module>
+    <module name="LocalVariableName"/>
     <module name="MemberName">
       <property name="format" value="^a[A-Z][a-zA-Z0-9]*$"/>
     </module>
@@ -47,10 +44,6 @@
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="LineLength">
-      <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
-      <property name="max" value="150"/>
-    </module>
     <module name="MethodLength">
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
@@ -79,9 +72,7 @@
       <property name="option" value="space"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="TypecastParenPad">
-      <property name="tokens" value="RPAREN,TYPECAST"/>
-    </module>
+    <module name="TypecastParenPad"/>
     <module name="WhitespaceAfter">
       <property name="tokens" value="COMMA,SEMI"/>
     </module>
@@ -183,4 +174,8 @@
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
   <module name="Translation"/>
+  <module name="LineLength">
+    <property name="fileExtensions" value="java"/>
+    <property name="max" value="150"/>
+  </module>
 </module>

@@ -43,13 +43,14 @@ public final class ClassDiagram extends Diagram
 															  new PackageNode(), 
 															  new NoteNode()};
 	
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[] {new DependencyEdge(), 
-															  new GeneralizationEdge(), 
-															  new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
-															  new AssociationEdge(),
-															  new AggregationEdge(),
-															  new AggregationEdge(AggregationEdge.Type.Composition),
-															  new NoteEdge()};
+	private static final Edge[] EDGE_PROTOTYPES = new Edge[] {
+			new DependencyEdge(), 
+			new GeneralizationEdge(), 
+			new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
+			new AssociationEdge(),
+			new AggregationEdge(),
+			new AggregationEdge(AggregationEdge.Type.Composition),
+			new NoteEdge()};
 
 	@Override
 	public Node[] getNodePrototypes()

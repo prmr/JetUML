@@ -115,7 +115,8 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	public int getHeight(Node pNode)
 	{
 		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).getHeight(), 
-				Math.max(VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getHeight(), EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
+				Math.max(VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getHeight(), 
+						EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
 	}
 	
 	@Override

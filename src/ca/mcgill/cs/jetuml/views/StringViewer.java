@@ -173,7 +173,8 @@ public final class StringViewer
 				xOffset = (int) bounds.getWidth();
 			}
 			
-			ViewUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, (int) (textX-xOffset+bounds.getWidth()), textY+yOffset, LineStyle.SOLID);
+			ViewUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
+					(int) (textX-xOffset+bounds.getWidth()), textY+yOffset, LineStyle.SOLID);
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 	}

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2015-2018 by the contributors of the JetUML project.
+ * Copyright (C) 2015-2019 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -22,64 +22,15 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 /**
- * An interface node in a class diagram that can be composed
- * of three compartments: top (for the name), middle (for attributes,
- * normally unused), and bottom (for methods).
+ * An interface node in a class diagram.
  */
-public class InterfaceNode extends NamedNode implements ChildNode
+public class InterfaceNode extends TypeNode
 {
-	private String aMethods = "";   
-	private ParentNode aContainer;
-
 	/**
      * Construct an interface node with a default size.
 	 */
 	public InterfaceNode() 
 	{
 		setName("\u00ABinterface\u00BB\n");
-	}
-	
-	/**
-     * Sets the methods property value.
-     * @param pMethods the methods of this interface
-	 */
-	public void setMethods(String pMethods)
-	{
-		aMethods = pMethods;
-	}
-	
-	/**
-     * Gets the methods property value.
-     * @return the methods of this interface
-	 */
-	public String getMethods()
-	{
-		return aMethods;
-	}
-
-	@Override
-	public ParentNode getParent()
-	{
-		return aContainer;
-	}
-
-	@Override
-	public void setParent(ParentNode pNode)
-	{
-		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = pNode;
-	}
-	
-	@Override
-	public boolean requiresParent()
-	{
-		return false;
-	}
-	
-	@Override
-	protected void buildProperties()
-	{
-		super.buildProperties();
-		properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
 	}
 }

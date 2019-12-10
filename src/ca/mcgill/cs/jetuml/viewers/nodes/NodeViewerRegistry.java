@@ -38,12 +38,12 @@ public final class NodeViewerRegistry
 	{
 		aRegistry.put(ActorNode.class, new ActorNodeViewer());
 		aRegistry.put(CallNode.class, new CallNodeViewer());
-		aRegistry.put(ClassNode.class, new ClassNodeViewer());
+		aRegistry.put(ClassNode.class, new TypeNodeViewer());
 		aRegistry.put(FieldNode.class, new FieldNodeViewer());
 		aRegistry.put(FinalStateNode.class, new CircularStateNodeViewer(true));
 		aRegistry.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
 		aRegistry.put(InitialStateNode.class, new CircularStateNodeViewer(false));
-		aRegistry.put(InterfaceNode.class, new InterfaceNodeViewer());
+		aRegistry.put(InterfaceNode.class, new TypeNodeViewer());
 		aRegistry.put(NoteNode.class, new NoteNodeViewer());
 		aRegistry.put(ObjectNode.class, new ObjectNodeViewer());
 		aRegistry.put(PackageNode.class, new PackageNodeViewer());

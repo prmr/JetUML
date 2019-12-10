@@ -367,11 +367,13 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getY() - NodeViewerRegistry.getBounds(otherNode2).getCenter().getY();
+				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getY() - 
+						NodeViewerRegistry.getBounds(otherNode2).getCenter().getY();
 			}
 			else
 			{
-				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getX() - NodeViewerRegistry.getBounds(otherNode2).getCenter().getX();
+				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getX() - 
+						NodeViewerRegistry.getBounds(otherNode2).getCenter().getX();
 			}
 		});
 	}
@@ -507,7 +509,8 @@ public final class SegmentationStyleFactory
 			if( pGraph != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
-				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
+						computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
@@ -644,7 +647,8 @@ public final class SegmentationStyleFactory
 			if( pGraph != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
-				end = computePointPosition(pEdge.getEnd(), startSide.flip(), computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
+				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
+						computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
