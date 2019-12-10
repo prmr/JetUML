@@ -37,7 +37,9 @@ public final class AggregationEdgeViewer extends SegmentedEdgeViewer
 	{
 		super(SegmentationStyleFactory.createHVHStrategy(),
 				e -> LineStyle.SOLID, e -> getStartArrowHead((AggregationEdge)e), e -> ArrowHead.NONE,
-				e -> ((AggregationEdge)e).getStartLabel(), e -> ((AggregationEdge)e).getMiddleLabel(), e -> ((AggregationEdge)e).getEndLabel());
+				e -> ((AggregationEdge)e).getStartLabel(), 
+				e -> ((AggregationEdge)e).getMiddleLabel(), 
+				e -> ((AggregationEdge)e).getEndLabel());
 	}
 	
 	/**

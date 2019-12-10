@@ -36,8 +36,12 @@ public final class AssociationEdgeViewer extends SegmentedEdgeViewer
 	public AssociationEdgeViewer()
 	{
 		super(SegmentationStyleFactory.createHVHStrategy(),
-				e -> LineStyle.SOLID, e -> getStartArrowHead((AssociationEdge)e), e -> getEndArrowHead((AssociationEdge)e),
-				e -> ((AssociationEdge)e).getStartLabel(), e -> ((AssociationEdge)e).getMiddleLabel(), e -> ((AssociationEdge)e).getEndLabel());
+				e -> LineStyle.SOLID, 
+				e -> getStartArrowHead((AssociationEdge)e), 
+				e -> getEndArrowHead((AssociationEdge)e),
+				e -> ((AssociationEdge)e).getStartLabel(), 
+				e -> ((AssociationEdge)e).getMiddleLabel(), 
+				e -> ((AssociationEdge)e).getEndLabel());
 	}
 	
 	/**

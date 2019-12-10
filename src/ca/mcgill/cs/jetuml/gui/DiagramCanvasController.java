@@ -166,7 +166,8 @@ public class DiagramCanvasController
 		}
 		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		if(!aSelectionModel.isEmpty() && viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+		if(!aSelectionModel.isEmpty() && 
+				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
@@ -275,7 +276,8 @@ public class DiagramCanvasController
 	private Optional<? extends DiagramElement> getSelectedElement(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		Optional<? extends DiagramElement> element = viewerFor(aDiagramBuilder.getDiagram()).findEdge(aDiagramBuilder.getDiagram(), mousePoint);
+		Optional<? extends DiagramElement> element = 
+				viewerFor(aDiagramBuilder.getDiagram()).findEdge(aDiagramBuilder.getDiagram(), mousePoint);
 		if(!element.isPresent())
 		{
 			element = viewerFor(aDiagramBuilder.getDiagram())

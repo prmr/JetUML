@@ -198,7 +198,8 @@ public class EditorFrame extends BorderPane
 				
 				factory.createCheckMenuItem("view.show_grid", false, 
 				UserPreferences.instance().getBoolean(BooleanPreference.showGrid), 
-				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, ((CheckMenuItem) pEvent.getSource()).isSelected())),
+					pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showGrid, 
+							((CheckMenuItem) pEvent.getSource()).isSelected())),
 			
 				factory.createCheckMenuItem("view.show_hints", false, 
 				UserPreferences.instance().getBoolean(BooleanPreference.showToolHints),
@@ -595,7 +596,8 @@ public class EditorFrame extends BorderPane
 		FileChooser fileChooser = new FileChooser();
 		for(String format : IMAGE_FORMATS ) 
 		{
-			ExtensionFilter filter = new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format);
+			ExtensionFilter filter = 
+					new ExtensionFilter(format.toUpperCase() + " " + RESOURCES.getString("files.image.name"), "*." +format);
 			fileChooser.getExtensionFilters().add(filter);
 			if( format.equals(pInitialFormat ))
 			{
@@ -607,7 +609,8 @@ public class EditorFrame extends BorderPane
 		// If the file was previously saved, use that to suggest a file name root.
 		if(frame.getFile().isPresent()) 
 		{
-			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), RESOURCES.getString("application.file.extension"), ""));
+			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), 
+					RESOURCES.getString("application.file.extension"), ""));
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}

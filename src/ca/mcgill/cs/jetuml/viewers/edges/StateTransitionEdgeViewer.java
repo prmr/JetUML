@@ -430,7 +430,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 		Direction d1 = new Direction(startCenter, endCenter).turn(-turn);
 		Direction d2 = new Direction(endCenter, startCenter).turn(turn);
-		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), d1), NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), d2));
+		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), d1), 
+				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), d2));
 	}
 	
 	@Override
@@ -443,7 +444,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		final double tangent = Math.tan(Math.toRadians(DEGREES_10));
 		double dx = (line.getX2() - line.getX1()) / 2;
 		double dy = (line.getY2() - line.getY1()) / 2;
-		Point control = new Point((int)((line.getX1() + line.getX2()) / 2 + tangent * dy), (int)((line.getY1() + line.getY2()) / 2 - tangent * dx));         
+		Point control = new Point((int)((line.getX1() + line.getX2()) / 2 + tangent * dy), 
+				(int)((line.getY1() + line.getY2()) / 2 - tangent * dx));         
 		
 		Path path = new Path();
 		MoveTo moveTo = new MoveTo(line.getPoint1().getX(), line.getPoint1().getY());

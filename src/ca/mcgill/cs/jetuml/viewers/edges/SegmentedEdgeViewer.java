@@ -272,7 +272,8 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	{
 		Point2D[] points = getPoints(pEdge);
 		Rectangle bounds = super.getBounds(pEdge);
-		bounds = bounds.add(getStringBounds(points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false));
+		bounds = bounds.add(getStringBounds(points[1], points[0], 
+				aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false));
 		bounds = bounds.add(getStringBounds(points[points.length / 2 - 1], 
 				points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true));
 		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], 

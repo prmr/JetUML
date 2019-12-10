@@ -72,7 +72,9 @@ class MenuFactory
 			result = System.getProperty("os.name", "unknown").toLowerCase().startsWith("mac");
 		}
 		catch( SecurityException pException )
-		{ /* Result stays false */ }
+		{ 
+			/* Result stays false */ 
+		}
 		return result;
 	}
 	

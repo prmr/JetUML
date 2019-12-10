@@ -41,7 +41,7 @@ public class WelcomeTab extends Tab
 	/* CSS classes of the different GUI elements in the welcome tab. See UMLEditorStyle.css for the styling */
 	private static final String CLASS_WELCOME_TAB_PANEL = "welcome-tab-panel"; 	// One column in the welcome tab
 	private static final String CLASS_PANEL_TITLE = "panel-title"; 				// The title/header above each of the two columns
-	private static final String CLASS_FOOTER = "welcome-tab-footer"; 						// The footer with the copyright information
+	private static final String CLASS_FOOTER = "welcome-tab-footer"; 			// The footer with the copyright information
     
 	/**
 	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams. The name 
