@@ -1,15 +1,20 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -18,6 +23,27 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public class TestTypeNodeViewer
 {
 	private static final TypeNodeViewer aViewer = new TypeNodeViewer();
+	private final Method aMethodNameBoxHeight;
+	
+	public TestTypeNodeViewer() throws ReflectiveOperationException
+	{
+		aMethodNameBoxHeight = TypeNodeViewer.class.getDeclaredMethod("nameBoxHeight", 
+				TypeNode.class, int.class, int.class);
+		aMethodNameBoxHeight.setAccessible(true);
+	}
+	
+	private int callNameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight)
+	{
+		try
+		{
+			return (int) aMethodNameBoxHeight.invoke(aViewer, pNode, pAttributeBoxHeight, pMethodBoxHeight);
+		}
+		catch( ReflectiveOperationException e )
+		{
+			fail("Reflection problem: " + e.getMessage());
+			return -1;
+		}
+	}
 	
 	@BeforeAll
 	public static void setupClass()
@@ -93,5 +119,33 @@ public class TestTypeNodeViewer
 		node.setMethods("METHODS");
 		return Arguments.of(node, 
 				new Rectangle(0, 0, 100, 60)); // Default width and height
+	}
+	
+	@Test
+	public void testNameBoxHeight_OneLineName()
+	{
+		assertEquals(60, callNameBoxHeight(new InterfaceNode(), 0, 0));
+	}
+	
+	@Test
+	public void testNameBoxHeight_MultiLineName()
+	{
+		InterfaceNode node = new InterfaceNode();
+		node.setName("X\nX\nX\nX\nX");
+		assertTrue(callNameBoxHeight(node, 0, 0) > 60);
+	}
+	
+	@Test
+	public void testNameBoxHeight_OneLineNameAndAttribute()
+	{
+		ClassNode node = new ClassNode();
+		assertEquals(40, callNameBoxHeight(node, 20, 0));
+	}
+	
+	@Test
+	public void testNameBoxHeight_OneLineNameAndAttributeAndMethods()
+	{
+		ClassNode node = new ClassNode();
+		assertEquals(20, callNameBoxHeight(node, 20, 40));
 	}
 }
