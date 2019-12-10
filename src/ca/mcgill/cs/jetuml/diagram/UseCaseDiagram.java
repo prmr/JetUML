@@ -37,11 +37,12 @@ import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 public final class UseCaseDiagram extends Diagram
 {
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new UseCaseAssociationEdge(),
-															 new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
-															 new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
-															 new UseCaseGeneralizationEdge(),
-															 new NoteEdge()};
+	private static final Edge[] EDGE_PROTOTYPES = 
+			new Edge[]{ new UseCaseAssociationEdge(),
+						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
+						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
+						new UseCaseGeneralizationEdge(),
+						new NoteEdge()};
 
 	@Override
 	public Node[] getNodePrototypes()

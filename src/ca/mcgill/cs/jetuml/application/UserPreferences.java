@@ -97,12 +97,14 @@ public final class UserPreferences
 		for( BooleanPreference preference : BooleanPreference.values() )
 		{
 			aBooleanPreferences.put(preference, 
-					Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get(preference.name(), preference.getDefault())));
+					Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class)
+							.get(preference.name(), preference.getDefault())));
 		}
 		for( IntegerPreference preference : IntegerPreference.values() )
 		{
 			aIntegerPreferences.put( preference, 
-					Integer.valueOf(Preferences.userNodeForPackage(UMLEditor.class).get(preference.name(), preference.getDefault())));
+					Integer.valueOf(Preferences.userNodeForPackage(UMLEditor.class)
+							.get(preference.name(), preference.getDefault())));
 		}
 	}
 	
