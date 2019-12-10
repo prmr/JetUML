@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2018 by the contributors of the JetUML project.
+ * Copyright (C) 2016-2019 by the contributors of the JetUML project.
  *
  * See: https://github.com/prmr/JetUML
  *
@@ -24,12 +24,13 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 /**
  * A class node in a class diagram.
  */
-public final class ClassNode extends InterfaceNode
+public final class ClassNode extends TypeNode
 {
 	private String aAttributes = "";
 	
 	/**
-	 * Constructs a new ClassNode with an empty name.
+	 * Constructs a new ClassNode with an empty name and no
+	 * attributes or methods.
 	 */
 	public ClassNode()
 	{
@@ -39,9 +40,11 @@ public final class ClassNode extends InterfaceNode
 	/**
      * Sets the attributes property value.
      * @param pNewValue the attributes of this class
+     * @pre pNewValue != null
 	 */
 	public void setAttributes(String pNewValue)
 	{
+		assert pNewValue != null;
 		aAttributes = pNewValue;
 	}
 
