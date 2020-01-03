@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -99,6 +100,11 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		Line connectionPoints = getConnectionPoints(pEdge);
 		bounds = bounds.add(Conversions.toRectangle(getArrowHeadView((CallEdge)pEdge).getPath(connectionPoints.getPoint1(), 
 					connectionPoints.getPoint2()).getBoundsInLocal()));
+		final String label = ((CallEdge)pEdge).getMiddleLabel();
+		if( label.length() > 0 )
+		{
+			bounds = bounds.add(getStringBounds((CallEdge)pEdge));
+		}
 		return bounds;
 	}
 
@@ -112,13 +118,32 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		String label = ((CallEdge)pEdge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			drawLabel(pEdge, pGraphics, label);
+			drawLabel((CallEdge)pEdge, pGraphics, label);
+		}
+	}
+	
+	private Rectangle getStringBounds(CallEdge pEdge)
+	{
+		assert pEdge != null;
+		final String label = pEdge.getMiddleLabel();
+		if( pEdge.isSelfEdge() )
+		{
+			Dimension dimensions = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(label);
+			Point[] points = getPoints(pEdge);
+			return new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, dimensions.getWidth() , dimensions.getHeight());
+		}
+		else
+		{
+			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
+			Point center = getConnectionPoints(pEdge).spanning().getCenter();
+			return new Rectangle(center.getX() - dimensions.getWidth()/2, 
+					center.getY()+SHIFT, dimensions.getWidth(), dimensions.getHeight());
 		}
 	}
 
-	private void drawLabel(Edge pEdge, GraphicsContext pGraphics, String pLabel)
+	private void drawLabel(CallEdge pEdge, GraphicsContext pGraphics, String pLabel)
 	{
-		if( ((CallEdge)pEdge).isSelfEdge() )
+		if( pEdge.isSelfEdge() )
 		{
 			Point[] points = getPoints(pEdge);
 			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
