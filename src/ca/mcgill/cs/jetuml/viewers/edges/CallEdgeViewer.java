@@ -137,7 +137,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
 			Point center = getConnectionPoints(pEdge).spanning().getCenter();
 			return new Rectangle(center.getX() - dimensions.getWidth()/2, 
-					center.getY()+SHIFT, dimensions.getWidth(), dimensions.getHeight());
+					center.getY()+SHIFT*2, dimensions.getWidth(), dimensions.getHeight());
 		}
 	}
 
@@ -145,13 +145,14 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	{
 		if( pEdge.isSelfEdge() )
 		{
-			Point[] points = getPoints(pEdge);
-			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pGraphics, bounds);
+//			Point[] points = getPoints(pEdge);
+//			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
 		}
 		else
 		{
-			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, SHIFT));
+			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
+//			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, SHIFT));
 		}
 	}
 	
