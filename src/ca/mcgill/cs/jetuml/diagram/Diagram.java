@@ -131,6 +131,16 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
+	 * @param pNode
+	 * @return True if pNode is a root node of the Diagram
+	 */
+	public boolean rootNodesContain(Node pNode) 
+	{
+		assert pNode !=null;
+		return aRootNodes.contains(pNode);
+	}
+	
+	/**
 	 * Gets the node types of a particular diagram type.
 	 * @return An array of node prototypes
 	 */   

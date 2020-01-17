@@ -307,6 +307,12 @@ public class DiagramCanvasController
 				// The test is necessary to ensure we don't undo multiple selections
 				aSelectionModel.set(element.get());
 			}
+			
+			// Reorder the selected nodes to ensure that they appear on the top
+			for(Node pSelected: aSelectionModel.getSelectedNodes()) 
+			{
+				reorderSelectedNode(pSelected);
+			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
 		}
@@ -320,6 +326,34 @@ public class DiagramCanvasController
 		}
 	}
 
+	/* Recursively reorder the node to be on top of its parent's all children. 
+	 * If the node is not a child node or it does not have a parent, check if 
+	 * the node is a root node of the diagram and reorder it to be on the top 
+	 * of other root nodes.
+	 */
+	private void reorderSelectedNode(Node pNode) 
+	{
+		assert pNode != null;
+		ParentNode parent = null;
+		if (pNode instanceof ChildNode)
+		{
+			parent = ((ChildNode)pNode).getParent();
+		}
+		if(parent != null) 
+		{
+			// Move the child node to the top of all other children  
+			parent.removeChild((ChildNode)pNode);
+			parent.addChild((ChildNode)pNode);
+			// Recursively reorder the node's parent
+			reorderSelectedNode(parent);
+		}
+		else if(aCanvas.getDiagram().rootNodesContain(pNode))
+		{
+			aCanvas.getDiagram().removeRootNode(pNode);
+			aCanvas.getDiagram().addRootNode(pNode);
+		}
+	}
+	
 	private void handleSingleClick(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = getTool(pEvent);
