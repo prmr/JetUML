@@ -2,6 +2,8 @@
 
 JetUML can be run most easily on Java 8, the last long-term support (LTS) Java release that bundles JavaFX with the run-time environment. JetUML can also be executed with later releases of Java, but this requires a bit more work.
 
+**MacOS Users:** Please note that some system configurations may cause the application to crash. If you notice a problem, please see [this issue report](https://github.com/prmr/JetUML/issues/324).
+
 *To contribute instructions for other system configurations, please submit a pull request.*
 
 ## Download JetUML
@@ -17,7 +19,6 @@ If your OS environment supports executable jars, simply double-click the jar fil
 ### Java 11/12/13 (macOS)
 1. **Download and install [Java SE](https://www.oracle.com/technetwork/java/javase/downloads)**. The macOS installer will automatically set up the path for you, so you do not need to manually add the path.
 2. **Download and install [JavaFX macOS](https://gluonhq.com/products/javafx/)**. Notice that you only need the *SDK*, not the *jmods*.
-
 
 ### OpenJDK 11/12 (Windows 10)
 
