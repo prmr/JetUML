@@ -61,7 +61,7 @@ public class DiagramViewer
 		NodeViewerRegistry.draw(pNode, pGraphics);
 		if(pNode instanceof ParentNode)
 		{
-			((ParentNode)pNode).getChildren().forEach(node -> NodeViewerRegistry.draw(node, pGraphics));
+			((ParentNode)pNode).getChildren().forEach(node -> drawNode(node, pGraphics));
 		}
 	}
 	
