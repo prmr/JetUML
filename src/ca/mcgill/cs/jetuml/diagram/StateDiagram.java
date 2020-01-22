@@ -38,6 +38,11 @@ public final class StateDiagram extends Diagram
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
 	
+	public StateDiagram()
+	{
+		super(DiagramType.STATE);
+	}
+	
 	@Override
 	public Node[] getNodePrototypes()
 	{

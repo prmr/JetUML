@@ -37,6 +37,11 @@ public final class SequenceDiagram extends Diagram
 	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
+	public SequenceDiagram()
+	{
+		super(DiagramType.SEQUENCE);
+	}
+	
 	@Override
 	public Node[] getNodePrototypes()
 	{

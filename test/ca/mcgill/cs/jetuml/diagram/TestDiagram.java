@@ -49,6 +49,11 @@ public class TestDiagram
 	
 	static class StubDiagram extends Diagram
 	{
+		public StubDiagram()
+		{
+			super(null);
+		}
+		
 		@Override
 		public Node[] getNodePrototypes() 
 		{

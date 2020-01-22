@@ -43,6 +43,11 @@ public final class UseCaseDiagram extends Diagram
 						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
 						new UseCaseGeneralizationEdge(),
 						new NoteEdge()};
+	
+	public UseCaseDiagram()
+	{
+		super(DiagramType.USECASE);
+	}
 
 	@Override
 	public Node[] getNodePrototypes()

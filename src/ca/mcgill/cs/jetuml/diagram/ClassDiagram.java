@@ -51,6 +51,11 @@ public final class ClassDiagram extends Diagram
 			new AggregationEdge(),
 			new AggregationEdge(AggregationEdge.Type.Composition),
 			new NoteEdge()};
+	
+	public ClassDiagram()
+	{
+		super(DiagramType.CLASS);
+	}
 
 	@Override
 	public Node[] getNodePrototypes()

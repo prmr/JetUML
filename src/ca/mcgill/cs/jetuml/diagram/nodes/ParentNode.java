@@ -61,7 +61,7 @@ public interface ParentNode extends Node
 	void removeChild(ChildNode pNode);
 	
 	/**
-	 * Move the child node to the last position in the list of children
+	 * Move the child node to the last position in the list of children.
 	 * @param pNode The child to move
 	 * @pre pNode != null
 	 */

@@ -54,6 +54,11 @@ public final class ObjectDiagram extends Diagram
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
 	}
 	
+	public ObjectDiagram()
+	{
+		super(DiagramType.OBJECT);
+	}
+	
 	@Override
 	public Node[] getNodePrototypes()
 	{

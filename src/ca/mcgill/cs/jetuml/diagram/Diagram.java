@@ -42,14 +42,16 @@ public abstract class Diagram implements DiagramData
 	 * that are children of their parent should be managed and accessed
 	 * through their parent node.
 	 */
-	private ArrayList<Node> aRootNodes;
-	private ArrayList<Edge> aEdges;
+	private final ArrayList<Node> aRootNodes;
+	private final ArrayList<Edge> aEdges;
+	private final DiagramType aType;
 
 	/**
 	 * Creates an empty diagram.
 	 */
-	public Diagram()
+	public Diagram(DiagramType pType)
 	{
+		aType = pType;
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
 	}
