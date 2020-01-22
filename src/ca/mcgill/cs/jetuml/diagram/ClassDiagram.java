@@ -21,34 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-
 /**
  *  A UML class diagram.
  */
 public final class ClassDiagram extends Diagram
 {
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[] {
-			new DependencyEdge(), 
-			new GeneralizationEdge(), 
-			new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
-			new AssociationEdge(),
-			new AggregationEdge(),
-			new AggregationEdge(AggregationEdge.Type.Composition),
-			new NoteEdge()};
-	
 	public ClassDiagram()
 	{
 		super(DiagramType.CLASS);
-	}
-
-	@Override
-	public Edge[] getEdgePrototypes()
-	{
-		return EDGE_PROTOTYPES;
 	}
 }

@@ -21,31 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
-
 /**
  * A UML use case diagram.
  */
 public final class UseCaseDiagram extends Diagram
 {
-	private static final Edge[] EDGE_PROTOTYPES = 
-			new Edge[]{ new UseCaseAssociationEdge(),
-						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
-						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
-						new UseCaseGeneralizationEdge(),
-						new NoteEdge()};
-	
 	public UseCaseDiagram()
 	{
 		super(DiagramType.USECASE);
 	}
-
-	@Override
-	public Edge[] getEdgePrototypes()
-	{
-		return EDGE_PROTOTYPES;
-	}   
 }

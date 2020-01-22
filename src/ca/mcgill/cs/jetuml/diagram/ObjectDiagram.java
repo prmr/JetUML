@@ -21,32 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
-
 /**
  *  An UML-style object diagram that shows object references.
  */
 public final class ObjectDiagram extends Diagram
 {
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
-	
-	static
-	{   
-	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
-	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
-	    EDGE_PROTOTYPES[2] = new NoteEdge();
-	}
-	
 	public ObjectDiagram()
 	{
 		super(DiagramType.OBJECT);
 	}
-	
-	@Override
-	public Edge[] getEdgePrototypes()
-	{
-		return EDGE_PROTOTYPES;
-	}   
 }

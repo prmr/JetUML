@@ -162,7 +162,10 @@ public abstract class Diagram implements DiagramData
 	 * Gets the edge types of a particular diagram type.
 	 * @return an array of edge prototypes
 	 */   
-	public abstract Edge[] getEdgePrototypes();
+	public final Edge[] getEdgePrototypes()
+	{
+		return aType.getEdgePrototypes();
+	}
 
 	/**
 	 * @param pNode the node to test for

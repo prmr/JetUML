@@ -21,24 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
-
 /**
  * A UML state diagram.
  */
 public final class StateDiagram extends Diagram
 {
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
-	
 	public StateDiagram()
 	{
 		super(DiagramType.STATE);
-	}
-
-	@Override
-	public Edge[] getEdgePrototypes()
-	{
-		return EDGE_PROTOTYPES;
 	}
 }

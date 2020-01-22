@@ -28,6 +28,19 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
@@ -55,7 +68,15 @@ public enum DiagramType
 			new DiagramViewer(), 
 			RESOURCES.getString("classdiagram.file.extension"),
 			RESOURCES.getString("classdiagram.file.name"),
-			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()}), 
+			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
+			new Edge[] {
+					new DependencyEdge(), 
+					new GeneralizationEdge(), 
+					new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
+					new AssociationEdge(),
+					new AggregationEdge(),
+					new AggregationEdge(AggregationEdge.Type.Composition),
+					new NoteEdge()}), 
 	
 	SEQUENCE(
 			SequenceDiagram.class, 
@@ -63,7 +84,8 @@ public enum DiagramType
 			new SequenceDiagramViewer(),
 			RESOURCES.getString("sequencediagram.file.extension"),
 			RESOURCES.getString("sequencediagram.file.name"),
-			new Node[]{new ImplicitParameterNode(), new NoteNode()}), 
+			new Node[]{new ImplicitParameterNode(), new NoteNode()},
+			new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()}), 
 	
 	STATE(
 			StateDiagram.class, 
@@ -71,7 +93,8 @@ public enum DiagramType
 			new DiagramViewer(),
 			RESOURCES.getString("statediagram.file.extension"),
 			RESOURCES.getString("statediagram.file.name"),
-			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()}), 
+			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
+			new Edge[]{new StateTransitionEdge(), new NoteEdge()}), 
 	
 	OBJECT(
 			ObjectDiagram.class, 
@@ -79,7 +102,8 @@ public enum DiagramType
 			new DiagramViewer(),
 			RESOURCES.getString("objectdiagram.file.extension"),
 			RESOURCES.getString("objectdiagram.file.name"),
-			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()}), 
+			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
+			new Edge[] {new ObjectReferenceEdge(), new ObjectCollaborationEdge(), new NoteEdge() }), 
 	
 	USECASE(
 			UseCaseDiagram.class, 
@@ -87,7 +111,12 @@ public enum DiagramType
 			new DiagramViewer(),
 			RESOURCES.getString("usecasediagram.file.extension"),
 			RESOURCES.getString("usecasediagram.file.name"),
-			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()});
+			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
+			new Edge[]{ new UseCaseAssociationEdge(),
+					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
+					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
+					new UseCaseGeneralizationEdge(),
+					new NoteEdge()});
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
@@ -95,9 +124,10 @@ public enum DiagramType
 	private final String aFileExtension;
 	private final String aDescription;
 	private final Node[] aNodePrototypes;
+	private final Edge[] aEdgePrototypes;
 	
 	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
-			String pFileExtension, String pDescription, Node[] pNodePrototypes)
+			String pFileExtension, String pDescription, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
@@ -105,6 +135,7 @@ public enum DiagramType
 		aFileExtension = pFileExtension;
 		aDescription = pDescription;
 		aNodePrototypes = pNodePrototypes;
+		aEdgePrototypes = pEdgePrototypes;
 	}
 	
 	/**
@@ -123,9 +154,22 @@ public enum DiagramType
 		return aDescription;
 	}
 	
+	/**
+	 * Gets the node types of a particular diagram type.
+	 * @return An array of node prototypes
+	 */   
 	public Node[] getNodePrototypes()
 	{
 		return aNodePrototypes;
+	}
+	
+	/**
+	 * Gets the edge types of a particular diagram type.
+	 * @return an array of edge prototypes
+	 */ 
+	public Edge[] getEdgePrototypes()
+	{
+		return aEdgePrototypes;
 	}
 	
 	/**

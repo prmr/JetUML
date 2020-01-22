@@ -55,12 +55,6 @@ public class TestDiagram
 		{
 			super(null);
 		}
-		
-		@Override
-		public Edge[] getEdgePrototypes() 
-		{
-			return null;
-		}
 	}
 	
 	static class StubNode extends AbstractNode{ }

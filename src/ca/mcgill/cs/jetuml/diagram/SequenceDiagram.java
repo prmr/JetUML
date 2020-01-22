@@ -21,25 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
-
 /**
  * A UML sequence diagram.
  */
 public final class SequenceDiagram extends Diagram
 {
-	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
-	
 	public SequenceDiagram()
 	{
 		super(DiagramType.SEQUENCE);
-	}
-	
-	@Override
-	public Edge[] getEdgePrototypes()
-	{
-		return EDGE_PROTOTYPES;
 	}
 }
