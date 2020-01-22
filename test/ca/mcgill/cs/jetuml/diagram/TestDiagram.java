@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.diagram;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -107,12 +106,6 @@ public class TestDiagram
 	}
 	
 	@Test
-	public void testContainsAsRoot_NullNode()
-	{
-		assertThrows(AssertionError.class, ()->aDiagram.containsAsRoot(null));
-	}
-	
-	@Test
 	public void testPlaceOnTop_NonRootNode()
 	{
 		aDiagram.addRootNode(aNode2);
@@ -139,11 +132,5 @@ public class TestDiagram
 		assertSame(pIterator.next(), aNode4);
 		// Ensure that the moved child node is now on top of all children
 		assertSame(aNode4.getChildren().get(1), aNode2);
-	}
-	
-	@Test
-	public void testPlaceOnTop_NullNode()
-	{
-		assertThrows(AssertionError.class, ()->aDiagram.placeOnTop(null));
 	}
 }
