@@ -55,12 +55,6 @@ public final class SequenceDiagram extends Diagram
 	}
 	
 	@Override
-	public String getFileExtension() 
-	{
-		return RESOURCES.getString("sequencediagram.file.extension");
-	}
-
-	@Override
 	public String getDescription() 
 	{
 		return RESOURCES.getString("sequencediagram.file.name");

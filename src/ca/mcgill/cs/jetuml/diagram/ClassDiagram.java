@@ -70,12 +70,6 @@ public final class ClassDiagram extends Diagram
 	}
 
 	@Override
-	public String getFileExtension() 
-	{
-		return RESOURCES.getString("classdiagram.file.extension");
-	}
-
-	@Override
 	public String getDescription() 
 	{
 		return RESOURCES.getString("classdiagram.file.name");

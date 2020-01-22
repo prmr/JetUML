@@ -63,12 +63,6 @@ public class TestDiagram
 		}
 		
 		@Override
-		public String getFileExtension() 
-		{
-			return null;
-		}
-		
-		@Override
 		public Edge[] getEdgePrototypes() 
 		{
 			return null;

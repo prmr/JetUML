@@ -72,12 +72,6 @@ public final class ObjectDiagram extends Diagram
 	}   
 	
 	@Override
-	public String getFileExtension() 
-	{
-		return RESOURCES.getString("objectdiagram.file.extension");
-	}
-
-	@Override
 	public String getDescription() 
 	{
 		return RESOURCES.getString("objectdiagram.file.name");

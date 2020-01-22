@@ -56,12 +56,6 @@ public final class StateDiagram extends Diagram
 	}
 	
 	@Override
-	public String getFileExtension() 
-	{
-		return RESOURCES.getString("statediagram.file.extension");
-	}
-
-	@Override
 	public String getDescription() 
 	{
 		return RESOURCES.getString("statediagram.file.name");

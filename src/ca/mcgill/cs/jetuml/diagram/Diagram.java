@@ -80,7 +80,10 @@ public abstract class Diagram implements DiagramData
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */
-	public abstract String getFileExtension();
+	public final String getFileExtension()
+	{
+		return aType.getFileExtension();
+	}
 
 	/**
 	 * @return A short description of this diagram, usually

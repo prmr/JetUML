@@ -62,12 +62,6 @@ public final class UseCaseDiagram extends Diagram
 	}   
 	
 	@Override
-	public String getFileExtension() 
-	{
-		return RESOURCES.getString("usecasediagram.file.extension");
-	}
-
-	@Override
 	public String getDescription() 
 	{
 		return RESOURCES.getString("usecasediagram.file.name");
