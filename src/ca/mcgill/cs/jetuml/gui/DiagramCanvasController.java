@@ -307,6 +307,12 @@ public class DiagramCanvasController
 				// The test is necessary to ensure we don't undo multiple selections
 				aSelectionModel.set(element.get());
 			}
+			
+			// Reorder the selected nodes to ensure that they appear on the top
+			for(Node pSelected: aSelectionModel.getSelectedNodes()) 
+			{
+				aCanvas.getDiagram().placeOnTop(pSelected);
+			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
 		}
@@ -319,7 +325,7 @@ public class DiagramCanvasController
 			aDragMode = DragMode.DRAG_LASSO;
 		}
 	}
-
+	
 	private void handleSingleClick(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = getTool(pEvent);
