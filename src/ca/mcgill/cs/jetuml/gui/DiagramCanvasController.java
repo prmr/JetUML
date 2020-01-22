@@ -499,13 +499,13 @@ public class DiagramCanvasController
 	private void mouseDragged(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		Point pointToReveal = mousePoint;
 		if(aDragMode == DragMode.DRAG_MOVE && !aSelectionModel.isEmpty() ) 
 		{
 			// The second condition in the if is necessary in the case where a single 
 			// element is selected with the Ctrl button is down, which immediately deselects it.
-			pointToReveal = computePointToReveal(mousePoint);
+			Point pointToReveal = computePointToReveal(mousePoint);
 			moveSelection(mousePoint);
+			aHandler.interactionTo(pointToReveal);
 		}
 		else if(aDragMode == DragMode.DRAG_LASSO)
 		{
@@ -521,7 +521,6 @@ public class DiagramCanvasController
 			aLastMousePoint = mousePoint;
 			aSelectionModel.activateRubberband(computeRubberband());
 		}
-		aHandler.interactionTo(pointToReveal);
 	}
 	
 	// finds the point to reveal based on the entire selection
