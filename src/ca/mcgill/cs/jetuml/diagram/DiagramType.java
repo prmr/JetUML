@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
@@ -29,28 +31,61 @@ import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 
-
 /**
  * The different types of UML diagrams supported by 
  * this application.
  */
 public enum DiagramType
 {
-	CLASS(ClassDiagram.class, ClassDiagramBuilder.class, new DiagramViewer()), 
-	SEQUENCE(SequenceDiagram.class, SequenceDiagramBuilder.class, new SequenceDiagramViewer()), 
-	STATE(StateDiagram.class, StateDiagramBuilder.class, new DiagramViewer()), 
-	OBJECT(ObjectDiagram.class, ObjectDiagramBuilder.class, new DiagramViewer()), 
-	USECASE(UseCaseDiagram.class, UseCaseDiagramBuilder.class, new DiagramViewer());
+	CLASS(
+			ClassDiagram.class, 
+			ClassDiagramBuilder.class, 
+			new DiagramViewer(), 
+			RESOURCES.getString("classdiagram.file.extension")), 
+	
+	SEQUENCE(
+			SequenceDiagram.class, 
+			SequenceDiagramBuilder.class, 
+			new SequenceDiagramViewer(),
+			RESOURCES.getString("sequencediagram.file.extension")), 
+	
+	STATE(
+			StateDiagram.class, 
+			StateDiagramBuilder.class, 
+			new DiagramViewer(),
+			RESOURCES.getString("statediagram.file.extension")), 
+	
+	OBJECT(
+			ObjectDiagram.class, 
+			ObjectDiagramBuilder.class, 
+			new DiagramViewer(),
+			RESOURCES.getString("objectdiagram.file.extension")), 
+	
+	USECASE(
+			UseCaseDiagram.class, 
+			UseCaseDiagramBuilder.class, 
+			new DiagramViewer(),
+			RESOURCES.getString("usecasediagram.file.extension"));
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
+	private final String aFileExtension;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, String pFileExtension)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
+		aFileExtension = pFileExtension;
+	}
+	
+	/**
+	 * @return The file extension for this type of diagram.
+	 */
+	public String getFileExtension()
+	{
+		return aFileExtension;
 	}
 	
 	/**

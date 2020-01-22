@@ -20,24 +20,26 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
+import java.util.Iterator;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-
-import java.util.Iterator;
 
 public class TestDiagram 
 {
@@ -81,12 +83,6 @@ public class TestDiagram
 	
 	static class StubNode extends AbstractNode{ }
 	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
 	@BeforeEach
 	public void setup()
 	{
@@ -108,6 +104,23 @@ public class TestDiagram
 	public void testContainsAsRoot_NonRootNode()
 	{
 		assertFalse(aDiagram.containsAsRoot(aNode1));
+	}
+	
+	@ParameterizedTest
+	@MethodSource("argumentsForFileExtensions")
+	public void testFileExtensions(Diagram pDiagram, String pExtension)
+	{
+		assertEquals(pExtension, pDiagram.getFileExtension());
+	}
+	
+	private static Stream<Arguments> argumentsForFileExtensions() {
+	    return Stream.of(
+	      Arguments.of(new ClassDiagram(), RESOURCES.getString("classdiagram.file.extension")),
+	      Arguments.of(new SequenceDiagram(), RESOURCES.getString("sequencediagram.file.extension")),
+	      Arguments.of(new StateDiagram(), RESOURCES.getString("statediagram.file.extension")),
+	      Arguments.of(new ObjectDiagram(), RESOURCES.getString("objectdiagram.file.extension")),
+	      Arguments.of(new UseCaseDiagram(), RESOURCES.getString("usecasediagram.file.extension"))
+	    );
 	}
 	
 	@Test
