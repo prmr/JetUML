@@ -67,12 +67,6 @@ public class TestDiagram
 		{
 			return null;
 		}
-		
-		@Override
-		public String getDescription() 
-		{
-			return "Stub Diagram";
-		}
 	}
 	
 	static class StubNode extends AbstractNode{ }
@@ -107,6 +101,13 @@ public class TestDiagram
 		assertEquals(pExtension, pDiagram.getFileExtension());
 	}
 	
+	@ParameterizedTest
+	@MethodSource("argumentsForDescriptions")
+	public void testDescriptions(Diagram pDiagram, String pExtension)
+	{
+		assertEquals(pExtension, pDiagram.getDescription());
+	}
+	
 	private static Stream<Arguments> argumentsForFileExtensions() {
 	    return Stream.of(
 	      Arguments.of(new ClassDiagram(), RESOURCES.getString("classdiagram.file.extension")),
@@ -114,6 +115,16 @@ public class TestDiagram
 	      Arguments.of(new StateDiagram(), RESOURCES.getString("statediagram.file.extension")),
 	      Arguments.of(new ObjectDiagram(), RESOURCES.getString("objectdiagram.file.extension")),
 	      Arguments.of(new UseCaseDiagram(), RESOURCES.getString("usecasediagram.file.extension"))
+	    );
+	}
+	
+	private static Stream<Arguments> argumentsForDescriptions() {
+	    return Stream.of(
+	      Arguments.of(new ClassDiagram(), RESOURCES.getString("classdiagram.file.name")),
+	      Arguments.of(new SequenceDiagram(), RESOURCES.getString("sequencediagram.file.name")),
+	      Arguments.of(new StateDiagram(), RESOURCES.getString("statediagram.file.name")),
+	      Arguments.of(new ObjectDiagram(), RESOURCES.getString("objectdiagram.file.name")),
+	      Arguments.of(new UseCaseDiagram(), RESOURCES.getString("usecasediagram.file.name"))
 	    );
 	}
 	

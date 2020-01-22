@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -67,11 +65,5 @@ public final class ClassDiagram extends Diagram
 	public Edge[] getEdgePrototypes()
 	{
 		return EDGE_PROTOTYPES;
-	}
-
-	@Override
-	public String getDescription() 
-	{
-		return RESOURCES.getString("classdiagram.file.name");
 	}
 }

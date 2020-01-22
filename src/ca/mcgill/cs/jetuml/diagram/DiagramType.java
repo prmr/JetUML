@@ -41,43 +41,50 @@ public enum DiagramType
 			ClassDiagram.class, 
 			ClassDiagramBuilder.class, 
 			new DiagramViewer(), 
-			RESOURCES.getString("classdiagram.file.extension")), 
+			RESOURCES.getString("classdiagram.file.extension"),
+			RESOURCES.getString("classdiagram.file.name")), 
 	
 	SEQUENCE(
 			SequenceDiagram.class, 
 			SequenceDiagramBuilder.class, 
 			new SequenceDiagramViewer(),
-			RESOURCES.getString("sequencediagram.file.extension")), 
+			RESOURCES.getString("sequencediagram.file.extension"),
+			RESOURCES.getString("sequencediagram.file.name")), 
 	
 	STATE(
 			StateDiagram.class, 
 			StateDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("statediagram.file.extension")), 
+			RESOURCES.getString("statediagram.file.extension"),
+			RESOURCES.getString("statediagram.file.name")), 
 	
 	OBJECT(
 			ObjectDiagram.class, 
 			ObjectDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("objectdiagram.file.extension")), 
+			RESOURCES.getString("objectdiagram.file.extension"),
+			RESOURCES.getString("objectdiagram.file.name")), 
 	
 	USECASE(
 			UseCaseDiagram.class, 
 			UseCaseDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("usecasediagram.file.extension"));
+			RESOURCES.getString("usecasediagram.file.extension"),
+			RESOURCES.getString("usecasediagram.file.name"));
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
 	private final String aFileExtension;
+	private final String aDescription;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, String pFileExtension)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, String pFileExtension, String pDescription)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
 		aFileExtension = pFileExtension;
+		aDescription = pDescription;
 	}
 	
 	/**
@@ -86,6 +93,14 @@ public enum DiagramType
 	public String getFileExtension()
 	{
 		return aFileExtension;
+	}
+	
+	/**
+	 * @return A short description of the diagram type.
+	 */
+	public String getDescription()
+	{
+		return aDescription;
 	}
 	
 	/**

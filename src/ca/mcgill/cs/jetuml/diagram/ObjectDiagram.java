@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -70,10 +68,4 @@ public final class ObjectDiagram extends Diagram
 	{
 		return EDGE_PROTOTYPES;
 	}   
-	
-	@Override
-	public String getDescription() 
-	{
-		return RESOURCES.getString("objectdiagram.file.name");
-	}
 }

@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -60,10 +58,4 @@ public final class UseCaseDiagram extends Diagram
 	{
 		return EDGE_PROTOTYPES;
 	}   
-	
-	@Override
-	public String getDescription() 
-	{
-		return RESOURCES.getString("usecasediagram.file.name");
-	}
 }

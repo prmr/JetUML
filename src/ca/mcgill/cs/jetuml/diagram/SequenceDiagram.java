@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -52,11 +50,5 @@ public final class SequenceDiagram extends Diagram
 	public Edge[] getEdgePrototypes()
 	{
 		return EDGE_PROTOTYPES;
-	}
-	
-	@Override
-	public String getDescription() 
-	{
-		return RESOURCES.getString("sequencediagram.file.name");
 	}
 }

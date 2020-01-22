@@ -89,7 +89,10 @@ public abstract class Diagram implements DiagramData
 	 * @return A short description of this diagram, usually
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
-	public abstract String getDescription();
+	public final String getDescription()
+	{
+		return aType.getDescription();
+	}
 	
 	/**
 	 * Checks whether pElement is in the diagram. If pElement
