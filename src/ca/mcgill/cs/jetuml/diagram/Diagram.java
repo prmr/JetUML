@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
@@ -134,9 +135,9 @@ public abstract class Diagram implements DiagramData
 	 * @param pNode
 	 * @return True if pNode is a root node of the Diagram
 	 */
-	public boolean rootNodesContain(Node pNode) 
+	public boolean containsAsRoot(Node pNode) 
 	{
-		assert pNode !=null;
+		assert pNode != null;
 		return aRootNodes.contains(pNode);
 	}
 	
@@ -282,5 +283,35 @@ public abstract class Diagram implements DiagramData
 	{
 		assert pEdge != null && aEdges.contains(pEdge);
 		aEdges.remove(pEdge);
+	}
+	
+	/**
+	 * Recursively reorder the node to be on top of its parent's children.
+	 * If the node is not a child node or the node does not have a parent, check if 
+	 * the node is a root node of the diagram and place it on top.
+	 * 
+	 * @param pNode The node to be placed on top
+	 * @pre pNode != null
+	 */
+	public void placeOnTop(Node pNode)
+	{
+		assert pNode != null;
+		ParentNode parent = null;
+		if (pNode instanceof ChildNode)
+		{
+			parent = ((ChildNode)pNode).getParent();
+		}
+		if (parent != null) 
+		{
+			// Move the child node to the top of all other children
+			parent.moveChildToLastPlace((ChildNode)pNode);
+			// Recursively reorder the node's parent
+			placeOnTop(parent);
+		}
+		else if(containsAsRoot(pNode))
+		{
+			removeRootNode(pNode);
+			addRootNode(pNode);
+		}
 	}
 }
