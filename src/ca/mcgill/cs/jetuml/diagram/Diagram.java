@@ -153,7 +153,10 @@ public abstract class Diagram implements DiagramData
 	 * Gets the node types of a particular diagram type.
 	 * @return An array of node prototypes
 	 */   
-	public abstract Node[] getNodePrototypes();
+	public final Node[] getNodePrototypes()
+	{
+		return aType.getNodePrototypes();
+	}
 
 	/**
 	 * Gets the edge types of a particular diagram type.

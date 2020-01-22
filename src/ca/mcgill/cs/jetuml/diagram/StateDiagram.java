@@ -23,28 +23,17 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 
 /**
  * A UML state diagram.
  */
 public final class StateDiagram extends Diagram
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new StateTransitionEdge(), new NoteEdge()};
 	
 	public StateDiagram()
 	{
 		super(DiagramType.STATE);
-	}
-	
-	@Override
-	public Node[] getNodePrototypes()
-	{
-		return NODE_PROTOTYPES;
 	}
 
 	@Override

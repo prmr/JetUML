@@ -25,16 +25,12 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 
 /**
  * A UML use case diagram.
  */
 public final class UseCaseDiagram extends Diagram
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = 
 			new Edge[]{ new UseCaseAssociationEdge(),
 						new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
@@ -45,12 +41,6 @@ public final class UseCaseDiagram extends Diagram
 	public UseCaseDiagram()
 	{
 		super(DiagramType.USECASE);
-	}
-
-	@Override
-	public Node[] getNodePrototypes()
-	{
-		return NODE_PROTOTYPES;
 	}
 
 	@Override

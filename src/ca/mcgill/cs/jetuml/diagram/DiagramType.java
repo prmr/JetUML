@@ -28,6 +28,18 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
+import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 
@@ -42,49 +54,57 @@ public enum DiagramType
 			ClassDiagramBuilder.class, 
 			new DiagramViewer(), 
 			RESOURCES.getString("classdiagram.file.extension"),
-			RESOURCES.getString("classdiagram.file.name")), 
+			RESOURCES.getString("classdiagram.file.name"),
+			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()}), 
 	
 	SEQUENCE(
 			SequenceDiagram.class, 
 			SequenceDiagramBuilder.class, 
 			new SequenceDiagramViewer(),
 			RESOURCES.getString("sequencediagram.file.extension"),
-			RESOURCES.getString("sequencediagram.file.name")), 
+			RESOURCES.getString("sequencediagram.file.name"),
+			new Node[]{new ImplicitParameterNode(), new NoteNode()}), 
 	
 	STATE(
 			StateDiagram.class, 
 			StateDiagramBuilder.class, 
 			new DiagramViewer(),
 			RESOURCES.getString("statediagram.file.extension"),
-			RESOURCES.getString("statediagram.file.name")), 
+			RESOURCES.getString("statediagram.file.name"),
+			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()}), 
 	
 	OBJECT(
 			ObjectDiagram.class, 
 			ObjectDiagramBuilder.class, 
 			new DiagramViewer(),
 			RESOURCES.getString("objectdiagram.file.extension"),
-			RESOURCES.getString("objectdiagram.file.name")), 
+			RESOURCES.getString("objectdiagram.file.name"),
+			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()}), 
 	
 	USECASE(
 			UseCaseDiagram.class, 
 			UseCaseDiagramBuilder.class, 
 			new DiagramViewer(),
 			RESOURCES.getString("usecasediagram.file.extension"),
-			RESOURCES.getString("usecasediagram.file.name"));
+			RESOURCES.getString("usecasediagram.file.name"),
+			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()});
 	
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
 	private final String aFileExtension;
 	private final String aDescription;
+	private final Node[] aNodePrototypes;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, String pFileExtension, String pDescription)
+	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
+			String pFileExtension, String pDescription, Node[] pNodePrototypes)
 	{
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
 		aFileExtension = pFileExtension;
 		aDescription = pDescription;
+		aNodePrototypes = pNodePrototypes;
 	}
 	
 	/**
@@ -101,6 +121,11 @@ public enum DiagramType
 	public String getDescription()
 	{
 		return aDescription;
+	}
+	
+	public Node[] getNodePrototypes()
+	{
+		return aNodePrototypes;
 	}
 	
 	/**

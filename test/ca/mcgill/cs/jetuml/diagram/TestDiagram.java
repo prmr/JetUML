@@ -57,12 +57,6 @@ public class TestDiagram
 		}
 		
 		@Override
-		public Node[] getNodePrototypes() 
-		{
-			return null;
-		}
-		
-		@Override
 		public Edge[] getEdgePrototypes() 
 		{
 			return null;

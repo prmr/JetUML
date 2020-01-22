@@ -26,8 +26,13 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
  */
 public final class FieldNode extends NamedNode implements ChildNode
 {
-	private String aValue = "";
+	private String aValue = "value";
 	private ObjectNode aObject; // The object defining this field
+	
+	public FieldNode()
+	{
+		setName("name");
+	}
 
 	/**
      * Sets the value property value.

@@ -59,6 +59,8 @@ public class TestFieldNodeViewer
 	{
 		aObjectNode1 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
+		aFieldNode1.setName("");
+		aFieldNode1.setValue("");
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aDiagram = new ObjectDiagram();
 		aDiagram.addRootNode(aObjectNode1);

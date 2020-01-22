@@ -24,29 +24,16 @@ package ca.mcgill.cs.jetuml.diagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 
 /**
  *  An UML-style object diagram that shows object references.
  */
 public final class ObjectDiagram extends Diagram
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[3];
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[3];
 	
 	static
-	{
-		NODE_PROTOTYPES[0] = new ObjectNode();
-	      
-		FieldNode fieldNode = new FieldNode();
-	    fieldNode.setName("name");
-	    fieldNode.setValue("value");
-	    
-	    NODE_PROTOTYPES[1] = fieldNode;
-	    NODE_PROTOTYPES[2] = new NoteNode();
-	    
+	{   
 	    EDGE_PROTOTYPES[0] = new ObjectReferenceEdge();
 	    EDGE_PROTOTYPES[1] = new ObjectCollaborationEdge();
 	    EDGE_PROTOTYPES[2] = new NoteEdge();
@@ -57,12 +44,6 @@ public final class ObjectDiagram extends Diagram
 		super(DiagramType.OBJECT);
 	}
 	
-	@Override
-	public Node[] getNodePrototypes()
-	{
-		return NODE_PROTOTYPES;
-	}
-
 	@Override
 	public Edge[] getEdgePrototypes()
 	{

@@ -52,7 +52,11 @@ public class TestObjectNodeViewer
 	{
 		aDiagram = new ObjectDiagram();
 		aField1 = new FieldNode();
+		aField1.setName("");
+		aField1.setValue("");
 		aField2 = new FieldNode();
+		aField2.setName("");
+		aField2.setValue("");
 		aNode = new ObjectNode();
 		aNode.attach(aDiagram);
 		aField1.attach(aDiagram);

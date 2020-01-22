@@ -26,21 +26,12 @@ import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 /**
  *  A UML class diagram.
  */
 public final class ClassDiagram extends Diagram
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[] {new ClassNode(), 
-															  new InterfaceNode(), 
-															  new PackageNode(), 
-															  new NoteNode()};
-	
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[] {
 			new DependencyEdge(), 
 			new GeneralizationEdge(), 
@@ -53,12 +44,6 @@ public final class ClassDiagram extends Diagram
 	public ClassDiagram()
 	{
 		super(DiagramType.CLASS);
-	}
-
-	@Override
-	public Node[] getNodePrototypes()
-	{
-		return NODE_PROTOTYPES;
 	}
 
 	@Override

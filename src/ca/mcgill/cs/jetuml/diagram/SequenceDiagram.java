@@ -24,15 +24,12 @@ package ca.mcgill.cs.jetuml.diagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 
 /**
  * A UML sequence diagram.
  */
 public final class SequenceDiagram extends Diagram
 {
-	private static final Node[] NODE_PROTOTYPES = new Node[]{new ImplicitParameterNode(), new NoteNode()};
 	private static final Edge[] EDGE_PROTOTYPES = new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()};
 	
 	public SequenceDiagram()
@@ -40,12 +37,6 @@ public final class SequenceDiagram extends Diagram
 		super(DiagramType.SEQUENCE);
 	}
 	
-	@Override
-	public Node[] getNodePrototypes()
-	{
-		return NODE_PROTOTYPES;
-	}
-
 	@Override
 	public Edge[] getEdgePrototypes()
 	{

@@ -127,7 +127,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		 */
 		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
 		assertEquals(2, numberOfEdges());
-		assertEquals("", aFieldNode1.getName());
+		assertEquals("name", aFieldNode1.getName());
 		
 		// create ObjectRefEdge from the other field to a different ObjectNode
 		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
