@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
@@ -36,7 +37,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
  */
 public final class JsonDecoder
 {
-	private static final String PREFIX_DIAGRAMS = "ca.mcgill.cs.jetuml.diagram.";
 	private static final String PREFIX_NODES = "ca.mcgill.cs.jetuml.diagram.nodes.";
 	private static final String PREFIX_EDGES = "ca.mcgill.cs.jetuml.diagram.edges.";
 	
@@ -52,8 +52,7 @@ public final class JsonDecoder
 		assert pDiagram != null;
 		try
 		{
-			Class<?> diagramClass = Class.forName(PREFIX_DIAGRAMS + pDiagram.getString("diagram"));
-			Diagram diagram = (Diagram) diagramClass.getDeclaredConstructor().newInstance();
+			Diagram diagram = new Diagram(DiagramType.fromName(pDiagram.getString("diagram")));
 			DeserializationContext context = new DeserializationContext(diagram);
 			decodeNodes(context, pDiagram);
 			restoreChildren(context, pDiagram);
@@ -62,7 +61,7 @@ public final class JsonDecoder
 			context.attachNodes();
 			return diagram;
 		}
-		catch( JSONException | ReflectiveOperationException exception )
+		catch( JSONException | IllegalArgumentException exception )
 		{
 			throw new DeserializationException("Cannot decode serialized object", exception);
 		}

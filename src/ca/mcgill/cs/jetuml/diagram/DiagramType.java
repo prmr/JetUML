@@ -120,11 +120,29 @@ public enum DiagramType
 	DiagramType(String pName, Class<?> pBuilderClass, DiagramViewer pViewer, 
 			Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
+		assert pName != null;
 		aName = pName;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
 		aNodePrototypes = pNodePrototypes;
 		aEdgePrototypes = pEdgePrototypes;
+	}
+	
+	/**
+	 * @param pName The name of the diagram type, to match the getName() field. Can be null.
+	 * @return The DiagramType with name pName.
+	 * @throws IllegalArgumentException if pName is not a valid diagram type name.
+	 */
+	public static DiagramType fromName(String pName)
+	{
+		for( DiagramType type : DiagramType.values() )
+		{
+			if( type.getName().equals(pName) )
+			{
+				return type;
+			}
+		}
+		throw new IllegalArgumentException(pName + " is not a valid " + DiagramType.class.getSimpleName() + " name");
 	}
 	
 	/**
@@ -159,14 +177,6 @@ public enum DiagramType
 	public Edge[] getEdgePrototypes()
 	{
 		return aEdgePrototypes;
-	}
-	
-	/**
-	 * @return A new instance of the diagram type that corresponds to this value.
-	 */
-	public Diagram newInstance()
-	{
-		return null; // TODO replace with constructor for non-abstract Diagram
 	}
 	
 	/**

@@ -290,7 +290,7 @@ public class EditorFrame extends BorderPane
 		{
 			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
-				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance()));
+				insertGraphFrameIntoTabbedPane(new DiagramTab(new Diagram(diagramType)));
 			}));
 		}
 		return Collections.unmodifiableList(result);
