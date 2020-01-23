@@ -59,7 +59,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	public void setup()
 	{
 		super.setup();
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aBuilder = new ClassDiagramBuilder(aDiagram);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
@@ -85,7 +85,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		select(aClassNode1, aClassNode2, aDependencyEdge);
 		copy();
 		
-		ClassDiagram diagram2 = new ClassDiagram();
+		Diagram diagram2 = new Diagram(DiagramType.CLASS);
 		ClassDiagramBuilder builder2 = new ClassDiagramBuilder(diagram2);
 		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
 		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));

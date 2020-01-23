@@ -98,7 +98,7 @@ public class TestDiagram
 	
 	private static Stream<Arguments> argumentsForFileExtensions() {
 	    return Stream.of(
-	      Arguments.of(new ClassDiagram(), RESOURCES.getString("classdiagram.file.extension")),
+	      Arguments.of(new Diagram(DiagramType.CLASS), RESOURCES.getString("classdiagram.file.extension")),
 	      Arguments.of(new SequenceDiagram(), RESOURCES.getString("sequencediagram.file.extension")),
 	      Arguments.of(new StateDiagram(), RESOURCES.getString("statediagram.file.extension")),
 	      Arguments.of(new ObjectDiagram(), RESOURCES.getString("objectdiagram.file.extension")),
@@ -108,7 +108,7 @@ public class TestDiagram
 	
 	private static Stream<Arguments> argumentsForDescriptions() {
 	    return Stream.of(
-	      Arguments.of(new ClassDiagram(), RESOURCES.getString("classdiagram.file.name")),
+	      Arguments.of(new Diagram(DiagramType.CLASS), RESOURCES.getString("classdiagram.file.name")),
 	      Arguments.of(new SequenceDiagram(), RESOURCES.getString("sequencediagram.file.name")),
 	      Arguments.of(new StateDiagram(), RESOURCES.getString("statediagram.file.name")),
 	      Arguments.of(new ObjectDiagram(), RESOURCES.getString("objectdiagram.file.name")),

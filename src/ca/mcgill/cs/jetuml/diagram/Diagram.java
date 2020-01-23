@@ -29,7 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
- *  Stores the logical structure of a diagram. This class hierarchy
+ *  Stores the logical structure of a diagram. This class 
  *  is only concerned with maintaining information about the logical
  *  structure of a diagram (nodes and edges). Specifically, it should 
  *  not encode any business rules about the valid construction of diagrams
@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
  *  a diagram (handled by DiagramView). DiagramData provides immutable
  *  access to the information stored in the diagram.
  */
-public abstract class Diagram implements DiagramData
+public class Diagram implements DiagramData
 {
 	/*
 	 * Only root nodes are explicitly tracked by a diagram object. Nodes

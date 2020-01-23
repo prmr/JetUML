@@ -24,11 +24,11 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
@@ -50,7 +50,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	public ObjectDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
-		assert pDiagram instanceof ObjectDiagram;
+		assert pDiagram.getType() == DiagramType.OBJECT;
 	}
 	
 	@Override

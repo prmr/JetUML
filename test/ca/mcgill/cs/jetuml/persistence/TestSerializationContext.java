@@ -29,7 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -38,7 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 public class TestSerializationContext
 {
 	private SerializationContext aContext;
-	private ClassDiagram aGraph;
+	private Diagram aGraph;
 	private PackageNode aPackage1; // Root
 	private PackageNode aPackage2; // Child of aPackage1
 	private ClassNode aClassNode1; // Root
@@ -55,7 +56,7 @@ public class TestSerializationContext
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new ClassDiagram();
+		aGraph = new Diagram(DiagramType.CLASS);
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aClassNode1 = new ClassNode();

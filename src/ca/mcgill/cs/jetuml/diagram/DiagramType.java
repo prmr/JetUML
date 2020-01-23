@@ -64,7 +64,6 @@ public enum DiagramType
 {
 	CLASS(
 			"ClassDiagram",
-			ClassDiagram.class, 
 			ClassDiagramBuilder.class, 
 			new DiagramViewer(), 
 			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
@@ -79,7 +78,6 @@ public enum DiagramType
 	
 	SEQUENCE(
 			"SequenceDiagram",
-			SequenceDiagram.class, 
 			SequenceDiagramBuilder.class, 
 			new SequenceDiagramViewer(),
 			new Node[]{new ImplicitParameterNode(), new NoteNode()},
@@ -87,7 +85,6 @@ public enum DiagramType
 	
 	STATE(
 			"StateDiagram",
-			StateDiagram.class, 
 			StateDiagramBuilder.class, 
 			new DiagramViewer(),
 			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
@@ -95,7 +92,6 @@ public enum DiagramType
 	
 	OBJECT(
 			"ObjectDiagram",
-			ObjectDiagram.class, 
 			ObjectDiagramBuilder.class, 
 			new DiagramViewer(),
 			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
@@ -103,7 +99,6 @@ public enum DiagramType
 	
 	USECASE(
 			"UseCaseDiagram",
-			UseCaseDiagram.class, 
 			UseCaseDiagramBuilder.class, 
 			new DiagramViewer(),
 			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
@@ -117,17 +112,15 @@ public enum DiagramType
 	 * type in externalized representations, such as persisted versions of the diagram
 	 * or property strings. It should this not be externalized. */
 	private final String aName;
-	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
 	private final Node[] aNodePrototypes;
 	private final Edge[] aEdgePrototypes;
 	
-	DiagramType(String pName, Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
+	DiagramType(String pName, Class<?> pBuilderClass, DiagramViewer pViewer, 
 			Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
 		aName = pName;
-		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
 		aNodePrototypes = pNodePrototypes;
@@ -173,15 +166,7 @@ public enum DiagramType
 	 */
 	public Diagram newInstance()
 	{
-		try
-		{
-			return (Diagram) aClass.getDeclaredConstructor().newInstance();
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			assert false;
-			return null;
-		}
+		return null; // TODO replace with constructor for non-abstract Diagram
 	}
 	
 	/**

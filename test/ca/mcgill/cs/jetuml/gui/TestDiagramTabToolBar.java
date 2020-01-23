@@ -34,7 +34,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
 
@@ -51,7 +52,7 @@ public class TestDiagramTabToolBar
 	@BeforeEach
 	public void setup()
 	{
-		aToolbar = new DiagramTabToolBar(new ClassDiagram());
+		aToolbar = new DiagramTabToolBar(new Diagram(DiagramType.CLASS));
 	}
 	
 	@SuppressWarnings("unchecked")

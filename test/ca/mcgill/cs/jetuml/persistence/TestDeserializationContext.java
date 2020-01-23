@@ -28,13 +28,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 public class TestDeserializationContext
 {
-	private ClassDiagram aGraph;
+	private Diagram aGraph;
 	private DeserializationContext aContext;
 	private ClassNode aClassNode1; 
 	private ClassNode aClassNode2; 
@@ -49,7 +50,7 @@ public class TestDeserializationContext
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new ClassDiagram();
+		aGraph = new Diagram(DiagramType.CLASS);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aClassNode3 = new ClassNode();

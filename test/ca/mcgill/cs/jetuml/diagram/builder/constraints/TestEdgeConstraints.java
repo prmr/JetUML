@@ -29,7 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
@@ -39,7 +40,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestEdgeConstraints
 {
-	private ClassDiagram aDiagram;
+	private Diagram aDiagram;
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private PointNode aPoint;
@@ -56,7 +57,7 @@ public class TestEdgeConstraints
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aNode1 = new ClassNode();
 		aNode2 = new ClassNode();
 		aNote = new NoteNode();

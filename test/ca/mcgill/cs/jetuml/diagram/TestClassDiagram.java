@@ -62,7 +62,7 @@ public class TestClassDiagram
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aDiagramAccessor = new DiagramAccessor(aDiagram);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
