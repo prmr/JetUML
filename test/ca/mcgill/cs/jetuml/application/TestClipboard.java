@@ -45,7 +45,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
@@ -231,6 +230,6 @@ public class TestClipboard
 		ClassNode classNode = new ClassNode();
 		aClipboard.copy(Arrays.asList(classNode));
 		assertTrue(aClipboard.validPaste(new Diagram(DiagramType.CLASS)));
-		assertFalse(aClipboard.validPaste(new SequenceDiagram()));
+		assertFalse(aClipboard.validPaste(new Diagram(DiagramType.SEQUENCE)));
 	}
 }

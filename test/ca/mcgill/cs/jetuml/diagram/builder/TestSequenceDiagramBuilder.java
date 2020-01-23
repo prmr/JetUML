@@ -29,8 +29,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -38,7 +39,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestSequenceDiagramBuilder
 {
-	private SequenceDiagram aDiagram;
+	private Diagram aDiagram;
 	private SequenceDiagramBuilder aBuilder;
 	private ImplicitParameterNode aImplicitParameterNode1;
 	private ImplicitParameterNode aImplicitParameterNode2;
@@ -56,7 +57,7 @@ public class TestSequenceDiagramBuilder
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new SequenceDiagram();
+		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aBuilder = new SequenceDiagramBuilder(aDiagram);
 		aImplicitParameterNode1 = new ImplicitParameterNode();
 		aImplicitParameterNode2 = new ImplicitParameterNode();

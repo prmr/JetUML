@@ -27,9 +27,9 @@ import java.util.Optional;
 import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
@@ -60,7 +60,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	public SequenceDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
-		assert pDiagram instanceof SequenceDiagram;
+		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
-		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		ControlFlow flow = new ControlFlow(aDiagram);
 		if( pTarget instanceof CallEdge && flow.hasNoCallees((CallNode)((Edge)pTarget).getEnd()))
 		{
 			Node end = ((Edge)pTarget).getEnd();
@@ -87,7 +87,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 
 	private void addEdgeStartIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
-		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		ControlFlow flow = new ControlFlow(aDiagram);
 		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)((Edge)pTarget).getStart(), (CallEdge) pTarget))
 		{
 			Node start = ((Edge)pTarget).getStart();
@@ -97,7 +97,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private void addNodeCallerIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
 	{
-		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		ControlFlow flow = new ControlFlow(aDiagram);
 		if( pElement instanceof CallNode )
 		{
 			Optional<CallNode> caller = flow.getCaller((Node)pElement);
@@ -114,7 +114,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private void addNodeCalleesIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
 	{
-		ControlFlow flow = new ControlFlow((SequenceDiagram)aDiagram);
+		ControlFlow flow = new ControlFlow(aDiagram);
 		if( pElement instanceof CallNode )
 		{
 			for( Node callee : flow.getCallees((Node)pElement))
@@ -228,7 +228,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
 	{
-		for( CallEdge callee : new ControlFlow((SequenceDiagram)aDiagram).getCalls(pCaller))
+		for( CallEdge callee : new ControlFlow(aDiagram).getCalls(pCaller))
 		{
 			if( EdgeViewerRegistry.getConnectionPoints(callee).getY1() > pY )
 			{

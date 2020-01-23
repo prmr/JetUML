@@ -45,7 +45,7 @@ public class TestDiagramType
 	{
 		assertSame(ClassDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.CLASS)).getClass());
 		assertSame(ObjectDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.OBJECT)).getClass());
-		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new SequenceDiagram()).getClass());
+		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.SEQUENCE)).getClass());
 		assertSame(StateDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new StateDiagram()).getClass());
 		assertSame(UseCaseDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new UseCaseDiagram()).getClass());
 	}

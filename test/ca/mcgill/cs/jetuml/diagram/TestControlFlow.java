@@ -72,9 +72,9 @@ public class TestControlFlow
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new SequenceDiagram();
+		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aDiagramAccessor = new DiagramAccessor(aDiagram);
-		aFlow = new ControlFlow((SequenceDiagram)aDiagram);
+		aFlow = new ControlFlow(aDiagram);
 		
 		aParameter1 = new ImplicitParameterNode();
 		aParameter2 = new ImplicitParameterNode();

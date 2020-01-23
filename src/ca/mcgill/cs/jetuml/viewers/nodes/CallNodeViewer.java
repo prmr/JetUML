@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.ControlFlow;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
@@ -93,7 +93,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	private int getX(Node pNode)
 	{
-		final SequenceDiagram diagram = (SequenceDiagram)pNode.getDiagram().get();
+		final Diagram diagram = pNode.getDiagram().get();
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) ((CallNode)pNode).getParent();
 		if(implicitParameterNode != null )
 		{
@@ -120,7 +120,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	{
 		final CallNode callNode = (CallNode) pNode;
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
-		final SequenceDiagram diagram = (SequenceDiagram) callNode.getDiagram().get();
+		final Diagram diagram = callNode.getDiagram().get();
 		
 		if( implicitParameterNode == null || diagram == null )
 		{
@@ -163,7 +163,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	public int getMaxY(Node pNode)
 	{
 		final CallNode callNode = (CallNode) pNode;
-		final SequenceDiagram diagram = (SequenceDiagram) callNode.getDiagram().get();
+		final Diagram diagram = callNode.getDiagram().get();
 		List<Node> callees = new ArrayList<>();
 		if( diagram != null )
 		{
