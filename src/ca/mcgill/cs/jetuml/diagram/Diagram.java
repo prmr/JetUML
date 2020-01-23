@@ -21,7 +21,9 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -151,20 +153,24 @@ public abstract class Diagram implements DiagramData
 	
 	/**
 	 * Gets the node types of a particular diagram type.
-	 * @return An array of node prototypes
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of node prototypes
 	 */   
-	public final Node[] getNodePrototypes()
+	public final List<Node> getNodePrototypes()
 	{
-		return aType.getNodePrototypes();
+		return Arrays.asList(aType.getNodePrototypes());
 	}
 
 	/**
 	 * Gets the edge types of a particular diagram type.
-	 * @return an array of edge prototypes
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of edge prototypes
 	 */   
-	public final Edge[] getEdgePrototypes()
+	public final List<Edge> getEdgePrototypes()
 	{
-		return aType.getEdgePrototypes();
+		return Arrays.asList(aType.getEdgePrototypes());
 	}
 
 	/**
