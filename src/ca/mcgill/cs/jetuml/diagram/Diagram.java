@@ -96,6 +96,11 @@ public abstract class Diagram implements DiagramData
 		return aType.getDescription();
 	}
 	
+	public String getName()
+	{
+		return aType.getName();
+	}
+	
 	/**
 	 * Checks whether pElement is in the diagram. If pElement
 	 * is a node, the method returns true if it is a root node,
