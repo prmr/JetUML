@@ -24,6 +24,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
@@ -67,7 +68,7 @@ public enum DiagramType
 {
 	CLASS(
 			"ClassDiagram",
-			ClassDiagramBuilder.class, 
+			ClassDiagramBuilder::new, 
 			new DiagramViewer(), 
 			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
 			new Edge[] {
@@ -81,28 +82,28 @@ public enum DiagramType
 	
 	SEQUENCE(
 			"SequenceDiagram",
-			SequenceDiagramBuilder.class, 
+			SequenceDiagramBuilder::new, 
 			new SequenceDiagramViewer(),
 			new Node[]{new ImplicitParameterNode(), new NoteNode()},
 			new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()}), 
 	
 	STATE(
 			"StateDiagram",
-			StateDiagramBuilder.class, 
+			StateDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
 			new Edge[]{new StateTransitionEdge(), new NoteEdge()}), 
 	
 	OBJECT(
 			"ObjectDiagram",
-			ObjectDiagramBuilder.class, 
+			ObjectDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
 			new Edge[] {new ObjectReferenceEdge(), new ObjectCollaborationEdge(), new NoteEdge() }), 
 	
 	USECASE(
 			"UseCaseDiagram",
-			UseCaseDiagramBuilder.class, 
+			UseCaseDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
 			new Edge[]{ new UseCaseAssociationEdge(),
@@ -115,17 +116,17 @@ public enum DiagramType
 	 * type in externalized representations, such as persisted versions of the diagram
 	 * or property strings. It should this not be externalized. */
 	private final String aName;
-	private final Class<?> aBuilderClass;
+	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final DiagramViewer aViewer;
 	private final Node[] aNodePrototypes;
 	private final Edge[] aEdgePrototypes;
 	
-	DiagramType(String pName, Class<?> pBuilderClass, DiagramViewer pViewer, 
+	DiagramType(String pName, Function<Diagram, DiagramBuilder> pBuilderSupplier, DiagramViewer pViewer, 
 			Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
 		assert pName != null;
 		aName = pName;
-		aBuilderClass = pBuilderClass;
+		aBuilderSupplier = pBuilderSupplier;
 		aViewer = pViewer;
 		aNodePrototypes = pNodePrototypes;
 		aEdgePrototypes = pEdgePrototypes;
@@ -193,16 +194,10 @@ public enum DiagramType
 	 */
 	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram)
 	{
+		/* This method is not defined on class Diagram to avoid introducing 
+		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
-		try
-		{
-			return (DiagramBuilder) pDiagram.getType().aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
-		}
-		catch(ReflectiveOperationException exception)
-		{
-			assert false;
-			return null;
-		}
+		return pDiagram.getType().aBuilderSupplier.apply(pDiagram);
 	}
 	
 	/**
@@ -228,6 +223,8 @@ public enum DiagramType
 	 */
 	public static DiagramViewer viewerFor(Diagram pDiagram) 
 	{
+		/* This method is not defined on class Diagram to avoid introducing 
+		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
 		return pDiagram.getType().aViewer;
 	}
