@@ -29,7 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
@@ -38,7 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 
 public class TestStateDiagramEdgeConstraints
 {
-	private StateDiagram aDiagram;
+	private Diagram aDiagram;
 	private StateNode aState;
 	private InitialStateNode aInitialNode;
 	private FinalStateNode aFinalNode;
@@ -53,7 +54,7 @@ public class TestStateDiagramEdgeConstraints
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new StateDiagram();
+		aDiagram = new Diagram(DiagramType.STATE);
 		aState = new StateNode();
 		aInitialNode = new InitialStateNode();
 		aFinalNode = new FinalStateNode();
