@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 
 public class TestObjectNode
 {
@@ -35,13 +36,13 @@ public class TestObjectNode
 	private ObjectNode aObject2;
 	private FieldNode aField1;
 	private FieldNode aField2;
-	private ObjectDiagram aDiagram;
+	private Diagram aDiagram;
 	
 	
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new ObjectDiagram();
+		aDiagram = new Diagram(DiagramType.OBJECT);
 		aObject1 = new ObjectNode();
 		aObject2 = new ObjectNode();
 		aField1 = new FieldNode();

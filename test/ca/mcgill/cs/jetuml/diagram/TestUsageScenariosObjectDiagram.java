@@ -48,7 +48,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	public void setup()
 	{
 		super.setup();
-		aDiagram = new ObjectDiagram();
+		aDiagram = new Diagram(DiagramType.OBJECT);
 		aBuilder = new ObjectDiagramBuilder(aDiagram);
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();

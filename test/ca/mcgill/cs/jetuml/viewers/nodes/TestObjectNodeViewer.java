@@ -28,7 +28,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -38,7 +39,7 @@ public class TestObjectNodeViewer
 	private ObjectNode aNode; 
 	private FieldNode aField1;
 	private FieldNode aField2;
-	private ObjectDiagram aDiagram; 
+	private Diagram aDiagram; 
 	private final ObjectNodeViewer aViewer = new ObjectNodeViewer();
 	
 	@BeforeAll
@@ -50,7 +51,7 @@ public class TestObjectNodeViewer
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new ObjectDiagram();
+		aDiagram = new Diagram(DiagramType.OBJECT);
 		aField1 = new FieldNode();
 		aField1.setName("");
 		aField1.setValue("");

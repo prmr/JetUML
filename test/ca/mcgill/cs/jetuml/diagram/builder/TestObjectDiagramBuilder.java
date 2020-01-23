@@ -33,9 +33,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramAccessor;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
@@ -46,7 +47,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestObjectDiagramBuilder
 {
-	private ObjectDiagram aDiagram;
+	private Diagram aDiagram;
 	private ObjectDiagramBuilder aBuilder;
 	private DiagramAccessor aAccessor;
 	private ObjectNode aObjectNode1;
@@ -66,7 +67,7 @@ public class TestObjectDiagramBuilder
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new ObjectDiagram();
+		aDiagram = new Diagram(DiagramType.OBJECT);
 		aAccessor = new DiagramAccessor(aDiagram);
 		aBuilder = new ObjectDiagramBuilder(aDiagram);
 		aObjectNode1 = new ObjectNode();
