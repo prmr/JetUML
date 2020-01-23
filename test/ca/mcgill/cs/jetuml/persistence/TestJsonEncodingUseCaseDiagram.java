@@ -35,7 +35,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
@@ -44,7 +45,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 
 public class TestJsonEncodingUseCaseDiagram
 {
-	private UseCaseDiagram aGraph;
+	private Diagram aGraph;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -55,7 +56,7 @@ public class TestJsonEncodingUseCaseDiagram
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new UseCaseDiagram();
+		aGraph = new Diagram(DiagramType.USECASE);
 	}
 	
 	/*
@@ -151,7 +152,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		UseCaseDiagram graph = (UseCaseDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build("name", "Mr. Bob"));
 		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Do it"));
@@ -165,7 +166,7 @@ public class TestJsonEncodingUseCaseDiagram
 	public void testEncodeDecodeGraph()
 	{
 		initiGraph();
-		UseCaseDiagram graph = (UseCaseDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));
 		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node2"));

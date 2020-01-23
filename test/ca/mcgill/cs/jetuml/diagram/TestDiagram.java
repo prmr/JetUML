@@ -102,7 +102,7 @@ public class TestDiagram
 	      Arguments.of(new Diagram(DiagramType.SEQUENCE), RESOURCES.getString("sequencediagram.file.extension")),
 	      Arguments.of(new Diagram(DiagramType.STATE), RESOURCES.getString("statediagram.file.extension")),
 	      Arguments.of(new Diagram(DiagramType.OBJECT), RESOURCES.getString("objectdiagram.file.extension")),
-	      Arguments.of(new UseCaseDiagram(), RESOURCES.getString("usecasediagram.file.extension"))
+	      Arguments.of(new Diagram(DiagramType.USECASE), RESOURCES.getString("usecasediagram.file.extension"))
 	    );
 	}
 	
@@ -112,7 +112,7 @@ public class TestDiagram
 	      Arguments.of(new Diagram(DiagramType.SEQUENCE), RESOURCES.getString("sequencediagram.file.name")),
 	      Arguments.of(new Diagram(DiagramType.STATE), RESOURCES.getString("statediagram.file.name")),
 	      Arguments.of(new Diagram(DiagramType.OBJECT), RESOURCES.getString("objectdiagram.file.name")),
-	      Arguments.of(new UseCaseDiagram(), RESOURCES.getString("usecasediagram.file.name"))
+	      Arguments.of(new Diagram(DiagramType.USECASE), RESOURCES.getString("usecasediagram.file.name"))
 	    );
 	}
 	

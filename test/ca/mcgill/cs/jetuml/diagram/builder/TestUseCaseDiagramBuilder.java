@@ -29,7 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -41,7 +42,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestUseCaseDiagramBuilder
 {
-	private UseCaseDiagram aDiagram;
+	private Diagram aDiagram;
 	private UseCaseDiagramBuilder aBuilder;
 	private ActorNode aActorNode1;
 	private UseCaseNode aUseCaseNode1;
@@ -60,7 +61,7 @@ public class TestUseCaseDiagramBuilder
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new UseCaseDiagram();
+		aDiagram = new Diagram(DiagramType.USECASE);
 		aBuilder = new UseCaseDiagramBuilder(aDiagram);
 		
 		aActorNode1 = new ActorNode();
