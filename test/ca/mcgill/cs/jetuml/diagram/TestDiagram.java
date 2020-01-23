@@ -49,20 +49,12 @@ public class TestDiagram
 	private ChildNode aNode3;
 	private ParentNode aNode4;
 	
-	static class StubDiagram extends Diagram
-	{
-		public StubDiagram()
-		{
-			super(null);
-		}
-	}
-	
 	static class StubNode extends AbstractNode{ }
 	
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new StubDiagram();
+		aDiagram = new Diagram(null);
 		aNode1 = new StubNode();
 		aNode2 = new PackageNode();
 		aNode3 = new ClassNode();

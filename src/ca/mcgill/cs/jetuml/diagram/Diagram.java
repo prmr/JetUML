@@ -37,7 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
  *  a diagram (handled by DiagramView). DiagramData provides immutable
  *  access to the information stored in the diagram.
  */
-public class Diagram implements DiagramData
+public final class Diagram implements DiagramData
 {
 	/*
 	 * Only root nodes are explicitly tracked by a diagram object. Nodes
@@ -90,7 +90,7 @@ public class Diagram implements DiagramData
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */
-	public final String getFileExtension()
+	public String getFileExtension()
 	{
 		return aType.getFileExtension();
 	}
@@ -99,7 +99,7 @@ public class Diagram implements DiagramData
 	 * @return A short description of this diagram, usually
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
-	public final String getDescription()
+	public String getDescription()
 	{
 		return aType.getDescription();
 	}
@@ -170,7 +170,7 @@ public class Diagram implements DiagramData
 	 * it can be safely modified.
 	 * @return A non-null list of node prototypes
 	 */   
-	public final List<Node> getNodePrototypes()
+	public List<Node> getNodePrototypes()
 	{
 		return Arrays.asList(aType.getNodePrototypes());
 	}
@@ -181,7 +181,7 @@ public class Diagram implements DiagramData
 	 * it can be safely modified.
 	 * @return A non-null list of edge prototypes
 	 */   
-	public final List<Edge> getEdgePrototypes()
+	public List<Edge> getEdgePrototypes()
 	{
 		return Arrays.asList(aType.getEdgePrototypes());
 	}

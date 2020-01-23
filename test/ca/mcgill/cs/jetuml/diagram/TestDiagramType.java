@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,5 +49,27 @@ public class TestDiagramType
 		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.SEQUENCE)).getClass());
 		assertSame(StateDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.STATE)).getClass());
 		assertSame(UseCaseDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.USECASE)).getClass());
+	}
+	
+	@Test
+	public void testFromName_Valid()
+	{
+		assertSame(DiagramType.CLASS, DiagramType.fromName(DiagramType.CLASS.getName()));
+		assertSame(DiagramType.OBJECT, DiagramType.fromName(DiagramType.OBJECT.getName()));
+		assertSame(DiagramType.SEQUENCE, DiagramType.fromName(DiagramType.SEQUENCE.getName()));
+		assertSame(DiagramType.STATE, DiagramType.fromName(DiagramType.STATE.getName()));
+		assertSame(DiagramType.USECASE, DiagramType.fromName(DiagramType.USECASE.getName()));
+	}
+	
+	@Test
+	public void testFromName_InvalidNotNull()
+	{
+		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName("XXX")); 
+	}
+	
+	@Test
+	public void testFromName_Null()
+	{
+		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName(null)); 
 	}
 }
