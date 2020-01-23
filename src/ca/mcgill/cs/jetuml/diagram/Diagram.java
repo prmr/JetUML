@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -172,7 +171,7 @@ public final class Diagram implements DiagramData
 	 */   
 	public List<Node> getNodePrototypes()
 	{
-		return Arrays.asList(aType.getNodePrototypes());
+		return aType.getNodePrototypes();
 	}
 
 	/**
@@ -183,7 +182,7 @@ public final class Diagram implements DiagramData
 	 */   
 	public List<Edge> getEdgePrototypes()
 	{
-		return Arrays.asList(aType.getEdgePrototypes());
+		return aType.getEdgePrototypes();
 	}
 
 	/**

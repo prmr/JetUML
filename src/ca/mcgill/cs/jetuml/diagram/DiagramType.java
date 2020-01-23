@@ -22,6 +22,9 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
@@ -163,20 +166,24 @@ public enum DiagramType
 	
 	/**
 	 * Gets the node types of a particular diagram type.
-	 * @return An array of node prototypes
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of node prototypes
 	 */   
-	public Node[] getNodePrototypes()
+	public List<Node> getNodePrototypes()
 	{
-		return aNodePrototypes;
+		return Arrays.asList(aNodePrototypes);
 	}
-	
+
 	/**
 	 * Gets the edge types of a particular diagram type.
-	 * @return an array of edge prototypes
-	 */ 
-	public Edge[] getEdgePrototypes()
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of edge prototypes
+	 */   
+	public List<Edge> getEdgePrototypes()
 	{
-		return aEdgePrototypes;
+		return Arrays.asList(aEdgePrototypes);
 	}
 	
 	/**
