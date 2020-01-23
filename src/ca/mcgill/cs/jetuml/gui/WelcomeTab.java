@@ -74,7 +74,7 @@ public class WelcomeTab extends Tab
 		diagramBox.getChildren().add(titleBox);
 		for(NewDiagramHandler handler : pNewDiagramHandlers)
 		{
-			Button newDiagramShortcut = new Button(RESOURCES.getString(handler.getDiagramType().getName() + ".text"));
+			Button newDiagramShortcut = new Button(RESOURCES.getString(handler.getDiagramType().getNameLowerCase() + ".text"));
 			newDiagramShortcut.setOnAction(handler);
 			diagramBox.getChildren().add(newDiagramShortcut);
 		}

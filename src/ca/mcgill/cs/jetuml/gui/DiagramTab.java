@@ -192,7 +192,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		}
 		else
 		{
-			setText(RESOURCES.getString(DiagramType.typeOf(getDiagram()).getName() + ".text"));
+			setText(RESOURCES.getString(DiagramType.typeOf(getDiagram()).getNameLowerCase() + ".text"));
 		}
 	}
 	

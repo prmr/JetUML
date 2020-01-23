@@ -134,18 +134,12 @@ public enum DiagramType
 		aEdgePrototypes = pEdgePrototypes;
 	}
 	
-	/* A variant of the name used as key in property files. */
-	private String propertyName()
-	{
-		return aName.toLowerCase();
-	}
-	
 	/**
 	 * @return The file extension for this type of diagram.
 	 */
 	public String getFileExtension()
 	{
-		return RESOURCES.getString( propertyName() + ".file.extension");
+		return RESOURCES.getString( getNameLowerCase() + ".file.extension");
 	}
 	
 	/**
@@ -153,7 +147,7 @@ public enum DiagramType
 	 */
 	public String getDescription()
 	{
-		return RESOURCES.getString( propertyName() + ".file.name");
+		return RESOURCES.getString( getNameLowerCase() + ".file.name");
 	}
 	
 	/**
@@ -229,12 +223,19 @@ public enum DiagramType
 	}
 	
 	/**
-	 * @return The name of the handler, which is the simple name of the corresponding
-	 * class in all lower case.
+	 * @return The name of the diagram type, in all lower case characters.
+	 */
+	public String getNameLowerCase()
+	{
+		return aName.toLowerCase();
+	}
+	
+	/**
+	 * @return The name of the diagram type.
 	 */
 	public String getName()
 	{
-		return aClass.getSimpleName().toLowerCase();
+		return aName;
 	}
 	
 	/**
