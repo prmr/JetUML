@@ -67,7 +67,6 @@ public enum DiagramType
 			ClassDiagram.class, 
 			ClassDiagramBuilder.class, 
 			new DiagramViewer(), 
-			RESOURCES.getString("classdiagram.file.name"),
 			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
 			new Edge[] {
 					new DependencyEdge(), 
@@ -83,7 +82,6 @@ public enum DiagramType
 			SequenceDiagram.class, 
 			SequenceDiagramBuilder.class, 
 			new SequenceDiagramViewer(),
-			RESOURCES.getString("sequencediagram.file.name"),
 			new Node[]{new ImplicitParameterNode(), new NoteNode()},
 			new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()}), 
 	
@@ -92,7 +90,6 @@ public enum DiagramType
 			StateDiagram.class, 
 			StateDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("statediagram.file.name"),
 			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
 			new Edge[]{new StateTransitionEdge(), new NoteEdge()}), 
 	
@@ -101,7 +98,6 @@ public enum DiagramType
 			ObjectDiagram.class, 
 			ObjectDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("objectdiagram.file.name"),
 			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
 			new Edge[] {new ObjectReferenceEdge(), new ObjectCollaborationEdge(), new NoteEdge() }), 
 	
@@ -110,7 +106,6 @@ public enum DiagramType
 			UseCaseDiagram.class, 
 			UseCaseDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("usecasediagram.file.name"),
 			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
 			new Edge[]{ new UseCaseAssociationEdge(),
 					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
@@ -125,18 +120,16 @@ public enum DiagramType
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
-	private final String aDescription;
 	private final Node[] aNodePrototypes;
 	private final Edge[] aEdgePrototypes;
 	
 	DiagramType(String pName, Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
-			String pDescription, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
+			Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
 		aName = pName;
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
-		aDescription = pDescription;
 		aNodePrototypes = pNodePrototypes;
 		aEdgePrototypes = pEdgePrototypes;
 	}
@@ -160,7 +153,7 @@ public enum DiagramType
 	 */
 	public String getDescription()
 	{
-		return aDescription;
+		return RESOURCES.getString( propertyName() + ".file.name");
 	}
 	
 	/**
