@@ -63,10 +63,10 @@ import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 public enum DiagramType
 {
 	CLASS(
+			"ClassDiagram",
 			ClassDiagram.class, 
 			ClassDiagramBuilder.class, 
 			new DiagramViewer(), 
-			RESOURCES.getString("classdiagram.file.extension"),
 			RESOURCES.getString("classdiagram.file.name"),
 			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
 			new Edge[] {
@@ -79,37 +79,37 @@ public enum DiagramType
 					new NoteEdge()}), 
 	
 	SEQUENCE(
+			"SequenceDiagram",
 			SequenceDiagram.class, 
 			SequenceDiagramBuilder.class, 
 			new SequenceDiagramViewer(),
-			RESOURCES.getString("sequencediagram.file.extension"),
 			RESOURCES.getString("sequencediagram.file.name"),
 			new Node[]{new ImplicitParameterNode(), new NoteNode()},
 			new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()}), 
 	
 	STATE(
+			"StateDiagram",
 			StateDiagram.class, 
 			StateDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("statediagram.file.extension"),
 			RESOURCES.getString("statediagram.file.name"),
 			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
 			new Edge[]{new StateTransitionEdge(), new NoteEdge()}), 
 	
 	OBJECT(
+			"ObjectDiagram",
 			ObjectDiagram.class, 
 			ObjectDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("objectdiagram.file.extension"),
 			RESOURCES.getString("objectdiagram.file.name"),
 			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
 			new Edge[] {new ObjectReferenceEdge(), new ObjectCollaborationEdge(), new NoteEdge() }), 
 	
 	USECASE(
+			"UseCaseDiagram",
 			UseCaseDiagram.class, 
 			UseCaseDiagramBuilder.class, 
 			new DiagramViewer(),
-			RESOURCES.getString("usecasediagram.file.extension"),
 			RESOURCES.getString("usecasediagram.file.name"),
 			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
 			new Edge[]{ new UseCaseAssociationEdge(),
@@ -118,24 +118,33 @@ public enum DiagramType
 					new UseCaseGeneralizationEdge(),
 					new NoteEdge()});
 	
+	/* aName is an internal name used for referring to objects of a certain diagram
+	 * type in externalized representations, such as persisted versions of the diagram
+	 * or property strings. It should this not be externalized. */
+	private final String aName;
 	private final Class<?> aClass;
 	private final Class<?> aBuilderClass;
 	private final DiagramViewer aViewer;
-	private final String aFileExtension;
 	private final String aDescription;
 	private final Node[] aNodePrototypes;
 	private final Edge[] aEdgePrototypes;
 	
-	DiagramType(Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
-			String pFileExtension, String pDescription, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
+	DiagramType(String pName, Class<?> pClass, Class<?> pBuilderClass, DiagramViewer pViewer, 
+			String pDescription, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
+		aName = pName;
 		aClass = pClass;
 		aBuilderClass = pBuilderClass;
 		aViewer = pViewer;
-		aFileExtension = pFileExtension;
 		aDescription = pDescription;
 		aNodePrototypes = pNodePrototypes;
 		aEdgePrototypes = pEdgePrototypes;
+	}
+	
+	/* A variant of the name used as key in property files. */
+	private String propertyName()
+	{
+		return aName.toLowerCase();
 	}
 	
 	/**
@@ -143,7 +152,7 @@ public enum DiagramType
 	 */
 	public String getFileExtension()
 	{
-		return aFileExtension;
+		return RESOURCES.getString( propertyName() + ".file.extension");
 	}
 	
 	/**
