@@ -28,7 +28,6 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Point;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
@@ -192,7 +191,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		}
 		else
 		{
-			setText(RESOURCES.getString(DiagramType.typeOf(getDiagram()).getNameLowerCase() + ".text"));
+			setText(RESOURCES.getString(getDiagram().getType().getNameLowerCase() + ".text"));
 		}
 	}
 	

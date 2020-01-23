@@ -51,16 +51,6 @@ public class TestDiagramType
 	}
 	
 	@Test
-	public void testTypeOf()
-	{
-		assertSame(DiagramType.CLASS, DiagramType.typeOf(new ClassDiagram()));
-		assertSame(DiagramType.OBJECT, DiagramType.typeOf(new ObjectDiagram()));
-		assertSame(DiagramType.SEQUENCE, DiagramType.typeOf(new SequenceDiagram()));
-		assertSame(DiagramType.STATE, DiagramType.typeOf(new StateDiagram()));
-		assertSame(DiagramType.USECASE, DiagramType.typeOf(new UseCaseDiagram()));
-	}
-	
-	@Test
 	public void testNewBuilderInstance()
 	{
 		assertSame(ClassDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new ClassDiagram()).getClass());

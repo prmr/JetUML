@@ -79,6 +79,14 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
+	 * @return The type of this diagram.
+	 */
+	public DiagramType getType()
+	{
+		return aType;
+	}
+	
+	/**
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */

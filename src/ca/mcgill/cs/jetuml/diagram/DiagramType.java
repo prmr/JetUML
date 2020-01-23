@@ -169,25 +169,6 @@ public enum DiagramType
 	}
 	
 	/**
-	 * @param pDiagram The diagram whose type we want to check.
-	 * @return The type of pDiagram.
-	 * @pre pDiagram != null
-	 */
-	public static DiagramType typeOf(Diagram pDiagram)
-	{
-		assert pDiagram != null;
-		for( DiagramType type : values())
-		{
-			if( pDiagram.getClass() == type.aClass )
-			{
-				return type;
-			}
-		}
-		assert false;
-		return null;
-	}
-	
-	/**
 	 * @return A new instance of the diagram type that corresponds to this value.
 	 */
 	public Diagram newInstance()
@@ -213,7 +194,7 @@ public enum DiagramType
 		assert pDiagram != null;
 		try
 		{
-			return (DiagramBuilder) typeOf(pDiagram).aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
+			return (DiagramBuilder) pDiagram.getType().aBuilderClass.getDeclaredConstructor(Diagram.class).newInstance(pDiagram);
 		}
 		catch(ReflectiveOperationException exception)
 		{
@@ -246,6 +227,6 @@ public enum DiagramType
 	public static DiagramViewer viewerFor(Diagram pDiagram) 
 	{
 		assert pDiagram != null;
-		return typeOf(pDiagram).aViewer;
+		return pDiagram.getType().aViewer;
 	}
 }
