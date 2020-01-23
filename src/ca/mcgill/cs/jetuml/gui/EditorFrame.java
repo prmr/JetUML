@@ -157,7 +157,7 @@ public class EditorFrame extends BorderPane
 		Menu newMenu = factory.createMenu("file.new", false);
 		for( NewDiagramHandler handler : pNewDiagramHandlers )
 		{
-			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getNameLowerCase(), false, handler));
+			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName().toLowerCase(), false, handler));
 		}
 		
 		aRecentFilesMenu = factory.createMenu("file.recent", false);

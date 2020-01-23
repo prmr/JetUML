@@ -154,7 +154,7 @@ public enum DiagramType
 	 */
 	public String getFileExtension()
 	{
-		return RESOURCES.getString( getNameLowerCase() + ".file.extension");
+		return RESOURCES.getString( aName.toLowerCase() + ".file.extension");
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public enum DiagramType
 	 */
 	public String getDescription()
 	{
-		return RESOURCES.getString( getNameLowerCase() + ".file.name");
+		return RESOURCES.getString( aName.toLowerCase() + ".file.name");
 	}
 	
 	/**
@@ -198,14 +198,6 @@ public enum DiagramType
 		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
 		return pDiagram.getType().aBuilderSupplier.apply(pDiagram);
-	}
-	
-	/**
-	 * @return The name of the diagram type, in all lower case characters.
-	 */
-	public String getNameLowerCase()
-	{
-		return aName.toLowerCase();
 	}
 	
 	/**
