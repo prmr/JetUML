@@ -29,7 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
@@ -38,7 +39,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestSequenceDiagramEdgeConstraints
 {
-	private SequenceDiagram aDiagram;
+	private Diagram aDiagram;
 	private ImplicitParameterNode aParameter1;
 	private ImplicitParameterNode aParameter2;
 	private CallNode aCallNode1;
@@ -56,7 +57,7 @@ public class TestSequenceDiagramEdgeConstraints
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new SequenceDiagram();
+		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aParameter1 = new ImplicitParameterNode();
 		aParameter2 = new ImplicitParameterNode();
 		aCallNode1 = new CallNode();

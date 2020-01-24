@@ -25,7 +25,6 @@ import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
@@ -61,7 +60,7 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint returnEdge(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram)
 	{
-		ControlFlow flow = new ControlFlow((SequenceDiagram)pDiagram);
+		ControlFlow flow = new ControlFlow(pDiagram);
 		return ()->
 		{
 			return !(pEdge.getClass() == ReturnEdge.class && 
@@ -96,7 +95,7 @@ public final class SequenceDiagramEdgeConstraints
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					pStartNode.getClass() == ImplicitParameterNode.class &&
-					new ControlFlow((SequenceDiagram)pDiagram).hasEntryPoint());
+					new ControlFlow(pDiagram).hasEntryPoint());
 		};
 	}
 }

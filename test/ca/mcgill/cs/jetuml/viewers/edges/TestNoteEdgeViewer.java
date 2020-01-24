@@ -30,7 +30,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
@@ -42,7 +43,7 @@ public class TestNoteEdgeViewer
 	private NoteNode aNoteNode;
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
-	private ClassDiagram aGraph;
+	private Diagram aGraph;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -61,7 +62,7 @@ public class TestNoteEdgeViewer
 		aPointNode.translate(100, 20);
 		aNoteEdge = new NoteEdge();
 		
-		aGraph = new ClassDiagram();
+		aGraph = new Diagram(DiagramType.CLASS);
 	}
 	
 	@Test

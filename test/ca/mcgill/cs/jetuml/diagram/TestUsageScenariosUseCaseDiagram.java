@@ -20,7 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +53,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 	public void setup()
 	{
 		super.setup();
-		aDiagram = new UseCaseDiagram();
+		aDiagram = new Diagram(DiagramType.USECASE);
 		aBuilder = new UseCaseDiagramBuilder(aDiagram);
 		aActorNode1 = new ActorNode();
 		aActorNode2 = new ActorNode();

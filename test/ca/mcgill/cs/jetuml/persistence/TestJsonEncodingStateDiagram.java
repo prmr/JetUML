@@ -35,7 +35,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
@@ -45,7 +46,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestJsonEncodingStateDiagram
 {
-	private StateDiagram aGraph;
+	private Diagram aGraph;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -56,7 +57,7 @@ public class TestJsonEncodingStateDiagram
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new StateDiagram();
+		aGraph = new Diagram(DiagramType.STATE);
 	}
 	
 	/*
@@ -196,7 +197,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Start"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "End"));
@@ -218,7 +219,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph()
 	{
 		initiGraph();
-		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "The Node"));
 		assertEquals(new Point(10,20), node1.position());
@@ -229,7 +230,7 @@ public class TestJsonEncodingStateDiagram
 	public void testEncodeDecodeGraph3()
 	{
 		initiGraph3();
-		StateDiagram graph = (StateDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node1"));
 		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node2"));

@@ -36,7 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
  */
 public final class ControlFlow
 {
-	private final SequenceDiagram aDiagram;
+	private final Diagram aDiagram;
 	
 	/**
 	 * Creates a new ControlFlow to query pDiagram.
@@ -44,9 +44,10 @@ public final class ControlFlow
 	 * @param pDiagram The diagram to wrap.
 	 * @pre pDiagram != null.
 	 */
-	public ControlFlow(SequenceDiagram pDiagram)
+	public ControlFlow(Diagram pDiagram)
 	{
 		assert pDiagram != null;
+		assert pDiagram.getType() == DiagramType.SEQUENCE;
 		aDiagram = pDiagram;
 	}
 	

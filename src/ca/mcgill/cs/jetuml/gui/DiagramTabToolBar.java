@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
@@ -99,21 +100,21 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		return canvas;
 	}
 	
-	private void installNodesAndEdgesTools(Diagram pGraph, ToggleGroup pToggleGroup)
+	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
-		Node[] nodeTypes = pGraph.getNodePrototypes();
-		for(int i = 0; i < nodeTypes.length; i++)
+		List<Node> nodeTypes = pDiagram.getNodePrototypes();
+		for(int i = 0; i < nodeTypes.size(); i++)
 		{
 			add(new SelectableToolButton(
-					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
-					pToggleGroup, nodeTypes[i]), NodeViewerRegistry.createIcon(nodeTypes[i]));
+					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
+					pToggleGroup, nodeTypes.get(i)), NodeViewerRegistry.createIcon(nodeTypes.get(i)));
 		}
-		Edge[] edgeTypes = pGraph.getEdgePrototypes();
-		for(int i = 0; i < edgeTypes.length; i++)
+		List<Edge> edgeTypes = pDiagram.getEdgePrototypes();
+		for(int i = 0; i < edgeTypes.size(); i++)
 		{
 			add(new SelectableToolButton(
-					RESOURCES.getString(pGraph.getClass().getSimpleName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
-					pToggleGroup, edgeTypes[i]), EdgeViewerRegistry.createIcon(edgeTypes[i]));
+					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
+					pToggleGroup, edgeTypes.get(i)), EdgeViewerRegistry.createIcon(edgeTypes.get(i)));
 		}
 	}
 	

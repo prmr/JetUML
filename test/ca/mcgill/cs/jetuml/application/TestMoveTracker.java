@@ -20,9 +20,11 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.assertThat;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
+import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -32,7 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
@@ -45,7 +47,7 @@ public class TestMoveTracker
 {
 	private MoveTracker aMoveTracker;
 	private SelectionModel aSelection;
-	private ClassDiagram aDiagram;
+	private Diagram aDiagram;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
 	private DependencyEdge aEdge1;
@@ -63,7 +65,7 @@ public class TestMoveTracker
 	{
 		aMoveTracker = new MoveTracker();
 		aSelection = new SelectionModel( () -> {} );
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);
 		aNode2 = new ClassNode();

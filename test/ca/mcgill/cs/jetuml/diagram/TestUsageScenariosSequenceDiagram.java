@@ -53,7 +53,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	public void setup()
 	{
 		super.setup();
-		aDiagram = new SequenceDiagram();
+		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aBuilder = new SequenceDiagramBuilder(aDiagram);
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
@@ -389,7 +389,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		select(aParameterNode1, aParameterNode2, aCallEdge1);
 		copy();
 		
-		SequenceDiagram diagram2 = new SequenceDiagram();
+		Diagram diagram2 = new Diagram(DiagramType.SEQUENCE);
 		SequenceDiagramBuilder builder2 = new SequenceDiagramBuilder(diagram2);
 		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
 		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));

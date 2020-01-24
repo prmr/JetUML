@@ -22,12 +22,12 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.UseCaseDiagram;
+import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 
 /**
  * A builder for use case diagram.
@@ -43,7 +43,7 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	public UseCaseDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
-		assert pDiagram instanceof UseCaseDiagram;
+		assert pDiagram.getType() == DiagramType.USECASE;
 	}
 	
 	@Override

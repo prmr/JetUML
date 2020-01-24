@@ -35,8 +35,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -52,7 +53,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClassDiagramBuilder
 {
-	private ClassDiagram aDiagram;
+	private Diagram aDiagram;
 	private ClassDiagramBuilder aBuilder;
 	
 	@BeforeAll
@@ -64,7 +65,7 @@ public class TestClassDiagramBuilder
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		aBuilder = new ClassDiagramBuilder(aDiagram);
 	}
 	

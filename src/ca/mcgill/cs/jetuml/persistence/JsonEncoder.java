@@ -45,17 +45,17 @@ public final class JsonEncoder
 	private JsonEncoder() {}
 	
 	/**
-	 * @param pGraph The graph to serialize.
-	 * @return A JSON object that encodes the graph.
+	 * @param pDiagram The diagram to serialize.
+	 * @return A JSON object that encodes the diagram.
 	 */
-	public static JSONObject encode(Diagram pGraph)
+	public static JSONObject encode(Diagram pDiagram)
 	{
-		assert pGraph != null;
+		assert pDiagram != null;
 		
 		JSONObject object = new JSONObject();
 		object.put("version", RESOURCES.getString("application.version.number"));
-		object.put("diagram", pGraph.getClass().getSimpleName());
-		SerializationContext context = new SerializationContext(pGraph);
+		object.put("diagram", pDiagram.getName());
+		SerializationContext context = new SerializationContext(pDiagram);
 		object.put("nodes", encodeNodes(context));
 		object.put("edges", encodeEdges(context));
 		return object;

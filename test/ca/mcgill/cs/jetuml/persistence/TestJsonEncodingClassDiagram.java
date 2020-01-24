@@ -35,14 +35,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 public class TestJsonEncodingClassDiagram
 {
-	private ClassDiagram aGraph;
+	private Diagram aGraph;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -53,7 +54,7 @@ public class TestJsonEncodingClassDiagram
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new ClassDiagram();
+		aGraph = new Diagram(DiagramType.CLASS);
 	}
 	
 	/*
@@ -83,7 +84,7 @@ public class TestJsonEncodingClassDiagram
 	public void testEncodeDecodeGraph1()
 	{
 		initiGraph1();
-		ClassDiagram diagram = (ClassDiagram) JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		Diagram diagram = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
 		Iterator<Node> iter = diagram.rootNodes().iterator();
 		iter.next();

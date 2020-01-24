@@ -157,7 +157,7 @@ public class EditorFrame extends BorderPane
 		Menu newMenu = factory.createMenu("file.new", false);
 		for( NewDiagramHandler handler : pNewDiagramHandlers )
 		{
-			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName(), false, handler));
+			newMenu.getItems().add(factory.createMenuItem(handler.getDiagramType().getName().toLowerCase(), false, handler));
 		}
 		
 		aRecentFilesMenu = factory.createMenu("file.recent", false);
@@ -290,7 +290,7 @@ public class EditorFrame extends BorderPane
 		{
 			result.add(new NewDiagramHandler(diagramType, pEvent ->
 			{
-				insertGraphFrameIntoTabbedPane(new DiagramTab(diagramType.newInstance()));
+				insertGraphFrameIntoTabbedPane(new DiagramTab(new Diagram(diagramType)));
 			}));
 		}
 		return Collections.unmodifiableList(result);

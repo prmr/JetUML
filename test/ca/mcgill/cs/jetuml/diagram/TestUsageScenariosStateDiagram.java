@@ -53,7 +53,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	public void setup()
 	{
 		super.setup();
-		aDiagram = new StateDiagram();
+		aDiagram = new Diagram(DiagramType.STATE);
 		aBuilder = new StateDiagramBuilder(aDiagram);
 		aStateNode1 = new StateNode();
 		aStateNode2 = new StateNode();

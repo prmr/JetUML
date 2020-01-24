@@ -24,8 +24,8 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
@@ -51,7 +51,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	public ClassDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
-		assert pDiagram instanceof ClassDiagram;
+		assert pDiagram.getType() == DiagramType.CLASS;
 	}
 	
 	@Override

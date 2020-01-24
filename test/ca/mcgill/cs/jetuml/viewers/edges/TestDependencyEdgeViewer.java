@@ -27,18 +27,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 
 public class TestDependencyEdgeViewer
 {
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private DependencyEdge aEdge;
-	private ClassDiagram aDiagram;
+	private Diagram aDiagram;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -52,7 +52,7 @@ public class TestDependencyEdgeViewer
 		aNode1 = new ClassNode(); // Bounds [x=0,y=0, w=100, h=60]
 		aNode2 = new ClassNode(); // Bounds [x=200,y=0, w=100, h=60]
 		aEdge = new DependencyEdge();
-		aDiagram = new ClassDiagram();
+		aDiagram = new Diagram(DiagramType.CLASS);
 		
 		aDiagram.addRootNode(aNode1);
 		aDiagram.addRootNode(aNode2);

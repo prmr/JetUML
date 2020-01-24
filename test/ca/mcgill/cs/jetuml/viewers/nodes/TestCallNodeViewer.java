@@ -27,18 +27,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.SequenceDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestCallNodeViewer
 {
 	private ImplicitParameterNode aImplicitParameterNode1;
 	private ImplicitParameterNode aImplicitParameterNode2;
-	private SequenceDiagram aDiagram;
+	private Diagram aDiagram;
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
 	private CallNode aCallNode1;
@@ -54,7 +54,7 @@ public class TestCallNodeViewer
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new SequenceDiagram();
+		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aImplicitParameterNode1 = new ImplicitParameterNode();
 		aImplicitParameterNode2 = new ImplicitParameterNode();
 		aDefaultCallNode1 = new CallNode();

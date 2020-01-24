@@ -22,10 +22,13 @@ package ca.mcgill.cs.jetuml.persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,43 +36,46 @@ import org.json.JSONObject;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 
 /**
- * Services for saving and loading Diagram objects (i.e., UML diagrams).
+ * Services for saving and loading Diagram objects. The files are encoded
+ * in UTF-8.
  */
 public final class PersistenceService
 {
 	private PersistenceService() {}
 	
 	/**
-     * Saves the current graph in a file. 
+     * Saves the current diagram in a file. 
      * 
-     * @param pGraph The graph to save
-     * @param pFile The file to save
+     * @param pDiagram The diagram to save
+     * @param pFile The file in which to save the diagram
      * @throws IOException If there is a problem writing to pFile.
-     * @pre pGraph != null.
+     * @pre pDiagram != null.
      * @pre pFile != null.
      */
-	public static void save(Diagram pGraph, File pFile) throws IOException
+	public static void save(Diagram pDiagram, File pFile) throws IOException
 	{
-		assert pGraph != null && pFile != null;
-		try( PrintWriter out = new PrintWriter(new FileWriter(pFile)))
+		assert pDiagram != null && pFile != null;
+		try( PrintWriter out = new PrintWriter(
+				new OutputStreamWriter(new FileOutputStream(pFile), StandardCharsets.UTF_8)))
 		{
-			out.println(JsonEncoder.encode(pGraph).toString());
+			out.println(JsonEncoder.encode(pDiagram).toString());
 		}
 	}
 	
 	/**
-	 * Reads a graph from a file.
+	 * Reads a diagram from a file.
 	 * 
-	 * @param pFile The file to read the graph from.
-	 * @return The graph that is read in
-	 * @throws IOException if the graph cannot be read.
+	 * @param pFile The file to read the diagram from.
+	 * @return The diagram that is read in
+	 * @throws IOException if the diagram cannot be read.
 	 * @throws DeserializationException if there is a problem decoding the file.
 	 * @pre pFile != null
 	 */
 	public static Diagram read(File pFile) throws IOException, DeserializationException
 	{
 		assert pFile != null;
-		try( BufferedReader in = new BufferedReader(new FileReader(pFile)))
+		try( BufferedReader in = new BufferedReader(
+				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
 			Diagram graph = JsonDecoder.decode(new JSONObject(in.readLine()));
 			return graph;

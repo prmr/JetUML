@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,32 +42,34 @@ public class TestDiagramType
 	}
 	
 	@Test
-	public void testnewInstance()
-	{
-		assertSame(ClassDiagram.class, DiagramType.CLASS.newInstance().getClass());
-		assertSame(ObjectDiagram.class, DiagramType.OBJECT.newInstance().getClass());
-		assertSame(SequenceDiagram.class, DiagramType.SEQUENCE.newInstance().getClass());
-		assertSame(StateDiagram.class, DiagramType.STATE.newInstance().getClass());
-		assertSame(UseCaseDiagram.class, DiagramType.USECASE.newInstance().getClass());
-	}
-	
-	@Test
-	public void testTypeOf()
-	{
-		assertSame(DiagramType.CLASS, DiagramType.typeOf(new ClassDiagram()));
-		assertSame(DiagramType.OBJECT, DiagramType.typeOf(new ObjectDiagram()));
-		assertSame(DiagramType.SEQUENCE, DiagramType.typeOf(new SequenceDiagram()));
-		assertSame(DiagramType.STATE, DiagramType.typeOf(new StateDiagram()));
-		assertSame(DiagramType.USECASE, DiagramType.typeOf(new UseCaseDiagram()));
-	}
-	
-	@Test
 	public void testNewBuilderInstance()
 	{
-		assertSame(ClassDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new ClassDiagram()).getClass());
-		assertSame(ObjectDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new ObjectDiagram()).getClass());
-		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new SequenceDiagram()).getClass());
-		assertSame(StateDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new StateDiagram()).getClass());
-		assertSame(UseCaseDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new UseCaseDiagram()).getClass());
+		assertSame(ClassDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.CLASS)).getClass());
+		assertSame(ObjectDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.OBJECT)).getClass());
+		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.SEQUENCE)).getClass());
+		assertSame(StateDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.STATE)).getClass());
+		assertSame(UseCaseDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.USECASE)).getClass());
+	}
+	
+	@Test
+	public void testFromName_Valid()
+	{
+		assertSame(DiagramType.CLASS, DiagramType.fromName(DiagramType.CLASS.getName()));
+		assertSame(DiagramType.OBJECT, DiagramType.fromName(DiagramType.OBJECT.getName()));
+		assertSame(DiagramType.SEQUENCE, DiagramType.fromName(DiagramType.SEQUENCE.getName()));
+		assertSame(DiagramType.STATE, DiagramType.fromName(DiagramType.STATE.getName()));
+		assertSame(DiagramType.USECASE, DiagramType.fromName(DiagramType.USECASE.getName()));
+	}
+	
+	@Test
+	public void testFromName_InvalidNotNull()
+	{
+		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName("XXX")); 
+	}
+	
+	@Test
+	public void testFromName_Null()
+	{
+		assertThrows(IllegalArgumentException.class, () -> DiagramType.fromName(null)); 
 	}
 }

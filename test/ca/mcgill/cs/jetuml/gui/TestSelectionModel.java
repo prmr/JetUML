@@ -20,7 +20,10 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,8 +34,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -51,7 +55,7 @@ public class TestSelectionModel
 	private ClassNode aNode2;
 	private PackageNode aPackage1; 
 	private PackageNode aPackage2; 
-	private ClassDiagram aClassDiagram;
+	private Diagram aClassDiagram;
 	private SelectionModel aModel;
 	
 	@BeforeAll
@@ -70,7 +74,7 @@ public class TestSelectionModel
 		aPackage1 = new PackageNode();
 		aPackage2 = new PackageNode();
 		aModel = new SelectionModel( () -> {});
-		aClassDiagram = new ClassDiagram();
+		aClassDiagram = new Diagram(DiagramType.CLASS);
 	}
 	
 	private int size()

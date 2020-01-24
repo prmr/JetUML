@@ -22,9 +22,9 @@
 package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.StateDiagram;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
@@ -44,7 +44,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 	public StateDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
-		assert pDiagram instanceof StateDiagram;
+		assert pDiagram.getType() == DiagramType.STATE;
 	}
 	
 	@Override

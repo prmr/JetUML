@@ -22,11 +22,13 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
- *  Stores the logical structure of a diagram. This class hierarchy
+ *  Stores the logical structure of a diagram. This class 
  *  is only concerned with maintaining information about the logical
  *  structure of a diagram (nodes and edges). Specifically, it should 
  *  not encode any business rules about the valid construction of diagrams
@@ -34,21 +36,23 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
  *  a diagram (handled by DiagramView). DiagramData provides immutable
  *  access to the information stored in the diagram.
  */
-public abstract class Diagram implements DiagramData
+public final class Diagram implements DiagramData
 {
 	/*
 	 * Only root nodes are explicitly tracked by a diagram object. Nodes
 	 * that are children of their parent should be managed and accessed
 	 * through their parent node.
 	 */
-	private ArrayList<Node> aRootNodes;
-	private ArrayList<Edge> aEdges;
+	private final ArrayList<Node> aRootNodes;
+	private final ArrayList<Edge> aEdges;
+	private final DiagramType aType;
 
 	/**
 	 * Creates an empty diagram.
 	 */
-	public Diagram()
+	public Diagram(DiagramType pType)
 	{
+		aType = pType;
 		aRootNodes = new ArrayList<>();
 		aEdges = new ArrayList<>();
 	}
@@ -74,16 +78,35 @@ public abstract class Diagram implements DiagramData
 	}
 	
 	/**
+	 * @return The type of this diagram.
+	 */
+	public DiagramType getType()
+	{
+		return aType;
+	}
+	
+	/**
 	 * @return The file extension (including the dot) corresponding
 	 * to files of this diagram type.
 	 */
-	public abstract String getFileExtension();
+	public String getFileExtension()
+	{
+		return aType.getFileExtension();
+	}
 
 	/**
 	 * @return A short description of this diagram, usually
 	 * ending in "Diagram", e.g., "State Diagram".
 	 */
-	public abstract String getDescription();
+	public String getDescription()
+	{
+		return aType.getDescription();
+	}
+	
+	public String getName()
+	{
+		return aType.getName();
+	}
 	
 	/**
 	 * Checks whether pElement is in the diagram. If pElement
@@ -131,16 +154,36 @@ public abstract class Diagram implements DiagramData
 	}
 
 	/**
+	 * @param pNode
+	 * @return True if pNode is a root node of the Diagram
+	 */
+	public boolean containsAsRoot(Node pNode) 
+	{
+		assert pNode != null;
+		return aRootNodes.contains(pNode);
+	}
+	
+	/**
 	 * Gets the node types of a particular diagram type.
-	 * @return An array of node prototypes
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of node prototypes
 	 */   
-	public abstract Node[] getNodePrototypes();
+	public List<Node> getNodePrototypes()
+	{
+		return aType.getNodePrototypes();
+	}
 
 	/**
 	 * Gets the edge types of a particular diagram type.
-	 * @return an array of edge prototypes
+	 * The list returned is a copy of the prototypes: 
+	 * it can be safely modified.
+	 * @return A non-null list of edge prototypes
 	 */   
-	public abstract Edge[] getEdgePrototypes();
+	public List<Edge> getEdgePrototypes()
+	{
+		return aType.getEdgePrototypes();
+	}
 
 	/**
 	 * @param pNode the node to test for
@@ -272,5 +315,35 @@ public abstract class Diagram implements DiagramData
 	{
 		assert pEdge != null && aEdges.contains(pEdge);
 		aEdges.remove(pEdge);
+	}
+	
+	/**
+	 * Recursively reorder the node to be on top of its parent's children.
+	 * If the node is not a child node or the node does not have a parent, check if 
+	 * the node is a root node of the diagram and place it on top.
+	 * 
+	 * @param pNode The node to be placed on top
+	 * @pre pNode != null
+	 */
+	public void placeOnTop(Node pNode)
+	{
+		assert pNode != null;
+		ParentNode parent = null;
+		if (pNode instanceof ChildNode)
+		{
+			parent = ((ChildNode)pNode).getParent();
+		}
+		if (parent != null) 
+		{
+			// Move the child node to the top of all other children
+			parent.moveChildToLastPlace((ChildNode)pNode);
+			// Recursively reorder the node's parent
+			placeOnTop(parent);
+		}
+		else if(containsAsRoot(pNode))
+		{
+			removeRootNode(pNode);
+			addRootNode(pNode);
+		}
 	}
 }

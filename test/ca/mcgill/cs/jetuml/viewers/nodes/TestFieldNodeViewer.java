@@ -31,21 +31,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ObjectDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.FieldNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestFieldNodeViewer
 {
 	private ObjectNode aObjectNode1;
 	private FieldNode aFieldNode1;
 	private Graphics2D aGraphics;
-	private ObjectDiagram aDiagram;
+	private Diagram aDiagram;
 	private FieldNodeViewer aFieldNodeViewer = new FieldNodeViewer();
 	
 	@BeforeAll
@@ -59,8 +58,10 @@ public class TestFieldNodeViewer
 	{
 		aObjectNode1 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
+		aFieldNode1.setName("");
+		aFieldNode1.setValue("");
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
-		aDiagram = new ObjectDiagram();
+		aDiagram = new Diagram(DiagramType.OBJECT);
 		aDiagram.addRootNode(aObjectNode1);
 	}
 	

@@ -27,7 +27,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.ClassDiagram;
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
@@ -36,7 +37,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge.Type;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyleFactory;
 import javafx.geometry.Point2D;
 
 public class TestSegmentationStrategies 
@@ -46,7 +46,7 @@ public class TestSegmentationStrategies
 	private ClassNode aNode3;
 	private ClassNode aNode4;
 	private PackageNode aNode5;
-	private ClassDiagram aGraph;
+	private Diagram aGraph;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -68,7 +68,7 @@ public class TestSegmentationStrategies
 		aNode4.translate(110, 20);
 		aNode5 = new PackageNode();
 		aNode5.translate(200, 250);
-		aGraph = new ClassDiagram();
+		aGraph = new Diagram(DiagramType.CLASS);
 		aGraph.addRootNode(aNode1);
 		aGraph.addRootNode(aNode2);
 		aGraph.addRootNode(aNode3);
