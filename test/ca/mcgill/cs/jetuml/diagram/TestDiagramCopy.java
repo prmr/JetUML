@@ -20,13 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 /**
@@ -45,8 +46,8 @@ public class TestDiagramCopy
 	@Test
 	public void test_empty()
 	{
-		assertFalse(aClassDiagram.copy().edges().iterator().hasNext());
-		assertFalse(aClassDiagram.copy().rootNodes().iterator().hasNext());
+		assertEquals(0, aClassDiagram.copy().edges().size());
+		assertEquals(0, aClassDiagram.copy().rootNodes().size());
 	}
 	
 	@Test
@@ -54,9 +55,27 @@ public class TestDiagramCopy
 	{
 		aClassDiagram.addRootNode(new ClassNode());
 		Diagram copy = aClassDiagram.copy();
-		assertFalse(aClassDiagram.copy().edges().iterator().hasNext());
-		assertTrue(copy.rootNodes().iterator().hasNext());
-		Node node = copy.rootNodes().iterator().next();
-		assertNotSame(aClassDiagram.rootNodes().iterator().next(), node);
+		assertEquals(0, aClassDiagram.copy().edges().size());
+		assertEquals(1, copy.rootNodes().size());
+		Node node = copy.rootNodes().get(0);
+		assertNotSame(aClassDiagram.rootNodes().get(0), node);
+	}
+	
+	@Test
+	public void test_oneEdge()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		aClassDiagram.addRootNode(node1);
+		aClassDiagram.addRootNode(node2);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node1, node2, aClassDiagram);
+		aClassDiagram.addEdge(edge);
+		Diagram copy = aClassDiagram.copy();
+		assertNotSame(aClassDiagram.rootNodes().get(0), copy.rootNodes().get(0));
+		assertNotSame(aClassDiagram.rootNodes().get(1), copy.rootNodes().get(1));
+		assertNotSame(aClassDiagram.edges().get(0), copy.edges().get(0));
+		assertSame(copy.rootNodes().get(0), copy.edges().get(0).getStart());
+		assertSame(copy.rootNodes().get(1), copy.edges().get(0).getEnd());
 	}
 }
