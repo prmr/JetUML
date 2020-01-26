@@ -57,6 +57,54 @@ public final class Diagram implements DiagramData
 		aEdges = new ArrayList<>();
 	}
 	
+	/**
+	 * Creates a copy of the current diagram. The copy is a completely
+	 * distinct graph of nodes and edges with the same topology as this
+	 * diagram.
+	 * 
+	 * @return A copy of this diagram. Never null.
+	 */
+	public Diagram copy()
+	{
+		Diagram copy = new Diagram(this.aType); 
+		aEdges.forEach( edge -> copy.aEdges.add(edge.clone()));
+		
+		for( Node node : aRootNodes )
+		{
+			Node nodeCopy = node.clone();
+			copy.aRootNodes.add(nodeCopy);
+			reassignEdges(copy.aEdges, node, nodeCopy);
+		}
+		return copy;
+	}
+
+	/* For node pOriginal, go through all edges that refer to it and replace
+	 * it with pCopy in the edge. Do this recursively for all children of pOriginal,
+	 * assuming the same topology for pCopy. */
+	private static void reassignEdges(List<Edge> pEdges, Node pOriginal, Node pCopy)
+	{
+		for( Edge edge : pEdges )
+		{
+			if( edge.getStart() == pOriginal )
+			{
+				edge.connect(pCopy, edge.getEnd(), edge.getDiagram());
+			}
+			if( edge.getEnd() == pOriginal)
+			{
+				edge.connect(edge.getStart(), pCopy, edge.getDiagram());
+			}
+		}
+		if( pOriginal instanceof ParentNode )
+		{
+			List<ChildNode> oldChildren = ((ParentNode) pOriginal).getChildren();
+			List<ChildNode> newChildren = ((ParentNode) pCopy).getChildren();
+			for( int i = 0; i < oldChildren.size(); i++)
+			{
+				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
+			}
+		}
+	}
+	
 	@Override
 	public Iterable<DiagramElement> allElements()
 	{
