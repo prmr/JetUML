@@ -107,14 +107,6 @@ public final class Diagram implements DiagramData
 	}
 	
 	@Override
-	public Iterable<DiagramElement> allElements()
-	{
-		ArrayList<DiagramElement> result = new ArrayList<>(aRootNodes);
-		result.addAll(aEdges);
-		return result;
-	}
-	
-	@Override
 	public List<Node> rootNodes()
 	{
 		return Collections.unmodifiableList(aRootNodes);

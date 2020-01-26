@@ -29,12 +29,6 @@ import java.util.List;
 public interface DiagramData
 {
 	/**
-	 * @return An iterable of all the elements tracked
-	 * by the diagram, namely, edges and root nodes.
-	 */
-	Iterable<DiagramElement> allElements();
-	
-	/**
 	 * @return An iterable of all the root nodes of the diagram.
 	 */
 	List<Node> rootNodes();
