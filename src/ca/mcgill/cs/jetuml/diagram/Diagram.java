@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
@@ -120,9 +121,9 @@ public final class Diagram implements DiagramData
 	}
 	
 	@Override
-	public Iterable<Edge> edges()
+	public List<Edge> edges()
 	{
-		return aEdges;
+		return Collections.unmodifiableList(aEdges);
 	}
 	
 	/**

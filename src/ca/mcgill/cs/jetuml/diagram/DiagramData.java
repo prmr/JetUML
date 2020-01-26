@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import java.util.List;
+
 /**
  * Represents an element (typically the diagram) that
  * can provide information about a diagram.
@@ -38,7 +40,8 @@ public interface DiagramData
 	Iterable<Node> rootNodes();
 	
 	/**
-	 * @return An iterable of all the edges in the diagram.
+	 * @return An unmodifiable list of all the edges in the diagram.
+	 * @post never null.
 	 */
-	Iterable<Edge> edges();
+	List<Edge> edges();
 }
