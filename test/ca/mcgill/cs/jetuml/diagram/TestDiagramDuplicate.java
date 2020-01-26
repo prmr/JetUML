@@ -78,4 +78,29 @@ public class TestDiagramDuplicate
 		assertSame(copy.rootNodes().get(0), copy.edges().get(0).getStart());
 		assertSame(copy.rootNodes().get(1), copy.edges().get(0).getEnd());
 	}
+	
+	@Test
+	public void test_DiagramReassignmentInNodes()
+	{
+		aClassDiagram.addRootNode(new ClassNode());
+		Diagram copy = aClassDiagram.duplicate();
+		assertEquals(0, copy.edges().size());
+		assertEquals(1, copy.rootNodes().size());
+		Node node = copy.rootNodes().get(0);
+		assertSame(copy, node.getDiagram().get());
+	}
+	
+	@Test
+	public void test_DiagramReassignmentInEdges()
+	{
+		ClassNode node1 = new ClassNode();
+		ClassNode node2 = new ClassNode();
+		aClassDiagram.addRootNode(node1);
+		aClassDiagram.addRootNode(node2);
+		DependencyEdge edge = new DependencyEdge();
+		edge.connect(node1, node2, aClassDiagram);
+		aClassDiagram.addEdge(edge);
+		Diagram copy = aClassDiagram.duplicate();
+		assertSame(copy, copy.edges().get(0).getDiagram());
+	}
 }

@@ -76,7 +76,29 @@ public final class Diagram implements DiagramData
 			copy.aRootNodes.add(nodeCopy);
 			reassignEdges(copy.aEdges, node, nodeCopy);
 		}
+		
+		// Reassign diagram
+		copy.aEdges.forEach( edge -> edge.connect(edge.getStart(), edge.getEnd(), copy));
+		for( Node node : copy.aRootNodes )
+		{
+			copy.attachNode(node);
+		}
 		return copy;
+	}
+	
+	/*
+	 * Recursively attach the node and all its children to this diagram.
+	 */
+	private void attachNode(Node pNode)
+	{
+		pNode.attach(this);
+		if( pNode instanceof ParentNode )
+		{
+			for( Node child : ((ParentNode)pNode).getChildren() )
+			{
+				attachNode(child);
+			}
+		}
 	}
 
 	/* For node pOriginal, go through all edges that refer to it and replace
