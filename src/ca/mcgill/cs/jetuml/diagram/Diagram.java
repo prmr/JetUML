@@ -65,7 +65,7 @@ public final class Diagram implements DiagramData
 	 * 
 	 * @return A copy of this diagram. Never null.
 	 */
-	public Diagram copy()
+	public Diagram duplicate()
 	{
 		Diagram copy = new Diagram(this.aType); 
 		aEdges.forEach( edge -> copy.aEdges.add(edge.clone()));

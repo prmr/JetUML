@@ -31,9 +31,9 @@ import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 /**
- * For testing method copy of class Diagram.
+ * For testing method duplicate of class Diagram.
  */
-public class TestDiagramCopy
+public class TestDiagramDuplicate
 {
 	private Diagram aClassDiagram;
 	
@@ -46,16 +46,16 @@ public class TestDiagramCopy
 	@Test
 	public void test_empty()
 	{
-		assertEquals(0, aClassDiagram.copy().edges().size());
-		assertEquals(0, aClassDiagram.copy().rootNodes().size());
+		assertEquals(0, aClassDiagram.duplicate().edges().size());
+		assertEquals(0, aClassDiagram.duplicate().rootNodes().size());
 	}
 	
 	@Test
 	public void test_NoEdges()
 	{
 		aClassDiagram.addRootNode(new ClassNode());
-		Diagram copy = aClassDiagram.copy();
-		assertEquals(0, aClassDiagram.copy().edges().size());
+		Diagram copy = aClassDiagram.duplicate();
+		assertEquals(0, aClassDiagram.duplicate().edges().size());
 		assertEquals(1, copy.rootNodes().size());
 		Node node = copy.rootNodes().get(0);
 		assertNotSame(aClassDiagram.rootNodes().get(0), node);
@@ -71,7 +71,7 @@ public class TestDiagramCopy
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(node1, node2, aClassDiagram);
 		aClassDiagram.addEdge(edge);
-		Diagram copy = aClassDiagram.copy();
+		Diagram copy = aClassDiagram.duplicate();
 		assertNotSame(aClassDiagram.rootNodes().get(0), copy.rootNodes().get(0));
 		assertNotSame(aClassDiagram.rootNodes().get(1), copy.rootNodes().get(1));
 		assertNotSame(aClassDiagram.edges().get(0), copy.edges().get(0));

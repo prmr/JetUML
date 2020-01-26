@@ -394,7 +394,7 @@ public class EditorFrame extends BorderPane
 	
 	private void duplicate() 
 	{
-		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().copy()));
+		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate()));
 	}
 	
 	/**
