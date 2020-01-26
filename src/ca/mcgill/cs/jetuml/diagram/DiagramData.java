@@ -37,7 +37,7 @@ public interface DiagramData
 	/**
 	 * @return An iterable of all the root nodes of the diagram.
 	 */
-	Iterable<Node> rootNodes();
+	List<Node> rootNodes();
 	
 	/**
 	 * @return An unmodifiable list of all the edges in the diagram.

@@ -115,9 +115,9 @@ public final class Diagram implements DiagramData
 	}
 	
 	@Override
-	public Iterable<Node> rootNodes()
+	public List<Node> rootNodes()
 	{
-		return aRootNodes;
+		return Collections.unmodifiableList(aRootNodes);
 	}
 	
 	@Override
