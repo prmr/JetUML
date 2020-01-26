@@ -83,7 +83,7 @@ public class TestClassDiagram
 	@Test
 	public void testNumberOfEdgesEmpty()
 	{
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, aDiagram.edges().size());
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class TestClassDiagram
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
 		aDiagram.addEdge(0, aEdge1);
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, aDiagram.edges().size());
 		assertEquals(0, aDiagram.indexOf(aEdge1));
 	}
 	
@@ -131,7 +131,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(0, aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(0));
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(1));
 	}
@@ -145,7 +145,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(1, aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
 	}

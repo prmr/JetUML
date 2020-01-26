@@ -346,14 +346,6 @@ public final class Diagram implements DiagramData
 	}
 	
 	/**
-	 * @return The number of edges in the diagram.
-	 */
-	public int numberOfEdges()
-	{
-		return aEdges.size();
-	}
-	
-	/**
 	 * Removes pEdge from this diagram. Callers must ensure that the removal
 	 * preserves the integrity of the diagram.
 	 * 

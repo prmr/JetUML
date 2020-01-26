@@ -128,7 +128,7 @@ public class TestClassDiagramBuilder
 		assertEquals(new Point(10,10), node.position());
 		NoteEdge edge = new NoteEdge();
 		aBuilder.createAddEdgeOperation(edge, new Point(11,11), new Point(100,100)).execute();
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, aDiagram.edges().size());
 		assertSame(node, edge.getStart());
 		assertSame(aDiagram, node.getDiagram().get());
 		PointNode end = (PointNode) edge.getEnd();
