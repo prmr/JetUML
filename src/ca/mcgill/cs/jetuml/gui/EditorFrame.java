@@ -392,9 +392,9 @@ public class EditorFrame extends BorderPane
 		}
 	}
 	
-	private void duplicate() // TODO finish
+	private void duplicate() 
 	{
-		System.out.println("duplicate");
+		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().copy()));
 	}
 	
 	/**
