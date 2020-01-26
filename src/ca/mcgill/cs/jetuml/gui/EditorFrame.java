@@ -166,15 +166,16 @@ public class EditorFrame extends BorderPane
 		// Standard factory invocation
 		pMenuBar.getMenus().add(factory.createMenu("file", false, 
 				newMenu,
-				factory.createMenuItem("file.open", false, pEvent -> openFile()),
+				factory.createMenuItem("file.open", false, event -> openFile()),
 				aRecentFilesMenu,
-				factory.createMenuItem("file.close", true, pEvent -> close()),
-				factory.createMenuItem("file.save", true, pEvent -> save()),
-				factory.createMenuItem("file.save_as", true, pEvent -> saveAs()),
-				factory.createMenuItem("file.export_image", true, pEvent -> exportImage()),
-				factory.createMenuItem("file.copy_to_clipboard", true, pEvent -> copyToClipboard()),
+				factory.createMenuItem("file.close", true, event -> close()),
+				factory.createMenuItem("file.save", true, event -> save()),
+				factory.createMenuItem("file.save_as", true, event -> saveAs()),
+				factory.createMenuItem("file.duplicate", true, event -> duplicate()),
+				factory.createMenuItem("file.export_image", true, event -> exportImage()),
+				factory.createMenuItem("file.copy_to_clipboard", true, event -> copyToClipboard()),
 				new SeparatorMenuItem(),
-				factory.createMenuItem("file.exit", false, pEvent -> exit())));
+				factory.createMenuItem("file.exit", false, event -> exit())));
 	}
 	
 	private void createEditMenu(MenuBar pMenuBar) 
@@ -390,7 +391,12 @@ public class EditorFrame extends BorderPane
 			removeGraphFrameFromTabbedPane(diagramTab);
 		}
 	}
-
+	
+	private void duplicate() // TODO finish
+	{
+		System.out.println("duplicate");
+	}
+	
 	/**
 	 * If a user confirms that they want to close their modified graph, this method
 	 * will remove it from the current list of tabs.
