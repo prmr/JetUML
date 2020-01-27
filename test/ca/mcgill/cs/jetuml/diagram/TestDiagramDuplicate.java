@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 /**
  * For testing method duplicate of class Diagram.
@@ -102,5 +103,47 @@ public class TestDiagramDuplicate
 		aClassDiagram.addEdge(edge);
 		Diagram copy = aClassDiagram.duplicate();
 		assertSame(copy, copy.edges().get(0).getDiagram());
+	}
+	
+	@Test
+	public void test_edgeInnerNodeToInnerNode()
+	{
+		PackageNode p1 = new PackageNode();
+		PackageNode p2 = new PackageNode();
+		ClassNode n1 = new ClassNode();
+		ClassNode n2 = new ClassNode();
+		p1.setName("p1");
+		p2.setName("p2");
+		n1.setName("n1");
+		n2.setName("n2");
+		DependencyEdge edge = new DependencyEdge();
+		aClassDiagram.addRootNode(p1);
+		aClassDiagram.addRootNode(p2);
+		p1.addChild(n1);
+		p2.addChild(n2);
+		edge.connect(n1, n2, aClassDiagram);
+		aClassDiagram.addEdge(edge);
+		Diagram copy = aClassDiagram.duplicate();
+		PackageNode p1Copy = (PackageNode) copy.rootNodes().get(0);
+		PackageNode p2Copy = (PackageNode) copy.rootNodes().get(1);
+		assertNotSame(p1, p1Copy);
+		assertNotSame(p2, p2Copy);
+		assertEquals("p1", p1Copy.getName());
+		assertEquals("p2", p2Copy.getName());
+		ClassNode n1Copy = (ClassNode) p1Copy.getChildren().get(0);
+		ClassNode n2Copy = (ClassNode) p2Copy.getChildren().get(0);
+		assertNotSame(n1, n1Copy);
+		assertNotSame(n2, n2Copy);
+		assertEquals("n1", n1Copy.getName());
+		assertEquals("n2", n2Copy.getName());
+		DependencyEdge edgeCopy = (DependencyEdge) copy.edges().get(0);
+		assertNotSame(edge, edgeCopy);
+		assertSame(n1Copy, edgeCopy.getStart());
+		assertSame(n2Copy, edgeCopy.getEnd());
+		assertSame(copy, p1Copy.getDiagram().get());
+		assertSame(copy, p2Copy.getDiagram().get());
+		assertSame(copy, n2Copy.getDiagram().get());
+		assertSame(copy, n2Copy.getDiagram().get());
+		assertSame(copy, edgeCopy.getDiagram());
 	}
 }
