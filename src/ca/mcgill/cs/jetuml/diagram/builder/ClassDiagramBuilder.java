@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
@@ -98,7 +99,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					pPotentialChild instanceof PackageNode ;
 	}
 	
-	/* Find if the node to be added should be added to a package. Returns null if not. 
+	/* 
+	 * Find if the node to be added should be added to a package. Returns null if not. 
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
@@ -132,6 +134,188 @@ public class ClassDiagramBuilder extends DiagramBuilder
 			{
 				return deeperContainer;
 			}
+		}
+	}
+
+	/*
+	 * Find the pacakage node at the pRequestedPosition in order to attach the nodes in pNodes.
+	 * Return null if there is no such package node for the nodes in pNodes to attach to.
+	 */
+	private PackageNode findPackageToAttach(Iterable<Node> pNodes, Point pRequestedPosition)
+	{
+		List<Node> rootNodes = new ArrayList<>();
+		aDiagram.rootNodes().forEach(rootNodes::add);
+		for(Node pNode: pNodes)
+		{
+			if(aDiagram.containsAsRoot(pNode))
+			{
+				rootNodes.remove(pNode);
+			}
+		}
+		PackageNode pPackageNode = findContainer(rootNodes, pRequestedPosition);
+		if(pPackageNode == null)
+		{
+			return null;
+		}
+		// Return null if the package node is in pNodes or contains any node in pNodes
+		for(Node pNode: pNodes)
+		{
+			if(pPackageNode == pNode || pPackageNode.getChildren().contains(pNode))
+			{
+				pPackageNode = null;
+			}
+		}
+		return pPackageNode;
+	}
+	
+	/*
+	 * Retrun true iff all the nodes in pNodes have non-null parents
+	 */
+	private static boolean haveNonNullParent(Iterable<Node> pNodes)
+	{
+		boolean haveNonNullParent = false;
+		for(Node pNode: pNodes)
+		{
+			haveNonNullParent = validChild(pNode) && ((ChildNode)pNode).getParent() != null;
+		}
+		return haveNonNullParent;
+	}
+	
+	/*
+	 * Retrun true iff all the nodes in pNodes have null parents
+	 */
+	private static boolean haveNullParent(Iterable<Node> pNodes)
+	{
+		boolean haveNonNullParent = false;
+		for(Node pNode: pNodes)
+		{
+			haveNonNullParent = validChild(pNode) && ((ChildNode)pNode).getParent() == null;
+		}
+		return haveNonNullParent;
+	}
+
+	/*
+	 * Find the parent of all the nodes in pNodes. Return null if the nodes have different parents.
+	 */
+	private static ParentNode findSharedParent(Iterable<Node> pNodes)
+	{
+		assert haveNonNullParent(pNodes);
+		List<ChildNode> pChildNodes = new ArrayList<>();
+		for(Node pNode: pNodes)
+		{
+			pChildNodes.add((ChildNode)pNode); 
+		}
+		ParentNode pParent = pChildNodes.remove(0).getParent();
+		for(ChildNode pChild: pChildNodes)
+		{
+			if(pParent != pChild.getParent())
+			{
+				return null;
+			}
+		}
+		return pParent;
+	}
+	
+	/**
+	 * Return true if the parent of all the nodes in pNodes is null and there exists 
+	 * a package node at pRequestedPosition for the nodes in pNodes to attach to.
+	 */
+	@Override
+	public boolean canAttachToPackage(Iterable<Node> pNodes, Point pRequestedPosition)
+	{
+		return haveNullParent(pNodes) && findPackageToAttach(pNodes, pRequestedPosition) != null;
+	}
+	
+	/**
+	 * Return true if the nodes in pNodes have the same non-null parent.
+	 */
+	@Override
+	public boolean canDetachFromPackage(Iterable<Node>pNodes)
+	{
+		return haveNonNullParent(pNodes) && findSharedParent(pNodes)!= null;
+	}
+	
+	/**
+	 * Creates an opeartion that attaches all the nodes in pNodes to the package node at pRequestedPosition.
+	 */
+	@Override
+	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes, Point pRequestedPosition)
+	{
+		PackageNode pPackageNode = findPackageToAttach(pNodes, pRequestedPosition);
+		return new SimpleOperation( 
+				()-> 
+				{
+					for(Node pNode: pNodes)
+					{
+						aDiagram.removeRootNode(pNode);
+						pPackageNode.addChild((ChildNode)pNode);
+						((ChildNode)pNode).setParent(pPackageNode);
+					}
+				},
+				()->
+				{
+					for(Node pNode: pNodes)
+					{
+						aDiagram.addRootNode(pNode);
+						pPackageNode.removeChild((ChildNode)pNode);
+						((ChildNode)pNode).setParent(null);
+					}
+				});	
+	}
+	
+	/**
+	 * Creates an opeartion that detaches all the nodes in pNodes from their parent. 
+	 */
+	@Override
+	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
+	{
+		ParentNode pParent = findSharedParent(pNodes);
+		ParentNode outerParent = (pParent instanceof ChildNode)? ((ChildNode)pParent).getParent():null;
+		if(outerParent == null)
+		{
+			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
+			return new SimpleOperation( 
+					()-> 
+					{
+						for(Node pNode: pNodes)
+						{
+							aDiagram.addRootNode(pNode);
+							pParent.removeChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(null);
+						}
+					},
+					()->
+					{
+						for(Node pNode: pNodes)
+						{
+							aDiagram.removeRootNode(pNode);
+							pParent.addChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(pParent);
+						}
+					});	
+		}
+		else 
+		{
+			// Attach the detached nodes to the parent of their current parent
+			return new SimpleOperation( 
+					()-> 
+					{
+						for(Node pNode: pNodes)
+						{
+							outerParent.addChild((ChildNode)pNode);
+							pParent.removeChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(outerParent);
+						}
+					},
+					()->
+					{
+						for(Node pNode: pNodes)
+						{
+							outerParent.removeChild((ChildNode)pNode);
+							pParent.addChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(pParent);
+						}
+					});	
 		}
 	}
 }

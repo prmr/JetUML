@@ -107,11 +107,12 @@ public abstract class DiagramBuilder
 	 * 
 	 * @param pNode The node to add if possible. 
 	 * @param pRequestedPosition The requested position for the node.
-	 * @return True if it is possible to add pNode at position pPoint.
+	 * @return True if it is possible to add pNode at position pRequestedPosition.
 	 * @pre pNode != null && pRequestedPosition != null
 	 */
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
+		assert pNode != null && pRequestedPosition != null;
 		return true;
 	}
 	
@@ -521,5 +522,64 @@ public abstract class DiagramBuilder
 	private static boolean hasParent(Node pNode)
 	{
 		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
+	}
+	
+	/**
+	 * Returns whether attaching the nodes in pNodes to the node at pRequestedPosition
+	 * is a valid operation on the diagram. False by default. 
+	 * Override to provide cases where this should be true.
+	 * 
+	 * @param pNodes The nodes to attach if possible. 
+	 * @param pRequestedPosition The requested position for the nodes to be attached to.
+	 * @return True if it is possible to attach pNodes to the node at pRequestedPosition.
+	 * @pre pNodes != null && pRequestedPosition != null
+	 */
+	public boolean canAttachToPackage(Iterable<Node>pNodes, Point pRequestedPosition)
+	{
+		assert pNodes != null && pRequestedPosition != null;
+		return false;
+	}
+	
+	/**
+	 * Returns whether detaching the nodes in pNodes from the their parent is
+	 * a valid operation on the diagram. False by default. 
+	 * Override to provide cases where this should be true.
+	 * 
+	 * @param pNodes The nodes to detach if possible.
+	 * @return True if it is possible to detach pNodes from their parents.
+	 * @pre pNodes != null
+	 */
+	public boolean canDetachFromPackage(Iterable<Node>pNodes)
+	{
+		assert pNodes != null;
+		return false;
+	}
+	
+	/**
+	 * Creates an opeartion that attaches all the nodes in pNodes to the node at 
+	 * pRequestedPosition. The operation is null by default. Override to provide
+	 * cases where the precondition is met.
+	 * 
+	 * @param pNodes The nodes to attach.
+	 * @param pRequestedPosition The requested position for the nodes to be attached to.
+	 * @return The requested operation
+	 */
+	public DiagramOperation createAttachToPackageOperation(Iterable<Node> pNodes, Point pRequestedPosition)
+	{
+		assert canAttachToPackage(pNodes, pRequestedPosition);
+		return null;
+	}
+	
+	/**
+	 * Creates an opeartion that detaches all the nodes in pNodes from their parent.
+	 * The operation is null by default. Override to provide cases where the precondition is met.
+	 * 
+	 * @param pNodes The nodes to detach.
+	 * @return The requested operation
+	 */
+	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
+	{
+		assert canDetachFromPackage(pNodes);
+		return null;
 	}
 }
