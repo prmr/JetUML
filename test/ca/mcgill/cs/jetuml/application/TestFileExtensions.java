@@ -23,37 +23,51 @@ package ca.mcgill.cs.jetuml.application;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.assertThat;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasNoNullElements;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class TestFileExtensions 
 {
 	@Test
-	public void testGetAll() 
+	public void all() 
 	{
 		List<ExtensionFilter> filters = FileExtensions.all();
 		assertThat(filters, hasSize, 7);
 		assertThat(filters, hasNoNullElements );
 	}
-//	
-//	@ParameterizedTest
-//	@ValueSource(strings = {"Class Diagram Files", "JetUML Files", "All Files"})
-//	public void testGetOnValidInput(String pExtensionDescription) 
-//	{
-//		assertNotNull(FileExtensions.get(pExtensionDescription));
-//	}
-//	
-//	@Test
-//	public void testGetOnInvalidInput() 
-//	{
-//		assertNull(FileExtensions.get(""));
-//	}
+	
+	@Test
+	public void all_Values_size()
+	{
+		FileExtensions.all().forEach( ext -> assertEquals(1, ext.getExtensions().size() ));
+	}
+	
+	@Test
+	public void all_Values_order()
+	{
+		List<ExtensionFilter> filters = FileExtensions.all();
+		assertEquals("*.jet", filters.get(0).getExtensions().get(0));
+		assertEquals("*.class.jet", filters.get(1).getExtensions().get(0));
+		assertEquals("*.sequence.jet", filters.get(2).getExtensions().get(0));
+		assertEquals("*.state.jet", filters.get(3).getExtensions().get(0));
+		assertEquals("*.object.jet", filters.get(4).getExtensions().get(0));
+		assertEquals("*.usecase.jet", filters.get(5).getExtensions().get(0));
+		assertEquals("*.*", filters.get(6).getExtensions().get(0));
+	}
+	
+	@Test
+	public void test_forDiagram()
+	{
+		for( DiagramType type : DiagramType.values() )
+		{
+			assertTrue(FileExtensions.all().contains(FileExtensions.forDiagramType(type)));
+		}
+	}
 }
