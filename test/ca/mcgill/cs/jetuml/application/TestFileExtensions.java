@@ -39,7 +39,7 @@ public class TestFileExtensions
 	@Test
 	public void testGetAll() 
 	{
-		List<ExtensionFilter> filters = FileExtensions.getAll();
+		List<ExtensionFilter> filters = FileExtensions.all();
 		assertThat(filters, hasSize, 7);
 		assertThat(filters, hasNoNullElements );
 	}

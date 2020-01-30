@@ -333,7 +333,7 @@ public class EditorFrame extends BorderPane
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
-		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 
 		File selectedFile = fileChooser.showOpenDialog(aMainStage);
 		if(selectedFile != null) 
@@ -452,7 +452,7 @@ public class EditorFrame extends BorderPane
 		Diagram diagram = diagramTab.getDiagram();
 
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
 
 		if(diagramTab.getFile().isPresent()) 

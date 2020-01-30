@@ -21,9 +21,13 @@
 package ca.mcgill.cs.jetuml.application;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static java.util.Map.Entry.comparingByKey;
+import static java.util.stream.Collectors.toList;
 
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -35,6 +39,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public final class FileExtensions
 {
 	public static final String EXTENSION_JET = ".jet";
+	
+	private static final ExtensionFilter FILTER_APPLICATION = 
+			new ExtensionFilter(RESOURCES.getString("application.file.name"), "*" + EXTENSION_JET);
+	private static final ExtensionFilter FILTER_ALL = 
+			new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*");
+	
+	private static Map<DiagramType, ExtensionFilter> aExtensionFilters = createFilters();
 	
 	private static List<ExtensionFilter> aFileFilters = new LinkedList<>();
 	
@@ -51,6 +62,17 @@ public final class FileExtensions
 			aFileFilters.add(createDiagramFilter(diagramType));
 		}
 		aFileFilters.add(createAllFilter());
+	}
+	
+	private static Map<DiagramType, ExtensionFilter> createFilters()
+	{
+		Map<DiagramType, ExtensionFilter> map = new EnumMap<>(DiagramType.class);
+		for( DiagramType diagramType : DiagramType.values() )
+		{
+			map.put(diagramType,  new ExtensionFilter(diagramType.getFileNameDescription(), 
+					"*" + diagramType.getFileExtension() + EXTENSION_JET));
+		}
+		return map;
 	}
 	
 	private static ExtensionFilter createApplicationFilter()
@@ -70,11 +92,32 @@ public final class FileExtensions
 	}
 	
 	/**
-	 * @return list of all diagram extension filters
+	 * @return An unmodifiable list of all filters applicable to the application. This list
+	 * includes one filter for each diagram type, the general filter for all file 
+	 * types, and the "application" filter for all diagram file types. Never null.
 	 */
-	public static List<ExtensionFilter> getAll()
+	public static List<ExtensionFilter> all()
 	{
+		List<ExtensionFilter> result = aExtensionFilters.entrySet().stream()
+				.sorted(comparingByKey())
+				.map(Map.Entry::getValue)
+				.collect(toList());
+		result.add(0, FILTER_APPLICATION);
+		result.add(FILTER_ALL);
 		return aFileFilters;
+	}
+	
+	/**
+	 * @param pDiagramType The diagram type to query.
+	 * @return The extension filter for pDiagram type. This object is the same
+	 * object than the one contained in the return value of method all(), they 
+	 * can be compared by identity.
+	 * @pre pDiagramType != null
+	 */
+	public static ExtensionFilter forDiagramType(DiagramType pDiagramType)
+	{
+		assert pDiagramType != null;
+		return aExtensionFilters.get(pDiagramType);
 	}
 	
 	/**
