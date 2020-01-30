@@ -90,11 +90,11 @@ public class TestDiagram
 	
 	private static Stream<Arguments> argumentsForFileExtensions() {
 	    return Stream.of(
-	      Arguments.of(new Diagram(DiagramType.CLASS), RESOURCES.getString("classdiagram.file.extension")),
-	      Arguments.of(new Diagram(DiagramType.SEQUENCE), RESOURCES.getString("sequencediagram.file.extension")),
-	      Arguments.of(new Diagram(DiagramType.STATE), RESOURCES.getString("statediagram.file.extension")),
-	      Arguments.of(new Diagram(DiagramType.OBJECT), RESOURCES.getString("objectdiagram.file.extension")),
-	      Arguments.of(new Diagram(DiagramType.USECASE), RESOURCES.getString("usecasediagram.file.extension"))
+	      Arguments.of(new Diagram(DiagramType.CLASS), ".class"),
+	      Arguments.of(new Diagram(DiagramType.SEQUENCE), ".sequence"),
+	      Arguments.of(new Diagram(DiagramType.STATE), ".state"),
+	      Arguments.of(new Diagram(DiagramType.OBJECT), ".object"),
+	      Arguments.of(new Diagram(DiagramType.USECASE), ".usecase")
 	    );
 	}
 	

@@ -68,6 +68,7 @@ public enum DiagramType
 {
 	CLASS(
 			"ClassDiagram",
+			".class",
 			ClassDiagramBuilder::new, 
 			new DiagramViewer(), 
 			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
@@ -82,6 +83,7 @@ public enum DiagramType
 	
 	SEQUENCE(
 			"SequenceDiagram",
+			".sequence",
 			SequenceDiagramBuilder::new, 
 			new SequenceDiagramViewer(),
 			new Node[]{new ImplicitParameterNode(), new NoteNode()},
@@ -89,6 +91,7 @@ public enum DiagramType
 	
 	STATE(
 			"StateDiagram",
+			".state",
 			StateDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
@@ -96,6 +99,7 @@ public enum DiagramType
 	
 	OBJECT(
 			"ObjectDiagram",
+			".object",
 			ObjectDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
@@ -103,6 +107,7 @@ public enum DiagramType
 	
 	USECASE(
 			"UseCaseDiagram",
+			".usecase",
 			UseCaseDiagramBuilder::new, 
 			new DiagramViewer(),
 			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
@@ -116,16 +121,18 @@ public enum DiagramType
 	 * type in externalized representations, such as persisted versions of the diagram
 	 * or property strings. It should this not be externalized. */
 	private final String aName;
+	private final String aFileExtension; // The suffix that indicates the type of files
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final DiagramViewer aViewer;
 	private final Node[] aNodePrototypes;
 	private final Edge[] aEdgePrototypes;
 	
-	DiagramType(String pName, Function<Diagram, DiagramBuilder> pBuilderSupplier, DiagramViewer pViewer, 
-			Node[] pNodePrototypes, Edge[] pEdgePrototypes)
+	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
+			DiagramViewer pViewer, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
 	{
 		assert pName != null;
 		aName = pName;
+		aFileExtension = pFileExtension;
 		aBuilderSupplier = pBuilderSupplier;
 		aViewer = pViewer;
 		aNodePrototypes = pNodePrototypes;
@@ -154,7 +161,7 @@ public enum DiagramType
 	 */
 	public String getFileExtension()
 	{
-		return RESOURCES.getString( aName.toLowerCase() + ".file.extension");
+		return aFileExtension;
 	}
 	
 	/**

@@ -25,8 +25,8 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import java.util.LinkedList;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import javafx.stage.FileChooser.ExtensionFilter;
-
 
 /**
  * A utility class to create and access diagram extension 
@@ -47,19 +47,19 @@ public final class FileExtensions
 				"*" + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("classdiagram.file.name"), 
-				"*" + RESOURCES.getString("classdiagram.file.extension") + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.CLASS.getFileExtension() + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("sequencediagram.file.name"), 
-				"*" + RESOURCES.getString("sequencediagram.file.extension") + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.SEQUENCE.getFileExtension() + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("statediagram.file.name"), 
-				"*" + RESOURCES.getString("statediagram.file.extension") + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.STATE.getFileExtension() + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("objectdiagram.file.name"), 
-				"*" + RESOURCES.getString("objectdiagram.file.extension") + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.OBJECT.getFileExtension() + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecasediagram.file.name"), 
-				"*" + RESOURCES.getString("usecasediagram.file.extension") + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.USECASE.getFileExtension() + RESOURCES.getString("application.file.extension")));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*"));
 	}
