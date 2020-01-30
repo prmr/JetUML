@@ -471,7 +471,7 @@ public class EditorFrame extends BorderPane
 			File result = fileChooser.showSaveDialog(aMainStage);
 			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
 			{
-				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
+				result = new File(result.getPath() + diagram.getFileExtension() + FileExtensions.EXTENSION_JET);
 			}
 			if( result != null )
 			{
@@ -616,7 +616,7 @@ public class EditorFrame extends BorderPane
 		if(frame.getFile().isPresent()) 
 		{
 			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), 
-					RESOURCES.getString("application.file.extension"), ""));
+					FileExtensions.EXTENSION_JET, ""));
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}

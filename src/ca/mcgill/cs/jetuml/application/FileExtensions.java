@@ -34,6 +34,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public final class FileExtensions
 {
+	public static final String EXTENSION_JET = ".jet";
+	
 	private static List<ExtensionFilter> aFileFilters = new LinkedList<>();
 	
 	private FileExtensions() {}
@@ -44,22 +46,22 @@ public final class FileExtensions
 	static 
 	{
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.name"), 
-				"*" + RESOURCES.getString("application.file.extension")));
+				"*" + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("classdiagram.file.name"), 
-				"*" + DiagramType.CLASS.getFileExtension() + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.CLASS.getFileExtension() + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("sequencediagram.file.name"), 
-				"*" + DiagramType.SEQUENCE.getFileExtension() + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.SEQUENCE.getFileExtension() + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("statediagram.file.name"), 
-				"*" + DiagramType.STATE.getFileExtension() + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.STATE.getFileExtension() + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("objectdiagram.file.name"), 
-				"*" + DiagramType.OBJECT.getFileExtension() + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.OBJECT.getFileExtension() + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecasediagram.file.name"), 
-				"*" + DiagramType.USECASE.getFileExtension() + RESOURCES.getString("application.file.extension")));
+				"*" + DiagramType.USECASE.getFileExtension() + EXTENSION_JET));
 		
 		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*"));
 	}
