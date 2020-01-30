@@ -167,7 +167,7 @@ public enum DiagramType
 	/**
 	 * @return A short description of the diagram type.
 	 */
-	public String getDescription()
+	public String getFileNameDescription()
 	{
 		return RESOURCES.getString( aName.toLowerCase() + ".file.name");
 	}

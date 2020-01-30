@@ -45,25 +45,28 @@ public final class FileExtensions
 	 */
 	static 
 	{
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.name"), 
-				"*" + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("classdiagram.file.name"), 
-				"*" + DiagramType.CLASS.getFileExtension() + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("sequencediagram.file.name"), 
-				"*" + DiagramType.SEQUENCE.getFileExtension() + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("statediagram.file.name"), 
-				"*" + DiagramType.STATE.getFileExtension() + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("objectdiagram.file.name"), 
-				"*" + DiagramType.OBJECT.getFileExtension() + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("usecasediagram.file.name"), 
-				"*" + DiagramType.USECASE.getFileExtension() + EXTENSION_JET));
-		
-		aFileFilters.add(new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*"));
+		aFileFilters.add(createApplicationFilter());
+		for( DiagramType diagramType : DiagramType.values() )
+		{
+			aFileFilters.add(createDiagramFilter(diagramType));
+		}
+		aFileFilters.add(createAllFilter());
+	}
+	
+	private static ExtensionFilter createApplicationFilter()
+	{
+		return new ExtensionFilter(RESOURCES.getString("application.file.name"), "*" + EXTENSION_JET);
+	}
+	
+	private static ExtensionFilter createAllFilter()
+	{
+		return new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*");
+	}
+	
+	private static ExtensionFilter createDiagramFilter(DiagramType pDiagramType)
+	{
+		return new ExtensionFilter(pDiagramType.getFileNameDescription(), 
+				"*" + pDiagramType.getFileExtension() + EXTENSION_JET);
 	}
 	
 	/**

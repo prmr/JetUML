@@ -163,7 +163,7 @@ public final class Diagram implements DiagramData
 	 */
 	public String getDescription()
 	{
-		return aType.getDescription();
+		return aType.getFileNameDescription();
 	}
 	
 	public String getName()
