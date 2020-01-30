@@ -43,17 +43,17 @@ public class TestFileExtensions
 		assertThat(filters, hasSize, 7);
 		assertThat(filters, hasNoNullElements );
 	}
-	
-	@ParameterizedTest
-	@ValueSource(strings = {"Class Diagram Files", "JetUML Files", "All Files"})
-	public void testGetOnValidInput(String pExtensionDescription) 
-	{
-		assertNotNull(FileExtensions.get(pExtensionDescription));
-	}
-	
-	@Test
-	public void testGetOnInvalidInput() 
-	{
-		assertNull(FileExtensions.get(""));
-	}
+//	
+//	@ParameterizedTest
+//	@ValueSource(strings = {"Class Diagram Files", "JetUML Files", "All Files"})
+//	public void testGetOnValidInput(String pExtensionDescription) 
+//	{
+//		assertNotNull(FileExtensions.get(pExtensionDescription));
+//	}
+//	
+//	@Test
+//	public void testGetOnInvalidInput() 
+//	{
+//		assertNull(FileExtensions.get(""));
+//	}
 }

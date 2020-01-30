@@ -453,7 +453,7 @@ public class EditorFrame extends BorderPane
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
-		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
+		fileChooser.setSelectedExtensionFilter(FileExtensions.forDiagramType(diagram.getType()));
 
 		if(diagramTab.getFile().isPresent()) 
 		{
@@ -469,7 +469,7 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			File result = fileChooser.showSaveDialog(aMainStage);
-			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
+			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.forDiagramType(diagram.getType()))
 			{
 				result = new File(result.getPath() + diagram.getFileExtension() + FileExtensions.EXTENSION_JET);
 			}

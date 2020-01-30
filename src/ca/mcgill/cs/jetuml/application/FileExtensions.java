@@ -25,7 +25,6 @@ import static java.util.Map.Entry.comparingByKey;
 import static java.util.stream.Collectors.toList;
 
 import java.util.EnumMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,22 +46,7 @@ public final class FileExtensions
 	
 	private static Map<DiagramType, ExtensionFilter> aExtensionFilters = createFilters();
 	
-	private static List<ExtensionFilter> aFileFilters = new LinkedList<>();
-	
 	private FileExtensions() {}
-	
-	/**
-	 * Constructs all file extension filters related to the diagrams.
-	 */
-	static 
-	{
-		aFileFilters.add(createApplicationFilter());
-		for( DiagramType diagramType : DiagramType.values() )
-		{
-			aFileFilters.add(createDiagramFilter(diagramType));
-		}
-		aFileFilters.add(createAllFilter());
-	}
 	
 	private static Map<DiagramType, ExtensionFilter> createFilters()
 	{
@@ -73,22 +57,6 @@ public final class FileExtensions
 					"*" + diagramType.getFileExtension() + EXTENSION_JET));
 		}
 		return map;
-	}
-	
-	private static ExtensionFilter createApplicationFilter()
-	{
-		return new ExtensionFilter(RESOURCES.getString("application.file.name"), "*" + EXTENSION_JET);
-	}
-	
-	private static ExtensionFilter createAllFilter()
-	{
-		return new ExtensionFilter(RESOURCES.getString("application.file.all"), "*.*");
-	}
-	
-	private static ExtensionFilter createDiagramFilter(DiagramType pDiagramType)
-	{
-		return new ExtensionFilter(pDiagramType.getFileNameDescription(), 
-				"*" + pDiagramType.getFileExtension() + EXTENSION_JET);
 	}
 	
 	/**
@@ -104,7 +72,7 @@ public final class FileExtensions
 				.collect(toList());
 		result.add(0, FILTER_APPLICATION);
 		result.add(FILTER_ALL);
-		return aFileFilters;
+		return result;
 	}
 	
 	/**
@@ -118,22 +86,6 @@ public final class FileExtensions
 	{
 		assert pDiagramType != null;
 		return aExtensionFilters.get(pDiagramType);
-	}
-	
-	/**
-	 * @param pDescription description of the filter
-	 * @return the corresponding diagram extension filter
-	 */
-	public static ExtensionFilter get(String pDescription) 
-	{
-		for(ExtensionFilter filter: aFileFilters) 
-		{
-			if(filter.getDescription().equals(pDescription))
-			{
-				return filter;
-			}
-		}
-		return null;
 	}
 }
 	
