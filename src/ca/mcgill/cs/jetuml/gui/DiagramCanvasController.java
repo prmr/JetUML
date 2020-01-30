@@ -577,6 +577,8 @@ public class DiagramCanvasController
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(pNodes));
 		}
+		// Place the modified nodes on the top
+		pNodes.forEach(pNode -> aCanvas.getDiagram().placeOnTop(pNode));
 		aCanvas.paintPanel();
 	}
 }

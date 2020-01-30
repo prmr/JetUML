@@ -139,7 +139,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 
 	/*
 	 * Find the pacakage node under the position of the first node in pNodes.
-	 * Return null if there is no such package node for the nodes in pNodes to attach to.
+	 * Return null if there is no such package node for the nodes in pNodes to attach to,
+	 * or the package node is already in the pNodes.
 	 */
 	private PackageNode findPackageToAttach(Iterable<Node> pNodes)
 	{
@@ -147,9 +148,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		Point pRequestedPosition = null;
 		List<Node> rootNodes = new ArrayList<>();
 		aDiagram.rootNodes().forEach(rootNodes::add);
-		// 
 		for(Node pNode: pNodes)
 		{
+			// Get the position of the first node in pNodes
 			if(pRequestedPosition== null)
 			{
 				pRequestedPosition = pNode.position();
@@ -212,6 +213,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		{
 			pChildNodes.add((ChildNode)pNode); 
 		}
+		// Get the parent of the first child node and check with other nodes
 		ParentNode pParent = pChildNodes.remove(0).getParent();
 		for(ChildNode pChild: pChildNodes)
 		{
