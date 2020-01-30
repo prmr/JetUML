@@ -20,7 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -81,13 +80,6 @@ public class TestDiagram
 		assertEquals(pExtension, pDiagram.getFileExtension());
 	}
 	
-	@ParameterizedTest
-	@MethodSource("argumentsForDescriptions")
-	public void testDescriptions(Diagram pDiagram, String pExtension)
-	{
-		assertEquals(pExtension, pDiagram.getDescription());
-	}
-	
 	private static Stream<Arguments> argumentsForFileExtensions() {
 	    return Stream.of(
 	      Arguments.of(new Diagram(DiagramType.CLASS), ".class"),
@@ -95,16 +87,6 @@ public class TestDiagram
 	      Arguments.of(new Diagram(DiagramType.STATE), ".state"),
 	      Arguments.of(new Diagram(DiagramType.OBJECT), ".object"),
 	      Arguments.of(new Diagram(DiagramType.USECASE), ".usecase")
-	    );
-	}
-	
-	private static Stream<Arguments> argumentsForDescriptions() {
-	    return Stream.of(
-	      Arguments.of(new Diagram(DiagramType.CLASS), RESOURCES.getString("classdiagram.file.name")),
-	      Arguments.of(new Diagram(DiagramType.SEQUENCE), RESOURCES.getString("sequencediagram.file.name")),
-	      Arguments.of(new Diagram(DiagramType.STATE), RESOURCES.getString("statediagram.file.name")),
-	      Arguments.of(new Diagram(DiagramType.OBJECT), RESOURCES.getString("objectdiagram.file.name")),
-	      Arguments.of(new Diagram(DiagramType.USECASE), RESOURCES.getString("usecasediagram.file.name"))
 	    );
 	}
 	

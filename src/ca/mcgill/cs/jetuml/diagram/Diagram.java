@@ -157,15 +157,6 @@ public final class Diagram implements DiagramData
 		return aType.getFileExtension();
 	}
 
-	/**
-	 * @return A short description of this diagram, usually
-	 * ending in "Diagram", e.g., "State Diagram".
-	 */
-	public String getDescription()
-	{
-		return aType.getFileNameDescription();
-	}
-	
 	public String getName()
 	{
 		return aType.getName();
