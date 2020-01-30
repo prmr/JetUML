@@ -495,34 +495,6 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	/**
-	 * Edits the file path so that the pToBeRemoved extension, if found, is replaced
-	 * with pDesired.
-	 * 
-	 * @param pOriginal
-	 *            the file to use as a starting point
-	 * @param pToBeRemoved
-	 *            the extension that is to be removed before adding the desired
-	 *            extension.
-	 * @param pDesired
-	 *            the desired extension (e.g. ".png")
-	 * @return original if it already has the desired extension, or a new file with
-	 *         the edited file path
-	 */
-	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired) 
-	{
-		assert pOriginal != null && pToBeRemoved != null && pDesired != null;
-
-		if (pOriginal.endsWith(pToBeRemoved)) 
-		{
-			return pOriginal.substring(0, pOriginal.length() - pToBeRemoved.length()) + pDesired;
-		}
-		else 
-		{
-			return pOriginal;
-		}
-	}
-
 	private File getLastDir(String pKey)
 	{
 		String dir = Preferences.userNodeForPackage(UMLEditor.class).get(pKey, ".");
@@ -615,8 +587,7 @@ public class EditorFrame extends BorderPane
 		// If the file was previously saved, use that to suggest a file name root.
 		if(frame.getFile().isPresent()) 
 		{
-			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), 
-					FileExtensions.EXTENSION_JET, ""));
+			File file = FileExtensions.clipApplicationExtension(frame.getFile().get());
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}

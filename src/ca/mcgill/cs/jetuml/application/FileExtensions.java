@@ -24,6 +24,8 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import static java.util.Map.Entry.comparingByKey;
 import static java.util.stream.Collectors.toList;
 
+import java.io.File;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +74,7 @@ public final class FileExtensions
 				.collect(toList());
 		result.add(0, FILTER_APPLICATION);
 		result.add(FILTER_ALL);
-		return result;
+		return Collections.unmodifiableList(result);
 	}
 	
 	/**
@@ -86,6 +88,24 @@ public final class FileExtensions
 	{
 		assert pDiagramType != null;
 		return aExtensionFilters.get(pDiagramType);
+	}
+	
+	/**
+	 * @param pFile The file to clip, if applicable.
+	 * @return A file with the same name as pFile, but with
+	 * the application extension removed. If there is no application
+	 * extension to clip, the same file object is returned.
+	 * @pre pFile != null
+	 */
+	public static File clipApplicationExtension(File pFile)
+	{
+		assert pFile != null;
+		if( !pFile.getAbsolutePath().endsWith(EXTENSION_JET))
+		{
+			return pFile;
+		}
+		return new File(pFile.getAbsolutePath()
+				.substring(0, pFile.getAbsolutePath().length() - EXTENSION_JET.length()));
 	}
 }
 	
