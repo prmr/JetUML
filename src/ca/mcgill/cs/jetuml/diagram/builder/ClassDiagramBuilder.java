@@ -138,15 +138,22 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 
 	/*
-	 * Find the pacakage node at the pRequestedPosition in order to attach the nodes in pNodes.
+	 * Find the pacakage node under the position of the first node in pNodes.
 	 * Return null if there is no such package node for the nodes in pNodes to attach to.
 	 */
-	private PackageNode findPackageToAttach(Iterable<Node> pNodes, Point pRequestedPosition)
+	private PackageNode findPackageToAttach(Iterable<Node> pNodes)
 	{
+	
+		Point pRequestedPosition = null;
 		List<Node> rootNodes = new ArrayList<>();
 		aDiagram.rootNodes().forEach(rootNodes::add);
+		// 
 		for(Node pNode: pNodes)
 		{
+			if(pRequestedPosition== null)
+			{
+				pRequestedPosition = pNode.position();
+			}
 			if(aDiagram.containsAsRoot(pNode))
 			{
 				rootNodes.remove(pNode);
@@ -218,12 +225,12 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	
 	/**
 	 * Return true if the parent of all the nodes in pNodes is null and there exists 
-	 * a package node at pRequestedPosition for the nodes in pNodes to attach to.
+	 * a package node under the position of the first node in pNodes.
 	 */
 	@Override
-	public boolean canAttachToPackage(Iterable<Node> pNodes, Point pRequestedPosition)
+	public boolean canAttachToPackage(Iterable<Node> pNodes)
 	{
-		return haveNullParent(pNodes) && findPackageToAttach(pNodes, pRequestedPosition) != null;
+		return haveNullParent(pNodes) && findPackageToAttach(pNodes) != null;
 	}
 	
 	/**
@@ -236,12 +243,13 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/**
-	 * Creates an opeartion that attaches all the nodes in pNodes to the package node at pRequestedPosition.
+	 * Creates an opeartion that attaches all the nodes in pNodes to the package node under 
+	 * the position of the first node in pNodes.
 	 */
 	@Override
-	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes, Point pRequestedPosition)
+	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes)
 	{
-		PackageNode pPackageNode = findPackageToAttach(pNodes, pRequestedPosition);
+		PackageNode pPackageNode = findPackageToAttach(pNodes);
 		return new SimpleOperation( 
 				()-> 
 				{

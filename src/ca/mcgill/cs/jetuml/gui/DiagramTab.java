@@ -259,10 +259,4 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, Shift
 	{
 		aDiagramCanvasController.keyPressed();
 	}
-
-	@Override
-	public void keyReleased() 
-	{
-		aDiagramCanvasController.keyReleased();
-	}
 }	        

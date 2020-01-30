@@ -120,13 +120,6 @@ public class EditorFrame extends BorderPane
 		      getSelectedDiagramTab().keyPressed();
 		   }
 		});
-		setOnKeyReleased(e -> 
-		{
-		   if(!e.isShiftDown() && !isWelcomeTabShowing())
-		   {
-		      getSelectedDiagramTab().keyReleased();
-		   }
-		});
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 

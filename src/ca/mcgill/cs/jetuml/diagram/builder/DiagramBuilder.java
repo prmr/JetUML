@@ -525,18 +525,17 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Returns whether attaching the nodes in pNodes to the node at pRequestedPosition
-	 * is a valid operation on the diagram. False by default. 
+	 * Returns whether attaching the nodes in pNodes to the package node under the position
+	 * of the first node in pNodes is a valid operation on the diagram. False by default. 
 	 * Override to provide cases where this should be true.
 	 * 
 	 * @param pNodes The nodes to attach if possible. 
-	 * @param pRequestedPosition The requested position for the nodes to be attached to.
 	 * @return True if it is possible to attach pNodes to the node at pRequestedPosition.
-	 * @pre pNodes != null && pRequestedPosition != null
+	 * @pre pNodes != null
 	 */
-	public boolean canAttachToPackage(Iterable<Node>pNodes, Point pRequestedPosition)
+	public boolean canAttachToPackage(Iterable<Node>pNodes)
 	{
-		assert pNodes != null && pRequestedPosition != null;
+		assert pNodes != null;
 		return false;
 	}
 	
@@ -556,17 +555,17 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Creates an opeartion that attaches all the nodes in pNodes to the node at 
-	 * pRequestedPosition. The operation is null by default. Override to provide
-	 * cases where the precondition is met.
+	 * Creates an opeartion that attaches all the nodes in pNodes to the package node under 
+	 * the position of the first node in pNodes. The operation is null by default. 
+	 * Override to provide cases where the precondition is met.
 	 * 
 	 * @param pNodes The nodes to attach.
 	 * @param pRequestedPosition The requested position for the nodes to be attached to.
 	 * @return The requested operation
 	 */
-	public DiagramOperation createAttachToPackageOperation(Iterable<Node> pNodes, Point pRequestedPosition)
+	public DiagramOperation createAttachToPackageOperation(Iterable<Node> pNodes)
 	{
-		assert canAttachToPackage(pNodes, pRequestedPosition);
+		assert canAttachToPackage(pNodes);
 		return null;
 	}
 	

@@ -26,6 +26,8 @@ package ca.mcgill.cs.jetuml.gui;
  */
 public interface ShiftKeyPressedHandler 
 {
+	/**
+	 * Handle node attachment or detachment if the shift key is pressed.
+	 */
 	void keyPressed();
-	void keyReleased();
 }

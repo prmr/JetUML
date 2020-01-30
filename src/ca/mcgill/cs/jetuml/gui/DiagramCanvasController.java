@@ -72,7 +72,6 @@ public class DiagramCanvasController
 	private Point aMouseDownPoint;  
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private MouseDraggedGestureHandler aHandler;
-	private boolean shiftKeyPressed = false;
 	
 	/**
 	 * Creates a new controller.
@@ -91,22 +90,6 @@ public class DiagramCanvasController
 		aCanvas.setOnMouseReleased(this::mouseReleased);
 		aCanvas.setOnMouseDragged(this::mouseDragged);
 		aHandler = pHandler;
-	}
-	
-	/**
-	 * Set the flag of shiftKeyPressed to be true.
-	 */
-	public void keyPressed()
-	{
-		shiftKeyPressed = true;
-	}
-	
-	/**
-	 * Set the flag of shiftKeyPressed to be false.
-	 */
-	public void keyReleased()
-	{
-		shiftKeyPressed = false;
 	}
 	
 	/**
@@ -323,15 +306,10 @@ public class DiagramCanvasController
 				// The test is necessary to ensure we don't undo multiple selections
 				aSelectionModel.set(element.get());
 			}
-			
 			// Reorder the selected nodes to ensure that they appear on the top
 			for(Node pSelected: aSelectionModel.getSelectedNodes()) 
 			{
 				aCanvas.getDiagram().placeOnTop(pSelected);
-			}
-			if(shiftKeyPressed)
-			{
-				handleShiftDown(Grid.snapped(getMousePoint(pEvent)));
 			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
@@ -343,23 +321,6 @@ public class DiagramCanvasController
 				aSelectionModel.clearSelection();
 			}
 			aDragMode = DragMode.DRAG_LASSO;
-		}
-	}
-
-	/*
-	 * Attach the selected nodes to the node under the mouse point if possible.
-	 * Otherwise, detach the selected nodes from their parent if possible.
-	 */
-	private void handleShiftDown(Point pPoint)
-	{
-		Iterable<Node> pNodes = aSelectionModel.getSelectedNodes();
-		if(aDiagramBuilder.canAttachToPackage(pNodes, pPoint))
-		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createAttachToPackageOperation(pNodes, pPoint));
-		}
-		else if(aDiagramBuilder.canDetachFromPackage(pNodes))
-		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(pNodes));
 		}
 	}
 		
@@ -599,6 +560,23 @@ public class DiagramCanvasController
 			selected.translate(dx, dy);
 		}
 		aLastMousePoint = pMousePoint; 
+		aCanvas.paintPanel();
+	}
+	
+	/**
+	 * When the shift key is pressed, perform node attachment or detachment if possible
+	 */
+	public void keyPressed()
+	{
+		Iterable<Node> pNodes = aSelectionModel.getSelectedNodes();
+		if(aDiagramBuilder.canAttachToPackage(pNodes))
+		{
+			aProcessor.executeNewOperation(aDiagramBuilder.createAttachToPackageOperation(pNodes));
+		}
+		else if(aDiagramBuilder.canDetachFromPackage(pNodes))
+		{
+			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(pNodes));
+		}
 		aCanvas.paintPanel();
 	}
 }
