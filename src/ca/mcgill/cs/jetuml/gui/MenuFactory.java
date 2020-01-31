@@ -82,6 +82,8 @@ class MenuFactory
 	 * Creates a normal menu item with pHandler as the event handler.
 	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
 	 * @param pHandler The callback to execute when the menu item is selected.
+	 * @param pDiagramSpecific True if the action requires a diagram tab to be active. A value of false
+	 * will indicate that the menu should be disabled if the welcome tab is showing. See setMenuVisibility
 	 * @return A menu item for the action described.
 	 */
 	public MenuItem createMenuItem(String pPrefix,  boolean pDiagramSpecific, EventHandler<ActionEvent> pHandler)

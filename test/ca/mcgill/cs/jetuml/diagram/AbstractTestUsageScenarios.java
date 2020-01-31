@@ -136,7 +136,8 @@ public class AbstractTestUsageScenarios
 	protected void selectAll()
 	{
 		aSelection.clear();
-		aDiagram.allElements().forEach((e)-> aSelection.add(e));
+		aDiagram.rootNodes().forEach(aSelection::add);
+		aDiagram.edges().forEach(aSelection::add);
 	}
 	
 	protected void undo()

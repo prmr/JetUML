@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import java.util.List;
+
 /**
  * Represents an element (typically the diagram) that
  * can provide information about a diagram.
@@ -27,18 +29,13 @@ package ca.mcgill.cs.jetuml.diagram;
 public interface DiagramData
 {
 	/**
-	 * @return An iterable of all the elements tracked
-	 * by the diagram, namely, edges and root nodes.
-	 */
-	Iterable<DiagramElement> allElements();
-	
-	/**
 	 * @return An iterable of all the root nodes of the diagram.
 	 */
-	Iterable<Node> rootNodes();
+	List<Node> rootNodes();
 	
 	/**
-	 * @return An iterable of all the edges in the diagram.
+	 * @return An unmodifiable list of all the edges in the diagram.
+	 * @post never null.
 	 */
-	Iterable<Edge> edges();
+	List<Edge> edges();
 }

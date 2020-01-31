@@ -235,7 +235,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				return aDiagram.indexOf(callee);
 			}
 		}
-		return aDiagram.numberOfEdges();
+		return aDiagram.edges().size();
 	}
 	
 	@Override
