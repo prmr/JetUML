@@ -202,13 +202,8 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 		addEdge(aGeneralEdge,  new Point(20, 20), new Point(140, 20));
 		addEdge(aNoteEdge, new Point(85, 25), new Point(110, 110));
 
-		for(DiagramElement element: aDiagram.allElements())
-		{
-			if(element instanceof Node)
-			{
-				((Node) element).translate(26, 37);
-			}
-		}
+		aDiagram.rootNodes().forEach(node -> node.translate(26, 37));
+		
 		assertEquals(new Point(46, 57), aActorNode1.position());
 		assertEquals(new Point(276, 57), aActorNode2.position());
 		assertEquals(new Point(106, 57), aUseCaseNode1.position());

@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
@@ -57,24 +58,86 @@ public final class Diagram implements DiagramData
 		aEdges = new ArrayList<>();
 	}
 	
-	@Override
-	public Iterable<DiagramElement> allElements()
+	/**
+	 * Creates a copy of the current diagram. The copy is a completely
+	 * distinct graph of nodes and edges with the same topology as this
+	 * diagram.
+	 * 
+	 * @return A copy of this diagram. Never null.
+	 */
+	public Diagram duplicate()
 	{
-		ArrayList<DiagramElement> result = new ArrayList<>(aRootNodes);
-		result.addAll(aEdges);
-		return result;
+		Diagram copy = new Diagram(this.aType); 
+		aEdges.forEach( edge -> copy.aEdges.add(edge.clone()));
+		
+		for( Node node : aRootNodes )
+		{
+			Node nodeCopy = node.clone();
+			copy.aRootNodes.add(nodeCopy);
+			reassignEdges(copy.aEdges, node, nodeCopy);
+		}
+		
+		// Reassign diagram
+		copy.aEdges.forEach( edge -> edge.connect(edge.getStart(), edge.getEnd(), copy));
+		for( Node node : copy.aRootNodes )
+		{
+			copy.attachNode(node);
+		}
+		return copy;
+	}
+	
+	/*
+	 * Recursively attach the node and all its children to this diagram.
+	 */
+	private void attachNode(Node pNode)
+	{
+		pNode.attach(this);
+		if( pNode instanceof ParentNode )
+		{
+			for( Node child : ((ParentNode)pNode).getChildren() )
+			{
+				attachNode(child);
+			}
+		}
+	}
+
+	/* For node pOriginal, go through all edges that refer to it and replace
+	 * it with pCopy in the edge. Do this recursively for all children of pOriginal,
+	 * assuming the same topology for pCopy. */
+	private static void reassignEdges(List<Edge> pEdges, Node pOriginal, Node pCopy)
+	{
+		for( Edge edge : pEdges )
+		{
+			if( edge.getStart() == pOriginal )
+			{
+				edge.connect(pCopy, edge.getEnd(), edge.getDiagram());
+			}
+			if( edge.getEnd() == pOriginal)
+			{
+				edge.connect(edge.getStart(), pCopy, edge.getDiagram());
+			}
+		}
+		if( pOriginal instanceof ParentNode )
+		{
+			List<ChildNode> oldChildren = ((ParentNode) pOriginal).getChildren();
+			List<ChildNode> newChildren = ((ParentNode) pCopy).getChildren();
+			for( int i = 0; i < oldChildren.size(); i++)
+			{
+				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
+			}
+		}
 	}
 	
 	@Override
-	public Iterable<Node> rootNodes()
+	public List<Node> rootNodes()
 	{
-		return aRootNodes;
+		return Collections.unmodifiableList(aRootNodes);
 	}
 	
 	@Override
-	public Iterable<Edge> edges()
+	public List<Edge> edges()
 	{
-		return aEdges;
+		return Collections.unmodifiableList(aEdges);
 	}
 	
 	/**
@@ -294,14 +357,6 @@ public final class Diagram implements DiagramData
 	{
 		assert pEdge != null && pIndex >=0 && pIndex <= aEdges.size();
 		aEdges.add(pIndex, pEdge);
-	}
-	
-	/**
-	 * @return The number of edges in the diagram.
-	 */
-	public int numberOfEdges()
-	{
-		return aEdges.size();
 	}
 	
 	/**

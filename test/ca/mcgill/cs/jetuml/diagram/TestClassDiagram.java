@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -83,7 +82,7 @@ public class TestClassDiagram
 	@Test
 	public void testNumberOfEdgesEmpty()
 	{
-		assertEquals(0, aDiagram.numberOfEdges());
+		assertEquals(0, aDiagram.edges().size());
 	}
 	
 	@Test
@@ -95,7 +94,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 	}
 	
 	@Test
@@ -118,7 +117,7 @@ public class TestClassDiagram
 		aDiagram.addRootNode(aClassNode2);
 		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
 		aDiagram.addEdge(0, aEdge1);
-		assertEquals(1, aDiagram.numberOfEdges());
+		assertEquals(1, aDiagram.edges().size());
 		assertEquals(0, aDiagram.indexOf(aEdge1));
 	}
 	
@@ -131,7 +130,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(0, aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(0));
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(1));
 	}
@@ -145,7 +144,7 @@ public class TestClassDiagram
 		aDiagram.addEdge(aEdge1);
 		aEdge2.connect(aClassNode1, aClassNode2, aDiagram);
 		aDiagram.addEdge(1, aEdge2);
-		assertEquals(2, aDiagram.numberOfEdges());
+		assertEquals(2, aDiagram.edges().size());
 		assertSame(aEdge1, aDiagramAccessor.getEdges().get(0));
 		assertSame(aEdge2, aDiagramAccessor.getEdges().get(1));
 	}
@@ -196,47 +195,6 @@ public class TestClassDiagram
 		aDiagram.removeEdge(aEdge1);
 		assertEquals(1, aDiagramAccessor.getEdges().size());
 		assertSame(aEdge3, aDiagramAccessor.getEdges().get(0));
-	}
-	
-	@Test
-	public void testAllElementsEmpty()
-	{
-		Iterable<DiagramElement> elements = aDiagram.allElements();
-		assertFalse(elements.iterator().hasNext());
-	}
-	
-	@Test
-	public void testAllElementsNodesAndEdges()
-	{
-		aDiagram.addRootNode(aClassNode1);
-		aDiagram.addRootNode(aClassNode2);
-		aEdge1.connect(aClassNode1, aClassNode1, aDiagram);
-		aDiagram.addEdge(aEdge1);
-		List<DiagramElement> elements = new ArrayList<>();
-		for( DiagramElement element : aDiagram.allElements() )
-		{
-			elements.add(element);
-		}
-		assertEquals(3, elements.size());
-		assertTrue( elements.contains(aClassNode1));
-		assertTrue( elements.contains(aClassNode2));
-		assertTrue( elements.contains(aEdge1));
-	}
-	
-	@Test
-	public void testAllElementsNodesWithChildren()
-	{
-		aDiagram.addRootNode(aClassNode1);
-		aPackageNode1.addChild(aClassNode2);
-		aDiagram.addRootNode(aPackageNode1);
-		List<DiagramElement> elements = new ArrayList<>();
-		for( DiagramElement element : aDiagram.allElements() )
-		{
-			elements.add(element);
-		}
-		assertEquals(2, elements.size());
-		assertTrue(elements.contains(aClassNode1));
-		assertTrue(elements.contains(aPackageNode1));
 	}
 	
 	@Test
