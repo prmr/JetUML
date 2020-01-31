@@ -100,7 +100,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/* 
-	 * Find if the node to be added should be added to a package. Returns null if not. 
+	 * Finds if the node to be added should be added to a package. Returns null if not. 
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
@@ -138,7 +138,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 
 	/*
-	 * Find the package node under the position of the first node in pNodes.
+	 * Finds the package node under the position of the first node in pNodes.
 	 * Returns null if there is no such package node for the nodes in pNodes to attach to,
 	 * or the package node is already in the pNodes.
 	 */
@@ -180,12 +180,14 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static boolean haveNonNullParent(Iterable<Node> pNodes)
 	{
-		boolean haveNonNullParent = false;
 		for(Node pNode: pNodes)
 		{
-			haveNonNullParent = validChild(pNode) && ((ChildNode)pNode).getParent() != null;
+			if (!validChild(pNode) || ((ChildNode)pNode).getParent() == null)
+			{
+				return false;
+			}
 		}
-		return haveNonNullParent;
+		return true;
 	}
 	
 	/*
@@ -193,16 +195,18 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static boolean haveNullParent(Iterable<Node> pNodes)
 	{
-		boolean haveNonNullParent = false;
 		for(Node pNode: pNodes)
 		{
-			haveNonNullParent = validChild(pNode) && ((ChildNode)pNode).getParent() == null;
+			if(!validChild(pNode) || ((ChildNode)pNode).getParent() != null)
+			{	
+				return false;
+			}
 		}
-		return haveNonNullParent;
+		return true;
 	}
 
 	/*
-	 * Find the parent of all the nodes in pNodes. Return null if the nodes have different parents.
+	 * Finds the parent of all the nodes in pNodes. Return null if the nodes have different parents.
 	 */
 	private static ParentNode findSharedParent(Iterable<Node> pNodes)
 	{
@@ -225,7 +229,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/**
-	 * Return true if the parent of all the nodes in pNodes is null and there exists 
+	 * Returns true if the parent of all the nodes in pNodes is null and there exists 
 	 * a package node under the position of the first node in pNodes.
 	 */
 	@Override
@@ -235,7 +239,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/**
-	 * Return true if the nodes in pNodes have the same non-null parent.
+	 * Returns true if the nodes in pNodes have the same non-null parent.
 	 */
 	@Override
 	public boolean canDetachFromPackage(Iterable<Node>pNodes)
