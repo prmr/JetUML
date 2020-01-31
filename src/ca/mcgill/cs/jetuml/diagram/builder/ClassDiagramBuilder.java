@@ -138,13 +138,12 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 
 	/*
-	 * Find the pacakage node under the position of the first node in pNodes.
-	 * Return null if there is no such package node for the nodes in pNodes to attach to,
+	 * Find the package node under the position of the first node in pNodes.
+	 * Returns null if there is no such package node for the nodes in pNodes to attach to,
 	 * or the package node is already in the pNodes.
 	 */
 	private PackageNode findPackageToAttach(Iterable<Node> pNodes)
 	{
-	
 		Point pRequestedPosition = null;
 		List<Node> rootNodes = new ArrayList<>();
 		aDiagram.rootNodes().forEach(rootNodes::add);
@@ -165,7 +164,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		{
 			return null;
 		}
-		// Return null if the package node is in pNodes or contains any node in pNodes
+		// Returns null if the package node is in pNodes or contains any node in pNodes
 		for(Node pNode: pNodes)
 		{
 			if(pPackageNode == pNode || pPackageNode.getChildren().contains(pNode))
@@ -177,7 +176,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Retrun true iff all the nodes in pNodes have non-null parents
+	 * Returns true iff all the nodes in pNodes have non-null parents
 	 */
 	private static boolean haveNonNullParent(Iterable<Node> pNodes)
 	{
@@ -190,7 +189,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Retrun true iff all the nodes in pNodes have null parents
+	 * Retruns true iff all the nodes in pNodes have null parents
 	 */
 	private static boolean haveNullParent(Iterable<Node> pNodes)
 	{

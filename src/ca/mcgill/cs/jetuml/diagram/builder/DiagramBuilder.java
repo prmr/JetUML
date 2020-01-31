@@ -533,7 +533,7 @@ public abstract class DiagramBuilder
 	 * @return True if it is possible to attach pNodes to the node at pRequestedPosition.
 	 * @pre pNodes != null
 	 */
-	public boolean canAttachToPackage(Iterable<Node>pNodes)
+	public boolean canAttachToPackage(Iterable<Node> pNodes)
 	{
 		assert pNodes != null;
 		return false;
@@ -548,14 +548,14 @@ public abstract class DiagramBuilder
 	 * @return True if it is possible to detach pNodes from their parents.
 	 * @pre pNodes != null
 	 */
-	public boolean canDetachFromPackage(Iterable<Node>pNodes)
+	public boolean canDetachFromPackage(Iterable<Node> pNodes)
 	{
 		assert pNodes != null;
 		return false;
 	}
 	
 	/**
-	 * Creates an opeartion that attaches all the nodes in pNodes to the package node under 
+	 * Creates an operation that attaches all the nodes in pNodes to the package node under 
 	 * the position of the first node in pNodes. The operation is null by default. 
 	 * Override to provide cases where the precondition is met.
 	 * 
