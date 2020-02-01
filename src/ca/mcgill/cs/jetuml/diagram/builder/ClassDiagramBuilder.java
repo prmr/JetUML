@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
@@ -61,19 +62,19 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		DiagramOperation result = null;
 		if( validChild(pNode))
 		{
-			PackageNode container = findContainer(aDiagram.rootNodes(), pRequestedPosition);
-			if( container != null )
+			Optional<PackageNode> container = findContainer(aDiagram.rootNodes(), pRequestedPosition);
+			if( container.isPresent() )
 			{
 				positionNode(pNode, pRequestedPosition);
 				result = new SimpleOperation( ()->  
 				{ 
 					pNode.attach(aDiagram);
-					container.addChild((ChildNode)pNode); 
+					container.get().addChild((ChildNode)pNode); 
 				},
 				()-> 
 				{ 
 					pNode.detach();
-					container.removeChild((ChildNode)pNode); 
+					container.get().removeChild((ChildNode)pNode); 
 				});
 			}
 		}
@@ -104,7 +105,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
-	private PackageNode findContainer( Iterable<Node> pNodes, Point pPoint)
+	private Optional<PackageNode> findContainer( Iterable<Node> pNodes, Point pPoint)
 	{
 		PackageNode container = null;
 		for( Node node : pNodes )
@@ -116,23 +117,23 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		}
 		if( container == null )
 		{
-			return null;
+			return Optional.empty();
 		}
 		List<Node> children = new ArrayList<>(container.getChildren());
 		if( children.size() == 0 )
 		{
-			return container;
+			return Optional.of(container);
 		}
 		else
 		{
-			PackageNode deeperContainer = findContainer( children, pPoint );
-			if( deeperContainer == null )
-			{
-				return container;
-			}
-			else
+			Optional<PackageNode> deeperContainer = findContainer( children, pPoint );
+			if( deeperContainer.isPresent() )
 			{
 				return deeperContainer;
+			}
+			else 
+			{
+				return Optional.of(container);
 			}
 		}
 	}
@@ -142,15 +143,14 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * Returns null if there is no such package node for the nodes in pNodes to attach to,
 	 * or the package node is already in the pNodes.
 	 */
-	private PackageNode findPackageToAttach(Iterable<Node> pNodes)
+	private Optional<PackageNode> findPackageToAttach(Iterable<Node> pNodes)
 	{
 		Point pRequestedPosition = null;
-		List<Node> rootNodes = new ArrayList<>();
-		aDiagram.rootNodes().forEach(rootNodes::add);
-		for(Node pNode: pNodes)
+		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
+		for( Node pNode: pNodes )
 		{
 			// Get the position of the first node in pNodes
-			if(pRequestedPosition== null)
+			if( pRequestedPosition == null )
 			{
 				pRequestedPosition = pNode.position();
 			}
@@ -159,17 +159,17 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				rootNodes.remove(pNode);
 			}
 		}
-		PackageNode pPackageNode = findContainer(rootNodes, pRequestedPosition);
-		if(pPackageNode == null)
+		Optional<PackageNode> pPackageNode = findContainer(rootNodes, pRequestedPosition);
+		if( !pPackageNode.isPresent() )
 		{
-			return null;
+			return Optional.empty();
 		}
 		// Returns null if the package node is in pNodes or contains any node in pNodes
 		for(Node pNode: pNodes)
 		{
-			if(pPackageNode == pNode || pPackageNode.getChildren().contains(pNode))
+			if( pPackageNode.get() == pNode || pPackageNode.get().getChildren().contains(pNode) )
 			{
-				pPackageNode = null;
+				return Optional.empty();
 			}
 		}
 		return pPackageNode;
@@ -180,9 +180,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static boolean haveNonNullParent(Iterable<Node> pNodes)
 	{
-		for(Node pNode: pNodes)
+		for( Node pNode: pNodes )
 		{
-			if (!validChild(pNode) || ((ChildNode)pNode).getParent() == null)
+			if ( !validChild(pNode) || ((ChildNode)pNode).getParent() == null )
 			{
 				return false;
 			}
@@ -195,9 +195,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static boolean haveNullParent(Iterable<Node> pNodes)
 	{
-		for(Node pNode: pNodes)
+		for( Node pNode: pNodes )
 		{
-			if(!validChild(pNode) || ((ChildNode)pNode).getParent() != null)
+			if( !validChild(pNode) || ((ChildNode)pNode).getParent() != null )
 			{	
 				return false;
 			}
@@ -208,7 +208,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	/*
 	 * Finds the parent of all the nodes in pNodes. Return null if the nodes have different parents.
 	 */
-	private static ParentNode findSharedParent(Iterable<Node> pNodes)
+	private static Optional<ParentNode> findSharedParent(Iterable<Node> pNodes)
 	{
 		assert haveNonNullParent(pNodes);
 		List<ChildNode> pChildNodes = new ArrayList<>();
@@ -222,10 +222,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		{
 			if(pParent != pChild.getParent())
 			{
-				return null;
+				return Optional.empty();
 			}
 		}
-		return pParent;
+		return Optional.of(pParent);
 	}
 	
 	/**
@@ -235,7 +235,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public boolean canAttachToPackage(Iterable<Node> pNodes)
 	{
-		return haveNullParent(pNodes) && findPackageToAttach(pNodes) != null;
+		return haveNullParent(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
 	/**
@@ -244,7 +244,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public boolean canDetachFromPackage(Iterable<Node>pNodes)
 	{
-		return haveNonNullParent(pNodes) && findSharedParent(pNodes)!= null;
+		return haveNonNullParent(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	
 	/**
@@ -254,11 +254,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes)
 	{
-		PackageNode pPackageNode = findPackageToAttach(pNodes);
+		PackageNode pPackageNode = findPackageToAttach(pNodes).get();
 		return new SimpleOperation( 
 				()-> 
 				{
-					for(Node pNode: pNodes)
+					for( Node pNode: pNodes )
 					{
 						aDiagram.removeRootNode(pNode);
 						pPackageNode.addChild((ChildNode)pNode);
@@ -267,7 +267,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				},
 				()->
 				{
-					for(Node pNode: pNodes)
+					for( Node pNode: pNodes )
 					{
 						aDiagram.addRootNode(pNode);
 						pPackageNode.removeChild((ChildNode)pNode);
@@ -282,15 +282,15 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
 	{
-		ParentNode pParent = findSharedParent(pNodes);
+		ParentNode pParent = findSharedParent(pNodes).get();
 		ParentNode outerParent = (pParent instanceof ChildNode)? ((ChildNode)pParent).getParent():null;
-		if(outerParent == null)
+		if( outerParent == null )
 		{
 			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
 			return new SimpleOperation( 
 					()-> 
 					{
-						for(Node pNode: pNodes)
+						for( Node pNode: pNodes )
 						{
 							aDiagram.addRootNode(pNode);
 							pParent.removeChild((ChildNode)pNode);
@@ -299,7 +299,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					},
 					()->
 					{
-						for(Node pNode: pNodes)
+						for( Node pNode: pNodes )
 						{
 							aDiagram.removeRootNode(pNode);
 							pParent.addChild((ChildNode)pNode);
@@ -313,7 +313,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 			return new SimpleOperation( 
 					()-> 
 					{
-						for(Node pNode: pNodes)
+						for( Node pNode: pNodes )
 						{
 							outerParent.addChild((ChildNode)pNode);
 							pParent.removeChild((ChildNode)pNode);
@@ -322,7 +322,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					},
 					()->
 					{
-						for(Node pNode: pNodes)
+						for( Node pNode: pNodes )
 						{
 							outerParent.removeChild((ChildNode)pNode);
 							pParent.addChild((ChildNode)pNode);
