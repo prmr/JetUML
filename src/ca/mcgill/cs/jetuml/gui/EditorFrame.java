@@ -469,10 +469,6 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			File result = fileChooser.showSaveDialog(aMainStage);
-			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.forDiagramType(diagram.getType()))
-			{
-				result = new File(result.getPath() + diagram.getFileExtension() + FileExtensions.EXTENSION_JET);
-			}
 			if( result != null )
 			{
 				PersistenceService.save(diagram, result);
