@@ -39,7 +39,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public final class FileExtensions
 {
-	public static final String EXTENSION_JET = ".jet";
+	private static final String EXTENSION_JET = ".jet";
 	
 	private static final ExtensionFilter FILTER_APPLICATION = 
 			new ExtensionFilter(RESOURCES.getString("application.file.name"), "*" + EXTENSION_JET);
