@@ -341,7 +341,7 @@ public class EditorFrame extends BorderPane
 	{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(aRecentFiles.getMostRecentDirectory());
-		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
+		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
 
 		File selectedFile = fileChooser.showOpenDialog(aMainStage);
 		if(selectedFile != null) 
@@ -460,8 +460,8 @@ public class EditorFrame extends BorderPane
 		Diagram diagram = diagramTab.getDiagram();
 
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(FileExtensions.getAll());
-		fileChooser.setSelectedExtensionFilter(FileExtensions.get(diagram.getDescription()));
+		fileChooser.getExtensionFilters().addAll(FileExtensions.all());
+		fileChooser.setSelectedExtensionFilter(FileExtensions.forDiagramType(diagram.getType()));
 
 		if(diagramTab.getFile().isPresent()) 
 		{
@@ -477,10 +477,6 @@ public class EditorFrame extends BorderPane
 		try 
 		{
 			File result = fileChooser.showSaveDialog(aMainStage);
-			if(fileChooser.getSelectedExtensionFilter() != FileExtensions.get(diagram.getDescription()))
-			{
-				result = new File(result.getPath() + diagram.getFileExtension() + RESOURCES.getString("application.file.extension"));
-			}
 			if( result != null )
 			{
 				PersistenceService.save(diagram, result);
@@ -500,34 +496,6 @@ public class EditorFrame extends BorderPane
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.save_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
 			alert.showAndWait();
-		}
-	}
-
-	/**
-	 * Edits the file path so that the pToBeRemoved extension, if found, is replaced
-	 * with pDesired.
-	 * 
-	 * @param pOriginal
-	 *            the file to use as a starting point
-	 * @param pToBeRemoved
-	 *            the extension that is to be removed before adding the desired
-	 *            extension.
-	 * @param pDesired
-	 *            the desired extension (e.g. ".png")
-	 * @return original if it already has the desired extension, or a new file with
-	 *         the edited file path
-	 */
-	static String replaceExtension(String pOriginal, String pToBeRemoved, String pDesired) 
-	{
-		assert pOriginal != null && pToBeRemoved != null && pDesired != null;
-
-		if (pOriginal.endsWith(pToBeRemoved)) 
-		{
-			return pOriginal.substring(0, pOriginal.length() - pToBeRemoved.length()) + pDesired;
-		}
-		else 
-		{
-			return pOriginal;
 		}
 	}
 
@@ -623,8 +591,7 @@ public class EditorFrame extends BorderPane
 		// If the file was previously saved, use that to suggest a file name root.
 		if(frame.getFile().isPresent()) 
 		{
-			File file = new File(replaceExtension(frame.getFile().get().getAbsolutePath(), 
-					RESOURCES.getString("application.file.extension"), ""));
+			File file = FileExtensions.clipApplicationExtension(frame.getFile().get());
 			fileChooser.setInitialDirectory(file.getParentFile());
 			fileChooser.setInitialFileName(file.getName());
 		}
