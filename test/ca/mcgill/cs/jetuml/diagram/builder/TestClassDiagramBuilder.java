@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +37,6 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
@@ -71,35 +69,17 @@ public class TestClassDiagramBuilder
 	
 	private int numberOfRootNodes()
 	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
-		{
-			sum++;
-		}
-		return sum;
+		return aDiagram.rootNodes().size();
 	}
 	
 	private int numberOfEdges()
 	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
-		{
-			sum++;
-		}
-		return sum;
+		return aDiagram.edges().size();
 	}
 	
 	private Node getRootNode(int pIndex)
 	{
-		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
-		int i = 0;
-		Node node = iterator.next();
-		while( i < pIndex )
-		{
-			i++;
-			node = iterator.next();
-		}
-		return node;
+		return aDiagram.rootNodes().get(pIndex);
 	}
 	
 	@Test
