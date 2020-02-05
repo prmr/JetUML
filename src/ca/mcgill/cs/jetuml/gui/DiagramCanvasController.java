@@ -568,17 +568,17 @@ public class DiagramCanvasController
 	 */
 	public void keyPressed()
 	{
-		Iterable<Node> pNodes = aSelectionModel.getSelectedNodes();
-		if(aDiagramBuilder.canAttachToPackage(pNodes))
+		Iterable<Node> selectedNodes = aSelectionModel.getSelectedNodes();
+		if(aDiagramBuilder.canAttachToPackage(selectedNodes))
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createAttachToPackageOperation(pNodes));
+			aProcessor.executeNewOperation(aDiagramBuilder.createAttachToPackageOperation(selectedNodes));
 		}
-		else if(aDiagramBuilder.canDetachFromPackage(pNodes))
+		else if(aDiagramBuilder.canDetachFromPackage(selectedNodes))
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(pNodes));
+			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(selectedNodes));
 		}
 		// Place the modified nodes on the top
-		pNodes.forEach(pNode -> aCanvas.getDiagram().placeOnTop(pNode));
+		selectedNodes.forEach(pNode -> aCanvas.getDiagram().placeOnTop(pNode));
 		aCanvas.paintPanel();
 	}
 }

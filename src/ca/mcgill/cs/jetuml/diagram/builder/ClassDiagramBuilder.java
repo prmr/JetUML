@@ -101,7 +101,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/* 
-	 * Finds if the node to be added should be added to a package. Returns null if not. 
+	 * Finds if the node to be added should be added to a package. Returns Optional.empty() if not. 
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
@@ -140,39 +140,39 @@ public class ClassDiagramBuilder extends DiagramBuilder
 
 	/*
 	 * Finds the package node under the position of the first node in pNodes.
-	 * Returns null if there is no such package node for the nodes in pNodes to attach to,
+	 * Returns Optional.empty() if there is no such package node for the nodes in pNodes to attach to,
 	 * or the package node is already in the pNodes.
 	 */
 	private Optional<PackageNode> findPackageToAttach(Iterable<Node> pNodes)
 	{
-		Point pRequestedPosition = null;
+		Point requestedPosition = null;
 		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
 		for( Node pNode: pNodes )
 		{
 			// Get the position of the first node in pNodes
-			if( pRequestedPosition == null )
+			if( requestedPosition == null )
 			{
-				pRequestedPosition = pNode.position();
+				requestedPosition = pNode.position();
 			}
 			if(aDiagram.containsAsRoot(pNode))
 			{
 				rootNodes.remove(pNode);
 			}
 		}
-		Optional<PackageNode> pPackageNode = findContainer(rootNodes, pRequestedPosition);
-		if( !pPackageNode.isPresent() )
+		Optional<PackageNode> packageNode = findContainer(rootNodes, requestedPosition);
+		if( !packageNode.isPresent() )
 		{
 			return Optional.empty();
 		}
-		// Returns null if the package node is in pNodes or contains any node in pNodes
+		// Returns Optional.empty() if the package node is in pNodes or contains any node in pNodes
 		for(Node pNode: pNodes)
 		{
-			if( pPackageNode.get() == pNode || pPackageNode.get().getChildren().contains(pNode) )
+			if( packageNode.get() == pNode || packageNode.get().getChildren().contains(pNode) )
 			{
 				return Optional.empty();
 			}
 		}
-		return pPackageNode;
+		return packageNode;
 	}
 	
 	/*
@@ -191,7 +191,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Retruns true iff all the nodes in pNodes have null parents
+	 * Returns true iff all the nodes in pNodes have null parents.
 	 */
 	private static boolean haveNullParent(Iterable<Node> pNodes)
 	{
@@ -206,26 +206,26 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 
 	/*
-	 * Finds the parent of all the nodes in pNodes. Return null if the nodes have different parents.
+	 * Finds the parent of all the nodes in pNodes. Returns Optional.empty() if the nodes have different parents.
 	 */
 	private static Optional<ParentNode> findSharedParent(Iterable<Node> pNodes)
 	{
 		assert haveNonNullParent(pNodes);
-		List<ChildNode> pChildNodes = new ArrayList<>();
+		List<ChildNode> childNodes = new ArrayList<>();
 		for(Node pNode: pNodes)
 		{
-			pChildNodes.add((ChildNode)pNode); 
+			childNodes.add((ChildNode)pNode); 
 		}
 		// Get the parent of the first child node and check with other nodes
-		ParentNode pParent = pChildNodes.remove(0).getParent();
-		for(ChildNode pChild: pChildNodes)
+		ParentNode parent = childNodes.remove(0).getParent();
+		for(ChildNode child: childNodes)
 		{
-			if(pParent != pChild.getParent())
+			if(parent != child.getParent())
 			{
 				return Optional.empty();
 			}
 		}
-		return Optional.of(pParent);
+		return Optional.of(parent);
 	}
 	
 	/**
@@ -254,15 +254,15 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes)
 	{
-		PackageNode pPackageNode = findPackageToAttach(pNodes).get();
+		PackageNode packageNode = findPackageToAttach(pNodes).get();
 		return new SimpleOperation( 
 				()-> 
 				{
 					for( Node pNode: pNodes )
 					{
 						aDiagram.removeRootNode(pNode);
-						pPackageNode.addChild((ChildNode)pNode);
-						((ChildNode)pNode).setParent(pPackageNode);
+						packageNode.addChild((ChildNode)pNode);
+						((ChildNode)pNode).setParent(packageNode);
 					}
 				},
 				()->
@@ -270,7 +270,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					for( Node pNode: pNodes )
 					{
 						aDiagram.addRootNode(pNode);
-						pPackageNode.removeChild((ChildNode)pNode);
+						packageNode.removeChild((ChildNode)pNode);
 						((ChildNode)pNode).setParent(null);
 					}
 				});	
@@ -282,8 +282,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
 	{
-		ParentNode pParent = findSharedParent(pNodes).get();
-		ParentNode outerParent = (pParent instanceof ChildNode)? ((ChildNode)pParent).getParent():null;
+		ParentNode parent = findSharedParent(pNodes).get();
+		ParentNode outerParent = (parent instanceof ChildNode)? ((ChildNode)parent).getParent():null;
 		if( outerParent == null )
 		{
 			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
@@ -293,7 +293,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							aDiagram.addRootNode(pNode);
-							pParent.removeChild((ChildNode)pNode);
+							parent.removeChild((ChildNode)pNode);
 							((ChildNode)pNode).setParent(null);
 						}
 					},
@@ -302,8 +302,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							aDiagram.removeRootNode(pNode);
-							pParent.addChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(pParent);
+							parent.addChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(parent);
 						}
 					});	
 		}
@@ -316,7 +316,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							outerParent.addChild((ChildNode)pNode);
-							pParent.removeChild((ChildNode)pNode);
+							parent.removeChild((ChildNode)pNode);
 							((ChildNode)pNode).setParent(outerParent);
 						}
 					},
@@ -325,8 +325,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							outerParent.removeChild((ChildNode)pNode);
-							pParent.addChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(pParent);
+							parent.addChild((ChildNode)pNode);
+							((ChildNode)pNode).setParent(parent);
 						}
 					});	
 		}
