@@ -224,29 +224,38 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/**
-	 * Returns true if the parent of all the nodes in pNodes is null and there exists 
-	 * a package node under the position of the first node in pNodes.
+	 * Returns whether attaching the nodes in pNodes to the package node under the position
+	 * of the first node in pNodes is a valid operation on the diagram.
+	 * 
+	 * @param pNodes The nodes to attach. 
+	 * @return True if it is possible to attach pNodes to the package node.
+	 * @pre pNodes != null
 	 */
-	@Override
 	public boolean canAttachToPackage(Iterable<Node> pNodes)
 	{
 		return haveNullParent(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
 	/**
-	 * Returns true if the nodes in pNodes have the same non-null parent.
+	 * Returns whether detaching the nodes in pNodes from the their parent is
+	 * a valid operation on the diagram.
+	 * 
+	 * @param pNodes The nodes to detach.
+	 * @return True if it is possible to detach pNodes from their parents.
+	 * @pre pNodes != null
 	 */
-	@Override
 	public boolean canDetachFromPackage(Iterable<Node>pNodes)
 	{
 		return haveNonNullParent(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	
 	/**
-	 * Creates an opeartion that attaches all the nodes in pNodes to the package node under 
+	 * Creates an operation that attaches all the nodes in pNodes to the package node under 
 	 * the position of the first node in pNodes.
+	 * 
+	 * @param pNodes The nodes to attach.
+	 * @return The requested operation
 	 */
-	@Override
 	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes)
 	{
 		PackageNode packageNode = findPackageToAttach(pNodes).get();
@@ -271,10 +280,13 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				});	
 	}
 	
+
 	/**
-	 * Creates an opeartion that detaches all the nodes in pNodes from their parent. 
+	 * Creates an opeartion that detaches all the nodes in pNodes from their parent.
+	 * 
+	 * @param pNodes The nodes to detach.
+	 * @return The requested operation
 	 */
-	@Override
 	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
 	{
 		ParentNode parent = findSharedParent(pNodes).get();

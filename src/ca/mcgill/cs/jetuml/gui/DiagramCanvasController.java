@@ -37,6 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -564,18 +565,23 @@ public class DiagramCanvasController
 	}
 	
 	/**
-	 * When the shift key is pressed, perform node attachment or detachment if possible
+	 * When the shift key is pressed on a class diagram, perform node attachment or detachment if possible.
 	 */
 	public void keyPressed()
 	{
-		Iterable<Node> selectedNodes = aSelectionModel.getSelectedNodes();
-		if(aDiagramBuilder.canAttachToPackage(selectedNodes))
+		if(aCanvas.getDiagram().getType() != DiagramType.CLASS)
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createAttachToPackageOperation(selectedNodes));
+			return;
 		}
-		else if(aDiagramBuilder.canDetachFromPackage(selectedNodes))
+		Iterable<Node> selectedNodes = aSelectionModel.getSelectedNodes();
+		ClassDiagramBuilder classDiagramBuilder = (ClassDiagramBuilder)aDiagramBuilder;
+		if(classDiagramBuilder.canAttachToPackage(selectedNodes))
 		{
-			aProcessor.executeNewOperation(aDiagramBuilder.createDetachFromPackageOperation(selectedNodes));
+			aProcessor.executeNewOperation(classDiagramBuilder.createAttachToPackageOperation(selectedNodes));
+		}
+		else if(classDiagramBuilder.canDetachFromPackage(selectedNodes))
+		{
+			aProcessor.executeNewOperation(classDiagramBuilder.createDetachFromPackageOperation(selectedNodes));
 		}
 		// Place the modified nodes on the top
 		selectedNodes.forEach(node -> aCanvas.getDiagram().placeOnTop(node));
