@@ -145,15 +145,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private Optional<PackageNode> findPackageToAttach(Iterable<Node> pNodes)
 	{
-		Point requestedPosition = null;
 		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
+		Point requestedPosition = rootNodes.get(0).position();
 		for( Node pNode: pNodes )
 		{
-			// Get the position of the first node in pNodes
-			if( requestedPosition == null )
-			{
-				requestedPosition = pNode.position();
-			}
 			if(aDiagram.containsAsRoot(pNode))
 			{
 				rootNodes.remove(pNode);
