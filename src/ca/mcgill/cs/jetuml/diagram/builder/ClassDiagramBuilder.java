@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
- * A builder for class diagram.
+ * A builder for class diagrams.
  */
 public class ClassDiagramBuilder extends DiagramBuilder
 {
@@ -48,7 +48,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * Creates a new builder for class diagrams.
 	 * 
 	 * @param pDiagram The diagram to wrap around.
-	 * @pre pDiagram != null;
+	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.CLASS
 	 */
 	public ClassDiagramBuilder( Diagram pDiagram )
 	{
@@ -171,33 +171,45 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Returns true iff all the nodes in pNodes have non-null parents.
+	 * Returns true iff all the nodes in pNodes are attachable.
+	 * @pre pNodes != null && pNodes.size() > 0
 	 */
-	private static boolean haveNonNullParent(List<Node> pNodes)
+	private static boolean allAttachable(List<Node> pNodes)
 	{
-		for( Node pNode: pNodes )
-		{
-			if ( !validChild(pNode) || ((ChildNode)pNode).getParent() == null )
-			{
-				return false;
-			}
-		}
-		return true;
+		assert pNodes != null && pNodes.size() > 0;
+		return pNodes.stream().allMatch(ClassDiagramBuilder::isAttachable);
 	}
 	
 	/*
-	 * Returns true iff all the nodes in pNodes have null parents.
+	 * @param pNode The node to check
+	 * @return True if the node is a valid child that does not already
+	 * have a parent.
+	 * @pre pNode != null
 	 */
-	private static boolean haveNullParent(List<Node> pNodes)
+	private static boolean isAttachable(Node pNode)
 	{
-		for( Node pNode: pNodes )
-		{
-			if( !validChild(pNode) || ((ChildNode)pNode).getParent() != null )
-			{	
-				return false;
-			}
-		}
-		return true;
+		return validChild(pNode) && ((ChildNode)pNode).getParent() == null;
+	}
+	
+	/*
+	 * @param pNode The node to check
+	 * @return True if the node is a valid child that already
+	 * has a parent.
+	 * @pre pNode != null
+	 */
+	private static boolean isDetachable(Node pNode)
+	{
+		return validChild(pNode) && ((ChildNode)pNode).getParent() != null;
+	}
+	
+	/*
+	 * Returns true iff all the nodes in pNodes are detachable
+	 * @pre pNodes != null && pNodes.size() > 0
+	 */
+	private static boolean allDetachable(List<Node> pNodes)
+	{
+		assert pNodes != null && pNodes.size() > 0;
+		return pNodes.stream().allMatch(ClassDiagramBuilder::isDetachable);
 	}
 
 	/*
@@ -205,7 +217,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static Optional<ParentNode> findSharedParent(List<Node> pNodes)
 	{
-		assert haveNonNullParent(pNodes);
+		assert allDetachable(pNodes);
 		// Get the parent of the first child node and check with other nodes
 		ParentNode parent = ((ChildNode)pNodes.get(0)).getParent();
 		for(Node pNode: pNodes)
@@ -229,7 +241,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	public boolean canAttachToPackage(List<Node> pNodes)
 	{
 		assert pNodes!= null;
-		return haveNullParent(pNodes) && findPackageToAttach(pNodes).isPresent();
+		return allAttachable(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
 	/**
@@ -243,7 +255,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	public boolean canDetachFromPackage(List<Node>pNodes)
 	{
 		assert pNodes!= null;
-		return haveNonNullParent(pNodes) && findSharedParent(pNodes).isPresent();
+		return allDetachable(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	
 	/**
@@ -291,7 +303,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	{
 		assert canDetachFromPackage(pNodes);
 		ParentNode parent = findSharedParent(pNodes).get();
-		ParentNode outerParent = (parent instanceof ChildNode)? ((ChildNode)parent).getParent():null;
+		// CSOFF:
+		ParentNode outerParent = (parent instanceof ChildNode) ? ((ChildNode)parent).getParent() : null; //CSON:
 		if( outerParent == null )
 		{
 			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
