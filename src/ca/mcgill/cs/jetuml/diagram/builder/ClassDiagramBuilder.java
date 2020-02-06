@@ -146,7 +146,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes)
 	{
 		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
-		Point requestedPosition = rootNodes.get(0).position();
+		Point requestedPosition = pNodes.get(0).position();
 		for( Node pNode: pNodes )
 		{
 			if(aDiagram.containsAsRoot(pNode))
