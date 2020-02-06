@@ -105,7 +105,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * If packages overlap, select the last one added, which by default should be on
 	 * top. This could be fixed if we ever add a z coordinate to the diagram.
 	 */
-	private Optional<PackageNode> findContainer( Iterable<Node> pNodes, Point pPoint)
+	private Optional<PackageNode> findContainer( List<Node> pNodes, Point pPoint)
 	{
 		PackageNode container = null;
 		for( Node node : pNodes )
@@ -171,7 +171,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Returns true iff all the nodes in pNodes have non-null parents
+	 * Returns true iff all the nodes in pNodes have non-null parents.
 	 */
 	private static boolean haveNonNullParent(List<Node> pNodes)
 	{
