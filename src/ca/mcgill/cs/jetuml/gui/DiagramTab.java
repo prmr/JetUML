@@ -38,7 +38,7 @@ import javafx.scene.layout.StackPane;
 /**
  *A tab holding a single diagram.
  */
-public class DiagramTab extends Tab implements MouseDraggedGestureHandler
+public class DiagramTab extends Tab implements MouseDraggedGestureHandler, ShiftKeyPressedHandler
 {	
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
@@ -252,5 +252,11 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler
 		return new ViewportProjection(viewportWidth, viewportHeight, 
 				(int) aDiagramCanvas.getWidth(), (int) aDiagramCanvas.getHeight(), 
 				scrollPane.getHvalue(), scrollPane.getVvalue());
+	}
+
+	@Override
+	public void keyPressed() 
+	{
+		aDiagramCanvasController.keyPressed();
 	}
 }	        

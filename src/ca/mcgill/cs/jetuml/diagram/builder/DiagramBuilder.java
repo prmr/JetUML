@@ -107,11 +107,12 @@ public abstract class DiagramBuilder
 	 * 
 	 * @param pNode The node to add if possible. 
 	 * @param pRequestedPosition The requested position for the node.
-	 * @return True if it is possible to add pNode at position pPoint.
+	 * @return True if it is possible to add pNode at position pRequestedPosition.
 	 * @pre pNode != null && pRequestedPosition != null
 	 */
 	public boolean canAdd(Node pNode, Point pRequestedPosition)
 	{
+		assert pNode != null && pRequestedPosition != null;
 		return true;
 	}
 	

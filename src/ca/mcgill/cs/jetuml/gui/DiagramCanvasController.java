@@ -37,6 +37,7 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -72,7 +73,6 @@ public class DiagramCanvasController
 	private Point aMouseDownPoint;  
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private MouseDraggedGestureHandler aHandler;
-
 	
 	/**
 	 * Creates a new controller.
@@ -307,7 +307,6 @@ public class DiagramCanvasController
 				// The test is necessary to ensure we don't undo multiple selections
 				aSelectionModel.set(element.get());
 			}
-			
 			// Reorder the selected nodes to ensure that they appear on the top
 			for(Node pSelected: aSelectionModel.getSelectedNodes()) 
 			{
@@ -325,7 +324,7 @@ public class DiagramCanvasController
 			aDragMode = DragMode.DRAG_LASSO;
 		}
 	}
-	
+		
 	private void handleSingleClick(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = getTool(pEvent);
@@ -562,6 +561,29 @@ public class DiagramCanvasController
 			selected.translate(dx, dy);
 		}
 		aLastMousePoint = pMousePoint; 
+		aCanvas.paintPanel();
+	}
+	
+	/**
+	 * When the shift key is pressed on a class diagram, perform node attachment or detachment if possible.
+	 */
+	public void keyPressed()
+	{
+		if(aCanvas.getDiagram().getType() != DiagramType.CLASS)
+		{
+			return;
+		}
+		List<Node> selectedNodes = aSelectionModel.getSelectedNodes();
+		if(((ClassDiagramBuilder)aDiagramBuilder).canAttachToPackage(selectedNodes))
+		{
+			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createAttachToPackageOperation(selectedNodes));
+		}
+		else if(((ClassDiagramBuilder)aDiagramBuilder).canDetachFromPackage(selectedNodes))
+		{
+			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createDetachFromPackageOperation(selectedNodes));
+		}
+		// Place the modified nodes on the top
+		selectedNodes.forEach(node -> aCanvas.getDiagram().placeOnTop(node));
 		aCanvas.paintPanel();
 	}
 }

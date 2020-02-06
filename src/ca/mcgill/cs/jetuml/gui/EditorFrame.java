@@ -102,7 +102,7 @@ public class EditorFrame extends BorderPane
 		TabPane tabPane = new TabPane();
 		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
 		setCenter( tabPane );
-	
+
 		List<NewDiagramHandler> newDiagramHandlers = createNewDiagramHandlers();
 		createFileMenu(menuBar, newDiagramHandlers);
 		createEditMenu(menuBar);
@@ -112,6 +112,14 @@ public class EditorFrame extends BorderPane
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTabIfNecessary();
+		
+		setOnKeyPressed(e -> 
+		{
+		   if(e.isShiftDown() && !isWelcomeTabShowing())
+		   {
+		      getSelectedDiagramTab().keyPressed();
+		   }
+		});
 	}
 	
 	/* Returns the subset of pDesiredFormats for which a registered image writer 

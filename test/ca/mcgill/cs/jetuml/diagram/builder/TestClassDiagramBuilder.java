@@ -25,10 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,6 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
@@ -71,35 +71,17 @@ public class TestClassDiagramBuilder
 	
 	private int numberOfRootNodes()
 	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Node node : aDiagram.rootNodes() )
-		{
-			sum++;
-		}
-		return sum;
+		return aDiagram.rootNodes().size();
 	}
 	
 	private int numberOfEdges()
 	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Edge edge : aDiagram.edges() )
-		{
-			sum++;
-		}
-		return sum;
+		return aDiagram.edges().size();
 	}
 	
 	private Node getRootNode(int pIndex)
 	{
-		Iterator<Node> iterator = aDiagram.rootNodes().iterator();
-		int i = 0;
-		Node node = iterator.next();
-		while( i < pIndex )
-		{
-			i++;
-			node = iterator.next();
-		}
-		return node;
+		return aDiagram.rootNodes().get(pIndex);
 	}
 	
 	@Test
@@ -419,5 +401,144 @@ public class TestClassDiagramBuilder
 		assertSame(node2, getRootNode(0));
 		operation.undo();
 		assertEquals(2, numberOfRootNodes());
+	}
+	
+	@Test
+	public void testCanAttachToPackageMultipleNodes()
+	{
+		ClassNode child1 = new ClassNode();
+		InterfaceNode child2 = new InterfaceNode();
+		PackageNode parent = new PackageNode();
+		aDiagram.addRootNode(child1);
+		aDiagram.addRootNode(child2);
+		aDiagram.addRootNode(parent);
+		assertTrue(aBuilder.canAttachToPackage(Arrays.asList(child1, child2)));
+	}
+	
+	@Test
+	public void testCanAttachToPackageNoNullParent()
+	{
+		ClassNode child = new ClassNode();
+		PackageNode parent = new PackageNode();
+		child.setParent(parent);
+		parent.addChild(child);
+		aDiagram.addRootNode(parent);
+		assertFalse(aBuilder.canAttachToPackage(Arrays.asList(child)));
+	}
+	
+	@Test
+	public void testCanAttachToPackageNoPackageToAttach()
+	{
+		ClassNode node1 = new ClassNode();
+		PackageNode node2 = new PackageNode();
+		node2.translate(5, 5);
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		assertFalse(aBuilder.canAttachToPackage(Arrays.asList(node1)));
+	}
+	
+	@Test
+	public void testCanDetachFromPackageSimple()
+	{
+		ClassNode child = new ClassNode();
+		PackageNode parent = new PackageNode();
+		child.setParent(parent);
+		parent.addChild(child);
+		aDiagram.addRootNode(parent);
+		assertTrue(aBuilder.canDetachFromPackage(Arrays.asList(child)));
+	}
+	
+	@Test
+	public void testCanDetachFromPackageNullParent()
+	{
+		ClassNode node1 = new ClassNode();
+		PackageNode node2 = new PackageNode();
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList(node1)));
+	}
+	
+	@Test
+	public void testCanDetachFromPackageNoSharedParent()
+	{
+		ClassNode child1 = new ClassNode();
+		InterfaceNode child2 = new InterfaceNode();
+		PackageNode parent1 = new PackageNode();
+		PackageNode parent2 = new PackageNode();
+		child1.setParent(parent1);
+		child2.setParent(parent2);
+		parent1.addChild(child1);
+		parent2.addChild(child2);
+		aDiagram.addRootNode(parent1);
+		aDiagram.addRootNode(parent2);
+		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList(child1, child2)));
+	}
+	
+	@Test
+	public void testCreateAttachToPackageOperation()
+	{
+		ClassNode child = new ClassNode();
+		PackageNode parent = new PackageNode();
+		aDiagram.addRootNode(child);
+		aDiagram.addRootNode(parent);
+		List<Node> selection = Arrays.asList(child);
+		assertTrue(aBuilder.canAttachToPackage(selection));
+		
+		DiagramOperation operation = aBuilder.createAttachToPackageOperation(selection);
+		operation.execute();
+		assertFalse(aDiagram.rootNodes().contains(child));
+		assertTrue(parent.getChildren().contains(child));
+		assertSame(parent, child.getParent());
+		operation.undo();
+		assertTrue(aDiagram.rootNodes().contains(child));
+		assertFalse(parent.getChildren().contains(child));
+		assertNull(child.getParent());
+	}
+	
+	@Test
+	public void testCreateDetachFromPackageOperationSimple()
+	{
+		ClassNode child = new ClassNode();
+		PackageNode parent = new PackageNode();
+		child.setParent(parent);
+		parent.addChild(child);
+		aDiagram.addRootNode(parent);
+		List<Node> selection = Arrays.asList(child);
+		assertTrue(aBuilder.canDetachFromPackage(selection));
+		
+		DiagramOperation operation = aBuilder.createDetachFromPackageOperation(selection);
+		operation.execute();
+		assertTrue(aDiagram.rootNodes().contains(child));
+		assertFalse(parent.getChildren().contains(child));
+		assertNull(child.getParent());
+		operation.undo();
+		assertFalse(aDiagram.rootNodes().contains(child));
+		assertTrue(parent.getChildren().contains(child));
+		assertSame(parent, child.getParent());
+	}
+	
+	@Test
+	public void testCreateDetachFromPackageOperationWithOuterParent()
+	{
+		ClassNode child = new ClassNode();
+		PackageNode innerParent = new PackageNode();
+		PackageNode outerParent = new PackageNode();
+		child.setParent(innerParent);
+		innerParent.addChild(child);
+		innerParent.setParent(outerParent);
+		outerParent.addChild(innerParent);
+		aDiagram.addRootNode(outerParent);
+		List<Node> selection = Arrays.asList(child);
+		assertTrue(aBuilder.canDetachFromPackage(selection));
+		
+		DiagramOperation operation = aBuilder.createDetachFromPackageOperation(selection);
+		operation.execute();
+		assertTrue(outerParent.getChildren().contains(child));
+		assertFalse(innerParent.getChildren().contains(child));
+		assertSame(outerParent, child.getParent());
+		operation.undo();
+		assertFalse(outerParent.getChildren().contains(child));
+		assertTrue(innerParent.getChildren().contains(child));
+		assertSame(innerParent, child.getParent());
 	}
 }
