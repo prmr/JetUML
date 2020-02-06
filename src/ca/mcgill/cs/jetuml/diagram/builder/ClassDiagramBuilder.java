@@ -143,7 +143,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * Returns Optional.empty() if there is no such package node for the nodes in pNodes to attach to,
 	 * or the package node is already in the pNodes.
 	 */
-	private Optional<PackageNode> findPackageToAttach(Iterable<Node> pNodes)
+	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes)
 	{
 		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
 		Point requestedPosition = rootNodes.get(0).position();
@@ -173,7 +173,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	/*
 	 * Returns true iff all the nodes in pNodes have non-null parents
 	 */
-	private static boolean haveNonNullParent(Iterable<Node> pNodes)
+	private static boolean haveNonNullParent(List<Node> pNodes)
 	{
 		for( Node pNode: pNodes )
 		{
@@ -188,7 +188,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	/*
 	 * Returns true iff all the nodes in pNodes have null parents.
 	 */
-	private static boolean haveNullParent(Iterable<Node> pNodes)
+	private static boolean haveNullParent(List<Node> pNodes)
 	{
 		for( Node pNode: pNodes )
 		{
@@ -203,19 +203,14 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	/*
 	 * Finds the parent of all the nodes in pNodes. Returns Optional.empty() if the nodes have different parents.
 	 */
-	private static Optional<ParentNode> findSharedParent(Iterable<Node> pNodes)
+	private static Optional<ParentNode> findSharedParent(List<Node> pNodes)
 	{
 		assert haveNonNullParent(pNodes);
-		List<ChildNode> childNodes = new ArrayList<>();
+		// Get the parent of the first child node and check with other nodes
+		ParentNode parent = ((ChildNode)pNodes.get(0)).getParent();
 		for(Node pNode: pNodes)
 		{
-			childNodes.add((ChildNode)pNode); 
-		}
-		// Get the parent of the first child node and check with other nodes
-		ParentNode parent = childNodes.remove(0).getParent();
-		for(ChildNode child: childNodes)
-		{
-			if(parent != child.getParent())
+			if(parent != ((ChildNode)pNode).getParent())
 			{
 				return Optional.empty();
 			}
@@ -229,10 +224,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * 
 	 * @param pNodes The nodes to attach. 
 	 * @return True if it is possible to attach pNodes to the package node.
-	 * @pre pNodes != null
+	 * @pre pNodes != null;
 	 */
-	public boolean canAttachToPackage(Iterable<Node> pNodes)
+	public boolean canAttachToPackage(List<Node> pNodes)
 	{
+		assert pNodes!= null;
 		return haveNullParent(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
@@ -242,10 +238,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * 
 	 * @param pNodes The nodes to detach.
 	 * @return True if it is possible to detach pNodes from their parents.
-	 * @pre pNodes != null
+	 * @pre pNodes != null;
 	 */
-	public boolean canDetachFromPackage(Iterable<Node>pNodes)
+	public boolean canDetachFromPackage(List<Node>pNodes)
 	{
+		assert pNodes!= null;
 		return haveNonNullParent(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	
@@ -254,10 +251,12 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * the position of the first node in pNodes.
 	 * 
 	 * @param pNodes The nodes to attach.
-	 * @return The requested operation
+	 * @return The requested operation.
+	 * @pre canAttachToPackage(pNodes);
 	 */
-	public DiagramOperation createAttachToPackageOperation(Iterable<Node>pNodes)
+	public DiagramOperation createAttachToPackageOperation(List<Node>pNodes)
 	{
+		assert canAttachToPackage(pNodes);
 		PackageNode packageNode = findPackageToAttach(pNodes).get();
 		return new SimpleOperation( 
 				()-> 
@@ -285,10 +284,12 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * Creates an opeartion that detaches all the nodes in pNodes from their parent.
 	 * 
 	 * @param pNodes The nodes to detach.
-	 * @return The requested operation
+	 * @return The requested operation.
+	 * @pre canDetachFromPackage(pNodes);
 	 */
-	public DiagramOperation createDetachFromPackageOperation(Iterable<Node> pNodes)
+	public DiagramOperation createDetachFromPackageOperation(List<Node> pNodes)
 	{
+		assert canDetachFromPackage(pNodes);
 		ParentNode parent = findSharedParent(pNodes).get();
 		ParentNode outerParent = (parent instanceof ChildNode)? ((ChildNode)parent).getParent():null;
 		if( outerParent == null )

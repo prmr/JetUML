@@ -99,7 +99,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * @return An iterable of all selected nodes. This 
 	 * corresponds to the entire selection, except the edge.
 	 */
-	public Iterable<Node> getSelectedNodes()
+	public List<Node> getSelectedNodes()
 	{
 		List<Node> result = new ArrayList<>();
 		for( DiagramElement element : aSelected )
