@@ -145,6 +145,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes)
 	{
+		assert pNodes != null && pNodes.size() > 0;
 		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
 		Point requestedPosition = pNodes.get(0).position();
 		for( Node pNode: pNodes )
@@ -171,12 +172,12 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Returns true iff all the nodes in pNodes are attachable.
-	 * @pre pNodes != null && pNodes.size() > 0
+	 * Returns true iff all the nodes in pNodes are attachable, or if the list is empty.
+	 * @pre pNodes != null
 	 */
 	private static boolean allAttachable(List<Node> pNodes)
 	{
-		assert pNodes != null && pNodes.size() > 0;
+		assert pNodes != null;
 		return pNodes.stream().allMatch(ClassDiagramBuilder::isAttachable);
 	}
 	
@@ -241,6 +242,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	public boolean canAttachToPackage(List<Node> pNodes)
 	{
 		assert pNodes!= null;
+		if( pNodes.isEmpty() ) 
+		{
+			return false;
+		}
 		return allAttachable(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
@@ -249,12 +254,17 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * a valid operation on the diagram.
 	 * 
 	 * @param pNodes The nodes to detach.
-	 * @return True if it is possible to detach pNodes from their parents.
+	 * @return True if it is possible to detach pNodes from their parents, false otherwise
+	 * or if the list is empty.
 	 * @pre pNodes != null;
 	 */
 	public boolean canDetachFromPackage(List<Node>pNodes)
 	{
 		assert pNodes!= null;
+		if( pNodes.isEmpty() )
+		{
+			return false;
+		}
 		return allDetachable(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	

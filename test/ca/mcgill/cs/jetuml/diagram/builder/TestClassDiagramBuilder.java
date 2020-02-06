@@ -416,6 +416,18 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
+	public void testCanAttachToPackage_EmptyList()
+	{
+		assertFalse(aBuilder.canAttachToPackage(Arrays.asList()));
+	}
+	
+	@Test
+	public void testCanDetachFromPackage_EmptyList()
+	{
+		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList()));
+	}
+	
+	@Test
 	public void testCanAttachToPackageNoNullParent()
 	{
 		ClassNode child = new ClassNode();
