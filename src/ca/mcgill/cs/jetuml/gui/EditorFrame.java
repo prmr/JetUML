@@ -115,9 +115,16 @@ public class EditorFrame extends BorderPane
 		
 		setOnKeyPressed(e -> 
 		{
-			if( !isWelcomeTabShowing() )
+			if( !isWelcomeTabShowing() && e.isShiftDown() )
 			{
-				getSelectedDiagramTab().keyPressed(e);
+				getSelectedDiagramTab().shiftKeyPressed();
+			}
+		});
+		setOnKeyTyped(e -> 
+		{
+			if( !isWelcomeTabShowing())
+			{
+				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
 		});
 	}

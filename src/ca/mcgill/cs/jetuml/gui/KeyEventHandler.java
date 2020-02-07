@@ -21,17 +21,20 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import javafx.scene.input.KeyEvent;
-
 /**
- * Internal observer of key pressed events.
+ * Internal observer of key events.
  */
-public interface KeyPressedHandler 
+public interface KeyEventHandler 
 {
 	/**
 	 * Callback for key press events.
-	 * @param pKeyEvent the event data.
-	 * @pre pKeyEvent != null;
 	 */
-	void keyPressed(KeyEvent pKeyEvent);
+	void shiftKeyPressed();
+	
+	/**
+	 * Callback for when a key is typed.
+	 * @param pChar The character typed.
+	 * @pre pChar != null
+	 */
+	void keyTyped(String pChar);
 }

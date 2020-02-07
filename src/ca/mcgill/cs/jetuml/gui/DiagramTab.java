@@ -39,7 +39,7 @@ import javafx.scene.layout.StackPane;
 /**
  *A tab holding a single diagram.
  */
-public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyPressedHandler
+public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEventHandler
 {	
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
@@ -256,15 +256,25 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyPr
 	}
 
 	@Override
-	public void keyPressed(KeyEvent pEvent) 
+	public void shiftKeyPressed() 
 	{
-		if( pEvent.isShiftDown() )
-		{
-			aDiagramCanvasController.shiftKeyPressed();
-		}
-		else
-		{
-			// TODO call the ToolBar to select a tool
-		}
+		aDiagramCanvasController.shiftKeyPressed();
+	}
+	
+	/* Converts the key typed to an 1-based index that represents
+	 * the tool to select in the toolbar. The Keys 1-0 map to 1-10, then
+	 * a maps to 11, b to 12, etc. Capitalization does not matter.
+	 * Returns -1 is the key is not in a range between 0 and Z.
+	 */
+	private static int toolIndex(KeyEvent pEvent)
+	{
+		System.out.println(pEvent.getCharacter());
+		return 0;
+	}
+
+	@Override
+	public void keyTyped(String pChar)
+	{
+		System.out.println(pChar);
 	}
 }	        
