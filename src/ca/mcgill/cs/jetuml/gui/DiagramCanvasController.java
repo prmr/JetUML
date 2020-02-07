@@ -351,6 +351,7 @@ public class DiagramCanvasController
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			aSelectionModel.set(newNode);
+			aCanvas.getDiagram().placeOnTop(newNode);
 			aCanvas.paintPanel();
 			if( UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode))
 			{
