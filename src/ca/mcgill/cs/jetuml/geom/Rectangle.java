@@ -163,7 +163,7 @@ public class Rectangle
 	
 	/**
 	 * @param pRectangle The rectangle to include.
-	 * @return A new rectangle that is this rectangle enlarged to include pPoint.
+	 * @return A new rectangle that is this rectangle enlarged to include pRectangle.
 	 * @pre pRectangle != null
 	 */ 
 	public Rectangle add(Rectangle pRectangle)
