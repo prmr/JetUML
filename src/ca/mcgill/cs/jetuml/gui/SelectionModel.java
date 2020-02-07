@@ -78,7 +78,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		pDiagramData.edges().forEach(this::internalAddToSelection);
 		aObserver.selectionModelChanged();
 	}
-	
+
 	/**
 	 * @return A rectangle that represents the bounding
 	 * box of the entire selection.
@@ -90,9 +90,22 @@ public class SelectionModel implements Iterable<DiagramElement>
 		Rectangle bounds = ViewerUtilities.getBounds(lastSelected.get());
 		for(DiagramElement selected : aSelected )
 		{
-			bounds = bounds.add(ViewerUtilities.getBounds(selected));
+			bounds = addBounds(bounds, selected);
 		}
 		return bounds;
+	}
+	
+	// Recursively enlarge the current rectangle to include the selected DiagramElements
+	private Rectangle addBounds(Rectangle pBounds,DiagramElement pSelected)
+	{
+		if( pSelected instanceof ChildNode && ((ChildNode) pSelected).getParent()!=null )
+		{
+			return addBounds(pBounds, ((ChildNode) pSelected).getParent());
+		}
+		else
+		{
+			return pBounds.add(ViewerUtilities.getBounds(pSelected));
+		}
 	}
 	
 	/**
