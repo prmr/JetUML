@@ -21,13 +21,17 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
+import javafx.scene.input.KeyEvent;
+
 /**
- * Handle the events when the shift key is pressed.
+ * Internal observer of key pressed events.
  */
-public interface ShiftKeyPressedHandler 
+public interface KeyPressedHandler 
 {
 	/**
-	 * Handle node attachment or detachment if the shift key is pressed.
+	 * Callback for key press events.
+	 * @param pKeyEvent the event data.
+	 * @pre pKeyEvent != null;
 	 */
-	void keyPressed();
+	void keyPressed(KeyEvent pKeyEvent);
 }

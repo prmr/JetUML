@@ -567,7 +567,7 @@ public class DiagramCanvasController
 	/**
 	 * When the shift key is pressed on a class diagram, perform node attachment or detachment if possible.
 	 */
-	public void keyPressed()
+	public void shiftKeyPressed()
 	{
 		if(aCanvas.getDiagram().getType() != DiagramType.CLASS)
 		{

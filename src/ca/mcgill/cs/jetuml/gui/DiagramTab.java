@@ -32,13 +32,14 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
  *A tab holding a single diagram.
  */
-public class DiagramTab extends Tab implements MouseDraggedGestureHandler, ShiftKeyPressedHandler
+public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyPressedHandler
 {	
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
@@ -255,8 +256,15 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, Shift
 	}
 
 	@Override
-	public void keyPressed() 
+	public void keyPressed(KeyEvent pEvent) 
 	{
-		aDiagramCanvasController.keyPressed();
+		if( pEvent.isShiftDown() )
+		{
+			aDiagramCanvasController.shiftKeyPressed();
+		}
+		else
+		{
+			// TODO call the ToolBar to select a tool
+		}
 	}
 }	        
