@@ -212,7 +212,24 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	public void setToolToBeSelect()
 	{
 		assert getItems().size() > 0;
-		((ToggleButton)getItems().get(0)).setSelected(true);
+		setSelectedTool(0);
+//		((ToggleButton)getItems().get(0)).setSelected(true);
+	}
+	
+	/**
+	 * Sets the selected tool to be the one at pIndex (zero-indexed)
+	 * in the tool group. Does nothing if there is no tool at this index.
+	 * 
+	 * @param pIndex The desired index.
+	 */
+	public void setSelectedTool(int pIndex)
+	{
+		ToggleGroup group = ((ToggleButton)getItems().get(0)).getToggleGroup();
+		if( pIndex < 0 || pIndex >= group.getToggles().size())
+		{
+			return;
+		}
+		group.getToggles().get(pIndex).setSelected(true);
 	}
 	
 	/**

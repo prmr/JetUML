@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
@@ -40,7 +39,7 @@ import javafx.scene.layout.StackPane;
  *A tab holding a single diagram.
  */
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEventHandler
-{	
+{
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -95,6 +94,12 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
+	}
+	
+	/* retrieves the toolbar from the component graph */
+	private DiagramTabToolBar toolBar()
+	{
+		return (DiagramTabToolBar)((BorderPane)getContent()).getRight();
 	}
 	
 	/**
@@ -265,16 +270,37 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 * the tool to select in the toolbar. The Keys 1-0 map to 1-10, then
 	 * a maps to 11, b to 12, etc. Capitalization does not matter.
 	 * Returns -1 is the key is not in a range between 0 and Z.
+	 * CSOFF:
 	 */
-	private static int toolIndex(KeyEvent pEvent)
+	private static int toolIndex(String pChar)
 	{
-		System.out.println(pEvent.getCharacter());
-		return 0;
-	}
-
+		assert pChar != null;
+		if( pChar.length() != 1 )
+		{
+			return -1;
+		}
+		int symbol = pChar.toUpperCase().charAt(0);
+		if( symbol == 48 ) // char "0"
+		{
+			return 10;
+		}
+		else if( symbol >= 49 && symbol <= 57) // char 1-9
+		{
+			return symbol - 48;
+		}
+		else if( symbol >= 65 && symbol <= 90 ) // char A-Z
+		{
+			return symbol - 54; 
+		}
+		else
+		{
+			return -1;
+		}
+	} // CSON:
+	
 	@Override
 	public void keyTyped(String pChar)
-	{
-		System.out.println(pChar);
+	{   // -1 because the input is 1-index and setSelectedTool is 0-indexed
+		toolBar().setSelectedTool(toolIndex(pChar)-1); 
 	}
 }	        
