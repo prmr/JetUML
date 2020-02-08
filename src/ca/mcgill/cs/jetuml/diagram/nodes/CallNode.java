@@ -95,11 +95,12 @@ public class CallNode extends AbstractNode implements ChildNode
 
 	/**
      * Sets the parent of this node.
-     * @param pNode the parent node, or null if the node has no parent
+     * @param pNode the parent node
 	 */
 	public void link(ParentNode pNode) 
 	{
-		assert pNode instanceof ImplicitParameterNode || pNode == null;
+		assert pNode != null;
+		assert pNode instanceof ImplicitParameterNode;
 		aImplicitParameter = (ImplicitParameterNode) pNode;
 	}
 	

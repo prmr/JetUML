@@ -61,7 +61,7 @@ public final class FieldNode extends NamedNode implements ChildNode
 	@Override
 	public void link(ParentNode pNode)
 	{
-		assert pNode == null || pNode instanceof ObjectNode;
+		assert pNode != null && pNode instanceof ObjectNode;
 		aObject = (ObjectNode) pNode;		
 	}
 	

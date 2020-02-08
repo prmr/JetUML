@@ -55,7 +55,7 @@ public class TestClassNode
 	}
 	
 	@Test
-	public void testSetParent()
+	public void testLink()
 	{
 		PackageNode package1 = new PackageNode();
 		PackageNode package2 = new PackageNode();
@@ -63,7 +63,7 @@ public class TestClassNode
 		assertTrue( aNode1.getParent() == package1 );
 		aNode1.link(package2);
 		assertTrue( aNode1.getParent() == package2 );
-		aNode1.link(null);
+		aNode1.unlink();
 		assertNull( aNode1.getParent() );
 	}
 	
