@@ -100,7 +100,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		if( pSelected instanceof ChildNode && ((Node) pSelected).hasParent() )
 		{
-			return addBounds(pBounds, ((ChildNode) pSelected).getParent());
+			return addBounds(pBounds, ((Node) pSelected).getParent());
 		}
 		else
 		{
@@ -281,7 +281,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		if( pElement instanceof ChildNode )
 		{
-			ParentNode parent = ((ChildNode) pElement).getParent();
+			ParentNode parent = ((Node) pElement).getParent();
 			if( parent == null )
 			{
 				return false;

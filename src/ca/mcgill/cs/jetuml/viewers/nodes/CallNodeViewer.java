@@ -94,7 +94,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private int getX(Node pNode)
 	{
 		final Diagram diagram = pNode.getDiagram().get();
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) ((CallNode)pNode).getParent();
+		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
 		if(implicitParameterNode != null )
 		{
 			int depth = 0;

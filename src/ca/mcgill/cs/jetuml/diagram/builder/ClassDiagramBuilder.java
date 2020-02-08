@@ -223,10 +223,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	{
 		assert allUnlinkable(pNodes);
 		// Get the parent of the first child node and check with other nodes
-		ParentNode parent = ((ChildNode)pNodes.get(0)).getParent();
+		ParentNode parent = pNodes.get(0).getParent();
 		for(Node pNode: pNodes)
 		{
-			if(parent != ((ChildNode)pNode).getParent())
+			if(parent != pNode.getParent())
 			{
 				return Optional.empty();
 			}
@@ -317,7 +317,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		assert canUnlinkFromPackage(pNodes);
 		ParentNode parent = findSharedParent(pNodes).get();
 		// CSOFF:
-		ParentNode outerParent = (parent instanceof ChildNode) ? ((ChildNode)parent).getParent() : null; //CSON:
+		ParentNode outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
 		if( outerParent == null )
 		{
 			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram

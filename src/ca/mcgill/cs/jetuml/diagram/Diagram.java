@@ -375,9 +375,9 @@ public final class Diagram implements DiagramData
 	{
 		assert pNode != null;
 		ParentNode parent = null;
-		if (pNode instanceof ChildNode)
+		if(pNode.hasParent())
 		{
-			parent = ((ChildNode)pNode).getParent();
+			parent = pNode.getParent();
 		}
 		if (parent != null) 
 		{

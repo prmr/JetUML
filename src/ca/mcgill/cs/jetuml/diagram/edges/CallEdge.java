@@ -70,7 +70,7 @@ public final class CallEdge extends SingleLabelEdge
 	public boolean isSelfEdge()
 	{
 		return getEnd() instanceof CallNode && 
-				((CallNode)getEnd()).getParent() == ((CallNode)getStart()).getParent();
+				getEnd().getParent() == getStart().getParent();
 	}
 }
 

@@ -59,7 +59,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	
 	private int getSplitPosition(Node pNode)
 	{
-		ObjectNode parent = (ObjectNode)((FieldNode)pNode).getParent();
+		ObjectNode parent = (ObjectNode)pNode.getParent();
 		if( parent != null )
 		{
 			return OBJECT_NODE_VIEWER.getSplitPosition(parent);
@@ -73,7 +73,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	@Override
 	public Rectangle getBounds(Node pNode)
 	{
-		ObjectNode parent = (ObjectNode)((FieldNode)pNode).getParent();
+		ObjectNode parent = (ObjectNode)pNode.getParent();
 		final int leftWidth = leftWidth(pNode);
 		final int height = getHeight(pNode);
 		if( parent != null )

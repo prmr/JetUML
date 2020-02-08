@@ -68,7 +68,7 @@ public final class SequenceDiagramEdgeConstraints
 					 pEnd.getClass() != CallNode.class ||
 					 !flow.getCaller(pStart).isPresent() ||
 					 pEnd != flow.getCaller(pStart).get() ||
-					 ((CallNode)pStart).getParent() == ((CallNode)pEnd).getParent()));
+					 pStart.getParent() == pEnd.getParent()));
 		};
 	}
 	
