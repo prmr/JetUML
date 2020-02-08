@@ -58,9 +58,9 @@ public class TestInterfaceNode
 	{
 		PackageNode package1 = new PackageNode();
 		PackageNode package2 = new PackageNode();
-		aNode1.setParent(package1);
+		aNode1.link(package1);
 		assertTrue( aNode1.getParent() == package1 );
-		aNode1.setParent(package2);
+		aNode1.link(package2);
 		assertTrue( aNode1.getParent() == package2 );
 		aNode1.unlink();
 		assertNull( aNode1.getParent() );

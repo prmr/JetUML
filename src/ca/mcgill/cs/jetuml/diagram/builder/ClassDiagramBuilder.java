@@ -290,7 +290,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						aDiagram.removeRootNode(pNode);
 						packageNode.addChild((ChildNode)pNode);
-						((ChildNode)pNode).setParent(packageNode);
+						((ChildNode)pNode).link(packageNode);
 					}
 				},
 				()->
@@ -335,7 +335,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							aDiagram.removeRootNode(pNode);
 							parent.addChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(parent);
+							((ChildNode)pNode).link(parent);
 						}
 					});	
 		}
@@ -349,7 +349,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.addChild((ChildNode)pNode);
 							parent.removeChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(outerParent);
+							((ChildNode)pNode).link(outerParent);
 						}
 					},
 					()->
@@ -358,7 +358,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.removeChild((ChildNode)pNode);
 							parent.addChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(parent);
+							((ChildNode)pNode).link(parent);
 						}
 					});	
 		}

@@ -45,7 +45,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
 			ChildNode clonedChild = (ChildNode) child.clone();
-			clonedChild.setParent(cloned);
+			clonedChild.link(cloned);
 			cloned.aCallNodes.add(clonedChild);
 		}
 		return cloned;
@@ -72,7 +72,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 			oldParent.removeChild(pNode);
 		}
 		aCallNodes.add(pNode);
-		pNode.setParent(this);
+		pNode.link(this);
 	}
 
 	@Override

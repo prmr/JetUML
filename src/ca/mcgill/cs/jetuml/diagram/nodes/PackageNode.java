@@ -92,7 +92,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
 			ChildNode clonedChild = (ChildNode) child.clone();
-			clonedChild.setParent(cloned);
+			clonedChild.link(cloned);
 			cloned.aContainedNodes.add(clonedChild);
 		}
 		return cloned;
@@ -105,7 +105,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	}
 
 	@Override
-	public void setParent(ParentNode pNode)
+	public void link(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = pNode;
@@ -135,7 +135,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 			oldParent.removeChild(pNode);
 		}
 		aContainedNodes.add(pIndex, pNode);
-		pNode.setParent(this);
+		pNode.link(this);
 	}
 
 	@Override

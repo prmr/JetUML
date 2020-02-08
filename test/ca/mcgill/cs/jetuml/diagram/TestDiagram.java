@@ -104,9 +104,9 @@ public class TestDiagram
 	public void testPlaceOnTop_ChildNodeWithParent()
 	{
 		aNode4.addChild(aNode2);
-		aNode2.setParent(aNode4);
+		aNode2.link(aNode4);
 		aNode4.addChild(aNode3);
-		aNode3.setParent(aNode4);
+		aNode3.link(aNode4);
 		
 		aDiagram.addRootNode(aNode4);
 		aDiagram.addRootNode(aNode1);

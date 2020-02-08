@@ -101,7 +101,7 @@ public interface Node extends DiagramElement
 	void unlink();
 	
 	/**
-	 * Sets the parent of this node. This operation does 
+	 * Links this node to a parent node This operation does 
 	 * NOT set the child node's parent as this node.
 	 * 
 	 * By default this operation is not supported. It is the 
@@ -112,5 +112,5 @@ public interface Node extends DiagramElement
 	 * @param pParentNode The node to set as parent of this node.
 	 * @pre pParentNode != null
 	 */
-	void setParent(ParentNode pParentNode);
+	void link(ParentNode pParentNode);
 }

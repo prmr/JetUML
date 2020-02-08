@@ -59,11 +59,11 @@ public class TestClassNode
 	{
 		PackageNode package1 = new PackageNode();
 		PackageNode package2 = new PackageNode();
-		aNode1.setParent(package1);
+		aNode1.link(package1);
 		assertTrue( aNode1.getParent() == package1 );
-		aNode1.setParent(package2);
+		aNode1.link(package2);
 		assertTrue( aNode1.getParent() == package2 );
-		aNode1.setParent(null);
+		aNode1.link(null);
 		assertNull( aNode1.getParent() );
 	}
 	
@@ -87,7 +87,7 @@ public class TestClassNode
 	{
 		PackageNode package1 = new PackageNode();
 		package1.setName("Foo");
-		aNode1.setParent(package1);
+		aNode1.link(package1);
 		ClassNode clone = (ClassNode) aNode1.clone();
 		assertEquals("Foo", ((PackageNode)clone.getParent()).getName());
 		assertSame(package1, clone.getParent());

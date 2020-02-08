@@ -67,7 +67,7 @@ public abstract class TypeNode extends NamedNode implements ChildNode
 	}
 
 	@Override
-	public void setParent(ParentNode pNode)
+	public void link(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = pNode;

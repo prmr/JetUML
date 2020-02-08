@@ -119,7 +119,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public void setParent(ParentNode pParentNode)
+	public void link(ParentNode pParentNode)
 	{
 		assert false;
 	}
