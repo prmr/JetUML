@@ -32,11 +32,4 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  */
 public interface ChildNode extends Node
 {	
-	/**
-	 * Sets the parent of this node. This operation does 
-	 * NOT set the child node's parent as this node.
-	 * 
-	 * @param pParentNode The node to set as parent of this node.
-	 */
-	void setParent(ParentNode pParentNode);
 }

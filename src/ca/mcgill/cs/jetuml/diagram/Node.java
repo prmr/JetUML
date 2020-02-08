@@ -99,4 +99,18 @@ public interface Node extends DiagramElement
 	 * @pre hasParent();
 	 */
 	void unlink();
+	
+	/**
+	 * Sets the parent of this node. This operation does 
+	 * NOT set the child node's parent as this node.
+	 * 
+	 * By default this operation is not supported. It is the 
+	 * responsibility of the Builder class to ensure that nodes
+	 * can only be linked to a parent if it respects the semantics
+	 * of the diagram.
+	 * 
+	 * @param pParentNode The node to set as parent of this node.
+	 * @pre pParentNode != null
+	 */
+	void setParent(ParentNode pParentNode);
 }
