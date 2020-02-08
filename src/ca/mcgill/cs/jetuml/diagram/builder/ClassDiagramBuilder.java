@@ -299,7 +299,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						aDiagram.addRootNode(pNode);
 						packageNode.removeChild((ChildNode)pNode);
-						((ChildNode)pNode).setParent(null);
 					}
 				});	
 	}
@@ -328,7 +327,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							aDiagram.addRootNode(pNode);
 							parent.removeChild((ChildNode)pNode);
-							((ChildNode)pNode).setParent(null);
 						}
 					},
 					()->

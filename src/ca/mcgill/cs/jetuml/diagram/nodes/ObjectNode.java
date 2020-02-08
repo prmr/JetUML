@@ -97,6 +97,6 @@ public final class ObjectNode extends NamedNode implements ParentNode
 			return;
 		}
 		aFields.remove(pNode);
-		pNode.setParent(null);
+		pNode.unlink();
 	}
 }

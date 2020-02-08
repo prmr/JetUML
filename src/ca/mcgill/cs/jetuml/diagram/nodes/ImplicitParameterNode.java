@@ -83,6 +83,6 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 			return;
 		}
 		aCallNodes.remove(pNode);
-		pNode.setParent(null);
+		pNode.unlink();
 	}
 }
