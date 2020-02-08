@@ -21,13 +21,15 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import java.util.Optional;
+
 /**
  *  A field node in an object diagram.
  */
 public final class FieldNode extends NamedNode implements ChildNode
 {
 	private String aValue = "value";
-	private ObjectNode aObject; // The object defining this field
+	private Optional<ObjectNode> aObject = Optional.empty(); // The object defining this field
 	
 	public FieldNode()
 	{
@@ -55,21 +57,22 @@ public final class FieldNode extends NamedNode implements ChildNode
 	@Override
 	public ParentNode getParent()
 	{
-		return aObject;
+		assert hasParent();
+		return aObject.get();
 	}
 
 	@Override
 	public void link(ParentNode pNode)
 	{
 		assert pNode != null && pNode instanceof ObjectNode;
-		aObject = (ObjectNode) pNode;		
+		aObject = Optional.of((ObjectNode) pNode);		
 	}
 	
 	@Override
 	public void unlink()
 	{
 		assert hasParent();
-		aObject = null;
+		aObject = Optional.empty();
 	}
 	
 	@Override
@@ -88,7 +91,7 @@ public final class FieldNode extends NamedNode implements ChildNode
 	@Override
 	public boolean hasParent()
 	{
-		return aObject != null;
+		return aObject.isPresent();
 	}
 }
 

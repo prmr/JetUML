@@ -101,7 +101,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			{
 				continue;
 			}
-			else if( pNode.getParent() == node )
+			else if( pNode.hasParent() && pNode.getParent() == node )
 			{
 				return (ObjectNode)node;
 			}

@@ -73,13 +73,12 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	@Override
 	public Rectangle getBounds(Node pNode)
 	{
-		ObjectNode parent = (ObjectNode)pNode.getParent();
 		final int leftWidth = leftWidth(pNode);
 		final int height = getHeight(pNode);
-		if( parent != null )
+		if( pNode.hasParent() )
 		{
-			int yPosition = OBJECT_NODE_VIEWER.getYPosition(parent, (FieldNode) pNode);
-			Rectangle parentBounds = OBJECT_NODE_VIEWER.getBounds(parent);
+			int yPosition = OBJECT_NODE_VIEWER.getYPosition(pNode.getParent(), (FieldNode) pNode);
+			Rectangle parentBounds = OBJECT_NODE_VIEWER.getBounds(pNode.getParent());
 			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, height);
 		}
 		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth, 0, leftWidth + rightWidth(pNode), height);

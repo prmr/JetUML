@@ -165,11 +165,5 @@ public class TestObjectNode
 		aObject1.removeChild(aField1);
 		assertEquals( 1, aObject1.getChildren().size());
 		assertEquals( aField2, aObject1.getChildren().get(0));
-		
-		FieldNode field3 = new FieldNode();
-		aObject1.removeChild(field3);
-		assertEquals( 1, aObject1.getChildren().size());
-		aObject2.addChild(field3);
-		assertEquals( 1, aObject1.getChildren().size());
 	}
 }
