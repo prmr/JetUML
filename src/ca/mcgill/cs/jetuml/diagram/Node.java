@@ -78,4 +78,10 @@ public interface Node extends DiagramElement
 	 * @return True if this node is linked to a parent node.
 	 */
 	boolean hasParent();
+	
+	/**
+	 * @return true if this node type requires a parent to exist, 
+	 * and false if it can exist as a root node.
+	 */
+	boolean requiresParent();	
 }

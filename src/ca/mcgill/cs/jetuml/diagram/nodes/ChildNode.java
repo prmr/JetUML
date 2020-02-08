@@ -31,13 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * See ParentNode for additional information.
  */
 public interface ChildNode extends Node
-{
-	/**
-	 * @return true if this node type requires a parent to exist, 
-	 * and false if it can exist as a root node.
-	 */
-	boolean requiresParent();	
-	
+{	
 	/**
 	 * @return The node that is the parent of this node.
 	 */

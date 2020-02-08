@@ -234,7 +234,7 @@ public final class Clipboard
 	 */
 	private boolean missingParent(Node pNode)
 	{
-		return pNode instanceof ChildNode && ((ChildNode)pNode).requiresParent() && !aNodes.contains(((ChildNode)pNode).getParent()) ;
+		return pNode instanceof ChildNode && pNode.requiresParent() && !aNodes.contains(((ChildNode)pNode).getParent()) ;
 	}
 	
 	/*
