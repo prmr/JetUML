@@ -77,5 +77,11 @@ public final class FieldNode extends NamedNode implements ChildNode
 		super.buildProperties();
 		properties().add("value", () -> aValue, pValue -> aValue = (String) pValue);
 	}
+
+	@Override
+	public boolean hasParent()
+	{
+		return aObject != null;
+	}
 }
 

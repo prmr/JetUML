@@ -172,13 +172,13 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	/*
-	 * Returns true iff all the nodes in pNodes are attachable, or if the list is empty.
+	 * Returns true iff all the nodes in pNodes are linkable to a parent, or if the list is empty.
 	 * @pre pNodes != null
 	 */
-	private static boolean allAttachable(List<Node> pNodes)
+	private static boolean allLinkable(List<Node> pNodes)
 	{
 		assert pNodes != null;
-		return pNodes.stream().allMatch(ClassDiagramBuilder::isAttachable);
+		return pNodes.stream().allMatch(ClassDiagramBuilder::isLinkable);
 	}
 	
 	/*
@@ -187,9 +187,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * have a parent.
 	 * @pre pNode != null
 	 */
-	private static boolean isAttachable(Node pNode)
+	private static boolean isLinkable(Node pNode)
 	{
-		return validChild(pNode) && ((ChildNode)pNode).getParent() == null;
+		return validChild(pNode) && !pNode.hasParent();
 	}
 	
 	/*
@@ -198,19 +198,22 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * has a parent.
 	 * @pre pNode != null
 	 */
-	private static boolean isDetachable(Node pNode)
+	private static boolean isUnlinkable(Node pNode)
 	{
-		return validChild(pNode) && ((ChildNode)pNode).getParent() != null;
+		// To be on the safe side we should technically check
+		// that pNode also does not require a parent, but since
+		// currently all linkable nodes do not require a parent, skip.
+		return pNode.hasParent(); 
 	}
 	
 	/*
 	 * Returns true iff all the nodes in pNodes are detachable
 	 * @pre pNodes != null && pNodes.size() > 0
 	 */
-	private static boolean allDetachable(List<Node> pNodes)
+	private static boolean allUnlinkable(List<Node> pNodes)
 	{
 		assert pNodes != null && pNodes.size() > 0;
-		return pNodes.stream().allMatch(ClassDiagramBuilder::isDetachable);
+		return pNodes.stream().allMatch(ClassDiagramBuilder::isUnlinkable);
 	}
 
 	/*
@@ -218,7 +221,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 */
 	private static Optional<ParentNode> findSharedParent(List<Node> pNodes)
 	{
-		assert allDetachable(pNodes);
+		assert allUnlinkable(pNodes);
 		// Get the parent of the first child node and check with other nodes
 		ParentNode parent = ((ChildNode)pNodes.get(0)).getParent();
 		for(Node pNode: pNodes)
@@ -239,14 +242,14 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @return True if it is possible to attach pNodes to the package node.
 	 * @pre pNodes != null;
 	 */
-	public boolean canAttachToPackage(List<Node> pNodes)
+	public boolean canLinkToPackage(List<Node> pNodes)
 	{
 		assert pNodes!= null;
 		if( pNodes.isEmpty() ) 
 		{
 			return false;
 		}
-		return allAttachable(pNodes) && findPackageToAttach(pNodes).isPresent();
+		return allLinkable(pNodes) && findPackageToAttach(pNodes).isPresent();
 	}
 	
 	/**
@@ -258,14 +261,14 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * or if the list is empty.
 	 * @pre pNodes != null;
 	 */
-	public boolean canDetachFromPackage(List<Node>pNodes)
+	public boolean canUnlinkFromPackage(List<Node>pNodes)
 	{
 		assert pNodes!= null;
 		if( pNodes.isEmpty() )
 		{
 			return false;
 		}
-		return allDetachable(pNodes) && findSharedParent(pNodes).isPresent();
+		return allUnlinkable(pNodes) && findSharedParent(pNodes).isPresent();
 	}
 	
 	/**
@@ -276,9 +279,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @return The requested operation.
 	 * @pre canAttachToPackage(pNodes);
 	 */
-	public DiagramOperation createAttachToPackageOperation(List<Node>pNodes)
+	public DiagramOperation createLinkToPackageOperation(List<Node>pNodes)
 	{
-		assert canAttachToPackage(pNodes);
+		assert canLinkToPackage(pNodes);
 		PackageNode packageNode = findPackageToAttach(pNodes).get();
 		return new SimpleOperation( 
 				()-> 
@@ -309,9 +312,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @return The requested operation.
 	 * @pre canDetachFromPackage(pNodes);
 	 */
-	public DiagramOperation createDetachFromPackageOperation(List<Node> pNodes)
+	public DiagramOperation createUnlinkFromPackageOperation(List<Node> pNodes)
 	{
-		assert canDetachFromPackage(pNodes);
+		assert canUnlinkFromPackage(pNodes);
 		ParentNode parent = findSharedParent(pNodes).get();
 		// CSOFF:
 		ParentNode outerParent = (parent instanceof ChildNode) ? ((ChildNode)parent).getParent() : null; //CSON:

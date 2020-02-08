@@ -285,14 +285,14 @@ public final class Diagram implements DiagramData
 		}
 	}
 	
-	private void recursiveDetch(Node pNode)
+	private void recursiveDetach(Node pNode)
 	{
 		pNode.detach();
 		if( pNode instanceof ParentNode )
 		{
 			for( Node child : ((ParentNode)pNode).getChildren())
 			{
-				recursiveDetch(child);
+				recursiveDetach(child);
 			}
 		}
 	}
@@ -308,7 +308,7 @@ public final class Diagram implements DiagramData
 	public void removeRootNode(Node pNode)
 	{
 		assert pNode != null && aRootNodes.contains(pNode);
-		recursiveDetch(pNode);
+		recursiveDetach(pNode);
 		aRootNodes.remove(pNode);
 	}
 	

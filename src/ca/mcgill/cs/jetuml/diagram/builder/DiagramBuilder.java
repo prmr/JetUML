@@ -376,7 +376,7 @@ public abstract class DiagramBuilder
 			}
 			else if( element instanceof Node )
 			{
-				if(hasParent((Node) element))
+				if(((Node) element).hasParent())
 				{
 					result.add(new SimpleOperation(
 						createDetachOperation((ChildNode)element),
@@ -513,14 +513,5 @@ public abstract class DiagramBuilder
 		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
 		Point position = computePosition(bounds, pRequestedPosition);
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
-	}
-	
-	/**
-	 * @param pNode A node to check for parenthood.
-	 * @return True iif pNode has a non-null parent.
-	 */
-	private static boolean hasParent(Node pNode)
-	{
-		return (pNode instanceof ChildNode) && ((ChildNode)pNode).getParent() != null;
 	}
 }

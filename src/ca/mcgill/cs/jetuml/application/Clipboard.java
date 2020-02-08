@@ -245,7 +245,7 @@ public final class Clipboard
 	{
 		for( Node node : aNodes )
 		{
-			if( node instanceof ChildNode && ((ChildNode)node).getParent() != null )
+			if( node.hasParent() )
 			{
 				if( !aNodes.contains(((ChildNode)node).getParent()))
 				{

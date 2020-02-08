@@ -412,19 +412,19 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(child1);
 		aDiagram.addRootNode(child2);
 		aDiagram.addRootNode(parent);
-		assertTrue(aBuilder.canAttachToPackage(Arrays.asList(child1, child2)));
+		assertTrue(aBuilder.canLinkToPackage(Arrays.asList(child1, child2)));
 	}
 	
 	@Test
 	public void testCanAttachToPackage_EmptyList()
 	{
-		assertFalse(aBuilder.canAttachToPackage(Arrays.asList()));
+		assertFalse(aBuilder.canLinkToPackage(Arrays.asList()));
 	}
 	
 	@Test
 	public void testCanDetachFromPackage_EmptyList()
 	{
-		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList()));
+		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList()));
 	}
 	
 	@Test
@@ -435,7 +435,7 @@ public class TestClassDiagramBuilder
 		child.setParent(parent);
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
-		assertFalse(aBuilder.canAttachToPackage(Arrays.asList(child)));
+		assertFalse(aBuilder.canLinkToPackage(Arrays.asList(child)));
 	}
 	
 	@Test
@@ -446,7 +446,7 @@ public class TestClassDiagramBuilder
 		node2.translate(5, 5);
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
-		assertFalse(aBuilder.canAttachToPackage(Arrays.asList(node1)));
+		assertFalse(aBuilder.canLinkToPackage(Arrays.asList(node1)));
 	}
 	
 	@Test
@@ -457,7 +457,7 @@ public class TestClassDiagramBuilder
 		child.setParent(parent);
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
-		assertTrue(aBuilder.canDetachFromPackage(Arrays.asList(child)));
+		assertTrue(aBuilder.canUnlinkFromPackage(Arrays.asList(child)));
 	}
 	
 	@Test
@@ -467,7 +467,7 @@ public class TestClassDiagramBuilder
 		PackageNode node2 = new PackageNode();
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
-		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList(node1)));
+		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList(node1)));
 	}
 	
 	@Test
@@ -483,7 +483,7 @@ public class TestClassDiagramBuilder
 		parent2.addChild(child2);
 		aDiagram.addRootNode(parent1);
 		aDiagram.addRootNode(parent2);
-		assertFalse(aBuilder.canDetachFromPackage(Arrays.asList(child1, child2)));
+		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList(child1, child2)));
 	}
 	
 	@Test
@@ -494,9 +494,9 @@ public class TestClassDiagramBuilder
 		aDiagram.addRootNode(child);
 		aDiagram.addRootNode(parent);
 		List<Node> selection = Arrays.asList(child);
-		assertTrue(aBuilder.canAttachToPackage(selection));
+		assertTrue(aBuilder.canLinkToPackage(selection));
 		
-		DiagramOperation operation = aBuilder.createAttachToPackageOperation(selection);
+		DiagramOperation operation = aBuilder.createLinkToPackageOperation(selection);
 		operation.execute();
 		assertFalse(aDiagram.rootNodes().contains(child));
 		assertTrue(parent.getChildren().contains(child));
@@ -516,9 +516,9 @@ public class TestClassDiagramBuilder
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		List<Node> selection = Arrays.asList(child);
-		assertTrue(aBuilder.canDetachFromPackage(selection));
+		assertTrue(aBuilder.canUnlinkFromPackage(selection));
 		
-		DiagramOperation operation = aBuilder.createDetachFromPackageOperation(selection);
+		DiagramOperation operation = aBuilder.createUnlinkFromPackageOperation(selection);
 		operation.execute();
 		assertTrue(aDiagram.rootNodes().contains(child));
 		assertFalse(parent.getChildren().contains(child));
@@ -541,9 +541,9 @@ public class TestClassDiagramBuilder
 		outerParent.addChild(innerParent);
 		aDiagram.addRootNode(outerParent);
 		List<Node> selection = Arrays.asList(child);
-		assertTrue(aBuilder.canDetachFromPackage(selection));
+		assertTrue(aBuilder.canUnlinkFromPackage(selection));
 		
-		DiagramOperation operation = aBuilder.createDetachFromPackageOperation(selection);
+		DiagramOperation operation = aBuilder.createUnlinkFromPackageOperation(selection);
 		operation.execute();
 		assertTrue(outerParent.getChildren().contains(child));
 		assertFalse(innerParent.getChildren().contains(child));

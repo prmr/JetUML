@@ -85,4 +85,10 @@ public abstract class TypeNode extends NamedNode implements ChildNode
 		super.buildProperties();
 		properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
 	}
+	
+	@Override
+	public boolean hasParent()
+	{
+		return aContainer != null;
+	}
 }

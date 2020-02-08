@@ -92,4 +92,10 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		return aDiagram;
 	}
+	
+	@Override
+	public boolean hasParent()
+	{
+		return false;
+	}
 }

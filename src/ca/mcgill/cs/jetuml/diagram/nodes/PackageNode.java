@@ -158,4 +158,10 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		properties().add("name", () -> aName, pName -> aName = (String)pName);
 		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
 	}
+
+	@Override
+	public boolean hasParent()
+	{
+		return aContainer != null;
+	}
 }

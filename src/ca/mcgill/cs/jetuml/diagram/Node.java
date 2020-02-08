@@ -73,4 +73,9 @@ public interface Node extends DiagramElement
 	 * or empty() if the node is not attached.
 	 */
 	Optional<Diagram> getDiagram();
+	
+	/**
+	 * @return True if this node is linked to a parent node.
+	 */
+	boolean hasParent();
 }

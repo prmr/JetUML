@@ -575,13 +575,13 @@ public class DiagramCanvasController
 			return;
 		}
 		List<Node> selectedNodes = aSelectionModel.getSelectedNodes();
-		if(((ClassDiagramBuilder)aDiagramBuilder).canAttachToPackage(selectedNodes))
+		if(((ClassDiagramBuilder)aDiagramBuilder).canLinkToPackage(selectedNodes))
 		{
-			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createAttachToPackageOperation(selectedNodes));
+			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createLinkToPackageOperation(selectedNodes));
 		}
-		else if(((ClassDiagramBuilder)aDiagramBuilder).canDetachFromPackage(selectedNodes))
+		else if(((ClassDiagramBuilder)aDiagramBuilder).canUnlinkFromPackage(selectedNodes))
 		{
-			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createDetachFromPackageOperation(selectedNodes));
+			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createUnlinkFromPackageOperation(selectedNodes));
 		}
 		// Place the modified nodes on the top
 		selectedNodes.forEach(node -> aCanvas.getDiagram().placeOnTop(node));

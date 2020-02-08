@@ -28,14 +28,13 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * relation. A child node is defined as a child that
  * cannot exist without its parent according to the rules
  * of UML. Child nodes are controlled by their parent nodes.
- * See ParentNode for details.
+ * See ParentNode for additional information.
  */
 public interface ChildNode extends Node
 {
 	/**
-	 * @return True if this node type absolutely
-	 * needs a parent to exist, and false if it can
-	 * exist as a root node.
+	 * @return true if this node type requires a parent to exist, 
+	 * and false if it can exist as a root node.
 	 */
 	boolean requiresParent();	
 	

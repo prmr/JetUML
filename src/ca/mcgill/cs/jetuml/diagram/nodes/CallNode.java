@@ -108,4 +108,10 @@ public class CallNode extends AbstractNode implements ChildNode
 	{
 		return true;
 	}
+
+	@Override
+	public boolean hasParent()
+	{
+		return aImplicitParameter != null;
+	}
 }

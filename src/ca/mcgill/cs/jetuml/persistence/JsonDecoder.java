@@ -102,7 +102,7 @@ public final class JsonDecoder
 	{
 		for( Node node : pContext )
 		{
-			if( !(node instanceof ChildNode) || ((ChildNode)node).getParent() == null )
+			if( !node.hasParent() )
 			{
 				pContext.pDiagram().addRootNode(node);
 			}
