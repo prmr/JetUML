@@ -249,7 +249,7 @@ public final class Clipboard
 			{
 				if( !aNodes.contains(node.getParent()))
 				{
-					node.getParent().removeChild((ChildNode)node);
+					node.getParent().removeChild(node);
 				}
 			}
 		}

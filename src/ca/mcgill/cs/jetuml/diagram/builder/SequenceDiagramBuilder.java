@@ -255,7 +255,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				()-> 
 				{
 					pNode.detach();
-					target.removeChild((ChildNode)pNode);
+					target.removeChild(pNode);
 				});
 			}
 		}

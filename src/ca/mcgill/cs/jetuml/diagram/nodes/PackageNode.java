@@ -147,7 +147,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	}
 
 	@Override
-	public void removeChild(ChildNode pNode)
+	public void removeChild(Node pNode)
 	{
 		aContainedNodes.remove(pNode);
 		pNode.unlink();

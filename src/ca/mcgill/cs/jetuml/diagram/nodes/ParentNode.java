@@ -58,17 +58,17 @@ public interface ParentNode extends Node
 	 * Remove pNode from the list of children of this node.
 	 * @param pNode The child to remove.
 	 */
-	void removeChild(ChildNode pNode);
+	void removeChild(Node pNode);
 	
 	/**
 	 * Move the child node to the last position in the list of children.
 	 * @param pNode The child to move
 	 * @pre pNode != null
 	 */
-	default void moveChildToLastPlace(ChildNode pNode)
+	default void moveChildToLastPlace(Node pNode)
 	{
 		assert pNode != null;
 		removeChild(pNode);
-		addChild(pNode);
+		addChild((ChildNode)pNode);
 	}
 }

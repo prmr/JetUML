@@ -24,6 +24,8 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.Node;
+
 /**
  * An implicit parameter node in a sequence diagram. The 
  * visual portion of this node includes the top rectangle (object) and
@@ -75,7 +77,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	}
 
 	@Override
-	public void removeChild(ChildNode pNode)
+	public void removeChild(Node pNode)
 	{
 		if (pNode.getParent() != this)
 		{

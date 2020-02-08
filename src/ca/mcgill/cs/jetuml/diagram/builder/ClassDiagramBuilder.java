@@ -74,7 +74,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				()-> 
 				{ 
 					pNode.detach();
-					container.get().removeChild((ChildNode)pNode); 
+					container.get().removeChild(pNode); 
 				});
 			}
 		}
@@ -298,7 +298,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					for( Node pNode: pNodes )
 					{
 						aDiagram.addRootNode(pNode);
-						packageNode.removeChild((ChildNode)pNode);
+						packageNode.removeChild(pNode);
 					}
 				});	
 	}
@@ -326,7 +326,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							aDiagram.addRootNode(pNode);
-							parent.removeChild((ChildNode)pNode);
+							parent.removeChild(pNode);
 						}
 					},
 					()->
@@ -348,7 +348,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							outerParent.addChild((ChildNode)pNode);
-							parent.removeChild((ChildNode)pNode);
+							parent.removeChild(pNode);
 							((ChildNode)pNode).link(outerParent);
 						}
 					},
@@ -356,7 +356,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							outerParent.removeChild((ChildNode)pNode);
+							outerParent.removeChild(pNode);
 							parent.addChild((ChildNode)pNode);
 							((ChildNode)pNode).link(parent);
 						}

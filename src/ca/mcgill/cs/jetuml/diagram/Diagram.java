@@ -382,7 +382,7 @@ public final class Diagram implements DiagramData
 		if (parent != null) 
 		{
 			// Move the child node to the top of all other children
-			parent.moveChildToLastPlace((ChildNode)pNode);
+			parent.moveChildToLastPlace(pNode);
 			// Recursively reorder the node's parent
 			placeOnTop(parent);
 		}

@@ -152,7 +152,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 						()-> 
 						{ 
 							pNode.detach();
-							object.removeChild((ChildNode)pNode);
+							object.removeChild(pNode);
 						}
 						);
 			}
