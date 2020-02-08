@@ -39,7 +39,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
@@ -379,8 +378,8 @@ public abstract class DiagramBuilder
 				if(((Node) element).hasParent())
 				{
 					result.add(new SimpleOperation(
-						createDetachOperation((ChildNode)element),
-						createReinsertOperation((ChildNode)element)));
+						createDetachOperation((Node)element),
+						createReinsertOperation((Node)element)));
 				}
 				else
 				{
@@ -464,7 +463,7 @@ public abstract class DiagramBuilder
 				()-> aDiagram.removeEdge(pEdge)));
 	}
 	
-	private Runnable createReinsertOperation(ChildNode pNode)
+	private Runnable createReinsertOperation(Node pNode)
 	{
 		ParentNode parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);
@@ -475,7 +474,7 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private Runnable createDetachOperation(ChildNode pNode)
+	private Runnable createDetachOperation(Node pNode)
 	{
 		ParentNode parent = pNode.getParent();
 		return ()-> 

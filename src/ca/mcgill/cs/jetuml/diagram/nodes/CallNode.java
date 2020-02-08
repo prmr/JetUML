@@ -27,7 +27,7 @@ import java.util.Optional;
  * A method call node in a sequence diagram. Call nodes are
  * not intended to be manipulated by users. 
  */
-public class CallNode extends AbstractNode implements ChildNode
+public class CallNode extends AbstractNode
 {
 	public static final int CALL_YGAP = 20;
 

@@ -46,7 +46,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 		for( Node child : aCallNodes )
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
-			ChildNode clonedChild = (ChildNode) child.clone();
+			Node clonedChild = child.clone();
 			clonedChild.link(cloned);
 			cloned.aCallNodes.add(clonedChild);
 		}

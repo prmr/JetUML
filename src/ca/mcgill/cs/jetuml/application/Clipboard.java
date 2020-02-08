@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
@@ -234,7 +233,7 @@ public final class Clipboard
 	 */
 	private boolean missingParent(Node pNode)
 	{
-		return pNode instanceof ChildNode && pNode.requiresParent() && !aNodes.contains(pNode.getParent()) ;
+		return pNode.requiresParent() && !aNodes.contains(pNode.getParent()) ;
 	}
 	
 	/*

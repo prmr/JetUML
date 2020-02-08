@@ -26,7 +26,7 @@ import java.util.Optional;
 /**
  *  A field node in an object diagram.
  */
-public final class FieldNode extends NamedNode implements ChildNode
+public final class FieldNode extends NamedNode
 {
 	private String aValue = "value";
 	private Optional<ObjectNode> aObject = Optional.empty(); // The object defining this field

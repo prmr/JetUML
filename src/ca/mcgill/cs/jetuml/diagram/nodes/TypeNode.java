@@ -27,7 +27,7 @@ import java.util.Optional;
  * A type that can represent either classes or interfaces. A type node 
  * always has at least methods.
  */
-public abstract class TypeNode extends NamedNode implements ChildNode
+public abstract class TypeNode extends NamedNode
 {
 	private String aMethods = ""; 
 	private Optional<ParentNode> aContainer = Optional.empty();

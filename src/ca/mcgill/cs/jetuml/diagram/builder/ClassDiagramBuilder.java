@@ -32,7 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
@@ -290,7 +289,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						aDiagram.removeRootNode(pNode);
 						packageNode.addChild(pNode);
-						((ChildNode)pNode).link(packageNode);
+						pNode.link(packageNode);
 					}
 				},
 				()->
@@ -335,7 +334,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							aDiagram.removeRootNode(pNode);
 							parent.addChild(pNode);
-							((ChildNode)pNode).link(parent);
+							pNode.link(parent);
 						}
 					});	
 		}
@@ -349,7 +348,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.addChild(pNode);
 							parent.removeChild(pNode);
-							((ChildNode)pNode).link(outerParent);
+							pNode.link(outerParent);
 						}
 					},
 					()->
@@ -358,7 +357,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.removeChild(pNode);
 							parent.addChild(pNode);
-							((ChildNode)pNode).link(parent);
+							pNode.link(parent);
 						}
 					});	
 		}

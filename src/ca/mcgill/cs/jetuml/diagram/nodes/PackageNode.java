@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 /**
  * A package node in a UML diagram.
  */
-public final class PackageNode extends AbstractNode implements ParentNode, ChildNode
+public final class PackageNode extends AbstractNode implements ParentNode
 {
 	private String aName = "";
 	private String aContents = "";
@@ -92,7 +92,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		for( Node child : aContainedNodes )
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
-			ChildNode clonedChild = (ChildNode) child.clone();
+			Node clonedChild = child.clone();
 			clonedChild.link(cloned);
 			cloned.aContainedNodes.add(clonedChild);
 		}

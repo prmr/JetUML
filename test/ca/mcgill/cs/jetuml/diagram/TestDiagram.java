@@ -35,7 +35,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
@@ -44,8 +43,8 @@ public class TestDiagram
 {
 	private Diagram aDiagram;
 	private Node aNode1;
-	private ChildNode aNode2;
-	private ChildNode aNode3;
+	private Node aNode2;
+	private Node aNode3;
 	private ParentNode aNode4;
 	
 	static class StubNode extends AbstractNode{ }

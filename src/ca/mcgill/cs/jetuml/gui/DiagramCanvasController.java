@@ -41,8 +41,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -384,19 +382,19 @@ public class DiagramCanvasController
 	private Optional<DiagramElement> getTool(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
-		Optional<? extends DiagramElement> selected = getSelectedElement(pEvent);
+//		Optional<? extends DiagramElement> selected = getSelectedElement(pEvent);
 
-		if( tool.isPresent() && tool.get() instanceof Node)
-		{
-			if(selected.isPresent() && selected.get() instanceof Node)
-			{
-				if(!(tool.get() instanceof ChildNode && selected.get() instanceof ParentNode))
-				{
-					aToolBar.setToolToBeSelect();
-					tool = Optional.empty();
-				}
-			}
-		}	
+//		if( tool.isPresent() && tool.get() instanceof Node)
+//		{
+//			if(selected.isPresent() && selected.get() instanceof Node)
+//			{
+//				if(!(tool.get() instanceof ChildNode && selected.get() instanceof ParentNode))
+//				{
+//					aToolBar.setToolToBeSelect();
+//					tool = Optional.empty();
+//				}
+//			}
+//		} // TODO retire this feature
 		return tool;
 	}
 	
