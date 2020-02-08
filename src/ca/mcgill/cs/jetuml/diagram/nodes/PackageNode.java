@@ -127,7 +127,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	}
 
 	@Override
-	public void addChild(int pIndex, ChildNode pNode)
+	public void addChild(int pIndex, Node pNode)
 	{
 		assert pNode != null;
 		assert pIndex >=0 && pIndex <= aContainedNodes.size();
@@ -135,7 +135,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		{
 			pNode.getParent().removeChild(pNode);
 		}
-		aContainedNodes.add(pIndex, pNode);
+		aContainedNodes.add(pIndex, (ChildNode)pNode);
 		pNode.link(this);
 	}
 
@@ -143,7 +143,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	public void addChild(Node pNode)
 	{
 		assert pNode != null;
-		addChild(aContainedNodes.size(), (ChildNode)pNode);
+		addChild(aContainedNodes.size(), pNode);
 	}
 
 	@Override

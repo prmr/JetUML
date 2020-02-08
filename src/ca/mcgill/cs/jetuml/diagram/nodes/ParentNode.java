@@ -46,7 +46,7 @@ public interface ParentNode extends Node
 	 * @param pIndex Where to insert the child.
 	 * @param pNode The child to insert.
 	 */
-	void addChild(int pIndex, ChildNode pNode); 
+	void addChild(int pIndex, Node pNode); 
 	
 	/**
 	 * Insert a child at the end of the list of children.

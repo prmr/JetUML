@@ -67,17 +67,17 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	@Override
 	public void addChild(Node pNode)
 	{
-		addChild(aFields.size(), (ChildNode)pNode);
+		addChild(aFields.size(), pNode);
 	}
 	
 	@Override
-	public void addChild(int pIndex, ChildNode pNode)
+	public void addChild(int pIndex, Node pNode)
 	{
 		if( pNode.hasParent() )
 		{
 			pNode.getParent().removeChild(pNode);
 		}
-		aFields.add(pIndex, pNode);
+		aFields.add(pIndex, (ChildNode)pNode);
 		pNode.link(this);
 	}
 

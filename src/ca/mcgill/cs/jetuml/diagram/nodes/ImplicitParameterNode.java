@@ -60,7 +60,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	}
 
 	@Override
-	public void addChild(int pIndex, ChildNode pNode)
+	public void addChild(int pIndex, Node pNode)
 	{
 		addChild(pNode);
 	}
