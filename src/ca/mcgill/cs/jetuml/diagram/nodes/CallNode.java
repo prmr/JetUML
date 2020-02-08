@@ -21,9 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import java.util.Optional;
 
 /**
  * A method call node in a sequence diagram. Call nodes are
@@ -33,7 +31,7 @@ public class CallNode extends AbstractNode implements ChildNode
 {
 	public static final int CALL_YGAP = 20;
 
-	private ImplicitParameterNode aImplicitParameter;
+	private Optional<ImplicitParameterNode> aImplicitParameter = Optional.empty();
 	private boolean aOpenBottom;
 
 	/**
@@ -69,46 +67,33 @@ public class CallNode extends AbstractNode implements ChildNode
 	}
 	
 	/**
-	 * @param pGraph The graph containing the node.
-	 * @return True if this node is signaled.
-	 */
-	public boolean isSignaled(Diagram pGraph)
-	{
-		for( Edge edge : pGraph.edgesConnectedTo(this))
-		{
-			if( edge instanceof CallEdge && edge.getEnd() == this && ((CallEdge)edge).isSignal())
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
      * Gets the parent of this node.
-     * @return the parent node, or null if the node has no parent
+     * @return the parent node
+     * @pre hasParent()
 	 */
 	public ParentNode getParent() 
    	{ 
-		return aImplicitParameter; 
+		assert hasParent();
+		return aImplicitParameter.get(); 
 	}
 
 	/**
      * Sets the parent of this node.
      * @param pNode the parent node
+     * @pre pNode != null;
 	 */
 	public void link(ParentNode pNode) 
 	{
 		assert pNode != null;
 		assert pNode instanceof ImplicitParameterNode;
-		aImplicitParameter = (ImplicitParameterNode) pNode;
+		aImplicitParameter = Optional.of((ImplicitParameterNode) pNode);
 	}
 	
 	@Override
 	public void unlink()
 	{
 		assert hasParent();
-		aImplicitParameter = null;
+		aImplicitParameter = Optional.empty();
 	}
 
 	@Override
@@ -120,6 +105,6 @@ public class CallNode extends AbstractNode implements ChildNode
 	@Override
 	public boolean hasParent()
 	{
-		return aImplicitParameter != null;
+		return aImplicitParameter.isPresent();
 	}
 }

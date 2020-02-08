@@ -66,10 +66,9 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	@Override
 	public void addChild(ChildNode pNode)
 	{
-		ParentNode oldParent = pNode.getParent();
-		if (oldParent != null)
+		if(pNode.hasParent())
 		{
-			oldParent.removeChild(pNode);
+			pNode.getParent().removeChild(pNode);
 		}
 		aCallNodes.add(pNode);
 		pNode.link(this);
