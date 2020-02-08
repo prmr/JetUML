@@ -69,7 +69,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				result = new SimpleOperation( ()->  
 				{ 
 					pNode.attach(aDiagram);
-					container.get().addChild((ChildNode)pNode); 
+					container.get().addChild(pNode); 
 				},
 				()-> 
 				{ 
@@ -289,7 +289,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					for( Node pNode: pNodes )
 					{
 						aDiagram.removeRootNode(pNode);
-						packageNode.addChild((ChildNode)pNode);
+						packageNode.addChild(pNode);
 						((ChildNode)pNode).link(packageNode);
 					}
 				},
@@ -334,7 +334,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							aDiagram.removeRootNode(pNode);
-							parent.addChild((ChildNode)pNode);
+							parent.addChild(pNode);
 							((ChildNode)pNode).link(parent);
 						}
 					});	
@@ -347,7 +347,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							outerParent.addChild((ChildNode)pNode);
+							outerParent.addChild(pNode);
 							parent.removeChild(pNode);
 							((ChildNode)pNode).link(outerParent);
 						}
@@ -357,7 +357,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						for( Node pNode: pNodes )
 						{
 							outerParent.removeChild(pNode);
-							parent.addChild((ChildNode)pNode);
+							parent.addChild(pNode);
 							((ChildNode)pNode).link(parent);
 						}
 					});	

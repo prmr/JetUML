@@ -52,7 +52,7 @@ public interface ParentNode extends Node
 	 * Insert a child at the end of the list of children.
 	 * @param pNode The child to insert.
 	 */
-	void addChild(ChildNode pNode);
+	void addChild(Node pNode);
 	
 	/**
 	 * Remove pNode from the list of children of this node.
@@ -69,6 +69,6 @@ public interface ParentNode extends Node
 	{
 		assert pNode != null;
 		removeChild(pNode);
-		addChild((ChildNode)pNode);
+		addChild(pNode);
 	}
 }

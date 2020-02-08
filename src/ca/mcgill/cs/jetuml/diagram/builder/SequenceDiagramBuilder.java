@@ -36,7 +36,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstr
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
@@ -250,7 +249,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				result = new SimpleOperation(()-> 
 				{ 
 					pNode.attach(aDiagram);
-					target.addChild((ChildNode)pNode); 
+					target.addChild(pNode); 
 				},
 				()-> 
 				{

@@ -29,7 +29,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
@@ -125,7 +124,7 @@ public final class JsonDecoder
 				JSONArray children = object.getJSONArray("children");
 				for( int j = 0; j < children.length(); j++ )
 				{
-					((ParentNode)node).addChild((ChildNode)pContext.getNode(children.getInt(j)));
+					((ParentNode)node).addChild(pContext.getNode(children.getInt(j)));
 				}
 			}
 		}

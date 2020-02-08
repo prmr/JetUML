@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -148,7 +147,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 				result = new SimpleOperation( 
 						()-> 
 						{ pNode.attach(aDiagram); 
-						object.addChild((ChildNode)pNode); },
+						object.addChild(pNode); },
 						()-> 
 						{ 
 							pNode.detach();

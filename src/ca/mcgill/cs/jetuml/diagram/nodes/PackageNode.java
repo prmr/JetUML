@@ -140,10 +140,10 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	}
 
 	@Override
-	public void addChild(ChildNode pNode)
+	public void addChild(Node pNode)
 	{
 		assert pNode != null;
-		addChild(aContainedNodes.size(), pNode);
+		addChild(aContainedNodes.size(), (ChildNode)pNode);
 	}
 
 	@Override
