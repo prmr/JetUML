@@ -185,7 +185,7 @@ public final class Clipboard
 		return false;
 	}
 	
-	private boolean recursivelyContains(Node pNode, List<ChildNode> pNodes)
+	private boolean recursivelyContains(Node pNode, List<Node> pNodes)
 	{
 		for( Node node : pNodes )
 		{
@@ -219,8 +219,8 @@ public final class Clipboard
 		}
 		if( pOld instanceof ParentNode )
 		{
-			List<ChildNode> oldChildren = ((ParentNode) pOld).getChildren();
-			List<ChildNode> newChildren = ((ParentNode) pNew).getChildren();
+			List<Node> oldChildren = ((ParentNode) pOld).getChildren();
+			List<Node> newChildren = ((ParentNode) pNew).getChildren();
 			for( int i = 0; i < oldChildren.size(); i++)
 			{
 				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));

@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -74,7 +73,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	public int getSplitPosition(Node pNode)
 	{
 		int leftWidth = 0;
-		for(ChildNode field : ((ObjectNode)pNode).getChildren())
+		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
 			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
 		}
@@ -92,7 +91,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		{
 			height = YGAP;
 		}
-		for(ChildNode field : ((ObjectNode)pNode).getChildren())
+		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
 			height += FIELD_NODE_VIEWER.getHeight(field) + YGAP;   
 			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
@@ -113,7 +112,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		assert ((ObjectNode)pNode).getChildren().contains(pFieldNode);
 		Rectangle bounds = getTopRectangle(pNode);
 		int yPosition = bounds.getMaxY() + YGAP; 
-		for( ChildNode field : ((ObjectNode)pNode).getChildren() )
+		for( Node field : ((ObjectNode)pNode).getChildren() )
 		{
 			yPosition += YGAP;
 			if( field == pFieldNode )

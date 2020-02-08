@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.viewers.nodes;
 import static ca.mcgill.cs.jetuml.geom.Util.max;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -80,7 +79,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	{
 		int maxY = 0;
 		int maxX = 0;
-		for( ChildNode child : ((ImplicitParameterNode)pNode).getChildren() )
+		for( Node child : ((ImplicitParameterNode)pNode).getChildren() )
 		{
 			Rectangle bounds = NodeViewerRegistry.getBounds(child);
 			maxX = Math.max(maxX,  bounds.getMaxX());

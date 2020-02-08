@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  */
 public final class ObjectNode extends NamedNode implements ParentNode
 {
-	private ArrayList<ChildNode> aFields = new ArrayList<>();
+	private ArrayList<Node> aFields = new ArrayList<>();
 
 	/* 
  	 * Translate the children as well. 
@@ -54,10 +54,10 @@ public final class ObjectNode extends NamedNode implements ParentNode
 		ObjectNode cloned = (ObjectNode) super.clone();
 		cloned.aFields = new ArrayList<>();
 		
-		for( ChildNode child : aFields )
+		for( Node child : aFields )
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
-			ChildNode clonedChild = (ChildNode) child.clone();
+			Node clonedChild = child.clone();
 			clonedChild.link(cloned);
 			cloned.aFields.add(clonedChild);
 		}
@@ -77,12 +77,12 @@ public final class ObjectNode extends NamedNode implements ParentNode
 		{
 			pNode.getParent().removeChild(pNode);
 		}
-		aFields.add(pIndex, (ChildNode)pNode);
+		aFields.add(pIndex, pNode);
 		pNode.link(this);
 	}
 
 	@Override
-	public List<ChildNode> getChildren()
+	public List<Node> getChildren()
 	{
 		return aFields; // TODO there should be a remove operation on ObjectNode
 	}

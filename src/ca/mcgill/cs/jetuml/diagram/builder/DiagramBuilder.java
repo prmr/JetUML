@@ -122,7 +122,7 @@ public abstract class DiagramBuilder
 		result.add(pNode);
 		if( pNode instanceof ParentNode )
 		{
-			for( ChildNode child : ((ParentNode)pNode).getChildren() )
+			for( Node child : ((ParentNode)pNode).getChildren() )
 			{
 				result.addAll(getNodeAndAllChildren(child));
 			}

@@ -52,7 +52,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
@@ -290,7 +289,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(310, 230, 120, 100), NodeViewerRegistry.getBounds(p1));
 		assertEquals("p1", p1.getName().toString());
 		
-		List<ChildNode> children = p1.getChildren();
+		List<Node> children = p1.getChildren();
 		assertEquals(1, children.size());
 		ClassNode c1 = (ClassNode) children.get(0);
 		assertEquals(new Rectangle(320, 260, 100, 60), NodeViewerRegistry.getBounds(c1));
@@ -381,7 +380,7 @@ public class TestPersistenceService
 		assertEquals("A note", node5.getName());
 		assertEquals(new Rectangle(700, 530, 60, 40), NodeViewerRegistry.getBounds(node5));
 		
-		List<ChildNode> children = node6.getChildren();
+		List<Node> children = node6.getChildren();
 		assertEquals(1, children.size());
 		ClassNode node7 = (ClassNode) children.get(0);
 		assertEquals("", node6.getContents());
@@ -456,20 +455,20 @@ public class TestPersistenceService
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
 		assertEquals(new Rectangle(160,0,90,250), NodeViewerRegistry.getBounds(object1));
-		List<ChildNode> o1children = object1.getChildren();
+		List<Node> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
 		CallNode init = (CallNode) o1children.get(0);
 		CallNode selfCall = (CallNode) o1children.get(1);
 		
 		assertEquals(new Rectangle(370,0,80,210), NodeViewerRegistry.getBounds(object2));
-		List<ChildNode> o2children = object2.getChildren();
+		List<Node> o2children = object2.getChildren();
 		assertEquals(1, o2children.size());
 		assertEquals(":Type2", object2.getName().toString());
 		CallNode o2Call = (CallNode) o2children.get(0);
 		
 		assertEquals(new Rectangle(590,0,80,190), NodeViewerRegistry.getBounds(object3));
-		List<ChildNode> o3children = object3.getChildren();
+		List<Node> o3children = object3.getChildren();
 		assertEquals(1, o3children.size());
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
@@ -627,7 +626,7 @@ public class TestPersistenceService
 		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 474));
 		
 		assertEquals(new Rectangle(240, 130, 90, 90), NodeViewerRegistry.getBounds(type1));
-		List<ChildNode> children = type1.getChildren();
+		List<Node> children = type1.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(":Type1", type1.getName().toString());
 		

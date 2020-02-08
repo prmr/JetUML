@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
@@ -86,7 +85,7 @@ public final class JsonEncoder
 	private static JSONArray encodeChildren(Node pNode, SerializationContext pContext)
 	{
 		JSONArray children = new JSONArray();
-		for( ChildNode child : ((ParentNode)pNode).getChildren())
+		for( Node child : ((ParentNode)pNode).getChildren())
 		{
 			children.put(pContext.getId(child));
 		}

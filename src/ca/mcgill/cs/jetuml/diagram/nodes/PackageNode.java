@@ -34,7 +34,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 {
 	private String aName = "";
 	private String aContents = "";
-	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
+	private ArrayList<Node> aContainedNodes = new ArrayList<>();
 	private Optional<ParentNode> aContainer = Optional.empty();
 	
 	/**
@@ -89,7 +89,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	{
 		PackageNode cloned = (PackageNode) super.clone();
 		cloned.aContainedNodes = new ArrayList<>();
-		for( ChildNode child : aContainedNodes )
+		for( Node child : aContainedNodes )
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
 			ChildNode clonedChild = (ChildNode) child.clone();
@@ -121,7 +121,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	}
 
 	@Override
-	public List<ChildNode> getChildren()
+	public List<Node> getChildren()
 	{
 		return aContainedNodes; // TODO there should be a remove operation on PackageNode
 	}
@@ -135,7 +135,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		{
 			pNode.getParent().removeChild(pNode);
 		}
-		aContainedNodes.add(pIndex, (ChildNode)pNode);
+		aContainedNodes.add(pIndex, pNode);
 		pNode.link(this);
 	}
 

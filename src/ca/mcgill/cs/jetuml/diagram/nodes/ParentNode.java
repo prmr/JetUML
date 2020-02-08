@@ -39,7 +39,7 @@ public interface ParentNode extends Node
 	/**
 	 * @return A list of the children of this node.
 	 */
-	List<ChildNode> getChildren(); 
+	List<Node> getChildren(); 
 	
 	/**
 	 * Insert a child node at index pIndex.

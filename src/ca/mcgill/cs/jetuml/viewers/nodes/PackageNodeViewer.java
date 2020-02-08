@@ -25,7 +25,6 @@ import static ca.mcgill.cs.jetuml.geom.Util.max;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
@@ -110,7 +109,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 			return Optional.empty();
 		}
 		Rectangle childBounds = null;
-		for( ChildNode child : ((PackageNode)pNode).getChildren() )
+		for( Node child : ((PackageNode)pNode).getChildren() )
 		{
 			if( childBounds == null )
 			{

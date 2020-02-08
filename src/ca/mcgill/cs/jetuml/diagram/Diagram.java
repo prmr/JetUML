@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.diagram.nodes.ChildNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
@@ -119,8 +118,8 @@ public final class Diagram implements DiagramData
 		}
 		if( pOriginal instanceof ParentNode )
 		{
-			List<ChildNode> oldChildren = ((ParentNode) pOriginal).getChildren();
-			List<ChildNode> newChildren = ((ParentNode) pCopy).getChildren();
+			List<Node> oldChildren = ((ParentNode) pOriginal).getChildren();
+			List<Node> newChildren = ((ParentNode) pCopy).getChildren();
 			for( int i = 0; i < oldChildren.size(); i++)
 			{
 				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));

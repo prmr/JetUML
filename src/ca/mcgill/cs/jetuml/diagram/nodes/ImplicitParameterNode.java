@@ -36,14 +36,14 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  */
 public final class ImplicitParameterNode extends NamedNode implements ParentNode
 {
-	private List<ChildNode> aCallNodes = new ArrayList<>();
+	private List<Node> aCallNodes = new ArrayList<>();
 
 	@Override
 	public ImplicitParameterNode clone()
 	{
 		ImplicitParameterNode cloned = (ImplicitParameterNode) super.clone();
 		cloned.aCallNodes = new ArrayList<>();
-		for( ChildNode child : aCallNodes )
+		for( Node child : aCallNodes )
 		{
 			// We can't use addChild(...) here because of the interaction with the original parent.
 			ChildNode clonedChild = (ChildNode) child.clone();
@@ -54,7 +54,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	}
 	
 	@Override
-	public List<ChildNode> getChildren()
+	public List<Node> getChildren()
 	{
 		return aCallNodes;
 	}
@@ -72,7 +72,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 		{
 			pNode.getParent().removeChild(pNode);
 		}
-		aCallNodes.add((ChildNode)pNode);
+		aCallNodes.add(pNode);
 		pNode.link(this);
 	}
 
