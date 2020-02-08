@@ -28,7 +28,6 @@ import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsSame
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -197,7 +196,7 @@ public class TestClipboard
 		assertThat( nodes, hasSize, 1 );
 		
 		ClassNode node = (ClassNode)nodes.get(0);
-		assertNull(node.getParent());
+		assertFalse(node.hasParent());
 		assertThat(extract(nodes, Node::position), hasElementsEqualTo, new Point(0,0));
 		
 		assertThat(getClipboardEdges(), isEmpty );

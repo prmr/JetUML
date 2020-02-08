@@ -25,7 +25,6 @@ import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.getBounds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -359,24 +358,24 @@ public class TestPersistenceService
 		assertEquals("", node1.getAttributes());
 		assertEquals("", node1.getMethods());
 		assertEquals("Class1", node1.getName());
-		assertNull(node1.getParent());
+		assertFalse(node1.hasParent());
 		assertEquals(new Rectangle(460, 370, 100, 60), NodeViewerRegistry.getBounds(node1));
 		
 		assertEquals("", node2.getMethods());
 		assertEquals("\u00ABinterface\u00BB\n", node2.getName());
-		assertNull(node2.getParent());
+		assertFalse(node2.hasParent());
 		assertEquals(new Rectangle(460, 250, 100, 60), NodeViewerRegistry.getBounds(node2));
 		
 		assertEquals("foo", node3.getAttributes());
 		assertEquals("bar", node3.getMethods());
 		assertEquals("Class2", node3.getName());
-		assertNull(node3.getParent());
+		assertFalse(node3.hasParent());
 		assertEquals(new Rectangle(460, 520, 100, 69), NodeViewerRegistry.getBounds(node3));
 		
 		assertEquals("", node4.getAttributes());
 		assertEquals("", node4.getMethods());
 		assertEquals("Class3", node4.getName());
-		assertNull(node4.getParent());
+		assertFalse(node4.hasParent());
 		assertEquals(new Rectangle(630, 370, 100, 60), NodeViewerRegistry.getBounds(node4));
 		
 		assertEquals("A note", node5.getName());

@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -504,7 +503,7 @@ public class TestClassDiagramBuilder
 		operation.undo();
 		assertTrue(aDiagram.rootNodes().contains(child));
 		assertFalse(parent.getChildren().contains(child));
-		assertNull(child.getParent());
+		assertFalse(child.hasParent());
 	}
 	
 	@Test
@@ -522,7 +521,7 @@ public class TestClassDiagramBuilder
 		operation.execute();
 		assertTrue(aDiagram.rootNodes().contains(child));
 		assertFalse(parent.getChildren().contains(child));
-		assertNull(child.getParent());
+		assertFalse(child.hasParent());
 		operation.undo();
 		assertFalse(aDiagram.rootNodes().contains(child));
 		assertTrue(parent.getChildren().contains(child));

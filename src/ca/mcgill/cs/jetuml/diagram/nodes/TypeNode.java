@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import java.util.Optional;
+
 /**
  * A type that can represent either classes or interfaces. A type node 
  * always has at least methods.
@@ -28,7 +30,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 public abstract class TypeNode extends NamedNode implements ChildNode
 {
 	private String aMethods = ""; 
-	private ParentNode aContainer;
+	private Optional<ParentNode> aContainer = Optional.empty();
 
 	/**
      * Sets the methods property value.
@@ -63,21 +65,22 @@ public abstract class TypeNode extends NamedNode implements ChildNode
 	@Override
 	public ParentNode getParent()
 	{
-		return aContainer;
+		assert hasParent();
+		return aContainer.get();
 	}
 
 	@Override
 	public void link(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode && pNode != null;
-		aContainer = pNode;
+		aContainer = Optional.of(pNode);
 	}
 	
 	@Override
 	public void unlink()
 	{
 		assert hasParent();
-		aContainer = null;
+		aContainer = Optional.empty();
 	}
 	
 	@Override
@@ -96,6 +99,6 @@ public abstract class TypeNode extends NamedNode implements ChildNode
 	@Override
 	public boolean hasParent()
 	{
-		return aContainer != null;
+		return aContainer.isPresent();
 	}
 }

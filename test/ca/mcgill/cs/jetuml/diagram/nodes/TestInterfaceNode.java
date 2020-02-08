@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ public class TestInterfaceNode
 		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
-		assertNull(aNode1.getParent());
+		assertFalse(aNode1.hasParent());
 	}
 	
 	@Test
@@ -63,6 +63,6 @@ public class TestInterfaceNode
 		aNode1.link(package2);
 		assertTrue( aNode1.getParent() == package2 );
 		aNode1.unlink();
-		assertNull( aNode1.getParent() );
+		assertFalse( aNode1.hasParent() );
 	}
 }

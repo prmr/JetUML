@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -112,7 +111,7 @@ public class TestPackageNode
 		
 		aPackage1.removeChild(aClass2);
 		assertEquals( 0, aPackage1.getChildren().size());
-		assertNull( aClass2.getParent());
+		assertFalse( aClass2.hasParent());
 	}
 	
 	@Test 
