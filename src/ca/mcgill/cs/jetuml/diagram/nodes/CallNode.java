@@ -102,6 +102,13 @@ public class CallNode extends AbstractNode implements ChildNode
 		assert pNode instanceof ImplicitParameterNode || pNode == null;
 		aImplicitParameter = (ImplicitParameterNode) pNode;
 	}
+	
+	@Override
+	public void unlink()
+	{
+		assert hasParent();
+		aImplicitParameter = null;
+	}
 
 	@Override
 	public boolean requiresParent()

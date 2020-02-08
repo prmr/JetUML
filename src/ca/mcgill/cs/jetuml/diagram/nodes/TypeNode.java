@@ -74,6 +74,13 @@ public abstract class TypeNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
+	public void unlink()
+	{
+		assert hasParent();
+		aContainer = null;
+	}
+	
+	@Override
 	public boolean requiresParent()
 	{
 		return false;

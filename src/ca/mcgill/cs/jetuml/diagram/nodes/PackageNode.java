@@ -110,6 +110,13 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = pNode;
 	}
+	
+	@Override
+	public void unlink()
+	{
+		assert hasParent();
+		aContainer = null;
+	}
 
 	@Override
 	public List<ChildNode> getChildren()

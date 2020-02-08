@@ -66,6 +66,13 @@ public final class FieldNode extends NamedNode implements ChildNode
 	}
 	
 	@Override
+	public void unlink()
+	{
+		assert hasParent();
+		aObject = null;
+	}
+	
+	@Override
 	public boolean requiresParent()
 	{
 		return true;

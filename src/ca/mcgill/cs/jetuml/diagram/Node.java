@@ -91,4 +91,12 @@ public interface Node extends DiagramElement
 	 * @pre hasParent()
 	 */
 	ParentNode getParent();
+	
+	/**
+	 * Unlinks this node from it parent node.. This operation does 
+	 * NOT set the child node's parent as this node.
+	 * 
+	 * @pre hasParent();
+	 */
+	void unlink();
 }

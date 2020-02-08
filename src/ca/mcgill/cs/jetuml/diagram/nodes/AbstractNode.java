@@ -111,5 +111,11 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 		assert false; // Safer way than assert hasParent() to trigger an assertion error if not overridden
 		return null; // Unreachable.
 	}
+	
+	@Override
+	public void unlink()
+	{
+		assert false; // Safer way than assert hasParent() to trigger an assertion error if not overridden
+	}
 
 }
