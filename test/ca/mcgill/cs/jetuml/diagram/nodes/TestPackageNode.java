@@ -52,7 +52,7 @@ public class TestPackageNode
 		assertEquals(0,aPackage1.getChildren().size());
 		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
-		assertNull(aPackage1.getParent());
+		assertFalse(aPackage1.hasParent());
 	}
 	
 	@Test
@@ -103,12 +103,12 @@ public class TestPackageNode
 		assertEquals( 2, aPackage1.getChildren().size());
 		assertEquals( aClass1, aPackage1.getChildren().get(0));
 		assertEquals( aClass2, aPackage1.getChildren().get(1));
-		assertNull( aPackage2.getParent());
+		assertFalse( aPackage2.hasParent());
 		
 		aPackage1.removeChild(aClass1);
 		assertEquals( 1, aPackage1.getChildren().size());
 		assertEquals( aClass2, aPackage1.getChildren().get(0));
-		assertNull( aClass1.getParent());
+		assertFalse( aClass1.hasParent());
 		
 		aPackage1.removeChild(aClass2);
 		assertEquals( 0, aPackage1.getChildren().size());
@@ -123,7 +123,7 @@ public class TestPackageNode
 		assertEquals(0,clone.getChildren().size());
 		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
-		assertNull(clone.getParent());
+		assertFalse(clone.hasParent());
 		
 		aPackage2.setName("p2");
 		aClass1.setName("c1");

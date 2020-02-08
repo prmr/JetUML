@@ -281,18 +281,17 @@ public class SelectionModel implements Iterable<DiagramElement>
 	{
 		if( pElement instanceof ChildNode )
 		{
-			ParentNode parent = ((Node) pElement).getParent();
-			if( parent == null )
+			if( !((Node) pElement).hasParent() )
 			{
 				return false;
 			}
-			else if( aSelected.contains(parent))
+			else if( aSelected.contains(((Node) pElement).getParent()))
 			{
 				return true;
 			}
 			else
 			{
-				return containsParent(parent);
+				return containsParent(((Node) pElement).getParent());
 			}
 		}
 		else

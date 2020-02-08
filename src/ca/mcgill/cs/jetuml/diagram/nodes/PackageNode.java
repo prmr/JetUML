@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 
@@ -34,7 +35,7 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	private String aName = "";
 	private String aContents = "";
 	private ArrayList<ChildNode> aContainedNodes = new ArrayList<>();
-	private ParentNode aContainer;
+	private Optional<ParentNode> aContainer = Optional.empty();
 	
 	/**
      * Sets the name property value.
@@ -101,21 +102,22 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	@Override
 	public ParentNode getParent()
 	{
-		return aContainer;
+		assert hasParent();
+		return aContainer.get();
 	}
 
 	@Override
 	public void link(ParentNode pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = pNode;
+		aContainer = Optional.of(pNode);
 	}
 	
 	@Override
 	public void unlink()
 	{
 		assert hasParent();
-		aContainer = null;
+		aContainer = Optional.empty();
 	}
 
 	@Override
@@ -129,10 +131,9 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	{
 		assert pNode != null;
 		assert pIndex >=0 && pIndex <= aContainedNodes.size();
-		ParentNode oldParent = pNode.getParent();
-		if (oldParent != null)
+		if(pNode.hasParent())
 		{
-			oldParent.removeChild(pNode);
+			pNode.getParent().removeChild(pNode);
 		}
 		aContainedNodes.add(pIndex, pNode);
 		pNode.link(this);
@@ -169,6 +170,6 @@ public final class PackageNode extends AbstractNode implements ParentNode, Child
 	@Override
 	public boolean hasParent()
 	{
-		return aContainer != null;
+		return aContainer.isPresent();
 	}
 }

@@ -387,7 +387,7 @@ public class TestPersistenceService
 		ClassNode node7 = (ClassNode) children.get(0);
 		assertEquals("", node6.getContents());
 		assertEquals("Package", node6.getName());
-		assertNull(node6.getParent());
+		assertFalse(node6.hasParent());
 		assertEquals(new Rectangle(270, 340, 120, 100), NodeViewerRegistry.getBounds(node6));
 
 		assertEquals("", node7.getAttributes());
