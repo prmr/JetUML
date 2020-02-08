@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
@@ -84,4 +85,10 @@ public interface Node extends DiagramElement
 	 * and false if it can exist as a root node.
 	 */
 	boolean requiresParent();	
+	
+	/**
+	 * @return The node that is the parent of this node. Never null.
+	 * @pre hasParent()
+	 */
+	ParentNode getParent();
 }

@@ -104,4 +104,12 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		return false;
 	}
+	
+	@Override
+	public ParentNode getParent()
+	{
+		assert false; // Safer way than assert hasParent() to trigger an assertion error if not overridden
+		return null; // Unreachable.
+	}
+
 }
