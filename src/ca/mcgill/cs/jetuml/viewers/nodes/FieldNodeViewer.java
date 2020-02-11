@@ -23,17 +23,21 @@ package ca.mcgill.cs.jetuml.viewers.nodes;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * An object to render a FieldNode.
  */
 public final class FieldNodeViewer extends AbstractNodeViewer
 {
+	private static final String ICON_LABEL = "x = y";
 	private static final String EQUALS = " = ";
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
@@ -123,5 +127,28 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	{
 		final Rectangle bounds = getBounds(pNode);
 		return new Point(bounds.getMaxX() - XGAP, bounds.getCenter().getY());
+	}
+	
+	/*
+	 * Custom version because the field node cannot be drawn without a parent.
+	 */
+	@Override
+	public Canvas createIcon(Node pNode)
+	{
+		Dimension dimension = EQUALS_VIEWER.getDimension(ICON_LABEL);
+		int width = dimension.getWidth();
+		int height = dimension.getHeight();
+		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
+		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+		double scale = Math.min(scaleX, scaleY);
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.scale(scale, scale);
+		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+		graphics.setFill(Color.WHITE);
+		graphics.setStroke(Color.BLACK);
+		EQUALS_VIEWER.draw(ICON_LABEL, graphics, 
+				new Rectangle(0, BUTTON_SIZE/2 - height/2+OFFSET, width, height));
+		return canvas;
 	}
 }
