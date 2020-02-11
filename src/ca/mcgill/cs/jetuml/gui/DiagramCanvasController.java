@@ -325,7 +325,7 @@ public class DiagramCanvasController
 		
 	private void handleSingleClick(MouseEvent pEvent)
 	{
-		Optional<DiagramElement> tool = getTool(pEvent);
+		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
 		if(!tool.isPresent())
 		{
 			handleSelection(pEvent);
@@ -371,33 +371,6 @@ public class DiagramCanvasController
 		}
 	}
 
-	/*
-	 * Implements a convenience feature. Normally returns 
-	 * aSideBar.getSelectedTool(), except if the mouse points
-	 * to an existing node, in which case defaults to select
-	 * mode because it's likely the user wanted to select the element
-	 * and forgot to switch tool. The only exception is when adding
-	 * children nodes, where the parent node obviously has to be selected.
-	 */
-	private Optional<DiagramElement> getTool(MouseEvent pEvent)
-	{
-		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
-//		Optional<? extends DiagramElement> selected = getSelectedElement(pEvent);
-
-//		if( tool.isPresent() && tool.get() instanceof Node)
-//		{
-//			if(selected.isPresent() && selected.get() instanceof Node)
-//			{
-//				if(!(tool.get() instanceof ChildNode && selected.get() instanceof ParentNode))
-//				{
-//					aToolBar.setToolToBeSelect();
-//					tool = Optional.empty();
-//				}
-//			}
-//		} // TODO retire this feature
-		return tool;
-	}
-	
 	/**
 	 * Select all elements in the diagram.
 	 */
