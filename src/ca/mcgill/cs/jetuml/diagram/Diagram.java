@@ -373,13 +373,9 @@ public final class Diagram implements DiagramData
 	public void placeOnTop(Node pNode)
 	{
 		assert pNode != null;
-		ParentNode parent = null;
-		if(pNode.hasParent())
+		if(pNode.hasParent()) 
 		{
-			parent = pNode.getParent();
-		}
-		if (parent != null) 
-		{
+			ParentNode parent = pNode.getParent();
 			// Move the child node to the top of all other children
 			parent.moveChildToLastPlace(pNode);
 			// Recursively reorder the node's parent
