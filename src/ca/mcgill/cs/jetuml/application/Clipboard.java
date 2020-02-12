@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
 /**
@@ -173,12 +172,9 @@ public final class Clipboard
 			{
 				return true;
 			}
-			else if( node instanceof ParentNode )
+			else if( recursivelyContains(pNode, node.getChildren()) )
 			{
-				if( recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
@@ -192,12 +188,9 @@ public final class Clipboard
 			{
 				return true;
 			}
-			else if( node instanceof ParentNode )
+			else if( recursivelyContains(pNode, node.getChildren()) )
 			{
-				if(  recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
@@ -216,14 +209,11 @@ public final class Clipboard
 				edge.connect(edge.getStart(), pNew, edge.getDiagram());
 			}
 		}
-		if( pOld instanceof ParentNode )
+		List<Node> oldChildren = pOld.getChildren();
+		List<Node> newChildren = pNew.getChildren();
+		for( int i = 0; i < oldChildren.size(); i++ )
 		{
-			List<Node> oldChildren = ((ParentNode) pOld).getChildren();
-			List<Node> newChildren = ((ParentNode) pNew).getChildren();
-			for( int i = 0; i < oldChildren.size(); i++)
-			{
-				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
-			}
+			reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
 		}
 	}
 	
