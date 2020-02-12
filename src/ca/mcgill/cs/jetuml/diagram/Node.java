@@ -21,14 +21,28 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
+import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
-  * A node in a diagram.
-  */
+ * A node in a diagram.
+ * 
+ * Different node subclasses can potentially implement the 
+ * child node and parent mixin behavior, depending on the needs
+ * of the diagram type in which nodes participants.
+ * 
+ * Nodes that can act as child nodes can potentially be linked to a parent node. 
+ * 
+ * Nodes that can act as parent nodes can potentially have children nodes according 
+ * to a diagram type-specific parent-child relation. Parent nodes control their
+ * child nodes. If a child node has a parent, only the parent node is tracked by
+ * the diagram object. If a parent node is removed from the diagram, all its children
+ * are also removed. Cloning a parent node clones all the children, and similarly
+ * with all other operations, including copying, translating, etc.
+ */
 public interface Node extends DiagramElement
 {
 	/**
@@ -113,4 +127,13 @@ public interface Node extends DiagramElement
 	 * @pre pParentNode != null
 	 */
 	void link(ParentNode pParentNode);
+	
+	/**
+	 * Returns the children of this node. This operation is legal 
+	 * on node types than cannot have children, in which case it
+	 * always returns an empty list.
+	 * 
+	 * @return An unmodifiable list of children nodes.
+	 */
+	List<Node> getChildren(); 
 }

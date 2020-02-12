@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import java.util.List;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
@@ -36,11 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  */
 public interface ParentNode extends Node
 {
-	/**
-	 * @return A list of the children of this node.
-	 */
-	List<Node> getChildren(); 
-	
 	/**
 	 * Insert a child node at index pIndex.
 	 * @param pIndex Where to insert the child.

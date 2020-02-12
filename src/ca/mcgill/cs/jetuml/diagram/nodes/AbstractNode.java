@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import static java.util.Collections.emptyList;
+
+import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
@@ -122,5 +125,11 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	public void link(ParentNode pParentNode)
 	{
 		assert false;
+	}
+	
+	@Override
+	public List<Node> getChildren()
+	{
+		return emptyList();
 	}
 }
