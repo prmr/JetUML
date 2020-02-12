@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -84,7 +85,7 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	@Override
 	public List<Node> getChildren()
 	{
-		return aFields; // TODO there should be a remove operation on ObjectNode
+		return Collections.unmodifiableList(aFields); 
 	}
 
 	@Override

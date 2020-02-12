@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,7 +124,7 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	@Override
 	public List<Node> getChildren()
 	{
-		return aContainedNodes; // TODO there should be a remove operation on PackageNode
+		return Collections.unmodifiableList(aContainedNodes); 
 	}
 
 	@Override
