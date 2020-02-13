@@ -91,12 +91,9 @@ public final class Diagram implements DiagramData
 	private void attachNode(Node pNode)
 	{
 		pNode.attach(this);
-		if( pNode instanceof ParentNode )
+		for( Node child : pNode.getChildren() )
 		{
-			for( Node child : ((ParentNode)pNode).getChildren() )
-			{
-				attachNode(child);
-			}
+			attachNode(child);
 		}
 	}
 
