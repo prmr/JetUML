@@ -43,10 +43,7 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		for(Node child : getChildren())
-		{
-			child.translate(pDeltaX, pDeltaY);
-		}   
+		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
 	}    
 
 	@Override

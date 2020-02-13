@@ -69,11 +69,7 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		
-		for(Node childNode : getChildren())
-        {
-        	childNode.translate(pDeltaX, pDeltaY);
-        }   
+		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
 	}
 
 	/**
