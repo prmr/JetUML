@@ -29,7 +29,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramData;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
@@ -149,13 +148,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 		{
 			internalAddToSelection(pNode);
 		}
-		if(pNode instanceof ParentNode) // check whether any child node might be selectable
-		{
-			for(Node child : ((ParentNode) pNode).getChildren())
-			{
-				selectNode(child, pLasso);
-			}
-		}
+		pNode.getChildren().forEach(child -> selectNode(child, pLasso));
 	}
 	
 	private void selectEdge(Edge pEdge, Rectangle pLasso )
