@@ -119,13 +119,7 @@ public abstract class DiagramBuilder
 	{
 		List<Node> result = new ArrayList<>();
 		result.add(pNode);
-		if( pNode instanceof ParentNode )
-		{
-			for( Node child : ((ParentNode)pNode).getChildren() )
-			{
-				result.addAll(getNodeAndAllChildren(child));
-			}
-		}
+		pNode.getChildren().forEach(node -> result.addAll(getNodeAndAllChildren(node)));
 		return result;
 	}
 	
