@@ -85,10 +85,7 @@ public final class JsonEncoder
 	private static JSONArray encodeChildren(Node pNode, SerializationContext pContext)
 	{
 		JSONArray children = new JSONArray();
-		for( Node child : ((ParentNode)pNode).getChildren())
-		{
-			children.put(pContext.getId(child));
-		}
+		pNode.getChildren().forEach(child -> children.put(pContext.getId(child)));
 		return children;
 	}
 	
