@@ -88,11 +88,8 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	@Override
 	public void removeChild(Node pNode)
 	{
-		assert pNode != null;
-		if(pNode.getParent() != this)
-		{
-			return;
-		}
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aFields.remove(pNode);
 		pNode.unlink();
 	}
