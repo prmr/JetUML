@@ -87,4 +87,10 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 		aCallNodes.remove(pNode);
 		pNode.unlink();
 	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
+	}
 }

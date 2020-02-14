@@ -169,4 +169,10 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	{
 		return aContainer.isPresent();
 	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
+	}
 }

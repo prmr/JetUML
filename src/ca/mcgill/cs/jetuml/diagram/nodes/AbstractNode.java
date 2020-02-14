@@ -132,4 +132,10 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		return emptyList();
 	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return false;
+	}
 }

@@ -96,4 +96,10 @@ public final class ObjectNode extends NamedNode implements ParentNode
 		aFields.remove(pNode);
 		pNode.unlink();
 	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
+	}
 }

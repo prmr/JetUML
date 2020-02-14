@@ -136,4 +136,10 @@ public interface Node extends DiagramElement
 	 * @return An unmodifiable list of children nodes.
 	 */
 	List<Node> getChildren(); 
+	
+	/**
+	 * @return true if the type of node supports keeping track
+	 * of children nodes.
+	 */
+	boolean allowsChildren();
 }
