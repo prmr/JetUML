@@ -168,6 +168,7 @@ public interface Node extends DiagramElement
 	 * Also unlinks the child's parent node from this node.
 	 * @param pNode The child to remove.
 	 * @pre getChildren().contains(pNode)
+	 * @pre pNode.getParent() == this
 	 */
 	void removeChild(Node pNode);
 }

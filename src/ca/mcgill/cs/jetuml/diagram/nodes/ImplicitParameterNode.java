@@ -80,10 +80,8 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	@Override
 	public void removeChild(Node pNode)
 	{
-		if (pNode.getParent() != this)
-		{
-			return;
-		}
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aCallNodes.remove(pNode);
 		pNode.unlink();
 	}
