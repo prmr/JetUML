@@ -138,4 +138,11 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		return false;
 	}
+	
+	@Override
+	public void addChild(Node pNode)
+	{
+		assert allowsChildren(); 
+		// Do nothing
+	}
 }

@@ -142,4 +142,11 @@ public interface Node extends DiagramElement
 	 * of children nodes.
 	 */
 	boolean allowsChildren();
+	
+	/**
+	 * Insert a child at the end of the list of children.
+	 * @param pNode The child to insert.
+	 * @pre allowsNode() == true && pNode != null
+	 */
+	void addChild(Node pNode);
 }
