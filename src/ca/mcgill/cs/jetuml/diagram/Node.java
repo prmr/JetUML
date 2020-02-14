@@ -149,4 +149,13 @@ public interface Node extends DiagramElement
 	 * @pre allowsNode() == true && pNode != null
 	 */
 	void addChild(Node pNode);
+	
+	/**
+	 * Insert a child node at index pIndex.
+	 * @param pIndex Where to insert the child.
+	 * @param pNode The child to insert.
+	 * @pre pNode != null && pIndex <= getChildren().size()
+	 * @pre allowsChildren()
+	 */
+	void addChild(int pIndex, Node pNode); 
 }

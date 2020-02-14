@@ -35,19 +35,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 public interface ParentNode extends Node
 {
 	/**
-	 * Insert a child node at index pIndex.
-	 * @param pIndex Where to insert the child.
-	 * @param pNode The child to insert.
-	 */
-	void addChild(int pIndex, Node pNode); 
-	
-	/**
-	 * Insert a child at the end of the list of children.
-	 * @param pNode The child to insert.
-	 */
-	void addChild(Node pNode);
-	
-	/**
 	 * Remove pNode from the list of children of this node.
 	 * @param pNode The child to remove.
 	 */
