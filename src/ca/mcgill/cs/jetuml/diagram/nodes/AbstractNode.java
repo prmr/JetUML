@@ -152,5 +152,11 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 		assert allowsChildren(); 
 		// Do nothing
 	}
+	
+	@Override
+	public void removeChild(Node pNode)
+	{
+		assert getChildren().contains(pNode);
+	}
 
 }

@@ -145,6 +145,8 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * Insert a child at the end of the list of children.
+	 * This method also links the current node as parent
+	 * node of pNode.
 	 * @param pNode The child to insert.
 	 * @pre allowsNode() == true && pNode != null
 	 */
@@ -152,10 +154,20 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * Insert a child node at index pIndex.
+	 * This method also links the current node as parent
+	 * node of pNode.
 	 * @param pIndex Where to insert the child.
 	 * @param pNode The child to insert.
 	 * @pre pNode != null && pIndex <= getChildren().size()
 	 * @pre allowsChildren()
 	 */
 	void addChild(int pIndex, Node pNode); 
+	
+	/**
+	 * Remove pNode from the list of children of this node.
+	 * Also unlinks the child's parent node from this node.
+	 * @param pNode The child to remove.
+	 * @pre getChildren().contains(pNode)
+	 */
+	void removeChild(Node pNode);
 }
