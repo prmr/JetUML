@@ -172,13 +172,37 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	@Override
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
-			Point pStartPoint, Point pEndPoint)
+			Point pStartPoint, Point pEndPoint )
 	{
 		if( pEdge.getClass() != CallEdge.class )
 		{
 			super.completeEdgeAdditionOperation(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
 			return;
 		}
+		if( canCreateConstructorCall(pStartNode, pEndNode, pEndPoint) )
+		{
+			completeConstructorCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+		}
+		else 
+		{
+			completeMethodCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+		}
+	}
+	
+	private boolean canCreateConstructorCall(Node pStartNode, Node pEndNode, Point pEndPoint)
+	{
+		return pEndNode instanceof ImplicitParameterNode && IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint);
+	}
+	
+	private void completeConstructorCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+			Point pStartPoint, Point pEndPoint)
+	{
+		
+	}
+	
+	private void completeMethodCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
+			Point pStartPoint, Point pEndPoint)
+	{
 		Node start = pStartNode;
 		if( start.getClass() == ImplicitParameterNode.class )
 		{
@@ -195,43 +219,34 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}));
 			start = newCallNode;
 		}
+		
+		Node end = new CallNode();
 		ImplicitParameterNode endParent = null;
-		if( pEndNode.getClass() == ImplicitParameterNode.class )
+		if (pEndNode.getClass() == ImplicitParameterNode.class)
 		{
 			endParent = (ImplicitParameterNode) pEndNode;
 		}
-		else
+		else 
 		{
 			assert pEndNode.getClass() == CallNode.class;
 			endParent = (ImplicitParameterNode)((CallNode)pEndNode).getParent();
 		}
-		CallNode newCallNode = new CallNode();
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> 
 		{
-			newCallNode.attach(aDiagram);
-			parent.addChild(newCallNode);
+			end.attach(aDiagram);
+			parent.addChild(end);
 		},
 		()-> 
 		{
-			newCallNode.detach();
-			parent.removeChild(newCallNode);
+			end.detach();
+			parent.removeChild(end);
 		}
 		));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
-		pEdge.connect(start, newCallNode, aDiagram);
+		pEdge.connect(start, end, aDiagram);
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
-	}
-	
-	private void addMethodCall()
-	{
-		
-	}
-	
-	private void addConstructorCall()
-	{
-		
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
