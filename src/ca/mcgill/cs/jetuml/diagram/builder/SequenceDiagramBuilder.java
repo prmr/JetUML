@@ -181,7 +181,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		if( canCreateConstructorCall(pStartNode, pEndNode, pEndPoint) )
 		{
-			completeConstructorCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+			if(((ImplicitParameterNode)pEndNode).getChildren().size()==0)
+			{
+				completeConstructorCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
+			}
 		}
 		else 
 		{
@@ -197,7 +200,34 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private void completeConstructorCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
-		
+		Node startNode = pStartNode;
+		if (pStartNode instanceof ImplicitParameterNode)
+		{
+			ImplicitParameterNode parent = (ImplicitParameterNode) pStartNode;
+			CallNode newCallNode = new CallNode();
+			pOperation.add(new SimpleOperation(() -> 
+			{
+				newCallNode.attach(aDiagram);
+				parent.addChild(newCallNode);
+			}, () -> 
+			{
+				newCallNode.detach();
+				parent.removeChild(newCallNode);
+			}));
+			startNode = newCallNode;
+		}
+
+		// Lambda
+		final CallNode start = (CallNode)startNode;
+		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
+		pEdge.connect(start, pEndNode, aDiagram);
+		pOperation.add(new SimpleOperation(() -> 
+		{
+			aDiagram.addEdge(insertionIndex, pEdge);
+		}, ()-> 
+		{
+			aDiagram.removeEdge(pEdge);
+		}));
 	}
 	
 	private void completeMethodCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
