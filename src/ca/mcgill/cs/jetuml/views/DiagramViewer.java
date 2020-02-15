@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
@@ -59,10 +58,7 @@ public class DiagramViewer
 	private void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		NodeViewerRegistry.draw(pNode, pGraphics);
-		if(pNode instanceof ParentNode)
-		{
-			((ParentNode)pNode).getChildren().forEach(node -> drawNode(node, pGraphics));
-		}
+		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
 	}
 	
 	/**
@@ -126,15 +122,12 @@ public class DiagramViewer
 	{
 		assert pDiagram != null && pNode != null && pPoint != null;
 		Node node = null;
-		if (pNode instanceof ParentNode)
+		for( Node child : pNode.getChildren() )
 		{
-			for (Node child : ((ParentNode) pNode).getChildren())
+			node = deepFindNode(pDiagram, child, pPoint);
+			if( node != null )
 			{
-				node = deepFindNode(pDiagram, child, pPoint);
-				if(node != null)
-				{
-					return node;
-				}
+				return node;
 			}
 		}
 		if( NodeViewerRegistry.contains(pNode, pPoint))

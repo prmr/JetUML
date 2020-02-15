@@ -109,7 +109,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public ParentNode getParent()
+	public Node getParent()
 	{
 		assert false; // Safer way than assert hasParent() to trigger an assertion error if not overridden
 		return null; // Unreachable.
@@ -122,7 +122,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public void link(ParentNode pParentNode)
+	public void link(Node pParentNode)
 	{
 		assert false;
 	}

@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
-
 /**
  * Stores the logical structure of a diagram. This class is only concerned with maintaining information about the
  * logical structure of a diagram (nodes and edges). Specifically, it should not encode any business rules about the
@@ -351,7 +349,7 @@ public final class Diagram implements DiagramData
 		assert pNode != null;
 		if( pNode.hasParent() )
 		{
-			ParentNode parent = pNode.getParent();
+			Node parent = pNode.getParent();
 			// Move the child node to the top of all other children
 			parent.placeLast(pNode);
 			// Recursively reorder the node's parent

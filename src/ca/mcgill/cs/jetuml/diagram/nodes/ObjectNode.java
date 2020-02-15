@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 /**
  *  An object node in an object diagram.
  */
-public final class ObjectNode extends NamedNode implements ParentNode
+public final class ObjectNode extends NamedNode
 {
 	private ArrayList<Node> aFields = new ArrayList<>();
 

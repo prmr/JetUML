@@ -24,7 +24,6 @@ package ca.mcgill.cs.jetuml.diagram;
 import java.util.List;
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
@@ -104,7 +103,7 @@ public interface Node extends DiagramElement
 	 * @return The node that is the parent of this node. Never null.
 	 * @pre hasParent()
 	 */
-	ParentNode getParent();
+	Node getParent();
 	
 	/**
 	 * Unlinks this node from it parent node.. This operation does 
@@ -126,7 +125,7 @@ public interface Node extends DiagramElement
 	 * @param pParentNode The node to set as parent of this node.
 	 * @pre pParentNode != null
 	 */
-	void link(ParentNode pParentNode);
+	void link(Node pParentNode);
 	
 	/**
 	 * Returns the children of this node. This operation is legal 

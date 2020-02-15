@@ -35,7 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public final class ImplicitParameterNode extends NamedNode implements ParentNode
+public final class ImplicitParameterNode extends NamedNode
 {
 	private List<Node> aCallNodes = new ArrayList<>();
 

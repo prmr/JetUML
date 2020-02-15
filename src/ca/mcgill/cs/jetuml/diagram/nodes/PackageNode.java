@@ -31,12 +31,12 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 /**
  * A package node in a UML diagram.
  */
-public final class PackageNode extends AbstractNode implements ParentNode
+public final class PackageNode extends AbstractNode
 {
 	private String aName = "";
 	private String aContents = "";
 	private ArrayList<Node> aContainedNodes = new ArrayList<>();
-	private Optional<ParentNode> aContainer = Optional.empty();
+	private Optional<Node> aContainer = Optional.empty();
 	
 	/**
      * Sets the name property value.
@@ -97,14 +97,14 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	}
 	
 	@Override
-	public ParentNode getParent()
+	public Node getParent()
 	{
 		assert hasParent();
 		return aContainer.get();
 	}
 
 	@Override
-	public void link(ParentNode pNode)
+	public void link(Node pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = Optional.of(pNode);

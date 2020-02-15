@@ -42,7 +42,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -459,7 +458,7 @@ public abstract class DiagramBuilder
 	
 	private Runnable createReinsertOperation(Node pNode)
 	{
-		ParentNode parent = pNode.getParent();
+		Node parent = pNode.getParent();
 		int index = parent.getChildren().indexOf(pNode);
 		return ()-> 
 		{
@@ -470,7 +469,7 @@ public abstract class DiagramBuilder
 	
 	private Runnable createDetachOperation(Node pNode)
 	{
-		ParentNode parent = pNode.getParent();
+		Node parent = pNode.getParent();
 		return ()-> 
 		{ 
 			pNode.detach(); 

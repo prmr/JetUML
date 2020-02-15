@@ -30,7 +30,6 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * Converts a graph to JSON notation. The notation includes:
@@ -75,7 +74,7 @@ public final class JsonEncoder
 		JSONObject object = toJSONObject(pNode.properties());
 		object.put("id", pContext.getId(pNode));
 		object.put("type", pNode.getClass().getSimpleName());
-		if( pNode instanceof ParentNode )
+		if( pNode.getChildren().size() > 0 )
 		{
 			object.put("children", encodeChildren(pNode, pContext));
 		}

@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.persistence;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * A serialization context automatically finds all the nodes
@@ -65,21 +64,21 @@ public class SerializationContext extends AbstractContext
 		for( Node node : pDiagram.rootNodes() )
 		{
 			addNode(node);
-			if( node instanceof ParentNode )
+			if( node.getChildren().size() > 0 )
 			{
-				addChildren((ParentNode) node);
+				addChildren(node);
 			}
 		}
 	}
 	
-	private void addChildren(ParentNode pParent)
+	private void addChildren(Node pParent)
 	{
 		for( Node node : pParent.getChildren() )
 		{
 			addNode(node);
-			if( node instanceof ParentNode )
+			if( node.getChildren().size() > 0  )
 			{
-				addChildren((ParentNode)node);
+				addChildren(node);
 			}
 		}
 	}

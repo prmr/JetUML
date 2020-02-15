@@ -96,7 +96,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	// Recursively enlarge the current rectangle to include the selected DiagramElements
 	private Rectangle addBounds(Rectangle pBounds, DiagramElement pSelected)
 	{
-		if( pSelected instanceof Node && ((Node) pSelected).hasParent() )
+		if( pSelected instanceof Node && ((Node) pSelected).hasParent())
 		{
 			return addBounds(pBounds, ((Node) pSelected).getParent());
 		}
