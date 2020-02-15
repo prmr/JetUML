@@ -21,11 +21,19 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestActorNode
 {
@@ -52,5 +60,93 @@ public class TestActorNode
 		assertEquals("Foo", properties.get("name").get());
 		assertEquals(10, properties.get("x").get());
 		assertEquals(20, properties.get("y").get());
+	}
+	
+	@Test
+	public void testProperty_Name()
+	{
+		aNode.setName("Foo");
+		assertEquals("Foo", aNode.getName());
+	}
+	
+	@Test
+	public void testInitialPosition()
+	{
+		assertEquals(new Point(0,0), aNode.position());
+	}
+	
+	@Test
+	public void testMoveTo()
+	{
+		aNode.moveTo(new Point(10, 20));
+		assertEquals(new Point(10,20), aNode.position());
+	}
+	
+	/*
+	 * The position should be a clone
+	 */
+	@Test
+	public void testClone_OfPosition()
+	{
+		ActorNode clone = (ActorNode) aNode.clone();
+		assertNotSame(aNode.position(), clone.position());
+		clone.position().setX(100);
+		assertNotEquals(100, aNode.position().getX());
+	}
+	
+	/*
+	 * The name should be the same object
+	 */
+	@Test
+	public void testClone_OfName()
+	{
+		aNode.setName("Foo");
+		ActorNode clone = (ActorNode) aNode.clone();
+		assertSame(aNode.getName(), clone.getName());
+	}
+	
+	/*
+	 * The name should be the same object
+	 */
+	@Test
+	public void testClone_OfProperties()
+	{
+		ActorNode clone = (ActorNode) aNode.clone();
+		assertNotSame(aNode.properties(), clone.properties());
+	}
+	
+	@Test
+	public void testAttachDetach()
+	{
+		assertFalse(aNode.getDiagram().isPresent());
+		Diagram diagram = new Diagram(DiagramType.USECASE);
+		aNode.attach(diagram);
+		assertSame(diagram, aNode.getDiagram().get());
+		aNode.detach();
+		assertFalse(aNode.getDiagram().isPresent());
+	}
+	
+	@Test
+	public void testHasParent()
+	{
+		assertFalse(aNode.hasParent());
+	}
+	
+	@Test
+	public void testRequiresParent()
+	{
+		assertFalse(aNode.requiresParent());
+	}
+	
+	@Test
+	public void testGetChildren()
+	{
+		assertTrue(aNode.getChildren().isEmpty());
+	}
+	
+	@Test
+	public void allowsChildren()
+	{
+		assertFalse(aNode.allowsChildren());
 	}
 }
