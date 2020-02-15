@@ -33,16 +33,4 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * with all other operations, including copying, translating, etc.
  */
 public interface ParentNode extends Node
-{	
-	/**
-	 * Move the child node to the last position in the list of children.
-	 * @param pNode The child to move
-	 * @pre pNode != null
-	 */
-	default void moveChildToLastPlace(Node pNode)
-	{
-		assert pNode != null;
-		removeChild(pNode);
-		addChild(pNode);
-	}
-}
+{}

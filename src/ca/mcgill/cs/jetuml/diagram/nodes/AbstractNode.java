@@ -158,5 +158,13 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	{
 		assert getChildren().contains(pNode);
 	}
-
+	
+	@Override
+	public void placeLast(Node pNode)
+	{
+		assert pNode != null;
+		assert getChildren().contains(pNode);
+		removeChild(pNode);
+		addChild(pNode);
+	}
 }

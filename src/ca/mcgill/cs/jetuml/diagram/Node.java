@@ -171,4 +171,11 @@ public interface Node extends DiagramElement
 	 * @pre pNode.getParent() == this
 	 */
 	void removeChild(Node pNode);
+	
+	/**
+	 * Move the child node to the last position in the list of children.
+	 * @param pChild The child to move
+	 * @pre pChild != null && getChildren().contains(pChild)
+	 */
+	void placeLast(Node pChild);
 }
