@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 
 public class TestCallNode
@@ -71,6 +73,22 @@ public class TestCallNode
 		assertFalse(aNode.clone().isOpenBottom());
 		aNode.setOpenBottom(true);
 		assertTrue(aNode.clone().isOpenBottom());
+	}
+	
+	@Test
+	public void testClone_Parent()
+	{
+		ImplicitParameterNode parent = new ImplicitParameterNode();
+		aNode.link(parent);
+		assertSame(parent, aNode.clone().getParent());
+	}
+	
+	@Test
+	public void testClone_Diagram()
+	{
+		Diagram diagram = new Diagram(DiagramType.SEQUENCE);
+		aNode.attach(diagram);
+		assertSame(diagram, aNode.clone().getDiagram().get());
 	}
 	
 	@Test

@@ -116,6 +116,14 @@ public class TestActorNode
 	}
 	
 	@Test
+	public void testClone_OfDiagram()
+	{
+		Diagram diagram = new Diagram(DiagramType.USECASE);
+		aNode.attach(diagram);
+		assertSame(diagram, aNode.getDiagram().get());
+	}
+	
+	@Test
 	public void testAttachDetach()
 	{
 		assertFalse(aNode.getDiagram().isPresent());

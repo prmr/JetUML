@@ -92,4 +92,10 @@ public class TestClassNode
 		assertEquals("Foo", ((PackageNode)clone.getParent()).getName());
 		assertSame(package1, clone.getParent());
 	}
+	
+	@Test
+	public void testRequiresParent()
+	{
+		assertFalse(aNode1.requiresParent());
+	}
 }
