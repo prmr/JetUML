@@ -422,12 +422,8 @@ public abstract class DiagramBuilder
 		DiagramViewer viewer = viewerFor(aDiagram);
 		
 		Node node1 = viewer.findNode(aDiagram, pStart).get();
-		Optional<Node> node2in = viewer.findNode(aDiagram, pEnd);
-		Node node2 = null;
-		if( node2in.isPresent() )
-		{
-			node2 = node2in.get();
-		}
+		Node node2 = viewer.findNode(aDiagram, pEnd).get();
+		
 		CompoundOperation result = new CompoundOperation();
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -438,7 +434,6 @@ public abstract class DiagramBuilder
 			result.add(new SimpleOperation(()-> aDiagram.addRootNode(end),
 					()-> aDiagram.removeRootNode(end)));
 		}
-		assert node2 != null;
 		completeEdgeAdditionOperation(result, pEdge, node1, node2, pStart, pEnd);
 		return result;
 	}

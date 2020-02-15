@@ -69,7 +69,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
 			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-			SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint),
 			SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
 		);
 	}
@@ -223,6 +222,16 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		pEdge.connect(start, newCallNode, aDiagram);
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
+	}
+	
+	private void addMethodCall()
+	{
+		
+	}
+	
+	private void addConstructorCall()
+	{
+		
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)

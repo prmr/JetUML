@@ -73,19 +73,6 @@ public final class SequenceDiagramEdgeConstraints
 	}
 	
 	/*
-	 * Call edges that land on a parameter node must land on the lifeline part.
-	 */
-	public static Constraint callEdgeEnd(Edge pEdge, Node pEndNode, Point pEndPoint)
-	{
-		return ()->
-		{
-			return !(pEdge.getClass() == CallEdge.class && 
-					 pEndNode.getClass() == ImplicitParameterNode.class &&
-							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint));
-		};
-	}
-	
-	/*
 	 * It's only legal to start an interaction on a parameter node if there are no existing activations
 	 * in the diagram.
 	 */
