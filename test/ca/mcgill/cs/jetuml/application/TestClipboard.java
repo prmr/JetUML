@@ -186,8 +186,8 @@ public class TestClipboard
 	@Test
 	public void testCopyNodeWithOneParent()
 	{
-		PackageNode pn = new PackageNode();
-		pn.addChild(aNode1);
+		PackageNode packageNode = new PackageNode();
+		packageNode.addChild(aNode1);
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode1, aDiagram);
 		aClipboard.copy(Arrays.asList(aNode1));

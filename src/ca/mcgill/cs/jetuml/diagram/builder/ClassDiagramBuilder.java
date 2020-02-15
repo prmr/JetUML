@@ -304,11 +304,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	
 
 	/**
-	 * Creates an opeartion that detaches all the nodes in pNodes from their parent.
+	 * Creates an operation that detaches all the nodes in pNodes from their parent.
 	 * 
 	 * @param pNodes The nodes to detach.
 	 * @return The requested operation.
-	 * @pre canDetachFromPackage(pNodes);
+	 * @pre canUnlinkFromPackage(pNodes);
 	 */
 	public DiagramOperation createUnlinkFromPackageOperation(List<Node> pNodes)
 	{
@@ -318,9 +318,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		ParentNode outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
 		if( outerParent == null )
 		{
-			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
-			return new SimpleOperation( 
-					()-> 
+			// The parent of the nodes in pNodes does not have parent, 
+			// set the detached nodes as root nodes in the diagram
+			return new SimpleOperation( ()-> 
 					{
 						for( Node pNode: pNodes )
 						{
@@ -334,7 +334,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							aDiagram.removeRootNode(pNode);
 							parent.addChild(pNode);
-							pNode.link(parent);
 						}
 					});	
 		}
@@ -346,9 +345,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							outerParent.addChild(pNode);
 							parent.removeChild(pNode);
-							pNode.link(outerParent);
+							outerParent.addChild(pNode);
 						}
 					},
 					()->
@@ -357,7 +355,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.removeChild(pNode);
 							parent.addChild(pNode);
-							pNode.link(parent);
 						}
 					});	
 		}

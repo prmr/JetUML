@@ -218,7 +218,7 @@ public final class Clipboard
 	}
 	
 	/*
-	 * Returns true of pNode needs a parent that isn't in 
+	 * Returns true if pNode needs a parent that isn't in 
 	 * the clipboard.
 	 */
 	private boolean missingParent(Node pNode)
@@ -227,21 +227,16 @@ public final class Clipboard
 	}
 	
 	/*
-	 * Removes the reference to the parent of any node that
-	 * does not have a parent in the copied node list.
+	 * Removes the reference to the parent of any node in the list.
+	 * This operation is safe because nodes in the clip-board
+	 * can only be pasted as root nodes. Children nodes would
+	 * be copied through their parent.
 	 */
 	private void removeDanglingReferencesToParents()
 	{
-		for( Node node : aNodes )
-		{
-			if( node.hasParent() )
-			{
-				if( !aNodes.contains(node.getParent()))
-				{
-					node.getParent().removeChild(node);
-				}
-			}
-		}
+		aNodes.stream()
+			.filter(Node::hasParent)
+			.forEach(Node::unlink);
 	}
 	
 	/**

@@ -146,6 +146,8 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	@Override
 	public void removeChild(Node pNode)
 	{
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aContainedNodes.remove(pNode);
 		pNode.unlink();
 	}
