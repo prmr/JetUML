@@ -65,12 +65,25 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
 	{
-		return new ConstraintSet(
-			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
-			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-			SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
-		);
+		if(canCreateConstructorCall(pStart, pEnd, pEndPoint))
+		{
+			return new ConstraintSet(
+					EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
+					SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
+					SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
+					SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
+				);
+		}
+		else 
+		{
+			return new ConstraintSet(
+					EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
+					SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
+					SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
+					SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint),
+					SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
+				);
+		}
 	}
 	
 	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
@@ -181,10 +194,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		if( canCreateConstructorCall(pStartNode, pEndNode, pEndPoint) )
 		{
-			if(((ImplicitParameterNode)pEndNode).getChildren().size()==0)
-			{
-				completeConstructorCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
-			}
+			completeConstructorCallEdgeAddition(pOperation, pEdge, pStartNode, pEndNode, pStartPoint, pEndPoint);
 		}
 		else 
 		{
@@ -194,7 +204,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private boolean canCreateConstructorCall(Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		return pEndNode instanceof ImplicitParameterNode && IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint);
+		return pEndNode instanceof ImplicitParameterNode && IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint)
+				&& ((ImplicitParameterNode)pEndNode).getChildren().size()==0;
 	}
 	
 	private void completeConstructorCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
@@ -216,18 +227,23 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}));
 			startNode = newCallNode;
 		}
-
-		// Lambda
 		final CallNode start = (CallNode)startNode;
-		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
-		pEdge.connect(start, pEndNode, aDiagram);
+		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());	
+		// Add a call node to the created Implicit Parameter Node
+		CallNode endChild = new CallNode();
+		ImplicitParameterNode end = (ImplicitParameterNode) pEndNode;
 		pOperation.add(new SimpleOperation(() -> 
 		{
-			aDiagram.addEdge(insertionIndex, pEdge);
+			end.addChild(endChild);
+			endChild.attach(aDiagram);
 		}, ()-> 
 		{
-			aDiagram.removeEdge(pEdge);
+			end.removeChild(endChild);
+			endChild.detach();
 		}));
+		pEdge.connect(start, end, aDiagram);
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
+				()-> aDiagram.removeEdge(pEdge)));
 	}
 	
 	private void completeMethodCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
