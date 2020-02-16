@@ -153,6 +153,34 @@ public class TestSequenceDiagramEdgeConstraints
 	}	
 
 	@Test
+	public void testCallEdgeEndNotCallEdge()
+	{
+		createDiagram();
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd(aReturnEdge, aCallNode2, new Point(10,10)).satisfied());
+	}	
+
+	@Test
+	public void testCallEdgeEndEndNotParameter()
+	{
+		createDiagram();
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd(aCallEdge, aCallNode2, new Point(10,10)).satisfied());
+	}	
+
+	@Test
+	public void testCallEdgeEndEndOnLifeLine()
+	{
+		createDiagram();
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd(aCallEdge, aParameter2, new Point(0,85)).satisfied());
+	}	
+
+	@Test
+	public void testCallEdgeEndEndOnTopRectangle()
+	{
+		createDiagram();
+		assertFalse(SequenceDiagramEdgeConstraints.callEdgeEnd(aCallEdge, aParameter2, new Point(0,5)).satisfied());
+	}	
+	
+	@Test
 	public void testSingleEntryPointNotACallEdge()
 	{
 		createDiagram();
