@@ -116,8 +116,13 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 * of the caller or a set distance before the previous call node, whatever is lower.
 	 * If not, it's simply a set distance below the previous call node.
 	 */
-	private int getY(Node pNode)
+	public int getY(Node pNode)
 	{
+		if(pNode instanceof ImplicitParameterNode)
+		{
+			assert IMPLICIT_PARAMETER_NODE_VIEWER.hasCaller(pNode);
+			return IMPLICIT_PARAMETER_NODE_VIEWER.getMaxYConstructorCall(pNode);
+		}
 		final CallNode callNode = (CallNode) pNode;
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
 		final Diagram diagram = callNode.getDiagram().get();
@@ -162,16 +167,16 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	public int getMaxY(Node pNode)
 	{
-		final CallNode callNode = (CallNode) pNode;
-		final Diagram diagram = callNode.getDiagram().get();
+		//final CallNode callNode = (CallNode) pNode;
+		final Diagram diagram = pNode.getDiagram().get();
 		List<Node> callees = new ArrayList<>();
 		if( diagram != null )
 		{
-			callees = new ControlFlow(diagram).getCallees(callNode);
+			callees = new ControlFlow(diagram).getCallees(pNode);
 		}
 		if( callees.isEmpty() )
 		{
-			return getY(callNode) + DEFAULT_HEIGHT;
+			return getY(pNode) + DEFAULT_HEIGHT;
 		}
 		else
 		{
