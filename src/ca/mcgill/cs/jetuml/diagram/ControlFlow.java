@@ -122,7 +122,7 @@ public final class ControlFlow
 	 * @return true iif pNode is the first callee of its parent
 	 * @pre pNode != null && getCaller(pNode).isPresent() && contains(pNode)
 	 */
-	public boolean isFirstCallee(CallNode pNode)
+	public boolean isFirstCallee(Node pNode)
 	{
 		assert pNode != null;
 		Optional<CallNode> caller = getCaller(pNode);
@@ -139,7 +139,7 @@ public final class ControlFlow
 	 * @pre !isFirstCallee(pNode)
 	 * @pre contains(pNode)
 	 */
-	public CallNode getPreviousCallee(CallNode pNode)
+	public Node getPreviousCallee(Node pNode)
 	{
 		assert pNode != null;
 		Optional<CallNode> caller = getCaller(pNode);
@@ -148,7 +148,7 @@ public final class ControlFlow
 		List<Node> callees = getCallees(caller.get());
 		int index = callees.indexOf(pNode);
 		assert index >= 1;
-		return (CallNode) callees.get(index-1);
+		return callees.get(index-1);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public final class ControlFlow
 	 * @return True if pNode is a call node that does not have any outgoing
 	 * call edge.
 	 */
-	public boolean hasNoCallees(CallNode pNode)
+	public boolean hasNoCallees(Node pNode)
 	{
 		assert pNode != null;
 		return getCallees(pNode).isEmpty();
@@ -226,5 +226,4 @@ public final class ControlFlow
 				calls.size() == 1 &&
 				calls.contains(pCallee);
 	}
-
 }

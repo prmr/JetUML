@@ -65,25 +65,18 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
 	{
-		if(canCreateConstructorCall(pStart, pEnd, pEndPoint))
+		ConstraintSet constraintSet = new ConstraintSet(
+				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
+				SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
+				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
+				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
+			);
+		
+		if( !canCreateConstructorCall(pStart, pEnd, pEndPoint) )
 		{
-			return new ConstraintSet(
-					EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-					SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
-					SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-					SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
-				);
+			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );
 		}
-		else 
-		{
-			return new ConstraintSet(
-					EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-					SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
-					SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-					SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint),
-					SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
-				);
-		}
+		return constraintSet;
 	}
 	
 	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
@@ -229,7 +222,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		final CallNode start = (CallNode)startNode;
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());	
-		// Add a call node to the created Implicit Parameter Node
 		CallNode endChild = new CallNode();
 		ImplicitParameterNode end = (ImplicitParameterNode) pEndNode;
 		pOperation.add(new SimpleOperation(() -> 
@@ -242,6 +234,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			endChild.detach();
 		}));
 		pEdge.connect(start, end, aDiagram);
+		((CallEdge)pEdge).setMiddleLabel("<<create>>");
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
 	}
