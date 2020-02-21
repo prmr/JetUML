@@ -1,8 +1,10 @@
 # JetUML
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/prmr/JetUML)
+![GitHub Release Date](https://img.shields.io/github/release-date/prmr/JetUML)
 ![GitHub](https://img.shields.io/github/license/prmr/JetUML)
 ![GitHub All Releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
+![GitHub contributors](https://img.shields.io/github/contributors/prmr/JetUML)
 
 A desktop application for fast UML diagramming. The idea of JetUML is to support the sketching of software design ideas *with a minimum of fuss*. No installation is required and the size of the application is a tiny 350Kb. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
 
