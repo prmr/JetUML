@@ -1,5 +1,6 @@
 # JetUML
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/prmr/JetUML)
 ![GitHub](https://img.shields.io/github/license/prmr/JetUML)
 ![GitHub All Releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
 
