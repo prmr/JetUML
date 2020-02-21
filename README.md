@@ -12,8 +12,6 @@ If you find this tool useful please **star the repo**.
 
 ![JetUML Class Diagram](docs/banner.png)
 
-[Twitter feed with release news and tips for users](https://twitter.com/search?q=%40JetUML&src=typd&lang=en)
-
 ## License 
 
 JetUML is available under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). 
