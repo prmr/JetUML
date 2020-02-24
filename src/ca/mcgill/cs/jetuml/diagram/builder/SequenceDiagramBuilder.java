@@ -82,7 +82,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
 		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pTarget instanceof CallEdge && flow.hasNoCallees((CallNode)((Edge)pTarget).getEnd()))
+		if( pTarget instanceof CallEdge && flow.hasNoCallees(((Edge)pTarget).getEnd()))
 		{
 			Node end = ((Edge)pTarget).getEnd();
 			pElements.add(end);
@@ -92,7 +92,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private void addEdgeStartIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
 		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)((Edge)pTarget).getStart(), (CallEdge) pTarget))
+		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall(((Edge)pTarget).getStart(), (CallEdge) pTarget))
 		{
 			Node start = ((Edge)pTarget).getStart();
 			pElements.add(start);
@@ -204,6 +204,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private void completeConstructorCallEdgeAddition(CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
+		assert canCreateConstructorCall(pStartNode, pEndNode, pEndPoint);
 		Node startNode = pStartNode;
 		if (pStartNode instanceof ImplicitParameterNode)
 		{
@@ -234,7 +235,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			endChild.detach();
 		}));
 		pEdge.connect(start, end, aDiagram);
-		((CallEdge)pEdge).setMiddleLabel("<<create>>");
+		((CallEdge)pEdge).setMiddleLabel("\u00ABcreate\u00BB");
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
 				()-> aDiagram.removeEdge(pEdge)));
 	}
