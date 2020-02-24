@@ -195,7 +195,7 @@ public final class ControlFlow
 	{
 		for( Node node : aDiagram.rootNodes() )
 		{
-			if( node.getClass() == ImplicitParameterNode.class && !((ImplicitParameterNode)node).getChildren().isEmpty())
+			if( node.getClass() == ImplicitParameterNode.class && !((ImplicitParameterNode)node).getChildren().isEmpty() )
 			{
 				return true;
 			}
@@ -219,11 +219,27 @@ public final class ControlFlow
 	 * @param pCallee The edge to check.
 	 * @return True if pNode has no caller and only pEdge as callee.
 	 */
-	public boolean onlyConnectedToOneCall(CallNode pNode, CallEdge pCallee)
+	public boolean onlyConnectedToOneCall(Node pNode, CallEdge pCallee)
 	{
 		List<CallEdge> calls = getCalls(pNode);
 		return !getCaller(pNode).isPresent() &&
 				calls.size() == 1 &&
 				calls.contains(pCallee);
+	}
+	
+	/**
+	 * @param pNode The node to check
+	 * @return True if pNode has an ImplicitParameterNode as callee
+	 */
+	public boolean isConstructorCall(Node pNode)
+	{
+		for( Node callee: getCallees(pNode) )
+		{
+			if ( callee instanceof ImplicitParameterNode )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
