@@ -174,7 +174,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		// If the node is not the first callee but the previous callee is a call node
 		else if(controlFlow.getPreviousCallee(pNode) instanceof CallNode)
 		{
-			return CALL_NODE_VIEWER.getMaxY(controlFlow.getPreviousCallee(pNode));
+			return CALL_NODE_VIEWER.getMaxY(controlFlow.getPreviousCallee(pNode)) + Y_GAP_SMALL;
 		}
 		// If the node is not the first callee but the previous callee is a implicit parameter node
 		else if(controlFlow.getPreviousCallee(pNode) instanceof ImplicitParameterNode)
@@ -191,7 +191,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 				Node lastCallee = prevCallees.get(prevCallees.size()-1);
 				if(lastCallee instanceof CallNode)
 				{
-					return CALL_NODE_VIEWER.getMaxY(lastCallee);
+					return CALL_NODE_VIEWER.getMaxY(lastCallee) + Y_GAP_SMALL;
 				}
 				else 
 				{

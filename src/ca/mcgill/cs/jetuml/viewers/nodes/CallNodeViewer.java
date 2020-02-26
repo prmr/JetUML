@@ -121,7 +121,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		if( pNode instanceof ImplicitParameterNode )
 		{
 			assert IMPLICIT_PARAMETER_NODE_VIEWER.hasCaller(pNode);
-			return IMPLICIT_PARAMETER_NODE_VIEWER.getMaxYwithConstructorCall(pNode) + Y_GAP_SMALL;
+			return IMPLICIT_PARAMETER_NODE_VIEWER.getMaxYwithConstructorCall(pNode);
 		}
 		final CallNode callNode = (CallNode) pNode;
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
