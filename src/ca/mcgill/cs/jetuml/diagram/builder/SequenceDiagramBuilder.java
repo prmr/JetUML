@@ -71,7 +71,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
 				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
 			);
-		
 		if( !canCreateConstructorCall(pStart, pEnd, pEndPoint) )
 		{
 			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );
@@ -86,16 +85,41 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			Node end = ((Edge)pTarget).getEnd();
 			pElements.add(end);
+			// If the target node is an implicit parameter node in a constructor call, remove its children
+			if(flow.isConstructorCall(end))
+			{
+				addConstructorCallElements(pElements, end);
+			}
 		}
 	}
 
+	private void addConstructorCallElements(List<DiagramElement> pElements, Node pTarget)
+	{
+		ControlFlow flow = new ControlFlow(aDiagram);
+		List<Node> children = ((ImplicitParameterNode)pTarget).getChildren();
+		pElements.addAll(children);
+		for(Node child: children)
+		{
+			Optional<Node> contructorNode = flow.getConstructorCall(child);
+			if(contructorNode.isPresent())
+			{
+				addConstructorCallElements(pElements, contructorNode.get());
+			}
+			pElements.addAll(getCoRemovals(child));
+		}
+	}
+	
 	private void addEdgeStartIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pTarget)
 	{
 		ControlFlow flow = new ControlFlow(aDiagram);
 		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall(((Edge)pTarget).getStart(), (CallEdge) pTarget))
 		{
 			Node start = ((Edge)pTarget).getStart();
-			pElements.add(start);
+			// Remove the start node only if the node is not in the constructor call 
+			if(!flow.isInconstructorCall(start))
+			{
+				pElements.add(start);				
+			}
 		}
 	}
 	
@@ -123,9 +147,13 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			for( Node callee : flow.getCallees((Node)pElement))
 			{
-				if( flow.hasNoCallees((CallNode)callee))
+				if( flow.hasNoCallees(callee))
 				{
 					pElements.add(callee);
+					if( flow.isConstructorCall(callee) )
+					{
+						addConstructorCallElements(pElements, callee);
+					}
 				}
 			}
 		}
