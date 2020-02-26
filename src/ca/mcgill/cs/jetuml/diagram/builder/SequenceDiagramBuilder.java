@@ -69,7 +69,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 				SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
 				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
+				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram),
+				SequenceDiagramEdgeConstraints.constructorCall(pEdge, pEnd, aDiagram)
 			);
 		if( !canCreateConstructorCall(pStart, pEnd, pEndPoint) )
 		{

@@ -98,4 +98,17 @@ public final class SequenceDiagramEdgeConstraints
 					new ControlFlow(pDiagram).hasEntryPoint());
 		};
 	}
+	
+	/*
+	 * Cannot create call edge to the call nodes in the constructor call.
+	 */
+	public static Constraint constructorCall(Edge pEdge, Node pEnd, Diagram pDiagram)
+	{
+		ControlFlow flow = new ControlFlow(pDiagram);
+		return ()->
+		{
+			return !(pEdge instanceof CallEdge &&
+					flow.isInconstructorCall(pEnd));
+		};
+	}
 }
