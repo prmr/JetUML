@@ -48,6 +48,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final int TOP_HEIGHT = 60;
+	private static final int Y_GAP_SMALL = 20; 
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
 	private static final CallNodeViewer CALL_NODE_VIEWER = new CallNodeViewer();
 	
@@ -104,7 +105,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	{
 		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).getWidth()+ 
 				HORIZONTAL_PADDING, DEFAULT_WIDTH); 
-		int yVal = hasCaller(pNode)?getCallerY(pNode):0;
+		int yVal = hasCaller(pNode)?getYWithCaller(pNode):0;
 		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
 	}
 
@@ -114,18 +115,20 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);
 		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - pNode.position().getX());
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);
-		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height- topRectangle.getY());
+		List<Node> childNodes = ((ImplicitParameterNode)pNode).getChildren();
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);	
+		// Keep the default height only if the node is a constructor call with no child nodes
+		if( !hasCaller(pNode) || childNodes.size()!=0 )
+		{
+			height -= topRectangle.getY();
+		}
+		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height);
 	}
-	
-	private int getCallerY(Node pNode)
-	{
-		assert hasCaller(pNode);
-		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
-		CallNode caller = controlFlow.getCaller(pNode).get();
-		return CALL_NODE_VIEWER.getY(caller);
-	}
-	
+
+	/**
+	 * @param pNode The node to check.
+	 * @return True if pNode has a caller.
+	 */
 	public boolean hasCaller(Node pNode) 
 	{
 		Optional<Diagram> diagram = pNode.getDiagram();
@@ -133,19 +136,69 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		{
 			ControlFlow flow = new ControlFlow(diagram.get());
 			Optional<CallNode> caller = flow.getCaller(pNode);
-			if(caller.isPresent())
-			{
-				return true;
-			}
+			return caller.isPresent();
 		}	
 		return false;
 	}
 	
-	public int getMaxYConstructorCall(Node pNode)
+	/**
+	 * 
+	 * @param pNode The node to compute the position.
+	 * @return If the node has child nodes, returns the y position of the last child node.
+	 * Otherwise, returns a fixed distance from the y position of the node.
+	 */
+	public int getMaxYwithConstructorCall(Node pNode)
 	{
 		assert hasCaller(pNode);
 		List<Node> child = ((ImplicitParameterNode)pNode).getChildren();
-		assert child.size()>0;
-		return CALL_NODE_VIEWER.getMaxY(child.get(child.size()-1));
+		if(child.size()>0)
+		{
+			return CALL_NODE_VIEWER.getMaxY(child.get(child.size()-1));
+		}
+		else 
+		{
+			return getYWithCaller(pNode) + Y_GAP_SMALL;
+		}
+	}
+	
+	private int getYWithCaller(Node pNode)
+	{
+		assert hasCaller(pNode);
+		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
+		// If the node is the first callee of its parent
+		if(controlFlow.isFirstCallee(pNode))
+		{
+			CallNode caller = controlFlow.getCaller(pNode).get(); 
+			return CALL_NODE_VIEWER.getY(caller);
+		}
+		// If the node is not the first callee but the previous callee is a call node
+		else if(controlFlow.getPreviousCallee(pNode) instanceof CallNode)
+		{
+			return CALL_NODE_VIEWER.getMaxY(controlFlow.getPreviousCallee(pNode));
+		}
+		// If the node is not the first callee but the previous callee is a implicit parameter node
+		else if(controlFlow.getPreviousCallee(pNode) instanceof ImplicitParameterNode)
+		{
+			Node prevCallee = controlFlow.getPreviousCallee(pNode);
+			List<Node> prevCallees = controlFlow.getCallees(prevCallee);
+			if( prevCallees.size()==0 ) 
+			{
+				// Returns a fixed distance from the previous callee
+				return getBounds(prevCallee).getMaxY() + Y_GAP_SMALL;
+			}
+			else 
+			{
+				Node lastCallee = prevCallees.get(prevCallees.size()-1);
+				if(lastCallee instanceof CallNode)
+				{
+					return CALL_NODE_VIEWER.getMaxY(lastCallee);
+				}
+				else 
+				{
+					return getYWithCaller(lastCallee);
+				}
+			}
+		}
+		return 0;
 	}
 }

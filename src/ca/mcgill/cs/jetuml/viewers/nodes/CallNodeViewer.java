@@ -118,6 +118,11 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 */
 	public int getY(Node pNode)
 	{
+		if( pNode instanceof ImplicitParameterNode )
+		{
+			assert IMPLICIT_PARAMETER_NODE_VIEWER.hasCaller(pNode);
+			return IMPLICIT_PARAMETER_NODE_VIEWER.getMaxYwithConstructorCall(pNode) + Y_GAP_SMALL;
+		}
 		final CallNode callNode = (CallNode) pNode;
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
 		final Diagram diagram = callNode.getDiagram().get();
@@ -174,16 +179,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		}
 		else
 		{
-			Node lastCallee = callees.get(callees.size()-1);
-			if( lastCallee instanceof ImplicitParameterNode )
-			{
-				assert IMPLICIT_PARAMETER_NODE_VIEWER.hasCaller(lastCallee);
-				return IMPLICIT_PARAMETER_NODE_VIEWER.getMaxYwithConstructorCall(lastCallee) + Y_GAP_SMALL;
-			}
-			else
-			{
-				return getMaxY(lastCallee) + Y_GAP_SMALL;
-			}
+			return getMaxY(callees.get(callees.size()-1)) + Y_GAP_SMALL;
 		}
 	}
 	
