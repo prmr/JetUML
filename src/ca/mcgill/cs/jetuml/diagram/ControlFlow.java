@@ -228,18 +228,36 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * @param pNode The node to check
-	 * @return True if pNode has an ImplicitParameterNode as callee
+	 * @param pNode The node to check.
+	 * @return The Optional of the implicit parameter node as a callee of pNode in the constructor call.
 	 */
-	public boolean isConstructorCall(Node pNode)
+	public Optional<Node> getConstructorCall(Node pNode)
 	{
 		for( Node callee: getCallees(pNode) )
 		{
 			if ( callee instanceof ImplicitParameterNode )
 			{
-				return true;
+				return Optional.of(callee);
 			}
 		}
-		return false;
+		return Optional.empty();
+	}
+	
+	/**
+	 * @param pNode The node to check.
+	 * @return True if pNode is an implicit parameter node in the constructor call.
+	 */
+	public boolean isConstructorCall(Node pNode)
+	{
+		return pNode instanceof ImplicitParameterNode && getCaller(pNode).isPresent();
+	}
+	
+	/**
+	 * @param pNode The node to check.
+	 * @return True if pNode is a callee of the implicit parameter node in the constructor call.
+	 */
+	public boolean isInconstructorCall(Node pNode)
+	{
+		return pNode instanceof CallNode && pNode.hasParent() && isConstructorCall(pNode.getParent());
 	}
 }
