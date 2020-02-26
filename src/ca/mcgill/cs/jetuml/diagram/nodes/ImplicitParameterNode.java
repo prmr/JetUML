@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -34,7 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * this node, or null if this node is node created as part of the 
  * sequence.
  */
-public final class ImplicitParameterNode extends NamedNode implements ParentNode
+public final class ImplicitParameterNode extends NamedNode
 {
 	private List<Node> aCallNodes = new ArrayList<>();
 
@@ -56,7 +57,7 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	@Override
 	public List<Node> getChildren()
 	{
-		return aCallNodes;
+		return Collections.unmodifiableList(aCallNodes);
 	}
 
 	@Override
@@ -79,11 +80,15 @@ public final class ImplicitParameterNode extends NamedNode implements ParentNode
 	@Override
 	public void removeChild(Node pNode)
 	{
-		if (pNode.getParent() != this)
-		{
-			return;
-		}
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aCallNodes.remove(pNode);
 		pNode.unlink();
+	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
 	}
 }

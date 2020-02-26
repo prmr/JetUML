@@ -431,7 +431,6 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
-		child.link(parent);
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		assertFalse(aBuilder.canLinkToPackage(Arrays.asList(child)));
@@ -453,7 +452,6 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
-		child.link(parent);
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		assertTrue(aBuilder.canUnlinkFromPackage(Arrays.asList(child)));
@@ -476,8 +474,6 @@ public class TestClassDiagramBuilder
 		InterfaceNode child2 = new InterfaceNode();
 		PackageNode parent1 = new PackageNode();
 		PackageNode parent2 = new PackageNode();
-		child1.link(parent1);
-		child2.link(parent2);
 		parent1.addChild(child1);
 		parent2.addChild(child2);
 		aDiagram.addRootNode(parent1);
@@ -511,7 +507,6 @@ public class TestClassDiagramBuilder
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
-		child.link(parent);
 		parent.addChild(child);
 		aDiagram.addRootNode(parent);
 		List<Node> selection = Arrays.asList(child);
@@ -534,9 +529,7 @@ public class TestClassDiagramBuilder
 		ClassNode child = new ClassNode();
 		PackageNode innerParent = new PackageNode();
 		PackageNode outerParent = new PackageNode();
-		child.link(innerParent);
 		innerParent.addChild(child);
-		innerParent.link(outerParent);
 		outerParent.addChild(innerParent);
 		aDiagram.addRootNode(outerParent);
 		List<Node> selection = Arrays.asList(child);

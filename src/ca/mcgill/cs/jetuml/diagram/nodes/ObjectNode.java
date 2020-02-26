@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -29,7 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 /**
  *  An object node in an object diagram.
  */
-public final class ObjectNode extends NamedNode implements ParentNode
+public final class ObjectNode extends NamedNode
 {
 	private ArrayList<Node> aFields = new ArrayList<>();
 
@@ -42,10 +43,7 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		for(Node child : getChildren())
-		{
-			child.translate(pDeltaX, pDeltaY);
-		}   
+		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
 	}    
 
 	@Override
@@ -84,18 +82,21 @@ public final class ObjectNode extends NamedNode implements ParentNode
 	@Override
 	public List<Node> getChildren()
 	{
-		return aFields; // TODO there should be a remove operation on ObjectNode
+		return Collections.unmodifiableList(aFields); 
 	}
 
 	@Override
 	public void removeChild(Node pNode)
 	{
-		assert pNode != null;
-		if(pNode.getParent() != this)
-		{
-			return;
-		}
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aFields.remove(pNode);
 		pNode.unlink();
+	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
 	}
 }

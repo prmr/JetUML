@@ -193,14 +193,13 @@ public final class ControlFlow
 	 */
 	public boolean hasEntryPoint()
 	{
-		for( Node node : aDiagram.rootNodes() )
-		{
-			if( node.getClass() == ImplicitParameterNode.class && !((ImplicitParameterNode)node).getChildren().isEmpty() )
-			{
-				return true;
-			}
-		}
-		return false;
+		return aDiagram.rootNodes().stream().anyMatch(ControlFlow::hasCallNode);
+	}
+	
+	private static boolean hasCallNode(Node pNode)
+	{
+		return pNode.getClass() == ImplicitParameterNode.class &&
+				!pNode.getChildren().isEmpty();
 	}
 	
 	/**

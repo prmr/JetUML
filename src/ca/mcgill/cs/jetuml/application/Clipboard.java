@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 
 /**
@@ -173,12 +172,9 @@ public final class Clipboard
 			{
 				return true;
 			}
-			else if( node instanceof ParentNode )
+			else if( recursivelyContains(pNode, node.getChildren()) )
 			{
-				if( recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
@@ -192,12 +188,9 @@ public final class Clipboard
 			{
 				return true;
 			}
-			else if( node instanceof ParentNode )
+			else if( recursivelyContains(pNode, node.getChildren()) )
 			{
-				if(  recursivelyContains( pNode, ((ParentNode)node).getChildren()) )
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		return false;
@@ -216,19 +209,16 @@ public final class Clipboard
 				edge.connect(edge.getStart(), pNew, edge.getDiagram());
 			}
 		}
-		if( pOld instanceof ParentNode )
+		List<Node> oldChildren = pOld.getChildren();
+		List<Node> newChildren = pNew.getChildren();
+		for( int i = 0; i < oldChildren.size(); i++ )
 		{
-			List<Node> oldChildren = ((ParentNode) pOld).getChildren();
-			List<Node> newChildren = ((ParentNode) pNew).getChildren();
-			for( int i = 0; i < oldChildren.size(); i++)
-			{
-				reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
-			}
+			reassignEdges(pEdges, oldChildren.get(i), newChildren.get(i));
 		}
 	}
 	
 	/*
-	 * Returns true of pNode needs a parent that isn't in 
+	 * Returns true if pNode needs a parent that isn't in 
 	 * the clipboard.
 	 */
 	private boolean missingParent(Node pNode)
@@ -237,21 +227,16 @@ public final class Clipboard
 	}
 	
 	/*
-	 * Removes the reference to the parent of any node that
-	 * does not have a parent in the copied node list.
+	 * Removes the reference to the parent of any node in the list.
+	 * This operation is safe because nodes in the clip-board
+	 * can only be pasted as root nodes. Children nodes would
+	 * be copied through their parent.
 	 */
 	private void removeDanglingReferencesToParents()
 	{
-		for( Node node : aNodes )
-		{
-			if( node.hasParent() )
-			{
-				if( !aNodes.contains(node.getParent()))
-				{
-					node.getParent().removeChild(node);
-				}
-			}
-		}
+		aNodes.stream()
+			.filter(Node::hasParent)
+			.forEach(Node::unlink);
 	}
 	
 	/**

@@ -20,6 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import static java.util.Collections.emptyList;
+
+import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.AbstractDiagramElement;
@@ -57,6 +60,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	public AbstractNode clone()
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
+		clone.aPosition = aPosition.clone();
 		return clone;
 	}
 	
@@ -106,7 +110,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public ParentNode getParent()
+	public Node getParent()
 	{
 		assert false; // Safer way than assert hasParent() to trigger an assertion error if not overridden
 		return null; // Unreachable.
@@ -119,8 +123,49 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public void link(ParentNode pParentNode)
+	public void link(Node pParentNode)
 	{
 		assert false;
+	}
+	
+	@Override
+	public List<Node> getChildren()
+	{
+		return emptyList();
+	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return false;
+	}
+	
+	@Override
+	public void addChild(Node pNode)
+	{
+		assert allowsChildren(); 
+		// Do nothing
+	}
+	
+	@Override
+	public void addChild(int pIndex, Node pNode)
+	{
+		assert allowsChildren(); 
+		// Do nothing
+	}
+	
+	@Override
+	public void removeChild(Node pNode)
+	{
+		assert getChildren().contains(pNode);
+	}
+	
+	@Override
+	public void placeLast(Node pNode)
+	{
+		assert pNode != null;
+		assert getChildren().contains(pNode);
+		removeChild(pNode);
+		addChild(pNode);
 	}
 }

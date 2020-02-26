@@ -29,7 +29,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 
 /**
  * Converts a JSONObject to a graph.
@@ -124,7 +123,7 @@ public final class JsonDecoder
 				JSONArray children = object.getJSONArray("children");
 				for( int j = 0; j < children.length(); j++ )
 				{
-					((ParentNode)node).addChild(pContext.getNode(children.getInt(j)));
+					node.addChild(pContext.getNode(children.getInt(j)));
 				}
 			}
 		}

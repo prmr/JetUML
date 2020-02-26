@@ -22,6 +22,7 @@
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +31,12 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 /**
  * A package node in a UML diagram.
  */
-public final class PackageNode extends AbstractNode implements ParentNode
+public final class PackageNode extends AbstractNode
 {
 	private String aName = "";
 	private String aContents = "";
 	private ArrayList<Node> aContainedNodes = new ArrayList<>();
-	private Optional<ParentNode> aContainer = Optional.empty();
+	private Optional<Node> aContainer = Optional.empty();
 	
 	/**
      * Sets the name property value.
@@ -68,11 +69,7 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		
-		for(Node childNode : getChildren())
-        {
-        	childNode.translate(pDeltaX, pDeltaY);
-        }   
+		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
 	}
 
 	/**
@@ -100,14 +97,14 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	}
 	
 	@Override
-	public ParentNode getParent()
+	public Node getParent()
 	{
 		assert hasParent();
 		return aContainer.get();
 	}
 
 	@Override
-	public void link(ParentNode pNode)
+	public void link(Node pNode)
 	{
 		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = Optional.of(pNode);
@@ -123,7 +120,7 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	@Override
 	public List<Node> getChildren()
 	{
-		return aContainedNodes; // TODO there should be a remove operation on PackageNode
+		return Collections.unmodifiableList(aContainedNodes); 
 	}
 
 	@Override
@@ -149,6 +146,8 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	@Override
 	public void removeChild(Node pNode)
 	{
+		assert getChildren().contains(pNode);
+		assert pNode.getParent() == this;
 		aContainedNodes.remove(pNode);
 		pNode.unlink();
 	}
@@ -171,5 +170,11 @@ public final class PackageNode extends AbstractNode implements ParentNode
 	public boolean hasParent()
 	{
 		return aContainer.isPresent();
+	}
+	
+	@Override
+	public boolean allowsChildren()
+	{
+		return true;
 	}
 }

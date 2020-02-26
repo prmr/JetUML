@@ -23,6 +23,8 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.Node;
+
 /**
  * A method call node in a sequence diagram. Call nodes are
  * not intended to be manipulated by users. 
@@ -71,7 +73,7 @@ public class CallNode extends AbstractNode
      * @return the parent node
      * @pre hasParent()
 	 */
-	public ParentNode getParent() 
+	public Node getParent() 
    	{ 
 		assert hasParent();
 		return aImplicitParameter.get(); 
@@ -82,7 +84,7 @@ public class CallNode extends AbstractNode
      * @param pNode the parent node
      * @pre pNode != null;
 	 */
-	public void link(ParentNode pNode) 
+	public void link(Node pNode) 
 	{
 		assert pNode != null;
 		assert pNode instanceof ImplicitParameterNode;

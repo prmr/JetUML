@@ -33,7 +33,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstrain
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
@@ -218,11 +217,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	/*
 	 * Finds the parent of all the nodes in pNodes. Returns Optional.empty() if the nodes have different parents.
 	 */
-	private static Optional<ParentNode> findSharedParent(List<Node> pNodes)
+	private static Optional<Node> findSharedParent(List<Node> pNodes)
 	{
 		assert allUnlinkable(pNodes);
 		// Get the parent of the first child node and check with other nodes
-		ParentNode parent = pNodes.get(0).getParent();
+		Node parent = pNodes.get(0).getParent();
 		for(Node pNode: pNodes)
 		{
 			if(parent != pNode.getParent())
@@ -304,23 +303,23 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	
 
 	/**
-	 * Creates an opeartion that detaches all the nodes in pNodes from their parent.
+	 * Creates an operation that detaches all the nodes in pNodes from their parent.
 	 * 
 	 * @param pNodes The nodes to detach.
 	 * @return The requested operation.
-	 * @pre canDetachFromPackage(pNodes);
+	 * @pre canUnlinkFromPackage(pNodes);
 	 */
 	public DiagramOperation createUnlinkFromPackageOperation(List<Node> pNodes)
 	{
 		assert canUnlinkFromPackage(pNodes);
-		ParentNode parent = findSharedParent(pNodes).get();
+		Node parent = findSharedParent(pNodes).get();
 		// CSOFF:
-		ParentNode outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
+		Node outerParent = parent.hasParent() ? parent.getParent() : null; //CSON:
 		if( outerParent == null )
 		{
-			// The parent of the nodes in pNodes does not have parent, attach the detached nodes to the Diagram
-			return new SimpleOperation( 
-					()-> 
+			// The parent of the nodes in pNodes does not have parent, 
+			// set the detached nodes as root nodes in the diagram
+			return new SimpleOperation( ()-> 
 					{
 						for( Node pNode: pNodes )
 						{
@@ -334,7 +333,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							aDiagram.removeRootNode(pNode);
 							parent.addChild(pNode);
-							pNode.link(parent);
 						}
 					});	
 		}
@@ -346,9 +344,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							outerParent.addChild(pNode);
 							parent.removeChild(pNode);
-							pNode.link(outerParent);
+							outerParent.addChild(pNode);
 						}
 					},
 					()->
@@ -357,7 +354,6 @@ public class ClassDiagramBuilder extends DiagramBuilder
 						{
 							outerParent.removeChild(pNode);
 							parent.addChild(pNode);
-							pNode.link(parent);
 						}
 					});	
 		}

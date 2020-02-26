@@ -21,14 +21,27 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
+import java.util.List;
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.diagram.nodes.ParentNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
-  * A node in a diagram.
-  */
+ * A node in a diagram.
+ * 
+ * Different node subclasses can potentially implement the 
+ * child node and parent mixin behavior, depending on the needs
+ * of the diagram type in which nodes participants.
+ * 
+ * Nodes that can act as child nodes can potentially be linked to a parent node. 
+ * 
+ * Nodes that can act as parent nodes can potentially have children nodes according 
+ * to a diagram type-specific parent-child relation. Parent nodes control their
+ * child nodes. If a child node has a parent, only the parent node is tracked by
+ * the diagram object. If a parent node is removed from the diagram, all its children
+ * are also removed. Cloning a parent node clones all the children, and similarly
+ * with all other operations, including copying, translating, etc.
+ */
 public interface Node extends DiagramElement
 {
 	/**
@@ -90,7 +103,7 @@ public interface Node extends DiagramElement
 	 * @return The node that is the parent of this node. Never null.
 	 * @pre hasParent()
 	 */
-	ParentNode getParent();
+	Node getParent();
 	
 	/**
 	 * Unlinks this node from it parent node.. This operation does 
@@ -112,5 +125,56 @@ public interface Node extends DiagramElement
 	 * @param pParentNode The node to set as parent of this node.
 	 * @pre pParentNode != null
 	 */
-	void link(ParentNode pParentNode);
+	void link(Node pParentNode);
+	
+	/**
+	 * Returns the children of this node. This operation is legal 
+	 * on node types than cannot have children, in which case it
+	 * always returns an empty list.
+	 * 
+	 * @return An unmodifiable list of children nodes.
+	 */
+	List<Node> getChildren(); 
+	
+	/**
+	 * @return true if the type of node supports keeping track
+	 * of children nodes.
+	 */
+	boolean allowsChildren();
+	
+	/**
+	 * Insert a child at the end of the list of children.
+	 * This method also links the current node as parent
+	 * node of pNode.
+	 * @param pNode The child to insert.
+	 * @pre allowsNode() == true && pNode != null
+	 */
+	void addChild(Node pNode);
+	
+	/**
+	 * Insert a child node at index pIndex.
+	 * This method also links the current node as parent
+	 * node of pNode.
+	 * @param pIndex Where to insert the child.
+	 * @param pNode The child to insert.
+	 * @pre pNode != null && pIndex <= getChildren().size()
+	 * @pre allowsChildren()
+	 */
+	void addChild(int pIndex, Node pNode); 
+	
+	/**
+	 * Remove pNode from the list of children of this node.
+	 * Also unlinks the child's parent node from this node.
+	 * @param pNode The child to remove.
+	 * @pre getChildren().contains(pNode)
+	 * @pre pNode.getParent() == this
+	 */
+	void removeChild(Node pNode);
+	
+	/**
+	 * Move the child node to the last position in the list of children.
+	 * @param pChild The child to move
+	 * @pre pChild != null && getChildren().contains(pChild)
+	 */
+	void placeLast(Node pChild);
 }

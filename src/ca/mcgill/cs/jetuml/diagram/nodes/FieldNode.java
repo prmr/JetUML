@@ -23,6 +23,8 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.diagram.Node;
+
 /**
  *  A field node in an object diagram.
  */
@@ -55,14 +57,14 @@ public final class FieldNode extends NamedNode
 	}
 
 	@Override
-	public ParentNode getParent()
+	public Node getParent()
 	{
 		assert hasParent();
 		return aObject.get();
 	}
 
 	@Override
-	public void link(ParentNode pNode)
+	public void link(Node pNode)
 	{
 		assert pNode != null && pNode instanceof ObjectNode;
 		aObject = Optional.of((ObjectNode) pNode);		
