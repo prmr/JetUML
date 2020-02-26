@@ -200,7 +200,7 @@ public class DiagramViewer
 			}
 			newElementBounds = newElementBounds.add(ViewerUtilities.getBounds(element));
 		}
-		if (pCurrentSelectionBounds.equals(newElementBounds) || pCurrentSelectionBounds.contains(newElementBounds)) 
+		if (pCurrentSelectionBounds.equals(newElementBounds)) 
 		{
 			return true;
 		}
