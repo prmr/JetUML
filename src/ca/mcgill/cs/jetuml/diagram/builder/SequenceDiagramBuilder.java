@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -65,13 +66,23 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
 	{
-		return new ConstraintSet(
-			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
-			SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-			SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint),
-			SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
-		);
+		ConstraintSet constraintSet = new ConstraintSet(
+				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
+				SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
+				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
+				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
+			);
+		if( !canCreateConstructorCall(pStart, pEnd, pEndPoint) )
+		{
+			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );
+		}
+		return constraintSet;
+	}
+	
+	private boolean canCreateConstructorCall(Node pStartNode, Node pEndNode, Point pEndPoint)
+	{
+		return pEndNode instanceof ImplicitParameterNode && IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint)
+				&& ((ImplicitParameterNode)pEndNode).getChildren().size()==0;
 	}
 	
 	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
@@ -206,23 +217,28 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			assert pEndNode.getClass() == CallNode.class;
 			endParent = (ImplicitParameterNode)((CallNode)pEndNode).getParent();
 		}
-		CallNode newCallNode = new CallNode();
+		CallNode end = new CallNode();
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> 
 		{
-			newCallNode.attach(aDiagram);
-			parent.addChild(newCallNode);
+			end.attach(aDiagram);
+			parent.addChild(end);
 		},
 		()-> 
 		{
-			newCallNode.detach();
-			parent.removeChild(newCallNode);
+			end.detach();
+			parent.removeChild(end);
 		}
 		));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
-		pEdge.connect(start, newCallNode, aDiagram);
-		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
-				()-> aDiagram.removeEdge(pEdge)));
+		if(canCreateConstructorCall(pStartNode, pEndNode, pEndPoint))
+		{
+			pEdge = new ConstructorEdge();
+		}
+		final Edge edge = pEdge;
+		pEdge.connect(start, end, aDiagram);
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, edge),
+				()-> aDiagram.removeEdge(edge)));
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
