@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 
@@ -66,7 +67,7 @@ public final class ControlFlow
 		List<Node> callees = new ArrayList<>();
 		for(Edge edge : aDiagram.edges() )
 		{
-			if ( edge.getStart() == pNode && edge.getClass() == CallEdge.class )
+			if ( edge.getStart() == pNode && edge instanceof CallEdge)
 			{
 				callees.add(edge.getEnd());
 			}
@@ -85,7 +86,7 @@ public final class ControlFlow
 		ArrayList<CallEdge> result = new ArrayList<>();
 		for( Edge edge : aDiagram.edges() )
 		{
-			if( edge.getClass() == CallEdge.class && edge.getStart() == pCaller )
+			if( edge instanceof CallEdge && edge.getStart() == pCaller )
 			{
 				result.add((CallEdge)edge);
 			}
@@ -106,7 +107,7 @@ public final class ControlFlow
 		assert pNode != null && aDiagram.contains(pNode);
 		for( Edge edge : aDiagram.edges() )
 		{
-			if( edge.getEnd() == pNode  && edge.getClass() == CallEdge.class )
+			if( edge.getEnd() == pNode  && edge instanceof CallEdge )
 			{
 				return Optional.of((CallNode) edge.getStart());
 			}
@@ -225,5 +226,17 @@ public final class ControlFlow
 				calls.size() == 1 &&
 				calls.contains(pCallee);
 	}
-
+	
+	public boolean isInConstructorCall(Node pNode)
+	{
+		assert pNode != null;
+		for(Edge edge : aDiagram.edges())
+		{
+			if ( pNode.getClass() == CallNode.class && edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
+			{
+				return true;
+			}
+		}
+		return false;	
+	}
 }
