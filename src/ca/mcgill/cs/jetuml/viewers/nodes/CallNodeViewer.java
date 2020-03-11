@@ -116,12 +116,11 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 * of the caller or a set distance before the previous call node, whatever is lower.
 	 * If not, it's simply a set distance below the previous call node.
 	 */
-	private int getY(Node pNode)
+	private int getYWithNoConstructorCall(Node pNode)
 	{
 		final CallNode callNode = (CallNode) pNode;
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
 		final Diagram diagram = callNode.getDiagram().get();
-		
 		if( implicitParameterNode == null || diagram == null )
 		{
 			return 0; // Only used for the ImageCreator
@@ -154,7 +153,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 			return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
 		}
 	} 
-	
+
 	/**
 	 * @param pNode the node.
 	 * @return If there's no callee, returns a fixed offset from the y position.
@@ -184,5 +183,34 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	{
 		int y = getY(pNode);
 		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);
+	}
+	
+	private int getYWithConstructorCall(Node pNode) 
+	{
+		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
+		return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
+	}
+
+	private boolean isInConstructorCall(Node pNode)
+	{
+		Optional<Diagram> diagram = pNode.getDiagram();
+		if(diagram.isPresent())
+		{
+			ControlFlow flow = new ControlFlow(diagram.get());
+			return flow.isInConstructorCall(pNode);
+		}
+		return false;
+	}
+	
+	protected int getY(Node pNode)
+	{
+		if(isInConstructorCall(pNode))
+		{
+			return getYWithConstructorCall(pNode);
+		}
+		else 
+		{
+			return getYWithNoConstructorCall(pNode);
+		}
 	}
 }
