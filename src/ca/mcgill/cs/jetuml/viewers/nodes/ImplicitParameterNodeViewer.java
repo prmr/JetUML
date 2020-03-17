@@ -133,12 +133,12 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		// If the node is not the first callee but the previous callee is in constructor call
 		if( controlFlow.isInConstructorCall(prevCallee) )
 		{
-			// Returns a fixed distance from the previous callee'sparent
+			// Returns a fixed distance from the bound of the previous callee's parent
 			return getBounds(prevCallee.getParent()).getMaxY();
 		}
-		// If the node is not the first callee but the previous callee is a call node 
 		else
 		{
+			// Returns a fixed distance from the previous callee
 			return CALL_NODE_VIEWER.getMaxY(prevCallee) + Y_GAP_SMALL;
 		}
 	}
