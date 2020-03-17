@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -62,6 +63,7 @@ public class TestControlFlow
 	private CallEdge aCallEdge4;
 	private CallEdge aCallEdge5;
 	private ReturnEdge aReturnEdge;
+	private ConstructorEdge aConstructorEdge;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -91,6 +93,7 @@ public class TestControlFlow
 		aCallEdge4 = new CallEdge();
 		aCallEdge5 = new CallEdge();
 		aReturnEdge = new ReturnEdge();
+		aConstructorEdge = new ConstructorEdge();
 		createSampleDiagram1();
 	}
 	
@@ -213,5 +216,37 @@ public class TestControlFlow
 	{
 		assertSame(aCall3, aFlow.getPreviousCallee(aCall2));
 		assertSame(aCall2, aFlow.getPreviousCallee(aCall6));
+	}
+	
+	@Test
+	public void testIsInConstructorCall()
+	{
+		aConstructorEdge.connect(aCall1, aCall2, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		assertTrue(aFlow.isInConstructorCall(aCall2));
+	}
+	
+	@Test
+	public void testIsInConstructorCallWithWrongEdge()
+	{
+		aCallEdge1.connect(aCall1, aCall2, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		assertFalse(aFlow.isInConstructorCall(aCall2));
+	}
+	
+	@Test
+	public void testIsInConstructorCallWithWrongNode()
+	{
+		aCallEdge1.connect(aCall1, aCall2, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		assertFalse(aFlow.isInConstructorCall(aCall1));
+	}
+	
+	@Test
+	public void testIsInConstructorCallWithWrongNodeType()
+	{
+		aCallEdge1.connect(aCall1, aParameter1, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		assertFalse(aFlow.isInConstructorCall(aParameter1));
 	}
 }

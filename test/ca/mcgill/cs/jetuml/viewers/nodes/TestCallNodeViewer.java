@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -44,6 +45,7 @@ public class TestCallNodeViewer
 	private CallNode aCallNode1;
 	private CallEdge aCallEdge1;
 	private CallEdge aCallEdge2;
+	private ConstructorEdge aConstructorEdge;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -62,6 +64,7 @@ public class TestCallNodeViewer
 		aCallNode1 = new CallNode();
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
+		aConstructorEdge = new ConstructorEdge();
 	}
 	
 	@Test
@@ -74,6 +77,7 @@ public class TestCallNodeViewer
 		aImplicitParameterNode2.translate(200, 0);
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		aDiagram.addRootNode(aImplicitParameterNode2);
+		
 		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
 		
@@ -86,4 +90,21 @@ public class TestCallNodeViewer
 		assertEquals(new Rectangle(232, 100, 16, 30), NodeViewerRegistry.getBounds(aDefaultCallNode2));
 		assertEquals(new Rectangle(232, 150, 16, 30), NodeViewerRegistry.getBounds(aCallNode1));
 	}	
+	
+	@Test
+	public void testGetBoundsWithConstructorCall()
+	{
+		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aDefaultCallNode1.attach(aDiagram);
+		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDefaultCallNode2.attach(aDiagram);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		
+		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		
+		assertEquals(new Rectangle(32, 80, 16, 150), NodeViewerRegistry.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(32, 180, 16, 30), NodeViewerRegistry.getBounds(aDefaultCallNode2));
+	}
 }

@@ -112,4 +112,10 @@ public class TestSequenceDiagramBuilder
 		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
 		assertSame(aCallNode1, aImplicitParameterNode1.getChildren().get(1));
 	}
+	
+	@Test
+	public void testGetAdditionalEdgeConstraints()
+	{
+		
+	}
 }
