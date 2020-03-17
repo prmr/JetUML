@@ -115,57 +115,37 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);
 		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - pNode.position().getX());
-		List<Node> childNodes = ((ImplicitParameterNode)pNode).getChildren();
-		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT);	
-		// Keep the default height only if the node is a constructor call with no child nodes
-		if( !isInConstructorCall(pNode) || childNodes.size()!=0 )
-		{
-			height -= topRectangle.getY();
-		}
+		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT) - topRectangle.getY();	
 		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height);
 	}
 	
 	private int getYWithConstructorCall(Node pNode) {
 		assert isInConstructorCall(pNode);
 		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
-		CallNode child = (CallNode)getFirstChild(pNode).get();
-		// If the node is the first callee of its parent
-		if(controlFlow.isFirstCallee(child))
+		CallNode child = (CallNode) getFirstChild(pNode).get();
+		// If the node is the first callee, set a fix distance from its caller
+		if( controlFlow.isFirstCallee(child) )
 		{
 			CallNode caller = controlFlow.getCaller(child).get(); 
 			return CALL_NODE_VIEWER.getY(caller) + Y_GAP_SMALL;
 		}
+		Node prevCallee = controlFlow.getPreviousCallee(child);
 		// If the node is not the first callee but the previous callee is in constructor call
-		else if(controlFlow.isInConstructorCall(controlFlow.getPreviousCallee(child)))
+		if( controlFlow.isInConstructorCall(prevCallee) )
 		{
-			Node prevCallee = controlFlow.getPreviousCallee(child);
-			List<Node> prevCallees = controlFlow.getCallees(prevCallee);
-			if( prevCallees.size()==0 ) 
-			{
-				// Returns a fixed distance from the previous callee
-				return getBounds(prevCallee).getMaxY() + Y_GAP_SMALL;
-			}
-			else 
-			{
-				Node lastCallee = prevCallees.get(prevCallees.size()-1);
-				if(lastCallee instanceof CallNode)
-				{
-					return CALL_NODE_VIEWER.getMaxY(lastCallee) + Y_GAP_SMALL;
-				}
-				else 
-				{
-					return getYWithConstructorCall(lastCallee);
-				}
-			}
-			
+			// Returns a fixed distance from the previous callee'sparent
+			return getBounds(prevCallee.getParent()).getMaxY();
 		}
 		// If the node is not the first callee but the previous callee is a call node 
 		else
 		{
-			return CALL_NODE_VIEWER.getMaxY(controlFlow.getPreviousCallee(child)) + Y_GAP_SMALL;
+			return CALL_NODE_VIEWER.getMaxY(prevCallee) + Y_GAP_SMALL;
 		}
 	}
 
+	/*
+	 * Returns true if the ImplicitParameterNode is in the constructor call
+	 */
 	private boolean isInConstructorCall(Node pNode) {
 		Optional<Diagram> diagram = pNode.getDiagram();
 		if(diagram.isPresent())
@@ -177,6 +157,10 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		return false;
 	}
 	
+	/*
+	 * Returns the Optional of the first child node of the ImplicitParameterNode if exists;
+	 * otherwise, returns Optional.empty().
+	 */
 	private Optional<Node> getFirstChild(Node pNode)
 	{
 		assert pNode!=null;

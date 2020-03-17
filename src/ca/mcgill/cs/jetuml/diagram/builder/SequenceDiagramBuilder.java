@@ -74,11 +74,15 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			);
 		if( !canCreateConstructorCall(pStart, pEnd, pEndPoint) )
 		{
+			// The edge could not land on the top rectangle of ImplicitParameterNode if cannot create constructor call
 			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );
 		}
 		return constraintSet;
 	}
 	
+	/*
+	 * Returns true if the end node of the edge is an ImplicitParameterNode with no child nodes.
+	 */
 	private boolean canCreateConstructorCall(Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
 		return pEndNode instanceof ImplicitParameterNode && IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint)
@@ -235,8 +239,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			pEdge = new ConstructorEdge();
 		}
-		final Edge edge = pEdge;
 		pEdge.connect(start, end, aDiagram);
+		final Edge edge = pEdge;
 		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, edge),
 				()-> aDiagram.removeEdge(edge)));
 	}

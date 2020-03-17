@@ -227,6 +227,10 @@ public final class ControlFlow
 				calls.contains(pCallee);
 	}
 	
+	/**
+	 * @param pNode The node to check.
+	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
+	 */
 	public boolean isInConstructorCall(Node pNode)
 	{
 		assert pNode != null;
