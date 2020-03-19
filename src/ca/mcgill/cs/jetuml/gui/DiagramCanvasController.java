@@ -166,7 +166,7 @@ public class DiagramCanvasController
 		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
 		if(!aSelectionModel.isEmpty() && 
-				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBound(), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
@@ -503,7 +503,7 @@ public class DiagramCanvasController
 	// finds the point to reveal based on the entire selection
 	private Point computePointToReveal(Point pMousePoint)
 	{
-		Rectangle bounds = aSelectionModel.getSelectionBounds();
+		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		int x = bounds.getMaxX();
 		int y = bounds.getMaxY();
 		
@@ -528,7 +528,7 @@ public class DiagramCanvasController
 		int dy = pMousePoint.getY() - aLastMousePoint.getY();
 
 		// Ensure the selection does not exceed the canvas bounds
-		Rectangle bounds = aSelectionModel.getSelectionBounds();
+		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		dx = Math.max(dx, -bounds.getX());
 		dy = Math.max(dy, -bounds.getY());
 		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
