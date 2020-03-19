@@ -26,7 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 /**
  * An edge that joins two call nodes.
  */
-public final class CallEdge extends SingleLabelEdge
+public class CallEdge extends SingleLabelEdge
 {
 	private boolean aSignal;
 	
@@ -73,5 +73,3 @@ public final class CallEdge extends SingleLabelEdge
 				getEnd().getParent() == getStart().getParent();
 	}
 }
-
-

@@ -40,12 +40,14 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
@@ -155,6 +157,19 @@ public abstract class DiagramBuilder
 		);
 		constraints.merge(getAdditionalEdgeConstraints(pEdge, startNode.get(), endNode.get(), pStart, pEnd));
 		return constraints.satisfied();
+	}
+	
+	/**
+	 * Returns whether a constructor call could be created.
+	 * @param pEnd The node to check.
+	 * @return True if the end node of the edge is an ImplicitParameterNode with no child nodes.
+	 */
+	public boolean canCreateConstructorCall(Point pEnd)
+	{
+		DiagramViewer viewer = viewerFor(aDiagram);
+		Node endNode = viewer.findNode(aDiagram, pEnd).get();
+		return endNode instanceof ImplicitParameterNode && new ImplicitParameterNodeViewer().getTopRectangle(endNode).contains(pEnd)
+				&& ((ImplicitParameterNode)endNode).getChildren().size()==0;
 	}
 	
 	/**

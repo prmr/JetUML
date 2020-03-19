@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -33,8 +35,11 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestSequenceDiagramBuilder
@@ -45,7 +50,6 @@ public class TestSequenceDiagramBuilder
 	private ImplicitParameterNode aImplicitParameterNode2;
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
-	private CallNode aCallNode1;
 	private CallEdge aCallEdge1;
 	
 	@BeforeAll
@@ -63,7 +67,6 @@ public class TestSequenceDiagramBuilder
 		aImplicitParameterNode2 = new ImplicitParameterNode();
 		aDefaultCallNode1 = new CallNode();
 		aDefaultCallNode2 = new CallNode();
-		aCallNode1 = new CallNode();
 		aCallEdge1 = new CallEdge();
 	}
 	
@@ -75,6 +78,11 @@ public class TestSequenceDiagramBuilder
 			sum++;
 		}
 		return sum;
+	}
+	
+	private int numberOfEdges() 
+	{
+		return aDiagram.edges().size();
 	}
 	
 	/*
@@ -105,11 +113,113 @@ public class TestSequenceDiagramBuilder
 		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
 		
-		DiagramOperation operation = aBuilder.createAddNodeOperation(aCallNode1, new Point(30, 135));
+		CallNode callNode = new CallNode();
+		DiagramOperation operation = aBuilder.createAddNodeOperation(callNode, new Point(30, 135));
 		operation.execute();
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(2, aImplicitParameterNode1.getChildren().size());
 		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
-		assertSame(aCallNode1, aImplicitParameterNode1.getChildren().get(1));
+		assertSame(callNode, aImplicitParameterNode1.getChildren().get(1));
+	}
+	 
+	@Test
+	public void testCompleteEdgeAdditionOperationWithConstructorCall()
+	{
+		aImplicitParameterNode1.translate(0, 70);
+		aImplicitParameterNode2.translate(100, 70);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		
+		Point startPoint = new Point(40, 95);
+		Point endPoint = new Point(120, 40);
+		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
+		assert aBuilder.canCreateConstructorCall(endPoint);
+		CompoundOperation result = new CompoundOperation();
+		ConstructorEdge constructorEdge = new ConstructorEdge();
+		aBuilder.completeEdgeAdditionOperation(result, constructorEdge, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
+		result.execute();
+		
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(1, numberOfEdges());
+		assertEquals(1, aImplicitParameterNode1.getChildren().size());
+		assertEquals(1, aImplicitParameterNode2.getChildren().size());
+		assertTrue(aImplicitParameterNode1.getChildren().get(0).getClass() == CallNode.class);
+		assertTrue(aImplicitParameterNode2.getChildren().get(0).getClass() == CallNode.class);
+		assertSame(aDiagram.edges().get(0), constructorEdge);
+	}
+	
+	@Test
+	public void testCompleteEdgeAdditionOperationWithoutConstructorCall()
+	{
+		aImplicitParameterNode1.translate(0, 70);
+		aImplicitParameterNode2.translate(100, 70);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		
+		Point startPoint = new Point(40, 95);
+		Point endPoint = new Point(120, 90);
+		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
+		assertFalse( aBuilder.canCreateConstructorCall(endPoint) );
+		CompoundOperation result = new CompoundOperation();
+		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
+		result.execute();
+		
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(1, numberOfEdges());
+		assertEquals(1, aImplicitParameterNode1.getChildren().size());
+		assertEquals(1, aImplicitParameterNode2.getChildren().size());
+		assertTrue(aImplicitParameterNode1.getChildren().get(0).getClass() == CallNode.class);
+		assertTrue(aImplicitParameterNode2.getChildren().get(0).getClass() == CallNode.class);
+		assertSame(aDiagram.edges().get(0), aCallEdge1);
+	}
+	
+	@Test
+	public void testCompleteEdgeAdditionOperationWithCallNodes()
+	{
+		aImplicitParameterNode1.translate(0, 70);
+		aImplicitParameterNode2.translate(100, 70);
+		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		
+		Point startPoint = new Point(40, 95);
+		Point endPoint = new Point(120, 70);
+		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
+		assertFalse( aBuilder.canCreateConstructorCall(endPoint) );
+		CompoundOperation result = new CompoundOperation();
+		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aDefaultCallNode1, aDefaultCallNode2, startPoint, endPoint);
+		result.execute();
+		
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(1, numberOfEdges());
+		assertEquals(1, aImplicitParameterNode1.getChildren().size());
+		// TODO: Fix the addition of the extra call node
+		assertEquals(2, aImplicitParameterNode2.getChildren().size());
+		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
+		assertSame(aDefaultCallNode2, aImplicitParameterNode2.getChildren().get(0));
+		assertSame(aDiagram.edges().get(0), aCallEdge1);
+	}
+	
+	@Test
+	public void testCompleteEdgeAdditionOperationWithNoteEdge()
+	{
+		NoteEdge noteEdge = new NoteEdge();
+		NoteNode noteNode = new NoteNode();
+		aImplicitParameterNode1.translate(0, 70);
+		noteNode.translate(100, 70);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(noteNode);
+		
+		Point startPoint = new Point(40, 95);
+		Point endPoint = new Point(120, 90);
+		assert aBuilder.canAdd(noteEdge, startPoint, endPoint);
+		CompoundOperation result = new CompoundOperation();
+		aBuilder.completeEdgeAdditionOperation(result, noteEdge, aDefaultCallNode1, aDefaultCallNode2, startPoint, endPoint);
+		result.execute();
+		
+		assertEquals(2, numberOfRootNodes());
+		assertEquals(1, numberOfEdges());
+		assertSame(aDiagram.edges().get(0), noteEdge);
 	}
 }

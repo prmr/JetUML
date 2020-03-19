@@ -17,6 +17,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -55,6 +56,7 @@ public final class EdgeViewerRegistry
 		aRegistry.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
 		aRegistry.put(ReturnEdge.class, new ReturnEdgeViewer());
 		aRegistry.put(CallEdge.class, new CallEdgeViewer());
+		aRegistry.put(ConstructorEdge.class, new CallEdgeViewer());
 		aRegistry.put(DependencyEdge.class, new DependencyEdgeViewer());
 		aRegistry.put(AssociationEdge.class,  new AssociationEdgeViewer());
 		aRegistry.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());

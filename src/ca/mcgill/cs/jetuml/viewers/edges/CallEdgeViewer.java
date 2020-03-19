@@ -23,7 +23,9 @@ package ca.mcgill.cs.jetuml.viewers.edges;
 import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -160,9 +162,9 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	private Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
-		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
-      
+		Node endNode = pEdge.getClass() == ConstructorEdge.class? pEdge.getEnd().getParent():pEdge.getEnd();
+		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());	
+		Rectangle end = NodeViewerRegistry.getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{
 			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
@@ -178,7 +180,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		else     
 		{
 			Direction direction = new Direction(start.getX() - end.getX(), 0);
-			Point endPoint = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), direction);
+			Point endPoint = NodeViewerRegistry.getConnectionPoints(endNode, direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{
