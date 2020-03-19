@@ -46,6 +46,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_HEIGHT = 30;
 	private static final int Y_GAP_BIG = 20;
 	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
+	private static final int Y_GAP_TINY = 5; // Was 10, changed to 20 to account for label space
 	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
 	
 	@Override
@@ -188,7 +189,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private int getYWithConstructorCall(Node pNode) 
 	{
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
-		return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
+		return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_TINY;
 	}
 
 	private boolean isInConstructorCall(Node pNode)

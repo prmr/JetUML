@@ -84,8 +84,8 @@ public class TestImplicitParameterNodeViewer
 		
 		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge1);
-		assertEquals(new Rectangle(0, 0, 80, 250), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 100, 80, 130), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(0, 0, 80, 235), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 100, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
 	}
 	
 	@Test
@@ -110,9 +110,9 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addEdge(aCallEdge1);
 		aDiagram.addEdge(aConstructorEdge1);
 		
-		assertEquals(new Rectangle(0, 0, 80, 300), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(0, 0, 80, 285), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
 		assertEquals(new Rectangle(100, 0, 80, 150), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
-		assertEquals(new Rectangle(200, 150, 80, 130), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
+		assertEquals(new Rectangle(200, 150, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
 	}
 	
 	@Test
@@ -137,8 +137,8 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addEdge(aConstructorEdge1);
 		aDiagram.addEdge(aConstructorEdge2);
 		
-		assertEquals(new Rectangle(0, 0, 80, 380), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 100, 80, 130), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
-		assertEquals(new Rectangle(200, 230, 80, 130), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
+		assertEquals(new Rectangle(0, 0, 80, 350), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 100, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(200, 215, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
 	}
 }
