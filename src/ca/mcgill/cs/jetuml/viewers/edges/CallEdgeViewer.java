@@ -147,14 +147,11 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	{
 		if( pEdge.isSelfEdge() )
 		{
-//			Point[] points = getPoints(pEdge);
-//			Rectangle bounds = new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, 0 , 0);
 			LEFT_JUSTIFIED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
 		}
 		else
 		{
 			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getStringBounds(pEdge));
-//			CENTERED_STRING_VIEWER.draw(pLabel, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, SHIFT));
 		}
 	}
 	
