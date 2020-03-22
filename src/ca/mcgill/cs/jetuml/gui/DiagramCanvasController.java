@@ -163,14 +163,12 @@ public class DiagramCanvasController
 		{
 			return;
 		}
-		
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
 		if(!aSelectionModel.isEmpty() && 
-				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBound(), newElements)) 
+				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
-		
 		aProcessor.executeNewOperation(aDiagramBuilder.createAddElementsOperation(newElements));
 		List<DiagramElement> newElementList = new ArrayList<>();
 		for( DiagramElement element : newElements )
