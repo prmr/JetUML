@@ -103,9 +103,9 @@ public class TestSelectionModel
 		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getEntireSelectionBounds());
 	}
 	
-	private void assertSelectionBound(int pX, int pY, int pWidth, int pHeight) 
+	private void assertSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
 	{
-		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getSelectionBound());
+		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getSelectionBounds());
 	}
 	
 	@Test
@@ -395,22 +395,24 @@ public class TestSelectionModel
 	}
 	
 	@Test 
-	public void testGetSelectionBoundOneNode() 
+	public void testGetSelectionBoundsOneNode() 
 	{
 		aModel.addToSelection(aNode1);
-		assertSelectionBound(0, 0, 100, 60); 
+		assertSelectionBounds(0, 0, 100, 60); 
 		aNode1.translate(10, 10);
-		assertSelectionBound(10, 10, 100, 60); 
+		assertSelectionBounds(10, 10, 100, 60); 
+		assertEntireSelectionBounds(10, 10, 100, 60); 
 	}
 	
 	@Test 
-	public void testGetSelectionBoundTwoNode() 
+	public void testGetSelectionBoundsNodeWithinPackage() 
 	{
+		aPackage1.addChild(aNode1);
 		aModel.addToSelection(aNode1);
-		aModel.addToSelection(aNode2);
-		aNode1.translate(10, 10);
-		aNode2.translate(100, 100);
-		assertSelectionBound(100, 100, 100, 60); 
+		aPackage1.translate(10, 10);
+		aNode1.translate(60, 60);
+		assertSelectionBounds(70, 70, 100, 60); 
+		assertEntireSelectionBounds(10, 10, 170, 130); 
 	}
 	
 	@Test
