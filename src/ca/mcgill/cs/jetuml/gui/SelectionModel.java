@@ -83,9 +83,31 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 */
 	public Rectangle getSelectionBounds()
 	{
+		Rectangle bounds = getLastSelectedBounds();
+		for(DiagramElement selected : aSelected )
+		{
+			bounds = bounds.add(ViewerUtilities.getBounds(selected));
+		}
+		return bounds;
+	}
+	
+	/*
+	 * Returns a rectangle that represents the bounding box of the last selected element.
+	 */
+	private Rectangle getLastSelectedBounds() 
+	{
 		Optional<DiagramElement> lastSelected = getLastSelected();
 		assert lastSelected.isPresent();
-		Rectangle bounds = ViewerUtilities.getBounds(lastSelected.get());
+		return ViewerUtilities.getBounds(lastSelected.get());
+	}
+	
+	/**
+	 * @return A rectangle that represents the bounding box of the 
+	 * entire selection including the bounds of their parent nodes.
+	 */
+	public Rectangle getEntireSelectionBounds()
+	{
+		Rectangle bounds = getLastSelectedBounds();
 		for(DiagramElement selected : aSelected )
 		{
 			bounds = addBounds(bounds, selected);
