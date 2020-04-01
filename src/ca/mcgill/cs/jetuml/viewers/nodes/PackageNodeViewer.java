@@ -134,9 +134,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 		{
 			return pNode.position();
 		}
-		int x = Math.min(pNode.position().getX(), pChildrenBounds.get().getX() - PADDING);
-		int y = Math.min(pNode.position().getY(), pChildrenBounds.get().getY() - PADDING - TOP_HEIGHT);
-		return new Point(x, y);
+		return new Point(pChildrenBounds.get().getX() - PADDING, pChildrenBounds.get().getY() - PADDING - TOP_HEIGHT);
 	}
 	
 	private Dimension getTopDimension(Node pNode)
