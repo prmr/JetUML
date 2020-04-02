@@ -182,7 +182,7 @@ public class TestClassDiagramBuilder
 		
 		assertEquals(1, node.getChildren().size());
 		assertSame(node2, node.getChildren().get(0));
-		assertEquals(new Point(10,10), node2.position());
+		assertEquals(new Point(10,30), node2.position());
 		
 		operation.undo();
 		assertEquals(0, node.getChildren().size());
@@ -203,7 +203,7 @@ public class TestClassDiagramBuilder
 		assertSame(middle, bottom.getChildren().get(0));
 		
 		InterfaceNode top = new InterfaceNode();
-		aBuilder.createAddNodeOperation(top, new Point(20,20)).execute();
+		aBuilder.createAddNodeOperation(top, new Point(20,40)).execute();
 		assertEquals(1, numberOfRootNodes());
 		assertSame(bottom, getRootNode(0));
 		assertEquals(1, bottom.getChildren().size());

@@ -42,6 +42,9 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
  */
 public class ClassDiagramBuilder extends DiagramBuilder
 {
+	private static final int PADDING = 10;
+	private static final int TOP_HEIGHT = 20;
+	
 	/**
 	 * Creates a new builder for class diagrams.
 	 * 
@@ -63,7 +66,15 @@ public class ClassDiagramBuilder extends DiagramBuilder
 			Optional<PackageNode> container = findContainer(aDiagram.rootNodes(), pRequestedPosition);
 			if( container.isPresent() )
 			{
-				positionNode(pNode, pRequestedPosition);
+				if( container.get().getChildren().size()==0 )
+				{
+					// If pNode would be the first child node, position the node according to its container's position
+					positionNode(pNode, new Point(container.get().position().getX() + PADDING, container.get().position().getY() + PADDING + TOP_HEIGHT));
+				}
+				else 
+				{
+					positionNode(pNode, pRequestedPosition);
+				}
 				result = new SimpleOperation( ()->  
 				{ 
 					pNode.attach(aDiagram);
