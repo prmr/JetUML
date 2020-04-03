@@ -90,7 +90,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(24,0,42,20), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(25,0,40,20), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@Test

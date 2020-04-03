@@ -412,7 +412,7 @@ public class TestSelectionModel
 		aPackage1.translate(10, 10);
 		aNode1.translate(60, 60);
 		assertSelectionBounds(70, 70, 100, 60); 
-		assertEntireSelectionBounds(10, 10, 170, 130); 
+		assertEntireSelectionBounds(60, 40, 120, 100); 
 	}
 	
 	@Test
