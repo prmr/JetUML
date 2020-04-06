@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -74,7 +75,7 @@ public class TestObjectNodeViewer
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(10, aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(11, 10, 10), aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -83,7 +84,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(54, aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(52, 54, 54), aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
