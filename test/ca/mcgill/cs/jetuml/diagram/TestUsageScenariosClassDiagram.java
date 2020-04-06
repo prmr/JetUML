@@ -103,11 +103,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	public void testClassDiagramCopyClassNodesAndEdgesInsidePackageNode()
 	{
 		addNode(aPackageNode, new Point(20, 20));
-		addNode(aClassNode1, new Point(25, 25));
+		addNode(aClassNode1, new Point(30, 30));
 		addNode(aClassNode2, new Point(30, 30));
 		moveNode(aClassNode2, 100, 0);
-
-		addEdge(aDependencyEdge, new Point(31, 31), new Point(131, 31));
+		addEdge(aDependencyEdge, new Point(31, 51), new Point(135, 31));
+		
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
 		assertSame(aClassNode1, aDependencyEdge.getStart());
@@ -128,7 +128,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(30, 30));
 		addNode(aClassNode2, new Point(30, 30));
 		moveNode(aClassNode2, 100, 0);
-		addEdge(aDependencyEdge, new Point(31, 31), new Point(135, 30));
+		addEdge(aDependencyEdge, new Point(31, 51), new Point(135, 31));
 		
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(2, aPackageNode.getChildren().size());
@@ -458,8 +458,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		PackageNode innerNode = new PackageNode();
 		addNode(aPackageNode, new Point(5, 5));
 		addNode(innerNode, new Point(10, 10));
-		addNode(aClassNode1, new Point(10, 13));
-		addNode(aClassNode2, new Point(11, 12));
+		addNode(aClassNode1, new Point(15, 35));
+		addNode(aClassNode2, new Point(20, 40));
 
 		select(aClassNode2);
 		deleteSelected();
@@ -554,8 +554,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		PackageNode innerNode = new PackageNode();
 		addNode(aPackageNode, new Point(20, 20));
 		addNode(innerNode, new Point(25, 25));
-		addNode(aClassNode1, new Point(26, 29));
-		addNode(aClassNode2, new Point(30, 31));
+		addNode(aClassNode1, new Point(31, 55));
+		addNode(aClassNode2, new Point(35, 60));
 	
 		assertEquals(1, numberOfRootNodes());
 		assertEquals(1, aPackageNode.getChildren().size());

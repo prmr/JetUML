@@ -74,7 +74,7 @@ public class TestObjectNodeViewer
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(11, aViewer.getSplitPosition(aNode));
+		assertEquals(10, aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(52, aViewer.getSplitPosition(aNode));
+		assertEquals(54, aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
