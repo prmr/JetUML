@@ -1,11 +1,15 @@
 # JetUML
+
+[![GitHub release](https://img.shields.io/github/release/prmr/JetUML.svg)](https://gitHub.com/prmr/JetUML/releases/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![GitHub All Releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
+![GitHub contributors](https://img.shields.io/github/contributors/prmr/JetUML)
+
 A desktop application for fast UML diagramming. The idea of JetUML is to support the sketching of software design ideas *with a minimum of fuss*. No installation is required and the size of the application is a tiny 350Kb. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
 
 If you find this tool useful please **star the repo**.
 
 ![JetUML Class Diagram](docs/banner.png)
-
-[Twitter feed with release news and tips for users](https://twitter.com/search?q=%40JetUML&src=typd&lang=en)
 
 ## License 
 
@@ -15,10 +19,7 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 JetUML requires **at least Java 8**. To run it on Java 8, download the jar file of the [latest release](https://github.com/prmr/JetUML/releases). If your OS environment supports executable jars, simply double-click the jar file to start the application. If this is not possible, your can start it from the command line with `java -jar file.jar` (where `file.jar` is the name of the JetUML jar you downloaded). 
 
-**MacOS Users:** Please note that some system configurations may cause the application to crash. If you notice a problem, please see [this issue report](https://github.com/prmr/JetUML/issues/324).
-
 For instructions on running JetUML will later versions of Java, see the [installation page](docs/install.md).
-
 
 ## Privacy Policy and Feedback
 
