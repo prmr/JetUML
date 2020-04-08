@@ -243,7 +243,7 @@ public class TestPersistenceService
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(new Rectangle(osDependent(233,232, 232), 205, osDependent(53,54, 54), 44), getBounds(cr3));
+		assertEquals(new Rectangle(osDependent(233,232, 229), 205, osDependent(53,54, 61), 44), getBounds(cr3));
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
