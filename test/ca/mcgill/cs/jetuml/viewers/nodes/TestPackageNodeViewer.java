@@ -20,6 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -118,7 +119,7 @@ public class TestPackageNodeViewer
 	public void testGetBoundsNameNoContent()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
+		assertEqualRectangles(0,0, osDependent(100,100,101),80, NodeViewerRegistry.getBounds(aPackageNode1));
 	}
 	
 	@Test
@@ -131,7 +132,7 @@ public class TestPackageNodeViewer
 	public void testGetTopBoundsName()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0,60,20, getTopBounds(aPackageNode1));
+		assertEqualRectangles(0,0,osDependent(60, 60, 61),20, getTopBounds(aPackageNode1));
 	}
 	
 	@Test
