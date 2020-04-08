@@ -243,7 +243,7 @@ public class TestPersistenceService
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
-		assertEquals(new Rectangle(osDependent(233,232, 232), 205, osDependent(53,54, 54), 44), getBounds(cr3));
+		assertEquals(new Rectangle(osDependent(233,232, 229), 205, osDependent(53,54, 61), 44), getBounds(cr3));
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
@@ -405,7 +405,7 @@ public class TestPersistenceService
 		assertEquals(node8, edge5.getEnd());
 		
 		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(378, osDependent(382,383, 383), 82, osDependent(23,22, 22)), getBounds(edge6));
+		assertEquals(new Rectangle(378, osDependent(382,383, 384), 82, osDependent(23,22, 21)), getBounds(edge6));
 		assertEquals(node7, edge6.getEnd());
 		assertEquals("", edge6.getEndLabel());
 		assertEquals("e1", edge6.getMiddleLabel());
@@ -455,7 +455,7 @@ public class TestPersistenceService
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
-		assertEquals(new Rectangle(160,0,osDependent(90,86, 86),250), NodeViewerRegistry.getBounds(object1));
+		assertEquals(new Rectangle(160,0,osDependent(90,86, 102),250), NodeViewerRegistry.getBounds(object1));
 		List<Node> o1children = object1.getChildren();
 		assertEquals(2, o1children.size());
 		assertEquals("object1:Type1", object1.getName().toString());
@@ -565,7 +565,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(640, 230, 20, 20), NodeViewerRegistry.getBounds(end));
 		
 		assertEquals("A note\non two lines", note.getName());
-		assertEquals(new Rectangle(690, 320, osDependent(78,73, 73), 40), NodeViewerRegistry.getBounds(note));
+		assertEquals(new Rectangle(690, 320, osDependent(78,73, 86), 40), NodeViewerRegistry.getBounds(note));
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), NodeViewerRegistry.getBounds(point));
 		
@@ -627,7 +627,7 @@ public class TestPersistenceService
 		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 281));
 		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 474));
 		
-		assertEquals(new Rectangle(240, 130, 90, 90), NodeViewerRegistry.getBounds(type1));
+		assertEquals(new Rectangle(240, 130, osDependent(90, 90, 100), osDependent(90, 90, 100)), NodeViewerRegistry.getBounds(type1));
 		List<Node> children = type1.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(":Type1", type1.getName().toString());
