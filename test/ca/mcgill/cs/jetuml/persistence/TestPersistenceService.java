@@ -505,14 +505,14 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(osDependent(210,208, 216), 85, osDependent(76, 76, 84), osDependent(25,24, 26)), getBounds(self));
+		assertEquals(new Rectangle(osDependent(210,208, 216), 85, osDependent(76, 76, 84), osDependent(25,24, 25)), getBounds(self));
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
 		assertEquals(new Rectangle(osDependent(220,218, 226), 100, osDependent(183, 185, 177), 
-				osDependent(26,25, 25)), getBounds(signal));
+				osDependent(26,25, 26)), getBounds(signal));
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
