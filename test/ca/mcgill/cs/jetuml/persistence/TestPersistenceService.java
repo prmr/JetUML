@@ -700,7 +700,7 @@ public class TestPersistenceService
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
 		
-		assertEquals(new Rectangle(529, 329, 82, 99), getBounds(o3));
+		assertEquals(new Rectangle(osDependent(529, 529, 539), 329, osDependent(82, 82, 72), 99), getBounds(o3));
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		
