@@ -264,7 +264,7 @@ public class TestPersistenceService
 		assertTrue( cr7.getStart() == u2 );
 		assertTrue( cr7.getEnd() == u1 );
 
-		assertEquals(new Rectangle(osDependent(488,487, 487),169,osDependent(55,56, 56),62), getBounds(cr8));
+		assertEquals(new Rectangle(osDependent(488,487, 484),169,osDependent(55,56, 62),62), getBounds(cr8));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Include);
@@ -413,7 +413,7 @@ public class TestPersistenceService
 		assertEquals("", edge6.getStartLabel());
 		
 		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 308, 22, 62), getBounds(edge1));
+		assertEquals(new Rectangle(503, 308, osDependent(22, 22, 25), 62), getBounds(edge1));
 		assertEquals(node2, edge1.getEnd());
 		assertEquals("", edge1.getEndLabel());
 		assertEquals("e2", edge1.getMiddleLabel());
@@ -474,7 +474,7 @@ public class TestPersistenceService
 		assertEquals("object3:", object3.getName().toString());
 		CallNode o3Call = (CallNode) o3children.get(0);
 		
-		assertEquals(new Rectangle(osDependent(197,195, 195),80,16,150), NodeViewerRegistry.getBounds(init));
+		assertEquals(new Rectangle(osDependent(197,195, 203),80,16,150), NodeViewerRegistry.getBounds(init));
 		assertEquals(object1, init.getParent());
 		assertFalse(init.isOpenBottom());
 		
@@ -584,7 +584,7 @@ public class TestPersistenceService
 		assertEquals(note, ne.getStart());
 		assertEquals(point, ne.getEnd());
 		
-		assertEquals(new Rectangle(168, osDependent(73,74, 74), 82, osDependent(37,36, 36)), getBounds(fromStart));
+		assertEquals(new Rectangle(168, osDependent(73,74, 75), 82, osDependent(37,36, 35)), getBounds(fromStart));
 		assertEquals(start, fromStart.getStart());
 		assertEquals(s1, fromStart.getEnd());
 		assertEquals("start", fromStart.getMiddleLabel().toString());
@@ -633,7 +633,7 @@ public class TestPersistenceService
 		assertEquals(":Type1", type1.getName().toString());
 		
 		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(245, 200, 80, 20), NodeViewerRegistry.getBounds(name));
+		assertEquals(new Rectangle(245, 200, osDependent(80, 80, 90), osDependent(20, 20, 21)), NodeViewerRegistry.getBounds(name));
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
