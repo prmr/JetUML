@@ -535,7 +535,7 @@ public class TestPersistenceService
 		assertEquals(o2Call, retC.getStart());
 		
 		assertEquals(new Rectangle(407, 187, 33, 17), getBounds(nedge));
-		assertEquals(point, nedge. getEnd());
+		assertEquals(point, nedge.getEnd());
 		assertEquals(note, nedge.getStart());
 	}
 	
@@ -691,7 +691,7 @@ public class TestPersistenceService
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle(319, 209, 122, 157), getBounds(o2));
+		assertEquals(new Rectangle(319, 209, osDependent(122, 122, 112), 157), getBounds(o2));
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
