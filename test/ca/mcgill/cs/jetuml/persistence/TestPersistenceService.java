@@ -524,7 +524,7 @@ public class TestPersistenceService
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle(416, 160, 207, osDependent(23,22, 22)), getBounds(ret1));
+		assertEquals(new Rectangle(416, 160, 207, osDependent(23,22, 23)), getBounds(ret1));
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
@@ -656,7 +656,7 @@ public class TestPersistenceService
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		
-		assertEquals(new Rectangle(445, 416, 90, 23), NodeViewerRegistry.getBounds(name4));
+		assertEquals(new Rectangle(445, 416, osDependent(90, 90, 100), 23), NodeViewerRegistry.getBounds(name4));
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
