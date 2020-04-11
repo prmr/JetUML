@@ -529,13 +529,13 @@ public class TestPersistenceService
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
 		
-		assertEquals(new Rectangle(osDependent(219,217, 217), 183, osDependent(184,186, 186), 12), getBounds(retC));
+		assertEquals(new Rectangle(osDependent(219,217, 225), 183, osDependent(184,186, 178), 12), getBounds(retC));
 		assertEquals(selfCall, retC.getEnd());
 		assertEquals("", retC.getMiddleLabel());
 		assertEquals(o2Call, retC.getStart());
 		
 		assertEquals(new Rectangle(407, 187, 33, 17), getBounds(nedge));
-		assertEquals(point, nedge.getEnd());
+		assertEquals(point, nedge. getEnd());
 		assertEquals(note, nedge.getStart());
 	}
 	
@@ -687,7 +687,7 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle(319, 174, 32, 37), getBounds(o1));
+		assertEquals(new Rectangle(osDependent(319, 319, 329), osDependent(174, 174, 179), 32, osDependent(37, 37, 32)), getBounds(o1));
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
