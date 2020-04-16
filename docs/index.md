@@ -23,6 +23,5 @@ classes in the `test` source folders can use reflection to get around accessibil
 The functional view is split by functional concern.
 
  * [Tab Management](functional/TabManagement.md)
- * [Diagram Elements](functional/DiagramElements.md)
  * [Diagram Element Properties](functional/properties.md)
  
