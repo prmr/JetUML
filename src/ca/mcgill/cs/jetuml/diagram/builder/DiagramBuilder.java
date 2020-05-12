@@ -43,12 +43,14 @@ import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
 /**
@@ -485,6 +487,16 @@ public abstract class DiagramBuilder
 	private Runnable createDetachOperation(Node pNode)
 	{
 		Node parent = pNode.getParent();
+		if(parent.getClass()==PackageNode.class && parent.getChildren().size()==1)
+		{
+			return ()-> 
+			{ 
+				Rectangle parentBound = new PackageNodeViewer().getBounds(parent);
+				pNode.detach(); 
+				parent.removeChild(pNode); 
+				parent.translate( parentBound.getX()-parent.position().getX(),  parentBound.getY()-parent.position().getY() );
+			};
+		}
 		return ()-> 
 		{ 
 			pNode.detach(); 
