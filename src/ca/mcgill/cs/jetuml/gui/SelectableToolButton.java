@@ -77,7 +77,7 @@ public class SelectableToolButton extends ToggleButton
 	
 	/**
 	 * @return The prototype graph element to create new ones. isPresent() == false indicates
-	 * that the Selection Tool is selected.
+	 *     that the Selection Tool is selected.
 	 */
 	public Optional<DiagramElement> getPrototype()
 	{

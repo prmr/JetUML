@@ -76,8 +76,8 @@ public class RecentFilesQueue implements Iterable<File>
 	
 	/**
 	 * @return The parent directory of the most recent
-	 * file in the list, or the current directory "." 
-	 * if the list is empty.
+	 *     file in the list, or the current directory "." 
+	 *     if the list is empty.
 	 */
 	public File getMostRecentDirectory()
 	{

@@ -211,7 +211,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	
 	/**
 	 * @return True if the diagram in this tab
-	 * has unsaved changes.
+	 *     has unsaved changes.
 	 */
 	public boolean hasUnsavedChanges()
 	{

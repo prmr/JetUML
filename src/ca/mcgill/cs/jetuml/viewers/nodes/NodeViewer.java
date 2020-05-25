@@ -81,7 +81,7 @@ public interface NodeViewer
      * of the shape of this node.
      * @param pNode The target node.
      * @param pDirection the direction from the center 
-     * of the bounding rectangle towards the boundary 
+     *     of the bounding rectangle towards the boundary 
      * @return the recommended connection point
      * @pre pNode != null && pDirection != null
 	 */

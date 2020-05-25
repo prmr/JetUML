@@ -63,8 +63,8 @@ public final class FileExtensions
 	
 	/**
 	 * @return An unmodifiable list of all filters applicable to the application. This list
-	 * includes one filter for each diagram type, the general filter for all file 
-	 * types, and the "application" filter for all diagram file types. Never null.
+	 *     includes one filter for each diagram type, the general filter for all file 
+	 *     types, and the "application" filter for all diagram file types. Never null.
 	 */
 	public static List<ExtensionFilter> all()
 	{
@@ -80,8 +80,8 @@ public final class FileExtensions
 	/**
 	 * @param pDiagramType The diagram type to query.
 	 * @return The extension filter for pDiagram type. This object is the same
-	 * object than the one contained in the return value of method all(), they 
-	 * can be compared by identity.
+	 *     object than the one contained in the return value of method all(), they 
+	 *     can be compared by identity.
 	 * @pre pDiagramType != null
 	 */
 	public static ExtensionFilter forDiagramType(DiagramType pDiagramType)
@@ -93,8 +93,8 @@ public final class FileExtensions
 	/**
 	 * @param pFile The file to clip, if applicable.
 	 * @return A file with the same name as pFile, but with
-	 * the application extension removed. If there is no application
-	 * extension to clip, the same file object is returned.
+	 *     the application extension removed. If there is no application
+	 *     extension to clip, the same file object is returned.
 	 * @pre pFile != null
 	 */
 	public static File clipApplicationExtension(File pFile)

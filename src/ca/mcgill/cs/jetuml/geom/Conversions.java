@@ -34,7 +34,7 @@ public final class Conversions
 	/**
 	 * @param pPoint2D The point to convert.
 	 * @return A point created from rounding both x and y coordinate
-	 * of the input parameter to integers.
+	 *     of the input parameter to integers.
 	 * @pre pPoint2D != null;
 	 */
 	public static Point toPoint(Point2D pPoint2D)
@@ -68,7 +68,7 @@ public final class Conversions
 	/**
 	 * @param pRectangle2D The rectangle to convert.
 	 * @return A rectangle created from rounding both x and y coordinate and the width
-	 * and height of the input parameter to integers.
+	 *     and height of the input parameter to integers.
 	 * @pre pRectangle2D != null;
 	 */
 	public static Rectangle toRectangle(Rectangle2D pRectangle2D)
@@ -83,7 +83,7 @@ public final class Conversions
 	/**
 	 * @param pRectangle The rectangle to convert.
 	 * @return A rectangle created from both x and y coordinate and the width
-	 * and height of the input parameter to integers.
+	 *     and height of the input parameter to integers.
 	 * @pre pRectangle != null;
 	 */
 	public static Rectangle2D toRectangle2D(Rectangle pRectangle)

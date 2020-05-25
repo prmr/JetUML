@@ -42,8 +42,8 @@ public final class GuiUtils
 	
 	/**
 	 * @return a bounding box that represents the default
-	 * bounds of the main stage. Finds the visual bounds 
-	 * of the primary screen and removes a marging around it.
+	 *     bounds of the main stage. Finds the visual bounds 
+	 *     of the primary screen and removes a marging around it.
 	 */
 	public static Rectangle defaultStageBounds()
 	{

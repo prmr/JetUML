@@ -44,7 +44,7 @@ public class DiagramViewer
 	 * Draws pDiagram onto pGraphics.
 	 * 
 	 * @param pGraphics the graphics context where the
-	 * diagram should be drawn.
+	 *     diagram should be drawn.
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
@@ -114,8 +114,8 @@ public class DiagramViewer
 	 * @param pNode The starting node for the search.
 	 * @param pPoint The point to test for.
 	 * @return The deepest child containing pPoint,
-	 * or null if pPoint is not contained by pNode or 
-	 * any of its children.
+	 *     or null if pPoint is not contained by pNode or 
+	 *     any of its children.
 	 * @pre pNode != null, pPoint != null;
 	 */
 	protected Node deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)

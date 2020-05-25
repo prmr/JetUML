@@ -64,7 +64,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The ratio (in the unit interval) of the canvas width covered by 
-	 * the viewport.
+	 *     the viewport.
 	 */
 	public double getWidthRatio()
 	{
@@ -73,7 +73,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The ratio (in the unit interval) of the canvas height covered by 
-	 * the viewport.
+	 *     the viewport.
 	 */
 	public double getHeightRatio()
 	{
@@ -82,7 +82,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The number of pixels on the left of the canvas that
-	 * are not visible in the viewport.
+	 *     are not visible in the viewport.
 	 */
 	public int getHiddenLeft()
 	{
@@ -92,7 +92,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The number of pixels on the right of the canvas that
-	 * are not visible in the viewport.
+	 *     are not visible in the viewport.
 	 */
 	public int getHiddenRight()
 	{
@@ -102,7 +102,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The number of pixels at the top of the canvas that
-	 * are not visible in the viewport.
+	 *     are not visible in the viewport.
 	 */
 	public int getHiddenTop()
 	{
@@ -112,7 +112,7 @@ public final class ViewportProjection
 	
 	/**
 	 * @return The number of pixels at the bottom of the canvas that
-	 * are not visible in the viewport.
+	 *     are not visible in the viewport.
 	 */
 	public int getHiddenBottom()
 	{
@@ -173,7 +173,7 @@ public final class ViewportProjection
 	/**
 	 * @param pX An x-coordinate to reveal.
 	 * @return A newly computed HValue that will ensure pX
-	 * is just visible in the viewport.
+	 *     is just visible in the viewport.
 	 */
 	public double getAdjustedHValueToRevealX(int pX)
 	{
@@ -194,7 +194,7 @@ public final class ViewportProjection
 	/**
 	 * @param pY A y-coordinate to reveal.
 	 * @return A newly computed VValue that will ensure pY
-	 * is just visible in the viewport.
+	 *     is just visible in the viewport.
 	 */
 	public double getAdjustedVValueToRevealY(int pY)
 	{

@@ -246,7 +246,7 @@ public final class Clipboard
 	 * @param pDiagram The diagram to paste into.
 	 * 
 	 * @return True if and only if it is possible to paste the content
-	 * of the clipboard into pDiagram.
+	 *     of the clipboard into pDiagram.
 	 */
 	public boolean validPaste(Diagram pDiagram)
 	{

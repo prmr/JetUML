@@ -46,7 +46,7 @@ public interface Node extends DiagramElement
 {
 	/**
 	 * @return The position of this node. Usually corresponds to the top left corner 
-	 * of its bounding box.
+	 *     of its bounding box.
 	 */
 	Point position();
 
@@ -84,7 +84,7 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * @return The diagram this node is attached to,
-	 * or empty() if the node is not attached.
+	 *     or empty() if the node is not attached.
 	 */
 	Optional<Diagram> getDiagram();
 	
@@ -95,7 +95,7 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * @return true if this node type requires a parent to exist, 
-	 * and false if it can exist as a root node.
+	 *     and false if it can exist as a root node.
 	 */
 	boolean requiresParent();	
 	
@@ -138,7 +138,7 @@ public interface Node extends DiagramElement
 	
 	/**
 	 * @return true if the type of node supports keeping track
-	 * of children nodes.
+	 *     of children nodes.
 	 */
 	boolean allowsChildren();
 	

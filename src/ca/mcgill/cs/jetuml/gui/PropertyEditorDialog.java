@@ -99,7 +99,7 @@ public class PropertyEditorDialog
 	 * until it is closed.
 	 * 
 	 * @return A compound operation that represents the modification of
-	 * each property modified through this dialog.
+	 *     each property modified through this dialog.
 	 */
 	public CompoundOperation show() 
 	{

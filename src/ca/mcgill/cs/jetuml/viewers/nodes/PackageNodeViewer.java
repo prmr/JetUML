@@ -64,7 +64,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 	/**
 	 * @param pNode The package node
 	 * @return The point that corresponds to the actual top right
-	 * corner of the figure (as opposed to bounds).
+	 *     corner of the figure (as opposed to bounds).
 	 */
 	public Point getTopRightCorner(Node pNode)
 	{

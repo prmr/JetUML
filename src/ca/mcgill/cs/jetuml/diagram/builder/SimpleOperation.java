@@ -34,10 +34,8 @@ public class SimpleOperation implements DiagramOperation
 	/**
 	 * Creates an operation.
 	 * 
-	 * @param pOperation The code to run when the operation is
-	 * executed.
-	 * @param pReverse The code to run when the operation is
-	 * undone.
+	 * @param pOperation The code to run when the operation is executed.
+	 * @param pReverse The code to run when the operation is undone.
 	 * @pre pOperation != null
 	 * @pre pReverse != null
 	 */

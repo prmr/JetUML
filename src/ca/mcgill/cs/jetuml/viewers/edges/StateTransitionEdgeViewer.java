@@ -319,7 +319,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	
 	/** 
 	 * @return An index that represents the position in the list of
-	 * edges between the same start and end nodes. 
+	 *     edges between the same start and end nodes. 
 	 * @pre getGraph() != null
 	 */
 	private int getPosition(Edge pEdge)

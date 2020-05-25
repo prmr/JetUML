@@ -44,7 +44,7 @@ public final class DiagramSizeUtils
 	/**
 	 * @param pText The value to test
 	 * @return True if pText can be converted to an integer
-	 * that is a valid diagram dimension.
+	 *     that is a valid diagram dimension.
 	 */
 	public static boolean isValid(String pText)
 	{

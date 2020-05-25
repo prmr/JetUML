@@ -128,7 +128,7 @@ public class DiagramCanvasController
 	
 	/**
 	 * @return True if the diagram controlled by this controller 
-	 * has unsaved changes.
+	 *     has unsaved changes.
 	 */
 	public boolean hasUnsavedChanges()
 	{

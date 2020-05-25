@@ -79,7 +79,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 
 	/**
 	 * @return A rectangle that represents the bounding
-	 * box of the entire selection.
+	 *     box of the entire selection.
 	 */
 	public Rectangle getSelectionBounds()
 	{
@@ -103,7 +103,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	/**
 	 * @return A rectangle that represents the bounding box of the 
-	 * entire selection including the bounds of their parent nodes.
+	 *     entire selection including the bounds of their parent nodes.
 	 */
 	public Rectangle getEntireSelectionBounds()
 	{
@@ -130,7 +130,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	/**
 	 * @return An iterable of all selected nodes. This 
-	 * corresponds to the entire selection, except the edge.
+	 *     corresponds to the entire selection, except the edge.
 	 */
 	public List<Node> getSelectedNodes()
 	{
@@ -151,7 +151,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	 * 
 	 * @param pLasso The bounds of the current lasso.
 	 * @param pDiagramData Data about the diagram whose elements are being selected with the lasso.
-	 * only the elements in the lasso are selected.
+	 *     only the elements in the lasso are selected.
 	 * @pre pLasso != null;
 	 * @pre pDiagramData != null;
 	 */

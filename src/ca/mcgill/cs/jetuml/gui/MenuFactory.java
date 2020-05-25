@@ -83,7 +83,7 @@ class MenuFactory
 	 * @param pPrefix A string such as "file.open" that indicates the menu->submenu path
 	 * @param pHandler The callback to execute when the menu item is selected.
 	 * @param pDiagramSpecific True if the action requires a diagram tab to be active. A value of false
-	 * will indicate that the menu should be disabled if the welcome tab is showing. See setMenuVisibility
+	 *     will indicate that the menu should be disabled if the welcome tab is showing. See setMenuVisibility
 	 * @return A menu item for the action described.
 	 */
 	public MenuItem createMenuItem(String pPrefix,  boolean pDiagramSpecific, EventHandler<ActionEvent> pHandler)
@@ -163,7 +163,7 @@ class MenuFactory
 	/**
 	 * Create a menu with the resources for key pPrefix.
 	 * @param pPrefix A string such as "file" that indicates where to find the related
-	 * resources in the resource bundle.
+	 *     resources in the resource bundle.
 	 * @return A configured menu.
 	 * @pre The .text and .mnemonic properties exist in the resource bundle
 	 */
@@ -179,7 +179,7 @@ class MenuFactory
 	 * Create a menu with the resources for key pPrefix, with submenus that 
 	 * correspond to the NamedHandlers.
 	 * @param pPrefix A string such as "file" that indicates where to find the related
-	 * resources in the resource bundle.
+	 *     resources in the resource bundle.
 	 * @param pMenuItems The items to add to the menu
 	 * @return A configured menu.
 	 * @pre The .text and .mnemonic properties exist in the resource bundle

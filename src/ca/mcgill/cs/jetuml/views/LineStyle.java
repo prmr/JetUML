@@ -37,8 +37,7 @@ public enum LineStyle
 	}
 	
 	/**
-	 * @return The LineDashes stroke attribute for 
-	 * this line style.
+	 * @return The LineDashes stroke attribute for this line style.
 	 */
 	public double[] getLineDashes()
 	{

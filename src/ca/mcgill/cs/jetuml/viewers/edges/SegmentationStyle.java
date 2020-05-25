@@ -92,7 +92,7 @@ public interface SegmentationStyle
      * @param pEdge the Edge for which a path is determine
      * @param pGraph the graph holding the edge. Can be null.
      * @return an array list of points at which to bend the
-     * segmented line representing the edge. Never null.
+     *     segmented line representing the edge. Never null.
 	 */
 	Point2D[] getPath(Edge pEdge, Diagram pGraph);
 	

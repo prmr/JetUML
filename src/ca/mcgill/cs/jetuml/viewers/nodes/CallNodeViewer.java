@@ -158,7 +158,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	/**
 	 * @param pNode the node.
 	 * @return If there's no callee, returns a fixed offset from the y position.
-	 * Otherwise, return with a gap from last callee.
+	 *     Otherwise, return with a gap from last callee.
 	 */
 	public int getMaxY(Node pNode)
 	{

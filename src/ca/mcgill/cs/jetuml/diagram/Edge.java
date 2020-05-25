@@ -31,8 +31,8 @@ public interface Edge extends DiagramElement
     * @param pStart the starting node
     * @param pEnd the end node
     * @param pDiagram the graph where the two connected nodes 
-    * exists. Can be null.
-  	 */
+    *     exists. Can be null.
+  	*/
   void connect(Node pStart, Node pEnd, Diagram pDiagram);
 
    	/**
@@ -52,8 +52,8 @@ public interface Edge extends DiagramElement
 
    	/**
    	 * @return A clone of this edge, with shallow cloning
-   	 * of the start and end nodes (i.e., the start and end 
-   	 * nodes are not cloned).
+   	 *     of the start and end nodes (i.e., the start and end 
+   	 *     nodes are not cloned).
    	 */
    	Edge clone();
 }

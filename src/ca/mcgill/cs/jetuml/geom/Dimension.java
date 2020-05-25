@@ -57,7 +57,7 @@ public class Dimension
 	 * @param pWidth The minimum width to include.
 	 * @param pHeight The minimum height to include.
 	 * @return A new dimension object that has the maximum
-	 * width and height of either dimensions.
+	 *     width and height of either dimensions.
 	 * @pre pWidth >= 0 && pHeight >= 0;
 	 */
 	public Dimension include(int pWidth, int pHeight)

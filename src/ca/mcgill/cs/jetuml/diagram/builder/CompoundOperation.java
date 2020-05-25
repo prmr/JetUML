@@ -70,7 +70,7 @@ public class CompoundOperation implements DiagramOperation
 	
 	/**
 	 * @return True if this CompoundOperation contains
-	 * no sub-operation.
+	 *     no sub-operation.
 	 */
 	public boolean isEmpty()
 	{

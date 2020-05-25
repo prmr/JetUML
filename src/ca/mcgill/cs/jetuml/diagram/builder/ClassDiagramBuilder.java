@@ -267,7 +267,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * 
 	 * @param pNodes The nodes to detach.
 	 * @return True if it is possible to detach pNodes from their parents, false otherwise
-	 * or if the list is empty.
+	 *     or if the list is empty.
 	 * @pre pNodes != null;
 	 */
 	public boolean canUnlinkFromPackage(List<Node>pNodes)
