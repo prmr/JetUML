@@ -227,7 +227,7 @@ public class EditorFrame extends BorderPane
 						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
-				factory.createMenuItem("view.diagram_size", false, Event -> new DiagramSizeDialog(aMainStage).show())));
+				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show())));
 	}
 	
 	private void createHelpMenu(MenuBar pMenuBar) 
@@ -548,7 +548,7 @@ public class EditorFrame extends BorderPane
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
 			BufferedImage image = getBufferedImage(frame.getDiagram()); 
-			if(format.equals("jpg"))	// to correct the display of JPEG/JPG images (removes red hue)
+			if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
 				Graphics2D graphics = imageRGB.createGraphics();
@@ -556,7 +556,7 @@ public class EditorFrame extends BorderPane
 				ImageIO.write(imageRGB, format, out);
 				graphics.dispose();
 			}
-			else if(format.equals("bmp"))	// to correct the BufferedImage type
+			else if("bmp".equals(format))	// to correct the BufferedImage type
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics = imageRGB.createGraphics();

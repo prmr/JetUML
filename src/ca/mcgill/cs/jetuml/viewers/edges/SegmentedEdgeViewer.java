@@ -254,7 +254,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	private static Rectangle getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
 			ArrowHead pArrow, String pString, boolean pCenter)
 	{
-		if (pString == null || pString.equals(""))
+		if (pString == null || pString.isEmpty())
 		{
 			return new Rectangle((int)Math.round(pEndPoint2.getX()), 
 					(int)Math.round(pEndPoint2.getY()), 0, 0);

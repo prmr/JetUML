@@ -50,7 +50,7 @@ public abstract class AbstractDiagramElement implements DiagramElement
 			clone.buildProperties();
 			return clone;
 		}
-		catch(CloneNotSupportedException pException)
+		catch(CloneNotSupportedException exception)
 		{
 			return null;
 		}

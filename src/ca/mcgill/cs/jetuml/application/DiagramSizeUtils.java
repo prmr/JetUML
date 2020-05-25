@@ -52,7 +52,7 @@ public final class DiagramSizeUtils
 		{
 			return isValid(Integer.parseInt(pText));
 		}
-		catch( NumberFormatException pException )
+		catch( NumberFormatException exception )
 		{
 			return false;
 		}

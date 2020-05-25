@@ -175,7 +175,6 @@
     <module name="IllegalTokenText"/>
     <module name="IllegalType"/>
     <module name="MissingCtor"/>
-    <module name="MultipleStringLiterals"/>
     <module name="NoArrayTrailingComma"/>
     <module name="NoEnumTrailingComma"/>
     <module name="NoFinalizer"/>
@@ -207,7 +206,6 @@
     <module name="SingleLineJavadoc">
       <property name="violateExecutionOnNonTightHtml" value="true"/>
     </module>
-    <module name="AbstractClassName"/>
     <module name="ClassTypeParameterName"/>
     <module name="ClassTypeParameterName"/>
     <module name="MethodTypeParameterName"/>

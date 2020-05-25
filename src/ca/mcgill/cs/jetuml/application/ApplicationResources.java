@@ -61,7 +61,7 @@ public final class ApplicationResources
 		{
 			return aResouceBundle.getString(pKey);
 		}
-		catch( MissingResourceException | ClassCastException pException )
+		catch( MissingResourceException | ClassCastException exception )
 		{
 			return ERROR_MESSAGE;
 		}
