@@ -174,7 +174,10 @@
     <module name="IllegalToken"/>
     <module name="IllegalTokenText"/>
     <module name="IllegalType"/>
-    <module name="MissingCtor"/>
+    <module name="MissingCtor">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="NoArrayTrailingComma"/>
     <module name="NoEnumTrailingComma"/>
     <module name="NoFinalizer"/>
@@ -184,7 +187,10 @@
     <module name="UnnecessarySemicolonInEnumeration"/>
     <module name="UnnecessarySemicolonInTryWithResources"/>
     <module name="OneStatementPerLine"/>
-    <module name="VariableDeclarationUsageDistance"/>
+    <module name="VariableDeclarationUsageDistance">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="OverloadMethodsDeclarationOrder"/>
     <module name="MissingOverride"/>
     <module name="AnnotationLocation"/>
