@@ -227,7 +227,10 @@
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
-    <module name="ClassMemberImpliedModifier"/>
+    <module name="ClassMemberImpliedModifier">
+      <property name="violateImpliedStaticOnNestedEnum" value="false"/>
+      <property name="violateImpliedStaticOnNestedInterface" value="false"/>
+    </module>
     <module name="NestedForDepth">
       <property name="max" value="2"/>
     </module>
