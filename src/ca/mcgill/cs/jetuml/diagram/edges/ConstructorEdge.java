@@ -26,6 +26,9 @@ package ca.mcgill.cs.jetuml.diagram.edges;
  */
 public final class ConstructorEdge extends CallEdge
 {
+	/**
+	 * Creates a new constructor edge.
+	 */
 	public ConstructorEdge()
 	{
 		super.setMiddleLabel("«create»");

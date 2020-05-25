@@ -45,7 +45,7 @@ public class WelcomeTab extends Tab
     
 	/**
 	 * @param pNewDiagramHandlers A list of named handlers for opening new diagrams. The name 
-	 * is expected to be the simple name of a concrete diagram, all in lower case.
+	 *     is expected to be the simple name of a concrete diagram, all in lower case.
 	 */
 	public WelcomeTab(List<NewDiagramHandler> pNewDiagramHandlers)
 	{

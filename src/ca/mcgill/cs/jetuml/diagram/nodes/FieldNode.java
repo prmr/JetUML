@@ -33,6 +33,9 @@ public final class FieldNode extends NamedNode
 	private String aValue = "value";
 	private Optional<ObjectNode> aObject = Optional.empty(); // The object defining this field
 	
+	/**
+	 * Creates a new field node.
+	 */
 	public FieldNode()
 	{
 		setName("name");

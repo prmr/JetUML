@@ -145,6 +145,9 @@ public final class Diagram implements DiagramData
 		return aType.getFileExtension();
 	}
 
+	/**
+	 * @return The name of the diagram.
+	 */
 	public String getName()
 	{
 		return aType.getName();

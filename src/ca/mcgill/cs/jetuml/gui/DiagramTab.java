@@ -36,7 +36,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
- *A tab holding a single diagram.
+ * A tab holding a single diagram.
  */
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEventHandler
 {
