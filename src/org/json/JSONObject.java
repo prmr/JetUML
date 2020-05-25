@@ -612,8 +612,10 @@ public class JSONObject {
     public static String quote(String string) {
         StringWriter sw = new StringWriter();
         synchronized (sw.getBuffer()) {
-            try {
-                return quote(string, sw).toString();
+            try 
+            {
+                quote(string, sw);
+                return sw.toString();
             } catch (IOException ignored) {
                 // will never happen - we are writing to a string writer
                 return "";
@@ -621,10 +623,10 @@ public class JSONObject {
         }
     }
 
-    public static Writer quote(String string, Writer w) throws IOException {
+    public static void quote(String string, final Writer pWriter) throws IOException {
         if (string == null || string.length() == 0) {
-            w.write("\"\"");
-            return w;
+            pWriter.write("\"\"");
+            return;
         }
 
         char b;
@@ -633,51 +635,50 @@ public class JSONObject {
         int i;
         int len = string.length();
 
-        w.write('"');
+        pWriter.write('"');
         for (i = 0; i < len; i += 1) {
             b = c;
             c = string.charAt(i);
             switch (c) {
             case '\\':
             case '"':
-                w.write('\\');
-                w.write(c);
+                pWriter.write('\\');
+                pWriter.write(c);
                 break;
             case '/':
                 if (b == '<') {
-                    w.write('\\');
+                    pWriter.write('\\');
                 }
-                w.write(c);
+                pWriter.write(c);
                 break;
             case '\b':
-                w.write("\\b");
+                pWriter.write("\\b");
                 break;
             case '\t':
-                w.write("\\t");
+                pWriter.write("\\t");
                 break;
             case '\n':
-                w.write("\\n");
+                pWriter.write("\\n");
                 break;
             case '\f':
-                w.write("\\f");
+                pWriter.write("\\f");
                 break;
             case '\r':
-                w.write("\\r");
+                pWriter.write("\\r");
                 break;
             default:
                 if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
                         || (c >= '\u2000' && c < '\u2100')) {
-                    w.write("\\u");
+                    pWriter.write("\\u");
                     hhhh = Integer.toHexString(c);
-                    w.write("0000", 0, 4 - hhhh.length());
-                    w.write(hhhh);
+                    pWriter.write("0000", 0, 4 - hhhh.length());
+                    pWriter.write(hhhh);
                 } else {
-                    w.write(c);
+                    pWriter.write(c);
                 }
             }
         }
-        w.write('"');
-        return w;
+        pWriter.write('"');
     }
 
     /**
