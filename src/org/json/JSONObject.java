@@ -831,8 +831,10 @@ public class JSONObject {
      */
     public String toString(int indentFactor) throws JSONException {
         StringWriter w = new StringWriter();
-        synchronized (w.getBuffer()) {
-            return this.write(w, indentFactor, 0).toString();
+        synchronized (w.getBuffer()) 
+        {
+        	this.write(w, indentFactor, 0);
+        	return w.toString();
         }
     }
 
@@ -960,10 +962,9 @@ public class JSONObject {
      *            The number of spaces to add to each level of indentation.
      * @param indent
      *            The indentation of the top level.
-     * @return The writer.
      * @throws JSONException
      */
-    public Writer write(Writer writer, int indentFactor, int indent)
+    public void write(Writer writer, int indentFactor, int indent)
             throws JSONException {
         try {
             boolean commanate = false;
@@ -1012,7 +1013,6 @@ public class JSONObject {
                 indent(writer, indent);
             }
             writer.write('}');
-            return writer;
         } catch (IOException exception) {
             throw new JSONException(exception);
         }
