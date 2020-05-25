@@ -889,7 +889,7 @@ public class JSONObject {
         }
     }
 
-    static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException 
+    static final void writeValue(Writer writer, Object value, int indentFactor, int indent) throws JSONException, IOException 
     {
     	if (value == null || value.equals(null)) 
     	{
@@ -929,7 +929,6 @@ public class JSONObject {
     	} else {
     		quote(value.toString(), writer);
     	}
-    	return writer;
     }
 
     static final void indent(Writer writer, int indent) throws IOException {
