@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Check Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!--
     This configuration file was written by the eclipse-cs plugin configuration editor
@@ -11,6 +11,9 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
+    <module name="JavadocMethod">
+      <property name="scope" value="protected"/>
+    </module>
     <module name="JavadocType">
       <property name="scope" value="package"/>
     </module>
@@ -159,6 +162,82 @@
       <property name="offCommentFormat" value="CSOFF\:"/>
       <property name="onCommentFormat" value="CSON\:"/>
     </module>
+    <module name="AvoidDoubleBraceInitialization"/>
+    <module name="AvoidNoArgumentSuperConstructorCall"/>
+    <module name="EqualsAvoidNull"/>
+    <module name="ExplicitInitialization"/>
+    <module name="FinalLocalVariable">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="IllegalThrows"/>
+    <module name="IllegalToken"/>
+    <module name="IllegalTokenText"/>
+    <module name="IllegalType"/>
+    <module name="MissingCtor"/>
+    <module name="MultipleStringLiterals"/>
+    <module name="NoArrayTrailingComma"/>
+    <module name="NoEnumTrailingComma"/>
+    <module name="NoFinalizer"/>
+    <module name="PackageDeclaration"/>
+    <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
+    <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
+    <module name="UnnecessarySemicolonInEnumeration"/>
+    <module name="UnnecessarySemicolonInTryWithResources"/>
+    <module name="OneStatementPerLine"/>
+    <module name="VariableDeclarationUsageDistance"/>
+    <module name="OverloadMethodsDeclarationOrder"/>
+    <module name="MissingOverride"/>
+    <module name="AnnotationLocation"/>
+    <module name="JavadocMissingWhitespaceAfterAsterisk"/>
+    <module name="MissingJavadocMethod"/>
+    <module name="MissingJavadocType"/>
+    <module name="NonEmptyAtclauseDescription">
+      <property name="javadocTokens" value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,EXCEPTION_LITERAL,DEPRECATED_LITERAL"/>
+    </module>
+    <module name="JavadocTagContinuationIndentation"/>
+    <module name="SummaryJavadoc">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="AtclauseOrder"/>
+    <module name="InvalidJavadocPosition"/>
+    <module name="JavadocBlockTagLocation"/>
+    <module name="JavadocContentLocation"/>
+    <module name="SingleLineJavadoc">
+      <property name="violateExecutionOnNonTightHtml" value="true"/>
+    </module>
+    <module name="AbstractClassName"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="MethodTypeParameterName"/>
+    <module name="InterfaceTypeParameterName"/>
+    <module name="CatchParameterName"/>
+    <module name="LambdaParameterName"/>
+    <module name="ImportOrder">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="OuterTypeNumber"/>
+    <module name="InterfaceMemberImpliedModifier">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="ClassMemberImpliedModifier"/>
+    <module name="NestedForDepth">
+      <property name="max" value="2"/>
+    </module>
+    <module name="MutableException"/>
+    <module name="ThrowsCount"/>
+    <module name="OneTopLevelClass"/>
+    <module name="AvoidEscapedUnicodeCharacters"/>
+  </module>
+  <module name="BeforeExecutionExclusionFileFilter">
+    <property name="fileNamePattern" value="module\-info\.java$"/>
+  </module>
+  <module name="LineLength">
+    <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
+    <property name="max" value="150"/>
   </module>
   <module name="FileTabCharacter">
     <property name="severity" value="ignore"/>
@@ -169,8 +248,5 @@
     <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
   <module name="Translation"/>
-  <module name="LineLength">
-    <property name="fileExtensions" value="java"/>
-    <property name="max" value="150"/>
-  </module>
+  <module name="UniqueProperties"/>
 </module>
