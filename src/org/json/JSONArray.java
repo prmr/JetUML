@@ -353,8 +353,10 @@ public class JSONArray implements Iterable<Object>
      */
     public String toString(int indentFactor) throws JSONException {
         StringWriter sw = new StringWriter();
-        synchronized (sw.getBuffer()) {
-            return this.write(sw, indentFactor, 0).toString();
+        synchronized (sw.getBuffer()) 
+        {
+            this.write(sw, indentFactor, 0);
+            return sw.toString();
         }
     }
 
@@ -386,7 +388,7 @@ public class JSONArray implements Iterable<Object>
      * @return The writer.
      * @throws JSONException
      */
-    public Writer write(Writer writer, int indentFactor, int indent)
+    public void write(final Writer writer, int indentFactor, int indent)
             throws JSONException {
         try {
             boolean commanate = false;
@@ -425,7 +427,6 @@ public class JSONArray implements Iterable<Object>
                 JSONObject.indent(writer, indent);
             }
             writer.write(']');
-            return writer;
         } catch (IOException e) {
             throw new JSONException(e);
         }
