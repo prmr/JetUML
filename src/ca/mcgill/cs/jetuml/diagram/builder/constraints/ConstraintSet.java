@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a set of constraints. Constraint sets are not meant to
@@ -32,7 +33,7 @@ import java.util.HashSet;
  */
 public class ConstraintSet
 {
-	private final HashSet<Constraint> aConstraints = new HashSet<>();
+	private final Set<Constraint> aConstraints = new HashSet<>();
 	
 	/**
 	 * Initializes a ConstraintSet with all the constraints in 

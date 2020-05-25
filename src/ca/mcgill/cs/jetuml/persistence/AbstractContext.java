@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.persistence;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -34,7 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  */
 public abstract class AbstractContext implements Iterable<Node>
 {
-	protected final HashMap<Node, Integer> aNodes = new HashMap<>();
+	protected final Map<Node, Integer> aNodes = new HashMap<>();
 	private final Diagram aDiagram;
 	
 	/**

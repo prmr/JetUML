@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -290,7 +291,7 @@ public abstract class DiagramBuilder
 	/*
 	 * Organize the elements to delete so that they can be reinserted properly
 	 */
-	private List<DiagramElement> tweakOrder(HashSet<DiagramElement> pElements)
+	private List<DiagramElement> tweakOrder(Set<DiagramElement> pElements)
 	{
 		List<DiagramElement> result = new ArrayList<>();
 		Map<ObjectNode, List<FieldNode>> fields = new HashMap<>();
@@ -366,7 +367,7 @@ public abstract class DiagramBuilder
 	public final DiagramOperation createRemoveElementsOperation(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
-		HashSet<DiagramElement> toDelete = new HashSet<>();
+		Set<DiagramElement> toDelete = new HashSet<>();
 		for( DiagramElement element : pElements)
 		{
 			toDelete.add(element);
