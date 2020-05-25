@@ -1,8 +1,8 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2016, 2020 by the contributors of the JetUML project.
- *
+ * Copyright (C) 2020 by the contributors of the JetUML project.
+ *     
  * See: https://github.com/prmr/JetUML
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * An implicit parameter node in a sequence diagram. The 
  * visual portion of this node includes the top rectangle (object) and
  * its vertical life line. The ImplicitParamterNode's creator is the
- * CallNode that is the source of a <<creates>> edge that leads to 
+ * CallNode that is the source of a «creates» edge that leads to 
  * this node, or null if this node is node created as part of the 
  * sequence.
  */

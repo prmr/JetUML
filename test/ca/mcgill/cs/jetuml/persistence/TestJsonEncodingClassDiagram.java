@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2018, 2020 by the contributors of the JetUML project.
+ * Copyright (C) 2020 by the contributors of the JetUML project.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.persistence;
 
