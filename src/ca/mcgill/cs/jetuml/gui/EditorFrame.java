@@ -407,11 +407,6 @@ public class EditorFrame extends BorderPane
 		}
 	}
 	
-	private void duplicate() 
-	{
-		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate()));
-	}
-	
 	/**
 	 * If a user confirms that they want to close their modified graph, this method
 	 * will remove it from the current list of tabs.
@@ -438,6 +433,13 @@ public class EditorFrame extends BorderPane
 			removeGraphFrameFromTabbedPane(pDiagramTab);
 		}
 	}
+	
+	private void duplicate() 
+	{
+		insertGraphFrameIntoTabbedPane(new DiagramTab(getSelectedDiagramTab().getDiagram().duplicate()));
+	}
+	
+	
 
 	private void save() 
 	{

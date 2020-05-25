@@ -121,6 +121,19 @@ public class Rectangle
 	}
 	
 	/**
+	 * @param pRectangle The rectangle to check.
+	 * @return True iif pRectangle is entired contains within this rectangle.
+	 * @pre pRectangle !=null.
+	 */
+	public boolean contains(Rectangle pRectangle)
+	{
+		assert pRectangle != null;
+		return pRectangle.aX >= aX && pRectangle.aY >= aY &&
+				pRectangle.getMaxX() <= aX + aWidth &&
+				pRectangle.getMaxY() <= aY + aHeight;
+	}
+	
+	/**
 	 * @return A point in the center of this rectangle.
 	 */
 	public Point getCenter()
@@ -174,19 +187,6 @@ public class Rectangle
 		int maxX = Math.max(getMaxX(), pRectangle.getMaxX());
 		int maxY = Math.max(getMaxY(), pRectangle.getMaxY());
 		return new Rectangle(x, y, maxX - x, maxY-y);
-	}
-	
-	/**
-	 * @param pRectangle The rectangle to check.
-	 * @return True iif pRectangle is entired contains within this rectangle.
-	 * @pre pRectangle !=null.
-	 */
-	public boolean contains(Rectangle pRectangle)
-	{
-		assert pRectangle != null;
-		return pRectangle.aX >= aX && pRectangle.aY >= aY &&
-				pRectangle.getMaxX() <= aX + aWidth &&
-				pRectangle.getMaxY() <= aY + aHeight;
 	}
 	
 	/**

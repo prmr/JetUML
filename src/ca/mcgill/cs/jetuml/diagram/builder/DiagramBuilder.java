@@ -103,22 +103,6 @@ public abstract class DiagramBuilder
 		aCanvasDimension = pDimension;
 	}
 	
-	/**
-	 * Returns whether adding pNode at pRequestedPosition is a valid
-	 * operation on the diagram. True by default. 
-	 * Override to provide cases where this should be false.
-	 * 
-	 * @param pNode The node to add if possible. 
-	 * @param pRequestedPosition The requested position for the node.
-	 * @return True if it is possible to add pNode at position pRequestedPosition.
-	 * @pre pNode != null && pRequestedPosition != null
-	 */
-	public boolean canAdd(Node pNode, Point pRequestedPosition)
-	{
-		assert pNode != null && pRequestedPosition != null;
-		return true;
-	}
-	
 	private static List<Node> getNodeAndAllChildren(Node pNode)
 	{
 		List<Node> result = new ArrayList<>();
@@ -163,6 +147,22 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
+	 * Returns whether adding pNode at pRequestedPosition is a valid
+	 * operation on the diagram. True by default. 
+	 * Override to provide cases where this should be false.
+	 * 
+	 * @param pNode The node to add if possible. 
+	 * @param pRequestedPosition The requested position for the node.
+	 * @return True if it is possible to add pNode at position pRequestedPosition.
+	 * @pre pNode != null && pRequestedPosition != null
+	 */
+	public boolean canAdd(Node pNode, Point pRequestedPosition)
+	{
+		assert pNode != null && pRequestedPosition != null;
+		return true;
+	}
+	
+	/**
 	 * Returns whether a constructor call could be created.
 	 * @param pEnd The node to check.
 	 * @return True if the end node of the edge is an ImplicitParameterNode with no child nodes.
@@ -171,8 +171,8 @@ public abstract class DiagramBuilder
 	{
 		DiagramViewer viewer = viewerFor(aDiagram);
 		Node endNode = viewer.findNode(aDiagram, pEnd).get();
-		return endNode instanceof ImplicitParameterNode && new ImplicitParameterNodeViewer().getTopRectangle(endNode).contains(pEnd)
-				&& ((ImplicitParameterNode)endNode).getChildren().size()==0;
+		return endNode instanceof ImplicitParameterNode && new ImplicitParameterNodeViewer().getTopRectangle(endNode).contains(pEnd) && 
+				((ImplicitParameterNode)endNode).getChildren().size()==0;
 	}
 	
 	/**

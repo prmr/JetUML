@@ -159,7 +159,11 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	private Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
-		Node endNode = pEdge.getClass() == ConstructorEdge.class? pEdge.getEnd().getParent():pEdge.getEnd();
+		Node endNode = pEdge.getEnd();
+		if( pEdge.getClass() == ConstructorEdge.class )
+		{
+			endNode = pEdge.getEnd().getParent();
+		}
 		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());	
 		Rectangle end = NodeViewerRegistry.getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )

@@ -105,7 +105,11 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	{
 		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).getWidth()+ 
 				HORIZONTAL_PADDING, DEFAULT_WIDTH);
-		int yVal = isInConstructorCall(pNode)?getYWithConstructorCall(pNode):0;
+		int yVal = 0;
+		if( isInConstructorCall(pNode) )
+		{
+			yVal = getYWithConstructorCall(pNode);
+		}
 		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
 	}
 
@@ -119,7 +123,8 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height);
 	}
 	
-	private int getYWithConstructorCall(Node pNode) {
+	private int getYWithConstructorCall(Node pNode) 
+	{
 		assert isInConstructorCall(pNode);
 		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
 		CallNode child = (CallNode) getFirstChild(pNode).get();
@@ -146,7 +151,8 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	/*
 	 * Returns true if the ImplicitParameterNode is in the constructor call
 	 */
-	private boolean isInConstructorCall(Node pNode) {
+	private boolean isInConstructorCall(Node pNode) 
+	{
 		Optional<Diagram> diagram = pNode.getDiagram();
 		if(diagram.isPresent())
 		{

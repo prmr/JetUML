@@ -188,8 +188,9 @@ public final class Diagram implements DiagramData
 	}
 
 	/**
-	 * @param pNode
-	 * @return True if pNode is a root node of the Diagram
+	 * @param pNode The node to check.
+	 * @return True if pNode is a root node of the Diagram.
+	 * @pre pNode != null.
 	 */
 	public boolean containsAsRoot(Node pNode)
 	{
@@ -286,8 +287,7 @@ public final class Diagram implements DiagramData
 	 * Adds pEdge to the diagram. pEdge should already be connected to its start and end nodes. The edge is added to the
 	 * end of the list of edges.
 	 * 
-	 * @param pEdge
-	 *            The edge to add.
+	 * @param pEdge The edge to add.
 	 * @pre pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getGraph != null
 	 */
 	public void addEdge(Edge pEdge)
@@ -295,6 +295,20 @@ public final class Diagram implements DiagramData
 		assert pEdge != null && pEdge.getStart() != null && pEdge.getEnd() != null && pEdge.getDiagram() != null;
 		aEdges.add(pEdge);
 	}
+	
+	/**
+	 * Adds pEdge at index pIndex, and shifts the existing edges to the right of the list.
+	 * 
+	 * @param pIndex Where to add the edge.
+	 * @param pEdge The edge to add.
+	 * @pre pEdge != null && pIndex >=0 && pIndex < aEdges.size()
+	 */
+	public void addEdge(int pIndex, Edge pEdge)
+	{
+		assert pEdge != null && pIndex >= 0 && pIndex <= aEdges.size();
+		aEdges.add(pIndex, pEdge);
+	}
+
 
 	/**
 	 * @param pEdge
@@ -306,21 +320,6 @@ public final class Diagram implements DiagramData
 	{
 		assert contains(pEdge);
 		return aEdges.indexOf(pEdge);
-	}
-
-	/**
-	 * Adds pEdge at index pIndex, and shifts the existing edges to the right of the list.
-	 * 
-	 * @param pIndex
-	 *            Where to add the edge.
-	 * @param pEdge
-	 *            The edge to add.
-	 * @pre pEdge != null && pIndex >=0 && pIndex < aEdges.size()
-	 */
-	public void addEdge(int pIndex, Edge pEdge)
-	{
-		assert pEdge != null && pIndex >= 0 && pIndex <= aEdges.size();
-		aEdges.add(pIndex, pEdge);
 	}
 
 	/**

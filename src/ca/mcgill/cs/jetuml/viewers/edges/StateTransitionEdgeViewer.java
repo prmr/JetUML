@@ -155,6 +155,20 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 	}
 	
+	/**
+     * Gets the dimensions for pString.
+     * @param pString The input string. Can be null.
+     * @return The dimensions of the string.
+	 */
+	public Dimension getLabelBounds(String pString)
+	{
+		if(pString == null || pString.length() == 0) 
+		{
+			return new Dimension(0, 0);
+		}
+		return textDimensions(pString);
+	}
+	
 	/*
 	 * Gets the bounds of the label text.
 	 * @return the bounds of the label text
@@ -232,20 +246,6 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, textDimensions.getWidth(), textDimensions.getHeight());
 		}
 	}   
-	
-	/**
-     * Gets the dimensions for pString.
-     * @param pString The input string. Can be null.
-     * @return The dimensions of the string.
-	 */
-	public Dimension getLabelBounds(String pString)
-	{
-		if(pString == null || pString.length() == 0) 
-		{
-			return new Dimension(0, 0);
-		}
-		return textDimensions(pString);
-	}
 	
 	private void adjustLabelFont(StateTransitionEdge pEdge)
 	{
