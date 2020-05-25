@@ -31,6 +31,6 @@ public class InterfaceNode extends TypeNode
 	 */
 	public InterfaceNode() 
 	{
-		setName("\u00ABinterface\u00BB\n");
+		setName("«interface»\n");
 	}
 }

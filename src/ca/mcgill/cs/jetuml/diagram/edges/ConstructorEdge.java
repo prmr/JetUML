@@ -28,7 +28,6 @@ public final class ConstructorEdge extends CallEdge
 {
 	public ConstructorEdge()
 	{
-		super();
-		super.setMiddleLabel("\u00ABcreate\u00BB");
+		super.setMiddleLabel("«create»");
 	}
 }
