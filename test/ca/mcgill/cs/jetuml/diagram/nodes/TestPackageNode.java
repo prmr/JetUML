@@ -49,7 +49,6 @@ public class TestPackageNode
 	public void testDefault()
 	{
 		assertEquals(0,aPackage1.getChildren().size());
-		assertEquals("", aPackage1.getContents().toString());
 		assertEquals("", aPackage1.getName().toString());
 		assertFalse(aPackage1.hasParent());
 	}
@@ -120,7 +119,6 @@ public class TestPackageNode
 		aPackage1.setName("Package");
 		PackageNode clone = aPackage1.clone();
 		assertEquals(0,clone.getChildren().size());
-		assertEquals("", clone.getContents().toString());
 		assertEquals("Package", clone.getName().toString());
 		assertFalse(clone.hasParent());
 		

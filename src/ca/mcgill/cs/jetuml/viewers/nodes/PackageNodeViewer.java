@@ -46,7 +46,6 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_TOP_WIDTH = 60;
 	private static final int NAME_GAP = 3;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
-	private static final StringViewer CONTENTS_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
@@ -57,8 +56,6 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 		ViewUtils.drawRectangle(pGraphics, bottomBounds );
 		NAME_VIEWER.draw(((PackageNode)pNode).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
 				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
-		CONTENTS_VIEWER.draw(((PackageNode)pNode).getContents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, 
-				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
 	}
 	
 	/**
@@ -160,7 +157,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 	
 	private Rectangle getBottomBounds(Node pNode)
 	{
-		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(((PackageNode)pNode).getContents());
+		Dimension contentsBounds = new Dimension(0, 0);
 		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
 		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
 		

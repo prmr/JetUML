@@ -34,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 public final class PackageNode extends AbstractNode
 {
 	private String aName = "";
-	private String aContents = "";
 	private ArrayList<Node> aContainedNodes = new ArrayList<>();
 	private Optional<Node> aContainer = Optional.empty();
 	
@@ -56,29 +55,11 @@ public final class PackageNode extends AbstractNode
 		return aName;
 	}
 
-	/**
-     * Sets the contents property value.
-     * @param pContents the contents of this class
-	 */
-	public void setContents(String pContents)
-	{
-		aContents = pContents;
-	}
-	
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
 		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
-	}
-
-	/**
-     * Gets the contents property value.
-     * @return the contents of this class
-	 */
-	public String getContents()
-	{
-		return aContents;
 	}
 
 	@Override
@@ -163,7 +144,6 @@ public final class PackageNode extends AbstractNode
 	{
 		super.buildProperties();
 		properties().add("name", () -> aName, pName -> aName = (String)pName);
-		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
 	}
 
 	@Override
