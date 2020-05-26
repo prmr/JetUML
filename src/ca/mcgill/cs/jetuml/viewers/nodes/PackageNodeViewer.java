@@ -157,9 +157,8 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 	
 	private Rectangle getBottomBounds(Node pNode)
 	{
-		Dimension contentsBounds = new Dimension(0, 0);
-		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
-		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
+		int width = DEFAULT_WIDTH;
+		int height = DEFAULT_BOTTOM_HEIGHT;
 		
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
 		Point position = getPosition(pNode, childrenBounds);
