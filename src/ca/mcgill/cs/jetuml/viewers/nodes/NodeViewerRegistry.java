@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
@@ -67,6 +68,7 @@ public final class NodeViewerRegistry
 		aRegistry.put(NoteNode.class, new NoteNodeViewer());
 		aRegistry.put(ObjectNode.class, new ObjectNodeViewer());
 		aRegistry.put(PackageNode.class, new PackageNodeViewer());
+		aRegistry.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
 		aRegistry.put(PointNode.class, new PointNodeViewer());
 		aRegistry.put(StateNode.class, new StateNodeViewer());
 		aRegistry.put(UseCaseNode.class, new UseCaseNodeViewer());

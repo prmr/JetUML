@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
@@ -144,7 +144,7 @@ public class PropertySheet extends GridPane
 	{
 		return 	aElement.getClass() == ClassNode.class ||
 				aElement.getClass() == InterfaceNode.class ||
-				aElement.getClass() == PackageNode.class && pProperty.equals("contents") ||
+				aElement.getClass() == PackageDescriptionNode.class && pProperty.equals("contents") ||
 				aElement.getClass() == NoteNode.class;
 	} // CSON:
 	

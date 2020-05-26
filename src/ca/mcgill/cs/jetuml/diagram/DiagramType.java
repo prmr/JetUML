@@ -55,6 +55,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
@@ -71,7 +72,7 @@ public enum DiagramType
 			".class",
 			ClassDiagramBuilder::new, 
 			new DiagramViewer(), 
-			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new NoteNode()},
+			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new PackageDescriptionNode(), new NoteNode()},
 			new Edge[] {
 					new DependencyEdge(), 
 					new GeneralizationEdge(), 
