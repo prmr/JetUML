@@ -92,6 +92,18 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 		return getTopBounds((AbstractPackageNode)pNode).add(getBottomBounds((AbstractPackageNode)pNode));
 	}
 	
+	/**
+	 * @param pNode The package node
+	 * @return The point that corresponds to the actual top right
+	 *     corner of the figure (as opposed to bounds).
+	 */
+	public Point getTopRightCorner(AbstractPackageNode pNode)
+	{
+		Rectangle bottomBounds = getBottomBounds(pNode);
+		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
+	}
+	
+	
 	protected Dimension getTopDimension(AbstractPackageNode pNode)
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(pNode.getName());

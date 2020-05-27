@@ -34,7 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
-import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -49,9 +49,9 @@ public class TestPackageNodeViewer
 	
 	public TestPackageNodeViewer() throws ReflectiveOperationException
 	{
-		aGetTopBoundsMethod = PackageNodeViewer.class.getDeclaredMethod("getTopBounds", Node.class);
+		aGetTopBoundsMethod = AbstractPackageNodeViewer.class.getDeclaredMethod("getTopBounds", AbstractPackageNode.class);
 		aGetTopBoundsMethod.setAccessible(true);
-		aGetBottomBoundsMethod = PackageNodeViewer.class.getDeclaredMethod("getBottomBounds", Node.class);
+		aGetBottomBoundsMethod = AbstractPackageNodeViewer.class.getDeclaredMethod("getBottomBounds", AbstractPackageNode.class);
 		aGetBottomBoundsMethod.setAccessible(true);
 	}
 	

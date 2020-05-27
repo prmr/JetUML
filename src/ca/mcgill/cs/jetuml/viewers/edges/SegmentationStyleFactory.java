@@ -34,12 +34,14 @@ import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge.Type;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.SegmentationStyle.Side;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
 import javafx.geometry.Point2D;
 
@@ -48,6 +50,9 @@ import javafx.geometry.Point2D;
  */
 public final class SegmentationStyleFactory
 {
+	private static final PackageNodeViewer PACKAGE_VIEWER = new PackageNodeViewer();
+	private static final PackageDescriptionNodeViewer PACKAGE_DESCRIPTION_VIEWER = new PackageDescriptionNodeViewer();
+	
 	private static final int MARGIN = 20;
 	private static final int MIN_SEGMENT = 10;
 	private static final int MAX_NUDGE = 11;
@@ -121,9 +126,13 @@ public final class SegmentationStyleFactory
 	 */
 	private static Point2D findTopRightCorner(Node pNode)
 	{
-		if( pNode instanceof AbstractPackageNode )
+		if( pNode instanceof PackageNode )
 		{
-			return Conversions.toPoint2D(new PackageNodeViewer().getTopRightCorner(pNode)); // TODO reuse object
+			return Conversions.toPoint2D(PACKAGE_VIEWER.getTopRightCorner((PackageNode)pNode)); 
+		}
+		else if( pNode instanceof PackageDescriptionNode )
+		{
+			return Conversions.toPoint2D(PACKAGE_DESCRIPTION_VIEWER.getTopRightCorner((PackageDescriptionNode)pNode)); 
 		}
 		else
 		{

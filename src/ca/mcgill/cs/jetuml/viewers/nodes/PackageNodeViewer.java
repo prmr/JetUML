@@ -25,77 +25,17 @@ import static ca.mcgill.cs.jetuml.geom.Util.max;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
-import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object to render a package in a class diagram.
  */
-public final class PackageNodeViewer extends AbstractNodeViewer
+public final class PackageNodeViewer extends AbstractPackageNodeViewer
 {
-	private static final int PADDING = 10;
-	private static final int TOP_HEIGHT = 20;
-	private static final int DEFAULT_WIDTH = 100;
-	private static final int DEFAULT_BOTTOM_HEIGHT = 60;
-	private static final int DEFAULT_TOP_WIDTH = 60;
-	private static final int NAME_GAP = 3;
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
-	
-	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
-	{
-		Rectangle topBounds = getTopBounds(pNode);
-		Rectangle bottomBounds = getBottomBounds(pNode);
-		ViewUtils.drawRectangle(pGraphics, topBounds );
-		ViewUtils.drawRectangle(pGraphics, bottomBounds );
-		NAME_VIEWER.draw(((PackageNode)pNode).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
-				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
-	}
-	
-	/**
-	 * @param pNode The package node
-	 * @return The point that corresponds to the actual top right
-	 *     corner of the figure (as opposed to bounds).
-	 */
-	public Point getTopRightCorner(Node pNode)
-	{
-		Rectangle bottomBounds = getBottomBounds(pNode);
-		return new Point(bottomBounds.getMaxX(), bottomBounds.getY());
-	}
-	
-	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
-		Rectangle topBounds = getTopBounds(pNode);
-		Rectangle bottomBounds = getBottomBounds(pNode);
-		Rectangle bounds = topBounds.add(bottomBounds);
-		
-		Point connectionPoint = super.getConnectionPoint(pNode, pDirection);
-		if( connectionPoint.getY() < bottomBounds.getY() && topBounds.getMaxX() < connectionPoint.getX() )
-		{
-			// The connection point falls in the empty top-right corner, re-compute it so
-			// it intersects the top of the bottom rectangle (basic triangle proportions)
-			int delta = topBounds.getHeight() * (connectionPoint.getX() - bounds.getCenter().getX()) * 2 / 
-					bounds.getHeight();
-			int newX = connectionPoint.getX() - delta;
-			if( newX < topBounds.getMaxX() )
-			{
-				newX = topBounds.getMaxX() + 1;
-			}
-			return new Point(newX, bottomBounds.getY());	
-		}
-		else
-		{
-			return connectionPoint;
-		}
-	}
-
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */
@@ -134,20 +74,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 		return new Point(pChildrenBounds.get().getX() - PADDING, pChildrenBounds.get().getY() - PADDING - TOP_HEIGHT);
 	}
 	
-	private Dimension getTopDimension(Node pNode)
-	{
-		Dimension nameBounds = NAME_VIEWER.getDimension(((PackageNode)pNode).getName());
-		int topWidth = max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		return new Dimension(topWidth, TOP_HEIGHT);
-	}
-	
-	@Override
-	public Rectangle getBounds(Node pNode)
-	{
-		return getTopBounds(pNode).add(getBottomBounds(pNode));
-	}
-	
-	private Rectangle getTopBounds(Node pNode)
+	protected Rectangle getTopBounds(AbstractPackageNode pNode)
 	{
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
 		Point position = getPosition(pNode, childrenBounds);
@@ -155,7 +82,7 @@ public final class PackageNodeViewer extends AbstractNodeViewer
 		return new Rectangle(position.getX(), position.getY(), topDimension.getWidth(), topDimension.getHeight());
 	}
 	
-	private Rectangle getBottomBounds(Node pNode)
+	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
 	{
 		int width = DEFAULT_WIDTH;
 		int height = DEFAULT_BOTTOM_HEIGHT;
