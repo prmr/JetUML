@@ -86,7 +86,7 @@ public final class PackageDescriptionNode extends AbstractNode
 	@Override
 	public void link(Node pNode)
 	{
-		assert pNode instanceof PackageDescriptionNode || pNode == null;
+		assert pNode instanceof PackageNode || pNode == null;
 		aContainer = Optional.of(pNode);
 	}
 	
