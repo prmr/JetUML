@@ -101,13 +101,13 @@ public class TestPersistenceService
 	@Test
 	public void testClassDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.class.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
 		verifyClassDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifyClassDiagram(graph);
 		tmp.delete();
 	}
@@ -115,13 +115,13 @@ public class TestPersistenceService
 	@Test
 	public void testClassDiagramContainment() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet")).diagram();
 		verifyClassDiagram2(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifyClassDiagram2(graph);
 		tmp.delete();
 	}
@@ -129,13 +129,13 @@ public class TestPersistenceService
 	@Test
 	public void testSequenceDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet")).diagram();
 		verifySequenceDiagram(graph);
 		
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifySequenceDiagram(graph);
 		tmp.delete();
 	}
@@ -143,13 +143,13 @@ public class TestPersistenceService
 	@Test
 	public void testStateDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.state.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.state.jet")).diagram();
 		verifyStateDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifyStateDiagram(graph);
 		tmp.delete();
 	}
@@ -157,13 +157,13 @@ public class TestPersistenceService
 	@Test
 	public void testObjectDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.object.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.object.jet")).diagram();
 		verifyObjectDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifyObjectDiagram(graph);
 		tmp.delete();
 	}
@@ -171,13 +171,13 @@ public class TestPersistenceService
 	@Test
 	public void testUseCaseDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet"));
+		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet")).diagram();
 		verifyUseCaseDiagram(graph);
 
 		File tmp = new File(TEST_FILE_NAME);
 		tmp.delete();
 		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp);
+		graph = PersistenceService.read(tmp).diagram();
 		verifyUseCaseDiagram(graph);
 		tmp.delete();
 	}

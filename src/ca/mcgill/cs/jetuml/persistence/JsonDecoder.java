@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -31,7 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
 
 /**
- * Converts a JSONObject to a graph.
+ * Converts a JSONObject to a versioned diagram.
  */
 public final class JsonDecoder
 {
@@ -45,19 +46,20 @@ public final class JsonDecoder
 	 * @return The decoded diagram.
 	 * @throws DeserializationException If it's not possible to decode the object into a valid diagram.
 	 */
-	public static Diagram decode(JSONObject pDiagram)
+	public static VersionedDiagram decode(JSONObject pDiagram)
 	{
 		assert pDiagram != null;
 		try
 		{
 			Diagram diagram = new Diagram(DiagramType.fromName(pDiagram.getString("diagram")));
+			Version version = Version.parse(pDiagram.getString("version"));
 			DeserializationContext context = new DeserializationContext(diagram);
 			decodeNodes(context, pDiagram);
 			restoreChildren(context, pDiagram);
 			restoreRootNodes(context);
 			decodeEdges(context, pDiagram);
 			context.attachNodes();
-			return diagram;
+			return new VersionedDiagram(diagram, version);
 		}
 		catch( JSONException | IllegalArgumentException exception )
 		{
@@ -67,7 +69,7 @@ public final class JsonDecoder
 	
 	/* 
 	 * Extracts information about nodes from pObject and creates new objects
-	 * to represent them in pGraph.
+	 * to represent them.
 	 * throws Deserialization Exception
 	 */
 	private static void decodeNodes(DeserializationContext pContext, JSONObject pObject)
@@ -94,7 +96,7 @@ public final class JsonDecoder
 	}
 	
 	/* 
-	 * Discovers the root nodes and stores them in the graph.
+	 * Discovers the root nodes and stores them in the diagram.
 	 */
 	private static void restoreRootNodes(DeserializationContext pContext)
 	{
@@ -108,7 +110,7 @@ public final class JsonDecoder
 	}
 	
 	/* 
-	 * Restores the parent-child hierarchy within the context's graph. Assumes
+	 * Restores the parent-child hierarchy within the context's diagram. Assumes
 	 * the context has been initialized with all the nodes.
 	 */
 	private static void restoreChildren(DeserializationContext pContext, JSONObject pObject)
@@ -131,7 +133,7 @@ public final class JsonDecoder
 	
 	/* 
 	 * Extracts information about nodes from pObject and creates new objects
-	 * to represent them in pGraph.
+	 * to represent them.
 	 * throws Deserialization Exception
 	 */
 	private static void decodeEdges(DeserializationContext pContext, JSONObject pObject)

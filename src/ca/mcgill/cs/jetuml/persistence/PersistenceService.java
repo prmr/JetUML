@@ -71,14 +71,13 @@ public final class PersistenceService
 	 * @throws DeserializationException if there is a problem decoding the file.
 	 * @pre pFile != null
 	 */
-	public static Diagram read(File pFile) throws IOException, DeserializationException
+	public static VersionedDiagram read(File pFile) throws IOException, DeserializationException
 	{
 		assert pFile != null;
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
-			Diagram graph = JsonDecoder.decode(new JSONObject(in.readLine()));
-			return graph;
+			return JsonDecoder.decode(new JSONObject(in.readLine()));
 		}
 		catch( JSONException e )
 		{

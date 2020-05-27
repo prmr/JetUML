@@ -276,7 +276,7 @@ public class EditorFrame extends BorderPane
 		
 		try 
 		{
-			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile));
+			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile).diagram());
 			frame.setFile(pFile.getAbsoluteFile());
 			addRecentFile(pFile.getPath());
 			insertGraphFrameIntoTabbedPane(frame);
