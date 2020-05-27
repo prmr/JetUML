@@ -30,6 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -140,5 +141,16 @@ public final class PackageDescriptionNodeViewer extends AbstractNodeViewer
 		
 		return new Rectangle(position.getX(), position.getY() + topDimension.getHeight(), 
 				width, height);
+	}
+	
+	/*
+	 * Custom version to distinguish package descriptions from package nodes.
+	 */
+	@Override
+	public Canvas createIcon(Node pNode)
+	{
+		Canvas icon = super.createIcon(pNode);
+		CONTENTS_VIEWER.draw("description", icon.getGraphicsContext2D(), getBottomBounds(pNode));
+		return icon;
 	}
 }
