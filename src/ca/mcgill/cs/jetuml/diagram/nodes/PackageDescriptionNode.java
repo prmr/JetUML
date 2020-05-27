@@ -21,43 +21,21 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
-import java.util.Optional;
-
-import ca.mcgill.cs.jetuml.diagram.Node;
-
 /**
  * A package description node in a UML diagram.
  */
-public final class PackageDescriptionNode extends AbstractNode
+public final class PackageDescriptionNode extends AbstractPackageNode
 {
-	private String aName = "";
 	private String aContents = "";
-	private Optional<Node> aContainer = Optional.empty();
 	
-	/**
-     * Sets the name property value.
-     * @param pName the class name
-	 */
-	public void setName(String pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the class name
-	 */
-	public String getName()
-	{
-		return aName;
-	}
-
 	/**
      * Sets the contents property value.
      * @param pContents the contents of this class
+     * @pre pContents != null
 	 */
 	public void setContents(String pContents)
 	{
+		assert pContents != null;
 		aContents = pContents;
 	}
 	
@@ -77,43 +55,9 @@ public final class PackageDescriptionNode extends AbstractNode
 	}
 	
 	@Override
-	public Node getParent()
-	{
-		assert hasParent();
-		return aContainer.get();
-	}
-
-	@Override
-	public void link(Node pNode)
-	{
-		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = Optional.of(pNode);
-	}
-	
-	@Override
-	public void unlink()
-	{
-		assert hasParent();
-		aContainer = Optional.empty();
-	}
-
-	@Override
-	public boolean requiresParent()
-	{
-		return false;
-	}
-	
-	@Override
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("name", () -> aName, pName -> aName = (String)pName);
 		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
-	}
-
-	@Override
-	public boolean hasParent()
-	{
-		return aContainer.isPresent();
 	}
 }
