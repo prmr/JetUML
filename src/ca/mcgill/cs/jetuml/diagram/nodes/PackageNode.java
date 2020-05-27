@@ -24,42 +24,21 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 
 /**
  * A package node in a UML diagram.
  */
-public final class PackageNode extends AbstractNode
+public final class PackageNode extends AbstractPackageNode
 {
-	private String aName = "";
 	private ArrayList<Node> aContainedNodes = new ArrayList<>();
-	private Optional<Node> aContainer = Optional.empty();
 	
-	/**
-     * Sets the name property value.
-     * @param pName the class name
-	 */
-	public void setName(String pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the class name
-	 */
-	public String getName()
-	{
-		return aName;
-	}
-
 	@Override
 	public void translate(int pDeltaX, int pDeltaY)
 	{
 		super.translate(pDeltaX, pDeltaY);
-		getChildren().forEach(child -> child.translate(pDeltaX, pDeltaY));
+		aContainedNodes.forEach(child -> child.translate(pDeltaX, pDeltaY));
 	}
 
 	@Override
@@ -77,27 +56,6 @@ public final class PackageNode extends AbstractNode
 		return cloned;
 	}
 	
-	@Override
-	public Node getParent()
-	{
-		assert hasParent();
-		return aContainer.get();
-	}
-
-	@Override
-	public void link(Node pNode)
-	{
-		assert pNode instanceof PackageNode || pNode == null;
-		aContainer = Optional.of(pNode);
-	}
-	
-	@Override
-	public void unlink()
-	{
-		assert hasParent();
-		aContainer = Optional.empty();
-	}
-
 	@Override
 	public List<Node> getChildren()
 	{
@@ -131,25 +89,6 @@ public final class PackageNode extends AbstractNode
 		assert pNode.getParent() == this;
 		aContainedNodes.remove(pNode);
 		pNode.unlink();
-	}
-	
-	@Override
-	public boolean requiresParent()
-	{
-		return false;
-	}
-	
-	@Override
-	protected void buildProperties()
-	{
-		super.buildProperties();
-		properties().add("name", () -> aName, pName -> aName = (String)pName);
-	}
-
-	@Override
-	public boolean hasParent()
-	{
-		return aContainer.isPresent();
 	}
 	
 	@Override

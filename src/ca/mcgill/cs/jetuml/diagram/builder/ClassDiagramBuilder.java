@@ -32,7 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -107,9 +107,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	
 	private static boolean validChild(Node pPotentialChild)
 	{
-		return pPotentialChild instanceof TypeNode || 
-					pPotentialChild instanceof PackageNode ||
-					pPotentialChild instanceof PackageDescriptionNode;
+		return pPotentialChild instanceof TypeNode || pPotentialChild instanceof AbstractPackageNode;
 	}
 	
 	/* 

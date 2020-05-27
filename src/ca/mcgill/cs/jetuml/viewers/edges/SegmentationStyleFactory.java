@@ -34,7 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge.Type;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.geom.Conversions;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -121,7 +121,7 @@ public final class SegmentationStyleFactory
 	 */
 	private static Point2D findTopRightCorner(Node pNode)
 	{
-		if( pNode instanceof PackageNode )
+		if( pNode instanceof AbstractPackageNode )
 		{
 			return Conversions.toPoint2D(new PackageNodeViewer().getTopRightCorner(pNode)); // TODO reuse object
 		}
