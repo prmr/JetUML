@@ -75,9 +75,8 @@ public class AboutDialog
 		Text name = new Text(RESOURCES.getString("application.name"));
 		name.setStyle("-fx-font-size: 18pt;");
 		
-		Text version = new Text(String.format("%s %s (%s)", RESOURCES.getString("dialog.about.version"), 
-				RESOURCES.getString("application.version.number"), 
-				RESOURCES.getString("application.version.date")));
+		Text version = new Text(String.format("%s %s", RESOURCES.getString("dialog.about.version"), 
+				UMLEditor.VERSION));
 		
 		Text copyright = new Text(RESOURCES.getString("application.copyright"));
 		

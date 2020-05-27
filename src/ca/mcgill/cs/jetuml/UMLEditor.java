@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import ca.mcgill.cs.jetuml.gui.GuiUtils;
@@ -37,6 +38,9 @@ import javafx.stage.Stage;
  */
 public final class UMLEditor extends Application
 {
+	@SuppressWarnings("exports")
+	public static final Version VERSION = Version.create(3, 0);
+	
 	private static HostServices aHostServices; // Required to open a browser page.
 	
 	/**
