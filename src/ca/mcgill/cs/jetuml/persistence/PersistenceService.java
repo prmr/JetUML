@@ -77,7 +77,9 @@ public final class PersistenceService
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream(pFile), StandardCharsets.UTF_8)))
 		{
-			return JsonDecoder.decode(new JSONObject(in.readLine()));
+			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
+			// Replace VersionMigrator.migrate with JSonDecoder.decode
+			return VersionMigrator.migrate(new JSONObject(in.readLine())); 
 		}
 		catch( JSONException e )
 		{
