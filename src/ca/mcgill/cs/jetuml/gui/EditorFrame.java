@@ -50,6 +50,7 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
+import ca.mcgill.cs.jetuml.persistence.VersionedDiagram;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -276,10 +277,20 @@ public class EditorFrame extends BorderPane
 		
 		try 
 		{
-			DiagramTab frame = new DiagramTab(PersistenceService.read(pFile).diagram());
+			VersionedDiagram versionedDiagram = PersistenceService.read(pFile); // TODO
+			DiagramTab frame = new DiagramTab(versionedDiagram.diagram());
 			frame.setFile(pFile.getAbsoluteFile());
 			addRecentFile(pFile.getPath());
 			insertGraphFrameIntoTabbedPane(frame);
+			if( !versionedDiagram.version().compatibleWith(UMLEditor.VERSION))
+			{
+				String message = String.format(RESOURCES.getString("warning.version.message"), 
+						versionedDiagram.version().toString(), UMLEditor.VERSION.toString());
+				Alert alert = new Alert(AlertType.WARNING, message, ButtonType.OK);
+				alert.setTitle(RESOURCES.getString("warning.version.title"));
+				alert.initOwner(aMainStage);
+				alert.showAndWait();
+			}
 		}
 		catch(IOException | DeserializationException exception) 
 		{

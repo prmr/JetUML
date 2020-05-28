@@ -50,7 +50,7 @@ public final class JsonEncoder
 		assert pDiagram != null;
 		
 		JSONObject object = new JSONObject();
-		object.put("version", UMLEditor.VERSION);
+		object.put("version", UMLEditor.VERSION.toString());
 		object.put("diagram", pDiagram.getName());
 		SerializationContext context = new SerializationContext(pDiagram);
 		object.put("nodes", encodeNodes(context));
