@@ -137,4 +137,25 @@ public class TestVersion
 	{
 		assertTrue(VERSION1.compareTo(VERSION2) > 0 );
 	}
+	
+	@Test
+	public void compatibleWith_Same()
+	{
+		assertTrue(VERSION1.compatibleWith(VERSION1));
+		assertTrue(VERSION2.compatibleWith(VERSION2));
+	}
+	
+	@Test
+	public void compatibleWith_False()
+	{
+		assertFalse(Version.create(2,1).compatibleWith(Version.create(3, 0)));
+		assertFalse(Version.create(2,1,1).compatibleWith(Version.create(3, 0, 1)));
+	}
+	
+	@Test
+	public void compatibleWith_True()
+	{
+		assertTrue(Version.create(2,1).compatibleWith(Version.create(2, 2)));
+		assertTrue(Version.create(3,0).compatibleWith(Version.create(3, 1)));
+	}
 }

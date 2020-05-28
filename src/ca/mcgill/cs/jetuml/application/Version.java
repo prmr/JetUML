@@ -156,4 +156,18 @@ public final class Version implements Comparable<Version>
 		Version other = (Version) pObject;
 		return aMajor == other.aMajor && aMinor == other.aMinor && aPatch == other.aPatch;
 	}
+	
+	/**
+	 * Determines if this version of the diagram is fully compatible
+	 * with pLaterVersion of the application.
+	 * 
+	 * @param pLaterVersion The version to load a diagram in.
+	 * @return true if this version is fully supported by pLaterVersion.
+	 * @pre pLaterVersion != null
+	 */
+	public boolean compatibleWith(Version pLaterVersion)
+	{
+		assert pLaterVersion != null;
+		return !(aMajor < 3 && pLaterVersion.aMajor >= 3);
+	}
 }
