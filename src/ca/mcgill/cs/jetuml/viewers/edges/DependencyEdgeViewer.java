@@ -27,17 +27,13 @@ import ca.mcgill.cs.jetuml.views.LineStyle;
 /**
  * A straight dotted line.
  */
-public final class DependencyEdgeViewer extends SegmentedEdgeViewer
+public final class DependencyEdgeViewer extends LabeledStraightEdgeViewer
 {	
 	/**
 	 * Creates a viewer for DependencyEdge instances.
 	 */
 	public DependencyEdgeViewer()
 	{
-		super(SegmentationStyleFactory.createStraightStrategy(),
-				e -> LineStyle.DOTTED, e -> ArrowHead.NONE, e -> ArrowHead.V,
-				e -> "", 
-				e -> ((DependencyEdge)e).getMiddleLabel(), 
-				e -> "");
+		super(LineStyle.DOTTED, ArrowHead.V, edge -> ((DependencyEdge)edge).getMiddleLabel());
 	}
 }

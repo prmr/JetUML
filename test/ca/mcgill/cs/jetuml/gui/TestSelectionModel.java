@@ -383,17 +383,6 @@ public class TestSelectionModel
 		assertEntireSelectionBounds(10, 10, 190, 150); 
 	}
 	
-	@Test
-	public void testGetEntireSelectionBoundsSelfEdge()
-	{
-		aModel.addToSelection(aNode1);
-		aEdge1.connect(aNode1, aNode1, aClassDiagram);
-		aClassDiagram.addEdge(aEdge1);
-		aModel.addToSelection(aEdge1);
-		aNode1.translate(100,100);
-		assertEntireSelectionBounds(100, 79, 121, 81); 
-	}
-	
 	@Test 
 	public void testGetSelectionBoundsOneNode() 
 	{
