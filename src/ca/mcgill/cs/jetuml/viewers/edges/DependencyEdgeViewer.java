@@ -20,9 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge.Directionality;
+import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * A straight dotted line.
@@ -35,5 +39,16 @@ public final class DependencyEdgeViewer extends LabeledStraightEdgeViewer
 	public DependencyEdgeViewer()
 	{
 		super(LineStyle.DOTTED, ArrowHead.V, edge -> ((DependencyEdge)edge).getMiddleLabel());
+	}
+	
+	@Override
+	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	{
+		super.draw(pEdge, pGraphics);
+		if( ((DependencyEdge)pEdge).getDirectionality() == Directionality.Bidirectional )
+		{
+			Line connectionPoints = getConnectionPoints(pEdge);
+			ArrowHead.V.view().draw(pGraphics, connectionPoints.getPoint2(), connectionPoints.getPoint1());
+		}
 	}
 }
