@@ -79,7 +79,7 @@ public final class PersistenceService
 		{
 			// Extra wrapper to support backward compatibility. Eventually take down the migrator.
 			// Replace VersionMigrator.migrate with JSonDecoder.decode
-			return VersionMigrator.migrate(new JSONObject(in.readLine())); 
+			return new VersionMigrator().migrate(new JSONObject(in.readLine())); 
 		}
 		catch( JSONException e )
 		{

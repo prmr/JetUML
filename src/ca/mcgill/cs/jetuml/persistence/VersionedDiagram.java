@@ -25,18 +25,21 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 
 /**
  * Wrapper for a diagram object that also stores
- * the version of JetUML with wich the diagram was
- * serialized.
+ * the version of JetUML with which the diagram was
+ * serialized, and whether it needed to be transformed
+ * to be migrated to 3.0.
  */
 public final class VersionedDiagram
 {
 	private final Diagram aDiagram;
-	private final Version aVersion;
+	private final Version aOriginalVersion;
+	private final boolean aMigrated;
 	
-	VersionedDiagram(Diagram pDiagram, Version pVersion)
+	VersionedDiagram(Diagram pDiagram, Version pVersion, boolean pMigrated)
 	{
 		aDiagram = pDiagram;
-		aVersion = pVersion;
+		aOriginalVersion = pVersion;
+		aMigrated = pMigrated;
 	}
 	
 	/**
@@ -53,6 +56,15 @@ public final class VersionedDiagram
 	 */
 	public Version version()
 	{
-		return aVersion;
+		return aOriginalVersion;
+	}
+	
+	/**
+	 * @return True if the diagram was transformed from its 
+	 *     original encoding.
+	 */
+	public boolean wasMigrated()
+	{
+		return aMigrated;
 	}
 }

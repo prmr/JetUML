@@ -41,7 +41,12 @@ import ca.mcgill.cs.jetuml.application.Version;
  */
 public final class VersionMigrator
 {
-	private VersionMigrator() {}
+	private boolean aMigrated;
+	
+	/**
+	 * Creates a new version migrator. Can be reused.
+	 */
+	public VersionMigrator() {}
 
 	/**
 	 * Currently for testing.
@@ -53,7 +58,7 @@ public final class VersionMigrator
 		try( BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream("test.class.jet"), StandardCharsets.UTF_8)))
 		{
-			migrate(new JSONObject(in.readLine()));
+			new VersionMigrator().migrate(new JSONObject(in.readLine()));
 		}
 		catch( JSONException e )
 		{
@@ -65,23 +70,26 @@ public final class VersionMigrator
 	 * @param pDiagram The loaded diagram to migrate
 	 * @return A migrated Diagram object.
 	 */
-	public static VersionedDiagram migrate(JSONObject pDiagram)
+	public VersionedDiagram migrate(JSONObject pDiagram)
 	{
-		assert Version.parse(pDiagram.getString("version")).compareTo(Version.create(3, 0)) < 0;
+		aMigrated = false;
+		
 		// JSONObject to JSONObject conversions
 		convertPackageNodeToPackageDescriptionNode(pDiagram);
-		return JsonDecoder.decode(pDiagram);
+		Version version = Version.parse(pDiagram.getString("version"));
+		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
 	}
 	
-	private static void convertPackageNodeToPackageDescriptionNode(JSONObject pDiagram)
+	private void convertPackageNodeToPackageDescriptionNode(JSONObject pDiagram)
 	{
 		JSONArray nodes = pDiagram.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			JSONObject object = nodes.getJSONObject(i);
-			if( object.getString("type").equals("PackageNode") && !object.has("children") )
+			if( object.getString("type").equals("PackageNode") && !object.has("children") && object.has("contents"))
 			{
 				object.put("type", "PackageDescriptionNode");
+				aMigrated = true;
 			}
 		}
 	}

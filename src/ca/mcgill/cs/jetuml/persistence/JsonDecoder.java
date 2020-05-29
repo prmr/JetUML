@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -46,20 +45,19 @@ public final class JsonDecoder
 	 * @return The decoded diagram.
 	 * @throws DeserializationException If it's not possible to decode the object into a valid diagram.
 	 */
-	public static VersionedDiagram decode(JSONObject pDiagram)
+	public static Diagram decode(JSONObject pDiagram)
 	{
 		assert pDiagram != null;
 		try
 		{
 			Diagram diagram = new Diagram(DiagramType.fromName(pDiagram.getString("diagram")));
-			Version version = Version.parse(pDiagram.getString("version"));
 			DeserializationContext context = new DeserializationContext(diagram);
 			decodeNodes(context, pDiagram);
 			restoreChildren(context, pDiagram);
 			restoreRootNodes(context);
 			decodeEdges(context, pDiagram);
 			context.attachNodes();
-			return new VersionedDiagram(diagram, version);
+			return diagram;
 		}
 		catch( JSONException | IllegalArgumentException exception )
 		{

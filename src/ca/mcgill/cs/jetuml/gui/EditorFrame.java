@@ -277,15 +277,15 @@ public class EditorFrame extends BorderPane
 		
 		try 
 		{
-			VersionedDiagram versionedDiagram = PersistenceService.read(pFile); // TODO
+			VersionedDiagram versionedDiagram = PersistenceService.read(pFile); 
 			DiagramTab frame = new DiagramTab(versionedDiagram.diagram());
 			frame.setFile(pFile.getAbsoluteFile());
 			addRecentFile(pFile.getPath());
 			insertGraphFrameIntoTabbedPane(frame);
-			if( !versionedDiagram.version().compatibleWith(UMLEditor.VERSION))
+			if( versionedDiagram.wasMigrated())
 			{
 				String message = String.format(RESOURCES.getString("warning.version.message"), 
-						versionedDiagram.version().toString(), UMLEditor.VERSION.toString());
+						versionedDiagram.version().toString());
 				Alert alert = new Alert(AlertType.WARNING, message, ButtonType.OK);
 				alert.setTitle(RESOURCES.getString("warning.version.title"));
 				alert.initOwner(aMainStage);
