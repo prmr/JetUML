@@ -42,6 +42,7 @@ import ca.mcgill.cs.jetuml.application.Version;
  * * A PackageNode with only content (no children) will be transformed into a PackageDescriptionNode
  * * DependencyEdge elements that have the same start and end node are removed
  * * The startLabel and endLabel property of DependencyEdges are removed
+ * * A directionality property is added to DependencyEdge elements
  */
 public final class VersionMigrator
 {
@@ -81,6 +82,7 @@ public final class VersionMigrator
 		// JSONObject to JSONObject conversions
 		convertPackageNodeToPackageDescriptionNode(pDiagram);
 		removeSelfDependencies(pDiagram);
+		addDirectionalityPropertyToDependencyEdges(pDiagram);
 		
 		Version version = Version.parse(pDiagram.getString("version"));
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
@@ -117,5 +119,19 @@ public final class VersionMigrator
 			}
 		}
 		pDiagram.put("edges", new JSONArray(newEdges));
+	}
+	
+	private void addDirectionalityPropertyToDependencyEdges(JSONObject pDiagram)
+	{
+		JSONArray edges = pDiagram.getJSONArray("edges");
+		for( int i = 0; i < edges.length(); i++ )
+		{
+			JSONObject object = edges.getJSONObject(i);
+			if( object.getString("type").equals("DependencyEdge"))
+			{
+				object.put("directionality", "Unidirectional");
+				aMigrated = true; 
+			}
+		}
 	}
 }
