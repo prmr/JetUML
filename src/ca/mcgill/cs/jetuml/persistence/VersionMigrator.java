@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +78,8 @@ public final class VersionMigrator
 		
 		// JSONObject to JSONObject conversions
 		convertPackageNodeToPackageDescriptionNode(pDiagram);
+		removeSelfDependencies(pDiagram);
+		
 		Version version = Version.parse(pDiagram.getString("version"));
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
 	}
@@ -92,5 +96,24 @@ public final class VersionMigrator
 				aMigrated = true;
 			}
 		}
+	}
+	
+	private void removeSelfDependencies(JSONObject pDiagram)
+	{
+		JSONArray edges = pDiagram.getJSONArray("edges");
+		List<JSONObject> newEdges = new ArrayList<>();
+		for( int i = 0; i < edges.length(); i++ )
+		{
+			JSONObject object = edges.getJSONObject(i);
+			if( object.getString("type").equals("DependencyEdge") && object.getInt("start") == object.getInt("end"))
+			{
+				aMigrated = true; // We don't add the dependency, essentially removing it.
+			}
+			else
+			{
+				newEdges.add(object);
+			}
+		}
+		pDiagram.put("edges", new JSONArray(newEdges));
 	}
 }
