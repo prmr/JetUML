@@ -320,14 +320,6 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeSelfDependency()
-	{
-		ClassNode node1 = new ClassNode();
-		aDiagram.addRootNode(node1);
-		assertTrue(aBuilder.canAdd(new DependencyEdge(), new Point(15,15), new Point(15,15)));
-	}
-	
-	@Test
 	public void testCanAddNoteEdgeNoNoteNode()
 	{
 		ClassNode start = new ClassNode();

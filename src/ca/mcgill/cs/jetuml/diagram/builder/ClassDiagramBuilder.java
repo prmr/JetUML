@@ -101,7 +101,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	{
 		return new ConstraintSet(
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd)
+				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd),
+				ClassDiagramEdgeConstraints.noSelfDependency(pEdge, pStart, pEnd)
 		);
 	}
 	

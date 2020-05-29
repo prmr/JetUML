@@ -561,19 +561,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	}
 	
 	@Test
-	public void testConnectInnerNodeWithEdges()
-	{
-		addNode(aPackageNode, new Point(20, 20));
-		addNode(aClassNode1, new Point(25, 25));
-		addNode(aClassNode2, new Point(30, 30));
-		moveNode(aClassNode2, 30, 30);
-		addEdge(aDependencyEdge, new Point(26, 26), new Point(65, 31));
-	
-		assertEquals(1, numberOfRootNodes());
-		assertEquals(1, numberOfEdges());
-	}
-	
-	@Test
 	public void testCutNodesAndEdgesInsidePackageNode()
 	{
 		addNode(aPackageNode, new Point(20, 20));

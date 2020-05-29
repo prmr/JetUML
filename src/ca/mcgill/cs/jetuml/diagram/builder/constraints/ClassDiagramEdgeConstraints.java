@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 
 /**
@@ -41,6 +42,17 @@ public final class ClassDiagramEdgeConstraints
 		return ()-> 
 		{
 			return !( pEdge.getClass() == GeneralizationEdge.class && pStart == pEnd );
+		};
+	}
+	
+	/*
+	 * Self edges are not allowed for Dependency edges.
+	 */
+	public static Constraint noSelfDependency(Edge pEdge, Node pStart, Node pEnd)
+	{
+		return () ->
+		{
+			return !( pEdge.getClass() == DependencyEdge.class && pStart == pEnd );
 		};
 	}
 }
