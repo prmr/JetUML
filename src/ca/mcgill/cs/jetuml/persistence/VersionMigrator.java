@@ -40,6 +40,8 @@ import ca.mcgill.cs.jetuml.application.Version;
  * Rules:
  * * A PackageNode with both content and children will lose its content
  * * A PackageNode with only content (no children) will be transformed into a PackageDescriptionNode
+ * * DependencyEdge elements that have the same start and end node are removed
+ * * The startLabel and endLabel property of DependencyEdges are removed
  */
 public final class VersionMigrator
 {

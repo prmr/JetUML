@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 
 /**
  *  An edge that that represents a UML dependency
- *  with optional labels.
+ *  with an optional label.
  */
-public final class DependencyEdge extends ThreeLabelEdge
+public final class DependencyEdge extends SingleLabelEdge
 {}

@@ -61,7 +61,7 @@ public class TestEdgeProperties
                 Arguments.of(new AggregationEdge(), new String[] {"Aggregation Type", "startLabel",  "middleLabel", "endLabel"}),
                 Arguments.of(new AssociationEdge(), new String[] {"directionality", "startLabel",  "middleLabel", "endLabel"}),
                 Arguments.of(new CallEdge(), new String[] {"signal", "middleLabel"}),
-                Arguments.of(new DependencyEdge(), new String[] {"startLabel",  "middleLabel", "endLabel"}),
+                Arguments.of(new DependencyEdge(), new String[] {"middleLabel"}),
                 Arguments.of(new GeneralizationEdge(), new String[] {"Generalization Type", "startLabel",  "middleLabel", "endLabel"}),
                 Arguments.of(new NoteEdge(), new String[] {}),
                 Arguments.of(new ObjectCollaborationEdge(), new String[] {"middleLabel"}),

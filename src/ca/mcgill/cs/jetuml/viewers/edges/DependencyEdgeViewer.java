@@ -36,8 +36,8 @@ public final class DependencyEdgeViewer extends SegmentedEdgeViewer
 	{
 		super(SegmentationStyleFactory.createStraightStrategy(),
 				e -> LineStyle.DOTTED, e -> ArrowHead.NONE, e -> ArrowHead.V,
-				e -> ((DependencyEdge)e).getStartLabel(), 
+				e -> "", 
 				e -> ((DependencyEdge)e).getMiddleLabel(), 
-				e -> ((DependencyEdge)e).getEndLabel());
+				e -> "");
 	}
 }
