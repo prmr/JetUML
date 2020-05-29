@@ -359,7 +359,7 @@ public final class Diagram implements DiagramData
 		// If pNode is a call node in the sequence diagram, do nothing
 		if( aType == DiagramType.SEQUENCE && pNode.getClass() == CallNode.class )
 		{
-			//return;
+			return;
 		}
 		if( pNode.hasParent() )
 		{
