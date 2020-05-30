@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
 public class TestDiagram 
@@ -93,9 +95,9 @@ public class TestDiagram
 	{
 		aDiagram.addRootNode(aNode2);
 		aDiagram.placeOnTop(aNode1);
-		Iterator<Node> pIterator = aDiagram.rootNodes().iterator();
-		assertSame(pIterator.next(), aNode2);
-		assertFalse(pIterator.hasNext());
+		List<Node> rootList = aDiagram.rootNodes();
+		assertSame(rootList.get(0), aNode2);
+		assertTrue(rootList.size()==1);
 	}
 	
 	@Test
@@ -110,10 +112,28 @@ public class TestDiagram
 		aDiagram.addRootNode(aNode1);
 		aDiagram.placeOnTop(aNode2);
 		
-		Iterator<Node> pIterator = aDiagram.rootNodes().iterator();
-		assertSame(pIterator.next(), aNode1);
-		assertSame(pIterator.next(), aNode4);
+		List<Node> rootList = aDiagram.rootNodes();
+		assertSame(rootList.get(0), aNode1);
+		assertSame(rootList.get(1), aNode4);
 		// Ensure that the moved child node is now on top of all children
 		assertSame(aNode4.getChildren().get(1), aNode2);
+	}
+	
+	@Test
+	public void testPlaceOnTop_SequenceDiagramWithCallNodes()
+	{
+		ImplicitParameterNode implicitParameterNode = new ImplicitParameterNode();
+		CallNode callNode1 = new CallNode();
+		CallNode callNode2 = new CallNode();
+		implicitParameterNode.addChild(callNode1);
+		implicitParameterNode.addChild(callNode2);
+		Diagram sequenceDiagram = new Diagram(DiagramType.SEQUENCE);
+		sequenceDiagram.addRootNode(implicitParameterNode);
+		sequenceDiagram.placeOnTop(callNode1);
+		
+		// The order of the call nodes remains the same
+		List<Node> childNodes = implicitParameterNode.getChildren();
+		assertSame(childNodes.get(0),callNode1);
+		assertSame(childNodes.get(1), callNode2);
 	}
 }
