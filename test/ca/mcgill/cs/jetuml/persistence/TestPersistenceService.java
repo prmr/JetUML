@@ -348,7 +348,7 @@ public class TestPersistenceService
 		assertEquals(7, numberOfRootNodes(pDiagram));
 		
 		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class1"));
-		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", "\u00ABinterface\u00BB\n"));
+		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", ""));
 		ClassNode node3 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class2"));
 		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class3"));
 		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "Package"));
@@ -362,7 +362,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(460, 370, 100, 60), NodeViewerRegistry.getBounds(node1));
 		
 		assertEquals("", node2.getMethods());
-		assertEquals("\u00ABinterface\u00BB\n", node2.getName());
+		assertEquals("", node2.getName());
 		assertFalse(node2.hasParent());
 		assertEquals(new Rectangle(460, 250, 100, 60), NodeViewerRegistry.getBounds(node2));
 		
