@@ -357,7 +357,7 @@ public final class Diagram implements DiagramData
 	{
 		assert pNode != null;
 		// If pNode is a call node in the sequence diagram, do nothing
-		if( aType == DiagramType.SEQUENCE && pNode.getClass() == CallNode.class )
+		if( pNode.getClass() == CallNode.class )
 		{
 			return;
 		}
