@@ -18,11 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
+package ca.mcgill.cs.jetuml.viewers.nodes;
 
-package ca.mcgill.cs.jetuml.diagram.nodes;
+import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 
 /**
- * An interface node in a class diagram.
+ * An object to render an interface in a class diagram.
  */
-public class InterfaceNode extends TypeNode
-{}
+public final class InterfaceNodeViewer extends TypeNodeViewer
+{
+	/**
+	 * Adds the interface Stereotype to the name.
+	 * 
+	 * @param pNode The Node.
+	 * @return The text to show as the name of the node.
+	 * @pre pNode != null
+	 */
+	protected String getNameText(TypeNode pNode)
+	{
+		return "«interface»\n" + pNode.getName();
+	}
+}

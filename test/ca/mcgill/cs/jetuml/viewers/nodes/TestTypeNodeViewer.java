@@ -81,62 +81,62 @@ public class TestTypeNodeViewer
 	
 	private static Stream<Arguments> provideArgumentsForTestBounds() {
 	    return Stream.of(
-	      createInterfaceNode1(),
-	      createInterfaceNode2(),
-	      createInterfaceNode3(),
-	      createInterfaceNode4(),
-	      createInterfaceNode5(),
-	      createInterfaceNode6()
+	      createClassNode1(),
+	      createClassNode2(),
+	      createClassNode3(),
+	      createClassNode4(),
+	      createClassNode5(),
+	      createClassNode6()
 	    );
 	}
 	
 	// At (0,0); name is just the interface prototype, no methods
-	private static Arguments createInterfaceNode1()
+	private static Arguments createClassNode1()
 	{
-		return Arguments.of(new InterfaceNode(), 
+		return Arguments.of(new ClassNode(), 
 				new Rectangle(0,0, 100, 60)); // Default width and height
 	}
 	
 	// At (10,20); name is just the interface prototype, no methods
-	private static Arguments createInterfaceNode2()
+	private static Arguments createClassNode2()
 	{
-		InterfaceNode node = new InterfaceNode();
+		ClassNode node = new ClassNode();
 		node.moveTo(new Point(10,20));
 		return Arguments.of(node, 
 				new Rectangle(10, 20, 100, 60)); // Default width and height, translated
 	}
 	
 	// At (0,0), name is a single line
-	private static Arguments createInterfaceNode3()
+	private static Arguments createClassNode3()
 	{
-		InterfaceNode node = new InterfaceNode();
+		ClassNode node = new ClassNode();
 		node.setName(node.getName() + "NAME");
 		return Arguments.of(node, 
 				new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
 	
 	// At (0,0) name is two lines, no methods
-	private static Arguments createInterfaceNode4()
+	private static Arguments createClassNode4()
 	{
-		InterfaceNode node = new InterfaceNode();
+		ClassNode node = new ClassNode();
 		node.setName(node.getName() + "NAME");
 		return Arguments.of(node, 
 				new Rectangle(0, 0, 100, 60)); // Default width and height
 	}
 	
-	// At (0,0) name is three lines, no methods
-	private static Arguments createInterfaceNode5()
+	// At (0,0) name is four lines, no methods
+	private static Arguments createClassNode5()
 	{
-		InterfaceNode node = new InterfaceNode();
-		node.setName(node.getName() + "NAME1\nNAME2\nNAME3");
+		ClassNode node = new ClassNode();
+		node.setName("NAME1\nNAME2\nNAME3\nNAME4");
 		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, osDependent(71, 65, 65))); // Default width and additional height
+				new Rectangle(0, 0, 100, osDependent(70, 65, 65))); // Default width and additional height
 	}
 
 	// Name is just the interface prototype, one methods
-	private static Arguments createInterfaceNode6()
+	private static Arguments createClassNode6()
 	{
-		InterfaceNode node = new InterfaceNode();
+		ClassNode node = new ClassNode();
 		node.setMethods("METHODS");
 		return Arguments.of(node, 
 				new Rectangle(0, 0, 100, 60)); // Default width and height

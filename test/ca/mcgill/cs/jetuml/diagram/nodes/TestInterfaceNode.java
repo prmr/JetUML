@@ -40,7 +40,7 @@ public class TestInterfaceNode
 	@Test
 	public void testDefault()
 	{
-		assertEquals("\u00ABinterface\u00BB\n", aNode1.getName());
+		assertEquals("", aNode1.getName());
 		String methods = aNode1.getMethods();
 		assertEquals("", methods);
 		assertFalse(aNode1.hasParent());

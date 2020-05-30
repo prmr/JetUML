@@ -37,7 +37,7 @@ import javafx.scene.canvas.GraphicsContext;
  * The top box, which shows the title, has a minimum height of 20 pixels,
  * minus 20 if attributes are present, minus another 20 if methods are present.
  */
-public final class TypeNodeViewer extends AbstractNodeViewer
+public class TypeNodeViewer extends AbstractNodeViewer
 {
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
@@ -56,7 +56,7 @@ public final class TypeNodeViewer extends AbstractNodeViewer
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
 		ViewUtils.drawRectangle(pGraphics, bounds);	
-		NAME_VIEWER.draw(node.getName(), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
+		NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
 		
 		if( attributeHeight > 0 )
 		{
@@ -89,9 +89,9 @@ public final class TypeNodeViewer extends AbstractNodeViewer
 		return textDimensions(pNode.getMethods()).getHeight();
 	}
 	
-	private static int nameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight)
+	private int nameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight)
 	{
-		final int textHeight = max(textDimensions(pNode.getName()).getHeight(), TOP_INCREMENT);
+		final int textHeight = max(textDimensions(getNameText(pNode)).getHeight(), TOP_INCREMENT);
 		final int freeSpaceInTopBox = DEFAULT_HEIGHT - textHeight;
 		if( freeSpaceInTopBox < 0 )
 		{
@@ -123,11 +123,24 @@ public final class TypeNodeViewer extends AbstractNodeViewer
 		final int attributeHeight = attributeBoxHeight(node);
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
-		Dimension nameDimension = textDimensions(node.getName());
+		Dimension nameDimension = textDimensions(getNameText(node));
 		Dimension attributeDimension = textDimensions(node.getAttributes());
 		Dimension methodDimension = textDimensions(node.getMethods());
 		int width = max(DEFAULT_WIDTH, nameDimension.getWidth(), attributeDimension.getWidth(), methodDimension.getWidth());
 		int height = attributeHeight + methodHeight + nameHeight;
 		return new Rectangle(node.position().getX(), node.position().getY(), width, height);
+	}
+	
+	/**
+	 * By default the name text is the name of the node.
+	 * 
+	 * @param pNode The Node.
+	 * @return The text to show as the name of the node.
+	 * @pre pNode != null
+	 */
+	protected String getNameText(TypeNode pNode)
+	{
+		assert pNode != null;
+		return pNode.getName();
 	}
 }
