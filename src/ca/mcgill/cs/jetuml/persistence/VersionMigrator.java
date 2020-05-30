@@ -37,11 +37,15 @@ import ca.mcgill.cs.jetuml.application.Version;
 /**
  * Utility class to migrate a pre-3.0 saved diagram to post 3.0.
  * 
- * Rules: * A PackageNode with both content and children will lose its content * A PackageNode with only content (no
- * children) will be transformed into a PackageDescriptionNode * DependencyEdge elements that have the same start and
- * end node are removed * The startLabel and endLabel property of DependencyEdges are removed * A directionality
- * property is added to DependencyEdge elements * Dependency edges between two same nodes, but in both directions, are
- * replaced with a single bidirectional edge whose label is the concatenation of the two original ones.
+ * Rules: 
+ * * A PackageNode with both content and children will lose its content 
+ * * A PackageNode with only content (no children) will be transformed into a PackageDescriptionNode
+ * * DependencyEdge elements that have the same start and end node are removed 
+ * * The startLabel and endLabel property of DependencyEdges are removed 
+ * * A directionality property is added to DependencyEdge elements 
+ * * Dependency edges between two same nodes, but in both directions, are replaced with a single 
+ *       bidirectional edge whose label is the concatenation of the two original ones.
+ * * The interface stereotype is removed from the name of interface nodes
  */
 public final class VersionMigrator
 {
@@ -51,8 +55,7 @@ public final class VersionMigrator
 	 * Creates a new version migrator. Can be reused.
 	 */
 	public VersionMigrator()
-	{
-	}
+	{}
 
 	/**
 	 * Currently for testing.
@@ -89,6 +92,7 @@ public final class VersionMigrator
 		removeSelfDependencies(pDiagram);
 		addDirectionalityPropertyToDependencyEdges(pDiagram);
 		replaceDualDependenciesWithBidirectionalEdge(pDiagram);
+		removeInterfaceStereotype(pDiagram);
 
 		Version version = Version.parse(pDiagram.getString("version"));
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
@@ -104,6 +108,23 @@ public final class VersionMigrator
 			{
 				object.put("type", "PackageDescriptionNode");
 				aMigrated = true;
+			}
+		}
+	}
+	
+	private void removeInterfaceStereotype(JSONObject pDiagram)
+	{
+		JSONArray nodes = pDiagram.getJSONArray("nodes");
+		for( int i = 0; i < nodes.length(); i++ )
+		{
+			JSONObject object = nodes.getJSONObject(i);
+			if( object.getString("type").equals("InterfaceNode") )
+			{
+				if( object.getString("name").contains("«interface»"))
+				{
+					object.put("name", object.getString("name").replace("«interface»", "").trim());
+					aMigrated = true;
+				}
 			}
 		}
 	}
