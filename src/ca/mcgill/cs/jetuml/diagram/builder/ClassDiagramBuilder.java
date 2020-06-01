@@ -33,6 +33,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstrain
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
@@ -104,7 +105,8 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
 				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd),
 				ClassDiagramEdgeConstraints.noSelfDependency(pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, pEdge, pStart, pEnd)
+				ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, pEdge, pStart, pEnd),
+				ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class, pEdge, pStart, pEnd)
 		);
 	}
 	
