@@ -48,6 +48,7 @@ import ca.mcgill.cs.jetuml.application.Version;
  * * The interface stereotype is removed from the name of interface nodes.
  * * All labels of GeneralizationEdges will be dropped
  * * AssociationEdges with a "Start" directionality will be flipped
+ * * The types of associations are renamed
  */
 public final class VersionMigrator
 {
@@ -96,6 +97,7 @@ public final class VersionMigrator
 		replaceDualDependenciesWithBidirectionalEdge(pDiagram);
 		removeInterfaceStereotype(pDiagram);
 		flipInversedAssociations(pDiagram);
+		renameAssociationDirectionality(pDiagram);
 
 		Version version = Version.parse(pDiagram.getString("version"));
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
@@ -182,6 +184,31 @@ public final class VersionMigrator
 				int end = object.getInt("end");
 				object.put("start", end);
 				object.put("end", start);
+				aMigrated = true;
+			}
+		}
+	}
+	
+	private void renameAssociationDirectionality(JSONObject pDiagram)
+	{
+		JSONArray edges = pDiagram.getJSONArray("edges");
+		for( int i = 0; i < edges.length(); i++ )
+		{
+			JSONObject object = edges.getJSONObject(i);
+			if( object.getString("type").equals("AssociationEdge"))
+			{
+				if( object.get("directionality").equals("None"))
+				{
+					object.put("directionality", "Unspecified");
+				}
+				else if( object.get("directionality").equals("End"))
+				{
+					object.put("directionality", "Unidirectional");
+				}
+				else if( object.get("directionality").equals("Both"))
+				{
+					object.put("directionality", "Bidirectional");
+				}
 				aMigrated = true;
 			}
 		}

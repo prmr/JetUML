@@ -49,7 +49,7 @@ public final class AssociationEdgeViewer extends SegmentedEdgeViewer
 	 */
 	private static ArrowHead getStartArrowHead(AssociationEdge pEdge)
 	{
-		if( pEdge.getDirectionality() == Directionality.Both )
+		if( pEdge.getDirectionality() == Directionality.Bidirectional )
 		{
 			return ArrowHead.V;
 		}
@@ -64,7 +64,7 @@ public final class AssociationEdgeViewer extends SegmentedEdgeViewer
 	 */
 	private static ArrowHead getEndArrowHead(AssociationEdge pEdge)
 	{
-		if( pEdge.getDirectionality() == Directionality.Both || pEdge.getDirectionality() == Directionality.End )
+		if( pEdge.getDirectionality() == Directionality.Bidirectional || pEdge.getDirectionality() == Directionality.Unidirectional )
 		{
 			return ArrowHead.V;
 		}
