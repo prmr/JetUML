@@ -84,36 +84,40 @@ public class TestClassDiagramEdgeConstraints
 	}
 	
 	@Test
-	public void testNoCircularDependencies_NotADependency()
+	public void testNoDirectCycles_NotADependency()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noCircularDependencies(new GeneralizationEdge(), aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
+				new GeneralizationEdge(), aNode1, aNode2).satisfied());
 	}
 	
 	@Test
-	public void testNoCircularDependencies_NoExistingEdge()
+	public void testNoDirectCycles_NoExistingEdge()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noCircularDependencies(aEdge1, aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
+				aEdge1, aNode1, aNode2).satisfied());
 	}
 	
 	@Test
-	public void testNoCircularDependencies_NoExistingDependencyEdge()
+	public void testNoDirectCycles_NoExistingDependencyEdge()
 	{
 		createDiagram();
 		GeneralizationEdge edge = new GeneralizationEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		assertTrue(ClassDiagramEdgeConstraints.noCircularDependencies(aEdge1, aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
+				aEdge1, aNode1, aNode2).satisfied());
 	}
 	
 	@Test
-	public void testNoCircularDependencies_False()
+	public void testNoDirectCycles_False()
 	{
 		createDiagram();
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		assertFalse(ClassDiagramEdgeConstraints.noCircularDependencies(aEdge1, aNode2, aNode1).satisfied());
+		assertFalse(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
+				aEdge1, aNode2, aNode1).satisfied());
 	}
 }

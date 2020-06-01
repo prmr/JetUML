@@ -57,20 +57,20 @@ public final class ClassDiagramEdgeConstraints
 	}
 	
 	/*
-	 * There can't be two dependencies, one in each direction, between two nodes.
-	 * A bidirectional dependency should be used instead.
+	 * There can't be two edges of a given type, one in each direction, between two nodes.
 	 */
-	public static Constraint noCircularDependencies(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noDirectCycles(Class<? extends Edge> pEdgeType, 
+			Edge pEdge, Node pStart, Node pEnd)
 	{
 		return () ->
 		{
-			if( pEdge.getClass() != DependencyEdge.class )
+			if( pEdge.getClass() != pEdgeType )
 			{
 				return true;
 			}
 			for( Edge edge : pStart.getDiagram().get().edgesConnectedTo(pStart) )
 			{
-				if( edge.getEnd() == pStart && edge.getStart() == pEnd )
+				if( edge.getClass() == pEdgeType && edge.getEnd() == pStart && edge.getStart() == pEnd )
 				{
 					return false;
 				}
