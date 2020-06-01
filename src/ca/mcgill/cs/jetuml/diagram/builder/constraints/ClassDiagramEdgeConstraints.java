@@ -23,6 +23,8 @@ package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 
@@ -71,6 +73,31 @@ public final class ClassDiagramEdgeConstraints
 			for( Edge edge : pStart.getDiagram().get().edgesConnectedTo(pStart) )
 			{
 				if( edge.getClass() == pEdgeType && edge.getEnd() == pStart && edge.getStart() == pEnd )
+				{
+					return false;
+				}
+			}
+			return true;
+		};
+	}
+	
+	/*
+	 * There can't be both an association and an aggregation edge between two nodes
+	 */
+	public static Constraint noCombinedAssociationAggregation(Edge pEdge, Node pStart, Node pEnd)
+	{
+		return () ->
+		{
+			if( pEdge.getClass() != AssociationEdge.class && pEdge.getClass() != AggregationEdge.class )
+			{
+				return true;
+			}
+			for( Edge edge : pStart.getDiagram().get().edgesConnectedTo(pStart) )
+			{
+				boolean targetEdge = edge.getClass() == AssociationEdge.class || edge.getClass() == AggregationEdge.class;
+				boolean sameInOneDirection = edge.getStart() == pStart && edge.getEnd() == pEnd;
+				boolean sameInOtherDirection = edge.getStart() == pEnd && edge.getEnd() == pStart;
+				if( targetEdge && (sameInOneDirection || sameInOtherDirection))
 				{
 					return false;
 				}

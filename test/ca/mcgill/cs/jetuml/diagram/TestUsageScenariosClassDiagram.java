@@ -182,12 +182,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(6, 7), new Point(170, 170)));
 		
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
-		assertEquals(3, numberOfEdges());
-		
-		addEdge(new AssociationEdge(), new Point(47, 49), new Point(50, 49));
-		assertEquals(4, numberOfEdges());
+		assertEquals(2, numberOfEdges());
 		
 		// not every edge is a valid self-edge
 		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(47, 49), new Point(50, 49)));
@@ -260,7 +256,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aNoteNode, new Point(134, 132));
 		
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
 		select(aClassNode1, aAggregationEdge, aInterfaceNode);
@@ -291,7 +286,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aInterfaceNode, new Point(44, 44));
 		addNode(aPackageNode, new Point(87, 87));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(47, 49), new Point(10, 17));
 		addEdge(aDependencyEdge, new Point(90, 93), new Point(44, 49));
 		
 		moveNode(aClassNode1, 20, 20);
@@ -344,16 +338,15 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
 		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
 		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
-		assertEquals(4, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		
 		assertFalse(aBuilder.canAdd(aAggregationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aAssociationEdge, new Point(9, 11), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aDependencyEdge, new Point(9, 11), new Point(46, 49))); 
 		assertFalse(aBuilder.canAdd(aGeneralizationEdge, new Point(9, 11), new Point(46, 49)));
-		assertEquals(4, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 
 	}
 	
@@ -368,17 +361,15 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		addEdge(aAssociationEdge, new Point(10, 10), new Point(45, 48));
 		addEdge(aDependencyEdge, new Point(10, 10), new Point(45, 48)); 
 		addEdge(aGeneralizationEdge, new Point(10, 10), new Point(45, 48));
-		assertEquals(4, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		
 		// new edges should not replace the current edges in the diagram
 		assertFalse(aBuilder.canAdd(aSecondAggregationEdge, new Point(9, 111), new Point(46, 49)));
-		assertFalse(aBuilder.canAdd(aSecondAssociationEdge, new Point(9, 111), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aSecondDependencyEdge, new Point(9, 111), new Point(46, 49)));
 		assertFalse(aBuilder.canAdd(aSecondGeneralizationEdge, new Point(9, 111), new Point(46, 49)));
-		assertEquals(4, numberOfEdges());
+		assertEquals(3, numberOfEdges());
 		assertFalse(aDiagram.contains(aSecondAggregationEdge));
 		assertFalse(aDiagram.contains(aSecondAssociationEdge));
 		assertFalse(aDiagram.contains(aSecondDependencyEdge));

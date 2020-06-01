@@ -32,6 +32,8 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
@@ -106,7 +108,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd),
 				ClassDiagramEdgeConstraints.noSelfDependency(pEdge, pStart, pEnd),
 				ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class, pEdge, pStart, pEnd)
+				ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class, pEdge, pStart, pEnd),
+				ClassDiagramEdgeConstraints.noDirectCycles(AggregationEdge.class, pEdge, pStart, pEnd),
+				ClassDiagramEdgeConstraints.noDirectCycles(AssociationEdge.class, pEdge, pStart, pEnd),
+				ClassDiagramEdgeConstraints.noCombinedAssociationAggregation(pEdge, pStart, pEnd)
 		);
 	}
 	
