@@ -30,7 +30,7 @@ public final class AssociationEdge extends ThreeLabelEdge
 	 * Possible directionalities for an association.
 	 */
 	public enum Directionality 
-	{None, Start, End, Both}
+	{None, End, Both}
 	
 	private Directionality aDirectionality = Directionality.None;
 	
