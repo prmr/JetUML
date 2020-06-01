@@ -410,20 +410,14 @@ public class TestPersistenceService
 		assertEquals(node1, edge6.getStart());
 		
 		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 308, osDependent(22, 22, 25), 62), getBounds(edge1));
+		assertEquals(new Rectangle(503, 308, osDependent(12, 12, 25), 62), getBounds(edge1));
 		assertEquals(node2, edge1.getEnd());
-		assertEquals("", edge1.getEndLabel());
-		assertEquals("e2", edge1.getMiddleLabel());
 		assertEquals(node1, edge1.getStart());
-		assertEquals("", edge1.getStartLabel());
 		
 		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 428, osDependent(22,23, 25), 92), getBounds(edge2));
+		assertEquals(new Rectangle(503, 428, osDependent(12,13, 25), 92), getBounds(edge2));
 		assertEquals(node1, edge2.getEnd());
-		assertEquals("", edge2.getEndLabel());
-		assertEquals("e3", edge2.getMiddleLabel());
 		assertEquals(node3, edge2.getStart());
-		assertEquals("", edge2.getStartLabel());
 		
 		AggregationEdge edge3 = (AggregationEdge) eIterator.next();
 		assertEquals(new Rectangle(558, osDependent(377,378, 379), 72, osDependent(23,22, 21)), getBounds(edge3));

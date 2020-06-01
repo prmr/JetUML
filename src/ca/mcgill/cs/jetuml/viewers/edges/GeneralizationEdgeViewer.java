@@ -37,8 +37,8 @@ public final class GeneralizationEdgeViewer extends SegmentedEdgeViewer
 	{
 		super(SegmentationStyleFactory.createVHVStrategy(),
 				e -> getLineStyle((GeneralizationEdge)e), e -> ArrowHead.NONE, e -> ArrowHead.TRIANGLE,
-				e -> ((GeneralizationEdge)e).getStartLabel(), e -> ((GeneralizationEdge)e).getMiddleLabel(), 
-				e -> ((GeneralizationEdge)e).getEndLabel());
+				e -> "", e -> "", 
+				e -> "");
 	}
 	
 	/**

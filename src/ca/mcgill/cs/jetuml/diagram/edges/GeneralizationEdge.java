@@ -22,9 +22,9 @@ package ca.mcgill.cs.jetuml.diagram.edges;
 
 /**
  *  An edge that that represents a UML generalization (inheritance
- *  or implementation), with optional labels.
+ *  or implementation).
  */
-public final class GeneralizationEdge extends ThreeLabelEdge
+public final class GeneralizationEdge extends AbstractEdge
 {
 	/**
 	 * Type of UML generalization relation.

@@ -45,7 +45,8 @@ import ca.mcgill.cs.jetuml.application.Version;
  * * A directionality property is added to DependencyEdge elements 
  * * Dependency edges between two same nodes, but in both directions, are replaced with a single 
  *       bidirectional edge whose label is the concatenation of the two original ones.
- * * The interface stereotype is removed from the name of interface nodes
+ * * The interface stereotype is removed from the name of interface nodes.
+ * * All labels of GeneralizationEdges will be dropped
  */
 public final class VersionMigrator
 {
