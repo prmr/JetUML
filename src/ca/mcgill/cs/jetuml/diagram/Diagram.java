@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+
 /**
  * Stores the logical structure of a diagram. This class is only concerned with maintaining information about the
  * logical structure of a diagram (nodes and edges). Specifically, it should not encode any business rules about the
@@ -354,6 +356,11 @@ public final class Diagram implements DiagramData
 	public void placeOnTop(Node pNode)
 	{
 		assert pNode != null;
+		// If pNode is a call node in the sequence diagram, do nothing
+		if( pNode.getClass() == CallNode.class )
+		{
+			return;
+		}
 		if( pNode.hasParent() )
 		{
 			Node parent = pNode.getParent();
