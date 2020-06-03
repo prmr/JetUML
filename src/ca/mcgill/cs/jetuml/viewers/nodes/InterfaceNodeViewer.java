@@ -36,6 +36,6 @@ public final class InterfaceNodeViewer extends TypeNodeViewer
 	 */
 	protected String getNameText(TypeNode pNode)
 	{
-		return "«interface»\n" + pNode.getName();
+		return "\u00ABinterface\u00BB\n" + pNode.getName();
 	}
 }

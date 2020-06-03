@@ -125,9 +125,9 @@ public final class VersionMigrator
 			JSONObject object = nodes.getJSONObject(i);
 			if( object.getString("type").equals("InterfaceNode") )
 			{
-				if( object.getString("name").contains("«interface»"))
+				if( object.getString("name").contains("\u00ABinterface\u00BB"))
 				{
-					object.put("name", object.getString("name").replace("«interface»", "").trim());
+					object.put("name", object.getString("name").replace("\u00ABinterface\u00BB", "").trim());
 					aMigrated = true;
 				}
 			}

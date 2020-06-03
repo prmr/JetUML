@@ -31,7 +31,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
  * An implicit parameter node in a sequence diagram. The 
  * visual portion of this node includes the top rectangle (object) and
  * its vertical life line. The ImplicitParamterNode's creator is the
- * CallNode that is the source of a «creates» edge that leads to 
+ * CallNode that is the source of a "creates" edge that leads to 
  * this node, or null if this node is node created as part of the 
  * sequence.
  */

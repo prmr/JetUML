@@ -31,7 +31,7 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	 */
 	public enum Type 
 	{
-		None(""), Include("«include»"), Extend("«extend»");
+		None(""), Include("\u00ABinclude\u00BB"), Extend("\u00ABextend\u00BB");
 		
 		private final String aLabel;
 		
