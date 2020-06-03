@@ -153,6 +153,19 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 	}
 	
+	private void getDownStreamElements(List<DiagramElement> pElements, DiagramElement pElement)
+	{
+		if(pElement instanceof Edge)
+		{
+			pElements.addAll(getEdgeDownStreams((Edge)pElement));
+			
+		}
+		else if(pElement instanceof Node)
+		{
+			pElements.addAll(getNodeDownStreams((Node)pElement));
+		}
+	}
+	
 	@Override
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
