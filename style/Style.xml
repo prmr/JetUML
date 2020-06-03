@@ -236,7 +236,6 @@
     <module name="MutableException"/>
     <module name="ThrowsCount"/>
     <module name="OneTopLevelClass"/>
-    <module name="AvoidEscapedUnicodeCharacters"/>
   </module>
   <module name="BeforeExecutionExclusionFileFilter">
     <property name="fileNamePattern" value="module\-info\.java$"/>
