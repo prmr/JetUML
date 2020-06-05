@@ -305,7 +305,6 @@ public final class ControlFlow
 					if(edge.getEnd() == child)
 					{
 						downstreamElements.add(edge);
-						
 					}
 				}
 			}
