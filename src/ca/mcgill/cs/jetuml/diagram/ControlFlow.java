@@ -22,6 +22,8 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -242,5 +244,44 @@ public final class ControlFlow
 			}
 		}
 		return false;	
+	}
+	
+	/**
+	 * @param pEdge
+	 * @return the downstream DiagramElements of pEdge
+	 */
+	public Collection<DiagramElement> getEdgeDownStreams(Edge pEdge)
+	{
+		HashSet<DiagramElement> toDelete = new HashSet<>();
+		// The edge addition here is necessary for recursive calls
+		toDelete.add(pEdge);
+		if(pEdge.getClass() == ConstructorEdge.class)
+		{
+			Node endParent = pEdge.getEnd().getParent();
+			toDelete.add(endParent);
+			toDelete.addAll(endParent.getChildren());
+			
+			// Recursively add downstream elements of the child nodes
+			for(Node child: endParent.getChildren())
+			{
+				for(Edge e: getCalls(child))
+				{
+					toDelete.addAll(getEdgeDownStreams(e));
+				}
+				// Add upstream edges of the child nodes
+				aDiagram.edges().forEach(
+						e -> { if(e.getEnd() == child) toDelete.add(e); });
+			}
+		}
+		else if(pEdge.getClass() == CallEdge.class)
+		{
+			CallNode endNode = (CallNode)pEdge.getEnd();
+			toDelete.add(endNode);
+			for(Edge e: getCalls(endNode))
+			{
+				toDelete.addAll(getEdgeDownStreams(e));
+			}
+		}
+		return toDelete;
 	}
 }
