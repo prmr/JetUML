@@ -32,32 +32,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
-import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
 
@@ -73,18 +47,18 @@ public enum DiagramType
 			ClassDiagramBuilder::new, 
 			new DiagramViewer(), 
 			new DiagramElement [] { 
-					new ClassNode(), 
-					new InterfaceNode(), 
-					new PackageNode(), 
-					new PackageDescriptionNode(), 
-					new NoteNode(),
-					new DependencyEdge(), 
-					new GeneralizationEdge(), 
-					new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
-					new AssociationEdge(),
-					new AggregationEdge(),
-					new AggregationEdge(AggregationEdge.Type.Composition),
-					new NoteEdge()}), 
+					Prototypes.CLASS, 
+					Prototypes.INTERFACE, 
+					Prototypes.PACKAGE, 
+					Prototypes.PACKAGE_DESCRIPTION, 
+					Prototypes.NOTE,
+					Prototypes.DEPENDENCY, 
+					Prototypes.GENERALIZATION, 
+					Prototypes.REALIZATION,
+					Prototypes.ASSOCIATION,
+					Prototypes.AGGREGATION,
+					Prototypes.COMPOSITION,
+					Prototypes.NOTE_CONNECTOR}), 
 	
 	SEQUENCE(
 			"SequenceDiagram",
@@ -92,11 +66,11 @@ public enum DiagramType
 			SequenceDiagramBuilder::new, 
 			new SequenceDiagramViewer(),
 			new DiagramElement[]{
-					new ImplicitParameterNode(), 
-					new NoteNode(),
-					new CallEdge(), 
-					new ReturnEdge(), 
-					new NoteEdge()}), 
+					Prototypes.IMPLICIT_PARAMETER,
+					Prototypes.NOTE,
+					Prototypes.METHOD_CALL,
+					Prototypes.METHOD_RETURN,
+					Prototypes.NOTE_CONNECTOR}), 
 	
 	STATE(
 			"StateDiagram",
@@ -104,12 +78,12 @@ public enum DiagramType
 			StateDiagramBuilder::new, 
 			new DiagramViewer(),
 			new DiagramElement[]{
-					new StateNode(), 
-					new InitialStateNode(), 
-					new FinalStateNode(), 
-					new NoteNode(),
-					new StateTransitionEdge(), 
-					new NoteEdge()}), 
+					Prototypes.STATE,
+					Prototypes.START_STATE,
+					Prototypes.END_STATE,
+					Prototypes.NOTE,
+					Prototypes.TRANSITION,
+					Prototypes.NOTE_CONNECTOR}), 
 	
 	OBJECT(
 			"ObjectDiagram",
@@ -117,12 +91,12 @@ public enum DiagramType
 			ObjectDiagramBuilder::new, 
 			new DiagramViewer(),
 			new DiagramElement[] {
-					new ObjectNode(), 
-					new FieldNode(), 
-					new NoteNode(),
-					new ObjectReferenceEdge(), 
-					new ObjectCollaborationEdge(), 
-					new NoteEdge() }), 
+					Prototypes.OBJECT,
+					Prototypes.FIELD,
+					Prototypes.NOTE,
+					Prototypes.REFERENCE,
+					Prototypes.COLLABORATION,
+					Prototypes.NOTE_CONNECTOR}), 
 	
 	USECASE(
 			"UseCaseDiagram",
@@ -130,14 +104,14 @@ public enum DiagramType
 			UseCaseDiagramBuilder::new, 
 			new DiagramViewer(),
 			new DiagramElement[]{
-					new ActorNode(), 
-					new UseCaseNode(), 
-					new NoteNode(),
-					new UseCaseAssociationEdge(),
-					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
-					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
-					new UseCaseGeneralizationEdge(),
-					new NoteEdge()});
+					Prototypes.ACTOR, 
+					Prototypes.USE_CASE, 
+					Prototypes.NOTE, 
+					Prototypes.USE_CASE_ASSOCIATION, 
+					Prototypes.USE_CASE_EXTENDS, 
+					Prototypes.USE_CASE_INCLUDES, 
+					Prototypes.USE_CASE_GENERALIZATION, 
+					Prototypes.NOTE_CONNECTOR}); 
 	
 	/* aName is an internal name used for referring to objects of a certain diagram
 	 * type in externalized representations, such as persisted versions of the diagram
