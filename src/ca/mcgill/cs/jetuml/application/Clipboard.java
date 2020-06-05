@@ -22,6 +22,7 @@ package ca.mcgill.cs.jetuml.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -269,18 +270,13 @@ public final class Clipboard
 	
 	private static boolean validElementFor( DiagramElement pElement, Diagram pDiagram )
 	{
-		// PointNodes are allowed in all diagrams despite not being contained in node prototypes.
+		// PointNodes are allowed in all diagrams despite not being contained in prototypes.
 		if ( pElement.getClass() == PointNode.class ) 
 		{
 			return true;
 		}
-		for( DiagramElement element : pDiagram.getPrototypes() )
-		{
-			if( pElement.getClass() == element.getClass() )
-			{
-				return true;
-			}
-		}
-		return false;
+		return pDiagram.getPrototypes().stream()
+				.map(Object::getClass)
+				.anyMatch(Predicate.isEqual(pElement.getClass()));
 	}
 }
