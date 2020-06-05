@@ -21,8 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -153,55 +150,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				final Edge target = returnEdge;
 				pElements.add(target);
 			}
-		}
-	}
-	
-	private Collection<DiagramElement> getEdgeDownStreams(Edge pEdge)
-	{
-		ControlFlow flow = new ControlFlow(aDiagram);
-		HashSet<DiagramElement> toDelete = new HashSet<>();
-		// Edge addition is necessary for recursive calls
-		toDelete.add(pEdge);
-		if(pEdge.getClass() == ConstructorEdge.class)
-		{
-			Node endParent = pEdge.getEnd().getParent();
-			toDelete.add(endParent);
-			toDelete.addAll(endParent.getChildren());
-			
-			// Recursively add downstream elements of the child nodes
-			for(Node child: endParent.getChildren())
-			{
-				for(Edge e: flow.getCalls(child))
-				{
-					toDelete.addAll(getEdgeDownStreams(e));
-				}
-				// Add upstream edges of the child nodes
-				aDiagram.edges().forEach(
-						e -> { if(e.getEnd() == child) toDelete.add(e); });
-			}
-		}
-		else if(pEdge.getClass() == CallEdge.class)
-		{
-			CallNode endNode = (CallNode)pEdge.getEnd();
-			toDelete.add(endNode);
-			for(Edge e: flow.getCalls(endNode))
-			{
-				toDelete.addAll(getEdgeDownStreams(e));
-			}
-		}
-		return toDelete;
-	}
-	
-	private void getDownStreamElements(List<DiagramElement> pElements, DiagramElement pElement)
-	{
-		if(pElement instanceof Edge)
-		{
-			pElements.addAll(getEdgeDownStreams((Edge)pElement));
-			
-		}
-		else if(pElement instanceof Node)
-		{
-			pElements.addAll(getNodeDownStreams((Node)pElement));
 		}
 	}
 	
