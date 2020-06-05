@@ -100,21 +100,44 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		return canvas;
 	}
 	
+//	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
+//	{
+//		List<Node> nodeTypes = pDiagram.getNodePrototypes();
+//		for(int i = 0; i < nodeTypes.size(); i++)
+//		{
+//			add(new SelectableToolButton(
+//					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
+//					pToggleGroup, nodeTypes.get(i)), NodeViewerRegistry.createIcon(nodeTypes.get(i)));
+//		}
+//		List<Edge> edgeTypes = pDiagram.getEdgePrototypes();
+//		for(int i = 0; i < edgeTypes.size(); i++)
+//		{
+//			add(new SelectableToolButton(
+//					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
+//					pToggleGroup, edgeTypes.get(i)), EdgeViewerRegistry.createIcon(edgeTypes.get(i)));
+//		}
+//	}
+	
 	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
-		List<Node> nodeTypes = pDiagram.getNodePrototypes();
-		for(int i = 0; i < nodeTypes.size(); i++)
+		List<DiagramElement> elementTypes = pDiagram.getPrototypes();
+		for(int i = 0; i < elementTypes.size(); i++)
 		{
 			add(new SelectableToolButton(
-					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
-					pToggleGroup, nodeTypes.get(i)), NodeViewerRegistry.createIcon(nodeTypes.get(i)));
+					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".prototype" + (i + 1) + ".tooltip"), 
+					pToggleGroup, elementTypes.get(i)), createIcon(elementTypes.get(i)));
 		}
-		List<Edge> edgeTypes = pDiagram.getEdgePrototypes();
-		for(int i = 0; i < edgeTypes.size(); i++)
+	}
+	
+	private static Canvas createIcon( DiagramElement pElement )
+	{
+		if( pElement instanceof Node )
 		{
-			add(new SelectableToolButton(
-					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
-					pToggleGroup, edgeTypes.get(i)), EdgeViewerRegistry.createIcon(edgeTypes.get(i)));
+			return NodeViewerRegistry.createIcon((Node)pElement);
+		}
+		else
+		{
+			return EdgeViewerRegistry.createIcon((Edge)pElement);
 		}
 	}
 	

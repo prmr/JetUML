@@ -28,10 +28,12 @@ import java.util.List;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 
 /**
- * Stores the logical structure of a diagram. This class is only concerned with maintaining information about the
- * logical structure of a diagram (nodes and edges). Specifically, it should not encode any business rules about the
- * valid construction of diagrams (handled by DiagramBuilder), or of computing the geometry of a diagram (handled by
- * DiagramView). DiagramData provides immutable access to the information stored in the diagram.
+ * Stores the logical structure of a diagram. This class is only concerned with 
+ * maintaining information about the logical structure of a diagram (nodes and edges). 
+ * Specifically, it should not encode any business rules about the valid construction
+ * of diagrams (handled by DiagramBuilder), or of computing the geometry of a diagram
+ * (handled by DiagramView). DiagramData provides immutable access to the information
+ * stored in the diagram.
  */
 public final class Diagram implements DiagramData
 {
@@ -209,25 +211,14 @@ public final class Diagram implements DiagramData
 	}
 
 	/**
-	 * Gets the node types of a particular diagram type. The list returned is a copy of the prototypes: it can be safely
-	 * modified.
+	 * Gets the types of elements that can be using prototypes for a diagram type. 
+	 * The list returned is a copy of the prototypes: it can be safely modified.
 	 * 
 	 * @return A non-null list of node prototypes
 	 */
-	public List<Node> getNodePrototypes()
+	public List<DiagramElement> getPrototypes()
 	{
-		return aType.getNodePrototypes();
-	}
-
-	/**
-	 * Gets the edge types of a particular diagram type. The list returned is a copy of the prototypes: it can be safely
-	 * modified.
-	 * 
-	 * @return A non-null list of edge prototypes
-	 */
-	public List<Edge> getEdgePrototypes()
-	{
-		return aType.getEdgePrototypes();
+		return aType.getPrototypes();
 	}
 
 	/**

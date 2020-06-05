@@ -72,8 +72,12 @@ public enum DiagramType
 			".class",
 			ClassDiagramBuilder::new, 
 			new DiagramViewer(), 
-			new Node [] { new ClassNode(), new InterfaceNode(), new PackageNode(), new PackageDescriptionNode(), new NoteNode()},
-			new Edge[] {
+			new DiagramElement [] { 
+					new ClassNode(), 
+					new InterfaceNode(), 
+					new PackageNode(), 
+					new PackageDescriptionNode(), 
+					new NoteNode(),
 					new DependencyEdge(), 
 					new GeneralizationEdge(), 
 					new GeneralizationEdge(GeneralizationEdge.Type.Implementation),
@@ -87,32 +91,49 @@ public enum DiagramType
 			".sequence",
 			SequenceDiagramBuilder::new, 
 			new SequenceDiagramViewer(),
-			new Node[]{new ImplicitParameterNode(), new NoteNode()},
-			new Edge[]{new CallEdge(), new ReturnEdge(), new NoteEdge()}), 
+			new DiagramElement[]{
+					new ImplicitParameterNode(), 
+					new NoteNode(),
+					new CallEdge(), 
+					new ReturnEdge(), 
+					new NoteEdge()}), 
 	
 	STATE(
 			"StateDiagram",
 			".state",
 			StateDiagramBuilder::new, 
 			new DiagramViewer(),
-			new Node[]{new StateNode(), new InitialStateNode(), new FinalStateNode(), new NoteNode()},
-			new Edge[]{new StateTransitionEdge(), new NoteEdge()}), 
+			new DiagramElement[]{
+					new StateNode(), 
+					new InitialStateNode(), 
+					new FinalStateNode(), 
+					new NoteNode(),
+					new StateTransitionEdge(), 
+					new NoteEdge()}), 
 	
 	OBJECT(
 			"ObjectDiagram",
 			".object",
 			ObjectDiagramBuilder::new, 
 			new DiagramViewer(),
-			new Node[] {new ObjectNode(), new FieldNode(), new NoteNode()},
-			new Edge[] {new ObjectReferenceEdge(), new ObjectCollaborationEdge(), new NoteEdge() }), 
+			new DiagramElement[] {
+					new ObjectNode(), 
+					new FieldNode(), 
+					new NoteNode(),
+					new ObjectReferenceEdge(), 
+					new ObjectCollaborationEdge(), 
+					new NoteEdge() }), 
 	
 	USECASE(
 			"UseCaseDiagram",
 			".usecase",
 			UseCaseDiagramBuilder::new, 
 			new DiagramViewer(),
-			new Node[]{new ActorNode(), new UseCaseNode(), new NoteNode()},
-			new Edge[]{ new UseCaseAssociationEdge(),
+			new DiagramElement[]{
+					new ActorNode(), 
+					new UseCaseNode(), 
+					new NoteNode(),
+					new UseCaseAssociationEdge(),
 					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend),
 					new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include),
 					new UseCaseGeneralizationEdge(),
@@ -125,19 +146,17 @@ public enum DiagramType
 	private final String aFileExtension; // The suffix that indicates the type of files
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final DiagramViewer aViewer;
-	private final Node[] aNodePrototypes;
-	private final Edge[] aEdgePrototypes;
+	private final DiagramElement[] aPrototypes;
 	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
-			DiagramViewer pViewer, Node[] pNodePrototypes, Edge[] pEdgePrototypes)
+			DiagramViewer pViewer, DiagramElement[] pPrototypes)
 	{
 		assert pName != null;
 		aName = pName;
 		aFileExtension = pFileExtension;
 		aBuilderSupplier = pBuilderSupplier;
 		aViewer = pViewer;
-		aNodePrototypes = pNodePrototypes;
-		aEdgePrototypes = pEdgePrototypes;
+		aPrototypes = pPrototypes;
 	}
 	
 	/**
@@ -174,27 +193,17 @@ public enum DiagramType
 	}
 	
 	/**
-	 * Gets the node types of a particular diagram type.
+	 * Gets the diagram elements that can be created 
+	 * using the Prototype pattern.
 	 * The list returned is a copy of the prototypes: 
 	 * it can be safely modified.
-	 * @return A non-null list of node prototypes
+	 * @return A non-null list of prototypes
 	 */   
-	public List<Node> getNodePrototypes()
+	public List<DiagramElement> getPrototypes()
 	{
-		return Arrays.asList(aNodePrototypes);
+		return Arrays.asList(aPrototypes);
 	}
 
-	/**
-	 * Gets the edge types of a particular diagram type.
-	 * The list returned is a copy of the prototypes: 
-	 * it can be safely modified.
-	 * @return A non-null list of edge prototypes
-	 */   
-	public List<Edge> getEdgePrototypes()
-	{
-		return Arrays.asList(aEdgePrototypes);
-	}
-	
 	/**
 	 * @param pDiagram The diagram for which we want to build a builder.
 	 * @return A new instance of a builder for this diagram type.

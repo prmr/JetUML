@@ -252,14 +252,14 @@ public final class Clipboard
 	{
 		for( Edge edge : aEdges )
 		{
-			if( !validEdgeFor(edge, pDiagram ))
+			if( !validElementFor(edge, pDiagram ))
 			{
 				return false;
 			}
 		}
 		for( Node node : aNodes )
 		{
-			if( !validNodeFor(node, pDiagram ))
+			if( !validElementFor(node, pDiagram ))
 			{
 				return false;
 			}
@@ -267,28 +267,16 @@ public final class Clipboard
 		return true;
 	}
 	
-	private static boolean validNodeFor( Node pNode, Diagram pGraph )
+	private static boolean validElementFor( DiagramElement pElement, Diagram pDiagram )
 	{
 		// PointNodes are allowed in all diagrams despite not being contained in node prototypes.
-		if ( pNode.getClass() == PointNode.class ) 
+		if ( pElement.getClass() == PointNode.class ) 
 		{
 			return true;
 		}
-		for( Node node : pGraph.getNodePrototypes() )
+		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
-			if( pNode.getClass() == node.getClass() )
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private static boolean validEdgeFor( Edge pEdge, Diagram pGraph )
-	{
-		for( Edge edge : pGraph.getEdgePrototypes() )
-		{
-			if( pEdge.getClass() == edge.getClass() )
+			if( pElement.getClass() == element.getClass() )
 			{
 				return true;
 			}
