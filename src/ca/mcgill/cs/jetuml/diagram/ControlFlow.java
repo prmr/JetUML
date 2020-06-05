@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
@@ -233,7 +234,7 @@ public final class ControlFlow
 	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */
-	public boolean isFirstCallNodeInConstructorCall(Node pNode)
+	public boolean isInConstructorCall(Node pNode)
 	{
 		assert pNode != null;
 		for(Edge edge : aDiagram.edges())
@@ -252,8 +253,7 @@ public final class ControlFlow
 	private boolean isImplicitParameterNodeInConstructorCall(Node pNode)
 	{
 		assert pNode != null;
-		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 
-				&& isFirstCallNodeInConstructorCall(getFirstChild(pNode));
+		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 && isInConstructorCall(getFirstChild(pNode));
 	}
 	
 	private Node getFirstChild(Node pNode)
@@ -264,7 +264,7 @@ public final class ControlFlow
 	
 	private Optional<Edge> getConstructorEdge(Node pNode)
 	{
-		assert pNode != null && isFirstCallNodeInConstructorCall(pNode);
+		assert pNode != null && isInConstructorCall(pNode);
 		for(Edge edge : aDiagram.edges())
 		{
 			if ( pNode.getClass() == CallNode.class && edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
@@ -276,57 +276,67 @@ public final class ControlFlow
 	}
 
 	/**
-	 * @param pEdge
+	 * @param pEdge the Edge to get downstream elements from 
 	 * @return the downstream DiagramElements of pEdge
+	 * @pre pEdge!=null
 	 */
 	public Collection<DiagramElement> getEdgeDownStreams(Edge pEdge)
 	{
-		HashSet<DiagramElement> toDelete = new HashSet<>();
+		assert pEdge!=null;
+		Set<DiagramElement> downstreamElements = new HashSet<>();
 		// The edge addition here is necessary for recursive calls
-		toDelete.add(pEdge);
+		downstreamElements.add(pEdge);
 		if(pEdge.getClass() == ConstructorEdge.class)
 		{
 			Node endParent = pEdge.getEnd().getParent();
-			toDelete.add(endParent);
-			toDelete.addAll(endParent.getChildren());
+			downstreamElements.add(endParent);
+			downstreamElements.addAll(endParent.getChildren());
 			
 			// Recursively add downstream elements of the child nodes
 			for(Node child: endParent.getChildren())
 			{
-				for(Edge e: getCalls(child))
+				for(Edge edge: getCalls(child))
 				{
-					toDelete.addAll(getEdgeDownStreams(e));
+					downstreamElements.addAll(getEdgeDownStreams(edge));
 				}
 				// Add upstream edges of the child nodes
-				aDiagram.edges().forEach(
-						e -> { if(e.getEnd() == child) toDelete.add(e); });
+				for(Edge edge: aDiagram.edges())
+				{
+					if(edge.getEnd() == child)
+					{
+						downstreamElements.add(edge);
+						
+					}
+				}
 			}
 		}
 		else if(pEdge.getClass() == CallEdge.class)
 		{
 			CallNode endNode = (CallNode)pEdge.getEnd();
-			toDelete.add(endNode);
+			downstreamElements.add(endNode);
 			for(Edge e: getCalls(endNode))
 			{
-				toDelete.addAll(getEdgeDownStreams(e));
+				downstreamElements.addAll(getEdgeDownStreams(e));
 			}
 		}
-		return toDelete;
+		return downstreamElements;
 	}
 
 	/** 
-	 * @param pNode
+	 * @param pNode the Node to get downstream elements from 
 	 * @return the downstream DiagramElements of pNode
+	 * @pre pNode!=null
 	 */
 	public Collection<DiagramElement> getNodeDownStreams(Node pNode)
 	{
-		HashSet<DiagramElement> toDelete = new HashSet<>();
-		if(isFirstCallNodeInConstructorCall(pNode))
+		assert pNode!=null;
+		Set<DiagramElement> downstreamElements = new HashSet<>();
+		if(isInConstructorCall(pNode))
 		{
 			Optional<Edge> constructorEdge = getConstructorEdge(pNode);
 			if(constructorEdge.isPresent())
 			{
-				toDelete.addAll(getEdgeDownStreams(constructorEdge.get()));
+				downstreamElements.addAll(getEdgeDownStreams(constructorEdge.get()));
 			}
 		}
 		else if(isImplicitParameterNodeInConstructorCall(pNode))
@@ -334,27 +344,27 @@ public final class ControlFlow
 			Optional<Edge> constructorEdge = getConstructorEdge(getFirstChild(pNode));
 			if(constructorEdge.isPresent())
 			{
-				toDelete.addAll(getEdgeDownStreams(constructorEdge.get()));
+				downstreamElements.addAll(getEdgeDownStreams(constructorEdge.get()));
 			}
 		}
 		else if(pNode.getClass() == CallNode.class)
 		{
 			for(Edge edge: getCalls(pNode))
 			{
-				toDelete.addAll(getEdgeDownStreams(edge));
+				downstreamElements.addAll(getEdgeDownStreams(edge));
 			}
 		}
 		else if (pNode.getClass() == ImplicitParameterNode.class)
 		{
-			toDelete.addAll(pNode.getChildren());
+			downstreamElements.addAll(pNode.getChildren());
 			for(Node child: pNode.getChildren())
 			{
 				for(Edge edge: getCalls(child))
 				{
-					toDelete.addAll(getEdgeDownStreams(edge));
+					downstreamElements.addAll(getEdgeDownStreams(edge));
 				}
 			}
 		}
-		return toDelete;
+		return downstreamElements;
 	}
 }
