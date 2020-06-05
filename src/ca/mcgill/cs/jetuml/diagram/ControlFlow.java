@@ -233,7 +233,7 @@ public final class ControlFlow
 	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */
-	public boolean isInConstructorCall(Node pNode)
+	public boolean isFirstCallNodeInConstructorCall(Node pNode)
 	{
 		assert pNode != null;
 		for(Edge edge : aDiagram.edges())
@@ -244,6 +244,22 @@ public final class ControlFlow
 			}
 		}
 		return false;	
+	}
+	
+	/*
+	 * Returns true if pNode is the ImplicitParameterNode that gets created in constructor call
+	 */
+	private boolean isImplicitParameterNodeInConstructorCall(Node pNode)
+	{
+		assert pNode != null;
+		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 
+				&& isFirstCallNodeInConstructorCall(getFirstChild(pNode));
+	}
+	
+	private Node getFirstChild(Node pNode)
+	{
+		assert pNode.getChildren().size()>0;
+		return pNode.getChildren().get(0);
 	}
 	
 	/**
