@@ -198,7 +198,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		if(diagram.isPresent())
 		{
 			ControlFlow flow = new ControlFlow(diagram.get());
-			return flow.isFirstCallNodeInConstructorCall(pNode);
+			return flow.isInConstructorCall(pNode);
 		}
 		return false;
 	}
