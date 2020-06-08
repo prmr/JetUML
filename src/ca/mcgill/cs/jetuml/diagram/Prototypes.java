@@ -34,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
@@ -84,7 +85,7 @@ public final class Prototypes
 	public static final DiagramElement STATE = create(new StateNode(), "state");
 	public static final DiagramElement START_STATE = create(new InitialStateNode(), "start_state");
 	public static final DiagramElement END_STATE = create(new FinalStateNode(), "end_state");
-	public static final DiagramElement TRANSITION = create(new FinalStateNode(), "transition");
+	public static final DiagramElement TRANSITION = create(new StateTransitionEdge(), "transition");
 	
 	public static final DiagramElement OBJECT = create(new ObjectNode(), "object");
 	public static final DiagramElement FIELD = create(new FieldNode(), "field");

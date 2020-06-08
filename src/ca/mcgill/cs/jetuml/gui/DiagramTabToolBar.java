@@ -22,7 +22,6 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import java.util.List;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
@@ -30,7 +29,6 @@ import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
-import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Prototypes;
@@ -103,24 +101,6 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	}
 	
 	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
-	{
-		if( pDiagram.getType() == DiagramType.CLASS )
-		{
-			installNodesAndEdgesToolsSpecial(pDiagram, pToggleGroup);
-		}
-		else
-		{
-			List<DiagramElement> elementTypes = pDiagram.getPrototypes();
-			for( int i = 0; i < elementTypes.size(); i++ )
-			{
-				add(new SelectableToolButton(
-						RESOURCES.getString(pDiagram.getName().toLowerCase() + ".prototype" + (i + 1) + ".tooltip"),
-						pToggleGroup, elementTypes.get(i)), createIcon(elementTypes.get(i)));
-			}
-		}
-	}
-	
-	private void installNodesAndEdgesToolsSpecial(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
