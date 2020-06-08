@@ -82,6 +82,8 @@ public class AboutDialog
 		
 		Text license = new Text(RESOURCES.getString("dialog.about.license"));
 		
+		Text quotes = new Text(RESOURCES.getString("quotes.copyright"));
+		
 		Hyperlink link = new Hyperlink(RESOURCES.getString("dialog.about.link"));
 		link.setBorder(Border.EMPTY);
 		link.setPadding(new Insets(0));
@@ -89,7 +91,7 @@ public class AboutDialog
 		link.setUnderline(true);
 		link.setFocusTraversable(false);
 		
-		info.getChildren().addAll(name, version, copyright, license, link);
+		info.getChildren().addAll(name, version, copyright, license, link, quotes);
 		
 		final int padding = 15;
 		HBox layout = new HBox(padding);
@@ -100,6 +102,7 @@ public class AboutDialog
 		ImageView logo = new ImageView(RESOURCES.getString("application.icon"));
 		logo.setEffect(new BoxBlur());
 		layout.getChildren().addAll(logo, info);
+		layout.setAlignment(Pos.TOP_CENTER);
 		
 		aStage.requestFocus();
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
