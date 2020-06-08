@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -32,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
@@ -115,5 +116,22 @@ public final class Prototypes
 	{
 		INSTANCE.aKeys.put(pElement, pKey);
 		return pElement;
+	}
+	
+	/**
+	 * @param pPrototype The requested prototype
+	 * @return The tooltype associated with this prototype.
+	 * @pre pPrototype != null
+	 */
+	public String tooltip(DiagramElement pPrototype)
+	{
+		if( aKeys.containsKey(pPrototype) && RESOURCES.containsKey(aKeys.get(pPrototype) + ".tooltip"))
+		{
+			return RESOURCES.getString(aKeys.get(pPrototype) + ".tooltip");
+		}
+		else
+		{
+			return "";
+		}
 	}
 }

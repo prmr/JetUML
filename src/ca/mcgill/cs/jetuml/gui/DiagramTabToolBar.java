@@ -30,8 +30,10 @@ import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.Prototypes;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.AbstractNodeViewer;
@@ -100,32 +102,31 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		return canvas;
 	}
 	
-//	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
-//	{
-//		List<Node> nodeTypes = pDiagram.getNodePrototypes();
-//		for(int i = 0; i < nodeTypes.size(); i++)
-//		{
-//			add(new SelectableToolButton(
-//					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".node" + (i + 1) + ".tooltip"), 
-//					pToggleGroup, nodeTypes.get(i)), NodeViewerRegistry.createIcon(nodeTypes.get(i)));
-//		}
-//		List<Edge> edgeTypes = pDiagram.getEdgePrototypes();
-//		for(int i = 0; i < edgeTypes.size(); i++)
-//		{
-//			add(new SelectableToolButton(
-//					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".edge" + (i + 1) + ".tooltip"), 
-//					pToggleGroup, edgeTypes.get(i)), EdgeViewerRegistry.createIcon(edgeTypes.get(i)));
-//		}
-//	}
-	
 	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
-		List<DiagramElement> elementTypes = pDiagram.getPrototypes();
-		for(int i = 0; i < elementTypes.size(); i++)
+		if( pDiagram.getType() == DiagramType.CLASS )
+		{
+			installNodesAndEdgesToolsSpecial(pDiagram, pToggleGroup);
+		}
+		else
+		{
+			List<DiagramElement> elementTypes = pDiagram.getPrototypes();
+			for( int i = 0; i < elementTypes.size(); i++ )
+			{
+				add(new SelectableToolButton(
+						RESOURCES.getString(pDiagram.getName().toLowerCase() + ".prototype" + (i + 1) + ".tooltip"),
+						pToggleGroup, elementTypes.get(i)), createIcon(elementTypes.get(i)));
+			}
+		}
+	}
+	
+	private void installNodesAndEdgesToolsSpecial(Diagram pDiagram, ToggleGroup pToggleGroup)
+	{
+		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
 			add(new SelectableToolButton(
-					RESOURCES.getString(pDiagram.getName().toLowerCase() + ".prototype" + (i + 1) + ".tooltip"), 
-					pToggleGroup, elementTypes.get(i)), createIcon(elementTypes.get(i)));
+					Prototypes.instance().tooltip(element), 
+					pToggleGroup, element), createIcon(element));
 		}
 	}
 	
