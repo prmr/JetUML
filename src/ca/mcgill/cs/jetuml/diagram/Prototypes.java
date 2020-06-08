@@ -135,7 +135,7 @@ public final class Prototypes
 		String verboseKey = basicKey + ".verbose";
 		if( pVerbose && RESOURCES.containsKey(verboseKey))
 		{
-			return RESOURCES.getString(verboseKey);
+			return RESOURCES.getString(basicKey) + ": " + RESOURCES.getString(verboseKey);
 		}
 		else
 		{
