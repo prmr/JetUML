@@ -38,7 +38,7 @@ public final class UserPreferences
 	 */
 	public enum BooleanPreference
 	{	
-		showGrid(true), showToolHints(false), autoEditNode(false);
+		showGrid(true), showToolHints(false), autoEditNode(false), verboseToolTips(false);
 		
 		private boolean aDefault;
 		

@@ -223,6 +223,11 @@ public class EditorFrame extends BorderPane
 				pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.showToolHints, 
 						((CheckMenuItem) pEvent.getSource()).isSelected())),
 				
+				factory.createCheckMenuItem("view.verbose_tooltips", false, 
+						UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips),
+						pEvent -> UserPreferences.instance().setBoolean(BooleanPreference.verboseToolTips, 
+								((CheckMenuItem) pEvent.getSource()).isSelected())),
+				
 				factory.createCheckMenuItem("view.autoedit_node", false, 
 						UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode),
 						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
