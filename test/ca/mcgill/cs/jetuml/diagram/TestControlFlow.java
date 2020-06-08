@@ -230,7 +230,7 @@ public class TestControlFlow
 	{
 		aConstructorEdge.connect(aCall1, aCall2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge);
-		assertTrue(aFlow.isInConstructorCall(aCall2));
+		assertTrue(aFlow.isConstructorExecution(aCall2));
 	}
 	
 	@Test
@@ -238,7 +238,7 @@ public class TestControlFlow
 	{
 		aCallEdge1.connect(aCall1, aCall2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
-		assertFalse(aFlow.isInConstructorCall(aCall2));
+		assertFalse(aFlow.isConstructorExecution(aCall2));
 	}
 	
 	@Test
@@ -246,7 +246,7 @@ public class TestControlFlow
 	{
 		aCallEdge1.connect(aCall1, aCall2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
-		assertFalse(aFlow.isInConstructorCall(aCall1));
+		assertFalse(aFlow.isConstructorExecution(aCall1));
 	}
 	
 	@Test
@@ -254,7 +254,7 @@ public class TestControlFlow
 	{
 		aCallEdge1.connect(aCall1, aParameter1, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
-		assertFalse(aFlow.isInConstructorCall(aParameter1));
+		assertFalse(aFlow.isConstructorExecution(aParameter1));
 	}
 	
 	@Test
