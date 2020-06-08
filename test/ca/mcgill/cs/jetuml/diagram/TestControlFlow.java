@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -34,9 +35,11 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 
 /*
  * This class is used to test the methods of SequenceDiagram
@@ -101,9 +104,10 @@ public class TestControlFlow
 	 * aCall1 and aCall2 are on aParameter1
 	 * aCall3 and aCall4 are on aParameter2
 	 * aCall5 and aCall6 are on aParameter3
-	 * aCall1 calls aCall3, then aCalls2 then returns, then aCall6
-	 * aCall2 calls aCall4
+	 * aCall1 calls aCall3, then aCalls2 
+	 * aCall2 calls aCall4 then returns
 	 * aCall4 calls aCall5
+	 * aCall1 calls aCall6
 	 */
 	private void createSampleDiagram1()
 	{
@@ -118,10 +122,10 @@ public class TestControlFlow
 		aParameter3.addChild(aCall6);
 		aDiagramAccessor.connectAndAdd(aCallEdge1, aCall1, aCall3);
 		aDiagramAccessor.connectAndAdd(aCallEdge2, aCall1, aCall2);
-		aDiagramAccessor.connectAndAdd(aReturnEdge, aCall2, aCall1);
-		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall1, aCall6);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall2, aCall4);
-		aDiagramAccessor.connectAndAdd(aCallEdge5, aCall4, aCall5);
+		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall2, aCall4);
+		aDiagramAccessor.connectAndAdd(aReturnEdge, aCall4, aCall2);
+		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall4, aCall5);
+		aDiagramAccessor.connectAndAdd(aCallEdge5, aCall1, aCall6);
 	}
 	
 	@Test
@@ -218,6 +222,9 @@ public class TestControlFlow
 		assertSame(aCall2, aFlow.getPreviousCallee(aCall6));
 	}
 	
+	/*
+	 * @Todo
+	 */
 	@Test
 	public void testIsInConstructorCall()
 	{
@@ -248,5 +255,91 @@ public class TestControlFlow
 		aCallEdge1.connect(aCall1, aParameter1, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
 		assertFalse(aFlow.isInConstructorCall(aParameter1));
+	}
+	
+	@Test
+	public void testGetEdgeDownStreamsCallEdge()
+	{
+		Collection<DiagramElement> downstreams = aFlow.getEdgeDownStreams(aCallEdge3);
+		assertEquals(4, downstreams.size());
+		assertTrue( downstreams.contains(aCall4));
+		assertTrue( downstreams.contains(aCall5));
+		assertTrue( downstreams.contains(aCallEdge3));
+		assertTrue( downstreams.contains(aCallEdge4));
+	}
+	
+	@Test
+	public void testGetEdgeDownStreamsNoteEdge()
+	{
+		NoteNode noteNode = new NoteNode();
+		NoteEdge noteEdge = new NoteEdge();
+		noteEdge.connect(noteNode, aCall3, aDiagram);
+		aDiagram.addRootNode(noteNode);
+		aDiagram.addEdge(noteEdge);
+		Collection<DiagramElement> downstreams = aFlow.getEdgeDownStreams(noteEdge);
+		assertEquals(1, downstreams.size());
+	}
+	
+	@Test
+	public void testGetNodeDownStreamsCallNodeInConstructorCall()
+	{
+		aConstructorEdge.connect(aCall1, aCall3, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aCall3);
+		assertEquals(8, downstreams.size());
+		assertTrue(downstreams.contains(aConstructorEdge));
+		assertTrue(downstreams.contains(aCallEdge1));
+		assertTrue(downstreams.contains(aCallEdge3));
+		assertTrue(downstreams.contains(aCallEdge4));	
+		assertTrue(downstreams.contains(aParameter2));
+		assertTrue(downstreams.contains(aCall3));
+		assertTrue(downstreams.contains(aCall4));
+		assertTrue(downstreams.contains(aCall5));
+	}
+	
+	@Test
+	public void testGetNodeDownStreamsParameterInConstructorCall()
+	{
+		aConstructorEdge.connect(aCall1, aCall3, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aParameter2);
+		assertEquals(8, downstreams.size());
+		assertTrue(downstreams.contains(aConstructorEdge));
+		assertTrue(downstreams.contains(aCallEdge1));
+		assertTrue(downstreams.contains(aCallEdge3));
+		assertTrue(downstreams.contains(aCallEdge4));	
+		assertTrue(downstreams.contains(aParameter2));
+		assertTrue(downstreams.contains(aCall3));
+		assertTrue(downstreams.contains(aCall4));
+		assertTrue(downstreams.contains(aCall5));
+	}
+	
+	@Test
+	public void testGetNodeDownStreamsParameter()
+	{
+		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aParameter2);
+		assertEquals(4, downstreams.size());
+		assertTrue(downstreams.contains(aCall3));
+		assertTrue(downstreams.contains(aCall4));
+		assertTrue(downstreams.contains(aCall5));
+		assertTrue(downstreams.contains(aCallEdge4));	
+	}
+	
+	@Test
+	public void testGetNodeDownStreamsCallNode()
+	{
+		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aCall4);
+		assertEquals(2, downstreams.size());
+		assertTrue(downstreams.contains(aCall5));
+		assertTrue(downstreams.contains(aCallEdge4));
+	}
+	
+	@Test
+	public void testGetNodeDownStreamsNoteNode()
+	{
+		NoteNode noteNode = new NoteNode();
+		aDiagram.addRootNode(noteNode);
+		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(noteNode);
+		assertEquals(0, downstreams.size());
 	}
 }
