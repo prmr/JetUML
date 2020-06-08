@@ -88,6 +88,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		SelectableToolButton selectionButton = new SelectableToolButton(createSelectionIcon(), 
 				RESOURCES.getString("toolbar.select.tooltip"), pToggleGroup);
 		add(selectionButton, createSelectionIcon());
+		UserPreferences.instance().addBooleanPreferenceChangeHandler(selectionButton);
 	}
 	
 	private static Canvas createSelectionIcon()
@@ -104,10 +105,12 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	{
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
-			add(new SelectableToolButton(
+			SelectableToolButton button = new SelectableToolButton(
 					Prototypes.instance().tooltip(element, 
 							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
-					pToggleGroup, element), createIcon(element));
+					pToggleGroup, element);
+			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
+			add(button, createIcon(element));
 		}
 	}
 	

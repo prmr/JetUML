@@ -22,7 +22,11 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Prototypes;
 import ca.mcgill.cs.jetuml.views.ViewerUtilities;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -34,7 +38,7 @@ import javafx.scene.control.Tooltip;
  * A selectable button that wraps a creation tool represented by an 
  * object prototype.
  */
-public class SelectableToolButton extends ToggleButton
+public class SelectableToolButton extends ToggleButton implements BooleanPreferenceChangeHandler
 {
 	private static final String BUTTON_STYLE_CSS = "-fx-background-radius: 0";
 	private static final int TOOLTIP_WIDTH = 250;
@@ -86,5 +90,15 @@ public class SelectableToolButton extends ToggleButton
 	public Optional<DiagramElement> getPrototype()
 	{
 		return aPrototype;
+	}
+
+	@Override
+	public void preferenceChanged(BooleanPreference pPreference)
+	{
+		if( pPreference == BooleanPreference.verboseToolTips && aPrototype.isPresent())
+		{
+			getTooltip().setText(Prototypes.instance().tooltip(aPrototype.get(), 
+					UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)));
+		}
 	}
 }
