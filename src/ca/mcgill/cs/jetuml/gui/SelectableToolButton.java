@@ -56,6 +56,7 @@ public class SelectableToolButton extends ToggleButton
 		setToggleGroup(pToggleGroup);
 		setSelected(true);
 		setTooltip(new Tooltip(pToolTip));
+		getTooltip().setStyle("-fx-font-size: 100%"); // Override JavaFX defaults
 		setAlignment(Pos.BASELINE_LEFT);
 		setOnAction( pEvent -> setSelected(true) );
 	}
