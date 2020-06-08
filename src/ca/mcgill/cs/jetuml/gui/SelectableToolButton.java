@@ -37,6 +37,7 @@ import javafx.scene.control.Tooltip;
 public class SelectableToolButton extends ToggleButton
 {
 	private static final String BUTTON_STYLE_CSS = "-fx-background-radius: 0";
+	private static final int TOOLTIP_WIDTH = 250;
 	
 	private Optional<DiagramElement> aPrototype = Optional.empty(); // If empty, indicates the "Select" tool
 	
@@ -57,6 +58,8 @@ public class SelectableToolButton extends ToggleButton
 		setSelected(true);
 		setTooltip(new Tooltip(pToolTip));
 		getTooltip().setStyle("-fx-font-size: 100%"); // Override JavaFX defaults
+		getTooltip().setWrapText(true);
+		getTooltip().setMaxWidth(TOOLTIP_WIDTH);
 		setAlignment(Pos.BASELINE_LEFT);
 		setOnAction( pEvent -> setSelected(true) );
 	}

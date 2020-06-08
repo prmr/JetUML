@@ -121,18 +121,25 @@ public final class Prototypes
 	
 	/**
 	 * @param pPrototype The requested prototype
-	 * @return The tooltype associated with this prototype.
+	 * @param pVerbose true if we want the verbose version of this tooltip.
+	 * @return The tooltip associated with this prototype.
 	 * @pre pPrototype != null
 	 */
-	public String tooltip(DiagramElement pPrototype)
+	public String tooltip(DiagramElement pPrototype, boolean pVerbose)
 	{
-		if( aKeys.containsKey(pPrototype) && RESOURCES.containsKey(aKeys.get(pPrototype) + ".tooltip"))
+		if( !aKeys.containsKey(pPrototype))
 		{
-			return RESOURCES.getString(aKeys.get(pPrototype) + ".tooltip");
+			return "[tooltip not found]";
+		}
+		String basicKey = aKeys.get(pPrototype) + ".tooltip";
+		String verboseKey = basicKey + ".verbose";
+		if( pVerbose && RESOURCES.containsKey(verboseKey))
+		{
+			return RESOURCES.getString(verboseKey);
 		}
 		else
 		{
-			return "";
+			return RESOURCES.getString(basicKey);
 		}
 	}
 }

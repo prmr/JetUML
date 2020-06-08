@@ -105,7 +105,8 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
 			add(new SelectableToolButton(
-					Prototypes.instance().tooltip(element), 
+					Prototypes.instance().tooltip(element, 
+							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
 					pToggleGroup, element), createIcon(element));
 		}
 	}
