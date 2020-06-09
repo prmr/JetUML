@@ -237,7 +237,7 @@ public final class ControlFlow
 	public boolean isConstructorExecution(Node pNode)
 	{
 		assert pNode != null;
-		if( pNode.getClass() == CallNode.class )
+		if( pNode.getClass() != CallNode.class )
 		{
 			return false;
 		}
