@@ -74,7 +74,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		ToggleGroup toggleGroup = new ToggleGroup();
 		// Method setToolToBeSelect assumes the selection tool will always be the first button in the toggle group.
 		installSelectionTool(toggleGroup); 
-		installNodesAndEdgesTools(pDiagram, toggleGroup);
+		installDiagramElementTools(pDiagram, toggleGroup);
 		installCopyToClipboard();
     	showButtonLabels( UserPreferences.instance().getBoolean(BooleanPreference.showToolHints ));
     	setToolToBeSelect();
@@ -101,7 +101,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		return canvas;
 	}
 	
-	private void installNodesAndEdgesTools(Diagram pDiagram, ToggleGroup pToggleGroup)
+	private void installDiagramElementTools(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
