@@ -221,7 +221,6 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	{
 		assert getItems().size() > 0;
 		setSelectedTool(0);
-//		((ToggleButton)getItems().get(0)).setSelected(true);
 	}
 	
 	/**
@@ -251,7 +250,17 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 			ButtonBase button = (ButtonBase) item;
 			if( pShow )
 			{
-				button.setText(button.getTooltip().getText());
+				if( item instanceof SelectableToolButton && 
+						((SelectableToolButton)item).getPrototype().isPresent())
+				{
+					SelectableToolButton toolButton = (SelectableToolButton) item;
+					String text = Prototypes.instance().tooltip(toolButton.getPrototype().get(), false);
+					button.setText(text);
+				}
+				else
+				{
+					button.setText(button.getTooltip().getText());
+				}
 				button.setMaxWidth(Double.MAX_VALUE);
 			}
 			else
