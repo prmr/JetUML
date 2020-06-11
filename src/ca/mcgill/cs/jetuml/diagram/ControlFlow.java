@@ -69,9 +69,9 @@ public final class ControlFlow
 	{
 		assert pNode != null && aDiagram.contains(pNode);
 		List<Node> callees = new ArrayList<>();
-		for(Edge edge : aDiagram.edges() )
+		for( Edge edge : aDiagram.edges() )
 		{
-			if ( edge.getStart() == pNode && edge instanceof CallEdge)
+			if ( edge.getStart() == pNode && edge instanceof CallEdge )
 			{
 				callees.add(edge.getEnd());
 			}
@@ -182,9 +182,9 @@ public final class ControlFlow
 		assert pNode != null;
 		int result = 0;
 		Optional<CallNode> node = getCaller(pNode);
-		while(node.isPresent())
+		while( node.isPresent() )
 		{
-			if(node.get().getParent() == pNode.getParent())
+			if( node.get().getParent() == pNode.getParent() )
 			{
 				result++;
 			}
@@ -229,7 +229,7 @@ public final class ControlFlow
 		{
 			return false;
 		}
-		for(Edge edge : aDiagram.edges())
+		for( Edge edge : aDiagram.edges() )
 		{
 			if ( edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
@@ -245,13 +245,13 @@ public final class ControlFlow
 	private boolean isConstructedObject(Node pNode)
 	{
 		assert pNode != null;
-		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 &&
+		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 &&
 				isConstructorExecution(getFirstChild(pNode));
 	}
 	
 	private Node getFirstChild(Node pNode)
 	{
-		assert pNode.getChildren().size()>0;
+		assert pNode.getChildren().size() > 0;
 		return pNode.getChildren().get(0);
 	}
 	
@@ -262,7 +262,7 @@ public final class ControlFlow
 		{
 			return Optional.empty();	
 		}
-		for(Edge edge : aDiagram.edges())
+		for( Edge edge : aDiagram.edges() )
 		{
 			if ( edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
 			{
@@ -273,44 +273,46 @@ public final class ControlFlow
 	}
 
 	/**
-	 * @param pEdge the Edge to get downstream elements from 
-	 * @return the downstream DiagramElements of pEdge
-	 * @pre pEdge!=null
+	 * @param pEdge The Edge to get downstream elements from.
+	 * @return The downstream DiagramElements of pEdge.
+	 * @pre pEdge != null
 	 */
 	public Collection<DiagramElement> getEdgeDownStreams(Edge pEdge)
 	{
-		assert pEdge!=null;
+		assert pEdge != null;
 		Set<DiagramElement> downstreamElements = new HashSet<>();
+		
 		// The edge addition here is necessary for recursive calls
 		downstreamElements.add(pEdge);
-		if(pEdge.getClass() == ConstructorEdge.class)
+		if( pEdge.getClass() == ConstructorEdge.class )
 		{
 			Node endParent = pEdge.getEnd().getParent();
 			downstreamElements.add(endParent);
 			downstreamElements.addAll(endParent.getChildren());
 			
 			// Recursively add downstream elements of the child nodes
-			for(Node child: endParent.getChildren())
+			for( Node child: endParent.getChildren() )
 			{
-				for(Edge edge: getCalls(child))
+				for( Edge edge: getCalls(child) )
 				{
 					downstreamElements.addAll(getEdgeDownStreams(edge));
 				}
+				
 				// Add upstream edges of the child nodes
-				for(Edge edge: aDiagram.edges())
+				for( Edge edge: aDiagram.edges() )
 				{
-					if(edge.getEnd() == child)
+					if( edge.getEnd() == child )
 					{
 						downstreamElements.add(edge);
 					}
 				}
 			}
 		}
-		else if(pEdge.getClass() == CallEdge.class)
+		else if( pEdge.getClass() == CallEdge.class )
 		{
 			CallNode endNode = (CallNode)pEdge.getEnd();
 			downstreamElements.add(endNode);
-			for(Edge e: getCalls(endNode))
+			for( Edge e: getCalls(endNode) )
 			{
 				downstreamElements.addAll(getEdgeDownStreams(e));
 			}
@@ -319,43 +321,43 @@ public final class ControlFlow
 	}
 
 	/** 
-	 * @param pNode the Node to get downstream elements from 
-	 * @return the downstream DiagramElements of pNode excluding pNode
+	 * @param pNode The Node to obtain downstream elements from.
+	 * @return The downstream DiagramElements of pNode.
 	 * @pre pNode!=null
 	 */
 	public Collection<DiagramElement> getNodeDownStreams(Node pNode)
 	{
 		assert pNode!=null;
 		Set<DiagramElement> downstreamElements = new HashSet<>();
-		if(isConstructorExecution(pNode))
+		if( isConstructorExecution(pNode) )
 		{
 			Optional<Edge> constructorEdge = getConstructorEdge(pNode);
-			if(constructorEdge.isPresent())
+			if( constructorEdge.isPresent() )
 			{
 				downstreamElements.addAll(getEdgeDownStreams(constructorEdge.get()));
 			}
 		}
-		else if(isConstructedObject(pNode))
+		else if( isConstructedObject(pNode) )
 		{
 			Optional<Edge> constructorEdge = getConstructorEdge(getFirstChild(pNode));
-			if(constructorEdge.isPresent())
+			if( constructorEdge.isPresent() )
 			{
 				downstreamElements.addAll(getEdgeDownStreams(constructorEdge.get()));
 			}
 		}
-		else if(pNode.getClass() == CallNode.class)
+		else if( pNode.getClass() == CallNode.class )
 		{
-			for(Edge edge: getCalls(pNode))
+			for( Edge edge: getCalls(pNode) )
 			{
 				downstreamElements.addAll(getEdgeDownStreams(edge));
 			}
 		}
-		else if (pNode.getClass() == ImplicitParameterNode.class)
+		else if ( pNode.getClass() == ImplicitParameterNode.class )
 		{
 			downstreamElements.addAll(pNode.getChildren());
-			for(Node child: pNode.getChildren())
+			for( Node child: pNode.getChildren() )
 			{
-				for(Edge edge: getCalls(child))
+				for( Edge edge: getCalls(child) )
 				{
 					downstreamElements.addAll(getEdgeDownStreams(edge));
 				}
@@ -392,15 +394,16 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * @param pNode the Node to obtain the caller and upstream DiagramElements for.
-	 * @return the Collection of DiagramElements in the upstream of pNode.
-	 *     Excludes pNode and elements returned by getCoRemovals in the DiagramBuilder class.
+	 * @param pNode The Node to obtain the caller and upstream DiagramElements for.
+	 * @return The Collection of DiagramElements in the upstream of pNode.
+	 *     Excludes pNode and elements returned by getCoRemovals method in the DiagramBuilder class.
+	 * @pre pNode != null
 	 */
 	public Collection<DiagramElement> getNodeUpstreams(Node pNode)
 	{
 		assert pNode != null;
 		Set<DiagramElement> elements = new HashSet<>();
-		if( pNode.getClass() == CallNode.class)
+		if( pNode.getClass() == CallNode.class )
 		{
 			Optional<CallNode> caller = getCaller(pNode);
 			if( caller.isPresent() && getCaller(caller.get()).isEmpty() )
@@ -422,9 +425,9 @@ public final class ControlFlow
 				}
 			}
 		}
-		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0)
+		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 )
 		{
-			Optional<CallNode> caller = getCaller(pNode.getChildren().get(0));
+			Optional<CallNode> caller = getCaller(getFirstChild(pNode));
 			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsOneObject(caller.get(), pNode) )
 			{
 				elements.add(caller.get());
@@ -434,8 +437,9 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * @param pEdge the Edge to obtain the edge start for.
-	 * @return the Optional value of the start Node for pEdge.
+	 * @param pEdge The Edge to obtain the edge start for.
+	 * @return The Optional value of the start Node for pEdge.
+	 * @pre pEdge != null
 	 */
 	public Optional<DiagramElement> getEdgeStart(Edge pEdge)
 	{
@@ -456,8 +460,8 @@ public final class ControlFlow
 	}	
 	
 	/**
-	 * @param pElements the DiagramElements to obtain the corresponding ReturnEdges for.
-	 * @return the Collection of corresponding ReturnEdges for pElements.
+	 * @param pElements The DiagramElements to obtain the corresponding ReturnEdges for.
+	 * @return The Collection of corresponding ReturnEdges for pElements.
 	 */
 	public Collection<DiagramElement> getCorrespondingReturnEdges(List<DiagramElement> pElements)
 	{
