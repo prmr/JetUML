@@ -220,19 +220,6 @@ public final class ControlFlow
 	
 	/**
 	 * @param pNode The node to check.
-	 * @param pCallee The edge to check.
-	 * @return True if pNode has no caller and only pEdge as callee.
-	 */
-	public boolean onlyConnectedToOneCall(CallNode pNode, CallEdge pCallee)
-	{
-		List<CallEdge> calls = getCalls(pNode);
-		return !getCaller(pNode).isPresent() &&
-				calls.size() == 1 &&
-				calls.contains(pCallee);
-	}
-	
-	/**
-	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */
 	public boolean isConstructorExecution(Node pNode)
@@ -258,7 +245,8 @@ public final class ControlFlow
 	private boolean isConstructedObject(Node pNode)
 	{
 		assert pNode != null;
-		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 && isConstructorExecution(getFirstChild(pNode));
+		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size()>0 &&
+				isConstructorExecution(getFirstChild(pNode));
 	}
 	
 	private Node getFirstChild(Node pNode)
@@ -270,7 +258,7 @@ public final class ControlFlow
 	private Optional<Edge> getConstructorEdge(Node pNode)
 	{
 		assert pNode != null && isConstructorExecution(pNode);
-		if( pNode.getClass() == CallNode.class )
+		if( pNode.getClass() != CallNode.class )
 		{
 			return Optional.empty();	
 		}
@@ -402,4 +390,68 @@ public final class ControlFlow
 		}
 		return Optional.empty();
 	}
+	
+	/**
+	 * @param pNode the Node to obtain the caller and upstream DiagramElements for.
+	 * @return the Collection of DiagramElements in the upstream of pNode.
+	 *     Excludes pNode and elements returned by getCoRemovals in the DiagramBuilder class.
+	 */
+	public Collection<DiagramElement> getNodeUpstreams(Node pNode)
+	{
+		assert pNode != null;
+		Set<DiagramElement> elements = new HashSet<>();
+		if( pNode.getClass() == CallNode.class)
+		{
+			Optional<CallNode> caller = getCaller(pNode);
+			if( caller.isPresent() && getCaller(caller.get()).isEmpty() )
+			{
+				CallNode callerNode = caller.get();
+				// If the caller is only connected to one call
+				if( getCalls(callerNode).size() == 1 && getCalls(callerNode).get(0).getEnd() == pNode )
+				{
+					elements.add(callerNode);
+				}
+				else if( isConstructorExecution(pNode) )
+				{
+					getCalls(callerNode).stream().filter(e -> e.getEnd().getParent() == pNode.getParent())
+												 .forEach(e -> elements.add(e));
+					if( onlyCallsOneObject(callerNode, pNode.getParent()) )
+					{
+						elements.add(callerNode);
+					}
+				}
+			}
+		}
+		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0)
+		{
+			Optional<CallNode> caller = getCaller(pNode.getChildren().get(0));
+			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsOneObject(caller.get(), pNode) )
+			{
+				elements.add(caller.get());
+			}
+		}
+		return elements;
+	}
+	
+	/**
+	 * @param pEdge the Edge to obtain the edge start for.
+	 * @return the Optional value of the start Node for pEdge.
+	 */
+	public Optional<DiagramElement> getEdgeStart(Edge pEdge)
+	{
+		assert pEdge != null;
+		Node start = pEdge.getStart();
+		if( onlyConnectedToOneEdge(start, pEdge) )
+		{
+			return Optional.of(start);
+		}
+		else if( pEdge.getClass() == ConstructorEdge.class )
+		{
+			if ( getCaller(start).isEmpty() && onlyCallsOneObject(start, pEdge.getEnd().getParent()) )
+			{
+				return Optional.of(start);
+			}
+		}
+		return Optional.empty();
+	}	
 }
