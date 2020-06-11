@@ -281,37 +281,20 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeDownStreamsCallNodeInConstructorCall()
+	public void testGetNodeDownStreamsWithConstructorCall()
 	{
-		aConstructorEdge.connect(aCall1, aCall3, aDiagram);
-		aDiagram.addEdge(aConstructorEdge);
-		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aCall3);
-		assertEquals(8, downstreams.size());
-		assertTrue(downstreams.contains(aConstructorEdge));
-		assertTrue(downstreams.contains(aCallEdge1));
-		assertTrue(downstreams.contains(aCallEdge3));
-		assertTrue(downstreams.contains(aCallEdge4));	
-		assertTrue(downstreams.contains(aParameter2));
-		assertTrue(downstreams.contains(aCall3));
-		assertTrue(downstreams.contains(aCall4));
-		assertTrue(downstreams.contains(aCall5));
-	}
-	
-	@Test
-	public void testGetNodeDownStreamsParameterInConstructorCall()
-	{
-		aConstructorEdge.connect(aCall1, aCall3, aDiagram);
-		aDiagram.addEdge(aConstructorEdge);
-		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aParameter2);
-		assertEquals(8, downstreams.size());
-		assertTrue(downstreams.contains(aConstructorEdge));
-		assertTrue(downstreams.contains(aCallEdge1));
-		assertTrue(downstreams.contains(aCallEdge3));
-		assertTrue(downstreams.contains(aCallEdge4));	
-		assertTrue(downstreams.contains(aParameter2));
-		assertTrue(downstreams.contains(aCall3));
-		assertTrue(downstreams.contains(aCall4));
-		assertTrue(downstreams.contains(aCall5));
+		aDiagramAccessor.connectAndAdd(aConstructorEdge, aCall1, aCall3);
+		Collection<DiagramElement> downstreams1 = aFlow.getNodeDownStreams(aCall3);
+		Collection<DiagramElement> downstreams2 = aFlow.getNodeDownStreams(aParameter2);
+		assertEquals(downstreams1, downstreams2);
+		assertTrue(downstreams1.contains(aConstructorEdge));
+		assertTrue(downstreams1.contains(aCallEdge1));
+		assertTrue(downstreams1.contains(aCallEdge3));
+		assertTrue(downstreams1.contains(aCallEdge4));	
+		assertTrue(downstreams1.contains(aParameter2));
+		assertTrue(downstreams1.contains(aCall3));
+		assertTrue(downstreams1.contains(aCall4));
+		assertTrue(downstreams1.contains(aCall5));
 	}
 	
 	@Test
