@@ -30,6 +30,7 @@ import java.util.Set;
 
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 
@@ -374,13 +375,14 @@ public final class ControlFlow
 		}
 		return downstreamElements;
 	}
-	private boolean calledOntheSameObject(List<CallEdge> pEdges, Node pParentNode)
+	
+	private boolean onlyCallsOneObject(Node pCaller, Node pParentNode)
 	{
-		assert pEdges!= null && pParentNode != null;
-		return pEdges.stream().allMatch(pEdge -> pEdge.getEnd().getParent() == pParentNode);
+		assert pCaller!= null && pParentNode != null;
+		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
 	}
 	
-	private boolean onlyConnectedToOneCallEdge(Node pNode, Edge pEdge)
+	private boolean onlyConnectedToOneEdge(Node pNode, Edge pEdge)
 	{
 		assert pNode != null && pEdge != null;
 		List<CallEdge> calls = getCalls(pNode);
@@ -389,21 +391,15 @@ public final class ControlFlow
 				calls.contains(pEdge);
 	}
 	
-	private List<DiagramElement> getUpstreamElements(Node pCaller, Node pParent)
+	private Optional<Edge> getReturnEdge(Edge pEdge)
 	{
-		assert pCaller != null && pParent != null;
-		List<DiagramElement> elements = new ArrayList<>();
-		for( Edge e: getCalls(pCaller))
+		for( Edge edge : aDiagram.edges() )
 		{
-			if ( e.getEnd().getParent() == pParent)
+			if( edge.getClass() == ReturnEdge.class && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart() )
 			{
-				elements.add(e);
+				return Optional.of(edge);
 			}
 		}
-		if( elements.size() == getCalls(pCaller).size())
-		{
-			elements.add(pCaller);
-		}
-		return elements;
-	}	
+		return Optional.empty();
+	}
 }
