@@ -454,4 +454,26 @@ public final class ControlFlow
 		}
 		return Optional.empty();
 	}	
+	
+	/**
+	 * @param pElements the DiagramElements to obtain the corresponding ReturnEdges for.
+	 * @return the Collection of corresponding ReturnEdges for pElements.
+	 */
+	public Collection<DiagramElement> getCorrespondingReturnEdges(List<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		Set<DiagramElement> returnEdges = new HashSet<>();
+		for( DiagramElement element: pElements )
+		{
+			if( element instanceof CallEdge )
+			{
+				Optional<Edge> returnEdge = getReturnEdge((Edge) element);
+				if( returnEdge.isPresent() )
+				{
+					returnEdges.add(returnEdge.get());
+				}
+			}
+		}
+		return returnEdges;
+	}
 }
