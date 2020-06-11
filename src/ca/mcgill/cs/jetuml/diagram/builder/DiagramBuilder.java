@@ -255,6 +255,7 @@ public abstract class DiagramBuilder
 	{
 		assert pElement != null && aDiagram.contains(pElement);
 		ArrayList<DiagramElement> result = new ArrayList<>();
+		result.add(pElement);
 		if( pElement.getClass() == PointNode.class )
 		{
 			for( Edge edge : aDiagram.edgesConnectedTo((Node)pElement))
@@ -370,7 +371,7 @@ public abstract class DiagramBuilder
 		Set<DiagramElement> toDelete = new HashSet<>();
 		for( DiagramElement element : pElements)
 		{
-			toDelete.add(element);
+			//toDelete.add(element);
 			toDelete.addAll(getCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
