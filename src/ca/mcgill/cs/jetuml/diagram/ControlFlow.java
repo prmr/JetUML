@@ -374,4 +374,36 @@ public final class ControlFlow
 		}
 		return downstreamElements;
 	}
+	private boolean calledOntheSameObject(List<CallEdge> pEdges, Node pParentNode)
+	{
+		assert pEdges!= null && pParentNode != null;
+		return pEdges.stream().allMatch(pEdge -> pEdge.getEnd().getParent() == pParentNode);
+	}
+	
+	private boolean onlyConnectedToOneCallEdge(Node pNode, Edge pEdge)
+	{
+		assert pNode != null && pEdge != null;
+		List<CallEdge> calls = getCalls(pNode);
+		return  getCaller(pNode).isEmpty() &&
+				calls.size() == 1 &&
+				calls.contains(pEdge);
+	}
+	
+	private List<DiagramElement> getUpstreamElements(Node pCaller, Node pParent)
+	{
+		assert pCaller != null && pParent != null;
+		List<DiagramElement> elements = new ArrayList<>();
+		for( Edge e: getCalls(pCaller))
+		{
+			if ( e.getEnd().getParent() == pParent)
+			{
+				elements.add(e);
+			}
+		}
+		if( elements.size() == getCalls(pCaller).size())
+		{
+			elements.add(pCaller);
+		}
+		return elements;
+	}	
 }

@@ -371,7 +371,6 @@ public abstract class DiagramBuilder
 		Set<DiagramElement> toDelete = new HashSet<>();
 		for( DiagramElement element : pElements)
 		{
-			//toDelete.add(element);
 			toDelete.addAll(getCoRemovals(element));
 		}
 		CompoundOperation result = new CompoundOperation();
