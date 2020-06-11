@@ -34,7 +34,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -79,89 +78,26 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return constraintSet;
 	}
 	
-	private void addEdgeEndIfItHasNoCallees(List<DiagramElement> pElements, DiagramElement pTarget)
-	{
-		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pTarget instanceof CallEdge && flow.hasNoCallees((CallNode)((Edge)pTarget).getEnd()))
-		{
-			Node end = ((Edge)pTarget).getEnd();
-			pElements.add(end);
-		}
-	}
-
-	private void addEdgeStartIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pTarget)
-	{
-		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pTarget instanceof CallEdge && flow.onlyConnectedToOneCall((CallNode)((Edge)pTarget).getStart(), (CallEdge) pTarget))
-		{
-			Node start = ((Edge)pTarget).getStart();
-			pElements.add(start);
-		}
-	}
-	
-	private void addNodeCallerIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
-	{
-		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pElement instanceof CallNode )
-		{
-			Optional<CallNode> caller = flow.getCaller((Node)pElement);
-			if( caller.isPresent() )
-			{
-				List<CallEdge> calls = flow.getCalls(caller.get());
-				if( !flow.getCaller(caller.get()).isPresent() && calls.size() == 1 && calls.get(0).getEnd() == pElement )
-				{
-					pElements.add(caller.get());
-				}
-			}
-		}
-	}
-	
-	private void addNodeCalleesIfItHasNoOtherFlow(List<DiagramElement> pElements, DiagramElement pElement)
-	{
-		ControlFlow flow = new ControlFlow(aDiagram);
-		if( pElement instanceof CallNode )
-		{
-			for( Node callee : flow.getCallees((Node)pElement))
-			{
-				if( flow.hasNoCallees((CallNode)callee))
-				{
-					pElements.add(callee);
-				}
-			}
-		}
-	}
-	
-	private void addCorrespondingReturnEdge(List<DiagramElement> pElements, DiagramElement pElement)
-	{
-		if( pElement instanceof CallEdge )
-		{
-			Edge returnEdge = null;
-			Edge input = (CallEdge) pElement;
-			for( Edge edge : aDiagram.edges() )
-			{
-				if( edge instanceof ReturnEdge && edge.getStart() == input.getEnd() && edge.getEnd() == input.getStart())
-				{
-					returnEdge = edge;
-					break;
-				}
-			}
-			if( returnEdge != null )
-			{
-				final Edge target = returnEdge;
-				pElements.add(target);
-			}
-		}
-	}
-	
 	@Override
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
 		List<DiagramElement> result = super.getCoRemovals(pElement);
-		addEdgeEndIfItHasNoCallees(result, pElement);
-		addEdgeStartIfItHasNoOtherFlow(result, pElement);
-		addNodeCallerIfItHasNoOtherFlow(result, pElement);
-		addCorrespondingReturnEdge(result, pElement);
-		addNodeCalleesIfItHasNoOtherFlow(result, pElement);
+		ControlFlow flow = new ControlFlow(aDiagram);
+		if(pElement instanceof Node)
+		{
+			result.addAll(flow.getNodeDownStreams( (Node)pElement));
+			result.addAll(flow.getNodeUpstreams( (Node)pElement));
+		}
+		else if(pElement instanceof Edge)
+		{
+			result.addAll(flow.getEdgeDownStreams( (Edge)pElement));
+			Optional<DiagramElement> edgeStart = flow.getEdgeStart( (Edge)pElement);
+			if(edgeStart.isPresent())
+			{
+				result.add(edgeStart.get());
+			}
+		}	
+		result.addAll( flow.getCorrespondingReturnEdges(result));
 		return result;
 	}
 	
