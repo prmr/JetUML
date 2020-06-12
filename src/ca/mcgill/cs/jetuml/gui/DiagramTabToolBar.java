@@ -87,7 +87,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	{
 		SelectableToolButton selectionButton = new SelectableToolButton(createSelectionIcon(), 
 				RESOURCES.getString("toolbar.select.tooltip"), pToggleGroup);
-		add(selectionButton, createSelectionIcon());
+		add(selectionButton, createSelectionIcon(), RESOURCES.getString("toolbar.select.tooltip"));
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(selectionButton);
 	}
 	
@@ -110,7 +110,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
 					pToggleGroup, element);
 			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
-			add(button, createIcon(element));
+			add(button, createIcon(element), Prototypes.instance().tooltip(element, false));
 		}
 	}
 	
@@ -141,19 +141,20 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		assert getItems().size() > 0; // We copy size information from the top button
 		button.prefWidthProperty().bind(((ToggleButton)getItems().get(0)).widthProperty());
 		button.prefHeightProperty().bind(((ToggleButton)getItems().get(0)).heightProperty());
-		add(button);
+		add(button, RESOURCES.getString("toolbar.toclipboard.tooltip"));
 	}
 	
 	/**
 	 * Adds the button to this toolbar and the corresponding context menu.
 	 * 
 	 * @param pButton The button to add.
+	 * @param pText The text for the menu
 	 */
-	private void add(ButtonBase pButton)
+	private void add(ButtonBase pButton, String pText)
 	{
 		assert pButton != null;
 		getItems().add( pButton );
-		MenuItem item = new MenuItem(pButton.getTooltip().getText());
+		MenuItem item = new MenuItem(pText);
 		item.setGraphic(new ImageView(((ImageView)pButton.getGraphic()).getImage()));
 		item.setOnAction(pButton.getOnAction());
 		aPopupMenu.getItems().add(item);
@@ -163,12 +164,13 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	 * Adds the button to this toolbar and the corresponding context menu.
 	 * 
 	 * @param pButton The button to add.
+	 * @param pText The text for the menu
 	 */
-	private void add(ButtonBase pButton, Canvas pIcon)
+	private void add(ButtonBase pButton, Canvas pIcon, String pText)
 	{
 		assert pButton != null;
 		getItems().add( pButton );
-		MenuItem item = new MenuItem(pButton.getTooltip().getText());
+		MenuItem item = new MenuItem(pText);
 		item.setGraphic(pIcon);
 		item.setOnAction(pButton.getOnAction());
 		aPopupMenu.getItems().add(item);
