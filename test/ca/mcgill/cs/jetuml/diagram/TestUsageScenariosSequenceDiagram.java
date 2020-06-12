@@ -210,8 +210,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		select(aParameterNode1);
 		deleteSelected();
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(1, newParameterNode.getChildren().size());
-		assertEquals(1, aParameterNode2.getChildren().size()); 
+		assertEquals(0, newParameterNode.getChildren().size());
+		assertEquals(0, aParameterNode2.getChildren().size()); 
 		assertEquals(0, numberOfEdges());
 		
 		undo();
