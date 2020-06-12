@@ -404,7 +404,7 @@ public class TestPersistenceService
 		assertEquals(node8, edge5.getEnd());
 		
 		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(378, osDependent(390,383, 384), 83, osDependent(23,22, 21)), getBounds(edge6));
+		assertEquals(new Rectangle(378, osDependent(390,390, 384), 83, osDependent(23,23, 21)), getBounds(edge6));
 		assertEquals(node7, edge6.getEnd());
 		assertEquals("e1", edge6.getMiddleLabel());
 		assertEquals(node1, edge6.getStart());
@@ -415,7 +415,7 @@ public class TestPersistenceService
 		assertEquals(node1, edge1.getStart());
 		
 		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 428, osDependent(12,13, 25), 92), getBounds(edge2));
+		assertEquals(new Rectangle(503, 428, osDependent(12,12, 25), 92), getBounds(edge2));
 		assertEquals(node1, edge2.getEnd());
 		assertEquals(node3, edge2.getStart());
 		
