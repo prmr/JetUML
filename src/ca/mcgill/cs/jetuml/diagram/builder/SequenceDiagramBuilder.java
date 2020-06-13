@@ -85,17 +85,17 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		ControlFlow flow = new ControlFlow(aDiagram);
 		if(pElement instanceof Node)
 		{
-			result.addAll(flow.getNodeDownStreams( (Node)pElement));
-			result.addAll(flow.getNodeUpstreams( (Node)pElement));
+			result.addAll(flow.getNodeUpstreams((Node)pElement));
+			result.addAll(flow.getNodeDownStreams((Node)pElement));
 		}
 		else if(pElement instanceof Edge)
 		{
-			result.addAll(flow.getEdgeDownStreams( (Edge)pElement));
-			Optional<DiagramElement> edgeStart = flow.getEdgeStart( (Edge)pElement);
+			Optional<DiagramElement> edgeStart = flow.getEdgeStart((Edge)pElement);
 			if(edgeStart.isPresent())
 			{
 				result.add(edgeStart.get());
 			}
+			result.addAll(flow.getEdgeDownStreams((Edge)pElement));
 		}	
 		result.addAll( flow.getCorrespondingReturnEdges(result));
 		return result;
