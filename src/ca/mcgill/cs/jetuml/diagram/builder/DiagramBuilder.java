@@ -296,7 +296,7 @@ public abstract class DiagramBuilder
 	{
 		List<DiagramElement> result = new ArrayList<>();
 		Map<ObjectNode, List<FieldNode>> fields = new HashMap<>();
-		for( DiagramElement element : pElements)
+		for( DiagramElement element : pElements )
 		{
 			if( element.getClass() != FieldNode.class )
 			{
@@ -305,7 +305,7 @@ public abstract class DiagramBuilder
 			else
 			{
 				FieldNode field = (FieldNode) element;
-				if( !fields.containsKey(field.getParent()))
+				if( !fields.containsKey(field.getParent()) )
 				{
 					fields.put((ObjectNode)field.getParent(), new ArrayList<>());
 				}
@@ -331,30 +331,41 @@ public abstract class DiagramBuilder
 		}
 		ArrayList<DiagramElement> result2 = new ArrayList<>();
 		ArrayList<Edge> edges = new ArrayList<>();
-		for( DiagramElement element : result)
+		ArrayList<Node> nodes = new ArrayList<>();
+		for( DiagramElement element : result )
 		{
-			if( element instanceof Edge)
+			if( element instanceof Edge )
 			{
 				edges.add((Edge)element);
+			}
+			else if( element instanceof Node )
+			{
+				nodes.add((Node)element);
 			}
 			else
 			{
 				result2.add(element);
 			}
 		}
-		Collections.sort(edges, new Comparator<Edge>() 
+		Collections.sort(edges, (pEdge1, pEdge2) -> aDiagram.indexOf(pEdge2) - aDiagram.indexOf(pEdge1));
+		Collections.sort(nodes, new Comparator<Node>() 
 		{
 			@Override
-			public int compare(Edge pEdge1, Edge pEdge2)
+			public int compare(Node pNode1, Node pNode2)
 			{
-				return aDiagram.indexOf(pEdge2) - aDiagram.indexOf(pEdge1);
+				if( pNode1.hasParent() && pNode2.hasParent() )
+				{
+					Node parent = pNode1.getParent();
+					if( parent == pNode2.getParent() )
+					{
+						return parent.getChildren().indexOf(pNode2) -  parent.getChildren().indexOf(pNode1);
+					}
+				}
+				return 0;
 			}
-			
 		});
-		for( Edge edge : edges)
-		{
-			result2.add(edge);
-		}
+		result2.addAll(edges);
+		result2.addAll(nodes);
 		return result2;
 	}
 	
