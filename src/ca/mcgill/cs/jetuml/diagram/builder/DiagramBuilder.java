@@ -338,7 +338,7 @@ public abstract class DiagramBuilder
 			{
 				edges.add((Edge)element);
 			}
-			else if( element instanceof Node )
+			else if( element instanceof Node && ((Node)element).hasParent() )
 			{
 				nodes.add((Node)element);
 			}
@@ -353,15 +353,16 @@ public abstract class DiagramBuilder
 			@Override
 			public int compare(Node pNode1, Node pNode2)
 			{
-				if( pNode1.hasParent() && pNode2.hasParent() )
+				Node parent1 = pNode1.getParent();
+				Node parent2 = pNode2.getParent();
+				if( parent1 == parent2 )
 				{
-					Node parent = pNode1.getParent();
-					if( parent == pNode2.getParent() )
-					{
-						return parent.getChildren().indexOf(pNode2) -  parent.getChildren().indexOf(pNode1);
-					}
+					return parent2.getChildren().indexOf(pNode2) -  parent1.getChildren().indexOf(pNode1);
 				}
-				return 0;
+				else 
+				{
+					return aDiagram.rootNodes().indexOf(parent2) - aDiagram.rootNodes().indexOf(parent1);
+				}
 			}
 		});
 		result2.addAll(edges);
