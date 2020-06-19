@@ -133,7 +133,7 @@ public class TestSequenceDiagramBuilder
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 40);
 		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
-		assert aBuilder.canCreateConstructorCall(endPoint);
+		assert aBuilder.canCreateConstructorCall(startPoint, endPoint);
 		CompoundOperation result = new CompoundOperation();
 		ConstructorEdge constructorEdge = new ConstructorEdge();
 		aBuilder.completeEdgeAdditionOperation(result, constructorEdge, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
@@ -159,7 +159,7 @@ public class TestSequenceDiagramBuilder
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 90);
 		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
-		assertFalse( aBuilder.canCreateConstructorCall(endPoint) );
+		assertFalse( aBuilder.canCreateConstructorCall(startPoint, endPoint) );
 		CompoundOperation result = new CompoundOperation();
 		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
 		result.execute();
@@ -186,7 +186,7 @@ public class TestSequenceDiagramBuilder
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 70);
 		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
-		assertFalse( aBuilder.canCreateConstructorCall(endPoint) );
+		assertFalse( aBuilder.canCreateConstructorCall(startPoint, endPoint) );
 		CompoundOperation result = new CompoundOperation();
 		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aDefaultCallNode1, aDefaultCallNode2, startPoint, endPoint);
 		result.execute();
@@ -194,7 +194,6 @@ public class TestSequenceDiagramBuilder
 		assertEquals(2, numberOfRootNodes());
 		assertEquals(1, numberOfEdges());
 		assertEquals(1, aImplicitParameterNode1.getChildren().size());
-		// TODO: Fix the addition of the extra call node
 		assertEquals(2, aImplicitParameterNode2.getChildren().size());
 		assertSame(aDefaultCallNode1, aImplicitParameterNode1.getChildren().get(0));
 		assertSame(aDefaultCallNode2, aImplicitParameterNode2.getChildren().get(0));

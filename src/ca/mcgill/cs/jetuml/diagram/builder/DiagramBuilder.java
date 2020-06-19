@@ -173,7 +173,6 @@ public abstract class DiagramBuilder
 		DiagramViewer viewer = viewerFor(aDiagram);
 		Optional<Node> end = viewer.findNode(aDiagram, pEnd);
 		Optional<Node> start = viewer.findNode(aDiagram, pStart);
-		
 		if(start.isPresent() && end.isPresent())
 		{
 			Node startNode = start.get();

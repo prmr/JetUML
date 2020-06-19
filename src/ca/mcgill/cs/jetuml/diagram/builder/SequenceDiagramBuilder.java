@@ -70,7 +70,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
 				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
 			);
-		if( !canCreateConstructorCall(pEndPoint) )
+		if( !canCreateConstructorCall(pStartPoint, pEndPoint) )
 		{
 			// The edge could not land on the top rectangle of ImplicitParameterNode if cannot create constructor call
 			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );

@@ -447,7 +447,7 @@ public class DiagramCanvasController
 		{
 			if( aDiagramBuilder.canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
-				if(aDiagramBuilder.canCreateConstructorCall(pMousePoint))
+				if(aDiagramBuilder.canCreateConstructorCall(aMouseDownPoint, pMousePoint))
 				{
 					// Change the edge type if can create a constructor call
 					newEdge = new ConstructorEdge();
