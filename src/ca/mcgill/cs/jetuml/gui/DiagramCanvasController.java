@@ -42,6 +42,8 @@ import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -325,18 +327,34 @@ public class DiagramCanvasController
 	private void handleSingleClick(MouseEvent pEvent)
 	{
 		Optional<DiagramElement> tool = aToolBar.getCreationPrototype();
-		if(!tool.isPresent())
+		Optional<? extends DiagramElement> element = getSelectedElement(pEvent);
+		if(tool.isEmpty())
 		{
 			handleSelection(pEvent);
 		}
-		else if(tool.get() instanceof Node)
+		else
 		{
-			handleNodeCreation(pEvent);
+			if(tool.get() instanceof Node)
+			{
+				if( element.isPresent() && isNodeOtherThanPackageAndField(element.get()) )
+				{
+					handleSelection(pEvent);
+				}
+				else 
+				{
+					handleNodeCreation(pEvent);
+				}
+			}
+			else if(tool.get() instanceof Edge)
+			{
+				handleEdgeStart(pEvent);
+			}
 		}
-		else if(tool.get() instanceof Edge)
-		{
-			handleEdgeStart(pEvent);
-		}
+	}
+	
+	private boolean isNodeOtherThanPackageAndField(DiagramElement pElement)
+	{
+		return pElement instanceof Node && !(pElement instanceof PackageNode)&& !(pElement instanceof FieldNode);
 	}
 	
 	private void handleNodeCreation(MouseEvent pEvent)
