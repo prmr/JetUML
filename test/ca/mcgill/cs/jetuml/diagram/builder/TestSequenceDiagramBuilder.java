@@ -221,4 +221,24 @@ public class TestSequenceDiagramBuilder
 		assertEquals(1, numberOfEdges());
 		assertSame(aDiagram.edges().get(0), noteEdge);
 	}
+	
+	@Test
+	public void testCanCreateConstructorCallNoNodes()
+	{
+		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(20, 20)));
+	}
+	
+	@Test
+	public void testCanCreateConstructorCallWrongStartNode()
+	{
+		aDiagram.addRootNode(new NoteNode());
+		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(20, 20)));
+	}
+	
+	@Test
+	public void testCanCreateConstructorCallNoEndNode()
+	{
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(150, 150)));
+	}
 }

@@ -41,6 +41,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
+import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
@@ -465,7 +466,8 @@ public class DiagramCanvasController
 		{
 			if( aDiagramBuilder.canAdd(newEdge, aMouseDownPoint, pMousePoint))
 			{
-				if(aDiagramBuilder.canCreateConstructorCall(aMouseDownPoint, pMousePoint))
+				if( aDiagramBuilder instanceof SequenceDiagramBuilder &&
+						((SequenceDiagramBuilder)aDiagramBuilder).canCreateConstructorCall(aMouseDownPoint, pMousePoint))
 				{
 					// Change the edge type if can create a constructor call
 					newEdge = new ConstructorEdge();
