@@ -163,29 +163,6 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Returns whether a constructor call could be created.
-	 * @param pStart the start position of the mouse
-	 * @param pEnd the end position of the mouse
-	 * @return True if the end node of the edge is an ImplicitParameterNode with no child nodes.
-	 */
-	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
-	{
-		DiagramViewer viewer = viewerFor(aDiagram);
-		Optional<Node> end = viewer.findNode(aDiagram, pEnd);
-		Optional<Node> start = viewer.findNode(aDiagram, pStart);
-		if(start.isPresent() && end.isPresent())
-		{
-			Node startNode = start.get();
-			Node endNode = end.get();
-			return 	startNode instanceof ImplicitParameterNode && 
-					endNode instanceof ImplicitParameterNode && 
-					new ImplicitParameterNodeViewer().getTopRectangle(endNode).contains(pEnd) && 
-					endNode.getChildren().size()==0;
-		}
-		return false;
-	}
-	
-	/**
 	 * @param pEdge The edge to add.
 	 * @param pStart The start node.
 	 * @param pEnd The end node.
