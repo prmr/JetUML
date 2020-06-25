@@ -163,19 +163,6 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * Returns whether a constructor call could be created.
-	 * @param pEnd The node to check.
-	 * @return True if the end node of the edge is an ImplicitParameterNode with no child nodes.
-	 */
-	public boolean canCreateConstructorCall(Point pEnd)
-	{
-		DiagramViewer viewer = viewerFor(aDiagram);
-		Node endNode = viewer.findNode(aDiagram, pEnd).get();
-		return endNode instanceof ImplicitParameterNode && new ImplicitParameterNodeViewer().getTopRectangle(endNode).contains(pEnd) && 
-				((ImplicitParameterNode)endNode).getChildren().size()==0;
-	}
-	
-	/**
 	 * @param pEdge The edge to add.
 	 * @param pStart The start node.
 	 * @param pEnd The end node.

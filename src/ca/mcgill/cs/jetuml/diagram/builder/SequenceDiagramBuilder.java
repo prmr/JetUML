@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder;
 
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +42,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
 /**
  * A builder for sequence diagrams.
@@ -70,12 +73,36 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
 				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram)
 			);
-		if( !canCreateConstructorCall(pEndPoint) )
+		if( !canCreateConstructorCall(pStartPoint, pEndPoint) )
 		{
 			// The edge could not land on the top rectangle of ImplicitParameterNode if cannot create constructor call
 			constraintSet.merge( new ConstraintSet(SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pEnd, pEndPoint)) );
 		}
 		return constraintSet;
+	}
+	
+	/**
+	 * Check if the start node is either a CallNode or ImplicitParameterNode, and the end node is an ImplicitParameterNode
+	 * with no child nodes. The end point of the edge should land on the top rectangle of the end Node.
+	 * @param pStart the start position of the mouse.
+	 * @param pEnd the end position of the mouse.
+	 * @return True if the start node and the end node of the edge satisfy the conditions to create the constructor call.
+	 * @pre pStart!= null && pEnd != null
+	 */
+	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
+	{
+		assert pStart!= null && pEnd != null;
+		DiagramViewer viewer = viewerFor(aDiagram);
+		Optional<Node> end = viewer.findNode(aDiagram, pEnd);
+		Optional<Node> start = viewer.findNode(aDiagram, pStart);
+		if(start.isPresent() && end.isPresent())
+		{
+			Node startNode = start.get();
+			Node endNode = end.get();
+			return 	(startNode instanceof ImplicitParameterNode || startNode instanceof CallNode) && 
+					new ControlFlow(aDiagram).canCreateConstructedObject(endNode, pEnd);
+		}
+		return false;
 	}
 	
 	@Override

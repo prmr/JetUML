@@ -33,6 +33,8 @@ import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
  * An immutable wrapper around a SequenceDiagram that can answer
@@ -479,5 +481,19 @@ public final class ControlFlow
 			}
 		}
 		return returnEdges;
+	}
+
+	/**
+	 * @param pNode The Node to check if it can create a constructed object.
+	 * @param pPoint The point to check if it is within the top rectangular bound of pNode.
+	 * @return True if pNode is an ImplicitParameterNode with no child nodes and pPoint is within the top rectangular bound of pNode.
+	 * @pre pNode != null && pPoint != null
+	 */
+	public boolean canCreateConstructedObject(Node pNode, Point pPoint)
+	{
+		assert pNode != null && pPoint != null;
+		return pNode instanceof ImplicitParameterNode && 
+				new ImplicitParameterNodeViewer().getTopRectangle(pNode).contains(pPoint) && 
+				pNode.getChildren().size()==0;
 	}
 }
