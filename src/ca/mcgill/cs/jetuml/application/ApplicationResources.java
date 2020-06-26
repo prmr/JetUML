@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.application;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.JetUML;
 
 /**
  * A single access point for all application resources.
@@ -42,7 +42,7 @@ public final class ApplicationResources
 	
 	private static final String ERROR_MESSAGE = "[Resource cannot be found]";
 	
-	private ResourceBundle aResouceBundle = ResourceBundle.getBundle(UMLEditor.class.getName());
+	private ResourceBundle aResouceBundle = ResourceBundle.getBundle(JetUML.class.getName());
 	
 	private ApplicationResources() {}
 	

@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 /**
  * Entry point for launching JetUML.
  */
-public final class UMLEditor extends Application
+public final class JetUML extends Application
 {
 	@SuppressWarnings("exports")
 	public static final Version VERSION = Version.create(3, 0);

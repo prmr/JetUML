@@ -23,7 +23,7 @@ package ca.mcgill.cs.jetuml.persistence;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.JetUML;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -50,7 +50,7 @@ public final class JsonEncoder
 		assert pDiagram != null;
 		
 		JSONObject object = new JSONObject();
-		object.put("version", UMLEditor.VERSION.toString());
+		object.put("version", JetUML.VERSION.toString());
 		object.put("diagram", pDiagram.getName());
 		SerializationContext context = new SerializationContext(pDiagram);
 		object.put("nodes", encodeNodes(context));
