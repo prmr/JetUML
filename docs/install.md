@@ -9,7 +9,9 @@ Starting with Release 3.0, JetUML is distributed in two formats:
 
 *This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 11 or above running on your system.* 
 
-Download file `JetUML-M.m.jar` (where `M.m` is the release number) from the latest release page to some directory. To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
+Download file `JetUML-<Version>.jar` from the latest release page, to a local directory. 
+
+To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
 
 ```shell
 java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls, javafx.swing, java.desktop, java.prefs -jar JETUML_FILE
@@ -21,4 +23,17 @@ Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javaf
 java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.0.jar
 ```
 
+## Runtime Image
+
+*We plan to have natively installable distributions in the future. For the moment, please go through the following steps.*
+
+Download the file `JetUML-<OS>-<Version>.zip` that corresponds to your operating system from the latest release page, to some local directory and extract the zip file to a location of your choice.
+
+#### Windows
+
+1. In the extracted files, find `bin\java.exe`, create a shortcut, and rename it `JetUML`;
+2. Right-click on the JetUML shortcut and select `Properties`.
+3. Under `Target`, append the following string to the current target: `-m jetuml/ca.mcgill.cs.jetuml.JetUML`
+4. (Optional) Still under `Properties`, click the button `Change Icon...` and browse to the file `JetUML.ico` in the same directory as the `java.exe` file. Click `Apply`.
+5. You can now move your shortcut to where you like and double-click it to start JetUML.
 
