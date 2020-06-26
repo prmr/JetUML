@@ -25,15 +25,15 @@ java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=j
 
 ## Runtime Image
 
-*We plan to have natively installable distributions in the future. For the moment, please go through the following steps.*
+*We plan to have natively installable distributions in the future. For the moment, please go through the following simple steps.*
 
-Download the file `JetUML-<OS>-<Version>.zip` that corresponds to your operating system from the latest release page, to some local directory and extract the zip file to a location of your choice.
+Download the file `JetUML-<Version>-<OS>.zip` that corresponds to your operating system from the latest release page and extract the zip file to a location of your choice.
 
 #### Windows
 
-1. In the extracted files, find `bin\java.exe`, create a shortcut, and rename it `JetUML`;
+1. In the extracted files, find `bin\javaw.exe`, create a shortcut, and rename it `JetUML`;
 2. Right-click on the JetUML shortcut and select `Properties`.
-3. Under `Target`, append the following string to the current target: `-m jetuml/ca.mcgill.cs.jetuml.JetUML`
+3. Under `Target`, append the following string to the current target: ` -m jetuml/ca.mcgill.cs.jetuml.JetUML` (making sure to leave a space between the existing command and the appended text).
 4. (Optional) Still under `Properties`, click the button `Change Icon...` and browse to the file `JetUML.ico` in the same directory as the `java.exe` file. Click `Apply`.
 5. You can now move your shortcut to where you like and double-click it to start JetUML.
 
