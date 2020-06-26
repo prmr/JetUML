@@ -2,12 +2,12 @@
 
 Starting with Release 3.0, JetUML is distributed in two formats:
 
-* **Self-contained application:** A large download that includes all dependencies necessary to run the application and that can be installed using an installer. The self-contained application is **OS-dependent** and does not require Java to be installed.
-* **Thin Jar:** A single small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is **OS-independent** but requires to have Java 11 or later *and* JavaFX 11 or later installed. 
+* **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform.
+* **Thin Jar:** A single small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 11 or later *and* JavaFX 11 or later installed. 
 
-## Runtime Image
+## Self-Contained Application
 
-Download the file `JetUML-<OS>-<Version>-<ext>` that corresponds to your operating system from the latest release page.
+Download the file `JetUML-<OS>-<Version>-<ext>` that corresponds to your operating system from the [latest release page](https://github.com/prmr/JetUML/releases).
 
 #### Windows
 
@@ -25,7 +25,7 @@ To be completed
 
 *This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 11 or above running on your system.* 
 
-Download file `JetUML-<Version>.jar` from the latest release page, to a local directory. 
+Download file `JetUML-<Version>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. 
 
 To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
 
