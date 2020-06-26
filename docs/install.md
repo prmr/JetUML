@@ -1,49 +1,24 @@
 # Installation Instructions
 
-JetUML can be run most easily on Java 8, the last long-term support (LTS) Java release that bundles JavaFX with the run-time environment. JetUML can also be executed with later releases of Java, but this requires a bit more work.
+Starting with Release 3.0, JetUML is distributed in two formats:
 
-**MacOS Users:** Please note that some system configurations may cause the application to crash. If you notice a problem, please see [this issue report](https://github.com/prmr/JetUML/issues/324).
+* **Thin Jar:** A single small Java archive (jar) file that does _not_ include any of the dependencies. Choose this format if you have Java 11 or later and JavaFX 11 or later installed on your system and just want to download a tiny file and run it from the command line. The thin jar is **OS-independent**.
+* **Runtime image:** A large download that includes all dependencies necessary to run the application. Choose this format if you don't have both Java and JavaFX installed on your system, and/or you want to be able to start the application using a desktop shortcut. The runtime image is **OS-dependent**.
 
-*To contribute instructions for other system configurations, please submit a pull request.*
+## Thin Jar
 
-## Download JetUML
+*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 11 or above running on your system.* 
 
-Download the latest version from the [releases page](https://github.com/prmr/JetUML/releases).
+Download file `JetUML-M.m.jar` (where `M.m` is the release number) from the latest release page to some directory. To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
 
-## Install Dependencies
-
-### Java 8 (Cross-Platform)
-
-If your OS environment supports executable jars, simply double-click the jar file to start the application. If this is not possible, your can start it from the command line with `java -jar file.jar` (where `file.jar` is the name of the JetUML jar you downloaded).
-
-### Java 11/12/13 (macOS)
-1. **Download and install [Java SE](https://www.oracle.com/technetwork/java/javase/downloads)**. The macOS installer will automatically set up the path for you, so you do not need to manually add the path.
-2. **Download and install [JavaFX macOS](https://gluonhq.com/products/javafx/)**. Notice that you only need the *SDK*, not the *jmods*.
-
-### OpenJDK 11/12 (Windows 10)
-
-1. **Download and install [OpenJDK](https://openjdk.java.net/)** by following the instructions. Make sure to include the Java binaries on the path. The installation is complete when typing `java -version` on the command line displays the downloaded and extracted version of the JDK.
-
-2. **Download and install [OpenJFX](https://openjfx.io/)** by following the instructions. 
-
-## Run JetUML
-At this point is should be possible to run JetUML by entering the command:
-
-```
-java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls -jar JETUML_FILE
+```shell
+java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls, javafx.swing, java.desktop, java.prefs -jar JETUML_FILE
 ```
 
 Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
 
-```
-java --module-path "C:\local\java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls -jar JetUML-2.4.jar
-```
-#### For Windows Users only:
-To make it possible to execute JetUML by **double-clicking the jar file** (optional/advanced), it is necessary to modify the Windows registry. Using `Regedit`, open the Windows registry editor and find the entry `HKEY_CLASSES_ROOT\jar_auto_file\shell\open\command` and modify its data field so it has the value:
-
-```
-"PATH_TO_JAVAW" --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls -jar "%1"
+```shell
+java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.0.jar
 ```
 
-where `PATH_TO_JAVAW` is the path to the executable `javaw.exe`, normally found in the `bin` directory of the JDK root directory. `PATH_TO_JAVAFX_LIB` is the same value as for step 2.
 
