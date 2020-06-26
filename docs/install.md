@@ -14,7 +14,7 @@ Download file `JetUML-<Version>.jar` from the latest release page, to a local di
 To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
 
 ```shell
-java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls, javafx.swing, java.desktop, java.prefs -jar JETUML_FILE
+java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
 ```
 
 Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
