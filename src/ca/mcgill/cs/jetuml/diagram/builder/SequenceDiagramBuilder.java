@@ -124,7 +124,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 			result.addAll(flow.getEdgeDownStreams((Edge)pElement));
 		}	
-		result.addAll( flow.getCorrespondingReturnEdges(result));
+		result.addAll(flow.getCorrespondingReturnEdges(result));
 		return result;
 	}
 	
@@ -211,18 +211,18 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		DiagramOperation result = null;
 		if(pNode instanceof CallNode) 
 		{
-			ImplicitParameterNode target = insideTargetArea(pRequestedPosition);
-			if( target != null )
+			Optional<ImplicitParameterNode> target = insideTargetArea(pRequestedPosition);
+			if( target.isPresent() )
 			{
 				result = new SimpleOperation(()-> 
 				{ 
 					pNode.attach(aDiagram);
-					target.addChild(pNode); 
+					target.get().addChild(pNode); 
 				},
 				()-> 
 				{
 					pNode.detach();
-					target.removeChild(pNode);
+					target.get().removeChild(pNode);
 				});
 			}
 		}
@@ -235,20 +235,20 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	/*
 	 * If pPoint is inside an ImplicitParameterNode but below its top
-	 * rectangle, returns that node. Otherwise, returns null.
+	 * rectangle, returns the Optional value of that node. Otherwise, returns Optional.empty().
 	 */
-	private ImplicitParameterNode insideTargetArea(Point pPoint)
+	private Optional<ImplicitParameterNode> insideTargetArea(Point pPoint)
 	{
 		for( Node node : aDiagram.rootNodes() )
 		{
-			if(node instanceof ImplicitParameterNode && NodeViewerRegistry.contains(node, pPoint))
+			if( node instanceof ImplicitParameterNode && NodeViewerRegistry.contains(node, pPoint) )
 			{
-				if( !(pPoint.getY() < IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).getMaxY() + CALL_NODE_YGAP))
+				if( !(pPoint.getY() < IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
 				{
-					return (ImplicitParameterNode) node;
+					return Optional.of( (ImplicitParameterNode)node );
 				}
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 }
