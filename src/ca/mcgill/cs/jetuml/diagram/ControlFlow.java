@@ -210,17 +210,6 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * @param pNode The node to check
-	 * @return True if pNode is a call node that does not have any outgoing
-	 *     call edge.
-	 */
-	public boolean hasNoCallees(CallNode pNode)
-	{
-		assert pNode != null;
-		return getCallees(pNode).isEmpty();
-	}
-	
-	/**
 	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */
