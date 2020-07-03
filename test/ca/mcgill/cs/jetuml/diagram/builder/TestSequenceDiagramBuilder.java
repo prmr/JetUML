@@ -26,12 +26,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
@@ -85,9 +89,6 @@ public class TestSequenceDiagramBuilder
 		return aDiagram.edges().size();
 	}
 	
-	/*
-	 * Add without the default call node. 
-	 */
 	@Test
 	public void testcreateAddNodeOperationOneImplicitParameterNode()
 	{
@@ -132,8 +133,8 @@ public class TestSequenceDiagramBuilder
 		
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 40);
-		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
-		assert aBuilder.canCreateConstructorCall(startPoint, endPoint);
+		assertTrue(aBuilder.canAdd(aCallEdge1, startPoint, endPoint));
+		assertTrue(aBuilder.canCreateConstructorCall(startPoint, endPoint));
 		CompoundOperation result = new CompoundOperation();
 		ConstructorEdge constructorEdge = new ConstructorEdge();
 		aBuilder.completeEdgeAdditionOperation(result, constructorEdge, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
@@ -143,8 +144,8 @@ public class TestSequenceDiagramBuilder
 		assertEquals(1, numberOfEdges());
 		assertEquals(1, aImplicitParameterNode1.getChildren().size());
 		assertEquals(1, aImplicitParameterNode2.getChildren().size());
-		assertTrue(aImplicitParameterNode1.getChildren().get(0).getClass() == CallNode.class);
-		assertTrue(aImplicitParameterNode2.getChildren().get(0).getClass() == CallNode.class);
+		assertEquals(CallNode.class, aImplicitParameterNode1.getChildren().get(0).getClass());
+		assertEquals(CallNode.class, aImplicitParameterNode2.getChildren().get(0).getClass());
 		assertSame(aDiagram.edges().get(0), constructorEdge);
 	}
 	
@@ -158,7 +159,7 @@ public class TestSequenceDiagramBuilder
 		
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 90);
-		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
+		assertTrue(aBuilder.canAdd(aCallEdge1, startPoint, endPoint));
 		assertFalse( aBuilder.canCreateConstructorCall(startPoint, endPoint) );
 		CompoundOperation result = new CompoundOperation();
 		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aImplicitParameterNode1, aImplicitParameterNode2, startPoint, endPoint);
@@ -168,8 +169,8 @@ public class TestSequenceDiagramBuilder
 		assertEquals(1, numberOfEdges());
 		assertEquals(1, aImplicitParameterNode1.getChildren().size());
 		assertEquals(1, aImplicitParameterNode2.getChildren().size());
-		assertTrue(aImplicitParameterNode1.getChildren().get(0).getClass() == CallNode.class);
-		assertTrue(aImplicitParameterNode2.getChildren().get(0).getClass() == CallNode.class);
+		assertEquals(CallNode.class, aImplicitParameterNode1.getChildren().get(0).getClass());
+		assertEquals(CallNode.class, aImplicitParameterNode2.getChildren().get(0).getClass());
 		assertSame(aDiagram.edges().get(0), aCallEdge1);
 	}
 	
@@ -185,7 +186,7 @@ public class TestSequenceDiagramBuilder
 		
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 70);
-		assert aBuilder.canAdd(aCallEdge1, startPoint, endPoint);
+		assertTrue(aBuilder.canAdd(aCallEdge1, startPoint, endPoint));
 		assertFalse( aBuilder.canCreateConstructorCall(startPoint, endPoint) );
 		CompoundOperation result = new CompoundOperation();
 		aBuilder.completeEdgeAdditionOperation(result, aCallEdge1, aDefaultCallNode1, aDefaultCallNode2, startPoint, endPoint);
@@ -212,7 +213,7 @@ public class TestSequenceDiagramBuilder
 		
 		Point startPoint = new Point(40, 95);
 		Point endPoint = new Point(120, 90);
-		assert aBuilder.canAdd(noteEdge, startPoint, endPoint);
+		assertTrue(aBuilder.canAdd(noteEdge, startPoint, endPoint));
 		CompoundOperation result = new CompoundOperation();
 		aBuilder.completeEdgeAdditionOperation(result, noteEdge, aDefaultCallNode1, aDefaultCallNode2, startPoint, endPoint);
 		result.execute();
@@ -240,5 +241,20 @@ public class TestSequenceDiagramBuilder
 	{
 		aDiagram.addRootNode(aImplicitParameterNode1);
 		assertFalse(aBuilder.canCreateConstructorCall(new Point(0, 0), new Point(150, 150)));
+	}
+	
+	@Test
+	public void testGetCoRemovals()
+	{
+		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aDiagram.addEdge(aCallEdge1);
+		aDiagram.addRootNode(aDefaultCallNode1);
+		aDiagram.addRootNode(aDefaultCallNode2);
+		Collection<DiagramElement> elements = new HashSet<>();
+		elements.addAll(aBuilder.getCoRemovals(aCallEdge1));
+		assertEquals(3, elements.size());
+		assertTrue(elements.contains(aDefaultCallNode1));
+		assertTrue(elements.contains(aDefaultCallNode2));
+		assertTrue(elements.contains(aCallEdge1));
 	}
 }
