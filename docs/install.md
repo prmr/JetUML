@@ -1,27 +1,31 @@
 # Installation Instructions
 
+*For older releases please see the [Legacy Section](#legacy) at the bottom of this page.*
+
+## Release 3.0 (Upcoming)
+
 Starting with Release 3.0, JetUML is distributed in two formats:
 
 * **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform.
-* **Thin Jar:** A single small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 11 or later *and* JavaFX 11 or later installed. 
+* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 11 or later *and* JavaFX 11 or later installed. 
 
-## Self-Contained Application
+### Self-Contained Application
 
 Download the file `JetUML-<OS>-<Version>-<ext>` that corresponds to your operating system from the [latest release page](https://github.com/prmr/JetUML/releases).
 
 #### Windows
 
-Run the executable file. The application will be extracted to the `Program Files` directory and a shortcut will be added to the desktop. To uninstall JetUML, use the "Add or remove programs" feature from the System Settings.
+Run the executable file. You will be asked where to extract the application and a shortcut will be added to the desktop. To uninstall JetUML, use the "Add or remove programs" feature from the System Settings.
 
 #### Mac
 
-To be completed.
+*Coming soon*.
 
 #### Linux
 
-To be completed
+*Coming soon.*
 
-## Thin Jar
+### Thin Jar
 
 *This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 11 or above running on your system.* 
 
@@ -30,12 +34,15 @@ Download file `JetUML-<Version>.jar` from the [latest release page](https://gith
 To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
 
 ```shell
-java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
+javaw --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
 ```
 
 Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
 
 ```shell
-java --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.0.jar
+javaw --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.0.jar
 ```
 
+## Legacy
+
+Versions prior to 2.0 will run as a self-executing jar on any version of Java. Versions 2.0 and higher require JavaFX. They will run as a self-executing jar on Java 8 only. To run versions 2.0-2.6 on Java 11 and later, follow the instructions for [thin jar](#thin-jar), above.
