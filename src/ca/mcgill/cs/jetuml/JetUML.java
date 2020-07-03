@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 /**
  * Entry point for launching JetUML.
  */
-public final class UMLEditor extends Application
+public final class JetUML extends Application
 {
 	@SuppressWarnings("exports")
 	public static final Version VERSION = Version.create(3, 0);
@@ -62,7 +62,7 @@ public final class UMLEditor extends Application
 		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 
 		pStage.setScene(new Scene(new EditorFrame(pStage)));
-		pStage.getScene().getStylesheets().add(getClass().getResource("UMLEditorStyle.css").toExternalForm());
+		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
 		pStage.setOnCloseRequest(pWindowEvent -> 
 		{

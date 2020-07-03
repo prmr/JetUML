@@ -25,7 +25,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.JetUML;
 
 /**
  * A Singleton that manages all user preferences global to
@@ -97,13 +97,13 @@ public final class UserPreferences
 		for( BooleanPreference preference : BooleanPreference.values() )
 		{
 			aBooleanPreferences.put(preference, 
-					Boolean.valueOf(Preferences.userNodeForPackage(UMLEditor.class)
+					Boolean.valueOf(Preferences.userNodeForPackage(JetUML.class)
 							.get(preference.name(), preference.getDefault())));
 		}
 		for( IntegerPreference preference : IntegerPreference.values() )
 		{
 			aIntegerPreferences.put( preference, 
-					Integer.valueOf(Preferences.userNodeForPackage(UMLEditor.class)
+					Integer.valueOf(Preferences.userNodeForPackage(JetUML.class)
 							.get(preference.name(), preference.getDefault())));
 		}
 	}
@@ -138,7 +138,7 @@ public final class UserPreferences
 	public void setBoolean(BooleanPreference pPreference, boolean pValue)
 	{
 		aBooleanPreferences.put(pPreference, pValue);
-		Preferences.userNodeForPackage(UMLEditor.class).put(pPreference.name(), Boolean.toString(pValue));
+		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), Boolean.toString(pValue));
 		aBooleanPreferenceChangeHandlers.forEach(handler -> handler.preferenceChanged(pPreference));
 	}
 	
@@ -151,7 +151,7 @@ public final class UserPreferences
 	public void setInteger(IntegerPreference pPreference, int pValue)
 	{
 		aIntegerPreferences.put(pPreference, pValue);
-		Preferences.userNodeForPackage(UMLEditor.class).put(pPreference.name(), Integer.toString(pValue));
+		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), Integer.toString(pValue));
 	}
 	
 	/**

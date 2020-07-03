@@ -22,7 +22,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.JetUML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -76,7 +76,7 @@ public class AboutDialog
 		name.setStyle("-fx-font-size: 18pt;");
 		
 		Text version = new Text(String.format("%s %s", RESOURCES.getString("dialog.about.version"), 
-				UMLEditor.VERSION));
+				JetUML.VERSION));
 		
 		Text copyright = new Text(RESOURCES.getString("application.copyright"));
 		
@@ -87,7 +87,7 @@ public class AboutDialog
 		Hyperlink link = new Hyperlink(RESOURCES.getString("dialog.about.link"));
 		link.setBorder(Border.EMPTY);
 		link.setPadding(new Insets(0));
-		link.setOnMouseClicked(e -> UMLEditor.openBrowser(RESOURCES.getString("dialog.about.url")));
+		link.setOnMouseClicked(e -> JetUML.openBrowser(RESOURCES.getString("dialog.about.url")));
 		link.setUnderline(true);
 		link.setFocusTraversable(false);
 		

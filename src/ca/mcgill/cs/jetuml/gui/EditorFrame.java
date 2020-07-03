@@ -41,7 +41,7 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
-import ca.mcgill.cs.jetuml.UMLEditor;
+import ca.mcgill.cs.jetuml.JetUML;
 import ca.mcgill.cs.jetuml.application.FileExtensions;
 import ca.mcgill.cs.jetuml.application.RecentFilesQueue;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
@@ -95,7 +95,7 @@ public class EditorFrame extends BorderPane
 	public EditorFrame(Stage pMainStage) 
 	{
 		aMainStage = pMainStage;
-		aRecentFiles.deserialize(Preferences.userNodeForPackage(UMLEditor.class).get("recent", "").trim());
+		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
 
 		MenuBar menuBar = new MenuBar();
 		setTop(menuBar);
@@ -526,7 +526,7 @@ public class EditorFrame extends BorderPane
 
 	private File getLastDir(String pKey)
 	{
-		String dir = Preferences.userNodeForPackage(UMLEditor.class).get(pKey, ".");
+		String dir = Preferences.userNodeForPackage(JetUML.class).get(pKey, ".");
 		File result = new File(dir);
 		if( !(result.exists() && result.isDirectory()))
 		{
@@ -537,7 +537,7 @@ public class EditorFrame extends BorderPane
 	
 	private void setLastDir(String pKey, File pLastExportDir)
 	{
-		Preferences.userNodeForPackage(UMLEditor.class).put(pKey, pLastExportDir.getAbsolutePath().toString());
+		Preferences.userNodeForPackage(JetUML.class).put(pKey, pLastExportDir.getAbsolutePath().toString());
 	}
 	
 	/**
@@ -546,7 +546,7 @@ public class EditorFrame extends BorderPane
 	private void exportImage() 
 	{
 		FileChooser fileChooser = getImageFileChooser(getLastDir(KEY_LAST_EXPORT_DIR), 
-				Preferences.userNodeForPackage(UMLEditor.class).get(KEY_LAST_IMAGE_FORMAT, "png"));
+				Preferences.userNodeForPackage(JetUML.class).get(KEY_LAST_IMAGE_FORMAT, "png"));
 		File file = fileChooser.showSaveDialog(aMainStage);
 		if(file == null) 
 		{
@@ -555,7 +555,7 @@ public class EditorFrame extends BorderPane
 
 		String fileName = file.getPath();
 		String format = fileName.substring(fileName.lastIndexOf(".") + 1);
-		Preferences.userNodeForPackage(UMLEditor.class).put(KEY_LAST_IMAGE_FORMAT, format);
+		Preferences.userNodeForPackage(JetUML.class).put(KEY_LAST_IMAGE_FORMAT, format);
 				
 		File dir = file.getParentFile();
 		if( dir != null )
@@ -664,13 +664,13 @@ public class EditorFrame extends BorderPane
 
 			if (alert.getResult() == ButtonType.YES) 
 			{
-				Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
+				Preferences.userNodeForPackage(JetUML.class).put("recent", aRecentFiles.serialize());
 				System.exit(0);
 			}
 		}
 		else 
 		{
-			Preferences.userNodeForPackage(UMLEditor.class).put("recent", aRecentFiles.serialize());
+			Preferences.userNodeForPackage(JetUML.class).put("recent", aRecentFiles.serialize());
 			System.exit(0);
 		}
 	}		
