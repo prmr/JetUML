@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by the contributors of the JetUML project.
+ * Copyright (C) 2020 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
