@@ -2,7 +2,7 @@
 
 *For older releases please see the [Legacy Section](#legacy) at the bottom of this page.*
 
-## Release 3.0 (Upcoming)
+## Release 3.0
 
 Starting with Release 3.0, JetUML is distributed in two formats:
 
@@ -11,19 +11,9 @@ Starting with Release 3.0, JetUML is distributed in two formats:
 
 ### Self-Contained Application
 
-Download the file `JetUML-<OS>-<Version>-<ext>` that corresponds to your operating system from the [latest release page](https://github.com/prmr/JetUML/releases).
+* Download the file `JetUML-<OS>-<Version>-<ext>` that corresponds to your operating system from the [latest release page](https://github.com/prmr/JetUML/releases).
 
-#### Windows
-
-Run the executable file. You will be asked where to extract the application and a shortcut will be added to the desktop. To uninstall JetUML, use the "Add or remove programs" feature from the System Settings.
-
-#### Mac
-
-*Coming soon*.
-
-#### Linux
-
-*Coming soon.*
+* Run or install the file as customary on the appropriate operating system. You will be asked where to extract the application and a shortcut will be added to the desktop. 
 
 ### Thin Jar
 
