@@ -4,7 +4,7 @@ Information on how diagrams saved with one version of the application can be rea
 
 ## Release 3.0
 
-When reading in a diagram from version 2.0-2.6, some automatic conversions may be automatically applied to the structure of the diagram. 
+When reading in a diagram from version 2.0-2.6, some conversions may be automatically applied to the structure of the diagram. 
 These transformations target **Class diagrams** only.
 
 * A Package element with both textual content and children elements will lose its textual content; 
