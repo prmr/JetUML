@@ -5,7 +5,7 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
 ![GitHub contributors](https://img.shields.io/github/contributors/prmr/JetUML)
 
-A desktop application for fast UML diagramming. The idea of JetUML is to support the sketching of software design ideas *with a minimum of fuss*. No installation is required and the size of the application is a tiny 350Kb. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
+A lightweight desktop application for interactively creating and editing diagrams in the Unified Modeling Language. The idea of JetUML is to support the sketching of software design ideas with a minimum of fuss. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
 
 If you find this tool useful please **star the repo**.
 
@@ -17,9 +17,7 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 ## Download and Installation
 
-JetUML requires **at least Java 8**. To run it on Java 8, download the jar file of the [latest release](https://github.com/prmr/JetUML/releases). If your OS environment supports executable jars, simply double-click the jar file to start the application. If this is not possible, your can start it from the command line with `java -jar file.jar` (where `file.jar` is the name of the JetUML jar you downloaded). 
-
-For instructions on running JetUML will later versions of Java, see the [installation page](docs/install.md).
+JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation page](docs/install.md). Users upgrading from a previous versions might want to peek at the [compatibility guide](docs/compatibility.md)
 
 ## Privacy Policy and Feedback
 
