@@ -17,7 +17,7 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 ## Download and Installation
 
-JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation page](docs/install.md). Users upgrading from a previous versions might want to peek at the [compatibility guide](docs/compatibility.md)
+JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation page](docs/install.md). Users upgrading from a previous version might want to peek at the [compatibility guide](docs/compatibility.md)
 
 ## Privacy Policy and Feedback
 
