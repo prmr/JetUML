@@ -337,13 +337,13 @@ public class DiagramCanvasController
 		{
 			if(tool.get() instanceof Node)
 			{
-				if( element.isPresent() && isNodeOtherThanPackageAndField(element.get()) )
+				if( creationEnabled(element, tool.get()) )
 				{
-					handleSelection(pEvent);
+					handleNodeCreation(pEvent);
 				}
 				else 
 				{
-					handleNodeCreation(pEvent);
+					handleSelection(pEvent);
 				}
 			}
 			else if(tool.get() instanceof Edge)
@@ -353,9 +353,21 @@ public class DiagramCanvasController
 		}
 	}
 	
-	private boolean isNodeOtherThanPackageAndField(DiagramElement pElement)
+	/*
+	 * The creation of a node is not allowed if there is an element under the mouse,
+	 * except if the target node is a PackageNode OR the tool is a field node.
+	 */
+	private static boolean creationEnabled(Optional<? extends DiagramElement> pElement, DiagramElement pTool)
 	{
-		return pElement instanceof Node && !(pElement instanceof PackageNode)&& !(pElement instanceof FieldNode);
+		if( pElement.isEmpty() )
+		{
+			return true;
+		}
+		if( pElement.get() instanceof PackageNode || pTool instanceof FieldNode)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	private void handleNodeCreation(MouseEvent pEvent)
