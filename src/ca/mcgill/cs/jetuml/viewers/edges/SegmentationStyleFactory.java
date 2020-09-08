@@ -182,14 +182,14 @@ public final class SegmentationStyleFactory
 			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), startSide.getDirection());
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
 			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), endSide.getDirection());
 			if( pGraph != null )
 			{
-				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false), pGraph);
+				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, pGraph, false));
 			}
 			
 		    return new Point2D[] {Conversions.toPoint2D(start), Conversions.toPoint2D(end) };
@@ -199,9 +199,9 @@ public final class SegmentationStyleFactory
 	/*
 	 * Compute the point where to attach an edge in position pPosition on side pSide of node pNode
 	 */
-	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition, Diagram pGraph)
+	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition)
 	{
-		assert pNode != null && pSide != null && pPosition != null && pGraph != null;
+		assert pNode != null && pSide != null && pPosition != null && pNode.getDiagram().isPresent();
 		Point start = NodeViewerRegistry.getConnectionPoints(pNode, pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
@@ -518,9 +518,9 @@ public final class SegmentationStyleFactory
 						
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
 				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
-						computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
+						computePosition(pEdge, startSide.flip(), pGraph, false));
 			}
 			
 	  		if(Math.abs(start.getY() - end.getY()) <= MIN_SEGMENT)
@@ -656,9 +656,9 @@ public final class SegmentationStyleFactory
 			
 			if( pGraph != null )
 			{
-				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true), pGraph);
+				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, pGraph, true));
 				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
-						computePosition(pEdge, startSide.flip(), pGraph, false), pGraph);
+						computePosition(pEdge, startSide.flip(), pGraph, false));
 			}
 			
 	  		if(Math.abs(start.getX() - end.getX()) <= MIN_SEGMENT)
