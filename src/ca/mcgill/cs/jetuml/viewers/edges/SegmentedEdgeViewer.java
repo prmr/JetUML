@@ -202,7 +202,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	
 	private Point2D[] getPoints(Edge pEdge)
 	{
-		return aStyle.getPath(pEdge, pEdge.getDiagram());
+		return aStyle.getPath(pEdge);
 	}
 
 	@Override

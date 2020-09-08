@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
@@ -90,11 +89,10 @@ public interface SegmentationStyle
      * Gets the points at which the line representing an
      * edge is bent according to this strategy.
      * @param pEdge the Edge for which a path is determine
-     * @param pGraph the graph holding the edge. Can be null.
      * @return an array list of points at which to bend the
      *     segmented line representing the edge. Never null.
 	 */
-	Point2D[] getPath(Edge pEdge, Diagram pGraph);
+	Point2D[] getPath(Edge pEdge);
 	
 	/**
 	 * Returns which side of the node attached to

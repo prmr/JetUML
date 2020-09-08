@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
@@ -171,7 +170,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
+		public Point2D[] getPath(Edge pEdge)
 		{
 			if( pEdge.getStart() == pEdge.getEnd() )
 			{
@@ -180,14 +179,14 @@ public final class SegmentationStyleFactory
 			
 			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
 			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), startSide.getDirection());
-			if( pGraph != null )
+			if( pEdge.getDiagram() != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, true));
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
 			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), endSide.getDirection());
-			if( pGraph != null )
+			if( pEdge.getDiagram() != null )
 			{
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, false));
 			}
@@ -481,7 +480,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
+		public Point2D[] getPath(Edge pEdge)
 		{
 			assert pEdge != null;
 			
@@ -494,11 +493,11 @@ public final class SegmentationStyleFactory
 				SegmentationStyle alternate = new VHV();
 				if( alternate.isPossible(pEdge))
 				{
-					return alternate.getPath(pEdge, pGraph);
+					return alternate.getPath(pEdge);
 				}
 				else
 				{
-					return new Straight().getPath(pEdge, pGraph);
+					return new Straight().getPath(pEdge);
 				}
 			}
 			
@@ -516,7 +515,7 @@ public final class SegmentationStyleFactory
 				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST);
 			}
 						
-			if( pGraph != null )
+			if( pEdge.getDiagram() != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, true));
 				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
@@ -618,7 +617,7 @@ public final class SegmentationStyleFactory
 		}
 		
 		@Override
-		public Point2D[] getPath(Edge pEdge, Diagram pGraph)
+		public Point2D[] getPath(Edge pEdge)
 		{
 			assert pEdge != null;
 			
@@ -631,11 +630,11 @@ public final class SegmentationStyleFactory
 				SegmentationStyle alternate = new HVH();
 				if( alternate.isPossible(pEdge))
 				{
-					return alternate.getPath(pEdge, pGraph);
+					return alternate.getPath(pEdge);
 				}
 				else
 				{
-					return new Straight().getPath(pEdge, pGraph);
+					return new Straight().getPath(pEdge);
 				}
 			}
 			
@@ -654,7 +653,7 @@ public final class SegmentationStyleFactory
 				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH);
 			}
 			
-			if( pGraph != null )
+			if( pEdge.getDiagram() != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, true));
 				end = computePointPosition(pEdge.getEnd(), startSide.flip(), 
