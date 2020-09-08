@@ -258,7 +258,7 @@ public final class SegmentationStyleFactory
 			tempTarget = pEdge.getEnd();
 		}
 		final Node target = tempTarget;
-		List<Edge> edgesOnSelectedSide = getAllEdgesForSide(pGraph, target, pStartSide);
+		List<Edge> edgesOnSelectedSide = getAllEdgesForSide(target, pStartSide);
 		sortPositions(edgesOnSelectedSide, target, pStartSide);
 		
 		// Group identical edge ends
@@ -317,10 +317,11 @@ public final class SegmentationStyleFactory
 		}
 	} // CSON:
 	
-	private static List<Edge> getAllEdgesForSide(Diagram pGraph, Node pTarget, Side pSide)
+	private static List<Edge> getAllEdgesForSide(Node pTarget, Side pSide)
 	{
+		assert pTarget.getDiagram().isPresent();
 		List<Edge> edgesOnSelectedSide = new ArrayList<>();
-		for( Edge edge : pGraph.edgesConnectedTo(pTarget))
+		for( Edge edge : pTarget.getDiagram().get().edgesConnectedTo(pTarget))
 		{
 			if( otherNode(edge, pTarget) == pTarget)
 			{
