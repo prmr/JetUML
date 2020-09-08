@@ -206,7 +206,7 @@ public final class SegmentationStyleFactory
 		if( pSide.isEastWest() )
 		{
 			double yPosition = start.getY()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getHeight()); // Default
-			if( hasSelfEdge(pNode, pGraph) && pSide == Side.EAST )
+			if( hasSelfEdge(pNode) && pSide == Side.EAST )
 			{
 				double increment = (NodeViewerRegistry.getBounds(pNode).getHeight() - MARGIN) / (pPosition.aTotal+1);
 				yPosition = NodeViewerRegistry.getBounds(pNode).getY() + MARGIN + pPosition.getIndex() * increment;
@@ -216,7 +216,7 @@ public final class SegmentationStyleFactory
 		else
 		{
 			double xPosition = start.getX()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getWidth());
-			if( hasSelfEdge(pNode, pGraph) && pSide == Side.NORTH )
+			if( hasSelfEdge(pNode) && pSide == Side.NORTH )
 			{
 				double increment = (NodeViewerRegistry.getBounds(pNode).getWidth() - MARGIN) / (pPosition.aTotal+1);
 				xPosition = NodeViewerRegistry.getBounds(pNode).getX() + pPosition.getIndex() * increment;
@@ -225,9 +225,10 @@ public final class SegmentationStyleFactory
 		}
 	}
 	
-	private static boolean hasSelfEdge(Node pNode, Diagram pGraph)
+	private static boolean hasSelfEdge(Node pNode)
 	{
-		for( Edge edge : pGraph.edgesConnectedTo(pNode))
+		assert pNode.getDiagram().isPresent();
+		for( Edge edge : pNode.getDiagram().get().edgesConnectedTo(pNode))
 		{
 			if( edge.getStart() == edge.getEnd())
 			{
