@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.mcgill.cs.jetuml.JetUML;
 import ca.mcgill.cs.jetuml.application.Version;
 
 /**
@@ -83,7 +84,7 @@ public final class VersionMigrator
 			throw new DeserializationException("Cannot decode the file", e);
 		}
 	}
-
+	
 	/**
 	 * @param pDiagram
 	 *            The loaded diagram to migrate
@@ -91,6 +92,13 @@ public final class VersionMigrator
 	 */
 	public VersionedDiagram migrate(JSONObject pDiagram)
 	{
+		Version version = Version.parse(pDiagram.getString("version"));
+
+		if( version.compatibleWith(JetUML.VERSION)) // We don't need to migrate the diagram, it's compatible
+		{
+			return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, false);
+		}
+		
 		aMigrated = false;
 
 		// JSONObject to JSONObject conversions
@@ -102,7 +110,6 @@ public final class VersionMigrator
 		flipInversedAssociations(pDiagram);
 		renameAssociationDirectionality(pDiagram);
 
-		Version version = Version.parse(pDiagram.getString("version"));
 		return new VersionedDiagram(JsonDecoder.decode(pDiagram), version, aMigrated);
 	}
 
