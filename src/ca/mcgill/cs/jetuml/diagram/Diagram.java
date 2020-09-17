@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 
 /**
  * Stores the logical structure of a diagram. This class is only concerned with 
@@ -161,8 +162,7 @@ public final class Diagram implements DiagramData
 	 * Checks whether pElement is in the diagram. If pElement is a node, the method returns true if it is a root node,
 	 * or any of its parent is a root node.
 	 * 
-	 * @param pElement
-	 *            The element we want to check is in the diagram.
+	 * @param pElement The element we want to check is in the diagram.
 	 * @return True if pElement is a node or edge in this diagram.
 	 * @pre pElement != null
 	 */
@@ -222,8 +222,7 @@ public final class Diagram implements DiagramData
 	}
 
 	/**
-	 * @param pNode
-	 *            the node to test for
+	 * @param pNode The node to test for
 	 * @return All the edges connected to pNode
 	 * @pre pNode != null
 	 * @pre contains(pNode)
@@ -246,8 +245,7 @@ public final class Diagram implements DiagramData
 	 * Adds pNode as a root node in this diagram. Callers of this method must ensure that the addition respects the
 	 * integrity of the diagram.
 	 * 
-	 * @param pNode
-	 *            The node to add.
+	 * @param pNode The node to add.
 	 * @pre pNode != null
 	 */
 	public void addRootNode(Node pNode)
@@ -273,8 +271,7 @@ public final class Diagram implements DiagramData
 	 * Removes pNode from the list of root nodes in this diagram. Callers must ensure that the removal preserves the
 	 * integrity of the diagram.
 	 * 
-	 * @param pNode
-	 *            The node to remove.
+	 * @param pNode The node to remove.
 	 * @pre pNode != null && pNode is contained as a root node.
 	 */
 	public void removeRootNode(Node pNode)
@@ -326,8 +323,7 @@ public final class Diagram implements DiagramData
 	/**
 	 * Removes pEdge from this diagram. Callers must ensure that the removal preserves the integrity of the diagram.
 	 * 
-	 * @param pEdge
-	 *            The edge to remove.
+	 * @param pEdge The edge to remove.
 	 * @pre pEdge != null && pEdge is contained in the diagram
 	 */
 	public void removeEdge(Edge pEdge)
@@ -340,15 +336,14 @@ public final class Diagram implements DiagramData
 	 * Recursively reorder the node to be on top of its parent's children. If the node is not a child node or the node
 	 * does not have a parent, check if the node is a root node of the diagram and place it on top.
 	 * 
-	 * @param pNode
-	 *            The node to be placed on top
+	 * @param pNode The node to be placed on top
 	 * @pre pNode != null
 	 */
 	public void placeOnTop(Node pNode)
 	{
 		assert pNode != null;
-		// If pNode is a call node in the sequence diagram, do nothing
-		if( pNode.getClass() == CallNode.class )
+		// Certain nodes should not have their order changed
+		if( pNode.getClass() == CallNode.class || pNode.getClass() == FieldNode.class )
 		{
 			return;
 		}
