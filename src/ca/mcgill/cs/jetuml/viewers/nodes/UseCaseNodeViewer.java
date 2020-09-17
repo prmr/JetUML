@@ -35,6 +35,7 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 {
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
+	private static final int HORIZONTAL_NAME_PADDING = 30;
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
 	
 	@Override
@@ -49,7 +50,8 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 	public Rectangle getBounds(Node pNode)
 	{
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
-				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).getWidth()), 
+				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).getWidth()+
+						HORIZONTAL_NAME_PADDING), 
 				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).getHeight()));
 	}
 }
