@@ -115,6 +115,16 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		return result;
 	}
 	
+	private static Dimension textDimensionsBold(String pString)
+	{
+		Dimension result = Dimension.NULL;
+		if( pString.length() > 0 )
+		{
+			result = NAME_VIEWER.getDimension(pString);
+		}
+		return result;
+	}
+	
 	@Override
 	public Rectangle getBounds(Node pNode)
 	{
@@ -123,7 +133,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		final int attributeHeight = attributeBoxHeight(node);
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
-		Dimension nameDimension = textDimensions(getNameText(node));
+		Dimension nameDimension = textDimensionsBold(getNameText(node));
 		Dimension attributeDimension = textDimensions(node.getAttributes());
 		Dimension methodDimension = textDimensions(node.getMethods());
 		int width = max(DEFAULT_WIDTH, nameDimension.getWidth(), attributeDimension.getWidth(), methodDimension.getWidth());

@@ -43,7 +43,7 @@ public final class StringViewer
 	private static final Font FONT_BOLD = Font.font(FONT.getFamily(), FontWeight.BOLD, FONT.getSize());
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
-	private static final int HORIZONTAL_TEXT_PADDING = 3;
+	private static final int HORIZONTAL_TEXT_PADDING = 7;
 	private static final int VERTICAL_TEXT_PADDING = 7;
 	
 	/**
