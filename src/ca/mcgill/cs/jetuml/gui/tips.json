@@ -1,0 +1,19 @@
+[
+  { 
+    "id": 1,
+    "title": "First Tip",
+    "content": [
+      { "image": "tip1.png"},
+      { "text": "<p>You can create a new diagram at any point using the menu <span class=\"menu\">File | New</span>. The diagram will open in a new tab</p>"}
+    ]
+  },
+  { 
+    "id": 2,
+    "title": "Second Tip",
+	"content": [
+	  { "image": "tip2_1.PNG"},
+	  { "text": "This is the second tip, it has two image"},
+	  { "image": "tip2_2.PNG"}
+	]
+  }  
+]
