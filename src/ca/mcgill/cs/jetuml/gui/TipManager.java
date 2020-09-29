@@ -1,6 +1,5 @@
 package ca.mcgill.cs.jetuml.gui;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -9,8 +8,12 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-public class TipManager {
-
+/**
+ * Singleton class that manages the tips loaded with the Singleton TipLoader. Tips
+ * are represented using an inner Tip class with a private constructor. 
+ */
+public final class TipManager 
+{
 	private static final TipManager INSTANCE = new TipManager();
 	
 	private final Hashtable<Integer, Tip> aTips = new Hashtable<>();
@@ -114,13 +117,19 @@ public class TipManager {
 		return aTips.containsKey(pID);
 	}
 	
+	/**
+	 *  @return a default TipManager.Tip instance
+	 */
 	public Tip getDefaultTip()
 	{
 		return aDefaultTip;
 	}
 	
-	public class Tip {
-		
+	/**
+	 * Inner class used to represent tips.
+	 */
+	public final class Tip 
+	{
 		private final int aID;
 		private final String aHTMLContent;
 		
