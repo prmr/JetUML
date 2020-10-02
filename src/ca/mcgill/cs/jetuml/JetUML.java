@@ -61,7 +61,7 @@ public final class JetUML extends Application
 		pStage.setTitle(RESOURCES.getString("application.name"));
 		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 
-		pStage.setScene(new Scene(new EditorFrame(pStage)));
+		pStage.setScene(new Scene(new EditorFrame(pStage, getParameters())));
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
 		pStage.setOnCloseRequest(pWindowEvent -> 

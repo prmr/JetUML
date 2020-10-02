@@ -52,6 +52,7 @@ import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.persistence.VersionedDiagram;
 import ca.mcgill.cs.jetuml.views.ImageCreator;
+import javafx.application.Application.Parameters;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -91,8 +92,9 @@ public class EditorFrame extends BorderPane
 	 * Constructs a blank frame with a desktop pane but no diagram window.
 	 * 
 	 * @param pMainStage The main stage used by the UMLEditor
+	 * @param parameters The application parameters
 	 */
-	public EditorFrame(Stage pMainStage) 
+	public EditorFrame(Stage pMainStage, Parameters parameters) 
 	{
 		aMainStage = pMainStage;
 		aRecentFiles.deserialize(Preferences.userNodeForPackage(JetUML.class).get("recent", "").trim());
@@ -113,6 +115,8 @@ public class EditorFrame extends BorderPane
 		
 		aWelcomeTab = new WelcomeTab(newDiagramHandlers);
 		showWelcomeTabIfNecessary();
+		
+		openFromParameters(parameters);
 		
 		setOnKeyPressed(e -> 
 		{
@@ -723,5 +727,23 @@ public class EditorFrame extends BorderPane
 		pTab.close();
 		tabs().remove(pTab);
 		showWelcomeTabIfNecessary();
+	}
+	
+	/*
+	 * Opens the files passed in as arguments to the application
+	 * @param parameters The application parameters
+	 */
+	private void openFromParameters(Parameters parameters) {
+		List<String> paramsList = parameters.getUnnamed();
+		if(!paramsList.isEmpty())
+		{
+			for(String param : paramsList) {
+				File file = new File(param);
+				if(file.exists() && !file.isDirectory())
+				{
+					open(file);
+				}
+			}
+		}
 	}
 }
