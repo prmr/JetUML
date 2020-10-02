@@ -23,6 +23,10 @@ package ca.mcgill.cs.jetuml;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.io.File;
+import java.util.List;
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
@@ -61,7 +65,7 @@ public final class JetUML extends Application
 		pStage.setTitle(RESOURCES.getString("application.name"));
 		pStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 
-		pStage.setScene(new Scene(new EditorFrame(pStage, getParameters())));
+		pStage.setScene(new Scene(new EditorFrame(pStage, openWith())));
 		pStage.getScene().getStylesheets().add(getClass().getResource("JetUML.css").toExternalForm());
 
 		pStage.setOnCloseRequest(pWindowEvent -> 
@@ -70,6 +74,25 @@ public final class JetUML extends Application
 			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
 		});
 		pStage.show();
+	}
+	
+	// If the first argument passed to the application is a valid file, open it.
+	private Optional<File> openWith()
+	{
+		List<String> parameters = getParameters().getUnnamed();
+		if( parameters.isEmpty() )
+		{
+			return Optional.empty();
+		}
+		File file = new File(parameters.get(0));
+		if(file.exists() && !file.isDirectory())
+		{
+			return Optional.of(file);
+		}
+		else
+		{
+			return Optional.empty();
+		}
 	}
 	
 	/**
