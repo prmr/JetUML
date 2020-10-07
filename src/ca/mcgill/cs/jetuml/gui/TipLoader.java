@@ -146,6 +146,12 @@ public final class TipLoader
 		return true; //Every content element is a JSON object with one of the correct fields
 	}
 	
+	/**
+	 * Returns the tip associated with the given tip id if there is such a tip.
+	 * 
+	 * @param pId id of the tip to return
+	 * @return Optional of the tip associated to pId if one exists, Optional.empty() otherwise.
+	 */
 	public static Optional<Tip> getTip(int pId)
 	{
 		for(Tip tip : TIPS)
@@ -225,18 +231,29 @@ public final class TipLoader
 		return Optional.of(firstTip.aId); 
 	}
 	
+	/**
+	 * A tip that contains TipElement instances.
+	 */
 	public static final class Tip
 	{
 		
 		private int aId;
 		private List<TipElement> aElements;
 		
+		/**
+		 * @param pTip
+		 * @pre tipIsWellFormatted(pTip)
+		 */
 		private Tip(JSONObject pTip)
 		{
+			assert tipIsWellFormatted(pTip);
 			aId = (int) pTip.get(TIP_ID_FIELD);
 			aElements = convertJSONObjectToTipElements(pTip);
 		}
 		
+		/**
+		 * @return List of TipElements contained in the Tip
+		 */
 		public List<TipElement>getElements()
 		{
 			return new ArrayList<TipElement>(aElements);
