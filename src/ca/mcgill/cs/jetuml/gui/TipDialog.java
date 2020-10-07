@@ -2,10 +2,14 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.util.List;
+
+import ca.mcgill.cs.jetuml.gui.TipLoader.Tip;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,11 +20,13 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
 /**
  * A window that presents the tip of the day.
@@ -67,13 +73,18 @@ public class TipDialog
 		
 		tipMenu.getChildren().addAll(showOnStartupCheckBox, tipMenuButtons);
 		
-		WebView tipArea = new WebView();
-		WebEngine webEngine = tipArea.getEngine();
+		VBox tipVBox = new VBox();
 		
-		TipManager tipManager = TipManager.getInstance();
-		TipManager.Tip tipOfTheDay = tipManager.getTipOfTheDay();
-		String tipHTMLContent = tipOfTheDay.getHTMLContent();
-		webEngine.loadContent(tipHTMLContent);
+		Tip tipOfTheDay = TipLoader.getTipOfTheDay();
+		
+		List<TipElement> tipElements = tipOfTheDay.getElements();
+		for(TipElement tipElement : tipElements)
+		{
+			Node node = tipElement.getAsNode();
+			tipVBox.getChildren().add(node);
+		}
+		
+		ScrollPane tipArea = new ScrollPane(tipVBox);
 		
 		layout.setCenter(tipArea);
 		layout.setBottom(tipMenu);

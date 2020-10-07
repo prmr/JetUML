@@ -4,7 +4,7 @@
     "title": "First Tip",
     "content": [
       { "image": "tip1.png"},
-      { "text": "<p>You can create a new diagram at any point using the menu <span class=\"menu\">File | New</span>. The diagram will open in a new tab</p>"}
+      { "text": "You can create a new diagram at any point using the menu File | New. The diagram will open in a new tab"}
     ]
   },
   { 

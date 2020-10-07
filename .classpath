@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry excluding="tipIcons/" kind="src" path="icons"/>
+	<classpathentry kind="src" path="tip_resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-14.0.2">
 		<attributes>
 			<attribute name="module" value="true"/>

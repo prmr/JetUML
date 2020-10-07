@@ -3,13 +3,17 @@ package ca.mcgill.cs.jetuml.gui;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
@@ -23,11 +27,25 @@ public final class TipLoader
 	private static final String TIP_CONTENT_FIELD = RESOURCES.getString("tips.json.field.name.content");
 	private static final String TIP_CONTENT_TEXT_FIELD = RESOURCES.getString("tips.json.field.name.content.text");
 	private static final String TIP_CONTENT_IMAGE_FIELD = RESOURCES.getString("tips.json.field.name.content.image");
-	private static final TipLoader INSTANCE = new TipLoader();
+	private static final String TIP_DEFAULT = RESOURCES.getString("tips.default");
 	
-	private ArrayList<JSONObject> aTipsAsJSONObjects = new ArrayList<>();
+	private static final List<Tip> TIPS = getTips();
+	private static final Tip DEFAULT_TIP = new Tip(new JSONObject(TIP_DEFAULT));
 	
-	private TipLoader() 
+	private TipLoader() {}
+	
+	private static List<Tip> getTips()
+	{
+		List<JSONObject> tipsAsJsonObjects = loadTipsAsJsonObjects();
+		List<Tip> tips = new ArrayList<>();
+		for(JSONObject tipAsJsonObject : tipsAsJsonObjects)
+		{
+			tips.add(new Tip(tipAsJsonObject));
+		}
+		return tips;
+	}
+	
+	private static List<JSONObject> loadTipsAsJsonObjects() 
 	{
 		String tipsJSONFilePath = RESOURCES.getString("tips.json.file.path");
 		InputStream tipsInputStream = TipLoader.class.getResourceAsStream(tipsJSONFilePath);
@@ -35,92 +53,28 @@ public final class TipLoader
 		if(tipsInputStream == null)
 		{
 			System.err.println("Tip JSON File not Found");
+			return new ArrayList<>();
 		}
 		else
 		{
 			InputStreamReader tipsReader = new InputStreamReader(tipsInputStream);
 			JSONTokener jsonTokener = new JSONTokener(tipsReader);
 			JSONArray jsonArray = new JSONArray(jsonTokener);
-			this.addWellFormattedTips(jsonArray);
+			return getWellFormattedTips(jsonArray);
 		}
 	}
 	
-	/**
-	 * Returns the single TipLoader instance.
-	 * 
-	 * @return TipLoader instance
-	 */
-	public static TipLoader getInstance()
+	private static List<JSONObject> getWellFormattedTips(JSONArray pJSONArray)
 	{
-		return INSTANCE;
-	}
-	
-	/**
-	 * Fetches the id of a tip from its associated Map pTipMap and returns
-	 * it as an int.
-	 * 
-	 * @param pTipMap a Map instance associated with a tip
-	 * @return Id of the Map's associated tip
-	 * @pre pTipMap is a Map given by the iterator returned by getTipMapsIterator()
-	 */
-	public static int getTipMapID(Map<String, Object> pTipMap)
-	{
-		assert pTipMap.containsKey(TIP_ID_FIELD);
-		Integer id = (Integer) pTipMap.get(TIP_ID_FIELD);
-		return id;
-	}
-	
-	/**
-	 * Fetches the text content and image content of a tip from its associated Map pTipMap 
-	 * and returns String containing both in HTML format (maintaining the order of the text 
-	 * and image content elements in the List pTipMap.get(TIP_CONTENT_FIELD).
-	 * 
-	 * @param pTipMap a Map instance associated with a tip
-	 * @return Text and image content of the Map's associated tip as an HTML formatted String
-	 * @pre pTipMap is a Map given by the iterator returned by getTipMapsIterator()
-	 */
-	@SuppressWarnings("unchecked") //is checked with assert
-	public static String getTipMapContentAsHTML(Map<String, Object> pTipMap) 
-	{
-		assert pTipMap.containsKey(TIP_TITLE_FIELD) && pTipMap.get(TIP_TITLE_FIELD).getClass() == String.class;
-		assert pTipMap.containsKey(TIP_CONTENT_FIELD) && List.class.isInstance(pTipMap.get(TIP_CONTENT_FIELD));
-
-		
-		String htmlContent = "<h2>" + (String) pTipMap.get(TIP_TITLE_FIELD) + "</h2>";
-		
-		List<Map<String, String>> contents = (List<Map<String, String>>) pTipMap.get(TIP_CONTENT_FIELD);
-		for(Map<String, String> contentElement : contents)
+		List<JSONObject> list = new ArrayList<>();
+		for (Object tip : pJSONArray)
 		{
-			htmlContent += "<br>";
-			if(contentElement.containsKey(TIP_CONTENT_TEXT_FIELD))
+			if (tipIsWellFormatted(tip))
 			{
-				htmlContent += contentElement.get(TIP_CONTENT_TEXT_FIELD) + "<br>"; 
-			}
-			else
-			{
-				URL imageURL = TipLoader.class.getResource("/ca/mcgill/cs/jetuml/gui/" +
-							   contentElement.get(TIP_CONTENT_IMAGE_FIELD));
-				
-				htmlContent += "<img src=\"" + imageURL.toString() + 
-						"\" alt=\"An error occured when loading this image\"" +
-						"><br>";
+				list.add((JSONObject)tip);
 			}
 		}
-		return htmlContent;
-	}
-	
-	/**
-	 * @return An iterator that iterates over the statically loaded tips
-	 *         (represented as Map instances).
-	 */
-	public Iterator<Map<String, Object>> getTipMapsIterator()
-	{
-		List<Map<String, Object>> tipList = new ArrayList<>();
-		for(JSONObject jsonObj : aTipsAsJSONObjects)
-		{
-			tipList.add(jsonObj.toMap());
-		}
-		return tipList.iterator();
+		return list;
 	}
 	
 	private static boolean tipIsWellFormatted(Object pTip)
@@ -192,15 +146,140 @@ public final class TipLoader
 		return true; //Every content element is a JSON object with one of the correct fields
 	}
 	
-	
-	private void addWellFormattedTips(JSONArray pJSONArray)
+	public static Optional<Tip> getTip(int pId)
 	{
-		for (Object tip : pJSONArray)
+		for(Tip tip : TIPS)
 		{
-			if (tipIsWellFormatted(tip))
+			if(tip.aId == pId)
 			{
-				aTipsAsJSONObjects.add((JSONObject)tip);
+				return Optional.of(tip);
 			}
 		}
+		return Optional.empty();
 	}
+	
+	/**
+	 * Method that returns the tip of the day and updates the user preferences 
+	 * to set the user's next tip of the day's id to the id of the following tip
+	 * (i.e. it updates the tip of the day for the next time this method gets 
+	 * called).
+	 * 
+	 * @return Tip the tip of the day
+	 */
+	public static Tip getTipOfTheDay()
+	{	
+		//If no tip was successfully loaded;
+		if(TIPS.size() == 0)
+		{
+			return DEFAULT_TIP;
+		}
+		
+		int tipID = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipID);
+		Optional<Tip> tipOptional = getTip(tipID);
+		Optional<Integer> followingTipIdOptional = getFollowingTipId(tipID);
+		
+		Tip tip;
+		if(!tipOptional.isEmpty()) // Getting the expected tip of the day as given by the preferences
+		{
+			tip = tipOptional.get();
+		}
+		// Getting the first tip in the tip list as the tip of the day if the proper tip of the day was not found
+		else if(!followingTipIdOptional.isEmpty() && !getTip(followingTipIdOptional.get()).isEmpty())
+		{
+			int followingTipId = followingTipIdOptional.get();
+			tip = getTip(followingTipId).get();
+		}
+		else //This branch should never occur. Leaving it for robustness.
+		{
+			tip = DEFAULT_TIP;
+		}
+		
+		// Setting the tip of the day to the next tip
+		Optional<Integer> followingTipID = getFollowingTipId(tipID);
+		if(!followingTipID.isEmpty())
+		{
+			UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipID, followingTipID.get());
+		}
+	
+		return tip;
+	}
+	
+	private static Optional<Integer> getFollowingTipId(int pId)
+	{
+		if(TIPS.size() == 0)
+		{
+			Optional.empty();
+		}
+		for(int i = 0; i<TIPS.size(); i++)
+		{
+			Tip tip = TIPS.get(i);
+			boolean tipHasNext = i < TIPS.size() - 1;
+			
+			if(tip.aId == pId && tipHasNext)
+			{
+				Tip nextTip = TIPS.get(i+1);
+				return Optional.of(nextTip.aId);
+			}
+		}
+		Tip firstTip = TIPS.get(0);
+		return Optional.of(firstTip.aId); 
+	}
+	
+	public static final class Tip
+	{
+		
+		private int aId;
+		private List<TipElement> aElements;
+		
+		private Tip(JSONObject pTip)
+		{
+			aId = (int) pTip.get(TIP_ID_FIELD);
+			aElements = convertJSONObjectToTipElements(pTip);
+		}
+		
+		public List<TipElement>getElements()
+		{
+			return new ArrayList<TipElement>(aElements);
+		}
+		
+
+		private static List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
+		{
+			List<TipElement> elements = new ArrayList<>();
+			Map<String, Object> tipMap = pTip.toMap();
+			TipElement title = new TipTitle((String) tipMap.get(TIP_TITLE_FIELD));
+			elements.add(title);
+			List<Map<String, String>> contentList = (List<Map<String, String>>) tipMap.get(TIP_CONTENT_FIELD);
+			for(Map<String, String> contentElement : contentList)
+			{
+				TipElement element;
+				Set<String> keys = contentElement.keySet();
+				if(keys.contains(TIP_CONTENT_TEXT_FIELD))
+				{
+					element = new TipText(contentElement.get(TIP_CONTENT_TEXT_FIELD));
+					elements.add(element);
+				}
+				else if (keys.contains(TIP_CONTENT_IMAGE_FIELD))
+				{
+					element = new TipImage(contentElement.get(TIP_CONTENT_IMAGE_FIELD));
+					elements.add(element);
+				}
+				else
+				{
+					Iterator<String> keyIterator = keys.iterator();
+					if(keyIterator.hasNext())
+					{
+						String key = keys.iterator().next();
+						System.err.println("Error: unknown tip element type " + key);
+					}
+					else
+					{
+						System.err.println("Error: empty tip content element found.");
+					}
+				}
+			}
+			return elements;
+		}
+	}
+	
 }

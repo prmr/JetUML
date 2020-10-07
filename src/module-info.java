@@ -21,7 +21,6 @@
 module jetuml {
 	requires javafx.controls;
 	requires javafx.swing;
-	requires javafx.web;
 	requires java.desktop;
 	requires java.prefs;
 	requires transitive javafx.graphics;
