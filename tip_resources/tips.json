@@ -1,19 +1,18 @@
 [
   { 
     "id": 1,
-    "title": "First Tip",
+    "title": "Creating a New Diagram",
     "content": [
       { "image": "tip1.png"},
       { "text": "You can create a new diagram at any point using the menu File | New. The diagram will open in a new tab"}
     ]
   },
   { 
-    "id": 2,
-    "title": "Second Tip",
-	"content": [
-	  { "image": "tip2_1.PNG"},
-	  { "text": "This is the second tip, it has two image"},
-	  { "image": "tip2_2.PNG"}
-	]
+  	"id": 2,
+  	"title": "Copying Diagram to Clipboard",
+  	"content": [ 
+  		{ "image": "tip2.PNG"},
+  		{ "text": "Using the \"copy to clipboard\" tool is a convenient way to screen grab the current diagram with no grid"}
+  	]
   }  
 ]

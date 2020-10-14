@@ -1,6 +1,7 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import org.json.JSONArray;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -9,7 +10,6 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -244,7 +244,7 @@ public final class TipLoader
 			int followingTipId = followingTipIdOptional.get();
 			tip = getTip(followingTipId).get();
 		}
-		else //This branch should never occur. Leaving it for robustness.
+		else //This branch should never occur unless no tip is in tips.json. Leaving it for robustness.
 		{
 			tip = DEFAULT_TIP;
 		}
@@ -319,6 +319,14 @@ public final class TipLoader
 			aId = (int) pTip.get(TIP_ID_FIELD);
 			aTitle = (String) pTip.get(TIP_TITLE_FIELD);
 			aElements = convertJSONObjectToTipElements(pTip);
+		}
+		
+		/**
+		 * @return the tip's id
+		 */
+		public int getId()
+		{
+			return aId;
 		}
 		
 		/**
