@@ -21,8 +21,9 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
  * Class that statically loads the tips in tipsJSON.json and stores them as Tip instances.
  * 
  * This class relies on assumptions about the format in /tip_resources/tips.json. If new
- * possible tip content fields are added or modified, tipIsWellFormatted(JSONObject pTip)
- * and tipContentsAreWellFormated(JSONObject pTip) may need to be modified.
+ * possible tip content fields are added or modified, tipIsWellFormatted(JSONObject pTip),
+ * tipContentsAreWellFormated(JSONObject pTip) and convertJSONObjectToTipElements(JSONObject pTip)
+ * may need to be modified.
  */
 public final class TipLoader
 {
@@ -270,8 +271,6 @@ public final class TipLoader
 	}
 	
 	/**
-	 * Returns the id of the following tip. 
-	 * 
 	 * @param pId id of the current Tip 
 	 * @return Id of the next tip if there is a next tip, Optional.empty() if there are no
 	 * 		   loaded tips, and the id of the first tip if the given id matches no tip in 
