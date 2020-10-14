@@ -8,11 +8,11 @@
     ]
   },
   { 
-  	"id": 2,
-  	"title": "Copying Diagram to Clipboard",
-  	"content": [ 
-  		{ "image": "tip2.PNG"},
-  		{ "text": "Using the \"copy to clipboard\" tool is a convenient way to screen grab the current diagram with no grid"}
-  	]
+    "id": 2,
+    "title": "Copying Diagram to Clipboard",
+    "content": [ 
+      { "image": "tip2.PNG"},
+      { "text": "Using the \"copy to clipboard\" tool is a convenient way to screen grab the current diagram with no grid"}
+    ]
   }  
 ]
