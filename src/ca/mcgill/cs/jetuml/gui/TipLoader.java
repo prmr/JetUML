@@ -1,12 +1,8 @@
 package ca.mcgill.cs.jetuml.gui;
 
-import org.json.JSONArray;
-
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,7 +11,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Class that statically loads the tips in tipsJSON.json and stores them as Tip instances.
