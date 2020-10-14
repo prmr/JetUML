@@ -7,7 +7,7 @@
 Starting with Release 3.0, JetUML is distributed in two formats:
 
 * **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform.
-* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 11 or later *and* JavaFX 11 or later installed. 
+* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 14 or later *and* JavaFX 14 or later installed. 
 
 ### Self-Contained Application
 
