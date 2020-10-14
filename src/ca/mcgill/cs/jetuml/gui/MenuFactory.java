@@ -22,7 +22,6 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import ca.mcgill.cs.jetuml.application.ApplicationResources;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;

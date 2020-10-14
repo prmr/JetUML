@@ -483,6 +483,4 @@ public class TestTipLoader
 			return null;
 		}
 	}
-	
-	
 }

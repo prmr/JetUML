@@ -22,7 +22,7 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
  * 
  * This class relies on assumptions about the format in /tip_resources/tips.json. If new
  * possible tip content fields are added or modified, tipIsWellFormatted(JSONObject pTip),
- * tipContentsAreWellFormated(JSONObject pTip) and convertJSONObjectToTipElements(JSONObject pTip)
+ * tipContentsAreWellFormated(JSONObject pTip) and Tip.convertJSONObjectToTipElements(JSONObject pTip)
  * may need to be modified.
  */
 public final class TipLoader
@@ -377,5 +377,4 @@ public final class TipLoader
 			return elements;
 		}
 	}
-	
 }

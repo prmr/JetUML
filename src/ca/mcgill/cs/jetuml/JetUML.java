@@ -23,7 +23,6 @@ package ca.mcgill.cs.jetuml;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-
 import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
