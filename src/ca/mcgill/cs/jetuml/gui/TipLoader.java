@@ -18,7 +18,11 @@ import java.util.Set;
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 /**
- * Class that statically loads the tips in tipsJSON.json and stores them as JSONObject instances.
+ * Class that statically loads the tips in tipsJSON.json and stores them as Tip instances.
+ * 
+ * This class relies on assumptions about the format in /tip_resources/tips.json. If new
+ * possible tip content fields are added or modified, tipIsWellFormatted(JSONObject pTip)
+ * and tipContentsAreWellFormated(JSONObject pTip) may need to be modified.
  */
 public final class TipLoader
 {
@@ -28,6 +32,8 @@ public final class TipLoader
 	private static final String TIP_CONTENT_TEXT_FIELD = RESOURCES.getString("tips.json.field.name.content.text");
 	private static final String TIP_CONTENT_IMAGE_FIELD = RESOURCES.getString("tips.json.field.name.content.image");
 	private static final String TIP_DEFAULT = RESOURCES.getString("tips.default");
+	private static final int TIP_NUM_FIELDS = 3;
+	private static final int TIP_CONTENT_NUM_FIELDS = 1;
 	
 	private static final List<Tip> TIPS = getTips();
 	private static final Tip DEFAULT_TIP = new Tip(new JSONObject(TIP_DEFAULT));
@@ -36,7 +42,8 @@ public final class TipLoader
 	
 	private static List<Tip> getTips()
 	{
-		List<JSONObject> tipsAsJsonObjects = loadTipsAsJsonObjects();
+		JSONArray tipsAsJsonArray = loadTipsAsJsonArray();
+		List<JSONObject> tipsAsJsonObjects = getWellFormattedTips(tipsAsJsonArray);
 		List<Tip> tips = new ArrayList<>();
 		for(JSONObject tipAsJsonObject : tipsAsJsonObjects)
 		{
@@ -45,7 +52,7 @@ public final class TipLoader
 		return tips;
 	}
 	
-	private static List<JSONObject> loadTipsAsJsonObjects() 
+	private static JSONArray loadTipsAsJsonArray() 
 	{
 		String tipsJSONFilePath = RESOURCES.getString("tips.json.file.path");
 		InputStream tipsInputStream = TipLoader.class.getResourceAsStream(tipsJSONFilePath);
@@ -53,19 +60,26 @@ public final class TipLoader
 		if(tipsInputStream == null)
 		{
 			System.err.println("Tip JSON File not Found");
-			return new ArrayList<>();
+			return new JSONArray();
 		}
 		else
 		{
 			InputStreamReader tipsReader = new InputStreamReader(tipsInputStream);
 			JSONTokener jsonTokener = new JSONTokener(tipsReader);
 			JSONArray jsonArray = new JSONArray(jsonTokener);
-			return getWellFormattedTips(jsonArray);
+			return jsonArray;
 		}
 	}
 	
+	/**
+	 * @param pJSONArray JSONArray containing tips whose format will be checked
+	 * @return list of well formatted JSONObjects
+	 * @pre pJSONArray != null
+	 */
 	private static List<JSONObject> getWellFormattedTips(JSONArray pJSONArray)
 	{
+		assert pJSONArray != null;
+		
 		List<JSONObject> list = new ArrayList<>();
 		for (Object tip : pJSONArray)
 		{
@@ -77,8 +91,23 @@ public final class TipLoader
 		return list;
 	}
 	
+	/**
+	 * Checks if a tip is well formatted based on current assumptions about the tip format
+	 * in /tip_resources/tips.json. If the format is modified, this method may need to be changed.
+	 * Furthermore, if this method is changed, calling methods may need to be modified also. In
+	 * particular Tip(JSONObject pTip) and Tip.convertJSONObjectToTipElements(JSONOBject pTip)
+	 * rely on assumptions based on the checks made by this method.
+	 * 
+	 * @param pTip the tip whose format is to be checked. 
+	 * @return true if the tip is well formatted, false otherwise (including if pTip is null)
+	 */
 	private static boolean tipIsWellFormatted(Object pTip)
 	{
+		if(pTip == null)
+		{
+			return false;
+		}
+		
 		boolean isJSONObj = pTip instanceof JSONObject;
 		if (isJSONObj) //The tip is a JSONObject
 		{
@@ -88,16 +117,21 @@ public final class TipLoader
 					tip.has(TIP_TITLE_FIELD) && 
 					tip.has(TIP_CONTENT_FIELD);
 			
-			if(hasExpectedFields) //The tip has the expected fields
+			boolean hasOnlyExpectedFields = tip.length() == TIP_NUM_FIELDS;
+			
+			if(hasExpectedFields && hasOnlyExpectedFields) //The tip has the expected fields only
 			{
 				boolean fieldsHaveRightType = 
 						tip.get(TIP_ID_FIELD).getClass() == Integer.class &&
 						tip.get(TIP_TITLE_FIELD).getClass() == String.class &&
 						tip.get(TIP_CONTENT_FIELD).getClass() == JSONArray.class;
 				
-				boolean idIsNotNull = tip.get(TIP_ID_FIELD) != null;
+				boolean fieldsAreNotNull = 
+						tip.get(TIP_ID_FIELD) != null &&
+						tip.get(TIP_TITLE_FIELD) != null &&
+						tip.get(TIP_CONTENT_FIELD) != null;
 				
-				if(fieldsHaveRightType && idIsNotNull) //The fields have the right types and the ID is not null
+				if(fieldsHaveRightType && fieldsAreNotNull) //The fields have the right types and the ID is not null
 				{
 					// True if the tip content field is well formatted (last necessary check), false otherwise
 					return tipContentsAreWellFormatted((JSONArray) tip.get(TIP_CONTENT_FIELD)); 
@@ -108,11 +142,26 @@ public final class TipLoader
 	}
 	
 	/**
-	 * @param pContents A JSONArray of tip content elements
+	 * Checks if a tip's contents are well formatted based on current assumptions about the tip 
+	 * format in /tip_resources/tips.json. If the format is modified, this method may need to be
+	 * changed. Furthermore, if this method is changed, methods that rely on it may need to be
+	 * modified also. In particular Tip(JSONObject pTip) and 
+	 * Tip.convertJSONObjectToTipElements(JSONOBject pTip) rely on assumptions based on the
+	 * checks made by this method.
+	 * 
+	 * Note that tips with no contents are deemed as incorrectly formatted.
+	 * 
+	 * @param pContents JSONArray containing a JSONObject tip's contents. 
 	 * @return true if the tip's contents are well formatted, false otherwise
+	 * @pre pContents != null;
 	 */
 	private static boolean tipContentsAreWellFormatted(JSONArray pContents)
 	{
+		assert pContents != null;
+		if(pContents.length() == 0)
+		{
+			return false;
+		}
 		for(Object contentElement : pContents)
 		{
 			if(contentElement.getClass() != JSONObject.class) 
@@ -122,21 +171,21 @@ public final class TipLoader
 			else // the content element is a JSONObject as desired
 			{
 				JSONObject contentElementJO = (JSONObject) contentElement;
-				int numKeys = contentElementJO.length();
+				int numFields = contentElementJO.length();
 				
-				boolean contentElementHasCorrectTextField = 
+				boolean contentElementIsProperTextElement = 
 						contentElementJO.has(TIP_CONTENT_TEXT_FIELD) && 
 						contentElementJO.get(TIP_CONTENT_TEXT_FIELD).getClass() == String.class && 
-						numKeys == 1;
+						numFields == TIP_CONTENT_NUM_FIELDS;
 				
-				boolean contentElementHasCorrectImageField =
+				boolean contentElementIsProperImageElement =
 						contentElementJO.has(TIP_CONTENT_IMAGE_FIELD) &&
 						contentElementJO.get(TIP_CONTENT_IMAGE_FIELD).getClass() == String.class &&
-						numKeys == 1; 
+						numFields == TIP_CONTENT_NUM_FIELDS; 
 				
 				// the content element has only one field (one of text or image) and it is of type string
-				boolean contentElementHasCorrectField = contentElementHasCorrectTextField ||
-						contentElementHasCorrectImageField;
+				boolean contentElementHasCorrectField = contentElementIsProperTextElement ||
+						contentElementIsProperImageElement;
 				if(!contentElementHasCorrectField)
 				{
 					return false; //false if any of the elements are wrongly formatted
@@ -210,6 +259,24 @@ public final class TipLoader
 		return tip;
 	}
 	
+	/**
+	 * Returns the default tip stored in JetUML.properties ("tips.default").
+	 * 
+	 * @return the default tip
+	 */
+	public static Tip getDefaultTip()
+	{
+		return DEFAULT_TIP;
+	}
+	
+	/**
+	 * Returns the id of the following tip. 
+	 * 
+	 * @param pId id of the current Tip 
+	 * @return Id of the next tip if there is a next tip, Optional.empty() if there are no
+	 * 		   loaded tips, and the id of the first tip if the given id matches no tip in 
+	 * 		   the list, but the list is non-empty.
+	 */
 	private static Optional<Integer> getFollowingTipId(int pId)
 	{
 		if(TIPS.size() == 0)
@@ -237,35 +304,51 @@ public final class TipLoader
 	public static final class Tip
 	{
 		
-		private int aId;
-		private List<TipElement> aElements;
+		private final int aId;
+		private final String aTitle;
+		private final List<TipElement> aElements;
 		
 		/**
-		 * @param pTip
+		 * @param pTip a JSONObject
 		 * @pre tipIsWellFormatted(pTip)
 		 */
 		private Tip(JSONObject pTip)
 		{
 			assert tipIsWellFormatted(pTip);
+			
 			aId = (int) pTip.get(TIP_ID_FIELD);
+			aTitle = (String) pTip.get(TIP_TITLE_FIELD);
 			aElements = convertJSONObjectToTipElements(pTip);
+		}
+		
+		/**
+		 * @return the tip's title
+		 */
+		public String getTitle()
+		{
+			return aTitle;
 		}
 		
 		/**
 		 * @return List of TipElements contained in the Tip
 		 */
-		public List<TipElement>getElements()
+		public List<TipElement> getElements()
 		{
 			return new ArrayList<TipElement>(aElements);
 		}
 		
 
+		/**
+		 * @param pTip a JSONObject
+		 * @pre tipIsWellFormatted(pTip)
+		 */
+		@SuppressWarnings("unchecked")
 		private static List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
 		{
+			assert tipIsWellFormatted(pTip);
+			
 			List<TipElement> elements = new ArrayList<>();
 			Map<String, Object> tipMap = pTip.toMap();
-			TipElement title = new TipTitle((String) tipMap.get(TIP_TITLE_FIELD));
-			elements.add(title);
 			List<Map<String, String>> contentList = (List<Map<String, String>>) tipMap.get(TIP_CONTENT_FIELD);
 			for(Map<String, String> contentElement : contentList)
 			{
@@ -273,26 +356,15 @@ public final class TipLoader
 				Set<String> keys = contentElement.keySet();
 				if(keys.contains(TIP_CONTENT_TEXT_FIELD))
 				{
-					element = new TipText(contentElement.get(TIP_CONTENT_TEXT_FIELD));
+					String textContent = contentElement.get(TIP_CONTENT_TEXT_FIELD);
+					element = new TipElement(Media.TEXT, textContent);
 					elements.add(element);
 				}
-				else if (keys.contains(TIP_CONTENT_IMAGE_FIELD))
+				else // we know from @pre that keys.contains(TIP_CONTENT_IMAGE_FIELD)
 				{
-					element = new TipImage(contentElement.get(TIP_CONTENT_IMAGE_FIELD));
+					String imageContent = contentElement.get(TIP_CONTENT_IMAGE_FIELD);
+					element = new TipElement(Media.IMAGE, imageContent);
 					elements.add(element);
-				}
-				else
-				{
-					Iterator<String> keyIterator = keys.iterator();
-					if(keyIterator.hasNext())
-					{
-						String key = keys.iterator().next();
-						System.err.println("Error: unknown tip element type " + key);
-					}
-					else
-					{
-						System.err.println("Error: empty tip content element found.");
-					}
 				}
 			}
 			return elements;
