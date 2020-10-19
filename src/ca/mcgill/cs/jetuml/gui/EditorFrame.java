@@ -127,7 +127,7 @@ public class EditorFrame extends BorderPane
 		});
 		setOnKeyTyped(e -> 
 		{
-			if( !isWelcomeTabShowing())
+			if( !isWelcomeTabShowing() && !e.isShortcutDown())
 			{
 				getSelectedDiagramTab().keyTyped(e.getCharacter());
 			}
@@ -237,7 +237,10 @@ public class EditorFrame extends BorderPane
 						event -> UserPreferences.instance().setBoolean(BooleanPreference.autoEditNode, 
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
-				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show())));
+				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show()),
+				factory.createMenuItem("view.zoom_in", false, event -> getSelectedDiagramTab().zoomIn()),
+				factory.createMenuItem("view.zoom_out", false, event -> getSelectedDiagramTab().zoomOut()),
+				factory.createMenuItem("view.reset_zoom", false, event -> getSelectedDiagramTab().resetZoom())));
 	}
 	
 	private void createHelpMenu(MenuBar pMenuBar) 
