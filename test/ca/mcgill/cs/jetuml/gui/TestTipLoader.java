@@ -31,7 +31,7 @@ public class TestTipLoader
 	
 	
 	@BeforeAll
-	public static void setupClass() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public static void setupClass()
 	{
 		WELL_FORMATTED_TIP = new JSONObject(WELL_FORMATTED_TIP_STRING);
 	}

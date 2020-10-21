@@ -9,7 +9,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 /**
- * Class that statically loads the tips in tipsJSON.json and stores them as Tip instances.
+ * Class that statically loads the tips.
  */
 public final class TipLoader
 {
@@ -27,7 +27,7 @@ public final class TipLoader
 		private final List<TipElement> aElements;
 		
 		/**
-		 * @param pTip a JSONObject
+		 * @param pTip a JSONObject obtained from the JSONArray gotten by loading the tips.
 		 */
 		private Tip(JSONObject pTip)
 		{
