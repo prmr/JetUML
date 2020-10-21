@@ -8,13 +8,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.json.JSONObject;
 
 public class TestTipLoader 
 {
-	
 	private static final String TIP_ID_FIELD = RESOURCES.getString("tips.json.field.name.id");
 	private static final String TIP_TITLE_FIELD = RESOURCES.getString("tips.json.field.name.title");
 	private static final String TIP_CONTENT_FIELD = RESOURCES.getString("tips.json.field.name.content");

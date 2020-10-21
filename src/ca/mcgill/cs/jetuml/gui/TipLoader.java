@@ -22,7 +22,6 @@ public final class TipLoader
 	 */
 	public static final class Tip
 	{
-		
 		private final int aId;
 		private final String aTitle;
 		private final List<TipElement> aElements;
@@ -62,7 +61,6 @@ public final class TipLoader
 			return new ArrayList<TipElement>(aElements);
 		}
 		
-
 		/**
 		 * @param pTip a JSONObject obtained from the JSONArray gotten by loading the tips.
 		 */
@@ -83,6 +81,4 @@ public final class TipLoader
 			return elements;
 		}
 	}
-	
-	
 }

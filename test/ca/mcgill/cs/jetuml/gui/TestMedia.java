@@ -3,13 +3,13 @@ package ca.mcgill.cs.jetuml.gui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Optional;
 import ca.mcgill.cs.jetuml.gui.Media;
 
-import org.junit.jupiter.api.Test;
-
-public class TestMedia {
-
+public class TestMedia 
+{
 	@Test
 	public void testMedia_nullParam()
 	{
@@ -32,7 +32,7 @@ public class TestMedia {
 	}
 	
 	@Test
-	public void testMedia_lowerCaseWellSpelled()
+	public void testMedia_wellSpelled()
 	{
 		Optional<Media> opt = Media.getMedia("image");
 		assertEquals(opt.get(), Media.IMAGE);
