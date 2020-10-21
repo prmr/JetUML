@@ -1,7 +1,7 @@
 package ca.mcgill.cs.jetuml.gui;
 
 /**
- * Tip element represented as a Media/Content pair.
+ * Tip element represented as a Media/content pair.
  */
 public final class TipElement 
 {
