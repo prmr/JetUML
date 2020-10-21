@@ -1,9 +1,5 @@
 package ca.mcgill.cs.jetuml.gui;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 /**
  * Tip element represented as a Media/Content pair.
  */
