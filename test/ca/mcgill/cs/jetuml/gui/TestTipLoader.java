@@ -18,8 +18,8 @@ public class TestTipLoader
 	private static final String TIP_ID_FIELD = RESOURCES.getString("tips.json.field.name.id");
 	private static final String TIP_TITLE_FIELD = RESOURCES.getString("tips.json.field.name.title");
 	private static final String TIP_CONTENT_FIELD = RESOURCES.getString("tips.json.field.name.content");
-	private static final String TIP_CONTENT_TEXT_FIELD = RESOURCES.getString("tips.json.field.name.content.text");
-	private static final String TIP_CONTENT_IMAGE_FIELD = RESOURCES.getString("tips.json.field.name.content.image");
+	private static final String TIP_CONTENT_TEXT_FIELD = Media.TEXT.name().toLowerCase();
+	private static final String TIP_CONTENT_IMAGE_FIELD = Media.IMAGE.name().toLowerCase();
 	
 	private static JSONObject WELL_FORMATTED_TIP;
 	private final static String WELL_FORMATTED_TIP_STRING = 
