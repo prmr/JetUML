@@ -1,7 +1,5 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +11,6 @@ import org.json.JSONObject;
  */
 final class TipLoader
 {
-	private static final String TIP_ID_FIELD = RESOURCES.getString("tips.json.field.name.id");
-	private static final String TIP_TITLE_FIELD = RESOURCES.getString("tips.json.field.name.title");
-	private static final String TIP_CONTENT_FIELD = RESOURCES.getString("tips.json.field.name.content");
-	
 	/**
 	 * A tip that contains TipElement instances.
 	 */
@@ -32,8 +26,8 @@ final class TipLoader
 		private Tip(JSONObject pTip)
 		{
 			
-			aId = (int) pTip.get(TIP_ID_FIELD);
-			aTitle = (String) pTip.get(TIP_TITLE_FIELD);
+			aId = (int) pTip.get(TipFieldName.ID.asString());
+			aTitle = (String) pTip.get(TipFieldName.TITLE.asString());
 			aElements = convertJSONObjectToTipElements(pTip);
 		}
 		
@@ -69,7 +63,7 @@ final class TipLoader
 		{
 			List<TipElement> elements = new ArrayList<>();
 			Map<String, Object> tipMap = pTip.toMap();
-			List<Map<String, String>> contentList = (List<Map<String, String>>) tipMap.get(TIP_CONTENT_FIELD);
+			List<Map<String, String>> contentList = (List<Map<String, String>>) tipMap.get(TipFieldName.CONTENT.asString());
 			for(Map<String, String> contentElement : contentList)
 			{
 				String mediaName = (String) contentElement.keySet().toArray()[0];

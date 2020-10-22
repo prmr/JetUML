@@ -1,6 +1,5 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -13,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 public class TestTipLoader 
 {
-	private static final String TIP_ID_FIELD = RESOURCES.getString("tips.json.field.name.id");
-	private static final String TIP_TITLE_FIELD = RESOURCES.getString("tips.json.field.name.title");
-	private static final String TIP_CONTENT_FIELD = RESOURCES.getString("tips.json.field.name.content");
+	private static final String TIP_ID_FIELD = TipFieldName.ID.asString();
+	private static final String TIP_TITLE_FIELD = TipFieldName.TITLE.asString();
+	private static final String TIP_CONTENT_FIELD = TipFieldName.CONTENT.asString();
 	private static final String TIP_CONTENT_TEXT_FIELD = Media.TEXT.name().toLowerCase();
 	private static final String TIP_CONTENT_IMAGE_FIELD = Media.IMAGE.name().toLowerCase();
 	
