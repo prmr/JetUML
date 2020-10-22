@@ -73,7 +73,7 @@ public final class TipLoader
 			for(Map<String, String> contentElement : contentList)
 			{
 				String mediaName = (String) contentElement.keySet().toArray()[0];
-				Media media = Media.getMedia(mediaName).get();
+				Media media = Media.valueOf(mediaName.toUpperCase());
 				String content = contentElement.get(mediaName);
 				TipElement tipElement = new TipElement(media, content);
 				elements.add(tipElement);
