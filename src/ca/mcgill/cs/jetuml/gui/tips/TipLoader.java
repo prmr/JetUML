@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.gui;
+package ca.mcgill.cs.jetuml.gui.tips;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
@@ -58,7 +58,7 @@ public final class TipLoader
 		 */
 		public List<TipElement> getElements()
 		{
-			return new ArrayList<TipElement>(aElements);
+			return new ArrayList<>(aElements);
 		}
 		
 		/**

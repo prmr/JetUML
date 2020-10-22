@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.gui;
+package ca.mcgill.cs.jetuml.gui.tips;
 
 import java.util.Optional;
 

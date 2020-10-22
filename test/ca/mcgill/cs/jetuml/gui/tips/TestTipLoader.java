@@ -1,16 +1,15 @@
-package ca.mcgill.cs.jetuml.gui;
+package ca.mcgill.cs.jetuml.gui.tips;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.json.JSONObject;
 
 public class TestTipLoader 
 {

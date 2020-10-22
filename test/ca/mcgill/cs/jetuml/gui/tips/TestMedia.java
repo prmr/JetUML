@@ -1,12 +1,11 @@
-package ca.mcgill.cs.jetuml.gui;
+package ca.mcgill.cs.jetuml.gui.tips;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.Optional;
-import ca.mcgill.cs.jetuml.gui.Media;
+
+import org.junit.jupiter.api.Test;
 
 public class TestMedia 
 {
