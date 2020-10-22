@@ -3,7 +3,7 @@ package ca.mcgill.cs.jetuml.gui.tips;
 /**
  * Tip element represented as a Media/content pair.
  */
-public final class TipElement 
+final class TipElement 
 {
 	private final Media aMedia;
 	private final String aContent;
@@ -14,7 +14,7 @@ public final class TipElement
 	 * 		  extension if the Media is IMAGE). 
 	 * @pre pMedia != null && pContent != null
 	 */
-	public TipElement(Media pMedia, String pContent)
+	TipElement(Media pMedia, String pContent)
 	{
 		assert pMedia != null && pContent != null;
 		aMedia = pMedia;

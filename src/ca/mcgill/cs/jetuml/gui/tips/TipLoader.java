@@ -11,7 +11,7 @@ import org.json.JSONObject;
 /**
  * Class that statically loads the tips.
  */
-public final class TipLoader
+final class TipLoader
 {
 	private static final String TIP_ID_FIELD = RESOURCES.getString("tips.json.field.name.id");
 	private static final String TIP_TITLE_FIELD = RESOURCES.getString("tips.json.field.name.title");
