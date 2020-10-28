@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -53,13 +52,13 @@ final class TipLoader
 	 * 
 	 * @return Tip the tip of the day
 	 */
-	public static Tip getTipOfTheDay()
+	public static Tip loadTipOfTheDay()
 	{	
-		int tipID = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
-		Tip tip = loadTip(tipID);
+		int tipId = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
+		Tip tip = loadTip(tipId);
 		
 		// Setting the tip of the day to the next tip
-		int followingTipID = getNextTipId(tipID); 
+		int followingTipID = getNextTipId(tipId); 
 		UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipId, followingTipID);
 
 		return tip;

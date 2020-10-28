@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
 
 public class TestTipLoader 
@@ -53,6 +54,33 @@ public class TestTipLoader
 		assertEquals(tip2.getId(), 2);
 	}
 	
+	@Test
+	public void testTipLoader_loadTipOfTheDayReturnsNotNull()
+	{
+		int currentTipOfTheDayId = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
+		
+		Tip tip = TipLoader.loadTipOfTheDay();
+		
+		//Resetting the user preference for the current tip of the day
+		UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipId, currentTipOfTheDayId);
+		
+		assertTrue(tip != null);
+	}
+	
+	@Test
+	public void testTipLoader_loadTipOfTheDayTwiceReturnsTipsWithDifferentIds()
+	{
+		int currentTipOfTheDayId = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
+		
+		Tip tip1 = TipLoader.loadTipOfTheDay();
+		Tip tip2 = TipLoader.loadTipOfTheDay();
+		
+		//Resetting the user preference for the current tip of the day
+		UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipId, currentTipOfTheDayId);
+				
+		assertTrue(tip1.getId() != tip2.getId());
+	}
+	
 	@Test 
 	public void testTipLoader_getNextTipIdIncrementsForIdOne()
 	{
@@ -77,12 +105,6 @@ public class TestTipLoader
 	public void testTipLoader_getPreviousTipIdWrapsAround()
 	{
 		assertEquals(getPreviousTipId(1), NUM_TIPS);
-	}
-	
-	@Test
-	public void testTipLoader_getNextTipIsDifferent()
-	{
-		
 	}
 	
 	@Test
