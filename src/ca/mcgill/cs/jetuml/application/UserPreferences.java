@@ -58,7 +58,7 @@ public final class UserPreferences
 	 */
 	public enum IntegerPreference
 	{
-		diagramWidth(0), diagramHeight(0);
+		diagramWidth(0), diagramHeight(0), nextTipId(1);
 		
 		private int aDefault;
 		
