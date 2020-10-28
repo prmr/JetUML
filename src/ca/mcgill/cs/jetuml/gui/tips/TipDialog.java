@@ -45,6 +45,7 @@ public class TipDialog
 	private final Stage aStage = new Stage();
 	
 	private Tip aCurrentTip;
+	private final ScrollPane aTipDisplay = new ScrollPane();
 
 	/**
 	 * Constructor for a TipDialog.
@@ -79,11 +80,11 @@ public class TipDialog
 		tipMenu.getChildren().addAll(showOnStartupCheckBox, tipMenuButtons);
 		
 		aCurrentTip = TipLoader.loadTipOfTheDay();
-		getTipAsVBox(tipVBox);
+		VBox tipVBox = getTipAsVBox(aCurrentTip);
 		
-		ScrollPane tipArea = new ScrollPane(tipVBox);
+		aTipDisplay.setContent(tipVBox);
 		
-		layout.setCenter(tipArea);
+		layout.setCenter(aTipDisplay);
 		layout.setBottom(tipMenu);
 		
 		aStage.requestFocus();
@@ -103,19 +104,19 @@ public class TipDialog
 		VBox tipVBox = new VBox();
 		List<TipElement> tipElements = pTip.getElements();
 		
-		// Adding title to VBox
 		Node titleNode = getTipTitleAsNode(pTip);
 		tipVBox.getChildren().add(titleNode);
 		
-		// Populating the VBox with the tip contents.
 		for(TipElement tipElement : tipElements)
 		{
 			Node node = getTipElementAsNode(tipElement);
 			tipVBox.getChildren().add(node);
 		}
+		
+		return tipVBox;
 	}
 	
-	private HBox createEmptyTipMenu() 
+	private static HBox createEmptyTipMenu() 
 	{
 		HBox tipMenu = new HBox(MENU_CHECKBOX_SPACING);
 		tipMenu.setPadding(new Insets(MENU_PADDING));
@@ -131,8 +132,8 @@ public class TipDialog
 		Button nextTipButton = new Button("Next Tip");
 		Button previousTipButton = new Button("Previous Tip");
 		Button closeButton = new Button("Close");
-		nextTipButton.setOnAction(e -> setUpNextTip());
-		previousTipButton.setOnAction(e -> setUpPreviousTip());
+		nextTipButton.setOnAction(e -> setUpNewTip(TipLoader.loadNextTip(this.aCurrentTip.getId())));
+		previousTipButton.setOnAction(e -> setUpNewTip(TipLoader.loadPreviousTip(this.aCurrentTip.getId())));
 		closeButton.setOnAction(e -> aStage.close());
 		
 		HBox navigationButtons = new HBox(MENU_NAVIGATION_BUTTONS_SPACING);
@@ -143,6 +144,13 @@ public class TipDialog
 		tipMenuButtons.getChildren().addAll(navigationButtons, closeButton);
 		
 		return tipMenuButtons;
+	}
+	
+	private void setUpNewTip(Tip pTip)
+	{
+		this.aCurrentTip = pTip;
+		VBox tipVBox = getTipAsVBox(aCurrentTip);
+		aTipDisplay.setContent(tipVBox);
 	}
 	
 	/**
@@ -159,7 +167,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private Node getImageTipElementAsNode(TipElement pTipElement) 
+	private static Node getImageTipElementAsNode(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.IMAGE);
@@ -177,7 +185,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.TEXT);
 	 */
-	private Node getTextTipElementAsNode(TipElement pTipElement) 
+	private static Node getTextTipElementAsNode(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT);
@@ -192,7 +200,7 @@ public class TipDialog
 	 * @pre pTipElement != null;
 	 * @pre pTipElement.getMedia().equals(Media.TEXT) || pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private Node getTipElementAsNode(TipElement pTipElement)
+	private static Node getTipElementAsNode(TipElement pTipElement)
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.TEXT) || pTipElement.getMedia().equals(Media.IMAGE);
@@ -213,7 +221,7 @@ public class TipDialog
 	 * @return Formatted Node containing the tip's title
 	 * @pre pTip!= null
 	 */
-	private Node getTipTitleAsNode(Tip pTip)
+	private static Node getTipTitleAsNode(Tip pTip)
 	{
 		assert pTip != null;
 		
@@ -223,4 +231,4 @@ public class TipDialog
 		titleNode.setFont(titleFont);
 		return titleNode;
 	}
-	
+}	
