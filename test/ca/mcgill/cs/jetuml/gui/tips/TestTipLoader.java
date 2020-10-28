@@ -1,6 +1,9 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
+import static ca.mcgill.cs.jetuml.gui.tips.TipLoader.NUM_TIPS;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
@@ -10,9 +13,10 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
+
 public class TestTipLoader 
 {
-	private static final String TIP_ID_FIELD = TipFieldName.ID.asString();
 	private static final String TIP_TITLE_FIELD = TipFieldName.TITLE.asString();
 	private static final String TIP_CONTENT_FIELD = TipFieldName.CONTENT.asString();
 	private static final String TIP_CONTENT_TEXT_FIELD = Media.TEXT.name().toLowerCase();
@@ -20,8 +24,7 @@ public class TestTipLoader
 	
 	private static JSONObject WELL_FORMATTED_TIP;
 	private final static String WELL_FORMATTED_TIP_STRING = 
-			"{"
-			+ " \"" + TIP_ID_FIELD + "\": 1,"
+			  "{"
 			+ " \"" + TIP_TITLE_FIELD + "\": \"First Tip\","
 			+ " \"" + TIP_CONTENT_FIELD + "\": [{ \"" + TIP_CONTENT_TEXT_FIELD + "\": \"sample text\"},"
 			+ 				 				   "{ \"" + TIP_CONTENT_IMAGE_FIELD + "\": \"image.png\"}] "
@@ -33,7 +36,54 @@ public class TestTipLoader
 	{
 		WELL_FORMATTED_TIP = new JSONObject(WELL_FORMATTED_TIP_STRING);
 	}
-
+	
+	@Test
+	public void testTipLoader_loadTipCanLoadTipFromCorrectId()
+	{
+		Tip tip = TipLoader.loadTip(1);
+		assertTrue(tip != null);
+	}
+	
+	@Test
+	public void testTipLoader_loadTipCreatesTipsWithRightId()
+	{
+		Tip tip1 = TipLoader.loadTip(1);
+		assertEquals(tip1.getId(), 1);
+		Tip tip2 = TipLoader.loadTip(2);
+		assertEquals(tip2.getId(), 2);
+	}
+	
+	@Test 
+	public void testTipLoader_getNextTipIdIncrementsForIdOne()
+	{
+		assertEquals(getNextTipId(1), 2); // Assuming there are at least 2 tips, 
+										  // this is checked by TestTipJsons.java
+	}
+	
+	@Test
+	public void testTipLoader_getNextTipIdWrapsAround()
+	{
+		assertEquals(getNextTipId(NUM_TIPS), 1);
+	}
+	
+	@Test 
+	public void testTipLoader_getPreviousTipIdDecrementsForGreatestId()
+	{
+		assertEquals(getPreviousTipId(NUM_TIPS), NUM_TIPS - 1); // Assuming there are at least 2 tips, 
+										  						// this is checked by TestTipJsons.java
+	}
+	
+	@Test
+	public void testTipLoader_getPreviousTipIdWrapsAround()
+	{
+		assertEquals(getPreviousTipId(1), NUM_TIPS);
+	}
+	
+	@Test
+	public void testTipLoader_getNextTipIsDifferent()
+	{
+		
+	}
 	
 	@Test
 	public void testTipConvertJSONObjectToTipElements_listHasRightSize()
@@ -77,6 +127,36 @@ public class TestTipLoader
 		{
 			fail();
 			return null;
+		}
+	}
+	
+	private int getNextTipId(int pId)
+	{
+		try
+		{
+			Method method = TipLoader.class.getDeclaredMethod("getNextTipId", int.class);
+			method.setAccessible(true);
+			return (int) method.invoke(null, pId);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return 0;
+		}
+	}
+	
+	private int getPreviousTipId(int pId)
+	{
+		try
+		{
+			Method method = TipLoader.class.getDeclaredMethod("getPreviousTipId", int.class);
+			method.setAccessible(true);
+			return (int) method.invoke(null, pId);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return 0;
 		}
 	}
 }

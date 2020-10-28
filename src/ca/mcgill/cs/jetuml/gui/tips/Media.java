@@ -5,5 +5,10 @@ package ca.mcgill.cs.jetuml.gui.tips;
  */
 enum Media 
 {
-	TEXT, IMAGE
+	TEXT, IMAGE;
+	
+	public String asString()
+	{
+		return name().toLowerCase();
+	}
 }

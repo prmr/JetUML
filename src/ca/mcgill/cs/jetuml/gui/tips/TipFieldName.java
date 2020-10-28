@@ -7,7 +7,7 @@ package ca.mcgill.cs.jetuml.gui.tips;
  */
 enum TipFieldName
 {
-	ID, TITLE, CONTENT;
+	TITLE, CONTENT;
 	
 	public String asString()
 	{
