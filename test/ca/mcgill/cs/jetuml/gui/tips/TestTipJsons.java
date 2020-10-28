@@ -159,7 +159,8 @@ public class TestTipJsons {
 		return (String) field.get(null);
 	}
 	
-	private static File getTipJsonsDirectoryAsFile() throws URISyntaxException {
+	private static File getTipJsonsDirectoryAsFile() throws URISyntaxException 
+	{
 		URI uri = TestTipLoader.class.getResource(TIPS_JSONS_DIR).toURI();
         Path tipsDirPath = Paths.get(uri);
         File dir = tipsDirPath.toFile();
