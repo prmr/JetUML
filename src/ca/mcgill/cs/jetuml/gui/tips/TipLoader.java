@@ -24,10 +24,10 @@ final class TipLoader
 	private TipLoader(){}
 	
 	/**
-	 * Returns the tip associated with the given tip id if there is such a tip.
+	 * Returns the tip associated with the given tip id.
 	 * 
 	 * @param pId id of the tip to return
-	 * @return Optional of the tip associated to pId if one exists, Optional.empty() otherwise.
+	 * @return the tip with id pId.
 	 * 
 	 * @pre pId >= 1 && pId <= NUM_TIPS 
 	 */
@@ -107,7 +107,8 @@ final class TipLoader
 	}
 	
 	/**
-	 * Loads and returns the next Tip following an id-wise increasing order. 
+	 * Loads and returns the next Tip after the tip with id pCurrentTipId following
+	 * an id-wise increasing order. 
 	 * 
 	 * @param pCurrentTipId the id of the current Tip
 	 * @return the next Tip 
@@ -123,7 +124,8 @@ final class TipLoader
 	}
 	
 	/**
-	 * Loads and returns the previous Tip following an id-wise increasing order. 
+	 * Loads and returns the previous Tip after the tip with id pCurrentTipId following
+	 * an id-wise increasing order. 
 	 * 
 	 * @param pCurrentTipId the id of the current Tip
 	 * @return the previous Tip 
