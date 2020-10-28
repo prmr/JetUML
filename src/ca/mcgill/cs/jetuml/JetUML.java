@@ -31,6 +31,7 @@ import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
 import ca.mcgill.cs.jetuml.gui.GuiUtils;
+import ca.mcgill.cs.jetuml.gui.tips.TipDialog;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.scene.Scene;
@@ -74,6 +75,7 @@ public final class JetUML extends Application
 			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
 		});
 		pStage.show();
+		new TipDialog(pStage).show();
 	}
 	
 	// If the first argument passed to the application is a valid file, open it.
