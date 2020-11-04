@@ -1,7 +1,5 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
-import static ca.mcgill.cs.jetuml.gui.tips.TipLoader.NUM_TIPS;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -13,7 +11,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
 
 public class TestTipLoader 
@@ -52,59 +49,6 @@ public class TestTipLoader
 		assertEquals(tip1.getId(), 1);
 		Tip tip2 = TipLoader.loadTip(2);
 		assertEquals(tip2.getId(), 2);
-	}
-	
-	@Test
-	public void testTipLoader_loadTipOfTheDayReturnsNotNull()
-	{
-		int currentTipOfTheDayId = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
-		
-		Tip tip = TipLoader.loadTipOfTheDay();
-		
-		//Resetting the user preference for the current tip of the day
-		UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipId, currentTipOfTheDayId);
-		
-		assertTrue(tip != null);
-	}
-	
-	@Test
-	public void testTipLoader_loadTipOfTheDayTwiceReturnsTipsWithDifferentIds()
-	{
-		int currentTipOfTheDayId = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.nextTipId);
-		
-		Tip tip1 = TipLoader.loadTipOfTheDay();
-		Tip tip2 = TipLoader.loadTipOfTheDay();
-		
-		//Resetting the user preference for the current tip of the day
-		UserPreferences.instance().setInteger(UserPreferences.IntegerPreference.nextTipId, currentTipOfTheDayId);
-				
-		assertTrue(tip1.getId() != tip2.getId());
-	}
-	
-	@Test 
-	public void testTipLoader_getNextTipIdIncrementsForIdOne()
-	{
-		assertEquals(getNextTipId(1), 2); // Assuming there are at least 2 tips, 
-										  // this is checked by TestTipJsons.java
-	}
-	
-	@Test
-	public void testTipLoader_getNextTipIdWrapsAround()
-	{
-		assertEquals(getNextTipId(NUM_TIPS), 1);
-	}
-	
-	@Test 
-	public void testTipLoader_getPreviousTipIdDecrementsForGreatestId()
-	{
-		assertEquals(getPreviousTipId(NUM_TIPS), NUM_TIPS - 1); // Assuming there are at least 2 tips, 
-										  						// this is checked by TestTipJsons.java
-	}
-	
-	@Test
-	public void testTipLoader_getPreviousTipIdWrapsAround()
-	{
-		assertEquals(getPreviousTipId(1), NUM_TIPS);
 	}
 	
 	@Test
@@ -149,36 +93,6 @@ public class TestTipLoader
 		{
 			fail();
 			return null;
-		}
-	}
-	
-	private int getNextTipId(int pId)
-	{
-		try
-		{
-			Method method = TipLoader.class.getDeclaredMethod("getNextTipId", int.class);
-			method.setAccessible(true);
-			return (int) method.invoke(null, pId);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return 0;
-		}
-	}
-	
-	private int getPreviousTipId(int pId)
-	{
-		try
-		{
-			Method method = TipLoader.class.getDeclaredMethod("getPreviousTipId", int.class);
-			method.setAccessible(true);
-			return (int) method.invoke(null, pId);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return 0;
 		}
 	}
 }
