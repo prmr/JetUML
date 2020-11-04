@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
@@ -147,7 +148,7 @@ public class TestTipJsons {
 	{
 		String tipFilePath = String.format(TIP_FILE_PATH_FORMAT, pId);
 		InputStream inputStream = TipLoader.class.getResourceAsStream(tipFilePath);
-		JSONTokener jTok = new JSONTokener(new InputStreamReader(inputStream));
+		JSONTokener jTok = new JSONTokener(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 		JSONObject jObj = new JSONObject(jTok);
 		return jObj;
 	}
