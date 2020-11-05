@@ -1,6 +1,7 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
@@ -10,9 +11,10 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
+
 public class TestTipLoader 
 {
-	private static final String TIP_ID_FIELD = TipFieldName.ID.asString();
 	private static final String TIP_TITLE_FIELD = TipFieldName.TITLE.asString();
 	private static final String TIP_CONTENT_FIELD = TipFieldName.CONTENT.asString();
 	private static final String TIP_CONTENT_TEXT_FIELD = Media.TEXT.name().toLowerCase();
@@ -20,8 +22,7 @@ public class TestTipLoader
 	
 	private static JSONObject WELL_FORMATTED_TIP;
 	private final static String WELL_FORMATTED_TIP_STRING = 
-			"{"
-			+ " \"" + TIP_ID_FIELD + "\": 1,"
+			  "{"
 			+ " \"" + TIP_TITLE_FIELD + "\": \"First Tip\","
 			+ " \"" + TIP_CONTENT_FIELD + "\": [{ \"" + TIP_CONTENT_TEXT_FIELD + "\": \"sample text\"},"
 			+ 				 				   "{ \"" + TIP_CONTENT_IMAGE_FIELD + "\": \"image.png\"}] "
@@ -33,7 +34,22 @@ public class TestTipLoader
 	{
 		WELL_FORMATTED_TIP = new JSONObject(WELL_FORMATTED_TIP_STRING);
 	}
-
+	
+	@Test
+	public void testTipLoader_loadTipCanLoadTipFromCorrectId()
+	{
+		Tip tip = TipLoader.loadTip(1);
+		assertTrue(tip != null);
+	}
+	
+	@Test
+	public void testTipLoader_loadTipCreatesTipsWithRightId()
+	{
+		Tip tip1 = TipLoader.loadTip(1);
+		assertEquals(tip1.getId(), 1);
+		Tip tip2 = TipLoader.loadTip(2);
+		assertEquals(tip2.getId(), 2);
+	}
 	
 	@Test
 	public void testTipConvertJSONObjectToTipElements_listHasRightSize()

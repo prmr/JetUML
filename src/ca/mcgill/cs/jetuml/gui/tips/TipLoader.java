@@ -1,16 +1,48 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 /**
  * Class that statically loads the tips.
  */
 final class TipLoader
 {
+	public static final int NUM_TIPS = Integer.parseInt(RESOURCES.getString("tips.quantity"));
+	private static final String TIP_FILE_PATH_FORMAT = RESOURCES.getString("tips.jsons.directory") + "/tip-%d.json";
+	
+	private TipLoader(){}
+	
+	/**
+	 * Returns the tip associated with the given tip id.
+	 * 
+	 * @param pId id of the tip to return
+	 * @return the tip with id pId.
+	 * 
+	 * @pre pId >= 1 && pId <= NUM_TIPS 
+	 */
+	public static Tip loadTip(int pId)
+	{
+		assert pId >= 1 && pId <= NUM_TIPS;
+		
+		String tipFileName = String.format(TIP_FILE_PATH_FORMAT, pId);
+		InputStream tipsInputStream = TipLoader.class.getResourceAsStream(tipFileName); //Not null if tests pass
+		InputStreamReader tipsReader = new InputStreamReader(tipsInputStream, StandardCharsets.UTF_8);
+		JSONTokener jsonTokener = new JSONTokener(tipsReader);
+		JSONObject jsonObject = new JSONObject(jsonTokener); // Won't throw JSONException if tests pass
+		Tip tip = new Tip(pId, jsonObject);
+		return tip;
+	}
+	
 	/**
 	 * A tip that contains TipElement instances.
 	 */
@@ -21,12 +53,14 @@ final class TipLoader
 		private final List<TipElement> aElements;
 		
 		/**
-		 * @param pTip a JSONObject obtained from the JSONArray gotten by loading the tips.
+		 * @param pId the id associated with the tip (number in the tip's file's name)
+		 * @param pTip the JSONObject obtained from the file tip-pId.json, where pId is the 
+		 * 		  same as the pId parameter.
 		 */
-		private Tip(JSONObject pTip)
+		private Tip(int pId, JSONObject pTip)
 		{
 			
-			aId = (int) pTip.get(TipFieldName.ID.asString());
+			aId = pId;
 			aTitle = (String) pTip.get(TipFieldName.TITLE.asString());
 			aElements = convertJSONObjectToTipElements(pTip);
 		}
