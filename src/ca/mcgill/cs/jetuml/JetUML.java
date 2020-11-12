@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.Version;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.gui.EditorFrame;
@@ -75,7 +76,12 @@ public final class JetUML extends Application
 			((EditorFrame)((Stage)pWindowEvent.getSource()).getScene().getRoot()).exit();
 		});
 		pStage.show();
-		new TipDialog(pStage).show();
+		
+		boolean shouldShowTips = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		if(shouldShowTips)
+		{
+			(new TipDialog(pStage)).show();
+		}
 	}
 	
 	// If the first argument passed to the application is a valid file, open it.
