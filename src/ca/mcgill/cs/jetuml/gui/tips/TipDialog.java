@@ -73,7 +73,6 @@ public class TipDialog
 	 */
 	public TipDialog(Stage pOwner)
 	{
-		
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
 		aOwner = pOwner;
@@ -87,8 +86,8 @@ public class TipDialog
 	{
 		aStage = new Stage();
 		prepareStage(aOwner);
-        aStage.showAndWait();
-    }
+		aStage.showAndWait();
+	}
 	
 	/**
 	 * @pre pOwner != null
@@ -160,8 +159,10 @@ public class TipDialog
 		HBox tipMenu = new HBox();
 		tipMenu.setPadding(new Insets(PADDING));
 		tipMenu.setStyle("-fx-background-color: gainsboro;");
-		tipMenu.setBorder(new Border(new BorderStroke(Color.DARKGRAY, 
-	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		
+		BorderStroke bs = new BorderStroke(Color.DARKGRAY, BorderStrokeStyle.SOLID,
+										   CornerRadii.EMPTY, BorderWidths.DEFAULT);
+		tipMenu.setBorder(new Border(bs));
 		return tipMenu;
 	}
 	
