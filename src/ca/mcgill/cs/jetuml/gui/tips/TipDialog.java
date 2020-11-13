@@ -286,7 +286,7 @@ public class TipDialog
 		}
 		else // media.equals(Media.IMAGE) by @pre
 		{
-			return this.getImageTipElementAsImageNode(pTipElement);
+			return this.getImageTipElementAsImageView(pTipElement);
 		}
 	}
 	
@@ -318,7 +318,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private ImageView getImageTipElementAsImageNode(TipElement pTipElement) 
+	private ImageView getImageTipElementAsImageView(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.IMAGE);
@@ -328,10 +328,10 @@ public class TipDialog
 		InputStream inputStream = TipDialog.class.getResourceAsStream(tipImagesDir + "/" + imageName);
 		Image image = new Image(inputStream);
 		ImageView imageNode = new ImageView(image);
-		if(imageNode.getImage().getWidth() > aStage.getWidth() - 2 * PADDING - 4 * DEFAULT_NODE_SPACING)
+		if(imageNode.getImage().getWidth() > WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING)
 		{
 			imageNode.setPreserveRatio(true);
-			imageNode.setFitWidth(aStage.getWidth() - 2 * PADDING - 4 * DEFAULT_NODE_SPACING);
+			imageNode.setFitWidth(WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING);
 			// two times the padding because of the VBox padding, and a bit extra to make up for
 			// other default spacing added between nodes
 		}
