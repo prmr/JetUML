@@ -1,7 +1,6 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-import static ca.mcgill.cs.jetuml.gui.tips.TipLoader.NUM_TIPS;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
@@ -15,12 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -28,7 +25,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -39,7 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 /**
- * A window that presents the tip of the day.
+ * A window that presents the tip of the day (by calling show()).
  */
 public class TipDialog 
 {
@@ -54,16 +50,17 @@ public class TipDialog
 	private static final double TITLE_FONT_SIZE = 23;
 	private static final double TEXT_FONT_SIZE = 13.5;
 	private static final double TEXT_LINE_SPACING = 2;
+	private static final double DEFAULT_NODE_SPACING = 10;
 	private static final String NEXT_BUTTON_STYLE = "next-tip-button";
 	private static final String BUTTON_STYLE = "tip-menu-button";
 	private static final String WINDOW_TITLE = "Tip of the Day";
 	
-	private final ScrollPane aTipDisplay;
 	private Stage aStage;
 	private Stage aOwner;
 	private Tip aCurrentTip;
 	private ViewedTips aViewedTips;
-
+	private final ScrollPane aTipDisplay;
+	private final CheckBox aShowTipsOnStartupCheckBox;
 
 	/**
 	 * Constructor for a TipDialog.
@@ -75,12 +72,14 @@ public class TipDialog
 	{
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
+		aShowTipsOnStartupCheckBox = new CheckBox("Show Tips on Sartup");
+		aShowTipsOnStartupCheckBox.setSelected(true);
 		aOwner = pOwner;
 	}
 	
 	/**
-	 * Shows the dialog and blocks the remainder of the UI
-	 * until it is closed.
+	 * Shows the tip dialog and blocks the remainder of the UI
+	 * until the tip dialog is closed.
 	 */
 	public void show() 
 	{
@@ -89,13 +88,8 @@ public class TipDialog
 		aStage.showAndWait();
 	}
 	
-	/**
-	 * @pre pOwner != null
-	 */
 	private void prepareStage(Stage pOwner) 
 	{
-		assert pOwner != null;
-		
 		aStage.setResizable(true);
 		aStage.setMinWidth(WINDOW_MIN_WIDTH);
 		aStage.setWidth(WINDOW_PREF_WIDTH);
@@ -112,26 +106,34 @@ public class TipDialog
 	private Scene createScene() 
 	{
 		BorderPane layout = new BorderPane();
-		
-		HBox tipMenu = createTipMenu();
-		
-		aCurrentTip = TipLoader.loadTip(getUserPrefNextTipId());
-		setUserPrefNextTip(aViewedTips.getNewNextTipOfTheDayId());
-		VBox tipVBox = getTipAsVBox(aCurrentTip);
+
+		//Removing the focus highlight on the ScrollPane
+		aTipDisplay.setStyle("-fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;" + 
+							 "-fx-background-insets: 0, 1, 2;");
 		
 		aTipDisplay.setFitToWidth(true);
-		aTipDisplay.setContent(tipVBox);
-		
 		layout.setCenter(aTipDisplay);
+		
+		HBox tipMenu = createTipMenu();
 		layout.setBottom(tipMenu);
+		
+		Tip tip = TipLoader.loadTip(getUserPrefNextTipId());
+		setUserPrefNextTip(aViewedTips.getNewNextTipOfTheDayId());
+		setupNewTip(tip);
 		
 		aStage.requestFocus();
 		aStage.addEventHandler(KeyEvent.KEY_PRESSED, pEvent -> 
 		{
 			if (pEvent.getCode() == KeyCode.ESCAPE) 
 			{
+				TipDialog.this.updateShowTipsOnStartupPref();
 				aStage.close();
 			}
+		});
+		aStage.setOnCloseRequest(pEvent -> 
+		{
+				TipDialog.this.updateShowTipsOnStartupPref();
+				aStage.close();
 		});
 		
 		Scene tipDialogScene = new Scene(layout, WINDOW_PREF_WIDTH, WINDOW_PREF_HEIGHT);
@@ -142,14 +144,11 @@ public class TipDialog
 	private HBox createTipMenu()
 	{
 		HBox tipMenu = createEmptyTipMenu();
-		
-		CheckBox showOnStartupCheckBox = new CheckBox("Show Tips on Sartup");
-		showOnStartupCheckBox.setSelected(true);
-		HBox tipMenuButtons = createTipMenuButtons(showOnStartupCheckBox);
+		HBox tipMenuButtons = createTipMenuButtons();
 		HBox emptyBox = new HBox();
 		HBox.setHgrow(emptyBox, Priority.ALWAYS);
 		
-		tipMenu.getChildren().addAll(showOnStartupCheckBox, emptyBox, tipMenuButtons);
+		tipMenu.getChildren().addAll(aShowTipsOnStartupCheckBox, emptyBox, tipMenuButtons);
 		
 		return tipMenu;
 	}
@@ -166,7 +165,7 @@ public class TipDialog
 		return tipMenu;
 	}
 	
-	private HBox createTipMenuButtons(CheckBox pShowOnStartupCheckBox)
+	private HBox createTipMenuButtons()
 	{
 		Button nextTipButton = new Button("Next Tip");
 		nextTipButton.getStyleClass().add(NEXT_BUTTON_STYLE);
@@ -194,11 +193,7 @@ public class TipDialog
 	
 		closeButton.setOnAction(e -> 
 		{
-			boolean shouldShowOnStartup = pShowOnStartupCheckBox.isSelected();
-			if(!shouldShowOnStartup)
-			{
-				UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, false);
-			}
+			TipDialog.this.updateShowTipsOnStartupPref();
 			aStage.close();
 		});
 		
@@ -220,6 +215,7 @@ public class TipDialog
 		
 		this.aCurrentTip = pTip;
 		VBox tipVBox = getTipAsVBox(aCurrentTip);
+		tipVBox.setFillWidth(true);
 		aTipDisplay.setContent(tipVBox);
 	}
 	
@@ -233,7 +229,6 @@ public class TipDialog
 		VBox tipVBox = new VBox();
 		tipVBox.setSpacing(TIP_ELEMENTS_SPACING);
 		tipVBox.setPadding(new Insets(PADDING));
-		tipVBox.setFillWidth(true);
 		
 		List<TipElement> tipElements = pTip.getElements();
 		
@@ -268,6 +263,13 @@ public class TipDialog
 	}
 	
 	/**
+	 * Returns a Node that presents the content of a TipElement. Remark that the preconditions
+	 * will change if new media are used in TipElements
+	 * 
+	 * @param pTipElement the TipElement to get as a Node
+	 * @param pParent the VBox that will eventually contain the tipElement. This parameter is
+	 * 		  necessary to ensure that dimensions and properties of the TipElement Nodes such 
+	 * 		  as text wrapping width are appropriate.
 	 * @return node containing the tip element content
 	 * @pre pTipElement != null;
 	 * @pre pTipElement.getMedia().equals(Media.TEXT) || pTipElement.getMedia().equals(Media.IMAGE)
@@ -289,7 +291,7 @@ public class TipDialog
 	}
 	
 	/**
-	 * @return node containing the text
+	 * @return Text Node presenting the content of the text TipElement
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.TEXT);
 	 */
@@ -300,19 +302,19 @@ public class TipDialog
 		
 		String text = pTipElement.getContent();
 		Text textNode = new Text(text);
-		textNode.wrappingWidthProperty().bind(aTipDisplay.widthProperty().subtract(4 * PADDING));
+		textNode.wrappingWidthProperty().bind(aTipDisplay.widthProperty().subtract(2 * PADDING + 4 * DEFAULT_NODE_SPACING));
 		// two times the padding because of the VBox padding, and a bit extra to make up for
 		// other default spacing added between nodes
 		
-		Font titleFont = new Font(TEXT_FONT_SIZE);
-		textNode.setFont(titleFont);
+		Font textFont = new Font(TEXT_FONT_SIZE);
+		textNode.setFont(textFont);
 		textNode.setLineSpacing(TEXT_LINE_SPACING);
 		
 		return textNode;
 	}
 	
 	/**
-	 * @return node containing the image
+	 * @return ImageView of the Image whose name is stored in the image TipElement
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
@@ -326,10 +328,12 @@ public class TipDialog
 		InputStream inputStream = TipDialog.class.getResourceAsStream(tipImagesDir + "/" + imageName);
 		Image image = new Image(inputStream);
 		ImageView imageNode = new ImageView(image);
-		if(imageNode.getFitWidth() > aTipDisplay.getWidth()- 2 * PADDING)
+		if(imageNode.getImage().getWidth() > aStage.getWidth() - 2 * PADDING - 4 * DEFAULT_NODE_SPACING)
 		{
 			imageNode.setPreserveRatio(true);
-			imageNode.setFitWidth(aTipDisplay.getWidth() - 2 * PADDING);
+			imageNode.setFitWidth(aStage.getWidth() - 2 * PADDING - 4 * DEFAULT_NODE_SPACING);
+			// two times the padding because of the VBox padding, and a bit extra to make up for
+			// other default spacing added between nodes
 		}
 		return imageNode;
 	}
@@ -342,5 +346,14 @@ public class TipDialog
 	private static void setUserPrefNextTip(int pId)
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.nextTipId, pId);
+	}
+	
+	private void updateShowTipsOnStartupPref()
+	{
+		boolean shouldShowTipsOnStartup = aShowTipsOnStartupCheckBox.isSelected();
+		if(!shouldShowTipsOnStartup)
+		{
+			UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, false);
+		}
 	}
 }	
