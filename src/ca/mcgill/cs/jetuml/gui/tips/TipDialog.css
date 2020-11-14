@@ -1,0 +1,65 @@
+.next-tip-button
+{
+  	-fx-body-color: cornflowerblue;
+  	-fx-inner-border: cornflowerblue;
+	-fx-background-color: 
+       -fx-shadow-highlight-color, 
+       -fx-outer-border, 
+       -fx-inner-border, 
+       -fx-body-color;
+    -fx-text-fill: white;
+  	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+  	-fx-background-radius: 4px, 4px, 4px, 4px;
+  	-fx-font-weight: bold;
+  	-fx-border-color: transparent;
+    -fx-border-width: 2; 
+    -fx-border-radius: 4;
+}
+
+.next-tip-button:focused
+{
+  	-fx-body-color: cornflowerblue;
+  	-fx-inner-border: cornflowerblue;
+	-fx-background-color: 
+       -fx-shadow-highlight-color, 
+       -fx-outer-border, 
+       -fx-inner-border, 
+       -fx-body-color;
+    -fx-text-fill: white;
+  	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+  	-fx-background-radius: 4px, 4px, 4px, 4px;
+  	-fx-font-weight: bold;
+	-fx-border-color: lightsteelblue;
+    -fx-border-width: 2; 
+    -fx-border-radius: 4;
+}
+
+.tip-menu-button
+{
+	-fx-body-color: linear-gradient(snow, whitesmoke); 
+	-fx-background-color: 
+       -fx-shadow-highlight-color, 
+       -fx-outer-border, 
+       -fx-inner-border, 
+       -fx-body-color;
+  	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+  	-fx-background-radius: 4px, 4px, 4px, 4px;
+  	-fx-border-color: transparent;
+    -fx-border-width: 2; 
+    -fx-border-radius: 4;
+}
+
+.tip-menu-button:focused
+{
+	-fx-body-color: linear-gradient(snow, whitesmoke); 
+	-fx-background-color: 
+       -fx-shadow-highlight-color, 
+       -fx-outer-border, 
+       -fx-inner-border, 
+       -fx-body-color;
+  	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+  	-fx-background-radius: 4px, 4px, 4px, 4px;
+  	-fx-border-color: lightsteelblue;
+    -fx-border-width: 2; 
+    -fx-border-radius: 4;
+}
