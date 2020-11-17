@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -39,7 +38,7 @@ public class TestTipJsons {
 	}
 	
 	@Test
-	public void testTipJsons_testCorrectNumberOfTips() throws IOException, URISyntaxException
+	public void testTipJsons_testCorrectNumberOfTips() throws URISyntaxException
 	{
 		File dir = getTipJsonsDirectoryAsFile();
         int numTipFiles = dir.listFiles().length;
@@ -47,7 +46,7 @@ public class TestTipJsons {
 	}
 	
 	@Test
-	public void testTipJsons_atLeastTwoTips() throws IOException, URISyntaxException
+	public void testTipJsons_atLeastTwoTips() throws URISyntaxException
 	{
 		File dir = getTipJsonsDirectoryAsFile();
         int numTipFiles = dir.listFiles().length;

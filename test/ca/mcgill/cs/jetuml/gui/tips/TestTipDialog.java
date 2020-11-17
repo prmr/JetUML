@@ -76,7 +76,8 @@ public class TestTipDialog
 			// image name, but the other media (Text) don't have such requirements, so we can
 			// use tip1.png as the content for all tips.
 			
-			Node node = getTipElementAsNode(aTipDialog, tipElement, parent);
+			// This is a crash test for this method, the return value does not matter
+			getTipElementAsNode(aTipDialog, tipElement, parent);
 		}
 	}
 	
