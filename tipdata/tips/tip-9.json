@@ -1,0 +1,7 @@
+{ 
+  "title": "Popup Toolbar",
+  "content": [ 
+    { "text": "The toolbar is also available as a popup menu. Right-click anywhere to show it." },
+  	{ "image": "tip9.png"}
+  ]
+}
