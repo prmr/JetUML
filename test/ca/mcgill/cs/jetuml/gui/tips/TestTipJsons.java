@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import ca.mcgill.cs.jetuml.gui.tips.Media;
-import ca.mcgill.cs.jetuml.gui.tips.TipFieldName;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
