@@ -48,6 +48,7 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.gui.tips.TipDialog;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.persistence.VersionedDiagram;
@@ -243,6 +244,7 @@ public class EditorFrame extends BorderPane
 	{
 		MenuFactory factory = new MenuFactory(RESOURCES);
 		pMenuBar.getMenus().add(factory.createMenu("help", false,
+				factory.createMenuItem("help.tips", false, pEvent -> new TipDialog(aMainStage).show()),
 				factory.createMenuItem("help.about", false, pEvent -> new AboutDialog(aMainStage).show())));
 	}
 	

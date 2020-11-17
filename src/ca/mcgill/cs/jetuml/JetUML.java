@@ -77,10 +77,9 @@ public final class JetUML extends Application
 		});
 		pStage.show();
 		
-		boolean shouldShowTips = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
-		if(shouldShowTips)
+		if(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips))
 		{
-			(new TipDialog(pStage)).show();
+			new TipDialog(pStage).show();
 		}
 	}
 	

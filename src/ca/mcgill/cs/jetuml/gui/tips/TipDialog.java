@@ -75,7 +75,9 @@ public class TipDialog
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
 		aShowTipsOnStartupCheckBox = new CheckBox("Show Tips on Sartup");
-		aShowTipsOnStartupCheckBox.setSelected(true);
+		aShowTipsOnStartupCheckBox.setSelected(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips));
+		aShowTipsOnStartupCheckBox.setOnAction(e -> UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, 
+				aShowTipsOnStartupCheckBox.isSelected()));
 		aOwner = pOwner;
 	}
 	
@@ -128,13 +130,11 @@ public class TipDialog
 		{
 			if (pEvent.getCode() == KeyCode.ESCAPE) 
 			{
-				TipDialog.this.updateShowTipsOnStartupPref();
 				aStage.close();
 			}
 		});
 		aStage.setOnCloseRequest(pEvent -> 
 		{
-				TipDialog.this.updateShowTipsOnStartupPref();
 				aStage.close();
 		});
 		
@@ -195,7 +195,6 @@ public class TipDialog
 	
 		closeButton.setOnAction(e -> 
 		{
-			TipDialog.this.updateShowTipsOnStartupPref();
 			aStage.close();
 		});
 		
@@ -356,14 +355,5 @@ public class TipDialog
 	private static void setUserPrefNextTip(int pId)
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.nextTipId, pId);
-	}
-	
-	private void updateShowTipsOnStartupPref()
-	{
-		boolean shouldShowTipsOnStartup = aShowTipsOnStartupCheckBox.isSelected();
-		if(!shouldShowTipsOnStartup)
-		{
-			UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, false);
-		}
 	}
 }	
