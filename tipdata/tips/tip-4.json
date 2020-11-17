@@ -1,0 +1,7 @@
+{ 
+  "title": "Selecting Diagram Elements",
+  "content": [ 
+    { "text": "To select diagram elements individually, enable the Selection Tool and click on the element to select or unselect. To add or remove individual elements to/from the selection, hold down the Ctrl key while clicking on the element." },
+  	{ "image": "tip4.png"}
+  ]
+}

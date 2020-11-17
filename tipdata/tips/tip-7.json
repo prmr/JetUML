@@ -1,0 +1,7 @@
+{ 
+  "title": "Edge Validation",
+  "content": [ 
+    { "text": "When attempting to create a new edge, the operation will only succeed if the edge is a valid connection between two elements according to the syntax of the diagram." },
+  	{ "image": "tip3.png"}
+  ]
+}

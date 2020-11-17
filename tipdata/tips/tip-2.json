@@ -1,7 +1,7 @@
 { 
-  "title": "Copying Diagram to Clipboard",
+  "title": "Creating Nodes",
   "content": [ 
-    { "image": "tip2.PNG"},
-    { "text": "Using the \"copy to clipboard\" tool is a convenient way to screen grab the current diagram with no grid."}
+    { "text": "Selecting a node type in the toolbar enables the corresponding \"Node creation tool\". With a node creation tool enabled, click on an empty space in the diagram to create a new node of that type. Rolling over the tool in the toolbar shows a tooltip with the name of the node type."},
+    { "image": "tip2.png"}
   ]
 }

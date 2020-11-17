@@ -1,0 +1,7 @@
+{ 
+  "title": "Selecting With the Lasso Tool",
+  "content": [ 
+    { "text": "To select all elements in a region of the diagram, enable the Selection Tool, then click and drag from an empty space in the diagram. This will enable the Lasso Tool. " },
+  	{ "image": "tip5.png"}
+  ]
+}
