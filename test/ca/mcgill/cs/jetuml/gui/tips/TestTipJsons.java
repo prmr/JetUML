@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -58,13 +59,19 @@ public class TestTipJsons {
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
-			InputStream inputStream = TestTipJsons.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, id));
-			assertTrue(inputStream != null);
+			try(InputStream inputStream = TestTipJsons.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, id)))
+			{
+				assertTrue(inputStream != null);
+			}
+			catch( IOException e )
+			{
+				fail();
+			}
 		}
 	}
 	
 	@Test
-	public void testTipJsons_testTipsCanBeOpenedAsJsonObjects()
+	public void testTipJsons_testTipsCanBeOpenedAsJsonObjects() throws IOException
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
@@ -74,7 +81,7 @@ public class TestTipJsons {
 	}
 	
 	@Test
-	public void testTipJsons_testTipsHaveTwoFieldsOnly()
+	public void testTipJsons_testTipsHaveTwoFieldsOnly() throws IOException
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
@@ -84,7 +91,7 @@ public class TestTipJsons {
 	}
 	
 	@Test
-	public void testTipJsons_testTipTitleIsWellFormatted()
+	public void testTipJsons_testTipTitleIsWellFormatted() throws IOException
 	{
 		assertTrue(tipsAllHaveField(TipFieldName.TITLE));
 		
@@ -97,7 +104,7 @@ public class TestTipJsons {
 	}
 	
 	@Test 
-	public void testTipJsons_testTipContentsAreWellFormatted()
+	public void testTipJsons_testTipContentsAreWellFormatted() throws IOException
 	{
 		assertTrue(tipsAllHaveField(TipFieldName.CONTENT));
 		
@@ -128,7 +135,7 @@ public class TestTipJsons {
 		}
 	}
 	
-	private static boolean tipsAllHaveField(TipFieldName pTipFieldName)
+	private static boolean tipsAllHaveField(TipFieldName pTipFieldName) throws IOException
 	{
 		for(int id = 1; id <= NUM_TIPS; id++)
 		{
@@ -141,13 +148,14 @@ public class TestTipJsons {
 		return true;
 	}
 	
-	private static JSONObject loadTipAsJsonObject(int pId)
+	private static JSONObject loadTipAsJsonObject(int pId) throws IOException
 	{
-		String tipFilePath = String.format(TIP_FILE_PATH_FORMAT, pId);
-		InputStream inputStream = TipLoader.class.getResourceAsStream(tipFilePath);
-		JSONTokener jTok = new JSONTokener(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-		JSONObject jObj = new JSONObject(jTok);
-		return jObj;
+		try( InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
+		{
+			JSONTokener jTok = new JSONTokener(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+			JSONObject jObj = new JSONObject(jTok);
+			return jObj;
+		}
 	}
 	
 	private static String getTipFilePathFormatString() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
