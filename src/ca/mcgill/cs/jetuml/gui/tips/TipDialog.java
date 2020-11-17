@@ -5,6 +5,8 @@ import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -325,17 +327,25 @@ public class TipDialog
 		
 		String imageName = pTipElement.getContent();
 		String tipImagesDir = RESOURCES.getString("tips.images.directory");
-		InputStream inputStream = TipDialog.class.getResourceAsStream(tipImagesDir + "/" + imageName);
-		Image image = new Image(inputStream);
-		ImageView imageNode = new ImageView(image);
-		if(imageNode.getImage().getWidth() > WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING)
+		try(InputStream inputStream = TipDialog.class.getResourceAsStream(tipImagesDir + "/" + imageName))
 		{
-			imageNode.setPreserveRatio(true);
-			imageNode.setFitWidth(WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING);
-			// two times the padding because of the VBox padding, and a bit extra to make up for
-			// other default spacing added between nodes
+			Image image = new Image(inputStream);
+			ImageView imageNode = new ImageView(image);
+			if(imageNode.getImage().getWidth() > WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING)
+			{
+				imageNode.setPreserveRatio(true);
+				imageNode.setFitWidth(WINDOW_PREF_WIDTH - 2 * PADDING - 4 * DEFAULT_NODE_SPACING);
+				// two times the padding because of the VBox padding, and a bit extra to make up for
+				// other default spacing added between nodes
+			}
+			return imageNode;
 		}
-		return imageNode;
+		catch( IOException e )
+		{
+			// The unit tests check that all tip images can be loaded properly.
+			assert false;
+			return null;
+		}
 	}
 	
 	private static int getUserPrefNextTipId()

@@ -1,5 +1,8 @@
 package ca.mcgill.cs.jetuml.gui.tips;
 
+import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -9,8 +12,6 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 /**
  * Class that statically loads the tips.
@@ -34,13 +35,22 @@ final class TipLoader
 	{
 		assert pId >= 1 && pId <= NUM_TIPS;
 		
-		String tipFileName = String.format(TIP_FILE_PATH_FORMAT, pId);
-		InputStream tipsInputStream = TipLoader.class.getResourceAsStream(tipFileName); //Not null if tests pass
-		InputStreamReader tipsReader = new InputStreamReader(tipsInputStream, StandardCharsets.UTF_8);
-		JSONTokener jsonTokener = new JSONTokener(tipsReader);
-		JSONObject jsonObject = new JSONObject(jsonTokener); // Won't throw JSONException if tests pass
-		Tip tip = new Tip(pId, jsonObject);
-		return tip;
+		// Running the unit tests ensures that all resources can be correctly loaded
+		// in the tool. 
+		try(InputStream tipsInputStream = TipLoader.class.getResourceAsStream(
+				String.format(TIP_FILE_PATH_FORMAT, pId)))
+		{
+			InputStreamReader tipsReader = new InputStreamReader(tipsInputStream, StandardCharsets.UTF_8);
+			JSONTokener jsonTokener = new JSONTokener(tipsReader);
+			JSONObject jsonObject = new JSONObject(jsonTokener); 
+			Tip tip = new Tip(pId, jsonObject);
+			return tip;
+		}
+		catch( IOException e )
+		{
+			assert false;
+			return null;
+		}
 	}
 	
 	/**
