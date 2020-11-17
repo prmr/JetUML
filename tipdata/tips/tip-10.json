@@ -1,0 +1,7 @@
+{ 
+  "title": "Adding Self-Edges",
+  "content": [ 
+    { "text": "Certain types of edges can be added from an element to itself. To create a self-edge, select a valid edge type and drag the rubberband within a compatible node." },
+  	{ "image": "tip10.png"}
+  ]
+}
