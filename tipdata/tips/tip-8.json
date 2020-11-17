@@ -1,0 +1,7 @@
+{ 
+  "title": "Tool Hints",
+  "content": [ 
+    { "text": "It is possible to view the name of each tool in the tool bar in full next to its icon. To toggle this feature, use the menu \"View | Show Tool Hint\"" },
+  	{ "image": "tip8.png"}
+  ]
+}
