@@ -1,0 +1,7 @@
+{ 
+  "title": "Selecting Everything",
+  "content": [ 
+    { "text": "Use the \"Edit | Select All\" command (Ctrl-A) to select all elements in a diagram, for example to move the entire diagram as one." },
+  	{ "image": "tip12.png"}
+  ]
+}
