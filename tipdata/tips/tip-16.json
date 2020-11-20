@@ -1,0 +1,7 @@
+{ 
+  "title": "Edge Labels",
+  "content": [ 
+    { "text": "Certain types of edges can have associated labels. Edit the edge properties by double-clicking the edge or using the Ctrl-Enter shortcut." },
+  	{ "image": "tip16.png"}
+  ]
+}
