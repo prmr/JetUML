@@ -12,6 +12,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javafx.event.ActionEvent;
+import javafx.scene.AccessibleAction;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -251,37 +254,53 @@ public class TestTipDialog
 	}
 	
 	@Test
-	public void testUpdateShowTipsOnStartupTurnsUserPrefFalse() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public void testCheckboxInitiallySelectedProperly() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
 		Field checkBoxField = TipDialog.class.getDeclaredField("aShowTipsOnStartupCheckBox");
 		checkBoxField.setAccessible(true);
 		CheckBox checkBox = (CheckBox)(checkBoxField.get(aTipDialog));
 		
-		boolean initialUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		boolean userPrefCheckBoxSelected = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		
+		boolean checkBoxIsSelected = checkBox.isSelected();
+		
+		assertEquals(checkBoxIsSelected, userPrefCheckBoxSelected);
+	}
+	
+	@Test
+	public void testUncheckingCheckboxTurnsUserPrefFalse() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	{
+		Field checkBoxField = TipDialog.class.getDeclaredField("aShowTipsOnStartupCheckBox");
+		checkBoxField.setAccessible(true);
+		CheckBox checkBox = (CheckBox)(checkBoxField.get(aTipDialog));
+		
+		boolean checkBoxInitialValue = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, true);
 		
 		checkBox.setSelected(false);
-		updateShowTipsOnStartupPref(aTipDialog);
+		checkBox.getOnAction().handle(new ActionEvent());;
 		
 		boolean newUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
-		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, initialUserPref);		
+		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, checkBoxInitialValue);
 		
 		assertFalse(newUserPref);
 	}
 	
 	@Test
-	public void testUpdateShowTipsOnStartupKeepsUserPrefTrue() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
+	public void testCheckingCheckboxTurnsUserPrefTrue() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
 	{
 		Field checkBoxField = TipDialog.class.getDeclaredField("aShowTipsOnStartupCheckBox");
 		checkBoxField.setAccessible(true);
 		CheckBox checkBox = (CheckBox)(checkBoxField.get(aTipDialog));
 		
-		boolean initialUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		boolean checkBoxInitialValue = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
+		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, false);
 		
 		checkBox.setSelected(true);
-		updateShowTipsOnStartupPref(aTipDialog);
+		checkBox.getOnAction().handle(new ActionEvent());;
 		
 		boolean newUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
-		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, initialUserPref);		
+		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, checkBoxInitialValue);
 		
 		assertTrue(newUserPref);
 	}
@@ -417,20 +436,6 @@ public class TestTipDialog
 		{
 			fail();
 			return null;
-		}
-	}
-	
-	private static void updateShowTipsOnStartupPref(TipDialog pImplicitTipDialog)
-	{
-		try
-		{
-			Method method = TipDialog.class.getDeclaredMethod("updateShowTipsOnStartupPref");
-			method.setAccessible(true);
-			method.invoke(pImplicitTipDialog);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
 		}
 	}
 }
