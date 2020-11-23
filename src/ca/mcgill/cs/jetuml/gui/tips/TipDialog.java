@@ -41,6 +41,10 @@ import javafx.scene.Node;
  */
 public class TipDialog 
 {
+	private static final String CLOSE_BUTTON_TEXT = RESOURCES.getString("tips.button.close.text");
+	private static final String PREVIOUS_TIP_BUTTON_TEXT = RESOURCES.getString("tips.button.previous.text");
+	private static final String NEXT_TIP_BUTTON_TEXT = RESOURCES.getString("tips.button.next.text");
+	private static final String SHOW_TIPS_CHECKBOX_TEXT = RESOURCES.getString("tips.checkbox.text");
 	private static final int WINDOW_PREF_WIDTH = 650;
 	private static final int WINDOW_PREF_HEIGHT = 450;
 	private static final int WINDOW_MIN_WIDTH = 650;
@@ -53,7 +57,7 @@ public class TipDialog
 	private static final double TEXT_FONT_SIZE = 13.5;
 	private static final double TEXT_LINE_SPACING = 2;
 	private static final double DEFAULT_NODE_SPACING = 10;
-	private static final String NEXT_BUTTON_STYLE = "next-tip-button";
+	private static final String NEXT_TIP_BUTTON_STYLE = "next-tip-button";
 	private static final String BUTTON_STYLE = "tip-menu-button";
 	private static final String WINDOW_TITLE = "Tip of the Day";
 	
@@ -74,7 +78,7 @@ public class TipDialog
 	{
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
-		aShowTipsOnStartupCheckBox = new CheckBox("Show Tips on Sartup");
+		aShowTipsOnStartupCheckBox = new CheckBox(SHOW_TIPS_CHECKBOX_TEXT);
 		aShowTipsOnStartupCheckBox.setSelected(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips));
 		aShowTipsOnStartupCheckBox.setOnAction(e -> UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, 
 				aShowTipsOnStartupCheckBox.isSelected()));
@@ -105,6 +109,7 @@ public class TipDialog
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		aStage.setScene(createScene());
 		aStage.getScene().getStylesheets().add(getClass().getResource("TipDialog.css").toExternalForm());
+		aTipDisplay.requestFocus();
 	}
 	
 	private Scene createScene() 
@@ -169,13 +174,13 @@ public class TipDialog
 	
 	private HBox createTipMenuButtons()
 	{
-		Button nextTipButton = new Button("Next Tip");
-		nextTipButton.getStyleClass().add(NEXT_BUTTON_STYLE);
+		Button nextTipButton = new Button(NEXT_TIP_BUTTON_TEXT);
+		nextTipButton.getStyleClass().add(NEXT_TIP_BUTTON_STYLE);
 		
-		Button previousTipButton = new Button("Previous Tip");
+		Button previousTipButton = new Button(PREVIOUS_TIP_BUTTON_TEXT);
 		previousTipButton.getStyleClass().add(BUTTON_STYLE);
 		
-		Button closeButton = new Button("Close");
+		Button closeButton = new Button(CLOSE_BUTTON_TEXT);
 		closeButton.getStyleClass().add(BUTTON_STYLE);
 		
 		nextTipButton.setOnAction(e -> 
