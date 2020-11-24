@@ -1,0 +1,7 @@
+{ 
+  "title": "Adding Fields to Objects",
+  "content": [ 
+    { "text": "To add a field to an object, select the Field creation tool from the toolbar and click within the desired object node. Accessing the fields' properties (Ctrl-Enter) allows to change the field's name and value." },
+  	{ "image": "tip19.png"}
+  ]
+}

@@ -1,0 +1,7 @@
+{ 
+  "title": "Adding Object References",
+  "content": [ 
+    { "text": "To add a reference to an object, select the Reference creation tool from the toolbar, then drag a rubberband from the \"value\" part of a field to the destination object node." },
+  	{ "image": "tip20.png"}
+  ]
+}
