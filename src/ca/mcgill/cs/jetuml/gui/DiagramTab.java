@@ -22,6 +22,8 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import java.io.File;
 import java.util.Optional;
@@ -45,7 +47,10 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 {
 	private static final double DEFAULT_SCALE = 1.0;
 	private static final double SCALE_MULTIPLIER = 1.25;
-	private final DoubleProperty aScaleProperty;
+	private static final double ZOOM_MIN = DEFAULT_SCALE / (SCALE_MULTIPLIER * SCALE_MULTIPLIER);
+	private static final double ZOOM_MAX = DEFAULT_SCALE * SCALE_MULTIPLIER * SCALE_MULTIPLIER;
+	
+	private final DoubleProperty aZoom;
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -79,9 +84,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 				+ "-fx-border-width: 1; -fx-border-style: solid;";
 		pane.setStyle(cssDefault);
 		
-		aScaleProperty = new SimpleDoubleProperty(DEFAULT_SCALE);
-		pane.scaleXProperty().bind(aScaleProperty);
-		pane.scaleYProperty().bind(aScaleProperty);
+		aZoom = new SimpleDoubleProperty(DEFAULT_SCALE);
+		pane.scaleXProperty().bind(aZoom);
+		pane.scaleYProperty().bind(aZoom);
 		
 		// First, wrap the StackPane in a Group to allow the scrolling to be based around the visual bounds
 		// of the canvas rather than its layout bounds.
@@ -200,7 +205,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void zoomIn()
 	{
-		aScaleProperty.set(aScaleProperty.get() * SCALE_MULTIPLIER);
+		aZoom.set(min(aZoom.get() * SCALE_MULTIPLIER, ZOOM_MAX));
 	}
 	
 	/**
@@ -208,7 +213,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void zoomOut()
 	{
-		aScaleProperty.set(aScaleProperty.get() / SCALE_MULTIPLIER);
+		aZoom.set(max(aZoom.get() / SCALE_MULTIPLIER, ZOOM_MIN));
 	}
 	
 	/**
@@ -216,7 +221,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void resetZoom()
 	{
-		aScaleProperty.set(DEFAULT_SCALE);
+		aZoom.set(DEFAULT_SCALE);
 	}
 	
 	/**
