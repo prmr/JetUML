@@ -1,0 +1,7 @@
+{ 
+  "title": "Cutting, Copying, and Pasting",
+  "content": [ 
+    { "text": "You can cut or copy one or more diagram elements and paste them either within the same diagram or to a different diagram. It is only possible to paste a selection to another diagram if all the elements in the selection are compatible with the destination diagram type." },
+  	{ "image": "tip17.png"}
+  ]
+}
