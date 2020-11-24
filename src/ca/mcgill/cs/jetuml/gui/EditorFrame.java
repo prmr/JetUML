@@ -238,9 +238,9 @@ public class EditorFrame extends BorderPane
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
 				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show()),
-				factory.createMenuItem("view.zoom_in", false, event -> getSelectedDiagramTab().zoomIn()),
-				factory.createMenuItem("view.zoom_out", false, event -> getSelectedDiagramTab().zoomOut()),
-				factory.createMenuItem("view.reset_zoom", false, event -> getSelectedDiagramTab().resetZoom())));
+				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
+				factory.createMenuItem("view.zoom_out", true, event -> getSelectedDiagramTab().zoomOut()),
+				factory.createMenuItem("view.reset_zoom", true, event -> getSelectedDiagramTab().resetZoom())));
 	}
 	
 	private void createHelpMenu(MenuBar pMenuBar) 
