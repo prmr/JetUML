@@ -277,7 +277,7 @@ public class TestTipDialog
 		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, true);
 		
 		checkBox.setSelected(false);
-		checkBox.getOnAction().handle(new ActionEvent());;
+		checkBox.getOnAction().handle(new ActionEvent());
 		
 		boolean newUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
 		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, checkBoxInitialValue);
@@ -296,7 +296,7 @@ public class TestTipDialog
 		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, false);
 		
 		checkBox.setSelected(true);
-		checkBox.getOnAction().handle(new ActionEvent());;
+		checkBox.getOnAction().handle(new ActionEvent());
 		
 		boolean newUserPref = UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips);
 		UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, checkBoxInitialValue);
