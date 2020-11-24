@@ -29,7 +29,10 @@ import java.util.Optional;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.geom.Point;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -40,6 +43,9 @@ import javafx.scene.layout.StackPane;
  */
 public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEventHandler
 {
+	private static final double DEFAULT_SCALE = 1.0;
+	private static final double SCALE_MULTIPLIER = 1.25;
+	private final DoubleProperty aScaleProperty;
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
 	private final DiagramCanvasController aDiagramCanvasController;
@@ -73,9 +79,15 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 				+ "-fx-border-width: 1; -fx-border-style: solid;";
 		pane.setStyle(cssDefault);
 		
-		// We wrap pane within an additional, resizable StackPane that can grow to fit the parent
+		aScaleProperty = new SimpleDoubleProperty(DEFAULT_SCALE);
+		pane.scaleXProperty().bind(aScaleProperty);
+		pane.scaleYProperty().bind(aScaleProperty);
+		
+		// First, wrap the StackPane in a Group to allow the scrolling to be based around the visual bounds
+		// of the canvas rather than its layout bounds.
+		// Then we wrap the Group within an additional, resizable StackPane that can grow to fit the parent
 		// ScrollPane and thus center the decorated canvas.
-		ScrollPane scroll = new ScrollPane(new StackPane(pane));
+		ScrollPane scroll = new ScrollPane(new StackPane(new Group(pane)));
 		
 		// The call below is necessary to removes the focus highlight around the Canvas
 		// See issue #250
@@ -181,6 +193,30 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	public void selectAll()
 	{
 		aDiagramCanvasController.selectAll();
+	}
+	
+	/**
+	 * Zooms in the diagram.
+	 */
+	public void zoomIn()
+	{
+		aScaleProperty.set(aScaleProperty.get() * SCALE_MULTIPLIER);
+	}
+	
+	/**
+	 * Zooms out the diagram.
+	 */
+	public void zoomOut()
+	{
+		aScaleProperty.set(aScaleProperty.get() / SCALE_MULTIPLIER);
+	}
+	
+	/**
+	 * Resets the diagram's zoom to its default value.
+	 */
+	public void resetZoom()
+	{
+		aScaleProperty.set(DEFAULT_SCALE);
 	}
 	
 	/**
