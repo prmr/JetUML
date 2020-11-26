@@ -1,0 +1,9 @@
+{ 
+  "title": "Creating Call Edges",
+  "content": [ 
+    { "text": "To create the initial call edge in a sequence diagram, select the call edge creation tool and drag the rubberband from the lifeline of the caller to the lifeline of the callee." },
+    { "image": "tip23a.png"},
+    { "text": "This will create the activation box for both the caller and the callee. To create additional call edges, drag from an activation box to a lifeline." },
+    { "image": "tip23b.png"},
+  ]
+}
