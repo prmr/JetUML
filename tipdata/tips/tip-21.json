@@ -1,0 +1,7 @@
+{ 
+  "title": "Transitions in State Diagrams",
+  "content": [ 
+    { "text": "State diagrams support up to two transitions between nodes in either direction, as well as two self-transitions." },
+  	{ "image": "tip21.png"}
+  ]
+}
