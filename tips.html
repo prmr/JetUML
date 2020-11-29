@@ -12,6 +12,7 @@
       var lines = data.split("\n");
       for(var i = 0; i<lines.length; i++)
       {
+      	var line = lines[i];
       	if (line.includes("tips.quantity="))
       	{
       		numTips = line.split("tips.quantity=")[1];
