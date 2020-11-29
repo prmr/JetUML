@@ -71,13 +71,14 @@
               click: function() //function snippet taken from 
                 { //https://www.w3schools.com/howto/howto_js_collapsible.asp
                   this.classList.toggle("active");
-                  if (tipContent.style.display === "block") 
+                  var content = this.nextElementSibling;
+                  if (content.style.display === "block") 
                   {
-                    tipContent.style.display = "none";
+                    content.style.display = "none";
                   } 
                   else 
                   {
-                    tipContent.style.display = "block";
+                    content.style.display = "block";
                   }
                 }
             });
