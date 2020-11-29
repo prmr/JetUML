@@ -102,7 +102,7 @@
 
     // looping over the tip contents and adding the tip elements to tipContent
     var content = data["content"];
-    for (var k = 0; k<content.lenght; k++)
+    for (var k = 0; k<content.length; k++)
     {
       var tipElement = content[k];
       for(var type in tipElement)
