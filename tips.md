@@ -52,13 +52,6 @@
 
       for(var j = 1; j <= numTips; j++)
       {
-
-      	var tipContent = $('<div/>', 
-          {
-            class: "content",
-          }
-        );
-
         var tipFileName = "tip-" + j + ".json";
         var tipPath = "tipdata/tips/" + tipFileName;
 
@@ -77,28 +70,36 @@
 
   function parseTip(data)
   {
+  	var tipContent = $('<div/>', 
+      {
+        class: "content",
+      }
+    );
+
     var collapsibleTip = $('<button/>', 
       {
         text: data["title"],
         id: 'button_j',
         class: 'collapsible',
-        click: function() //function snippet taken from 
-          { //https://www.w3schools.com/howto/howto_js_collapsible.asp
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") 
-            {
-              content.style.display = "none";
-            } 
-            else 
-            {
-              content.style.display = "block";
-            }
-          }
       }
     );  
     $("#body").append(collapsibleTip);
     $("#body").append(tipContent);
+
+    collapsibleTip.addEventListener("click", function() //function snippet taken from 
+      { //https://www.w3schools.com/howto/howto_js_collapsible.asp
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") 
+        {
+          content.style.display = "none";
+        } 
+        else 
+        {
+          content.style.display = "block";
+        }
+      }
+    );
 
     // looping over the tip contents and adding the tip elements to tipContent
     var content = data["content"];
