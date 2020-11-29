@@ -6,14 +6,6 @@
 
 <script>
 
-  
-
-  $.ajaxSetup(
-    {
-      async: false
-    }
-  );
-
   jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
     {
       var numTips = 0;
