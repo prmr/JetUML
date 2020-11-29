@@ -36,15 +36,7 @@
 
 <script>
 
-  $.ajax({ 
-    url: 'src/ca/mcgill/cs/jetuml/JetUML.properties', 
-    dataType: 'json', 
-    async: false, 
-    success: parseJson(data)
-  });
-
-
-  function parseJson(data){
+	function parseJson(data){
         var numTips = 0;
         var lines = data.split("\n");
         for(var i = 0; i<lines.length; i++)
@@ -121,5 +113,15 @@
         );
       }
     }
+
+  $.ajax({ 
+    url: 'src/ca/mcgill/cs/jetuml/JetUML.properties', 
+    dataType: 'json', 
+    async: false, 
+    success: parseJson
+  });
+
+
+  
 
 </script>
