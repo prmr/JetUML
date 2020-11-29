@@ -33,7 +33,7 @@
               class: 'collapsible',
               click: function () { alert('hi'); }
             });
-            $("#boddy").append(collapsibleTip);
+            $("#body").append(collapsibleTip);
           }
         );
       }
