@@ -6,6 +6,12 @@
 
 <script>
 
+  $.ajaxSetup(
+    {
+      async: false
+    }
+  );
+
   jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
     {
       var numTips = 0;
@@ -23,7 +29,7 @@
       for(var j = 1; j <= numTips; j++)
       {
         var tipFileName = "tip-" + j + ".json";
-        var tipPath = "/tipdata/tips/" + tipFileName;
+        var tipPath = "tipdata/tips/" + tipFileName;
         $.getJSON(tipPath, data =>
           {
           	$("#body").append("<p>" + data["title"] + "</p>");
