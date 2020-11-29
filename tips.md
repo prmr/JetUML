@@ -36,92 +36,96 @@
 
 <script>
 
-	function parseJson(data){
-        var numTips = 0;
-        var lines = data.split("\n");
-        for(var i = 0; i<lines.length; i++)
-        {
-      	  var line = lines[i];
-      	  if (line.includes("tips.quantity="))
-      	  {
-      	    numTips = line.split("tips.quantity=")[1];
+  jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', async:false, data => 
+    {
+      var numTips = 0;
+      var lines = data.split("\n");
+      for(var i = 0; i<lines.length; i++)
+      {
+      	var line = lines[i];
+      	if (line.includes("tips.quantity="))
+      	{
+      		numTips = line.split("tips.quantity=")[1];
       		break;
-      	  }
-        }
+      	}
+      }
 
-        for(var j = 1; j <= numTips; j++)
-        {
-      	  var tipContent = $('<div/>', 
-            {
-              class: "content",
-            }
-          );
+      for(var j = 1; j <= numTips; j++)
+      {
 
-          var tipFileName = "tip-" + j + ".json";
-          var tipPath = "tipdata/tips/" + tipFileName;
-          $.getJSON(tipPath, data =>
-            {
-          	  var collapsibleTip = $('<button/>', 
-          	  {
-                text: data["title"],
-                id: 'button_j',
-                class: 'collapsible',
-                click: function() //function snippet taken from 
-                  { //https://www.w3schools.com/howto/howto_js_collapsible.asp
-                  this.classList.toggle("active");
-                  var content = this.nextElementSibling;
-                  if (content.style.display === "block") 
-                  {
-                    content.style.display = "none";
-                  } 
-                  else 
-                  {
-                    content.style.display = "block";
-                  }
-                }
-            });
-            $("#body").append(collapsibleTip);
-            $("#body").append(tipContent);
-
-            // looping over the tip contents and adding the tip elements to tipContent
-            var content = data["content"];
-            for (var tipElement in content)
-            {
-              for(var type in tipElement)
-              {
-                if(type == "text")
-                {
-                  var tipText = $('<p/>', 
-          	        {
-                      text: tipElement["text"],
-                    }
-                  );
-                  tipContent.appendChild(tipText);
-                }
-                else if (type == "image")
-                {
-                  var tipImage = $('<img/>', 
-          	        {
-                      src: "tipdata/tip_images/" + tipElement["image"],
-                    }
-                  );
-                  tipContent.appendChild(tipImage);
-                }
-              }
-            }
+      	var tipContent = $('<div/>', 
+          {
+            class: "content",
           }
+        );
+
+        var tipFileName = "tip-" + j + ".json";
+        var tipPath = "tipdata/tips/" + tipFileName;
+
+        $.ajax(
+          { 
+            url: tipPath, 
+            dataType: 'json', 
+            data: data, 
+            async: false, 
+            success: parseTip
+          } 
         );
       }
     }
+  );
 
-  $.ajax({ 
-    url: 'src/ca/mcgill/cs/jetuml/JetUML.properties', 
-    dataType: 'json', 
-    async: false, 
-    success: parseJson
-  });
+  function parseTip(data)
+  {
+    var collapsibleTip = $('<button/>', 
+      {
+        text: data["title"],
+        id: 'button_j',
+        class: 'collapsible',
+        click: function() //function snippet taken from 
+          { //https://www.w3schools.com/howto/howto_js_collapsible.asp
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") 
+            {
+              content.style.display = "none";
+            } 
+            else 
+            {
+              content.style.display = "block";
+            }
+          }
+      }
+    );  
+    $("#body").append(collapsibleTip);
+    $("#body").append(tipContent);
 
-
-  
+    // looping over the tip contents and adding the tip elements to tipContent
+    var content = data["content"];
+    for (var tipElement in content)
+    {
+      for(var type in tipElement)
+      {
+        if(type == "text")
+        {
+          var tipText = $('<p/>', 
+	        {
+              text: tipElement["text"],
+            }
+          );
+          tipContent.appendChild(tipText);
+        }
+        else if (type == "image")
+        {
+          var tipImage = $('<img/>', 
+  	        {
+              src: "tipdata/tip_images/" + tipElement["image"],
+            }
+          );
+          tipContent.appendChild(tipImage);
+        }
+      }
+    }
+  }
 
 </script>
