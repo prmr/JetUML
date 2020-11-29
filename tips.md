@@ -36,7 +36,7 @@
 
 <script>
 
-  jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', async:false, data => 
+  jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
     {
       var numTips = 0;
       var lines = data.split("\n");
