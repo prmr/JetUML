@@ -55,10 +55,9 @@
 
       	var tipContent = $('<div/>', 
           {
-            class: 'content',
+            class: "content",
           }
         );
-        $("#body").append(tipContent);
 
         var tipFileName = "tip-" + j + ".json";
         var tipPath = "tipdata/tips/" + tipFileName;
@@ -83,6 +82,7 @@
                 }
             });
             $("#body").append(collapsibleTip);
+            $("#body").append(tipContent);
 
             // looping over the tip contents and adding the tip elements to tipContent
             var content = data["content"];
