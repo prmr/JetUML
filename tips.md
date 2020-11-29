@@ -79,13 +79,14 @@
     var collapsibleTip = $('<button/>', 
       {
         text: data["title"],
-        id: 'button_j',
+        id: 'button_' + j,
         class: 'collapsible',
       }
     );  
     $("#body").append(collapsibleTip);
     $("#body").append(tipContent);
 
+    collapsibleTip = document.getElementById("button" + j); //getting the node from DOM (as button)
     collapsibleTip.addEventListener("click", function() //function snippet taken from 
       { //https://www.w3schools.com/howto/howto_js_collapsible.asp
         this.classList.toggle("active");
