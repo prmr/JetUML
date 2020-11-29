@@ -1,4 +1,4 @@
-<h1>JetUML Tips</h1>
+# JetUML Tips
 
 <div id=body></div>
 
@@ -33,7 +33,8 @@
         $.getJSON(tipPath, data =>
           {
           	$("#body").append("<p>" + data["title"] + "</p>");
-          })
+          }
+        );
       }
     }
   );
