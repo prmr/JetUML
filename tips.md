@@ -6,6 +6,8 @@
 
 <script>
 
+  
+
   $.ajaxSetup(
     {
       async: false
@@ -32,7 +34,14 @@
         var tipPath = "tipdata/tips/" + tipFileName;
         $.getJSON(tipPath, data =>
           {
-          	$("#body").append("<p>" + data["title"] + "</p>");
+          	var collapsibleTip = $('<button/>', 
+          	{
+              text: data["title"],
+              id: 'button_j',
+              class: 'collapsible',
+              click: function () { alert('hi'); }
+            });
+            $("#boddy").append(collapsibleTip);
           }
         );
       }
