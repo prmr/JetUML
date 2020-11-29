@@ -1,0 +1,26 @@
+<h1>JetUML Tips</h1>
+
+<div id=body></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+  jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
+    {
+      var numTips = 0;
+      var lines = data.split("\n");
+      for(var i = 0; i<lines.length; i++)
+      {
+      	if (line.includes("tips.quantity="))
+      	{
+      		numTips = line.split("tips.quantity=")[1];
+      		break;
+      	}
+      }
+      alert(numTips);;
+    }
+  );
+
+
+</script>
