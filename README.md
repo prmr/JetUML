@@ -25,10 +25,11 @@ JetUML collects no information whatsoever. We rely on you to estimate usage leve
 
 ## Documentation
 
-* [Installation Guide](/docs/install.md)
-* [User Guide](/docs/user-guide.md)
+* [Installation Guide](/docs/install)
+* [User Guide](/docs/user-guide)
 * [Compatibility Guide](compatibility)
 * [Contributing Guidelines](docs/CONTRIBUTING)
+* [Architecture Description](/docs/architecture)
 
 ## JetUML in the Literature
 
