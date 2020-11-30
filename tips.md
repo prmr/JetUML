@@ -97,7 +97,7 @@
         } 
         else 
         {
-          content.style.maxHeight = content.scrollHeight + "px";
+          content.style.maxHeight = content.clientHeight + "px";
         }
       }
     );
