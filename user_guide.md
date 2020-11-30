@@ -8,8 +8,8 @@
 /* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
-    background-color: #B8B8B8;
-    color: white;
+    background-color: #DCDCDC;
+    color: black;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -21,7 +21,7 @@
 
   .active, .collapsible:hover 
   {
-    background-color: #A8A8A8;
+    background-color: DodgerBlue;
   }
 
   .content 
