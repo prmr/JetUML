@@ -28,7 +28,6 @@
   .content 
   {
     padding: 0 18px;
-    display: none;
     overflow: hidden;
     background-color: #f1f1f1;
     max-height: 0;
@@ -97,7 +96,7 @@
         } 
         else 
         {
-          content.style.maxHeight = getElementHeight(content);
+          content.style.maxHeight = content.scrollHeight + "px";
         }
       }
     );
@@ -130,16 +129,5 @@
       }
     }
   }
-
-
-  function getElementHeight(el) {
-  var clone           = el.cloneNode(true);
-  var width           = el.getBoundingClientRect().width;
-  clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + width + 'px';
-  document.body.append(clone);
-  var height = clone.getBoundingClientRect().height + 'px';
-  clone.remove();
-  return height;
-}
 
 </script>
