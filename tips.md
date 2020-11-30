@@ -31,6 +31,8 @@
     display: none;
     overflow: hidden;
     background-color: #f1f1f1;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
   }
 </style>
 
@@ -89,13 +91,13 @@
       { //https://www.w3schools.com/howto/howto_js_collapsible.asp
         this.classList.toggle("active");
         var content = this.nextElementSibling;
-        if (content.style.display === "block") 
+        if (content.style.maxHeight) 
         {
-          content.style.display = "none";
+          content.style.maxHeight = null;
         } 
         else 
         {
-          content.style.display = "block";
+          content.style.maxHeight = content.scrollHeight + "px";
         }
       }
     );
@@ -127,7 +129,11 @@
         }
       }
     }
-    $("#body").append("<br/>");
+    $("#body").append("<br/>", 
+      {
+        margin-top: "10px";
+      }
+    );
   }
 
 </script>
