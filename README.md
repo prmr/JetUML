@@ -17,15 +17,18 @@ JetUML is available under the terms of the [GNU General Public License v3](https
 
 ## Download and Installation
 
-JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation page](docs/install.md). Users upgrading from a previous version might want to peek at the [compatibility guide](docs/compatibility.md)
+JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation guide](docs/install.md). Users upgrading from a previous version might want to peek at the [compatibility guide](docs/compatibility.md)
 
 ## Privacy Policy and Feedback
 
 JetUML collects no information whatsoever. We rely on you to estimate usage levels and receive feedback. If you use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
 
-## Contributing to JetUML
+## Documentation
 
-If you are interested in getting involved in the JetUML project, please see the [Contributing Guidelines](docs/CONTRIBUTING.md).
+* [Installation Guide](/docs/install.md)
+* [User Guide](/docs/user-guide.md)
+* [Compatibility Guide](compatibility)
+* [Contributing Guidelines](docs/CONTRIBUTING)
 
 ## JetUML in the Literature
 
