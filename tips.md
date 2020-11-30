@@ -4,7 +4,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
 <style>
 /* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
@@ -18,7 +17,6 @@
     text-align: left;
     outline: none;
     font-size: 15px;
-    font-weight: bold;
   }
 
   .active, .collapsible:hover 
@@ -129,6 +127,7 @@
         }
       }
     }
+    $("#body").append($('<br/>'));
   }
 
 </script>
