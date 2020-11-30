@@ -2,7 +2,7 @@
 
 Information on how diagrams saved with one version of the application can be read by other versions.
 
-## Release 3.0
+## Releases 3.0 and 3.1
 
 When reading in a diagram from version 2.0-2.6, some conversions may be automatically applied to the structure of the diagram. 
 These transformations target **Class diagrams** only.
@@ -17,6 +17,6 @@ These transformations target **Class diagrams** only.
 
 ## Release 2.6
 
-Starting with this release all saved diagrams are encoded in UTF-8. Any diagram saved with a version 2.1-2.5 that contains
-non-ASCII characters can be made compatible simply by changing the encoding with the help of a text editor.
+Starting with this release all saved diagrams are encoded in UTF-8. Any diagram saved with a version 2.1-2.5 that contains non-ASCII characters can be made compatible simply by changing the encoding with the help of a text editor.
+
 The easiest way to do this is to create a new file set with UTF-8 encoding, and paste the content of the old file in.
