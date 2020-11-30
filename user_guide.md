@@ -5,7 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <style>
-/* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
+/* Snippet inspired from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
     background-color: #DCDCDC;
@@ -19,7 +19,12 @@
     font-size: 15px;
   }
 
-  .active, .collapsible:hover 
+  .active
+  {
+    background-color: #D3D3D3
+  } 
+
+  .collapsible:hover 
   {
     background-color: #AFDBF5;
   }
