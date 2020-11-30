@@ -14,7 +14,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
     background-color: #DCDCDC;
     color: black;
     cursor: pointer;
-    padding: 18px;
+    padding: 15px;
     width: 100%;
     border: none;
     text-align: left;
@@ -34,7 +34,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 
   .content 
   {
-    padding: 0 18px;
+    padding: 0 15px;
     overflow: hidden;
     background-color: #f1f1f1;
     max-height: 0;
@@ -43,7 +43,7 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 
   .br
   {
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
 </style>
