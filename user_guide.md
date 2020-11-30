@@ -8,7 +8,7 @@
 /* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
-    background-color: #C8C8C8;
+    background-color: #B8B8B8;
     color: white;
     cursor: pointer;
     padding: 18px;
@@ -21,7 +21,7 @@
 
   .active, .collapsible:hover 
   {
-    background-color: #B0B0B0;
+    background-color: #A8A8A8;
   }
 
   .content 
@@ -134,7 +134,7 @@
     }
     $("#body").append($('<br/>',
       {
-        class: br,
+        class: 'br',
       }
     ));
   }
