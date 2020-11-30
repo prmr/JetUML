@@ -1,4 +1,4 @@
-# JetUML Tips
+# User Guide
 
 <div id=body></div>
 
@@ -8,7 +8,7 @@
 /* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
-    background-color: #585858;
+    background-color: LightGrey;
     color: white;
     cursor: pointer;
     padding: 18px;
@@ -21,7 +21,7 @@
 
   .active, .collapsible:hover 
   {
-    background-color: #343434;
+    background-color: Grey;
   }
 
   .content 
@@ -31,6 +31,11 @@
     background-color: #f1f1f1;
     max-height: 0;
     transition: max-height 0.2s ease-out;
+  }
+
+  .br
+  {
+  	margin-top: 4px;
   }
 </style>
 
@@ -127,7 +132,11 @@
         }
       }
     }
-    $("#body").append($('<br/>'));
+    $("#body").append($('<br/>'),
+      {
+        class: br,
+      }
+    );
   }
 
 </script>
