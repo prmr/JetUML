@@ -46,7 +46,7 @@
 
 <script>
 
-  jQuery.get('src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
+  jQuery.get('../src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
     {
       var numTips = 0;
       var lines = data.split("\n");
@@ -63,7 +63,7 @@
       for(var j = 1; j <= numTips; j++)
       {
         var tipFileName = "tip-" + j + ".json";
-        var tipPath = "tipdata/tips/" + tipFileName;
+        var tipPath = "../tipdata/tips/" + tipFileName;
 
         $.ajax(
           { 
@@ -130,7 +130,7 @@
         {
           var tipImage = $('<img/>', 
   	        {
-              src: "tipdata/tip_images/" + tipElement["image"],
+              src: "../tipdata/tip_images/" + tipElement["image"],
             }
           );
           tipContent.append(tipImage);
