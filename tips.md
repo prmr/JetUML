@@ -114,7 +114,7 @@
               text: tipElement["text"],
             }
           );
-          tipContent.appendChild(tipText);
+          tipContent.append(tipText);
         }
         else if (type == "image")
         {
@@ -123,7 +123,7 @@
               src: "tipdata/tip_images/" + tipElement["image"],
             }
           );
-          tipContent.appendChild(tipImage);
+          tipContent.append(tipImage);
         }
       }
     }
