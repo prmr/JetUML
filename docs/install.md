@@ -2,7 +2,7 @@
 
 *For older releases please see the [Legacy Section](#legacy) at the bottom of this page.*
 
-## Release 3.0
+## Release 3.0 and Up
 
 Starting with Release 3.0, JetUML is distributed in two formats:
 
