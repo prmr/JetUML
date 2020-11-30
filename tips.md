@@ -129,11 +129,6 @@
         }
       }
     }
-    $("#body").append("<br/>", 
-      {
-        "margin-top": "10px"
-      }
-    );
   }
 
 </script>
