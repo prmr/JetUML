@@ -9,7 +9,7 @@
   .collapsible 
   {
     background-color: LightGrey;
-    color: white;
+    color: #C8C8C8;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -28,7 +28,7 @@
   {
     padding: 0 18px;
     overflow: hidden;
-    background-color: #f1f1f1;
+    background-color: #B0B0B0;
     max-height: 0;
     transition: max-height 0.2s ease-out;
   }
@@ -132,11 +132,11 @@
         }
       }
     }
-    $("#body").append($('<br/>'),
+    $("#body").append($('<br/>',
       {
         class: br,
       }
-    );
+    ));
   }
 
 </script>
