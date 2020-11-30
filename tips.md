@@ -9,7 +9,7 @@
 /* Snippet taken from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
-    background-color: #414a4c;
+    background-color: #696969;
     color: white;
     cursor: pointer;
     padding: 18px;
