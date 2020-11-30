@@ -97,7 +97,7 @@
         } 
         else 
         {
-          content.style.maxHeight = getHiddenElementHeight(content) + "px";
+          content.style.maxHeight = getElementHeight(content);
         }
       }
     );
@@ -132,18 +132,14 @@
   }
 
 
-  var getHiddenElementHeight = function(element){
-    var tempId = 'tmp-'+Math.floor(Math.random()*99999);//generating unique id just in case
-    $(element).clone()
-    .css('position','absolute')
-    .css('height','auto').css('width','1000px')
-    //inject right into parent element so all the css applies (yes, i know, except the :first-child and other pseudo stuff..
-    .appendTo($(element).parent())
-    .css('left','-10000em')
-    .addClass(tempId).show()
-    h = $('.'+tempId).height()
-    $('.'+tempId).remove()
-    return h;
-  }
+  function getElementHeight(el) {
+  var clone           = el.cloneNode(true);
+  var width           = el.getBoundingClientRect().width;
+  clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + width + 'px';
+  document.body.append(clone);
+  var height = clone.getBoundingClientRect().height + 'px';
+  clone.remove();
+  return height;
+}
 
 </script>
