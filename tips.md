@@ -97,7 +97,7 @@
         } 
         else 
         {
-          content.style.maxHeight = content.clientHeight + "px";
+          content.style.maxHeight = getHiddenElementHeight(content) + "px";
         }
       }
     );
@@ -129,6 +129,21 @@
         }
       }
     }
+  }
+
+
+  var getHiddenElementHeight = function(element){
+    var tempId = 'tmp-'+Math.floor(Math.random()*99999);//generating unique id just in case
+    $(element).clone()
+    .css('position','absolute')
+    .css('height','auto').css('width','1000px')
+    //inject right into parent element so all the css applies (yes, i know, except the :first-child and other pseudo stuff..
+    .appendTo($(element).parent())
+    .css('left','-10000em')
+    .addClass(tempId).show()
+    h = $('.'+tempId).height()
+    $('.'+tempId).remove()
+    return h;
   }
 
 </script>
