@@ -1,0 +1,7 @@
+{ 
+  "title": "Sequence Diagram Validation",
+  "content": [ 
+    { "text": "JetUML verifies that call and return edges added to a sequence diagram result in a valid control sequence. Trying to add edges at arbitrary points that would result in a jump in the control flow will fail silently." },
+  	{ "image": "tip26.png"}
+  ]
+}
