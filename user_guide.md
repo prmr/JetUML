@@ -21,7 +21,7 @@
 
   .active
   {
-    background-color: #C8C8C8
+    background-color: #C0C0C0
   } 
 
   .collapsible:hover 
