@@ -1,11 +1,14 @@
 # User Guide
 
+This page contains the complete list of "tips" available through JetUML's "Tip of the Day" dialog. Click on an entry to expand with details.
+
 <div id=body></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <style>
-/* Snippet inspired from https://www.w3schools.com/howto/howto_js_collapsible.asp */
+
+  /* Snippet inspired from https://www.w3schools.com/howto/howto_js_collapsible.asp */
   .collapsible 
   {
     background-color: #DCDCDC;
@@ -40,28 +43,19 @@
 
   .br
   {
-  	margin-top: 4px;
+    margin-top: 4px;
   }
+
 </style>
+
 
 <script>
 
-  // fetching the properties to get the number of tips
+  // fetching the properties to get the number of tips and adding tips to the DOM
   jQuery.get('../src/ca/mcgill/cs/jetuml/JetUML.properties', data => 
     {
-      var numTips = 0;
-      var lines = data.split("\n");
-      for(var i = 0; i<lines.length; i++)
-      {
-      	var line = lines[i];
-      	if (line.includes("tips.quantity="))
-      	{
-      		numTips = line.split("tips.quantity=")[1];
-      		break;
-      	}
-      }
+      var numTips = getNumTips(data);
 
-      // adding all tips to the DOM
       for(var j = 1; j <= numTips; j++)
       {
         var tipFileName = "tip-" + j + ".json";
@@ -82,10 +76,30 @@
     }
   );
 
-  function parseTip(data)
+  // function that takes in the JetUML properties file as data and 
+  // extracts the tip quantity property
+  function getNumTips(data)
+  {
+    var numTips = 0;
+    var lines = data.split("\n");
+    for(var i = 0; i<lines.length; i++)
+    {
+      var line = lines[i];
+      if (line.includes("tips.quantity="))
+      {
+        numTips = line.split("tips.quantity=")[1];
+        break;
+      }
+    }
+    return numTips;
+  }
+
+  // function that takes in a tip json and parses it to add nodes containing the tip
+  // contents to the DOM
+  function parseTip(tipData)
   {
     // The div containing the contents of a given tip
-  	var tipContent = $('<div/>', 
+    var tipContentDiv = $('<div/>', 
       {
         class: "content",
       }
@@ -94,13 +108,13 @@
     // the button that opens up the tip content
     var collapsibleTip = $('<button/>', 
       {
-        text: data["title"],
+        text: tipData["title"],
         class: 'collapsible',
       }
     );  
     //adding both to the body div
     $("#body").append(collapsibleTip);
-    $("#body").append(tipContent);
+    $("#body").append(tipContentDiv);
 
     // adding handler for the button
     collapsibleTip.on("click", function() //function snippet taken from 
@@ -118,8 +132,23 @@
       }
     );
 
-    // looping over the tip contents and adding the tip elements to tipContent (div)
-    var content = data["content"];
+    addTipToDiv(tipData, tipContentDiv);
+    
+    // adding a <br> to separate the buttons 
+    $("#body").append($('<br/>',
+      {
+        class: 'br',
+      }
+    ));
+  }
+
+  // function that takes in the data of a tip json and the div to which the 
+  // tip contents should be added to add the tip contents to the div
+  function addTipToDiv(tipData, tipContentDiv)
+  {
+    var content = tipData["content"];
+
+    // looping over the tip contents and adding the tip elements to tipContentDiv
     for (var k = 0; k<content.length; k++)
     {
       var tipElement = content[k];
@@ -129,30 +158,24 @@
         {
           //creating a <p> node with the text
           var tipText = $('<p/>', 
-	        {
+            {
               text: tipElement["text"],
             }
           );
-          tipContent.append(tipText);
+          tipContentDiv.append(tipText);
         }
         else if (type == "image")
         {
           //creating an <img> node with the image
           var tipImage = $('<img/>', 
-  	        {
+            {
               src: "../tipdata/tip_images/" + tipElement["image"],
             }
           );
-          tipContent.append(tipImage);
+          tipContentDiv.append(tipImage);
         }
       }
     }
-    // adding a <br> to separate the buttons 
-    $("#body").append($('<br/>',
-      {
-        class: 'br',
-      }
-    ));
   }
 
 </script>
