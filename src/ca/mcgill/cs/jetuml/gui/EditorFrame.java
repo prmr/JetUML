@@ -80,6 +80,7 @@ public class EditorFrame extends BorderPane
 	private static final String KEY_LAST_EXPORT_DIR = "lastExportDir";
 	private static final String KEY_LAST_SAVEAS_DIR = "lastSaveAsDir";
 	private static final String KEY_LAST_IMAGE_FORMAT = "lastImageFormat";
+	private static final String USER_MANUAL_URL = "https://www.jetuml.org/docs/user-guide.html";
 	
 	private static final String[] IMAGE_FORMATS = validFormats("png", "jpg", "gif", "bmp");
 	
@@ -247,8 +248,9 @@ public class EditorFrame extends BorderPane
 	{
 		MenuFactory factory = new MenuFactory(RESOURCES);
 		pMenuBar.getMenus().add(factory.createMenu("help", false,
-				factory.createMenuItem("help.tips", false, pEvent -> new TipDialog(aMainStage).show()),
-				factory.createMenuItem("help.about", false, pEvent -> new AboutDialog(aMainStage).show())));
+				factory.createMenuItem("help.tips", false, event -> new TipDialog(aMainStage).show()),
+				factory.createMenuItem("help.guide", false, event -> JetUML.openBrowser(USER_MANUAL_URL)),
+				factory.createMenuItem("help.about", false, event -> new AboutDialog(aMainStage).show())));
 	}
 	
 	/*
