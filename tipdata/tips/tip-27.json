@@ -1,0 +1,7 @@
+{ 
+  "title": "Adding Self-Calls in Sequence Diagrams",
+  "content": [ 
+    { "text": "JetUML supports self-calls in sequence diagrams. To create a self-call, select the Call Edge creation tool and drag the rubber band within an activation box." },
+  	{ "image": "tip27.png"}
+  ]
+}
