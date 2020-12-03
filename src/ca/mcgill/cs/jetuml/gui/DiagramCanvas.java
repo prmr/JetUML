@@ -129,7 +129,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	/*
 	 * If the diagram is smaller than the preferred dimension, return
-	 * the preferred dimension. Otherwise, grow the dimensions to accomodate
+	 * the preferred dimension. Otherwise, grow the dimensions to accommodate
 	 * the diagram.
 	 */
 	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
