@@ -1,7 +1,7 @@
 { 
   "title": "Exporting the Diagram",
   "content": [ 
-    { "text": "Use the command \"File | Export Image\" to save the current diagram as an image file. The image type is determined by the file extension selected from the \"Save as Type\" field." },
+    { "text": "Use the menu command File | Export Image to save the current diagram as an image file. The image type is determined by the file extension selected from the Save as Type field." },
     { "image": "tip34.png"}
   ]
 }

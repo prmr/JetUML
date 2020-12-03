@@ -1,7 +1,7 @@
 { 
   "title": "Automatically Editing Newly Created Nodes",
   "content": [ 
-    { "text": "To speed up diagramming, use the \"Auto Edit Node\" feature to automatically open the properties page whenever a new node is created. This feature is only available for nodes." },
+    { "text": "To speed up diagramming, use the Auto Edit Node feature to automatically open the properties page whenever a new node is created. This feature is only available for nodes." },
   	{ "image": "tip24.png"}
   ]
 }

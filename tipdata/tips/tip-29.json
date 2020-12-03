@@ -1,7 +1,7 @@
 { 
   "title": "Setting the Size of Diagrams",
   "content": [ 
-    { "text": "In JetUML diagrams have a fixed size. To change this size, use \"View | Set Diagram Size\". The size will be used when creating new diagrams or opening diagram files. When opening a diagram, the size is automatically increased to fit the diagram if necessary. Larger diagrams decrease the tool's performance. The default values are in relation to the display size." },
+    { "text": "In JetUML diagrams have a fixed size. To change this size, use the menu command View | Set Diagram Size. The size will be used when creating new diagrams or opening diagram files. When opening a diagram, the size is automatically increased to fit the diagram if necessary. Larger diagrams decrease the tool's performance. The default values are in relation to the display size." },
     { "image": "tip29.png"}
   ]
 }

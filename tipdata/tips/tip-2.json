@@ -1,7 +1,7 @@
 { 
   "title": "Creating Nodes",
   "content": [ 
-    { "text": "Selecting a node type in the toolbar enables the corresponding \"Node creation tool\". With a node creation tool enabled, click on an empty space in the diagram to create a new node of that type. Rolling over the tool in the toolbar shows a tooltip with the name of the node type."},
+    { "text": "Selecting a node type in the toolbar enables the corresponding Node Creation tool. With a Node Creation tool enabled, click on an empty space in the diagram to create a new node of that type. Rolling over the tool in the toolbar shows a tooltip with the name of the node type."},
     { "image": "tip2.png"}
   ]
 }
