@@ -105,7 +105,7 @@ In the JetUML project, releases map one-to-one with milestones.
 ```
 JetUML - A desktop application for fast UML diagramming.
 
-Copyright (C) ${date} by the contributors of the JetUML project.
+Copyright (C) ${date} by McGill University.
     
 See: https://github.com/prmr/JetUML
 
