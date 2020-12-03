@@ -1,0 +1,7 @@
+{ 
+  "title": "Showing or Hiding the Grid",
+  "content": [ 
+    { "text": "It is possible to control whether the grid is visible or not in a diagram. Use the command \"View | Show Grid\" to toggle this option. Diagram elements automatically snap to the grid whether it is visible or not." },
+    { "image": "tip31.png"}
+  ]
+}
