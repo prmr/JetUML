@@ -79,19 +79,4 @@ public final class Conversions
 							  (int)Math.round(pRectangle2D.getWidth()),
 							  (int)Math.round(pRectangle2D.getHeight()));
 	}
-	
-	/**
-	 * @param pRectangle The rectangle to convert.
-	 * @return A rectangle created from both x and y coordinate and the width
-	 *     and height of the input parameter to integers.
-	 * @pre pRectangle != null;
-	 */
-	public static Rectangle2D toRectangle2D(Rectangle pRectangle)
-	{
-		assert pRectangle != null;
-		return new Rectangle2D( pRectangle.getX(),
-							  pRectangle.getY(),
-							  pRectangle.getWidth(),
-							  pRectangle.getHeight());
-	}
 }
