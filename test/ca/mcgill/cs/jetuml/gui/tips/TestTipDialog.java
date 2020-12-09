@@ -140,15 +140,6 @@ public class TestTipDialog
 	}
 	
 	@Test
-	public void testTipDialogCheckBoxIsChecked() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
-	{
-		Field checkBoxField = TipDialog.class.getDeclaredField("aShowTipsOnStartupCheckBox");
-		checkBoxField.setAccessible(true);
-		CheckBox checkBox = (CheckBox)(checkBoxField.get(aTipDialog));
-		assertTrue(checkBox.isSelected());
-	}
-	
-	@Test
 	public void testCreateEmptyTipMenuReturnsValidHBox()
 	{
 		assertNotNull(createEmptyTipMenu(aTipDialog));
