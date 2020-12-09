@@ -36,13 +36,13 @@ public class TestDimension
 	private static Dimension DIM_4 = new Dimension(5, 10);
 	
 	@Test
-	public void testEquals_Same()
+	void testEquals_Same()
 	{
 		assertTrue( DIM_0.equals(DIM_0));
 	}
 	
 	@Test
-	public void testEquals_Equal()
+	void testEquals_Equal()
 	{
 		assertTrue( DIM_0.equals(new Dimension(0,0)));
 		assertTrue( DIM_1.equals(new Dimension(10,10)));
@@ -50,17 +50,33 @@ public class TestDimension
 	}
 	
 	@Test
-	public void testEquals_NotEqual()
+	void testEquals_Null()
+	{
+		assertFalse( DIM_0.equals(null));
+	}
+	
+	@Test
+	void testEquals_NotSameClass()
+	{
+		assertFalse( DIM_0.equals((Object)"foo"));
+	}
+	
+	@Test
+	void testEquals_NotEqual()
 	{
 		assertFalse( DIM_0.equals(DIM_1));
 		assertFalse( DIM_0.equals(DIM_2));
 		assertFalse( DIM_0.equals(DIM_3));
 		assertFalse( DIM_0.equals(DIM_4));
 		assertFalse( DIM_1.equals(DIM_0));
+		assertFalse( DIM_1.equals(DIM_2));
+		assertFalse( DIM_1.equals(DIM_3));
+		assertFalse( DIM_1.equals(DIM_4));
+
 	}
 	
 	@Test
-	public void testInclude_Zero()
+	void testInclude_Zero()
 	{
 		assertEquals(new Dimension(0,0), DIM_0.include(0, 0));
 		assertEquals(new Dimension(10,10), DIM_1.include(0, 0));
@@ -68,9 +84,36 @@ public class TestDimension
 	}
 	
 	@Test
-	public void testInclude_Grow()
+	void testInclude_Grow()
 	{
 		assertEquals(new Dimension(10,10), DIM_2.include(10, 10));
 		assertEquals(new Dimension(5,10), DIM_2.include(5, 10));
+	}
+	
+	@Test
+	void testToString()
+	{
+		assertEquals("[Dimension: w=5 x h=10]", DIM_4.toString());
+	}
+	
+	@Test
+	void testWidth()
+	{
+		assertEquals(10, DIM_1.width());
+	}
+	
+	@Test
+	void testHeight()
+	{
+		assertEquals(10, DIM_1.height());
+	}
+	
+	@Test
+	void testHashCode()
+	{
+		assertEquals(1281, DIM_1.hashCode());
+		assertEquals(1121, DIM_2.hashCode());
+		assertEquals(1126, DIM_3.hashCode());
+		assertEquals(1276, DIM_4.hashCode());
 	}
 }

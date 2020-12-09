@@ -164,7 +164,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	{
 		if(pString == null || pString.length() == 0) 
 		{
-			return new Dimension(0, 0);
+			return Dimension.NULL;
 		}
 		return textDimensions(pString);
 	}

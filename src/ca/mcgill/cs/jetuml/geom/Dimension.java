@@ -86,10 +86,7 @@ public class Dimension
 	public int hashCode()
 	{
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + aHeight;
-		result = prime * result + aWidth;
-		return result;
+		return prime * (prime + aHeight) + aWidth;
 	}
 
 	@Override
