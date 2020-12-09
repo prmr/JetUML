@@ -72,7 +72,7 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 		assert label != null && label.length() > 0;
 		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints(pEdge).spanning().getCenter();
-		return new Rectangle(center.getX()-dimensions.getWidth()/2, center.getY() + SHIFT, dimensions.getWidth(), dimensions.getHeight());
+		return new Rectangle(center.getX()-dimensions.width()/2, center.getY() + SHIFT, dimensions.width(), dimensions.height());
 	}
 	
 	@Override

@@ -44,21 +44,21 @@ public class TestLine
 		assertEquals(31745, ZERO_TO_ONE.hashCode());
 	}
 	
-	@Test
-	public void testClone()
-	{
-		Line clone = ZERO_TO_ONE.clone();
-		assertFalse( clone == ZERO_TO_ONE);
-		assertTrue( ZERO_TO_ONE.getPoint1() == clone.getPoint1() );
-		assertTrue( ZERO_TO_ONE.getPoint2() == clone.getPoint2() );
-	}
+//	@Test
+//	public void testClone()
+//	{
+//		Line clone = ZERO_TO_ONE.clone();
+//		assertFalse( clone == ZERO_TO_ONE);
+//		assertTrue( ZERO_TO_ONE.getPoint1() == clone.getPoint1() );
+//		assertTrue( ZERO_TO_ONE.getPoint2() == clone.getPoint2() );
+//	}
 	
 	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void testEquals()
 	{
 		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE));
-		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE.clone()));
+//		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE.clone()));
 		assertFalse(ZERO_TO_ONE.equals(new Line(ONE, ZERO)));
 		assertFalse(ZERO_TO_ONE.equals(null));
 		assertFalse(ZERO_TO_ONE.equals("Foo"));

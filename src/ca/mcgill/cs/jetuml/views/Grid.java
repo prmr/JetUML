@@ -119,7 +119,7 @@ public final class Grid
 	{
 		assert pDimension != null;
 		final int size = (int) GRID_SIZE;
-		int xRemainder = pDimension.getWidth() % size;
+		int xRemainder = pDimension.width() % size;
 		if( xRemainder < size/2 )
 		{
 			xRemainder = -xRemainder;
@@ -129,7 +129,7 @@ public final class Grid
 			xRemainder = size - xRemainder;
 		}
 		
-		int yRemainder = pDimension.getHeight() % size;
+		int yRemainder = pDimension.height() % size;
 		if( yRemainder < size/2 )
 		{
 			yRemainder = -yRemainder;

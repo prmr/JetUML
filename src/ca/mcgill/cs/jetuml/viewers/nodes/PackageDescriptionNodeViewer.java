@@ -50,13 +50,13 @@ public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewe
 	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
 	{
 		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(((PackageDescriptionNode)pNode).getContents());
-		int width = max(contentsBounds.getWidth() + 2 * PADDING, DEFAULT_WIDTH);
-		int height = max(contentsBounds.getHeight() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
+		int width = max(contentsBounds.width() + 2 * PADDING, DEFAULT_WIDTH);
+		int height = max(contentsBounds.height() + 2 * PADDING, DEFAULT_BOTTOM_HEIGHT);
 		
 		Dimension topDimension = getTopDimension(pNode);
-		width = max( width, topDimension.getWidth()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
+		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
 		
-		return new Rectangle(pNode.position().getX(), pNode.position().getY() + topDimension.getHeight(), 
+		return new Rectangle(pNode.position().getX(), pNode.position().getY() + topDimension.height(), 
 				width, height);
 	}
 	

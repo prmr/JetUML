@@ -45,7 +45,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final StringViewer VALUE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
 	private static final StringViewer EQUALS_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
-	private static final int MID_OFFSET = EQUALS_VIEWER.getDimension(EQUALS).getWidth() / 2;
+	private static final int MID_OFFSET = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 	private static final ObjectNodeViewer OBJECT_NODE_VIEWER = new ObjectNodeViewer();
 	
 	@Override
@@ -94,7 +94,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 */
 	public int leftWidth(Node pNode)
 	{
-		return NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).getWidth() + MID_OFFSET;
+		return NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).width() + MID_OFFSET;
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 */
 	public int rightWidth(Node pNode)
 	{
-		int rightWidth = VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getWidth();
+		int rightWidth = VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).width();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
@@ -117,9 +117,9 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 */
 	public int getHeight(Node pNode)
 	{
-		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).getHeight(), 
-				Math.max(VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).getHeight(), 
-						EQUALS_VIEWER.getDimension(EQUALS).getHeight())));
+		return Math.max(DEFAULT_HEIGHT, Math.max(NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).height(), 
+				Math.max(VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).height(), 
+						EQUALS_VIEWER.getDimension(EQUALS).height())));
 	}
 	
 	@Override
@@ -136,8 +136,8 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	public Canvas createIcon(Node pNode)
 	{
 		Dimension dimension = EQUALS_VIEWER.getDimension(ICON_LABEL);
-		int width = dimension.getWidth();
-		int height = dimension.getHeight();
+		int width = dimension.width();
+		int height = dimension.height();
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
 		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
 		double scale = Math.min(scaleX, scaleY);

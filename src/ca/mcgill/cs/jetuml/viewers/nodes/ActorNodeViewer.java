@@ -53,7 +53,7 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(),
-            Math.max(WIDTH, nameBounds.getWidth()), HEIGHT + nameBounds.getHeight());
+            Math.max(WIDTH, nameBounds.width()), HEIGHT + nameBounds.height());
 	}
 
 	@Override
@@ -61,8 +61,8 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	{	
 		Rectangle bounds = getBounds(pNode);
 		Dimension nameBox = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
-		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.getWidth()) / 2.0), 
-				bounds.getY() + HEIGHT, nameBox.getWidth(), nameBox.getHeight());
+		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.width()) / 2.0), 
+				bounds.getY() + HEIGHT, nameBox.width(), nameBox.height());
 		NAME_VIEWER.draw(((ActorNode)pNode).getName(), pGraphics, namebox);
 		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(pNode), LineStyle.SOLID);
 	}

@@ -506,13 +506,13 @@ public abstract class DiagramBuilder
 	{
 		int newX = pRequestedPosition.getX();
 		int newY = pRequestedPosition.getY();
-		if(newX + pBounds.getWidth() > aCanvasDimension.getWidth())
+		if(newX + pBounds.getWidth() > aCanvasDimension.width())
 		{
-			newX = aCanvasDimension.getWidth() - pBounds.getWidth();
+			newX = aCanvasDimension.width() - pBounds.getWidth();
 		}
-		if (newY + pBounds.getHeight() > aCanvasDimension.getHeight())
+		if (newY + pBounds.getHeight() > aCanvasDimension.height())
 		{
-			newY = aCanvasDimension.getHeight() - pBounds.getHeight();
+			newY = aCanvasDimension.height() - pBounds.getHeight();
 		}
 		return new Point(newX, newY);
 	}

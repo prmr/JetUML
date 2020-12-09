@@ -61,8 +61,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	{
 		assert pDiagram != null;
 		Dimension dimension = getDiagramCanvasWidth(pDiagram);
-		setWidth(dimension.getWidth());
-		setHeight(dimension.getHeight());
+		setWidth(dimension.width());
+		setHeight(dimension.height());
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
 		aDiagram = pDiagram;

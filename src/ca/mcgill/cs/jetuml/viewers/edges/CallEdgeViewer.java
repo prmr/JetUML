@@ -132,14 +132,14 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		{
 			Dimension dimensions = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(label);
 			Point[] points = getPoints(pEdge);
-			return new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, dimensions.getWidth() , dimensions.getHeight());
+			return new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, dimensions.width() , dimensions.height());
 		}
 		else
 		{
 			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
 			Point center = getConnectionPoints(pEdge).spanning().getCenter();
-			return new Rectangle(center.getX() - dimensions.getWidth()/2, 
-					center.getY()+SHIFT*2, dimensions.getWidth(), dimensions.getHeight());
+			return new Rectangle(center.getX() - dimensions.width()/2, 
+					center.getY()+SHIFT*2, dimensions.width(), dimensions.height());
 		}
 	}
 

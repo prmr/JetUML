@@ -81,17 +81,17 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	
 	private static int attributeBoxHeight(TypeNode pNode)
 	{
-		return textDimensions(pNode.getAttributes()).getHeight();
+		return textDimensions(pNode.getAttributes()).height();
 	}
 	
 	private static int methodBoxHeight(TypeNode pNode)
 	{
-		return textDimensions(pNode.getMethods()).getHeight();
+		return textDimensions(pNode.getMethods()).height();
 	}
 	
 	private int nameBoxHeight(TypeNode pNode, int pAttributeBoxHeight, int pMethodBoxHeight)
 	{
-		final int textHeight = max(textDimensions(getNameText(pNode)).getHeight(), TOP_INCREMENT);
+		final int textHeight = max(textDimensions(getNameText(pNode)).height(), TOP_INCREMENT);
 		final int freeSpaceInTopBox = DEFAULT_HEIGHT - textHeight;
 		if( freeSpaceInTopBox < 0 )
 		{
@@ -136,7 +136,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		Dimension nameDimension = textDimensionsBold(getNameText(node));
 		Dimension attributeDimension = textDimensions(node.getAttributes());
 		Dimension methodDimension = textDimensions(node.getMethods());
-		int width = max(DEFAULT_WIDTH, nameDimension.getWidth(), attributeDimension.getWidth(), methodDimension.getWidth());
+		int width = max(DEFAULT_WIDTH, nameDimension.width(), attributeDimension.width(), methodDimension.width());
 		int height = attributeHeight + methodHeight + nameHeight;
 		return new Rectangle(node.position().getX(), node.position().getY(), width, height);
 	}

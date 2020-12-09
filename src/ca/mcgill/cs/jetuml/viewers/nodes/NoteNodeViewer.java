@@ -88,6 +88,6 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	{
 		Dimension textBounds = NOTE_VIEWER.getDimension(((NoteNode)pNode).getName()); 
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
-				Math.max(textBounds.getWidth() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.getHeight(), DEFAULT_HEIGHT));
+				Math.max(textBounds.width() + FOLD_LENGTH, DEFAULT_WIDTH), Math.max(textBounds.height(), DEFAULT_HEIGHT));
 	}
 }

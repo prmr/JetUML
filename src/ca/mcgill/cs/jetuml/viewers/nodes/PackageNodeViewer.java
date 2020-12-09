@@ -79,7 +79,7 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
 		Point position = getPosition(pNode, childrenBounds);
 		Dimension topDimension = getTopDimension(pNode);
-		return new Rectangle(position.getX(), position.getY(), topDimension.getWidth(), topDimension.getHeight());
+		return new Rectangle(position.getX(), position.getY(), topDimension.width(), topDimension.height());
 	}
 	
 	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
@@ -95,12 +95,12 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 		if( childrenBounds.isPresent() )
 		{
 			width = max( width, childrenBounds.get().getMaxX() + PADDING - position.getX());
-			height = max( height, childrenBounds.get().getMaxY() + PADDING - position.getY() - topDimension.getHeight());
+			height = max( height, childrenBounds.get().getMaxY() + PADDING - position.getY() - topDimension.height());
 		}
 		
-		width = max( width, topDimension.getWidth()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
+		width = max( width, topDimension.width()+ (DEFAULT_WIDTH - DEFAULT_TOP_WIDTH));
 		
-		return new Rectangle(position.getX(), position.getY() + topDimension.getHeight(), 
+		return new Rectangle(position.getX(), position.getY() + topDimension.height(), 
 				width, height);
 	}
 }

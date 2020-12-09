@@ -188,7 +188,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 				line.getY1() <= line.getY2() + VERTICAL_TOLERANCE ) 
 		{
 			// The label is centered if the edge is (mostly) horizontal
-			x -= textDimensions.getWidth() / 2;
+			x -= textDimensions.width() / 2;
 		}
 		else if( line.getY1() <= line.getY2() )
 		{
@@ -196,12 +196,12 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 		else
 		{
-			x -= textDimensions.getWidth() + gap;
+			x -= textDimensions.width() + gap;
 		}
 		
 		if( line.getX1() <= line.getX2() )
 		{
-			y -= textDimensions.getHeight() + gap;
+			y -= textDimensions.height() + gap;
 		}
 		else
 		{
@@ -212,7 +212,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		if( pEdge.getDiagram() != null && getPosition(pEdge) > 1 )
 		{
 			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
-			delta = textDimensions.getHeight() - delta*RADIANS_TO_PIXELS;
+			delta = textDimensions.height() - delta*RADIANS_TO_PIXELS;
 			if( line.getX1() <= line.getX2() )
 			{
 				y -= delta;
@@ -222,7 +222,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 				y += delta;
 			}
 		}
-		return new Rectangle2D(x, y, textDimensions.getWidth(), textDimensions.getHeight());
+		return new Rectangle2D(x, y, textDimensions.width(), textDimensions.height());
 }   
 	
 	/*
@@ -237,13 +237,13 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		Dimension textDimensions = getLabelBounds(pEdge.getMiddleLabel());
 		if( getPosition(pEdge) == 1 )
 		{
-			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.getWidth()/2,	
-					line.getY1() - SELF_EDGE_OFFSET*2, textDimensions.getWidth(), textDimensions.getHeight());
+			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.width()/2,	
+					line.getY1() - SELF_EDGE_OFFSET*2, textDimensions.width(), textDimensions.height());
 		}
 		else
 		{
-			return new Rectangle2D(line.getX1() - textDimensions.getWidth()/2,	
-					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, textDimensions.getWidth(), textDimensions.getHeight());
+			return new Rectangle2D(line.getX1() - textDimensions.width()/2,	
+					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, textDimensions.width(), textDimensions.height());
 		}
 	}   
 	

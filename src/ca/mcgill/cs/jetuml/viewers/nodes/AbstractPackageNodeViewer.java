@@ -107,7 +107,7 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	protected Dimension getTopDimension(AbstractPackageNode pNode)
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(pNode.getName());
-		int topWidth = max(nameBounds.getWidth() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
+		int topWidth = max(nameBounds.width() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
 		return new Dimension(topWidth, TOP_HEIGHT);
 	}
 	
@@ -118,7 +118,7 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	{
 		Point position = pNode.position();
 		Dimension topDimension = getTopDimension(pNode);
-		return new Rectangle(position.getX(), position.getY(), topDimension.getWidth(), topDimension.getHeight());
+		return new Rectangle(position.getX(), position.getY(), topDimension.width(), topDimension.height());
 	}
 	
 	protected abstract Rectangle getBottomBounds(AbstractPackageNode pNode);

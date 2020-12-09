@@ -50,6 +50,6 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	{
 		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
-				Math.max(bounds.getWidth(), DEFAULT_WIDTH), Math.max(bounds.getHeight(), DEFAULT_HEIGHT));
+				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
 	}
 }

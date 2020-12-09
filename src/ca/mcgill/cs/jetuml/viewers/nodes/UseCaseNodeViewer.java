@@ -50,8 +50,8 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 	public Rectangle getBounds(Node pNode)
 	{
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
-				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).getWidth()+
+				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).width()+
 						HORIZONTAL_NAME_PADDING), 
-				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).getHeight()));
+				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).height()));
 	}
 }

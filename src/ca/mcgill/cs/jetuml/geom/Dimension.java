@@ -69,7 +69,7 @@ public class Dimension
 	/**
 	 * @return The width component of this dimension.
 	 */
-	public int getWidth()
+	public int width()
 	{
 		return aWidth;
 	}
@@ -77,7 +77,7 @@ public class Dimension
 	/**
 	 * @return The height component of this dimension.
 	 */
-	public int getHeight()
+	public int height()
 	{
 		return aHeight;
 	}

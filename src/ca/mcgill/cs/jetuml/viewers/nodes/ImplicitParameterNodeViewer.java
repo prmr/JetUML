@@ -103,7 +103,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	 */
 	public Rectangle getTopRectangle(Node pNode)
 	{
-		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).getWidth()+ 
+		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
 				HORIZONTAL_PADDING, DEFAULT_WIDTH);
 		int yVal = 0;
 		if( isInConstructorCall(pNode) )
