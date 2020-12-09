@@ -22,12 +22,10 @@
 package ca.mcgill.cs.jetuml.geom;
 
 /**
- * This class describes a direction in the 2D plane. 
+ * This class describes an immutable direction in the 2D plane. 
  * A direction is a vector of length 1 with an angle between 0 
  * (inclusive) and 360 degrees (exclusive). There is also
- * a degenerate direction of length 0. Note that this class
- * currently does not support hashing with hashCode and 
- * equality testing with equals().
+ * a degenerate direction of length 0.
  */
 public class Direction
 {
@@ -44,7 +42,7 @@ public class Direction
      * @param pX the x-value of the direction
      * @param pY the corresponding y-value of the direction
 	 */
-	public Direction(double pX, double pY)
+	private Direction(double pX, double pY)
 	{
 		aX = pX;
 		aY = pY;

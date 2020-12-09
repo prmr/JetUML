@@ -180,7 +180,11 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		}
 		else     
 		{
-			Direction direction = new Direction(start.getX() - end.getX(), 0);
+			Direction direction = Direction.WEST;
+			if( start.getX() > end.getX() )
+			{
+				direction = Direction.EAST;
+			}
 			Point endPoint = NodeViewerRegistry.getConnectionPoints(endNode, direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
