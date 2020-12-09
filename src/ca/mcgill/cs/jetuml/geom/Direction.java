@@ -34,6 +34,8 @@ public class Direction
 	public static final Direction EAST = new Direction(1, 0);
 	public static final Direction WEST = new Direction(-1, 0);
 	
+	private static final int DEGREES_IN_CIRCLE = 360;
+	
 	private double aX;
 	private double aY;   
 	
@@ -92,6 +94,32 @@ public class Direction
 	public double getY()
 	{
 		return aY;
+	}
+	
+	/**
+	 * @return The direction as an angle between 0 (north) and 359.
+	 */
+	public int asAngle()
+	{
+		if( aX == 0 && aY == -1 )
+		{
+			return 0;
+		}
+		else if( aX == 0 && aY == 1 )
+		{
+			return DEGREES_IN_CIRCLE/2;
+		}
+		else
+		{
+			int factor = 1;
+			if( aX <= 0 )
+			{
+				factor = -1;
+			}
+			long degrees = factor * Math.round(Math.toDegrees(Math.acos(-aY)));
+			degrees = (degrees + DEGREES_IN_CIRCLE) % DEGREES_IN_CIRCLE;
+			return (int) degrees;
+		}
 	}
 	
 	@Override
