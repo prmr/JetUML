@@ -20,7 +20,9 @@ package ca.mcgill.cs.jetuml.geom;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.IntStream;
 
@@ -74,5 +76,25 @@ public class TestDirection
 	{
 		return IntStream.range(0, 500)
 				.filter(angle -> angle % 25 == 0);
+	}
+	
+	@Test
+	void testIsBetween_Boundaries()
+	{
+		assertTrue(Direction.fromAngle(0).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
+		assertFalse(Direction.fromAngle(5).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
+	}
+	
+	@Test
+	void testIsBetween_True()
+	{
+		assertTrue(Direction.fromAngle(5).isBetween(Direction.fromAngle(0), Direction.fromAngle(10)));
+		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
+	}
+	
+	@Test
+	void testIsBetween_False()
+	{
+		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
 	}
 }

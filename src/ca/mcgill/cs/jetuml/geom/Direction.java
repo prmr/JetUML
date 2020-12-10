@@ -59,8 +59,14 @@ public final class Direction
 		aAngleInDegrees = pAngle;
 	}
 	
-	private static Direction fromAngle(int pAngle)
+	/**
+	 * @param pAngle the desired angle.
+	 * @return A direction that corresponds to pAngle
+	 * @pre pAngle in [0,359]
+	 */
+	public static Direction fromAngle(int pAngle)
 	{
+		assert pAngle >= 0 && pAngle < DEGREES_IN_CIRCLE;
 		return DIRECTIONS.computeIfAbsent(pAngle, Direction::new);
 	}
 
@@ -91,6 +97,28 @@ public final class Direction
 	{
 		return new Direction((aAngleInDegrees + pAngle) % DEGREES_IN_CIRCLE);
 	}
+	
+	/**
+	 * Returns a new direction that represents this direction turned clockwise by 180C.
+	 * 
+	 * @return The new, rotated direction.
+	 */
+	public Direction mirrored()
+	{
+		return new Direction((aAngleInDegrees + DEGREES_IN_CIRCLE/2) % DEGREES_IN_CIRCLE);
+	}
+	
+	/**
+	 * @param pStart The start angle (inclusive)
+	 * @param pEnd The end angle (exclusive)
+	 * @return True if this direction represents an angle between pStart (inclusive) and pEnd (exclusive).
+	 * @pre pStart != null && pEnd != null
+	 */
+	public boolean isBetween( Direction pStart, Direction pEnd)
+	{
+		return aAngleInDegrees >= pStart.aAngleInDegrees && aAngleInDegrees < pEnd.aAngleInDegrees;
+	}
+
 
 	/**
 	 * Gets the x-component of this direction.

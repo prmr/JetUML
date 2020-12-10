@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -48,50 +50,70 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		return getBounds(pNode).contains(pPoint);
 	}
 	
+	private static Optional<Point> computeConnectionPointForCanonicalDirection(Rectangle pBounds, Direction pDirection)
+	{
+		Optional<Point> result = Optional.empty();
+		if( pDirection == Direction.NORTH )
+		{
+			result = Optional.of(new Point(pBounds.getCenter().getX(), pBounds.getY()));
+		}
+		else if( pDirection == Direction.SOUTH )
+		{
+			result =  Optional.of(new Point(pBounds.getCenter().getX(), pBounds.getMaxY()));
+		}
+		else if( pDirection == Direction.EAST)
+		{
+			result = Optional.of(new Point(pBounds.getMaxX(), pBounds.getCenter().getY()));
+		}
+		else if( pDirection == Direction.WEST )
+		{
+			result = Optional.of(new Point(pBounds.getX(), pBounds.getCenter().getY()));
+		}
+		return result;
+	}
+	
 	/* 
-	 * The default behavior is to returns a point in the middle of the appropriate side of the bounding box 
-	 * of the node.
-	 * @see ca.mcgill.cs.jetuml.diagram.views.nodes.NodeView#getConnectionPoint(ca.mcgill.cs.jetuml.geom.Direction)
+	 * The default behavior is to returns a point on the bounds of the node that intersects
+	 * the side of the node at the point where a line in pDirection originating from the center
+	 * intersects it.
 	 */
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		double slope = (double) bounds.getHeight() / (double) bounds.getWidth();
-		double ex = pDirection.getX();
-		double ey = pDirection.getY();
-		int x = bounds.getCenter().getX();
-		int y = bounds.getCenter().getY();
-      
-		if(ex != 0 && -slope <= ey / ex && ey / ex <= slope)
-		{  
-			// intersects at left or right boundary
-			if(ex > 0) 
-			{
-				x = bounds.getMaxX();
-				y += (bounds.getWidth() / 2) * ey / ex;
-			}
-			else
-			{
-				x = bounds.getX();
-				y -= (bounds.getWidth() / 2) * ey / ex;
-			}
+		
+		Optional<Point> result = computeConnectionPointForCanonicalDirection(bounds, pDirection);
+		if( result.isPresent() )
+		{
+			return result.get();
 		}
-		else if(ey != 0)
-		{  
-			// intersects at top or bottom
-			if(ey > 0) 
-			{
-				x += (bounds.getHeight() / 2) * ex / ey;
-				y = bounds.getMaxY();
-			}
-			else
-			{
-				x -= (bounds.getHeight() / 2) * ex / ey;
-				y = bounds.getY();
-			}
+		
+		Direction diagonalNE = Direction.fromLine(bounds.getCenter(), new Point(bounds.getMaxX(), bounds.getY()));
+		Direction diagonalSE = Direction.fromLine(bounds.getCenter(), new Point(bounds.getMaxX(), bounds.getMaxY()));
+		Direction diagonalSW = diagonalNE.mirrored();
+		Direction diagonalNW = diagonalSE.mirrored();
+		
+		if( pDirection.isBetween(diagonalNE, diagonalSE))
+		{
+			int offset = length(pDirection.asAngle() - Direction.EAST.asAngle(), bounds.getWidth()/2);
+			return new Point(bounds.getMaxX(), bounds.getCenter().getY() + offset);
 		}
-		return new Point(x, y);
+		else if( pDirection.isBetween(diagonalSE, diagonalSW))
+		{
+			int offset = length(pDirection.asAngle() - Direction.SOUTH.asAngle(), bounds.getHeight()/2);
+			return new Point(bounds.getCenter().getX() - offset, bounds.getMaxY());
+		}
+		else if( pDirection.isBetween(diagonalSW, diagonalNW))
+		{
+			int offset = length(pDirection.asAngle() - Direction.WEST.asAngle(), bounds.getWidth()/2);
+			return new Point(bounds.getX(), bounds.getCenter().getY() - offset);
+		}
+		else
+		{
+			final int angleS = 360;
+			int offset = length(pDirection.asAngle() - angleS, bounds.getHeight()/2);
+			return new Point(bounds.getCenter().getX() + offset, bounds.getY());
+		}
 	}
 	
 	@Override
@@ -117,5 +139,10 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		graphics.setStroke(Color.BLACK);
 		draw(pNode, canvas.getGraphicsContext2D());
 		return canvas;
+	}
+	
+	private static int length(int pAngleInDegrees, int pOpposingSide)
+	{
+		return (int) Math.round(pOpposingSide * Math.tan(Math.toRadians(pAngleInDegrees)));
 	}
 }
