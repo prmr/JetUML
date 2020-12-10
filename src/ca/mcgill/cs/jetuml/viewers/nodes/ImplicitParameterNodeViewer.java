@@ -73,7 +73,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
 		Rectangle bounds = getBounds(pNode);
-		if(pDirection.getX() > 0)
+		if(pDirection == Direction.EAST)
 		{
 			return new Point(bounds.getMaxX(), bounds.getY() + TOP_HEIGHT / 2);
 		}

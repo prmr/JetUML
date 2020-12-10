@@ -78,7 +78,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		if(pDirection.getX() > 0)
+		if(pDirection == Direction.EAST)
 		{
 			return new Point(getBounds(pNode).getMaxX(), getBounds(pNode).getY());
 		}
