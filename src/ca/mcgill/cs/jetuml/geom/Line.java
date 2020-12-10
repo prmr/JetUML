@@ -21,11 +21,15 @@
 package ca.mcgill.cs.jetuml.geom;
 
 import static java.lang.Math.min;
+
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 import static java.lang.Math.abs;
 
 /**
- * An immutable pair of points in the integer space.
+ * A pair of points in the integer space.
  */
+@Immutable
 public class Line implements Cloneable
 {
 	private final Point aPoint1;

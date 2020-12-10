@@ -20,10 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
  * A framework independent representation of a rectangle in 
- * 2-dimensional integer space. Immutable.
+ * 2-dimensional integer space.
  */
+@Immutable
 public class Rectangle
 {
 	private int aX;

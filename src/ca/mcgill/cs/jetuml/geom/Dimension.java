@@ -23,9 +23,12 @@ package ca.mcgill.cs.jetuml.geom;
 
 import static java.lang.Math.max;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
- * Represents an immutable pair of width and height.
+ * Represents a pair of width and height.
  */
+@Immutable
 public class Dimension
 {
 	public static final Dimension NULL = new Dimension(0, 0);

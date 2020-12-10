@@ -25,6 +25,8 @@ import static java.lang.Math.toDegrees;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
  * This class describes an immutable direction in the 2D plane. The
  * direction is conceptually represented as an angle in degrees between
@@ -32,6 +34,7 @@ import java.util.Map;
  * an increase in the angle moves the direction clockwise. A direction
  * can be expressed with a precision of a maximum of one degree.
  */
+@Immutable
 public final class Direction
 {
 	private static final Map<Integer, Direction> DIRECTIONS = new HashMap<>();
