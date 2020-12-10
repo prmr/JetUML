@@ -29,9 +29,10 @@ import static java.lang.Math.toRadians;
  * This class describes an immutable direction in the 2D plane. The
  * direction is conceptually represented as an angle in degrees between
  * 0 and 359 inclusively, where 0 represents "up" or "north", and where
- * an increase in the angle moves the direction clockwise.
+ * an increase in the angle moves the direction clockwise. A direction
+ * can be expressed with a precision of a maximum of one degree.
  */
-public class Direction
+public final class Direction
 {
 	public static final Direction NORTH = new Direction(0);
 	public static final Direction EAST = new Direction(90);
@@ -42,42 +43,39 @@ public class Direction
 
 	private final int aAngleInDegrees;
 
-	/**
-	 * Creates a new direction that represents this angle.
-	 * 
-	 * @param pAngle The angle to specify.
-	 * @pre pAngle >= 0 && pAngle < 360;
+	/*
+	 * @pre pAngle >= 0 && pAngle < DEGREES_IN_CIRCLE;
 	 */
-	public Direction(int pAngle)
+	private Direction(int pAngle)
 	{
 		assert pAngle >= 0 && pAngle < DEGREES_IN_CIRCLE;
 		aAngleInDegrees = pAngle;
 	}
 
 	/**
-	 * Constructs a direction from two points. The direction
-	 * is equivalent to the direction of the vector that runs
-	 * start point to the end point.
+	 * Returns the direction equivalent to the direction
+	 * represented by the line between pStart and pEnd.
 	 * 
 	 * @param pStart The starting point
 	 * @param pEnd The ending point
+	 * @return A Direction object
 	 * @pre pStart != null && pEnd != null
 	 * @pre ! pStart.equals(pEnd);
 	 */
-	public Direction(Point pStart, Point pEnd)
+	public static Direction fromLine(Point pStart, Point pEnd)
 	{
-		this(asAngle(pEnd.getX() - pStart.getX(), pEnd.getY() - pStart.getY()));
 		assert pStart != null && pEnd != null;
 		assert !pStart.equals(pEnd);
+		return new Direction(asAngle(pEnd.getX() - pStart.getX(), pEnd.getY() - pStart.getY()));
 	}
-
+	
 	/**
 	 * Returns a new direction that represents this direction turned clockwise by pAngle.
 	 * 
 	 * @param pAngle The angle in degrees for which to turn the direction.
 	 * @return The new, rotated direction.
 	 */
-	public Direction rotate(int pAngle)
+	public Direction rotatedBy(int pAngle)
 	{
 		return new Direction((aAngleInDegrees + pAngle) % DEGREES_IN_CIRCLE);
 	}

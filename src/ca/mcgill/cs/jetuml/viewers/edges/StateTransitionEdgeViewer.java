@@ -428,8 +428,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		{
 			turn = DEGREES_20;
 		}
-		Direction d1 = new Direction(startCenter, endCenter).rotate(-turn);
-		Direction d2 = new Direction(endCenter, startCenter).rotate(turn);
+		Direction d1 = Direction.fromLine(startCenter, endCenter).rotatedBy(-turn);
+		Direction d2 = Direction.fromLine(endCenter, startCenter).rotatedBy(turn);
 		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), d1), 
 				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), d2));
 	}

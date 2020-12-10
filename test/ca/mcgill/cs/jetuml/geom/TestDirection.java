@@ -35,7 +35,7 @@ public class TestDirection
 	{
 		int x = (int) Math.round(sin(Math.toRadians(pAngle))*100);
 		int y = (int) -Math.round(cos(Math.toRadians(pAngle))*100);
-		Direction direction = new Direction(new Point(0,0), new Point(x,y));
+		Direction direction = Direction.fromLine(new Point(0,0), new Point(x,y));
 		assertEquals(pAngle % 360, direction.asAngle());
 		assertEquals(sin(Math.toRadians(pAngle)), direction.getX(), 0.000000001);
 		assertEquals(-cos(Math.toRadians(pAngle)), direction.getY(), 0.000000001);
@@ -45,8 +45,8 @@ public class TestDirection
 	@MethodSource("angleGenerator")
 	void testRotate(int pAngle)
 	{
-		Direction direction = new Direction(0);
-		assertEquals(pAngle % 360, direction.rotate(pAngle).asAngle());
+		Direction direction = Direction.NORTH;
+		assertEquals(pAngle % 360, direction.rotatedBy(pAngle).asAngle());
 	}
 	
 	@Test

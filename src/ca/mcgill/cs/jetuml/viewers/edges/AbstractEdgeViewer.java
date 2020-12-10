@@ -121,9 +121,9 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 		Rectangle endBounds = NodeViewerRegistry.getBounds(pEdge.getEnd());
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
-		Direction toEnd = new Direction(startCenter, endCenter);
+		Direction toEnd = Direction.fromLine(startCenter, endCenter);
 		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), toEnd), 
-				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.rotate(DEGREES_180)));
+				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.rotatedBy(DEGREES_180)));
 	}
 
 	@Override
