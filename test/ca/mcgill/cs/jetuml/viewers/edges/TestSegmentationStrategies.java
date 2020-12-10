@@ -299,13 +299,13 @@ public class TestSegmentationStrategies
 		
 		Point2D[] points = SegmentationStyleFactory.createStraightStrategy().getPath(edge1);
 		assertEquals( 2, points.length );
-		assertEquals( new Point2D(100,25), points[0]);
+		assertEquals( new Point2D(100,24), points[0]);
 		assertEquals( new Point2D(200,25), points[1]);
 		
 		points = SegmentationStyleFactory.createStraightStrategy().getPath(edge2);
 		assertEquals( 2, points.length );
 		assertEquals( new Point2D(200,36), points[0]);
-		assertEquals( new Point2D(100,36), points[1]);
+		assertEquals( new Point2D(100,35), points[1]);
 	}
 	
 	/*

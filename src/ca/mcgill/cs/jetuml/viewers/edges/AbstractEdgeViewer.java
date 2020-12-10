@@ -123,7 +123,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = new Direction(startCenter, endCenter);
 		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), toEnd), 
-				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.turn(DEGREES_180)));
+				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.rotate(DEGREES_180)));
 	}
 
 	@Override

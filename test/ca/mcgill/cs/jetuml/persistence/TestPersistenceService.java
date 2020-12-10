@@ -239,7 +239,7 @@ public class TestPersistenceService
 		assertTrue(cr1.getStart() == n1);
 		assertTrue(cr1.getEnd() == p1);
 		
-		assertEquals(new Rectangle(236, 118, 34, 38), getBounds(cr2));
+		assertEquals(new Rectangle(236, 117, 34, 39), getBounds(cr2));
 		assertTrue(cr2.getStart() == a3);
 		assertTrue(cr2.getEnd() == a1);
 		
@@ -248,7 +248,7 @@ public class TestPersistenceService
 		assertTrue( cr3.getEnd() == a2);
 		assertTrue( cr3.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle(316, 67, 124, 22), getBounds(cr4));
+		assertEquals(new Rectangle(316, 66, 124, 23), getBounds(cr4));
 		assertTrue( cr4.getStart() == a1 );
 		assertTrue( cr4.getEnd() == u1 );
 		
@@ -274,7 +274,7 @@ public class TestPersistenceService
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
 		
-		assertEquals(new Rectangle(531, 78, 135, 72), getBounds(cr10));
+		assertEquals(new Rectangle(530, 78, 137, 72), getBounds(cr10));
 		assertTrue( cr10.getStart() == u1 );
 		assertTrue( cr10.getEnd() == u4 );
  	}
@@ -399,7 +399,7 @@ public class TestPersistenceService
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		NoteEdge edge5 = (NoteEdge) eIterator.next();
-		assertEquals(new Rectangle(692, 407, 32, 123), getBounds(edge5));
+		assertEquals(new Rectangle(692, 407, 33, 123), getBounds(edge5));
 		assertEquals(node5, edge5.getStart());
 		assertEquals(node8, edge5.getEnd());
 		
@@ -571,7 +571,7 @@ public class TestPersistenceService
 		StateTransitionEdge toEnd = (StateTransitionEdge) eIterator.next(); 
 		StateTransitionEdge toS3 = (StateTransitionEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(575, 338, 116, 2), getBounds(ne));
+		assertEquals(new Rectangle(574, 337, 116, 3), getBounds(ne));
 		assertEquals(note, ne.getStart());
 		assertEquals(point, ne.getEnd());
 		
@@ -686,7 +686,7 @@ public class TestPersistenceService
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle(osDependent(530, 524, 527), 208, osDependent(37, 41, 39), 82), getBounds(cr1));
+		assertEquals(new Rectangle(osDependent(529, 524, 527), 208, osDependent(38, 41, 39), 82), getBounds(cr1));
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
