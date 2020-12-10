@@ -20,6 +20,7 @@ package ca.mcgill.cs.jetuml.geom;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.stream.IntStream;
 
@@ -42,7 +43,7 @@ public class TestDirection
 	}
 	
 	@ParameterizedTest(name = "Angle={0} deg")
-	@MethodSource("angleGenerator")
+	@MethodSource("angleGeneratorMultiplesOf25")
 	void testRotate(int pAngle)
 	{
 		Direction direction = Direction.NORTH;
@@ -55,8 +56,23 @@ public class TestDirection
 		assertEquals( "[Direction: 0 degrees]", Direction.NORTH.toString() );
 	}
 	
+	@Test
+	void testFlyweight()
+	{
+		assertSame( Direction.NORTH, Direction.fromLine(new Point(0,0), new Point(0, -1)));
+		assertSame( Direction.EAST, Direction.fromLine(new Point(0,0), new Point(1, 0)));
+		assertSame( Direction.SOUTH, Direction.fromLine(new Point(0,0), new Point(0, 1)));
+		assertSame( Direction.WEST, Direction.fromLine(new Point(0,0), new Point(-1, 0)));
+	}
+	
 	private static IntStream angleGenerator()
 	{
 		return IntStream.range(0, 500);
+	}
+	
+	private static IntStream angleGeneratorMultiplesOf25()
+	{
+		return IntStream.range(0, 500)
+				.filter(angle -> angle % 25 == 0);
 	}
 }

@@ -25,6 +25,9 @@ import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class describes an immutable direction in the 2D plane. The
  * direction is conceptually represented as an angle in degrees between
@@ -34,10 +37,14 @@ import static java.lang.Math.toRadians;
  */
 public final class Direction
 {
-	public static final Direction NORTH = new Direction(0);
-	public static final Direction EAST = new Direction(90);
-	public static final Direction SOUTH = new Direction(180);
-	public static final Direction WEST = new Direction(270);
+	private static final Map<Integer, Direction> DIRECTIONS = new HashMap<>();
+	
+	// CSOFF: These need to be below the DIRECTION fields to avoid initialization errors
+	public static final Direction NORTH = fromAngle(0);
+	public static final Direction EAST = fromAngle(90);
+	public static final Direction SOUTH = fromAngle(180);
+	public static final Direction WEST = fromAngle(270);
+	// CSON:
 
 	private static final int DEGREES_IN_CIRCLE = 360;
 
@@ -50,6 +57,11 @@ public final class Direction
 	{
 		assert pAngle >= 0 && pAngle < DEGREES_IN_CIRCLE;
 		aAngleInDegrees = pAngle;
+	}
+	
+	private static Direction fromAngle(int pAngle)
+	{
+		return DIRECTIONS.computeIfAbsent(pAngle, Direction::new);
 	}
 
 	/**
@@ -66,7 +78,7 @@ public final class Direction
 	{
 		assert pStart != null && pEnd != null;
 		assert !pStart.equals(pEnd);
-		return new Direction(asAngle(pEnd.getX() - pStart.getX(), pEnd.getY() - pStart.getY()));
+		return fromAngle(asAngle(pEnd.getX() - pStart.getX(), pEnd.getY() - pStart.getY()));
 	}
 	
 	/**
