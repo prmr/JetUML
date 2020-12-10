@@ -20,6 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.round;
+import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
+
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -65,22 +72,16 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		double a = bounds.getWidth() / 2;
-		double b = bounds.getHeight() / 2;
-		double x = pDirection.getX();
-		double y = pDirection.getY();
-		double cx = bounds.getCenter().getX();
-		double cy = bounds.getCenter().getY();
-      
-		if(a != 0 && b != 0 && !(x == 0 && y == 0))
+		
+		Optional<Point> result = computeConnectionPointForCanonicalDirection(bounds, pDirection);
+		if( result.isPresent() )
 		{
-			double t = Math.sqrt((x * x) / (a * a) + (y * y) / (b * b));
-			return new Point( (int) Math.round(cx + x / t), (int) Math.round(cy + y / t));
+			return result.get();
 		}
-		else
-		{
-			return new Point((int) Math.round(cx), (int) Math.round(cy));
-		}
+		
+		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * DIAMETER/2);
+		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * DIAMETER/2);
+		return new Point( bounds.getCenter().getX() + offsetX, bounds.getCenter().getY() + offsetY);
 	}   	 
 
 	@Override

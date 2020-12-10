@@ -50,7 +50,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		return getBounds(pNode).contains(pPoint);
 	}
 	
-	private static Optional<Point> computeConnectionPointForCanonicalDirection(Rectangle pBounds, Direction pDirection)
+	protected static Optional<Point> computeConnectionPointForCanonicalDirection(Rectangle pBounds, Direction pDirection)
 	{
 		Optional<Point> result = Optional.empty();
 		if( pDirection == Direction.NORTH )
@@ -95,23 +95,23 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		
 		if( pDirection.isBetween(diagonalNE, diagonalSE))
 		{
-			int offset = length(pDirection.asAngle() - Direction.EAST.asAngle(), bounds.getWidth()/2);
+			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.EAST.asAngle(), bounds.getWidth()/2);
 			return new Point(bounds.getMaxX(), bounds.getCenter().getY() + offset);
 		}
 		else if( pDirection.isBetween(diagonalSE, diagonalSW))
 		{
-			int offset = length(pDirection.asAngle() - Direction.SOUTH.asAngle(), bounds.getHeight()/2);
+			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.SOUTH.asAngle(), bounds.getHeight()/2);
 			return new Point(bounds.getCenter().getX() - offset, bounds.getMaxY());
 		}
 		else if( pDirection.isBetween(diagonalSW, diagonalNW))
 		{
-			int offset = length(pDirection.asAngle() - Direction.WEST.asAngle(), bounds.getWidth()/2);
+			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.WEST.asAngle(), bounds.getWidth()/2);
 			return new Point(bounds.getX(), bounds.getCenter().getY() - offset);
 		}
 		else
 		{
 			final int angleS = 360;
-			int offset = length(pDirection.asAngle() - angleS, bounds.getHeight()/2);
+			int offset = lengthOfOpposingSide(pDirection.asAngle() - angleS, bounds.getHeight()/2);
 			return new Point(bounds.getCenter().getX() + offset, bounds.getY());
 		}
 	}
@@ -141,8 +141,8 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		return canvas;
 	}
 	
-	private static int length(int pAngleInDegrees, int pOpposingSide)
+	private static int lengthOfOpposingSide(int pAngleInDegrees, int pAdjacentSide)
 	{
-		return (int) Math.round(pOpposingSide * Math.tan(Math.toRadians(pAngleInDegrees)));
+		return (int) Math.round(pAdjacentSide * Math.tan(Math.toRadians(pAngleInDegrees)));
 	}
 }

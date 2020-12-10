@@ -29,6 +29,8 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestCircularNodeViewer
@@ -56,5 +58,53 @@ public class TestCircularNodeViewer
 	{
 		assertEquals(new Rectangle(0,0,20,20), aFinalViewer.getBounds(aFinal));
 		assertEquals(new Rectangle(0,0,20,20), aInitialViewer.getBounds(aInitial));
+	}
+	
+	@Test
+	void testGetConnectionPoint_North()
+	{
+		assertEquals(new Point(10,0), aFinalViewer.getConnectionPoint(aFinal, Direction.NORTH));
+	}
+	
+	@Test
+	void testGetConnectionPoint_East()
+	{
+		assertEquals(new Point(20,10), aFinalViewer.getConnectionPoint(aFinal, Direction.EAST));
+	}
+	
+	@Test
+	void testGetConnectionPoint_South()
+	{
+		assertEquals(new Point(10,20), aFinalViewer.getConnectionPoint(aFinal, Direction.SOUTH));
+	}
+	
+	@Test
+	void testGetConnectionPoint_West()
+	{
+		assertEquals(new Point(0,10), aFinalViewer.getConnectionPoint(aFinal, Direction.WEST));
+	}
+	
+	@Test
+	void testGetConnectionPoint_NE()
+	{
+		assertEquals(new Point(19,7), aFinalViewer.getConnectionPoint(aFinal, Direction.fromAngle(70)));
+	}
+	
+	@Test
+	void testGetConnectionPoint_SE()
+	{
+		assertEquals(new Point(19,13), aFinalViewer.getConnectionPoint(aFinal, Direction.fromAngle(110)));
+	}
+	
+	@Test
+	void testGetConnectionPoint_SW()
+	{
+		assertEquals(new Point(3,17), aFinalViewer.getConnectionPoint(aFinal, Direction.fromAngle(225)));
+	}
+	
+	@Test
+	void testGetConnectionPoint_NW()
+	{
+		assertEquals(new Point(2,4), aFinalViewer.getConnectionPoint(aFinal, Direction.fromAngle(305)));
 	}
 }

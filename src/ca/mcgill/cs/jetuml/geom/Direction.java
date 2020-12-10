@@ -19,11 +19,8 @@
 package ca.mcgill.cs.jetuml.geom;
 
 import static java.lang.Math.acos;
-import static java.lang.Math.cos;
 import static java.lang.Math.round;
-import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
-import static java.lang.Math.toRadians;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,7 +102,7 @@ public final class Direction
 	 */
 	public Direction mirrored()
 	{
-		return new Direction((aAngleInDegrees + DEGREES_IN_CIRCLE/2) % DEGREES_IN_CIRCLE);
+		return fromAngle((aAngleInDegrees + DEGREES_IN_CIRCLE/2) % DEGREES_IN_CIRCLE);
 	}
 	
 	/**
@@ -117,27 +114,6 @@ public final class Direction
 	public boolean isBetween( Direction pStart, Direction pEnd)
 	{
 		return aAngleInDegrees >= pStart.aAngleInDegrees && aAngleInDegrees < pEnd.aAngleInDegrees;
-	}
-
-
-	/**
-	 * Gets the x-component of this direction.
-	 * 
-	 * @return the x-component (between -1 and 1)
-	 */
-	public double getX()
-	{
-		return sin(Math.toRadians(aAngleInDegrees));
-	}
-
-	/**
-	 * Gets the y-component of this direction.
-	 * 
-	 * @return the y-component (between -1 and 1)
-	 */
-	public double getY()
-	{
-		return -cos(toRadians(aAngleInDegrees));
 	}
 
 	/**

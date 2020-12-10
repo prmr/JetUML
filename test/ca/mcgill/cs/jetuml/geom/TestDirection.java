@@ -19,6 +19,7 @@ package ca.mcgill.cs.jetuml.geom;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -40,8 +41,8 @@ public class TestDirection
 		int y = (int) -Math.round(cos(Math.toRadians(pAngle))*100);
 		Direction direction = Direction.fromLine(new Point(0,0), new Point(x,y));
 		assertEquals(pAngle % 360, direction.asAngle());
-		assertEquals(sin(Math.toRadians(pAngle)), direction.getX(), 0.000000001);
-		assertEquals(-cos(Math.toRadians(pAngle)), direction.getY(), 0.000000001);
+		assertEquals(sin(Math.toRadians(pAngle)), getX(direction), 0.000000001);
+		assertEquals(-cos(Math.toRadians(pAngle)), getY(direction), 0.000000001);
 	}
 	
 	@ParameterizedTest(name = "Angle={0} deg")
@@ -96,5 +97,36 @@ public class TestDirection
 	void testIsBetween_False()
 	{
 		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(0), Direction.fromAngle(5)));
+		assertFalse(Direction.fromAngle(25).isBetween(Direction.fromAngle(30), Direction.fromAngle(35)));
 	}
+	
+	@Test
+	void testMirrored()
+	{
+		assertSame(Direction.fromAngle(180), Direction.fromAngle(0).mirrored());
+		assertSame(Direction.fromAngle(181), Direction.fromAngle(1).mirrored());
+		assertSame(Direction.fromAngle(270), Direction.fromAngle(90).mirrored());
+		assertSame(Direction.fromAngle(90), Direction.fromAngle(270).mirrored());
+	}
+	
+	/**
+	 * Gets the x-component of this direction.
+	 * 
+	 * @return the x-component (between -1 and 1)
+	 */
+	private static double getX(Direction pDirection)
+	{
+		return sin(Math.toRadians(pDirection.asAngle()));
+	}
+
+	/**
+	 * Gets the y-component of this direction.
+	 * 
+	 * @return the y-component (between -1 and 1)
+	 */
+	private static double getY(Direction pDirection)
+	{
+		return -cos(toRadians(pDirection.asAngle()));
+	}
+
 }
