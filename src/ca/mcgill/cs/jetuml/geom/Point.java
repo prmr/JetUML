@@ -24,7 +24,7 @@ package ca.mcgill.cs.jetuml.geom;
  * A framework independent representation of a point in 
  * integer space. 
  */
-public final class Point implements Cloneable
+public final class Point
 {
 	private int aX;
 	private int aY;
@@ -90,17 +90,12 @@ public final class Point implements Cloneable
 		return Math.sqrt(a*a + b*b);
 	}
 	
-	@Override
-	public Point clone()
+	/**
+	 * @return A copy of this point.
+	 */
+	public Point copy()
 	{
-		try
-		{
-			return (Point) super.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return null;
-		}
+		return new Point(aX, aY);
 	}
 	
 	@Override

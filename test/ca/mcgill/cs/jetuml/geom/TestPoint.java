@@ -48,10 +48,10 @@ public class TestPoint
 	}
 	
 	@Test
-	public void testClone()
+	public void testCopy()
 	{
 		Point point = new Point(0,0);
-		Point clone = point.clone();
+		Point clone = point.copy();
 		assertTrue( clone != point );
 		assertEquals( point.getX(), clone.getX());
 		assertEquals( point.getY(), clone.getY());

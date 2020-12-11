@@ -60,7 +60,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	public AbstractNode clone()
 	{
 		AbstractNode clone = (AbstractNode) super.clone();
-		clone.aPosition = aPosition.clone();
+		clone.aPosition = aPosition.copy();
 		return clone;
 	}
 	
