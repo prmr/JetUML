@@ -30,7 +30,7 @@ import static java.lang.Math.abs;
  * A pair of points in the integer space.
  */
 @Immutable
-public class Line implements Cloneable
+public class Line
 {
 	private final Point aPoint1;
 	private final Point aPoint2;
@@ -48,35 +48,6 @@ public class Line implements Cloneable
 		assert pPoint1 != null && pPoint2 != null;
 		aPoint1 = pPoint1; 
 		aPoint2 = pPoint2;
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + aPoint1.hashCode();
-		result = prime * result + aPoint2.hashCode();
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object pObject)
-	{
-		if(this == pObject)
-		{
-			return true;
-		}
-		if(pObject == null)
-		{
-			return false;
-		}
-		if(getClass() != pObject.getClass())
-		{
-			return false;
-		}
-		Line other = (Line) pObject;
-		return aPoint1.equals(other.aPoint1) && aPoint2.equals(other.aPoint2);
 	}
 
 	/**
@@ -134,23 +105,6 @@ public class Line implements Cloneable
 	{
 		return new Rectangle(min(getX1(), getX2()), min(getY1(), getY2()), 
 				abs(getX2() - getX1()), abs(getY2() - getY1()));
-	}
-	
-	/* 
-	 * Shallow clone since points are immutable.
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	public Line clone()
-	{
-		try
-		{
-			return (Line) super.clone();
-		}
-		catch (CloneNotSupportedException e)
-		{
-			return null;
-		}
 	}
 	
 	@Override

@@ -125,10 +125,18 @@ public class TestSelectionModel
 		assertFalse(aModel.getRubberband().isPresent());
 		aModel.activateRubberband(new Line(new Point(0,0), new Point(10,10)));
 		assertTrue(aModel.getRubberband().isPresent());
-		assertEquals(new Line(new Point(0,0), new Point(10,10)), aModel.getRubberband().get());
+		
+		Line result = aModel.getRubberband().get();
+		assertEquals(new Point(0, 0), result.getPoint1());
+		assertEquals(new Point(10, 10), result.getPoint2());
+		
 		aModel.activateRubberband(new Line(new Point(0,0), new Point(20,30)));
 		assertTrue(aModel.getRubberband().isPresent());
-		assertEquals(new Line(new Point(0,0), new Point(20,30)), aModel.getRubberband().get());
+		
+		result = aModel.getRubberband().get();
+		assertEquals(new Point(0, 0), result.getPoint1());
+		assertEquals(new Point(20, 30), result.getPoint2());
+
 		aModel.deactivateRubberband();
 		assertFalse(aModel.getRubberband().isPresent());
 		aModel.deactivateRubberband();

@@ -21,8 +21,6 @@
 package ca.mcgill.cs.jetuml.geom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,11 +36,11 @@ public class TestLine
 		assertEquals("[(x=0,y=0), (x=1,y=1)]", ZERO_TO_ONE.toString());
 	}
 	
-	@Test
-	public void testHashCode()
-	{
-		assertEquals(31745, ZERO_TO_ONE.hashCode());
-	}
+//	@Test
+//	public void testHashCode()
+//	{
+//		assertEquals(31745, ZERO_TO_ONE.hashCode());
+//	}
 	
 //	@Test
 //	public void testClone()
@@ -53,18 +51,18 @@ public class TestLine
 //		assertTrue( ZERO_TO_ONE.getPoint2() == clone.getPoint2() );
 //	}
 	
-	@SuppressWarnings("unlikely-arg-type")
-	@Test
-	public void testEquals()
-	{
-		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE));
-//		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE.clone()));
-		assertFalse(ZERO_TO_ONE.equals(new Line(ONE, ZERO)));
-		assertFalse(ZERO_TO_ONE.equals(null));
-		assertFalse(ZERO_TO_ONE.equals("Foo"));
-		assertFalse(ZERO_TO_ONE.equals(new Line(ZERO, ZERO)));
-		assertFalse(ZERO_TO_ONE.equals(new Line(ONE, ONE)));
-	}
+//	@SuppressWarnings("unlikely-arg-type")
+//	@Test
+//	public void testEquals()
+//	{
+//		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE));
+////		assertTrue(ZERO_TO_ONE.equals(ZERO_TO_ONE.clone()));
+//		assertFalse(ZERO_TO_ONE.equals(new Line(ONE, ZERO)));
+//		assertFalse(ZERO_TO_ONE.equals(null));
+//		assertFalse(ZERO_TO_ONE.equals("Foo"));
+//		assertFalse(ZERO_TO_ONE.equals(new Line(ZERO, ZERO)));
+//		assertFalse(ZERO_TO_ONE.equals(new Line(ONE, ONE)));
+//	}
 	
 	@Test
 	public void testPositions()
