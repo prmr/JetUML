@@ -25,6 +25,7 @@ import static java.lang.Math.toDegrees;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.mcgill.cs.jetuml.annotations.Flyweight;
 import ca.mcgill.cs.jetuml.annotations.Immutable;
 
 /**
@@ -34,7 +35,8 @@ import ca.mcgill.cs.jetuml.annotations.Immutable;
  * an increase in the angle moves the direction clockwise. A direction
  * can be expressed with a precision of a maximum of one degree.
  */
-@Immutable
+@Immutable 
+@Flyweight
 public final class Direction
 {
 	private static final Map<Integer, Direction> DIRECTIONS = new HashMap<>();
