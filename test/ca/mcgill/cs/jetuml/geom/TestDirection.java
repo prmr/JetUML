@@ -54,6 +54,16 @@ public class TestDirection
 	}
 	
 	@Test
+	public void testIsCardinal()
+	{
+		assertTrue(Direction.NORTH.isCardinal());
+		assertTrue(Direction.EAST.isCardinal());
+		assertTrue(Direction.SOUTH.isCardinal());
+		assertTrue(Direction.WEST.isCardinal());
+		assertFalse(Direction.fromAngle(15).isCardinal());
+	}
+	
+	@Test
 	void testToString()
 	{
 		assertEquals( "[Direction: 0 degrees]", Direction.NORTH.toString() );

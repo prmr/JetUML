@@ -20,15 +20,9 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.round;
-import static java.lang.Math.sin;
-import static java.lang.Math.toRadians;
-
-import java.util.Optional;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.GeomUtils;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -71,17 +65,7 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		final Rectangle bounds = getBounds(pNode);
-		
-		Optional<Point> result = computeConnectionPointForCanonicalDirection(bounds, pDirection);
-		if( result.isPresent() )
-		{
-			return result.get();
-		}
-		
-		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * DIAMETER/2);
-		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * DIAMETER/2);
-		return new Point( bounds.getCenter().getX() + offsetX, bounds.getCenter().getY() + offsetY);
+		return GeomUtils.intersectCircle(getBounds(pNode), pDirection);
 	}   	 
 
 	@Override

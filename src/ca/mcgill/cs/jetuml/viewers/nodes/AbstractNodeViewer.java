@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.GeomUtils;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
@@ -80,40 +81,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		final Rectangle bounds = getBounds(pNode);
-		
-		Optional<Point> result = computeConnectionPointForCanonicalDirection(bounds, pDirection);
-		if( result.isPresent() )
-		{
-			return result.get();
-		}
-		
-		Direction diagonalNE = Direction.fromLine(bounds.getCenter(), new Point(bounds.getMaxX(), bounds.getY()));
-		Direction diagonalSE = Direction.fromLine(bounds.getCenter(), new Point(bounds.getMaxX(), bounds.getMaxY()));
-		Direction diagonalSW = diagonalNE.mirrored();
-		Direction diagonalNW = diagonalSE.mirrored();
-		
-		if( pDirection.isBetween(diagonalNE, diagonalSE))
-		{
-			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.EAST.asAngle(), bounds.getWidth()/2);
-			return new Point(bounds.getMaxX(), bounds.getCenter().getY() + offset);
-		}
-		else if( pDirection.isBetween(diagonalSE, diagonalSW))
-		{
-			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.SOUTH.asAngle(), bounds.getHeight()/2);
-			return new Point(bounds.getCenter().getX() - offset, bounds.getMaxY());
-		}
-		else if( pDirection.isBetween(diagonalSW, diagonalNW))
-		{
-			int offset = lengthOfOpposingSide(pDirection.asAngle() - Direction.WEST.asAngle(), bounds.getWidth()/2);
-			return new Point(bounds.getX(), bounds.getCenter().getY() - offset);
-		}
-		else
-		{
-			final int angleS = 360;
-			int offset = lengthOfOpposingSide(pDirection.asAngle() - angleS, bounds.getHeight()/2);
-			return new Point(bounds.getCenter().getX() + offset, bounds.getY());
-		}
+		return GeomUtils.intersectRectangle(getBounds(pNode), pDirection);
 	}
 	
 	@Override
@@ -139,10 +107,5 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		graphics.setStroke(Color.BLACK);
 		draw(pNode, canvas.getGraphicsContext2D());
 		return canvas;
-	}
-	
-	private static int lengthOfOpposingSide(int pAngleInDegrees, int pAdjacentSide)
-	{
-		return (int) Math.round(pAdjacentSide * Math.tan(Math.toRadians(pAngleInDegrees)));
 	}
 }

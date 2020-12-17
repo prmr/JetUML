@@ -62,6 +62,15 @@ public final class Direction
 	}
 	
 	/**
+	 * @return true if and only if this direction represents one of the four
+	 *     cardinal directions, namely NORTH, SOUTH, EAST, WEST. 
+	 */
+	public boolean isCardinal()
+	{
+		return this == NORTH || this == EAST || this == SOUTH || this == WEST;
+	}
+	
+	/**
 	 * @param pAngle the desired angle.
 	 * @return A direction that corresponds to pAngle
 	 * @pre pAngle in [0,359]
