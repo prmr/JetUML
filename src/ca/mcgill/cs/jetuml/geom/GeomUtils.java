@@ -22,11 +22,12 @@
 package ca.mcgill.cs.jetuml.geom;
 
 /**
- * A collection of utility methods.
+ * A collection of utility methods related to geometric
+ * calculations and supporting functions.
  */
-public final class Util
+public final class GeomUtils
 {
-	private Util()
+	private GeomUtils()
 	{}
 	
 	/**

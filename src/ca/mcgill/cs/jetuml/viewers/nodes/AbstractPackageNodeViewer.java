@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static ca.mcgill.cs.jetuml.geom.Util.max;
+import static ca.mcgill.cs.jetuml.geom.GeomUtils.max;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
