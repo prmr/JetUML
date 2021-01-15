@@ -110,6 +110,11 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 			pGraphics.setTextBaseline(VPos.CENTER);
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
+		else
+		{
+			pGraphics.setTextBaseline(VPos.CENTER);
+			pGraphics.setTextAlign(TextAlignment.CENTER);
+		}
 		pGraphics.fillText(pString, textX, textY);
 		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
 		pGraphics.setFill(oldFill);
