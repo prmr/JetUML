@@ -7,7 +7,7 @@ The Diagram Element Properties feature concerns how the domain-related state of 
 ## Design
 
 The state of diagram elements (i.e., instances of `DiagramElement`) can be separated into two categories:
-* *Application-related* state, such as the reference to their `View`, or the parent or children nodes of hierachical nodes;
+* *Application-related* state, such as the reference to the diagram that contains them, or the parent or children nodes of hierarchical nodes;
 * *Domain-related* state, which captures the properties of a diagram element that define it intrinsically (e.g., the name of a node, whether a call edge is a signal or not, etc.).
 
 Elements of domain-related state are referred to as *properties*. Properties are involved in three areas of the application:
