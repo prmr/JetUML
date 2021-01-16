@@ -88,7 +88,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	 * @param pCenter true if the string should be centered along the segment
 	 */
 	private static void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrowHead, String pString, boolean pCenter)
+			ArrowHead pArrowHead, String pString, boolean pCenter, VPos pVPos, TextAlignment pAlign)
 	{
 		if (pString == null || pString.length() == 0)
 		{
@@ -103,17 +103,12 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		pGraphics.setFill(Color.BLACK);
 		int textX = 0;
 		int textY = 0;
+		pGraphics.setTextBaseline(pVPos);
+		pGraphics.setTextAlign(pAlign);
 		if(pCenter) 
 		{
 			textX = bounds.getWidth()/2;
 			textY = bounds.getHeight() - textDimensions(pString).height()/2;
-			pGraphics.setTextBaseline(VPos.CENTER);
-			pGraphics.setTextAlign(TextAlignment.CENTER);
-		}
-		else
-		{
-			pGraphics.setTextBaseline(VPos.CENTER);
-			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
 		pGraphics.fillText(pString, textX, textY);
 		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
@@ -135,10 +130,12 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 				Conversions.toPoint(points[points.length - 2]), 
 				Conversions.toPoint(points[points.length - 1]));
 
-		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false);
-		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true);
+		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false, 
+				VPos.TOP, TextAlignment.LEFT);
+		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true,  
+				VPos.CENTER, TextAlignment.CENTER);
 		drawString(pGraphics, points[points.length - 2], points[points.length - 1], 
-				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false);
+				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, VPos.TOP, TextAlignment.CENTER);
 	}
 	
 	/**
