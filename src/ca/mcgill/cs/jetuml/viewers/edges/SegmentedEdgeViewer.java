@@ -107,7 +107,11 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		{
 			textX = bounds.getWidth()/2;
 			textY = bounds.getHeight() - textDimensions(pString).height()/2;
-			pGraphics.setTextBaseline(VPos.CENTER);
+			pGraphics.setTextBaseline(VPos.BOTTOM);
+			if ( pEndPoint2.getY() > pEndPoint1.getY() ) 
+			{
+				pGraphics.setTextBaseline(VPos.TOP);
+			}
 			pGraphics.setTextAlign(TextAlignment.CENTER);
 		}
 		pGraphics.fillText(pString, textX, textY);
