@@ -192,4 +192,100 @@ public class TestGeomUtils
 	{
 		assertEquals(new Point(2,4), GeomUtils.intersectCircle(aSquare, Direction.fromAngle(305)));
 	}
+	
+	@Test
+	void testIntersectEllipse_North()
+	{
+		assertEquals(new Point(30,0), GeomUtils.intersectEllipse(aRectangle, Direction.NORTH));
+	}
+	
+	@Test
+	void testIntersectEllipse_East()
+	{
+		assertEquals(new Point(60,20), GeomUtils.intersectEllipse(aRectangle, Direction.EAST));
+	}
+	
+	@Test
+	void tesIntersectEllipse_South()
+	{
+		assertEquals(new Point(30,40), GeomUtils.intersectEllipse(aRectangle, Direction.SOUTH));
+	}
+	
+	@Test
+	void testIntersectEllipse_West()
+	{
+		assertEquals(new Point(0,20), GeomUtils.intersectEllipse(aRectangle, Direction.WEST));
+	}
+	
+	@Test
+	void testIntersectEllipse_NE()
+	{
+		assertEquals(new Point(58,13), GeomUtils.intersectEllipse(aRectangle, Direction.fromAngle(70)));
+	}
+	
+	@Test
+	void testIntersectEllipse_SE()
+	{
+		assertEquals(new Point(58,27), GeomUtils.intersectEllipse(aRectangle, Direction.fromAngle(110)));
+	}
+	
+	@Test
+	void testIntersectEllipse_SW()
+	{
+		assertEquals(new Point(9,34), GeomUtils.intersectEllipse(aRectangle, Direction.fromAngle(225)));
+	}
+	
+	@Test
+	void testIntersectEllipse_NW()
+	{
+		assertEquals(new Point(5,9), GeomUtils.intersectEllipse(aRectangle, Direction.fromAngle(305)));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_North()
+	{
+		assertEquals(new Point(30,0), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.NORTH));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_East()
+	{
+		assertEquals(new Point(60,20), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.EAST));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_South()
+	{
+		assertEquals(new Point(30,40), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.SOUTH));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_West()
+	{
+		assertEquals(new Point(0,20), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.WEST));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_NE()
+	{
+		assertEquals(new Point(59,7), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(70)));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_SE()
+	{
+		assertEquals(new Point(59,33), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(110)));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_SW()
+	{
+		assertEquals(new Point(3,37), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(225)));
+	}
+	
+	@Test
+	void testIntersectRoundedRectangle_NW()
+	{
+		assertEquals(new Point(2,4), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(305)));
+	}
 }
