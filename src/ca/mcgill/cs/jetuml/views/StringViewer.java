@@ -138,6 +138,8 @@ public final class StringViewer
 	public void draw(String pString, GraphicsContext pGraphics, Rectangle pRectangle)
 	{
 		Text label = getLabel(pString);
+		final VPos oldVPos = pGraphics.getTextBaseline();
+		final TextAlignment oldAlign = pGraphics.getTextAlign();
 		
 		pGraphics.setTextAlign(label.getTextAlignment());
 		
@@ -177,5 +179,7 @@ public final class StringViewer
 					(int) (textX-xOffset+bounds.getWidth()), textY+yOffset, LineStyle.SOLID);
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
+		pGraphics.setTextBaseline(oldVPos);
+		pGraphics.setTextAlign(oldAlign);
 	}
 }
