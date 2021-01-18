@@ -23,6 +23,9 @@ package ca.mcgill.cs.jetuml.viewers.nodes;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
+import ca.mcgill.cs.jetuml.geom.Direction;
+import ca.mcgill.cs.jetuml.geom.GeomUtils;
+import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
@@ -52,4 +55,10 @@ public final class StateNodeViewer extends AbstractNodeViewer
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
 				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
 	}
+	
+	@Override
+	public Point getConnectionPoint(Node pNode, Direction pDirection)
+	{
+		return GeomUtils.intersectRoundedRectangle(getBounds(pNode), pDirection);
+	}   	
 }

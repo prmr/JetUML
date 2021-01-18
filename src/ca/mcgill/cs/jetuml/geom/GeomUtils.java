@@ -150,6 +150,95 @@ public final class GeomUtils
 		return new Point( pBounds.getCenter().getX() + offsetX, pBounds.getCenter().getY() + offsetY);
 	}   	 
 	
+	/**
+	 * Returns the point that intersects a ellipse on the line that originates
+	 * at the center of pBounds going in direction pDirection. 
+	 * 
+	 * @param pBounds The bounds of the rectangle in which the ellipse to intersect in inscribed.
+	 * @param pDirection The direction to follow to intersect the sides of the ellipse.
+	 * @return The point that intersects the ellipse inscribed in pBounds if we draw a line from its 
+	 *     center going in direction pDirection.
+	 * @pre pBounds != null && pDirection != null
+	 */
+	public static Point intersectEllipse(Rectangle pBounds, Direction pDirection)
+	{
+		assert pBounds != null && pDirection != null;
+		
+		if( pDirection.isCardinal() )
+		{
+			return intersectionForCardinalDirection(pBounds, pDirection);
+		}
+		
+		final int a = pBounds.getWidth()/2;
+		final int b = pBounds.getHeight()/2;
+		
+		int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * a);
+		int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * b);
+		return new Point( pBounds.getCenter().getX() + offsetX, pBounds.getCenter().getY() + offsetY);
+	}
+
+	/**
+	 * 
+	 * @param pBounds The bounds of the rectangle in which the rounded rectangle to intersect in inscribed.
+	 * @param pDirection The direction to follow to intersect the sides of the rounded rectangle.
+	 * @return The point that intersects the rounded rectangle inscribed in pBounds if we draw a line from 
+	 * 	   its center going in direction pDirection.
+	 * @pre pBounds != null && pDirection != null
+	 */
+	public static Point intersectRoundedRectangle(Rectangle pBounds, Direction pDirection)
+	{
+		assert pBounds != null && pDirection != null;
+		
+		if( pDirection.isCardinal() )
+		{
+			return intersectionForCardinalDirection(pBounds, pDirection);
+		}
+		
+		final int arcSize = 20; // same as the value in viewUtils
+		int radius = arcSize/2;
+		int widthOffset = pBounds.getWidth()/2 - radius;
+		int heightOffset = pBounds.getHeight()/2 - radius;
+		
+		// calculate bounds of rounded corner
+		Direction topNE = Direction.fromLine(pBounds.getCenter(), new Point(pBounds.getMaxX() - radius, pBounds.getY()));
+		Direction bottomNE = Direction.fromLine(pBounds.getCenter(), new Point(pBounds.getMaxX(), pBounds.getY() + radius));
+		Direction topSE = Direction.fromLine(pBounds.getCenter(), new Point(pBounds.getMaxX(), pBounds.getMaxY() - radius));
+		Direction bottomSE = Direction.fromLine(pBounds.getCenter(), new Point(pBounds.getMaxX() - radius, pBounds.getMaxY()));
+		Direction topSW = topNE.mirrored();
+		Direction bottomSW = bottomNE.mirrored();
+		Direction topNW = topSE.mirrored();
+		Direction bottomNW = bottomSE.mirrored();
+		
+		if( pDirection.isBetween(topNE, bottomNE))
+		{
+			int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			return new Point( pBounds.getCenter().getX() + offsetX + widthOffset, pBounds.getCenter().getY() + offsetY - heightOffset);
+		}
+		else if( pDirection.isBetween(topSE, bottomSE))
+		{
+			int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			return new Point( pBounds.getCenter().getX() + offsetX + widthOffset, pBounds.getCenter().getY() + offsetY + heightOffset);
+		}
+		else if( pDirection.isBetween(topSW, bottomSW))
+		{
+			int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			return new Point( pBounds.getCenter().getX() + offsetX - widthOffset, pBounds.getCenter().getY() + offsetY + heightOffset);
+		}
+		else if( pDirection.isBetween(topNW, bottomNW))
+		{
+			int offsetX = (int) round(cos(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			int offsetY = (int) round(sin(toRadians(pDirection.asAngle() - Direction.EAST.asAngle())) * radius);
+			return new Point( pBounds.getCenter().getX() + offsetX - widthOffset, pBounds.getCenter().getY() + offsetY - heightOffset);
+		}
+		else
+		{
+			return intersectRectangle(pBounds, pDirection);
+		}
+	}
+	
 	/*
      * returns the length, in pixel, of the opposing side to the angle pAngleInDegrees
      * of a right triangle for when the length (in pixels) of the adjacent side is 
