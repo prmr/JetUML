@@ -268,24 +268,24 @@ public class TestGeomUtils
 	@Test
 	void testIntersectRoundedRectangle_NE()
 	{
-		assertEquals(new Point(59,7), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(70)));
+		assertEquals(new Point(60,9), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(70)));
 	}
 	
 	@Test
 	void testIntersectRoundedRectangle_SE()
 	{
-		assertEquals(new Point(59,33), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(110)));
+		assertEquals(new Point(60,31), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(110)));
 	}
 	
 	@Test
 	void testIntersectRoundedRectangle_SW()
 	{
-		assertEquals(new Point(3,37), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(225)));
+		assertEquals(new Point(10,40), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(225)));
 	}
 	
 	@Test
 	void testIntersectRoundedRectangle_NW()
 	{
-		assertEquals(new Point(2,4), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(305)));
+		assertEquals(new Point(3,3), GeomUtils.intersectRoundedRectangle(aRectangle, Direction.fromAngle(305)));
 	}
 }
