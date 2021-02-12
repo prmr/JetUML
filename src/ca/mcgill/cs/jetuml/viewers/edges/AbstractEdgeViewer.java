@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.views.FontMetrics;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
@@ -36,7 +37,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Text;
 
 /**
  * Provides shared services for viewing an edge.
@@ -46,12 +46,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	protected static final int MAX_DISTANCE = 3;
 	protected static final int BUTTON_SIZE = 25;
 	protected static final int OFFSET = 3;
-	private static final Text SIZE_TESTER = new Text();
-	
-	static
-	{
-		SIZE_TESTER.setFont(FONT);
-	}
+	private static final FontMetrics SIZE_TESTER = new FontMetrics(FONT);
 	
 	private static final int DEGREES_180 = 180;
 	
@@ -80,9 +75,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	 */
 	protected static Dimension textDimensions( String pText )
 	{
-		SIZE_TESTER.setText(pText);
-		Bounds bounds = SIZE_TESTER.getBoundsInLocal();
-		return new Dimension((int)bounds.getWidth(), (int)bounds.getHeight());
+		return SIZE_TESTER.getDimension(pText);
 	}
 	
 	@Override
