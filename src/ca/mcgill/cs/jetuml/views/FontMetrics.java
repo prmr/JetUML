@@ -82,17 +82,4 @@ public class FontMetrics
 		double leading = aTextNode.getLayoutBounds().getMaxY();
 		return new Dimension((int) bounds.getWidth(), (int) (bounds.getHeight() - leading));
 	}
-
-	/**
-	 * Returns the logical height of the string.
-	 * @param pString The string to use.
-	 * @return The height defined by the ascent, descent, and leading
-	 */
-	public int getLogicalHeight(String pString)
-	{
-		assert pString != null;
-		
-		aTextNode.setText(pString);
-		return (int) aTextNode.getLayoutBounds().getHeight();
-	}
 } 
