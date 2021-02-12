@@ -43,12 +43,4 @@ public class TestFontMetrics {
 		assertEquals(new Dimension(92, 11), aMetrics.getDimension("Single-Line-String"));
 		assertEquals(new Dimension(29, 39), aMetrics.getDimension("Multi\nLine\nString"));
 	}
-	
-	@Test
-	public void testGetLogicalHeight()
-	{
-		assertEquals(14, aMetrics.getLogicalHeight(""));
-		assertEquals(14, aMetrics.getLogicalHeight("Single-Line-String"));
-		assertEquals(42, aMetrics.getLogicalHeight("Multi\nLine\nString"));
-	}
 }
