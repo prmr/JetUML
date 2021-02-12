@@ -130,7 +130,7 @@ public class TestTypeNodeViewer
 		ClassNode node = new ClassNode();
 		node.setName("NAME1\nNAME2\nNAME3\nNAME4");
 		return Arguments.of(node, 
-				new Rectangle(0, 0, 100, osDependent(70, 65, 65))); // Default width and additional height
+				new Rectangle(0, 0, 100, osDependent(70, 68, 65))); // Default width and additional height
 	}
 
 	// Name is just the interface prototype, one methods
