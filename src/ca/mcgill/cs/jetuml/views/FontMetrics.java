@@ -68,7 +68,7 @@ public class FontMetrics
 	}
 
 	/**
-	 * Returns the dimension of this string.
+	 * Returns the dimension of a given string.
 	 * @param pString The string to which the bounds pertain.
 	 * @return The dimension of the string
 	 */
@@ -80,6 +80,6 @@ public class FontMetrics
 		Bounds bounds = aTextNode.getLayoutBounds();
 		aTextNode.setText(BLANK);
 		double leading = aTextNode.getLayoutBounds().getMaxY();
-		return new Dimension((int) bounds.getWidth(), (int) (bounds.getHeight() - leading));
+		return new Dimension((int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight() - leading));
 	}
 } 
