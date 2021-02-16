@@ -100,7 +100,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		assertEquals(70, aViewer.getYPosition(aNode, aField1));
-		assertEquals(100, aViewer.getYPosition(aNode, aField2));
+		assertEquals(101, aViewer.getYPosition(aNode, aField2));
 	}
 	
 	@Test

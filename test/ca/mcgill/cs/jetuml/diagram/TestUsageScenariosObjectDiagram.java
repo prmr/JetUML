@@ -166,7 +166,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
 		addEdge(aReferenceEdge1, new Point(65, 100), new Point(20, 20));
-		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 		
 		selectAll();
 		moveSelection(26, 37);
@@ -219,8 +219,8 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		addNode(aFieldNode2, new Point(30, 40));
 		ObjectCollaborationEdge collaborationEdge1 = new ObjectCollaborationEdge();
 		addEdge(collaborationEdge1, new Point(25, 20), new Point(165, 20));
-		addEdge(aReferenceEdge1, new Point(65, 120), new Point(25, 20));
-		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		addEdge(aReferenceEdge1, new Point(65, 125), new Point(25, 20));
+		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 
 		// delete aReferenceEdge2 and collaborationEdge1
 		select(aReferenceEdge2);
@@ -247,8 +247,8 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		
 		ObjectCollaborationEdge assoEdge1 = new ObjectCollaborationEdge();
 		addEdge(assoEdge1, new Point(25, 20), new Point(165, 20));
-		addEdge(aReferenceEdge1, new Point(65, 120), new Point(20, 20));
-		addEdge(aReferenceEdge2, new Point(65, 120), new Point(150, 20));
+		addEdge(aReferenceEdge1, new Point(65, 125), new Point(20, 20));
+		addEdge(aReferenceEdge2, new Point(65, 125), new Point(150, 20));
 
 		// delete aObjectNode1 and all 3 edges
 		select(aObjectNode1, assoEdge1, aReferenceEdge1, aReferenceEdge2);

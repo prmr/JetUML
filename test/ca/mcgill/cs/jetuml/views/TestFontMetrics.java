@@ -39,8 +39,8 @@ public class TestFontMetrics {
 	@Test
 	public void testGetDimensions()
 	{
-		assertEquals(new Dimension(0, 11), aMetrics.getDimension(""));
-		assertEquals(new Dimension(92, 11), aMetrics.getDimension("Single-Line-String"));
-		assertEquals(new Dimension(29, 39), aMetrics.getDimension("Multi\nLine\nString"));
+		assertEquals(new Dimension(0, 12), aMetrics.getDimension(""));
+		assertEquals(new Dimension(92, 12), aMetrics.getDimension("Single-Line-String"));
+		assertEquals(new Dimension(30, 40), aMetrics.getDimension("Multi\nLine\nString"));
 	}
 }
