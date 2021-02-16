@@ -107,8 +107,8 @@ public final class StringViewer
 			return EMPTY;
 		}
 		Dimension dimension = getFontMetrics().getDimension(pString);
-		return new Dimension((int) Math.round(dimension.width() + HORIZONTAL_TEXT_PADDING*2), 
-				(int) Math.round(dimension.height() + VERTICAL_TEXT_PADDING*2));
+		return new Dimension(Math.round(dimension.width() + HORIZONTAL_TEXT_PADDING*2), 
+				Math.round(dimension.height() + VERTICAL_TEXT_PADDING*2));
 	}
 	
 	private TextAlignment getTextAlignment()
@@ -161,16 +161,16 @@ public final class StringViewer
 			Dimension dimension = getFontMetrics().getDimension(pString);
 			if(aAlignment == Align.CENTER)
 			{
-				xOffset = (int) (dimension.width()/2);
+				xOffset = dimension.width()/2;
 				yOffset = (int) (getFont().getSize()/2) + 1;
 			}
 			else if(aAlignment == Align.RIGHT)
 			{
-				xOffset = (int) dimension.width();
+				xOffset = dimension.width();
 			}
 			
 			ViewUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
-					(int) (textX-xOffset+dimension.width()), textY+yOffset, LineStyle.SOLID);
+					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 		pGraphics.setTextBaseline(oldVPos);
