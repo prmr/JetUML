@@ -117,7 +117,7 @@ public class TestPackageNodeViewer
 	public void testGetBoundsNameNoContent()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0, osDependent(102,104,101),80, NodeViewerRegistry.getBounds(aPackageNode1));
+		assertEqualRectangles(0,0, osDependent(104,104,101),80, NodeViewerRegistry.getBounds(aPackageNode1));
 	}
 	
 	@Test
@@ -130,7 +130,7 @@ public class TestPackageNodeViewer
 	public void testGetTopBoundsName()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0,osDependent(62, 64, 61),20, getTopBounds(aPackageNode1));
+		assertEqualRectangles(0,0,osDependent(64, 64, 61),20, getTopBounds(aPackageNode1));
 	}
 	
 	@Test

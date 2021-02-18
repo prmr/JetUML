@@ -70,18 +70,18 @@ public class TestFieldNodeViewer
 	public void testDimensionsUnattachedWithNameString()
 	{
 		aFieldNode1.setName("XXXXX");
-		assertEquals(osDependent(59, 65, 53), aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
-		assertEquals(osDependent(40, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
-		assertEquals(osDependent(22, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
+		assertEquals(osDependent(63, 65, 53), aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(osDependent(44, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(osDependent(27, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
 	public void testDimensionsUnattachedWithValueString()
 	{
 		aFieldNode1.setValue("XXXXX");
-		assertEquals(osDependent(10, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
-		assertEquals(osDependent(59, 65, 53), aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
-		assertEquals(osDependent(22, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
+		assertEquals(osDependent(14, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(osDependent(63, 65, 53), aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(osDependent(27, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test
@@ -91,7 +91,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(osDependent(20, 17, 23),0,osDependent(50, 56, 44),26), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(16, 17, 23),0,osDependent(58, 56, 44), osDependent(27,26,26)), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = 47 * 2
 		// h = text height 22
-		assertEquals( new Rectangle(osDependent(-29, -35, -23), 0, osDependent(118, 130, 106), osDependent(22, 26, 23)), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(-33, -35, -23), 0, osDependent(126, 130, 106), osDependent(27, 26, 23)), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class TestFieldNodeViewer
 	{
 		// x = max x of the node bounds - x gap
 		// y = half-point of the default height
-		assertEquals( new Point(osDependent(65, 68, 62),13), NodeViewerRegistry.getConnectionPoints(aFieldNode1, Direction.EAST));
+		assertEquals( new Point(osDependent(69, 68, 62),13), NodeViewerRegistry.getConnectionPoints(aFieldNode1, Direction.EAST));
 	}
 	
 	// NEW
@@ -120,9 +120,9 @@ public class TestFieldNodeViewer
 	public void testDimensionsAttachedNoStrings()
 	{
 		aObjectNode1.addChild(aFieldNode1);
-		assertEquals(osDependent(10, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
-		assertEquals(osDependent(40, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
-		assertEquals(26, aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
+		assertEquals(osDependent(14, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(osDependent(44, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(osDependent(27, 26,26), aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
@@ -130,9 +130,9 @@ public class TestFieldNodeViewer
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aObjectNode1.setName("XXXXXXXXXXXXXXXXXXX");
-		assertEquals(osDependent(10, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
-		assertEquals(osDependent(40, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
-		assertEquals(26, aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
+		assertEquals(osDependent(14, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    // Just the length of the mid offset
+		assertEquals(osDependent(44, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));  // Half the default width + mid offset.
+		assertEquals(osDependent(27,26,26), aFieldNodeViewer.getHeight(aFieldNode1));   // Default height
 	}
 	
 	@Test
@@ -140,9 +140,9 @@ public class TestFieldNodeViewer
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setName("XXXXX");
-		assertEquals(osDependent(59, 65, 53), aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
-		assertEquals(osDependent(40, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
-		assertEquals(osDependent(22, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
+		assertEquals(osDependent(63, 65, 53), aFieldNodeViewer.leftWidth(aFieldNode1));    // The length of the string
+		assertEquals(osDependent(44, 43, 37), aFieldNodeViewer.rightWidth(aFieldNode1));   // Half the default width + mid offset.
+		assertEquals(osDependent(27, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    // The height of the string
 	}
 	
 	@Test
@@ -150,9 +150,9 @@ public class TestFieldNodeViewer
 	{
 		aObjectNode1.addChild(aFieldNode1);
 		aFieldNode1.setValue("XXXXX");
-		assertEquals(osDependent(10, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
-		assertEquals(osDependent(59, 65, 53), aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
-		assertEquals(osDependent(22, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
+		assertEquals(osDependent(14, 13, 7), aFieldNodeViewer.leftWidth(aFieldNode1));    	// Just the length of the mid offset
+		assertEquals(osDependent(63, 65, 53), aFieldNodeViewer.rightWidth(aFieldNode1));  	// The length of the string
+		assertEquals(osDependent(27, 26, 23), aFieldNodeViewer.getHeight(aFieldNode1));    	// The height of the string
 	}
 	
 	@Test
@@ -163,7 +163,7 @@ public class TestFieldNodeViewer
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(5,70,70,26), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(5,70,70, osDependent(27,26,26)), NodeViewerRegistry.getBounds(aFieldNode1));
 	}
 	
 	@AfterEach

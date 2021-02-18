@@ -1,11 +1,11 @@
 package ca.mcgill.cs.jetuml.views;
 
+import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
+import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.stream.Stream;
-
-import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,8 +39,8 @@ public class TestFontMetrics {
 	@Test
 	public void testGetDimensions()
 	{
-		assertEquals(new Dimension(0, 12), aMetrics.getDimension(""));
-		assertEquals(new Dimension(92, 12), aMetrics.getDimension("Single-Line-String"));
-		assertEquals(new Dimension(30, 40), aMetrics.getDimension("Multi\nLine\nString"));
+		assertEquals(new Dimension(0, osDependent(13,12,12)), aMetrics.getDimension(""));
+		assertEquals(new Dimension(osDependent(95, 92, 92), osDependent(13, 12, 12)), aMetrics.getDimension("Single-Line-String"));
+		assertEquals(new Dimension(osDependent(31, 30, 30), osDependent(45, 40, 45)), aMetrics.getDimension("Multi\nLine\nString"));
 	}
 }
