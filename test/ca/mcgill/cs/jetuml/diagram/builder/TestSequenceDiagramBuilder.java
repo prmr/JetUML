@@ -144,9 +144,9 @@ public class TestSequenceDiagramBuilder
 		assertEquals(1, numberOfEdges());
 		assertEquals(1, aImplicitParameterNode1.getChildren().size());
 		assertEquals(1, aImplicitParameterNode2.getChildren().size());
-		assertEquals(CallNode.class, aImplicitParameterNode1.getChildren().get(0).getClass());
-		assertEquals(CallNode.class, aImplicitParameterNode2.getChildren().get(0).getClass());
-		assertSame(aDiagram.edges().get(0), constructorEdge);
+		assertSame(CallNode.class, aImplicitParameterNode1.getChildren().get(0).getClass());
+		assertSame(CallNode.class, aImplicitParameterNode2.getChildren().get(0).getClass());
+		assertSame(ConstructorEdge.class, aDiagram.edges().get(0).getClass());
 	}
 	
 	@Test

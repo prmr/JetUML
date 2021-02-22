@@ -36,6 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -188,9 +189,12 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		));
 		int insertionIndex = computeInsertionIndex(start, pStartPoint.getY());
-		pEdge.connect(start, end, aDiagram);
-		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, pEdge),
-				()-> aDiagram.removeEdge(pEdge)));
+		
+		// CSOFF: Needed for assigning to the final variable
+		final Edge edge = canCreateConstructorCall(pStartPoint, pEndPoint)?new ConstructorEdge():pEdge; // CSON:
+		edge.connect(start, end, aDiagram);
+		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, edge),
+				()-> aDiagram.removeEdge(edge)));
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
