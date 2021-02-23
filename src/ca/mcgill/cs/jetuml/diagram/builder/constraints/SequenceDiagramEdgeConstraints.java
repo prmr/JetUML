@@ -73,16 +73,24 @@ public final class SequenceDiagramEdgeConstraints
 	}
 	
 	/*
-	 * Call edges that land on a parameter node must land on the lifeline part.
+	 * Call edges that land on a parameter node must land on the lifeline part,
+	 * except if it is allowed to create a constructor.
 	 */
-	public static Constraint callEdgeEnd(Edge pEdge, Node pEndNode, Point pEndPoint)
+	public static Constraint callEdgeEnd(Edge pEdge, Node pStartNode, Node pEndNode, Point pEndPoint, Diagram pDiagram)
 	{
 		return ()->
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEndNode.getClass() == ImplicitParameterNode.class &&
-							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint));
+							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint) && 
+							 	!canCreateConstructor(pStartNode, pEndNode, pDiagram, pEndPoint));
 		};
+	}
+	
+	private static boolean canCreateConstructor(Node pStartNode, Node pEndNode, Diagram pDiagram, Point pEndPoint)
+	{
+		return 	(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) && 
+				new ControlFlow(pDiagram).canCreateConstructedObject(pEndNode, pEndPoint);
 	}
 	
 	/*
