@@ -204,10 +204,10 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(460, 230, 110, 40), NodeViewerRegistry.getBounds(u3));
 		assertEquals("Use case 3", u3.getName().toString());
 		
-		assertEquals(new Rectangle(270, 50, 48, osDependent(91, 87, 87)), NodeViewerRegistry.getBounds(a1));
+		assertEquals(new Rectangle(270, 50, 48, osDependent(91, 90, 87)), NodeViewerRegistry.getBounds(a1));
 		assertEquals("Actor", a1.getName().toString());
 		
-		assertEquals(new Rectangle(280, 230, 49, 91), NodeViewerRegistry.getBounds(a2));
+		assertEquals(new Rectangle(280, 230, osDependent(49, 48, 49), osDependent(91, 90, 87)), NodeViewerRegistry.getBounds(a2));
 		assertEquals("Actor2", a2.getName().toString());
 		
 		assertEquals("A note", n1.getName());
