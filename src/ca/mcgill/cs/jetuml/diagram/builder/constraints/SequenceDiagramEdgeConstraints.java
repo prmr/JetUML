@@ -84,7 +84,7 @@ public final class SequenceDiagramEdgeConstraints
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEnd.getClass() == ImplicitParameterNode.class &&
 							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEnd).contains(pEndPoint) && 
-							 	!canCreateConstructor(pStart, pEnd, pEdge.getDiagram(), pEndPoint));
+							 	!canCreateConstructor(pStart, pEnd, pDiagram, pEndPoint));
 		};
 	}
 	

@@ -91,14 +91,14 @@ public class TestEdgeConstraints
 	public void testNoteEdgeNodeNotePoint()
 	{
 		createDiagram();
-		assertTrue(EdgeConstraints.noteEdge().satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
+		assertTrue(EdgeConstraints.noteEdge().satisfied(aNoteEdge, aNote, aPointNode, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoteEdgeNodeNoteNotPoint()
 	{
 		createDiagram();
-		assertFalse(EdgeConstraints.noteEdge().satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
+		assertFalse(EdgeConstraints.noteEdge().satisfied(aNoteEdge, aNote, aNode1, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
@@ -153,7 +153,7 @@ public class TestEdgeConstraints
 		assertTrue(EdgeConstraints.maxEdges(1).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 		aEdge1.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(aEdge1);
-		assertFalse(EdgeConstraints.maxEdges(1).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
+		assertFalse(EdgeConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test 
@@ -163,11 +163,11 @@ public class TestEdgeConstraints
 		assertTrue(EdgeConstraints.maxEdges(2).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 		aEdge1.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(aEdge1);
-		assertTrue(EdgeConstraints.maxEdges(2).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
+		assertTrue(EdgeConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aDiagram));
 		DependencyEdge edge = aEdge1;
 		edge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		assertFalse(EdgeConstraints.maxEdges(2).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
+		assertFalse(EdgeConstraints.maxEdges(2).satisfied(new DependencyEdge(), aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test 
@@ -177,7 +177,7 @@ public class TestEdgeConstraints
 		aEdge1.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(aEdge1);
 		ClassNode node3 = new ClassNode();
-		assertTrue(EdgeConstraints.maxEdges(1).satisfied(aEdge1, aNode1, node3, aPoint, aPoint, aDiagram));
+		assertTrue(EdgeConstraints.maxEdges(1).satisfied(new DependencyEdge(), aNode1, node3, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test 
@@ -213,7 +213,7 @@ public class TestEdgeConstraints
 	public void testNodeSelfEdgeTrue()
 	{
 		createDiagram();
-		assertTrue(EdgeConstraints.noSelfEdge().satisfied(aEdge1, aNode1, aNode1, aPoint, aPoint, aDiagram));
+		assertTrue(EdgeConstraints.noSelfEdge().satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
