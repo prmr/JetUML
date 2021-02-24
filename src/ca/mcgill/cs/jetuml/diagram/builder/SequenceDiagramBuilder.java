@@ -52,6 +52,15 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
 	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
+	private static final ConstraintSet constraints = new ConstraintSet(
+			EdgeConstraints.noteEdge(),
+			EdgeConstraints.noteNode(),
+			EdgeConstraints.maxEdges(1),
+			SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(),
+			SequenceDiagramEdgeConstraints.returnEdge(),
+			SequenceDiagramEdgeConstraints.singleEntryPoint(),
+			SequenceDiagramEdgeConstraints.callEdgeEnd()
+	);
 	
 	/**
 	 * Creates a new builder for sequence diagrams.
@@ -66,16 +75,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
+	protected ConstraintSet getEdgeConstraints()
 	{
-		ConstraintSet constraintSet = new ConstraintSet(
-				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-				SequenceDiagramEdgeConstraints.noEdgesFromParameterTop(pStart, pStartPoint),
-				SequenceDiagramEdgeConstraints.returnEdge(pEdge, pStart, pEnd, aDiagram),
-				SequenceDiagramEdgeConstraints.singleEntryPoint(pEdge, pStart, aDiagram),
-				SequenceDiagramEdgeConstraints.callEdgeEnd(pEdge, pStart, pEnd, pEndPoint, aDiagram)
-			);
-		return constraintSet;
+
+		return constraints;
 	}
 	
 	/**

@@ -43,6 +43,7 @@ public class TestClassDiagramEdgeConstraints
 	private ClassNode aNode2;
 	private DependencyEdge aEdge1;
 	private GeneralizationEdge aGen1;
+	private Point aPoint;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -58,6 +59,7 @@ public class TestClassDiagramEdgeConstraints
 		aNode2 = new ClassNode();
 		aEdge1 = new DependencyEdge();
 		aGen1 = new GeneralizationEdge();
+		aPoint = new Point(0,0);
 	}
 	
 	private void createDiagram()
@@ -71,32 +73,30 @@ public class TestClassDiagramEdgeConstraints
 	public void testNoSelfGeneralizationNotAGeneralizationEdge()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization(aEdge1, aNode1, aNode2).satisfied());
-		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization(aEdge1, aNode1, aNode1).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization().satisfied(aEdge1, aNode1, new ClassNode(), aPoint, aPoint, aDiagram));
+		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization().satisfied(aEdge1, aNode1, aNode1, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoSelfGeneralizationGeneralizationEdge()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization(aGen1, aNode1, aNode2).satisfied());
-		assertFalse(ClassDiagramEdgeConstraints.noSelfGeneralization(aGen1, aNode1, aNode1).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noSelfGeneralization().satisfied(aGen1, aNode1, aNode2,aPoint, aPoint, aDiagram));
+		assertFalse(ClassDiagramEdgeConstraints.noSelfGeneralization().satisfied(aGen1, aNode1, aNode2,aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoDirectCycles_NotADependency()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
-				new GeneralizationEdge(), aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(new GeneralizationEdge(), aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoDirectCycles_NoExistingEdge()
 	{
 		createDiagram();
-		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
-				aEdge1, aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
@@ -106,8 +106,7 @@ public class TestClassDiagramEdgeConstraints
 		GeneralizationEdge edge = new GeneralizationEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
-				aEdge1, aNode1, aNode2).satisfied());
+		assertTrue(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
@@ -117,7 +116,6 @@ public class TestClassDiagramEdgeConstraints
 		DependencyEdge edge = new DependencyEdge();
 		edge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		assertFalse(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, 
-				aEdge1, aNode2, aNode1).satisfied());
+		assertFalse(ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class).satisfied(aEdge1, aNode1, aNode2, aPoint, aPoint, aDiagram));
 	}
 }

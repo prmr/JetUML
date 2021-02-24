@@ -36,6 +36,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestStateDiagramEdgeConstraints
 {
@@ -44,6 +45,7 @@ public class TestStateDiagramEdgeConstraints
 	private InitialStateNode aInitialNode;
 	private FinalStateNode aFinalNode;
 	private StateTransitionEdge aEdge;
+	private Point aPoint;
 
 	@BeforeAll
 	public static void setupClass()
@@ -59,6 +61,7 @@ public class TestStateDiagramEdgeConstraints
 		aInitialNode = new InitialStateNode();
 		aFinalNode = new FinalStateNode();
 		aEdge = new StateTransitionEdge();
+		aPoint = new Point(0,0);
 	}
 	
 	private void createDiagram()
@@ -72,34 +75,34 @@ public class TestStateDiagramEdgeConstraints
 	public void testNoEdgeToInitialNodeFalse()
 	{
 		createDiagram();
-		assertFalse(StateDiagramEdgeConstraints.noEdgeToInitialNode(aInitialNode).satisfied());
+		assertFalse(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aState, aInitialNode, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoEdgeToInitialNodeTrue()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeToInitialNode(aState).satisfied());
+		assertTrue(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aInitialNode, aState, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoEdgeFromFinalNodeInapplicableEdge()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode(new NoteEdge(), aFinalNode).satisfied());
+		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(new NoteEdge(), aFinalNode, aState, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoEdgeFromFinalNodeApplicableEdgeFalse()
 	{
 		createDiagram();
-		assertFalse(StateDiagramEdgeConstraints.noEdgeFromFinalNode(aEdge, aFinalNode).satisfied());
+		assertFalse(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aFinalNode, aState, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testNoEdgeFromFinalNodeApplicableEdgeTrue()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode(aEdge, aState).satisfied());
+		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aState, aState, aPoint, aPoint, aDiagram));
 	}
 }

@@ -21,11 +21,13 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -38,9 +40,9 @@ public final class StateDiagramEdgeConstraints
 	/*
 	 * No edges are allowed into an Initial Node
 	 */
-	public static Constraint noEdgeToInitialNode(Node pEnd)
+	public static Constraint noEdgeToInitialNode()
 	{
-		return ()->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
 		{
 			return pEnd.getClass() != InitialStateNode.class;
 		};
@@ -49,9 +51,9 @@ public final class StateDiagramEdgeConstraints
 	/*
 	 * The only edge allowed out of a FinalNode is a NoteEdge
 	 */
-	public static Constraint noEdgeFromFinalNode(Edge pEdge, Node pStart)
+	public static Constraint noEdgeFromFinalNode()
 	{
-		return ()->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
 		{
 			return !(pStart.getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class );
 		};

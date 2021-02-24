@@ -21,12 +21,14 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -34,14 +36,22 @@ import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
  */
 public final class ClassDiagramEdgeConstraints
 {
-	private ClassDiagramEdgeConstraints() {}
+	private ClassDiagramEdgeConstraints() {
+		
+		noSelfGeneralization();
+		noSelfDependency();
+		noDirectCycles(GeneralizationEdge.class);
+		noDirectCycles(AggregationEdge.class);
+		noDirectCycles(AssociationEdge.class);
+		noCombinedAssociationAggregation();
+	}
 	
 	/*
 	 * Self edges are not allowed for Generalization edges.
 	 */
-	public static Constraint noSelfGeneralization(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noSelfGeneralization()
 	{
-		return ()-> 
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)-> 
 		{
 			return !( pEdge.getClass() == GeneralizationEdge.class && pStart == pEnd );
 		};
@@ -50,9 +60,9 @@ public final class ClassDiagramEdgeConstraints
 	/*
 	 * Self edges are not allowed for Dependency edges.
 	 */
-	public static Constraint noSelfDependency(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noSelfDependency()
 	{
-		return () ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
 		{
 			return !( pEdge.getClass() == DependencyEdge.class && pStart == pEnd );
 		};
@@ -61,10 +71,9 @@ public final class ClassDiagramEdgeConstraints
 	/*
 	 * There can't be two edges of a given type, one in each direction, between two nodes.
 	 */
-	public static Constraint noDirectCycles(Class<? extends Edge> pEdgeType, 
-			Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
-		return () ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
 		{
 			if( pEdge.getClass() != pEdgeType )
 			{
@@ -84,9 +93,9 @@ public final class ClassDiagramEdgeConstraints
 	/*
 	 * There can't be both an association and an aggregation edge between two nodes
 	 */
-	public static Constraint noCombinedAssociationAggregation(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noCombinedAssociationAggregation()
 	{
-		return () ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
 		{
 			if( pEdge.getClass() != AssociationEdge.class && pEdge.getClass() != AggregationEdge.class )
 			{

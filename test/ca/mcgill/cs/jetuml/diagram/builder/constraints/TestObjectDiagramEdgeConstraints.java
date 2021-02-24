@@ -45,6 +45,7 @@ public class TestObjectDiagramEdgeConstraints
 	private FieldNode aField1;
 	private ObjectCollaborationEdge aCollaboration1;
 	private ObjectReferenceEdge aReference1;
+	private Point aPoint;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -61,6 +62,7 @@ public class TestObjectDiagramEdgeConstraints
 		aField1 = new FieldNode();
 		aCollaboration1 = new ObjectCollaborationEdge();
 		aReference1 = new ObjectReferenceEdge();
+		aPoint = new Point(0,0);
 	}
 	
 	private void createDiagram()
@@ -75,56 +77,56 @@ public class TestObjectDiagramEdgeConstraints
 	public void testCollaborationNotCollaborationEdge()
 	{
 		createDiagram();
-		assertTrue(ObjectDiagramEdgeConstraints.collaboration(aReference1, aObject1, aObject2).satisfied());
+		assertTrue(ObjectDiagramEdgeConstraints.collaboration().satisfied(aReference1, aObject1, aObject2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testCollaborationCollaborationNotCorrectStartNode()
 	{
 		createDiagram();
-		assertFalse(ObjectDiagramEdgeConstraints.collaboration(aCollaboration1, aField1, aObject2).satisfied());
+		assertFalse(ObjectDiagramEdgeConstraints.collaboration().satisfied(aCollaboration1, aField1, aObject2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testCollaborationCollaborationNotCorrectEndNode()
 	{
 		createDiagram();
-		assertFalse(ObjectDiagramEdgeConstraints.collaboration(aCollaboration1, aObject2, aField1).satisfied());
+		assertFalse(ObjectDiagramEdgeConstraints.collaboration().satisfied(aCollaboration1, aObject2, aField1, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testCollaborationCollaborationCorrect()
 	{
 		createDiagram();
-		assertTrue(ObjectDiagramEdgeConstraints.collaboration(aCollaboration1, aObject2, aObject2).satisfied());
+		assertTrue(ObjectDiagramEdgeConstraints.collaboration().satisfied(aCollaboration1, aObject2, aObject2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testReferenceNotReference()
 	{
 		createDiagram();
-		assertTrue(ObjectDiagramEdgeConstraints.reference(aCollaboration1, aField1, aObject2).satisfied());
+		assertTrue(ObjectDiagramEdgeConstraints.reference().satisfied(aCollaboration1, aField1, aObject2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testReferenceReferenceNotCorrectStart()
 	{
 		createDiagram();
-		assertFalse(ObjectDiagramEdgeConstraints.reference(aReference1, aObject1, aObject2).satisfied());
+		assertFalse(ObjectDiagramEdgeConstraints.reference().satisfied(aReference1, aObject1, aObject2, aPoint, aPoint, aDiagram));
 	}
 	
 	@Test
 	public void testReferenceReferenceNotCorrectEnd()
 	{
 		createDiagram();
-		assertFalse(ObjectDiagramEdgeConstraints.reference(aReference1, aField1, aField1).satisfied());
+		assertFalse(ObjectDiagramEdgeConstraints.reference().satisfied(aReference1, aField1, aField1, aPoint, aPoint, aDiagram));
 	}
 
 	@Test
 	public void testReferenceReferenceCorrect()
 	{
 		createDiagram();
-		assertTrue(ObjectDiagramEdgeConstraints.reference(aReference1, aField1, aObject2).satisfied());
+		assertTrue(ObjectDiagramEdgeConstraints.reference().satisfied(aReference1, aField1, aObject2, aPoint, aPoint, aDiagram));
 	}
 
 

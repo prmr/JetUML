@@ -27,6 +27,7 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * Methods to create edge addition constraints that apply to
@@ -41,9 +42,10 @@ public final class EdgeConstraints
 	 * - Any node and a note node.
 	 * - A note node and a point node. 
 	 */
-	public static Constraint noteEdge(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noteEdge()
 	{
-		return ()-> !( pEdge.getClass() == NoteEdge.class && 
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+				!( pEdge.getClass() == NoteEdge.class && 
 						!((pStart.getClass() == NoteNode.class && pEnd.getClass() == PointNode.class) ||
 								(pEnd.getClass() == NoteNode.class)));
 		
@@ -52,9 +54,9 @@ public final class EdgeConstraints
 	/* 
 	 * An edge can only be added to or from a note node if it is a note edge
 	 */
-	public static Constraint noteNode(Edge pEdge, Node pStart, Node pEnd)
+	public static Constraint noteNode()
 	{
-		return ()->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
 		{
 			if( pStart.getClass() == NoteNode.class || pEnd.getClass() == NoteNode.class )
 			{
@@ -67,10 +69,10 @@ public final class EdgeConstraints
 	/*
 	 * Only pNumber of edges of the same type are allowed in one direction between two nodes
 	 */
-	public static Constraint maxEdges(Edge pEdge, Node pStart, Node pEnd, Diagram pDiagram, int pNumber)
+	public static Constraint maxEdges(int pNumber)
 	{
 		assert pNumber > 0;
-		return ()->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
 		{
 			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber-1;
 		};
@@ -79,9 +81,9 @@ public final class EdgeConstraints
 	/*
 	 * Self-edges are not allowed.
 	 */
-	public static Constraint noSelfEdge(Node pStart, Node pEnd)
+	public static Constraint noSelfEdge()
 	{
-		return ()-> { return pStart != pEnd; };
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)-> { return pStart != pEnd; };
 	}
 
 	/*
