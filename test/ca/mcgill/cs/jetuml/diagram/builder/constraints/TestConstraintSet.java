@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,13 +30,22 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
+import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
+import ca.mcgill.cs.jetuml.geom.Point;
+
 public class TestConstraintSet
 {
 	private Set<String> aMessages;
+	private DependencyEdge aEdge1;
 	
 	private Constraint constraint(String pMessage, boolean pReturn)
 	{
-		return ()->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
 		{
 			aMessages.add(pMessage);
 			return pReturn;
@@ -48,71 +56,34 @@ public class TestConstraintSet
 	public void setUp()
 	{
 		aMessages = new HashSet<>();
+		aEdge1 = new DependencyEdge();
 	}
 	
 	@Test
 	public void testEmpty()
 	{
 		ConstraintSet constraints = new ConstraintSet();
-		assertTrue(constraints.satisfied());
+		assertTrue(constraints.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
 	}
-	
-	@Test
-	public void testMergeIntoEmpty()
-	{
-		ConstraintSet set1 = new ConstraintSet();
-		ConstraintSet set2 = new ConstraintSet(constraint("A", true), constraint("B", true));
-		set1.merge(set2);
-		set1.satisfied();
-		assertEquals(2, aMessages.size());
-		assertTrue(aMessages.contains("A"));
-		assertTrue(aMessages.contains("B"));
-	}
-	
-	@Test
-	public void testMergeEmpty()
-	{
-		ConstraintSet set1 = new ConstraintSet();
-		ConstraintSet set2 = new ConstraintSet(constraint("A", true), constraint("B", true));
-		set2.merge(set1);
-		set2.satisfied();
-		assertEquals(2, aMessages.size());
-		assertTrue(aMessages.contains("A"));
-		assertTrue(aMessages.contains("B"));
-	}
-	
-	@Test
-	public void testMergeNonEmptyNonEmpty()
-	{
-		ConstraintSet set1 = new ConstraintSet(constraint("X", true), constraint("Y", true));
-		ConstraintSet set2 = new ConstraintSet(constraint("A", true), constraint("B", true));
-		set2.merge(set1);
-		set2.satisfied();
-		assertEquals(4, aMessages.size());
-		assertTrue(aMessages.contains("A"));
-		assertTrue(aMessages.contains("B"));
-		assertTrue(aMessages.contains("X"));
-		assertTrue(aMessages.contains("Y"));
-	}
-	
+
 	@Test
 	public void testSatisfiedAllFalse()
 	{
 		ConstraintSet set1 = new ConstraintSet(constraint("X", false), constraint("Y", false), constraint("Z", false));
-		assertFalse(set1.satisfied());
+		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
 	}
 	
 	@Test
 	public void testSatisfiedSomeFalse()
 	{
 		ConstraintSet set1 = new ConstraintSet(constraint("X", true), constraint("Y", true), constraint("Z", false));
-		assertFalse(set1.satisfied());
+		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
 	}
 	
 	@Test
 	public void testSatisfiedTrue()
 	{
 		ConstraintSet set1 = new ConstraintSet(constraint("X", true), constraint("Y", true), constraint("Z", true));
-		assertTrue(set1.satisfied());
+		assertTrue(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
 	}
 }

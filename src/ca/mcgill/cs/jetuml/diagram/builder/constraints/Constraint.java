@@ -21,6 +21,11 @@
 
 package ca.mcgill.cs.jetuml.diagram.builder.constraints;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.geom.Point;
+
 /**
  * Represents a generic constraint.
  */
@@ -30,5 +35,5 @@ public interface Constraint
 	 * Indicates if the constraint is satisfied.
 	 * @return True if this constraint is satisfied.
 	 */
-	boolean satisfied();
+	boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram);
 }
