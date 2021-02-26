@@ -52,18 +52,22 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	public Rectangle getBounds(Node pNode)
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(),
-            Math.max(WIDTH, nameBounds.width()), HEIGHT + nameBounds.height());
+		return new Rectangle(
+				pNode.position().getX() + Math.min(0, (WIDTH - nameBounds.width()) / 2), 
+				pNode.position().getY(),
+				Math.max(WIDTH, nameBounds.width()),
+				HEIGHT + nameBounds.height()
+		);
 	}
 
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{	
 		Rectangle bounds = getBounds(pNode);
-		Dimension nameBox = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
-		Rectangle namebox = new Rectangle(bounds.getX() + (int)((bounds.getWidth() - nameBox.width()) / 2.0), 
-				bounds.getY() + HEIGHT, nameBox.width(), nameBox.height());
-		NAME_VIEWER.draw(((ActorNode)pNode).getName(), pGraphics, namebox);
+		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
+		Rectangle nameBox = new Rectangle(pNode.position().getX() + (WIDTH - nameBounds.width()) / 2, 
+				bounds.getY() + HEIGHT, nameBounds.width(), nameBounds.height());
+		NAME_VIEWER.draw(((ActorNode)pNode).getName(), pGraphics, nameBox);
 		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(pNode), LineStyle.SOLID);
 	}
 	
