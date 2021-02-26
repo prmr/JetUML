@@ -69,7 +69,7 @@ public class TestActorNodeViewer
 	public void testGetBounds_LongName()
 	{
 		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertEquals(new Point(-166,0), aViewer.getBounds(aNode).getOrigin());
 		assertTrue(aViewer.getBounds(aNode).getWidth() > 48);
 		assertTrue(aViewer.getBounds(aNode).getHeight() > 64);
 	}
