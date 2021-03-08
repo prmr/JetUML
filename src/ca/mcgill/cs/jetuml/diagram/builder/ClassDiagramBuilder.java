@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
@@ -49,7 +48,19 @@ public class ClassDiagramBuilder extends DiagramBuilder
 {
 	private static final int PADDING = 10;
 	private static final int TOP_HEIGHT = 20;
-	
+	private static final ConstraintSet constraints = new ConstraintSet(
+			EdgeConstraints.noteEdge(),
+			EdgeConstraints.noteNode(),
+			EdgeConstraints.maxEdges(1),
+			ClassDiagramEdgeConstraints.noSelfGeneralization(),
+			ClassDiagramEdgeConstraints.noSelfDependency(),
+			ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class),
+			ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class),
+			ClassDiagramEdgeConstraints.noDirectCycles(AggregationEdge.class),
+			ClassDiagramEdgeConstraints.noDirectCycles(AssociationEdge.class),
+			ClassDiagramEdgeConstraints.noCombinedAssociationAggregation()
+	);
+
 	/**
 	 * Creates a new builder for class diagrams.
 	 * 
@@ -101,18 +112,9 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
+	protected ConstraintSet getEdgeConstraints()
 	{
-		return new ConstraintSet(
-				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-				ClassDiagramEdgeConstraints.noSelfGeneralization(pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noSelfDependency(pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(DependencyEdge.class, pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(GeneralizationEdge.class, pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(AggregationEdge.class, pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noDirectCycles(AssociationEdge.class, pEdge, pStart, pEnd),
-				ClassDiagramEdgeConstraints.noCombinedAssociationAggregation(pEdge, pStart, pEnd)
-		);
+		return constraints;
 	}
 	
 	private static boolean validChild(Node pPotentialChild)

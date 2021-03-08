@@ -40,6 +40,15 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
  */
 public class ObjectDiagramBuilder extends DiagramBuilder
 {
+	private static final ConstraintSet constraints = new ConstraintSet(
+			
+			EdgeConstraints.noteEdge(),
+			EdgeConstraints.noteNode(),
+			EdgeConstraints.maxEdges(1),
+			ObjectDiagramEdgeConstraints.collaboration(),
+			ObjectDiagramEdgeConstraints.reference()
+		);
+			
 	/**
 	 * Creates a new builder for object diagrams.
 	 * 
@@ -53,13 +62,9 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
+	protected ConstraintSet getEdgeConstraints()
 	{
-		return new ConstraintSet(
-			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-			ObjectDiagramEdgeConstraints.collaboration(pEdge, pStart, pEnd),
-			ObjectDiagramEdgeConstraints.reference(pEdge, pStart, pEnd)
-		);
+		return constraints;
 	}
 	
 	@Override

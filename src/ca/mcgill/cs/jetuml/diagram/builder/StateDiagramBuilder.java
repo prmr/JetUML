@@ -23,12 +23,10 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
-import ca.mcgill.cs.jetuml.geom.Point;
+
 
 /**
  * A builder for state diagrams.
@@ -41,6 +39,15 @@ public class StateDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
+	private static final ConstraintSet constraints = new ConstraintSet(
+			
+			EdgeConstraints.noteEdge(),
+			EdgeConstraints.noteNode(),
+			EdgeConstraints.maxEdges(2),
+			StateDiagramEdgeConstraints.noEdgeFromFinalNode(),
+			StateDiagramEdgeConstraints.noEdgeToInitialNode()
+		);
+			
 	public StateDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
@@ -48,12 +55,8 @@ public class StateDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
+	protected ConstraintSet getEdgeConstraints()
 	{
-		return new ConstraintSet(
-			EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 2),
-			StateDiagramEdgeConstraints.noEdgeFromFinalNode(pEdge, pStart),
-			StateDiagramEdgeConstraints.noEdgeToInitialNode(pEnd)
-		);
+		return constraints;
 	}
 }
