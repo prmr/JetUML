@@ -39,7 +39,7 @@ public class StateDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	private static final ConstraintSet constraints = new ConstraintSet(
+	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
 			
 			EdgeConstraints.noteEdge(),
 			EdgeConstraints.noteNode(),
@@ -57,6 +57,6 @@ public class StateDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getEdgeConstraints()
 	{
-		return constraints;
+		return CONSTRAINTS;
 	}
 }

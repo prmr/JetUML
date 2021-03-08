@@ -40,7 +40,7 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
  */
 public class ObjectDiagramBuilder extends DiagramBuilder
 {
-	private static final ConstraintSet constraints = new ConstraintSet(
+	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
 			
 			EdgeConstraints.noteEdge(),
 			EdgeConstraints.noteNode(),
@@ -64,7 +64,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getEdgeConstraints()
 	{
-		return constraints;
+		return CONSTRAINTS;
 	}
 	
 	@Override

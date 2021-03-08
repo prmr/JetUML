@@ -52,7 +52,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
 	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
-	private static final ConstraintSet constraints = new ConstraintSet(
+	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
 			EdgeConstraints.noteEdge(),
 			EdgeConstraints.noteNode(),
 			EdgeConstraints.maxEdges(1),
@@ -78,7 +78,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	protected ConstraintSet getEdgeConstraints()
 	{
 
-		return constraints;
+		return CONSTRAINTS;
 	}
 	
 	/**
