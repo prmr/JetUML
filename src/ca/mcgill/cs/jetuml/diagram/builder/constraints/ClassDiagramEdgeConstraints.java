@@ -36,15 +36,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
  */
 public final class ClassDiagramEdgeConstraints
 {
-	private ClassDiagramEdgeConstraints() {
-		
-		noSelfGeneralization();
-		noSelfDependency();
-		noDirectCycles(GeneralizationEdge.class);
-		noDirectCycles(AggregationEdge.class);
-		noDirectCycles(AssociationEdge.class);
-		noCombinedAssociationAggregation();
-	}
+	private ClassDiagramEdgeConstraints() {}
 	
 	/*
 	 * Self edges are not allowed for Generalization edges.

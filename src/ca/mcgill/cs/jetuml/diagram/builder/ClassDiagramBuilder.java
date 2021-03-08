@@ -48,7 +48,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 {
 	private static final int PADDING = 10;
 	private static final int TOP_HEIGHT = 20;
-	private static final ConstraintSet constraints = new ConstraintSet(
+	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
 			EdgeConstraints.noteEdge(),
 			EdgeConstraints.noteNode(),
 			EdgeConstraints.maxEdges(1),
@@ -114,7 +114,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	@Override
 	protected ConstraintSet getEdgeConstraints()
 	{
-		return constraints;
+		return CONSTRAINTS;
 	}
 	
 	private static boolean validChild(Node pPotentialChild)
