@@ -23,17 +23,23 @@ package ca.mcgill.cs.jetuml.diagram.builder;
 
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
-import ca.mcgill.cs.jetuml.geom.Point;
+
 
 /**
  * A builder for use case diagram.
  */
 public class UseCaseDiagramBuilder extends DiagramBuilder
 {
+	private static final ConstraintSet constraints = new ConstraintSet(
+			
+			EdgeConstraints.noteEdge(),
+			EdgeConstraints.noteNode(),
+			EdgeConstraints.maxEdges(1),
+			EdgeConstraints.noSelfEdge()
+	);
+	
 	/**
 	 * Creates a new builder for use case diagrams.
 	 * 
@@ -47,11 +53,8 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	}
 	
 	@Override
-	protected ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint)
+	protected ConstraintSet getEdgeConstraints()
 	{
-		return new ConstraintSet(
-				EdgeConstraints.maxEdges(pEdge, pStart, pEnd, aDiagram, 1),
-				EdgeConstraints.noSelfEdge(pStart, pEnd)
-		);
+		return constraints;
 	}
 }

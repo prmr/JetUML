@@ -38,7 +38,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
-import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -136,12 +135,9 @@ public abstract class DiagramBuilder
 			return false;
 		}
 		
-		ConstraintSet constraints = new ConstraintSet(
-				EdgeConstraints.noteEdge(pEdge, startNode.get(), endNode.get()),
-				EdgeConstraints.noteNode(pEdge, startNode.get(), endNode.get())
-		);
-		constraints.merge(getAdditionalEdgeConstraints(pEdge, startNode.get(), endNode.get(), pStart, pEnd));
-		return constraints.satisfied();
+
+		return this.getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagram);
+		
 	}
 	
 	/**
@@ -161,15 +157,9 @@ public abstract class DiagramBuilder
 	}
 	
 	/**
-	 * @param pEdge The edge to add.
-	 * @param pStart The start node.
-	 * @param pEnd The end node.
- 	 * @param pStartPoint the point in the start node.
-	 * @param pEndPoint the point in the end node.
-	 * @return Additional, diagram type-specific constraints for adding edges.
-	 * @pre pEdge != null && pStart != null && pEnd != null && pStartPoint!= null && pEndPoint != null
+	 * @return diagram type-specific constraints for adding edges.
 	 */
-	protected abstract ConstraintSet getAdditionalEdgeConstraints(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint);
+	protected abstract ConstraintSet getEdgeConstraints();
 	
 	/** 
 	 * The default behavior is to position the node so it entirely fits in the diagram, then 

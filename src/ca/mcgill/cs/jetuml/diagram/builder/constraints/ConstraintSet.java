@@ -25,6 +25,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.geom.Point;
+
 /**
  * Represents a set of constraints. Constraint sets are not meant to
  * be reused, so they do not have a method to clear the set. The intended
@@ -47,28 +52,15 @@ public class ConstraintSet
 		assert pConstraints != null;
 		aConstraints.addAll(Arrays.asList(pConstraints));
 	}
-	
-	/**
-	 * Add all constraints in pConstraintSet into this
-	 * set.
-	 * 
-	 * @param pConstraintSet The set to merge into this set.
-	 * @pre pConstraintSet != null;
-	 */
-	public void merge( ConstraintSet pConstraintSet )
-	{
-		assert pConstraintSet != null;
-		pConstraintSet.aConstraints.forEach( constraint -> aConstraints.add(constraint ));
-	}
-	
+		
 	/**
 	 * @return True if and only if all the constraints in the set are satisfied.
 	 */
-	public boolean satisfied()
+	public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)
 	{
 		for( Constraint constraint : aConstraints )
 		{
-			if( !constraint.satisfied() )
+			if( !constraint.satisfied(pEdge, pStart, pEnd, pStartPoint, pEndPoint, pDiagram))
 			{
 				return false;
 			}
