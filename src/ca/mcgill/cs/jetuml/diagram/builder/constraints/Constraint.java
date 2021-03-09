@@ -27,12 +27,17 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
- * Represents a generic constraint.
+ * Represents a generic constraint on how an edge can be created.
  */
 public interface Constraint
 {
 	/**
-	 * Indicates if the constraint is satisfied.
+	 * @param pEdge The edge on which the constraint is applied.
+	 * @param pStart The start node for the edge.
+	 * @param pEnd The end node for the edge.
+	 * @param pStartPoint The point on the canvas where the edge rubber band starts.
+	 * @param pEndPoint The point on the canvas where the edge rubber band ends.
+	 * @param pDiagram The diagram in which the edge is to be added.
 	 * @return True if this constraint is satisfied.
 	 */
 	boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram);

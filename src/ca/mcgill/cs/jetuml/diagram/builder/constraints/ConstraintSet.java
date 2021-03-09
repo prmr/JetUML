@@ -25,17 +25,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
- * Represents a set of constraints. Constraint sets are not meant to
- * be reused, so they do not have a method to clear the set. The intended
- * life cycle for an object of this class is to be initialized, checked for 
- * satisfaction, then discarded.
+ * Represents a set of constraints.
  */
+@Immutable
 public class ConstraintSet
 {
 	private final Set<Constraint> aConstraints = new HashSet<>();
@@ -54,6 +53,14 @@ public class ConstraintSet
 	}
 		
 	/**
+	 * Returns True if and only if all the constraints in the set are satisfied.
+	 * 
+	 * @param pEdge The edge on which the constraints are applied.
+	 * @param pStart The start node for the edge.
+	 * @param pEnd The end node for the edge.
+	 * @param pStartPoint The point on the canvas where the edge rubber band starts.
+	 * @param pEndPoint The point on the canvas where the edge rubber band ends.
+	 * @param pDiagram The diagram in which the edge is to be added.
 	 * @return True if and only if all the constraints in the set are satisfied.
 	 */
 	public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)

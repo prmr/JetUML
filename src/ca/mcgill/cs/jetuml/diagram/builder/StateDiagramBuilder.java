@@ -27,7 +27,6 @@ import ca.mcgill.cs.jetuml.diagram.builder.constraints.ConstraintSet;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.EdgeConstraints;
 import ca.mcgill.cs.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
 
-
 /**
  * A builder for state diagrams.
  */
@@ -48,6 +47,12 @@ public class StateDiagramBuilder extends DiagramBuilder
 			StateDiagramEdgeConstraints.noEdgeToInitialNode()
 		);
 			
+	/**
+	 * Creates a new builder for state diagrams.
+	 * 
+	 * @param pDiagram The diagram to wrap around.
+	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.STATE
+	 */
 	public StateDiagramBuilder( Diagram pDiagram )
 	{
 		super( pDiagram );
