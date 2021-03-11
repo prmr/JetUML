@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static java.util.EnumSet.of;
+
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -41,7 +43,8 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
 	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
-	private static final StringViewer NOTE_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer NOTE_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
+			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
