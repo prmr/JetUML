@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static java.util.EnumSet.of;
+
 import java.util.function.Function;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -30,25 +32,29 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Renders edges as a path consisting of straight line segments.
  */
 public class SegmentedEdgeViewer extends AbstractEdgeViewer
 {
+	private static final StringViewer CENTERED_TOP_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer CENTERED_BOTTOM_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.BOTTOM, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
+			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
+			
 	private Function<Edge, LineStyle> aLineStyleExtractor;
 	private Function<Edge, ArrowHead> aArrowStartExtractor;
 	private Function<Edge, ArrowHead> aArrowEndExtractor;
@@ -95,30 +101,21 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 			return;
 		}
 		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
-		
-		Paint oldFill = pGraphics.getFill();
-		VPos oldVPos = pGraphics.getTextBaseline();
-		TextAlignment oldAlign = pGraphics.getTextAlign();
-		pGraphics.translate(bounds.getX(), bounds.getY());
-		pGraphics.setFill(Color.BLACK);
-		int textX = 0;
-		int textY = 0;
 		if(pCenter) 
 		{
-			textX = bounds.getWidth()/2;
-			textY = bounds.getHeight() - textDimensions(pString).height()/2;
-			pGraphics.setTextBaseline(VPos.BOTTOM);
-			if ( pEndPoint2.getY() > pEndPoint1.getY() ) 
+			if ( pEndPoint2.getY() > pEndPoint1.getY() )
 			{
-				pGraphics.setTextBaseline(VPos.TOP);
+				CENTERED_TOP_STRING_VIEWER.draw(pString, pGraphics, bounds);
 			}
-			pGraphics.setTextAlign(TextAlignment.CENTER);
+			else
+			{
+				CENTERED_BOTTOM_STRING_VIEWER.draw(pString, pGraphics, bounds);
+			}
 		}
-		pGraphics.fillText(pString, textX, textY);
-		pGraphics.translate(-bounds.getX(), -bounds.getY()); 
-		pGraphics.setFill(oldFill);
-		pGraphics.setTextBaseline(oldVPos);
-		pGraphics.setTextAlign(oldAlign);
+		else
+		{
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(pString, pGraphics, bounds);
+		}
 	}
 	
 	@Override
