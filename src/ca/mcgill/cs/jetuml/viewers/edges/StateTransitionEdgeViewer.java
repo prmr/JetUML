@@ -22,6 +22,8 @@ package ca.mcgill.cs.jetuml.viewers.edges;
 
 import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
 
+import static java.util.EnumSet.noneOf;
+
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
@@ -33,13 +35,13 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.MoveTo;
@@ -47,7 +49,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 
 /**
  * An edge view specialized for state transitions.
@@ -65,6 +66,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final double HEIGHT_RATIO = 3.5;
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int MIN_FONT_SIZE = 9;
+	private static final StringViewer STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.BOTTOM, StringViewer.HorizontalAlign.CENTER, 
+			noneOf(StringViewer.TextDecorations.class));
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
@@ -118,19 +121,13 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	{
 		adjustLabelFont(pEdge);
 		Rectangle2D labelBounds = getLabelBounds(pEdge);
-		double x = labelBounds.getMinX();
-		double y = labelBounds.getMinY();
+		Rectangle drawingRectangle = new Rectangle((int) Math.round(labelBounds.getMinX()), (int) Math.round(labelBounds.getMinY()), 
+				(int) Math.round(labelBounds.getWidth()), (int) Math.round(labelBounds.getHeight()));
 		
-		Paint oldFill = pGraphics.getFill();
 		Font oldFont = pGraphics.getFont();
-		pGraphics.translate(x, y);
-		pGraphics.setFill(Color.BLACK);
 		pGraphics.setFont(aFont);
-		pGraphics.setTextAlign(TextAlignment.CENTER);
-		pGraphics.fillText(pEdge.getMiddleLabel(), labelBounds.getWidth()/2, 0);
-		pGraphics.setFill(oldFill);
+		STRING_VIEWER.draw(pEdge.getMiddleLabel(), pGraphics, drawingRectangle);
 		pGraphics.setFont(oldFont);
-		pGraphics.translate(-x, -y);        
 	}
 	
 	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)
