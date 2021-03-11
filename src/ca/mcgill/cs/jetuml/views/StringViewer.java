@@ -20,6 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import ca.mcgill.cs.jetuml.annotations.Flyweight;
+import ca.mcgill.cs.jetuml.annotations.Immutable;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.VPos;
@@ -34,6 +42,8 @@ import javafx.scene.text.TextAlignment;
  * - bold
  * - different alignments.
  */
+@Immutable 
+@Flyweight
 public final class StringViewer
 {
 	public static final Font FONT = Font.font("System", 12);
@@ -42,33 +52,62 @@ public final class StringViewer
 	private static final FontMetrics FONT_BOLD_METRICS = new FontMetrics(FONT_BOLD);
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
-	private static final int HORIZONTAL_TEXT_PADDING = 7;
-	private static final int VERTICAL_TEXT_PADDING = 7;
+	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
+	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
 	
+	private static final Map<Set<Object>, StringViewer> STORE = new HashMap<Set<Object>, StringViewer>();
+
 	/**
-	 * How to align the text in this string.
+	 * How to align the text in this string vertically.
 	 */
-	public enum Align
+	public enum VerticalAlign
+	{ TOP , CENTER, BOTTOM }
+	/**
+	 * How to align the text in this string horizontally.
+	 */
+	public enum HorizontalAlign
 	{ LEFT, CENTER, RIGHT }
 	
-	private Align aAlignment = Align.CENTER;
+	/**
+	 * Various text decorations.
+	 */
+	public enum TextDecorations
+	{ BOLD, UNDERLINED, PADDED }
+	
+	private VerticalAlign aVerticalAlignment = VerticalAlign.CENTER;
+	private HorizontalAlign aHorizontalAlignment = HorizontalAlign.CENTER;
 	private final boolean aBold;
 	private final boolean aUnderlined;
+	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
+	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
+	
+	private StringViewer(VerticalAlign pVerticalAlignment, HorizontalAlign pHorizontalAlignment, EnumSet<TextDecorations> pDecorations) 
+	{
+		if ( !pDecorations.contains(TextDecorations.PADDED) )
+		{
+			aHorizontalPadding = 0;
+			aVerticalPadding = 0;
+		}
+		aVerticalAlignment = pVerticalAlignment;
+		aHorizontalAlignment = pHorizontalAlignment;
+		aBold = pDecorations.contains(TextDecorations.BOLD);
+		aUnderlined = pDecorations.contains(TextDecorations.UNDERLINED);
+	}
 	
 	/**
-	 * Creates a new StringViewer.
-	 * 
-	 * @param pAlignment The alignment of the string.
-	 * @param pBold True if the string is to be rendered bold.
-	 * @param pUnderlined True if the string is to be rendered underlined.
-	 * @pre pAlign != null.
+	 * Lazily creates or retrieves an instance of StringViewer.
+	 * @param pVerticalAlign The vertical alignment to use.
+	 * @param pHorizontalAlign The horizontal alignment to use.
+	 * @param pDecorations The decorations to apply.
+	 * @pre pVerticalAlign != null && pHorizontalAlign != null && pDecorations != null
+	 * @return The StringViewer instance with the requested properties.
 	 */
-	public StringViewer(Align pAlignment, boolean pBold, boolean pUnderlined) 
+	public static StringViewer get(VerticalAlign pVerticalAlign, HorizontalAlign pHorizontalAlign, EnumSet<TextDecorations> pDecorations)
 	{
-		assert pAlignment != null;
-		aAlignment = pAlignment;
-		aBold = pBold;
-		aUnderlined = pUnderlined;
+		assert pVerticalAlign != null && pHorizontalAlign != null &&  pDecorations != null;
+		// Make sure key is immutable
+		Set<Object> keySet = Set.of(pVerticalAlign, pHorizontalAlign, Collections.unmodifiableSet(pDecorations));
+		return STORE.computeIfAbsent(keySet, k -> new StringViewer(pVerticalAlign, pHorizontalAlign, pDecorations));
 	}
 	
 	private Font getFont()
@@ -107,21 +146,34 @@ public final class StringViewer
 			return EMPTY;
 		}
 		Dimension dimension = getFontMetrics().getDimension(pString);
-		return new Dimension(Math.round(dimension.width() + HORIZONTAL_TEXT_PADDING*2), 
-				Math.round(dimension.height() + VERTICAL_TEXT_PADDING*2));
+		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
+				Math.round(dimension.height() + aVerticalPadding*2));
 	}
 	
 	private TextAlignment getTextAlignment()
 	{		
-		if(aAlignment == Align.LEFT)
+		if(aHorizontalAlignment == HorizontalAlign.LEFT)
 		{
 			return TextAlignment.LEFT;
 		}
-		else if(aAlignment == Align.CENTER)
+		else if(aHorizontalAlignment == HorizontalAlign.CENTER)
 		{
 			return TextAlignment.CENTER;
 		}
 		return TextAlignment.RIGHT;
+	}
+	
+	private VPos getTextBaseline()
+	{
+		if ( aVerticalAlignment == VerticalAlign.TOP )
+		{
+			return VPos.TOP;
+		}
+		else if ( aVerticalAlignment == VerticalAlign.CENTER )
+		{
+			return VPos.CENTER;
+		}
+		return VPos.BASELINE;
 	}
 	
 	/**
@@ -136,19 +188,22 @@ public final class StringViewer
 		final TextAlignment oldAlign = pGraphics.getTextAlign();
 		
 		pGraphics.setTextAlign(getTextAlignment());
+		pGraphics.setTextBaseline(getTextBaseline());
 		
 		int textX = 0;
 		int textY = 0;
-		if(aAlignment == Align.CENTER) 
+		if(aHorizontalAlignment == HorizontalAlign.CENTER) 
 		{
 			textX = pRectangle.getWidth()/2;
-			textY = pRectangle.getHeight()/2;
-			pGraphics.setTextBaseline(VPos.CENTER);
 		}
 		else
 		{
-			pGraphics.setTextBaseline(VPos.TOP);
-			textX = HORIZONTAL_TEXT_PADDING;
+			textX = aHorizontalPadding;
+		}
+		
+		if ( aVerticalAlignment == VerticalAlign.CENTER )
+		{
+			textY = pRectangle.getHeight()/2;
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
@@ -159,12 +214,12 @@ public final class StringViewer
 			int xOffset = 0;
 			int yOffset = 0;
 			Dimension dimension = getFontMetrics().getDimension(pString);
-			if(aAlignment == Align.CENTER)
+			if(aHorizontalAlignment == HorizontalAlign.CENTER)
 			{
 				xOffset = dimension.width()/2;
 				yOffset = (int) (getFont().getSize()/2) + 1;
 			}
-			else if(aAlignment == Align.RIGHT)
+			else if(aHorizontalAlignment == HorizontalAlign.RIGHT)
 			{
 				xOffset = dimension.width();
 			}
