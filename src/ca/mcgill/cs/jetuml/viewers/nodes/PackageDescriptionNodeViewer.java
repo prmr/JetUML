@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static ca.mcgill.cs.jetuml.geom.GeomUtils.max;
+import static java.util.EnumSet.of;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
@@ -36,7 +37,8 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewer
 {
-	private static final StringViewer CONTENTS_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final StringViewer CONTENTS_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)

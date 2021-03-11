@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static java.util.EnumSet.of;
+
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -38,7 +40,8 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeViewer extends AbstractNodeViewer
 {
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

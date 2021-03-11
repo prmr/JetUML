@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static ca.mcgill.cs.jetuml.geom.GeomUtils.max;
+import static java.util.EnumSet.of;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,8 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final int TOP_HEIGHT = 60;
 	private static final int Y_GAP_SMALL = 20; 
-	private static final StringViewer NAME_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, true);
+	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.UNDERLINED, StringViewer.TextDecorations.PADDED));
 	private static final CallNodeViewer CALL_NODE_VIEWER = new CallNodeViewer();
 	
 	@Override

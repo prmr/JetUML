@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static java.util.EnumSet.of;
+
 import java.util.function.Function;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -36,7 +38,8 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 {	
-	private static final StringViewer STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
+	private static final StringViewer STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
 	private static final int SHIFT = -10;
 	
 	private final Function<Edge, String> aLabelExtractor;

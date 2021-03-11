@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static java.util.EnumSet.of;
+
 import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -53,8 +55,10 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeViewer extends AbstractEdgeViewer
 {	
-	private static final StringViewer CENTERED_STRING_VIEWER = new StringViewer(StringViewer.Align.CENTER, false, false);
-	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = new StringViewer(StringViewer.Align.LEFT, false, false);
+	private static final StringViewer CENTERED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
+			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
+			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
 
 	private static final int SHIFT = -10;
 	
