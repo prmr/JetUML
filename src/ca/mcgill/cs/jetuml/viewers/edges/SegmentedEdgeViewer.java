@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import static java.util.EnumSet.of;
-
 import java.util.function.Function;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -33,6 +31,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -48,12 +47,9 @@ import javafx.scene.shape.Shape;
  */
 public class SegmentedEdgeViewer extends AbstractEdgeViewer
 {
-	private static final StringViewer CENTERED_TOP_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
-	private static final StringViewer CENTERED_BOTTOM_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.BOTTOM, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
-	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
-			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer TOP_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
+	private static final StringViewer BOTTOM_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.BOTTOM_CENTER);
+	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
 			
 	private Function<Edge, LineStyle> aLineStyleExtractor;
 	private Function<Edge, ArrowHead> aArrowStartExtractor;
@@ -103,13 +99,13 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
 		if(pCenter) 
 		{
-			if ( pEndPoint2.getY() > pEndPoint1.getY() )
+			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
 			{
-				CENTERED_TOP_STRING_VIEWER.draw(pString, pGraphics, bounds);
+				TOP_CENTERED_STRING_VIEWER.draw(pString, pGraphics, bounds);
 			}
 			else
 			{
-				CENTERED_BOTTOM_STRING_VIEWER.draw(pString, pGraphics, bounds);
+				BOTTOM_CENTERED_STRING_VIEWER.draw(pString, pGraphics, bounds);
 			}
 		}
 		else

@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static ca.mcgill.cs.jetuml.geom.GeomUtils.max;
-import static java.util.EnumSet.of;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
@@ -29,6 +28,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -37,8 +38,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewer
 {
-	private static final StringViewer CONTENTS_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer CONTENTS_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
