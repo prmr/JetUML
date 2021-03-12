@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import static java.util.EnumSet.of;
-
 import java.util.ArrayList;
 
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -40,6 +38,8 @@ import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.ArrowHeadView;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -55,10 +55,8 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeViewer extends AbstractEdgeViewer
 {	
-	private static final StringViewer CENTERED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
-	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
-			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer CENTERED_STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 
 	private static final int SHIFT = -10;
 	

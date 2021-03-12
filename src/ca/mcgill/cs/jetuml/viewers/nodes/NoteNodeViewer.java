@@ -20,13 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static java.util.EnumSet.of;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -43,8 +43,7 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
 	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
-	private static final StringViewer NOTE_VIEWER = StringViewer.get(StringViewer.VerticalAlign.TOP, 
-			StringViewer.HorizontalAlign.LEFT, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer NOTE_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)

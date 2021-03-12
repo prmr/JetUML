@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static java.util.EnumSet.of;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -31,6 +29,8 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -40,8 +40,7 @@ public final class StateNodeViewer extends AbstractNodeViewer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)

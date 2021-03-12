@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static ca.mcgill.cs.jetuml.geom.GeomUtils.max;
-import static java.util.EnumSet.of;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +35,8 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -50,8 +51,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final int TOP_HEIGHT = 60;
 	private static final int Y_GAP_SMALL = 20; 
-	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.UNDERLINED, StringViewer.TextDecorations.PADDED));
+	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	private static final CallNodeViewer CALL_NODE_VIEWER = new CallNodeViewer();
 	
 	@Override

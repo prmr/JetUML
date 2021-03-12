@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static java.util.EnumSet.allOf;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
@@ -30,6 +28,8 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -43,8 +43,8 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final int TEXT_HORIZONTAL_MARGIN = 5;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, allOf(StringViewer.TextDecorations.class));
+	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, 
+			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
 	private static final FieldNodeViewer FIELD_NODE_VIEWER = new FieldNodeViewer();
 	
 	@Override

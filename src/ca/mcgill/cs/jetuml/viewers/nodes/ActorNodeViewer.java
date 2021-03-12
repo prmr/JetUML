@@ -20,14 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import static java.util.EnumSet.of;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -40,8 +40,7 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeViewer extends AbstractNodeViewer
 {
-	private static final StringViewer NAME_VIEWER = StringViewer.get(StringViewer.VerticalAlign.CENTER, 
-			StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED));
+	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

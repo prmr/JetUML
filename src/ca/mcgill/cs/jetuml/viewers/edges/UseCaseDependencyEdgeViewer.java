@@ -20,14 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import static java.util.EnumSet.of;
-
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import javafx.scene.canvas.Canvas;
 
 /**
@@ -50,8 +50,8 @@ public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
 		Canvas canvas = super.createIcon(pEdge);
 		final float scale = 0.75f;
 		canvas.getGraphicsContext2D().scale(scale, scale);
-		StringViewer.get(StringViewer.VerticalAlign.CENTER, StringViewer.HorizontalAlign.CENTER, of(StringViewer.TextDecorations.PADDED))
-			.draw(getIconTag(pEdge), canvas.getGraphicsContext2D(), new Rectangle(1, BUTTON_SIZE, 1, 1));
+		StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED).draw(getIconTag(pEdge), 
+				canvas.getGraphicsContext2D(), new Rectangle(1, BUTTON_SIZE, 1, 1));
 		return canvas;
 	}
 
