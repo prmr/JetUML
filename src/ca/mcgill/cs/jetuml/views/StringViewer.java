@@ -56,58 +56,57 @@ public final class StringViewer
 	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
 	
 	private static final Map<Set<Object>, StringViewer> STORE = new HashMap<Set<Object>, StringViewer>();
-
+	
 	/**
-	 * How to align the text in this string vertically.
+	 * How to align the text in this string.
 	 */
-	public enum VerticalAlign
-	{ TOP , CENTER, BOTTOM }
-	/**
-	 * How to align the text in this string horizontally.
-	 */
-	public enum HorizontalAlign
-	{ LEFT, CENTER, RIGHT }
+	public enum Alignment
+	{ TOP_LEFT, TOP_CENTER, TOP_RIGHT,
+	  CENTER_LEFT, CENTER_CENTER, CENTER_RIGHT,
+	  BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
+	}
 	
 	/**
 	 * Various text decorations.
 	 */
-	public enum TextDecorations
+	public enum TextDecoration
 	{ BOLD, UNDERLINED, PADDED }
 	
-	private VerticalAlign aVerticalAlignment = VerticalAlign.CENTER;
-	private HorizontalAlign aHorizontalAlignment = HorizontalAlign.CENTER;
+	private Alignment aAlign = Alignment.CENTER_CENTER;
 	private final boolean aBold;
 	private final boolean aUnderlined;
 	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
 	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
 	
-	private StringViewer(VerticalAlign pVerticalAlignment, HorizontalAlign pHorizontalAlignment, EnumSet<TextDecorations> pDecorations) 
+	private StringViewer(Alignment pAlign, EnumSet<TextDecoration> pDecorations) 
 	{
-		if ( !pDecorations.contains(TextDecorations.PADDED) )
+		if ( !pDecorations.contains(TextDecoration.PADDED) )
 		{
 			aHorizontalPadding = 0;
 			aVerticalPadding = 0;
 		}
-		aVerticalAlignment = pVerticalAlignment;
-		aHorizontalAlignment = pHorizontalAlignment;
-		aBold = pDecorations.contains(TextDecorations.BOLD);
-		aUnderlined = pDecorations.contains(TextDecorations.UNDERLINED);
+		aAlign = pAlign;
+		aBold = pDecorations.contains(TextDecoration.BOLD);
+		aUnderlined = pDecorations.contains(TextDecoration.UNDERLINED);
 	}
 	
 	/**
 	 * Lazily creates or retrieves an instance of StringViewer.
-	 * @param pVerticalAlign The vertical alignment to use.
-	 * @param pHorizontalAlign The horizontal alignment to use.
+	 * @param pAlign The alignment to use.
 	 * @param pDecorations The decorations to apply.
-	 * @pre pVerticalAlign != null && pHorizontalAlign != null && pDecorations != null
+	 * @pre pAlign != null
 	 * @return The StringViewer instance with the requested properties.
 	 */
-	public static StringViewer get(VerticalAlign pVerticalAlign, HorizontalAlign pHorizontalAlign, EnumSet<TextDecorations> pDecorations)
+	public static StringViewer get(Alignment pAlign, TextDecoration... pDecorations)
 	{
-		assert pVerticalAlign != null && pHorizontalAlign != null &&  pDecorations != null;
-		// Make sure key is immutable
-		Set<Object> keySet = Set.of(pVerticalAlign, pHorizontalAlign, Collections.unmodifiableSet(pDecorations));
-		return STORE.computeIfAbsent(keySet, k -> new StringViewer(pVerticalAlign, pHorizontalAlign, pDecorations));
+		assert pAlign != null;
+		
+		EnumSet<TextDecoration> decorationSet = EnumSet.noneOf(TextDecoration.class);
+		Collections.addAll(decorationSet, pDecorations);
+		
+		Set<Object> keySet = Set.of(pAlign, decorationSet);
+		
+		return STORE.computeIfAbsent(keySet, k -> new StringViewer(pAlign, decorationSet));
 	}
 	
 	private Font getFont()
@@ -152,11 +151,11 @@ public final class StringViewer
 	
 	private TextAlignment getTextAlignment()
 	{		
-		if(aHorizontalAlignment == HorizontalAlign.LEFT)
+		if ( aAlign == Alignment.TOP_LEFT || aAlign == Alignment.CENTER_LEFT || aAlign == Alignment.BOTTOM_LEFT )
 		{
 			return TextAlignment.LEFT;
 		}
-		else if(aHorizontalAlignment == HorizontalAlign.CENTER)
+		else if ( aAlign == Alignment.TOP_CENTER || aAlign == Alignment.CENTER_CENTER || aAlign == Alignment.BOTTOM_CENTER )
 		{
 			return TextAlignment.CENTER;
 		}
@@ -165,11 +164,11 @@ public final class StringViewer
 	
 	private VPos getTextBaseline()
 	{
-		if ( aVerticalAlignment == VerticalAlign.TOP )
+		if ( aAlign == Alignment.TOP_LEFT || aAlign == Alignment.TOP_CENTER || aAlign == Alignment.TOP_RIGHT )
 		{
 			return VPos.TOP;
 		}
-		else if ( aVerticalAlignment == VerticalAlign.CENTER )
+		else if ( aAlign == Alignment.CENTER_LEFT || aAlign == Alignment.CENTER_CENTER || aAlign == Alignment.CENTER_RIGHT )
 		{
 			return VPos.CENTER;
 		}
@@ -187,12 +186,20 @@ public final class StringViewer
 		final VPos oldVPos = pGraphics.getTextBaseline();
 		final TextAlignment oldAlign = pGraphics.getTextAlign();
 		
+		boolean isHorizontallyCentered = aAlign == Alignment.TOP_CENTER || aAlign == Alignment.CENTER_CENTER || 
+				aAlign == Alignment.BOTTOM_CENTER;
+		boolean isRightJustified = aAlign == Alignment.TOP_RIGHT || aAlign == Alignment.CENTER_RIGHT || 
+				aAlign == Alignment.BOTTOM_RIGHT;
+		boolean isVerticallyCentered = aAlign == Alignment.CENTER_LEFT || aAlign == Alignment.CENTER_CENTER || 
+				aAlign == Alignment.CENTER_RIGHT;
+		
 		pGraphics.setTextAlign(getTextAlignment());
 		pGraphics.setTextBaseline(getTextBaseline());
 		
+		
 		int textX = 0;
 		int textY = 0;
-		if(aHorizontalAlignment == HorizontalAlign.CENTER) 
+		if( isHorizontallyCentered ) 
 		{
 			textX = pRectangle.getWidth()/2;
 		}
@@ -201,7 +208,7 @@ public final class StringViewer
 			textX = aHorizontalPadding;
 		}
 		
-		if ( aVerticalAlignment == VerticalAlign.CENTER )
+		if ( isVerticallyCentered )
 		{
 			textY = pRectangle.getHeight()/2;
 		}
@@ -214,12 +221,12 @@ public final class StringViewer
 			int xOffset = 0;
 			int yOffset = 0;
 			Dimension dimension = getFontMetrics().getDimension(pString);
-			if(aHorizontalAlignment == HorizontalAlign.CENTER)
+			if( isHorizontallyCentered )
 			{
 				xOffset = dimension.width()/2;
 				yOffset = (int) (getFont().getSize()/2) + 1;
 			}
-			else if(aHorizontalAlignment == HorizontalAlign.RIGHT)
+			else if( isRightJustified )
 			{
 				xOffset = dimension.width();
 			}
