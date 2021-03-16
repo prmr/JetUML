@@ -42,11 +42,11 @@ public class TestStringViewer {
 	@Test
 	public void testDimensionEmptyPaddedNoPaddedBold()
 	{
-		assertEquals(topCenter.getDimension(""), new Dimension(0, 0));
-		assertEquals(topCenterPadded.getDimension(""), new Dimension(0, 0));
-		assertEquals(topCenter.getDimension("Display String"), new Dimension(osDependent(69, 69, 69), osDependent(12, 12, 12)));
-		assertEquals(topCenterBold.getDimension("Display String"), new Dimension(osDependent(69, 69, 69), osDependent(12, 12, 12)));
-		assertEquals(topCenterPadded.getDimension("Display String"), new Dimension(osDependent(83, 83, 83), osDependent(26, 26, 26)));
+		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
+		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
+		assertEquals(new Dimension(osDependent(73, 69, 69), osDependent(13, 12, 12)), topCenter.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(79, 69, 69), osDependent(13, 12, 12)), topCenterBold.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(87, 83, 83), osDependent(27, 26, 26)), topCenterPadded.getDimension("Display String"));
 	}
 	
 	
