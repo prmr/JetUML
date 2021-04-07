@@ -2,11 +2,11 @@
 
 ### Contents
 
-* [Building the Application](building-the-application)
-* [Committing Code](committing-code)
-* [Packaging the Application](packaging-the-application)
-* [Releasing the Application](releasing-the-application)
-* [See Also](see-also)
+* [Building the Application](#building-the-application-in-eclipse)
+* [Committing Code](#committing-code)
+* [Packaging the Application](#packaging-the-application)
+* [Releasing the Application](#releasing-the-application)
+* [See Also](#see-also)
 
 ## Building the Application in Eclipse
 
@@ -70,7 +70,7 @@ To test that the files were correctly compiled, run the following:
 java -p %FXMODS%:bin/jetuml --add-modules javafx.controls,javafx.swing,jetuml ca.mcgill.cs.jetuml.JetUML 
 ```
 
-## Runtime image
+### Runtime image
 
 Normally it is not necessary to create a run-time image separately from the one created through the jpackage tool. However, if for any reason one is needed, here is how to create it:
 
