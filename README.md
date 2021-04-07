@@ -2,8 +2,9 @@
 
 [![GitHub release](https://img.shields.io/github/release/prmr/JetUML.svg)](https://gitHub.com/prmr/JetUML/releases/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![GitHub All Releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
+![GitHub all releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
 ![GitHub contributors](https://img.shields.io/github/contributors/prmr/JetUML)
+![GitHub repo stars](https://img.shields.io/github/stars/prmr/JetUML)
 
 A lightweight desktop application for interactively creating and editing diagrams in the Unified Modeling Language. The idea of JetUML is to support the sketching of software design ideas with a minimum of fuss. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
 
