@@ -3,26 +3,21 @@
 [![GitHub release](https://img.shields.io/github/release/prmr/JetUML.svg)](https://gitHub.com/prmr/JetUML/releases/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub all releases](https://img.shields.io/github/downloads/prmr/JetUML/total)
+![GitHub Repo stars](https://img.shields.io/github/stars/prmr/JetUML?color=Green)
 ![GitHub contributors](https://img.shields.io/github/contributors/prmr/JetUML)
-![GitHub repo stars](https://img.shields.io/github/stars/prmr/JetUML)
 
-A lightweight desktop application for interactively creating and editing diagrams in the Unified Modeling Language. The idea of JetUML is to support the sketching of software design ideas with a minimum of fuss. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Currently supports Class diagrams, Sequence diagrams, State diagrams, Object diagrams, and Use case diagrams.
 
-If you find this tool useful please **star the repo**.
+A lightweight desktop application for interactively creating and editing diagrams in the Unified Modeling Language. JetUML supports the sketching of software design ideas with a minimum of fuss. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Supports class diagrams, sequence diagrams, state diagrams, object diagrams, and use case diagrams. If you find this tool useful please **star the repo**.
 
 ![JetUML Class Diagram](docs/banner.png)
 
-## License 
-
-JetUML is available under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). 
-
 ## Download and Installation
 
-JetUML is available both as a self-contained application and as a Java archive file. Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation guide](docs/install.md). Users upgrading from a previous version might want to peek at the [compatibility guide](docs/compatibility.md)
+JetUML is available both as a self-contained application and as a Java archive file under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation guide](docs/install.md). Users upgrading from a previous version might want to peek at the [compatibility guide](docs/compatibility.md)
 
 ## Privacy Policy and Feedback
 
-JetUML collects no information whatsoever. We rely on you to estimate usage levels and receive feedback. If you use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
+JetUML does not collect any information. We rely on you to estimate usage levels and receive feedback. If you use JetUML, please **star the repo**. If you use the project for teaching or research, please also [let us know](mailto:jetuml@cs.mcgill.ca). 
 
 ## Documentation
 
