@@ -11,3 +11,7 @@
 hs_err_pid*
 /bin/
 /.settings/
+
+# Flatpak builder cache and output directories.
+.flatpak-builder/
+build/

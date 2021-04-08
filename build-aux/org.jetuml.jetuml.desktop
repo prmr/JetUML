@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=JetUML
+Comment=A desktop application for fast UML diagramming.
+Categories=Development;Engineering;
+
+Icon=jetuml
+Exec=jetuml
+Terminal=false

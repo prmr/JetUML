@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.jetuml.jetuml</id>
+
+  <name>JetUML</name>
+  <summary>A desktop application for fast UML diagramming.</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+
+  <description>
+    <p>
+      A lightweight desktop application for interactively creating and editing diagrams in the Unified Modeling Language. JetUML supports the sketching of software design ideas with a minimum of fuss. Diagrams can be saved in JSON, exported to popular image formats, and copied to the system clipboard for integration with other tools. Supports class diagrams, sequence diagrams, state diagrams, object diagrams, and use case diagrams.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.jetuml.jetuml.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/prmr/JetUML/blob/master/docs/banner.png</image>
+    </screenshot>
+  </screenshots>
+</component>
