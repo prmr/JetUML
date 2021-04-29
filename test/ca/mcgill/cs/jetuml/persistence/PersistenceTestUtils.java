@@ -107,7 +107,23 @@ final class PersistenceTestUtils
 				Properties nodeProperties = node.properties();
 				for( Property property : pProperties )
 				{
-					if( !nodeProperties.get(property.getName()).get().equals(property.get()))
+					if( property.getName().equals("x") )
+					{
+						if( !property.get().equals(node.position().getX()))
+						{
+							match = false;
+							break;
+						}
+					}
+					else if( property.getName().equals("y") )
+					{
+						if( !property.get().equals(node.position().getY()))
+						{
+							match = false;
+							break;
+						}
+					}
+					else if( !nodeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;

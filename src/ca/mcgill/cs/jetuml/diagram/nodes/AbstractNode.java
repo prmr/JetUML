@@ -71,14 +71,6 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	protected void buildProperties()
-	{
-		super.buildProperties();
-		properties().addInvisible("x", () -> aPosition.getX(), pX -> aPosition.setX((int)pX)); 
-		properties().addInvisible("y", () -> aPosition.getY(), pY -> aPosition.setY((int)pY));
-	}
-	
-	@Override
 	public final void attach(Diagram pDiagram)
 	{
 		assert pDiagram != null;

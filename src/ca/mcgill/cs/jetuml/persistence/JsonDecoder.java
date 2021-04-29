@@ -29,6 +29,7 @@ import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.geom.Point;
 
 /**
  * Converts a JSONObject to a versioned diagram.
@@ -80,6 +81,7 @@ public final class JsonDecoder
 				JSONObject object = nodes.getJSONObject(i);
 				Class<?> nodeClass = Class.forName(PREFIX_NODES + object.getString("type"));
 				Node node = (Node) nodeClass.getDeclaredConstructor().newInstance();
+				node.moveTo(new Point(object.getInt("x"), object.getInt("y")));
 				for( Property property : node.properties() )
 				{
 					property.set(object.get(property.getName()));

@@ -61,6 +61,6 @@ public final class ClassNode extends TypeNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 3);
+		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 1);
 	}
 }

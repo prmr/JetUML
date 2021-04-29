@@ -35,7 +35,6 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestPropertyChangeTracker
 {
@@ -81,20 +80,6 @@ public class TestPropertyChangeTracker
 	}
 	
 	@Test
-	public void testOneChangeInteger()
-	{
-		aTracker.startTracking();
-		aNode.moveTo(new Point(0,10));
-		CompoundOperation operation = aTracker.stopTracking();
-		assertEquals(1, getOperations(operation).size());
-		
-		operation.undo();
-		assertEquals(new Point(0,0), aNode.position());
-		operation.execute();
-		assertEquals(new Point(0,10), aNode.position());
-	}
-	
-	@Test
 	public void testOneChangeString()
 	{
 		aTracker.startTracking();
@@ -113,7 +98,7 @@ public class TestPropertyChangeTracker
 	public void testTwoChanges()
 	{
 		aTracker.startTracking();
-		aNode.moveTo(new Point(0,10));
+		aNode.setAttributes("Bar");
 		aNode.setName("Foo");
 		CompoundOperation command = aTracker.stopTracking();
 		List<DiagramOperation> operations = getOperations(command);
@@ -121,17 +106,17 @@ public class TestPropertyChangeTracker
 		assertEquals(2, operations.size());
 		
 		operations.get(0).undo();
-		assertEquals(new Point(0,0), aNode.position());
-		assertEquals("Foo", aNode.getName());
+		assertEquals("Bar", aNode.getAttributes());
+		assertEquals("", aNode.getName());
 		operations.get(0).execute();
-		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Bar", aNode.getAttributes());
 		assertEquals("Foo", aNode.getName());
 		
 		operations.get(1).undo();
-		assertEquals(new Point(0,10), aNode.position());
-		assertEquals("", aNode.getName());
+		assertEquals("", aNode.getAttributes());
+		assertEquals("Foo", aNode.getName());
 		operations.get(1).execute();
-		assertEquals(new Point(0,10), aNode.position());
+		assertEquals("Bar", aNode.getAttributes());
 		assertEquals("Foo", aNode.getName());
 		
 	}

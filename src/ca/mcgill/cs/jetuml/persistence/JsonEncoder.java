@@ -73,6 +73,8 @@ public final class JsonEncoder
 		JSONObject object = toJSONObject(pNode.properties());
 		object.put("id", pContext.getId(pNode));
 		object.put("type", pNode.getClass().getSimpleName());
+		object.put("x", pNode.position().getX());
+		object.put("y", pNode.position().getY());
 		if( pNode.getChildren().size() > 0 )
 		{
 			object.put("children", encodeChildren(pNode, pContext));
