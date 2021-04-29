@@ -23,10 +23,8 @@ The main elements in the design of the properties feature are as follows:
 
 ### Defining a Property
 
-An instance of `Property` consists of four pieces of information:
+An instance of `Property` consists of three pieces of information:
 * The name of the property
-* Whether the property is *visible* (to users) or not. This bit of information is used by the GUI when generating the property page
-for a diagram element.
 * A *setter* for the property.
 * A *getter* for the property.
 
@@ -63,5 +61,4 @@ protected void buildProperties()
 }
 ```
 
-The super call binds to `NamedNode.buildProperties()`, which then calls `super.buildProperties()` and so on. When all superclasses have contributed their properties, control returns to `IntefaceNode.buildProperties()`, which adds the "methods"
-property (the text that describes the methods of an interface).
+The super call binds to `NamedNode.buildProperties()`, which then calls `super.buildProperties()` and so on. When all superclasses have contributed their properties, control returns to `IntefaceNode.buildProperties()`, which adds the "methods" property (the text that describes the methods of an interface).

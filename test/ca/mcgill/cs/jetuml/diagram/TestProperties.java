@@ -25,7 +25,6 @@ import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.extract;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 import java.util.List;
@@ -70,7 +69,6 @@ public class TestProperties
 		Property prop = aProperties.get("test");
 		assertEquals("test", prop.getName());
 		assertEquals("", prop.get());
-		assertTrue(prop.isVisible());
 	}
 	
 	@Test
@@ -81,14 +79,12 @@ public class TestProperties
 		Property prop = aProperties.get("test");
 		assertEquals("test", prop.getName());
 		assertEquals("", prop.get());
-		assertTrue(prop.isVisible());
 		
 		aProperties.add("test2", () -> aStub.aValue + "X", val -> aStub.aValue = (String) val + "X");
 		assertEquals(2, size());
 		prop = aProperties.get("test2");
 		assertEquals("test2", prop.getName());
 		assertEquals("X", prop.get());
-		assertTrue(prop.isVisible());
 	}
 	
 	@Test
@@ -100,46 +96,6 @@ public class TestProperties
 		Property prop = aProperties.get("test");
 		assertEquals("test", prop.getName());
 		assertEquals("", prop.get());
-		assertTrue(prop.isVisible());
-	}
-	
-	@Test
-	public void testAddInvisible()
-	{
-		aProperties.addInvisible("test", () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		assertEquals(1, size());
-		Property prop = aProperties.get("test");
-		assertEquals("test", prop.getName());
-		assertEquals("", prop.get());
-		assertFalse(prop.isVisible());
-	}
-	
-	@Test
-	public void testAddInvisibleTwice()
-	{
-		aProperties.addInvisible("test", () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		aProperties.addInvisible("test", () -> aStub.aValue + "X", val -> aStub.aValue = (String) val + "Y");
-		assertEquals(1, size());
-		Property prop = aProperties.get("test");
-		assertEquals("test", prop.getName());
-		assertEquals("", prop.get());
-		assertFalse(prop.isVisible());
-	}
-	
-	@Test
-	public void testAddVisibleInvisible()
-	{
-		aProperties.add("visible", () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		aProperties.addInvisible("invisible", () -> "INVISIBLE", val -> {});
-		assertEquals(2, size());
-		Property prop = aProperties.get("visible");
-		assertEquals("visible", prop.getName());
-		assertEquals("", prop.get());
-		assertTrue(prop.isVisible());
-		prop = aProperties.get("invisible");
-		assertEquals("invisible", prop.getName());
-		assertEquals("INVISIBLE", prop.get());
-		assertFalse(prop.isVisible());
 	}
 	
 	@Test
@@ -150,7 +106,6 @@ public class TestProperties
 		Property prop = aProperties.iterator().next();
 		assertEquals("test", prop.getName());
 		assertEquals("", prop.get());
-		assertTrue(prop.isVisible());
 	}
 	
 	@Test

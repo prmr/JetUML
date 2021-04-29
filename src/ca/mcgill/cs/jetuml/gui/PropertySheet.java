@@ -85,7 +85,7 @@ public class PropertySheet extends GridPane
 		for( Property property : aElement.properties() )
 		{
 			Control editor = getEditorControl(property);
-			if(property.isVisible() && editor != null )
+			if( editor != null )
 			{
 				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
 				add(editor, 1, row);

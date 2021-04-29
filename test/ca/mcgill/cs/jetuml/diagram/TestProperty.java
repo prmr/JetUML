@@ -21,7 +21,6 @@
 package ca.mcgill.cs.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,10 +31,9 @@ public class TestProperty
 	{
 		class Stub { String aValue = "value"; }
 		Stub stub = new Stub();
-		Property property = new Property("test", () -> stub.aValue, newval -> stub.aValue = (String) newval, true);
+		Property property = new Property("test", () -> stub.aValue, newval -> stub.aValue = (String) newval);
 		assertEquals("test", property.getName());
 		assertEquals("value", property.get());
-		assertTrue(property.isVisible());
 		
 		property.set("foo");
 		assertEquals("foo", property.get());

@@ -47,7 +47,7 @@ public class Properties implements Iterable<Property>
 	private final List<Property> aProperties = new ArrayList<>();
 	
 	/**
-	 * Adds a visible property to the list. The property is added at the end of the list.
+	 * Adds a property to the end of the list.
 	 * 
 	 * @param pName The name of the property.
 	 * @param pGetter The getter for this property.
@@ -59,7 +59,7 @@ public class Properties implements Iterable<Property>
 		assert pName != null && pGetter != null & pSetter != null;
 		if( !contains(pName) )
 		{
-			aProperties.add(new Property(pName, pGetter, pSetter, true));
+			aProperties.add(new Property(pName, pGetter, pSetter));
 		}
 	}
 	
@@ -99,24 +99,7 @@ public class Properties implements Iterable<Property>
 	}
 	
 	/**
-	 * Adds an invisible property to the list. The property is added at the end of the list.
-	 * 
-	 * @param pName The name of the property.
-	 * @param pGetter The getter for this property.
-	 * @param pSetter The setter for this property.
-	 * @pre pPropertyName != null && pGetter != null && pSetter != null
-	 */
-	public void addInvisible(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
-	{
-		assert pName != null && pGetter != null & pSetter != null;
-		if( !contains(pName) )
-		{
-			aProperties.add(new Property(pName, pGetter, pSetter, false));
-		}
-	}
-	
-	/**
-	 * Adds a visible property and inserts its key at the specified index, shifting
+	 * Adds a property and inserts its key at the specified index, shifting
 	 * all other properties down by one. If the property already exists, its previous index
 	 * is unchanged and its getter and setter are silently overwritten.
 	 * 
@@ -131,7 +114,7 @@ public class Properties implements Iterable<Property>
 		assert pIndex >=0 && pIndex <= aProperties.size();
 		if( !contains(pName) )
 		{
-			aProperties.add(pIndex, new Property(pName, pGetter, pSetter, true));
+			aProperties.add(pIndex, new Property(pName, pGetter, pSetter));
 		}
 	}
 

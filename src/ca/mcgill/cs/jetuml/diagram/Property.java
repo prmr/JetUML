@@ -26,18 +26,13 @@ import java.util.function.Supplier;
 /**
  * Represents a property of an object as a tuple that 
  * consists of a name, a getter for a value, and a setter
- * for that value, and a flag indicating whether the property
- * is visible or not. The distinction between visible and invisible
- * properties can be used, e.g., when creating UI components.
- * 
- * The values managed by a property should only be of immutable types.
+ * for that value. The values managed by a property should only be of immutable types.
  */
 public class Property
 {
 	private final String aName;
 	private final Supplier<Object> aGetter;
 	private final Consumer<Object> aSetter;
-	private final boolean aVisible;
 	
 	/**
 	 * Creates a new property.
@@ -45,16 +40,14 @@ public class Property
 	 * @param pName The name of the property.
 	 * @param pGetter The getter for the property.
 	 * @param pSetter The setter for the property.
-	 * @param pVisible True if this is a visible property.
 	 * @pre pName != null && pGetter != null && pSetter != null.
 	 */
-	public Property(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter, boolean pVisible)
+	public Property(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
 	{
 		assert pName != null && pGetter != null && pSetter != null;
 		aName = pName;
 		aGetter = pGetter;
 		aSetter = pSetter;
-		aVisible = pVisible;
 	}
 	
 	/**
@@ -63,14 +56,6 @@ public class Property
 	public String getName()
 	{
 		return aName;
-	}
-	
-	/**
-	 * @return True if this is a visible property.
-	 */
-	public boolean isVisible()
-	{
-		return aVisible;
 	}
 	
 	/**
