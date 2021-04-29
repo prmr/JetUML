@@ -86,8 +86,8 @@ public class TestActorNode
 	{
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertNotSame(aNode.position(), clone.position());
-		clone.position().setX(100);
-		assertNotEquals(100, aNode.position().getX());
+		clone.properties().get("name").set("Foo");
+		assertNotEquals("Foo", aNode.properties().get("name"));
 	}
 	
 	/*

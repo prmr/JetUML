@@ -20,10 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.geom;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
- * A framework independent representation of a point in 
- * integer space. 
+ * A framework independent representation of a point in integer space. 
  */
+@Immutable
 public final class Point
 {
 	private int aX;
@@ -47,26 +49,6 @@ public final class Point
 	public int getX()
 	{
 		return aX;
-	}
-	
-	/**
-	 * Sets the X coordinate.
-	 * 
-	 * @param pX The new X coordinate.
-	 */
-	public void setX(int pX)
-	{
-		aX = pX;
-	}
-	
-	/**
-	 * Sets the Y coordinate.
-	 * 
-	 * @param pY The new Y coordinate.
-	 */
-	public void setY(int pY)
-	{
-		aY = pY;
 	}
 	
 	/**
