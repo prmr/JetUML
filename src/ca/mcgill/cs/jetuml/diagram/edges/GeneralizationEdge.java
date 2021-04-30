@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  *  An edge that that represents a UML generalization (inheritance
  *  or implementation).
@@ -71,6 +73,6 @@ public final class GeneralizationEdge extends AbstractEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("Generalization Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties().add(PropertyName.GENERALIZATION_TYPE, () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 }

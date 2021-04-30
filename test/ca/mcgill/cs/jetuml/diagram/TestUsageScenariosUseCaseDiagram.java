@@ -68,17 +68,17 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 	public void testCreateUseCaseDiagram()
 	{
 		addNode(aActorNode1, new Point(20, 20));
-		setProperty(aActorNode1.properties().get("name"), "Car");
+		setProperty(aActorNode1.properties().get(PropertyName.NAME), "Car");
 		assertEquals(1, numberOfRootNodes());
 		assertEquals("Car", aActorNode1.getName());
 		
 		addNode(aUseCaseNode1, new Point(120, 80));
-		setProperty(aUseCaseNode1.properties().get("name"), "driving");
+		setProperty(aUseCaseNode1.properties().get(PropertyName.NAME), "driving");
 		assertEquals(2, numberOfRootNodes());
 		assertEquals("driving", aUseCaseNode1.getName());
 
 		addNode(aNoteNode, new Point(50, 50));
-		setProperty(aNoteNode.properties().get("name"), "something...\nsomething");
+		setProperty(aNoteNode.properties().get(PropertyName.NAME), "something...\nsomething");
 		assertEquals(3, numberOfRootNodes());
 		assertEquals("something...\nsomething", aNoteNode.getName());
 	}

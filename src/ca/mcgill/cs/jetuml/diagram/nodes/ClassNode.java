@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * A class node in a class diagram.
  */
@@ -61,6 +63,6 @@ public final class ClassNode extends TypeNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().addAt("attributes", () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 1);
+		properties().addAt(PropertyName.ATTRIBUTES, () -> aAttributes, pAttributes -> aAttributes = (String)pAttributes, 1);
 	}
 }

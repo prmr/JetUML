@@ -66,25 +66,6 @@ public enum PropertyName
 	}
 	
 	/**
-	 * Returns the PropertyName that has pExternalName.
-	 * 
-	 * @param pExternalName The external name of the desired property.
-	 * @return The PropertyName object that has pExternalName as external name.
-	 * @throws IllegalArgumentException if pExternalName is not a valid property name.
-	 */
-	public static PropertyName fromExternal(String pExternalName)
-	{
-		for( PropertyName propertyName : PropertyName.values() )
-		{
-			if( propertyName.aExternal.equals(pExternalName))
-			{
-				return propertyName;
-			}
-		}
-		throw new IllegalArgumentException(pExternalName + " is not a valid PropertyName");
-	}
-	
-	/**
 	 * @return The name of the property as users should see it, that is, 
 	 *     obtained from the application resources.
 	 */

@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  * A type that can represent either classes or interfaces. A type node 
@@ -95,7 +96,7 @@ public abstract class TypeNode extends NamedNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
+		properties().add(PropertyName.METHODS, () -> aMethods, pMethods -> aMethods = (String)pMethods);
 	}
 	
 	@Override

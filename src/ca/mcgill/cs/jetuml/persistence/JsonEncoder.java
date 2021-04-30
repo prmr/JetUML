@@ -112,15 +112,15 @@ public final class JsonEncoder
 			Object value = property.get();
 			if( value instanceof String || value instanceof Enum )
 			{
-				object.put(property.getName(), value.toString());
+				object.put(property.getName().externalName(), value.toString());
 			}
 			else if( value instanceof Integer)
 			{
-				object.put(property.getName(), (int) value);
+				object.put(property.getName().externalName(), (int) value);
 			}
 			else if( value instanceof Boolean)
 			{
-				object.put(property.getName(), (boolean) value);
+				object.put(property.getName().externalName(), (boolean) value);
 			}
 		}
 		return object;

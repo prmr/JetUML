@@ -67,8 +67,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	@Test
 	public void testCreateAndLinkParameterNode()
 	{
-		setProperty(aParameterNode1.properties().get("name"), "client");
-		setProperty(aParameterNode2.properties().get("name"), "platform");
+		setProperty(aParameterNode1.properties().get(PropertyName.NAME), "client");
+		setProperty(aParameterNode2.properties().get(PropertyName.NAME), "platform");
 
 		addNode(aParameterNode1, new Point(5, 0));
 		addNode(aParameterNode2, new Point(25, 0));

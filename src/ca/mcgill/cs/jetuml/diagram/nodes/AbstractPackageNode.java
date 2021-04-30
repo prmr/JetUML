@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  * Common data and implementation for the different flavors of 
@@ -77,7 +78,7 @@ public class AbstractPackageNode extends AbstractNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("name", () -> aName, pName -> aName = (String)pName);
+		properties().add(PropertyName.NAME, () -> aName, pName -> aName = (String)pName);
 	}
 
 	@Override

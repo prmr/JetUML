@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 public class TestCallNode
 {
@@ -47,12 +48,12 @@ public class TestCallNode
 	{
 		Properties properties = aNode.properties();
 		
-		assertEquals(false, properties.get("openBottom").get());
+		assertEquals(false, properties.get(PropertyName.OPEN_BOTTOM).get());
 		
 		aNode.setOpenBottom(true);
 		aNode.translate(10, 20);
 		properties = aNode.properties();
-		assertEquals(true, properties.get("openBottom").get());
+		assertEquals(true, properties.get(PropertyName.OPEN_BOTTOM).get());
 	}
 	
 	@Test

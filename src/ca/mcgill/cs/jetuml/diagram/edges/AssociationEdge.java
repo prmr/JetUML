@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  *  An edge that that represents a UML association, with optional 
  *  labels and directionality.
@@ -29,9 +31,6 @@ public final class AssociationEdge extends ThreeLabelEdge
 	/**
 	 * Possible directionalities for an association.
 	 */
-//	public enum Directionality 
-//	{None, End, Both}
-	
 	public enum Directionality 
 	{ Unspecified, Unidirectional, Bidirectional }
 	
@@ -57,7 +56,7 @@ public final class AssociationEdge extends ThreeLabelEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("directionality", () -> aDirectionality, 
+		properties().add(PropertyName.DIRECTIONALITY, () -> aDirectionality, 
 				pDirectionality -> aDirectionality = Directionality.valueOf((String)pDirectionality ));
 	}
 }

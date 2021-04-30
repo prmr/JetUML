@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * An edge with three labels.
  */
@@ -64,7 +66,7 @@ public abstract class ThreeLabelEdge extends SingleLabelEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().addAt("startLabel", ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel, 0);
-		properties().add("endLabel", ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
+		properties().addAt(PropertyName.START_LABEL, ()-> aStartLabel, pLabel -> aStartLabel = (String) pLabel, 0);
+		properties().add(PropertyName.END_LABEL, ()-> aEndLabel, pLabel -> aEndLabel = (String) pLabel);
 	}
 }

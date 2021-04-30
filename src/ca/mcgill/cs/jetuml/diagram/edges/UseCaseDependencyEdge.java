@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  *  An edge that that represents a UML dependency
  *  between use cases.
@@ -71,6 +73,6 @@ public final class UseCaseDependencyEdge extends AbstractEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("Dependency Type", () -> aType, pType -> aType = Type.valueOf((String)pType));
+		properties().add(PropertyName.USE_CASE_DEPENDENCY_TYPE, () -> aType, pType -> aType = Type.valueOf((String)pType));
 	}
 }

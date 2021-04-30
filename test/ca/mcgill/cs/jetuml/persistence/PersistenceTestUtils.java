@@ -32,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  * Utilities to facilitate writing tests for the persistence
@@ -50,7 +51,7 @@ final class PersistenceTestUtils
 		for( int i = 0; i < pInput.length; i+=2 )
 		{
 			final int j = i;
-			properties.add((String)pInput[i], () -> pInput[j+1], p -> {});
+			properties.add((PropertyName)pInput[i], () -> pInput[j+1], p -> {});
 		}
 		return properties;
 	}
@@ -75,19 +76,53 @@ final class PersistenceTestUtils
 			JSONObject object = pArray.getJSONObject(i);
 			for( Property property : pProperties )
 			{
-				if( !object.has(property.getName()))
+				if( !object.has(property.getName().externalName()))
 				{
 					match = false;
 				}
 				else
 				{
-					if(!object.get(property.getName()).equals(property.get()))
+					if(!object.get(property.getName().externalName()).equals(property.get()))
 					{
 						match = false;
 					}
 				}
 			}
 			if( match )
+			{
+				found = object;
+				break;
+			}
+		}
+		assertNotNull(found);
+		return found;
+	}
+	
+	/*
+	 * Finds the object in an array with the specified properties
+	 */
+	static JSONObject find(JSONArray pArray, String pType, Properties pProperties)
+	{
+		JSONObject found = null;
+		for( int i = 0; i < pArray.length(); i++ )
+		{
+			boolean match = true;
+			JSONObject object = pArray.getJSONObject(i);
+			for( Property property : pProperties )
+			{
+				if( !object.has(property.getName().externalName()))
+				{
+					match = false;
+				}
+				else
+				{
+					if(!object.get(property.getName().externalName()).equals(property.get()))
+					{
+						match = false;
+					}
+				}
+			}
+			if( match && object.get("type").equals(pType) )
 			{
 				found = object;
 				break;
@@ -107,23 +142,7 @@ final class PersistenceTestUtils
 				Properties nodeProperties = node.properties();
 				for( Property property : pProperties )
 				{
-					if( property.getName().equals("x") )
-					{
-						if( !property.get().equals(node.position().getX()))
-						{
-							match = false;
-							break;
-						}
-					}
-					else if( property.getName().equals("y") )
-					{
-						if( !property.get().equals(node.position().getY()))
-						{
-							match = false;
-							break;
-						}
-					}
-					else if( !nodeProperties.get(property.getName()).get().equals(property.get()))
+					if( !nodeProperties.get(property.getName()).get().equals(property.get()))
 					{
 						match = false;
 						break;
@@ -133,6 +152,19 @@ final class PersistenceTestUtils
 				{
 					return node;
 				}
+			}
+		}
+		fail("Expected node not found");
+		return null;
+	}
+	
+	static Node findRootNode(Diagram pDiagram, Class<?> pClass, int pX)
+	{
+		for( Node node : pDiagram.rootNodes() )
+		{
+			if( node.getClass() == pClass && node.position().getX() == pX )
+			{
+				return node;
 			}
 		}
 		fail("Expected node not found");

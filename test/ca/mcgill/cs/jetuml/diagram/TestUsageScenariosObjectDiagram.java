@@ -63,7 +63,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	public void testCreateStateDiagram()
 	{
 		addNode(aObjectNode1, new Point(20, 20));
-		setProperty(aObjectNode1.properties().get("name"), "Car");
+		setProperty(aObjectNode1.properties().get(PropertyName.NAME), "Car");
 		assertEquals(1, numberOfRootNodes());
 		assertEquals("Car", aObjectNode1.getName());
 		
@@ -136,7 +136,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		assertEquals(aObjectNode2, aReferenceEdge2.getEnd());
 		
 		// change the property of a field
-		setProperty(aFieldNode3.properties().get("name"), "Car");
+		setProperty(aFieldNode3.properties().get(PropertyName.NAME), "Car");
 		assertEquals("Car", aFieldNode3.getName());
 	}
 	

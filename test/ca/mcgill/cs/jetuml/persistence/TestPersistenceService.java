@@ -39,6 +39,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
@@ -185,15 +186,15 @@ public class TestPersistenceService
 	private void verifyUseCaseDiagram(Diagram pDiagram)
 	{
 		assertEquals(9, numberOfRootNodes(pDiagram));
-		UseCaseNode u1 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 1"));
-		UseCaseNode u2 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 2"));
-		UseCaseNode u3 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 3"));
-		ActorNode a1 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor"));
-		ActorNode a2 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor2"));
+		UseCaseNode u1 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 1"));
+		UseCaseNode u2 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 2"));
+		UseCaseNode u3 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 3"));
+		ActorNode a1 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build(PropertyName.NAME, "Actor"));
+		ActorNode a2 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build(PropertyName.NAME, "Actor2"));
 		NoteNode n1 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build());
-		UseCaseNode u4 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build("name", "Use case 4"));
-		ActorNode a3 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build("name", "Actor3"));
+		UseCaseNode u4 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 4"));
+		ActorNode a3 = (ActorNode) findRootNode(pDiagram, ActorNode.class, build(PropertyName.NAME, "Actor3"));
 		
 		assertEquals(new Rectangle(440, 40, 110, 40), NodeViewerRegistry.getBounds(u1));
 		assertEquals("Use case 1", u1.getName().toString());
@@ -246,7 +247,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(osDependent(228,228, 229), 207, osDependent(62,63, 61), 44), getBounds(cr3));
 		assertTrue( cr3.getStart() == a3);
 		assertTrue( cr3.getEnd() == a2);
-		assertTrue( cr3.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
+		assertTrue( cr3.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get() == UseCaseDependencyEdge.Type.Extend);
 		
 		assertEquals(new Rectangle(316, 61, 125, 30), getBounds(cr4));
 		assertTrue( cr4.getStart() == a1 );
@@ -267,12 +268,12 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(osDependent(483,483, 484),169,osDependent(64,65, 62),62), getBounds(cr8));
 		assertTrue( cr8.getStart() == u2 );
 		assertTrue( cr8.getEnd() == u3 );
-		assertTrue( cr8.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Include);
+		assertTrue( cr8.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get() == UseCaseDependencyEdge.Type.Include);
 		
 		assertEquals(new Rectangle(568,150,82,osDependent(27, 26, 26)), getBounds(cr9));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
-		assertTrue( cr9.properties().get("Dependency Type").get() == UseCaseDependencyEdge.Type.Extend);
+		assertTrue( cr9.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get() == UseCaseDependencyEdge.Type.Extend);
 		
 		assertEquals(new Rectangle(542, 67, 114, 94), getBounds(cr10));
 		assertTrue( cr10.getStart() == u1 );
@@ -283,9 +284,9 @@ public class TestPersistenceService
 	{
 		assertEquals(4, numberOfRootNodes(pDiagram));
 		
-		PackageNode p1 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p1"));
-		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p2"));
-		PackageNode p3 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "p3"));
+		PackageNode p1 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "p1"));
+		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "p2"));
+		PackageNode p3 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "p3"));
 		
 		assertEquals(new Rectangle(310, 230, 120, 100), NodeViewerRegistry.getBounds(p1));
 		assertEquals("p1", p1.getName().toString());
@@ -347,11 +348,11 @@ public class TestPersistenceService
 	{
 		assertEquals(7, numberOfRootNodes(pDiagram));
 		
-		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class1"));
-		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build("name", ""));
-		ClassNode node3 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class2"));
-		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build("name", "Class3"));
-		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build("name", "Package"));
+		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class1"));
+		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build(PropertyName.NAME, ""));
+		ClassNode node3 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class2"));
+		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class3"));
+		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "Package"));
 		NoteNode node5 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode node8 = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
@@ -440,9 +441,9 @@ public class TestPersistenceService
 	{
 		assertEquals(5, numberOfRootNodes(pDiagram));
 		
-		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", "object1:Type1"));
-		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", ":Type2"));
-		ImplicitParameterNode object3 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build("name", "object3:"));
+		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build(PropertyName.NAME, "object1:Type1"));
+		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build(PropertyName.NAME, ":Type2"));
+		ImplicitParameterNode object3 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build(PropertyName.NAME, "object3:"));
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
 		PointNode point = (PointNode) findRootNode(pDiagram, PointNode.class, build());
 		
@@ -534,9 +535,9 @@ public class TestPersistenceService
 	{
 		assertEquals(7, numberOfRootNodes(pDiagram));
 		
-		StateNode s1 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S1"));
-		StateNode s2 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S2"));
-		StateNode s3 = (StateNode) findRootNode(pDiagram, StateNode.class, build("name", "S3"));
+		StateNode s1 = (StateNode) findRootNode(pDiagram, StateNode.class, build(PropertyName.NAME, "S1"));
+		StateNode s2 = (StateNode) findRootNode(pDiagram, StateNode.class, build(PropertyName.NAME, "S2"));
+		StateNode s3 = (StateNode) findRootNode(pDiagram, StateNode.class, build(PropertyName.NAME, "S3"));
 		InitialStateNode start = (InitialStateNode) findRootNode(pDiagram, InitialStateNode.class, build());
 		FinalStateNode end = (FinalStateNode) findRootNode(pDiagram, FinalStateNode.class, build());
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
@@ -609,14 +610,14 @@ public class TestPersistenceService
 	{
 		assertEquals(7, numberOfRootNodes(pDiagram));
 		
-		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ":Type1"));
-		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ""));
-		ObjectNode object2 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", "object2:"));
-		ObjectNode type3 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build("name", ":Type3"));
+		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type1"));
+		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ""));
+		ObjectNode object2 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, "object2:"));
+		ObjectNode type3 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type3"));
 
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
-		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 281));
-		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, build("x", 474));
+		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, 281);
+		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, 474);
 		
 		assertEquals(new Rectangle(240, 130, osDependent(90, 110, 100), osDependent(90, 100, 100)), NodeViewerRegistry.getBounds(type1));
 		List<Node> children = type1.getChildren();

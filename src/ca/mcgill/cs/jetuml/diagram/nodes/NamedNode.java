@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * A node with a name.
  */
@@ -50,6 +52,6 @@ public abstract class NamedNode extends AbstractNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("name", () -> aName, pName -> aName = (String)pName);
+		properties().add(PropertyName.NAME, () -> aName, pName -> aName = (String)pName);
 	}
 }

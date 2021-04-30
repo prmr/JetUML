@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  *  An edge that that represents a UML aggregation or 
  *  composition, with optional labels.
@@ -70,6 +72,6 @@ public final class AggregationEdge extends ThreeLabelEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("Aggregation Type", () -> aType, pType -> aType = Type.valueOf((String) pType));
+		properties().add(PropertyName.AGGREGATION_TYPE, () -> aType, pType -> aType = Type.valueOf((String) pType));
 	}
 }

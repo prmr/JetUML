@@ -20,12 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Properties;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
 
@@ -35,7 +35,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
  */
 public class PropertyChangeTracker 
 {
-	private Map<String, Object> aOldValues = new HashMap<>();
+	private EnumMap<PropertyName, Object> aOldValues = new EnumMap<>(PropertyName.class);
 	private Properties aProperties;
 	
 	/**

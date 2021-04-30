@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 public class TestCallEdge
 {
 	@Test
@@ -35,12 +37,12 @@ public class TestCallEdge
 		assertFalse(edge.isSignal());
 		edge.setSignal(true);
 		assertTrue(edge.isSignal());
-		assertTrue((boolean) edge.properties().get("signal").get());
-		edge.properties().get("signal").set(false);
-		assertFalse((boolean) edge.properties().get("signal").get());
+		assertTrue((boolean) edge.properties().get(PropertyName.SIGNAL).get());
+		edge.properties().get(PropertyName.SIGNAL).set(false);
+		assertFalse((boolean) edge.properties().get(PropertyName.SIGNAL).get());
 		assertFalse(edge.isSignal());
 		
-		edge.properties().get("middleLabel").set("Foo");
+		edge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
 		assertEquals("Foo", edge.getMiddleLabel());
 	}
 	
@@ -50,9 +52,9 @@ public class TestCallEdge
 		CallEdge edge = new CallEdge();
 		CallEdge clone = (CallEdge) edge.clone();
 		
-		edge.properties().get("middleLabel").set("Foo");
+		edge.properties().get(PropertyName.MIDDLE_LABEL).set("Foo");
 		
-		assertEquals("Foo", edge.properties().get("middleLabel").get());
-		assertEquals("", clone.properties().get("middleLabel").get());
+		assertEquals("Foo", edge.properties().get(PropertyName.MIDDLE_LABEL).get());
+		assertEquals("", clone.properties().get(PropertyName.MIDDLE_LABEL).get());
 	}
 }

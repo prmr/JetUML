@@ -31,8 +31,8 @@ public class TestProperty
 	{
 		class Stub { String aValue = "value"; }
 		Stub stub = new Stub();
-		Property property = new Property("test", () -> stub.aValue, newval -> stub.aValue = (String) newval);
-		assertEquals("test", property.getName());
+		Property property = new Property(PropertyName.NAME, () -> stub.aValue, newval -> stub.aValue = (String) newval);
+		assertEquals(PropertyName.NAME, property.getName());
 		assertEquals("value", property.get());
 		
 		property.set("foo");

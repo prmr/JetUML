@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
@@ -45,7 +46,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.UseCaseNode;
 
 public class TestJsonEncodingUseCaseDiagram
 {
-	private Diagram aGraph;
+	private Diagram aDiagram;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -56,50 +57,50 @@ public class TestJsonEncodingUseCaseDiagram
 	@BeforeEach
 	public void setup()
 	{
-		aGraph = new Diagram(DiagramType.USECASE);
+		aDiagram = new Diagram(DiagramType.USECASE);
 	}
 	
 	/*
 	 * Initializes a simple graph with an actor and a use case node.
 	 */
-	private void initiGraph1()
+	private void initDiagram1()
 	{
 		ActorNode actor = new ActorNode();
 		actor.setName("Mr. Bob");
 		UseCaseNode useCase = new UseCaseNode();
 		useCase.setName("Do it");
 		
-		aGraph.addRootNode(actor);
-		aGraph.addRootNode(useCase);
+		aDiagram.addRootNode(actor);
+		aDiagram.addRootNode(useCase);
 		
 		UseCaseAssociationEdge edge = new UseCaseAssociationEdge();
-		edge.connect(actor, useCase, aGraph);
-		aGraph.addEdge(edge);
+		edge.connect(actor, useCase, aDiagram);
+		aDiagram.addEdge(edge);
 	}
 	
 	/*
 	 * Initializes a graph with two use cases
 	 * with a extension dependency between them.
 	 */
-	private void initiGraph()
+	private void initDiagram()
 	{
 		UseCaseNode node1 = new UseCaseNode();
 		node1.setName("Node1");
 		UseCaseNode node2 = new UseCaseNode();
 		node2.setName("Node2");
 		
-		aGraph.addRootNode(node1);
-		aGraph.addRootNode(node2);
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
 		
 		UseCaseDependencyEdge edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
-		edge.connect(node1, node2, aGraph);
-		aGraph.addEdge(edge);
+		edge.connect(node1, node2, aDiagram);
+		aDiagram.addEdge(edge);
 	}
 	
 	@Test
 	public void testEmpty()
 	{
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JSONObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(0, object.getJSONArray("nodes").length());	
@@ -109,9 +110,9 @@ public class TestJsonEncodingUseCaseDiagram
 	@Test
 	public void testSingleNode()
 	{
-		aGraph.addRootNode(new NoteNode());
+		aDiagram.addRootNode(new NoteNode());
 		
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JSONObject object = JsonEncoder.encode(aDiagram);
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
 		assertEquals(1, object.getJSONArray("nodes").length());	
@@ -126,11 +127,11 @@ public class TestJsonEncodingUseCaseDiagram
 	}
 	
 	@Test
-	public void testEncodeGraph1()
+	public void testEncode()
 	{
-		initiGraph1();
+		initDiagram1();
 
-		JSONObject object = JsonEncoder.encode(aGraph);
+		JSONObject object = JsonEncoder.encode(aDiagram);
 		
 		assertHasKeys(object, "diagram", "nodes", "edges", "version");
 		assertEquals("UseCaseDiagram", object.getString("diagram"));
@@ -138,24 +139,24 @@ public class TestJsonEncodingUseCaseDiagram
 		assertEquals(1, object.getJSONArray("edges").length());	
 		
 		JSONArray nodes = object.getJSONArray("nodes");
-		JSONObject actor = find(nodes, build("type", "ActorNode", "name", "Mr. Bob"));
-		JSONObject useCase = find(nodes, build("type", "UseCaseNode", "name", "Do it"));
+		JSONObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));
+		JSONObject useCase = find(nodes, "UseCaseNode", build(PropertyName.NAME, "Do it"));
 				
 		JSONArray edges = object.getJSONArray("edges");
-		JSONObject edge1 = find(edges, build("type", "UseCaseAssociationEdge"));
+		JSONObject edge1 = find(edges, "UseCaseAssociationEdge", build());
 
 		assertEquals(edge1.getInt("start"), actor.getInt("id"));
 		assertEquals(edge1.getInt("end"), useCase.getInt("id"));
 	}
 	
 	@Test
-	public void testEncodeDecodeGraph1()
+	public void testEncodeDecode1()
 	{
-		initiGraph1();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		initDiagram1();
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aDiagram));
 		
-		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build("name", "Mr. Bob"));
-		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Do it"));
+		ActorNode actor = (ActorNode) findRootNode(graph, ActorNode.class, build(PropertyName.NAME, "Mr. Bob"));
+		UseCaseNode useCase = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Do it"));
 		UseCaseAssociationEdge edge = (UseCaseAssociationEdge) findEdge(graph, UseCaseAssociationEdge.class, build());
 		
 		assertSame(edge.getStart(), actor);
@@ -163,15 +164,15 @@ public class TestJsonEncodingUseCaseDiagram
 	}
 	
 	@Test
-	public void testEncodeDecodeGraph()
+	public void testEncodeDecode2()
 	{
-		initiGraph();
-		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
+		initDiagram();
+		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aDiagram));
 		
-		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node1"));
-		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build("name", "Node2"));
+		UseCaseNode node1 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Node1"));
+		UseCaseNode node2 = (UseCaseNode) findRootNode(graph, UseCaseNode.class, build(PropertyName.NAME, "Node2"));
 
-		UseCaseDependencyEdge edge = (UseCaseDependencyEdge) findEdge(graph, UseCaseDependencyEdge.class, build("Dependency Type", UseCaseDependencyEdge.Type.Extend));
+		UseCaseDependencyEdge edge = (UseCaseDependencyEdge) findEdge(graph, UseCaseDependencyEdge.class, build(PropertyName.USE_CASE_DEPENDENCY_TYPE, UseCaseDependencyEdge.Type.Extend));
 		
 		assertSame(edge.getStart(), node1);
 		assertSame(edge.getEnd(), node2);

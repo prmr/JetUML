@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram.nodes;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * A package description node in a UML diagram.
  */
@@ -58,6 +60,6 @@ public final class PackageDescriptionNode extends AbstractPackageNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("contents", () -> aContents, pContents -> aContents = (String)pContents);
+		properties().add(PropertyName.CONTENTS, () -> aContents, pContents -> aContents = (String)pContents);
 	}
 }

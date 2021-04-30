@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * An edge that that represents a UML dependency with an optional label.
  * A DependencyEdge can be either unidirectional (from start to end),
@@ -59,7 +61,7 @@ public final class DependencyEdge extends SingleLabelEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("directionality", () -> aDirectionality,
+		properties().add(PropertyName.DIRECTIONALITY, () -> aDirectionality,
 				directionality -> aDirectionality = Directionality.valueOf((String) directionality));
 	}
 }

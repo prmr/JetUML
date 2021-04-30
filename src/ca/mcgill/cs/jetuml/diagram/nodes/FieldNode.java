@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  *  A field node in an object diagram.
@@ -90,7 +91,7 @@ public final class FieldNode extends NamedNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("value", () -> aValue, pValue -> aValue = (String) pValue);
+		properties().add(PropertyName.VALUE, () -> aValue, pValue -> aValue = (String) pValue);
 	}
 
 	@Override

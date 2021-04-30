@@ -154,12 +154,12 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 
 		assertEquals(4, numberOfRootNodes());
 		
-		setProperty(aClassNode1.properties().get("name"), "truck");
-		setProperty(aClassNode1.properties().get("methods"), "setDriver()");
-		setProperty(aInterfaceNode.properties().get("name"), "vehicle");
-		setProperty(aInterfaceNode.properties().get("methods"), "getPrice()");
-		setProperty(aPackageNode.properties().get("name"), "object");
-		setProperty(aNoteNode.properties().get("name"), "some text...");
+		setProperty(aClassNode1.properties().get(PropertyName.NAME), "truck");
+		setProperty(aClassNode1.properties().get(PropertyName.METHODS), "setDriver()");
+		setProperty(aInterfaceNode.properties().get(PropertyName.NAME), "vehicle");
+		setProperty(aInterfaceNode.properties().get(PropertyName.METHODS), "getPrice()");
+		setProperty(aPackageNode.properties().get(PropertyName.NAME), "object");
+		setProperty(aNoteNode.properties().get(PropertyName.NAME), "some text...");
 
 		assertEquals(aClassNode1.getName(), "truck");
 		assertEquals(aClassNode1.getMethods(), "setDriver()");

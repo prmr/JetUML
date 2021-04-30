@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestActorNode
@@ -50,12 +51,12 @@ public class TestActorNode
 	{
 		Properties properties = aNode.properties();
 		
-		assertEquals("Actor", properties.get("name").get());
+		assertEquals("Actor", properties.get(PropertyName.NAME).get());
 		
 		aNode.setName("Foo");
 		aNode.translate(10, 20);
 		properties = aNode.properties();
-		assertEquals("Foo", properties.get("name").get());
+		assertEquals("Foo", properties.get(PropertyName.NAME).get());
 	}
 	
 	@Test
@@ -86,8 +87,8 @@ public class TestActorNode
 	{
 		ActorNode clone = (ActorNode) aNode.clone();
 		assertNotSame(aNode.position(), clone.position());
-		clone.properties().get("name").set("Foo");
-		assertNotEquals("Foo", aNode.properties().get("name"));
+		clone.properties().get(PropertyName.NAME).set("Foo");
+		assertNotEquals("Foo", aNode.properties().get(PropertyName.NAME));
 	}
 	
 	/*

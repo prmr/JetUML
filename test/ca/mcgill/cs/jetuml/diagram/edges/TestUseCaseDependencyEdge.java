@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseDependencyEdge.Type;
 
 public class TestUseCaseDependencyEdge
@@ -32,10 +33,10 @@ public class TestUseCaseDependencyEdge
 	public void testGetProperties()
 	{
 		UseCaseDependencyEdge edge = new UseCaseDependencyEdge();
-		assertEquals(Type.None, edge.properties().get("Dependency Type").get());
+		assertEquals(Type.None, edge.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get());
 		edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Extend);
-		assertEquals(Type.Extend, edge.properties().get("Dependency Type").get());
+		assertEquals(Type.Extend, edge.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get());
 		edge = new UseCaseDependencyEdge(UseCaseDependencyEdge.Type.Include);
-		assertEquals(Type.Include, edge.properties().get("Dependency Type").get());
+		assertEquals(Type.Include, edge.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get());
 	}
 }

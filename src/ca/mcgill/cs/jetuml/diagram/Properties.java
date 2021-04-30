@@ -44,7 +44,7 @@ import java.util.function.Supplier;
  */
 public class Properties implements Iterable<Property>
 {
-	private final Map<String, Property> aProperties = new LinkedHashMap<>();
+	private final Map<PropertyName, Property> aProperties = new LinkedHashMap<>();
 	
 	/**
 	 * Adds a property to the end of the list.
@@ -54,7 +54,7 @@ public class Properties implements Iterable<Property>
 	 * @param pSetter The setter for this property.
 	 * @pre pPropertyName != null && pGetter != null && pSetter != null && !containsKey(pName)
 	 */
-	public void add(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
+	public void add(PropertyName pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
 	{
 		assert pName != null && pGetter != null && pSetter != null && !aProperties.containsKey(pName);
 		aProperties.put(pName, new Property(pName, pGetter, pSetter));
@@ -65,7 +65,7 @@ public class Properties implements Iterable<Property>
 	 * @return The property with pName.
 	 * @pre pName != null && containsKey(pName)
 	 */
-	public Property get(String pName)
+	public Property get(PropertyName pName)
 	{
 		assert pName != null && aProperties.containsKey(pName);
 		return aProperties.get(pName);
@@ -82,7 +82,7 @@ public class Properties implements Iterable<Property>
 	 * @pre pPropertyName != null && pGetter != null && pSetter != null && !containsKey(pName)
 	 * @pre pIndex >=0 && pIndex <= aProperties.size();
 	 */
-	public void addAt(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter, int pIndex)
+	public void addAt(PropertyName pName, Supplier<Object> pGetter, Consumer<Object> pSetter, int pIndex)
 	{
 		// Rebuilds the map in the proper iteration order
 		assert pName != null && pGetter != null && pSetter != null && !aProperties.containsKey(pName);

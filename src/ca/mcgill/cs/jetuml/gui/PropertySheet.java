@@ -21,12 +21,11 @@
 
 package ca.mcgill.cs.jetuml.gui;
 
-import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-
 import java.lang.reflect.InvocationTargetException;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
@@ -87,7 +86,7 @@ public class PropertySheet extends GridPane
 			Control editor = getEditorControl(property);
 			if( editor != null )
 			{
-				add(new Label(getPropertyName(pElement.getClass(), property.getName())), 0, row);
+				add(new Label(property.getName().visibleName()), 0, row);
 				add(editor, 1, row);
 				row++;
 			}
@@ -140,11 +139,11 @@ public class PropertySheet extends GridPane
 	/*
 	 * Not the greatest but avoids over-engineering the rest of the properties API. CSOFF:
 	 */
-	private boolean extended(String pProperty)
+	private boolean extended(PropertyName pProperty)
 	{
 		return 	aElement.getClass() == ClassNode.class ||
 				aElement.getClass() == InterfaceNode.class ||
-				aElement.getClass() == PackageDescriptionNode.class && pProperty.equals("contents") ||
+				aElement.getClass() == PackageDescriptionNode.class && pProperty == PropertyName.CONTENTS ||
 				aElement.getClass() == NoteNode.class;
 	} // CSON:
 	
@@ -247,29 +246,29 @@ public class PropertySheet extends GridPane
 		return checkBox;
 	}
 
-	/*
-	 * Obtains the externalized name of a property and takes account
-	 * of property inheritance: if a property is not found on a class,
-	 * looks for the property name in superclasses. We do not use the actual
-	 * property names to decouple visual representation (which can eventually
-	 * be translated) from names in the design space.
-	 */
-	private static String getPropertyName(Class<?> pClass, String pProperty)
-	{
-		assert pProperty != null;
-		if( pClass == null )
-		{
-			return pProperty;
-		}
-		String key = pClass.getSimpleName() + "." + pProperty;
-		if( !RESOURCES.containsKey(key) )
-		{
-			return getPropertyName(pClass.getSuperclass(), pProperty);
-		}
-		else
-		{
-			return RESOURCES.getString(key);
-		}
-	}
+//	/*
+//	 * Obtains the externalized name of a property and takes account
+//	 * of property inheritance: if a property is not found on a class,
+//	 * looks for the property name in superclasses. We do not use the actual
+//	 * property names to decouple visual representation (which can eventually
+//	 * be translated) from names in the design space.
+//	 */
+//	private static String getPropertyName(Class<?> pClass, String pProperty)
+//	{
+//		assert pProperty != null;
+//		if( pClass == null )
+//		{
+//			return pProperty;
+//		}
+//		String key = pClass.getSimpleName() + "." + pProperty;
+//		if( !RESOURCES.containsKey(key) )
+//		{
+//			return getPropertyName(pClass.getSuperclass(), pProperty);
+//		}
+//		else
+//		{
+//			return RESOURCES.getString(key);
+//		}
+//	}
 }
 

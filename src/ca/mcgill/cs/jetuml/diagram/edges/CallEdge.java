@@ -21,6 +21,7 @@
 
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 
 /**
@@ -42,7 +43,7 @@ public class CallEdge extends SingleLabelEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("signal", () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
+		properties().add(PropertyName.SIGNAL, () -> aSignal, pSignal -> aSignal = (boolean) pSignal);
 	}
 	
 	/**

@@ -38,6 +38,7 @@ import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 
@@ -90,7 +91,7 @@ public class TestJsonEncodingClassDiagram
 		iter.next();
 		assertFalse(iter.hasNext());
 		
-		PackageNode p = (PackageNode) findRootNode(diagram, PackageNode.class, build("name", "package"));
+		PackageNode p = (PackageNode) findRootNode(diagram, PackageNode.class, build(PropertyName.NAME, "package"));
 
 		assertEquals(1, p.getChildren().size());
 		

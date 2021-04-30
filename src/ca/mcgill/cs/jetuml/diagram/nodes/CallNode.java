@@ -24,6 +24,7 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  * A method call node in a sequence diagram. Call nodes are
@@ -65,7 +66,7 @@ public class CallNode extends AbstractNode
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("openBottom", () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
+		properties().add(PropertyName.OPEN_BOTTOM, () -> aOpenBottom, pOpen -> aOpenBottom = (boolean) pOpen);
 	}
 	
 	/**

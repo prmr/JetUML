@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  */
 public class Property
 {
-	private final String aName;
+	private final PropertyName aName;
 	private final Supplier<Object> aGetter;
 	private final Consumer<Object> aSetter;
 	
@@ -42,7 +42,7 @@ public class Property
 	 * @param pSetter The setter for the property.
 	 * @pre pName != null && pGetter != null && pSetter != null.
 	 */
-	public Property(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
+	public Property(PropertyName pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
 	{
 		assert pName != null && pGetter != null && pSetter != null;
 		aName = pName;
@@ -53,7 +53,7 @@ public class Property
 	/**
 	 * @return The name of this property.
 	 */
-	public String getName()
+	public PropertyName getName()
 	{
 		return aName;
 	}

@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
@@ -175,15 +176,15 @@ public class TestJsonEncodingStateDiagram
 		assertEquals(3, object.getJSONArray("edges").length());	
 		
 		JSONArray nodes = object.getJSONArray("nodes");
-		JSONObject node1b = find(nodes, build("type", "StateNode", "name", "Start"));
-		JSONObject node2b = find(nodes, build("type", "StateNode", "name", "End"));
-		JSONObject startb = find(nodes, build("type", "InitialStateNode"));
-		JSONObject endb = find(nodes, build("type", "FinalStateNode"));
+		JSONObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));
+		JSONObject node2b = find(nodes, "StateNode", build(PropertyName.NAME, "End"));
+		JSONObject startb = find(nodes, "InitialStateNode", build());
+		JSONObject endb = find(nodes, "FinalStateNode", build());
 		
 		JSONArray edges = object.getJSONArray("edges");
-		JSONObject edge1b = find(edges, build("type", "StateTransitionEdge", "middleLabel", "edge1"));
-		JSONObject edge2b = find(edges, build("type", "StateTransitionEdge", "middleLabel", "edge2"));
-		JSONObject edge3b = find(edges, build("type", "StateTransitionEdge", "middleLabel", "edge3"));
+		JSONObject edge1b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge1"));
+		JSONObject edge2b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge2"));
+		JSONObject edge3b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge3"));
 
 		assertEquals(edge1b.getInt("start"), startb.getInt("id"));
 		assertEquals(edge1b.getInt("end"), node1b.getInt("id"));
@@ -199,13 +200,13 @@ public class TestJsonEncodingStateDiagram
 		initiGraph1();
 		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Start"));
-		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "End"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Start"));
+		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "End"));
 		InitialStateNode start = (InitialStateNode) findRootNode(graph, InitialStateNode.class, build());
 		FinalStateNode end = (FinalStateNode) findRootNode(graph, FinalStateNode.class, build());
-		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge1"));
-		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge2"));
-		StateTransitionEdge edge3 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge3"));
+		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge1"));
+		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge2"));
+		StateTransitionEdge edge3 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge3"));
 		
 		assertSame(edge1.getStart(), start);
 		assertSame(edge1.getEnd(), node1);
@@ -221,7 +222,7 @@ public class TestJsonEncodingStateDiagram
 		initiGraph();
 		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "The Node"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "The Node"));
 		assertEquals(new Point(10,20), node1.position());
 		assertEquals("The Node", node1.getName());
 	}
@@ -232,12 +233,12 @@ public class TestJsonEncodingStateDiagram
 		initiGraph3();
 		Diagram graph = JsonDecoder.decode(JsonEncoder.encode(aGraph));
 		
-		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node1"));
-		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build("name", "Node2"));
-		StateTransitionEdge self1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "self1"));
-		StateTransitionEdge self2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "self2"));
-		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge1"));
-		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build( "middleLabel", "edge2"));
+		StateNode node1 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Node1"));
+		StateNode node2 = (StateNode) findRootNode(graph, StateNode.class, build(PropertyName.NAME, "Node2"));
+		StateTransitionEdge self1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "self1"));
+		StateTransitionEdge self2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "self2"));
+		StateTransitionEdge edge1 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge1"));
+		StateTransitionEdge edge2 = (StateTransitionEdge) findEdge(graph, StateTransitionEdge.class, build(PropertyName.MIDDLE_LABEL, "edge2"));
 
 		assertSame(self1.getStart(), node1);
 		assertSame(self1.getEnd(), node1);

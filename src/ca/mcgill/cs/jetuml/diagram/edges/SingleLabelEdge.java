@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram.edges;
 
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
+
 /**
  * An edge with a single middle label.
  */
@@ -49,6 +51,6 @@ public abstract class SingleLabelEdge extends AbstractEdge
 	protected void buildProperties()
 	{
 		super.buildProperties();
-		properties().add("middleLabel", ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
+		properties().add(PropertyName.MIDDLE_LABEL, ()-> aLabelText, pLabel -> aLabelText = (String) pLabel );
 	}
 }
