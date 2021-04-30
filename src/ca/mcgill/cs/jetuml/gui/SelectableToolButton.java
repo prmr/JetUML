@@ -93,7 +93,7 @@ public class SelectableToolButton extends ToggleButton implements BooleanPrefere
 	}
 
 	@Override
-	public void preferenceChanged(BooleanPreference pPreference)
+	public void booleanPreferenceChanged(BooleanPreference pPreference)
 	{
 		if( pPreference == BooleanPreference.verboseToolTips && aPrototype.isPresent())
 		{
