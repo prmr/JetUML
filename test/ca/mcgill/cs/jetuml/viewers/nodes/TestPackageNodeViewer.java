@@ -21,6 +21,7 @@
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
 import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -28,12 +29,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.nodes.AbstractPackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Point;
@@ -41,6 +45,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestPackageNodeViewer
 {
+	private static int userDefinedFontSize;
 	private PackageNodeViewer aViewer = new PackageNodeViewer();
 	private PackageNode aPackageNode1;
 	private Graphics2D aGraphics;
@@ -84,6 +89,8 @@ public class TestPackageNodeViewer
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
 	}
 	
@@ -98,6 +105,12 @@ public class TestPackageNodeViewer
 	public void teardown()
 	{
 		aGraphics.dispose();
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	@Test

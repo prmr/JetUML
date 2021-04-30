@@ -20,15 +20,20 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.application.Clipboard;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperationProcessor;
@@ -43,6 +48,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
  */
 public class AbstractTestUsageScenarios 
 {
+	private static int userDefinedFontSize;
 	protected Diagram aDiagram;
 	protected DiagramBuilder aBuilder;
 	private DiagramOperationProcessor aProcessor;
@@ -54,7 +60,15 @@ public class AbstractTestUsageScenarios
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	protected void setup()

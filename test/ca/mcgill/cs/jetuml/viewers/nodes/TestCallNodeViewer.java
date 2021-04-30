@@ -20,13 +20,17 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
@@ -37,6 +41,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestCallNodeViewer
 {
+	private static int userDefinedFontSize;
 	private ImplicitParameterNode aImplicitParameterNode1;
 	private ImplicitParameterNode aImplicitParameterNode2;
 	private Diagram aDiagram;
@@ -50,6 +55,8 @@ public class TestCallNodeViewer
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
 	}
 	
@@ -65,6 +72,12 @@ public class TestCallNodeViewer
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
 		aConstructorEdge = new ConstructorEdge();
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	@Test
