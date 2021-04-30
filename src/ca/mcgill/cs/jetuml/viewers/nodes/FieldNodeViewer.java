@@ -29,7 +29,6 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
 import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -44,9 +43,9 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
 	private static final int XGAP = 5;
-	private static final StringViewer VALUE_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
-	private static final StringViewer EQUALS_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringViewer VALUE_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
+	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
+	private static final StringViewer EQUALS_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
 	private static final int MID_OFFSET = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 	private static final ObjectNodeViewer OBJECT_NODE_VIEWER = new ObjectNodeViewer();
 	
@@ -146,7 +145,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.scale(scale, scale);
-		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+		graphics.translate(Math.max((height - width) / 2, 0), 0);
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
 		EQUALS_VIEWER.draw(ICON_LABEL, graphics, 
