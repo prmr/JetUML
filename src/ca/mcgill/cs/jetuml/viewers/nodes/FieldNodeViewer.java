@@ -46,7 +46,6 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final StringViewer VALUE_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
 	private static final StringViewer EQUALS_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
-	private static final int MID_OFFSET = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 	private static final ObjectNodeViewer OBJECT_NODE_VIEWER = new ObjectNodeViewer();
 	
 	@Override
@@ -55,11 +54,12 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 		final Rectangle bounds = getBounds(pNode);
 		final int split = getSplitPosition(pNode);
 		final int leftWidth = leftWidth(pNode);
+		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 		NAME_VIEWER.draw(((FieldNode)pNode).getName(), pGraphics, 
 				new Rectangle(split - leftWidth, bounds.getY(), leftWidth, bounds.getHeight()));
-		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - MID_OFFSET, bounds.getY(), MID_OFFSET * 2, bounds.getHeight()));
+		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - midOffset, bounds.getY(), midOffset * 2, bounds.getHeight()));
 		VALUE_VIEWER.draw(((FieldNode)pNode).getValue(), 
-				pGraphics, new Rectangle(split + MID_OFFSET, bounds.getY(), rightWidth(pNode), bounds.getHeight()));
+				pGraphics, new Rectangle(split + midOffset, bounds.getY(), rightWidth(pNode), bounds.getHeight()));
 	}
 	
 	private int getSplitPosition(Node pNode)
@@ -95,7 +95,8 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 */
 	public int leftWidth(Node pNode)
 	{
-		return NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).width() + MID_OFFSET;
+		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
+		return NAME_VIEWER.getDimension(((FieldNode)pNode).getName()).width() + midOffset;
 	}
 	
 	/**
@@ -104,12 +105,13 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 */
 	public int rightWidth(Node pNode)
 	{
+		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
 		int rightWidth = VALUE_VIEWER.getDimension(((FieldNode)pNode).getValue()).width();
 		if(rightWidth == 0)
 		{
 			rightWidth = DEFAULT_WIDTH / 2;
 		}
-		return rightWidth + MID_OFFSET;
+		return rightWidth + midOffset;
 	}
 	
 	/**
