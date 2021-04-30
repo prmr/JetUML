@@ -23,6 +23,7 @@ package ca.mcgill.cs.jetuml.gui;
 
 import java.lang.reflect.InvocationTargetException;
 
+import ca.mcgill.cs.jetuml.application.ApplicationResources;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Property;
 import ca.mcgill.cs.jetuml.diagram.PropertyName;
@@ -86,7 +87,7 @@ public class PropertySheet extends GridPane
 			Control editor = getEditorControl(property);
 			if( editor != null )
 			{
-				add(new Label(property.getName().visibleName()), 0, row);
+				add(new Label(labelName(pElement, property.getName())), 0, row);
 				add(editor, 1, row);
 				row++;
 			}
@@ -94,6 +95,24 @@ public class PropertySheet extends GridPane
 		setVgap(LAYOUT_SPACING);
 		setHgap(LAYOUT_SPACING);
 		setPadding(new Insets(LAYOUT_PADDING));
+	}
+	
+	/*
+	 * Special case due to the poor decision in the past to declare NodeNodes as a 
+	 * subclass of Name nodes, which means that its control would use the NAME
+	 * property and thus be labeled with "Name" instead of "Text". Ideally, the 
+	 * property for NodeNodes should be a new enum called TEXT, and NoteNode should 
+	 * not be children of NamedNodes. However, changing this would break backward
+	 * compatibility.
+	 * TODO: Next time we do a backward-incompatible release, we'll fix this.
+	 */
+	private static String labelName(DiagramElement pElement, PropertyName pPropertyName)
+	{
+		if( pElement.getClass() == NoteNode.class && pPropertyName == PropertyName.NAME )
+		{
+			return ApplicationResources.RESOURCES.getString("NoteNode.name");
+		}
+		return pPropertyName.visibleName();
 	}
 	
 	/**
@@ -245,30 +264,5 @@ public class PropertySheet extends GridPane
 
 		return checkBox;
 	}
-
-//	/*
-//	 * Obtains the externalized name of a property and takes account
-//	 * of property inheritance: if a property is not found on a class,
-//	 * looks for the property name in superclasses. We do not use the actual
-//	 * property names to decouple visual representation (which can eventually
-//	 * be translated) from names in the design space.
-//	 */
-//	private static String getPropertyName(Class<?> pClass, String pProperty)
-//	{
-//		assert pProperty != null;
-//		if( pClass == null )
-//		{
-//			return pProperty;
-//		}
-//		String key = pClass.getSimpleName() + "." + pProperty;
-//		if( !RESOURCES.containsKey(key) )
-//		{
-//			return getPropertyName(pClass.getSuperclass(), pProperty);
-//		}
-//		else
-//		{
-//			return RESOURCES.getString(key);
-//		}
-//	}
 }
 
