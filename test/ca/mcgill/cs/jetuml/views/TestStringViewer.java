@@ -69,5 +69,14 @@ public class TestStringViewer {
 		assertEquals(new Dimension(osDependent(87, 83, 83), osDependent(27, 26, 26)), topCenterPadded.getDimension("Display String"));
 	}
 	
-	
+	@Test
+	public void testWrapString()
+	{
+		assertEquals("Display String", topCenter.wrapString("Display String", 15));
+		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 
+				topCenter.wrapString("A really long string that should probably be wrapped", 15));
+		assertEquals("Display\nString", topCenter.wrapString("Display String", 1));
+		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
+				topCenter.wrapString("A really long string that should probably be wrapped", 1));
+	}
 }
