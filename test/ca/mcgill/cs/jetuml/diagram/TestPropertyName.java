@@ -30,7 +30,7 @@ public class TestPropertyName
 	@Test
 	public void test_externalName()
 	{
-		assertEquals("Aggregation Type", PropertyName.AGGREGATION_TYPE.externalName());
+		assertEquals("Aggregation Type", PropertyName.AGGREGATION_TYPE.external());
 	}
 	
 	/*
@@ -41,7 +41,7 @@ public class TestPropertyName
 	{
 		for( PropertyName propertyName : PropertyName.values() )
 		{
-			assertNotEquals("[Resource cannot be found]", propertyName.visibleName(), propertyName.toString());
+			assertNotEquals("[Resource cannot be found]", propertyName.visible(), propertyName.toString());
 		}
 	}
 }

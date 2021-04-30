@@ -57,7 +57,7 @@ public class PropertyChangeTracker
 	{
 		for( Property property : aProperties )
 		{
-			aOldValues.put(property.getName(), property.get());
+			aOldValues.put(property.name(), property.get());
 		}
 	}
 	
@@ -73,10 +73,10 @@ public class PropertyChangeTracker
 		CompoundOperation operation = new CompoundOperation();
 		for( Property property : aProperties )
 		{
-			if( !aOldValues.get(property.getName()).equals(property.get()))
+			if( !aOldValues.get(property.name()).equals(property.get()))
 			{
 				final Object newValue = property.get();
-				final Object oldValue = aOldValues.get(property.getName());
+				final Object oldValue = aOldValues.get(property.name());
 				operation.add(new SimpleOperation(
 						()-> property.set(newValue),
 						()-> property.set(oldValue)));

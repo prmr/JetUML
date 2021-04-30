@@ -60,7 +60,7 @@ public enum PropertyName
 	/**
 	 * @return The name of this property for purpose of externalizing it in a diagram file.
 	 */
-	public String externalName()
+	public String external()
 	{
 		return aExternal;
 	}
@@ -69,7 +69,7 @@ public enum PropertyName
 	 * @return The name of the property as users should see it, that is, 
 	 *     obtained from the application resources.
 	 */
-	public String visibleName()
+	public String visible()
 	{
 		return RESOURCES.getString("property." + name().toLowerCase());
 	}

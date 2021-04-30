@@ -87,7 +87,7 @@ public class PropertySheet extends GridPane
 			Control editor = getEditorControl(property);
 			if( editor != null )
 			{
-				add(new Label(labelName(pElement, property.getName())), 0, row);
+				add(new Label(labelName(pElement, property.name())), 0, row);
 				add(editor, 1, row);
 				row++;
 			}
@@ -112,7 +112,7 @@ public class PropertySheet extends GridPane
 		{
 			return ApplicationResources.RESOURCES.getString("NoteNode.name");
 		}
-		return pPropertyName.visibleName();
+		return pPropertyName.visible();
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class PropertySheet extends GridPane
 	{      
 		if( pProperty.get() instanceof String )
 		{
-			if( extended(pProperty.getName()))
+			if( extended(pProperty.name()))
 			{
 				return createExtendedStringEditor(pProperty);
 			}

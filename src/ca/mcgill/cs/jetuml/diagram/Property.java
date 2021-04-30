@@ -53,7 +53,7 @@ public class Property
 	/**
 	 * @return The name of this property.
 	 */
-	public PropertyName getName()
+	public PropertyName name()
 	{
 		return aName;
 	}

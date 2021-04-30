@@ -84,7 +84,7 @@ public final class JsonDecoder
 				node.moveTo(new Point(object.getInt("x"), object.getInt("y")));
 				for( Property property : node.properties() )
 				{
-					property.set(object.get(property.getName().externalName()));
+					property.set(object.get(property.name().external()));
 				}
 				pContext.addNode(node, object.getInt("id"));
 			}
@@ -149,7 +149,7 @@ public final class JsonDecoder
 				
 				for( Property property : edge.properties())
 				{
-					property.set(object.get(property.getName().externalName()));
+					property.set(object.get(property.name().external()));
 				}
 				edge.connect(pContext.getNode(object.getInt("start")), pContext.getNode(object.getInt("end")), pContext.pDiagram());
 				pContext.pDiagram().addEdge(edge);

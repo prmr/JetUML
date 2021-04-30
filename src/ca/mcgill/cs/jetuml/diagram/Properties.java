@@ -90,7 +90,7 @@ public class Properties implements Iterable<Property>
 		List<Property> properties = aProperties.values().stream().collect(toList());
 		properties.add(pIndex, new Property(pName, pGetter, pSetter));
 		aProperties.clear();
-		properties.stream().forEach(property -> aProperties.put(property.getName(), property));
+		properties.stream().forEach(property -> aProperties.put(property.name(), property));
 	}
 
 	@Override

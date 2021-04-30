@@ -68,7 +68,7 @@ public class TestProperties
 		aProperties.add(PropertyName.AGGREGATION_TYPE, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		assertEquals(1, size());
 		Property prop = aProperties.get(PropertyName.AGGREGATION_TYPE);
-		assertEquals(PropertyName.AGGREGATION_TYPE, prop.getName());
+		assertEquals(PropertyName.AGGREGATION_TYPE, prop.name());
 		assertEquals("", prop.get());
 	}
 	
@@ -78,13 +78,13 @@ public class TestProperties
 		aProperties.add(PropertyName.AGGREGATION_TYPE, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		assertEquals(1, size());
 		Property prop = aProperties.get(PropertyName.AGGREGATION_TYPE);
-		assertSame(PropertyName.AGGREGATION_TYPE, prop.getName());
+		assertSame(PropertyName.AGGREGATION_TYPE, prop.name());
 		assertEquals("", prop.get());
 		
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue + "X", val -> aStub.aValue = (String) val + "X");
 		assertEquals(2, size());
 		prop = aProperties.get(PropertyName.ATTRIBUTES);
-		assertSame(PropertyName.ATTRIBUTES, prop.getName());
+		assertSame(PropertyName.ATTRIBUTES, prop.name());
 		assertEquals("X", prop.get());
 	}
 	
@@ -94,7 +94,7 @@ public class TestProperties
 		aProperties.addAt(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
 		assertEquals(1, size());
 		Property prop = aProperties.iterator().next();
-		assertEquals(PropertyName.ATTRIBUTES, prop.getName());
+		assertEquals(PropertyName.ATTRIBUTES, prop.name());
 		assertEquals("", prop.get());
 	}
 	
@@ -103,7 +103,7 @@ public class TestProperties
 	{
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.CONTENTS, PropertyName.ATTRIBUTES);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.CONTENTS, PropertyName.ATTRIBUTES);
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class TestProperties
 	{
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
 	}
 	
 	@Test
@@ -120,7 +120,7 @@ public class TestProperties
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.DIRECTIONALITY, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.DIRECTIONALITY, PropertyName.ATTRIBUTES, PropertyName.CONTENTS);
 	}
 	
 	@Test
@@ -129,7 +129,7 @@ public class TestProperties
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS);
 	}
 	
 	@Test
@@ -138,7 +138,7 @@ public class TestProperties
 		aProperties.add(PropertyName.ATTRIBUTES, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 2);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS, PropertyName.DIRECTIONALITY);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.CONTENTS, PropertyName.DIRECTIONALITY);
 	}
 	
 	@Test
@@ -148,7 +148,7 @@ public class TestProperties
 		aProperties.add(PropertyName.CONTENTS, () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		aProperties.addAt(PropertyName.DIRECTIONALITY, () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
 		aProperties.add(PropertyName.END_LABEL, () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS, PropertyName.END_LABEL);
+		assertThat(extract(getProperties(), Property::name), hasElementsEqualTo, PropertyName.ATTRIBUTES, PropertyName.DIRECTIONALITY, PropertyName.CONTENTS, PropertyName.END_LABEL);
 	}
 	
 	private int size()

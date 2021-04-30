@@ -53,7 +53,7 @@ public class TestEdgeProperties
 	private static List<PropertyName> getPropertyNamesAsList(Edge pEdge)
 	{
 		return StreamSupport.stream(pEdge.properties().spliterator(), false)
-		    .map(Property::getName).collect(Collectors.toList());
+		    .map(Property::name).collect(Collectors.toList());
 	}
 	
 	private static Stream<Arguments> argumentProvider() 

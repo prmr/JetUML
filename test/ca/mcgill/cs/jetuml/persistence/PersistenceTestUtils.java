@@ -76,13 +76,13 @@ final class PersistenceTestUtils
 			JSONObject object = pArray.getJSONObject(i);
 			for( Property property : pProperties )
 			{
-				if( !object.has(property.getName().externalName()))
+				if( !object.has(property.name().external()))
 				{
 					match = false;
 				}
 				else
 				{
-					if(!object.get(property.getName().externalName()).equals(property.get()))
+					if(!object.get(property.name().external()).equals(property.get()))
 					{
 						match = false;
 					}
@@ -110,13 +110,13 @@ final class PersistenceTestUtils
 			JSONObject object = pArray.getJSONObject(i);
 			for( Property property : pProperties )
 			{
-				if( !object.has(property.getName().externalName()))
+				if( !object.has(property.name().external()))
 				{
 					match = false;
 				}
 				else
 				{
-					if(!object.get(property.getName().externalName()).equals(property.get()))
+					if(!object.get(property.name().external()).equals(property.get()))
 					{
 						match = false;
 					}
@@ -142,7 +142,7 @@ final class PersistenceTestUtils
 				Properties nodeProperties = node.properties();
 				for( Property property : pProperties )
 				{
-					if( !nodeProperties.get(property.getName()).get().equals(property.get()))
+					if( !nodeProperties.get(property.name()).get().equals(property.get()))
 					{
 						match = false;
 						break;
@@ -181,7 +181,7 @@ final class PersistenceTestUtils
 				Properties edgeProperties = edge.properties();
 				for( Property property : pProperties )
 				{
-					if( !edgeProperties.get(property.getName()).get().equals(property.get()))
+					if( !edgeProperties.get(property.name()).get().equals(property.get()))
 					{
 						match = false;
 						break;
