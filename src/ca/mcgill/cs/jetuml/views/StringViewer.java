@@ -177,7 +177,41 @@ public final class StringViewer
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
-	
+
+	/**
+	 * Breaks up a string such that each multi-word line has at most
+	 * pWidth characters.
+	 * @param pString The string to wrap.
+	 * @param pWidth The maximum number of characters on a line.
+	 * @return The new string.
+	 */
+	public String wrapString(String pString, int pWidth)
+	{
+		int remainingEmptySpace = pWidth;
+        final int spaceLength = 1;
+        String[] words = pString.split(" ");
+        StringBuilder formattedString = new StringBuilder();
+
+        for ( String word : words )
+        {
+        	// Replace last space with newline (if last space exists)
+        	if ( word.length() > remainingEmptySpace && formattedString.length() > 0 )
+        	{
+        		formattedString.deleteCharAt(formattedString.length() - 1);
+        		formattedString.append('\n');
+        		remainingEmptySpace = pWidth;
+        	}
+
+    		remainingEmptySpace = remainingEmptySpace - word.length() - spaceLength;
+    		formattedString.append(word);
+    		formattedString.append(' ');
+        }
+
+        // Remove extraneous space
+        formattedString.deleteCharAt(formattedString.length() - 1);
+    	return formattedString.toString();
+	}
+
 	private TextAlignment getTextAlignment()
 	{		
 		if ( aAlign.isLeft() )
