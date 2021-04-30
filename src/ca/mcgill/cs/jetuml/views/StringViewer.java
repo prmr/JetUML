@@ -27,6 +27,9 @@ import java.util.Map;
 
 import ca.mcgill.cs.jetuml.annotations.Flyweight;
 import ca.mcgill.cs.jetuml.annotations.Immutable;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.geometry.VPos;
@@ -45,10 +48,7 @@ import javafx.scene.text.TextAlignment;
 @Flyweight
 public final class StringViewer
 {
-	public static final Font FONT = Font.font("System", 12);
-	private static final Font FONT_BOLD = Font.font(FONT.getFamily(), FontWeight.BOLD, FONT.getSize());
-	private static final FontMetrics FONT_METRICS = new FontMetrics(FONT);
-	private static final FontMetrics FONT_BOLD_METRICS = new FontMetrics(FONT_BOLD);
+	private static final CanvasFont CANVAS_FONT = new CanvasFont();
 	
 	private static final Dimension EMPTY = new Dimension(0, 0);
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
@@ -138,27 +138,6 @@ public final class StringViewer
 		return innerMap.computeIfAbsent(decorationSet, k -> new StringViewer(pAlign, decorationSet));
 	}
 	
-	private Font getFont()
-	{
-		if( aBold )
-		{
-			return FONT_BOLD;
-		}
-		else
-		{
-			return FONT;
-		}
-	}
-	
-	private FontMetrics getFontMetrics()
-	{
-		if ( aBold )
-		{
-			return FONT_BOLD_METRICS;
-		}
-		return FONT_METRICS;
-	}
-	
 	/**
      * Gets the width and height required to show pString, including
      * padding around the string.
@@ -173,7 +152,7 @@ public final class StringViewer
 		{
 			return EMPTY;
 		}
-		Dimension dimension = getFontMetrics().getDimension(pString);
+		Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
 		return new Dimension(Math.round(dimension.width() + aHorizontalPadding*2), 
 				Math.round(dimension.height() + aVerticalPadding*2));
 	}
@@ -270,17 +249,17 @@ public final class StringViewer
 		}
 		
 		pGraphics.translate(pRectangle.getX(), pRectangle.getY());
-		ViewUtils.drawText(pGraphics, textX, textY, pString.trim(), getFont());
+		CANVAS_FONT.drawString(pGraphics, textX, textY, pString.trim(), aBold);
 		
 		if(aUnderlined && pString.trim().length() > 0)
 		{
 			int xOffset = 0;
 			int yOffset = 0;
-			Dimension dimension = getFontMetrics().getDimension(pString);
+			Dimension dimension = CANVAS_FONT.getDimension(pString, aBold);
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
-				yOffset = (int) (getFont().getSize()/2) + 1;
+				yOffset = (int) (CANVAS_FONT.fontSize()/2) + 1;
 			}
 			else if( aAlign.isRight() )
 			{
@@ -293,5 +272,93 @@ public final class StringViewer
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
 		pGraphics.setTextBaseline(oldVPos);
 		pGraphics.setTextAlign(oldAlign);
+	}
+	
+	/**
+	 * Responsible for performing more rudimentary operations involving font,
+	 * as well as being synchronized with the user's current font.
+	 */
+	private static final class CanvasFont implements IntegerPreferenceChangeHandler
+	{
+
+		private Font aFont;
+		private Font aFontBold;
+		private FontMetrics aFontMetrics;
+		private FontMetrics aFontBoldMetrics;
+
+		private CanvasFont()
+		{
+			refreshAttributes();
+			UserPreferences.instance().addIntegerPreferenceChangeHandler(this);
+		}
+
+		private Font getFont(boolean pBold)
+		{
+			if ( pBold )
+			{
+				return aFontBold;
+			}
+			return aFont;
+		}
+
+		private FontMetrics getFontMetrics(boolean pBold)
+		{
+			if ( pBold )
+			{
+				return aFontBoldMetrics;
+			}
+			return aFontMetrics;
+		}
+
+		/**
+		 * Returns the dimension of a given string.
+		 * @param pString The string to which the bounds pertain.
+		 * @return The dimension of the string
+		 */
+		public Dimension getDimension(String pString, boolean pBold)
+		{
+			return getFontMetrics(pBold).getDimension(pString);
+		}
+
+		/**
+		 * Draws the string on the graphics context at the specified position.
+		 * @param pGraphics The graphics context
+		 * @param pTextX The x-position of the string
+		 * @param pTextY The y-position of the string
+		 * @param pString The canvas on which to draw the string
+		 * @param pBold If the text should be bold
+		 */
+		public void drawString(GraphicsContext pGraphics, int pTextX, int pTextY, String pString, boolean pBold)
+		{
+			ViewUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
+		}
+
+		/**
+		 * Returns the font size the user currently specifies.
+		 * @return The font size
+		 */
+		public int fontSize()
+		{
+			return (int) Math.round(aFont.getSize());
+		}
+
+		@Override
+		public void integerPreferenceChanged(IntegerPreference pPreference) 
+		{
+			if ( pPreference == IntegerPreference.fontSize && aFont.getSize() != UserPreferences.instance().getInteger(pPreference) )
+			{
+				refreshAttributes();
+			}
+
+		}
+
+		private void refreshAttributes()
+		{
+			aFont = Font.font("System", UserPreferences.instance().getInteger(IntegerPreference.fontSize));
+			aFontBold = Font.font(aFont.getFamily(), FontWeight.BOLD, aFont.getSize());
+			aFontMetrics = new FontMetrics(aFont);
+			aFontBoldMetrics = new FontMetrics(aFontBold);
+		}
+
 	}
 }

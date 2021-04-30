@@ -21,12 +21,14 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -103,6 +105,8 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	
 	private void installDiagramElementTools(Diagram pDiagram, ToggleGroup pToggleGroup)
 	{
+		final int oldFontSize = UserPreferences.instance().getInteger(IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
 			SelectableToolButton button = new SelectableToolButton(
@@ -112,6 +116,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
 			add(button, createIcon(element), Prototypes.instance().tooltip(element, false));
 		}
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, oldFontSize);
 	}
 	
 	private static Canvas createIcon( DiagramElement pElement )
