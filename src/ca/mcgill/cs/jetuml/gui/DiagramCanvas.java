@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Dimension;
@@ -40,7 +41,7 @@ import javafx.scene.paint.Color;
 /**
  * A canvas on which to view diagrams.
  */
-public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler
+public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanPreferenceChangeHandler, IntegerPreferenceChangeHandler
 {	
 	private static final double LINE_WIDTH = 0.6;
 	/* The number of pixels to leave around a diagram when the canvas size
@@ -119,12 +120,22 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	}
 
 	@Override
-	public void preferenceChanged(BooleanPreference pPreference)
+	public void booleanPreferenceChanged(BooleanPreference pPreference)
 	{
 		if( pPreference == BooleanPreference.showGrid )
 		{
 			paintPanel();
 		}
+	}
+	
+	@Override
+	public void integerPreferenceChanged(IntegerPreference pPreference) 
+	{
+		if ( pPreference == IntegerPreference.fontSize )
+		{
+			paintPanel();
+		}
+
 	}
 	
 	/*
