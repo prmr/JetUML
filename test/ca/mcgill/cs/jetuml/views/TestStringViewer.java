@@ -21,23 +21,36 @@
 package ca.mcgill.cs.jetuml.views;
 
 import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
 import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 
-public class TestStringViewer {
-	
+public class TestStringViewer 
+{
+	private static int userDefinedFontSize;
 	private StringViewer topCenter;
 	private StringViewer topCenterPadded;
 	private StringViewer topCenterBold;
 	private StringViewer bottomCenterPadded;
+	
+	@BeforeAll
+	public static void setupClass()
+	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
 	
 	@BeforeEach
 	public void setup()
@@ -48,7 +61,12 @@ public class TestStringViewer {
 		bottomCenterPadded = StringViewer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
 	}
 	
-
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
+	}
+	
 	@Test
 	public void testFlyweightProperty()
 	{
@@ -60,13 +78,37 @@ public class TestStringViewer {
 	}
 	
 	@Test
-	public void testDimensionEmptyPaddedNoPaddedBold()
+	public void testDimensionDefaultFont()
 	{
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
 		assertEquals(new Dimension(osDependent(73, 69, 69), osDependent(13, 12, 12)), topCenter.getDimension("Display String"));
 		assertEquals(new Dimension(osDependent(79, 69, 69), osDependent(13, 12, 12)), topCenterBold.getDimension("Display String"));
 		assertEquals(new Dimension(osDependent(87, 83, 83), osDependent(27, 26, 26)), topCenterPadded.getDimension("Display String"));
+	}
+	
+	@Test
+	public void testDimension8ptFont()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 8);
+		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
+		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
+		assertEquals(new Dimension(osDependent(73, 46, 46), osDependent(13, 8, 8)), topCenter.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(79, 46, 46), osDependent(13, 8, 8)), topCenterBold.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(87, 60, 60), osDependent(27, 22, 22)), topCenterPadded.getDimension("Display String"));
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
+
+	@Test
+	public void testDimension24ptFont()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
+		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
+		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
+		assertEquals(new Dimension(osDependent(73, 139, 139), osDependent(13, 23, 23)), topCenter.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(79, 139, 139), osDependent(13, 23, 23)), topCenterBold.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(87, 153, 153), osDependent(27, 37, 37)), topCenterPadded.getDimension("Display String"));
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 	
 	@Test

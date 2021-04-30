@@ -24,6 +24,7 @@ import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.build;
 import static ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils.findRootNode;
 import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
 import static ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry.getBounds;
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,10 +33,13 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -72,11 +76,20 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 public class TestPersistenceService
 {
 	private static final String TEST_FILE_NAME = "testdata/tmp";
+	private static int userDefinedFontSize;
 	
 	@BeforeAll
 	public static void setupClass()
 	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	private int numberOfRootNodes(Diagram pDiagram)
@@ -270,7 +283,7 @@ public class TestPersistenceService
 		assertTrue( cr8.getEnd() == u3 );
 		assertTrue( cr8.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get() == UseCaseDependencyEdge.Type.Include);
 		
-		assertEquals(new Rectangle(568,150,82,osDependent(27, 26, 26)), getBounds(cr9));
+		assertEquals(new Rectangle(568,147,82,osDependent(27, 26, 26)), getBounds(cr9));
 		assertTrue( cr9.getStart() == u2 );
 		assertTrue( cr9.getEnd() == u4 );
 		assertTrue( cr9.properties().get(PropertyName.USE_CASE_DEPENDENCY_TYPE).get() == UseCaseDependencyEdge.Type.Extend);
@@ -405,7 +418,7 @@ public class TestPersistenceService
 		assertEquals(node8, edge5.getEnd());
 		
 		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(378, osDependent(390,390, 384), 83, osDependent(27,26, 21)), getBounds(edge6));
+		assertEquals(new Rectangle(378, osDependent(387,387, 384), 83, osDependent(27,26, 21)), getBounds(edge6));
 		assertEquals(node7, edge6.getEnd());
 		assertEquals("e1", edge6.getMiddleLabel());
 		assertEquals(node1, edge6.getStart());
@@ -497,26 +510,26 @@ public class TestPersistenceService
 		ReturnEdge retC = (ReturnEdge) eIterator.next(); 
 		NoteEdge nedge = (NoteEdge) eIterator.next(); 
 		
-		assertEquals(new Rectangle(osDependent(214,212, 216), 85, 86, osDependent(27, 26, 26)), getBounds(self));
+		assertEquals(new Rectangle(osDependent(214,212, 216), 87, 86, osDependent(27, 26, 26)), getBounds(self));
 		assertEquals(selfCall, self.getEnd());
 		assertEquals("selfCall()", self.getMiddleLabel());
 		assertEquals(init, self.getStart());
 		assertFalse(self.isSignal());
 		
-		assertEquals(new Rectangle(osDependent(224,222, 226), 100, osDependent(179, 181, 177), 
+		assertEquals(new Rectangle(osDependent(224,222, 226), 99, osDependent(179, 181, 177), 
 				osDependent(27, 26, 26)), getBounds(signal));
 		assertEquals(o2Call, signal.getEnd());
 		assertEquals("signal", signal.getMiddleLabel());
 		assertEquals(selfCall, signal.getStart());
 		assertTrue(signal.isSignal());
 		
-		assertEquals(new Rectangle(417, 120, 206, osDependent(27, 26, 26)), getBounds(call1));
+		assertEquals(new Rectangle(417, 119, 206, osDependent(27, 26, 26)), getBounds(call1));
 		assertEquals(o3Call, call1.getEnd());
 		assertEquals("call1()", call1.getMiddleLabel());
 		assertEquals(o2Call, call1.getStart());
 		assertFalse(call1.isSignal());
 		
-		assertEquals(new Rectangle(416, 160, 207, osDependent(27,26, 23)), getBounds(ret1));
+		assertEquals(new Rectangle(416, 157, 207, osDependent(27,26, 23)), getBounds(ret1));
 		assertEquals(o2Call, ret1.getEnd());
 		assertEquals("r1", ret1.getMiddleLabel());
 		assertEquals(o3Call, ret1.getStart());
@@ -619,18 +632,18 @@ public class TestPersistenceService
 		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, 281);
 		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, 474);
 		
-		assertEquals(new Rectangle(240, 130, osDependent(90, 110, 100), osDependent(90, 100, 100)), NodeViewerRegistry.getBounds(type1));
+		assertEquals(new Rectangle(240, 130, osDependent(90, 80, 100), osDependent(90, 90, 100)), NodeViewerRegistry.getBounds(type1));
 		List<Node> children = type1.getChildren();
 		assertEquals(1, children.size());
 		assertEquals(":Type1", type1.getName().toString());
 		
 		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(245, 200, osDependent(80, 100, 90), osDependent(20, 26, 21)), NodeViewerRegistry.getBounds(name));
+		assertEquals(new Rectangle(245, 200, osDependent(80, 70, 90), osDependent(20, 20, 21)), NodeViewerRegistry.getBounds(name));
 		assertEquals("name", name.getName().toString());
 		assertEquals(type1, name.getParent());
 		assertEquals("", name.getValue().toString());
 
-		assertEquals(new Rectangle(440, 290, osDependent(90, 130, 110), osDependent(140, 160, 160)), NodeViewerRegistry.getBounds(blank));
+		assertEquals(new Rectangle(440, 290, osDependent(90, 90, 110), osDependent(140, 140, 160)), NodeViewerRegistry.getBounds(blank));
 		children = blank.getChildren();
 		assertEquals(3, children.size());
 		assertEquals("", blank.getName().toString());
@@ -638,17 +651,17 @@ public class TestPersistenceService
 		FieldNode name3 = (FieldNode) children.get(1);
 		FieldNode name4 = (FieldNode) children.get(2);
 		
-		assertEquals(new Rectangle(445, 360, osDependent(80, 120, 100), osDependent(20, 26, 26)), NodeViewerRegistry.getBounds(name2));
+		assertEquals(new Rectangle(445, 360, osDependent(80, 80, 100), osDependent(20, 20, 26)), NodeViewerRegistry.getBounds(name2));
 		assertEquals("name2", name2.getName().toString());
 		assertEquals(blank, name2.getParent());
 		assertEquals("value", name2.getValue().toString());
 		
-		assertEquals(new Rectangle(445, osDependent(385, 391, 391), osDependent(80, 120, 100), osDependent(20, 26, 26)), NodeViewerRegistry.getBounds(name3));
+		assertEquals(new Rectangle(445, osDependent(385, 385, 391), osDependent(80, 80, 100), osDependent(20, 20, 26)), NodeViewerRegistry.getBounds(name3));
 		assertEquals("name3", name3.getName().toString());
 		assertEquals(blank, name3.getParent());
 		assertEquals("value", name3.getValue().toString());
 		
-		assertEquals(new Rectangle(445, osDependent(410, 422, 422), osDependent(80, 120, 100), osDependent(20,26,26)), NodeViewerRegistry.getBounds(name4));
+		assertEquals(new Rectangle(445, osDependent(410, 410, 422), osDependent(80, 80, 100), osDependent(20,20,26)), NodeViewerRegistry.getBounds(name4));
 		assertEquals("name4", name4.getName().toString());
 		assertEquals(blank, name4.getParent());
 		assertEquals("", name4.getValue().toString());
@@ -679,20 +692,20 @@ public class TestPersistenceService
 		NoteEdge ne2 = (NoteEdge) eIt.next();
 		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
 		
-		assertEquals(new Rectangle(osDependent(319, 339, 329), osDependent(174, 179, 179), 32, osDependent(37, 35, 32)), getBounds(o1));
+		assertEquals(new Rectangle(osDependent(319, 309, 329), osDependent(174, 174, 179), 32, osDependent(37, 37, 32)), getBounds(o1));
 		assertEquals(name, o1.getStart());
 		assertEquals(type1, o1.getEnd());
 		
-		assertEquals(new Rectangle(osDependent(319, 339, 329), 209, osDependent(122, 102, 112), osDependent(152, 159, 159)), getBounds(o2));
+		assertEquals(new Rectangle(osDependent(319, 309, 329), 209, osDependent(122, 132, 112), osDependent(152, 152, 159)), getBounds(o2));
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle(osDependent(520, 535, 527), 208, osDependent(44, 33, 39), 82), getBounds(cr1));
+		assertEquals(new Rectangle(osDependent(520, 520, 527), 208, osDependent(44, 44, 39), 82), getBounds(cr1));
 		assertEquals(object2, cr1.getEnd());
 		assertEquals("e1", cr1.getMiddleLabel().toString());
 		assertEquals(blank, cr1.getStart());
 		
-		assertEquals(new Rectangle(osDependent(519, 559, 539), 329, osDependent(92, 52, 72), osDependent(92, 107, 107)), getBounds(o3));
+		assertEquals(new Rectangle(osDependent(519, 519, 539), 329, osDependent(92, 92, 72), osDependent(92, 92, 107)), getBounds(o3));
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		
