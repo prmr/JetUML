@@ -62,9 +62,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final double LINE_WIDTH = 0.6;
 	
 	private static final int RADIANS_TO_PIXELS = 10;
-	private static final double HEIGHT_RATIO = 3.5;
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
-	private static final int MIN_FONT_SIZE = 9;
 	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER);
 	
 	// The amount of vertical difference in connection points to tolerate
@@ -117,14 +115,14 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private void drawLabel(StateTransitionEdge pEdge, GraphicsContext pGraphics)
 	{
-		adjustLabelFont(pEdge);
+		String label = wrapLabel(pEdge);
 		Rectangle2D labelBounds = getLabelBounds(pEdge);
 		Rectangle drawingRectangle = new Rectangle((int) Math.round(labelBounds.getMinX()), (int) Math.round(labelBounds.getMinY()), 
 				(int) Math.round(labelBounds.getWidth()), (int) Math.round(labelBounds.getHeight()));
 		
 		Font oldFont = pGraphics.getFont();
 		pGraphics.setFont(aFont);
-		STRING_VIEWER.draw(pEdge.getMiddleLabel(), pGraphics, drawingRectangle);
+		STRING_VIEWER.draw(label, pGraphics, drawingRectangle);
 		pGraphics.setFont(oldFont);
 	}
 	
@@ -175,8 +173,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		double x = control.getX() / 2 + line.getX1() / 4 + line.getX2() / 4;
 		double y = control.getY() / 2 + line.getY1() / 4 + line.getY2() / 4;
 
-		adjustLabelFont(pEdge);
-		Dimension textDimensions = getLabelBounds(pEdge.getMiddleLabel());
+		String label = wrapLabel(pEdge);
+		Dimension textDimensions = getLabelBounds(label);
 
 		int gap = 3;
 		if( line.getY1() >= line.getY2() - VERTICAL_TOLERANCE && 
@@ -228,33 +226,38 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private Rectangle2D getSelfEdgeLabelBounds(StateTransitionEdge pEdge)
 	{
 		Line line = getConnectionPoints(pEdge);
-		adjustLabelFont(pEdge);
-		Dimension textDimensions = getLabelBounds(pEdge.getMiddleLabel());
+		String label = wrapLabel(pEdge);
+		Dimension textDimensions = getLabelBounds(label);
 		if( getPosition(pEdge) == 1 )
 		{
-			return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.width()/2,	
-					line.getY1() - SELF_EDGE_OFFSET*2, textDimensions.width(), textDimensions.height());
-		}
-		else
-		{
-			return new Rectangle2D(line.getX1() - textDimensions.width()/2,	
-					line.getY1() - SELF_EDGE_OFFSET * HEIGHT_RATIO, textDimensions.width(), textDimensions.height());
-		}
-	}   
-	
-	private void adjustLabelFont(StateTransitionEdge pEdge)
+            return new Rectangle2D(line.getX1() + SELF_EDGE_OFFSET - textDimensions.width()/2,  
+                    line.getY1() - SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), textDimensions.height());
+        }
+        else
+        {
+            return new Rectangle2D(line.getX1() - textDimensions.width()/2, 
+                    line.getY1() - 2*SELF_EDGE_OFFSET - textDimensions.height(), textDimensions.width(), 
+                    textDimensions.height());
+        }
+	}  
+
+	/**
+	 * Wraps the edge label, accounting for possible self-loop intersections.
+	 */
+	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		if(pEdge.getMiddleLabel().length() > MAX_LENGTH_FOR_NORMAL_FONT)
+		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
+		if ( isSelfEdge(pEdge) )
 		{
-			float difference = pEdge.getMiddleLabel().length() - MAX_LENGTH_FOR_NORMAL_FONT;
-			difference = difference / (2*pEdge.getMiddleLabel().length()); // damping
-			double newFontSize = Math.max(MIN_FONT_SIZE, (1-difference) * FONT.getSize());
-			aFont = new Font(aFont.getName(), newFontSize);
+			final int singleCharWidth = STRING_VIEWER.getDimension(" ").width();
+	    	final int nodeLength = NodeViewerRegistry.getBounds(pEdge.getStart()).getWidth() / singleCharWidth;
+	    	if ( lineLength >= nodeLength / 2 )
+	    	{
+	    		lineLength =  nodeLength / 2;
+	    	}
 		}
-		else
-		{
-			aFont = FONT;
-		}
+		
+		return STRING_VIEWER.wrapString(pEdge.getMiddleLabel(), lineLength);	
 	}
 
 	@Override
