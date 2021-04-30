@@ -274,7 +274,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	}
 
 	@Override
-	public void preferenceChanged(BooleanPreference pPreference)
+	public void booleanPreferenceChanged(BooleanPreference pPreference)
 	{
 		if( pPreference == BooleanPreference.showToolHints )
 		{
