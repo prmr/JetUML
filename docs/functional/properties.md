@@ -24,7 +24,7 @@ The main elements in the design of the properties feature are as follows:
 ### Defining a Property
 
 An instance of `Property` consists of three pieces of information:
-* The name of the property
+* The name of the property (an enumerated value listed in `PropertyName`)
 * A *setter* for the property.
 * A *getter* for the property.
 
@@ -40,11 +40,9 @@ Given the above design, getting and setting the value of a property is done as f
 
 ```java
 ClassNode node = ...
-int x = node.properties().get("x").get();
-node.properties().get("x").set(25);
+String name = node.properties().get(PropertyName.NAME).get();
+node.properties().get(PropertyName.NAME).set(25);
 ```
-
-Note that this example uses autoboxing.
 
 ### Initializing Properties
 
@@ -57,7 +55,9 @@ The following code, in class `InterfaceNode`, illustrates this protocol:
 protected void buildProperties()
 {
    super.buildProperties();
-   properties().add("methods", () -> aMethods, pMethods -> aMethods = (String)pMethods);
+   properties().add(PropertyName.METHODS, 
+                    () -> aMethods, 
+                    pMethods -> aMethods = (String)pMethods);
 }
 ```
 
