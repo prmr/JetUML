@@ -65,13 +65,14 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 	 * The node's position might have to get adjusted if there are children
 	 * whose position is to the left or up of the node's position.
 	 */
-	private Point getPosition(Node pNode, Optional<Rectangle> pChildrenBounds)
+	private Point getPosition(AbstractPackageNode pNode, Optional<Rectangle> pChildrenBounds)
 	{
 		if( !pChildrenBounds.isPresent() )
 		{
 			return pNode.position();
 		}
-		return new Point(pChildrenBounds.get().getX() - PADDING, pChildrenBounds.get().getY() - PADDING - TOP_HEIGHT);
+		return new Point(pChildrenBounds.get().getX() - PADDING, 
+				pChildrenBounds.get().getY() - PADDING - getTopDimension(pNode).height());
 	}
 	
 	protected Rectangle getTopBounds(AbstractPackageNode pNode)

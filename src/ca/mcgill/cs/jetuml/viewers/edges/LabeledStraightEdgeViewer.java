@@ -39,7 +39,6 @@ import javafx.scene.canvas.GraphicsContext;
 public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 {	
 	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
-	private static final int SHIFT = -10;
 	
 	private final Function<Edge, String> aLabelExtractor;
 	
@@ -62,9 +61,10 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	{
 		super.draw(pEdge, pGraphics);
 		String label = aLabelExtractor.apply(pEdge);
+		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, SHIFT));
+			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, -labelHeight/2));
 		}
 	}
 	
@@ -74,7 +74,8 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 		assert label != null && label.length() > 0;
 		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints(pEdge).spanning().getCenter();
-		return new Rectangle(center.getX()-dimensions.width()/2, center.getY() + SHIFT, dimensions.width(), dimensions.height());
+		return new Rectangle(center.getX()-dimensions.width()/2, center.getY() - dimensions.height()/2, dimensions.width(), 
+				dimensions.height());
 	}
 	
 	@Override

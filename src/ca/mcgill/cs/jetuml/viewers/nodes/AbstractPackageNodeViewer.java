@@ -110,7 +110,8 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(pNode.getName());
 		int topWidth = max(nameBounds.width() + 2 * NAME_GAP, DEFAULT_TOP_WIDTH);
-		return new Dimension(topWidth, TOP_HEIGHT);
+		int topHeight = max(nameBounds.height() - 2 * NAME_GAP, TOP_HEIGHT);
+		return new Dimension(topWidth, topHeight);
 	}
 	
 	/*

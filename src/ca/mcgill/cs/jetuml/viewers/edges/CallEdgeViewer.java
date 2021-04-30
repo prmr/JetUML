@@ -58,7 +58,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	private static final StringViewer CENTERED_STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 
-	private static final int SHIFT = -10;
+	private static final int SHIFT = 5;
 	
 	@Override
 	protected Shape getShape(Edge pEdge)
@@ -134,14 +134,15 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		{
 			Dimension dimensions = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(label);
 			Point[] points = getPoints(pEdge);
-			return new Rectangle(points[1].getX(), points[1].getY() + SHIFT/2, dimensions.width() , dimensions.height());
+			int heightDelta = (points[2].getY() -  points[1].getY() - dimensions.height())/2 + SHIFT;
+			return new Rectangle(points[1].getX(), points[1].getY() + heightDelta, dimensions.width() , dimensions.height());
 		}
 		else
 		{
 			Dimension dimensions = CENTERED_STRING_VIEWER.getDimension(label);
 			Point center = getConnectionPoints(pEdge).spanning().getCenter();
 			return new Rectangle(center.getX() - dimensions.width()/2, 
-					center.getY()+SHIFT*2, dimensions.width(), dimensions.height());
+					center.getY() - dimensions.height() + SHIFT, dimensions.width(), dimensions.height());
 		}
 	}
 

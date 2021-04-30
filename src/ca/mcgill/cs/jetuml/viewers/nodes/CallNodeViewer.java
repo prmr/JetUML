@@ -33,6 +33,9 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.views.StringViewer;
+import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -48,6 +51,10 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
 	private static final int Y_GAP_TINY = 5; // Was 10, changed to 20 to account for label space
 	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
+	// Inserts gaps between call nodes so that call edge labels don't intersect
+	private static final StringViewer NODE_GAP_TESTER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final String TEST_STRING = "|";
+	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
@@ -205,13 +212,19 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	
 	protected int getY(Node pNode)
 	{
+		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
+		// Only apply shift if necessary
+		if ( shift < MINIMUM_SHIFT_THRESHOLD )
+		{
+			shift = 0;
+		}
 		if(isInConstructorCall(pNode))
 		{
-			return getYWithConstructorCall(pNode);
+			return getYWithConstructorCall(pNode) + shift;
 		}
 		else 
 		{
-			return getYWithNoConstructorCall(pNode);
+			return getYWithNoConstructorCall(pNode) + shift;
 		}
 	}
 }

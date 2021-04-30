@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import static ca.mcgill.cs.jetuml.views.StringViewer.FONT;
-
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.geom.Conversions;
@@ -47,7 +45,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 
 /**
  * An edge view specialized for state transitions.
@@ -61,15 +58,13 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final int DEGREES_270 = 270;
 	private static final double LINE_WIDTH = 0.6;
 	
-	private static final int RADIANS_TO_PIXELS = 10;
+	private static final int RADIANS_TO_PIXELS = 7;
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER);
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
-
-	private Font aFont = FONT;
 	
 	@Override
 	public void draw(Edge pEdge, GraphicsContext pGraphics)
@@ -119,11 +114,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		Rectangle2D labelBounds = getLabelBounds(pEdge);
 		Rectangle drawingRectangle = new Rectangle((int) Math.round(labelBounds.getMinX()), (int) Math.round(labelBounds.getMinY()), 
 				(int) Math.round(labelBounds.getWidth()), (int) Math.round(labelBounds.getHeight()));
-		
-		Font oldFont = pGraphics.getFont();
-		pGraphics.setFont(aFont);
+
 		STRING_VIEWER.draw(label, pGraphics, drawingRectangle);
-		pGraphics.setFont(oldFont);
 	}
 	
 	private void drawSelfEdge(Edge pEdge, GraphicsContext pGraphics)
@@ -204,8 +196,14 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		// Additional gap to make sure the labels don't overlap
 		if( pEdge.getDiagram() != null && getPosition(pEdge) > 1 )
 		{
-			double delta = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
-			delta = textDimensions.height() - delta*RADIANS_TO_PIXELS;
+			final double angleLowerBound = Math.atan2(1, 1);
+			final double angleUpperBound = 3 * angleLowerBound;
+			double angle = Math.abs(Math.atan2(line.getX2()-line.getX1(), line.getY2()-line.getY1()));
+			double delta = textDimensions.height();
+			if ( angleLowerBound <= angle && angle <= angleUpperBound )
+			{
+				delta -= angle*RADIANS_TO_PIXELS;
+			}
 			if( line.getX1() <= line.getX2() )
 			{
 				y -= delta;
