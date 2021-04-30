@@ -239,6 +239,7 @@ public class EditorFrame extends BorderPane
 								((CheckMenuItem) event.getSource()).isSelected())),
 		
 				factory.createMenuItem("view.diagram_size", false, event -> new DiagramSizeDialog(aMainStage).show()),
+				factory.createMenuItem("view.font_size", false, event -> new FontSizeDialog(aMainStage).show()),
 				factory.createMenuItem("view.zoom_in", true, event -> getSelectedDiagramTab().zoomIn()),
 				factory.createMenuItem("view.zoom_out", true, event -> getSelectedDiagramTab().zoomOut()),
 				factory.createMenuItem("view.reset_zoom", true, event -> getSelectedDiagramTab().resetZoom())));
