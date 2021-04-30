@@ -75,7 +75,7 @@ public class TestObjectNodeViewer
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(osDependent(19, 18, 12), aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(12, 18, 12), aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(osDependent(68, 70, 58), aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(47, 70, 58), aViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		assertEquals(70, aViewer.getYPosition(aNode, aField1));
-		assertEquals(osDependent(102, 101, 101), aViewer.getYPosition(aNode, aField2));
+		assertEquals(osDependent(95, 101, 101), aViewer.getYPosition(aNode, aField2));
 	}
 	
 	@Test
@@ -137,7 +137,7 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
 		assertEquals(80, aViewer.getBounds(aNode).getWidth());
-		assertEquals(100, aViewer.getBounds(aNode).getHeight());
+		assertEquals(90, aViewer.getBounds(aNode).getHeight());
 	}
 	
 	@Test
@@ -148,6 +148,6 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField2);
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
 		assertEquals(80, aViewer.getBounds(aNode).getWidth());
-		assertEquals(130, aViewer.getBounds(aNode).getHeight());
+		assertEquals(120, aViewer.getBounds(aNode).getHeight());
 	}
 }
