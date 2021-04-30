@@ -20,6 +20,8 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -59,7 +61,7 @@ public final class UserPreferences
 	 */
 	public enum IntegerPreference
 	{
-		diagramWidth(0), diagramHeight(0), nextTipId(1);
+		diagramWidth(0), diagramHeight(0), nextTipId(1), fontSize(DEFAULT_FONT_SIZE);
 		
 		private int aDefault;
 		
@@ -75,16 +77,29 @@ public final class UserPreferences
 	}
 	
 	/**
-	 * An object that can react to a change in user preference.
+	 * An object that can react to a change to a boolean user preference.
 	 */
 	public interface BooleanPreferenceChangeHandler
 	{
 		/**
-		 * Callback for change in preference values.
+		 * Callback for change in boolean preference values.
 		 * 
 		 * @param pPreference The preference that just changed.
 		 */
-		void preferenceChanged(BooleanPreference pPreference);
+		void booleanPreferenceChanged(BooleanPreference pPreference);
+	}
+
+	/**
+	 * An object that can react to a change to an integer user preference.
+	 */
+	public interface IntegerPreferenceChangeHandler
+	{
+		/**
+		 * Callback for change in integer preference values.
+		 * 
+		 * @param pPreference The preference that just changed.
+		 */
+		void integerPreferenceChanged(IntegerPreference pPreference);
 	}
 	
 	private static final UserPreferences INSTANCE = new UserPreferences();
@@ -92,6 +107,7 @@ public final class UserPreferences
 	private EnumMap<BooleanPreference, Boolean> aBooleanPreferences = new EnumMap<>(BooleanPreference.class);
 	private final List<BooleanPreferenceChangeHandler> aBooleanPreferenceChangeHandlers = new ArrayList<>();
 	private EnumMap<IntegerPreference, Integer> aIntegerPreferences = new EnumMap<>(IntegerPreference.class);
+	private final List<IntegerPreferenceChangeHandler> aIntegerPreferenceChangeHandlers = new ArrayList<>();
 	
 	private UserPreferences()
 	{
@@ -140,7 +156,7 @@ public final class UserPreferences
 	{
 		aBooleanPreferences.put(pPreference, pValue);
 		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), Boolean.toString(pValue));
-		aBooleanPreferenceChangeHandlers.forEach(handler -> handler.preferenceChanged(pPreference));
+		aBooleanPreferenceChangeHandlers.forEach(handler -> handler.booleanPreferenceChanged(pPreference));
 	}
 	
 	/**
@@ -153,10 +169,11 @@ public final class UserPreferences
 	{
 		aIntegerPreferences.put(pPreference, pValue);
 		Preferences.userNodeForPackage(JetUML.class).put(pPreference.name(), Integer.toString(pValue));
+		aIntegerPreferenceChangeHandlers.forEach(handler -> handler.integerPreferenceChanged(pPreference));
 	}
 	
 	/**
-	 * Adds a handler for a property change. Don't forget to remove handers if 
+	 * Adds a handler for a boolean property change. Don't forget to remove handers if 
 	 * objects are removed, e.g., diagram Tabs.
 	 * 
 	 * @param pHandler A handler for a change in boolean preferences.
@@ -174,5 +191,26 @@ public final class UserPreferences
 	public void removeBooleanPreferenceChangeHandler(BooleanPreferenceChangeHandler pHandler)
 	{
 		aBooleanPreferenceChangeHandlers.remove(pHandler);
+	}
+	
+	/**
+	 * Adds a handler for an integer property change. Don't forget to remove handers if 
+	 * objects are removed, e.g., diagram Tabs.
+	 * 
+	 * @param pHandler A handler for a change in integer preferences.
+	 */
+	public void addIntegerPreferenceChangeHandler(IntegerPreferenceChangeHandler pHandler)
+	{
+		aIntegerPreferenceChangeHandlers.add(pHandler);
+	}
+
+	/**
+	 * Removes a handler.
+	 * 
+	 * @param pHandler The handler to remove.
+	 */
+	public void removeIntegerPreferenceChangeHandler(IntegerPreferenceChangeHandler pHandler)
+	{
+		aIntegerPreferenceChangeHandlers.remove(pHandler);
 	}
 }
