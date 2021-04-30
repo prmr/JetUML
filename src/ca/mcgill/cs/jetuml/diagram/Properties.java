@@ -20,21 +20,21 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.diagram;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A class to externalize the properties of an object into a separate
- * object. 
+ * A class to collect and manage the properties of a diagram element.
  * 
- * It is not possible to overwrite properties. Adding a property with a
- * name equal to the name of a property that already exists will silently
- * do nothing. It is also not possible to change a property once it's 
- * added to a Properties object. Properties objects are intended to be
- * constructed once, then queried only.
+ * It is not possible to change a property once it's added to a Properties
+ * object. Properties objects are intended to be constructed once, then queried only.
  * 
  * This class provides support for storing properties in a meaningful order. 
  * By default, this is the order of insertion. However, use of the method <code>addAt</code>
@@ -44,7 +44,7 @@ import java.util.function.Supplier;
  */
 public class Properties implements Iterable<Property>
 {
-	private final List<Property> aProperties = new ArrayList<>();
+	private final Map<String, Property> aProperties = new LinkedHashMap<>();
 	
 	/**
 	 * Adds a property to the end of the list.
@@ -52,75 +52,50 @@ public class Properties implements Iterable<Property>
 	 * @param pName The name of the property.
 	 * @param pGetter The getter for this property.
 	 * @param pSetter The setter for this property.
-	 * @pre pPropertyName != null && pGetter != null && pSetter != null
+	 * @pre pPropertyName != null && pGetter != null && pSetter != null && !containsKey(pName)
 	 */
 	public void add(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter)
 	{
-		assert pName != null && pGetter != null & pSetter != null;
-		if( !contains(pName) )
-		{
-			aProperties.add(new Property(pName, pGetter, pSetter));
-		}
-	}
-	
-	/**
-	 * @param pName The name to check
-	 * @return True if there is already a property with this name in the list.
-	 */
-	private boolean contains(String pName)
-	{
-		for( Property property : aProperties)
-		{
-			if( property.getName().equals(pName))
-			{
-				return true;
-			}
-		}
-		return false;
+		assert pName != null && pGetter != null && pSetter != null && !aProperties.containsKey(pName);
+		aProperties.put(pName, new Property(pName, pGetter, pSetter));
 	}
 	
 	/**
 	 * @param pName The name of the property to get.
 	 * @return The property with pName.
-	 * @pre pName != null && contains(pName)
+	 * @pre pName != null && containsKey(pName)
 	 */
 	public Property get(String pName)
 	{
-		assert pName != null && contains(pName);
-		for( Property property : aProperties )
-		{
-			if( property.getName().equals(pName))
-			{
-				return property;
-			}
-		}
-		assert false;
-		return null;
+		assert pName != null && aProperties.containsKey(pName);
+		return aProperties.get(pName);
 	}
 	
 	/**
-	 * Adds a property and inserts its key at the specified index, shifting
-	 * all other properties down by one. If the property already exists, its previous index
-	 * is unchanged and its getter and setter are silently overwritten.
+	 * Inserts a property at the specified 0-based index, shifting all other 
+	 * properties down by one. 
 	 * 
 	 * @param pName The name of the property.
 	 * @param pGetter The getter for this property.
 	 * @param pSetter The setter for this property.
 	 * @param pIndex Where to insert the property. Must be between 0 and size()-1, inclusive.
+	 * @pre pPropertyName != null && pGetter != null && pSetter != null && !containsKey(pName)
+	 * @pre pIndex >=0 && pIndex <= aProperties.size();
 	 */
 	public void addAt(String pName, Supplier<Object> pGetter, Consumer<Object> pSetter, int pIndex)
 	{
-		assert pName != null && pGetter != null;
+		// Rebuilds the map in the proper iteration order
+		assert pName != null && pGetter != null && pSetter != null && !aProperties.containsKey(pName);
 		assert pIndex >=0 && pIndex <= aProperties.size();
-		if( !contains(pName) )
-		{
-			aProperties.add(pIndex, new Property(pName, pGetter, pSetter));
-		}
+		List<Property> properties = aProperties.values().stream().collect(toList());
+		properties.add(pIndex, new Property(pName, pGetter, pSetter));
+		aProperties.clear();
+		properties.stream().forEach(property -> aProperties.put(property.getName(), property));
 	}
 
 	@Override
 	public Iterator<Property> iterator()
 	{
-		return aProperties.iterator();
+		return Collections.unmodifiableCollection(aProperties.values()).iterator();
 	}
 }

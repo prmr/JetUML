@@ -88,17 +88,6 @@ public class TestProperties
 	}
 	
 	@Test
-	public void testAddTwiceSame()
-	{
-		aProperties.add("test", () -> aStub.aValue, val -> aStub.aValue = (String) val);
-		aProperties.add("test", () -> aStub.aValue + "X", val -> aStub.aValue = (String) val + "X");
-		assertEquals(1, size());
-		Property prop = aProperties.get("test");
-		assertEquals("test", prop.getName());
-		assertEquals("", prop.get());
-	}
-	
-	@Test
 	public void testAddAt0()
 	{
 		aProperties.addAt("test", () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
@@ -159,17 +148,6 @@ public class TestProperties
 		aProperties.addAt("test3", () -> aStub.aValue, val -> aStub.aValue = (String) val, 1);
 		aProperties.add("test4", () -> aStub.aValue, val -> aStub.aValue = (String) val);
 		assertThat(extract(getProperties(), Property::getName), hasElementsEqualTo, "test1", "test3", "test2", "test4");
-	}
-	
-	@Test
-	public void testAddAtTwice()
-	{
-		aProperties.addAt("test1", () -> aStub.aValue, val -> aStub.aValue = (String) val, 0);
-		aProperties.addAt("test1", () -> "X", val -> aStub.aValue = "Y", 0);
-		assertEquals(1, size());
-		Property prop = aProperties.get("test1");
-		assertEquals("test1", prop.getName());
-		assertEquals("", prop.get());
 	}
 	
 	private int size()
