@@ -93,9 +93,9 @@ public class TestStringViewer
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 8);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
-		assertEquals(new Dimension(osDependent(73, 46, 46), osDependent(13, 8, 8)), topCenter.getDimension("Display String"));
-		assertEquals(new Dimension(osDependent(79, 46, 46), osDependent(13, 8, 8)), topCenterBold.getDimension("Display String"));
-		assertEquals(new Dimension(osDependent(87, 60, 60), osDependent(27, 22, 22)), topCenterPadded.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(49, 46, 46), osDependent(9, 8, 8)), topCenter.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(53, 46, 46), osDependent(9, 8, 8)), topCenterBold.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(63, 60, 60), osDependent(23, 22, 22)), topCenterPadded.getDimension("Display String"));
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 
@@ -105,9 +105,9 @@ public class TestStringViewer
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, 24);
 		assertEquals(new Dimension(0, 0), topCenter.getDimension(""));
 		assertEquals(new Dimension(0, 0), topCenterPadded.getDimension(""));
-		assertEquals(new Dimension(osDependent(73, 139, 139), osDependent(13, 23, 23)), topCenter.getDimension("Display String"));
-		assertEquals(new Dimension(osDependent(79, 139, 139), osDependent(13, 23, 23)), topCenterBold.getDimension("Display String"));
-		assertEquals(new Dimension(osDependent(87, 153, 153), osDependent(27, 37, 37)), topCenterPadded.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(146, 139, 139), osDependent(26, 23, 23)), topCenter.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(158, 139, 139), osDependent(26, 23, 23)), topCenterBold.getDimension("Display String"));
+		assertEquals(new Dimension(osDependent(160, 153, 153), osDependent(40, 37, 37)), topCenterPadded.getDimension("Display String"));
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 	}
 	
