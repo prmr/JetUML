@@ -25,16 +25,15 @@ import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -107,7 +106,7 @@ public class FontSizeDialog
 		HBox size = new HBox(new Label(RESOURCES.getString("dialog.font_size.size")), aSizeField);
 		size.setAlignment(Pos.CENTER);
 		size.setSpacing(2);
-		aSizeField.setOnAction(this::onInput);
+		aSizeField.setOnAction(event -> onInput());
 		
 		Button defaultButton = new Button(RESOURCES.getString("dialog.font_size.default"));
 		defaultButton.setOnAction( pEvent -> 
@@ -155,7 +154,7 @@ public class FontSizeDialog
 	{
 		Button ok = new Button(RESOURCES.getString("dialog.font_size.ok"));
 		Button cancel = new Button(RESOURCES.getString("dialog.font_size.cancel"));
-		ok.setOnAction(this::onInput);
+		ok.setOnAction(event -> onInput());
 		cancel.setOnAction( pEvent -> aStage.close() );
 
 		HBox box = new HBox(ok, cancel);
@@ -165,7 +164,7 @@ public class FontSizeDialog
 		return box;
 	}
 	
-	private void onInput(ActionEvent pEvent)
+	private void onInput()
 	{
 		if( isValid(aSizeField.getText()) )
 		{

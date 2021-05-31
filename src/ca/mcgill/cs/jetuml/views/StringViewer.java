@@ -259,7 +259,7 @@ public final class StringViewer
 			if( aAlign.isHorizontallyCentered() )
 			{
 				xOffset = dimension.width()/2;
-				yOffset = (int) (CANVAS_FONT.fontSize()/2) + 1;
+				yOffset = CANVAS_FONT.fontSize()/2 + 1;
 			}
 			else if( aAlign.isRight() )
 			{
