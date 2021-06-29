@@ -32,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageDescriptionNode;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -40,7 +41,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
@@ -50,6 +54,9 @@ import javafx.scene.layout.GridPane;
  */
 public class PropertySheet extends GridPane
 {
+    private static final KeyCombination STEREOTYPE_DELIMITER_TRIGGER = 
+    		new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
+
 	/**
 	 * A handler for whenever a property is being detected
 	 * as being edited. This allows a more responsive UI,
@@ -174,7 +181,47 @@ public class PropertySheet extends GridPane
 		textArea.setPrefRowCount(rows);
 		textArea.setPrefColumnCount(columns);
 
-		textArea.addEventFilter(KeyEvent.KEY_PRESSED, pKeyEvent ->
+		addTabbingFeature(textArea);
+		addStereotypeDelimiterFeature(textArea);
+
+		textArea.setText((String) pProperty.get());
+		textArea.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
+		{
+		   pProperty.set(textArea.getText());
+		   aListener.propertyChanged();
+		});
+		
+		return new ScrollPane(textArea);
+	}
+	
+	/*
+	 * Add a feature to the control that adds the stereotype delimiters to the input control
+	 * if Ctrl-Q is typed, and position the caret between the delimiters.
+	 */
+	private static void addStereotypeDelimiterFeature(TextInputControl pTextInput)
+	{
+		pTextInput.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() 
+		{
+		    public void handle(KeyEvent pKeyEvent) 
+		    {
+		    	if(STEREOTYPE_DELIMITER_TRIGGER.match(pKeyEvent)) 
+		    	{
+		    		pTextInput.setText(pTextInput.getText() + "\u00AB\u00BB");
+		    		pTextInput.end();
+		    		pTextInput.backward();
+		    		pKeyEvent.consume();
+		    	}
+		    }
+		});
+	}
+	
+	/*
+	 * Make it possible to insert tab characters in a text area using Ctrl-Tab.
+	 * The tab character is otherwise used to switch between fields.
+	 */
+	private static void addTabbingFeature(TextArea pTextArea)
+	{
+		pTextArea.addEventFilter(KeyEvent.KEY_PRESSED, pKeyEvent ->
 		{
 			final String aFocusEventText = "TAB_TO_FOCUS_EVENT";
 			
@@ -204,21 +251,13 @@ public class PropertySheet extends GridPane
 	            textAreaSource.fireEvent(tabControlEvent);
 	        }
 	    });
-
-		textArea.setText((String) pProperty.get());
-		textArea.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
-		{
-		   pProperty.set(textArea.getText());
-		   aListener.propertyChanged();
-		});
-		
-		return new ScrollPane(textArea);
 	}
 	
 	private Control createStringEditor(Property pProperty)
 	{
 		TextField textField = new TextField((String) pProperty.get());
 		textField.setPrefColumnCount(TEXT_FIELD_WIDTH);
+		addStereotypeDelimiterFeature(textField);
 		
 		textField.textProperty().addListener((pObservable, pOldValue, pNewValue) -> 
 		{
