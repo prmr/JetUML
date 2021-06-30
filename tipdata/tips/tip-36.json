@@ -1,0 +1,7 @@
+{ 
+  "title": "Inserting Stereotype Delimiters",
+  "content": [ 
+    { "text": "In the Properties editor for any diagram element, use the shortcut key combination Ctrl-Q to insert the characters « », which are the delimiters for UML stereotypes. The cursor will be positioned between the delimiters, so you can just continue typing the name of your stereotype." },
+    { "image": "tip36.png"}
+  ]
+}
