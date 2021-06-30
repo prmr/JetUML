@@ -1,0 +1,7 @@
+{ 
+  "title": "Changing the Font Size",
+  "content": [ 
+    { "text": "Use the menu command View | Set Font Size to change the size of the font used in the diagram. This setting only affects how the diagram looks visually." },
+    { "image": "tip35.png"}
+  ]
+}
