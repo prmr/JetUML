@@ -88,8 +88,10 @@ modules:
       - mkdir -p bin/jetuml
       - cp -r icons/** bin/jetuml/
       - cp -r tipdata/** bin/jetuml/
-      - find . -name '*.java' > files.txt
-      - /usr/lib/sdk/openjdk11/bin/javac -cp src:test -p /app/javafx/lib --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt
+      - find src/ -name '*.java' > files.txt
+      - find . -name '*.java' > all_files.txt
+      - /usr/lib/sdk/openjdk11/bin/javac -cp src -p /app/javafx/lib --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt
+      - /usr/lib/sdk/openjdk11/bin/javac -cp src:test --add-reads jetuml=org.junit.jupiter.params --add-reads jetuml=org.junit.jupiter.api -p /app/javafx/lib:/app/junit --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing -d bin/jetuml @all_files.txt
       - cd src; cp --parent `find -name '*.css'` ../bin/jetuml
       - cd src; cp --parent `find -name '*.properties'` ../bin/jetuml
       - cd test; cp --parent `find -name '*.properties'` ../bin/jetuml
