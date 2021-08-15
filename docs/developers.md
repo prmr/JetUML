@@ -56,7 +56,7 @@ rm -rf bin
 mkdir bin 
 cp -r icons/** bin/jetuml/ 
 find . -name "*.java" > files.txt 
-javac -cp test:src -p %FXMODS%:junit --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt 
+javac -cp test:src -p %FXMODS%:junit --add-reads jetuml=org.junit.jupiter.params --add-reads jetuml=org.junit.jupiter.api --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt 
 cd src/ 
 cp --parent `find -name "*.css"` ../bin/jetuml 
 cp --parent `find -name "*.properties"` ../bin/jetuml 
