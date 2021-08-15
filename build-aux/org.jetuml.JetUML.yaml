@@ -34,38 +34,6 @@ modules:
         type: "archive"
         url: "https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_linux-x64_bin-sdk.zip"
   -
-    name: "Jupiter"
-    buildsystem: "simple"
-    builddir: true
-    build-commands:
-      - mkdir -p /app/junit
-      - cp -r ./ /app/junit
-    sources:
-      -
-        sha256: "380bde7098b4f6448f620afcdc2e3695896a57ee3620cfaa29ad274be1d78a61"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter/5.6.3/junit-jupiter-5.6.3.jar"
-      -
-        sha256: "26a22fe54dca351da9edccbcaa3c3cdcf25862cef3d2e04aa9363029a7beaa9d"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.6.3/junit-jupiter-api-5.6.3.jar"
-      -
-        sha256: "12dd6cf31f4d1d0209a2f121d1c90e97254efcd7650b4041619ece13250d2ccb"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-params/5.6.3/junit-jupiter-params-5.6.3.jar"
-      -
-        sha256: "49be6439351fdb50f0b7827e555acad26504a8084b6bc4019b2e6d73bc9da91a"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/junit/platform/junit-platform-commons/1.6.3/junit-platform-commons-1.6.3.jar"
-      -
-        sha256: "fc68f0d28633caccf3980fdf1e99628fba9c49424ee56dc685cd8b4d2a9fefde"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar"
-      -
-        sha256: "58812de60898d976fb81ef3b62da05c6604c18fd4a249f5044282479fc286af2"
-        type: "file"
-        url: "https://repo1.maven.org/maven2/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar"
-  -
     name: "launch-script"
     buildsystem: "simple"
     builddir: true
@@ -89,12 +57,9 @@ modules:
       - cp -r icons/** bin/jetuml/
       - cp -r tipdata/** bin/jetuml/
       - find src/ -name '*.java' > files.txt
-      - find . -name '*.java' > all_files.txt
       - /usr/lib/sdk/openjdk11/bin/javac -cp src -p /app/javafx/lib --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt
-      - /usr/lib/sdk/openjdk11/bin/javac -cp src:test --add-reads jetuml=org.junit.jupiter.params --add-reads jetuml=org.junit.jupiter.api -p /app/javafx/lib:/app/junit --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing -d bin/jetuml @all_files.txt
       - cd src; cp --parent `find -name '*.css'` ../bin/jetuml
       - cd src; cp --parent `find -name '*.properties'` ../bin/jetuml
-      - cd test; cp --parent `find -name '*.properties'` ../bin/jetuml
       - mkdir -p /app/bin/jetuml
       - cp -R bin/jetuml/* /app/bin/jetuml
     sources:
