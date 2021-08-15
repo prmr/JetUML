@@ -89,7 +89,7 @@ modules:
       - cp -r icons/** bin/jetuml/
       - cp -r tipdata/** bin/jetuml/
       - find . -name '*.java' > files.txt
-      - /usr/lib/sdk/openjdk11/bin/javac -cp test:src -p /app/javafx/lib:/app/junit --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt
+      - /usr/lib/sdk/openjdk11/bin/javac -cp src:test -p /app/javafx/lib --add-modules javafx.controls,javafx.swing -d bin/jetuml @files.txt
       - cd src; cp --parent `find -name '*.css'` ../bin/jetuml
       - cd src; cp --parent `find -name '*.properties'` ../bin/jetuml
       - cd test; cp --parent `find -name '*.properties'` ../bin/jetuml
