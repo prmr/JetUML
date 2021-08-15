@@ -26,4 +26,6 @@ jobs:
         mkdir -p bin/jetuml
         find . -name "*.java" > files.txt 
         javac -cp src:test -p junit:/usr/share/openjfx/lib --add-reads jetuml=org.junit.jupiter.params --add-reads jetuml=org.junit.jupiter.api --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing -d bin/jetuml @files.txt
+    - name: running the tests
+      run: |
         java -p junit:/usr/share/openjfx/lib:bin/jetuml --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing ca.mcgill.cs.jetuml.JetUML
