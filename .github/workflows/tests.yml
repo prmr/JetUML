@@ -1,0 +1,29 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: installing Java and Java libraries
+      run: apt-get install -y openjdk-13-jdk openjfx libopenjfx-java
+    - name: installing JUnit 5
+      run:
+        mkdir junit
+        wget https://repo1.maven.org/maven2/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar
+        wget https://repo1.maven.org/maven2/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar
+        wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-commons/1.6.3/junit-platform-commons-1.6.3.jar
+        wget https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-params/5.6.3/junit-jupiter-params-5.6.3.jar
+        wget https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.6.3/junit-jupiter-api-5.6.3.jar
+        wget https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter/5.6.3/junit-jupiter-5.6.3.jar
+        mv *.jar junit
+    - name: compiling
+      run:
+        mkdir -p bin/jetuml
+        find . -name "*.java" > files.txt 
+        javac -cp src:test -p junit:/usr/share/openjfx/lib --add-reads jetuml=org.junit.jupiter.params --add-reads jetuml=org.junit.jupiter.api --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing -d bin/jetuml @files.txt
+        java -p junit:/usr/share/openjfx/lib:bin/jetuml --add-modules org.junit.jupiter.params,org.junit.jupiter.api,javafx.controls,javafx.swing ca.mcgill.cs.jetuml.JetUML
