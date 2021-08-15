@@ -70,6 +70,12 @@ To test that the files were correctly compiled, run the following:
 java -p %FXMODS%:bin/jetuml --add-modules javafx.controls,javafx.swing,jetuml ca.mcgill.cs.jetuml.JetUML 
 ```
 
+### Packaging with Flatpak
+
+```
+flatpak-builder --user build build-aux/org.jetuml.JetUML.yaml
+```
+
 ## Runtime image
 
 Normally it is not necessary to create a run-time image separately from the one created through the jpackage tool. However, if for any reason one is needed, here is how to create it:

@@ -18,11 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-module jetuml {
-	requires javafx.controls;
-	requires javafx.swing;
-	requires java.desktop;
-	requires java.prefs;
-	requires transitive javafx.graphics;
-	exports ca.mcgill.cs.jetuml;
+module tests {
+	requires ca.mcgill.cs.jetuml;
+	requires static org.junit.jupiter.api;
+	requires static org.junit.jupiter.params;
 }
