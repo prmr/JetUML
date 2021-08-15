@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: installing Java and Java libraries
-      run: apt-get install -y openjdk-13-jdk openjfx libopenjfx-java
+      run: sudo apt-get install -y openjdk-13-jdk openjfx libopenjfx-java
     - name: installing JUnit 5
       run:
         mkdir junit
