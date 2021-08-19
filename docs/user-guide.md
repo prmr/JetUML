@@ -177,6 +177,16 @@ This page contains the complete list of "tips" available through JetUML's "Tip o
 <p>Use the menu command File | Export Image to save the current diagram as an image file. The image type is determined by the file extension selected from the Save as Type field.</p>
 <img src="../tipdata/tip_images/tip34.png">
 </div>
+<button class="collapsible">Changing the Font Size</button>
+<div class="content">
+<p>Use the menu command View | Set Font Size to change the size of the font used in the diagram. This setting only affects how the diagram looks visually.</p>
+<img src="../tipdata/tip_images/tip35.png">
+</div>
+<button class="collapsible">Inserting Stereotype Delimiters</button>
+<div class="content">
+<p>In the Properties editor for any diagram element, use the shortcut key combination Ctrl-Q to insert the characters « », which are the delimiters for UML stereotypes. The cursor will be positioned between the delimiters, so you can just continue typing the name of your stereotype.</p>
+<img src="../tipdata/tip_images/tip36.png">
+</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
