@@ -92,113 +92,87 @@ public class TestPersistenceService
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
-	private int numberOfRootNodes(Diagram pDiagram)
-	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Node node : pDiagram.rootNodes() )
-		{
-			sum++;
-		}
-		return sum;
-	}
-	
-	private int numberOfEdges(Diagram pDiagram)
-	{
-		int sum = 0;
-		for( @SuppressWarnings("unused") Edge edge : pDiagram.edges() )
-		{
-			sum++;
-		}
-		return sum;
-	}
-	
 	@Test
 	public void testClassDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
-		verifyClassDiagram(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
+		verifyClassDiagram(diagram);
 		
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifyClassDiagram(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifyClassDiagram(diagram);
 		tmp.delete();
 	}
 	
 	@Test
 	public void testClassDiagramContainment() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet")).diagram();
-		verifyClassDiagram2(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService2.class.jet")).diagram();
+		verifyClassDiagram2(diagram);
 		
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifyClassDiagram2(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifyClassDiagram2(diagram);
 		tmp.delete();
 	}
 	
 	@Test
 	public void testSequenceDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet")).diagram();
-		verifySequenceDiagram(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.sequence.jet")).diagram();
+		verifySequenceDiagram(diagram);
 		
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifySequenceDiagram(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifySequenceDiagram(diagram);
 		tmp.delete();
 	}
 	
 	@Test
 	public void testStateDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.state.jet")).diagram();
-		verifyStateDiagram(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.state.jet")).diagram();
+		verifyStateDiagram(diagram);
 
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifyStateDiagram(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifyStateDiagram(diagram);
 		tmp.delete();
 	}
 	
 	@Test
 	public void testObjectDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.object.jet")).diagram();
-		verifyObjectDiagram(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.object.jet")).diagram();
+		verifyObjectDiagram(diagram);
 
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifyObjectDiagram(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifyObjectDiagram(diagram);
 		tmp.delete();
 	}
 	
 	@Test
 	public void testUseCaseDiagram() throws Exception
 	{
-		Diagram graph = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet")).diagram();
-		verifyUseCaseDiagram(graph);
+		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.usecase.jet")).diagram();
+		verifyUseCaseDiagram(diagram);
 
 		File tmp = new File(TEST_FILE_NAME);
-		tmp.delete();
-		PersistenceService.save(graph, tmp);
-		graph = PersistenceService.read(tmp).diagram();
-		verifyUseCaseDiagram(graph);
+		PersistenceService.save(diagram, tmp);
+		diagram = PersistenceService.read(tmp).diagram();
+		verifyUseCaseDiagram(diagram);
 		tmp.delete();
 	}
 	
 	private void verifyUseCaseDiagram(Diagram pDiagram)
 	{
-		assertEquals(9, numberOfRootNodes(pDiagram));
+		assertEquals(9, pDiagram.rootNodes().size());
 		UseCaseNode u1 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 1"));
 		UseCaseNode u2 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 2"));
 		UseCaseNode u3 = (UseCaseNode) findRootNode(pDiagram, UseCaseNode.class, build(PropertyName.NAME, "Use case 3"));
@@ -235,7 +209,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(650, 150, 110, 40), NodeViewerRegistry.getBounds(u4));
 		assertEquals("Actor3", a3.getName().toString());
 		
-		assertEquals(10,  numberOfEdges(pDiagram));
+		assertEquals(10,  pDiagram.edges().size());
 		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		
 		NoteEdge cr1 = (NoteEdge) eIt.next();
@@ -295,7 +269,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram2(Diagram pDiagram)
 	{
-		assertEquals(4, numberOfRootNodes(pDiagram));
+		assertEquals(4, pDiagram.rootNodes().size());
 		
 		PackageNode p1 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "p1"));
 		PackageNode p2 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "p2"));
@@ -336,7 +310,7 @@ public class TestPersistenceService
 		assertEquals(new Rectangle(490, 160, 60, 40), NodeViewerRegistry.getBounds(n1));
 		assertEquals("n1", n1.getName().toString());
 
-		assertEquals(3, numberOfEdges(pDiagram));
+		assertEquals(3, pDiagram.edges().size());
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		DependencyEdge e1 = (DependencyEdge) eIterator.next();
@@ -359,7 +333,7 @@ public class TestPersistenceService
 	
 	private void verifyClassDiagram(Diagram pDiagram)
 	{
-		assertEquals(7, numberOfRootNodes(pDiagram));
+		assertEquals(7, pDiagram.rootNodes().size());
 		
 		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class1"));
 		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build(PropertyName.NAME, ""));
@@ -452,7 +426,7 @@ public class TestPersistenceService
 	
 	private void verifySequenceDiagram(Diagram pDiagram)
 	{
-		assertEquals(5, numberOfRootNodes(pDiagram));
+		assertEquals(5, pDiagram.rootNodes().size());
 		
 		ImplicitParameterNode object1 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build(PropertyName.NAME, "object1:Type1"));
 		ImplicitParameterNode object2 = (ImplicitParameterNode) findRootNode(pDiagram, ImplicitParameterNode.class, build(PropertyName.NAME, ":Type2"));
@@ -500,7 +474,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(409,189,0,0), NodeViewerRegistry.getBounds(point));
 	
-		assertEquals(6, numberOfEdges(pDiagram));
+		assertEquals(6, pDiagram.edges().size());
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		CallEdge self = (CallEdge) eIterator.next(); 
@@ -546,7 +520,7 @@ public class TestPersistenceService
 	
 	private void verifyStateDiagram(Diagram pDiagram)
 	{
-		assertEquals(7, numberOfRootNodes(pDiagram));
+		assertEquals(7, pDiagram.rootNodes().size());
 		
 		StateNode s1 = (StateNode) findRootNode(pDiagram, StateNode.class, build(PropertyName.NAME, "S1"));
 		StateNode s2 = (StateNode) findRootNode(pDiagram, StateNode.class, build(PropertyName.NAME, "S2"));
@@ -574,7 +548,7 @@ public class TestPersistenceService
 		
 		assertEquals(new Rectangle(576, 339, 0, 0), NodeViewerRegistry.getBounds(point));
 		
-		assertEquals(7,  numberOfEdges(pDiagram));
+		assertEquals(7,  pDiagram.edges().size());
 		Iterator<Edge> eIterator = pDiagram.edges().iterator();
 		
 		NoteEdge ne = (NoteEdge) eIterator.next();
@@ -621,7 +595,7 @@ public class TestPersistenceService
 	
 	private void verifyObjectDiagram(Diagram pDiagram)
 	{
-		assertEquals(7, numberOfRootNodes(pDiagram));
+		assertEquals(7, pDiagram.rootNodes().size());
 		
 		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type1"));
 		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ""));

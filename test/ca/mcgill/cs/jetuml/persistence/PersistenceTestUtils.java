@@ -67,40 +67,6 @@ final class PersistenceTestUtils
 	/*
 	 * Finds the object in an array with the specified properties
 	 */
-	static JSONObject find(JSONArray pArray, Properties pProperties)
-	{
-		JSONObject found = null;
-		for( int i = 0; i < pArray.length(); i++ )
-		{
-			boolean match = true;
-			JSONObject object = pArray.getJSONObject(i);
-			for( Property property : pProperties )
-			{
-				if( !object.has(property.name().external()))
-				{
-					match = false;
-				}
-				else
-				{
-					if(!object.get(property.name().external()).equals(property.get()))
-					{
-						match = false;
-					}
-				}
-			}
-			if( match )
-			{
-				found = object;
-				break;
-			}
-		}
-		assertNotNull(found);
-		return found;
-	}
-	
-	/*
-	 * Finds the object in an array with the specified properties
-	 */
 	static JSONObject find(JSONArray pArray, String pType, Properties pProperties)
 	{
 		JSONObject found = null;
