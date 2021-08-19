@@ -20,9 +20,12 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui.tips;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
  * Tip element represented as a Media/content pair.
  */
+@Immutable
 final class TipElement 
 {
 	private final Media aMedia;

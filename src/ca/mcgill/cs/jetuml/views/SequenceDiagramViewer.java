@@ -30,7 +30,7 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 /**
- * A specialized viewer stategy for a sequence diagram.
+ * A specialized viewer strategy for a sequence diagram.
  */
 public class SequenceDiagramViewer extends DiagramViewer
 {

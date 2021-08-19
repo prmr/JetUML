@@ -23,9 +23,12 @@ package ca.mcgill.cs.jetuml.application;
 import java.util.Comparator;
 import java.util.StringJoiner;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
+
 /**
- * Represents a version of JetUML. Immutable.
+ * Represents a version of JetUML. 
  */
+@Immutable
 public final class Version implements Comparable<Version>
 {
 	private static final Comparator<Version> COMPARATOR = 

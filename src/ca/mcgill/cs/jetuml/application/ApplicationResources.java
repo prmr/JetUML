@@ -24,6 +24,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import ca.mcgill.cs.jetuml.JetUML;
+import ca.mcgill.cs.jetuml.annotations.Singleton;
 
 /**
  * A single access point for all application resources.
@@ -34,8 +35,8 @@ import ca.mcgill.cs.jetuml.JetUML;
  * 
  * The instance is exported as a public field instead of a static method
  * to makes its more convenient and clear when statically imported.
- *
  */
+@Singleton
 public final class ApplicationResources
 {
 	public static final ApplicationResources RESOURCES = new ApplicationResources();
