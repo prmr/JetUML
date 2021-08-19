@@ -22,16 +22,16 @@ package ca.mcgill.cs.jetuml.gui.tips;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.application.UserPreferences;
-import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
-import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
+import ca.mcgill.cs.jetuml.gui.tips.TipLoader.Tip;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -54,17 +54,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 /**
  * A window that presents the tip of the day (by calling show()).
  */
 public class TipDialog 
 {
-	private static final String CLOSE_BUTTON_TEXT = RESOURCES.getString("tips.button.close.text");
-	private static final String PREVIOUS_TIP_BUTTON_TEXT = RESOURCES.getString("tips.button.previous.text");
-	private static final String NEXT_TIP_BUTTON_TEXT = RESOURCES.getString("tips.button.next.text");
-	private static final String SHOW_TIPS_CHECKBOX_TEXT = RESOURCES.getString("tips.checkbox.text");
 	private static final int WINDOW_PREF_WIDTH = 650;
 	private static final int WINDOW_PREF_HEIGHT = 450;
 	private static final int WINDOW_MIN_WIDTH = 650;
@@ -79,7 +74,6 @@ public class TipDialog
 	private static final double DEFAULT_NODE_SPACING = 10;
 	private static final String NEXT_TIP_BUTTON_STYLE = "next-tip-button";
 	private static final String BUTTON_STYLE = "tip-menu-button";
-	private static final String WINDOW_TITLE = "Tip of the Day";
 	
 	private Stage aStage;
 	private Stage aOwner;
@@ -98,7 +92,7 @@ public class TipDialog
 	{
 		aTipDisplay = new ScrollPane();
 		aViewedTips = new ViewedTips(getUserPrefNextTipId());
-		aShowTipsOnStartupCheckBox = new CheckBox(SHOW_TIPS_CHECKBOX_TEXT);
+		aShowTipsOnStartupCheckBox = new CheckBox(RESOURCES.getString("dialog.tips.checkbox.text"));
 		aShowTipsOnStartupCheckBox.setSelected(UserPreferences.instance().getBoolean(UserPreferences.BooleanPreference.showTips));
 		aShowTipsOnStartupCheckBox.setOnAction(e -> UserPreferences.instance().setBoolean(UserPreferences.BooleanPreference.showTips, 
 				aShowTipsOnStartupCheckBox.isSelected()));
@@ -125,7 +119,7 @@ public class TipDialog
 		aStage.setHeight(WINDOW_PREF_HEIGHT);
 		aStage.initModality(Modality.WINDOW_MODAL);
 		aStage.initOwner(pOwner);
-		aStage.setTitle(WINDOW_TITLE);
+		aStage.setTitle(RESOURCES.getString("dialog.tips.title"));
 		aStage.getIcons().add(new Image(RESOURCES.getString("application.icon")));
 		aStage.setScene(createScene());
 		aStage.getScene().getStylesheets().add(getClass().getResource("TipDialog.css").toExternalForm());
@@ -194,13 +188,13 @@ public class TipDialog
 	
 	private HBox createTipMenuButtons()
 	{
-		Button nextTipButton = new Button(NEXT_TIP_BUTTON_TEXT);
+		Button nextTipButton = new Button(RESOURCES.getString("dialog.tips.button.next.text"));
 		nextTipButton.getStyleClass().add(NEXT_TIP_BUTTON_STYLE);
 		
-		Button previousTipButton = new Button(PREVIOUS_TIP_BUTTON_TEXT);
+		Button previousTipButton = new Button(RESOURCES.getString("dialog.tips.button.previous.text"));
 		previousTipButton.getStyleClass().add(BUTTON_STYLE);
 		
-		Button closeButton = new Button(CLOSE_BUTTON_TEXT);
+		Button closeButton = new Button(RESOURCES.getString("dialog.tips.button.close.text"));
 		closeButton.getStyleClass().add(BUTTON_STYLE);
 		
 		nextTipButton.setOnAction(e -> 
