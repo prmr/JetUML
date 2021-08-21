@@ -65,5 +65,9 @@ modules:
     sources:
       -
         type: "git"
-        url: "https://github.com/louib/JetUML.git"
-        branch: flatpak_manifest
+        url: "https://github.com/prmr/JetUML.git"
+        tag: "3.3"
+        commit: "8c6121cf4a966946abdb9b54404e6d9570cf782c"
+      -
+        type: "patch"
+        path: "./compile_without_junit.patch"
