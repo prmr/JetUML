@@ -49,7 +49,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
@@ -595,7 +594,7 @@ public class TestPersistenceService
 	
 	private void verifyObjectDiagram(Diagram pDiagram)
 	{
-		assertEquals(7, pDiagram.rootNodes().size());
+		assertEquals(6, pDiagram.rootNodes().size());
 		
 		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type1"));
 		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ""));
@@ -603,8 +602,6 @@ public class TestPersistenceService
 		ObjectNode type3 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type3"));
 
 		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
-		PointNode p1 = (PointNode) findRootNode(pDiagram, PointNode.class, 281);
-		PointNode p2 = (PointNode) findRootNode(pDiagram, PointNode.class, 474);
 		
 		assertEquals(new Rectangle(240, 130, osDependent(90, 80, 100), osDependent(90, 90, 100)), NodeViewerRegistry.getBounds(type1));
 		List<Node> children = type1.getChildren();
@@ -653,18 +650,12 @@ public class TestPersistenceService
 		assertEquals("A note", note.getName());
 		assertEquals(new Rectangle(280, 330, 60, 40), NodeViewerRegistry.getBounds(note));
 		
-		assertEquals(new Rectangle(281, 216, 0, 0), NodeViewerRegistry.getBounds(p1));
-		
-		assertEquals(new Rectangle(474, 339, 0, 0), NodeViewerRegistry.getBounds(p2));
-		
 		Iterator<Edge> eIt = pDiagram.edges().iterator();
 		
 		ObjectReferenceEdge o1 = (ObjectReferenceEdge) eIt.next();
 		ObjectReferenceEdge o2 = (ObjectReferenceEdge) eIt.next();
 		ObjectReferenceEdge o3 = (ObjectReferenceEdge) eIt.next();
-		NoteEdge ne1 = (NoteEdge) eIt.next();
-		NoteEdge ne2 = (NoteEdge) eIt.next();
-		ObjectCollaborationEdge cr1 = (ObjectCollaborationEdge) eIt.next();
+		Edge ne1 = eIt.next();
 		
 		assertEquals(new Rectangle(osDependent(319, 309, 329), osDependent(174, 174, 179), 32, osDependent(37, 37, 32)), getBounds(o1));
 		assertEquals(name, o1.getStart());
@@ -674,21 +665,10 @@ public class TestPersistenceService
 		assertEquals(name, o2.getStart());
 		assertEquals(blank, o2.getEnd());
 		
-		assertEquals(new Rectangle(osDependent(520, 520, 527), 208, osDependent(44, 44, 39), 82), getBounds(cr1));
-		assertEquals(object2, cr1.getEnd());
-		assertEquals("e1", cr1.getMiddleLabel().toString());
-		assertEquals(blank, cr1.getStart());
-		
 		assertEquals(new Rectangle(osDependent(519, 519, 539), 329, osDependent(92, 92, 72), osDependent(92, 92, 107)), getBounds(o3));
 		assertEquals(name4, o3.getStart());
 		assertEquals(type3, o3.getEnd());
 		
-		assertEquals(new Rectangle(279, 214, 27, 116), getBounds(ne1));
 		assertEquals(note, ne1.getStart());
-		assertEquals(p1, ne1.getEnd());
-		
-		assertEquals(new Rectangle(338, 337, 136, 11), getBounds(ne2));
-		assertEquals(note, ne2.getStart());
-		assertEquals(p2, ne2.getEnd());
 	}
 }
