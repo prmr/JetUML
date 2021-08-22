@@ -47,7 +47,7 @@ modules:
         type: "script"
         dest-filename: "launch_jetuml"
         commands:
-          - /usr/lib/sdk/openjdk11/bin/java -cp /app/bin/jetuml -p /app/javafx/lib --add-modules javafx.controls,javafx.swing ca.mcgill.cs.jetuml.JetUML
+          - java -cp /app/bin/jetuml -p /app/javafx/lib --add-modules javafx.controls,javafx.swing ca.mcgill.cs.jetuml.JetUML
   -
     name: "JetUML"
     buildsystem: "simple"
