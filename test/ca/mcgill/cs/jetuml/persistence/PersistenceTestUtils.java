@@ -24,6 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +41,7 @@ import ca.mcgill.cs.jetuml.diagram.PropertyName;
  * Utilities to facilitate writing tests for the persistence
  * classes.
  */
-final class PersistenceTestUtils
+public final class PersistenceTestUtils
 {
 	private PersistenceTestUtils() {}
 	
@@ -62,6 +65,34 @@ final class PersistenceTestUtils
 		{
 			assertTrue(pObject.has(key));
 		}
+	}
+	
+	/*
+	 * Returns all the nodes in the diagram, both the root nodes
+	 * and all their children.
+	 */
+	public static List<Node> getAllNodes(Diagram pDiagram)
+	{
+		List<Node> result = new ArrayList<>();
+		for( Node node : pDiagram.rootNodes() )
+		{
+			result.addAll(getAllNodes(node));
+		}
+		return result;
+	}
+	
+	/*
+	 * Returns pNode and all its children.
+	 */
+	private static List<Node> getAllNodes(Node pNode)
+	{
+		List<Node> result = new ArrayList<>();
+		result.add(pNode);
+		for(Node child : pNode.getChildren() )
+		{
+			result.addAll(getAllNodes(child));
+		}
+		return result;
 	}
 	
 	/*

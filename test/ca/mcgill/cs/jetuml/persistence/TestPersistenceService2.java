@@ -24,9 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -85,7 +83,7 @@ public class TestPersistenceService2
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash
-		getAllNodes(diagram).forEach( node -> bounds.put(hash(node), NodeViewerRegistry.getBounds(node)));
+		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(node), NodeViewerRegistry.getBounds(node)));
 		diagram.edges().forEach( edge -> bounds.put(hash(edge), EdgeViewerRegistry.getBounds(edge)));
 		
 		// Save the diagram in a new file, and re-load it
@@ -95,36 +93,8 @@ public class TestPersistenceService2
 		temporaryFile.delete();
 		
 		// Check that all bounds match
-		getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), NodeViewerRegistry.getBounds(node), hash(node)));
+		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), NodeViewerRegistry.getBounds(node), hash(node)));
 		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), EdgeViewerRegistry.getBounds(edge), hash(edge)));
-	}
-	
-	/*
-	 * Returns all the nodes in the diagram, both the root nodes
-	 * and all their children.
-	 */
-	private static List<Node> getAllNodes(Diagram pDiagram)
-	{
-		List<Node> result = new ArrayList<>();
-		for( Node node : pDiagram.rootNodes() )
-		{
-			result.addAll(getAllNodes(node));
-		}
-		return result;
-	}
-	
-	/*
-	 * Returns pNode and all its children.
-	 */
-	private static List<Node> getAllNodes(Node pNode)
-	{
-		List<Node> result = new ArrayList<>();
-		result.add(pNode);
-		for(Node child : pNode.getChildren() )
-		{
-			result.addAll(getAllNodes(child));
-		}
-		return result;
 	}
 	
 	/*

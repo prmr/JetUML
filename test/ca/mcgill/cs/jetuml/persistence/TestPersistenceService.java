@@ -91,18 +91,18 @@ public class TestPersistenceService
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
-	@Test
-	public void testClassDiagram() throws Exception
-	{
-		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
-		verifyClassDiagram(diagram);
-		
-		File tmp = new File(TEST_FILE_NAME);
-		PersistenceService.save(diagram, tmp);
-		diagram = PersistenceService.read(tmp).diagram();
-		verifyClassDiagram(diagram);
-		tmp.delete();
-	}
+//	@Test
+//	public void testClassDiagram() throws Exception
+//	{
+//		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
+//		verifyClassDiagram(diagram);
+//		
+//		File tmp = new File(TEST_FILE_NAME);
+//		PersistenceService.save(diagram, tmp);
+//		diagram = PersistenceService.read(tmp).diagram();
+//		verifyClassDiagram(diagram);
+//		tmp.delete();
+//	}
 	
 	@Test
 	public void testClassDiagramContainment() throws Exception
