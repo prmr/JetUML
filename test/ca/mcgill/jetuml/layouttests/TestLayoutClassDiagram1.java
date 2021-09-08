@@ -5,36 +5,35 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.PropertyName;
-import ca.mcgill.cs.jetuml.diagram.nodes.NamedNode;
+import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
+import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.persistence.PersistenceService;
-import ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /*
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.
  */
-public class TestLayoutClassDiagram1
+public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 {
 	private static final Path PATH = Path.of("testdata", "testPersistenceService.class.jet");
-
-	private final Diagram aDiagram; 
+	
+	// We add two pixels to the length of an edge to account for the stroke width and/or 
+	// the arrow head.
+	private static final int BUFFER = 2; 
 
 	public TestLayoutClassDiagram1() throws IOException
 	{
-		aDiagram = PersistenceService.read(PATH.toFile()).diagram();
+		super(PATH);
 	}
 	 
 	/*
@@ -108,31 +107,100 @@ public class TestLayoutClassDiagram1
 	}
 	
 	/*
-	 * Returns a named node with the matching name
+	 * Tests that the dependency edge connects to its node boundaries. 
 	 */
-	private Node nodeByName(String pName)
+	@Test
+	void testDependencyEdge()
 	{
-		return PersistenceTestUtils.getAllNodes(aDiagram).stream()
-			.filter(node -> node instanceof NamedNode )
-			.filter( node -> node.properties().get(PropertyName.NAME).get().equals(pName))
-			.findFirst()
-			.get();
+		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
+		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
+		assertWithTolerance(boundsNode2.getMaxX(), BUFFER, edgeBounds.getX());
+		assertWithTolerance(boundsNode3.getX(), BUFFER, edgeBounds.getMaxX());
 	}
 	
 	/*
-	 * Returns all the nodes of a certain type
+	 * Tests that the implementation edge connects to its node boundaries. 
 	 */
-	private List<Node> nodesByType(Class<?> pType)
+	@Test
+	void testImplementationEdge()
 	{
-		return PersistenceTestUtils.getAllNodes(aDiagram).stream()
-				.filter(node -> node.getClass() == pType)
-				.collect(Collectors.toUnmodifiableList());
+		Rectangle boundsNode1 = NodeViewerRegistry.getBounds(nodeByName("Node1"));
+		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
+				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Implementation)
+				.findFirst()
+				.get();
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		assertWithTolerance(boundsNode1.getMaxY(), BUFFER, edgeBounds.getY());
+		assertWithTolerance(boundsNode3.getY(), BUFFER, edgeBounds.getMaxY());
 	}
 	
-	private static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY)
+	/*
+	 * Tests that the inheritance edge connects to its node boundaries. 
+	 */
+	@Test
+	void testInheritanceEdge()
 	{
-		assertEquals(pExpectedX, pNode.position().getX());
-		assertEquals(pExpectedY, pNode.position().getY());
+		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode5 = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
+				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Inheritance)
+				.findFirst()
+				.get();
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		assertWithTolerance(boundsNode3.getMaxY(), BUFFER, edgeBounds.getY());
+		assertWithTolerance(boundsNode5.getY(), BUFFER, edgeBounds.getMaxY());
 	}
-
+	
+	/*
+	 * Tests that the aggregation edge connects to its node boundaries. 
+	 */
+	@Test
+	void testAggregationEdge()
+	{
+		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
+				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Aggregation)
+				.findFirst()
+				.get();
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		assertWithTolerance(boundsNode3.getMaxX(), BUFFER, edgeBounds.getX());
+		assertWithTolerance(boundsNode4.getX(), BUFFER, edgeBounds.getMaxX());
+	}
+	
+	/*
+	 * Tests that the composition edge connects to its node boundaries. 
+	 */
+	@Test
+	void testCompositionEdge()
+	{
+		Rectangle boundsNode5 = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
+				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Composition)
+				.findFirst()
+				.get();
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		assertWithTolerance(boundsNode5.getMaxX(), BUFFER, edgeBounds.getX());
+		assertWithTolerance(boundsNode4.getX(), BUFFER, edgeBounds.getMaxX());
+	}
+	
+	/*
+	 * Tests that the note edge connects to the note node boundary and falls within
+	 *  the target node.
+	 */
+	@Test
+	void testNoteEdge()
+	{
+		Rectangle boundsNode6 = NodeViewerRegistry.getBounds(nodeByName("Node6"));
+		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		NoteEdge edge = (NoteEdge) edgesByType(NoteEdge.class).stream()
+				.findFirst()
+				.get();
+		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		assertWithTolerance(boundsNode6.getY(), BUFFER, edgeBounds.getMaxY());
+		assertTrue(boundsNode4.contains(edge.getEnd().position()));
+	}
 }

@@ -52,27 +52,15 @@ public abstract class AbstractTestDiagramLayout
 	}
 	
 	/**
-	 * Ensures that pActual is either pExpected or at most pTolerance pixels to the left
-	 * of pActual, inclusively.
+	 * Ensures that pActual is either pExpected or within a pTolerance distance,
+	 * inclusively.
 	 * @param pExpected The value we expect.
-	 * @param pTolerance The number of pixels we can deviate to the left.
+	 * @param pTolerance The number of pixels we can deviate.
 	 * @param pActual The actual value.
 	 */
-	protected static void assertWithinLeft(int pExpected, int pTolerance, int pActual)
+	protected static void assertWithTolerance(int pExpected, int pTolerance, int pActual)
 	{
-		assertTrue( (pActual >= pExpected - pTolerance) && (pActual <= pExpected));
-	}
-	
-	/**
-	 * Ensures that pActual is either pExpected or at most pTolerance pixels to the right
-	 * of pActual, inclusively.
-	 * @param pExpected The value we expect.
-	 * @param pTolerance The number of pixels we can deviate to the right.
-	 * @param pActual The actual value.
-	 */
-	protected static void assertWithinRight(int pExpected, int pTolerance, int pActual)
-	{
-		assertTrue( (pActual >= pExpected) && (pActual <= pExpected + pTolerance));
+		assertTrue( (pActual <= pExpected + pTolerance) && (pActual >= pExpected - pTolerance));
 	}
 	
 	/*
@@ -97,6 +85,17 @@ public abstract class AbstractTestDiagramLayout
 				.filter( edge -> edge.properties().get(PropertyName.MIDDLE_LABEL).get().equals(pLabel))
 				.findFirst()
 				.get();
+	}
+	
+	/*
+	 * Returns the edge with the corresponding type and kind.
+	 * This assumes that the kind is available on the type.
+	 */
+	protected List<Edge> edgesByType(Class<?> pType)
+	{
+		return aDiagram.edges().stream()
+				.filter(edge -> edge.getClass() == pType)
+				.collect(Collectors.toUnmodifiableList());
 	}
 	
 	/*
