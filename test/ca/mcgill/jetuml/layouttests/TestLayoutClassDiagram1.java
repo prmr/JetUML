@@ -2,6 +2,7 @@ package ca.mcgill.jetuml.layouttests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,7 +19,9 @@ import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
 
 /*
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.
@@ -60,11 +63,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@ValueSource(strings = {"Node1", "Node2", "Node3", "Node4"})
 	void testClassNodesDefaultDimension(String pNodeName)
 	{
-		final int DEFAULT_WIDTH = 100;
-		final int DEFAULT_HEIGHT = 60;
-		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName(pNodeName));
-		assertEquals(DEFAULT_WIDTH, bounds.getWidth());
-		assertEquals(DEFAULT_HEIGHT, bounds.getHeight());
+		verifyClassNodeDefaultDimensions(nodeByName(pNodeName));
 	}
 	
 	/*
@@ -73,11 +72,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@Test
 	void testNoteNodeDefaultDimension()
 	{
-		final int DEFAULT_WIDTH = 60;
-		final int DEFAULT_HEIGHT = 40;
-		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node6"));
-		assertEquals(DEFAULT_WIDTH, bounds.getWidth());
-		assertEquals(DEFAULT_HEIGHT, bounds.getHeight());
+		verifyNoteNodeDefaultDimensions(nodeByName("Node6"));
 	}
 	
 	/*
@@ -86,9 +81,16 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@Test
 	void testNode5IsExpanded()
 	{
-		final int DEFAULT_HEIGHT = 60;
-		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node5"));
-		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
+		try
+		{
+			final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
+			Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+			assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
+		} 
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+		}
 	}
 	
 	/*
@@ -98,12 +100,20 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@Test
 	void testPackageNodeContainment()
 	{
-		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
-		Rectangle boundsNode7 = NodeViewerRegistry.getBounds(nodesByType(PackageNode.class).get(0));
-		assertEquals(boundsNode2.getX()-10, boundsNode7.getX());
-		assertEquals(boundsNode2.getMaxX()+10, boundsNode7.getMaxX());
-		assertEquals(boundsNode2.getMaxY() + 10, boundsNode7.getMaxY());
-		assertTrue(boundsNode7.getY() < boundsNode2.getY());
+		try 
+		{
+			final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
+			Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
+			Rectangle boundsNode7 = NodeViewerRegistry.getBounds(nodesByType(PackageNode.class).get(0));
+			assertEquals(boundsNode2.getX() - packageNodePadding, boundsNode7.getX());
+			assertEquals(boundsNode2.getMaxX() + packageNodePadding, boundsNode7.getMaxX());
+			assertEquals(boundsNode2.getMaxY() + packageNodePadding, boundsNode7.getMaxY());
+			assertTrue(boundsNode7.getY() < boundsNode2.getY());
+		} 
+		catch (ReflectiveOperationException e) 
+		{
+			fail();
+		}
 	}
 	
 	/*
