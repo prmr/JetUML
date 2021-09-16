@@ -22,8 +22,10 @@ package ca.mcgill.jetuml.layouttests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +36,13 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.SingleLabelEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.NamedNode;
+import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
+import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
 
 /*
  * Superclass for classes that test the layout of a given diagram.
@@ -108,9 +115,66 @@ public abstract class AbstractTestDiagramLayout
 				.collect(Collectors.toUnmodifiableList());
 	}
 	
+	protected static int getStaticIntFieldValue(Class<?> pClass, String pFieldName) throws ReflectiveOperationException
+	{
+		Field field = pClass.getDeclaredField(pFieldName);
+		field.setAccessible(true);
+		int fieldValue = field.getInt(null);
+		return fieldValue;
+	}
+	
+	private static void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
+	{
+		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
+		assertEquals(pDefaultWidth, bounds.getWidth());
+		assertEquals(pDefaultHeight, bounds.getHeight());
+	}
+	
 	protected static void verifyPosition(Node pNode, int pExpectedX, int pExpectedY)
 	{
 		assertEquals(pExpectedX, pNode.position().getX());
 		assertEquals(pExpectedY, pNode.position().getY());
+	}
+	
+	protected static void verifyClassNodeDefaultDimensions(Node pNode)
+	{
+		try
+		{
+			final int DEFAULT_WIDTH = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_WIDTH");
+			final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
+			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		} 
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+		}
+	}
+	
+	protected static void verifyObjectNodeDefaultDimensions(Node pNode)
+	{
+		try
+		{
+			final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_WIDTH");
+			final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
+			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		} 
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+		}
+	}
+	
+	protected static void verifyNoteNodeDefaultDimensions(Node pNode)
+	{
+		try
+		{
+			final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
+			final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");
+			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		} 
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+		}
 	}
 }
