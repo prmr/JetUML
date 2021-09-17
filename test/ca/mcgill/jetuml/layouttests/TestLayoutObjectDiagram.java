@@ -1,5 +1,6 @@
 package ca.mcgill.jetuml.layouttests;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
 				.filter(edge -> boundsType1Node.contains(edge.getStart().position()) ||
 						boundsType1Node.contains(edge.getEnd().position()))
-				.toList().get(0);
+				.collect(toList()).get(0);
 		Rectangle boundsNoteEdge = EdgeViewerRegistry.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getY(), boundsNoteEdge.getMaxY());
 		assertTrue(boundsType1Node.contains(noteEdge.getStart().position()));
@@ -116,7 +117,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
 				.filter(edge -> boundsType4Node.contains(edge.getStart().position()) ||
 						boundsType4Node.contains(edge.getEnd().position()))
-				.toList().get(0);
+				.collect(toList()).get(0);
 		Rectangle boundsNoteEdge = EdgeViewerRegistry.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getMaxX(), boundsNoteEdge.getX());
 		assertTrue(boundsType4Node.contains(noteEdge.getEnd().position()));
@@ -132,7 +133,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Node type1Node = nodeByName(":Type1");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(type1Node))
-				.toList().get(0);
+				.collect(toList()).get(0);
 		Rectangle boundsType1Node = NodeViewerRegistry.getBounds(type1Node);
 		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.getEnd().position().getX());
 		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
@@ -148,7 +149,9 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Node type1Node = nodeByName(":Type1");
 		Node type4Node = nodeByName(":Type4");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(type4Node)).toList().get(0);
+				.filter(edge -> edge.getEnd().equals(type4Node))
+				.collect(toList())
+				.get(0);
 		Rectangle boundsType1Node = NodeViewerRegistry.getBounds(type1Node);
 		Rectangle boundsType4Node = NodeViewerRegistry.getBounds(type4Node);
 		Rectangle boundsReferenceEdge = EdgeViewerRegistry.getBounds(referenceEdge);
@@ -166,7 +169,8 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Node type4Node = nodeByName(":Type4");
 		Node type3Node = nodeByName(":Type3");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(type3Node)).toList().get(0);
+				.filter(edge -> edge.getEnd().equals(type3Node))
+				.collect(toList()).get(0);
 		Rectangle boundsType4Node = NodeViewerRegistry.getBounds(type4Node);
 		Rectangle boundsType3Node = NodeViewerRegistry.getBounds(type3Node);
 		Rectangle boundsReferenceEdge = EdgeViewerRegistry.getBounds(referenceEdge);
