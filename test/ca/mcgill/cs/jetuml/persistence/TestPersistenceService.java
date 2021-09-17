@@ -44,12 +44,9 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.PropertyName;
-import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ObjectReferenceEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.UseCaseAssociationEdge;
@@ -58,13 +55,11 @@ import ca.mcgill.cs.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.InterfaceNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
@@ -90,19 +85,6 @@ public class TestPersistenceService
 	{
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
-	
-//	@Test
-//	public void testClassDiagram() throws Exception
-//	{
-//		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.class.jet")).diagram();
-//		verifyClassDiagram(diagram);
-//		
-//		File tmp = new File(TEST_FILE_NAME);
-//		PersistenceService.save(diagram, tmp);
-//		diagram = PersistenceService.read(tmp).diagram();
-//		verifyClassDiagram(diagram);
-//		tmp.delete();
-//	}
 	
 	@Test
 	public void testClassDiagramContainment() throws Exception
@@ -140,19 +122,6 @@ public class TestPersistenceService
 		PersistenceService.save(diagram, tmp);
 		diagram = PersistenceService.read(tmp).diagram();
 		verifyStateDiagram(diagram);
-		tmp.delete();
-	}
-	
-	@Test
-	public void testObjectDiagram() throws Exception
-	{
-		Diagram diagram = PersistenceService.read(new File("testdata/testPersistenceService.object.jet")).diagram();
-		verifyObjectDiagram(diagram);
-
-		File tmp = new File(TEST_FILE_NAME);
-		PersistenceService.save(diagram, tmp);
-		diagram = PersistenceService.read(tmp).diagram();
-		verifyObjectDiagram(diagram);
 		tmp.delete();
 	}
 	
@@ -330,99 +299,6 @@ public class TestPersistenceService
 		assertEquals( p2, e3.getEnd());
 	}
 	
-	private void verifyClassDiagram(Diagram pDiagram)
-	{
-		assertEquals(7, pDiagram.rootNodes().size());
-		
-		ClassNode node1 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class1"));
-		InterfaceNode node2 = (InterfaceNode) findRootNode(pDiagram, InterfaceNode.class, build(PropertyName.NAME, ""));
-		ClassNode node3 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class2"));
-		ClassNode node4 = (ClassNode) findRootNode(pDiagram, ClassNode.class, build(PropertyName.NAME, "Class3"));
-		PackageNode node6 = (PackageNode) findRootNode(pDiagram, PackageNode.class, build(PropertyName.NAME, "Package"));
-		NoteNode node5 = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
-		PointNode node8 = (PointNode) findRootNode(pDiagram, PointNode.class, build());
-		
-		assertEquals("", node1.getAttributes());
-		assertEquals("", node1.getMethods());
-		assertEquals("Class1", node1.getName());
-		assertFalse(node1.hasParent());
-		assertEquals(new Rectangle(460, 370, 100, 60), NodeViewerRegistry.getBounds(node1));
-		
-		assertEquals("", node2.getMethods());
-		assertEquals("", node2.getName());
-		assertFalse(node2.hasParent());
-		assertEquals(new Rectangle(460, 250, 100, 60), NodeViewerRegistry.getBounds(node2));
-		
-		assertEquals("foo", node3.getAttributes());
-		assertEquals("bar", node3.getMethods());
-		assertEquals("Class2", node3.getName());
-		assertFalse(node3.hasParent());
-		assertEquals(new Rectangle(460, 520, 100, osDependent(81, 78, 78)), NodeViewerRegistry.getBounds(node3));
-		
-		assertEquals("", node4.getAttributes());
-		assertEquals("", node4.getMethods());
-		assertEquals("Class3", node4.getName());
-		assertFalse(node4.hasParent());
-		assertEquals(new Rectangle(630, 370, 100, 60), NodeViewerRegistry.getBounds(node4));
-		
-		assertEquals("A note", node5.getName());
-		assertEquals(new Rectangle(700, 530, 60, 40), NodeViewerRegistry.getBounds(node5));
-		
-		List<Node> children = node6.getChildren();
-		assertEquals(1, children.size());
-		ClassNode node7 = (ClassNode) children.get(0);
-		assertEquals("Package", node6.getName());
-		assertFalse(node6.hasParent());
-		assertEquals(new Rectangle(270, osDependent(339, 340, 340), 120, osDependent(101, 100, 100)), NodeViewerRegistry.getBounds(node6));
-
-		assertEquals("", node7.getAttributes());
-		assertEquals("", node7.getMethods());
-		assertEquals("Class", node7.getName());
-		assertEquals(node6,node7.getParent());
-		assertEquals(new Rectangle(280, 370, 100, 60), NodeViewerRegistry.getBounds(node7));
-		
-		assertEquals(new Rectangle(694, 409, 0, 0), NodeViewerRegistry.getBounds(node8));
-		
-		Iterator<Edge> eIterator = pDiagram.edges().iterator();
-		
-		NoteEdge edge5 = (NoteEdge) eIterator.next();
-		assertEquals(new Rectangle(692, 407, 33, 123), getBounds(edge5));
-		assertEquals(node5, edge5.getStart());
-		assertEquals(node8, edge5.getEnd());
-		
-		DependencyEdge edge6 = (DependencyEdge) eIterator.next();
-		assertEquals(new Rectangle(378, osDependent(387,387, 384), 83, osDependent(27,26, 21)), getBounds(edge6));
-		assertEquals(node7, edge6.getEnd());
-		assertEquals("e1", edge6.getMiddleLabel());
-		assertEquals(node1, edge6.getStart());
-		
-		GeneralizationEdge edge1 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 308, osDependent(12, 12, 25), 62), getBounds(edge1));
-		assertEquals(node2, edge1.getEnd());
-		assertEquals(node1, edge1.getStart());
-		
-		GeneralizationEdge edge2 = (GeneralizationEdge) eIterator.next();
-		assertEquals(new Rectangle(503, 428, osDependent(12,12, 25), 92), getBounds(edge2));
-		assertEquals(node1, edge2.getEnd());
-		assertEquals(node3, edge2.getStart());
-		
-		AggregationEdge edge3 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(558, osDependent(379,380, 379), 72, osDependent(21,20, 21)), getBounds(edge3));
-		assertEquals(node4, edge3.getEnd());
-		assertEquals("*", edge3.getEndLabel());
-		assertEquals("e4", edge3.getMiddleLabel());
-		assertEquals(node1, edge3.getStart());
-		assertEquals("1", edge3.getStartLabel());
-		
-		AggregationEdge edge4 = (AggregationEdge) eIterator.next();
-		assertEquals(new Rectangle(559, 399, 72, osDependent(161, 160, 160)), getBounds(edge4));
-		assertEquals(node3, edge4.getEnd());
-		assertEquals("", edge4.getEndLabel());
-		assertEquals("e5", edge4.getMiddleLabel());
-		assertEquals(node4, edge4.getStart());
-		assertEquals("", edge4.getStartLabel());
-	}
-	
 	private void verifySequenceDiagram(Diagram pDiagram)
 	{
 		assertEquals(5, pDiagram.rootNodes().size());
@@ -590,85 +466,5 @@ public class TestPersistenceService
 		assertEquals(s2, toS3.getStart());
 		assertEquals(s3, toS3.getEnd());
 		assertEquals("", toS3.getMiddleLabel().toString());
-	}
-	
-	private void verifyObjectDiagram(Diagram pDiagram)
-	{
-		assertEquals(6, pDiagram.rootNodes().size());
-		
-		ObjectNode type1 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type1"));
-		ObjectNode blank = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ""));
-		ObjectNode object2 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, "object2:"));
-		ObjectNode type3 = (ObjectNode) findRootNode(pDiagram, ObjectNode.class, build(PropertyName.NAME, ":Type3"));
-
-		NoteNode note = (NoteNode) findRootNode(pDiagram, NoteNode.class, build());
-		
-		assertEquals(new Rectangle(240, 130, osDependent(90, 80, 100), osDependent(90, 90, 100)), NodeViewerRegistry.getBounds(type1));
-		List<Node> children = type1.getChildren();
-		assertEquals(1, children.size());
-		assertEquals(":Type1", type1.getName().toString());
-		
-		FieldNode name = (FieldNode) children.get(0);
-		assertEquals(new Rectangle(245, 200, osDependent(80, 70, 90), osDependent(20, 20, 21)), NodeViewerRegistry.getBounds(name));
-		assertEquals("name", name.getName().toString());
-		assertEquals(type1, name.getParent());
-		assertEquals("", name.getValue().toString());
-
-		assertEquals(new Rectangle(440, 290, osDependent(90, 90, 110), osDependent(140, 140, 160)), NodeViewerRegistry.getBounds(blank));
-		children = blank.getChildren();
-		assertEquals(3, children.size());
-		assertEquals("", blank.getName().toString());
-		FieldNode name2 = (FieldNode) children.get(0);
-		FieldNode name3 = (FieldNode) children.get(1);
-		FieldNode name4 = (FieldNode) children.get(2);
-		
-		assertEquals(new Rectangle(445, 360, osDependent(80, 80, 100), osDependent(20, 20, 26)), NodeViewerRegistry.getBounds(name2));
-		assertEquals("name2", name2.getName().toString());
-		assertEquals(blank, name2.getParent());
-		assertEquals("value", name2.getValue().toString());
-		
-		assertEquals(new Rectangle(445, osDependent(385, 385, 391), osDependent(80, 80, 100), osDependent(20, 20, 26)), NodeViewerRegistry.getBounds(name3));
-		assertEquals("name3", name3.getName().toString());
-		assertEquals(blank, name3.getParent());
-		assertEquals("value", name3.getValue().toString());
-		
-		assertEquals(new Rectangle(445, osDependent(410, 410, 422), osDependent(80, 80, 100), osDependent(20,20,26)), NodeViewerRegistry.getBounds(name4));
-		assertEquals("name4", name4.getName().toString());
-		assertEquals(blank, name4.getParent());
-		assertEquals("", name4.getValue().toString());
-
-		assertEquals(new Rectangle(540, 150, 80, 60), NodeViewerRegistry.getBounds(object2));
-		children = object2.getChildren();
-		assertEquals(0, children.size());
-		assertEquals("object2:", object2.getName().toString());
-		
-		assertEquals(new Rectangle(610, 300, 80, 60), NodeViewerRegistry.getBounds(type3));
-		children = type3.getChildren();
-		assertEquals(0, children.size());
-		assertEquals(":Type3", type3.getName().toString());
-
-		assertEquals("A note", note.getName());
-		assertEquals(new Rectangle(280, 330, 60, 40), NodeViewerRegistry.getBounds(note));
-		
-		Iterator<Edge> eIt = pDiagram.edges().iterator();
-		
-		ObjectReferenceEdge o1 = (ObjectReferenceEdge) eIt.next();
-		ObjectReferenceEdge o2 = (ObjectReferenceEdge) eIt.next();
-		ObjectReferenceEdge o3 = (ObjectReferenceEdge) eIt.next();
-		Edge ne1 = eIt.next();
-		
-		assertEquals(new Rectangle(osDependent(319, 309, 329), osDependent(174, 174, 179), 32, osDependent(37, 37, 32)), getBounds(o1));
-		assertEquals(name, o1.getStart());
-		assertEquals(type1, o1.getEnd());
-		
-		assertEquals(new Rectangle(osDependent(319, 309, 329), 209, osDependent(122, 132, 112), osDependent(152, 152, 159)), getBounds(o2));
-		assertEquals(name, o2.getStart());
-		assertEquals(blank, o2.getEnd());
-		
-		assertEquals(new Rectangle(osDependent(519, 519, 539), 329, osDependent(92, 92, 72), osDependent(92, 92, 107)), getBounds(o3));
-		assertEquals(name4, o3.getStart());
-		assertEquals(type3, o3.getEnd());
-		
-		assertEquals(note, ne1.getStart());
 	}
 }
