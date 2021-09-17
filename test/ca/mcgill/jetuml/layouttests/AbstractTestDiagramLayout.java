@@ -41,8 +41,6 @@ import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
 
 /*
  * Superclass for classes that test the layout of a given diagram.
@@ -51,6 +49,11 @@ import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
  */
 public abstract class AbstractTestDiagramLayout
 {
+	/**
+	 * We add two pixels to the length of an edge to account for the stroke width and/or the arrow head.
+	 */
+	private static final int BUFFER = 2; 
+	
 	protected final Diagram aDiagram; 
 	
 	AbstractTestDiagramLayout(Path pDiagramPath) throws IOException
@@ -59,15 +62,14 @@ public abstract class AbstractTestDiagramLayout
 	}
 	
 	/**
-	 * Ensures that pActual is either pExpected or within a pTolerance distance,
+	 * Ensures that pActual is either pExpected or within a BUFFER distance,
 	 * inclusively.
 	 * @param pExpected The value we expect.
-	 * @param pTolerance The number of pixels we can deviate.
 	 * @param pActual The actual value.
 	 */
-	protected static void assertWithTolerance(int pExpected, int pTolerance, int pActual)
+	protected static void assertWithDefaultTolerance(int pExpected, int pActual)
 	{
-		assertTrue( (pActual <= pExpected + pTolerance) && (pActual >= pExpected - pTolerance));
+		assertTrue( (pActual <= pExpected + BUFFER) && (pActual >= pExpected - BUFFER));
 	}
 	
 	/*
@@ -115,15 +117,24 @@ public abstract class AbstractTestDiagramLayout
 				.collect(Collectors.toUnmodifiableList());
 	}
 	
-	protected static int getStaticIntFieldValue(Class<?> pClass, String pFieldName) throws ReflectiveOperationException
+	protected static int getStaticIntFieldValue(Class<?> pClass, String pFieldName)
 	{
-		Field field = pClass.getDeclaredField(pFieldName);
-		field.setAccessible(true);
-		int fieldValue = field.getInt(null);
-		return fieldValue;
+		try 
+		{
+			Field field = pClass.getDeclaredField(pFieldName);
+			field.setAccessible(true);
+			int fieldValue = field.getInt(null);
+			return fieldValue;
+		} 
+		catch (ReflectiveOperationException e)
+		{
+			assert false;
+			fail();
+			return -1;
+		}
 	}
 	
-	private static void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
+	protected static void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
 	{
 		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
 		assertEquals(pDefaultWidth, bounds.getWidth());
@@ -136,45 +147,10 @@ public abstract class AbstractTestDiagramLayout
 		assertEquals(pExpectedY, pNode.position().getY());
 	}
 	
-	protected static void verifyClassNodeDefaultDimensions(Node pNode)
-	{
-		try
-		{
-			final int DEFAULT_WIDTH = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_WIDTH");
-			final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
-			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		} 
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-		}
-	}
-	
-	protected static void verifyObjectNodeDefaultDimensions(Node pNode)
-	{
-		try
-		{
-			final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_WIDTH");
-			final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
-			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		} 
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-		}
-	}
-	
 	protected static void verifyNoteNodeDefaultDimensions(Node pNode)
 	{
-		try
-		{
-			final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
-			final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");
-			verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		} 
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-		}
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");
+		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 }

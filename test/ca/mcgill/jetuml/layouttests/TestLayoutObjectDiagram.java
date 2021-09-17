@@ -1,7 +1,6 @@
 package ca.mcgill.jetuml.layouttests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -23,14 +22,9 @@ import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
 /**
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.
  */
-public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
+public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 {
 	private static final Path PATH = Path.of("testdata", "testPersistenceService.object.jet");
-
-	/**
-	 * We add two pixels to the length of an edge to account for the stroke width and/or the arrow head.
-	 */
-	private static final int BUFFER = 2; 
 	
 	TestLayoutObjectDiagram() throws IOException
 	{
@@ -45,19 +39,11 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 	@CsvSource({":Type1, 240, 130",
 				"object2:, 540, 150",
 				":Type3, 610, 300",
-				"A note, 280, 330"})
+				"A note, 280, 330",
+				":Type4, 440, 290"})
 	void testNamedNodePosition(String pNodeName, int pExpectedX, int pExpectedY)
 	{
 		verifyPosition(nodeByName(pNodeName), pExpectedX, pExpectedY);
-	}
-	
-	/**
-	 * Tests that the unnamed node is in the position that corresponds to its position value in the file. 
-	 */
-	@Test
-	void testUnnamedNodePosition()
-	{
-		verifyPosition(nodeByName(""), 440, 290);
 	}
 	
 	/**
@@ -75,19 +61,12 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 	 * Tests that the object nodes that are supposed to be expanded, actually are. 
 	 */
 	@ParameterizedTest
-	@ValueSource(strings = {":Type1", ""})
+	@ValueSource(strings = {":Type1", ":Type4"})
 	void testObjectNodeExpandedVertically(String pNodeName)
 	{
-		try
-		{
-			final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
-			Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName(pNodeName));
-			assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
-		} 
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-		}
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
+		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName(pNodeName));
+		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}
 	
 	/**
@@ -96,11 +75,11 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 	@Test
 	void testCollaborationEdge()
 	{
-		Rectangle boundsUnnamedNode = NodeViewerRegistry.getBounds(nodeByName(""));
+		Rectangle boundsNodeType4 = NodeViewerRegistry.getBounds(nodeByName(":Type4"));
 		Rectangle boundsNodeObject2 = NodeViewerRegistry.getBounds(nodeByName("object2:"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
-		assertWithTolerance(boundsNodeObject2.getMaxY(), BUFFER, edgeBounds.getY());
-		assertWithTolerance(boundsUnnamedNode.getY(), BUFFER, edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNodeObject2.getMaxY(), edgeBounds.getY());
+		assertWithDefaultTolerance(boundsNodeType4.getY(), edgeBounds.getMaxY());
 	}
 	
 	/**
@@ -119,7 +98,7 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 						boundsType1Node.contains(edge.getEnd().position()))
 				.toList().get(0);
 		Rectangle boundsNoteEdge = EdgeViewerRegistry.getBounds(noteEdge);
-		assertWithTolerance(boundsNoteNode.getY(), BUFFER, boundsNoteEdge.getMaxY());
+		assertWithDefaultTolerance(boundsNoteNode.getY(), boundsNoteEdge.getMaxY());
 		assertTrue(boundsType1Node.contains(noteEdge.getStart().position()));
 	}
 	
@@ -128,19 +107,19 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 	 *  the target node.
 	 */
 	@Test
-	void testNoteEdgeBetweenNoteNodeAndUnnamedNode()
+	void testNoteEdgeBetweenNoteNodeAndType4Node()
 	{
-		Node unnamedNode = nodeByName("");
+		Node type4Node = nodeByName(":Type4");
 		Node noteNode = nodeByName("A note");
-		Rectangle boundsUnnamedNode = NodeViewerRegistry.getBounds(unnamedNode);
+		Rectangle boundsType4Node = NodeViewerRegistry.getBounds(type4Node);
 		Rectangle boundsNoteNode = NodeViewerRegistry.getBounds(noteNode);
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
-				.filter(edge -> boundsUnnamedNode.contains(edge.getStart().position()) ||
-						boundsUnnamedNode.contains(edge.getEnd().position()))
+				.filter(edge -> boundsType4Node.contains(edge.getStart().position()) ||
+						boundsType4Node.contains(edge.getEnd().position()))
 				.toList().get(0);
 		Rectangle boundsNoteEdge = EdgeViewerRegistry.getBounds(noteEdge);
-		assertWithTolerance(boundsNoteNode.getMaxX(), BUFFER, boundsNoteEdge.getX());
-		assertTrue(boundsUnnamedNode.contains(noteEdge.getEnd().position()));
+		assertWithDefaultTolerance(boundsNoteNode.getMaxX(), boundsNoteEdge.getX());
+		assertTrue(boundsType4Node.contains(noteEdge.getEnd().position()));
 	}
 	
 	/**
@@ -155,43 +134,43 @@ public class TestLayoutObjectDiagram extends AbstractTestDiagramLayout
 				.filter(edge -> edge.getEnd().equals(type1Node))
 				.toList().get(0);
 		Rectangle boundsType1Node = NodeViewerRegistry.getBounds(type1Node);
-		assertWithTolerance(boundsType1Node.getX(), BUFFER, referenceEdge.getEnd().position().getX());
+		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.getEnd().position().getX());
 		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
 	}
 	
 	/**
-	 * Tests that the reference edge connects to the unnamed node boundary and falls within
+	 * Tests that the reference edge connects to the node ":Type4" boundary and falls within
 	 *  the node ":Type1".
 	 */
 	@Test
-	void testReferenceEdgeBetweenType1NodeAndUnnamedNode()
+	void testReferenceEdgeBetweenType1NodeAndType4Node()
 	{
 		Node type1Node = nodeByName(":Type1");
-		Node unnamedNode = nodeByName("");
+		Node type4Node = nodeByName(":Type4");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
-				.filter(edge -> edge.getEnd().equals(unnamedNode)).toList().get(0);
+				.filter(edge -> edge.getEnd().equals(type4Node)).toList().get(0);
 		Rectangle boundsType1Node = NodeViewerRegistry.getBounds(type1Node);
-		Rectangle boundsUnnamedNode = NodeViewerRegistry.getBounds(unnamedNode);
+		Rectangle boundsType4Node = NodeViewerRegistry.getBounds(type4Node);
 		Rectangle boundsReferenceEdge = EdgeViewerRegistry.getBounds(referenceEdge);
-		assertWithTolerance(boundsUnnamedNode.getX(), BUFFER, boundsReferenceEdge.getMaxX());
+		assertWithDefaultTolerance(boundsType4Node.getX(), boundsReferenceEdge.getMaxX());
 		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
 	}
 	
 	/**
 	 * Tests that the reference edge connects to the node ":Type3" boundary and falls within
-	 *  the unnamed node.
+	 *  the node ":Type4".
 	 */
 	@Test
-	void testReferenceEdgeBetweenUnnamedNodeAndType3Node()
+	void testReferenceEdgeBetweenType4NodeAndType3Node()
 	{
-		Node unnamedNode = nodeByName("");
+		Node type4Node = nodeByName(":Type4");
 		Node type3Node = nodeByName(":Type3");
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(type3Node)).toList().get(0);
-		Rectangle boundsUnnamedNode = NodeViewerRegistry.getBounds(unnamedNode);
+		Rectangle boundsType4Node = NodeViewerRegistry.getBounds(type4Node);
 		Rectangle boundsType3Node = NodeViewerRegistry.getBounds(type3Node);
 		Rectangle boundsReferenceEdge = EdgeViewerRegistry.getBounds(referenceEdge);
-		assertWithTolerance(boundsType3Node.getX(), BUFFER, boundsReferenceEdge.getMaxX());
-		assertTrue(boundsUnnamedNode.contains(referenceEdge.getStart().position()));
+		assertWithDefaultTolerance(boundsType3Node.getX(), boundsReferenceEdge.getMaxX());
+		assertTrue(boundsType4Node.contains(referenceEdge.getStart().position()));
 	}
 }
