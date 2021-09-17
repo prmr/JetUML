@@ -2,7 +2,6 @@ package ca.mcgill.jetuml.layouttests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,13 +25,9 @@ import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
 /*
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.
  */
-public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
+public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 {
 	private static final Path PATH = Path.of("testdata", "testPersistenceService.class.jet");
-	
-	// We add two pixels to the length of an edge to account for the stroke width and/or 
-	// the arrow head.
-	private static final int BUFFER = 2; 
 
 	public TestLayoutClassDiagram1() throws IOException
 	{
@@ -81,16 +76,9 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@Test
 	void testNode5IsExpanded()
 	{
-		try
-		{
-			final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
-			Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node5"));
-			assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
-		} 
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-		}
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
+		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}
 	
 	/*
@@ -100,20 +88,13 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 	@Test
 	void testPackageNodeContainment()
 	{
-		try 
-		{
-			final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
-			Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
-			Rectangle boundsNode7 = NodeViewerRegistry.getBounds(nodesByType(PackageNode.class).get(0));
-			assertEquals(boundsNode2.getX() - packageNodePadding, boundsNode7.getX());
-			assertEquals(boundsNode2.getMaxX() + packageNodePadding, boundsNode7.getMaxX());
-			assertEquals(boundsNode2.getMaxY() + packageNodePadding, boundsNode7.getMaxY());
-			assertTrue(boundsNode7.getY() < boundsNode2.getY());
-		} 
-		catch (ReflectiveOperationException e) 
-		{
-			fail();
-		}
+		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
+		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
+		Rectangle boundsNode7 = NodeViewerRegistry.getBounds(nodesByType(PackageNode.class).get(0));
+		assertEquals(boundsNode2.getX() - packageNodePadding, boundsNode7.getX());
+		assertEquals(boundsNode2.getMaxX() + packageNodePadding, boundsNode7.getMaxX());
+		assertEquals(boundsNode2.getMaxY() + packageNodePadding, boundsNode7.getMaxY());
+		assertTrue(boundsNode7.getY() < boundsNode2.getY());
 	}
 	
 	/*
@@ -125,8 +106,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
 		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
-		assertWithTolerance(boundsNode2.getMaxX(), BUFFER, edgeBounds.getX());
-		assertWithTolerance(boundsNode3.getX(), BUFFER, edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode2.getMaxX(), edgeBounds.getX());
+		assertWithDefaultTolerance(boundsNode3.getX(), edgeBounds.getMaxX());
 	}
 	
 	/*
@@ -142,8 +123,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
-		assertWithTolerance(boundsNode1.getMaxY(), BUFFER, edgeBounds.getY());
-		assertWithTolerance(boundsNode3.getY(), BUFFER, edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode1.getMaxY(), edgeBounds.getY());
+		assertWithDefaultTolerance(boundsNode3.getY(), edgeBounds.getMaxY());
 	}
 	
 	/*
@@ -159,8 +140,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
-		assertWithTolerance(boundsNode3.getMaxY(), BUFFER, edgeBounds.getY());
-		assertWithTolerance(boundsNode5.getY(), BUFFER, edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode3.getMaxY(), edgeBounds.getY());
+		assertWithDefaultTolerance(boundsNode5.getY(), edgeBounds.getMaxY());
 	}
 	
 	/*
@@ -176,8 +157,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
-		assertWithTolerance(boundsNode3.getMaxX(), BUFFER, edgeBounds.getX());
-		assertWithTolerance(boundsNode4.getX(), BUFFER, edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode3.getMaxX(), edgeBounds.getX());
+		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
 	
 	/*
@@ -193,8 +174,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
-		assertWithTolerance(boundsNode5.getMaxX(), BUFFER, edgeBounds.getX());
-		assertWithTolerance(boundsNode4.getX(), BUFFER, edgeBounds.getMaxX());
+		assertWithDefaultTolerance(boundsNode5.getMaxX(), edgeBounds.getX());
+		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
 	
 	/*
@@ -210,7 +191,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestDiagramLayout
 				.findFirst()
 				.get();
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
-		assertWithTolerance(boundsNode6.getY(), BUFFER, edgeBounds.getMaxY());
+		assertWithDefaultTolerance(boundsNode6.getY(), edgeBounds.getMaxY());
 		assertTrue(boundsNode4.contains(edge.getEnd().position()));
 	}
 }
