@@ -24,34 +24,14 @@ package ca.mcgill.cs.jetuml.diagram.nodes;
 import java.util.Optional;
 
 import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.PropertyName;
 
 /**
  * Common data and implementation for the different flavors of 
  * package nodes. Package nodes have at least a name and a parent.
  */
-public class AbstractPackageNode extends AbstractNode
+public class AbstractPackageNode extends NamedNode
 {
-	private String aName = "";
 	private Optional<Node> aContainer = Optional.empty();
-	
-	/**
-     * Sets the name property value.
-     * @param pName the class name
-	 */
-	public void setName(String pName)
-	{
-		aName = pName;
-	}
-
-	/**
-     * Gets the name property value.
-     * @return the class name
-	 */
-	public String getName()
-	{
-		return aName;
-	}
 
 	@Override
 	public Node getParent()
@@ -72,13 +52,6 @@ public class AbstractPackageNode extends AbstractNode
 	{
 		assert hasParent();
 		aContainer = Optional.empty();
-	}
-
-	@Override
-	protected void buildProperties()
-	{
-		super.buildProperties();
-		properties().add(PropertyName.NAME, () -> aName, pName -> aName = (String)pName);
 	}
 
 	@Override
