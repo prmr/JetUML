@@ -1,6 +1,5 @@
 package ca.mcgill.jetuml.layouttests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -15,10 +14,8 @@ import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.GeneralizationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.PackageNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
 
@@ -88,13 +85,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testPackageNodeContainment()
 	{
-		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
-		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
-		Rectangle boundsNode7 = NodeViewerRegistry.getBounds(nodesByType(PackageNode.class).get(0));
-		assertEquals(boundsNode2.getX() - packageNodePadding, boundsNode7.getX());
-		assertEquals(boundsNode2.getMaxX() + packageNodePadding, boundsNode7.getMaxX());
-		assertEquals(boundsNode2.getMaxY() + packageNodePadding, boundsNode7.getMaxY());
-		assertTrue(boundsNode7.getY() < boundsNode2.getY());
+		verifyPackageNodeContainmentOfSingleNode("Node7", "Node2");
 	}
 	
 	/*
