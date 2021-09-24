@@ -59,7 +59,7 @@ import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
  * This code is generated on a best-effort basis, an can be helped by 
  * effective naming of diagram elements.
  */
-public class TestPersistenceService2
+public class TestPersistenceService
 {
 	private static final Path PATH_TEST_FILES = Path.of("testdata");
 	private static final Path PATH_TEMPORARY_FILE = PATH_TEST_FILES.resolve("tmp");
