@@ -15,7 +15,7 @@ import ca.mcgill.cs.jetuml.viewers.nodes.StateNodeViewer;
  * Superclass for classes that test the layout of a state diagram.
  * Declares convenience methods to test diagram elements. 
  */
-public class AbstractTestStateDiagramLayout extends AbstractTestDiagramLayout 
+public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagramLayout 
 {
 	AbstractTestStateDiagramLayout(Path pDiagramPath) throws IOException 
 	{
