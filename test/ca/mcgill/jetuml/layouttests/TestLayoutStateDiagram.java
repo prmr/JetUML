@@ -1,6 +1,5 @@
 package ca.mcgill.jetuml.layouttests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -85,10 +84,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testNoteNodeIsExpandedHorizontally()
 	{
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
 		Rectangle bounds = NodeViewerRegistry.getBounds(nodesByType(NoteNode.class).get(0));
-		assertEquals(DEFAULT_HEIGHT, bounds.getHeight());
 		assertTrue(bounds.getWidth() > DEFAULT_WIDTH);
 	}
 	
