@@ -187,7 +187,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		int y = getY(pNode);
 		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);

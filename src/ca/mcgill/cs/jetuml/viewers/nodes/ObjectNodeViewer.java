@@ -84,7 +84,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Rectangle bounds = getTopRectangle(pNode);
 		int leftWidth = 0;

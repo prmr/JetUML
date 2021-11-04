@@ -88,7 +88,7 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	}
 
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		assert pNode instanceof AbstractPackageNode;
 		return getTopBounds((AbstractPackageNode)pNode).add(getBottomBounds((AbstractPackageNode)pNode));
