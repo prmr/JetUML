@@ -51,7 +51,7 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
 		return new Rectangle(

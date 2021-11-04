@@ -34,7 +34,7 @@ public final class PointNodeViewer extends AbstractNodeViewer
 	private static final int SELECTION_DISTANCE = 5;
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 0, 0);
 	}

@@ -40,6 +40,8 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	public static final int BUTTON_SIZE = 25;
 	public static final int OFFSET = 3;
 	
+	private NodeStorage aNodeStorage = new NodeStorage();
+	
 	/* 
 	 * The default behavior for containment is to return true if the point is
 	 * within the bounding box of the node view.
@@ -108,4 +110,31 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		draw(pNode, canvas.getGraphicsContext2D());
 		return canvas;
 	}
+	
+	@Override
+	public final Rectangle getBounds(Node pNode)
+	{
+		return aNodeStorage.getBounds(pNode, this::internalGetBounds);
+	}
+	
+	@Override
+	public final void activateNodeStorage()
+	{
+		aNodeStorage.activate();
+	}
+	
+	@Override
+	public final void deactivateAndClearNodeStorage() 
+	{
+		aNodeStorage.deactivateAndClear();
+	}
+	
+	/**
+     * Gets the smallest rectangle that bounds this element.
+     * The bounding rectangle contains all labels.
+     * @param pNode The node whose bounds we want.
+     * @pre pNode != null
+     * @return the bounding rectangle
+   	 */
+	protected abstract Rectangle internalGetBounds(Node pNode);
 }

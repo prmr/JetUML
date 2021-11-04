@@ -86,7 +86,7 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension textBounds = NOTE_VIEWER.getDimension(((NoteNode)pNode).getName()); 
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 

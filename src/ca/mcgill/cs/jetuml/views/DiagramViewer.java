@@ -51,8 +51,10 @@ public class DiagramViewer
 	public final void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
+		NodeViewerRegistry.activateNodeStorages();
 		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
 		pDiagram.edges().forEach(edge -> EdgeViewerRegistry.draw(edge, pGraphics));
+		NodeViewerRegistry.deactivateAndClearNodeStorages();
 	}
 	
 	private void drawNode(Node pNode, GraphicsContext pGraphics)

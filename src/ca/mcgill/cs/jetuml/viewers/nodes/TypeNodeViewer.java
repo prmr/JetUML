@@ -128,7 +128,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		assert pNode instanceof TypeNode;
 		TypeNode node = (TypeNode) pNode;

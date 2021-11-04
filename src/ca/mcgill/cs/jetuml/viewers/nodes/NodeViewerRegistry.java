@@ -154,4 +154,26 @@ public final class NodeViewerRegistry
    	{
 		return INSTANCE.viewerFor(pNode).getConnectionPoint(pNode, pDirection);
    	}
+   	
+   	/**
+   	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
+   	 */
+   	public static void activateNodeStorages()
+   	{
+   		for (NodeViewer nodeViewer : INSTANCE.aRegistry.values())
+   		{
+   			nodeViewer.activateNodeStorage();
+   		}
+   	}
+   	
+   	/**
+   	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
+   	 */
+   	public static void deactivateAndClearNodeStorages()
+   	{
+   		for (NodeViewer nodeViewer : INSTANCE.aRegistry.values())
+   		{
+   			nodeViewer.deactivateAndClearNodeStorage();
+   		}
+   	}
 }

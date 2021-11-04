@@ -51,7 +51,7 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 

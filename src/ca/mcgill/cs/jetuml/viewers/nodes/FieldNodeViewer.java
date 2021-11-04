@@ -76,7 +76,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		final int leftWidth = leftWidth(pNode);
 		final int height = getHeight(pNode);

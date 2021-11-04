@@ -27,4 +27,5 @@ module jetuml {
 	requires static org.junit.jupiter.api;
 	requires static org.junit.jupiter.params;
 	exports ca.mcgill.cs.jetuml;
+	exports ca.mcgill.cs.jetuml.performance;
 }

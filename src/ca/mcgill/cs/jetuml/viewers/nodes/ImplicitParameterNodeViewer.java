@@ -116,7 +116,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	}
 
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Rectangle topRectangle = getTopRectangle(pNode);
 		Point childrenMaxXY = getMaxXYofChildren(pNode);

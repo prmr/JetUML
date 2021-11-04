@@ -69,7 +69,7 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	}   	 
 
 	@Override
-	public Rectangle getBounds(Node pNode)
+	protected Rectangle internalGetBounds(Node pNode)
 	{
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), DIAMETER, DIAMETER);
 	}
