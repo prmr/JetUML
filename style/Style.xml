@@ -98,7 +98,6 @@
     <module name="InnerAssignment"/>
     <module name="MagicNumber">
       <property name="ignoreNumbers" value="-1, 0, 1, 2,3,4,0.5"/>
-      <property name="constantWaiverParentToken" value="TYPECAST,METHOD_CALL,EXPR,ARRAY_INIT,UNARY_MINUS,UNARY_PLUS,ELIST,STAR,ASSIGN,PLUS,MINUS,DIV,LITERAL_NEW"/>
     </module>
     <module name="MissingSwitchDefault"/>
     <module name="SimplifyBooleanExpression"/>
@@ -164,7 +163,6 @@
     <module name="AvoidDoubleBraceInitialization"/>
     <module name="AvoidNoArgumentSuperConstructorCall"/>
     <module name="EqualsAvoidNull"/>
-    <module name="ExplicitInitialization"/>
     <module name="FinalLocalVariable">
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
@@ -196,9 +194,7 @@
     <module name="JavadocMissingWhitespaceAfterAsterisk"/>
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>
-    <module name="NonEmptyAtclauseDescription">
-      <property name="javadocTokens" value="PARAM_LITERAL,RETURN_LITERAL,THROWS_LITERAL,EXCEPTION_LITERAL,DEPRECATED_LITERAL"/>
-    </module>
+    <module name="NonEmptyAtclauseDescription"/>
     <module name="JavadocTagContinuationIndentation"/>
     <module name="SummaryJavadoc">
       <property name="severity" value="ignore"/>

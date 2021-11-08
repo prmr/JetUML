@@ -12,8 +12,7 @@ package ca.mcgill.cs.jetuml.viewers.nodes;
   */
  public class NodeStorage 
  {
-
- 	private Map<Node, Rectangle> aNodeBounds = new IdentityHashMap<Node, Rectangle>();
+ 	private Map<Node, Rectangle> aNodeBounds = new IdentityHashMap<>();
  	private boolean aIsActivated = false;
 
  	/**
@@ -56,4 +55,4 @@ package ca.mcgill.cs.jetuml.viewers.nodes;
  		aIsActivated = false;
  		aNodeBounds.clear();
  	}
- } 
+ }

@@ -68,7 +68,7 @@ public class TestNodeStorage
 
 	private Function<Node, Rectangle> createDefaultBoundCalculator()
 	{
-		return new Function<Node, Rectangle>()
+		return new Function<>()
 		{
 			@Override
 			public Rectangle apply(Node pNode) 
@@ -77,5 +77,4 @@ public class TestNodeStorage
 			}
 		};
 	}
-
 } 

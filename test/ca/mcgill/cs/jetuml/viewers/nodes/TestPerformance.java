@@ -1,4 +1,4 @@
-package ca.mcgill.cs.jetuml.performance;
+package ca.mcgill.cs.jetuml.viewers.nodes;
 
  import java.nio.file.Path;
  import java.time.Duration;
@@ -13,9 +13,11 @@ package ca.mcgill.cs.jetuml.performance;
  /**
   * Tests the performance of drawing a diagram. 
   */
- public class TestPerformance 
+ public final class TestPerformance 
  {
  	private static final int NUMBER_OF_TRIALS = 10;
+ 	
+ 	private TestPerformance() {}
 
  	/**
  	 * Test method. 
