@@ -89,31 +89,39 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	 * @param pString the string to draw 
 	 * @param pCenter true if the string should be centered along the segment
 	 */
-	private static void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
+	private void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
 			ArrowHead pArrowHead, String pString, boolean pCenter)
 	{
 		if (pString == null || pString.length() == 0)
 		{
 			return;
 		}
-		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, pString, pCenter);
+		String label = wrapLabel(pString, pEndPoint1, pEndPoint2);
+		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, label, pCenter);
 		if(pCenter) 
 		{
 			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
 			{
-				TOP_CENTERED_STRING_VIEWER.draw(pString, pGraphics, bounds);
+				TOP_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
 			}
 			else
 			{
-				BOTTOM_CENTERED_STRING_VIEWER.draw(pString, pGraphics, bounds);
+				BOTTOM_CENTERED_STRING_VIEWER.draw(label, pGraphics, bounds);
 			}
 		}
 		else
 		{
-			LEFT_JUSTIFIED_STRING_VIEWER.draw(pString, pGraphics, bounds);
+			LEFT_JUSTIFIED_STRING_VIEWER.draw(label, pGraphics, bounds);
 		}
 	}
 	
+	private String wrapLabel(String pString, Point2D pEndPoint1, Point2D pEndPoint2) 
+	{
+		int distanceInX = (int)Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
+		int distanceInY = (int)Math.abs(pEndPoint1.getY() - pEndPoint2.getY());
+		return super.wrapLabel(pString, distanceInX, distanceInY);
+	}
+
 	@Override
 	public void draw(Edge pEdge, GraphicsContext pGraphics)
 	{

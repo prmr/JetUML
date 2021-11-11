@@ -26,6 +26,7 @@ import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import ca.mcgill.cs.jetuml.views.LineStyle;
 import ca.mcgill.cs.jetuml.views.StringViewer;
@@ -60,7 +61,7 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	public void draw(Edge pEdge, GraphicsContext pGraphics)
 	{
 		super.draw(pEdge, pGraphics);
-		String label = aLabelExtractor.apply(pEdge);
+		String label = wrapLabel(pEdge, aLabelExtractor.apply(pEdge));
 		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
@@ -68,9 +69,18 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 		}
 	}
 	
+	private String wrapLabel(Edge pEdge, String pString) 
+	{
+		int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
+				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
+		int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
+				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
+		return super.wrapLabel(pString, distanceInX, distanceInY);
+	}
+
 	private Rectangle getStringBounds(Edge pEdge)
 	{
-		String label = aLabelExtractor.apply(pEdge);
+		String label = wrapLabel(pEdge, aLabelExtractor.apply(pEdge));
 		assert label != null && label.length() > 0;
 		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints(pEdge).spanning().getCenter();

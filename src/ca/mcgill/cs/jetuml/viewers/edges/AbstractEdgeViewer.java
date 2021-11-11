@@ -45,6 +45,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	protected static final int MAX_DISTANCE = 3;
 	protected static final int BUTTON_SIZE = 25;
 	protected static final int OFFSET = 3;
+	protected static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final StringViewer SIZE_TESTER = StringViewer.get(Alignment.TOP_LEFT);
 	
 	private static final int DEGREES_180 = 180;
@@ -122,5 +123,21 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	public void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics)
 	{
 		ToolGraphics.drawHandles(pGraphics, getConnectionPoints(pEdge));		
+	}
+	
+	protected String wrapLabel(String pString, int pDistanceInX, int pDistanceInY)
+	{
+		final int singleCharWidth = SIZE_TESTER.getDimension(" ").width();
+		final int singleCharHeight = SIZE_TESTER.getDimension(" ").height();
+
+		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
+		double distanceInX = pDistanceInX / singleCharWidth;
+		double distanceInY = pDistanceInY / singleCharHeight;
+		if (distanceInX > 0)
+		{
+			double angleInDegrees = Math.toDegrees(Math.atan(distanceInY/distanceInX));
+			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
+		}
+		return SIZE_TESTER.wrapString(pString, lineLength);
 	}
 }
