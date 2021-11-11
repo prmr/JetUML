@@ -55,6 +55,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final int DEGREES_5 = 5;
 	private static final int DEGREES_10 = 10;
 	private static final int DEGREES_20 = 20;
+	private static final int DEGREES_180 = 180;
 	private static final int DEGREES_270 = 270;
 	private static final double LINE_WIDTH = 0.6;
 	
@@ -244,17 +245,30 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
+		final int singleCharWidth = STRING_VIEWER.getDimension(" ").width();
+		final int singleCharHeight = STRING_VIEWER.getDimension(" ").height();
+		
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
 		if ( isSelfEdge(pEdge) )
 		{
-			final int singleCharWidth = STRING_VIEWER.getDimension(" ").width();
 	    	final int nodeLength = NodeViewerRegistry.getBounds(pEdge.getStart()).getWidth() / singleCharWidth;
 	    	if ( lineLength >= nodeLength / 2 )
 	    	{
 	    		lineLength =  nodeLength / 2;
 	    	}
 		}
-		
+		else
+		{
+			double distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
+					NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX()) / singleCharWidth;
+			double distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
+					NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY()) / singleCharHeight;
+			if (distanceInX > 0)
+			{
+				double angleInDegrees = Math.toDegrees(Math.atan(distanceInY/distanceInX));
+				lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
+			}
+		}
 		return STRING_VIEWER.wrapString(pEdge.getMiddleLabel(), lineLength);	
 	}
 
