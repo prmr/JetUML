@@ -61,7 +61,7 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	public void draw(Edge pEdge, GraphicsContext pGraphics)
 	{
 		super.draw(pEdge, pGraphics);
-		String label = wrapLabel(pEdge, aLabelExtractor.apply(pEdge));
+		String label = wrapLabel(pEdge);
 		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
@@ -69,18 +69,18 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 		}
 	}
 	
-	private String wrapLabel(Edge pEdge, String pString) 
+	private String wrapLabel(Edge pEdge) 
 	{
 		int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
 				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
 		int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
 				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
-		return super.wrapLabel(pString, distanceInX, distanceInY);
+		return super.wrapLabel(aLabelExtractor.apply(pEdge), distanceInX, distanceInY);
 	}
 
 	private Rectangle getStringBounds(Edge pEdge)
 	{
-		String label = wrapLabel(pEdge, aLabelExtractor.apply(pEdge));
+		String label = wrapLabel(pEdge);
 		assert label != null && label.length() > 0;
 		Dimension dimensions = STRING_VIEWER.getDimension(label);
 		Point center = getConnectionPoints(pEdge).spanning().getCenter();

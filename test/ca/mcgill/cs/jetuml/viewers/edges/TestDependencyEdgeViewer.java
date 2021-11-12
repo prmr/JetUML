@@ -21,14 +21,20 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
+import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
@@ -39,6 +45,7 @@ public class TestDependencyEdgeViewer
 	private ClassNode aNode2;
 	private DependencyEdge aEdge;
 	private Diagram aDiagram;
+	private DependencyEdgeViewer aDependencyEdgeViewer = new DependencyEdgeViewer();
 	
 	@BeforeAll
 	public static void setupClass()
@@ -58,14 +65,45 @@ public class TestDependencyEdgeViewer
 		aDiagram.addRootNode(aNode2);
 		aEdge.connect(aNode1, aNode2, aDiagram);
 		aDiagram.addEdge(aEdge);
-		
-		aNode2.translate(200, 0);
 	}
 	
 	@Test
 	public void testEdgeViewBounds()
 	{
+		aNode2.translate(200, 0);
 		assertEquals(new Rectangle(99,23,102,12), EdgeViewerRegistry.getBounds(aEdge));
-
+	}
+	
+	@ParameterizedTest
+	@CsvSource(value = {
+			"apple banana orange kiwi peach grape raspberry, 1000, 100, 1", 
+			"apple banana orange kiwi peach grape raspberry, 250, 100, 2",
+			"apple banana orange kiwi peach grape raspberry, 200, 200, 3",
+			"apple banana orange kiwi peach grape raspberry, 100, 0, 4"
+	})
+	public void testWrapLabel(String pString, int pDistanceInX, int pDistanceInY, int pExpectedNumberOfLines)
+	{
+		aNode2.translate(pDistanceInX, pDistanceInY);
+		aEdge.setMiddleLabel(pString);
+		String label = wrapLabel(aEdge);
+		int numberOfLines = (int)label.chars().filter(c -> c == '\n').count() + 1;
+		assertEquals(pExpectedNumberOfLines, numberOfLines);
+	}
+	
+	private String wrapLabel(Edge pEdge) 
+	{
+		try 
+		{
+			Method method = LabeledStraightEdgeViewer.class.getDeclaredMethod("wrapLabel", Edge.class);
+			method.setAccessible(true);
+			String label = (String)method.invoke(aDependencyEdgeViewer, pEdge);
+			return label;
+		} 
+		catch (ReflectiveOperationException e)
+		{
+			assert false;
+			fail();
+			return "";
+		}
 	}
 }
