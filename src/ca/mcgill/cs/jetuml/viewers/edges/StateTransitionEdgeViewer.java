@@ -239,30 +239,15 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	}  
 
 	/**
-	 * Wraps the edge label, accounting for possible self-loop intersections.
+	 * Wraps the edge label.
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		final int singleCharWidth = STRING_VIEWER.getDimension(" ").width();
-		
-		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
-		if ( isSelfEdge(pEdge) )
-		{
-	    	final int nodeLength = NodeViewerRegistry.getBounds(pEdge.getStart()).getWidth() / singleCharWidth;
-	    	if ( lineLength >= nodeLength / 2 )
-	    	{
-	    		lineLength =  nodeLength / 2;
-	    	}
-	    	return STRING_VIEWER.wrapString(pEdge.getMiddleLabel(), lineLength);
-		}
-		else
-		{
-			int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
-					NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
-			int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
-					NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
-			return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);
-		}	
+		int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
+				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
+		int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
+				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
+		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
 	@Override
