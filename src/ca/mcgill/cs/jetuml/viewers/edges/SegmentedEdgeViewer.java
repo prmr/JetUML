@@ -90,14 +90,14 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	 * @param pCenter true if the string should be centered along the segment
 	 */
 	private void drawString(GraphicsContext pGraphics, Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrowHead, String pString, boolean pCenter)
+			ArrowHead pArrowHead, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if (pString == null || pString.length() == 0)
 		{
 			return;
 		}
 		String label = wrapLabel(pString, pEndPoint1, pEndPoint2);
-		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, label, pCenter);
+		Rectangle bounds = getStringBounds(pEndPoint1, pEndPoint2, pArrowHead, label, pCenter, pIsStepUp);
 		if(pCenter) 
 		{
 			if ( pEndPoint2.getY() >= pEndPoint1.getY() )
@@ -134,11 +134,10 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		aArrowEndExtractor.apply(pEdge).view().draw(pGraphics, 
 				Conversions.toPoint(points[points.length - 2]), 
 				Conversions.toPoint(points[points.length - 1]));
-
-		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false);
-		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true);
+		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
+		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge));
 		drawString(pGraphics, points[points.length - 2], points[points.length - 1], 
-				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false);
+				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
 	}
 	
 	/**
@@ -150,7 +149,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	 * @return the point at which to draw the string
 	 */
 	private static Point2D getAttachmentPoint(Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrow, Rectangle pDimension, boolean pCenter)
+			ArrowHead pArrow, Rectangle pDimension, boolean pCenter, boolean pIsStepUp)
 	{    
 		final int gap = 3;
 		double xoff = gap;
@@ -160,22 +159,27 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		{
 			if (pEndPoint1.getX() > pEndPoint2.getX()) 
 			{ 
-				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter); 
+				return getAttachmentPoint(pEndPoint2, pEndPoint1, pArrow, pDimension, pCenter, pIsStepUp); 
 			}
 			attach = new Point2D((pEndPoint1.getX() + pEndPoint2.getX()) / 2, 
 					(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
-			if (pEndPoint1.getY() < pEndPoint2.getY())
+			if (pEndPoint1.getX() == pEndPoint2.getX() && pIsStepUp)
+			{
+				yoff = gap;
+			}
+			else if (pEndPoint1.getX() == pEndPoint2.getX() && !pIsStepUp)
 			{
 				yoff =  -gap-pDimension.getHeight();
 			}
 			else if (pEndPoint1.getY() == pEndPoint2.getY())
 			{
+				if (pDimension.getWidth() > Math.abs(pEndPoint1.getX() - pEndPoint2.getX()))
+				{
+					attach = new Point2D(pEndPoint2.getX() + (pDimension.getWidth() / 2) + gap, 
+							(pEndPoint1.getY() + pEndPoint2.getY()) / 2);
+				}
 				xoff = -pDimension.getWidth() / 2;
 			}
-			else
-			{
-				yoff = gap;
-			}	
 		}
 		else 
 		{
@@ -257,7 +261,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	 * @return the rectangle enclosing the string
 	 */
 	private static Rectangle getStringBounds(Point2D pEndPoint1, Point2D pEndPoint2, 
-			ArrowHead pArrow, String pString, boolean pCenter)
+			ArrowHead pArrow, String pString, boolean pCenter, boolean pIsStepUp)
 	{
 		if (pString == null || pString.isEmpty())
 		{
@@ -267,7 +271,7 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		
 		Dimension textDimensions = textDimensions(pString);
 		Rectangle stringDimensions = new Rectangle(0, 0, textDimensions.width(), textDimensions.height());
-		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter);
+		Point2D a = getAttachmentPoint(pEndPoint1, pEndPoint2, pArrow, stringDimensions, pCenter, pIsStepUp);
 		return new Rectangle((int)Math.round(a.getX()), (int)Math.round(a.getY()),
 				Math.round(stringDimensions.getWidth()), Math.round(stringDimensions.getHeight()));
 	}
@@ -278,14 +282,22 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		Point2D[] points = getPoints(pEdge);
 		Rectangle bounds = super.getBounds(pEdge);
 		bounds = bounds.add(getStringBounds(points[1], points[0], 
-				aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false));
+				aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge)));
 		bounds = bounds.add(getStringBounds(points[points.length / 2 - 1], 
-				points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true));
+				points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge)));
 		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], 
-				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false));
+				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, isStepUp(pEdge)));
 		return bounds;
 	}
 	
+	private boolean isStepUp(Edge pEdge) 
+	{
+		Point point1 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint1();
+		Point point2 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint2();
+		return (point1.getX() < point2.getX() && point1.getY() > point2.getY()) 
+				|| (point1.getX() > point2.getX() && point1.getY() < point2.getY());
+	}
+
 	@Override
 	public Canvas createIcon(Edge pEdge) 
 	{
