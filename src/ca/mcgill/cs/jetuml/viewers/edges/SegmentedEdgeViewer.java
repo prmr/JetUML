@@ -187,18 +187,18 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 			{
 				yoff = gap;
 			}
-			if(pArrow != null)
+			if(pArrow != null && pArrow != ArrowHead.NONE)
 			{
 				Bounds arrowBounds = pArrow.view().getPath(
 						Conversions.toPoint(pEndPoint1), 
 						Conversions.toPoint(pEndPoint2)).getBoundsInLocal();
-				if(pEndPoint1.getX() < pEndPoint2.getX())
+				if(pEndPoint1.getY() == pEndPoint2.getY())
 				{
-					xoff -= arrowBounds.getWidth();
+					yoff -= arrowBounds.getHeight() / 2;
 				}
-				else
+				else if(pEndPoint1.getX() == pEndPoint2.getX())
 				{
-					xoff += arrowBounds.getWidth();
+					xoff += arrowBounds.getWidth() / 2;
 				}
 			}
 		}
