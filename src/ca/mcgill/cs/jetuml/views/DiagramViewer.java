@@ -64,27 +64,21 @@ public class DiagramViewer
 	}
 	
 	/**
-	 * Finds the edge that contains the given point, if it 
-	 * exists.
+	 * Returns the edge underneath the given point, if it exists.
 	 * 
 	 * @param pDiagram The diagram to query
 	 * @param pPoint a point
-	 * @return An edge containing pPoint or null if no edge contains pPoint
+	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
-	public final Optional<Edge> findEdge(Diagram pDiagram, Point pPoint)
+	public final Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		for(Edge edge : pDiagram.edges())
-		{
-			if(EdgeViewerRegistry.contains(edge, pPoint))
-			{
-				return Optional.of(edge);
-			}
-		}
-		return Optional.empty();
+		return pDiagram.edges().stream()
+				.filter(edge -> EdgeViewerRegistry.contains(edge, pPoint))
+				.findFirst();
 	}
-	
+		
 	/**
      * Finds a node that contains the given point. Always returns
      * the deepest child and the last one in a list.
