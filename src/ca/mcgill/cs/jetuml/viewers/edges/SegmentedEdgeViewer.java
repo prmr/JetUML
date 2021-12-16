@@ -134,8 +134,10 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 		aArrowEndExtractor.apply(pEdge).view().draw(pGraphics, 
 				Conversions.toPoint(points[points.length - 2]), 
 				Conversions.toPoint(points[points.length - 1]));
-		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
-		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge));
+		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), 
+				aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
+		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, 
+				aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge));
 		drawString(pGraphics, points[points.length - 2], points[points.length - 1], 
 				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
 	}
@@ -294,8 +296,8 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	{
 		Point point1 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint1();
 		Point point2 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint2();
-		return (point1.getX() < point2.getX() && point1.getY() > point2.getY()) 
-				|| (point1.getX() > point2.getX() && point1.getY() < point2.getY());
+		return point1.getX() < point2.getX() && point1.getY() > point2.getY() || 
+				point1.getX() > point2.getX() && point1.getY() < point2.getY();
 	}
 
 	@Override
