@@ -33,8 +33,8 @@ public class TestStateTransitionEdgeViewer
 	@ParameterizedTest
 	@CsvSource(value = {
 			"apple banana orange kiwi peach grape raspberry, 1000, 100, 1", 
-			"apple banana orange kiwi peach grape raspberry, 250, 100, 2",
-			"apple banana orange kiwi peach grape raspberry, 200, 200, 3",
+			"apple banana orange kiwi peach grape, 250, 100, 2",
+			"apple banana orange kiwi peach grape, 200, 200, 3",
 			"apple banana orange kiwi peach grape raspberry, 100, 0, 4"
 	})
 	public void testWrapLabelForEdgeBetweenTwoStates(String pString, int pDistanceInX, int pDistanceInY, int pExpectedNumberOfLines)
