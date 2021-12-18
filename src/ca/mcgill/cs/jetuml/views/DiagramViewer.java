@@ -90,16 +90,11 @@ public class DiagramViewer
 	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		Optional<Node> result = Optional.empty();
-		for(Node node : pDiagram.rootNodes())
-		{
-			Optional<Node> temp = deepFindNode(pDiagram, node, pPoint);
-			if(temp.isPresent())
-			{
-				result = temp;
-			}
-		}
-		return result;
+		return pDiagram.rootNodes().stream()
+			.map(node -> deepFindNode(pDiagram, node, pPoint))
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.reduce((first, second) -> second);
 	}
 	
 	/**
@@ -117,23 +112,13 @@ public class DiagramViewer
 	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
 	{
 		assert pDiagram != null && pNode != null && pPoint != null;
-		Optional<Node> node = Optional.empty();
-		for( Node child : pNode.getChildren() )
-		{
-			node = deepFindNode(pDiagram, child, pPoint);
-			if( node.isPresent() )
-			{
-				return node;
-			}
-		}
-		if( NodeViewerRegistry.contains(pNode, pPoint))
-		{
-			return Optional.of(pNode);
-		}
-		else
-		{
-			return Optional.empty();
-		}
+		
+		return pNode.getChildren().stream()
+			.map(node -> deepFindNode(pDiagram, node, pPoint))
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.findFirst()
+			.or( () -> Optional.of(pNode).filter(originalNode -> NodeViewerRegistry.contains(originalNode, pPoint)));
 	}
 	
 	/**
