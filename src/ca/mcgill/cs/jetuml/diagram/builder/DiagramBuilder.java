@@ -123,8 +123,8 @@ public abstract class DiagramBuilder
 		assert pEdge != null && pStart != null && pEnd != null;
 		
 		final DiagramViewer viewer = viewerFor(aDiagram);
-		Optional<Node> startNode = viewer.findNode(aDiagram, pStart);
-		Optional<Node> endNode = viewer.findNode(aDiagram, pEnd);
+		Optional<Node> startNode = viewer.nodeAt(aDiagram, pStart);
+		Optional<Node> endNode = viewer.nodeAt(aDiagram, pEnd);
 		
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -419,8 +419,8 @@ public abstract class DiagramBuilder
 		assert canAdd(pEdge, pStart, pEnd);
 		DiagramViewer viewer = viewerFor(aDiagram);
 		
-		Node node1 = viewer.findNode(aDiagram, pStart).get();
-		Optional<Node> node2in = viewer.findNode(aDiagram, pEnd);
+		Node node1 = viewer.nodeAt(aDiagram, pStart).get();
+		Optional<Node> node2in = viewer.nodeAt(aDiagram, pEnd);
 		Node node2 = null;
 		if( node2in.isPresent() )
 		{

@@ -87,7 +87,7 @@ public class DiagramViewer
      * @return a node containing pPoint or null if no nodes contain pPoint
      * @pre pDiagram != null && pPoint != null.
      */
-	public final Optional<Node> findNode(Diagram pDiagram, Point pPoint)
+	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
 		Node result = null;

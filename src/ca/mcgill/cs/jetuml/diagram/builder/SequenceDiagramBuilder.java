@@ -93,8 +93,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		assert pStart!= null && pEnd != null;
 		DiagramViewer viewer = viewerFor(aDiagram);
-		Optional<Node> end = viewer.findNode(aDiagram, pEnd);
-		Optional<Node> start = viewer.findNode(aDiagram, pStart);
+		Optional<Node> end = viewer.nodeAt(aDiagram, pEnd);
+		Optional<Node> start = viewer.nodeAt(aDiagram, pStart);
 		if(start.isPresent() && end.isPresent())
 		{
 			Node startNode = start.get();

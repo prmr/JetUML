@@ -279,7 +279,7 @@ public class DiagramCanvasController
 		if(!element.isPresent())
 		{
 			element = viewerFor(aDiagramBuilder.getDiagram())
-					.findNode(aDiagramBuilder.getDiagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
+					.nodeAt(aDiagramBuilder.getDiagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}
