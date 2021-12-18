@@ -21,6 +21,8 @@
 
 package ca.mcgill.cs.jetuml.views;
 
+import java.util.Optional;
+
 import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -35,7 +37,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 public class SequenceDiagramViewer extends DiagramViewer
 {
 	@Override
-	protected Node deepFindNode(Diagram pDiagram, Node pNode, Point pPoint )
+	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint )
 	{		
 		ControlFlow flow = new ControlFlow(pDiagram);
 		if( pNode instanceof CallNode )
@@ -44,8 +46,8 @@ public class SequenceDiagramViewer extends DiagramViewer
 			{
 				if ( child != null )
 				{
-					Node node = deepFindNode(pDiagram, child, pPoint);
-					if ( node != null )
+					Optional<Node> node = deepFindNode(pDiagram, child, pPoint);
+					if (node.isPresent())
 					{
 						return node;
 					}

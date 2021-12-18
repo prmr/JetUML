@@ -90,16 +90,16 @@ public class DiagramViewer
 	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		Node result = null;
+		Optional<Node> result = Optional.empty();
 		for(Node node : pDiagram.rootNodes())
 		{
-			Node temp = deepFindNode(pDiagram, node, pPoint);
-			if (temp != null)
+			Optional<Node> temp = deepFindNode(pDiagram, node, pPoint);
+			if(temp.isPresent())
 			{
 				result = temp;
 			}
 		}
-		return Optional.ofNullable(result);
+		return result;
 	}
 	
 	/**
@@ -114,25 +114,25 @@ public class DiagramViewer
 	 *     any of its children.
 	 * @pre pNode != null, pPoint != null;
 	 */
-	protected Node deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
+	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
 	{
 		assert pDiagram != null && pNode != null && pPoint != null;
-		Node node = null;
+		Optional<Node> node = Optional.empty();
 		for( Node child : pNode.getChildren() )
 		{
 			node = deepFindNode(pDiagram, child, pPoint);
-			if( node != null )
+			if( node.isPresent() )
 			{
 				return node;
 			}
 		}
 		if( NodeViewerRegistry.contains(pNode, pPoint))
 		{
-			return pNode;
+			return Optional.of(pNode);
 		}
 		else
 		{
-			return null;
+			return Optional.empty();
 		}
 	}
 	
