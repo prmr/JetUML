@@ -98,6 +98,21 @@ public class DiagramViewer
 	}
 	
 	/**
+     * Finds a node that contains the given point, if this is a node that can be 
+     * selected. The difference between this method and nodeAt is that it is specialized for
+     * nodes that can be selected by the users, whereas nodeAt is also used for edge creation.
+     * By default, this method has the same behavior as nodeAt.
+     * @param pDiagram The diagram to query.
+     * @param pPoint A point
+     * @return a node containing pPoint or null if no nodes contain pPoint
+     * @pre pDiagram != null && pPoint != null.
+     */
+	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	{
+		return nodeAt(pDiagram, pPoint);
+	}
+	
+	/**
 	 * Find the "deepest" child that contains pPoint,
 	 * where depth is measured in terms of distance from
 	 * pNode along the parent-child relation.

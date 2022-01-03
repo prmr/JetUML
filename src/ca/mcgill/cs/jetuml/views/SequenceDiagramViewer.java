@@ -25,14 +25,18 @@ import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
  * A specialized viewer strategy for a sequence diagram.
  */
 public class SequenceDiagramViewer extends DiagramViewer
 {
+	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
+	
 	@Override
 	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
 	{
@@ -82,5 +86,19 @@ public class SequenceDiagramViewer extends DiagramViewer
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	 * This specialized version supports selecting implicit parameter nodes only by 
+	 * selecting their top rectangle.
+	 */
+	@Override
+	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	{
+		Optional<Node> topRectangleSelected = pDiagram.rootNodes().stream()
+			.filter(node -> node.getClass() == ImplicitParameterNode.class)
+			.filter(node -> IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).contains(pPoint))
+			.findFirst();
+		return topRectangleSelected.or(() -> super.selectableNodeAt(pDiagram, pPoint));				
 	}
 }
