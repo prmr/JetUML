@@ -47,6 +47,7 @@ import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -451,13 +452,34 @@ public class DiagramCanvasController
 	 */
 	private void alignMoveToGrid()
 	{
+		//TODO: what if we passed the whole selectionModel or at least the bounds of it to Grid.snapped()?
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
+		Rectangle wideBounds = aSelectionModel.getEntireSelectionBounds();
+		//first do the entire selection bounds and then do the selected nodes.
 		if( selectedNodes.hasNext() )
 		{
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
+			Rectangle bounds = NodeViewerRegistry.getBounds(firstSelected);
 			Point position = firstSelected.position();
-			Point snappedPosition = Grid.snapped(position);
+			Rectangle snappedPosition = Grid.snapped(bounds);
+			
+			//ensure the bounds of the node are not outside the walls of the canvas
+			if (snappedPosition.getMaxX() > aCanvas.getWidth())
+			{
+				snappedPosition = 
+						new Rectangle((int) (snappedPosition.getX() - snappedPosition.getMaxX() + aCanvas.getWidth()), 
+						snappedPosition.getY(), snappedPosition.getWidth(), snappedPosition.getHeight());
+			}
+			if (snappedPosition.getMaxY() > aCanvas.getHeight()) 
+			{
+				snappedPosition = 
+						new Rectangle(snappedPosition.getX(),
+								(int) (snappedPosition.getY() - snappedPosition.getMaxY() + aCanvas.getHeight()),
+								snappedPosition.getWidth(), snappedPosition.getHeight());
+						
+			}
+
 			final int dx = snappedPosition.getX() - position.getX();
 			final int dy = snappedPosition.getY() - position.getY();
 			for(Node selected : aSelectionModel.getSelectedNodes())
@@ -529,6 +551,15 @@ public class DiagramCanvasController
 		int x = bounds.getMaxX();
 		int y = bounds.getMaxY();
 		
+		if (x > aCanvas.getWidth()) 
+		{
+			System.out.println("computePointToReveal Out of range x");
+		}
+		if (y > aCanvas.getHeight()) 
+		{
+			System.out.println("computePointToReveal Out of range y");
+		}
+		
 		if( pMousePoint.getX() < aLastMousePoint.getX()) 	 // Going left, reverse coordinate
 		{
 			x = bounds.getX(); 
@@ -553,8 +584,31 @@ public class DiagramCanvasController
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		dx = Math.max(dx, -bounds.getX());
 		dy = Math.max(dy, -bounds.getY());
-		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
-		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
+		
+		if (((int) aCanvas.getWidth() - bounds.getMaxX()) < 0) 
+		{
+			dx = Math.min(dx, 0);
+		}
+		else 
+		{
+			dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
+		}
+		if (((int) aCanvas.getHeight() - bounds.getMaxY()) < 0) 
+		{
+			dy = Math.min(dy, 0);
+		}
+		else
+		{
+			dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
+		}
+		if (bounds.getMaxY() > aCanvas.getHeight()) 
+		{
+			System.out.println("moveSelection out of range y");
+		}
+		if (bounds.getMaxX() > aCanvas.getWidth()) 
+		{
+			System.out.println("moveSelection out of range x");
+		}
 
 		for(Node selected : aSelectionModel.getSelectedNodes())
 		{
