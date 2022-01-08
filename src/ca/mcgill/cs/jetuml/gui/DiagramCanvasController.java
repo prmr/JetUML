@@ -461,27 +461,37 @@ public class DiagramCanvasController
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
 			Rectangle bounds = NodeViewerRegistry.getBounds(firstSelected);
-			Point position = firstSelected.position();
 			Rectangle snappedPosition = Grid.snapped(bounds);
 			
 			//ensure the bounds of the node are not outside the walls of the canvas
 			if (snappedPosition.getMaxX() > aCanvas.getWidth())
 			{
 				snappedPosition = 
-						new Rectangle((int) (snappedPosition.getX() - snappedPosition.getMaxX() + aCanvas.getWidth()), 
+						new Rectangle((int) (snappedPosition.getX() - GRID_SIZE), 
 						snappedPosition.getY(), snappedPosition.getWidth(), snappedPosition.getHeight());
 			}
 			if (snappedPosition.getMaxY() > aCanvas.getHeight()) 
 			{
 				snappedPosition = 
 						new Rectangle(snappedPosition.getX(),
-								(int) (snappedPosition.getY() - snappedPosition.getMaxY() + aCanvas.getHeight()),
+								(int) (snappedPosition.getY() - GRID_SIZE),
 								snappedPosition.getWidth(), snappedPosition.getHeight());
 						
 			}
 
-			final int dx = snappedPosition.getX() - position.getX();
-			final int dy = snappedPosition.getY() - position.getY();
+			int dx = snappedPosition.getX() - bounds.getX();
+			int dy = snappedPosition.getY() - bounds.getY();
+			
+			//ensure the bounds of the entire selection are not outside the walls of the canvas
+			if (wideBounds.getMaxX() + dx > aCanvas.getWidth()) 
+			{
+				dx -= GRID_SIZE;
+			}
+			if (wideBounds.getMaxY() + dy > aCanvas.getHeight()) 
+			{
+				dy -= GRID_SIZE;
+			}
+			
 			for(Node selected : aSelectionModel.getSelectedNodes())
 			{
 				selected.translate(dx, dy);
