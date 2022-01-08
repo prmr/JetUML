@@ -476,9 +476,8 @@ public class DiagramCanvasController
 						new Rectangle(snappedPosition.getX(),
 								(int) (snappedPosition.getY() - GRID_SIZE),
 								snappedPosition.getWidth(), snappedPosition.getHeight());
-						
 			}
-
+			
 			int dx = snappedPosition.getX() - bounds.getX();
 			int dy = snappedPosition.getY() - bounds.getY();
 			
@@ -487,9 +486,17 @@ public class DiagramCanvasController
 			{
 				dx -= GRID_SIZE;
 			}
+			else if (wideBounds.getX() + dx == 0) 
+			{
+				dx += GRID_SIZE;
+			}
 			if (wideBounds.getMaxY() + dy > aCanvas.getHeight()) 
 			{
 				dy -= GRID_SIZE;
+			}
+			else if (wideBounds.getY() == 0) 
+			{
+				dy += GRID_SIZE;
 			}
 			
 			for(Node selected : aSelectionModel.getSelectedNodes())
@@ -594,31 +601,8 @@ public class DiagramCanvasController
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		dx = Math.max(dx, -bounds.getX());
 		dy = Math.max(dy, -bounds.getY());
-		
-		if (((int) aCanvas.getWidth() - bounds.getMaxX()) < 0) 
-		{
-			dx = Math.min(dx, 0);
-		}
-		else 
-		{
-			dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
-		}
-		if (((int) aCanvas.getHeight() - bounds.getMaxY()) < 0) 
-		{
-			dy = Math.min(dy, 0);
-		}
-		else
-		{
-			dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
-		}
-		if (bounds.getMaxY() > aCanvas.getHeight()) 
-		{
-			System.out.println("moveSelection out of range y");
-		}
-		if (bounds.getMaxX() > aCanvas.getWidth()) 
-		{
-			System.out.println("moveSelection out of range x");
-		}
+		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
+		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
 
 		for(Node selected : aSelectionModel.getSelectedNodes())
 		{
