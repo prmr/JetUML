@@ -567,16 +567,7 @@ public class DiagramCanvasController
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		int x = bounds.getMaxX();
 		int y = bounds.getMaxY();
-		
-		if (x > aCanvas.getWidth()) 
-		{
-			System.out.println("computePointToReveal Out of range x");
-		}
-		if (y > aCanvas.getHeight()) 
-		{
-			System.out.println("computePointToReveal Out of range y");
-		}
-		
+
 		if( pMousePoint.getX() < aLastMousePoint.getX()) 	 // Going left, reverse coordinate
 		{
 			x = bounds.getX(); 
@@ -596,13 +587,14 @@ public class DiagramCanvasController
 		
 		int dx = pMousePoint.getX() - aLastMousePoint.getX();
 		int dy = pMousePoint.getY() - aLastMousePoint.getY();
-
+		System.out.println(dy);
 		// Ensure the selection does not exceed the canvas bounds
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		dx = Math.max(dx, -bounds.getX());
 		dy = Math.max(dy, -bounds.getY());
 		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
 		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
+		System.out.println("after: " + dy + "\n");
 
 		for(Node selected : aSelectionModel.getSelectedNodes())
 		{
