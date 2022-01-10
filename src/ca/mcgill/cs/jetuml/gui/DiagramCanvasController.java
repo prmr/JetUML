@@ -587,14 +587,13 @@ public class DiagramCanvasController
 		
 		int dx = pMousePoint.getX() - aLastMousePoint.getX();
 		int dy = pMousePoint.getY() - aLastMousePoint.getY();
-		System.out.println(dy);
+
 		// Ensure the selection does not exceed the canvas bounds
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
 		dx = Math.max(dx, -bounds.getX());
 		dy = Math.max(dy, -bounds.getY());
 		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
 		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
-		System.out.println("after: " + dy + "\n");
 
 		for(Node selected : aSelectionModel.getSelectedNodes())
 		{
