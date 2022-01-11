@@ -463,21 +463,6 @@ public class DiagramCanvasController
 			Rectangle bounds = NodeViewerRegistry.getBounds(firstSelected);
 			Rectangle snappedPosition = Grid.snapped(bounds);
 			
-			//ensure the bounds of the node are not outside the walls of the canvas
-			if (snappedPosition.getMaxX() > aCanvas.getWidth())
-			{
-				snappedPosition = 
-						new Rectangle((int) (snappedPosition.getX() - GRID_SIZE), 
-						snappedPosition.getY(), snappedPosition.getWidth(), snappedPosition.getHeight());
-			}
-			if (snappedPosition.getMaxY() > aCanvas.getHeight()) 
-			{
-				snappedPosition = 
-						new Rectangle(snappedPosition.getX(),
-								(int) (snappedPosition.getY() - GRID_SIZE),
-								snappedPosition.getWidth(), snappedPosition.getHeight());
-			}
-			
 			int dx = snappedPosition.getX() - bounds.getX();
 			int dy = snappedPosition.getY() - bounds.getY();
 			
@@ -486,7 +471,7 @@ public class DiagramCanvasController
 			{
 				dx -= GRID_SIZE;
 			}
-			else if (wideBounds.getX() + dx == 0) 
+			else if (wideBounds.getX() + dx <= 0) 
 			{
 				dx += GRID_SIZE;
 			}
@@ -494,7 +479,7 @@ public class DiagramCanvasController
 			{
 				dy -= GRID_SIZE;
 			}
-			else if (wideBounds.getY() == 0) 
+			else if (wideBounds.getY() <= 0) 
 			{
 				dy += GRID_SIZE;
 			}
