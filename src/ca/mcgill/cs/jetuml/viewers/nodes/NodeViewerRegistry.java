@@ -87,7 +87,7 @@ public final class NodeViewerRegistry
 	
    	/**
      * Tests whether pNode contains a point.
-     * @param pNode the edge to test
+     * @param pNode the node to test
      * @param pPoint the point to test
      * @return true if this element contains aPoint
      */
@@ -109,7 +109,7 @@ public final class NodeViewerRegistry
    	
 	/**
      * Draws pNode.
-     * @param pNode The edge to draw.
+     * @param pNode The node to draw.
      * @param pGraphics the graphics context
      * @pre pNode != null
 	 */
@@ -120,7 +120,7 @@ public final class NodeViewerRegistry
    	
    	/**
      * Draw selection handles around pNode.
-     * @param pNode The target edge
+     * @param pNode The target node
      * @param pGraphics the graphics context
      * @pre pNode != null && pGraphics != null
 	 */
