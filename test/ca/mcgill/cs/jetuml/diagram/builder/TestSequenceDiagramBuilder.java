@@ -34,7 +34,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.ControlFlow;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramAccessor;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
@@ -55,6 +57,8 @@ public class TestSequenceDiagramBuilder
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
 	private CallEdge aCallEdge1;
+	private ConstructorEdge aConstructorEdge;
+	
 	
 	@BeforeAll
 	public static void setupClass()
@@ -72,6 +76,7 @@ public class TestSequenceDiagramBuilder
 		aDefaultCallNode1 = new CallNode();
 		aDefaultCallNode2 = new CallNode();
 		aCallEdge1 = new CallEdge();
+		aConstructorEdge = new ConstructorEdge();
 	}
 	
 	private int numberOfRootNodes()
@@ -244,7 +249,7 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testGetCoRemovals()
+	public void testGetCoRemovals_CallEdge()
 	{
 		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
@@ -256,5 +261,23 @@ public class TestSequenceDiagramBuilder
 		assertTrue(elements.contains(aDefaultCallNode1));
 		assertTrue(elements.contains(aDefaultCallNode2));
 		assertTrue(elements.contains(aCallEdge1));
+	}
+	@Test
+	public void testGetCoRemovals_ConstructorEdge()
+	{
+		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		Collection<DiagramElement> elements = new HashSet<>();
+		elements.addAll(aBuilder.getCoRemovals(aConstructorEdge));
+		assertEquals(3, elements.size());
+		assertFalse(elements.contains(aImplicitParameterNode1));
+		assertFalse(elements.contains(aImplicitParameterNode2));
+		assertTrue(elements.contains(aDefaultCallNode1));
+		assertTrue(elements.contains(aDefaultCallNode2));
+		assertTrue(elements.contains(aConstructorEdge));
 	}
 }
