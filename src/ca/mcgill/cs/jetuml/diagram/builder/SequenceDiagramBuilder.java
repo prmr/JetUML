@@ -39,6 +39,7 @@ import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
+import ca.mcgill.cs.jetuml.diagram.nodes.ObjectNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
@@ -123,8 +124,13 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 				result.add(edgeStart.get());
 			}
 			result.addAll(flow.getEdgeDownStreams((Edge)pElement));
+			
 		}	
 		result.addAll(flow.getCorrespondingReturnEdges(result));
+		if (pElement instanceof ConstructorEdge) 
+		{
+			result.removeIf(element -> element instanceof ImplicitParameterNode);
+		}
 		return result;
 	}
 	
