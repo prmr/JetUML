@@ -452,10 +452,9 @@ public class DiagramCanvasController
 	 */
 	private void alignMoveToGrid()
 	{
-		//TODO: what if we passed the whole selectionModel or at least the bounds of it to Grid.snapped()?
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
-		Rectangle wideBounds = aSelectionModel.getEntireSelectionBounds();
-		//first do the entire selection bounds and then do the selected nodes.
+		Rectangle entireBounds = aSelectionModel.getEntireSelectionBounds();
+		
 		if( selectedNodes.hasNext() )
 		{
 			// Pick one node in the selection model, arbitrarily
@@ -467,19 +466,19 @@ public class DiagramCanvasController
 			int dy = snappedPosition.getY() - bounds.getY();
 			
 			//ensure the bounds of the entire selection are not outside the walls of the canvas
-			if (wideBounds.getMaxX() + dx > aCanvas.getWidth()) 
+			if (entireBounds.getMaxX() + dx > aCanvas.getWidth()) 
 			{
 				dx -= GRID_SIZE;
 			}
-			else if (wideBounds.getX() + dx <= 0) 
+			else if (entireBounds.getX() + dx <= 0) 
 			{
 				dx += GRID_SIZE;
 			}
-			if (wideBounds.getMaxY() + dy > aCanvas.getHeight()) 
+			if (entireBounds.getMaxY() + dy > aCanvas.getHeight()) 
 			{
 				dy -= GRID_SIZE;
 			}
-			else if (wideBounds.getY() <= 0) 
+			else if (entireBounds.getY() <= 0) 
 			{
 				dy += GRID_SIZE;
 			}
