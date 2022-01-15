@@ -100,13 +100,14 @@ public class TestControlFlow
 	}
 	
 	/*
-	 * aCall1 and aCall2 are on aParameter1
-	 * aCall3 and aCall4 are on aParameter2
-	 * aCall5 and aCall6 are on aParameter3
-	 * aCall1 calls aCall3, then aCalls2 
-	 * aCall2 calls aCall4 then returns
-	 * aCall4 calls aCall5
-	 * aCall1 calls aCall6
+	 * aCall1 is on aParameter1
+	 * aCall2 and aCall3 are on aParameter2
+	 * aCall4 and aCall5 are on aParameter3
+	 * aConstructorEdge connects aCall1 to aCall2
+	 * aReturnEdge connects aCall2 to aCall1
+	 * aCall2 calls aCall3
+	 * aCall3 calls aCall4
+	 * aCall2 calls aCall5
 	 */
 	private void createSampleDiagram1()
 	{
