@@ -125,6 +125,11 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			result.addAll(flow.getEdgeDownStreams((Edge)pElement));
 		}	
 		result.addAll(flow.getCorrespondingReturnEdges(result));
+		//Implicit parameter nodes downstream of constructor calls should not be removed
+		if (pElement instanceof ConstructorEdge) 
+		{
+			result.removeIf(element -> element instanceof ImplicitParameterNode);
+		}
 		return result;
 	}
 	
