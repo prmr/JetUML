@@ -55,6 +55,7 @@ public class TestSequenceDiagramBuilder
 	private CallNode aDefaultCallNode1;
 	private CallNode aDefaultCallNode2;
 	private CallEdge aCallEdge1;
+	private ConstructorEdge aConstructorEdge;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -244,7 +245,7 @@ public class TestSequenceDiagramBuilder
 	}
 	
 	@Test
-	public void testGetCoRemovals()
+	public void testGetCoRemovals_CallEdge()
 	{
 		aCallEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
@@ -257,4 +258,23 @@ public class TestSequenceDiagramBuilder
 		assertTrue(elements.contains(aDefaultCallNode2));
 		assertTrue(elements.contains(aCallEdge1));
 	}
+	
+	public void testGetCoRemovals_ConstructorEdge()
+	{
+		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
+		aDiagram.addEdge(aConstructorEdge);
+		aImplicitParameterNode1.addChild(aDefaultCallNode1);
+		aImplicitParameterNode2.addChild(aDefaultCallNode2);
+		aDiagram.addRootNode(aImplicitParameterNode1);
+		aDiagram.addRootNode(aImplicitParameterNode2);
+		Collection<DiagramElement> elements = new HashSet<>();
+		elements.addAll(aBuilder.getCoRemovals(aConstructorEdge));
+		assertEquals(3, elements.size());
+		assertFalse(elements.contains(aImplicitParameterNode1));
+		assertFalse(elements.contains(aImplicitParameterNode2));
+		assertTrue(elements.contains(aDefaultCallNode1));
+		assertTrue(elements.contains(aDefaultCallNode2));
+		assertTrue(elements.contains(aConstructorEdge));
+	}
+	
 }
