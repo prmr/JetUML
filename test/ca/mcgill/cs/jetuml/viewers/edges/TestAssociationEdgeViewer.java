@@ -1,21 +1,41 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.ArrowHead;
 import javafx.geometry.Point2D;
 
 public class TestAssociationEdgeViewer 
 {
+	private static int userDefinedFontSize;
+
 	private AssociationEdgeViewer aAssociationEdgeViewer = new AssociationEdgeViewer();
 	private ArrowHead aArrowHead = ArrowHead.DIAMOND;
+	
+	@BeforeAll
+	public static void setupClass()
+	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
+	}
 	
 	@ParameterizedTest
 	@CsvSource(value = {

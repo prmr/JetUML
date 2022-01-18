@@ -20,18 +20,21 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -41,6 +44,8 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 
 public class TestDependencyEdgeViewer
 {
+	private static int userDefinedFontSize;
+	
 	private ClassNode aNode1;
 	private ClassNode aNode2;
 	private DependencyEdge aEdge;
@@ -50,7 +55,14 @@ public class TestDependencyEdgeViewer
 	@BeforeAll
 	public static void setupClass()
 	{
-		JavaFXLoader.load();
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	@BeforeEach

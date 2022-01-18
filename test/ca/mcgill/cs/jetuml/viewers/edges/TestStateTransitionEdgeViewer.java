@@ -1,14 +1,19 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Method;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import ca.mcgill.cs.jetuml.application.UserPreferences;
+import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
@@ -16,6 +21,8 @@ import ca.mcgill.cs.jetuml.diagram.nodes.StateNode;
 
 public class TestStateTransitionEdgeViewer 
 {
+	private static int userDefinedFontSize;
+
 	private StateNode aStateNode1;
 	private StateNode aStateNode2;
 	private StateTransitionEdge aTransitionEdge;
@@ -28,6 +35,19 @@ public class TestStateTransitionEdgeViewer
 		aDiagram = new Diagram(DiagramType.STATE);
 		aStateNode1 = new StateNode();
 		aTransitionEdge = new StateTransitionEdge();
+	}
+	
+	@BeforeAll
+	public static void setupClass()
+	{
+		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
+	}
+	
+	@AfterAll
+	public static void restorePreferences()
+	{
+		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
 	}
 	
 	@ParameterizedTest
