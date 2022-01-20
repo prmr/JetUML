@@ -104,6 +104,7 @@ public class EditorFrame extends BorderPane
 		setTop(menuBar);
 		
 		TabPane tabPane = new TabPane();
+		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
 		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
 		setCenter( tabPane );
 
