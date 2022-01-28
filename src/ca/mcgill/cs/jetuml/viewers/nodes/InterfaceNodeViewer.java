@@ -34,6 +34,7 @@ public final class InterfaceNodeViewer extends TypeNodeViewer
 	 * @return The text to show as the name of the node.
 	 * @pre pNode != null
 	 */
+	@Override
 	protected String getNameText(TypeNode pNode)
 	{
 		return "\u00ABinterface\u00BB\n" + pNode.getName();

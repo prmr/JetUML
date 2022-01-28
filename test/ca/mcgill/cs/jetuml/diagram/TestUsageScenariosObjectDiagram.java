@@ -45,6 +45,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	private ObjectReferenceEdge aReferenceEdge2;
 	
 	@BeforeEach
+	@Override
 	public void setup()
 	{
 		super.setup();

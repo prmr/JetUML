@@ -50,6 +50,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	private StateTransitionEdge aTransitionEdge5;
 
 	@BeforeEach
+	@Override
 	public void setup()
 	{
 		super.setup();

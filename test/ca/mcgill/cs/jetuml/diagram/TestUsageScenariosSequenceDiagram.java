@@ -50,6 +50,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	private ReturnEdge aReturnEdge;
 	
 	@BeforeEach
+	@Override
 	public void setup()
 	{
 		super.setup();

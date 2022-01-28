@@ -49,6 +49,7 @@ public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewe
 				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
 	}
 	
+	@Override
 	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
 	{
 		Dimension contentsBounds = CONTENTS_VIEWER.getDimension(((PackageDescriptionNode)pNode).getContents());

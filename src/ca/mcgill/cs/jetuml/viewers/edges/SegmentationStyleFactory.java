@@ -713,6 +713,7 @@ public final class SegmentationStyleFactory
 			return -(getMiddle()-getIndex()) * increment;
 		}
 		
+		@Override
 		public String toString()
 		{
 			return aIndex + " of " + aTotal;

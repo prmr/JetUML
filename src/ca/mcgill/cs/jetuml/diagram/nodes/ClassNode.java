@@ -54,6 +54,7 @@ public final class ClassNode extends TypeNode
      * Gets the attributes property value.
      * @return the attributes of this class
 	 */
+	@Override
 	public String getAttributes()
 	{
 		return aAttributes;

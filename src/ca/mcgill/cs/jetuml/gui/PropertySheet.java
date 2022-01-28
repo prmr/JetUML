@@ -202,6 +202,7 @@ public class PropertySheet extends GridPane
 	{
 		pTextInput.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() 
 		{
+			@Override
 		    public void handle(KeyEvent pKeyEvent) 
 		    {
 		    	if(STEREOTYPE_DELIMITER_TRIGGER.match(pKeyEvent)) 

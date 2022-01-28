@@ -75,6 +75,7 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 				pChildrenBounds.get().getY() - PADDING - getTopDimension(pNode).height());
 	}
 	
+	@Override
 	protected Rectangle getTopBounds(AbstractPackageNode pNode)
 	{
 		Optional<Rectangle> childrenBounds = getChildrenBounds(pNode);
@@ -83,6 +84,7 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 		return new Rectangle(position.getX(), position.getY(), topDimension.width(), topDimension.height());
 	}
 	
+	@Override
 	protected Rectangle getBottomBounds(AbstractPackageNode pNode)
 	{
 		int width = DEFAULT_WIDTH;

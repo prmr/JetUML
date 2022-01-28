@@ -74,6 +74,7 @@ public class CallNode extends AbstractNode
      * @return the parent node
      * @pre hasParent()
 	 */
+	@Override
 	public Node getParent() 
    	{ 
 		assert hasParent();
@@ -85,6 +86,7 @@ public class CallNode extends AbstractNode
      * @param pNode the parent node
      * @pre pNode != null;
 	 */
+	@Override
 	public void link(Node pNode) 
 	{
 		assert pNode != null;

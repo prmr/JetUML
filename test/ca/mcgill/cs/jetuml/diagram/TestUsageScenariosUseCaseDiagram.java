@@ -50,6 +50,7 @@ public class TestUsageScenariosUseCaseDiagram extends AbstractTestUsageScenarios
 	private UseCaseGeneralizationEdge aGeneralEdge;
 	
 	@BeforeEach
+	@Override
 	public void setup()
 	{
 		super.setup();
