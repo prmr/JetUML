@@ -99,8 +99,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			Node startNode = start.get();
 			Node endNode = end.get();
-			return 	(startNode instanceof ImplicitParameterNode || startNode instanceof CallNode) && 
-					new ControlFlow(aDiagram).canCreateConstructedObject(endNode, pEnd);
+			return 	SequenceDiagramEdgeConstraints.canCreateConstructor(startNode, endNode, pEnd);
 		}
 		return false;
 	}

@@ -42,7 +42,6 @@ import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.geom.Point;
 
 /*
  * This class is used to test the methods of SequenceDiagram
@@ -475,11 +474,5 @@ public class TestControlFlow
 		assertEquals(2, returnEdges.size());
 		assertTrue(returnEdges.contains(aReturnEdge));
 		assertTrue(returnEdges.contains(returnEdge1));
-	}
-	
-	@Test
-	public void testCanCreateConstructedObjectParameterWithChild()
-	{	
-		assertFalse(aFlow.canCreateConstructedObject(aParameter3, new Point(0, 0)));
 	}
 }

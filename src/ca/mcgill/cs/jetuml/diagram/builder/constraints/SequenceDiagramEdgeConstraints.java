@@ -84,14 +84,34 @@ public final class SequenceDiagramEdgeConstraints
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEnd.getClass() == ImplicitParameterNode.class &&
 							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEnd).contains(pEndPoint) && 
-							 	!canCreateConstructor(pStart, pEnd, pDiagram, pEndPoint));
+							 	!canCreateConstructor(pStart, pEnd, pEndPoint));
 		};
 	}
 	
-	private static boolean canCreateConstructor(Node pStartNode, Node pEndNode, Diagram pDiagram, Point pEndPoint)
+	/**
+	 * Checks whether it is permitted to create a "creates" edge between
+	 * pStartNode and pEndNode.
+	 * 
+	 * This is possible pStartNode is a CallNode or an ImplicitParameterNode, and if 
+	 * the end node it is an ImplicitParameterNode with no child node and the point selected
+	 * is in its top rectangle.
+	 * 
+	 * @param pStartNode The desired start node for the "creates" edge.
+	 * @param pEndNode The desired end node of the "creates" edge.
+	 * @param pPoint The point on the canvas selected by the user.
+	 * @return True if pStartNode is a CallNode or and ImplicitParameterNode and pEndNode
+	 *     is an ImplicitParameterNode with no child node and pPoint is within the top rectangular bound of pNode.
+	 * @pre pNode != null && pPoint != null
+	 */
+	public static boolean canCreateConstructor(Node pStartNode, Node pEndNode, Point pEndPoint)
 	{
-		return 	(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) && 
-				new ControlFlow(pDiagram).canCreateConstructedObject(pEndNode, pEndPoint);
+		if( !(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) )
+		{
+			return false;
+		}
+		return pEndNode instanceof ImplicitParameterNode && 
+				IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint) && 
+				pEndNode.getChildren().isEmpty();
 	}
 	
 	/*
