@@ -114,7 +114,7 @@ public final class JetUML extends Application
 		aHostServices.showDocument(pUrl);
 	}
 
-	private void setStageBoundaries(Stage pStage)
+	private static void setStageBoundaries(Stage pStage)
 	{
 		Rectangle defaultStageBounds = GuiUtils.defaultStageBounds();
 		pStage.setX(defaultStageBounds.getX());

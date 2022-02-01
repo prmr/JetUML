@@ -28,22 +28,25 @@ import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasElementsSame
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.hasSize;
 import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.Node;
+import ca.mcgill.cs.jetuml.diagram.edges.AssociationEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.DependencyEdge;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.FieldNode;
@@ -54,12 +57,12 @@ import ca.mcgill.cs.jetuml.geom.Point;
 
 public class TestClipboard
 {
-	private Clipboard aClipboard;
+	private Clipboard aClipboard = Clipboard.instance();
 	private Field aNodesField;
 	private Field aEdgesField;
-	private ClassNode aNode1;
-	private ClassNode aNode2;
-	private Diagram aDiagram;
+	private ClassNode aNode1 = new ClassNode();
+	private ClassNode aNode2 = new ClassNode();
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	
 	public TestClipboard() throws ReflectiveOperationException
 	{
@@ -69,10 +72,20 @@ public class TestClipboard
 		aEdgesField.setAccessible(true);
 	}
 	
-	@BeforeAll
-	public static void setupClass()
+	@SuppressWarnings("unchecked")
+	private static List<Edge> copyEdges(Iterable<DiagramElement> pSelection)
 	{
-		JavaFXLoader.load();
+		try
+		{
+			Method method = Clipboard.class.getDeclaredMethod("copyEdges", Iterable.class);
+			method.setAccessible(true);
+			return (List<Edge>) method.invoke(null, pSelection);
+		}
+		catch(Exception e)
+		{
+			fail();
+			return null;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -104,17 +117,37 @@ public class TestClipboard
 		}
 	}
 	
-	@BeforeEach
-	public void setup()
+	@Test
+	void testCopyEdges_Empty()
 	{
-		aClipboard = Clipboard.instance();		
-		aNode1 = new ClassNode();
-		aNode2 = new ClassNode();
-		aDiagram = new Diagram(DiagramType.CLASS);
+		assertTrue(copyEdges(new ArrayList<>()).isEmpty());
 	}
 	
 	@Test
-	public void testCopySingleNodeNoReposition()
+	void testCopyEdges_OnlyNodes()
+	{
+		assertTrue(copyEdges(List.of(aNode1, aNode2)).isEmpty());
+	}
+	
+	@Test
+	void testCopyEdges_NodesAndEdges()
+	{
+		Edge edge1 = new DependencyEdge();
+		edge1.connect(aNode1, aNode2, aDiagram);
+		Edge edge2 = new AssociationEdge();
+		edge2.connect(aNode2, aNode1, aDiagram);
+		List<Edge> copies = copyEdges(List.of(aNode1, edge1, aNode2, edge2));
+		assertNotSame(edge1, copies.get(0));
+		assertSame(DependencyEdge.class, copies.get(0).getClass());
+		assertSame(aNode1, copies.get(0).getStart());
+		assertSame(aNode2, copies.get(0).getEnd());
+		assertNotSame(edge2, copies.get(1));
+		assertSame(aNode2, copies.get(1).getStart());
+		assertSame(aNode1, copies.get(1).getEnd());
+	}
+	
+	@Test
+	void testCopySingleNodeNoReposition()
 	{
 		aClipboard.copy(Arrays.asList(aNode1));
 		List<Node> clipboardNodes = getClipboardNodes();
@@ -123,7 +156,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopySingleNodeReposition()
+	void testCopySingleNodeReposition()
 	{
 		aNode1.translate(10, 10);
 		aClipboard.copy(Arrays.asList(aNode1));
@@ -133,7 +166,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopyTwoNodesOneEdgeFlat()
+	void testCopyTwoNodesOneEdgeFlat()
 	{
 		aNode1.translate(10, 10);
 		aNode2.translate(200, 200);
@@ -150,7 +183,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopyDanglingEdgeFlat()
+	void testCopyDanglingEdgeFlat()
 	{
 		aNode1.translate(10, 10);
 		aNode2.translate(200, 200);
@@ -165,7 +198,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopyNodeWithOneChild()
+	void testCopyNodeWithOneChild()
 	{
 		PackageNode pn = new PackageNode();
 		pn.addChild(aNode1);
@@ -184,7 +217,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopyNodeWithOneParent()
+	void testCopyNodeWithOneParent()
 	{
 		PackageNode packageNode = new PackageNode();
 		packageNode.addChild(aNode1);
@@ -203,7 +236,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testCopyNodeMissingParent()
+	void testCopyNodeMissingParent()
 	{
 		ObjectNode node = new ObjectNode();
 		FieldNode field = new FieldNode();
@@ -216,7 +249,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testValidPasteOfPointNode() 
+	void testValidPasteOfPointNode() 
 	{
 		PointNode node = new PointNode();
 		aClipboard.copy(Arrays.asList(node));
@@ -224,7 +257,7 @@ public class TestClipboard
 	}
 	
 	@Test
-	public void testValidPasteForDifferentDiagramTypes() 
+	void testValidPasteForDifferentDiagramTypes() 
 	{
 		ClassNode classNode = new ClassNode();
 		aClipboard.copy(Arrays.asList(classNode));

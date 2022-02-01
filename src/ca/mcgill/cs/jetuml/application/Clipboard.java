@@ -20,10 +20,14 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.application;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import ca.mcgill.cs.jetuml.annotations.Singleton;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -48,12 +52,13 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
  * The clipboard is a singleton. This is necessary to allow copying elements
  * between diagrams of the same type.
  */
+@Singleton
 public final class Clipboard 
 {
 	private static final Clipboard INSTANCE = new Clipboard();
 	
-	private List<Node> aNodes = new ArrayList<>();
-	private List<Edge> aEdges = new ArrayList<>();
+	private final List<Node> aNodes = new ArrayList<>();
+	private final List<Edge> aEdges = new ArrayList<>();
 
 	/**
 	 * Creates an empty clip-board.
@@ -113,17 +118,13 @@ public final class Clipboard
 	/*
 	 * Makes a clone of every edges in pSelection and copies it into the clipboard	 
 	 */
-	private List<Edge> copyEdges(Iterable<DiagramElement> pSelection)
+	private static List<Edge> copyEdges(Iterable<DiagramElement> pSelection)
 	{
-		List<Edge> result = new ArrayList<>();
-		for( DiagramElement element : pSelection )
-		{
-			if( element instanceof Edge )
-			{	
-				result.add(((Edge) element).clone());
-			}
-		}
-		return result;
+		return stream(pSelection.spliterator(), false)
+			.filter(Edge.class::isInstance)
+			.map(Edge.class::cast)
+			.map(Edge::clone)
+			.collect(toList());
 	}
 	
 	/*
