@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import ca.mcgill.cs.jetuml.annotations.Immutable;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
@@ -37,10 +38,11 @@ import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
- * An immutable wrapper around a SequenceDiagram that can answer
+ * An immutable wrapper around a sequence Diagram that can answer
  * various queries about the control-flow represented by 
  * the wrapped sequence diagram.
  */
+@Immutable
 public final class ControlFlow
 {
 	private final Diagram aDiagram;
@@ -49,7 +51,7 @@ public final class ControlFlow
 	 * Creates a new ControlFlow to query pDiagram.
 	 * 
 	 * @param pDiagram The diagram to wrap.
-	 * @pre pDiagram != null.
+	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.SEQUENCE
 	 */
 	public ControlFlow(Diagram pDiagram)
 	{
@@ -237,10 +239,10 @@ public final class ControlFlow
 	{
 		assert pNode != null;
 		return pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 &&
-				isConstructorExecution(getFirstChild(pNode));
+				isConstructorExecution(firstChildOf(pNode));
 	}
 	
-	private Node getFirstChild(Node pNode)
+	private static Node firstChildOf(Node pNode)
 	{
 		assert pNode.getChildren().size() > 0;
 		return pNode.getChildren().get(0);
@@ -330,7 +332,7 @@ public final class ControlFlow
 		}
 		else if( isConstructedObject(pNode) )
 		{
-			Optional<Edge> constructorEdge = getConstructorEdge(getFirstChild(pNode));
+			Optional<Edge> constructorEdge = getConstructorEdge(firstChildOf(pNode));
 			if( constructorEdge.isPresent() )
 			{
 				downstreamElements.addAll(getEdgeDownStreams(constructorEdge.get()));
@@ -418,7 +420,7 @@ public final class ControlFlow
 		}
 		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 )
 		{
-			Optional<CallNode> caller = getCaller(getFirstChild(pNode));
+			Optional<CallNode> caller = getCaller(firstChildOf(pNode));
 			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsOneObject(caller.get(), pNode) )
 			{
 				elements.add(caller.get());
