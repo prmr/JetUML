@@ -97,7 +97,7 @@ public class AbstractTestUsageScenarios
 	
 	protected void moveNode(Node pNode, int pX, int pY)
 	{
-		aProcessor.executeNewOperation(aBuilder.createMoveNodeOperation(pNode, pX, pY));
+		aProcessor.executeNewOperation(DiagramBuilder.createMoveNodeOperation(pNode, pX, pY));
 	}
 	
 	protected void moveSelection(int pX, int pY)
@@ -107,7 +107,7 @@ public class AbstractTestUsageScenarios
 		{
 			if( element instanceof Node)
 			{
-				operation.add(aBuilder.createMoveNodeOperation((Node)element, pX, pY));
+				operation.add(DiagramBuilder.createMoveNodeOperation((Node)element, pX, pY));
 			}
 		}
 		aProcessor.executeNewOperation(operation);

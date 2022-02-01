@@ -71,7 +71,7 @@ public class DiagramViewer
 	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
-	public final Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
+	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
 		return pDiagram.edges().stream()
@@ -143,7 +143,7 @@ public class DiagramViewer
 	 * @return The bounding rectangle
 	 * @pre pDiagram != null
 	 */
-	public final Rectangle getBounds(Diagram pDiagram)
+	public static Rectangle getBounds(Diagram pDiagram)
 	{
 		assert pDiagram != null;
 		Rectangle bounds = null;

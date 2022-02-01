@@ -49,15 +49,14 @@ public final class ImageCreator
 	public static Image createImage(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		DiagramViewer viewer = DiagramType.viewerFor(pDiagram);
-		Rectangle bounds = viewer.getBounds(pDiagram);
+		Rectangle bounds = DiagramViewer.getBounds(pDiagram);
 		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(Color.WHITE);
 		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
-		viewer.draw(pDiagram, context);
+		DiagramType.viewerFor(pDiagram).draw(pDiagram, context);
 		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);

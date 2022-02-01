@@ -138,6 +138,6 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInY/distanceInX));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return SIZE_TESTER.wrapString(pString, lineLength);
+		return StringViewer.wrapString(pString, lineLength);
 	}
 }

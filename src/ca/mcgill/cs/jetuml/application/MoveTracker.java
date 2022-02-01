@@ -88,7 +88,7 @@ public class MoveTracker
 			int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
 			if(dX != 0 || dY != 0)
 			{
-				operation.add(pDiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
+				operation.add(DiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
 			}
 		}
 		return operation;

@@ -399,7 +399,7 @@ public abstract class DiagramBuilder
  	 * @return The requested operation.
  	 * @pre pNode != null.
 	 */
-	public final DiagramOperation createMoveNodeOperation(Node pNode, int pX, int pY)
+	public static DiagramOperation createMoveNodeOperation(Node pNode, int pX, int pY)
 	{
 		return new SimpleOperation(
 				()-> pNode.translate(pX, pY),

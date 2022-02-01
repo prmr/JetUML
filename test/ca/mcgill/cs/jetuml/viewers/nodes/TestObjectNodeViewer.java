@@ -81,14 +81,14 @@ public class TestObjectNodeViewer
 	@Test
 	public void testGetSplitPosition_NoField()
 	{
-		assertEquals(5, aViewer.getSplitPosition(aNode));
+		assertEquals(5, ObjectNodeViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(osDependent(12, 11, 12), aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(12, 11, 12), ObjectNodeViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -97,14 +97,14 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(osDependent(47, 49, 58), aViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(47, 49, 58), ObjectNodeViewer.getSplitPosition(aNode));
 	}
 	
 	@Test
 	public void testGetYPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(70, aViewer.getYPosition(aNode, aField1));
+		assertEquals(70, ObjectNodeViewer.getYPosition(aNode, aField1));
 	}
 	
 	@Test
@@ -112,8 +112,8 @@ public class TestObjectNodeViewer
 	{
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
-		assertEquals(70, aViewer.getYPosition(aNode, aField1));
-		assertEquals(osDependent(95, 95, 101), aViewer.getYPosition(aNode, aField2));
+		assertEquals(70, ObjectNodeViewer.getYPosition(aNode, aField1));
+		assertEquals(osDependent(95, 95, 101), ObjectNodeViewer.getYPosition(aNode, aField2));
 	}
 	
 	@Test

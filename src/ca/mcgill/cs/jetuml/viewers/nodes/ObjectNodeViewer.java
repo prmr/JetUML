@@ -45,7 +45,6 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final int YGAP = 5;
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, 
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
-	private static final FieldNodeViewer FIELD_NODE_VIEWER = new FieldNodeViewer();
 	
 	@Override
 	public void draw(Node pNode, GraphicsContext pGraphics)
@@ -73,12 +72,13 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	 * @param pNode The node
 	 * @return The position that represents the split between the name and value fields.
 	 */
-	public int getSplitPosition(Node pNode)
+	public static int getSplitPosition(Node pNode)
 	{
+		assert ObjectNode.class.isInstance(pNode);
 		int leftWidth = 0;
 		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
-			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
+			leftWidth = Math.max(leftWidth, FieldNodeViewer.leftWidth(field));
 		}
 		return pNode.position().getX() + leftWidth + XGAP;
 	}
@@ -96,9 +96,9 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		}
 		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
-			height += FIELD_NODE_VIEWER.getHeight(field) + YGAP;   
-			leftWidth = Math.max(leftWidth, FIELD_NODE_VIEWER.leftWidth(field));
-			rightWidth = Math.max(rightWidth, FIELD_NODE_VIEWER.rightWidth(field));
+			height += FieldNodeViewer.getHeight(field) + YGAP;   
+			leftWidth = Math.max(leftWidth, FieldNodeViewer.leftWidth(field));
+			rightWidth = Math.max(rightWidth, FieldNodeViewer.rightWidth(field));
 		}
 		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
 		width = Grid.toMultiple(width);
@@ -110,7 +110,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	 * @param pFieldNode The node whose position to compute.
 	 * @return The y position of a child node.
 	 */
-	public int getYPosition(Node pNode, FieldNode pFieldNode)
+	public static int getYPosition(Node pNode, FieldNode pFieldNode)
 	{
 		assert ((ObjectNode)pNode).getChildren().contains(pFieldNode);
 		Rectangle bounds = getTopRectangle(pNode);
@@ -122,7 +122,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 			{
 				return yPosition;
 			}
-			yPosition += FIELD_NODE_VIEWER.getHeight(field);
+			yPosition += FieldNodeViewer.getHeight(field);
 		}
 		return yPosition;
 	}

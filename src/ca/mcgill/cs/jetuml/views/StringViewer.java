@@ -164,7 +164,7 @@ public final class StringViewer
 	 * @param pWidth The maximum number of characters on a line.
 	 * @return The new string.
 	 */
-	public String wrapString(String pString, int pWidth)
+	public static String wrapString(String pString, int pWidth)
 	{
 		int remainingEmptySpace = pWidth;
         final int spaceLength = 1;
