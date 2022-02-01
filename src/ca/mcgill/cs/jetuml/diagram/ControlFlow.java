@@ -21,7 +21,8 @@
 
 package ca.mcgill.cs.jetuml.diagram;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -70,15 +71,11 @@ public final class ControlFlow
 	public List<Node> getCallees(Node pNode)
 	{
 		assert pNode != null && aDiagram.contains(pNode);
-		List<Node> callees = new ArrayList<>();
-		for( Edge edge : aDiagram.edges() )
-		{
-			if ( edge.getStart() == pNode && edge instanceof CallEdge )
-			{
-				callees.add(edge.getEnd());
-			}
-		}
-		return callees;
+		return aDiagram.edges().stream()
+				.filter(CallEdge.class::isInstance)
+				.filter(edge -> edge.getStart() == pNode)
+				.map(Edge::getEnd)
+				.collect(toList());
 	}
 	
 	/**
@@ -89,15 +86,11 @@ public final class ControlFlow
 	public List<CallEdge> getCalls(Node pCaller)
 	{
 		assert pCaller != null;
-		ArrayList<CallEdge> result = new ArrayList<>();
-		for( Edge edge : aDiagram.edges() )
-		{
-			if( edge instanceof CallEdge && edge.getStart() == pCaller )
-			{
-				result.add((CallEdge)edge);
-			}
-		}
-		return result;
+		return aDiagram.edges().stream()
+				.filter(CallEdge.class::isInstance)
+				.map(CallEdge.class::cast)
+				.filter(edge -> edge.getStart() == pCaller)
+				.collect(toList());
 	}
 	
 	/**
@@ -111,14 +104,12 @@ public final class ControlFlow
 	public Optional<CallNode> getCaller(Node pNode)
 	{
 		assert pNode != null && aDiagram.contains(pNode);
-		for( Edge edge : aDiagram.edges() )
-		{
-			if( edge.getEnd() == pNode  && edge instanceof CallEdge )
-			{
-				return Optional.of((CallNode) edge.getStart());
-			}
-		}
-		return Optional.empty();
+		return aDiagram.edges().stream()
+			.filter(CallEdge.class::isInstance)
+			.filter(edge -> edge.getEnd() == pNode)
+			.map(Edge::getStart)
+			.map(CallNode.class::cast)
+			.findFirst();
 	}
 	
 	/**
@@ -159,6 +150,8 @@ public final class ControlFlow
 	}
 	
 	/**
+	 * Checks whether a call node represents a nested (recursive) call.
+	 * 
 	 * @param pNode The node to test.
 	 * @return True if pNode has a caller on the same implicit parameter node, false otherwise.
 	 * @pre pNode != null && contains(pNode) && pNode.getParent() != null
@@ -372,18 +365,6 @@ public final class ControlFlow
 				calls.contains(pEdge);
 	}
 	
-	private Optional<Edge> getReturnEdge(Edge pEdge)
-	{
-		for( Edge edge : aDiagram.edges() )
-		{
-			if( edge.getClass() == ReturnEdge.class && edge.getStart() == pEdge.getEnd() && edge.getEnd() == pEdge.getStart() )
-			{
-				return Optional.of(edge);
-			}
-		}
-		return Optional.empty();
-	}
-	
 	/**
 	 * @param pNode The Node to obtain the caller and upstream DiagramElements for.
 	 * @return The Collection of DiagramElements in the upstream of pNode.
@@ -470,5 +451,14 @@ public final class ControlFlow
 			}
 		}
 		return returnEdges;
+	}
+	
+	private Optional<Edge> getReturnEdge(Edge pEdge)
+	{
+		return aDiagram.edges().stream()
+			.filter(ReturnEdge.class::isInstance)
+			.filter(edge -> edge.getStart() == pEdge.getEnd())
+			.filter(edge -> edge.getEnd() == pEdge.getStart())
+			.findFirst();
 	}
 }

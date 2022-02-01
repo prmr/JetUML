@@ -30,11 +30,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.edges.CallEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.ConstructorEdge;
 import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
@@ -49,52 +47,28 @@ import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
  */
 public class TestControlFlow
 {
-	private Diagram aDiagram;
-	private DiagramAccessor aDiagramAccessor;
-	private ControlFlow aFlow;
+	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
+	private DiagramAccessor aDiagramAccessor = new DiagramAccessor(aDiagram);
+	private ControlFlow aFlow = new ControlFlow(aDiagram);
 	
-	private ImplicitParameterNode aParameter1;
-	private ImplicitParameterNode aParameter2;
-	private ImplicitParameterNode aParameter3;
-	private CallNode aCall1;
-	private CallNode aCall2;
-	private CallNode aCall3;
-	private CallNode aCall4;
-	private CallNode aCall5;
-	private CallEdge aCallEdge1;
-	private CallEdge aCallEdge2;
-	private CallEdge aCallEdge3;
-	private CallEdge aCallEdge4;
-	private ReturnEdge aReturnEdge;
-	private ConstructorEdge aConstructorEdge;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
+	private ImplicitParameterNode aParameter1 = new ImplicitParameterNode();
+	private ImplicitParameterNode aParameter2 = new ImplicitParameterNode();
+	private ImplicitParameterNode aParameter3 = new ImplicitParameterNode();
+	private CallNode aCall1 = new CallNode();
+	private CallNode aCall2 = new CallNode();
+	private CallNode aCall3 = new CallNode();
+	private CallNode aCall4 = new CallNode();
+	private CallNode aCall5 = new CallNode();
+	private CallEdge aCallEdge1 = new CallEdge();
+	private CallEdge aCallEdge2 = new CallEdge();
+	private CallEdge aCallEdge3 = new CallEdge();
+	private CallEdge aCallEdge4 = new CallEdge();
+	private ReturnEdge aReturnEdge = new ReturnEdge();
+	private ConstructorEdge aConstructorEdge = new ConstructorEdge();
 	
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new Diagram(DiagramType.SEQUENCE);
-		aDiagramAccessor = new DiagramAccessor(aDiagram);
-		aFlow = new ControlFlow(aDiagram);
-		
-		aParameter1 = new ImplicitParameterNode();
-		aParameter2 = new ImplicitParameterNode();
-		aParameter3 = new ImplicitParameterNode();
-		aCall1 = new CallNode();
-		aCall2 = new CallNode();
-		aCall3 = new CallNode();
-		aCall4 = new CallNode();
-		aCall5 = new CallNode();
-		aCallEdge1 = new CallEdge();
-		aCallEdge2 = new CallEdge();
-		aCallEdge3 = new CallEdge();
-		aCallEdge4 = new CallEdge();
-		aReturnEdge = new ReturnEdge();
-		aConstructorEdge = new ConstructorEdge();
 		createSampleDiagram1();
 	}
 	
@@ -125,20 +99,85 @@ public class TestControlFlow
 		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall2, aCall5);
 	}
 	
+	/*
+	 * Recursive calls.
+	 * 
+	 * aCall1-4 is on aParameter1
+	 * aCall1 calls aCall2
+	 * aCall2 calls aCall3 etc.
+	 */
+	private void createSampleDiagram2()
+	{
+		aDiagram.addRootNode(aParameter1);
+		aParameter1.addChild(aCall1);
+		aParameter1.addChild(aCall2);
+		aParameter1.addChild(aCall3);
+		aParameter1.addChild(aCall4);
+		aDiagramAccessor.connectAndAdd(aCallEdge1, aCall1, aCall2);
+		aDiagramAccessor.connectAndAdd(aCallEdge2, aCall2, aCall3);
+		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall3, aCall4);
+	}
+	
 	@Test
-	public void testGetCallerNoCaller()
+	void testGetNestingDepth_0()
+	{
+		createSampleDiagram2();
+		assertEquals(0, aFlow.getNestingDepth(aCall1));
+	}
+	
+	@Test
+	void testGetNestingDepth_1()
+	{
+		createSampleDiagram2();
+		assertEquals(1, aFlow.getNestingDepth(aCall2));
+	}
+	
+	@Test
+	void testGetNestingDepth_2()
+	{
+		createSampleDiagram2();
+		assertEquals(2, aFlow.getNestingDepth(aCall3));
+	}
+	
+	@Test
+	void testGetNestingDepth_3()
+	{
+		createSampleDiagram2();
+		assertEquals(3, aFlow.getNestingDepth(aCall4));
+	}
+	
+	@Test
+	void testGetNestingDepth_DifferentParents()
+	{
+		assertEquals(0, aFlow.getNestingDepth(aCall2));
+	}
+	
+	@Test
+	void testHasEntryPoint_No()
+	{
+		assertFalse(new ControlFlow(new Diagram(DiagramType.SEQUENCE)).hasEntryPoint());
+	}
+	
+	@Test
+	void testHasEntryPoint_Yes()
+	{
+		assertTrue(aFlow.hasEntryPoint());
+	}
+	
+	@Test
+	void testGetCallerNoCaller()
 	{
 		assertFalse( aFlow.getCaller(aCall1).isPresent());
 	}
 	
 	@Test
-	public void testGetCallerSameParameter()
+	void testGetCallerSameParameter()
 	{
 		assertSame( aCall2, aFlow.getCaller(aCall3).get());
 	}
 	
 	@Test
-	public void testGetCallerDifferentParameter()
+	void testGetCallerDifferentParameter()
 	{
 		assertSame( aCall1, aFlow.getCaller(aCall2).get());
 		assertSame( aCall2, aFlow.getCaller(aCall3).get());
@@ -147,14 +186,14 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetCalleesEmpty()
+	void testGetCalleesEmpty()
 	{
 		assertTrue( aFlow.getCallees(aCall4).isEmpty());
 		assertTrue( aFlow.getCallees(aCall5).isEmpty());
 	}
 	
 	@Test
-	public void testGetCalleesSingle()
+	void testGetCalleesSingle()
 	{
 		List<Node> callees = aFlow.getCallees(aCall1);
 		assertEquals(1, callees.size());
@@ -166,7 +205,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetCalleesMultiple()
+	void testGetCalleesMultiple()
 	{
 		List<Node> callees = aFlow.getCallees(aCall2);
 		assertEquals(2, callees.size());
@@ -175,19 +214,19 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testIsNestedNoCaller()
+	void testIsNestedNoCaller()
 	{
 		assertFalse(aFlow.isNested(aCall1));
 	}
 	
 	@Test
-	public void testIsNestedTrue()
+	void testIsNestedTrue()
 	{
 		assertTrue(aFlow.isNested(aCall3));
 	}
 	
 	@Test
-	public void testIsNestedFalse()
+	void testIsNestedFalse()
 	{
 		assertFalse(aFlow.isNested(aCall2));
 		assertFalse(aFlow.isNested(aCall4));
@@ -195,7 +234,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testIsFirstCalleeTrue()
+	void testIsFirstCalleeTrue()
 	{
 		assertTrue(aFlow.isFirstCallee(aCall2));
 		assertTrue(aFlow.isFirstCallee(aCall3));
@@ -203,13 +242,13 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testIsFirstCalleeFalse()
+	void testIsFirstCalleeFalse()
 	{
 		assertFalse(aFlow.isFirstCallee(aCall5));
 	}
 	
 	@Test
-	public void testGetPreviousCallee()
+	void testGetPreviousCallee()
 	{
 		CallNode callNode = new CallNode();
 		aParameter2.addChild(callNode);
@@ -218,31 +257,31 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testIsConstructorExecutionInConstructorCall()
+	void testIsConstructorExecutionInConstructorCall()
 	{
 		assertTrue(aFlow.isConstructorExecution(aCall2));
 	}
 	
 	@Test
-	public void testIsConstructorExecutionNotInConstructorCall()
+	void testIsConstructorExecutionNotInConstructorCall()
 	{
 		assertFalse(aFlow.isConstructorExecution(aCall4));
 	}
 	
 	@Test
-	public void testIsInConstructorCallWithWrongNode()
+	void testIsInConstructorCallWithWrongNode()
 	{
 		assertFalse(aFlow.isConstructorExecution(aCall3));
 	}
 	
 	@Test
-	public void testIsInConstructorCallWithWrongNodeType()
+	void testIsInConstructorCallWithWrongNodeType()
 	{
 		assertFalse(aFlow.isConstructorExecution(aParameter2));
 	}
 	
 	@Test
-	public void testGetEdgeDownStreamsCallEdge()
+	void testGetEdgeDownStreamsCallEdge()
 	{
 		Collection<DiagramElement> downstreams = aFlow.getEdgeDownStreams(aCallEdge2);
 		assertEquals(2, downstreams.size());
@@ -251,7 +290,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetEdgeDownStreamsNoteEdge()
+	void testGetEdgeDownStreamsNoteEdge()
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge = new NoteEdge();
@@ -263,7 +302,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeDownStreamsWithConstructorCall()
+	void testGetNodeDownStreamsWithConstructorCall()
 	{
 		Collection<DiagramElement> downstreams1 = aFlow.getNodeDownStreams(aCall2);
 		Collection<DiagramElement> downstreams2 = aFlow.getNodeDownStreams(aParameter2);
@@ -281,7 +320,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeDownStreamsCallNode()
+	void testGetNodeDownStreamsCallNode()
 	{
 		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aCall3);
 		assertEquals(2, downstreams.size());
@@ -290,7 +329,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeDownStreamsNoteNode()
+	void testGetNodeDownStreamsNoteNode()
 	{
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addRootNode(noteNode);
@@ -299,7 +338,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeDownStreamsParameter()
+	void testGetNodeDownStreamsParameter()
 	{
 		Collection<DiagramElement> downstreams = aFlow.getNodeDownStreams(aParameter1);
 		assertEquals(10, downstreams.size());
@@ -316,7 +355,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsIfNoOtherFlows()
+	void testGetNodeUpstreamsIfNoOtherFlows()
 	{
 		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
 		assertEquals(1, upstreams.size());
@@ -324,7 +363,7 @@ public class TestControlFlow
 	}
 
 	@Test
-	public void testGetNodeUpstreamsIfHasOtherFlows()
+	void testGetNodeUpstreamsIfHasOtherFlows()
 	{
 		CallNode callNode = new CallNode();
 		aParameter3.addChild(callNode);
@@ -333,7 +372,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsIfHasOtherFlowsInConstructorExecution()
+	void testGetNodeUpstreamsIfHasOtherFlowsInConstructorExecution()
 	{
 		CallNode callNode = new CallNode();
 		aParameter2.addChild(callNode);
@@ -346,7 +385,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsHasOtherFlowBesidesConstructorCall()
+	void testGetNodeUpstreamsHasOtherFlowBesidesConstructorCall()
 	{
 		CallNode call1 = new CallNode();
 		CallNode call2 = new CallNode();
@@ -364,13 +403,13 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsWithNestedCallers()
+	void testGetNodeUpstreamsWithNestedCallers()
 	{
 		assertEquals(0, aFlow.getNodeUpstreams(aCall4).size());
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsNoteNode()
+	void testGetNodeUpstreamsNoteNode()
 	{
 		NoteNode noteNode = new NoteNode();
 		aDiagram.addRootNode(noteNode);
@@ -378,7 +417,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsConstructedObject()
+	void testGetNodeUpstreamsConstructedObject()
 	{
 		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aParameter2);
 		assertEquals(1, upstreams.size());
@@ -386,7 +425,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsUnconnectedParameter()
+	void testGetNodeUpstreamsUnconnectedParameter()
 	{
 		ImplicitParameterNode parameter = new ImplicitParameterNode();
 		aDiagram.addRootNode(parameter);
@@ -394,19 +433,19 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsParameterWithNoCaller()
+	void testGetNodeUpstreamsParameterWithNoCaller()
 	{
 		assertEquals(0, aFlow.getNodeUpstreams(aParameter1).size());
 	}
 	
 	@Test
-	public void testGetNodeUpstreamsParameterWithNestedCallers()
+	void testGetNodeUpstreamsParameterWithNestedCallers()
 	{
 		assertEquals(0, aFlow.getNodeUpstreams(aParameter3).size());
 	}
 	
 	@Test 
-	public void testGetEdgeStartNoteEdge()
+	void testGetEdgeStartNoteEdge()
 	{
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge = new NoteEdge();
@@ -415,7 +454,7 @@ public class TestControlFlow
 	}
 	
 	@Test 
-	public void testGetEdgeStartHasNoOtherFlows()
+	void testGetEdgeStartHasNoOtherFlows()
 	{
 		Optional<DiagramElement> start = aFlow.getEdgeStart(aConstructorEdge);
 		assertTrue(start.isPresent());
@@ -423,7 +462,7 @@ public class TestControlFlow
 	}
 	
 	@Test 
-	public void testGetEdgeStartHasOtherFlowsInConstructorCall()
+	void testGetEdgeStartHasOtherFlowsInConstructorCall()
 	{
 		CallNode callNode = new CallNode();
 		aParameter2.addChild(callNode);
@@ -435,7 +474,7 @@ public class TestControlFlow
 	}
 	
 	@Test 
-	public void testGetEdgeStartHasOtherFlowsBesidesConstructorCall()
+	void testGetEdgeStartHasOtherFlowsBesidesConstructorCall()
 	{
 		CallNode callNode = new CallNode();
 		aParameter3.addChild(callNode);
@@ -446,7 +485,7 @@ public class TestControlFlow
 	}
 	
 	@Test 
-	public void testGetEdgeStartHasOtherFlowsNestedConstructorCall()
+	void testGetEdgeStartHasOtherFlowsNestedConstructorCall()
 	{
 		ImplicitParameterNode parameter = new ImplicitParameterNode();
 		CallNode  callNode = new CallNode();
@@ -460,7 +499,7 @@ public class TestControlFlow
 	}
 	
 	@Test
-	public void testGetCorrespondingReturnEdges()
+	void testGetCorrespondingReturnEdges()
 	{
 		ReturnEdge returnEdge1 = new ReturnEdge();
 		aDiagramAccessor.connectAndAdd(returnEdge1, aCall4, aCall3);
