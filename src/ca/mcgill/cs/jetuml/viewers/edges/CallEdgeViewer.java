@@ -85,7 +85,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		return new Line(points[0], points[points.length-1]);
 	}
 	
-	private ArrowHeadView getArrowHeadView(CallEdge pEdge)
+	private static ArrowHeadView getArrowHeadView(CallEdge pEdge)
 	{
 		if(pEdge.isSignal())
 		{
@@ -159,7 +159,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	/* Gets the points on a segmented path */ 
-	private Point[] getPoints(Edge pEdge)
+	private static Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
 		Node endNode = pEdge.getEnd();

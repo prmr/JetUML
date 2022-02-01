@@ -120,7 +120,7 @@ public class FontSizeDialog
 		return pane;
 	}
 	
-	private boolean isValid(String pSize) 
+	private static boolean isValid(String pSize) 
 	{
 		try
 		{

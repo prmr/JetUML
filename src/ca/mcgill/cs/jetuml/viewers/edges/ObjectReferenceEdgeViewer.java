@@ -57,7 +57,7 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 		}			
 	}
 	
-	private Path getSShape(Line pConnectionPoints)
+	private static Path getSShape(Line pConnectionPoints)
 	{
 		final int x1 = pConnectionPoints.getX1() + ENDSIZE;
 		final int y1 = pConnectionPoints.getY1();
@@ -77,7 +77,7 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 		return path;
 	}
 	
-	private Path getCShape(Line pConnectionPoints)
+	private static Path getCShape(Line pConnectionPoints)
 	{
 		final int x1 = Math.max(pConnectionPoints.getX1(), pConnectionPoints.getX2()) + ENDSIZE;
 		final int y1 = pConnectionPoints.getY1();

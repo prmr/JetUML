@@ -85,7 +85,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		}
 	}
 	
-	private Point getMaxXYofChildren(Node pNode)
+	private static Point getMaxXYofChildren(Node pNode)
 	{
 		int maxY = 0;
 		int maxX = 0;
@@ -153,7 +153,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	/*
 	 * Returns true if the ImplicitParameterNode is in the constructor call
 	 */
-	private boolean isInConstructorCall(Node pNode) 
+	private static boolean isInConstructorCall(Node pNode) 
 	{
 		Optional<Diagram> diagram = pNode.getDiagram();
 		if(diagram.isPresent())
@@ -169,7 +169,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	 * Returns the Optional of the first child node of the ImplicitParameterNode if exists;
 	 * otherwise, returns Optional.empty().
 	 */
-	private Optional<Node> getFirstChild(Node pNode)
+	private static Optional<Node> getFirstChild(Node pNode)
 	{
 		assert pNode!=null;
 		List<Node> children = pNode.getChildren();

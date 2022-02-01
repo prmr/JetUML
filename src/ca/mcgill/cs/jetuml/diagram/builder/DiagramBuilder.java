@@ -472,7 +472,7 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private Runnable createDetachOperation(Node pNode)
+	private static Runnable createDetachOperation(Node pNode)
 	{
 		Node parent = pNode.getParent();
 		if(parent.getClass()==PackageNode.class && parent.getChildren().size()==1)

@@ -62,7 +62,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 				pGraphics, new Rectangle(split + midOffset, bounds.getY(), rightWidth(pNode), bounds.getHeight()));
 	}
 	
-	private int getSplitPosition(Node pNode)
+	private static int getSplitPosition(Node pNode)
 	{
 		ObjectNode parent = (ObjectNode)pNode.getParent();
 		if( parent != null )

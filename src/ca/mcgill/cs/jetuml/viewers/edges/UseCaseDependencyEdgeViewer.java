@@ -55,7 +55,7 @@ public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
 		return canvas;
 	}
 
-	private String getIconTag(Edge pEdge)
+	private static String getIconTag(Edge pEdge)
 	{
 		return ((UseCaseDependencyEdge)pEdge).getType().getLabel().substring(1, 2).toUpperCase();
 	}

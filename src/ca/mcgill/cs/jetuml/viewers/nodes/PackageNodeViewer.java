@@ -39,7 +39,7 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */
-	private Optional<Rectangle> getChildrenBounds(Node pNode)
+	private static Optional<Rectangle> getChildrenBounds(Node pNode)
 	{
 		if( ((PackageNode)pNode).getChildren().isEmpty() )
 		{

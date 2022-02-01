@@ -101,7 +101,7 @@ public class TestTipLoader
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
+	private static List<TipElement> convertJSONObjectToTipElements(JSONObject pTip)
 	{
 		try
 		{

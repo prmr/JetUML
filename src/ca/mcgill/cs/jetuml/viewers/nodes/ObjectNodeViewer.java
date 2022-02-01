@@ -62,7 +62,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), topRectangle.getHeight()));
 	}
 	
-	private Rectangle getTopRectangle(Node pNode)
+	private static Rectangle getTopRectangle(Node pNode)
 	{
 		Dimension bounds = NAME_VIEWER.getDimension(((ObjectNode)pNode).getName() + TEXT_HORIZONTAL_MARGIN); 
 		bounds = bounds.include(DEFAULT_WIDTH, DEFAULT_HEIGHT);

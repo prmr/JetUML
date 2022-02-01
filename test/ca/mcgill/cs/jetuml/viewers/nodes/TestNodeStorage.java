@@ -66,7 +66,7 @@ public class TestNodeStorage
 		assertNotSame(boundsBeforeDeactivation, boundsAfterDeactivation);
 	}
 
-	private Function<Node, Rectangle> createDefaultBoundCalculator()
+	private static Function<Node, Rectangle> createDefaultBoundCalculator()
 	{
 		return new Function<>()
 		{

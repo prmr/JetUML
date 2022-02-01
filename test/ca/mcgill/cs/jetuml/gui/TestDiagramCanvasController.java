@@ -45,7 +45,7 @@ public class TestDiagramCanvasController
 		JavaFXLoader.load();
 	}
 	
-	private boolean creationEnabled(Optional<? extends DiagramElement> pElement, DiagramElement pTool)
+	private static boolean creationEnabled(Optional<? extends DiagramElement> pElement, DiagramElement pTool)
 	{
 		try
 		{

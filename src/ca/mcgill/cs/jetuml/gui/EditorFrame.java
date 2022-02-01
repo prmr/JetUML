@@ -536,7 +536,7 @@ public class EditorFrame extends BorderPane
 		}
 	}
 
-	private File getLastDir(String pKey)
+	private static File getLastDir(String pKey)
 	{
 		String dir = Preferences.userNodeForPackage(JetUML.class).get(pKey, ".");
 		File result = new File(dir);
@@ -547,7 +547,7 @@ public class EditorFrame extends BorderPane
 		return result;
 	}
 	
-	private void setLastDir(String pKey, File pLastExportDir)
+	private static void setLastDir(String pKey, File pLastExportDir)
 	{
 		Preferences.userNodeForPackage(JetUML.class).put(pKey, pLastExportDir.getAbsolutePath().toString());
 	}

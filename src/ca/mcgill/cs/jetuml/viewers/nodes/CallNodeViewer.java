@@ -99,7 +99,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 * The x position is a function of the position of the implicit parameter
 	 * node and the nesting depth of the call node.
 	 */
-	private int getX(Node pNode)
+	private static int getX(Node pNode)
 	{
 		final Diagram diagram = pNode.getDiagram().get();
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
@@ -193,13 +193,13 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);
 	}
 	
-	private int getYWithConstructorCall(Node pNode) 
+	private static int getYWithConstructorCall(Node pNode) 
 	{
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
 		return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_TINY;
 	}
 
-	private boolean isInConstructorCall(Node pNode)
+	private static boolean isInConstructorCall(Node pNode)
 	{
 		Optional<Diagram> diagram = pNode.getDiagram();
 		if(diagram.isPresent())

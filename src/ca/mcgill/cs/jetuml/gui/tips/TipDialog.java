@@ -306,7 +306,7 @@ public class TipDialog
 		}
 		else // media.equals(Media.IMAGE) by @pre
 		{
-			return this.getImageTipElementAsImageView(pTipElement);
+			return getImageTipElementAsImageView(pTipElement);
 		}
 	}
 	
@@ -338,7 +338,7 @@ public class TipDialog
 	 * @pre pTipElement != null
 	 * @pre pTipElement.getMedia().equals(Media.IMAGE)
 	 */
-	private ImageView getImageTipElementAsImageView(TipElement pTipElement) 
+	private static ImageView getImageTipElementAsImageView(TipElement pTipElement) 
 	{
 		assert pTipElement != null;
 		assert pTipElement.getMedia().equals(Media.IMAGE);

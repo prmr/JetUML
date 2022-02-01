@@ -73,7 +73,7 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(pNode), LineStyle.SOLID);
 	}
 	
-	private Path createStickManPath(Node pNode)
+	private static Path createStickManPath(Node pNode)
 	{
 		Path path = new Path();
 		

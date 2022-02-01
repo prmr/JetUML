@@ -185,7 +185,7 @@ public class DiagramCanvasController
 	 * @param pElements The elements to shift.
 	 * @param pShiftAmount Amount to shift elements by to prevent overlapping.
 	 */
-	private void shiftElements(Iterable<DiagramElement> pElements, int pShiftAmount) 
+	private static void shiftElements(Iterable<DiagramElement> pElements, int pShiftAmount) 
 	{
 		for (DiagramElement element: pElements) 
 		{
@@ -266,7 +266,7 @@ public class DiagramCanvasController
 						     Math.abs(aMouseDownPoint.getY() - aLastMousePoint.getY()));
 	}
 	
-	private Point getMousePoint(MouseEvent pEvent)
+	private static Point getMousePoint(MouseEvent pEvent)
 	{
 		return new Point((int)pEvent.getX(), (int)pEvent.getY());
 	}

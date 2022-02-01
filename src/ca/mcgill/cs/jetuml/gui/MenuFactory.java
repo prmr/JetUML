@@ -149,7 +149,7 @@ class MenuFactory
 	 * If pMnemonic is not a single letter that is part of pText, it
 	 * is simply ignored.
 	 */
-	private String installMnemonic(String pText, String pMnemonic)
+	private static String installMnemonic(String pText, String pMnemonic)
 	{
 		if( pMnemonic.length() != 1 || !pText.contains(pMnemonic))
 		{

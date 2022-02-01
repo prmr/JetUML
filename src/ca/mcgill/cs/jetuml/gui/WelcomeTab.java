@@ -63,7 +63,7 @@ public class WelcomeTab extends Tab
 	    setContent(layout);
 	}
 		
-	private VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers)
+	private static VBox createDiagramPanel(List<NewDiagramHandler> pNewDiagramHandlers)
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
@@ -98,7 +98,7 @@ public class WelcomeTab extends Tab
 		}
 	}
 	
-	private VBox createFilePanel()
+	private static VBox createFilePanel()
 	{
 		HBox titleBox = new HBox();
 		titleBox.getStyleClass().add(CLASS_PANEL_TITLE);
@@ -112,7 +112,7 @@ public class WelcomeTab extends Tab
 	}
 
 
-	private HBox createFootTextPanel()
+	private static HBox createFootTextPanel()
 	{
 		HBox footTextPanel = new HBox();
 		footTextPanel.getStyleClass().add(CLASS_FOOTER);
