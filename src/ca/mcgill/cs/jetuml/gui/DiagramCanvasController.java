@@ -47,6 +47,7 @@ import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.input.MouseEvent;
@@ -453,14 +454,36 @@ public class DiagramCanvasController
 	private void alignMoveToGrid()
 	{
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
+		Rectangle entireBounds = aSelectionModel.getEntireSelectionBounds();
+		
 		if( selectedNodes.hasNext() )
 		{
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
-			Point position = firstSelected.position();
-			Point snappedPosition = Grid.snapped(position);
-			final int dx = snappedPosition.getX() - position.getX();
-			final int dy = snappedPosition.getY() - position.getY();
+			Rectangle bounds = NodeViewerRegistry.getBounds(firstSelected);
+			Rectangle snappedPosition = Grid.snapped(bounds);
+			
+			int dx = snappedPosition.getX() - bounds.getX();
+			int dy = snappedPosition.getY() - bounds.getY();
+			
+			//ensure the bounds of the entire selection are not outside the walls of the canvas
+			if (entireBounds.getMaxX() + dx > aCanvas.getWidth()) 
+			{
+				dx -= GRID_SIZE;
+			}
+			else if (entireBounds.getX() + dx <= 0) 
+			{
+				dx += GRID_SIZE;
+			}
+			if (entireBounds.getMaxY() + dy > aCanvas.getHeight()) 
+			{
+				dy -= GRID_SIZE;
+			}
+			else if (entireBounds.getY() <= 0) 
+			{
+				dy += GRID_SIZE;
+			}
+			
 			for(Node selected : aSelectionModel.getSelectedNodes())
 			{
 				selected.translate(dx, dy);
