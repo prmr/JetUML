@@ -572,18 +572,18 @@ public class DiagramCanvasController
 		
 		int dx = pMousePoint.getX() - aLastMousePoint.getX();
 		int dy = pMousePoint.getY() - aLastMousePoint.getY();
-
-		// Ensure the selection does not exceed the canvas bounds
+		
+		// Perform the move without painting it
+		aSelectionModel.getSelectedNodes().forEach(selected -> selected.translate(dx, dy));
+		
+		// If this translation results in exceeding the canvas bounds, roll back.
 		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
-		dx = Math.max(dx, -bounds.getX());
-		dy = Math.max(dy, -bounds.getY());
-		dx = Math.min(dx, (int) aCanvas.getWidth() - bounds.getMaxX());
-		dy = Math.min(dy, (int) aCanvas.getHeight() - bounds.getMaxY());
-
-		for(Node selected : aSelectionModel.getSelectedNodes())
-		{
-			selected.translate(dx, dy);
-		}
+		int dxCorrection = Math.max(-bounds.getX(), 0) 
+				+ Math.min((int)aCanvas.getWidth() - bounds.getMaxX(), 0);
+		int dyCorrection = Math.max(-bounds.getY(), 0) 
+				+ Math.min((int)aCanvas.getHeight() - bounds.getMaxY(), 0);
+		aSelectionModel.getSelectedNodes().forEach(selected -> selected.translate(dxCorrection, dyCorrection));
+		
 		aLastMousePoint = pMousePoint; 
 		aCanvas.paintPanel();
 	}
