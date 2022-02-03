@@ -21,11 +21,6 @@
 package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
-import static ca.mcgill.cs.jetuml.application.DiagramSizeUtils.MIN_SIZE;
-
-import ca.mcgill.cs.jetuml.application.DiagramSizeUtils;
-
-import static ca.mcgill.cs.jetuml.application.DiagramSizeUtils.MAX_SIZE;
 
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
@@ -33,11 +28,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -54,6 +49,9 @@ public class DiagramSizeDialog
 {
 	private static final int SPACING = 10;
 	private static final int VSPACE = 20;
+	
+	private static final int MAX_SIZE = 4000;
+	private static final int MIN_SIZE = 250;
 	
 	private final Stage aStage = new Stage();
 	private final TextField aWidthField = new TextField();
@@ -111,7 +109,7 @@ public class DiagramSizeDialog
 		width.setSpacing(2);
 		aWidthField.setOnAction( pEvent -> 
 		{
-			if( !DiagramSizeUtils.isValid(aWidthField.getText()) )
+			if( !isValidDiagramDimensionSize(aWidthField.getText()) )
 			{
 				aWidthField.setText(Integer.toString(getDiagramWidth()));
 				showInvalidSizeAlert();
@@ -125,7 +123,7 @@ public class DiagramSizeDialog
 		height.setSpacing(2);
 		aHeightField.setOnAction( pEvent -> 
 		{
-			if( !DiagramSizeUtils.isValid(aHeightField.getText()) )
+			if( !isValidDiagramDimensionSize(aHeightField.getText()) )
 			{
 				aHeightField.setText(Integer.toString(getDiagramHeight()));
 				showInvalidSizeAlert();
@@ -193,7 +191,7 @@ public class DiagramSizeDialog
 		Button cancel = new Button(RESOURCES.getString("dialog.diagram_size.cancel"));
 		ok.setOnAction(pEvent -> 
 		{
-			if( DiagramSizeUtils.isValid(aWidthField.getText()) && DiagramSizeUtils.isValid(aHeightField.getText()))
+			if( isValidDiagramDimensionSize(aWidthField.getText()) && isValidDiagramDimensionSize(aHeightField.getText()))
 			{
 				UserPreferences.instance().setInteger(IntegerPreference.diagramWidth, Integer.parseInt(aWidthField.getText()));
 				UserPreferences.instance().setInteger(IntegerPreference.diagramHeight, Integer.parseInt(aHeightField.getText()));
@@ -221,4 +219,17 @@ public class DiagramSizeDialog
 	{
         aStage.showAndWait();
     }
+	
+	private static boolean isValidDiagramDimensionSize(String pText)
+	{
+		try
+		{
+			int value = Integer.parseInt(pText);
+			return value >= MIN_SIZE && value <= MAX_SIZE;
+		}
+		catch( NumberFormatException exception )
+		{
+			return false;
+		}
+	}
 }
