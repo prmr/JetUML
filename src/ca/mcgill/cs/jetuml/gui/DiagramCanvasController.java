@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import ca.mcgill.cs.jetuml.application.Clipboard;
-import ca.mcgill.cs.jetuml.application.MoveTracker;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
@@ -609,5 +608,70 @@ public class DiagramCanvasController
 		// Place the modified nodes on the top
 		selectedNodes.forEach(node -> aCanvas.getDiagram().placeOnTop(node));
 		aCanvas.paintPanel();
+	}
+	
+	/**
+	 * Tracks the movement of a set of selected diagram elements.
+	 */
+	private static final class MoveTracker
+	{
+		private final List<Node> aTrackedNodes = new ArrayList<>();
+		private final List<Rectangle> aOriginalBounds = new ArrayList<>();
+		
+		/**
+		 * Records the elements in pSelectedElements and their position at the 
+		 * time where the method is called.
+		 * 
+		 * @param pSelectedElements The elements that are being moved. Not null.
+		 */
+		void startTrackingMove(Iterable<DiagramElement> pSelectedElements)
+		{
+			assert pSelectedElements != null;
+			
+			aTrackedNodes.clear();
+			aOriginalBounds.clear();
+			
+			for(DiagramElement element : pSelectedElements)
+			{
+				assert element != null;
+				if(element instanceof Node)
+				{
+					aTrackedNodes.add((Node) element);
+					aOriginalBounds.add(NodeViewerRegistry.getBounds((Node)element));
+				}
+			}
+		}
+
+		/**
+		 * Creates and returns a CompoundOperation that represents the movement
+		 * of all tracked nodes between the time where startTrackingMove was 
+		 * called and the time endTrackingMove was called.
+		 * 
+		 * @param pDiagramBuilder The Diagram containing the selected elements.
+		 * @return A CompoundCommand describing the move.
+		 * @pre pDiagramBuilder != null
+		 */
+		CompoundOperation endTrackingMove(DiagramBuilder pDiagramBuilder)
+		{
+			assert pDiagramBuilder != null;
+			CompoundOperation operation = new CompoundOperation();
+			Rectangle[] selectionBounds2 = new Rectangle[aOriginalBounds.size()];
+			int i = 0;
+			for(Node node : aTrackedNodes)
+			{
+				selectionBounds2[i] = NodeViewerRegistry.getBounds(node);
+				i++;
+			}
+			for(i = 0; i < aOriginalBounds.size(); i++)
+			{
+				int dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
+				int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
+				if(dX != 0 || dY != 0)
+				{
+					operation.add(DiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
+				}
+			}
+			return operation;
+		}
 	}
 }

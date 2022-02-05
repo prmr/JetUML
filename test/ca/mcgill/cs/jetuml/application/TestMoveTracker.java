@@ -26,15 +26,16 @@ import static ca.mcgill.cs.jetuml.testutils.CollectionAssertions.isEmpty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramBuilder;
@@ -45,7 +46,7 @@ import ca.mcgill.cs.jetuml.gui.SelectionModel;
 
 public class TestMoveTracker
 {
-	private MoveTracker aMoveTracker;
+	private Object aMoveTracker;
 	private SelectionModel aSelection;
 	private Diagram aDiagram;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
@@ -54,16 +55,34 @@ public class TestMoveTracker
 	private Field aOperationsField;
 	private DiagramBuilder aBuilder;
 	
-	@BeforeAll
-	public static void setupClass()
+	private static Object createMoveTracker() throws ReflectiveOperationException
 	{
-		JavaFXLoader.load();
+		Constructor<?> constructor = Class.forName("ca.mcgill.cs.jetuml.gui.DiagramCanvasController$MoveTracker")
+				.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		return constructor.newInstance();
+	}
+	
+	private void startTrackingMove(Iterable<DiagramElement> pSelectedElements) throws ReflectiveOperationException
+	{
+		Method method = Class.forName("ca.mcgill.cs.jetuml.gui.DiagramCanvasController$MoveTracker")
+			.getDeclaredMethod("startTrackingMove", Iterable.class);
+		method.setAccessible(true);
+		method.invoke(aMoveTracker, pSelectedElements);
+	}
+	
+	private CompoundOperation endTrackingMove(DiagramBuilder pDiagramBuilder) throws ReflectiveOperationException
+	{
+		Method method = Class.forName("ca.mcgill.cs.jetuml.gui.DiagramCanvasController$MoveTracker")
+			.getDeclaredMethod("endTrackingMove", DiagramBuilder.class);
+		method.setAccessible(true);
+		return (CompoundOperation) method.invoke(aMoveTracker, pDiagramBuilder);
 	}
 	
 	@BeforeEach
-	public void setup() throws ReflectiveOperationException
+	void setup() throws ReflectiveOperationException
 	{
-		aMoveTracker = new MoveTracker();
+		aMoveTracker = createMoveTracker();
 		aSelection = new SelectionModel( () -> {} );
 		aDiagram = new Diagram(DiagramType.CLASS);
 		aNode1 = new ClassNode();
@@ -79,14 +98,14 @@ public class TestMoveTracker
 	}
 
 	@Test
-	public void moveSingleObjectFourTimes()
+	void moveSingleObjectFourTimes() throws ReflectiveOperationException
 	{
 		aSelection.addToSelection(aNode1);
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
 		aNode1.translate(50, 50);
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
+		CompoundOperation operation = endTrackingMove(aBuilder);
 		
 		assertThat(getOperations(operation), hasSize, 1);
 		
@@ -98,9 +117,9 @@ public class TestMoveTracker
 		assertEquals(420, aNode1.position().getY());
 		
 		// No change in selection, move only X
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(200, 0);
-		operation = aMoveTracker.endTrackingMove(aBuilder);
+		operation = endTrackingMove(aBuilder);
 		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
 		assertEquals(220, aNode1.position().getX());
@@ -110,9 +129,9 @@ public class TestMoveTracker
 		assertEquals(420, aNode1.position().getY());
 		
 		// No change in selection, move only Y
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(0, 200);
-		operation = aMoveTracker.endTrackingMove(aBuilder);
+		operation = endTrackingMove(aBuilder);
 		assertThat(getOperations(operation), hasSize, 1);
 		operation.undo();
 		assertEquals(420, aNode1.position().getX());
@@ -122,22 +141,22 @@ public class TestMoveTracker
 		assertEquals(620, aNode1.position().getY());
 		
 		// No change in selection, null move
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(0, 0);
-		operation = aMoveTracker.endTrackingMove(aBuilder);
+		operation = endTrackingMove(aBuilder);
 		assertThat(getOperations(operation), isEmpty );
 	}
 	
 	@Test
-	public void moveNodesAndEdges()
+	void moveNodesAndEdges() throws ReflectiveOperationException
 	{
 		aSelection.addToSelection(aNode1);
 		aSelection.addToSelection(aNode2);
 		aSelection.addToSelection(aEdge1);
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aBuilder);
+		CompoundOperation operation = endTrackingMove(aBuilder);
 		List<DiagramOperation> operations = getOperations(operation);
 		assertThat(operations, hasSize, 2);
 		
@@ -164,10 +183,10 @@ public class TestMoveTracker
 		assertEquals(420, aNode2.position().getY());
 
 		// Second identical move
-		aMoveTracker.startTrackingMove(aSelection);
+		startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
-		operation = aMoveTracker.endTrackingMove(aBuilder);
+		operation = endTrackingMove(aBuilder);
 		
 		operations = getOperations(operation);
 		assertThat(operations, hasSize, 2);
