@@ -27,7 +27,7 @@ import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Prototypes;
-import ca.mcgill.cs.jetuml.views.ViewerUtilities;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ToggleButton;
@@ -78,7 +78,7 @@ public class SelectableToolButton extends ToggleButton implements BooleanPrefere
 	 */
 	public SelectableToolButton(String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
 	{
-		this(ViewerUtilities.createIcon(pPrototype), pToolTip, pToggleGroup);
+		this(ViewUtils.createIcon(pPrototype), pToolTip, pToggleGroup);
 		aPrototype = Optional.of(pPrototype);
 		setSelected(false);
 	}

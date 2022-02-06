@@ -173,6 +173,27 @@ public class DiagramViewer
 	}
 	
 	/**
+	 * Obtains the bounds for an element.
+	 * 
+	 * @param pElement The element whose bounds we want
+	 * @return The bounds for this element.
+	 * @pre pElement != null
+	 */
+	public static Rectangle getBounds(DiagramElement pElement)
+	{
+		assert pElement != null;
+		if( pElement instanceof Node )
+		{
+			return NodeViewerRegistry.getBounds((Node)pElement);
+		}
+		else
+		{
+			assert pElement instanceof Edge;
+			return EdgeViewerRegistry.getBounds((Edge)pElement);
+		}
+	}
+	
+	/**
 	 * Used during pasting to determine whether the current selection bounds completely overlaps the new elements.
 	 * @param pCurrentSelectionBounds The current selection bounds
 	 * @param pNewElements Elements to be pasted
@@ -185,9 +206,9 @@ public class DiagramViewer
 		{
 			if (newElementBounds == null) 
 			{
-				newElementBounds = ViewerUtilities.getBounds(element);
+				newElementBounds = DiagramViewer.getBounds(element);
 			}
-			newElementBounds = newElementBounds.add(ViewerUtilities.getBounds(element));
+			newElementBounds = newElementBounds.add(DiagramViewer.getBounds(element));
 		}
 		if (pCurrentSelectionBounds.equals(newElementBounds)) 
 		{

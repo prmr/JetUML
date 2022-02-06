@@ -20,7 +20,13 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.views;
 
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Edge;
+import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
+import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -178,5 +184,49 @@ public final class ViewUtils
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);
+	}
+
+	/**
+	 * @param pElement The element for which we want an icon
+	 * @return An icon that represents this element
+	 * @pre pElement != null
+	 */
+	public static Canvas createIcon(DiagramElement pElement)
+	{
+		/* 
+		 * This method exists to cover the case where we wish to create an icon 
+		 * for a diagram element without knowing whether it's a node or an edge.
+		 */
+		assert pElement != null;
+		if( pElement instanceof Node )
+		{
+			return NodeViewerRegistry.createIcon((Node)pElement);
+		}
+		else
+		{
+			assert pElement instanceof Edge;
+			return EdgeViewerRegistry.createIcon((Edge)pElement);
+		}
+	}
+
+	/**
+	 * Draws selection handles around pElement.
+	 * 
+	 * @param pElement The diagram element to select.
+	 * @param pContext The graphics context.
+	 * @pre pElement != null && pContext != null
+	 */
+	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pContext)
+	{
+		assert pElement != null && pContext != null;
+		if( pElement instanceof Node )
+		{
+			NodeViewerRegistry.drawSelectionHandles((Node) pElement, pContext);
+		}
+		else
+		{
+			assert pElement instanceof Edge;
+			EdgeViewerRegistry.drawSelectionHandles((Edge)pElement, pContext);
+		}
 	}
 }

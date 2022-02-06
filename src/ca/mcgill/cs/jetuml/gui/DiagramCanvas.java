@@ -32,7 +32,7 @@ import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.views.DiagramViewer;
 import ca.mcgill.cs.jetuml.views.Grid;
 import ca.mcgill.cs.jetuml.views.ToolGraphics;
-import ca.mcgill.cs.jetuml.views.ViewerUtilities;
+import ca.mcgill.cs.jetuml.views.ViewUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -107,7 +107,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		DiagramType.viewerFor(aDiagram).draw(aDiagram, context);
 		aController.synchronizeSelectionModel();
-		aController.getSelectionModel().forEach( selected -> ViewerUtilities.drawSelectionHandles(selected, context));
+		aController.getSelectionModel().forEach( selected -> ViewUtils.drawSelectionHandles(selected, context));
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
