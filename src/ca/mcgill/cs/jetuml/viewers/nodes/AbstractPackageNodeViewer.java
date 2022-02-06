@@ -28,10 +28,10 @@ import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
+import ca.mcgill.cs.jetuml.viewers.StringViewer;
+import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -53,8 +53,8 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 		assert pNode instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
-		ViewUtils.drawRectangle(pGraphics, topBounds );
-		ViewUtils.drawRectangle(pGraphics, bottomBounds );
+		ViewerUtils.drawRectangle(pGraphics, topBounds );
+		ViewerUtils.drawRectangle(pGraphics, bottomBounds );
 		NAME_VIEWER.draw(((AbstractPackageNode)pNode).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
 				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
 	}

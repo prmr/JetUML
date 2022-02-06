@@ -1,6 +1,6 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
+import static ca.mcgill.cs.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.ArrowHead;
+import ca.mcgill.cs.jetuml.viewers.ArrowHead;
 import javafx.geometry.Point2D;
 
 public class TestAssociationEdgeViewer 

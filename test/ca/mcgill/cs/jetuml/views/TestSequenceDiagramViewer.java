@@ -32,6 +32,7 @@ import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.SequenceDiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestSequenceDiagramViewer

@@ -19,7 +19,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
 import java.util.Optional;
 

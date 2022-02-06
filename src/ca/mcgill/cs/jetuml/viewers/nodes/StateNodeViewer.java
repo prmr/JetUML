@@ -27,10 +27,10 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.GeomUtils;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
-import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
+import ca.mcgill.cs.jetuml.viewers.StringViewer;
+import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -46,7 +46,7 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	public void draw(Node pNode, GraphicsContext pGraphics)
 	{
 		final Rectangle bounds = getBounds(pNode);
-		ViewUtils.drawRoundedRectangle(pGraphics, bounds);
+		ViewerUtils.drawRoundedRectangle(pGraphics, bounds);
 		NAME_VIEWER.draw(((StateNode)pNode).getName(), pGraphics, bounds);
 	}
 	

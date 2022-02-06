@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.GeomUtils;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.ToolGraphics;
+import ca.mcgill.cs.jetuml.viewers.ToolGraphics;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -43,7 +43,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	/* 
 	 * The default behavior for containment is to return true if the point is
 	 * within the bounding box of the node view.
-	 * @see ca.mcgill.cs.jetuml.views.DiagramElementView#contains(ca.mcgill.cs.jetuml.geom.Point)
+	 * @see ca.mcgill.cs.jetuml.viewers.DiagramElementView#contains(ca.mcgill.cs.jetuml.geom.Point)
 	 */
 	@Override
 	public boolean contains(Node pNode, Point pPoint)

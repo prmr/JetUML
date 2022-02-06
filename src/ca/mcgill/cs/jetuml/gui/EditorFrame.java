@@ -52,7 +52,7 @@ import ca.mcgill.cs.jetuml.gui.tips.TipDialog;
 import ca.mcgill.cs.jetuml.persistence.DeserializationException;
 import ca.mcgill.cs.jetuml.persistence.PersistenceService;
 import ca.mcgill.cs.jetuml.persistence.VersionedDiagram;
-import ca.mcgill.cs.jetuml.views.ImageCreator;
+import ca.mcgill.cs.jetuml.viewers.ImageCreator;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

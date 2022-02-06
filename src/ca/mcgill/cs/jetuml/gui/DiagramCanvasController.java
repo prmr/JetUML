@@ -46,9 +46,9 @@ import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
+import ca.mcgill.cs.jetuml.viewers.Grid;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.views.DiagramViewer;
-import ca.mcgill.cs.jetuml.views.Grid;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 

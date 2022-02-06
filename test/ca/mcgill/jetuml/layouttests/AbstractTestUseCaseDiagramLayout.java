@@ -6,11 +6,11 @@ import java.nio.file.Path;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
+import ca.mcgill.cs.jetuml.viewers.StringViewer;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
 
 /**
  * Superclass for classes that test the layout of a use case diagram.

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import javafx.geometry.Bounds;

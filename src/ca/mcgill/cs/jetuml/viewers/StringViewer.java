@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -266,7 +266,7 @@ public final class StringViewer
 				xOffset = dimension.width();
 			}
 			
-			ViewUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
+			ViewerUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
@@ -330,7 +330,7 @@ public final class StringViewer
 		 */
 		public void drawString(GraphicsContext pGraphics, int pTextX, int pTextY, String pString, boolean pBold)
 		{
-			ViewUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
+			ViewerUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
 		}
 
 		/**

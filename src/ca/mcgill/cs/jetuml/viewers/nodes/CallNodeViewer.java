@@ -32,11 +32,11 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
+import ca.mcgill.cs.jetuml.viewers.LineStyle;
+import ca.mcgill.cs.jetuml.viewers.StringViewer;
+import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -62,7 +62,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		if(((CallNode)pNode).isOpenBottom())
 		{
 			pGraphics.setStroke(Color.WHITE);
-			ViewUtils.drawRectangle(pGraphics, getBounds(pNode));
+			ViewerUtils.drawRectangle(pGraphics, getBounds(pNode));
 			pGraphics.setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds(pNode);
 			int x1 = bounds.getX();
@@ -70,15 +70,15 @@ public final class CallNodeViewer extends AbstractNodeViewer
 			int y1 = bounds.getY();
 			int y3 = bounds.getMaxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			ViewUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
-			ViewUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
-			ViewUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
+			ViewerUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
+			ViewerUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
+			ViewerUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
+			ViewerUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
+			ViewerUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
 		}
 		else
 		{
-			ViewUtils.drawRectangle(pGraphics, getBounds(pNode));
+			ViewerUtils.drawRectangle(pGraphics, getBounds(pNode));
 		}
 	}
 

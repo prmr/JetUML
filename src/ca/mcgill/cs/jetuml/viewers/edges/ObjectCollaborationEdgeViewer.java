@@ -21,8 +21,8 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import ca.mcgill.cs.jetuml.diagram.edges.ObjectCollaborationEdge;
-import ca.mcgill.cs.jetuml.views.ArrowHead;
-import ca.mcgill.cs.jetuml.views.LineStyle;
+import ca.mcgill.cs.jetuml.viewers.ArrowHead;
+import ca.mcgill.cs.jetuml.viewers.LineStyle;
 
 /**
  * A straight solid line with an optional label.

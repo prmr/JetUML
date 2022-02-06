@@ -47,9 +47,9 @@ import ca.mcgill.cs.jetuml.diagram.nodes.PointNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
+import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 import ca.mcgill.cs.jetuml.viewers.nodes.PackageNodeViewer;
-import ca.mcgill.cs.jetuml.views.DiagramViewer;
 
 /**
  * Wrapper around a Diagram that provides the logic for converting

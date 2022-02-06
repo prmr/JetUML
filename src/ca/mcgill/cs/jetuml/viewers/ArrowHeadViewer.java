@@ -19,14 +19,14 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
-import static ca.mcgill.cs.jetuml.views.ArrowHead.BLACK_DIAMOND;
-import static ca.mcgill.cs.jetuml.views.ArrowHead.BLACK_TRIANGLE;
-import static ca.mcgill.cs.jetuml.views.ArrowHead.DIAMOND;
-import static ca.mcgill.cs.jetuml.views.ArrowHead.NONE;
-import static ca.mcgill.cs.jetuml.views.ArrowHead.TRIANGLE;
-import static ca.mcgill.cs.jetuml.views.ArrowHead.V;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.BLACK_DIAMOND;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.BLACK_TRIANGLE;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.DIAMOND;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.NONE;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.TRIANGLE;
+import static ca.mcgill.cs.jetuml.viewers.ArrowHead.V;
 
 import ca.mcgill.cs.jetuml.geom.Point;
 import javafx.scene.canvas.GraphicsContext;
@@ -38,7 +38,7 @@ import javafx.scene.shape.Path;
 /**
  * Defines how to draw arrow heads.
  */
-public final class ArrowHeadView
+public final class ArrowHeadViewer
 {
 	private static final double ARROW_ANGLE = Math.PI / 6; 
 	private static final double ARROW_LENGTH = 10;
@@ -50,7 +50,7 @@ public final class ArrowHeadView
 	 * 
 	 * @param pArrowHead The arrowhead to wrap.
 	 */
-	public ArrowHeadView(ArrowHead pArrowHead)
+	public ArrowHeadViewer(ArrowHead pArrowHead)
 	{
 		aArrowHead = pArrowHead;
 	}

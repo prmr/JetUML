@@ -25,7 +25,7 @@ import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.GeomUtils;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
+import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -51,14 +51,14 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 		final Rectangle bounds = getBounds(pNode);
 		if( aFinal )
 		{
-			ViewUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.WHITE, true);
+			ViewerUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.WHITE, true);
 			int innerDiameter = DIAMETER/2;
-			ViewUtils.drawCircle(pGraphics, bounds.getX() + innerDiameter/2, 
+			ViewerUtils.drawCircle(pGraphics, bounds.getX() + innerDiameter/2, 
 					bounds.getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
 		}
 		else
 		{
-			ViewUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.BLACK, true);
+			ViewerUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.BLACK, true);
 		}
 	}
 	

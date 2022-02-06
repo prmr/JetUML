@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.Edge;
@@ -42,12 +42,12 @@ import javafx.scene.text.Font;
  * 
  * In the method names, "draw" refers to stroke and fill.
  */
-public final class ViewUtils
+public final class ViewerUtils
 {
 	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	private static final int ARC_SIZE = 20;
 	
-	private ViewUtils()
+	private ViewerUtils()
 	{}
 	
 	/**

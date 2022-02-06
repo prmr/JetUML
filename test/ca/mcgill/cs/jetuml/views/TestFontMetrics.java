@@ -21,7 +21,7 @@
 package ca.mcgill.cs.jetuml.views;
 
 import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
-import static ca.mcgill.cs.jetuml.views.FontMetrics.DEFAULT_FONT_SIZE;
+import static ca.mcgill.cs.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -33,6 +33,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ca.mcgill.cs.jetuml.geom.Dimension;
+import ca.mcgill.cs.jetuml.viewers.FontMetrics;
 import javafx.scene.text.Font;
 
 public class TestFontMetrics {

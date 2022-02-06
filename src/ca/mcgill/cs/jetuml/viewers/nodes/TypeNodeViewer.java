@@ -26,11 +26,11 @@ import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.TypeNode;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.views.LineStyle;
-import ca.mcgill.cs.jetuml.views.StringViewer;
-import ca.mcgill.cs.jetuml.views.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.views.StringViewer.TextDecoration;
-import ca.mcgill.cs.jetuml.views.ViewUtils;
+import ca.mcgill.cs.jetuml.viewers.LineStyle;
+import ca.mcgill.cs.jetuml.viewers.StringViewer;
+import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -57,18 +57,18 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		ViewUtils.drawRectangle(pGraphics, bounds);	
+		ViewerUtils.drawRectangle(pGraphics, bounds);	
 		NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
 		
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.getY() + nameHeight;
-			ViewUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
 			STRING_VIEWER.draw(node.getAttributes(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), attributeHeight));
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				ViewUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
+				ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
 				STRING_VIEWER.draw(node.getMethods(), pGraphics, 
 						new Rectangle(bounds.getX(), splitY2, bounds.getWidth(), methodHeight));
 			}
@@ -76,7 +76,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.getY() + nameHeight;
-			ViewUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
 			STRING_VIEWER.draw(node.getMethods(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), methodHeight));
 		}	
 	}

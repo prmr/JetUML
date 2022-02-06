@@ -32,8 +32,8 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
-import ca.mcgill.cs.jetuml.views.DiagramViewer;
-import ca.mcgill.cs.jetuml.views.SequenceDiagramViewer;
+import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
+import ca.mcgill.cs.jetuml.viewers.SequenceDiagramViewer;
 
 /**
  * The different types of UML diagrams supported by 
