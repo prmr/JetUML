@@ -24,67 +24,73 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.mcgill.cs.jetuml.JavaFXLoader;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
 import ca.mcgill.cs.jetuml.diagram.builder.DiagramOperation;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
 
 public class TestPropertyChangeTracker
 {
-	private PropertyChangeTracker aTracker;
+	private Object aTracker;
 	private ClassNode aNode;
 	private Field aOperationsField;
 	
-	/**
-	  * Load JavaFX toolkit and environment.
-	  */
-	 @BeforeAll
-	 public static void setupClass()
-	 {
-		 JavaFXLoader.load();
-	 }
-	
 	public TestPropertyChangeTracker()
 	{
+		aNode = new ClassNode();
 		try
 		{
 			aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
 			aOperationsField.setAccessible(true);
+			Constructor<?> constructor = Class.forName("ca.mcgill.cs.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
+					.getDeclaredConstructor(DiagramElement.class);
+			constructor.setAccessible(true);
+			aTracker = constructor.newInstance(aNode);
+			
 		}
-		catch( ReflectiveOperationException pException )
+		catch( ReflectiveOperationException exception )
 		{
 			fail();
 		}
 	}
 	
-	@BeforeEach
-	public void setup()
+	private void startTracking() throws ReflectiveOperationException
 	{
-		aNode = new ClassNode();
-		aTracker = new PropertyChangeTracker(aNode);
+		Method method = Class.forName("ca.mcgill.cs.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
+			.getDeclaredMethod("startTracking");
+		method.setAccessible(true);
+		method.invoke(aTracker);
+	}
+	
+	private CompoundOperation stopTracking() throws ReflectiveOperationException
+	{
+		Method method = Class.forName("ca.mcgill.cs.jetuml.gui.PropertyEditorDialog$PropertyChangeTracker")
+			.getDeclaredMethod("stopTracking");
+		method.setAccessible(true);
+		return (CompoundOperation) method.invoke(aTracker);
 	}
 	
 	@Test
-	public void testNoChanges()
+	void testNoChanges() throws ReflectiveOperationException
 	{
-		aTracker.startTracking();
-		CompoundOperation operation = aTracker.stopTracking();
+		startTracking();
+		CompoundOperation operation = stopTracking();
 		assertTrue(operation.isEmpty());
 	}
 	
 	@Test
-	public void testOneChangeString()
+	void testOneChangeString() throws ReflectiveOperationException
 	{
-		aTracker.startTracking();
+		startTracking();
 		aNode.setName("Foo");
-		CompoundOperation operation = aTracker.stopTracking();
+		CompoundOperation operation = stopTracking();
 		
 		assertEquals(1, getOperations(operation).size());
 		
@@ -95,12 +101,12 @@ public class TestPropertyChangeTracker
 	}
 	
 	@Test
-	public void testTwoChanges()
+	void testTwoChanges() throws ReflectiveOperationException
 	{
-		aTracker.startTracking();
+		startTracking();
 		aNode.setAttributes("Bar");
 		aNode.setName("Foo");
-		CompoundOperation command = aTracker.stopTracking();
+		CompoundOperation command = stopTracking();
 		List<DiagramOperation> operations = getOperations(command);
 		
 		assertEquals(2, operations.size());

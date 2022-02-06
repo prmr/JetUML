@@ -22,9 +22,14 @@ package ca.mcgill.cs.jetuml.gui;
 
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
-import ca.mcgill.cs.jetuml.application.PropertyChangeTracker;
+import java.util.EnumMap;
+
 import ca.mcgill.cs.jetuml.diagram.DiagramElement;
+import ca.mcgill.cs.jetuml.diagram.Properties;
+import ca.mcgill.cs.jetuml.diagram.Property;
+import ca.mcgill.cs.jetuml.diagram.PropertyName;
 import ca.mcgill.cs.jetuml.diagram.builder.CompoundOperation;
+import ca.mcgill.cs.jetuml.diagram.builder.SimpleOperation;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -115,4 +120,57 @@ public class PropertyEditorDialog
 			return new CompoundOperation();
 		}
     }
+	
+	private static class PropertyChangeTracker 
+	{
+		private EnumMap<PropertyName, Object> aOldValues = new EnumMap<>(PropertyName.class);
+		private Properties aProperties;
+		
+		/**
+		 * Creates a new tracker for pEdited.
+		 *  
+		 * @param pEdited The element to track.
+		 * @pre pEdited != null;
+		 */
+		PropertyChangeTracker(DiagramElement pEdited)
+		{
+			assert pEdited != null;
+			aProperties = pEdited.properties();
+		}
+
+		/**
+		 * Makes a snapshot of the properties values of the tracked element.
+		 */
+		public void startTracking()
+		{
+			for( Property property : aProperties )
+			{
+				aOldValues.put(property.name(), property.get());
+			}
+		}
+		
+		/**
+		 * Creates and returns a CompoundOperation that represents any change
+		 * in properties detected between the time startTracking
+		 * and stopTracking were called.
+		 * 
+		 * @return A CompoundOperation describing the property changes.
+		 */
+		public CompoundOperation stopTracking()
+		{
+			CompoundOperation operation = new CompoundOperation();
+			for( Property property : aProperties )
+			{
+				if( !aOldValues.get(property.name()).equals(property.get()))
+				{
+					final Object newValue = property.get();
+					final Object oldValue = aOldValues.get(property.name());
+					operation.add(new SimpleOperation(
+							()-> property.set(newValue),
+							()-> property.set(oldValue)));
+				}
+			}
+			return operation;
+		}
+	}
 }
