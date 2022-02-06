@@ -21,7 +21,6 @@
 
 package ca.mcgill.cs.jetuml.views;
 
-import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
@@ -105,39 +104,5 @@ public final class Grid
 	{
 		assert pCoordinate >= 0;
 		return (int)(Math.ceil(pCoordinate / GRID_SIZE) * GRID_SIZE);
-	}
-	
-	/**
-	 * Creates a point that represents a distance to the origin which, when added to 
-	 * pDimension, will correspond to a dimension that is rounded to align to the grid.
-	 * 
-	 * @param pDimension The original dimension.
-	 * @return An aligned dimension.
-	 * @pre pDimension != null
-	 */
-	public static Point toSnap(Dimension pDimension)
-	{
-		assert pDimension != null;
-		final int size = (int) GRID_SIZE;
-		int xRemainder = pDimension.width() % size;
-		if( xRemainder < size/2 )
-		{
-			xRemainder = -xRemainder;
-		}
-		else
-		{
-			xRemainder = size - xRemainder;
-		}
-		
-		int yRemainder = pDimension.height() % size;
-		if( yRemainder < size/2 )
-		{
-			yRemainder = -yRemainder;
-		}
-		else
-		{
-			yRemainder = size - yRemainder;
-		}
-		return new Point(xRemainder, yRemainder);
 	}
 }

@@ -20,8 +20,6 @@
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.nodes;
 
-import java.util.Optional;
-
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.GeomUtils;
@@ -51,28 +49,6 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	public boolean contains(Node pNode, Point pPoint)
 	{
 		return getBounds(pNode).contains(pPoint);
-	}
-	
-	protected static Optional<Point> computeConnectionPointForCanonicalDirection(Rectangle pBounds, Direction pDirection)
-	{
-		Optional<Point> result = Optional.empty();
-		if( pDirection == Direction.NORTH )
-		{
-			result = Optional.of(new Point(pBounds.getCenter().getX(), pBounds.getY()));
-		}
-		else if( pDirection == Direction.SOUTH )
-		{
-			result =  Optional.of(new Point(pBounds.getCenter().getX(), pBounds.getMaxY()));
-		}
-		else if( pDirection == Direction.EAST)
-		{
-			result = Optional.of(new Point(pBounds.getMaxX(), pBounds.getCenter().getY()));
-		}
-		else if( pDirection == Direction.WEST )
-		{
-			result = Optional.of(new Point(pBounds.getX(), pBounds.getCenter().getY()));
-		}
-		return result;
 	}
 	
 	/* 
