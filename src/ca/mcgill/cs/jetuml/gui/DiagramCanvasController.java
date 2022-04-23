@@ -276,7 +276,7 @@ public class DiagramCanvasController
 	{
 		Point mousePoint = getMousePoint(pEvent);
 		Optional<? extends DiagramElement> element = 
-				DiagramViewer.edgeAt(aDiagramBuilder.getDiagram(), mousePoint);
+				viewerFor(aDiagramBuilder.getDiagram()).edgeAt(aDiagramBuilder.getDiagram(), mousePoint);
 		if(!element.isPresent())
 		{
 			element = viewerFor(aDiagramBuilder.getDiagram())

@@ -28,7 +28,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
 /**
  * Utility class to create icons that are drawn
  * using graphic primitives.
@@ -49,7 +49,7 @@ public final class ImageCreator
 	public static Image createImage(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		Rectangle bounds = DiagramViewer.getBounds(pDiagram);
+		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
 		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();
