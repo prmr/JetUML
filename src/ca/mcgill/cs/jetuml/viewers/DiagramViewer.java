@@ -48,7 +48,7 @@ public class DiagramViewer
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
-	public final void draw(Diagram pDiagram, GraphicsContext pGraphics)
+	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
 		NodeViewerRegistry.activateNodeStorages();
@@ -57,7 +57,7 @@ public class DiagramViewer
 		NodeViewerRegistry.deactivateAndClearNodeStorages();
 	}
 	
-	private void drawNode(Node pNode, GraphicsContext pGraphics)
+	protected void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		NodeViewerRegistry.draw(pNode, pGraphics);
 		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
@@ -71,7 +71,7 @@ public class DiagramViewer
 	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
-	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
 		return pDiagram.edges().stream()
@@ -143,7 +143,7 @@ public class DiagramViewer
 	 * @return The bounding rectangle
 	 * @pre pDiagram != null
 	 */
-	public static Rectangle getBounds(Diagram pDiagram)
+	public Rectangle getBounds(Diagram pDiagram)
 	{
 		assert pDiagram != null;
 		Rectangle bounds = null;

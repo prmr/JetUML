@@ -23,7 +23,9 @@ package ca.mcgill.cs.jetuml.diagram;
 import static ca.mcgill.cs.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import ca.mcgill.cs.jetuml.diagram.builder.ClassDiagramBuilder;
@@ -32,6 +34,7 @@ import ca.mcgill.cs.jetuml.diagram.builder.ObjectDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.SequenceDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.StateDiagramBuilder;
 import ca.mcgill.cs.jetuml.diagram.builder.UseCaseDiagramBuilder;
+import ca.mcgill.cs.jetuml.viewers.ClassDiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.SequenceDiagramViewer;
 
@@ -45,7 +48,7 @@ public enum DiagramType
 			"ClassDiagram",
 			".class",
 			ClassDiagramBuilder::new, 
-			new DiagramViewer(), 
+			new ClassDiagramViewer(), // not used
 			new DiagramElement [] { 
 					Prototypes.CLASS, 
 					Prototypes.INTERFACE, 
@@ -58,7 +61,7 @@ public enum DiagramType
 					Prototypes.ASSOCIATION,
 					Prototypes.AGGREGATION,
 					Prototypes.COMPOSITION,
-					Prototypes.NOTE_CONNECTOR}), 
+					Prototypes.NOTE_CONNECTOR}),
 	
 	SEQUENCE(
 			"SequenceDiagram",
@@ -121,6 +124,11 @@ public enum DiagramType
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final DiagramViewer aViewer;
 	private final DiagramElement[] aPrototypes;
+	
+	/**
+	 * Maps ClassDiagrams to ClassDiagramViewers, which hold an EdgeStorage object and are unique to each diagram. 
+	 */
+	private static final Map<Diagram, ClassDiagramViewer> aClassDiagramViewers = new HashMap<>();
 	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
 			DiagramViewer pViewer, DiagramElement[] pPrototypes)
@@ -206,9 +214,16 @@ public enum DiagramType
 	 */
 	public static DiagramViewer viewerFor(Diagram pDiagram) 
 	{
-		/* This method is not defined on class Diagram to avoid introducing 
-		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
-		return pDiagram.getType().aViewer;
+		//Each class diagram has a unique, stateful ClassDiagramViewer
+		if(pDiagram.getType() == DiagramType.CLASS )
+		{
+			aClassDiagramViewers.putIfAbsent(pDiagram, new ClassDiagramViewer());
+			return aClassDiagramViewers.get(pDiagram);
+		}
+		else
+		{
+			return pDiagram.getType().aViewer;
+		}
 	}
 }

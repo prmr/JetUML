@@ -19,7 +19,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package ca.mcgill.cs.jetuml.gui;
-
+import static ca.mcgill.cs.jetuml.diagram.DiagramType.viewerFor;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
@@ -144,7 +144,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
 	{
-		Rectangle bounds = DiagramViewer.getBounds(pDiagram);
+		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
 		return new Dimension(
 				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
 				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
