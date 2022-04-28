@@ -31,7 +31,6 @@ import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
 import ca.mcgill.cs.jetuml.viewers.ClassDiagramViewer;
-import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.Grid;
 import ca.mcgill.cs.jetuml.viewers.ToolGraphics;
 import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
