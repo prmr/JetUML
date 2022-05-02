@@ -26,10 +26,11 @@ import ca.mcgill.cs.jetuml.application.UserPreferences.BooleanPreferenceChangeHa
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import ca.mcgill.cs.jetuml.diagram.Diagram;
+import ca.mcgill.cs.jetuml.diagram.DiagramElement;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.geom.Dimension;
 import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.DiagramViewer;
+import ca.mcgill.cs.jetuml.viewers.ClassDiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.Grid;
 import ca.mcgill.cs.jetuml.viewers.ToolGraphics;
 import ca.mcgill.cs.jetuml.viewers.ViewerUtils;
@@ -107,10 +108,29 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		DiagramType.viewerFor(aDiagram).draw(aDiagram, context);
 		aController.synchronizeSelectionModel();
-		aController.getSelectionModel().forEach( selected -> ViewerUtils.drawSelectionHandles(selected, context));
+		aController.getSelectionModel().forEach( selected -> drawSelectionHandles(selected, context));
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
+	
+	/**
+	 * Draws the selection handles using EdgeStorage for class diagrams, or using ViewerUtils otherwise.
+	 * @param pSelected the DiagramElement selected
+	 * @param pGraphics the graphics context
+	 */
+	private void drawSelectionHandles(DiagramElement pSelected, GraphicsContext pGraphics)
+	{
+		if (getDiagram().getType() == DiagramType.CLASS)
+		{
+			ClassDiagramViewer viewer = (ClassDiagramViewer) DiagramType.viewerFor(aDiagram);
+			viewer.drawSelectionHandles(pSelected, pGraphics);
+		}
+		else
+		{
+			ViewerUtils.drawSelectionHandles(pSelected, pGraphics);
+		}
+	}
+
 	
 	@Override
 	public void selectionModelChanged()
