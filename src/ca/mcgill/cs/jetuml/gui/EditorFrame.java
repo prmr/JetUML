@@ -104,7 +104,7 @@ public class EditorFrame extends BorderPane
 		setTop(menuBar);
 		
 		TabPane tabPane = new TabPane();
-		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER);
+//		tabPane.setTabDragPolicy(TabPane.TabDragPolicy.REORDER); // This JavaFX feature is too buggy to use at the moment see issue #455
 		tabPane.getSelectionModel().selectedItemProperty().addListener((pValue, pOld, pNew) -> setMenuVisibility());
 		setCenter( tabPane );
 
