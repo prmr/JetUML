@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers;
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +38,10 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Viewer for ClassDiagrams.
  * Uses Layouter to plan and store the EdgePaths of edges. Uses StoredEdgeViewer to draw the stored edges. 
- * Unlike other DiagramViwers, ClassDiagramViewer stateful. 
- *
+ * Unlike other DiagramViwers, ClassDiagramViewer is stateful. 
  */
-
 public class ClassDiagramViewer extends DiagramViewer
 {
-	
 	private static final StoredEdgeViewer STORED_EDGE_VIEWER = new StoredEdgeViewer();
 	private final EdgeStorage aEdgeStorage = new EdgeStorage();
 	private final Layouter aLayouter = new Layouter();
@@ -217,7 +234,6 @@ public class ClassDiagramViewer extends DiagramViewer
 		return aEdgeStorage.getEdgesWithSameNodes(pEdge);
 	}
 	
-	
 	/**
 	 * Returns whether pPoint is available as a connection point based on Egdes which are already in storage.
 	 * @param pPoint the Point of interest
@@ -227,5 +243,4 @@ public class ClassDiagramViewer extends DiagramViewer
 	{
 		return aEdgeStorage.connectionPointIsAvailable(pPoint);
 	}
-	
 }

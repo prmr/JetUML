@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * JetUML - A desktop application for fast UML diagramming.
+ *
+ * Copyright (C) 2022 by McGill University.
+ *     
+ * See: https://github.com/prmr/JetUML
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ *******************************************************************************/
 package ca.mcgill.cs.jetuml.viewers.edges;
 
 import static ca.mcgill.cs.jetuml.viewers.EdgePriority.priorityOf;
@@ -140,9 +160,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 		return ArrowHead.NONE;
 		
 	}
-	
-
-	
 
 	/**
 	 * Uses the stored EdgePath of pEdge to create Path representation of its trajectory. 
@@ -164,7 +181,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 		}
 		return shape;
 	}
-	
 
 	/**
 	 * Returns whether an edge is segmented and is a step up. 
@@ -179,7 +195,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 				point1.getX() > point2.getX() && point1.getY() < point2.getY();
 	}
 	
-
 	/**
 	 * Draws a string.
 	 * @param pGraphics the graphics context
@@ -214,7 +229,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 		}
 	}
 	
-	
 	private String wrapLabel(String pString, Point pEndPoint1, Point pEndPoint2) 
 	{
 		int distanceInX = (int)Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
@@ -228,7 +242,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
 		return StringViewer.wrapString(pString, lineLength);
-		
 	}
 	
 	/**
@@ -466,7 +479,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 			fatPath.setStrokeWidth(2 * MAX_DISTANCE);
 			return fatPath.contains(pPoint.getX(), pPoint.getY());
 		}
-		
 	}
 
 	@Override
@@ -475,7 +487,6 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 		return new Line(getStoredEdgePath(pEdge).getStartPoint(), 
 				getStoredEdgePath(pEdge).getEndPoint());
 	}
-	
 	
 	/**
 	 * Gets the EdgePath of pEdge from EdgeStorage.
