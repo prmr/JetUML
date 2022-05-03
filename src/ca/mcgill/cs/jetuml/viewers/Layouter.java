@@ -607,7 +607,7 @@ public class Layouter
 	 * @param pEdge the edge of interest
 	 * @param pEdgeDirection the direction describing the trajectory of pEdge (the direction of the first segment of pEdge).
 	 * @return the x-coordinate for the middle segment of pEdge, 
-	 * so that it is either 10px to the right of pClosestStoredEdge, or 10px to the left.
+	 *     so that it is either 10px to the right of pClosestStoredEdge, or 10px to the left.
 	 * @pre pClosestStoredEdge is present in the diagram's EdgeStorage
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 * @pre pEdgeDirection == Direction.WEST || pEdgeDirection == Direction.EAST
@@ -873,7 +873,7 @@ public class Layouter
 	 * @param pCommonNode aNode which has edges which connect to both pNode1 and pNode2
 	 * @param pAttachedSide the side of pCommonNode on which the edges from pNode1 and pNode2 connect
 	 * @return true if the center points of pNode1 and pNode2 are both above, below, to the left, or to the right 
-	 * 	of the center point of pCommonNode. False otherwise.
+	 *     of the center point of pCommonNode. False otherwise.
 	 * @pre pAttachedSide.isCardinal()
 	 */
 	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, Direction pAttachedSide)

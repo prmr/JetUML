@@ -116,6 +116,11 @@ public enum DiagramType
 					Prototypes.USE_CASE_GENERALIZATION, 
 					Prototypes.NOTE_CONNECTOR}); 
 	
+	/**
+	 * Maps ClassDiagrams to ClassDiagramViewers, which hold an EdgeStorage object and are unique to each diagram. 
+	 */
+	private static final Map<Diagram, ClassDiagramViewer> CLASS_DIAGRAM_VIEWERS = new HashMap<>();
+	
 	/* aName is an internal name used for referring to objects of a certain diagram
 	 * type in externalized representations, such as persisted versions of the diagram
 	 * or property strings. It should this not be externalized. */
@@ -124,11 +129,6 @@ public enum DiagramType
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
 	private final DiagramViewer aViewer;
 	private final DiagramElement[] aPrototypes;
-	
-	/**
-	 * Maps ClassDiagrams to ClassDiagramViewers, which hold an EdgeStorage object and are unique to each diagram. 
-	 */
-	private static final Map<Diagram, ClassDiagramViewer> aClassDiagramViewers = new HashMap<>();
 	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
 			DiagramViewer pViewer, DiagramElement[] pPrototypes)
@@ -218,8 +218,8 @@ public enum DiagramType
 		//Each class diagram has a unique, stateful ClassDiagramViewer
 		if(pDiagram.getType() == DiagramType.CLASS )
 		{
-			aClassDiagramViewers.putIfAbsent(pDiagram, new ClassDiagramViewer());
-			return aClassDiagramViewers.get(pDiagram);
+			CLASS_DIAGRAM_VIEWERS.putIfAbsent(pDiagram, new ClassDiagramViewer());
+			return CLASS_DIAGRAM_VIEWERS.get(pDiagram);
 		}
 		else
 		{

@@ -1,5 +1,7 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
+import static ca.mcgill.cs.jetuml.viewers.EdgePriority.priorityOf;
+
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Edge;
 import ca.mcgill.cs.jetuml.diagram.edges.AggregationEdge;
@@ -20,8 +22,8 @@ import ca.mcgill.cs.jetuml.viewers.ClassDiagramViewer;
 import ca.mcgill.cs.jetuml.viewers.EdgePriority;
 import ca.mcgill.cs.jetuml.viewers.LineStyle;
 import ca.mcgill.cs.jetuml.viewers.StringViewer;
-import ca.mcgill.cs.jetuml.viewers.ToolGraphics;
 import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
+import ca.mcgill.cs.jetuml.viewers.ToolGraphics;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,24 +31,23 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
-import static ca.mcgill.cs.jetuml.viewers.EdgePriority.priorityOf;
 
 /**
  * Renders the path of stored class diagram edges using EdgeStorage.
  */
 public class StoredEdgeViewer extends AbstractEdgeViewer
 {
+	private static final int BUTTON_SIZE = 25;
+	private static final int OFFSET = 3;
+	private static final int MAX_DISTANCE = 3;
+	
 	private static final StringViewer TOP_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
 	private static final StringViewer BOTTOM_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.BOTTOM_CENTER);
 	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
-	private static final int singleCharWidth = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").width();
-	private static final int singleCharHeight = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
+	private static final int SINGLE_CHAR_WIDTH = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").width();
+	private static final int SIGLE_CHAR_HEIGHT = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_180 = 180;
-	protected static final int BUTTON_SIZE = 25;
-	protected static final int OFFSET = 3;
-	protected static final int MAX_DISTANCE = 3;
-
 	
 	/**
 	 * Gets the line style for pEdge.
@@ -219,14 +220,14 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 		int distanceInX = (int)Math.abs(pEndPoint1.getX() - pEndPoint2.getX());
 		int distanceInY = (int)Math.abs(pEndPoint1.getY() - pEndPoint2.getY());
 		int lineLength = MAX_LENGTH_FOR_NORMAL_FONT;
-		double distanceInXPerChar = distanceInX / singleCharWidth;
-		double distanceInYPerChar = distanceInY / singleCharHeight;
+		double distanceInXPerChar = distanceInX / SINGLE_CHAR_WIDTH;
+		double distanceInYPerChar = distanceInY / SIGLE_CHAR_HEIGHT;
 		if (distanceInX > 0)
 		{
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInYPerChar/distanceInXPerChar));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return LEFT_JUSTIFIED_STRING_VIEWER.wrapString(pString, lineLength);
+		return StringViewer.wrapString(pString, lineLength);
 		
 	}
 	

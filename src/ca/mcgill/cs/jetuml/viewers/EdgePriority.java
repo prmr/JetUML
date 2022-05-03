@@ -19,6 +19,7 @@ public enum EdgePriority
 	 * @param pEdge the edge of interest
 	 * @return the EdgePriority associated with pEdge
 	 * @pre pEdge!=null
+	 * CSOFF:
 	 */
 	public static EdgePriority priorityOf(Edge pEdge)
 	{
@@ -61,7 +62,7 @@ public enum EdgePriority
 		{
 			return EdgePriority.OTHER;
 		}
-	}
+	} // CSON:
 	
 	/**
 	 * Returns whether pPriority describes a segmented edge.
