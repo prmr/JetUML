@@ -33,7 +33,6 @@ import ca.mcgill.cs.jetuml.diagram.nodes.ImplicitParameterNode;
 import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
 import ca.mcgill.cs.jetuml.geom.Point;
 import ca.mcgill.cs.jetuml.viewers.SequenceDiagramViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 public class TestSequenceDiagramViewer
 {
@@ -123,9 +122,6 @@ public class TestSequenceDiagramViewer
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2, aDiagram);
 		aDiagram.addEdge(edge);
-		
-		System.out.println(NodeViewerRegistry.getBounds(callNode1));
-		System.out.println(NodeViewerRegistry.getBounds(callNode2));
 
 		assertSame(callNode1, aViewer.nodeAt(aDiagram, new Point(38,105)).get());
 		assertSame(callNode2, aViewer.nodeAt(aDiagram, new Point(42,105)).get());
