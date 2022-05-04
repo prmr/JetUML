@@ -70,7 +70,7 @@ public class Layouter
 		while (!edgesToProcess.isEmpty())
 		{
 			Edge currentEdge = edgesToProcess.get(0);
-			Direction edgeDirection = attachedSide(currentEdge, currentEdge.getStart());
+			NodeSide edgeDirection = attachedSide(currentEdge, currentEdge.getStart());
 			//Get all the edges which will merge with the start or end of currentEdge
 			List<Edge> edgesToMergeStart = getEdgesToMergeStart(currentEdge, edgesToProcess);
 			List<Edge> edgesToMergeEnd = getEdgesToMergeEnd(currentEdge, edgesToProcess);	
@@ -103,7 +103,7 @@ public class Layouter
 		{
 			if (priorityOf(edge)==EdgePriority.DEPENDENCY)
 			{   //Determine the start and end connection points
-				Direction attachedEndSide = attachedSide(edge, edge.getEnd());
+				NodeSide attachedEndSide = attachedSide(edge, edge.getEnd());
 				Point startPoint = getConnectionPoint(edge.getStart(), edge, attachedEndSide.mirrored());
 				Point endPoint = getConnectionPoint(edge.getEnd(), edge, attachedEndSide);
 				//Store an EdgePath from startPoint to endPoint
@@ -203,13 +203,11 @@ public class Layouter
 	 * @param pDirection the trajectory of the edges in pEdgesToMergeEnd (the direction of the first segment of the edges)
 	 * @param pEdgesToMergeEnd a list of edges whose ends should be merged
 	 * @param pDiagram the diagram
-	 * @pre pDirection.isCardinal()
 	 * @pre pEdgesToMergeEnd.size() > 0
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
-	private void storeMergedEndEdges(Direction pDirection, List<Edge> pEdgesToMergeEnd, Diagram pDiagram)
+	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMergeEnd, Diagram pDiagram)
 	{
-		assert pDirection.isCardinal();
 		assert pEdgesToMergeEnd.size() > 0;
 		assert pDiagram.getType() == DiagramType.CLASS;
 		//Merged edges will share a common end point
@@ -223,7 +221,7 @@ public class Layouter
 		//Determine the position of the shared middle segment
 		Point closestStartPoint = getClosestPoint(startPoints.values(), pDirection);
 		int midLineCoordinate;
-		if (pDirection == Direction.NORTH || pDirection == Direction.SOUTH)
+		if(pDirection.isNorthSouth())
 		{
 			midLineCoordinate = getHorizontalMidLine(closestStartPoint, sharedEndPoint, pDirection, pEdgesToMergeEnd.get(0));
 		}
@@ -245,13 +243,11 @@ public class Layouter
 	 * @param pDirection the trajectory of the edges in pEdgesToMmergeStart (the direction of the first segment of the edges)
 	 * @param pEdgesToMergeStart a list of edges which should me merged at their start points
 	 * @param pDiagram the class diagram 
-	 * @pre pDirection.isCardinal()
 	 * @pre pEdgesToMergeStart.size() > 0
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
-	private void storeMergedStartEdges(Direction pDirection, List<Edge> pEdgesToMergeStart, Diagram pDiagram)
+	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMergeStart, Diagram pDiagram)
 	{
-		assert pDirection.isCardinal();
 		assert pEdgesToMergeStart.size() > 0;
 		//Get the shared start point for all pEdgesToMerge
 		Point startPoint = getConnectionPoint(pEdgesToMergeStart.get(0).getStart(), pEdgesToMergeStart.get(0), pDirection);
@@ -265,7 +261,7 @@ public class Layouter
 		//The default position of the merged middle segment is halfway between startPoint and closestEndPoint:
 		Point closestEndPoint = getClosestPoint(endPoints.values(), pDirection.mirrored());
 		int midLineCoordinate;
-		if (pDirection == Direction.NORTH || pDirection == Direction.SOUTH)
+		if(pDirection.isNorthSouth())
 		{
 			midLineCoordinate = getHorizontalMidLine(closestEndPoint, startPoint, pDirection, 
 					pEdgesToMergeStart.get(0));
@@ -292,18 +288,16 @@ public class Layouter
 	 * @param pMidLine an integer representing an X or Y coordinate of the middle segment
 	 * @param pEnd the end point of pEdge
 	 * @return a EdgePath consisting of pStart, 2 middle points connecting the middle segment, and pEnd
-	 * @pre pEdgeDirection.isCardinal()
 	 * @pre pStart != null && pEnd != null
 	 * @pre pMidLine >= 0
 	 */
-	private EdgePath buildSegmentedEdgePath(Direction pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
+	private EdgePath buildSegmentedEdgePath(NodeSide pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
 	{
-		assert pEdgeDirection.isCardinal();
 		assert pStart != null && pEnd != null;
 		assert pMidLine >= 0;
 		Point firstMiddlePoint;
 		Point secondMiddlePoint;
-		if (pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH)
+		if(pEdgeDirection.isNorthSouth())
 		{
 			//Then the mid-point coordinate is a Y-coordinate
 			firstMiddlePoint = new Point(pStart.getX(), pMidLine);
@@ -371,9 +365,9 @@ public class Layouter
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 * @pre pStart != null && pEnd != null
 	 */
-	private int getHorizontalMidLine(Point pStart, Point pEnd, Direction pEdgeDirection, Edge pEdge)
+	private int getHorizontalMidLine(Point pStart, Point pEnd, NodeSide pEdgeDirection, Edge pEdge)
 	{
-		assert pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH;
+		assert pEdgeDirection.isNorthSouth();
 		assert EdgePriority.isSegmented(pEdge);
 		assert pStart != null && pEnd != null;
 		//Check for any edge in storage which is attached to pEdge's start and end nodes
@@ -407,9 +401,9 @@ public class Layouter
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 * @pre pStart != null && pEnd != null
 	 */
-	private int getVerticalMidLine(Point pStart, Point pEnd, Direction pEdgeDirection, Edge pEdge)
+	private int getVerticalMidLine(Point pStart, Point pEnd, NodeSide pEdgeDirection, Edge pEdge)
 	{
-		assert pEdgeDirection == Direction.EAST || pEdgeDirection == Direction.WEST;
+		assert pEdgeDirection.isEastWest();
 		assert EdgePriority.isSegmented(pEdge);
 		assert pStart != null && pEnd != null;
 		//Check for any edge in storage which shares the same 2 nodes as pEdge: 
@@ -443,13 +437,13 @@ public class Layouter
 	 * @pre pEdgeWithSameNodes and pEdge both share the same 2 attached nodes.
 	 * @pre pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH
 	 */
-	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Direction pEdgeDirection)
+	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection)
 	{
 		assert classDiagramViewerFor(pEdgeWithSameNodes).storageContains(pEdgeWithSameNodes);
 		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
 		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
-		assert pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH;
-		if (pEdgeDirection == Direction.NORTH)
+		assert pEdgeDirection.isNorthSouth();
+		if(pEdgeDirection == NodeSide.NORTH)
 		{	
 			return getStoredEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getY() - TEN_PIXELS;
 		}
@@ -470,13 +464,13 @@ public class Layouter
 	 * @pre pEdgeWithSameNodes and pEdge both share the same 2 attached nodes.
 	 * @pre pEdgeDirection == Direction.WEST || pEdgeDirection == Direction.EAST
 	 */
-	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Direction pEdgeDirection) 
+	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection) 
 	{
 		assert classDiagramViewerFor(pEdgeWithSameNodes).storageContains(pEdgeWithSameNodes);
 		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
 		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
-		assert pEdgeDirection == Direction.WEST || pEdgeDirection == Direction.EAST;
-		if (pEdgeDirection == Direction.WEST)
+		assert pEdgeDirection.isEastWest();
+		if(pEdgeDirection == NodeSide.WEST)
 		{
 			return getStoredEdgePath(pEdgeWithSameNodes).getPointByIndex(1).getX() - TEN_PIXELS;
 		}
@@ -496,9 +490,9 @@ public class Layouter
 	 * @return the closest Edge conflicting with the horizontal middle segment of pEdge, or Optional.empty() if there are no conflicting edges.
 	 * @pre pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH
 	 */
-	private Optional<Edge> closestConflictingHorizontalSegment(Direction pEdgeDirection, Edge pEdge)
+	private Optional<Edge> closestConflictingHorizontalSegment(NodeSide pEdgeDirection, Edge pEdge)
 	{
-		assert pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH;
+		assert pEdgeDirection.isNorthSouth();
 		//Consider all edges connected to pEdge.getEnd() which are in the way of pEdge
 		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.getEnd(), pEdge);	
 		//also consider edges which are connected to pEdge.getStart() which are in the way of pEdge
@@ -532,9 +526,9 @@ public class Layouter
 	 * @pre pEdgeDirection == Direction.EAST || pEdgeDirection == Direction.WEST
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 */
-	private Optional<Edge> closestConflictingVerticalSegment(Direction pEdgeDirection, Edge pEdge) 
+	private Optional<Edge> closestConflictingVerticalSegment(NodeSide pEdgeDirection, Edge pEdge) 
 	{
-		assert pEdgeDirection == Direction.EAST || pEdgeDirection == Direction.WEST;
+		assert pEdgeDirection.isEastWest();
 		assert EdgePriority.isSegmented(pEdge);
 		//Get all edges connected to pEdge's end node which could conflict with pEdge's middle segment position
 		List<Edge> conflictingEdges = storedConflictingEdges(pEdgeDirection.mirrored(), pEdge.getEnd(), pEdge);	
@@ -570,13 +564,13 @@ public class Layouter
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 * @pre pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH
 	 */
-	private int adjacentHorizontalMidLine(Edge pClosestStoredEdge, Edge pEdge, Direction pEdgeDirection)
+	private int adjacentHorizontalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection)
 	{
 		assert classDiagramViewerFor(pEdge).storageContains(pClosestStoredEdge);
 		assert EdgePriority.isSegmented(pEdge);
-		assert pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH;
+		assert pEdgeDirection.isNorthSouth();
 		Node commonNode = getSharedNode(pClosestStoredEdge, pEdge);
-		if (pEdgeDirection == Direction.NORTH)
+		if(pEdgeDirection == NodeSide.NORTH)
 		{
 			if (isOutgoingEdge(pEdge, commonNode))
 			{
@@ -612,13 +606,13 @@ public class Layouter
 	 * @pre EdgePriority.isSegmented(pEdge)
 	 * @pre pEdgeDirection == Direction.WEST || pEdgeDirection == Direction.EAST
 	 */
-	private int adjacentVerticalMidLine(Edge pClosestStoredEdge, Edge pEdge, Direction pEdgeDirection) 
+	private int adjacentVerticalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection) 
 	{
 		assert classDiagramViewerFor(pEdge).storageContains(pClosestStoredEdge);
 		assert EdgePriority.isSegmented(pEdge);
-		assert pEdgeDirection == Direction.EAST || pEdgeDirection == Direction.WEST;
+		assert pEdgeDirection.isEastWest();
 		Node commonNode = getSharedNode(pClosestStoredEdge, pEdge);
-		if (pEdgeDirection == Direction.WEST)
+		if(pEdgeDirection == NodeSide.WEST)
 		{
 			if (isOutgoingEdge(pEdge, commonNode))
 			{
@@ -668,34 +662,32 @@ public class Layouter
 	 * Gets all edges currently in storage which are connected to the pNodeFace side of pNode
 	 * with the same index sign (-1 or +1) as pEdge. These edges may conflict with the default placement 
 	 * of pEdge, so their EdgePaths need to be considered when planning the EdgePath of pEdge. 
-	 * @param pNodeFace the face of pNode on which pEdge is attached
+	 * @param pNodeSide the side of pNode on which pEdge is attached
 	 * @param pNode the node of interest which pEdge is attached to
 	 * @param pEdge the edge of interest
 	 * @return a list of edges which could conflict with the default EdgePath of pEdge.
-	 * @pre pNodeFace.isCardinal() 
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
 	 */
-	private List<Edge> storedConflictingEdges(Direction pNodeFace, Node pNode, Edge pEdge)
+	private List<Edge> storedConflictingEdges(NodeSide pNodeSide, Node pNode, Edge pEdge)
 	{
-		assert pNodeFace.isCardinal();
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
 		return classDiagramViewerFor(pEdge).storedEdgesConnectedTo(pNode).stream()
-			.filter(edge -> attachedSideFromStorage(edge, pNode) == pNodeFace)
+			.filter(edge -> attachedSideFromStorage(edge, pNode) == pNodeSide)
 			.filter(edge -> EdgePriority.isSegmented(edge))
-			.filter(edge -> getIndexSign(edge, pNode, pNodeFace) == getIndexSign(pEdge, pNode, pNodeFace))
+			.filter(edge -> getIndexSign(edge, pNode, pNodeSide) == getIndexSign(pEdge, pNode, pNodeSide))
 			.filter(edge -> !edge.equals(pEdge))
 			.collect(toList());
 	}
 	
 	/**
-	 * Uses EdgeStorage to get the cardinal Direction describing the face of pNode on which a stored edge pEdge is attached.
+	 * Uses EdgeStorage to get the side describing the face of pNode on which a stored edge pEdge is attached.
 	 * @param pEdge the edge of interest
 	 * @param pNode the node of interest which PEdge is attached to
-	 * @return the face of pNode on which pEdge is attached
+	 * @return the side of pNode on which pEdge is attached
 	 * @pre storageContains(pEdge)
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
 	 */
-	private Direction attachedSideFromStorage(Edge pEdge, Node pNode)
+	private NodeSide attachedSideFromStorage(Edge pEdge, Node pNode)
 	{
 		assert storageContains(pEdge);
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
@@ -706,15 +698,14 @@ public class Layouter
 			connectionPoint = getStoredEdgePath(pEdge).getEndPoint();
 		}
 		//Iterate over each side of pNode. Return the side which contains connectionPoint
-		Direction[] sides = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
-		for (Direction side : sides)
+		for(NodeSide side : NodeSide.values())
 		{
-			if (getNodeFace(getBounds(pNode), side).spanning().contains(connectionPoint))
+			if(getNodeFace(getBounds(pNode), side).spanning().contains(connectionPoint))
 			{
 				return side;
 			}
 		}
-		return Direction.NORTH;
+		return NodeSide.NORTH;
 	}
 	
 	/**
@@ -727,9 +718,9 @@ public class Layouter
 	 * @pre pEdge.getEnd() == pEndNode
 	 * @pre EdgePriority.isSegmented(priorityOf(pEdge));
 	 */
-	private int verticalDistanceToNode(Node pEndNode, Edge pEdge, Direction pEdgeDirection) 
+	private int verticalDistanceToNode(Node pEndNode, Edge pEdge, NodeSide pEdgeDirection) 
 	{
-		assert pEdgeDirection == Direction.NORTH || pEdgeDirection == Direction.SOUTH;	
+		assert pEdgeDirection.isNorthSouth();	
 		assert EdgePriority.isSegmented(priorityOf(pEdge));
 		assert storageContains(pEdge);
 		return Math.abs(getStoredEdgePath(pEdge).getPointByIndex(1).getY() - pEndNode.position().getY());
@@ -744,9 +735,9 @@ public class Layouter
 	 * @pre pEdgeDirection == Direction.EAST || PEdgeDirection == Direction.WEST
 	 * @pre EdgePriority.isSegmented(priorityOf(pEdge));
 	 */
-	private int horizontalDistanceToNode(Node pEndNode, Edge pEdge, Direction pEdgeDirection) 
+	private int horizontalDistanceToNode(Node pEndNode, Edge pEdge, NodeSide pEdgeDirection) 
 	{
-		assert pEdgeDirection == Direction.EAST || pEdgeDirection == Direction.WEST;
+		assert pEdgeDirection.isEastWest();
 		assert EdgePriority.isSegmented(priorityOf(pEdge));
 		assert storageContains(pEdge);
 		return Math.abs(getStoredEdgePath(pEdge).getPointByIndex(1).getX() - pEndNode.position().getX());
@@ -759,23 +750,22 @@ public class Layouter
 	 * @param pDirection the direction used to compare pPoints
 	 * @return the Point which which maximizes pDirection
 	 * @pre pPoints.size() > 0
-	 * @pre pEdgeDirection.iscardinal()
 	 */
-	private Point getClosestPoint(Collection<Point> pPoints, Direction pDirection) 
+	private Point getClosestPoint(Collection<Point> pPoints, NodeSide pDirection) 
 	{
 		assert pPoints.size() > 0;
-		assert pDirection!=null && pDirection.isCardinal();
-		if (pDirection == Direction.NORTH)
+		assert pDirection!=null;
+		if( pDirection == NodeSide.NORTH)
 		{//Then return the point with the smallest Y-coordinate
 			return pPoints.stream()
 							.min((p1, p2)->Integer.compare(p1.getY(), p2.getY())).orElseGet(null);
 		}
-		else if (pDirection == Direction.SOUTH) 
+		else if( pDirection == NodeSide.SOUTH) 
 		{//Then return the point with the the largest Y-coordinate
 			return pPoints.stream()
 						.max((p1, p2) -> Integer.compare(p1.getY(), p2.getY())).orElseGet(null);
 		}
-		else if (pDirection == Direction.EAST)
+		else if (pDirection == NodeSide.EAST)
 		{//Then return the point with the largest X-coordinate
 			return pPoints.stream()
 				.max((p1, p2)-> Integer.compare(p1.getX() , p2.getX())).orElseGet(null);
@@ -876,14 +866,13 @@ public class Layouter
 	 *     of the center point of pCommonNode. False otherwise.
 	 * @pre pAttachedSide.isCardinal()
 	 */
-	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, Direction pAttachedSide)
+	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, NodeSide pAttachedSide)
 	{
-		assert pAttachedSide.isCardinal();
 		//Compare positions of pNode1 and pNode2 to the position of pCommonNode
 		Point node1Center = getBounds(pNode1).getCenter();
 		Point node2Center = getBounds(pNode2).getCenter();
 		Point commonNodeCenter = getBounds(pCommonNode).getCenter();
-		if (pAttachedSide == Direction.NORTH || pAttachedSide == Direction.SOUTH)//then compare X-coordinates
+		if(pAttachedSide.isNorthSouth())//then compare X-coordinates
 		{
 			return node1Center.getX() <= commonNodeCenter.getX() && node2Center.getX() <= commonNodeCenter.getX() ||
 					node1Center.getX() >= commonNodeCenter.getX() && node2Center.getX() >= commonNodeCenter.getX();
@@ -902,17 +891,15 @@ public class Layouter
 	 * @param pEdge the edge of interest
 	 * @return the Point where pEdge connects to pNode
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode	
-	 * @pre pAttachmentSide.isCardinal()
 	 */
-	private Point getConnectionPoint(Node pNode, Edge pEdge, Direction pAttachmentSide)
+	private Point getConnectionPoint(Node pNode, Edge pEdge, NodeSide pAttachmentSide)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;	
-		assert pAttachmentSide.isCardinal();
 		Line faceOfNode = getNodeFace(getBounds(pNode), pAttachmentSide);
 		//North and South node sides have connection points: -4 ...0... +4
 		//East and West node sides have connection points: -2 ...0... +2
 		int maxIndex = 4; 
-		if (pAttachmentSide == Direction.EAST || pAttachmentSide == Direction.WEST)
+		if( pAttachmentSide.isEastWest() )
 		{
 			maxIndex = 2; 
 		}
@@ -923,7 +910,7 @@ public class Layouter
 		{
 			int ordinal = 4 + (indexSign * offset);
 			NodeIndex index = NodeIndex.values()[ordinal];
-			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide.toNodeSide()); // TODO Convert pAttachmentSide to NodeSide
+			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide); 
 			if (classDiagramViewerFor(pEdge).connectionPointAvailableInStorage(indexPoint))
 			{
 				return indexPoint;
@@ -931,7 +918,7 @@ public class Layouter
 		}
 		//If no connection point was available, return the point at NodeIndex MINUS_FOUR or PLUS_FOUR	
 		int maxOrdinal = 4 + ( maxIndex * indexSign );
-		return NodeIndex.values()[maxOrdinal].toPoint(faceOfNode, pAttachmentSide.toNodeSide()); // TODO Convert pAttachmentSide to NodeSide
+		return NodeIndex.values()[maxOrdinal].toPoint(faceOfNode, pAttachmentSide); 
 	}
 	
 	/**
@@ -973,9 +960,8 @@ public class Layouter
 	 * @param pSideOfNode the cardinal direction describing the side of pNode where pEdge attaches
 	 * @return the index sign (-1 or 1) describing the attachment of pEdge onto pNode.
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
-	 * @pre pSideOfNode.isCardinal()
 	 */
-	private int getIndexSign(Edge pEdge, Node pNode, Direction pSideOfNode)
+	private int getIndexSign(Edge pEdge, Node pNode, NodeSide pSideOfNode)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
 		//Check whether there are any stored edges which are connected to both pEdge.getStart() and pEdge.getEnd()
@@ -1000,14 +986,12 @@ public class Layouter
 	 * @return the index sign (-1 or 1) describing the attachment of pEdge onto pNode.
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
 	 * @pre getOtherNode(pEdge, pNode).equals(pOtherNode)
-	 * @pre pSideOfNode.isCardinal()
 	 */
-	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, Direction pSideOfNode)
+	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, NodeSide pSideOfNode)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
-		assert pSideOfNode.isCardinal();
-		if (pSideOfNode == Direction.NORTH || pSideOfNode == Direction.SOUTH) //then compare X-coordinates
+		if( pSideOfNode.isNorthSouth() ) //then compare X-coordinates
 		{
 			if (NodeViewerRegistry.getBounds(pNode).getCenter().getX() <=  NodeViewerRegistry.getBounds(pOtherNode).getCenter().getX())
 			{
@@ -1035,27 +1019,26 @@ public class Layouter
 	/**
 	 * Gets a line representing the pSideOfNode side of pNode. 
 	 * @param pNode the node of interest
-	 * @param pSideOfNode the desired side of pNode
+	 * @param pNodeSide the desired side of pNode
 	 * @return a line spanning the pSideOfNode side of pNode
-	 * @pre pNodeBounds != null
-	 * @pre pSideOfNode.isCardinal()
+	 * @pre pNodeBounds != null && pNodeSide != null
 	 */
-	private Line getNodeFace(Rectangle pNodeBounds, Direction pSideOfNode)
+	private Line getNodeFace(Rectangle pNodeBounds, NodeSide pNodeSide)
 	{
-		assert pNodeBounds !=null && pSideOfNode.isCardinal();
+		assert pNodeBounds !=null && pNodeSide != null;
 		Point topLeft = pNodeBounds.getOrigin();
 		Point topRight = new Point(pNodeBounds.getMaxX(), pNodeBounds.getY());
 		Point bottomLeft = new Point(pNodeBounds.getX(), pNodeBounds.getMaxY());
 		Point bottomRight = new Point(pNodeBounds.getMaxX(), pNodeBounds.getMaxY());
-		if (pSideOfNode == Direction.SOUTH)
+		if(pNodeSide == NodeSide.SOUTH)
 		{
 			return new Line(bottomLeft, bottomRight);
 		}
-		else if (pSideOfNode == Direction.NORTH)
+		else if (pNodeSide == NodeSide.NORTH)
 		{
 			return new Line(topLeft, topRight);
 		}
-		else if (pSideOfNode == Direction.WEST)
+		else if (pNodeSide == NodeSide.WEST)
 		{
 			return new Line(topLeft, bottomLeft);
 		}
@@ -1080,16 +1063,16 @@ public class Layouter
 	}
 	
 	/**
-	 * Gets the Direction describing the side of pNode that pEdge should be attached to.
+	 * Gets the side of pNode that pEdge should be attached to.
 	 * @param pEdge the edge of interest
 	 * @param pNode the node of interest
-	 * @return the cardinal side of pNode where pEdge should be attached.
+	 * @return The side of pNode where pEdge should be attached.
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode 
 	 */
-	private Direction attachedSide(Edge pEdge, Node pNode)
+	private NodeSide attachedSide(Edge pEdge, Node pNode)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		Direction startAttachedSide;
+		NodeSide startAttachedSide;
 		/* If there is an Edge in storage which is also attached to pEdge.getStart() and pEdge.getEnd()
 		  then the attachment side of pEdge onto pNode must be the same as the attachment side of the 
 		  stored node onto pNode. (These are referred to as "shared-node edges").
@@ -1125,10 +1108,10 @@ public class Layouter
 	 * Gets the cardinal direction describing the side of pEdge's start node on which pEdge should attach.
 	 * pEdge should connect to the East or West sides unless its nodes are directly above or below each other. 
 	 * @param pEdge the edge of interest
-	 * @return the cardinal side of pNode that pEdge should be attached to
+	 * @return the side of pNode that pEdge should be attached to
 	 * @pre pEdge != null
 	 */
-	private Direction attachedSidePreferringEastWest(Edge pEdge)
+	private NodeSide attachedSidePreferringEastWest(Edge pEdge)
 	{
 		assert pEdge != null;
 		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
@@ -1151,7 +1134,7 @@ public class Layouter
 	 * @param pEdge the edge of interest
 	 * @return the North/South side of pEdge's start node which pEdge should attach to, unless pEdge's nodes are directly beside each other.
 	 */
-	private Direction attachedSidePreferringNorthSouth(Edge pEdge)
+	private NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		assert pEdge!= null;
 		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
@@ -1174,11 +1157,11 @@ public class Layouter
 	 * @param pEdge the edge of interest
 	 * @return the attachment side of pEdge 
 	 */
-	private Direction northSouthSideUnlessTooClose(Edge pEdge)
+	private NodeSide northSouthSideUnlessTooClose(Edge pEdge)
 	{
-		Direction preferredSide = northOrSouthSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
+		NodeSide preferredSide = northOrSouthSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
 				NodeViewerRegistry.getBounds(pEdge.getEnd()));
-		if (nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
+		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
 			return eastOrWestSide(NodeViewerRegistry.getBounds(pEdge.getStart()), NodeViewerRegistry.getBounds(pEdge.getEnd()));
@@ -1195,11 +1178,11 @@ public class Layouter
 	 * @param pEdge the edge of interest
 	 * @return the attachment side of pEdge 
 	 */
-	private Direction eastWestSideUnlessTooClose(Edge pEdge)
+	private NodeSide eastWestSideUnlessTooClose(Edge pEdge)
 	{
-		Direction preferredSide = eastOrWestSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
+		NodeSide preferredSide = eastOrWestSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
 				NodeViewerRegistry.getBounds(pEdge.getEnd()));
-		if (nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
+		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
 			return northOrSouthSide(NodeViewerRegistry.getBounds(pEdge.getStart()), NodeViewerRegistry.getBounds(pEdge.getEnd()));
@@ -1218,16 +1201,16 @@ public class Layouter
 	 * @return the side of pBounds (either North or South) where an edge connecting pBounds and pOtherBounds should attach.
 	 * @pre pBounds != null && pOtherBounds != null
 	 */
-	private Direction northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private NodeSide northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds != null && pOtherBounds != null;
 		if (pOtherBounds.getCenter().getY() < pBounds.getCenter().getY())
 		{
-			return Direction.NORTH;
+			return NodeSide.NORTH;
 		}
 		else
 		{
-			return Direction.SOUTH;
+			return NodeSide.SOUTH;
 		}
 	}
 	
@@ -1239,16 +1222,16 @@ public class Layouter
 	 * @return the side of pBounds (either East or West) where an edge connecting pBounds and pOtherBounds should attach.
 	 * @pre pBounds !=null && pOtherBounds !=null
 	 */
-	private Direction eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private NodeSide eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		assert pBounds !=null && pOtherBounds !=null;
-		if (pOtherBounds.getCenter().getX() < pBounds.getCenter().getX() )
+		if(pOtherBounds.getCenter().getX() < pBounds.getCenter().getX() )
 		{
-			return Direction.WEST;
+			return NodeSide.WEST;
 		}
 		else
 		{
-			return Direction.EAST;
+			return NodeSide.EAST;
 					
 		}
 	}
@@ -1257,31 +1240,29 @@ public class Layouter
 	 * Returns whether the other node attached to pEdge is closer to pNode than pEdge's middle segment. 
 	 * @param pEdge the edge of interest
 	 * @param pNode a node attached to pEdge 
-	 * @param pAttachedSide the cardinal direction describing the side of pNode where pEdge is attached
+	 * @param pAttachedSide the side of pNode where pEdge is attached
 	 * @return true if pEdge's other node is closer to pNode than pEdge's middle segment is, false otherwise.
 	 * @pre pEdge.getStart() == pNode || pEdge.getEnd() == pNode
-	 * @pre pAttachedSide.isCardinal()
 	 */
-	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, Direction pAttachedSide)
+	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, NodeSide pAttachedSide)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		assert pAttachedSide.isCardinal();
 		Rectangle otherNodeBounds = NodeViewerRegistry.getBounds(getOtherNode(pEdge, pNode));
-		if (pAttachedSide == Direction.NORTH)
+		if(pAttachedSide == NodeSide.NORTH)
 		{ //Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
 					.filter(edge -> otherNodeBounds.getY() < getStoredEdgePath(edge).getPointByIndex(1).getY() - TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
-		else if (pAttachedSide == Direction.SOUTH)
+		else if(pAttachedSide == NodeSide.SOUTH)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
 					.filter(edge -> otherNodeBounds.getMaxY() > getStoredEdgePath(edge).getPointByIndex(1).getY() + TEN_PIXELS)
 					.collect(toList())
 					.isEmpty();
 		}
-		else if (pAttachedSide == Direction.EAST)
+		else if(pAttachedSide == NodeSide.EAST)
 		{//Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
 					.filter(edge -> otherNodeBounds.getMaxX() > getStoredEdgePath(edge).getPointByIndex(1).getX() - TEN_PIXELS)

@@ -25,7 +25,7 @@ package ca.mcgill.cs.jetuml.viewers;
  */
 public enum NodeSide 
 {
-	NORTH, EAST, SOUTH, WEST;
+	NORTH, SOUTH, EAST, WEST;
 	
 	/**
 	 * @return True if this is the North or South side.
@@ -41,5 +41,29 @@ public enum NodeSide
 	public boolean isEastWest()
 	{
 		return this == EAST || this == WEST;
+	}
+	
+	/**
+	 * @return The side opposite the current side on
+	 *     the rectangle.
+	 */
+	public NodeSide mirrored()
+	{
+		if( this == NORTH )
+		{
+			return SOUTH;
+		}
+		else if( this == SOUTH)
+		{
+			return NORTH;
+		}
+		else if( this == EAST)
+		{
+			return WEST;
+		}
+		else 
+		{
+			return EAST;
+		}
 	}
 }
