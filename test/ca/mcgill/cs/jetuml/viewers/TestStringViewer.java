@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package ca.mcgill.cs.jetuml.views;
+package ca.mcgill.cs.jetuml.viewers;
 
 import static ca.mcgill.cs.jetuml.testutils.GeometryUtils.osDependent;
 import static ca.mcgill.cs.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import ca.mcgill.cs.jetuml.application.UserPreferences;
 import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
 import ca.mcgill.cs.jetuml.geom.Dimension;
-import ca.mcgill.cs.jetuml.viewers.StringViewer;
 import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
 import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
 
