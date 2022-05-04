@@ -25,13 +25,12 @@ public enum NodeIndex
 	 * @return a point on pNodeFace at the pNodeIndex position
 	 * @pre pNodeFace != null
 	 * @pre pAttachmentSide.isCardinal()
-	 * @pre pNodeIndex != null
 	 */
-	public static Point toPoint(Line pNodeFace, Direction pAttachmentSide, NodeIndex pNodeIndex)
+	public Point toPoint(Line pNodeFace, Direction pAttachmentSide)
 	{
 		//determine the offset from the center point. 
 		float spacing = spaceBetweenConnectionPoints(pNodeFace, pAttachmentSide);
-		int offset = (int) ((pNodeIndex.ordinal() - 4) * spacing);
+		int offset = (int) ((ordinal() - 4) * spacing);
 		
 		//Determine center point and add the offset to the center point
 		Point center;

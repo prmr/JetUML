@@ -33,36 +33,36 @@ public class TestNodeIndex
 	public void testToPoint_north()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(100, 0));
-		assertEquals(new Point(30, 0), NodeIndex.toPoint(nodeFace, Direction.NORTH, NodeIndex.MINUS_TWO));
-		assertEquals(new Point(50, 0), NodeIndex.toPoint(nodeFace, Direction.NORTH, NodeIndex.ZERO));
-		assertEquals(new Point(90, 0), NodeIndex.toPoint(nodeFace, Direction.NORTH, NodeIndex.PLUS_FOUR));
+		assertEquals(new Point(30, 0), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.NORTH));
+		assertEquals(new Point(50, 0), NodeIndex.ZERO.toPoint(nodeFace, Direction.NORTH));
+		assertEquals(new Point(90, 0), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Direction.NORTH));
 	}
 	
 	@Test
 	public void testToPoint_south()
 	{
 		Line nodeFace = new Line(new Point(0, 60), new Point(100, 60));
-		assertEquals(new Point(30, 60), NodeIndex.toPoint(nodeFace, Direction.SOUTH, NodeIndex.MINUS_TWO));
-		assertEquals(new Point(50, 60), NodeIndex.toPoint(nodeFace, Direction.SOUTH, NodeIndex.ZERO));
-		assertEquals(new Point(90, 60), NodeIndex.toPoint(nodeFace, Direction.SOUTH, NodeIndex.PLUS_FOUR));
+		assertEquals(new Point(30, 60), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.SOUTH));
+		assertEquals(new Point(50, 60), NodeIndex.ZERO.toPoint(nodeFace, Direction.SOUTH));
+		assertEquals(new Point(90, 60), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Direction.SOUTH));
 	}
 	
 	@Test
 	public void testToPoint_west()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(0, 60));
-		assertEquals(new Point(0, 10), NodeIndex.toPoint(nodeFace, Direction.WEST, NodeIndex.MINUS_TWO));
-		assertEquals(new Point(0, 30), NodeIndex.toPoint(nodeFace, Direction.WEST, NodeIndex.ZERO));
-		assertEquals(new Point(0, 40), NodeIndex.toPoint(nodeFace, Direction.WEST, NodeIndex.PLUS_ONE));
+		assertEquals(new Point(0, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.WEST));
+		assertEquals(new Point(0, 30), NodeIndex.ZERO.toPoint(nodeFace, Direction.WEST));
+		assertEquals(new Point(0, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Direction.WEST));
 	}
 	
 	@Test
 	public void testToPoint_east()
 	{
 		Line nodeFace = new Line(new Point(100, 0), new Point(100, 60));
-		assertEquals(new Point(100, 10), NodeIndex.toPoint(nodeFace, Direction.EAST, NodeIndex.MINUS_TWO));
-		assertEquals(new Point(100, 30), NodeIndex.toPoint(nodeFace, Direction.EAST, NodeIndex.ZERO));
-		assertEquals(new Point(100, 40), NodeIndex.toPoint(nodeFace, Direction.EAST, NodeIndex.PLUS_ONE));
+		assertEquals(new Point(100, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.EAST));
+		assertEquals(new Point(100, 30), NodeIndex.ZERO.toPoint(nodeFace, Direction.EAST));
+		assertEquals(new Point(100, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Direction.EAST));
 	}
 	
 	@Test
