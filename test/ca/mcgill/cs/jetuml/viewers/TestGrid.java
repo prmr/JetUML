@@ -29,7 +29,37 @@ import ca.mcgill.cs.jetuml.geom.Point;
 public class TestGrid
 {
 	@Test
-	public void testSnapped_ToTopLeft()
+	void testSnappedHorizontally()
+	{
+		assertEquals(new Point(0,2), Grid.snappedHorizontally(new Point(0,2)));
+		assertEquals(new Point(0,2), Grid.snappedHorizontally(new Point(1,2)));
+		assertEquals(new Point(0,2), Grid.snappedHorizontally(new Point(2,2)));
+		assertEquals(new Point(0,2), Grid.snappedHorizontally(new Point(3,2)));
+		assertEquals(new Point(0,2), Grid.snappedHorizontally(new Point(4,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(5,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(6,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(7,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(8,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(9,2)));
+		assertEquals(new Point(10,2), Grid.snappedHorizontally(new Point(10,2)));
+	}
+	
+	@Test
+	void testSnappedVertically()
+	{
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,8)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,9)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,10)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,11)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,12)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,13)));
+		assertEquals(new Point(2,10), Grid.snappedVertically(new Point(2,14)));
+		assertEquals(new Point(2,20), Grid.snappedVertically(new Point(2,15)));
+		assertEquals(new Point(2,20), Grid.snappedVertically(new Point(2,16)));
+	}
+	
+	@Test
+	void testSnapped_ToTopLeft()
 	{
 		assertEquals(new Point(0,0), Grid.snapped(new Point(0,0)));
 		assertEquals(new Point(0,0), Grid.snapped(new Point(0,1)));
@@ -46,7 +76,7 @@ public class TestGrid
 	}
 	
 	@Test
-	public void testToMultiple()
+	void testToMultiple()
 	{
 		assertEquals(0,Grid.toMultiple(0));
 		assertEquals(10,Grid.toMultiple(1));
@@ -72,7 +102,7 @@ public class TestGrid
 	}
 	
 	@Test
-	public void testSnapped_ToTopRight()
+	void testSnapped_ToTopRight()
 	{
 		assertEquals(new Point(0,0), Grid.snapped(new Point(0,4)));
 		assertEquals(new Point(0,10), Grid.snapped(new Point(0,5)));

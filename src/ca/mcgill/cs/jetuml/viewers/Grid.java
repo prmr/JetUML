@@ -96,6 +96,32 @@ public final class Grid
 	}
 	
 	/**
+	 * @param pPoint The point to snap.
+	 * @return A new point that corresponds to pPoint, but with its x-coordinate
+	 *     snapped to the grid.
+	 * @pre pPoint != null
+	 */
+	public static Point snappedHorizontally(Point pPoint)
+	{
+		assert pPoint != null;
+		Point snapped = snapped(pPoint);
+		return new Point(snapped.getX(), pPoint.getY());
+	}
+	
+	/**
+	 * @param pPoint The point to snap.
+	 * @return A new point that corresponds to pPoint, but with its y-coordinate
+	 *     snapped to the grid.
+	 * @pre pPoint != null
+	 */
+	public static Point snappedVertically(Point pPoint)
+	{
+		assert pPoint != null;
+		Point snapped = snapped(pPoint);
+		return new Point(pPoint.getX(), snapped.getY());
+	}
+	
+	/**
 	 * @param pCoordinate A coordinate to place on the grid.
 	 * @return The next int that lies on the grid (i.e., is a multiple of the grid size).
 	 * @pre pCoordinate >= 0;
