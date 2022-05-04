@@ -1,8 +1,8 @@
 package ca.mcgill.cs.jetuml.viewers.edges;
 
-import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.NodeSide;
 
 /**
  * Represents indexed positions on the faces of nodes where edges can attach.
@@ -18,15 +18,13 @@ public enum NodeIndex
 	private static final int NUM_SPACES_EW = 6;
 	
 	/**
-	 * Returns a point on pNodeFace at the pNodeIndex position.
+	 * Returns a point on pNodeFace at the position represented by this index.
 	 * @param pNodeFace a Line representing the side of pNode where the point is needed.
-	 * @param pAttatchmentSide the side of the node of interest
-	 * @param pNodeIndex the indexed position on pNodeFace
+	 * @param pAttachmentSide the side of the node of interest
 	 * @return a point on pNodeFace at the pNodeIndex position
 	 * @pre pNodeFace != null
-	 * @pre pAttachmentSide.isCardinal()
 	 */
-	public Point toPoint(Line pNodeFace, Direction pAttachmentSide)
+	public Point toPoint(Line pNodeFace, NodeSide pAttachmentSide)
 	{
 		//determine the offset from the center point. 
 		float spacing = spaceBetweenConnectionPoints(pNodeFace, pAttachmentSide);
@@ -34,7 +32,7 @@ public enum NodeIndex
 		
 		//Determine center point and add the offset to the center point
 		Point center;
-		if (pAttachmentSide == Direction.NORTH || pAttachmentSide == Direction.SOUTH)
+		if(pAttachmentSide.isNorthSouth())
 		{
 			center = new Point(((pNodeFace.getX2() - pNodeFace.getX1())/2) + pNodeFace.getX1(), pNodeFace.getY1());
 			return new Point(center.getX() + offset, center.getY());
@@ -51,16 +49,14 @@ public enum NodeIndex
 	 * This allows the space between NodeIndex connection points
 	 *  to increase proportionally with the width or height of the node. 
 	 * @param pNodeFace a line representing the pAttachmentSide of a node
-	 * @param pAttachmentSide a cardinal direction describing a side of a node. 
+	 * @param pAttachmentSide A side of a node. 
 	 * @return the spacing in between connection points on pNodeFace. 
-	 * @pre pNodeFace != null
-	 * @pre pAttachmentSide.isCardinal()
+	 * @pre pNodeFace != null && pAttachmentSide != null
 	 */
-	private static float spaceBetweenConnectionPoints(Line pNodeFace, Direction pAttachmentSide)
+	private static float spaceBetweenConnectionPoints(Line pNodeFace, NodeSide pAttachmentSide)
 	{
-		assert pNodeFace != null;
-		assert pAttachmentSide.isCardinal();
-		if (pAttachmentSide == Direction.NORTH || pAttachmentSide == Direction.SOUTH)
+		assert pNodeFace != null && pAttachmentSide != null;
+		if(pAttachmentSide.isNorthSouth())
 		{
 			return (float) (Math.abs((pNodeFace.getX2() - pNodeFace.getX1()) / NUM_SPACES_NS));
 		}

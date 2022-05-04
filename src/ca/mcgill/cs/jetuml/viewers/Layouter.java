@@ -923,7 +923,7 @@ public class Layouter
 		{
 			int ordinal = 4 + (indexSign * offset);
 			NodeIndex index = NodeIndex.values()[ordinal];
-			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide);
+			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide.toNodeSide()); // TODO Convert pAttachmentSide to NodeSide
 			if (classDiagramViewerFor(pEdge).connectionPointAvailableInStorage(indexPoint))
 			{
 				return indexPoint;
@@ -931,7 +931,7 @@ public class Layouter
 		}
 		//If no connection point was available, return the point at NodeIndex MINUS_FOUR or PLUS_FOUR	
 		int maxOrdinal = 4 + ( maxIndex * indexSign );
-		return NodeIndex.values()[maxOrdinal].toPoint(faceOfNode, pAttachmentSide);
+		return NodeIndex.values()[maxOrdinal].toPoint(faceOfNode, pAttachmentSide.toNodeSide()); // TODO Convert pAttachmentSide to NodeSide
 	}
 	
 	/**

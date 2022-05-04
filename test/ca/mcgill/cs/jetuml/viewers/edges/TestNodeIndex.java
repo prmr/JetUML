@@ -2,16 +2,19 @@ package ca.mcgill.cs.jetuml.viewers.edges;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import ca.mcgill.cs.jetuml.diagram.Diagram;
 import ca.mcgill.cs.jetuml.diagram.DiagramType;
 import ca.mcgill.cs.jetuml.diagram.Node;
 import ca.mcgill.cs.jetuml.diagram.nodes.ClassNode;
-import ca.mcgill.cs.jetuml.geom.Direction;
 import ca.mcgill.cs.jetuml.geom.Line;
 import ca.mcgill.cs.jetuml.geom.Point;
+import ca.mcgill.cs.jetuml.viewers.NodeSide;
 
 /**
  * Test for the NodeIndex methods. 
@@ -33,36 +36,36 @@ public class TestNodeIndex
 	public void testToPoint_north()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(100, 0));
-		assertEquals(new Point(30, 0), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.NORTH));
-		assertEquals(new Point(50, 0), NodeIndex.ZERO.toPoint(nodeFace, Direction.NORTH));
-		assertEquals(new Point(90, 0), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Direction.NORTH));
+		assertEquals(new Point(30, 0), NodeIndex.MINUS_TWO.toPoint(nodeFace, NodeSide.NORTH));
+		assertEquals(new Point(50, 0), NodeIndex.ZERO.toPoint(nodeFace, NodeSide.NORTH));
+		assertEquals(new Point(90, 0), NodeIndex.PLUS_FOUR.toPoint(nodeFace, NodeSide.NORTH));
 	}
 	
 	@Test
 	public void testToPoint_south()
 	{
 		Line nodeFace = new Line(new Point(0, 60), new Point(100, 60));
-		assertEquals(new Point(30, 60), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.SOUTH));
-		assertEquals(new Point(50, 60), NodeIndex.ZERO.toPoint(nodeFace, Direction.SOUTH));
-		assertEquals(new Point(90, 60), NodeIndex.PLUS_FOUR.toPoint(nodeFace, Direction.SOUTH));
+		assertEquals(new Point(30, 60), NodeIndex.MINUS_TWO.toPoint(nodeFace, NodeSide.SOUTH));
+		assertEquals(new Point(50, 60), NodeIndex.ZERO.toPoint(nodeFace, NodeSide.SOUTH));
+		assertEquals(new Point(90, 60), NodeIndex.PLUS_FOUR.toPoint(nodeFace, NodeSide.SOUTH));
 	}
 	
 	@Test
 	public void testToPoint_west()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(0, 60));
-		assertEquals(new Point(0, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.WEST));
-		assertEquals(new Point(0, 30), NodeIndex.ZERO.toPoint(nodeFace, Direction.WEST));
-		assertEquals(new Point(0, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Direction.WEST));
+		assertEquals(new Point(0, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, NodeSide.WEST));
+		assertEquals(new Point(0, 30), NodeIndex.ZERO.toPoint(nodeFace, NodeSide.WEST));
+		assertEquals(new Point(0, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, NodeSide.WEST));
 	}
 	
 	@Test
 	public void testToPoint_east()
 	{
 		Line nodeFace = new Line(new Point(100, 0), new Point(100, 60));
-		assertEquals(new Point(100, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Direction.EAST));
-		assertEquals(new Point(100, 30), NodeIndex.ZERO.toPoint(nodeFace, Direction.EAST));
-		assertEquals(new Point(100, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, Direction.EAST));
+		assertEquals(new Point(100, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, NodeSide.EAST));
+		assertEquals(new Point(100, 30), NodeIndex.ZERO.toPoint(nodeFace, NodeSide.EAST));
+		assertEquals(new Point(100, 40), NodeIndex.PLUS_ONE.toPoint(nodeFace, NodeSide.EAST));
 	}
 	
 	@Test
@@ -70,8 +73,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Direction.NORTH));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Direction.NORTH));
+		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, NodeSide.NORTH));
+		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, NodeSide.NORTH));
 	}
 	
 	@Test
@@ -79,8 +82,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Direction.SOUTH));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Direction.SOUTH));
+		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, NodeSide.SOUTH));
+		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, NodeSide.SOUTH));
 	}
 	
 	@Test
@@ -88,8 +91,8 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Direction.EAST));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Direction.EAST));
+		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, NodeSide.EAST));
+		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, NodeSide.EAST));
 	}
 	
 	@Test
@@ -97,15 +100,15 @@ public class TestNodeIndex
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
-		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, Direction.WEST));
-		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, Direction.WEST));
+		assertEquals(10.0, spaceBetweenConnectionPoints(regularSize, NodeSide.WEST));
+		assertEquals(20.0, spaceBetweenConnectionPoints(largerSize, NodeSide.WEST));
 	}
 	
-	private static float spaceBetweenConnectionPoints(Line pNodeFace, Direction pAttachmentSide)
+	private static float spaceBetweenConnectionPoints(Line pNodeFace, NodeSide pAttachmentSide)
 	{
 		try
 		{
-			Method method = NodeIndex.class.getDeclaredMethod("spaceBetweenConnectionPoints", Line.class, Direction.class);
+			Method method = NodeIndex.class.getDeclaredMethod("spaceBetweenConnectionPoints", Line.class, NodeSide.class);
 			method.setAccessible(true);
 			return (float) method.invoke(null, pNodeFace, pAttachmentSide);
 		}

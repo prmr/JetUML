@@ -27,6 +27,7 @@ import java.util.Map;
 
 import ca.mcgill.cs.jetuml.annotations.Flyweight;
 import ca.mcgill.cs.jetuml.annotations.Immutable;
+import ca.mcgill.cs.jetuml.viewers.NodeSide;
 
 /**
  * This class describes an immutable direction in the 2D plane. The
@@ -107,6 +108,28 @@ public final class Direction
 	public Direction rotatedBy(int pAngle)
 	{
 		return new Direction((aAngleInDegrees + pAngle) % DEGREES_IN_CIRCLE);
+	}
+	
+	// TODO Remove this
+	public NodeSide toNodeSide()
+	{
+		assert isCardinal();
+		if( this == NORTH )
+		{
+			return NodeSide.NORTH;
+		}
+		else if( this == SOUTH )
+		{
+			return NodeSide.SOUTH;
+		}
+		else if( this == EAST )
+		{
+			return NodeSide.EAST;
+		}
+		else
+		{
+			return NodeSide.WEST;
+		}
 	}
 	
 	/**
