@@ -35,6 +35,14 @@ Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javaf
 javaw --module-path "C:\local\Java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.4.jar
 ```
 
+## Package Managers
+
+Some systems may have a pre-packaged version of JetUML available.
+
+| System | Link | Maintainers |
+|--------|------|-------------|
+| Arch   | [aur.archlinux.org/packages/jetuml](https://aur.archlinux.org/packages/jetuml) | Community   |
+
 ## Legacy
 
 Versions prior to 2.0 will run as a self-executing jar on any version of Java. Versions 2.0 and higher require JavaFX. They will run as a self-executing jar on Java 8 only. To run versions 2.0-2.6 on Java 11 and later, follow the instructions for [thin jar](#thin-jar), above.
