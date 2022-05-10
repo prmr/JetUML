@@ -26,10 +26,11 @@ Starting with Release 3.0 JetUML needs to be packaged as a self-contained applic
 
 ### Windows
 
-Run this from the git repo root (where `FXMODS` points to the JavaFX mods directory)
+Run this from the git repo root (where `FXMODS` points to the JavaFX mods directory, e.g.,):
 
 ```
-jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.0 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
+set FXMODS="C:\local\Java\javafx-jmods-17.0.2"
+jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.4 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
 ```
 
 ### Mac
@@ -38,7 +39,7 @@ jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/
 Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
 
 ```
-$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.0 --module jetuml/ca.mcgill.cs.jetuml.JetUML --type pkg --icon docs/JetUML.icns
+$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.4 --module jetuml/ca.mcgill.cs.jetuml.JetUML --type pkg --icon docs/JetUML.icns
 ```
 
 ### Linux

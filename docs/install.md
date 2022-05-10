@@ -7,7 +7,7 @@
 Starting with Release 3.0, JetUML is distributed in two formats:
 
 * **Self-contained application:** A large OS-specific download that must be installed on your system, but that does not require the Java platform.
-* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 14 or later *and* JavaFX 14 or later installed. 
+* **Thin Jar:** A small Java archive (jar) file that does _not_ include any of the dependencies. This option is available for experienced users who just want to download a tiny file and run it from the command-line. The thin jar is OS-independent but requires to have Java 17 or later *and* JavaFX 17 or later installed. 
 
 ### Self-Contained Application
 
@@ -15,9 +15,11 @@ Starting with Release 3.0, JetUML is distributed in two formats:
 
 * Run or install the file as customary on the appropriate operating system. You will be asked where to extract the application and a shortcut will be added to the desktop. 
 
+* If you are upgrading from a previous version, you can install the new application on top of the older version. See the [compatibility guide](compatibility) for information on loading diagram saved using older versions of JetUML.
+
 ### Thin Jar
 
-*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 14 or above running on your system.* 
+*This format requires that you have both [Java](https://openjdk.java.net/) and [JavaFX](https://openjfx.io/) version 17 or above running on your system.* 
 
 Download file `JetUML-<Version>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. 
 
@@ -30,7 +32,7 @@ javaw --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.sw
 Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
 
 ```shell
-javaw --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.0.jar
+javaw --module-path "C:\local\Java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.4.jar
 ```
 
 ## Legacy
