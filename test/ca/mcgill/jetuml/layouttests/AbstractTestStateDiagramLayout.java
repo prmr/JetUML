@@ -25,11 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.CircularStateNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.StateNodeViewer;
+import org.jetuml.diagram.Node;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.nodes.CircularStateNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.StateNodeViewer;
 
 /**
  * Superclass for classes that test the layout of a state diagram.

@@ -23,8 +23,8 @@ package ca.mcgill.jetuml.layouttests;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.diagram.Node;
+import org.jetuml.viewers.nodes.ObjectNodeViewer;
 
 /**
  * Superclass for classes that test the layout of an object diagram.

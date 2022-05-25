@@ -30,7 +30,7 @@ Run this from the git repo root (where `FXMODS` points to the JavaFX mods direct
 
 ```
 set FXMODS="C:\local\Java\javafx-jmods-17.0.2"
-jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.4 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
+jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --icon docs\JetUML.ico --win-shortcut --win-dir-chooser
 ```
 
 ### Mac
@@ -39,7 +39,7 @@ jpackage --module-path %FXMODS%;bin\jetuml --add-modules jetuml --module jetuml/
 Run this from the git repo root (where `PATH_TO_FX_MODS` points to the JavaFX mods directory)
 
 ```
-$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.4 --module jetuml/ca.mcgill.cs.jetuml.JetUML --type pkg --icon docs/JetUML.icns
+$JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.4 --module jetuml/org.jetuml.JetUML --type pkg --icon docs/JetUML.icns
 ```
 
 ### Linux
@@ -47,7 +47,7 @@ $JAVA_HOME/bin/jpackage -n JetUML --module-path $PATH_TO_FX_MODS:bin/jetuml --ad
 After compiling the project, run this from the git repo root (where FXMODS points to the JavaFX mods directory) 
 
 ``` 
-jpackage --module-path %FXMODS%:bin/jetuml --add-modules jetuml --module jetuml/ca.mcgill.cs.jetuml.JetUML --app-version 3.0 --icon docs/JetUML.ico 
+jpackage --module-path %FXMODS%:bin/jetuml --add-modules jetuml --module jetuml/org.jetuml.JetUML --app-version 3.0 --icon docs/JetUML.ico 
 ```
 
 To build JetUML from the command line, after downloading the necessary JUnit 5 dependencies and placing them into a `junit` folder at the root of the git repo, run the following: 
@@ -68,7 +68,7 @@ cp --parent `find -name "*.properties"` ../bin/jetuml cd ..
 To test that the files were correctly compiled, run the following: 
 
 ``` 
-java -p %FXMODS%:bin/jetuml --add-modules javafx.controls,javafx.swing,jetuml ca.mcgill.cs.jetuml.JetUML 
+java -p %FXMODS%:bin/jetuml --add-modules javafx.controls,javafx.swing,jetuml org.jetuml.JetUML 
 ```
 
 ### Runtime image
@@ -77,7 +77,7 @@ Normally it is not necessary to create a run-time image separately from the one 
 
 * To [build a run-time image](https://openjfx.io/openjfx-docs/#IDE-Eclipse), use the command `jlink --module-path %FXMODS%;bin\jetuml --add-modules=jetuml --output image` from the root of the git repo.
 
-* To run the image, do `image\bin\java -m jetuml/ca.mcgill.cs.jetuml.UMLEditor`. 
+* To run the image, do `image\bin\java -m jetuml/org.jetuml.UMLEditor`. 
 
 * Don't forget to move or delete the runtime image from the git repo.
 

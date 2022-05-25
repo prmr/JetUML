@@ -26,11 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.AbstractPackageNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.TypeNodeViewer;
+import org.jetuml.diagram.Node;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.TypeNodeViewer;
 
 /**
  * Superclass for classes that test the layout of a class diagram.

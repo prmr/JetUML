@@ -28,11 +28,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.nodes.CallNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.diagram.Node;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.nodes.CallNodeViewer;
+import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * Superclass for classes that test the layout of a sequence diagram.

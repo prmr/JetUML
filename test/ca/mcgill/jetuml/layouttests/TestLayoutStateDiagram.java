@@ -26,23 +26,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.jetuml.diagram.Edge;
+import org.jetuml.diagram.edges.NoteEdge;
+import org.jetuml.diagram.edges.StateTransitionEdge;
+import org.jetuml.diagram.nodes.FinalStateNode;
+import org.jetuml.diagram.nodes.InitialStateNode;
+import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.geom.Line;
+import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.edges.EdgeViewerRegistry;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.StateTransitionEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.FinalStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.InitialStateNode;
-import ca.mcgill.cs.jetuml.diagram.nodes.NoteNode;
-import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.geom.Point;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 
 /**
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.
@@ -77,7 +76,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 		"FinalStateNode, 640, 230"})
 	void testNodePositionByType(String pClassName, int pExpectedX, int pExpectedY)
 	{
-		String fullyQualifiedClassName = "ca.mcgill.cs.jetuml.diagram.nodes." + pClassName;
+		String fullyQualifiedClassName = "org.jetuml.diagram.nodes." + pClassName;
 		try 
 		{
 			verifyPosition(nodesByType(Class.forName(fullyQualifiedClassName)).get(0), pExpectedX, pExpectedY);

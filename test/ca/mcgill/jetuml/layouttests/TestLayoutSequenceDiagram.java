@@ -26,21 +26,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.jetuml.diagram.Edge;
+import org.jetuml.diagram.Node;
+import org.jetuml.diagram.PropertyName;
+import org.jetuml.diagram.edges.NoteEdge;
+import org.jetuml.diagram.edges.ReturnEdge;
+import org.jetuml.diagram.nodes.CallNode;
+import org.jetuml.geom.Line;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.edges.EdgeViewerRegistry;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.PropertyName;
-import ca.mcgill.cs.jetuml.diagram.edges.NoteEdge;
-import ca.mcgill.cs.jetuml.diagram.edges.ReturnEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.CallNode;
-import ca.mcgill.cs.jetuml.geom.Line;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.

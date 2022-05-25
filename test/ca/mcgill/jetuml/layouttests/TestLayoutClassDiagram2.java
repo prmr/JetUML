@@ -26,15 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.edges.EdgeViewerRegistry;
+import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.viewers.edges.EdgeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.AbstractPackageNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * This class tests that the layout of a manually-created diagram file corresponds to expectations.

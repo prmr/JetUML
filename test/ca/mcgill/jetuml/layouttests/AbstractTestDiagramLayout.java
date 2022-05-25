@@ -20,7 +20,7 @@
  *******************************************************************************/
 package ca.mcgill.jetuml.layouttests;
 
-import static ca.mcgill.cs.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -31,22 +31,21 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jetuml.application.UserPreferences;
+import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.Edge;
+import org.jetuml.diagram.Node;
+import org.jetuml.diagram.PropertyName;
+import org.jetuml.diagram.edges.SingleLabelEdge;
+import org.jetuml.diagram.nodes.NamedNode;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.persistence.PersistenceService;
+import org.jetuml.persistence.PersistenceTestUtils;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-
-import ca.mcgill.cs.jetuml.application.UserPreferences;
-import ca.mcgill.cs.jetuml.application.UserPreferences.IntegerPreference;
-import ca.mcgill.cs.jetuml.diagram.Diagram;
-import ca.mcgill.cs.jetuml.diagram.Edge;
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.PropertyName;
-import ca.mcgill.cs.jetuml.diagram.edges.SingleLabelEdge;
-import ca.mcgill.cs.jetuml.diagram.nodes.NamedNode;
-import ca.mcgill.cs.jetuml.geom.Rectangle;
-import ca.mcgill.cs.jetuml.persistence.PersistenceService;
-import ca.mcgill.cs.jetuml.persistence.PersistenceTestUtils;
-import ca.mcgill.cs.jetuml.viewers.nodes.NodeViewerRegistry;
-import ca.mcgill.cs.jetuml.viewers.nodes.NoteNodeViewer;
 
 /*
  * Superclass for classes that test the layout of a given diagram.

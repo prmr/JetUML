@@ -23,14 +23,14 @@ package ca.mcgill.jetuml.layouttests;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import ca.mcgill.cs.jetuml.diagram.Node;
-import ca.mcgill.cs.jetuml.diagram.nodes.ActorNode;
-import ca.mcgill.cs.jetuml.geom.Dimension;
-import ca.mcgill.cs.jetuml.viewers.StringViewer;
-import ca.mcgill.cs.jetuml.viewers.StringViewer.Alignment;
-import ca.mcgill.cs.jetuml.viewers.StringViewer.TextDecoration;
-import ca.mcgill.cs.jetuml.viewers.nodes.ActorNodeViewer;
-import ca.mcgill.cs.jetuml.viewers.nodes.UseCaseNodeViewer;
+import org.jetuml.diagram.Node;
+import org.jetuml.diagram.nodes.ActorNode;
+import org.jetuml.geom.Dimension;
+import org.jetuml.viewers.StringViewer;
+import org.jetuml.viewers.StringViewer.Alignment;
+import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.viewers.nodes.ActorNodeViewer;
+import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
 /**
  * Superclass for classes that test the layout of a use case diagram.

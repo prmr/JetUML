@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.7.0_67" class="java.beans.XMLDecoder">
- <object class="ca.mcgill.cs.jetuml.diagram.ClassDiagram">
+ <object class="org.jetuml.diagram.ClassDiagram">
   <void method="addNode">
-   <object class="ca.mcgill.cs.jetuml.diagram.ClassNode"/>
+   <object class="org.jetuml.diagram.ClassNode"/>
    <object class="java.awt.geom.Point2D$Double" id="Point2D$Double0">
     <void class="java.awt.geom.Point2D$Double" method="getField">
      <string>x</string>
