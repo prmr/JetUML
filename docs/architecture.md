@@ -24,4 +24,5 @@ The functional view is split by functional concern.
 
  * [Tab Management](functional/TabManagement.md)
  * [Diagram Element Properties](functional/properties.md)
+ * [Node Storage](functional/NodeStorage.md)
  
