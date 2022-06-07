@@ -20,6 +20,8 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,7 +34,6 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.DiagramViewer;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
@@ -77,59 +78,16 @@ public class SelectionModel implements Iterable<DiagramElement>
 		pDiagramData.edges().forEach(this::internalAddToSelection);
 		aObserver.selectionModelChanged();
 	}
-
-	/*
-	 * Returns a rectangle that represents the bounding box of the last selected element.
-	 */
-	private Rectangle getLastSelectedBounds() 
-	{
-		Optional<DiagramElement> lastSelected = getLastSelected();
-		assert lastSelected.isPresent();
-		return DiagramViewer.getBounds(lastSelected.get());
-	}
 	
 	/**
-	 * @return A rectangle that represents the bounding box of the 
-	 *     entire selection including the bounds of their parent nodes.
-	 */
-	public Rectangle getEntireSelectionBounds()
-	{
-		Rectangle bounds = getLastSelectedBounds();
-		for(DiagramElement selected : aSelected )
-		{
-			bounds = addBounds(bounds, selected);
-		}
-		return bounds;
-	}
-	
-	// Recursively enlarge the current rectangle to include the selected DiagramElements
-	private Rectangle addBounds(Rectangle pBounds, DiagramElement pSelected)
-	{
-		if( pSelected instanceof Node && ((Node) pSelected).hasParent())
-		{
-			return addBounds(pBounds, ((Node) pSelected).getParent());
-		}
-		else
-		{
-			return pBounds.add(DiagramViewer.getBounds(pSelected));
-		}
-	}
-	
-	/**
-	 * @return An iterable of all selected nodes. This 
-	 *     corresponds to the entire selection, except the edge.
+	 * @return A list of all the selected nodes. 
 	 */
 	public List<Node> getSelectedNodes()
 	{
-		List<Node> result = new ArrayList<>();
-		for( DiagramElement element : aSelected )
-		{
-			if( element instanceof Node )
-			{
-				result.add((Node) element);
-			}
-		}
-		return result;
+		return aSelected.stream()
+				.filter(e -> Node.class.isAssignableFrom(e.getClass()))
+				.map(Node.class::cast)
+				.collect(toList());
 	}
 	
 	/**

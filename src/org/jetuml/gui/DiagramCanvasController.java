@@ -454,7 +454,7 @@ public class DiagramCanvasController
 	private void alignMoveToGrid()
 	{
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
-		Rectangle entireBounds = aSelectionModel.getEntireSelectionBounds();
+		Rectangle entireBounds = RenderingFacade.getBoundsIncludingParents(aSelectionModel);
 		
 		if( selectedNodes.hasNext() )
 		{
@@ -549,7 +549,7 @@ public class DiagramCanvasController
 	// finds the point to reveal based on the entire selection
 	private Point computePointToReveal(Point pMousePoint)
 	{
-		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
+		Rectangle bounds = RenderingFacade.getBoundsIncludingParents(aSelectionModel);
 		int x = bounds.getMaxX();
 		int y = bounds.getMaxY();
 		
@@ -577,7 +577,7 @@ public class DiagramCanvasController
 		aSelectionModel.getSelectedNodes().forEach(selected -> selected.translate(dx, dy));
 		
 		// If this translation results in exceeding the canvas bounds, roll back.
-		Rectangle bounds = aSelectionModel.getEntireSelectionBounds();
+		Rectangle bounds =RenderingFacade.getBoundsIncludingParents(aSelectionModel);
 		int dxCorrection = Math.max(-bounds.getX(), 0) 
 				+ Math.min((int)aCanvas.getWidth() - bounds.getMaxX(), 0);
 		int dyCorrection = Math.max(-bounds.getY(), 0) 

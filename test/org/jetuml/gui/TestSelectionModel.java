@@ -100,7 +100,7 @@ public class TestSelectionModel
 	
 	private void assertEntireSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
 	{
-		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getEntireSelectionBounds());
+		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), RenderingFacade.getBoundsIncludingParents(aModel));
 	}
 	
 	private void assertSelectionBounds(int pX, int pY, int pWidth, int pHeight) 

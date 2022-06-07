@@ -59,6 +59,12 @@ public class RenderingFacade
 		}
 	}
 	
+	/**
+	 * @param pElements The elements whose bounds we are interested in. 
+	 * @return The rectangle that bounds all elements in pElements, excluding their parent node.
+	 * @pre pElements != null
+	 * @pre pElements has at least one element.
+	 */
 	public static Rectangle getBounds(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
@@ -70,5 +76,40 @@ public class RenderingFacade
 			bounds = bounds.add(DiagramViewer.getBounds(elements.next()));
 		}
 		return bounds;
-	}	
+	}
+	
+	/**
+	 * @param pElements The elements whose bounds we are interested in. 
+	 * @return A rectangle that represents the bounding box of the 
+	 *     entire selection including the bounds of their parent nodes.
+	 * @pre pElements != null
+	 * @pre pElements has at least one element.
+	 */
+	public static Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		assert pElements.iterator().hasNext();
+		Iterator<DiagramElement> elements = pElements.iterator();
+		DiagramElement next = elements.next();
+		Rectangle bounds = DiagramViewer.getBounds(next);
+		bounds = addBounds(bounds, next);
+		while( elements.hasNext() )
+		{
+			bounds = addBounds(bounds, elements.next());
+		}
+		return bounds;
+	}
+	
+	// Recursively enlarge the current rectangle to include the selected DiagramElements
+	private static Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
+	{
+		if( pElement instanceof Node && ((Node) pElement).hasParent())
+		{
+			return addBounds(pBounds, ((Node) pElement).getParent());
+		}
+		else
+		{
+			return pBounds.add(DiagramViewer.getBounds(pElement));
+		}
+	}
 }
