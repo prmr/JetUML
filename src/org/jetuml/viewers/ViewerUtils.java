@@ -27,7 +27,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -185,29 +184,6 @@ public final class ViewerUtils
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);
-	}
-
-	/**
-	 * @param pElement The element for which we want an icon
-	 * @return An icon that represents this element
-	 * @pre pElement != null
-	 */
-	public static Canvas createIcon(DiagramElement pElement)
-	{
-		/* 
-		 * This method exists to cover the case where we wish to create an icon 
-		 * for a diagram element without knowing whether it's a node or an edge.
-		 */
-		assert pElement != null;
-		if( pElement instanceof Node )
-		{
-			return NodeViewerRegistry.createIcon((Node)pElement);
-		}
-		else
-		{
-			assert pElement instanceof Edge;
-			return EdgeViewerRegistry.createIcon((Edge)pElement);
-		}
 	}
 
 	/**
