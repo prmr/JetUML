@@ -21,6 +21,7 @@
 package org.jetuml.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -77,20 +78,6 @@ public class SelectionModel implements Iterable<DiagramElement>
 		aObserver.selectionModelChanged();
 	}
 
-	/**
-	 * @return A rectangle that represents the bounding
-	 *     box of the entire selection.
-	 */
-	public Rectangle getSelectionBounds()
-	{
-		Rectangle bounds = getLastSelectedBounds();
-		for(DiagramElement selected : aSelected )
-		{
-			bounds = bounds.add(DiagramViewer.getBounds(selected));
-		}
-		return bounds;
-	}
-	
 	/*
 	 * Returns a rectangle that represents the bounding box of the last selected element.
 	 */
@@ -378,7 +365,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	@Override
 	public Iterator<DiagramElement> iterator()
 	{
-		return aSelected.iterator();
+		return Collections.unmodifiableList(aSelected).iterator();
 	}
 	
 	/**

@@ -42,6 +42,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -104,7 +105,7 @@ public class TestSelectionModel
 	
 	private void assertSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
 	{
-		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), aModel.getSelectionBounds());
+		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), RenderingFacade.getBounds(aModel));
 	}
 	
 	@Test

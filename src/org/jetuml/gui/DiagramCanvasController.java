@@ -47,6 +47,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.Grid;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.input.MouseEvent;
@@ -167,7 +168,7 @@ public class DiagramCanvasController
 		}
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
 		if(!aSelectionModel.isEmpty() && 
-				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(aSelectionModel.getSelectionBounds(), newElements)) 
+				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(RenderingFacade.getBounds(aSelectionModel), newElements)) 
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}

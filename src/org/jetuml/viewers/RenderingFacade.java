@@ -20,9 +20,12 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
+import java.util.Iterator;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
@@ -56,4 +59,16 @@ public class RenderingFacade
 		}
 	}
 	
+	public static Rectangle getBounds(Iterable<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		assert pElements.iterator().hasNext();
+		Iterator<DiagramElement> elements = pElements.iterator();
+		Rectangle bounds = DiagramViewer.getBounds(elements.next());
+		while( elements.hasNext() )
+		{
+			bounds = bounds.add(DiagramViewer.getBounds(elements.next()));
+		}
+		return bounds;
+	}	
 }
