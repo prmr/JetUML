@@ -263,4 +263,63 @@ public class TestClipboard
 		assertTrue(aClipboard.validPaste(new Diagram(DiagramType.CLASS)));
 		assertFalse(aClipboard.validPaste(new Diagram(DiagramType.SEQUENCE)));
 	}
+	
+	@Test
+	void testOverlapsWithElementOf_BothEmpty()
+	{
+		Diagram diagram = new Diagram(null);
+		assertFalse(aClipboard.overlapsWithElementOf(diagram));
+	}
+	
+	@Test
+	void testOverlapsWithElementOf_SelectionEmpty()
+	{
+		Diagram diagram = new Diagram(null);
+		diagram.addRootNode(new ClassNode());
+		assertFalse(aClipboard.overlapsWithElementOf(diagram));
+	}
+	
+	@Test
+	void testOverlapsWithElementOf_DiagramEmpty()
+	{
+		Diagram diagram = new Diagram(null);
+		aClipboard.copy(Arrays.asList(new ClassNode()));
+		assertFalse(aClipboard.overlapsWithElementOf(diagram));
+	}
+	
+	@Test
+	void testOverlapsWithElementOf_OneOfOneMatch()
+	{
+		Node selectedNode1 = new ClassNode();
+		selectedNode1.moveTo(new Point(10,20));
+		aClipboard.copy(Arrays.asList(selectedNode1));
+		
+		Diagram diagram = new Diagram(null);
+		Node diagramNode1 = new ClassNode();
+		diagramNode1.moveTo(new Point(10,20));
+		diagram.addRootNode(diagramNode1);
+		
+		assertTrue(aClipboard.overlapsWithElementOf(diagram));
+	}
+	
+	@Test
+	void testOverlapsWithElementOf_OneOfManyMatch()
+	{
+		Node selectedNode1 = new ClassNode();
+		selectedNode1.moveTo(new Point(10,20));
+		Node selectedNode2 = new ClassNode();
+		selectedNode2.moveTo(new Point(30,30));
+		Node selectedNode3 = new ClassNode();
+		selectedNode3.moveTo(new Point(20,200));
+		aClipboard.copy(Arrays.asList(selectedNode1, selectedNode2, selectedNode3));
+		
+		Diagram diagram = new Diagram(null);
+		Node diagramNode1 = new ClassNode();
+		diagramNode1.moveTo(new Point(100,200));
+		Node diagramNode2 = new ClassNode();
+		diagramNode2.moveTo(new Point(30,30));
+		diagram.addRootNode(diagramNode2);
+		
+		assertTrue(aClipboard.overlapsWithElementOf(diagram));
+	}
 }

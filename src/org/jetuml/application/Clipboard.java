@@ -21,10 +21,12 @@
 package org.jetuml.application;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetuml.annotations.Singleton;
@@ -33,6 +35,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.PointNode;
+import org.jetuml.geom.Point;
 
 /**
  * Stores a set of diagram elements for the purpose of pasting into a diagram.
@@ -125,6 +128,24 @@ public final class Clipboard
 			.map(Edge.class::cast)
 			.map(Edge::clone)
 			.collect(toList());
+	}
+	
+	/**
+	 * Determines if any node in the clipboard has a position equal to any
+	 * node in the target diagram.
+	 * 
+	 * @param pDiagram The target diagram. 
+	 * @return True iff there is a node in pDiagram with a position equal to 
+	 * that of a node in the clipboard.
+	 */
+	public boolean overlapsWithElementOf(Diagram pDiagram)
+	{
+		Set<Point> positions = aNodes.stream()
+				.map(Node::position)
+				.collect(toSet());
+		return pDiagram.allNodes().stream()
+				.map(Node::position)
+				.anyMatch(positions::contains);
 	}
 	
 	/*

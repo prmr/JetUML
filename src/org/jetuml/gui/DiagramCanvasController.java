@@ -167,8 +167,7 @@ public class DiagramCanvasController
 			return;
 		}
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		if(!aSelectionModel.isEmpty() && 
-				viewerFor(aDiagramBuilder.getDiagram()).isOverlapping(RenderingFacade.getBounds(aSelectionModel), newElements)) 
+		if(Clipboard.instance().overlapsWithElementOf(aDiagramBuilder.getDiagram()))
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
