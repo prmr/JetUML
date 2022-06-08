@@ -18,29 +18,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package ca.mcgill.jetuml.layouttests;
+package org.jetuml.layouttests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
-import org.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.nodes.CircularStateNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.StateNodeViewer;
 
 /**
- * Superclass for classes that test the layout of an object diagram.
+ * Superclass for classes that test the layout of a state diagram.
  * Declares convenience methods to test diagram elements. 
  */
-public abstract class AbstractTestObjectDiagramLayout extends AbstractTestDiagramLayout
+public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagramLayout 
 {
-	AbstractTestObjectDiagramLayout(Path pDiagramPath) throws IOException
+	AbstractTestStateDiagramLayout(Path pDiagramPath) throws IOException 
 	{
 		super(pDiagramPath);
 	}
 	
-	protected static void verifyObjectNodeDefaultDimensions(Node pNode)
+	protected static void verifyStateNodeDefaultDimensions(Node pNode)
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	protected static void verifyCircularStateNodeDefaultDimensions(Node pNode)
+	{
+		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeViewer.class, "DIAMETER");
+		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
+		assertEquals(DIAMETER, bounds.getWidth());
+		assertEquals(DIAMETER, bounds.getHeight());
 	}
 }
