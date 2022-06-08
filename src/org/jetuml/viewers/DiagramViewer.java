@@ -193,28 +193,4 @@ public class DiagramViewer
 			return EdgeViewerRegistry.getBounds((Edge)pElement);
 		}
 	}
-	
-	/**
-	 * Used during pasting to determine whether the current selection bounds completely overlaps the new elements.
-	 * @param pCurrentSelectionBounds The current selection bounds
-	 * @param pNewElements Elements to be pasted
-	 * @return Is the current selection bounds completely overlapping the new elements
-	 */
-	public boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements) 
-	{
-		Rectangle newElementBounds = null;
-		for (DiagramElement element : pNewElements) 
-		{
-			if (newElementBounds == null) 
-			{
-				newElementBounds = DiagramViewer.getBounds(element);
-			}
-			newElementBounds = newElementBounds.add(DiagramViewer.getBounds(element));
-		}
-		if (pCurrentSelectionBounds.equals(newElementBounds)) 
-		{
-			return true;
-		}
-		return false;
-	}
 }

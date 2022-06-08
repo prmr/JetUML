@@ -22,12 +22,10 @@ import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
@@ -51,43 +49,7 @@ public class SequenceDiagramViewer extends DiagramViewer
 		}
 		return result.or(() -> super.deepFindNode(pDiagram, pNode, pPoint));
 	}
-
-	/*
-	 * Used during pasting to determine whether the current selection bounds completely overlaps the new elements. For
-	 * sequence diagrams the height between the selection bounds and the bounds of the new elements may vary, but the
-	 * height is irrelevant to determining overlap.
-	 * 
-	 * @param pCurrentSelectionBounds The current selection bounds
-	 * 
-	 * @param pNewElements Elements to be pasted
-	 * 
-	 * @return Is the current selection bounds overlapping the new elements
-	 */
-	@Override
-	public boolean isOverlapping(Rectangle pCurrentSelectionBounds, Iterable<DiagramElement> pNewElements)
-	{
-		Rectangle newElementBounds = null;
-		for( DiagramElement element : pNewElements )
-		{
-			if( newElementBounds == null )
-			{
-				newElementBounds = DiagramViewer.getBounds(element);
-			}
-			newElementBounds = newElementBounds.add(DiagramViewer.getBounds(element));
-		}
-		if( newElementBounds == null )
-		{
-			return false;
-		}
-		if( pCurrentSelectionBounds.getX() == newElementBounds.getX() &&
-				pCurrentSelectionBounds.getY() == newElementBounds.getY() &&
-				pCurrentSelectionBounds.getWidth() == newElementBounds.getWidth() )
-		{
-			return true;
-		}
-		return false;
-	}
-
+	
 	/*
 	 * This specialized version supports selecting implicit parameter nodes only by 
 	 * selecting their top rectangle.

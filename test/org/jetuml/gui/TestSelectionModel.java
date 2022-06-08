@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -42,40 +41,18 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.RenderingFacade;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSelectionModel
 {
-	private Edge aEdge1; 
-	private Edge aEdge2; 
-	private ClassNode aNode1;
-	private ClassNode aNode2;
-	private PackageNode aPackage1; 
-	private PackageNode aPackage2; 
-	private Diagram aClassDiagram;
-	private SelectionModel aModel;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setup()
-	{
-		aEdge1 = new DependencyEdge();
-		aEdge2 = new NoteEdge();
-		aNode1 = new ClassNode();
-		aNode2 = new ClassNode();
-		aPackage1 = new PackageNode();
-		aPackage2 = new PackageNode();
-		aModel = new SelectionModel( () -> {});
-		aClassDiagram = new Diagram(DiagramType.CLASS);
-	}
+	private Edge aEdge1 = new DependencyEdge(); 
+	private Edge aEdge2 = new NoteEdge();
+	private ClassNode aNode1 = new ClassNode();
+	private ClassNode aNode2 = new ClassNode();
+	private PackageNode aPackage1 = new PackageNode();
+	private PackageNode aPackage2 = new PackageNode();; 
+	private Diagram aClassDiagram = new Diagram(DiagramType.CLASS);
+	private SelectionModel aModel = new SelectionModel( () -> {});
 	
 	private int size()
 	{
@@ -98,18 +75,8 @@ public class TestSelectionModel
 		assertFalse(iterator.hasNext());
 	}
 	
-	private void assertEntireSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
-	{
-		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), RenderingFacade.getBoundsIncludingParents(aModel));
-	}
-	
-	private void assertSelectionBounds(int pX, int pY, int pWidth, int pHeight) 
-	{
-		assertEquals(new Rectangle(pX, pY, pWidth, pHeight), RenderingFacade.getBounds(aModel));
-	}
-	
 	@Test
-	public void testEmpty()
+	void testEmpty()
 	{
 		aModel.clearSelection();
 		assertFalse(aModel.getLastSelected().isPresent());
@@ -120,7 +87,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testRubberband()
+	void testRubberband()
 	{
 		assertFalse(aModel.getRubberband().isPresent());
 		aModel.activateRubberband(new Line(new Point(0,0), new Point(10,10)));
@@ -144,7 +111,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testActivateLassoOneNode()
+	void testActivateLassoOneNode()
 	{
 		aClassDiagram.addRootNode(aNode1);
 		aNode1.translate(10, 10);
@@ -160,7 +127,7 @@ public class TestSelectionModel
 	}
 	
 	@Test 
-	public void testActivateLassoNodesAndEdges1()
+	void testActivateLassoNodesAndEdges1()
 	{
 		// aNode1: [x=0, y=0, w=100, h=60]
 		// aNode2: [x=200, y=0, w=100, h=60]
@@ -198,7 +165,7 @@ public class TestSelectionModel
 	
 	
 	@Test 
-	public void testActivateLassoNodesAndEdgesAddMode()
+	void testActivateLassoNodesAndEdgesAddMode()
 	{
 		// aNode1: [x=0, y=0, w=100, h=60]
 		// aNode2: [x=200, y=0, w=100, h=60]
@@ -239,7 +206,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testActivateLassoParentNotAddMode() throws Exception
+	void testActivateLassoParentNotAddMode() throws Exception
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
@@ -252,7 +219,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testActivateLassoParentAddMode() throws Exception
+	void testActivateLassoParentAddMode() throws Exception
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
@@ -269,7 +236,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testActivateLassoChildInParent() throws Exception
+	void testActivateLassoChildInParent() throws Exception
 	{
 		// Selects three nodes, one of which is a parent of another.
 		aPackage1.addChild(aNode1);
@@ -281,7 +248,7 @@ public class TestSelectionModel
 	
 	
 	@Test
-	public void testSetSelectionToEmpty()
+	void testSetSelectionToEmpty()
 	{
 		List<DiagramElement> list = new ArrayList<>();
 		aModel.setSelectionTo(list);
@@ -289,7 +256,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSetSelectionToNodesOnly()
+	void testSetSelectionToNodesOnly()
 	{
 		List<DiagramElement> list = new ArrayList<>();
 		list.add(aNode1);
@@ -299,7 +266,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSetSelectionToNodesAndEdges()
+	void testSetSelectionToNodesAndEdges()
 	{
 		List<DiagramElement> list = new ArrayList<>();
 		list.add(aNode1);
@@ -312,7 +279,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSetSelectionWithContainment()
+	void testSetSelectionWithContainment()
 	{
 		List<DiagramElement> list = new ArrayList<>();
 		list.add(aNode1);
@@ -325,7 +292,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSetSelectionTwice()
+	void testSetSelectionTwice()
 	{
 		List<DiagramElement> list = new ArrayList<>();
 		list.add(aNode1);
@@ -338,7 +305,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSelectAllRootNodesOnly()
+	void testSelectAllRootNodesOnly()
 	{
 		aClassDiagram.addRootNode(aNode1);
 		aClassDiagram.addRootNode(aNode2);
@@ -348,7 +315,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSelectAllRootAndChildNode()
+	void testSelectAllRootAndChildNode()
 	{
 		aPackage1.addChild(aNode1);
 		aClassDiagram.addRootNode(aPackage1);
@@ -358,62 +325,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetEntireSelectionBoundsOneNode()
-	{
-		aModel.addToSelection(aNode1);
-		assertEntireSelectionBounds(0, 0, 100, 60); 
-		aNode1.translate(10, 10);
-		assertEntireSelectionBounds(10, 10, 100, 60); 
-	}
-	
-	@Test
-	public void testGetEntireSelectionBoundsTwoNodes()
-	{
-		aModel.addToSelection(aNode1);
-		aModel.addToSelection(aNode2);
-		aNode1.translate(10, 10);
-		aNode2.translate(100, 100);
-		assertEntireSelectionBounds(10, 10, 190, 150); 
-	}
-	
-	@Test
-	public void testGetEntireSelectionBoundsTwoNodesOneEdge()
-	{
-		aModel.addToSelection(aNode1);
-		aModel.addToSelection(aNode2);
-		aNode1.translate(10, 10);
-		aNode2.translate(100, 100);
-		aEdge1.connect(aNode1, aNode2, aClassDiagram);
-		aClassDiagram.addEdge(aEdge1);
-		aClassDiagram.addRootNode(aNode1);
-		aClassDiagram.addRootNode(aNode2);
-		aModel.addToSelection(aEdge1);
-		assertEntireSelectionBounds(10, 10, 190, 150); 
-	}
-	
-	@Test 
-	public void testGetSelectionBoundsOneNode() 
-	{
-		aModel.addToSelection(aNode1);
-		assertSelectionBounds(0, 0, 100, 60); 
-		aNode1.translate(10, 10);
-		assertSelectionBounds(10, 10, 100, 60); 
-		assertEntireSelectionBounds(10, 10, 100, 60); 
-	}
-	
-	@Test 
-	public void testGetSelectionBoundsNodeWithinPackage() 
-	{
-		aPackage1.addChild(aNode1);
-		aModel.addToSelection(aNode1);
-		aPackage1.translate(10, 10);
-		aNode1.translate(60, 60);
-		assertSelectionBounds(70, 70, 100, 60); 
-		assertEntireSelectionBounds(60, 40, 120, 100); 
-	}
-	
-	@Test
-	public void testSelectRootNodesAndEdges()
+	void testSelectRootNodesAndEdges()
 	{
 		aClassDiagram.addRootNode(aNode1);
 		aClassDiagram.addRootNode(aNode2);
@@ -425,13 +337,13 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetSelectedNodesEmpty()
+	void testGetSelectedNodesEmpty()
 	{
 		assertFalse(aModel.getSelectedNodes().iterator().hasNext());
 	}
 	
 	@Test
-	public void testGetSelectedNodesJustNodes()
+	void testGetSelectedNodesJustNodes()
 	{
 		aModel.addToSelection(aNode1);
 		aModel.addToSelection(aNode2);
@@ -442,7 +354,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetSelectedNodesJustEdges()
+	void testGetSelectedNodesJustEdges()
 	{
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
@@ -450,7 +362,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetSelectedNodesNodesAndEdges()
+	void testGetSelectedNodesNodesAndEdges()
 	{
 		aModel.addToSelection(aNode1);
 		aModel.addToSelection(aEdge1);
@@ -462,7 +374,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetSelectedEdgesAndNodes()
+	void testGetSelectedEdgesAndNodes()
 	{
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aNode1);
@@ -473,7 +385,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testContains()
+	void testContains()
 	{
 		aModel.addToSelection(aNode1);
 		aModel.addToSelection(aEdge1);
@@ -483,7 +395,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testAdd()
+	void testAdd()
 	{
 		aModel.addToSelection(aEdge1);
 		assertEquals(1, size());
@@ -497,7 +409,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testAddParentContained()
+	void testAddParentContained()
 	{
 		aModel.addToSelection(aEdge1);
 		aPackage1.addChild(aNode1);
@@ -509,7 +421,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testAddChildrenContained()
+	void testAddChildrenContained()
 	{
 		aPackage1.addChild(aPackage2);
 		aPackage2.addChild(aNode1);
@@ -525,7 +437,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testGetLastSelected()
+	void testGetLastSelected()
 	{
 		assertFalse(aModel.getLastSelected().isPresent());
 		aModel.addToSelection(aEdge1);
@@ -537,7 +449,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testClearSelection()
+	void testClearSelection()
 	{
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
@@ -548,7 +460,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testRemove()
+	void testRemove()
 	{
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
@@ -562,7 +474,7 @@ public class TestSelectionModel
 	}
 	
 	@Test
-	public void testSet()
+	void testSet()
 	{
 		aModel.addToSelection(aEdge1);
 		aModel.addToSelection(aEdge2);
