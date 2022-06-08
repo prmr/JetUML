@@ -20,6 +20,9 @@
  *******************************************************************************/
 package org.jetuml.diagram;
 
+import static org.jetuml.testutils.CollectionAssertions.assertThat;
+import static org.jetuml.testutils.CollectionAssertions.hasElementsSameAs;
+import static org.jetuml.testutils.CollectionAssertions.hasSetOfElementsEqualsTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -134,5 +137,44 @@ public class TestDiagram
 		List<Node> childNodes = implicitParameterNode.getChildren();
 		assertSame(childNodes.get(0),callNode1);
 		assertSame(childNodes.get(1), callNode2);
+	}
+	
+	@Test
+	public void testAllNodes_SingleRoot()
+	{
+		Diagram diagram = new Diagram(null);
+		diagram.addRootNode(aNode1);
+		assertThat(diagram.allNodes(), hasElementsSameAs, aNode1);
+	}
+	
+	@Test
+	public void testAllNodes_TwoChildlessRoots()
+	{
+		Diagram diagram = new Diagram(null);
+		diagram.addRootNode(aNode2);
+		diagram.addRootNode(aNode4);
+		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, aNode2, aNode4);
+	}
+	
+	@Test
+	public void testAllNodes_TwoParents()
+	{
+		Diagram diagram = new Diagram(null);
+		ClassNode node1 = new ClassNode();
+		aNode2.addChild(node1);
+		aNode4.addChild(aNode3);
+		diagram.addRootNode(aNode2);
+		diagram.addRootNode(aNode4);
+		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, node1, aNode2, aNode3, aNode4);
+	}
+	
+	@Test
+	public void testAllNodes_ThreeHierarchicalLevels()
+	{
+		Diagram diagram = new Diagram(null);
+		aNode4.addChild(aNode2);
+		aNode2.addChild(aNode3);
+		diagram.addRootNode(aNode4);
+		assertThat(diagram.allNodes(), hasSetOfElementsEqualsTo, aNode2, aNode3, aNode4);
 	}
 }

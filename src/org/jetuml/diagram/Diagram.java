@@ -127,6 +127,26 @@ public final class Diagram implements DiagramData
 	{
 		return Collections.unmodifiableList(aRootNodes);
 	}
+	
+	/**
+	 * @return All the nodes in the diagram: both the root nodes
+	 * and their children.
+	 */
+	public List<Node> allNodes()
+	{
+		List<Node> allNodes = new ArrayList<>();
+		rootNodes().forEach(node -> collectNodes(node, allNodes));
+		return allNodes;
+	}
+	
+	/*
+	 * Adds pParent to the list, then all its children recursively.
+	 */
+	private static void collectNodes(Node pParent, List<Node> pNodes)
+	{
+		pNodes.add(pParent);
+		pParent.getChildren().forEach(child -> collectNodes(child, pNodes));
+	}
 
 	@Override
 	public List<Edge> edges()
