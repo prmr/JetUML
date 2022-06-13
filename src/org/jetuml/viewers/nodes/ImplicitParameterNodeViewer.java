@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -67,9 +68,9 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public boolean contains(Node pNode, Point pPoint)
+	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		final Rectangle bounds = getBounds(pNode);
+		final Rectangle bounds = getBounds(pElement);
 		return bounds.getX() <= pPoint.getX() && pPoint.getX() <= bounds.getX() + bounds.getWidth();
 	}
 

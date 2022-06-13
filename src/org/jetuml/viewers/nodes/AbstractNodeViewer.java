@@ -48,9 +48,9 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	 * @see org.jetuml.viewers.DiagramElementView#contains(org.jetuml.geom.Point)
 	 */
 	@Override
-	public boolean contains(Node pNode, Point pPoint)
+	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		return getBounds(pNode).contains(pPoint);
+		return getBounds(pElement).contains(pPoint);
 	}
 	
 	/* 

@@ -50,15 +50,6 @@ public interface NodeViewer extends DiagramElementRenderer
    	void drawSelectionHandles(Node pNode, GraphicsContext pGraphics);
    	
    	/**
-     * Tests whether the node contains a point.
-     * @param pNode The node to test
-     * @param pPoint the point to test
-     * @return true if this element contains aPoint
-     * @pre pNode != null && pPoint != null
-     */
-   	boolean contains(Node pNode, Point pPoint);
-   	
-   	/**
      * Get the best connection point to connect this node 
      * with another node. This should be a point on the boundary
      * of the shape of this node.

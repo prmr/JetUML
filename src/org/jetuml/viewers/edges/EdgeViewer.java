@@ -22,7 +22,6 @@ package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Line;
-import org.jetuml.geom.Point;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -47,14 +46,6 @@ public interface EdgeViewer extends DiagramElementRenderer
      * @pre pEdge != null && pGraphics != null
 	 */
    	void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics);
-   	
-   	/**
-     * Tests whether pEdge contains a point.
-     * @param pEdge the edge to test
-     * @param pPoint the point to test
-     * @return true if this element contains aPoint
-     */
-   	boolean contains(Edge pEdge, Point pPoint);
    	
    	/**
      * Gets the points at which pEdge is connected to

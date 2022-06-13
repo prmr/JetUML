@@ -21,6 +21,7 @@
 package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.Canvas;
@@ -46,4 +47,12 @@ public interface DiagramElementRenderer
      * @pre pElement != null
    	 */
 	Rectangle getBounds(DiagramElement pElement);
+	
+  	/**
+     * Tests whether pElement contains a point.
+     * @param pElement the element to test
+     * @param pPoint the point to test
+     * @return true if this element contains aPoint
+     */
+   	boolean contains(DiagramElement pElement, Point pPoint);
 }

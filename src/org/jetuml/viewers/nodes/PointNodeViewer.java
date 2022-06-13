@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
@@ -41,9 +42,9 @@ public final class PointNodeViewer extends AbstractNodeViewer
 	}
 
 	@Override
-	public boolean contains(Node pNode, Point pPoint)
+	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		return pNode.position().distance(pPoint) < SELECTION_DISTANCE;
+		return ((Node)pElement).position().distance(pPoint) < SELECTION_DISTANCE;
 	}
 
 	@Override

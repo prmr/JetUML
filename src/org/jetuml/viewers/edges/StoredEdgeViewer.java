@@ -465,10 +465,10 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public boolean contains(Edge pEdge, Point pPoint) 
+	public boolean contains(DiagramElement pElement, Point pPoint) 
 	{
 		// Purposefully does not include the arrow head and labels, which create large bounds.
-		EdgePath path = getStoredEdgePath(pEdge);
+		EdgePath path = getStoredEdgePath((Edge)pElement);
 		if (path == null)
 		{
 			return false;
@@ -479,7 +479,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 			{
 				return true;
 			}
-			Shape fatPath = getShape(pEdge);
+			Shape fatPath = getShape((Edge)pElement);
 			fatPath.setStrokeWidth(2 * MAX_DISTANCE);
 			return fatPath.contains(pPoint.getX(), pPoint.getY());
 		}

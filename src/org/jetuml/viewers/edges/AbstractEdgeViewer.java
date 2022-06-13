@@ -81,16 +81,17 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	}
 	
 	@Override
-	public boolean contains(Edge pEdge, Point pPoint)
+	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
+		Edge edge = (Edge) pElement;
 		// Purposefully does not include the arrow head and labels, which create large bounds.
-		Line conn = getConnectionPoints(pEdge);
+		Line conn = getConnectionPoints(edge);
 		if(pPoint.distance(conn.getPoint1()) <= MAX_DISTANCE || pPoint.distance(conn.getPoint2()) <= MAX_DISTANCE)
 		{
 			return false;
 		}
 
-		Shape fatPath = getShape(pEdge);
+		Shape fatPath = getShape(edge);
 		fatPath.setStrokeWidth(2 * MAX_DISTANCE);
 		return fatPath.contains(pPoint.getX(), pPoint.getY());
 	}

@@ -294,12 +294,12 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public boolean contains(Edge pEdge, Point pPoint)
+	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		boolean result = super.contains(pEdge, pPoint);
-		if (getShape(pEdge) instanceof Arc)
+		boolean result = super.contains(pElement, pPoint);
+		if (getShape((Edge)pElement) instanceof Arc)
 		{
-			Arc arc = (Arc) getShape(pEdge);
+			Arc arc = (Arc) getShape((Edge)pElement);
 			arc.setRadiusX(arc.getRadiusX() + 2 * MAX_DISTANCE);
 			arc.setRadiusY(arc.getRadiusY() + 2 * MAX_DISTANCE);
 			result = arc.contains(pPoint.getX(), pPoint.getY());
