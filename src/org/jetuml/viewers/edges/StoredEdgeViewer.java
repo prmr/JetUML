@@ -22,6 +22,7 @@ package org.jetuml.viewers.edges;
 
 import static org.jetuml.viewers.EdgePriority.priorityOf;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -438,15 +439,16 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public Canvas createIcon(Edge pEdge) 
+	public Canvas createIcon(DiagramElement pElement) 
 	{
+		Edge edge = (Edge)pElement;
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, getLineStyle(pEdge));
-		getArrowEnd(pEdge).view().draw(canvas.getGraphicsContext2D(), 
+		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, getLineStyle(edge));
+		getArrowEnd(edge).view().draw(canvas.getGraphicsContext2D(), 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
-		getArrowStart(pEdge).view().draw(canvas.getGraphicsContext2D(), 
+		getArrowStart(edge).view().draw(canvas.getGraphicsContext2D(), 
 				new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET), new Point(OFFSET, OFFSET));
 		return canvas;
 	}

@@ -25,14 +25,13 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Abstract strategy that describes objects that can draw and
  * compute various geometric properties of edges.
  */
-public interface EdgeViewer
+public interface EdgeViewer extends DiagramElementRenderer
 {
 	/**
      * Gets the smallest rectangle that bounds pEdge.
@@ -50,14 +49,6 @@ public interface EdgeViewer
      * @pre pEdge != null
 	 */
    	void draw(Edge pEdge, GraphicsContext pGraphics);
-   	
-   	/**
-   	 * Returns an icon that represents pEdge.
-   	 * @param pEdge The edge for which we need an icon.
-     * @return A canvas object on which the icon is painted.
-     * @pre pEdge != null
-   	 */
-   	Canvas createIcon(Edge pEdge);
    	
    	/**
      * Draw selection handles around pEdge.

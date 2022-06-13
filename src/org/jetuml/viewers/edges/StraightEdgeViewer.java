@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Line;
@@ -81,7 +82,7 @@ public class StraightEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(Edge pEdge)
+	public Canvas createIcon(DiagramElement pElement)
 	{
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();

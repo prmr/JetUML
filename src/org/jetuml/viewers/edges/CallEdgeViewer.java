@@ -22,6 +22,7 @@ package org.jetuml.viewers.edges;
 
 import java.util.ArrayList;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
@@ -205,7 +206,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(Edge pEdge)
+	public Canvas createIcon(DiagramElement pElement)
 	{
 		final float scale = 0.6f;
 		final int offset = 15;

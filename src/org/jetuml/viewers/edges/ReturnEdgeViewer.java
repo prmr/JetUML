@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.PointNode;
@@ -72,7 +73,7 @@ public final class ReturnEdgeViewer extends LabeledStraightEdgeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(Edge pEdge)
+	public Canvas createIcon(DiagramElement pElement)
 	{
 		final float scale = 0.6f;
 		final int offset = 25;

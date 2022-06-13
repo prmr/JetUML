@@ -22,6 +22,7 @@ package org.jetuml.viewers.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
@@ -68,11 +69,11 @@ public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewe
 	 * Custom version to distinguish package descriptions from package nodes.
 	 */
 	@Override
-	public Canvas createIcon(Node pNode)
+	public Canvas createIcon(DiagramElement pElement)
 	{
-		assert pNode instanceof AbstractPackageNode;
-		Canvas icon = super.createIcon(pNode);
-		CONTENTS_VIEWER.draw("description", icon.getGraphicsContext2D(), getBottomBounds((AbstractPackageNode)pNode));
+		assert pElement instanceof AbstractPackageNode;
+		Canvas icon = super.createIcon(pElement);
+		CONTENTS_VIEWER.draw("description", icon.getGraphicsContext2D(), getBottomBounds((AbstractPackageNode)pElement));
 		return icon;
 	}
 }

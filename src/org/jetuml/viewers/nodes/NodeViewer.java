@@ -24,15 +24,15 @@ import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.edges.DiagramElementRenderer;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Abstract strategy that describes objects that can draw and
  * compute various geometric properties of nodes.
  */
-public interface NodeViewer
+public interface NodeViewer extends DiagramElementRenderer
 {
 	/**
      * Gets the smallest rectangle that bounds this element.
@@ -50,14 +50,6 @@ public interface NodeViewer
      * @pre pNode != null && pGraphics != null
 	 */
    	void draw(Node pNode, GraphicsContext pGraphics);
-   	
-   	/**
-   	 * Returns an icon that represents the element.
-   	 * @param pNode The node to create an icon for.
-     * @return A canvas object on which the icon is painted.
-     * @pre pNode != null
-   	 */
-   	Canvas createIcon(Node pNode);
    	
    	/**
      * Draw selection handles around the element.

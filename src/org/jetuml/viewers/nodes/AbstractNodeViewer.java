@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -70,9 +71,10 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(Node pNode)
+	public Canvas createIcon(DiagramElement pElement)
 	{
-		Rectangle bounds = getBounds(pNode);
+		Node node = (Node) pElement;
+		Rectangle bounds = getBounds(node);
 		int width = bounds.getWidth();
 		int height = bounds.getHeight();
 		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
@@ -84,7 +86,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
 		graphics.setFill(Color.WHITE);
 		graphics.setStroke(Color.BLACK);
-		draw(pNode, canvas.getGraphicsContext2D());
+		draw(node, canvas.getGraphicsContext2D());
 		return canvas;
 	}
 	

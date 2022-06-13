@@ -22,6 +22,7 @@ package org.jetuml.viewers.edges;
 
 import java.util.function.Function;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Dimension;
@@ -303,15 +304,16 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public Canvas createIcon(Edge pEdge) 
+	public Canvas createIcon(DiagramElement pElement) 
 	{
+		Edge edge = (Edge)pElement;
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		Path path = new Path();
 		path.getElements().addAll(new MoveTo(OFFSET, OFFSET), new LineTo(BUTTON_SIZE-OFFSET, BUTTON_SIZE-OFFSET));
-		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyleExtractor.apply(pEdge));
-		aArrowEndExtractor.apply(pEdge).view().draw(canvas.getGraphicsContext2D(), 
+		ToolGraphics.strokeSharpPath(canvas.getGraphicsContext2D(), path, aLineStyleExtractor.apply(edge));
+		aArrowEndExtractor.apply(edge).view().draw(canvas.getGraphicsContext2D(), 
 				new Point(OFFSET, OFFSET), new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET));
-		aArrowStartExtractor.apply(pEdge).view().draw(canvas.getGraphicsContext2D(), 
+		aArrowStartExtractor.apply(edge).view().draw(canvas.getGraphicsContext2D(), 
 				new Point(BUTTON_SIZE-OFFSET, BUTTON_SIZE - OFFSET), new Point(OFFSET, OFFSET));
 		return canvas;
 	}
