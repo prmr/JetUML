@@ -29,17 +29,17 @@ import java.util.Optional;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AggregationEdge.Type;
 import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
-import org.jetuml.diagram.edges.AggregationEdge.Type;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.SegmentationStyle.Side;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 
@@ -136,7 +136,7 @@ public final class SegmentationStyleFactory
 		}
 		else
 		{
-			return new Point2D(NodeViewerRegistry.getBounds(pNode).getMaxX(), NodeViewerRegistry.getBounds(pNode).getY());
+			return new Point2D(RenderingFacade.getBounds(pNode).getMaxX(), RenderingFacade.getBounds(pNode).getY());
 		}
 	}
 	
@@ -149,10 +149,10 @@ public final class SegmentationStyleFactory
 			double shortestDistance = Double.MAX_VALUE;
 			for( Side side : Side.values() )
 			{
-				Point start = NodeViewerRegistry.getConnectionPoints(pNode, side.getDirection());
+				Point start = RenderingFacade.getConnectionPoints(pNode, side.getDirection());
 				for( Side inner : Side.values() )
 				{
-					Point end = NodeViewerRegistry.getConnectionPoints(otherNode(pEdge, pNode), inner.getDirection());
+					Point end = RenderingFacade.getConnectionPoints(otherNode(pEdge, pNode), inner.getDirection());
 					double distance = start.distance(end);
 					if( distance < shortestDistance )
 					{
@@ -179,14 +179,14 @@ public final class SegmentationStyleFactory
 			}
 			
 			Side startSide = getAttachedSide(pEdge, pEdge.getStart());
-			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), startSide.getDirection());
+			Point start = RenderingFacade.getConnectionPoints(pEdge.getStart(), startSide.getDirection());
 			if( pEdge.getDiagram() != null )
 			{
 				start = computePointPosition(pEdge.getStart(), startSide, computePosition(pEdge, startSide, true));
 			}
 			
 			Side endSide = getAttachedSide(pEdge, pEdge.getEnd());
-			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), endSide.getDirection());
+			Point end = RenderingFacade.getConnectionPoints(pEdge.getEnd(), endSide.getDirection());
 			if( pEdge.getDiagram() != null )
 			{
 				end = computePointPosition(pEdge.getEnd(), endSide, computePosition(pEdge, endSide, false));
@@ -202,24 +202,24 @@ public final class SegmentationStyleFactory
 	private static Point computePointPosition(Node pNode, Side pSide, Position pPosition)
 	{
 		assert pNode != null && pSide != null && pPosition != null && pNode.getDiagram().isPresent();
-		Point start = NodeViewerRegistry.getConnectionPoints(pNode, pSide.getDirection());
+		Point start = RenderingFacade.getConnectionPoints(pNode, pSide.getDirection());
 		if( pSide.isEastWest() )
 		{
-			double yPosition = start.getY()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getHeight()); // Default
+			double yPosition = start.getY()+ pPosition.computeNudge(RenderingFacade.getBounds(pNode).getHeight()); // Default
 			if( hasSelfEdge(pNode) && pSide == Side.EAST )
 			{
-				double increment = (NodeViewerRegistry.getBounds(pNode).getHeight() - MARGIN) / (pPosition.aTotal+1);
-				yPosition = NodeViewerRegistry.getBounds(pNode).getY() + MARGIN + pPosition.getIndex() * increment;
+				double increment = (RenderingFacade.getBounds(pNode).getHeight() - MARGIN) / (pPosition.aTotal+1);
+				yPosition = RenderingFacade.getBounds(pNode).getY() + MARGIN + pPosition.getIndex() * increment;
 			}
 			return new Point( start.getX(), (int) Math.round(yPosition));	
 		}
 		else
 		{
-			double xPosition = start.getX()+ pPosition.computeNudge(NodeViewerRegistry.getBounds(pNode).getWidth());
+			double xPosition = start.getX()+ pPosition.computeNudge(RenderingFacade.getBounds(pNode).getWidth());
 			if( hasSelfEdge(pNode) && pSide == Side.NORTH )
 			{
-				double increment = (NodeViewerRegistry.getBounds(pNode).getWidth() - MARGIN) / (pPosition.aTotal+1);
-				xPosition = NodeViewerRegistry.getBounds(pNode).getX() + pPosition.getIndex() * increment;
+				double increment = (RenderingFacade.getBounds(pNode).getWidth() - MARGIN) / (pPosition.aTotal+1);
+				xPosition = RenderingFacade.getBounds(pNode).getX() + pPosition.getIndex() * increment;
 			}
 			return new Point( (int) Math.round(xPosition), start.getY());
 		}
@@ -377,13 +377,13 @@ public final class SegmentationStyleFactory
 						
 			if( pSide.isEastWest() )
 			{		
-				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getY() - 
-						NodeViewerRegistry.getBounds(otherNode2).getCenter().getY();
+				return RenderingFacade.getBounds(otherNode1).getCenter().getY() - 
+						RenderingFacade.getBounds(otherNode2).getCenter().getY();
 			}
 			else
 			{
-				return NodeViewerRegistry.getBounds(otherNode1).getCenter().getX() - 
-						NodeViewerRegistry.getBounds(otherNode2).getCenter().getX();
+				return RenderingFacade.getBounds(otherNode1).getCenter().getX() - 
+						RenderingFacade.getBounds(otherNode2).getCenter().getX();
 			}
 		});
 	}
@@ -460,8 +460,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingEast(Edge pEdge)
 		{
-			return NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
-					NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST).getX();
+			return RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.WEST).getX();
 		}
 		
 		/*
@@ -470,8 +470,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingWest(Edge pEdge)
 		{
-			return NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
-					NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.WEST).getX();
+			return RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.EAST).getX() + 2 * MIN_SEGMENT <= 
+					RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.WEST).getX();
 		}
 		
 		@Override
@@ -502,8 +502,8 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
-			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST);
+			Point start = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+			Point end = RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.WEST);
 			Side startSide = Side.EAST;
 			
 			if( goingEast(pEdge) )
@@ -512,8 +512,8 @@ public final class SegmentationStyleFactory
 			else if( goingWest(pEdge) )
 			{ 	// The segment goes in the other direction
 				startSide = Side.WEST;	
-				start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.WEST);
-				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST);
+				start = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.WEST);
+				end = RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.EAST);
 			}
 						
 			if( pEdge.getDiagram() != null )
@@ -597,8 +597,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingSouth(Edge pEdge)
 		{
-			return NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
-					NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.NORTH).getY();
+			return RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.NORTH).getY();
 		}
 		
 		/*
@@ -607,8 +607,8 @@ public final class SegmentationStyleFactory
 		 */
 		private static boolean goingNorth(Edge pEdge)
 		{
-			return NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
-					NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY();
+			return RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 2 * MIN_SEGMENT <= 
+					RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY();
 		}
 		
 		@Override
@@ -639,19 +639,19 @@ public final class SegmentationStyleFactory
 				}
 			}
 			
-			Point start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.SOUTH);
-			Point end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.NORTH);
+			Point start = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.SOUTH);
+			Point end = RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.NORTH);
 			Side startSide = Side.SOUTH;
 			
 			if( start.getY() + 2* MIN_SEGMENT <= end.getY() )
 			{ 	// There is enough space to create the segment, we keep this order
 			}
-			else if( NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 
-					2 * MIN_SEGMENT <= NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY() )
+			else if( RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH).getY() + 
+					2 * MIN_SEGMENT <= RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.NORTH).getY() )
 			{ 	// The segment goes in the other direction
 				startSide = Side.NORTH;
-				start = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.NORTH);
-				end = NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH);
+				start = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.NORTH);
+				end = RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.SOUTH);
 			}
 			
 			if( pEdge.getDiagram() != null )

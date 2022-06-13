@@ -30,8 +30,8 @@ import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -93,7 +93,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	void testNode5IsExpanded()
 	{
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
-		Rectangle bounds = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+		Rectangle bounds = RenderingFacade.getBounds(nodeByName("Node5"));
 		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}
 	
@@ -113,8 +113,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testDependencyEdge()
 	{
-		Rectangle boundsNode2 = NodeViewerRegistry.getBounds(nodeByName("Node2"));
-		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode2 = RenderingFacade.getBounds(nodeByName("Node2"));
+		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsNode2.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode3.getX(), edgeBounds.getMaxX());
@@ -126,8 +126,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testImplementationEdge()
 	{
-		Rectangle boundsNode1 = NodeViewerRegistry.getBounds(nodeByName("Node1"));
-		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode1 = RenderingFacade.getBounds(nodeByName("Node1"));
+		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
 		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Implementation)
 				.findFirst()
@@ -143,8 +143,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testInheritanceEdge()
 	{
-		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
-		Rectangle boundsNode5 = NodeViewerRegistry.getBounds(nodeByName("Node5"));
+		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode5 = RenderingFacade.getBounds(nodeByName("Node5"));
 		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Inheritance)
 				.findFirst()
@@ -160,8 +160,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testAggregationEdge()
 	{
-		Rectangle boundsNode3 = NodeViewerRegistry.getBounds(nodeByName("Node3"));
-		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
 		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Aggregation)
 				.findFirst()
@@ -177,8 +177,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testCompositionEdge()
 	{
-		Rectangle boundsNode5 = NodeViewerRegistry.getBounds(nodeByName("Node5"));
-		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode5 = RenderingFacade.getBounds(nodeByName("Node5"));
+		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
 		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Composition)
 				.findFirst()
@@ -195,8 +195,8 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testNoteEdge()
 	{
-		Rectangle boundsNode6 = NodeViewerRegistry.getBounds(nodeByName("Node6"));
-		Rectangle boundsNode4 = NodeViewerRegistry.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode6 = RenderingFacade.getBounds(nodeByName("Node6"));
+		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
 		NoteEdge edge = (NoteEdge) edgesByType(NoteEdge.class).stream()
 				.findFirst()
 				.get();

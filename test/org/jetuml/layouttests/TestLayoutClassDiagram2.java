@@ -27,9 +27,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -90,9 +90,9 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	void testPackageNodeP4ContainsBothNodesI1AndC2()
 	{
 		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
-		Rectangle boundsI1 = NodeViewerRegistry.getBounds(nodeByName("I1"));
-		Rectangle boundsC2 = NodeViewerRegistry.getBounds(nodeByName("C2"));
-		Rectangle boundsPackageNode = NodeViewerRegistry.getBounds(nodeByName("p4"));
+		Rectangle boundsI1 = RenderingFacade.getBounds(nodeByName("I1"));
+		Rectangle boundsC2 = RenderingFacade.getBounds(nodeByName("C2"));
+		Rectangle boundsPackageNode = RenderingFacade.getBounds(nodeByName("p4"));
 		assertEquals(boundsI1.getX() - packageNodePadding, boundsPackageNode.getX());
 		assertEquals(boundsC2.getMaxX() + packageNodePadding, boundsPackageNode.getMaxX());
 		assertEquals(boundsI1.getMaxY() + packageNodePadding, boundsPackageNode.getMaxY());
@@ -107,8 +107,8 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	@Test
 	void testDependencyEdgeBetweenC1AndI1()
 	{
-		Rectangle boundsC1 = NodeViewerRegistry.getBounds(nodeByName("C1"));
-		Rectangle boundsI1 = NodeViewerRegistry.getBounds(nodeByName("I1"));
+		Rectangle boundsC1 = RenderingFacade.getBounds(nodeByName("C1"));
+		Rectangle boundsI1 = RenderingFacade.getBounds(nodeByName("I1"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsC1.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsI1.getX(), edgeBounds.getMaxX());
@@ -120,8 +120,8 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	@Test
 	void testDependencyEdgeBetweenC2AndI1()
 	{
-		Rectangle boundsC2 = NodeViewerRegistry.getBounds(nodeByName("C2"));
-		Rectangle boundsI1 = NodeViewerRegistry.getBounds(nodeByName("I1"));
+		Rectangle boundsC2 = RenderingFacade.getBounds(nodeByName("C2"));
+		Rectangle boundsI1 = RenderingFacade.getBounds(nodeByName("I1"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e2"));
 		assertWithDefaultTolerance(boundsC2.getX(), edgeBounds.getMaxX());
 		assertWithDefaultTolerance(boundsI1.getMaxX(), edgeBounds.getX());
@@ -133,8 +133,8 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	@Test
 	void testDependencyEdgeBetweenP3AndP2()
 	{
-		Rectangle boundsP3 = NodeViewerRegistry.getBounds(nodeByName("p3"));
-		Rectangle boundsP2 = NodeViewerRegistry.getBounds(nodeByName("p2"));
+		Rectangle boundsP3 = RenderingFacade.getBounds(nodeByName("p3"));
+		Rectangle boundsP2 = RenderingFacade.getBounds(nodeByName("p2"));
 		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e3"));
 		assertWithDefaultTolerance(boundsP3.getY(), edgeBounds.getMaxY());
 		assertWithDefaultTolerance(boundsP2.getMaxX(), edgeBounds.getX());

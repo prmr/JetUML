@@ -30,7 +30,6 @@ import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -52,15 +51,15 @@ public class DiagramViewer
 	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
-		NodeViewerRegistry.activateNodeStorages();
+		RenderingFacade.activateNodeStorages();
 		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
 		pDiagram.edges().forEach(edge -> EdgeViewerRegistry.draw(edge, pGraphics));
-		NodeViewerRegistry.deactivateAndClearNodeStorages();
+		RenderingFacade.deactivateAndClearNodeStorages();
 	}
 	
 	protected void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
-		NodeViewerRegistry.draw(pNode, pGraphics);
+		RenderingFacade.draw(pNode, pGraphics);
 		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
 	}
 	
@@ -134,7 +133,7 @@ public class DiagramViewer
 			.filter(Optional::isPresent)
 			.map(Optional::get)
 			.findFirst()
-			.or( () -> Optional.of(pNode).filter(originalNode -> NodeViewerRegistry.contains(originalNode, pPoint)));
+			.or( () -> Optional.of(pNode).filter(originalNode -> RenderingFacade.contains(originalNode, pPoint)));
 	}
 	
 	/**
@@ -152,11 +151,11 @@ public class DiagramViewer
 		{
 			if(bounds == null)
 			{
-				bounds = NodeViewerRegistry.getBounds(node);
+				bounds = RenderingFacade.getBounds(node);
 			}
 			else
 			{
-				bounds = bounds.add(NodeViewerRegistry.getBounds(node));
+				bounds = bounds.add(RenderingFacade.getBounds(node));
 			}
 		}
 		for(Edge edge : pDiagram.edges())
@@ -185,7 +184,7 @@ public class DiagramViewer
 		assert pElement != null;
 		if( pElement instanceof Node )
 		{
-			return NodeViewerRegistry.getBounds((Node)pElement);
+			return RenderingFacade.getBounds((Node)pElement);
 		}
 		else
 		{

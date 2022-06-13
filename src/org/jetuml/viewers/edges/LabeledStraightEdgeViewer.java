@@ -28,10 +28,10 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -72,10 +72,10 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	
 	private String wrapLabel(Edge pEdge) 
 	{
-		int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
-				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
-		int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
-				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
+		int distanceInX = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getX() -
+				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getX());
+		int distanceInY = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getY() -
+				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getY());
 		return super.wrapLabel(aLabelExtractor.apply(pEdge), distanceInX, distanceInY);
 	}
 

@@ -30,10 +30,10 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.ToolGraphics;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -244,10 +244,10 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		int distanceInX = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getX() -
-				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getX());
-		int distanceInY = Math.abs(NodeViewerRegistry.getBounds(pEdge.getStart()).getCenter().getY() -
-				NodeViewerRegistry.getBounds(pEdge.getEnd()).getCenter().getY());
+		int distanceInX = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getX() -
+				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getX());
+		int distanceInY = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getY() -
+				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getY());
 		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
@@ -338,18 +338,18 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
-					NodeViewerRegistry.getBounds(pEdge.getStart()).getY());
-			Point2D point2 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getMaxX(), 
-					NodeViewerRegistry.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point1 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
+					RenderingFacade.getBounds(pEdge.getStart()).getY());
+			Point2D point2 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getMaxX(), 
+					RenderingFacade.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D point1 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getX(), 
-					NodeViewerRegistry.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(NodeViewerRegistry.getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
-					NodeViewerRegistry.getBounds(pEdge.getStart()).getY());
+			Point2D point1 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getX(), 
+					RenderingFacade.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point2 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
+					RenderingFacade.getBounds(pEdge.getStart()).getY());
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 	}
@@ -408,8 +408,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private static Line getNormalEdgeConnectionsPoints(Edge pEdge)
 	{
-		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
+		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());
+		Rectangle end = RenderingFacade.getBounds(pEdge.getEnd());
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;
@@ -419,8 +419,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 		Direction d1 = Direction.fromLine(startCenter, endCenter).rotatedBy(-turn);
 		Direction d2 = Direction.fromLine(endCenter, startCenter).rotatedBy(turn);
-		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), d1), 
-				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), d2));
+		return new Line(RenderingFacade.getConnectionPoints(pEdge.getStart(), d1), 
+				RenderingFacade.getConnectionPoints(pEdge.getEnd(), d2));
 	}
 	
 	@Override

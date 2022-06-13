@@ -42,7 +42,7 @@ import org.jetuml.diagram.nodes.NamedNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.PersistenceTestUtils;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -156,7 +156,7 @@ public abstract class AbstractTestDiagramLayout
 	
 	protected static void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
 	{
-		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
+		Rectangle bounds = RenderingFacade.getBounds(pNode);
 		assertEquals(pDefaultWidth, bounds.getWidth());
 		assertEquals(pDefaultHeight, bounds.getHeight());
 	}

@@ -25,7 +25,6 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.NodeIndex;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * Represents the 4 corners of a node. Used to plan the placement of self-edges.
@@ -117,7 +116,7 @@ public enum NodeCorner
 	 */
 	public static Point[] toPoints(NodeCorner pCorner, Node pNode)
 	{
-		Rectangle nodeBounds = NodeViewerRegistry.getBounds(pNode);
+		Rectangle nodeBounds = RenderingFacade.getBounds(pNode);
 		Point startPoint;
 		Point endPoint;		
 		if (pCorner == TOP_RIGHT)

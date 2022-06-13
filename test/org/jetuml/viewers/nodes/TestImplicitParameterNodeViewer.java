@@ -36,6 +36,7 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,14 +92,14 @@ public class TestImplicitParameterNodeViewer
 	@Test
 	public void testGetBoundsWithOneNode()
 	{
-		assertEquals(new Rectangle(0, 0, 80, 120), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(0, 0, 80, 120), RenderingFacade.getBounds(aImplicitParameterNode1));
 	}
 	
 	@Test
 	public void testGetBoundsWithOneNodeInDiagram()
 	{
 		aDiagram.addRootNode(aImplicitParameterNode1);
-		assertEquals(new Rectangle(0, 0, 80, 120), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(0, 0, 80, 120), RenderingFacade.getBounds(aImplicitParameterNode1));
 	}
 	
 	@Test
@@ -116,8 +117,8 @@ public class TestImplicitParameterNodeViewer
 		
 		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge1);
-		assertEquals(new Rectangle(0, 0, 80, 235), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 100, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(0, 0, 80, 235), RenderingFacade.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 100, 80, 115), RenderingFacade.getBounds(aImplicitParameterNode2));
 	}
 	
 	@Test
@@ -142,9 +143,9 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addEdge(aCallEdge1);
 		aDiagram.addEdge(aConstructorEdge1);
 		
-		assertEquals(new Rectangle(0, 0, 80, 285), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 0, 80, 150), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
-		assertEquals(new Rectangle(200, 150, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
+		assertEquals(new Rectangle(0, 0, 80, 285), RenderingFacade.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 0, 80, 150), RenderingFacade.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(200, 150, 80, 115), RenderingFacade.getBounds(aImplicitParameterNode3));
 	}
 	
 	@Test
@@ -169,8 +170,8 @@ public class TestImplicitParameterNodeViewer
 		aDiagram.addEdge(aConstructorEdge1);
 		aDiagram.addEdge(aConstructorEdge2);
 		
-		assertEquals(new Rectangle(0, 0, 80, 350), NodeViewerRegistry.getBounds(aImplicitParameterNode1));
-		assertEquals(new Rectangle(100, 100, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode2));
-		assertEquals(new Rectangle(200, 215, 80, 115), NodeViewerRegistry.getBounds(aImplicitParameterNode3));
+		assertEquals(new Rectangle(0, 0, 80, 350), RenderingFacade.getBounds(aImplicitParameterNode1));
+		assertEquals(new Rectangle(100, 100, 80, 115), RenderingFacade.getBounds(aImplicitParameterNode2));
+		assertEquals(new Rectangle(200, 215, 80, 115), RenderingFacade.getBounds(aImplicitParameterNode3));
 	}
 }

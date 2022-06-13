@@ -27,8 +27,8 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -103,8 +103,8 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	 */
 	private static boolean isSShaped(Edge pEdge)
 	{
-		Rectangle b = NodeViewerRegistry.getBounds(pEdge.getEnd());
-		Point p = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Rectangle b = RenderingFacade.getBounds(pEdge.getEnd());
+		Point p = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
@@ -131,14 +131,14 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Point point = NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Point point = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		if (isSShaped(pEdge))
 		{
-			return new Line(point, NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.WEST));
+			return new Line(point, RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), Direction.EAST));
+			return new Line(point, RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.EAST));
 		}
 	}
 	

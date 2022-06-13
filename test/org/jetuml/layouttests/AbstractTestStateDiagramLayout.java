@@ -27,8 +27,8 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.CircularStateNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.jetuml.viewers.nodes.StateNodeViewer;
 
 /**
@@ -52,7 +52,7 @@ public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagram
 	protected static void verifyCircularStateNodeDefaultDimensions(Node pNode)
 	{
 		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeViewer.class, "DIAMETER");
-		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
+		Rectangle bounds = RenderingFacade.getBounds(pNode);
 		assertEquals(DIAMETER, bounds.getWidth());
 		assertEquals(DIAMETER, bounds.getHeight());
 	}

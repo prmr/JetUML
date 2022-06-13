@@ -37,6 +37,7 @@ import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -102,7 +103,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(osDependent(23, 24, 23),0,osDependent(44, 42, 44), osDependent(20,20,26)), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(23, 24, 23),0,osDependent(44, 42, 44), osDependent(20,20,26)), RenderingFacade.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -114,7 +115,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = 47 * 2
 		// h = text height 22
-		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), RenderingFacade.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -122,7 +123,7 @@ public class TestFieldNodeViewer
 	{
 		// x = max x of the node bounds - x gap
 		// y = half-point of the default height
-		assertEquals( new Point(osDependent(62, 61, 62),10), NodeViewerRegistry.getConnectionPoints(aFieldNode1, Direction.EAST));
+		assertEquals( new Point(osDependent(62, 61, 62),10), RenderingFacade.getConnectionPoints(aFieldNode1, Direction.EAST));
 	}
 	
 	// NEW
@@ -174,7 +175,7 @@ public class TestFieldNodeViewer
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(5,70,70, osDependent(20,20,26)), NodeViewerRegistry.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(5,70,70, osDependent(20,20,26)), RenderingFacade.getBounds(aFieldNode1));
 	}
 	
 	@AfterEach

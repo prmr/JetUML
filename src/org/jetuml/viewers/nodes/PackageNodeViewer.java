@@ -30,6 +30,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 
 /**
  * An object to render a package in a class diagram.
@@ -50,11 +51,11 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 		{
 			if( childBounds == null )
 			{
-				childBounds = NodeViewerRegistry.getBounds(child);
+				childBounds = RenderingFacade.getBounds(child);
 			}
 			else
 			{
-				childBounds = childBounds.add(NodeViewerRegistry.getBounds(child));
+				childBounds = childBounds.add(RenderingFacade.getBounds(child));
 			}
 		}
 		assert childBounds != null;

@@ -48,7 +48,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.Grid;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -459,7 +458,7 @@ public class DiagramCanvasController
 		{
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
-			Rectangle bounds = NodeViewerRegistry.getBounds(firstSelected);
+			Rectangle bounds = RenderingFacade.getBounds(firstSelected);
 			Rectangle snappedPosition = Grid.snapped(bounds);
 			
 			int dx = snappedPosition.getX() - bounds.getX();
@@ -637,7 +636,7 @@ public class DiagramCanvasController
 				if(element instanceof Node)
 				{
 					aTrackedNodes.add((Node) element);
-					aOriginalBounds.add(NodeViewerRegistry.getBounds((Node)element));
+					aOriginalBounds.add(RenderingFacade.getBounds((Node)element));
 				}
 			}
 		}
@@ -659,7 +658,7 @@ public class DiagramCanvasController
 			int i = 0;
 			for(Node node : aTrackedNodes)
 			{
-				selectionBounds2[i] = NodeViewerRegistry.getBounds(node);
+				selectionBounds2[i] = RenderingFacade.getBounds(node);
 				i++;
 			}
 			for(i = 0; i < aOriginalBounds.size(); i++)

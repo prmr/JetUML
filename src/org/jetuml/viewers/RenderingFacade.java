@@ -20,16 +20,49 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.nodes.ActorNode;
+import org.jetuml.diagram.nodes.CallNode;
+import org.jetuml.diagram.nodes.ClassNode;
+import org.jetuml.diagram.nodes.FieldNode;
+import org.jetuml.diagram.nodes.FinalStateNode;
+import org.jetuml.diagram.nodes.ImplicitParameterNode;
+import org.jetuml.diagram.nodes.InitialStateNode;
+import org.jetuml.diagram.nodes.InterfaceNode;
+import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.diagram.nodes.ObjectNode;
+import org.jetuml.diagram.nodes.PackageDescriptionNode;
+import org.jetuml.diagram.nodes.PackageNode;
+import org.jetuml.diagram.nodes.PointNode;
+import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.geom.Direction;
+import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.ActorNodeViewer;
+import org.jetuml.viewers.nodes.CallNodeViewer;
+import org.jetuml.viewers.nodes.CircularStateNodeViewer;
+import org.jetuml.viewers.nodes.FieldNodeViewer;
+import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import org.jetuml.viewers.nodes.InterfaceNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewer;
+import org.jetuml.viewers.nodes.NoteNodeViewer;
+import org.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
+import org.jetuml.viewers.nodes.PackageNodeViewer;
+import org.jetuml.viewers.nodes.PointNodeViewer;
+import org.jetuml.viewers.nodes.StateNodeViewer;
+import org.jetuml.viewers.nodes.TypeNodeViewer;
+import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Meant as a single access point for all services that require rendering
@@ -37,6 +70,28 @@ import javafx.scene.canvas.Canvas;
  */
 public class RenderingFacade
 {
+	private static IdentityHashMap<Class<? extends Node>, NodeViewer> aNodeViewers = 
+			new IdentityHashMap<>();
+	
+	static
+	{
+		aNodeViewers.put(ActorNode.class, new ActorNodeViewer());
+		aNodeViewers.put(CallNode.class, new CallNodeViewer());
+		aNodeViewers.put(ClassNode.class, new TypeNodeViewer());
+		aNodeViewers.put(FieldNode.class, new FieldNodeViewer());
+		aNodeViewers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
+		aNodeViewers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
+		aNodeViewers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
+		aNodeViewers.put(InterfaceNode.class, new InterfaceNodeViewer());
+		aNodeViewers.put(NoteNode.class, new NoteNodeViewer());
+		aNodeViewers.put(ObjectNode.class, new ObjectNodeViewer());
+		aNodeViewers.put(PackageNode.class, new PackageNodeViewer());
+		aNodeViewers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
+		aNodeViewers.put(PointNode.class, new PointNodeViewer());
+		aNodeViewers.put(StateNode.class, new StateNodeViewer());
+		aNodeViewers.put(UseCaseNode.class, new UseCaseNodeViewer());
+	}
+	
 	/**
 	 * Convenience method for creating the icon for either a node
 	 * or an edge.
@@ -50,7 +105,7 @@ public class RenderingFacade
 		assert pElement != null;
 		if( pElement instanceof Node )
 		{
-			return NodeViewerRegistry.createIcon((Node)pElement);
+			return aNodeViewers.get(pElement.getClass()).createIcon((Node)pElement);
 		}
 		else
 		{
@@ -112,4 +167,92 @@ public class RenderingFacade
 			return pBounds.add(DiagramViewer.getBounds(pElement));
 		}
 	}
+	
+	/**
+	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
+	 */
+	public static void activateNodeStorages()
+	{
+		for (NodeViewer nodeViewer : aNodeViewers.values())
+		{
+			nodeViewer.activateNodeStorage();
+		}
+	}
+	
+	/**
+	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
+	 */
+	public static void deactivateAndClearNodeStorages()
+	{
+		for (NodeViewer nodeViewer : aNodeViewers.values())
+		{
+			nodeViewer.deactivateAndClearNodeStorage();
+		}
+	}
+	
+	/**
+	 * Tests whether pNode contains a point.
+	 * 
+	 * @param pNode The node to test
+	 * @param pPoint The point to test
+	 * @return true if this element contains aPoint
+	 */
+	public static boolean contains(Node pNode, Point pPoint)
+	{
+		return aNodeViewers.get(pNode.getClass()).contains(pNode, pPoint);
+	}
+	
+	/**
+	 * Draw selection handles around pNode.
+	 * 
+	 * @param pNode The target node
+	 * @param pGraphics The graphics context
+	 * @pre pNode != null && pGraphics != null
+	 */
+	public static void drawSelectionHandles(Node pNode, GraphicsContext pGraphics)
+	{
+		aNodeViewers.get(pNode.getClass()).drawSelectionHandles(pNode, pGraphics);
+	}
+	
+	/**
+	 * Draws pNode.
+	 * 
+	 * @param pNode The node to draw.
+	 * @param pGraphics The graphics context
+	 * @pre pNode != null
+	 */
+	public static void draw(Node pNode, GraphicsContext pGraphics)
+	{
+		assert pNode != null;
+		aNodeViewers.get(pNode.getClass()).draw(pNode, pGraphics);
+	}
+	
+	/**
+	 * Gets the smallest rectangle that bounds pNode. The bounding rectangle contains all labels.
+	 * 
+	 * @param pNode The node whose bounds we wish to compute.
+	 * @return The bounding rectangle
+	 * @pre pNode != null
+	 */
+	public static Rectangle getBounds(Node pNode)
+	{
+		assert pNode != null;
+		return aNodeViewers.get(pNode.getClass()).getBounds(pNode);
+	}
+
+	/**
+	 * Gets the points at which pNode is connected to its nodes.
+	 * 
+	 * @param pNode The target node
+	 * @param pDirection The desired direction.
+	 * @return A connection point on the node.
+	 * @pre pNode != null && pDirection != null
+	 * 
+	 */
+	public static Point getConnectionPoints(Node pNode, Direction pDirection)
+	{
+		assert pNode != null;
+		return aNodeViewers.get(pNode.getClass()).getConnectionPoint(pNode, pDirection);
+	}
+	
 }

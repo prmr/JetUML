@@ -36,6 +36,7 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -115,21 +116,21 @@ public class TestPackageNodeViewer
 	@Test
 	public void testGetBoundsDefault()
 	{
-		assertEqualRectangles(0,0,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
+		assertEqualRectangles(0,0,100,80, RenderingFacade.getBounds(aPackageNode1));
 	}
 	
 	@Test
 	public void testGetBoundsOffset()
 	{
 		aPackageNode1.moveTo(new Point(25,25));
-		assertEqualRectangles(25,25,100,80, NodeViewerRegistry.getBounds(aPackageNode1));
+		assertEqualRectangles(25,25,100,80, RenderingFacade.getBounds(aPackageNode1));
 	}
 	
 	@Test
 	public void testGetBoundsNameNoContent()
 	{
 		aPackageNode1.setName("Package");
-		assertEqualRectangles(0,0, osDependent(104,104,101), osDependent(81, 80, 80), NodeViewerRegistry.getBounds(aPackageNode1));
+		assertEqualRectangles(0,0, osDependent(104,104,101), osDependent(81, 80, 80), RenderingFacade.getBounds(aPackageNode1));
 	}
 	
 	@Test

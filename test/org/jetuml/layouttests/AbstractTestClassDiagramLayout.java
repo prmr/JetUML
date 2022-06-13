@@ -28,8 +28,8 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 
 /**
@@ -53,8 +53,8 @@ public abstract class AbstractTestClassDiagramLayout extends AbstractTestDiagram
 	protected void verifyPackageNodeContainmentOfSingleNode(String pPackageName, String pInnerNodeName)
 	{
 		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
-		Rectangle boundsInnerNode = NodeViewerRegistry.getBounds(nodeByName(pInnerNodeName));
-		Rectangle boundsPackageNode = NodeViewerRegistry.getBounds(nodeByName(pPackageName));
+		Rectangle boundsInnerNode = RenderingFacade.getBounds(nodeByName(pInnerNodeName));
+		Rectangle boundsPackageNode = RenderingFacade.getBounds(nodeByName(pPackageName));
 		assertEquals(boundsInnerNode.getX() - packageNodePadding, boundsPackageNode.getX());
 		assertEquals(boundsInnerNode.getMaxX() + packageNodePadding, boundsPackageNode.getMaxX());
 		assertEquals(boundsInnerNode.getMaxY() + packageNodePadding, boundsPackageNode.getMaxY());

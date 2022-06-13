@@ -25,7 +25,6 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
@@ -198,7 +197,7 @@ public final class ViewerUtils
 		assert pElement != null && pContext != null;
 		if( pElement instanceof Node )
 		{
-			NodeViewerRegistry.drawSelectionHandles((Node) pElement, pContext);
+			RenderingFacade.drawSelectionHandles((Node) pElement, pContext);
 		}
 		else
 		{

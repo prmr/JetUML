@@ -35,10 +35,10 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.AbstractNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -124,7 +124,7 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	{
 		if( pElement instanceof Node )
 		{
-			return NodeViewerRegistry.createIcon((Node)pElement);
+			return RenderingFacade.createIcon((Node)pElement);
 		}
 		else
 		{

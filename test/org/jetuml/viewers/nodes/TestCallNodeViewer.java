@@ -33,6 +33,7 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,9 +99,9 @@ public class TestCallNodeViewer
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge2);
 		
-		assertEquals(new Rectangle(32, 80, 16, 120), NodeViewerRegistry.getBounds(aDefaultCallNode1));
-		assertEquals(new Rectangle(232, 100, 16, 30), NodeViewerRegistry.getBounds(aDefaultCallNode2));
-		assertEquals(new Rectangle(232, 150, 16, 30), NodeViewerRegistry.getBounds(aCallNode1));
+		assertEquals(new Rectangle(32, 80, 16, 120), RenderingFacade.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(232, 100, 16, 30), RenderingFacade.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(232, 150, 16, 30), RenderingFacade.getBounds(aCallNode1));
 	}	
 	
 	@Test
@@ -116,7 +117,7 @@ public class TestCallNodeViewer
 		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge);
 		
-		assertEquals(new Rectangle(32, 80, 16, 135), NodeViewerRegistry.getBounds(aDefaultCallNode1));
-		assertEquals(new Rectangle(32, 165, 16, 30), NodeViewerRegistry.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(32, 80, 16, 135), RenderingFacade.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(32, 165, 16, 30), RenderingFacade.getBounds(aDefaultCallNode2));
 	}
 }

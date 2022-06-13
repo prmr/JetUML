@@ -48,7 +48,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.DiagramViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 
 /**
@@ -517,7 +517,7 @@ public abstract class DiagramBuilder
 	protected void positionNode(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
-		Rectangle bounds = NodeViewerRegistry.getBounds(pNode);
+		Rectangle bounds = RenderingFacade.getBounds(pNode);
 		Point position = computePosition(bounds, pRequestedPosition);
 		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
 	}

@@ -25,14 +25,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
+import java.util.IdentityHashMap;
 
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.nodes.NodeViewer;
 
 /**
  * Superclass for classes that test the layout of a sequence diagram.
@@ -56,7 +58,7 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	protected static void verifyCallNodeDefaultWidth(Node pNode)
 	{
 		final int WIDTH = getStaticIntFieldValue(CallNodeViewer.class, "WIDTH");
-		Rectangle nodeBounds = NodeViewerRegistry.getBounds(pNode);
+		Rectangle nodeBounds = RenderingFacade.getBounds(pNode);
 		assertEquals(WIDTH, nodeBounds.getWidth());
 	}
 	
@@ -64,14 +66,11 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	{
 		try
 		{
-			Field fieldInstanceOfNodeViewerRegistry = NodeViewerRegistry.class.getDeclaredField("INSTANCE");
-			fieldInstanceOfNodeViewerRegistry.setAccessible(true);
-			NodeViewerRegistry instanceOfNodeViewerRegistry = (NodeViewerRegistry) fieldInstanceOfNodeViewerRegistry.get(null);
-			
-			Method method = NodeViewerRegistry.class.getDeclaredMethod("viewerFor", Node.class);
-			method.setAccessible(true);
-			ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer =
-					(ImplicitParameterNodeViewer)method.invoke(instanceOfNodeViewerRegistry, pImplicitParameterNode);
+			Field nodeViewers = RenderingFacade.class.getDeclaredField("aNodeViewers");
+			nodeViewers.setAccessible(true);
+			@SuppressWarnings("unchecked")
+			ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer = 
+					(ImplicitParameterNodeViewer)((IdentityHashMap<Class<? extends Node>, NodeViewer>)nodeViewers.get(null)).get(ImplicitParameterNode.class);
 			return instanceOfImplicitParameterNodeViewer;
 		}
 		catch (ReflectiveOperationException e)

@@ -28,8 +28,8 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -54,8 +54,8 @@ public final class ReturnEdgeViewer extends LabeledStraightEdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle end = NodeViewerRegistry.getBounds(pEdge.getEnd());
+		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());
+		Rectangle end = RenderingFacade.getBounds(pEdge.getEnd());
 		
 		if(pEdge.getEnd() instanceof PointNode) // show nicely in tool bar
 		{

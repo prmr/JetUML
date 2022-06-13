@@ -36,11 +36,11 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.ArrowHeadViewer;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -168,8 +168,8 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		{
 			endNode = pEdge.getEnd().getParent();
 		}
-		Rectangle start = NodeViewerRegistry.getBounds(pEdge.getStart());	
-		Rectangle end = NodeViewerRegistry.getBounds(endNode);
+		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());	
+		Rectangle end = RenderingFacade.getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{
 			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);
@@ -189,7 +189,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 			{
 				direction = Direction.EAST;
 			}
-			Point endPoint = NodeViewerRegistry.getConnectionPoints(endNode, direction);
+			Point endPoint = RenderingFacade.getConnectionPoints(endNode, direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{

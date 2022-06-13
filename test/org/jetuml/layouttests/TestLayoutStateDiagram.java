@@ -35,8 +35,8 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -104,7 +104,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	void testNoteNodeIsExpandedHorizontally()
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
-		Rectangle bounds = NodeViewerRegistry.getBounds(nodesByType(NoteNode.class).get(0));
+		Rectangle bounds = RenderingFacade.getBounds(nodesByType(NoteNode.class).get(0));
 		assertTrue(bounds.getWidth() > DEFAULT_WIDTH);
 	}
 	
@@ -124,8 +124,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testTransitionEdgeFromInitialStateToS1()
 	{
-		Rectangle boundsInitialState = NodeViewerRegistry.getBounds(nodesByType(InitialStateNode.class).get(0));
-		Rectangle boundsS1 = NodeViewerRegistry.getBounds(nodeByName("S1"));
+		Rectangle boundsInitialState = RenderingFacade.getBounds(nodesByType(InitialStateNode.class).get(0));
+		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
 		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("start"));
 		assertWithDefaultTolerance(boundsInitialState.getMaxX(), edgeLine.getPoint1().getX());
 		assertWithDefaultTolerance(boundsS1.getX(), edgeLine.getPoint2().getX());
@@ -137,8 +137,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testTransitionEdgesFromS1ToS2()
 	{
-		Rectangle boundsS1 = NodeViewerRegistry.getBounds(nodeByName("S1"));
-		Rectangle boundsS2 = NodeViewerRegistry.getBounds(nodeByName("S2"));
+		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
+		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
 		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint1().getX());
 		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint2().getX());
@@ -150,8 +150,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testTransitionEdgesFromS2ToS1()
 	{
-		Rectangle boundsS1 = NodeViewerRegistry.getBounds(nodeByName("S1"));
-		Rectangle boundsS2 = NodeViewerRegistry.getBounds(nodeByName("S2"));
+		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
+		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
 		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("e2"));
 		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint2().getX());
 		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint1().getX());
@@ -163,7 +163,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testSelfTransitionEdgeOnS2()
 	{
-		Rectangle boundsS2 = NodeViewerRegistry.getBounds(nodeByName("S2"));
+		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
 		Point arrowBaseConnectionPoint = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("self")).getPoint1();
 		Point arrowHeadConnectionPoint = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("self")).getPoint2();
 		assertWithDefaultTolerance(arrowBaseConnectionPoint.getY(), boundsS2.getY());
@@ -176,8 +176,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testTransitionEdgeFromS2ToS3()
 	{
-		Rectangle boundsS2 = NodeViewerRegistry.getBounds(nodeByName("S2"));
-		Rectangle boundsS3 = NodeViewerRegistry.getBounds(nodeByName("S3"));
+		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
+		Rectangle boundsS3 = RenderingFacade.getBounds(nodeByName("S3"));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(nodeByName("S3")))
 				.findFirst()
@@ -193,8 +193,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testTransitionEdgeFromS3ToFinalState()
 	{
-		Rectangle boundsS3 = NodeViewerRegistry.getBounds(nodeByName("S3"));
-		Rectangle boundsFinalState = NodeViewerRegistry.getBounds(nodesByType(FinalStateNode.class).get(0));
+		Rectangle boundsS3 = RenderingFacade.getBounds(nodeByName("S3"));
+		Rectangle boundsFinalState = RenderingFacade.getBounds(nodesByType(FinalStateNode.class).get(0));
 		Edge transitionEdge = edgesByType(StateTransitionEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(nodesByType(FinalStateNode.class).get(0)))
 				.findFirst()
@@ -210,8 +210,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testNoteEdgeBetweenS3AndNoteNode()
 	{
-		Rectangle boundsS3 = NodeViewerRegistry.getBounds(nodeByName("S3"));
-		Rectangle boundsNoteNode = NodeViewerRegistry.getBounds(nodesByType(NoteNode.class).get(0));
+		Rectangle boundsS3 = RenderingFacade.getBounds(nodeByName("S3"));
+		Rectangle boundsNoteNode = RenderingFacade.getBounds(nodesByType(NoteNode.class).get(0));
 		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
 		assertWithDefaultTolerance(boundsNoteNode.getX(), edgeLine.getPoint1().getX());
 		assertTrue(boundsS3.contains(edgeLine.getPoint2()));

@@ -26,10 +26,10 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
+import org.jetuml.viewers.ToolGraphics;
 
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
@@ -111,13 +111,13 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle startBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle endBounds = NodeViewerRegistry.getBounds(pEdge.getEnd());
+		Rectangle startBounds = RenderingFacade.getBounds(pEdge.getStart());
+		Rectangle endBounds = RenderingFacade.getBounds(pEdge.getEnd());
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = Direction.fromLine(startCenter, endCenter);
-		return new Line(NodeViewerRegistry.getConnectionPoints(pEdge.getStart(), toEnd), 
-				NodeViewerRegistry.getConnectionPoints(pEdge.getEnd(), toEnd.rotatedBy(DEGREES_180)));
+		return new Line(RenderingFacade.getConnectionPoints(pEdge.getStart(), toEnd), 
+				RenderingFacade.getConnectionPoints(pEdge.getEnd(), toEnd.rotatedBy(DEGREES_180)));
 	}
 
 	@Override

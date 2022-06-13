@@ -22,7 +22,7 @@ package org.jetuml.viewers;
 
 import static java.util.stream.Collectors.toList;
 import static org.jetuml.viewers.EdgePriority.priorityOf;
-import static org.jetuml.viewers.nodes.NodeViewerRegistry.getBounds;
+import static org.jetuml.viewers.RenderingFacade.getBounds;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -43,7 +43,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.NodeIndex;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * Plans and stores the paths for edges based on the position of stored edges and nodes 
@@ -1015,7 +1014,7 @@ public class Layouter
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
 		if( pSideOfNode.isNorthSouth() ) //then compare X-coordinates
 		{
-			if (NodeViewerRegistry.getBounds(pNode).getCenter().getX() <=  NodeViewerRegistry.getBounds(pOtherNode).getCenter().getX())
+			if (RenderingFacade.getBounds(pNode).getCenter().getX() <=  RenderingFacade.getBounds(pOtherNode).getCenter().getX())
 			{
 				return 1;
 			}
@@ -1026,7 +1025,7 @@ public class Layouter
 		}
 		else //Side of node is East/West, so we need to compare Y-coordinates
 		{
-			if (NodeViewerRegistry.getBounds(pNode).getCenter().getY() <=  NodeViewerRegistry.getBounds(pOtherNode).getCenter().getY())
+			if (RenderingFacade.getBounds(pNode).getCenter().getY() <=  RenderingFacade.getBounds(pOtherNode).getCenter().getY())
 			{
 				return 1;
 			}
@@ -1136,8 +1135,8 @@ public class Layouter
 	private NodeSide attachedSidePreferringEastWest(Edge pEdge)
 	{
 		assert pEdge != null;
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = RenderingFacade.getBounds(pEdge.getStart());
+		Rectangle endNodeBounds = RenderingFacade.getBounds(pEdge.getEnd());
 		//if the start node is above or below the end node (+- 20 px) then determine whether it belongs on the N or S side
 		if (startNodeBounds.getMaxX() > endNodeBounds.getX() - (2 * TEN_PIXELS) &&
 				startNodeBounds.getX() < endNodeBounds.getMaxX() + (2 * TEN_PIXELS))
@@ -1159,8 +1158,8 @@ public class Layouter
 	private NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		assert pEdge!= null;
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = RenderingFacade.getBounds(pEdge.getStart());
+		Rectangle endNodeBounds = RenderingFacade.getBounds(pEdge.getEnd());
 		//if the start node is beside the end node (+- 20 px) then compute whether it belongs on the E or W side
 		if (startNodeBounds.getMaxY() > endNodeBounds.getY() - (2 * TEN_PIXELS) && 
 				startNodeBounds.getY() < endNodeBounds.getMaxY() + (2 * TEN_PIXELS))
@@ -1181,12 +1180,12 @@ public class Layouter
 	 */
 	private NodeSide northSouthSideUnlessTooClose(Edge pEdge)
 	{
-		NodeSide preferredSide = northOrSouthSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
-				NodeViewerRegistry.getBounds(pEdge.getEnd()));
+		NodeSide preferredSide = northOrSouthSide(RenderingFacade.getBounds(pEdge.getStart()), 
+				RenderingFacade.getBounds(pEdge.getEnd()));
 		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
-			return eastOrWestSide(NodeViewerRegistry.getBounds(pEdge.getStart()), NodeViewerRegistry.getBounds(pEdge.getEnd()));
+			return eastOrWestSide(RenderingFacade.getBounds(pEdge.getStart()), RenderingFacade.getBounds(pEdge.getEnd()));
 		}
 		else
 		{
@@ -1202,12 +1201,12 @@ public class Layouter
 	 */
 	private NodeSide eastWestSideUnlessTooClose(Edge pEdge)
 	{
-		NodeSide preferredSide = eastOrWestSide(NodeViewerRegistry.getBounds(pEdge.getStart()), 
-				NodeViewerRegistry.getBounds(pEdge.getEnd()));
+		NodeSide preferredSide = eastOrWestSide(RenderingFacade.getBounds(pEdge.getStart()), 
+				RenderingFacade.getBounds(pEdge.getEnd()));
 		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
-			return northOrSouthSide(NodeViewerRegistry.getBounds(pEdge.getStart()), NodeViewerRegistry.getBounds(pEdge.getEnd()));
+			return northOrSouthSide(RenderingFacade.getBounds(pEdge.getStart()), RenderingFacade.getBounds(pEdge.getEnd()));
 		}
 		else
 		{
@@ -1269,7 +1268,7 @@ public class Layouter
 	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, NodeSide pAttachedSide)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		Rectangle otherNodeBounds = NodeViewerRegistry.getBounds(getOtherNode(pEdge, pNode));
+		Rectangle otherNodeBounds = RenderingFacade.getBounds(getOtherNode(pEdge, pNode));
 		if(pAttachedSide == NodeSide.NORTH)
 		{ //Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()

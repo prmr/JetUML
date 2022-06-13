@@ -32,7 +32,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.edges.StoredEdgeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -58,7 +57,7 @@ public class ClassDiagramViewer extends DiagramViewer
 	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		//draw and store nodes 
-		NodeViewerRegistry.activateNodeStorages();
+		RenderingFacade.activateNodeStorages();
 		pDiagram.rootNodes().forEach(node -> super.drawNode(node, pGraphics));
 		
 		//plan edge paths using Layouter
@@ -77,7 +76,7 @@ public class ClassDiagramViewer extends DiagramViewer
 				EdgeViewerRegistry.draw(edge, pGraphics);
 			}
 		}
-		NodeViewerRegistry.deactivateAndClearNodeStorages();
+		RenderingFacade.deactivateAndClearNodeStorages();
 	}
 	
 	/**
@@ -122,11 +121,11 @@ public class ClassDiagramViewer extends DiagramViewer
 		{
 			if(bounds == null)
 			{
-				bounds = NodeViewerRegistry.getBounds(node);
+				bounds = RenderingFacade.getBounds(node);
 			}
 			else
 			{
-				bounds = bounds.add(NodeViewerRegistry.getBounds(node));
+				bounds = bounds.add(RenderingFacade.getBounds(node));
 			}
 		}
 		//When getBounds(pDiagram) is called to open an existing class diagram file,

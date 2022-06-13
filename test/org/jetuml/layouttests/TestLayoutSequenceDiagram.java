@@ -34,8 +34,8 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -188,8 +188,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.findFirst()
 				.get();
 		Line selfCallEdgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("selfCall()"));
-		Rectangle largerCallNodeBounds = NodeViewerRegistry.getBounds(largerCallNode);
-		Rectangle smallerCallNodeBounds = NodeViewerRegistry.getBounds(smallerCallNode);
+		Rectangle largerCallNodeBounds = RenderingFacade.getBounds(largerCallNode);
+		Rectangle smallerCallNodeBounds = RenderingFacade.getBounds(smallerCallNode);
 		assertEquals(largerCallNodeBounds.getMaxX(), selfCallEdgeLine.getPoint1().getX());
 		assertEquals(smallerCallNodeBounds.getMaxX(), selfCallEdgeLine.getPoint2().getX());
 	}
@@ -204,8 +204,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node startNode = nodeByName("object1:Type1").getChildren().get(1);
 		Node endNode = nodeByName(":Type2").getChildren().get(0);
 		Line signalCallEdgeLine = EdgeViewerRegistry.getConnectionPoints(signalCallEdge);
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(startNode);
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(endNode);
+		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
+		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
 		assertEquals(startNodeBounds.getMaxX(), signalCallEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getX(), signalCallEdgeLine.getPoint2().getX());
 	}
@@ -228,8 +228,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.findFirst()
 				.get();
 		Line call1EdgeLine = EdgeViewerRegistry.getConnectionPoints(call1Edge);
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(startNode);
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(endNode);
+		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
+		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
 		assertEquals(startNodeBounds.getMaxX(), call1EdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getX(), call1EdgeLine.getPoint2().getX());
 	}
@@ -252,8 +252,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.findFirst()
 				.get();
 		Line r1ReturnEdgeLine = EdgeViewerRegistry.getConnectionPoints(r1ReturnEdge);
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(startNode);
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(endNode);
+		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
+		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
 		assertEquals(startNodeBounds.getX(), r1ReturnEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getMaxX(), r1ReturnEdgeLine.getPoint2().getX());
 	}
@@ -280,8 +280,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.findFirst()
 				.get();
 		Line returnEdgeLine = EdgeViewerRegistry.getConnectionPoints(returnEdge);
-		Rectangle startNodeBounds = NodeViewerRegistry.getBounds(startNode);
-		Rectangle endNodeBounds = NodeViewerRegistry.getBounds(endNode);
+		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
+		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
 		assertEquals(startNodeBounds.getX(), returnEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getMaxX(), returnEdgeLine.getPoint2().getX());
 	}
@@ -295,8 +295,8 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node noteNode = nodeByName("A note");
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
 		Line noteEdgeLine = EdgeViewerRegistry.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
-		Rectangle noteNodeBounds = NodeViewerRegistry.getBounds(noteNode);
-		Rectangle callNodeBounds = NodeViewerRegistry.getBounds(callNode);
+		Rectangle noteNodeBounds = RenderingFacade.getBounds(noteNode);
+		Rectangle callNodeBounds = RenderingFacade.getBounds(callNode);
 		assertEquals(noteNodeBounds.getX(), noteEdgeLine.getPoint1().getX());
 		assertTrue(callNodeBounds.contains(noteEdgeLine.getPoint2()));
 	}

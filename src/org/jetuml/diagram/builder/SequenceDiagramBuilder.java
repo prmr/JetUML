@@ -41,9 +41,9 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.viewers.DiagramViewer;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewerRegistry;
 
 /**
  * A builder for sequence diagrams.
@@ -248,7 +248,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( Node node : aDiagram.rootNodes() )
 		{
-			if( node instanceof ImplicitParameterNode && NodeViewerRegistry.contains(node, pPoint) )
+			if( node instanceof ImplicitParameterNode && RenderingFacade.contains(node, pPoint) )
 			{
 				if( !(pPoint.getY() < IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
 				{
