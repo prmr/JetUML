@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -47,9 +48,9 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	}
 
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		final Rectangle bounds = getBounds(pNode);
+		final Rectangle bounds = getBounds(pElement);
 		if( aFinal )
 		{
 			ViewerUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.WHITE, true);

@@ -116,16 +116,17 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(pEdge), LineStyle.SOLID);
+		Edge edge = (Edge) pElement;
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
 		
-		Point[] points = getPoints(pEdge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
-		getArrowHeadView((CallEdge)pEdge).draw(pGraphics, points[points.length - 2], points[points.length - 1]);
-		String label = ((CallEdge)pEdge).getMiddleLabel();
+		Point[] points = getPoints(edge); // TODO already called by getShape(), find a way to avoid having to do 2 calls.
+		getArrowHeadView((CallEdge)edge).draw(pGraphics, points[points.length - 2], points[points.length - 1]);
+		String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			drawLabel((CallEdge)pEdge, pGraphics, label);
+			drawLabel((CallEdge)edge, pGraphics, label);
 		}
 	}
 	

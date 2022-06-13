@@ -54,7 +54,7 @@ public final class PointNodeViewer extends AbstractNodeViewer
 	}
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics) 
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics) 
 	{
 		// Do nothing, a point is invisible.
 	}

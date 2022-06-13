@@ -22,6 +22,7 @@ package org.jetuml.viewers.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.geom.Dimension;
@@ -49,14 +50,14 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		assert pNode instanceof AbstractPackageNode;
-		Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
-		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
+		assert pElement instanceof AbstractPackageNode;
+		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
+		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
 		ViewerUtils.drawRectangle(pGraphics, topBounds );
 		ViewerUtils.drawRectangle(pGraphics, bottomBounds );
-		NAME_VIEWER.draw(((AbstractPackageNode)pNode).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
+		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
 				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
 	}
 	

@@ -33,14 +33,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface NodeViewer extends DiagramElementRenderer
 {
-	/**
-     * Draw the element.
-     * @param pNode The node to draw.
-     * @param pGraphics the graphics context
-     * @pre pNode != null && pGraphics != null
-	 */
-   	void draw(Node pNode, GraphicsContext pGraphics);
-   	
    	/**
      * Draw selection handles around the element.
      * @param pNode The node to draw selection handles around

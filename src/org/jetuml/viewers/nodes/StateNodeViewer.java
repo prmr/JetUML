@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Dimension;
@@ -44,11 +45,11 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		final Rectangle bounds = getBounds(pNode);
+		final Rectangle bounds = getBounds(pElement);
 		ViewerUtils.drawRoundedRectangle(pGraphics, bounds);
-		NAME_VIEWER.draw(((StateNode)pNode).getName(), pGraphics, bounds);
+		NAME_VIEWER.draw(((StateNode)pElement).getName(), pGraphics, bounds);
 	}
 	
 	@Override

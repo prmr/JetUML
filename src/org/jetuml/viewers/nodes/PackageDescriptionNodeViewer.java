@@ -23,7 +23,6 @@ package org.jetuml.viewers.nodes;
 import static org.jetuml.geom.GeomUtils.max;
 
 import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.geom.Dimension;
@@ -43,11 +42,11 @@ public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewe
 	private static final StringViewer CONTENTS_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		super.draw(pNode, pGraphics);
-		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
-		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pNode).getContents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, 
+		super.draw(pElement, pGraphics);
+		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
+		CONTENTS_VIEWER.draw(((PackageDescriptionNode)pElement).getContents(), pGraphics, new Rectangle(bottomBounds.getX() + NAME_GAP, 
 				bottomBounds.getY(), bottomBounds.getWidth(), bottomBounds.getHeight()));
 	}
 	

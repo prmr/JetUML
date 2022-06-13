@@ -58,13 +58,13 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final CallNodeViewer CALL_NODE_VIEWER = new CallNodeViewer();
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		Rectangle top = getTopRectangle(pNode);
+		Rectangle top = getTopRectangle((Node)pElement);
 		ViewerUtils.drawRectangle(pGraphics, top);
-		NAME_VIEWER.draw(((ImplicitParameterNode)pNode).getName(), pGraphics, top);
+		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pGraphics, top);
 		int xmid = top.getCenter().getX();
-		ViewerUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pNode).getMaxY(), LineStyle.DOTTED);
+		ViewerUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pElement).getMaxY(), LineStyle.DOTTED);
 	}
 	
 	@Override

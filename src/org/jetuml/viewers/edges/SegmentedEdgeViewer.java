@@ -126,23 +126,24 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		Point2D[] points = getPoints(pEdge);		
-		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(pEdge), aLineStyleExtractor.apply(pEdge));
-		aArrowStartExtractor.apply(pEdge).view().draw(pGraphics, 
+		Edge edge = (Edge) pElement;
+		Point2D[] points = getPoints(edge);		
+		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(edge), aLineStyleExtractor.apply(edge));
+		aArrowStartExtractor.apply(edge).view().draw(pGraphics, 
 				Conversions.toPoint(points[1]), 
 				Conversions.toPoint(points[0]));
 		
-		aArrowEndExtractor.apply(pEdge).view().draw(pGraphics, 
+		aArrowEndExtractor.apply(edge).view().draw(pGraphics, 
 				Conversions.toPoint(points[points.length - 2]), 
 				Conversions.toPoint(points[points.length - 1]));
-		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(pEdge), 
-				aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
+		drawString(pGraphics, points[1], points[0], aArrowStartExtractor.apply(edge), 
+				aStartLabelExtractor.apply(edge), false, isStepUp(edge));
 		drawString(pGraphics, points[points.length / 2 - 1], points[points.length / 2], null, 
-				aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge));
+				aMiddleLabelExtractor.apply(edge), true, isStepUp(edge));
 		drawString(pGraphics, points[points.length - 2], points[points.length - 1], 
-				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, isStepUp(pEdge));
+				aArrowEndExtractor.apply(edge), aEndLabelExtractor.apply(edge), false, isStepUp(edge));
 	}
 	
 	/**

@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
@@ -64,14 +65,15 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	}
 
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
-	{	
-		Rectangle bounds = getBounds(pNode);
-		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());
-		Rectangle nameBox = new Rectangle(pNode.position().getX() + (WIDTH - nameBounds.width()) / 2, 
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	{
+		Rectangle bounds = getBounds(pElement);
+		Node node = (Node) pElement;
+		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)node).getName());
+		Rectangle nameBox = new Rectangle(node.position().getX() + (WIDTH - nameBounds.width()) / 2, 
 				bounds.getY() + HEIGHT, nameBounds.width(), nameBounds.height());
-		NAME_VIEWER.draw(((ActorNode)pNode).getName(), pGraphics, nameBox);
-		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(pNode), LineStyle.SOLID);
+		NAME_VIEWER.draw(((ActorNode)node).getName(), pGraphics, nameBox);
+		ToolGraphics.strokeSharpPath(pGraphics, createStickManPath(node), LineStyle.SOLID);
 	}
 	
 	private static Path createStickManPath(Node pNode)

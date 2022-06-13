@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Dimension;
@@ -47,12 +48,13 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	private static final StringViewer NOTE_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(pNode), NOTE_COLOR, true);
-		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(pNode), Color.WHITE, false);
-		NOTE_VIEWER.draw(((NoteNode)pNode).getName(), pGraphics, 
-				new Rectangle(pNode.position().getX(), pNode.position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		Node node = (Node) pElement;
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createNotePath(node), NOTE_COLOR, true);
+		ToolGraphics.strokeAndFillSharpPath(pGraphics, createFoldPath(node), Color.WHITE, false);
+		NOTE_VIEWER.draw(((NoteNode)node).getName(), pGraphics, 
+				new Rectangle(node.position().getX(), node.position().getY(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
 	}
 	
 	private Path createNotePath(Node pNode)

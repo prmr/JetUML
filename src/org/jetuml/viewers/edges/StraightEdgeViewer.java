@@ -60,11 +60,12 @@ public class StraightEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		Path shape = (Path) getShape(pEdge);
+		Edge edge = (Edge) pElement;
+		Path shape = (Path) getShape(edge);
 		ToolGraphics.strokeSharpPath(pGraphics, shape, aLineStyle);
-		Line connectionPoints = getConnectionPoints(pEdge);
+		Line connectionPoints = getConnectionPoints(edge);
 		aArrowHead.view().draw(pGraphics, connectionPoints.getPoint1(), connectionPoints.getPoint2());
 	}
 	

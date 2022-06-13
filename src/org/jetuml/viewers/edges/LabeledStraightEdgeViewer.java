@@ -60,14 +60,15 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	}
 	
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		super.draw(pEdge, pGraphics);
-		String label = wrapLabel(pEdge);
+		super.draw(pElement, pGraphics);
+		Edge edge = (Edge) pElement;
+		String label = wrapLabel(edge);
 		int labelHeight = STRING_VIEWER.getDimension(label).height();
 		if( label.length() > 0 )
 		{
-			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints(pEdge).spanning().translated(0, -labelHeight/2));
+			STRING_VIEWER.draw(label, pGraphics, getConnectionPoints(edge).spanning().translated(0, -labelHeight/2));
 		}
 	}
 	

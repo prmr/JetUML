@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.DependencyEdge.Directionality;
@@ -43,12 +44,12 @@ public final class DependencyEdgeViewer extends LabeledStraightEdgeViewer
 	}
 	
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		super.draw(pEdge, pGraphics);
-		if( ((DependencyEdge)pEdge).getDirectionality() == Directionality.Bidirectional )
+		super.draw(pElement, pGraphics);
+		if( ((DependencyEdge)pElement).getDirectionality() == Directionality.Bidirectional )
 		{
-			Line connectionPoints = getConnectionPoints(pEdge);
+			Line connectionPoints = getConnectionPoints((Edge)pElement);
 			ArrowHead.V.view().draw(pGraphics, connectionPoints.getPoint2(), connectionPoints.getPoint1());
 		}
 	}

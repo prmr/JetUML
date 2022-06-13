@@ -22,6 +22,7 @@ package org.jetuml.viewers.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
@@ -49,11 +50,11 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{	
-		assert pNode instanceof TypeNode;
-		TypeNode node = (TypeNode) pNode;
-		final Rectangle bounds = getBounds(pNode);
+		assert pElement instanceof TypeNode;
+		TypeNode node = (TypeNode) pElement;
+		final Rectangle bounds = getBounds(pElement);
 		final int attributeHeight = attributeBoxHeight(node);
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);

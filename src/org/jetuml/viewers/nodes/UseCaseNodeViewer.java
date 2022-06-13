@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Direction;
@@ -45,11 +46,11 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		Rectangle bounds = getBounds(pNode);
+		Rectangle bounds = getBounds(pElement);
 		ViewerUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
-		NAME_VIEWER.draw(((UseCaseNode)pNode).getName(), pGraphics, getBounds(pNode));
+		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pGraphics, getBounds(pElement));
 	}
 	
 	@Override

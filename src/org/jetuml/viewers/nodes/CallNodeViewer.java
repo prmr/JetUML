@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -58,14 +59,14 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		if(((CallNode)pNode).isOpenBottom())
+		if(((CallNode)pElement).isOpenBottom())
 		{
 			pGraphics.setStroke(Color.WHITE);
-			ViewerUtils.drawRectangle(pGraphics, getBounds(pNode));
+			ViewerUtils.drawRectangle(pGraphics, getBounds(pElement));
 			pGraphics.setStroke(Color.BLACK);
-			final Rectangle bounds = getBounds(pNode);
+			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.getX();
 			int x2 = bounds.getMaxX();
 			int y1 = bounds.getY();
@@ -79,7 +80,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		}
 		else
 		{
-			ViewerUtils.drawRectangle(pGraphics, getBounds(pNode));
+			ViewerUtils.drawRectangle(pGraphics, getBounds(pElement));
 		}
 	}
 

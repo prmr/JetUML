@@ -424,19 +424,20 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics) 
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics) 
 	{
-		assert pEdge !=null && pGraphics != null;
-		EdgePath path = getStoredEdgePath(pEdge);
-		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(pEdge), getLineStyle(pEdge));
-		getArrowStart(pEdge).view().draw(pGraphics, path.getPointByIndex(1), path.getStartPoint());
-		getArrowEnd(pEdge).view().draw(pGraphics, path.getPointByIndex(path.size()-2), path.getEndPoint());
-		drawString(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(pEdge), getStartLabel(pEdge), 
-			false, isStepUp(pEdge));
+		assert pElement !=null && pGraphics != null;
+		Edge edge = (Edge) pElement;
+		EdgePath path = getStoredEdgePath(edge);
+		ToolGraphics.strokeSharpPath(pGraphics, getSegmentPath(edge), getLineStyle(edge));
+		getArrowStart(edge).view().draw(pGraphics, path.getPointByIndex(1), path.getStartPoint());
+		getArrowEnd(edge).view().draw(pGraphics, path.getPointByIndex(path.size()-2), path.getEndPoint());
+		drawString(pGraphics, path.getPointByIndex(1), path.getStartPoint(), getArrowStart(edge), getStartLabel(edge), 
+			false, isStepUp(edge));
 		drawString(pGraphics, path.getPointByIndex(path.size() / 2 - 1) , path.getPointByIndex(path.size() / 2), null, 
-			getMiddleLabel(pEdge), true, isStepUp(pEdge));
+			getMiddleLabel(edge), true, isStepUp(edge));
 		drawString(pGraphics, path.getPointByIndex(path.size()-2), path.getPointByIndex(path.size()-1), 
-			getArrowEnd(pEdge), getEndLabel(pEdge), false, isStepUp(pEdge));
+			getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge));
 	}
 
 	@Override

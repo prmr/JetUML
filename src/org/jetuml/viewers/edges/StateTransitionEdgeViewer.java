@@ -68,19 +68,20 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final int VERTICAL_TOLERANCE = 20; 
 	
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		if(isSelfEdge(pEdge))
+		Edge edge = (Edge) pElement;
+		if(isSelfEdge(edge))
 		{
 			pGraphics.setStroke(Color.BLACK);
-			drawSelfEdge(pEdge, pGraphics);
+			drawSelfEdge(edge, pGraphics);
 		}
 		else 
 		{
-			ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(pEdge), LineStyle.SOLID);
+			ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
 		}
-		drawLabel((StateTransitionEdge)pEdge, pGraphics);
-		drawArrowHead(pEdge, pGraphics);
+		drawLabel((StateTransitionEdge)edge, pGraphics);
+		drawArrowHead(edge, pGraphics);
 	}
 	
 	private void drawArrowHead(Edge pEdge, GraphicsContext pGraphics)

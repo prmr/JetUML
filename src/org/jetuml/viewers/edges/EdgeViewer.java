@@ -31,14 +31,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface EdgeViewer extends DiagramElementRenderer
 {
-	/**
-     * Draws pEdge.
-     * @param pEdge The edge to draw.
-     * @param pGraphics the graphics context
-     * @pre pEdge != null
-	 */
-   	void draw(Edge pEdge, GraphicsContext pGraphics);
-   	
    	/**
      * Draw selection handles around pEdge.
      * @param pEdge The target edge

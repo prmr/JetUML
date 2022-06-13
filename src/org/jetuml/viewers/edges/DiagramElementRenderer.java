@@ -25,6 +25,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  * An object that can be used to render a diagram element.
@@ -55,4 +56,12 @@ public interface DiagramElementRenderer
      * @return true if this element contains aPoint
      */
    	boolean contains(DiagramElement pElement, Point pPoint);
+   	
+	/**
+     * Draws the element.
+     * @param pElement The element to draw.
+     * @param pGraphics the graphics context
+     * @pre pElement != null
+	 */
+   	void draw(DiagramElement pElement, GraphicsContext pGraphics);
 }

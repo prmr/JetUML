@@ -51,17 +51,18 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final ObjectNodeViewer OBJECT_NODE_VIEWER = new ObjectNodeViewer();
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		final Rectangle bounds = getBounds(pNode);
-		final int split = getSplitPosition(pNode);
-		final int leftWidth = leftWidth(pNode);
+		final Rectangle bounds = getBounds(pElement);
+		Node node = (Node) pElement;
+		final int split = getSplitPosition(node);
+		final int leftWidth = leftWidth(node);
 		final int midOffset = EQUALS_VIEWER.getDimension(EQUALS).width() / 2;
-		NAME_VIEWER.draw(((FieldNode)pNode).getName(), pGraphics, 
+		NAME_VIEWER.draw(((FieldNode)node).getName(), pGraphics, 
 				new Rectangle(split - leftWidth, bounds.getY(), leftWidth, bounds.getHeight()));
 		EQUALS_VIEWER.draw(EQUALS, pGraphics, new Rectangle(split - midOffset, bounds.getY(), midOffset * 2, bounds.getHeight()));
-		VALUE_VIEWER.draw(((FieldNode)pNode).getValue(), 
-				pGraphics, new Rectangle(split + midOffset, bounds.getY(), rightWidth(pNode), bounds.getHeight()));
+		VALUE_VIEWER.draw(((FieldNode)node).getValue(), 
+				pGraphics, new Rectangle(split + midOffset, bounds.getY(), rightWidth(node), bounds.getHeight()));
 	}
 	
 	private static int getSplitPosition(Node pNode)

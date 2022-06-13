@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
@@ -48,17 +49,18 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
 	
 	@Override
-	public void draw(Node pNode, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		final Rectangle bounds = getBounds(pNode);
-		final Rectangle topRectangle = getTopRectangle(pNode);
+		final Rectangle bounds = getBounds(pElement);
+		Node node = (Node) pElement;
+		final Rectangle topRectangle = getTopRectangle(node);
 		int dividerPosition = topRectangle.getMaxY();
 		ViewerUtils.drawRectangle(pGraphics, bounds);
-		if( ((ObjectNode)pNode).getChildren().size() > 0 ) 
+		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
 			ViewerUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
 		}
-		NAME_VIEWER.draw(((ObjectNode)pNode).getName(), pGraphics, 
+		NAME_VIEWER.draw(((ObjectNode)node).getName(), pGraphics, 
 				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), topRectangle.getHeight()));
 	}
 	

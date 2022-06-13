@@ -110,12 +110,13 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public void draw(Edge pEdge, GraphicsContext pGraphics)
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(pEdge), LineStyle.SOLID);
-		Line connectionPoints = getConnectionPoints(pEdge);
+		Edge edge = (Edge) pElement;
+		ToolGraphics.strokeSharpPath(pGraphics, (Path) getShape(edge), LineStyle.SOLID);
+		Line connectionPoints = getConnectionPoints(edge);
 		
-		if(isSShaped(pEdge))
+		if(isSShaped(edge))
 		{
 			ArrowHead.BLACK_TRIANGLE.view().draw(pGraphics, 
 					new Point(connectionPoints.getX2() - ENDSIZE, connectionPoints.getY2()), 
