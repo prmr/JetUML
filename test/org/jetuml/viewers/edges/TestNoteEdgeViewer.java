@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
-import static org.jetuml.viewers.edges.EdgeViewerRegistry.getBounds;
-import static org.jetuml.viewers.edges.EdgeViewerRegistry.getConnectionPoints;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,6 +31,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,9 +78,9 @@ public class TestNoteEdgeViewer
 	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
-		assertEquals(new Rectangle(59,19,42,2), getBounds(aNoteEdge));
+		assertEquals(new Rectangle(59,19,42,2), RenderingFacade.getBounds(aNoteEdge));
 		
-		Line connectionPoints = getConnectionPoints(aNoteEdge);
+		Line connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 100, connectionPoints.getX2());
@@ -89,9 +88,9 @@ public class TestNoteEdgeViewer
 		
 		
 		aPointNode.translate(20, 0);
-		assertEquals(new Rectangle(59,19,62,2), getBounds(aNoteEdge));
+		assertEquals(new Rectangle(59,19,62,2), RenderingFacade.getBounds(aNoteEdge));
 		
-		connectionPoints = getConnectionPoints(aNoteEdge);
+		connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());
@@ -103,9 +102,9 @@ public class TestNoteEdgeViewer
 		// The edge should intersect the note edge at x=58, y=24
 		// (basic correspondence of proportions between triangles)
 		// yielding bounds of [x=58,y=24,width=62,height=16]
-		assertEquals(new Rectangle(58,25,62,15), getBounds(aNoteEdge));
+		assertEquals(new Rectangle(58,25,62,15), RenderingFacade.getBounds(aNoteEdge));
 		
-		connectionPoints = getConnectionPoints(aNoteEdge);
+		connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 27, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());

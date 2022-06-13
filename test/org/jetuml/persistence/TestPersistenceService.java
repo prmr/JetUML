@@ -41,7 +41,6 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -83,7 +82,7 @@ public class TestPersistenceService
 		
 		// Create a list of all bounds, indexed by object hash
 		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(node), RenderingFacade.getBounds(node)));
-		diagram.edges().forEach( edge -> bounds.put(hash(edge), EdgeViewerRegistry.getBounds(edge)));
+		diagram.edges().forEach( edge -> bounds.put(hash(edge), RenderingFacade.getBounds(edge)));
 		
 		// Save the diagram in a new file, and re-load it
 		File temporaryFile = PATH_TEMPORARY_FILE.toFile();
@@ -93,7 +92,7 @@ public class TestPersistenceService
 		
 		// Check that all bounds match
 		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), RenderingFacade.getBounds(node), hash(node)));
-		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), EdgeViewerRegistry.getBounds(edge), hash(edge)));
+		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), RenderingFacade.getBounds(edge), hash(edge)));
 	}
 	
 	/*

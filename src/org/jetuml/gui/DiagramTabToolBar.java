@@ -31,13 +31,10 @@ import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.AbstractNodeViewer;
 
 import javafx.geometry.Orientation;
@@ -115,21 +112,9 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
 					pToggleGroup, element);
 			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
-			add(button, createIcon(element), Prototypes.instance().tooltip(element, false));
+			add(button, RenderingFacade.createIcon(element), Prototypes.instance().tooltip(element, false));
 		}
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, oldFontSize);
-	}
-	
-	private static Canvas createIcon( DiagramElement pElement )
-	{
-		if( pElement instanceof Node )
-		{
-			return RenderingFacade.createIcon((Node)pElement);
-		}
-		else
-		{
-			return EdgeViewerRegistry.createIcon((Edge)pElement);
-		}
 	}
 	
 	private void installCopyToClipboard()

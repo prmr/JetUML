@@ -26,6 +26,20 @@ import java.util.Iterator;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AssociationEdge;
+import org.jetuml.diagram.edges.CallEdge;
+import org.jetuml.diagram.edges.ConstructorEdge;
+import org.jetuml.diagram.edges.DependencyEdge;
+import org.jetuml.diagram.edges.GeneralizationEdge;
+import org.jetuml.diagram.edges.NoteEdge;
+import org.jetuml.diagram.edges.ObjectCollaborationEdge;
+import org.jetuml.diagram.edges.ObjectReferenceEdge;
+import org.jetuml.diagram.edges.ReturnEdge;
+import org.jetuml.diagram.edges.StateTransitionEdge;
+import org.jetuml.diagram.edges.UseCaseAssociationEdge;
+import org.jetuml.diagram.edges.UseCaseDependencyEdge;
+import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ClassNode;
@@ -42,9 +56,23 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Direction;
+import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
+import org.jetuml.viewers.edges.AggregationEdgeViewer;
+import org.jetuml.viewers.edges.AssociationEdgeViewer;
+import org.jetuml.viewers.edges.CallEdgeViewer;
+import org.jetuml.viewers.edges.DependencyEdgeViewer;
+import org.jetuml.viewers.edges.EdgeViewer;
+import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
+import org.jetuml.viewers.edges.NoteEdgeViewer;
+import org.jetuml.viewers.edges.ObjectCollaborationEdgeViewer;
+import org.jetuml.viewers.edges.ObjectReferenceEdgeViewer;
+import org.jetuml.viewers.edges.ReturnEdgeViewer;
+import org.jetuml.viewers.edges.StateTransitionEdgeViewer;
+import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
+import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
+import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.CircularStateNodeViewer;
@@ -72,6 +100,8 @@ public class RenderingFacade
 {
 	private static IdentityHashMap<Class<? extends Node>, NodeViewer> aNodeViewers = 
 			new IdentityHashMap<>();
+	private static IdentityHashMap<Class<? extends Edge>, EdgeViewer> aEdgeViewers = 
+			new IdentityHashMap<>();
 	
 	static
 	{
@@ -90,6 +120,21 @@ public class RenderingFacade
 		aNodeViewers.put(PointNode.class, new PointNodeViewer());
 		aNodeViewers.put(StateNode.class, new StateNodeViewer());
 		aNodeViewers.put(UseCaseNode.class, new UseCaseNodeViewer());
+		
+		aEdgeViewers.put(NoteEdge.class, new NoteEdgeViewer());
+		aEdgeViewers.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
+		aEdgeViewers.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
+		aEdgeViewers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
+		aEdgeViewers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
+		aEdgeViewers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
+		aEdgeViewers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
+		aEdgeViewers.put(ReturnEdge.class, new ReturnEdgeViewer());
+		aEdgeViewers.put(CallEdge.class, new CallEdgeViewer());
+		aEdgeViewers.put(ConstructorEdge.class, new CallEdgeViewer());
+		aEdgeViewers.put(DependencyEdge.class, new DependencyEdgeViewer());
+		aEdgeViewers.put(AssociationEdge.class,  new AssociationEdgeViewer());
+		aEdgeViewers.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());
+		aEdgeViewers.put(AggregationEdge.class, new AggregationEdgeViewer());
 	}
 	
 	/**
@@ -110,7 +155,7 @@ public class RenderingFacade
 		else
 		{
 			assert pElement instanceof Edge;
-			return EdgeViewerRegistry.createIcon((Edge)pElement);
+			return aEdgeViewers.get(pElement.getClass()).createIcon((Edge)pElement);
 		}
 	}
 	
@@ -255,4 +300,64 @@ public class RenderingFacade
 		return aNodeViewers.get(pNode.getClass()).getConnectionPoint(pNode, pDirection);
 	}
 	
+	/**
+	 * Tests whether pEdge contains a point.
+	 * 
+	 * @param pEdge The edge to test
+	 * @param pPoint The point to test
+	 * @return true if this element contains aPoint
+	 */
+	public static boolean contains(Edge pEdge, Point pPoint)
+	{
+		return aEdgeViewers.get(pEdge.getClass()).contains(pEdge, pPoint);
+	}
+	
+	/**
+	 * Draws pEdge.
+	 * 
+	 * @param pEdge The edge to draw.
+	 * @param pGraphics The graphics context
+	 * @pre pEdge != null
+	 */
+	public static void draw(Edge pEdge, GraphicsContext pGraphics)
+	{
+		aEdgeViewers.get(pEdge.getClass()).draw(pEdge, pGraphics);
+	}
+	
+	/**
+	 * Draw selection handles around pEdge.
+	 * 
+	 * @param pEdge The target edge
+	 * @param pGraphics The graphics context
+	 * @pre pEdge != null && pGraphics != null
+	 */
+	public static void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics)
+	{
+		aEdgeViewers.get(pEdge.getClass()).drawSelectionHandles(pEdge, pGraphics);
+	}
+	
+	/**
+	 * Gets the smallest rectangle that bounds pEdge. The bounding rectangle contains all labels.
+	 * 
+	 * @param pEdge The edge whose bounds we wish to compute.
+	 * @return The bounding rectangle
+	 * @pre pEdge != null
+	 */
+	public static Rectangle getBounds(Edge pEdge)
+	{
+		return aEdgeViewers.get(pEdge.getClass()).getBounds(pEdge);
+	}
+	
+	/**
+	 * Gets the points at which pEdge is connected to its nodes.
+	 * 
+	 * @param pEdge The target edge
+	 * @return a line joining the two connection points
+	 * @pre pEdge != null
+	 * 
+	 */
+	public static Line getConnectionPoints(Edge pEdge)
+	{
+		return aEdgeViewers.get(pEdge.getClass()).getConnectionPoints(pEdge);
+	}
 }

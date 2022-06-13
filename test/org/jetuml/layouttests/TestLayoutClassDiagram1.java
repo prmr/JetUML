@@ -31,7 +31,6 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -115,7 +114,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	{
 		Rectangle boundsNode2 = RenderingFacade.getBounds(nodeByName("Node2"));
 		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
+		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsNode2.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode3.getX(), edgeBounds.getMaxX());
 	}
@@ -132,7 +131,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Implementation)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode1.getMaxY(), edgeBounds.getY());
 		assertWithDefaultTolerance(boundsNode3.getY(), edgeBounds.getMaxY());
 	}
@@ -149,7 +148,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Inheritance)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode3.getMaxY(), edgeBounds.getY());
 		assertWithDefaultTolerance(boundsNode5.getY(), edgeBounds.getMaxY());
 	}
@@ -166,7 +165,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Aggregation)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode3.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
@@ -183,7 +182,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Composition)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode5.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
@@ -200,7 +199,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 		NoteEdge edge = (NoteEdge) edgesByType(NoteEdge.class).stream()
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edge);
+		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode6.getY(), edgeBounds.getMaxY());
 		assertTrue(boundsNode4.contains(edge.getEnd().position()));
 	}

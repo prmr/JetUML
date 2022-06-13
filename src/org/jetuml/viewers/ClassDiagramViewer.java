@@ -30,7 +30,6 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.EdgeStorage;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.edges.StoredEdgeViewer;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -73,7 +72,7 @@ public class ClassDiagramViewer extends DiagramViewer
 			}
 			else
 			{	//For edges which are not stored (note edges)
-				EdgeViewerRegistry.draw(edge, pGraphics);
+				RenderingFacade.draw(edge, pGraphics);
 			}
 		}
 		RenderingFacade.deactivateAndClearNodeStorages();
@@ -97,7 +96,7 @@ public class ClassDiagramViewer extends DiagramViewer
 		{
 			//check if a Note edge is is at pPoint
 			return pDiagram.edges().stream()
-					.filter(edge -> EdgeViewerRegistry.contains(edge, pPoint))
+					.filter(edge -> RenderingFacade.contains(edge, pPoint))
 					.findFirst();
 		}
 		else
@@ -142,7 +141,7 @@ public class ClassDiagramViewer extends DiagramViewer
 			}
 			else //For note edges (which are not stored in EdgeStorage):
 			{
-				bounds.add(EdgeViewerRegistry.getBounds(edge));
+				bounds.add(RenderingFacade.getBounds(edge));
 			}
 		}
 		if(bounds == null )

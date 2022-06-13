@@ -35,7 +35,6 @@ import org.jetuml.diagram.Node;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 
 /**
  * Encapsulates all state related to the selection feature of a diagram canvas.
@@ -120,7 +119,7 @@ public class SelectionModel implements Iterable<DiagramElement>
 	
 	private void selectEdge(Edge pEdge, Rectangle pLasso )
 	{
-		if(pLasso.contains(EdgeViewerRegistry.getBounds(pEdge)))
+		if(pLasso.contains(RenderingFacade.getBounds(pEdge)))
 		{
 			internalAddToSelection(pEdge);
 		}		

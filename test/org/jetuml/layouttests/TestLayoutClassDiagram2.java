@@ -28,7 +28,6 @@ import java.nio.file.Path;
 
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -109,7 +108,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	{
 		Rectangle boundsC1 = RenderingFacade.getBounds(nodeByName("C1"));
 		Rectangle boundsI1 = RenderingFacade.getBounds(nodeByName("I1"));
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e1"));
+		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsC1.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsI1.getX(), edgeBounds.getMaxX());
 	}
@@ -122,7 +121,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	{
 		Rectangle boundsC2 = RenderingFacade.getBounds(nodeByName("C2"));
 		Rectangle boundsI1 = RenderingFacade.getBounds(nodeByName("I1"));
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e2"));
+		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e2"));
 		assertWithDefaultTolerance(boundsC2.getX(), edgeBounds.getMaxX());
 		assertWithDefaultTolerance(boundsI1.getMaxX(), edgeBounds.getX());
 	}
@@ -135,7 +134,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	{
 		Rectangle boundsP3 = RenderingFacade.getBounds(nodeByName("p3"));
 		Rectangle boundsP2 = RenderingFacade.getBounds(nodeByName("p2"));
-		Rectangle edgeBounds = EdgeViewerRegistry.getBounds(edgeByMiddleLabel("e3"));
+		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e3"));
 		assertWithDefaultTolerance(boundsP3.getY(), edgeBounds.getMaxY());
 		assertWithDefaultTolerance(boundsP2.getMaxX(), edgeBounds.getX());
 	}

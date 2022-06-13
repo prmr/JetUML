@@ -36,7 +36,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewerRegistry;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -126,7 +125,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	{
 		Rectangle boundsInitialState = RenderingFacade.getBounds(nodesByType(InitialStateNode.class).get(0));
 		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("start"));
+		Line edgeLine = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("start"));
 		assertWithDefaultTolerance(boundsInitialState.getMaxX(), edgeLine.getPoint1().getX());
 		assertWithDefaultTolerance(boundsS1.getX(), edgeLine.getPoint2().getX());
 	}
@@ -139,7 +138,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	{
 		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("e1"));
+		Line edgeLine = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint1().getX());
 		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint2().getX());
 	}
@@ -152,7 +151,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	{
 		Rectangle boundsS1 = RenderingFacade.getBounds(nodeByName("S1"));
 		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("e2"));
+		Line edgeLine = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("e2"));
 		assertWithDefaultTolerance(boundsS1.getMaxX(), edgeLine.getPoint2().getX());
 		assertWithDefaultTolerance(boundsS2.getX(), edgeLine.getPoint1().getX());
 	}
@@ -164,8 +163,8 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	void testSelfTransitionEdgeOnS2()
 	{
 		Rectangle boundsS2 = RenderingFacade.getBounds(nodeByName("S2"));
-		Point arrowBaseConnectionPoint = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("self")).getPoint1();
-		Point arrowHeadConnectionPoint = EdgeViewerRegistry.getConnectionPoints(edgeByMiddleLabel("self")).getPoint2();
+		Point arrowBaseConnectionPoint = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("self")).getPoint1();
+		Point arrowHeadConnectionPoint = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("self")).getPoint2();
 		assertWithDefaultTolerance(arrowBaseConnectionPoint.getY(), boundsS2.getY());
 		assertWithDefaultTolerance(arrowHeadConnectionPoint.getX(), boundsS2.getMaxX());
 	}
@@ -182,7 +181,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.filter(edge -> edge.getEnd().equals(nodeByName("S3")))
 				.findFirst()
 				.get();
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(transitionEdge);
+		Line edgeLine = RenderingFacade.getConnectionPoints(transitionEdge);
 		assertWithDefaultTolerance(boundsS2.getMaxY(), edgeLine.getPoint1().getY());
 		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint2().getY());
 	}
@@ -199,7 +198,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 				.filter(edge -> edge.getEnd().equals(nodesByType(FinalStateNode.class).get(0)))
 				.findFirst()
 				.get();
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(transitionEdge);
+		Line edgeLine = RenderingFacade.getConnectionPoints(transitionEdge);
 		assertWithDefaultTolerance(boundsS3.getY(), edgeLine.getPoint1().getY());
 		assertTrue(boundsFinalState.contains(edgeLine.getPoint2()));
 	}
@@ -212,7 +211,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	{
 		Rectangle boundsS3 = RenderingFacade.getBounds(nodeByName("S3"));
 		Rectangle boundsNoteNode = RenderingFacade.getBounds(nodesByType(NoteNode.class).get(0));
-		Line edgeLine = EdgeViewerRegistry.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
+		Line edgeLine = RenderingFacade.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
 		assertWithDefaultTolerance(boundsNoteNode.getX(), edgeLine.getPoint1().getX());
 		assertTrue(boundsS3.contains(edgeLine.getPoint2()));
 	}

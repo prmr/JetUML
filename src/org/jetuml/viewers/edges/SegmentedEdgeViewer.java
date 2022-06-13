@@ -30,6 +30,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.StringViewer.Alignment;
@@ -295,8 +296,8 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	
 	private static boolean isStepUp(Edge pEdge) 
 	{
-		Point point1 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint1();
-		Point point2 = EdgeViewerRegistry.getConnectionPoints(pEdge).getPoint2();
+		Point point1 = RenderingFacade.getConnectionPoints(pEdge).getPoint1();
+		Point point2 = RenderingFacade.getConnectionPoints(pEdge).getPoint2();
 		return point1.getX() < point2.getX() && point1.getY() > point2.getY() || 
 				point1.getX() > point2.getX() && point1.getY() < point2.getY();
 	}

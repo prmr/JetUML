@@ -34,6 +34,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,7 +83,7 @@ public class TestDependencyEdgeViewer
 	public void testEdgeViewBounds()
 	{
 		aNode2.translate(200, 0);
-		assertEquals(new Rectangle(99,23,102,12), EdgeViewerRegistry.getBounds(aEdge));
+		assertEquals(new Rectangle(99,23,102,12), RenderingFacade.getBounds(aEdge));
 	}
 	
 	@ParameterizedTest
