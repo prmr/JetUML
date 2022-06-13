@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
@@ -95,9 +96,9 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		Bounds bounds = getShape(pEdge).getBoundsInLocal();
+		Bounds bounds = getShape((Edge)pElement).getBoundsInLocal();
 		return new Rectangle((int)bounds.getMinX(), (int)bounds.getMinY(), (int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 	

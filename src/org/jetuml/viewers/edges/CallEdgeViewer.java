@@ -100,16 +100,17 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		Rectangle bounds = super.getBounds(pEdge);
-		Line connectionPoints = getConnectionPoints(pEdge);
-		bounds = bounds.add(Conversions.toRectangle(getArrowHeadView((CallEdge)pEdge).getPath(connectionPoints.getPoint1(), 
+		Rectangle bounds = super.getBounds(pElement);
+		Edge edge = (Edge) pElement;
+		Line connectionPoints = getConnectionPoints(edge);
+		bounds = bounds.add(Conversions.toRectangle(getArrowHeadView((CallEdge)edge).getPath(connectionPoints.getPoint1(), 
 					connectionPoints.getPoint2()).getBoundsInLocal()));
-		final String label = ((CallEdge)pEdge).getMiddleLabel();
+		final String label = ((CallEdge)edge).getMiddleLabel();
 		if( label.length() > 0 )
 		{
-			bounds = bounds.add(getStringBounds((CallEdge)pEdge));
+			bounds = bounds.add(getStringBounds((CallEdge)edge));
 		}
 		return bounds;
 	}

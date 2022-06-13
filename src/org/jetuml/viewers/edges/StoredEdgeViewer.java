@@ -402,16 +402,17 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public Rectangle getBounds(Edge pEdge) 
+	public Rectangle getBounds(DiagramElement pElement) 
 	{
-		EdgePath path = getStoredEdgePath(pEdge);
-		Rectangle bounds = super.getBounds(pEdge);
+		Edge edge = (Edge) pElement;
+		EdgePath path = getStoredEdgePath(edge);
+		Rectangle bounds = super.getBounds(edge);
 		bounds = bounds.add(getStringBounds(path.getPointByIndex(1), path.getStartPoint(), 
-				getArrowStart(pEdge), getStartLabel(pEdge), false, isStepUp(pEdge)));
+				getArrowStart(edge), getStartLabel(edge), false, isStepUp(edge)));
 		bounds = bounds.add(getStringBounds(path.getPointByIndex(path.size() / 2 - 1), 
-				path.getPointByIndex(path.size() / 2), null, getMiddleLabel(pEdge), true, isStepUp(pEdge)));
+				path.getPointByIndex(path.size() / 2), null, getMiddleLabel(edge), true, isStepUp(edge)));
 		bounds = bounds.add(getStringBounds(path.getPointByIndex(path.size() - 2), path.getEndPoint(), 
-				getArrowEnd(pEdge), getEndLabel(pEdge), false, isStepUp(pEdge)));
+				getArrowEnd(edge), getEndLabel(edge), false, isStepUp(edge)));
 		return bounds;
 	}
 

@@ -282,16 +282,17 @@ public class SegmentedEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		Point2D[] points = getPoints(pEdge);
-		Rectangle bounds = super.getBounds(pEdge);
+		Edge edge = (Edge) pElement;
+		Point2D[] points = getPoints(edge);
+		Rectangle bounds = super.getBounds(edge);
 		bounds = bounds.add(getStringBounds(points[1], points[0], 
-				aArrowStartExtractor.apply(pEdge), aStartLabelExtractor.apply(pEdge), false, isStepUp(pEdge)));
+				aArrowStartExtractor.apply(edge), aStartLabelExtractor.apply(edge), false, isStepUp(edge)));
 		bounds = bounds.add(getStringBounds(points[points.length / 2 - 1], 
-				points[points.length / 2], null, aMiddleLabelExtractor.apply(pEdge), true, isStepUp(pEdge)));
+				points[points.length / 2], null, aMiddleLabelExtractor.apply(edge), true, isStepUp(edge)));
 		bounds = bounds.add(getStringBounds(points[points.length - 2], points[points.length - 1], 
-				aArrowEndExtractor.apply(pEdge), aEndLabelExtractor.apply(pEdge), false, isStepUp(pEdge)));
+				aArrowEndExtractor.apply(edge), aEndLabelExtractor.apply(edge), false, isStepUp(edge)));
 		return bounds;
 	}
 	

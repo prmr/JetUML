@@ -150,12 +150,12 @@ public class RenderingFacade
 		assert pElement != null;
 		if( pElement instanceof Node )
 		{
-			return aNodeViewers.get(pElement.getClass()).createIcon((Node)pElement);
+			return aNodeViewers.get(pElement.getClass()).createIcon(pElement);
 		}
 		else
 		{
 			assert pElement instanceof Edge;
-			return aEdgeViewers.get(pElement.getClass()).createIcon((Edge)pElement);
+			return aEdgeViewers.get(pElement.getClass()).createIcon(pElement);
 		}
 	}
 	

@@ -23,7 +23,6 @@ package org.jetuml.viewers.edges;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -33,15 +32,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface EdgeViewer extends DiagramElementRenderer
 {
-	/**
-     * Gets the smallest rectangle that bounds pEdge.
-     * The bounding rectangle contains all labels.
-     * @param pEdge The edge whose bounds we wish to compute.
-     * @return the bounding rectangle
-     * @pre pEdge != null
-   	 */
-	Rectangle getBounds(Edge pEdge);
-	
 	/**
      * Draws pEdge.
      * @param pEdge The edge to draw.

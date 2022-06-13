@@ -23,7 +23,6 @@ package org.jetuml.viewers.nodes;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.edges.DiagramElementRenderer;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -34,15 +33,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface NodeViewer extends DiagramElementRenderer
 {
-	/**
-     * Gets the smallest rectangle that bounds this element.
-     * The bounding rectangle contains all labels.
-     * @param pNode The node whose bounds we want.
-     * @pre pNode != null
-     * @return the bounding rectangle
-   	 */
-	Rectangle getBounds(Node pNode);
-   	
 	/**
      * Draw the element.
      * @param pNode The node to draw.

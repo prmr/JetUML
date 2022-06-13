@@ -385,9 +385,9 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		return super.getBounds(pEdge).add(Conversions.toRectangle(getLabelBounds((StateTransitionEdge)pEdge)));
+		return super.getBounds(pElement).add(Conversions.toRectangle(getLabelBounds((StateTransitionEdge)pElement)));
 	}
 	
 	@Override

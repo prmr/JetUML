@@ -22,6 +22,7 @@ package org.jetuml.viewers.edges;
 
 import java.util.function.Function;
 
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
@@ -90,13 +91,14 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		Rectangle bounds = super.getBounds(pEdge);
-		String label = aLabelExtractor.apply(pEdge);
+		Rectangle bounds = super.getBounds(pElement);
+		Edge edge = (Edge) pElement;
+		String label = aLabelExtractor.apply(edge);
 		if( label.length() > 0 )
 		{
-			bounds = bounds.add(getStringBounds(pEdge));
+			bounds = bounds.add(getStringBounds(edge));
 		}
 		return bounds;
 	}

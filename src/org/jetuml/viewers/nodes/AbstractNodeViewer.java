@@ -91,9 +91,9 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	}
 	
 	@Override
-	public final Rectangle getBounds(Node pNode)
+	public final Rectangle getBounds(DiagramElement pElement)
 	{
-		return aNodeStorage.getBounds(pNode, this::internalGetBounds);
+		return aNodeStorage.getBounds((Node)pElement, this::internalGetBounds);
 	}
 	
 	@Override

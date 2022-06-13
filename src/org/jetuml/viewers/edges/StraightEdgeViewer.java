@@ -69,12 +69,13 @@ public class StraightEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Rectangle getBounds(Edge pEdge)
+	public Rectangle getBounds(DiagramElement pElement)
 	{
-		Rectangle bounds = super.getBounds(pEdge);
+		Rectangle bounds = super.getBounds(pElement);
+		Edge edge = (Edge) pElement;
 		if( aArrowHead != ArrowHead.NONE )
 		{
-			Line connectionPoints = getConnectionPoints(pEdge);
+			Line connectionPoints = getConnectionPoints(edge);
 			bounds = bounds.add(Conversions.toRectangle(aArrowHead.view().getPath(connectionPoints.getPoint1(), 
 					connectionPoints.getPoint2()).getBoundsInLocal()));
 		}

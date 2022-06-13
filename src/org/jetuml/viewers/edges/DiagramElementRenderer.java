@@ -21,6 +21,7 @@
 package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.Canvas;
 
@@ -36,4 +37,13 @@ public interface DiagramElementRenderer
 	 * @pre pElement != null
 	 */
 	Canvas createIcon(DiagramElement pElement);
+	
+	/**
+     * Gets the smallest rectangle that bounds the element.
+     * The bounding rectangle contains all labels.
+     * @param pElement The element whose bounds we wish to compute.
+     * @return the bounding rectangle
+     * @pre pElement != null
+   	 */
+	Rectangle getBounds(DiagramElement pElement);
 }
