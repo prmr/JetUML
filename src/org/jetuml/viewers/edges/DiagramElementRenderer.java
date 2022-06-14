@@ -64,4 +64,12 @@ public interface DiagramElementRenderer
      * @pre pElement != null
 	 */
    	void draw(DiagramElement pElement, GraphicsContext pGraphics);
+   	
+   	/**
+     * Draw selection handles around the element.
+     * @param pElement The target element
+     * @param pGraphics the graphics context
+     * @pre pElement != null && pGraphics != null
+	 */
+   	void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics);
 }

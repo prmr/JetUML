@@ -23,22 +23,12 @@ package org.jetuml.viewers.edges;
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Line;
 
-import javafx.scene.canvas.GraphicsContext;
-
 /**
  * Abstract strategy that describes objects that can draw and
  * compute various geometric properties of edges.
  */
 public interface EdgeViewer extends DiagramElementRenderer
 {
-   	/**
-     * Draw selection handles around pEdge.
-     * @param pEdge The target edge
-     * @param pGraphics the graphics context
-     * @pre pEdge != null && pGraphics != null
-	 */
-   	void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics);
-   	
    	/**
      * Gets the points at which pEdge is connected to
      * its nodes.

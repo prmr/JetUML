@@ -123,9 +123,9 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	}
 
 	@Override
-	public void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics)
+	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		ToolGraphics.drawHandles(pGraphics, getConnectionPoints(pEdge));		
+		ToolGraphics.drawHandles(pGraphics, getConnectionPoints((Edge)pElement));		
 	}
 	
 	protected String wrapLabel(String pString, int pDistanceInX, int pDistanceInY)

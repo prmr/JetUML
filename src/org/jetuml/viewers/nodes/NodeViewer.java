@@ -25,22 +25,12 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.viewers.edges.DiagramElementRenderer;
 
-import javafx.scene.canvas.GraphicsContext;
-
 /**
  * Abstract strategy that describes objects that can draw and
  * compute various geometric properties of nodes.
  */
 public interface NodeViewer extends DiagramElementRenderer
 {
-   	/**
-     * Draw selection handles around the element.
-     * @param pNode The node to draw selection handles around
-     * @param pGraphics the graphics context
-     * @pre pNode != null && pGraphics != null
-	 */
-   	void drawSelectionHandles(Node pNode, GraphicsContext pGraphics);
-   	
    	/**
      * Get the best connection point to connect this node 
      * with another node. This should be a point on the boundary

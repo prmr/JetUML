@@ -65,9 +65,9 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	}
 	
 	@Override
-	public void drawSelectionHandles(Node pNode, GraphicsContext pGraphics)
+	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		ToolGraphics.drawHandles(pGraphics, getBounds(pNode));		
+		ToolGraphics.drawHandles(pGraphics, getBounds(pElement));		
 	}
 	
 	@Override

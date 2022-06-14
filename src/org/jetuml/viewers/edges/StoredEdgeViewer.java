@@ -456,9 +456,9 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics) 
+	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics) 
 	{
-		EdgePath path = getStoredEdgePath(pEdge);
+		EdgePath path = getStoredEdgePath((Edge)pElement);
 		if (path != null) 
 		{
 			ToolGraphics.drawHandles(pGraphics, new Line(path.getStartPoint(), path.getEndPoint()));
