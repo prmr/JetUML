@@ -63,6 +63,7 @@ import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
 import org.jetuml.viewers.edges.CallEdgeViewer;
 import org.jetuml.viewers.edges.DependencyEdgeViewer;
+import org.jetuml.viewers.edges.DiagramElementRenderer;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
@@ -98,48 +99,45 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class RenderingFacade
 {
-	private static IdentityHashMap<Class<? extends Node>, NodeViewer> aNodeViewers = 
-			new IdentityHashMap<>();
-	private static IdentityHashMap<Class<? extends Edge>, EdgeViewer> aEdgeViewers = 
+	private static IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
 			new IdentityHashMap<>();
 	
 	static
 	{
-		aNodeViewers.put(ActorNode.class, new ActorNodeViewer());
-		aNodeViewers.put(CallNode.class, new CallNodeViewer());
-		aNodeViewers.put(ClassNode.class, new TypeNodeViewer());
-		aNodeViewers.put(FieldNode.class, new FieldNodeViewer());
-		aNodeViewers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
-		aNodeViewers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
-		aNodeViewers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
-		aNodeViewers.put(InterfaceNode.class, new InterfaceNodeViewer());
-		aNodeViewers.put(NoteNode.class, new NoteNodeViewer());
-		aNodeViewers.put(ObjectNode.class, new ObjectNodeViewer());
-		aNodeViewers.put(PackageNode.class, new PackageNodeViewer());
-		aNodeViewers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
-		aNodeViewers.put(PointNode.class, new PointNodeViewer());
-		aNodeViewers.put(StateNode.class, new StateNodeViewer());
-		aNodeViewers.put(UseCaseNode.class, new UseCaseNodeViewer());
+		aRenderers.put(ActorNode.class, new ActorNodeViewer());
+		aRenderers.put(CallNode.class, new CallNodeViewer());
+		aRenderers.put(ClassNode.class, new TypeNodeViewer());
+		aRenderers.put(FieldNode.class, new FieldNodeViewer());
+		aRenderers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
+		aRenderers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
+		aRenderers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
+		aRenderers.put(InterfaceNode.class, new InterfaceNodeViewer());
+		aRenderers.put(NoteNode.class, new NoteNodeViewer());
+		aRenderers.put(ObjectNode.class, new ObjectNodeViewer());
+		aRenderers.put(PackageNode.class, new PackageNodeViewer());
+		aRenderers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
+		aRenderers.put(PointNode.class, new PointNodeViewer());
+		aRenderers.put(StateNode.class, new StateNodeViewer());
+		aRenderers.put(UseCaseNode.class, new UseCaseNodeViewer());
 		
-		aEdgeViewers.put(NoteEdge.class, new NoteEdgeViewer());
-		aEdgeViewers.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
-		aEdgeViewers.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
-		aEdgeViewers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
-		aEdgeViewers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
-		aEdgeViewers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
-		aEdgeViewers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
-		aEdgeViewers.put(ReturnEdge.class, new ReturnEdgeViewer());
-		aEdgeViewers.put(CallEdge.class, new CallEdgeViewer());
-		aEdgeViewers.put(ConstructorEdge.class, new CallEdgeViewer());
-		aEdgeViewers.put(DependencyEdge.class, new DependencyEdgeViewer());
-		aEdgeViewers.put(AssociationEdge.class,  new AssociationEdgeViewer());
-		aEdgeViewers.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());
-		aEdgeViewers.put(AggregationEdge.class, new AggregationEdgeViewer());
+		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
+		aRenderers.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
+		aRenderers.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
+		aRenderers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
+		aRenderers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
+		aRenderers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
+		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
+		aRenderers.put(ReturnEdge.class, new ReturnEdgeViewer());
+		aRenderers.put(CallEdge.class, new CallEdgeViewer());
+		aRenderers.put(ConstructorEdge.class, new CallEdgeViewer());
+		aRenderers.put(DependencyEdge.class, new DependencyEdgeViewer());
+		aRenderers.put(AssociationEdge.class,  new AssociationEdgeViewer());
+		aRenderers.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());
+		aRenderers.put(AggregationEdge.class, new AggregationEdgeViewer());
 	}
 	
 	/**
-	 * Convenience method for creating the icon for either a node
-	 * or an edge.
+	 * Creates the icon for the target diagram element.
 	 * 
 	 * @param pElement The element for which we want an icon
 	 * @return An icon that represents this element
@@ -148,34 +146,7 @@ public class RenderingFacade
 	public static Canvas createIcon(DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( pElement instanceof Node )
-		{
-			return aNodeViewers.get(pElement.getClass()).createIcon(pElement);
-		}
-		else
-		{
-			assert pElement instanceof Edge;
-			return aEdgeViewers.get(pElement.getClass()).createIcon(pElement);
-		}
-	}
-	
-	/**
-	 * @param pElements The elements whose bounds we are interested in. 
-	 * @return The rectangle that bounds all elements in pElements, excluding their parent node.
-	 * @pre pElements != null
-	 * @pre pElements has at least one element.
-	 */
-	public static Rectangle getBounds(Iterable<DiagramElement> pElements)
-	{
-		assert pElements != null;
-		assert pElements.iterator().hasNext();
-		Iterator<DiagramElement> elements = pElements.iterator();
-		Rectangle bounds = DiagramViewer.getBounds(elements.next());
-		while( elements.hasNext() )
-		{
-			bounds = bounds.add(DiagramViewer.getBounds(elements.next()));
-		}
-		return bounds;
+		return aRenderers.get(pElement.getClass()).createIcon(pElement);
 	}
 	
 	/**
@@ -191,7 +162,7 @@ public class RenderingFacade
 		assert pElements.iterator().hasNext();
 		Iterator<DiagramElement> elements = pElements.iterator();
 		DiagramElement next = elements.next();
-		Rectangle bounds = DiagramViewer.getBounds(next);
+		Rectangle bounds = getBounds(next);
 		bounds = addBounds(bounds, next);
 		while( elements.hasNext() )
 		{
@@ -209,7 +180,7 @@ public class RenderingFacade
 		}
 		else
 		{
-			return pBounds.add(DiagramViewer.getBounds(pElement));
+			return pBounds.add(getBounds(pElement));
 		}
 	}
 	
@@ -218,10 +189,10 @@ public class RenderingFacade
 	 */
 	public static void activateNodeStorages()
 	{
-		for (NodeViewer nodeViewer : aNodeViewers.values())
-		{
-			nodeViewer.activateNodeStorage();
-		}
+		aRenderers.values().stream()
+			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+			.map(NodeViewer.class::cast)
+			.forEach(NodeViewer::activateNodeStorage);
 	}
 	
 	/**
@@ -229,60 +200,60 @@ public class RenderingFacade
 	 */
 	public static void deactivateAndClearNodeStorages()
 	{
-		for (NodeViewer nodeViewer : aNodeViewers.values())
-		{
-			nodeViewer.deactivateAndClearNodeStorage();
-		}
+		aRenderers.values().stream()
+			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+			.map(NodeViewer.class::cast)
+			.forEach(NodeViewer::deactivateAndClearNodeStorage);
 	}
 	
 	/**
-	 * Tests whether pNode contains a point.
+	 * Tests whether pElement contains a point.
 	 * 
-	 * @param pNode The node to test
+	 * @param pElement The element to test
 	 * @param pPoint The point to test
 	 * @return true if this element contains aPoint
 	 */
-	public static boolean contains(Node pNode, Point pPoint)
+	public static boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		return aNodeViewers.get(pNode.getClass()).contains(pNode, pPoint);
+		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
 	
 	/**
-	 * Draw selection handles around pNode.
+	 * Draw selection handles around the element.
 	 * 
-	 * @param pNode The target node
+	 * @param pElement The target element
 	 * @param pGraphics The graphics context
-	 * @pre pNode != null && pGraphics != null
+	 * @pre pElement != null && pGraphics != null
 	 */
-	public static void drawSelectionHandles(Node pNode, GraphicsContext pGraphics)
+	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		aNodeViewers.get(pNode.getClass()).drawSelectionHandles(pNode, pGraphics);
+		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
 	}
 	
 	/**
-	 * Draws pNode.
+	 * Draws the element on the canvas.
 	 * 
-	 * @param pNode The node to draw.
+	 * @param pElement The element to draw.
 	 * @param pGraphics The graphics context
-	 * @pre pNode != null
+	 * @pre pElement != null
 	 */
-	public static void draw(Node pNode, GraphicsContext pGraphics)
+	public static void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		assert pNode != null;
-		aNodeViewers.get(pNode.getClass()).draw(pNode, pGraphics);
+		assert pElement != null;
+		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
 	}
 	
 	/**
-	 * Gets the smallest rectangle that bounds pNode. The bounding rectangle contains all labels.
+	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
 	 * 
-	 * @param pNode The node whose bounds we wish to compute.
+	 * @param pElement The element whose bounds we wish to compute.
 	 * @return The bounding rectangle
-	 * @pre pNode != null
+	 * @pre pElement != null
 	 */
-	public static Rectangle getBounds(Node pNode)
+	public static Rectangle getBounds(DiagramElement pElement)
 	{
-		assert pNode != null;
-		return aNodeViewers.get(pNode.getClass()).getBounds(pNode);
+		assert pElement != null;
+		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 
 	/**
@@ -297,55 +268,7 @@ public class RenderingFacade
 	public static Point getConnectionPoints(Node pNode, Direction pDirection)
 	{
 		assert pNode != null;
-		return aNodeViewers.get(pNode.getClass()).getConnectionPoint(pNode, pDirection);
-	}
-	
-	/**
-	 * Tests whether pEdge contains a point.
-	 * 
-	 * @param pEdge The edge to test
-	 * @param pPoint The point to test
-	 * @return true if this element contains aPoint
-	 */
-	public static boolean contains(Edge pEdge, Point pPoint)
-	{
-		return aEdgeViewers.get(pEdge.getClass()).contains(pEdge, pPoint);
-	}
-	
-	/**
-	 * Draws pEdge.
-	 * 
-	 * @param pEdge The edge to draw.
-	 * @param pGraphics The graphics context
-	 * @pre pEdge != null
-	 */
-	public static void draw(Edge pEdge, GraphicsContext pGraphics)
-	{
-		aEdgeViewers.get(pEdge.getClass()).draw(pEdge, pGraphics);
-	}
-	
-	/**
-	 * Draw selection handles around pEdge.
-	 * 
-	 * @param pEdge The target edge
-	 * @param pGraphics The graphics context
-	 * @pre pEdge != null && pGraphics != null
-	 */
-	public static void drawSelectionHandles(Edge pEdge, GraphicsContext pGraphics)
-	{
-		aEdgeViewers.get(pEdge.getClass()).drawSelectionHandles(pEdge, pGraphics);
-	}
-	
-	/**
-	 * Gets the smallest rectangle that bounds pEdge. The bounding rectangle contains all labels.
-	 * 
-	 * @param pEdge The edge whose bounds we wish to compute.
-	 * @return The bounding rectangle
-	 * @pre pEdge != null
-	 */
-	public static Rectangle getBounds(Edge pEdge)
-	{
-		return aEdgeViewers.get(pEdge.getClass()).getBounds(pEdge);
+		return ((NodeViewer)aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
 	
 	/**
@@ -358,6 +281,6 @@ public class RenderingFacade
 	 */
 	public static Line getConnectionPoints(Edge pEdge)
 	{
-		return aEdgeViewers.get(pEdge.getClass()).getConnectionPoints(pEdge);
+		return ((EdgeViewer)aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
 }

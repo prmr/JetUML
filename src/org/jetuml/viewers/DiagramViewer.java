@@ -24,7 +24,6 @@ package org.jetuml.viewers;
 import java.util.Optional;
 
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
@@ -168,27 +167,6 @@ public class DiagramViewer
 		else
 		{
 			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-		}
-	}
-	
-	/**
-	 * Obtains the bounds for an element.
-	 * 
-	 * @param pElement The element whose bounds we want
-	 * @return The bounds for this element.
-	 * @pre pElement != null
-	 */
-	public static Rectangle getBounds(DiagramElement pElement)
-	{
-		assert pElement != null;
-		if( pElement instanceof Node )
-		{
-			return RenderingFacade.getBounds((Node)pElement);
-		}
-		else
-		{
-			assert pElement instanceof Edge;
-			return RenderingFacade.getBounds((Edge)pElement);
 		}
 	}
 }

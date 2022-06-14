@@ -66,7 +66,7 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	{
 		try
 		{
-			Field nodeViewers = RenderingFacade.class.getDeclaredField("aNodeViewers");
+			Field nodeViewers = RenderingFacade.class.getDeclaredField("aRenderers");
 			nodeViewers.setAccessible(true);
 			@SuppressWarnings("unchecked")
 			ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer = 

@@ -33,8 +33,8 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ClassDiagramViewer;
 import org.jetuml.viewers.Grid;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -129,7 +129,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		else
 		{
-			ViewerUtils.drawSelectionHandles(pSelected, pGraphics);
+			RenderingFacade.drawSelectionHandles(pSelected, pGraphics);
 		}
 	}
 

@@ -20,9 +20,6 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
-import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -182,26 +179,5 @@ public final class ViewerUtils
 		pGraphics.fillText(pText, pX + 0.5, pY + 0.5);
 		pGraphics.setFont(font);
 		pGraphics.setFill(Color.WHITE);
-	}
-
-	/**
-	 * Draws selection handles around pElement.
-	 * 
-	 * @param pElement The diagram element to select.
-	 * @param pContext The graphics context.
-	 * @pre pElement != null && pContext != null
-	 */
-	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pContext)
-	{
-		assert pElement != null && pContext != null;
-		if( pElement instanceof Node )
-		{
-			RenderingFacade.drawSelectionHandles((Node) pElement, pContext);
-		}
-		else
-		{
-			assert pElement instanceof Edge;
-			RenderingFacade.drawSelectionHandles((Edge)pElement, pContext);
-		}
 	}
 }

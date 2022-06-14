@@ -167,7 +167,7 @@ public class ClassDiagramViewer extends DiagramViewer
 		}
 		else
 		{
-			ViewerUtils.drawSelectionHandles(pSelected, pContext);
+			RenderingFacade.drawSelectionHandles(pSelected, pContext);
 		}
 	}
 	
