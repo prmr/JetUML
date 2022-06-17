@@ -21,8 +21,6 @@
 
 package org.jetuml.diagram.builder;
 
-import static org.jetuml.diagram.DiagramType.viewerFor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,7 +45,6 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.DiagramViewer;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 
@@ -122,9 +119,8 @@ public abstract class DiagramBuilder
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
 		
-		final DiagramViewer viewer = viewerFor(aDiagram);
-		Optional<Node> startNode = viewer.nodeAt(aDiagram, pStart);
-		Optional<Node> endNode = viewer.nodeAt(aDiagram, pEnd);
+		Optional<Node> startNode = RenderingFacade.nodeAt(aDiagram, pStart);
+		Optional<Node> endNode = RenderingFacade.nodeAt(aDiagram, pEnd);
 		
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -417,10 +413,9 @@ public abstract class DiagramBuilder
 	public final DiagramOperation createAddEdgeOperation(Edge pEdge, Point pStart, Point pEnd)
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
-		DiagramViewer viewer = viewerFor(aDiagram);
 		
-		Node node1 = viewer.nodeAt(aDiagram, pStart).get();
-		Optional<Node> node2in = viewer.nodeAt(aDiagram, pEnd);
+		Node node1 = RenderingFacade.nodeAt(aDiagram, pStart).get();
+		Optional<Node> node2in = RenderingFacade.nodeAt(aDiagram, pEnd);
 		Node node2 = null;
 		if( node2in.isPresent() )
 		{

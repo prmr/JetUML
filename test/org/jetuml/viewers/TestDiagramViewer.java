@@ -32,14 +32,12 @@ import org.junit.jupiter.api.Test;
 
 public class TestDiagramViewer
 {
-	private DiagramViewer aViewer = new DiagramViewer();
-	
 	@Test
 	public void testNodeAt_NoneShallow()
 	{
 		Diagram diagram = new Diagram(DiagramType.CLASS);
 		diagram.addRootNode(new ClassNode());
-		assertTrue(aViewer.nodeAt(diagram, new Point(100,100)).isEmpty());
+		assertTrue(RenderingFacade.nodeAt(diagram, new Point(100,100)).isEmpty());
 	}
 	
 	@Test
@@ -52,7 +50,7 @@ public class TestDiagramViewer
 		p2.addChild(c);
 		p1.addChild(p2);
 		diagram.addRootNode(p1);
-		assertTrue(aViewer.nodeAt(diagram, new Point(100,100)).isEmpty());
+		assertTrue(RenderingFacade.nodeAt(diagram, new Point(100,100)).isEmpty());
 	}
 	
 	@Test
@@ -61,7 +59,7 @@ public class TestDiagramViewer
 		Diagram diagram = new Diagram(DiagramType.CLASS);
 		ClassNode node = new ClassNode();
 		diagram.addRootNode(node);
-		assertSame(node, aViewer.nodeAt(diagram, new Point(20,20)).get());
+		assertSame(node, RenderingFacade.nodeAt(diagram, new Point(20,20)).get());
 	}
 	
 	@Test
@@ -73,7 +71,7 @@ public class TestDiagramViewer
 		node.translate(10, 10);
 		p1.addChild(node);
 		diagram.addRootNode(p1);
-		assertSame(p1, aViewer.nodeAt(diagram, new Point(5,5)).get());
+		assertSame(p1, RenderingFacade.nodeAt(diagram, new Point(5,5)).get());
 	}
 	
 	@Test
@@ -85,7 +83,7 @@ public class TestDiagramViewer
 		node.translate(10, 10);
 		p1.addChild(node);
 		diagram.addRootNode(p1);
-		assertSame(node, aViewer.nodeAt(diagram, new Point(15,15)).get());
+		assertSame(node, RenderingFacade.nodeAt(diagram, new Point(15,15)).get());
 	}
 	
 	@Test
@@ -101,6 +99,6 @@ public class TestDiagramViewer
 		node.translate(20, 20);
 		p1.addChild(node);
 		diagram.addRootNode(p1);
-		assertSame(p2, aViewer.nodeAt(diagram, new Point(15,15)).get());
+		assertSame(p2, RenderingFacade.nodeAt(diagram, new Point(15,15)).get());
 	}
 }

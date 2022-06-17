@@ -21,8 +21,6 @@
 
 package org.jetuml.diagram.builder;
 
-import static org.jetuml.diagram.DiagramType.viewerFor;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +38,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.DiagramViewer;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
@@ -91,9 +88,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
 	{
 		assert pStart!= null && pEnd != null;
-		DiagramViewer viewer = viewerFor(aDiagram);
-		Optional<Node> end = viewer.nodeAt(aDiagram, pEnd);
-		Optional<Node> start = viewer.nodeAt(aDiagram, pStart);
+		Optional<Node> end = RenderingFacade.nodeAt(aDiagram, pEnd);
+		Optional<Node> start = RenderingFacade.nodeAt(aDiagram, pStart);
 		if(start.isPresent() && end.isPresent())
 		{
 			Node startNode = start.get();

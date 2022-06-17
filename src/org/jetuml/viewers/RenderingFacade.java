@@ -312,4 +312,17 @@ public class RenderingFacade
 	{
 		return DiagramType.viewerFor(pDiagram).edgeAt(pDiagram, pPoint);
 	}
+	
+	/**
+     * Finds a node that contains the given point. Always returns
+     * the deepest child and the last one in a list.
+     * @param pDiagram The diagram to query.
+     * @param pPoint A point
+     * @return a node containing pPoint or null if no nodes contain pPoint
+     * @pre pDiagram != null && pPoint != null.
+     */
+	public static Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
+	{
+		return DiagramType.viewerFor(pDiagram).nodeAt(pDiagram, pPoint);
+	}
 }

@@ -34,14 +34,13 @@ import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramViewer
 {
-	private SequenceDiagramViewer aViewer = new SequenceDiagramViewer();
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
 	
 	@Test
 	void testNodeAt_NoneShallow()
 	{
 		aDiagram.addRootNode(new ImplicitParameterNode());
-		assertTrue(aViewer.nodeAt(aDiagram, new Point(100,100)).isEmpty());
+		assertTrue(RenderingFacade.nodeAt(aDiagram, new Point(100,100)).isEmpty());
 	}
 	
 	@Test 
@@ -50,7 +49,7 @@ public class TestSequenceDiagramViewer
 		NoteNode note = new NoteNode();
 		note.translate(50, 50);
 		aDiagram.addRootNode(note);
-		assertSame(note, aViewer.nodeAt(aDiagram, new Point(55,55)).get());
+		assertSame(note, RenderingFacade.nodeAt(aDiagram, new Point(55,55)).get());
 	}
 	
 	@Test 
@@ -60,9 +59,9 @@ public class TestSequenceDiagramViewer
 		node.translate(50, 0);
 		aDiagram.addRootNode(node);
 		// Inside top rectangle
-		assertSame(node, aViewer.nodeAt(aDiagram, new Point(60,10)).get());
+		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(60,10)).get());
 		// Below top rectangle
-		assertSame(node, aViewer.nodeAt(aDiagram, new Point(60,100)).get());
+		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(60,100)).get());
 	}
 	
 	/*
@@ -77,9 +76,9 @@ public class TestSequenceDiagramViewer
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
 		// Inside top rectangle
-		assertSame(node1, aViewer.nodeAt(aDiagram, new Point(10,10)).get());
-		assertSame(node2, aViewer.nodeAt(aDiagram, new Point(25,10)).get());
-		assertSame(node2, aViewer.nodeAt(aDiagram, new Point(65,10)).get());
+		assertSame(node1, RenderingFacade.nodeAt(aDiagram, new Point(10,10)).get());
+		assertSame(node2, RenderingFacade.nodeAt(aDiagram, new Point(25,10)).get());
+		assertSame(node2, RenderingFacade.nodeAt(aDiagram, new Point(65,10)).get());
 	}
 	
 	@Test 
@@ -101,8 +100,8 @@ public class TestSequenceDiagramViewer
 		edge.connect(callNode1, callNode2, aDiagram);
 		aDiagram.addEdge(edge);
 		
-		assertSame(callNode1, aViewer.nodeAt(aDiagram, new Point(35,85)).get());
-		assertSame(callNode2, aViewer.nodeAt(aDiagram, new Point(135,105)).get());
+		assertSame(callNode1, RenderingFacade.nodeAt(aDiagram, new Point(35,85)).get());
+		assertSame(callNode2, RenderingFacade.nodeAt(aDiagram, new Point(135,105)).get());
 	}
 	
 	@Test 
@@ -121,7 +120,7 @@ public class TestSequenceDiagramViewer
 		edge.connect(callNode1, callNode2, aDiagram);
 		aDiagram.addEdge(edge);
 
-		assertSame(callNode1, aViewer.nodeAt(aDiagram, new Point(38,105)).get());
-		assertSame(callNode2, aViewer.nodeAt(aDiagram, new Point(42,105)).get());
+		assertSame(callNode1, RenderingFacade.nodeAt(aDiagram, new Point(38,105)).get());
+		assertSame(callNode2, RenderingFacade.nodeAt(aDiagram, new Point(42,105)).get());
 	}
 }
