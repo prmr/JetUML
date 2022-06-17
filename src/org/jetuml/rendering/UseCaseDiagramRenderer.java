@@ -108,8 +108,7 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public boolean contains(DiagramElement pElement, Point pPoint)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
 
 	@Override

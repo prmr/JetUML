@@ -228,6 +228,11 @@ public class RenderingFacade
 	 */
 	public static boolean contains(DiagramElement pElement, Point pPoint)
 	{
+		assert pElement != null;
+		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		{
+			aDiagramRenderers.get(diagramType(pElement)).contains(pElement, pPoint);
+		}
 		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
 	
