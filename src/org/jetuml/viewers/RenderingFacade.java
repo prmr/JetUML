@@ -68,7 +68,6 @@ import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
 import org.jetuml.viewers.edges.CallEdgeViewer;
 import org.jetuml.viewers.edges.DependencyEdgeViewer;
-import org.jetuml.viewers.edges.DiagramElementRenderer;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
@@ -153,14 +152,14 @@ public class RenderingFacade
 	 * @return An icon that represents this element
 	 * @pre pElement != null
 	 */
-	public static Canvas createIcon(DiagramElement pElement)
+	public static Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		if( pDiagramType == DiagramType.USECASE ) // TODO Generalize
 		{
-			aDiagramRenderers.get(diagramType(pElement)).createIcon(pElement);
+			aDiagramRenderers.get(pDiagramType).createIcon(pElement);
 		}
-		return aRenderers.get(pElement.getClass()).createIcon(pElement);
+		return aRenderers.get(pElement.getClass()).createIcon(null, pElement); // TODO remove null
 	}
 	
 	/**

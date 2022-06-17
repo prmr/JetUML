@@ -23,7 +23,7 @@ package org.jetuml.viewers.nodes;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.edges.DiagramElementRenderer;
+import org.jetuml.viewers.DiagramElementRenderer;
 
 /**
  * Abstract strategy that describes objects that can draw and

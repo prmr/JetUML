@@ -21,6 +21,7 @@
 package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.geom.Conversions;
@@ -426,7 +427,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(DiagramElement pElement)
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{   //CSOFF: Magic numbers
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
 		GraphicsContext graphics = canvas.getGraphicsContext2D();

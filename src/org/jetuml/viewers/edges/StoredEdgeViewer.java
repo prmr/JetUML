@@ -441,7 +441,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	}
 
 	@Override
-	public Canvas createIcon(DiagramElement pElement) 
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement) 
 	{
 		Edge edge = (Edge)pElement;
 		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);

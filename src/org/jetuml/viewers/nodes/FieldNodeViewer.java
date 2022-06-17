@@ -21,6 +21,7 @@
 package org.jetuml.viewers.nodes;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
@@ -142,7 +143,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	 * Custom version because the field node cannot be drawn without a parent.
 	 */
 	@Override
-	public Canvas createIcon(DiagramElement pElement)
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		Dimension dimension = EQUALS_VIEWER.getDimension(ICON_LABEL);
 		int width = dimension.width();

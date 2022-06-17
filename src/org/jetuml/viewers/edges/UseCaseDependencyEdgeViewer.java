@@ -21,6 +21,7 @@
 package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.geom.Rectangle;
@@ -47,10 +48,10 @@ public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(DiagramElement pElement)
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		Edge edge = (Edge) pElement;
-		Canvas canvas = super.createIcon(edge);
+		Canvas canvas = super.createIcon(pDiagramType, edge);
 		final float scale = 0.75f;
 		canvas.getGraphicsContext2D().scale(scale, scale);
 		StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED).draw(getIconTag(edge), 

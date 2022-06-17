@@ -27,7 +27,6 @@ import org.jetuml.application.UserPreferences.BooleanPreference;
 import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Prototypes;
-import org.jetuml.viewers.RenderingFacade;
 
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -77,9 +76,9 @@ public class SelectableToolButton extends ToggleButton implements BooleanPrefere
 	 * @param pPrototype The object prototype for the creation.
 	 * @pre pImage != null && pToolTip != null && pToggleGroup != null.
 	 */
-	public SelectableToolButton(String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
+	public SelectableToolButton(Canvas pIcon, String pToolTip, ToggleGroup pToggleGroup, DiagramElement pPrototype)
 	{
-		this(RenderingFacade.createIcon(pPrototype), pToolTip, pToggleGroup);
+		this(pIcon, pToolTip, pToggleGroup);
 		aPrototype = Optional.of(pPrototype);
 		setSelected(false);
 	}

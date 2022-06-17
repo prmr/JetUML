@@ -107,12 +107,12 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		for( DiagramElement element : pDiagram.getPrototypes() )
 		{
-			SelectableToolButton button = new SelectableToolButton(
+			SelectableToolButton button = new SelectableToolButton(RenderingFacade.createIcon(pDiagram.getType(), element),
 					Prototypes.instance().tooltip(element, 
 							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
 					pToggleGroup, element);
 			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
-			add(button, RenderingFacade.createIcon(element), Prototypes.instance().tooltip(element, false));
+			add(button, RenderingFacade.createIcon(pDiagram.getType(), element), Prototypes.instance().tooltip(element, false));
 		}
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, oldFontSize);
 	}

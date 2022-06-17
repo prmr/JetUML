@@ -21,6 +21,7 @@
 package org.jetuml.viewers.nodes;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
@@ -71,7 +72,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	}
 	
 	@Override
-	public Canvas createIcon(DiagramElement pElement)
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		Node node = (Node) pElement;
 		Rectangle bounds = getBounds(node);

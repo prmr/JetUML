@@ -18,9 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.viewers;
 
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
@@ -35,10 +36,13 @@ public interface DiagramElementRenderer
 	/**
 	 * Returns an icon that represents pElement.
 	 * @param pElement The element for which we need an icon.
+	 * @param pDiagramType The diagram type that is the context for creating this icon. It is necessary to include this 
+	 * parameter because prototype nodes that represent diagram tools are not part of any diagram from which it would be possible to 
+	 * obtain the type.
 	 * @return A canvas object on which the icon is painted.
 	 * @pre pElement != null
 	 */
-	Canvas createIcon(DiagramElement pElement);
+	Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement);
 	
 	/**
      * Gets the smallest rectangle that bounds the element.
