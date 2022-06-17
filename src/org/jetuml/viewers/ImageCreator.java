@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
-import static org.jetuml.diagram.DiagramType.viewerFor;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Rectangle;
 
@@ -50,7 +48,7 @@ public final class ImageCreator
 	public static Image createImage(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
+		Rectangle bounds = RenderingFacade.getBounds(pDiagram);
 		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		GraphicsContext context = canvas.getGraphicsContext2D();

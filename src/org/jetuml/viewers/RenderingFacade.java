@@ -325,4 +325,16 @@ public class RenderingFacade
 	{
 		return DiagramType.viewerFor(pDiagram).nodeAt(pDiagram, pPoint);
 	}
+	
+	/**
+	 * Gets the smallest rectangle enclosing the diagram.
+	 * 
+	 * @param pDiagram The diagram to query
+	 * @return The bounding rectangle
+	 * @pre pDiagram != null
+	 */
+	public static Rectangle getBounds(Diagram pDiagram)
+	{
+		return DiagramType.viewerFor(pDiagram).getBounds(pDiagram);
+	}
 }

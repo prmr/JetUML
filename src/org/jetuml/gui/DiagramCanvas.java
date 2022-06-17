@@ -19,8 +19,6 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 package org.jetuml.gui;
-import static org.jetuml.diagram.DiagramType.viewerFor;
-
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.BooleanPreference;
 import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
@@ -166,7 +164,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
 	{
-		Rectangle bounds = viewerFor(pDiagram).getBounds(pDiagram);
+		Rectangle bounds = RenderingFacade.getBounds(pDiagram);
 		return new Dimension(
 				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
 				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
