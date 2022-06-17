@@ -316,33 +316,33 @@ public class TestLayouter
 		setUpTestLayout();
 		aLayouter.layout(aDiagram);
 		//aEdgeA
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(50, 190)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(50, 155)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(200, 155)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(200, 120)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 190)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 155)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 155)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 120)).get());
 		//aEdgeB (the other segments of aEdgeB overlap with aEdgeA)
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 190)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 190)).get());
 		//aEdgeC
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 190)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 155)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(210, 155)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(210, 120)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 190)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 155)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(210, 155)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(210, 120)).get());
 		//aEdgeD
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(350, 190)).get());
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(350, 145)).get());
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(220, 145)).get());
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(220, 120)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 190)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 145)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(220, 145)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(220, 120)).get());
 		//aEdgeE
-		assertEquals(aEdgeE, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(400, 90)).get());
-		assertEquals(aEdgeE, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 90)).get());
+		assertEquals(aEdgeE, RenderingFacade.edgeAt(aDiagram, new Point(400, 90)).get());
+		assertEquals(aEdgeE, RenderingFacade.edgeAt(aDiagram, new Point(250, 90)).get());
 		//EdgeF
-		assertEquals(aEdgeF, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(400, 30)).get());
-		assertEquals(aEdgeF, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(325, 30)).get());
-		assertEquals(aEdgeF, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(325, 80)).get());
-		assertEquals(aEdgeF, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 80)).get());
+		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(400, 30)).get());
+		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(325, 30)).get());
+		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(325, 80)).get());
+		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(250, 80)).get());
 		//aEdgeG
-		assertEquals(aEdgeG, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(100, 30)).get());
-		assertEquals(aEdgeG, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeG, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeG, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
 	}
 	
 	
@@ -357,12 +357,12 @@ public class TestLayouter
 		assertFalse(storageContains(aEdgeC));
 		assertFalse(storageContains(aEdgeD));
 		//aEdgeA
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(50, 140)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(50, 100)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(50, 60)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 140)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 100)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 60)).get());
 		//aEdgeB
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 140)).get());
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 100)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 140)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 100)).get());
 		
 		//Layout aEdgeC
 		layoutSegmentedEdges(aDiagram, EdgePriority.IMPLEMENTATION);
@@ -371,8 +371,8 @@ public class TestLayouter
 		assertTrue(storageContains(aEdgeC));
 		assertFalse(storageContains(aEdgeD));
 		//aEdgeC
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 140)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(250, 90)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 140)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 90)).get());
 		
 		//Layout aEdgeD
 		layoutSegmentedEdges(aDiagram, EdgePriority.ASSOCIATION);
@@ -381,8 +381,8 @@ public class TestLayouter
 		assertTrue(storageContains(aEdgeC));
 		assertTrue(storageContains(aEdgeD));
 		//aEdgeD
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(350, 140)).get());
-		assertEquals(aEdgeD, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(350, 80)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 140)).get());
+		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 80)).get());
 		
 	}
 	
@@ -392,18 +392,18 @@ public class TestLayouter
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Aggregation);
 		layoutSegmentedEdges(aDiagram, EdgePriority.AGGREGATION);
 		//aEdgeA
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(200, 90)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 90)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 30)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 90)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 30)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
 		//aEdgeB
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 150)).get());
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(100, 150)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 150)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(100, 150)).get());
 		//aEdgeC
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(300, 100)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(340, 100)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(340, 210)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(400, 210)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(300, 100)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 100)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 210)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(400, 210)).get());
 		
 	}
 	
@@ -413,20 +413,20 @@ public class TestLayouter
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Composition);
 		layoutSegmentedEdges(aDiagram, EdgePriority.COMPOSITION);
 		//aEdgeA
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(200, 90)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 90)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 30)).get());
-		assertEquals(aEdgeA, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 90)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 30)).get());
+		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
 		
 		//aEdgeB
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(150, 150)).get());
-		assertEquals(aEdgeB, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(100, 150)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 150)).get());
+		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(100, 150)).get());
 		
 		//aEdgeC
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(300, 100)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(340, 100)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(340, 210)).get());
-		assertEquals(aEdgeC, DiagramType.viewerFor(aDiagram).edgeAt(aDiagram, new Point(400, 210)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(300, 100)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 100)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 210)).get());
+		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(400, 210)).get());
 		
 	}
 	
