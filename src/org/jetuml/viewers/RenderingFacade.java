@@ -62,6 +62,8 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
 import org.jetuml.viewers.edges.CallEdgeViewer;
@@ -102,6 +104,9 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class RenderingFacade
 {
+	private static IdentityHashMap<DiagramType, DiagramRenderer> 
+		aDiagramRenderers = new IdentityHashMap<>();
+	
 	private static IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
 			new IdentityHashMap<>();
 	
@@ -137,6 +142,8 @@ public class RenderingFacade
 		aRenderers.put(AssociationEdge.class,  new AssociationEdgeViewer());
 		aRenderers.put(GeneralizationEdge.class, new GeneralizationEdgeViewer());
 		aRenderers.put(AggregationEdge.class, new AggregationEdgeViewer());
+		
+		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
 	}
 	
 	/**
@@ -149,6 +156,10 @@ public class RenderingFacade
 	public static Canvas createIcon(DiagramElement pElement)
 	{
 		assert pElement != null;
+		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		{
+			aDiagramRenderers.get(diagramType(pElement)).createIcon(pElement);
+		}
 		return aRenderers.get(pElement.getClass()).createIcon(pElement);
 	}
 	
@@ -336,5 +347,21 @@ public class RenderingFacade
 	public static Rectangle getBounds(Diagram pDiagram)
 	{
 		return DiagramType.viewerFor(pDiagram).getBounds(pDiagram);
+	}
+	
+	/* 
+	 * Returns the type of the diagram this element is a part of. 
+	 * @pre the element is part of a diagram.
+	 */
+	private static DiagramType diagramType(DiagramElement pElement)
+	{
+		if( pElement instanceof Edge )
+		{
+			return ((Edge)pElement).getDiagram().getType();
+		}
+		else
+		{
+			return ((Node)pElement).getDiagram().get().getType();
+		}
 	}
 }
