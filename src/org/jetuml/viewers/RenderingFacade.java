@@ -23,7 +23,9 @@ package org.jetuml.viewers;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -282,5 +284,18 @@ public class RenderingFacade
 	public static Line getConnectionPoints(Edge pEdge)
 	{
 		return ((EdgeViewer)aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
+	}
+	
+	/**
+	 * Draws pDiagram onto pGraphics.
+	 * 
+	 * @param pGraphics the graphics context where the
+	 *     diagram should be drawn.
+	 * @param pDiagram the diagram to draw.
+	 * @pre pDiagram != null && pGraphics != null.
+	 */
+	public static void draw(Diagram pDiagram, GraphicsContext pGraphics)
+	{
+		DiagramType.viewerFor(pDiagram).draw(pDiagram, pGraphics);
 	}
 }

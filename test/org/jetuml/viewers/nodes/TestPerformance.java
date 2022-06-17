@@ -25,8 +25,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.persistence.PersistenceService;
+import org.jetuml.viewers.RenderingFacade;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -53,7 +53,7 @@ import javafx.scene.canvas.GraphicsContext;
  		for (int i = 0; i < NUMBER_OF_TRIALS+1; i++)
  		{
  			Instant start = Instant.now();
- 			DiagramType.viewerFor(diagram).draw(diagram, graphicContext);
+ 			RenderingFacade.draw(diagram, graphicContext);
  			Instant stop = Instant.now();
 
  			if (i == 0)
@@ -67,7 +67,7 @@ import javafx.scene.canvas.GraphicsContext;
  		}
  		avgExecutionTime = avgExecutionTime / NUMBER_OF_TRIALS;
 
- 		System.out.println("Test DiagramViewer.draw(diagram) : ");
+ 		System.out.println("Test DiagramRenderer.draw(diagram) : ");
  		System.out.println("Average Duration (ms) of " + NUMBER_OF_TRIALS + " trials : " + avgExecutionTime);
  	}
  }

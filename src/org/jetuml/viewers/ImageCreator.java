@@ -23,7 +23,6 @@ package org.jetuml.viewers;
 import static org.jetuml.diagram.DiagramType.viewerFor;
 
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.Canvas;
@@ -58,7 +57,7 @@ public final class ImageCreator
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(Color.WHITE);
 		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
-		DiagramType.viewerFor(pDiagram).draw(pDiagram, context);
+		RenderingFacade.draw(pDiagram, context);
 		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);

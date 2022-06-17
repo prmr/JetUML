@@ -209,7 +209,7 @@ public enum DiagramType
 	
 	/**
 	 * @param pDiagram The diagram for which we want a viewer.
-	 * @return The DiagramViewer instance registered for this type of diagram.
+	 * @return The DiagramRenderer instance registered for this type of diagram.
 	 * @pre pDiagram != null;
 	 */
 	public static DiagramViewer viewerFor(Diagram pDiagram) 

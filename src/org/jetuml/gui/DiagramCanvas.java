@@ -108,7 +108,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		DiagramType.viewerFor(aDiagram).draw(aDiagram, context);
+		RenderingFacade.draw(aDiagram, context);
 		aController.synchronizeSelectionModel();
 		aController.getSelectionModel().forEach( selected -> drawSelectionHandles(selected, context));
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
