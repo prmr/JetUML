@@ -109,6 +109,8 @@ public class RenderingFacade
 	private static IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
 			new IdentityHashMap<>();
 	
+	private static Optional<Diagram> aActiveDiagram = Optional.empty();
+	
 	static
 	{
 		aRenderers.put(ActorNode.class, new ActorNodeViewer());
@@ -143,6 +145,18 @@ public class RenderingFacade
 		aRenderers.put(AggregationEdge.class, new AggregationEdgeViewer());
 		
 		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
+	}
+	
+	/**
+	 * Caches the diagram to be rendered. All subsequent rendering operations
+	 * will be assumed to target this diagram, until the next call to prepare.
+	 * 
+	 * @param pDiagram The diagram to prepare for rendering.
+	 */
+	public static void prepareFor(Diagram pDiagram)
+	{
+		assert pDiagram != null;
+		aActiveDiagram = Optional.of(pDiagram);
 	}
 	
 	/**
@@ -303,11 +317,15 @@ public class RenderingFacade
 	 * @param pDirection The desired direction.
 	 * @return A connection point on the node.
 	 * @pre pNode != null && pDirection != null
-	 * 
 	 */
+	// DONE
 	public static Point getConnectionPoints(Node pNode, Direction pDirection)
 	{
 		assert pNode != null;
+		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(diagramType(pNode)).getConnectionPoints(pNode, pDirection);
+		}
 		return ((NodeViewer)aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
 	
@@ -319,8 +337,14 @@ public class RenderingFacade
 	 * @pre pEdge != null
 	 * 
 	 */
+	//DONE
 	public static Line getConnectionPoints(Edge pEdge)
 	{
+		assert pEdge != null;
+		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(diagramType(pEdge)).getConnectionPoints(pEdge);
+		}
 		return ((EdgeViewer)aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
 	

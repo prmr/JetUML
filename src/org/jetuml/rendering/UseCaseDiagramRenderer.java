@@ -42,6 +42,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.DiagramElementRenderer;
+import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
@@ -216,14 +217,14 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pEdge != null;
+		return ((EdgeViewer) aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
 
 	@Override
 	public Point getConnectionPoints(Node pNode, Direction pDirection)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pNode != null && pDirection != null;
+		return ((NodeViewer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
 }

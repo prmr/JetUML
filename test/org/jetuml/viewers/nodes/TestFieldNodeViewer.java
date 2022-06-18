@@ -70,6 +70,7 @@ public class TestFieldNodeViewer
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aDiagram = new Diagram(DiagramType.OBJECT);
 		aDiagram.addRootNode(aObjectNode1);
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@AfterAll
