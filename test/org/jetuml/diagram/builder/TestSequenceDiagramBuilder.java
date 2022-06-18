@@ -41,6 +41,7 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,7 @@ public class TestSequenceDiagramBuilder
 		aDefaultCallNode1 = new CallNode();
 		aDefaultCallNode2 = new CallNode();
 		aCallEdge1 = new CallEdge();
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	private int numberOfRootNodes()

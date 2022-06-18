@@ -78,6 +78,7 @@ public class TestPersistenceService
 	public void test( String pFileName ) throws Exception
 	{
 		Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
+		RenderingFacade.prepareFor(diagram);
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash

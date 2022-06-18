@@ -31,6 +31,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of a class diagram.
@@ -41,6 +42,12 @@ public abstract class AbstractTestClassDiagramLayout extends AbstractTestDiagram
 	AbstractTestClassDiagramLayout(Path pDiagramPath) throws IOException
 	{
 		super(pDiagramPath);
+	}
+	
+	@BeforeEach
+	void setup()
+	{
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	protected static void verifyClassNodeDefaultDimensions(Node pNode)

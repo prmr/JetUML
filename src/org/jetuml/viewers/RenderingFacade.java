@@ -40,10 +40,6 @@ import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
-import org.jetuml.diagram.edges.UseCaseAssociationEdge;
-import org.jetuml.diagram.edges.UseCaseDependencyEdge;
-import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
-import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.FieldNode;
@@ -57,7 +53,6 @@ import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -75,10 +70,6 @@ import org.jetuml.viewers.edges.ObjectCollaborationEdgeViewer;
 import org.jetuml.viewers.edges.ObjectReferenceEdgeViewer;
 import org.jetuml.viewers.edges.ReturnEdgeViewer;
 import org.jetuml.viewers.edges.StateTransitionEdgeViewer;
-import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
-import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
-import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
-import org.jetuml.viewers.nodes.ActorNodeViewer;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.CircularStateNodeViewer;
 import org.jetuml.viewers.nodes.FieldNodeViewer;
@@ -92,7 +83,6 @@ import org.jetuml.viewers.nodes.PackageNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
 import org.jetuml.viewers.nodes.StateNodeViewer;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
-import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -113,7 +103,6 @@ public class RenderingFacade
 	
 	static
 	{
-		aRenderers.put(ActorNode.class, new ActorNodeViewer());
 		aRenderers.put(CallNode.class, new CallNodeViewer());
 		aRenderers.put(ClassNode.class, new TypeNodeViewer());
 		aRenderers.put(FieldNode.class, new FieldNodeViewer());
@@ -127,12 +116,8 @@ public class RenderingFacade
 		aRenderers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
 		aRenderers.put(PointNode.class, new PointNodeViewer());
 		aRenderers.put(StateNode.class, new StateNodeViewer());
-		aRenderers.put(UseCaseNode.class, new UseCaseNodeViewer());
 		
 		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
-		aRenderers.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
-		aRenderers.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
-		aRenderers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
 		aRenderers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
 		aRenderers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
 		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
