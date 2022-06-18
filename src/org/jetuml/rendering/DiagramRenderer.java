@@ -59,6 +59,14 @@ public interface DiagramRenderer
 	void draw(Diagram pDiagram, GraphicsContext pGraphics);
 	
 	/**
+     * Draws the element.
+     * @param pElement The element to draw.
+     * @param pGraphics the graphics context
+     * @pre pElement != null
+	 */
+   	void draw(DiagramElement pElement, GraphicsContext pGraphics);
+	
+	/**
 	 * Returns the edge underneath the given point, if it exists.
 	 * 
 	 * @param pDiagram The diagram to query

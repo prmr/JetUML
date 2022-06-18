@@ -152,6 +152,7 @@ public class RenderingFacade
 	 * @return An icon that represents this element
 	 * @pre pElement != null
 	 */
+	// DONE
 	public static Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		assert pElement != null;
@@ -169,6 +170,7 @@ public class RenderingFacade
 	 * @pre pElements != null
 	 * @pre pElements has at least one element.
 	 */
+	//DONE
 	public static Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
@@ -200,6 +202,7 @@ public class RenderingFacade
 	/**
 	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
 	 */
+	//DONE
 	public static void activateNodeStorages()
 	{
 		aRenderers.values().stream()
@@ -211,6 +214,7 @@ public class RenderingFacade
 	/**
 	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
 	 */
+	//DONE
 	public static void deactivateAndClearNodeStorages()
 	{
 		aRenderers.values().stream()
@@ -226,12 +230,13 @@ public class RenderingFacade
 	 * @param pPoint The point to test
 	 * @return true if this element contains aPoint
 	 */
+	//DONE
 	public static boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		assert pElement != null;
 		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
 		{
-			aDiagramRenderers.get(diagramType(pElement)).contains(pElement, pPoint);
+			return aDiagramRenderers.get(diagramType(pElement)).contains(pElement, pPoint);
 		}
 		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
@@ -243,9 +248,18 @@ public class RenderingFacade
 	 * @param pGraphics The graphics context
 	 * @pre pElement != null && pGraphics != null
 	 */
+	//DONE
 	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
+		assert pElement != null && pGraphics != null;
+		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		{
+			aDiagramRenderers.get(diagramType(pElement)).drawSelectionHandles(pElement, pGraphics);
+		}
+		else
+		{
+			aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
+		}
 	}
 	
 	/**
@@ -255,10 +269,18 @@ public class RenderingFacade
 	 * @param pGraphics The graphics context
 	 * @pre pElement != null
 	 */
+	//DONE
 	public static void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		assert pElement != null;
-		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+		assert pElement != null && pGraphics != null;
+		if( diagramType(pElement) == DiagramType.USECASE )
+		{
+			aDiagramRenderers.get(diagramType(pElement)).draw(pElement, pGraphics);
+		}
+		else
+		{
+			aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+		}
 	}
 	
 	/**
@@ -310,9 +332,18 @@ public class RenderingFacade
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
+	//DONE
 	public static void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
-		DiagramType.viewerFor(pDiagram).draw(pDiagram, pGraphics);
+		assert pDiagram != null && pGraphics != null;
+		if( pDiagram.getType() == DiagramType.USECASE )
+		{
+			aDiagramRenderers.get(pDiagram.getType()).draw(pDiagram, pGraphics);
+		}
+		else
+		{
+			DiagramType.viewerFor(pDiagram).draw(pDiagram, pGraphics);
+		}
 	}
 	
 	/**

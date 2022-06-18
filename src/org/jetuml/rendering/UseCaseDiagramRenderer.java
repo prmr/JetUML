@@ -47,6 +47,7 @@ import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
+import org.jetuml.viewers.nodes.NodeViewer;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
@@ -77,12 +78,62 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 		aRenderers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
 	}
 
-	@Override
+	/**
+	 * Draws pDiagram onto pGraphics.
+	 * 
+	 * @param pGraphics the graphics context where the
+	 *     diagram should be drawn.
+	 * @param pDiagram the diagram to draw.
+	 * @pre pDiagram != null && pGraphics != null.
+	 */
 	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
-		// TODO Auto-generated method stub
-		
+		assert pDiagram != null && pGraphics != null;
+		activateNodeStorages();
+		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		deactivateAndClearNodeStorages();
 	}
+	
+	/**
+	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
+	 */
+	public void activateNodeStorages()
+	{
+		aRenderers.values().stream()
+			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+			.map(NodeViewer.class::cast)
+			.forEach(NodeViewer::activateNodeStorage);
+	}
+	
+	/**
+	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
+	 */
+	public void deactivateAndClearNodeStorages()
+	{
+		aRenderers.values().stream()
+			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+			.map(NodeViewer.class::cast)
+			.forEach(NodeViewer::deactivateAndClearNodeStorage);
+	}
+	
+	protected void drawNode(Node pNode, GraphicsContext pGraphics)
+	{
+		draw(pNode, pGraphics);
+		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
+	}
+	
+	/**
+     * Draws the element.
+     * @param pElement The element to draw.
+     * @param pGraphics the graphics context
+     * @pre pElement != null
+	 */
+	@Override
+   	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+   	{
+   		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+   	}
 
 	@Override
 	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
@@ -121,8 +172,8 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		// TODO Auto-generated method stub
-		
+		assert pElement != null && pGraphics != null;
+		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
 	}
 
 	@Override
