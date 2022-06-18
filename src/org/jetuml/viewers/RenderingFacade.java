@@ -354,8 +354,14 @@ public class RenderingFacade
 	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
+	//DONE
 	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
+		assert pDiagram != null && pPoint != null;
+		if( pDiagram.getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pDiagram, pPoint);
+		}
 		return DiagramType.viewerFor(pDiagram).edgeAt(pDiagram, pPoint);
 	}
 	
@@ -367,8 +373,14 @@ public class RenderingFacade
      * @return a node containing pPoint or null if no nodes contain pPoint
      * @pre pDiagram != null && pPoint != null.
      */
+	//DONE
 	public static Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
+		assert pDiagram != null && pPoint != null;
+		if( pDiagram.getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(pDiagram.getType()).nodeAt(pDiagram, pPoint);
+		}
 		return DiagramType.viewerFor(pDiagram).nodeAt(pDiagram, pPoint);
 	}
 	

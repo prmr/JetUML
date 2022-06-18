@@ -138,15 +138,45 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pDiagram != null && pPoint != null;
+		return pDiagram.edges().stream()
+				.filter(edge -> contains(edge, pPoint))
+				.findFirst();
 	}
 
 	@Override
-	public Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
+	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pDiagram != null && pPoint != null;
+		return pDiagram.rootNodes().stream()
+			.map(node -> deepFindNode(pDiagram, node, pPoint))
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.reduce((first, second) -> second);
+	}
+	
+	/**
+	 * Find the "deepest" child that contains pPoint,
+	 * where depth is measured in terms of distance from
+	 * pNode along the parent-child relation.
+	 * @param pDiagram The diagram to query.
+	 * @param pNode The starting node for the search.
+	 * @param pPoint The point to test for.
+	 * @return The deepest child containing pPoint,
+	 *     or null if pPoint is not contained by pNode or 
+	 *     any of its children.
+	 * @pre pNode != null, pPoint != null;
+	 */
+	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
+	{
+		assert pDiagram != null && pNode != null && pPoint != null;
+		
+		return pNode.getChildren().stream()
+			.map(node -> deepFindNode(pDiagram, node, pPoint))
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.findFirst()
+			.or( () -> Optional.of(pNode).filter(originalNode -> contains(originalNode, pPoint)));
 	}
 
 	@Override
