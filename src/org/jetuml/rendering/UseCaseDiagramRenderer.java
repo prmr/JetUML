@@ -42,6 +42,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.DiagramElementRenderer;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
@@ -183,8 +184,31 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public Rectangle getBounds(Diagram pDiagram)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pDiagram != null;
+		Rectangle bounds = null;
+		for(Node node : pDiagram.rootNodes() )
+		{
+			if(bounds == null)
+			{
+				bounds = RenderingFacade.getBounds(node);
+			}
+			else
+			{
+				bounds = bounds.add(RenderingFacade.getBounds(node));
+			}
+		}
+		for(Edge edge : pDiagram.edges())
+		{
+			bounds = bounds.add(RenderingFacade.getBounds(edge));
+		}
+		if(bounds == null )
+		{
+			return new Rectangle(0, 0, 0, 0);
+		}
+		else
+		{
+			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+		}
 	}
 
 	@Override
@@ -210,8 +234,8 @@ public final class UseCaseDiagramRenderer implements DiagramRenderer
 	@Override
 	public Rectangle getBounds(DiagramElement pElement)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		assert pElement != null;
+		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 
 	@Override

@@ -298,19 +298,6 @@ public class RenderingFacade
 	}
 	
 	/**
-	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
-	 * 
-	 * @param pElement The element whose bounds we wish to compute.
-	 * @return The bounding rectangle
-	 * @pre pElement != null
-	 */
-	public static Rectangle getBounds(DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aRenderers.get(pElement.getClass()).getBounds(pElement);
-	}
-
-	/**
 	 * Gets the points at which pNode is connected to its nodes.
 	 * 
 	 * @param pNode The target node
@@ -415,9 +402,33 @@ public class RenderingFacade
 	 * @return The bounding rectangle
 	 * @pre pDiagram != null
 	 */
+	//DONE
 	public static Rectangle getBounds(Diagram pDiagram)
 	{
+		assert pDiagram != null;
+		if( pDiagram.getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(pDiagram.getType()).getBounds(pDiagram);
+		}
 		return DiagramType.viewerFor(pDiagram).getBounds(pDiagram);
+	}
+	
+	/**
+	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
+	 * 
+	 * @param pElement The element whose bounds we wish to compute.
+	 * @return The bounding rectangle
+	 * @pre pElement != null
+	 */
+	// DONE
+	public static Rectangle getBounds(DiagramElement pElement)
+	{
+		assert pElement != null;
+		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		{
+			return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
+		}
+		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 	
 	/* 
