@@ -35,6 +35,7 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,6 +72,7 @@ public class TestUseCaseDiagramBuilder
 		aDependencyEdge = new UseCaseDependencyEdge();
 		aGeneralizationEdge = new UseCaseGeneralizationEdge();
 		aNoteEdge = new NoteEdge();
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test

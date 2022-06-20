@@ -2,21 +2,18 @@
  * JetUML - A desktop application for fast UML diagramming.
  *
  * Copyright (C) 2022 by McGill University.
- *     
+ * 
  * See: https://github.com/prmr/JetUML
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * http://www.gnu.org/licenses.
  ******************************************************************************/
 package org.jetuml.rendering;
 
@@ -28,6 +25,9 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.edges.NoteEdge;
+import org.jetuml.diagram.nodes.NoteNode;
+import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -35,7 +35,10 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.DiagramElementRenderer;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewer;
+import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;
+import org.jetuml.viewers.nodes.NoteNodeViewer;
+import org.jetuml.viewers.nodes.PointNodeViewer;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -45,10 +48,19 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class AbstractDiagramRenderer implements DiagramRenderer
 {
-	private final IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
-			new IdentityHashMap<>();
-	
-	protected void addElementRenderer( Class<? extends DiagramElement> pElementClass, 
+	private final IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = new IdentityHashMap<>();
+
+	/*
+	 * Add renderers for elements that are present in all diagrams. 
+	 */
+	protected AbstractDiagramRenderer()
+	{
+		addElementRenderer(NoteNode.class, new NoteNodeViewer());
+		addElementRenderer(PointNode.class, new PointNodeViewer());
+		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
+	}
+
+	protected void addElementRenderer(Class<? extends DiagramElement> pElementClass,
 			DiagramElementRenderer pElementRenderer)
 	{
 		aRenderers.put(pElementClass, pElementRenderer);
@@ -63,71 +75,59 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
 		deactivateAndClearNodeStorages();
 	}
-	
+
 	/**
-	 * Activates all the NodeStorages of the NodeViewers present in the renderer. 
+	 * Activates all the NodeStorages of the NodeViewers present in the renderer.
 	 */
 	protected void activateNodeStorages()
 	{
-		aRenderers.values().stream()
-			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-			.map(NodeViewer.class::cast)
-			.forEach(NodeViewer::activateNodeStorage);
+		aRenderers.values().stream().filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+				.map(NodeViewer.class::cast).forEach(NodeViewer::activateNodeStorage);
 	}
-	
+
 	/**
-	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the renderer. 
+	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the renderer.
 	 */
 	protected void deactivateAndClearNodeStorages()
 	{
-		aRenderers.values().stream()
-			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-			.map(NodeViewer.class::cast)
-			.forEach(NodeViewer::deactivateAndClearNodeStorage);
+		aRenderers.values().stream().filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
+				.map(NodeViewer.class::cast).forEach(NodeViewer::deactivateAndClearNodeStorage);
 	}
-	
+
 	protected void drawNode(Node pNode, GraphicsContext pGraphics)
 	{
 		draw(pNode, pGraphics);
 		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
 	}
-	
+
 	@Override
-   	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
-   	{
-   		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
-   	}
+	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
+	{
+		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
+	}
 
 	@Override
 	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		return pDiagram.edges().stream()
-				.filter(edge -> contains(edge, pPoint))
-				.findFirst();
+		return pDiagram.edges().stream().filter(edge -> contains(edge, pPoint)).findFirst();
 	}
 
 	@Override
 	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		return pDiagram.rootNodes().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.reduce((first, second) -> second);
+		return pDiagram.rootNodes().stream().map(node -> deepFindNode(pDiagram, node, pPoint))
+				.filter(Optional::isPresent).map(Optional::get).reduce((first, second) -> second);
 	}
-	
+
 	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
 	{
 		assert pDiagram != null && pNode != null && pPoint != null;
-		
-		return pNode.getChildren().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.findFirst()
-			.or( () -> Optional.of(pNode).filter(originalNode -> contains(originalNode, pPoint)));
+
+		return pNode.getChildren().stream().map(node -> deepFindNode(pDiagram, node, pPoint))
+				.filter(Optional::isPresent).map(Optional::get).findFirst()
+				.or(() -> Optional.of(pNode).filter(originalNode -> contains(originalNode, pPoint)));
 	}
 
 	@Override
@@ -135,9 +135,9 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	{
 		assert pDiagram != null;
 		Rectangle bounds = null;
-		for(Node node : pDiagram.rootNodes() )
+		for (Node node : pDiagram.rootNodes())
 		{
-			if(bounds == null)
+			if (bounds == null)
 			{
 				bounds = RenderingFacade.getBounds(node);
 			}
@@ -146,11 +146,11 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 				bounds = bounds.add(RenderingFacade.getBounds(node));
 			}
 		}
-		for(Edge edge : pDiagram.edges())
+		for (Edge edge : pDiagram.edges())
 		{
 			bounds = bounds.add(RenderingFacade.getBounds(edge));
 		}
-		if(bounds == null )
+		if (bounds == null)
 		{
 			return new Rectangle(0, 0, 0, 0);
 		}

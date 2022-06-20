@@ -35,6 +35,7 @@ import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of a sequence diagram.
@@ -45,6 +46,12 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	AbstractTestSequenceDiagramLayout(Path pDiagramPath) throws IOException 
 	{
 		super(pDiagramPath);
+	}
+	
+	@BeforeEach
+	protected void setup()
+	{
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	protected static void verifyImplicitParameterNodeTopRectangleDefaultHeight(Node pNode)

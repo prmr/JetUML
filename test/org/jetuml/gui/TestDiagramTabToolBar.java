@@ -29,10 +29,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.junit.jupiter.api.BeforeAll;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,18 +40,13 @@ import javafx.scene.control.ToolBar;
 
 public class TestDiagramTabToolBar
 {
-	private DiagramTabToolBar aToolbar;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(aDiagram);
 	
 	@BeforeEach
-	public void setup()
+	void setup()
 	{
-		aToolbar = new DiagramTabToolBar(new Diagram(DiagramType.CLASS));
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@SuppressWarnings("unchecked")

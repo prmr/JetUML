@@ -36,19 +36,15 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.edges.ObjectCollaborationEdge;
-import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.NoteNode;
-import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
@@ -58,6 +54,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
@@ -66,18 +63,14 @@ import org.jetuml.viewers.edges.DependencyEdgeViewer;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
-import org.jetuml.viewers.edges.ObjectCollaborationEdgeViewer;
-import org.jetuml.viewers.edges.ObjectReferenceEdgeViewer;
 import org.jetuml.viewers.edges.ReturnEdgeViewer;
 import org.jetuml.viewers.edges.StateTransitionEdgeViewer;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.CircularStateNodeViewer;
-import org.jetuml.viewers.nodes.FieldNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import org.jetuml.viewers.nodes.InterfaceNodeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
-import org.jetuml.viewers.nodes.ObjectNodeViewer;
 import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
@@ -105,21 +98,21 @@ public class RenderingFacade
 	{
 		aRenderers.put(CallNode.class, new CallNodeViewer());
 		aRenderers.put(ClassNode.class, new TypeNodeViewer());
-		aRenderers.put(FieldNode.class, new FieldNodeViewer());
+//		aRenderers.put(FieldNode.class, new FieldNodeViewer());
 		aRenderers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
 		aRenderers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
 		aRenderers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
 		aRenderers.put(InterfaceNode.class, new InterfaceNodeViewer());
 		aRenderers.put(NoteNode.class, new NoteNodeViewer());
-		aRenderers.put(ObjectNode.class, new ObjectNodeViewer());
+//		aRenderers.put(ObjectNode.class, new ObjectNodeViewer());
 		aRenderers.put(PackageNode.class, new PackageNodeViewer());
 		aRenderers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
 		aRenderers.put(PointNode.class, new PointNodeViewer());
 		aRenderers.put(StateNode.class, new StateNodeViewer());
 		
 		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
-		aRenderers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
-		aRenderers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
+//		aRenderers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
+//		aRenderers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
 		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
 		aRenderers.put(ReturnEdge.class, new ReturnEdgeViewer());
 		aRenderers.put(CallEdge.class, new CallEdgeViewer());
@@ -130,6 +123,18 @@ public class RenderingFacade
 		aRenderers.put(AggregationEdge.class, new AggregationEdgeViewer());
 		
 		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
+		aDiagramRenderers.put(DiagramType.OBJECT, ObjectDiagramRenderer.INSTANCE);
+	}
+	
+	private static boolean isImplemented()
+	{
+		return diagramType() == DiagramType.USECASE ||
+				diagramType() == DiagramType.OBJECT;
+	}
+	
+	private static DiagramType diagramType()
+	{
+		return aActiveDiagram.get().getType();
 	}
 	
 	/**
@@ -151,11 +156,10 @@ public class RenderingFacade
 	 * @return An icon that represents this element
 	 * @pre pElement != null
 	 */
-	// DONE
 	public static Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( pDiagramType == DiagramType.USECASE ) // TODO Generalize
+		if( pDiagramType == DiagramType.USECASE || pDiagramType == DiagramType.OBJECT ) // TODO Generalize
 		{
 			return aDiagramRenderers.get(pDiagramType).createIcon(pElement);
 		}
@@ -169,7 +173,6 @@ public class RenderingFacade
 	 * @pre pElements != null
 	 * @pre pElements has at least one element.
 	 */
-	//DONE
 	public static Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
 	{
 		assert pElements != null;
@@ -201,7 +204,6 @@ public class RenderingFacade
 	/**
 	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
 	 */
-	//DONE
 	public static void activateNodeStorages()
 	{
 		aRenderers.values().stream()
@@ -213,7 +215,6 @@ public class RenderingFacade
 	/**
 	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
 	 */
-	//DONE
 	public static void deactivateAndClearNodeStorages()
 	{
 		aRenderers.values().stream()
@@ -229,13 +230,12 @@ public class RenderingFacade
 	 * @param pPoint The point to test
 	 * @return true if this element contains aPoint
 	 */
-	//DONE
 	public static boolean contains(DiagramElement pElement, Point pPoint)
 	{
 		assert pElement != null;
-		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		if( isImplemented() ) // TODO Generalize
 		{
-			return aDiagramRenderers.get(diagramType(pElement)).contains(pElement, pPoint);
+			return aDiagramRenderers.get(diagramType()).contains(pElement, pPoint);
 		}
 		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
 	}
@@ -247,13 +247,12 @@ public class RenderingFacade
 	 * @param pGraphics The graphics context
 	 * @pre pElement != null && pGraphics != null
 	 */
-	//DONE
 	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		assert pElement != null && pGraphics != null;
-		if( diagramType(pElement) == DiagramType.USECASE ) // TODO Generalize
+		if( isImplemented() ) // TODO Generalize
 		{
-			aDiagramRenderers.get(diagramType(pElement)).drawSelectionHandles(pElement, pGraphics);
+			aDiagramRenderers.get(diagramType()).drawSelectionHandles(pElement, pGraphics);
 		}
 		else
 		{
@@ -268,13 +267,12 @@ public class RenderingFacade
 	 * @param pGraphics The graphics context
 	 * @pre pElement != null
 	 */
-	//DONE
 	public static void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		assert pElement != null && pGraphics != null;
-		if( diagramType(pElement) == DiagramType.USECASE )
+		if( isImplemented() )
 		{
-			aDiagramRenderers.get(diagramType(pElement)).draw(pElement, pGraphics);
+			aDiagramRenderers.get(diagramType()).draw(pElement, pGraphics);
 		}
 		else
 		{
@@ -290,13 +288,12 @@ public class RenderingFacade
 	 * @return A connection point on the node.
 	 * @pre pNode != null && pDirection != null
 	 */
-	// DONE
 	public static Point getConnectionPoints(Node pNode, Direction pDirection)
 	{
 		assert pNode != null;
-		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
-			return aDiagramRenderers.get(diagramType(pNode)).getConnectionPoints(pNode, pDirection);
+			return aDiagramRenderers.get(diagramType()).getConnectionPoints(pNode, pDirection);
 		}
 		return ((NodeViewer)aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
@@ -309,13 +306,12 @@ public class RenderingFacade
 	 * @pre pEdge != null
 	 * 
 	 */
-	//DONE
 	public static Line getConnectionPoints(Edge pEdge)
 	{
 		assert pEdge != null;
-		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
-			return aDiagramRenderers.get(diagramType(pEdge)).getConnectionPoints(pEdge);
+			return aDiagramRenderers.get(diagramType()).getConnectionPoints(pEdge);
 		}
 		return ((EdgeViewer)aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
@@ -328,11 +324,10 @@ public class RenderingFacade
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
-	//DONE
 	public static void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		assert pDiagram != null && pGraphics != null;
-		if( pDiagram.getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
 			aDiagramRenderers.get(pDiagram.getType()).draw(pDiagram, pGraphics);
 		}
@@ -350,11 +345,10 @@ public class RenderingFacade
 	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
-	//DONE
 	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		if( pDiagram.getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pDiagram, pPoint);
 		}
@@ -369,11 +363,10 @@ public class RenderingFacade
      * @return a node containing pPoint or null if no nodes contain pPoint
      * @pre pDiagram != null && pPoint != null.
      */
-	//DONE
 	public static Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		if( pDiagram.getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).nodeAt(pDiagram, pPoint);
 		}
@@ -387,11 +380,10 @@ public class RenderingFacade
 	 * @return The bounding rectangle
 	 * @pre pDiagram != null
 	 */
-	//DONE
 	public static Rectangle getBounds(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		if( pDiagram.getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).getBounds(pDiagram);
 		}
@@ -405,30 +397,13 @@ public class RenderingFacade
 	 * @return The bounding rectangle
 	 * @pre pElement != null
 	 */
-	// DONE
 	public static Rectangle getBounds(DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( aActiveDiagram.get().getType() == DiagramType.USECASE )
+		if( isImplemented() )
 		{
 			return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
 		}
 		return aRenderers.get(pElement.getClass()).getBounds(pElement);
-	}
-	
-	/* 
-	 * Returns the type of the diagram this element is a part of. 
-	 * @pre the element is part of a diagram.
-	 */
-	private static DiagramType diagramType(DiagramElement pElement)
-	{
-		if( pElement instanceof Edge )
-		{
-			return ((Edge)pElement).getDiagram().getType();
-		}
-		else
-		{
-			return ((Node)pElement).getDiagram().get().getType();
-		}
 	}
 }

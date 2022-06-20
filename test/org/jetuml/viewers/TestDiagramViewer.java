@@ -28,68 +28,71 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestDiagramViewer
 {
-	@Test
-	public void testNodeAt_NoneShallow()
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	
+	@BeforeEach
+	void setup()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
-		diagram.addRootNode(new ClassNode());
-		assertTrue(RenderingFacade.nodeAt(diagram, new Point(100,100)).isEmpty());
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test
-	public void testNodeAt_NoneDeep()
+	void testNodeAt_NoneShallow()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
+		aDiagram.addRootNode(new ClassNode());
+		assertTrue(RenderingFacade.nodeAt(aDiagram, new Point(100,100)).isEmpty());
+	}
+	
+	@Test
+	void testNodeAt_NoneDeep()
+	{
 		PackageNode p1 = new PackageNode();
 		PackageNode p2 = new PackageNode();
 		ClassNode c = new ClassNode();
 		p2.addChild(c);
 		p1.addChild(p2);
-		diagram.addRootNode(p1);
-		assertTrue(RenderingFacade.nodeAt(diagram, new Point(100,100)).isEmpty());
+		aDiagram.addRootNode(p1);
+		assertTrue(RenderingFacade.nodeAt(aDiagram, new Point(100,100)).isEmpty());
 	}
 	
 	@Test
-	public void testNodeAt_FoundLevel1WhenNoOther()
+	void testNodeAt_FoundLevel1WhenNoOther()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
 		ClassNode node = new ClassNode();
-		diagram.addRootNode(node);
-		assertSame(node, RenderingFacade.nodeAt(diagram, new Point(20,20)).get());
+		aDiagram.addRootNode(node);
+		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(20,20)).get());
 	}
 	
 	@Test
-	public void testNodeAt_FoundLevel1WhenOther()
+	void testNodeAt_FoundLevel1WhenOther()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
 		PackageNode p1 = new PackageNode();
 		ClassNode node = new ClassNode();
 		node.translate(10, 10);
 		p1.addChild(node);
-		diagram.addRootNode(p1);
-		assertSame(p1, RenderingFacade.nodeAt(diagram, new Point(5,5)).get());
+		aDiagram.addRootNode(p1);
+		assertSame(p1, RenderingFacade.nodeAt(aDiagram, new Point(5,5)).get());
 	}
 	
 	@Test
-	public void testNodeAt_FoundLevel2WhenNoOther()
+	void testNodeAt_FoundLevel2WhenNoOther()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
 		PackageNode p1 = new PackageNode();
 		ClassNode node = new ClassNode();
 		node.translate(10, 10);
 		p1.addChild(node);
-		diagram.addRootNode(p1);
-		assertSame(node, RenderingFacade.nodeAt(diagram, new Point(15,15)).get());
+		aDiagram.addRootNode(p1);
+		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(15,15)).get());
 	}
 	
 	@Test
-	public void testNodeAt_FoundLevel2WhenOther()
+	void testNodeAt_FoundLevel2WhenOther()
 	{
-		Diagram diagram = new Diagram(DiagramType.CLASS);
 		PackageNode p1 = new PackageNode();
 		PackageNode p2 = new PackageNode();
 		ClassNode node = new ClassNode();
@@ -98,7 +101,7 @@ public class TestDiagramViewer
 		p2.addChild(node);
 		node.translate(20, 20);
 		p1.addChild(node);
-		diagram.addRootNode(p1);
-		assertSame(p2, RenderingFacade.nodeAt(diagram, new Point(15,15)).get());
+		aDiagram.addRootNode(p1);
+		assertSame(p2, RenderingFacade.nodeAt(aDiagram, new Point(15,15)).get());
 	}
 }

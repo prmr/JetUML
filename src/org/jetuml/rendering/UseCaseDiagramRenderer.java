@@ -21,21 +21,15 @@
 package org.jetuml.rendering;
 
 import org.jetuml.annotations.Singleton;
-import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.UseCaseAssociationEdge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
-import org.jetuml.diagram.nodes.NoteNode;
-import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
-import org.jetuml.viewers.nodes.NoteNodeViewer;
-import org.jetuml.viewers.nodes.PointNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
 /**
@@ -49,10 +43,7 @@ public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 	private UseCaseDiagramRenderer()
 	{
 		addElementRenderer(ActorNode.class, new ActorNodeViewer());
-		addElementRenderer(NoteNode.class, new NoteNodeViewer());
-		addElementRenderer(PointNode.class, new PointNodeViewer());
 		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer());
-		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
 		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
 		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
 		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());

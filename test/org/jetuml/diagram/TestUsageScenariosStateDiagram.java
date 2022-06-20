@@ -33,6 +33,7 @@ import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,6 +65,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 		aTransitionEdge3 = new StateTransitionEdge();
 		aTransitionEdge4 = new StateTransitionEdge();
 		aTransitionEdge5 = new StateTransitionEdge();
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test
