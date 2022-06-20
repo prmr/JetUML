@@ -157,7 +157,7 @@ public class RenderingFacade
 		assert pElement != null;
 		if( pDiagramType == DiagramType.USECASE ) // TODO Generalize
 		{
-			aDiagramRenderers.get(pDiagramType).createIcon(pElement);
+			return aDiagramRenderers.get(pDiagramType).createIcon(pElement);
 		}
 		return aRenderers.get(pElement.getClass()).createIcon(null, pElement); // TODO remove null
 	}

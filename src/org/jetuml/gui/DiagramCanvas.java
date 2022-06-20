@@ -99,6 +99,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public void paintPanel()
 	{
+		RenderingFacade.prepareFor(aDiagram);
 		GraphicsContext context = getGraphicsContext2D();
 		context.setFill(Color.WHITE); 
 		context.fillRect(0, 0, getWidth(), getHeight());

@@ -20,15 +20,7 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
-import java.util.IdentityHashMap;
-import java.util.Optional;
-
 import org.jetuml.annotations.Singleton;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.UseCaseAssociationEdge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
@@ -37,218 +29,32 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.geom.Direction;
-import org.jetuml.geom.Line;
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.DiagramElementRenderer;
-import org.jetuml.viewers.RenderingFacade;
-import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
 import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewer;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
-
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * The renderer for use case diagrams.
  */
 @Singleton
-public final class UseCaseDiagramRenderer implements DiagramRenderer
+public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 {
-	private IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
-			new IdentityHashMap<>();
-	
 	public static final UseCaseDiagramRenderer INSTANCE = new UseCaseDiagramRenderer();
 	
 	private UseCaseDiagramRenderer()
 	{
-		aRenderers.put(ActorNode.class, new ActorNodeViewer());
-		aRenderers.put(NoteNode.class, new NoteNodeViewer());
-		aRenderers.put(PointNode.class, new PointNodeViewer());
-		aRenderers.put(UseCaseNode.class, new UseCaseNodeViewer());
-		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
-		aRenderers.put(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
-		aRenderers.put(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
-		aRenderers.put(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
-	}
-
-	/**
-	 * Draws pDiagram onto pGraphics.
-	 * 
-	 * @param pGraphics the graphics context where the
-	 *     diagram should be drawn.
-	 * @param pDiagram the diagram to draw.
-	 * @pre pDiagram != null && pGraphics != null.
-	 */
-	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
-	{
-		assert pDiagram != null && pGraphics != null;
-		activateNodeStorages();
-		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
-		deactivateAndClearNodeStorages();
-	}
-	
-	/**
-	 * Activates all the NodeStorages of the NodeViewers present in the registry. 
-	 */
-	public void activateNodeStorages()
-	{
-		aRenderers.values().stream()
-			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-			.map(NodeViewer.class::cast)
-			.forEach(NodeViewer::activateNodeStorage);
-	}
-	
-	/**
-	 * Deactivates and clears all the NodeStorages of the NodeViewers present in the registry. 
-	 */
-	public void deactivateAndClearNodeStorages()
-	{
-		aRenderers.values().stream()
-			.filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-			.map(NodeViewer.class::cast)
-			.forEach(NodeViewer::deactivateAndClearNodeStorage);
-	}
-	
-	protected void drawNode(Node pNode, GraphicsContext pGraphics)
-	{
-		draw(pNode, pGraphics);
-		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
-	}
-	
-	/**
-     * Draws the element.
-     * @param pElement The element to draw.
-     * @param pGraphics the graphics context
-     * @pre pElement != null
-	 */
-	@Override
-   	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
-   	{
-   		aRenderers.get(pElement.getClass()).draw(pElement, pGraphics);
-   	}
-
-	@Override
-	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null && pPoint != null;
-		return pDiagram.edges().stream()
-				.filter(edge -> contains(edge, pPoint))
-				.findFirst();
-	}
-
-	@Override
-	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null && pPoint != null;
-		return pDiagram.rootNodes().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.reduce((first, second) -> second);
-	}
-	
-	/**
-	 * Find the "deepest" child that contains pPoint,
-	 * where depth is measured in terms of distance from
-	 * pNode along the parent-child relation.
-	 * @param pDiagram The diagram to query.
-	 * @param pNode The starting node for the search.
-	 * @param pPoint The point to test for.
-	 * @return The deepest child containing pPoint,
-	 *     or null if pPoint is not contained by pNode or 
-	 *     any of its children.
-	 * @pre pNode != null, pPoint != null;
-	 */
-	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
-	{
-		assert pDiagram != null && pNode != null && pPoint != null;
-		
-		return pNode.getChildren().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.findFirst()
-			.or( () -> Optional.of(pNode).filter(originalNode -> contains(originalNode, pPoint)));
-	}
-
-	@Override
-	public Rectangle getBounds(Diagram pDiagram)
-	{
-		assert pDiagram != null;
-		Rectangle bounds = null;
-		for(Node node : pDiagram.rootNodes() )
-		{
-			if(bounds == null)
-			{
-				bounds = RenderingFacade.getBounds(node);
-			}
-			else
-			{
-				bounds = bounds.add(RenderingFacade.getBounds(node));
-			}
-		}
-		for(Edge edge : pDiagram.edges())
-		{
-			bounds = bounds.add(RenderingFacade.getBounds(edge));
-		}
-		if(bounds == null )
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-		else
-		{
-			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-		}
-	}
-
-	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
-		return aRenderers.get(pElement.getClass()).contains(pElement, pPoint);
-	}
-
-	@Override
-	public Canvas createIcon(DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aRenderers.get(pElement.getClass()).createIcon(DiagramType.USECASE, pElement);
-	}
-
-	@Override
-	public void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
-	{
-		assert pElement != null && pGraphics != null;
-		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
-	}
-
-	@Override
-	public Rectangle getBounds(DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aRenderers.get(pElement.getClass()).getBounds(pElement);
-	}
-
-	@Override
-	public Line getConnectionPoints(Edge pEdge)
-	{
-		assert pEdge != null;
-		return ((EdgeViewer) aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
-	}
-
-	@Override
-	public Point getConnectionPoints(Node pNode, Direction pDirection)
-	{
-		assert pNode != null && pDirection != null;
-		return ((NodeViewer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
+		addElementRenderer(ActorNode.class, new ActorNodeViewer());
+		addElementRenderer(NoteNode.class, new NoteNodeViewer());
+		addElementRenderer(PointNode.class, new PointNodeViewer());
+		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer());
+		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
+		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
+		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
+		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
 	}
 }

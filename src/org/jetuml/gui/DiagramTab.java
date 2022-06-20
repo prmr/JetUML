@@ -31,6 +31,7 @@ import java.util.Optional;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -64,6 +65,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	public DiagramTab(Diagram pDiagram)
 	{
 		aDiagram = pDiagram;
+		RenderingFacade.prepareFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
 		aDiagramCanvas = new DiagramCanvas(pDiagram);
@@ -106,10 +108,10 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		
 		setTitle();
 		setContent(layout);
-
-		setOnCloseRequest(pEvent -> 
+		
+		setOnCloseRequest(event -> 
 		{
-			pEvent.consume();
+			event.consume();
 			EditorFrame editorFrame = (EditorFrame) getTabPane().getParent();
 			editorFrame.close(this);
 		});
