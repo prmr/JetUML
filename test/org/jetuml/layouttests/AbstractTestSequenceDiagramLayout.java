@@ -31,6 +31,8 @@ import java.util.IdentityHashMap;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.AbstractDiagramRenderer;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
@@ -73,11 +75,11 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	{
 		try
 		{
-			Field nodeViewers = RenderingFacade.class.getDeclaredField("aRenderers");
+			Field nodeViewers = AbstractDiagramRenderer.class.getDeclaredField("aRenderers");
 			nodeViewers.setAccessible(true);
 			@SuppressWarnings("unchecked")
 			ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer = 
-					(ImplicitParameterNodeViewer)((IdentityHashMap<Class<? extends Node>, NodeViewer>)nodeViewers.get(null)).get(ImplicitParameterNode.class);
+					(ImplicitParameterNodeViewer)((IdentityHashMap<Class<? extends Node>, NodeViewer>)nodeViewers.get(SequenceDiagramRenderer.INSTANCE)).get(ImplicitParameterNode.class);
 			return instanceOfImplicitParameterNodeViewer;
 		}
 		catch (ReflectiveOperationException e)

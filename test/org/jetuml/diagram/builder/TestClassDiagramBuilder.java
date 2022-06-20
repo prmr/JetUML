@@ -45,6 +45,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,7 @@ public class TestClassDiagramBuilder
 	{
 		aDiagram = new Diagram(DiagramType.CLASS);
 		aBuilder = new ClassDiagramBuilder(aDiagram);
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	private int numberOfRootNodes()

@@ -31,15 +31,11 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.AssociationEdge;
-import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
-import org.jetuml.diagram.edges.ReturnEdge;
-import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
@@ -51,6 +47,7 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.ObjectDiagramRenderer;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StateDiagramRenderer;
 import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.jetuml.viewers.edges.AggregationEdgeViewer;
@@ -60,9 +57,6 @@ import org.jetuml.viewers.edges.DependencyEdgeViewer;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
-import org.jetuml.viewers.edges.ReturnEdgeViewer;
-import org.jetuml.viewers.nodes.CallNodeViewer;
-import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import org.jetuml.viewers.nodes.InterfaceNodeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
@@ -90,22 +84,14 @@ public class RenderingFacade
 	
 	static
 	{
-		aRenderers.put(CallNode.class, new CallNodeViewer());
 		aRenderers.put(ClassNode.class, new TypeNodeViewer());
-//		aRenderers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
-		aRenderers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
-//		aRenderers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
 		aRenderers.put(InterfaceNode.class, new InterfaceNodeViewer());
 		aRenderers.put(NoteNode.class, new NoteNodeViewer());
 		aRenderers.put(PackageNode.class, new PackageNodeViewer());
 		aRenderers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
 		aRenderers.put(PointNode.class, new PointNodeViewer());
-//		aRenderers.put(StateNode.class, new StateNodeViewer());
 		
 		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
-//		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
-		aRenderers.put(ReturnEdge.class, new ReturnEdgeViewer());
-		aRenderers.put(CallEdge.class, new CallEdgeViewer());
 		aRenderers.put(ConstructorEdge.class, new CallEdgeViewer());
 		aRenderers.put(DependencyEdge.class, new DependencyEdgeViewer());
 		aRenderers.put(AssociationEdge.class,  new AssociationEdgeViewer());
@@ -115,12 +101,14 @@ public class RenderingFacade
 		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
 		aDiagramRenderers.put(DiagramType.OBJECT, ObjectDiagramRenderer.INSTANCE);
 		aDiagramRenderers.put(DiagramType.STATE, StateDiagramRenderer.INSTANCE);
+		aDiagramRenderers.put(DiagramType.SEQUENCE, SequenceDiagramRenderer.INSTANCE);
 	}
 	
 	private static boolean isImplemented()
 	{
 		return diagramType() == DiagramType.USECASE ||
 				diagramType() == DiagramType.OBJECT ||
+				diagramType() == DiagramType.SEQUENCE ||
 				diagramType() == DiagramType.STATE;
 	}
 	
@@ -151,7 +139,7 @@ public class RenderingFacade
 	public static Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
 	{
 		assert pElement != null;
-		if( pDiagramType == DiagramType.USECASE || pDiagramType == DiagramType.OBJECT ) // TODO Generalize
+		if( pDiagramType == DiagramType.USECASE || pDiagramType == DiagramType.OBJECT || pDiagramType == DiagramType.STATE || pDiagramType == DiagramType.SEQUENCE) // TODO Generalize
 		{
 			return aDiagramRenderers.get(pDiagramType).createIcon(pElement);
 		}

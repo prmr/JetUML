@@ -65,6 +65,12 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	{
 		aRenderers.put(pElementClass, pElementRenderer);
 	}
+	
+	protected DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
+	{
+		assert aRenderers.containsKey(pClass);
+		return aRenderers.get(pClass);
+	}
 
 	@Override
 	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
@@ -199,5 +205,11 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	{
 		assert pNode != null && pDirection != null;
 		return ((NodeViewer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
+	}
+	
+	@Override
+	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	{
+		return nodeAt(pDiagram, pPoint);
 	}
 }

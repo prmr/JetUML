@@ -30,11 +30,18 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramViewer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
+	
+	@BeforeEach
+	void setup()
+	{
+		RenderingFacade.prepareFor(aDiagram);
+	}
 	
 	@Test
 	void testNodeAt_NoneShallow()

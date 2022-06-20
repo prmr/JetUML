@@ -69,6 +69,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		aAssociationEdge = new AssociationEdge();
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test
