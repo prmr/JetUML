@@ -32,6 +32,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +55,7 @@ public class TestStateTransitionEdgeViewer
 		aDiagram = new Diagram(DiagramType.STATE);
 		aStateNode1 = new StateNode();
 		aTransitionEdge = new StateTransitionEdge();
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@BeforeAll
@@ -98,7 +100,6 @@ public class TestStateTransitionEdgeViewer
 		} 
 		catch (ReflectiveOperationException e)
 		{
-			assert false;
 			fail();
 			return "";
 		}

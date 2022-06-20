@@ -37,24 +37,21 @@ import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
-import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
-import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
-import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.ObjectDiagramRenderer;
+import org.jetuml.rendering.StateDiagramRenderer;
 import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
@@ -64,9 +61,7 @@ import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.GeneralizationEdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.edges.ReturnEdgeViewer;
-import org.jetuml.viewers.edges.StateTransitionEdgeViewer;
 import org.jetuml.viewers.nodes.CallNodeViewer;
-import org.jetuml.viewers.nodes.CircularStateNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 import org.jetuml.viewers.nodes.InterfaceNodeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;
@@ -74,7 +69,6 @@ import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
-import org.jetuml.viewers.nodes.StateNodeViewer;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 
 import javafx.scene.canvas.Canvas;
@@ -98,22 +92,18 @@ public class RenderingFacade
 	{
 		aRenderers.put(CallNode.class, new CallNodeViewer());
 		aRenderers.put(ClassNode.class, new TypeNodeViewer());
-//		aRenderers.put(FieldNode.class, new FieldNodeViewer());
-		aRenderers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
+//		aRenderers.put(FinalStateNode.class, new CircularStateNodeViewer(true));
 		aRenderers.put(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
-		aRenderers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
+//		aRenderers.put(InitialStateNode.class, new CircularStateNodeViewer(false));
 		aRenderers.put(InterfaceNode.class, new InterfaceNodeViewer());
 		aRenderers.put(NoteNode.class, new NoteNodeViewer());
-//		aRenderers.put(ObjectNode.class, new ObjectNodeViewer());
 		aRenderers.put(PackageNode.class, new PackageNodeViewer());
 		aRenderers.put(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
 		aRenderers.put(PointNode.class, new PointNodeViewer());
-		aRenderers.put(StateNode.class, new StateNodeViewer());
+//		aRenderers.put(StateNode.class, new StateNodeViewer());
 		
 		aRenderers.put(NoteEdge.class, new NoteEdgeViewer());
-//		aRenderers.put(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
-//		aRenderers.put(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
-		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
+//		aRenderers.put(StateTransitionEdge.class, new StateTransitionEdgeViewer());
 		aRenderers.put(ReturnEdge.class, new ReturnEdgeViewer());
 		aRenderers.put(CallEdge.class, new CallEdgeViewer());
 		aRenderers.put(ConstructorEdge.class, new CallEdgeViewer());
@@ -124,12 +114,14 @@ public class RenderingFacade
 		
 		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
 		aDiagramRenderers.put(DiagramType.OBJECT, ObjectDiagramRenderer.INSTANCE);
+		aDiagramRenderers.put(DiagramType.STATE, StateDiagramRenderer.INSTANCE);
 	}
 	
 	private static boolean isImplemented()
 	{
 		return diagramType() == DiagramType.USECASE ||
-				diagramType() == DiagramType.OBJECT;
+				diagramType() == DiagramType.OBJECT ||
+				diagramType() == DiagramType.STATE;
 	}
 	
 	private static DiagramType diagramType()
