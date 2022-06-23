@@ -126,7 +126,7 @@ public class Layouter
 				Point startPoint = getConnectionPoint(edge.getStart(), edge, attachedEndSide.mirrored());
 				Point endPoint = getConnectionPoint(edge.getEnd(), edge, attachedEndSide);
 				//Store an EdgePath from startPoint to endPoint
-				RenderingFacade.classDiagramViewer().store(edge, new EdgePath(startPoint, endPoint));
+				RenderingFacade.classDiagramRenderer().store(edge, new EdgePath(startPoint, endPoint));
 			}
 		}	
 	}
@@ -148,7 +148,7 @@ public class Layouter
 			NodeCorner corner = getSelfEdgeCorner(edge);
 			//Build a self-edge EdgePath at the corner and store it
 			EdgePath path = buildSelfEdge(edge, corner);
-			RenderingFacade.classDiagramViewer().store(edge, path);
+			RenderingFacade.classDiagramRenderer().store(edge, path);
 		}
 	}
 	
@@ -165,8 +165,8 @@ public class Layouter
 		{	//Get a 2D array of [startPoint, endPoint] for a self edge at the corner
 			Point[] points = NodeCorner.toPoints(corner, pEdge.getEnd());
 			//Return the first corner with available start and end points
-			if (RenderingFacade.classDiagramViewer().connectionPointAvailableInStorage(points[0]) && 
-					RenderingFacade.classDiagramViewer().connectionPointAvailableInStorage(points[1]))
+			if (RenderingFacade.classDiagramRenderer().connectionPointAvailableInStorage(points[0]) && 
+					RenderingFacade.classDiagramRenderer().connectionPointAvailableInStorage(points[1]))
 			{
 				return corner;
 			}
@@ -252,7 +252,7 @@ public class Layouter
 		for (Edge edge : pEdgesToMergeEnd)
 		{
 			EdgePath path = buildSegmentedEdgePath(pDirection, startPoints.get(edge), midLineCoordinate, sharedEndPoint);
-			RenderingFacade.classDiagramViewer().store(edge, path);
+			RenderingFacade.classDiagramRenderer().store(edge, path);
 		}
 	}
 	
@@ -294,7 +294,7 @@ public class Layouter
 		for (Edge edge : pEdgesToMergeStart)
 		{
 			EdgePath path = buildSegmentedEdgePath(pDirection, startPoint, midLineCoordinate, endPoints.get(edge));
-			RenderingFacade.classDiagramViewer().store(edge, path);
+			RenderingFacade.classDiagramRenderer().store(edge, path);
 		}
 	}
 	
@@ -391,7 +391,7 @@ public class Layouter
 		assert pStart != null && pEnd != null;
 		//Check for any edge in storage which is attached to pEdge's start and end nodes
 		// "Shared-node edges" require a different layout strategy:
-		List<Edge> storedEdgesWithSameNodes = RenderingFacade.classDiagramViewer().storedEdgesWithSameNodes(pEdge);
+		List<Edge> storedEdgesWithSameNodes = RenderingFacade.classDiagramRenderer().storedEdgesWithSameNodes(pEdge);
 		if (!storedEdgesWithSameNodes.isEmpty())
 		{
 			return horizontalMidlineForSharedNodeEdges(storedEdgesWithSameNodes.get(0), pEdge, pEdgeDirection);
@@ -426,7 +426,7 @@ public class Layouter
 		assert EdgePriority.isSegmented(pEdge);
 		assert pStart != null && pEnd != null;
 		//Check for any edge in storage which shares the same 2 nodes as pEdge: 
-		List<Edge> storedEdgesWithSameNodes = RenderingFacade.classDiagramViewer().storedEdgesWithSameNodes(pEdge);
+		List<Edge> storedEdgesWithSameNodes = RenderingFacade.classDiagramRenderer().storedEdgesWithSameNodes(pEdge);
 		if (!storedEdgesWithSameNodes.isEmpty())
 		{
 			//"Shared-node edges" require a different layout strategy
@@ -458,7 +458,7 @@ public class Layouter
 	 */
 	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection)
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pEdgeWithSameNodes);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pEdgeWithSameNodes);
 		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
 		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
 		assert pEdgeDirection.isNorthSouth();
@@ -485,7 +485,7 @@ public class Layouter
 	 */
 	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection) 
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pEdgeWithSameNodes);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pEdgeWithSameNodes);
 		assert pEdgeWithSameNodes.getStart() == pNewEdge.getStart() || pEdgeWithSameNodes.getStart() == pNewEdge.getEnd();
 		assert pEdgeWithSameNodes.getEnd() == pNewEdge.getStart() || pEdgeWithSameNodes.getEnd() == pNewEdge.getEnd();
 		assert pEdgeDirection.isEastWest();
@@ -585,7 +585,7 @@ public class Layouter
 	 */
 	private int adjacentHorizontalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection)
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pClosestStoredEdge);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pClosestStoredEdge);
 		assert EdgePriority.isSegmented(pEdge);
 		assert pEdgeDirection.isNorthSouth();
 		Node commonNode = getSharedNode(pClosestStoredEdge, pEdge);
@@ -627,7 +627,7 @@ public class Layouter
 	 */
 	private int adjacentVerticalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection) 
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pClosestStoredEdge);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pClosestStoredEdge);
 		assert EdgePriority.isSegmented(pEdge);
 		assert pEdgeDirection.isEastWest();
 		Node commonNode = getSharedNode(pClosestStoredEdge, pEdge);
@@ -690,7 +690,7 @@ public class Layouter
 	private List<Edge> storedConflictingEdges(NodeSide pNodeSide, Node pNode, Edge pEdge)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		return RenderingFacade.classDiagramViewer().storedEdgesConnectedTo(pNode).stream()
+		return RenderingFacade.classDiagramRenderer().storedEdgesConnectedTo(pNode).stream()
 			.filter(edge -> attachedSideFromStorage(edge, pNode) == pNodeSide)
 			.filter(edge -> EdgePriority.isSegmented(edge))
 			.filter(edge -> getIndexSign(edge, pNode, pNodeSide) == getIndexSign(pEdge, pNode, pNodeSide))
@@ -862,7 +862,7 @@ public class Layouter
 			return true;
 		}
 		//Return true if there are no other stored edges connected to the same side of pNode as pEdge1 and pEdge2
-		if(RenderingFacade.classDiagramViewer().storedEdgesConnectedTo(pNode).stream()
+		if(RenderingFacade.classDiagramRenderer().storedEdgesConnectedTo(pNode).stream()
 					.filter(edge -> attachedSide(edge, pNode) == attachedSide(pEdge1, pNode))
 					.collect(toList()).isEmpty()) 
 		{
@@ -930,7 +930,7 @@ public class Layouter
 			int ordinal = 4 + (indexSign * offset);
 			NodeIndex index = NodeIndex.values()[ordinal];
 			Point indexPoint = index.toPoint(faceOfNode, pAttachmentSide); 
-			if (RenderingFacade.classDiagramViewer().connectionPointAvailableInStorage(indexPoint))
+			if (RenderingFacade.classDiagramRenderer().connectionPointAvailableInStorage(indexPoint))
 			{
 				return indexPoint;
 			}
@@ -984,7 +984,7 @@ public class Layouter
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
 		//Check whether there are any stored edges which are connected to both pEdge.getStart() and pEdge.getEnd()
-		List<Edge> edgesWithSameNodes =RenderingFacade.classDiagramViewer().storedEdgesWithSameNodes(pEdge);
+		List<Edge> edgesWithSameNodes =RenderingFacade.classDiagramRenderer().storedEdgesWithSameNodes(pEdge);
 		if (!edgesWithSameNodes.isEmpty()) 
 		{	//For shared-nod edge: index sign on start node should always be same as end node index sign
 			return indexSignOnNode(pEdge, pEdge.getEnd(), pEdge.getStart(), attachedSide(pEdge, pEdge.getEnd()));
@@ -1096,7 +1096,7 @@ public class Layouter
 		  then the attachment side of pEdge onto pNode must be the same as the attachment side of the 
 		  stored node onto pNode. (These are referred to as "shared-node edges").
 		*/
-		List<Edge> edgesWithSameNodes = RenderingFacade.classDiagramViewer().storedEdgesWithSameNodes(pEdge);
+		List<Edge> edgesWithSameNodes = RenderingFacade.classDiagramRenderer().storedEdgesWithSameNodes(pEdge);
 		if (!edgesWithSameNodes.isEmpty())
 		{
 			return attachedSideFromStorage(edgesWithSameNodes.get(0), pNode);
@@ -1305,8 +1305,8 @@ public class Layouter
 	 */
 	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pEdge);
-		return RenderingFacade.classDiagramViewer().storedEdgePath(pEdge);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pEdge);
+		return RenderingFacade.classDiagramRenderer().storedEdgePath(pEdge);
 	}
 
 	/**
@@ -1316,6 +1316,6 @@ public class Layouter
 	 */
 	private boolean storageContains(Edge pEdge)
 	{
-		return RenderingFacade.classDiagramViewer().storageContains(pEdge);
+		return RenderingFacade.classDiagramRenderer().storageContains(pEdge);
 	}
 }

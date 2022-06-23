@@ -36,6 +36,7 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ import org.junit.jupiter.api.Test;
 public class TestClassDiagramViewer 
 {
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	private ClassDiagramViewer aClassDiagramViewer;
+	private ClassDiagramRenderer aClassDiagramViewer;
 	private GeneralizationEdge aImplementationEdge;
 	private AggregationEdge aAggregationEdge;
 	private DependencyEdge aDependencyEdge;
@@ -64,7 +65,7 @@ public class TestClassDiagramViewer
 	@BeforeEach
 	public void setUp()
 	{
-		aClassDiagramViewer = RenderingFacade.classDiagramViewer();
+		aClassDiagramViewer = RenderingFacade.classDiagramRenderer();
 		aImplementationEdge = new GeneralizationEdge(GeneralizationEdge.Type.Implementation);
 		aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
 		aDependencyEdge = new DependencyEdge();

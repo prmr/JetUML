@@ -343,7 +343,7 @@ public class TestStoredEdgeViewer
 	
 	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
-		RenderingFacade.classDiagramViewer().store(pEdge, pEdgePath);
+		RenderingFacade.classDiagramRenderer().store(pEdge, pEdgePath);
 	}
 	
 }

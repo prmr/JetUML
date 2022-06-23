@@ -45,6 +45,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.jetuml.rendering.SequenceDiagramRenderer;
@@ -80,7 +81,7 @@ public class RenderingFacade
 	private static IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
 			new IdentityHashMap<>();
 	
-	private static ClassDiagramViewer aClassDiagramViewer; // TODO optional
+	private static ClassDiagramRenderer aClassDiagramRenderer; // TODO optional
 	
 	private static Optional<Diagram> aActiveDiagram = Optional.empty();
 	
@@ -131,7 +132,7 @@ public class RenderingFacade
 		aActiveDiagram = Optional.of(pDiagram);
 		if( pDiagram.getType() == DiagramType.CLASS)
 		{
-			aClassDiagramViewer = new ClassDiagramViewer();
+			aClassDiagramRenderer = new ClassDiagramRenderer();
 		}
 		
 	}
@@ -243,7 +244,7 @@ public class RenderingFacade
 		}
 		else
 		{
-			aClassDiagramViewer.drawSelectionHandles(pElement, pGraphics);
+			aClassDiagramRenderer.drawSelectionHandles(pElement, pGraphics);
 		}
 	}
 	
@@ -325,7 +326,7 @@ public class RenderingFacade
 		}
 		else
 		{
-			aClassDiagramViewer.draw(pDiagram, pGraphics);
+			aClassDiagramRenderer.draw(pDiagram, pGraphics);
 		}
 	}
 	
@@ -344,7 +345,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pDiagram, pPoint);
 		}
-		return aClassDiagramViewer.edgeAt(pDiagram, pPoint);
+		return aClassDiagramRenderer.edgeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -362,7 +363,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).nodeAt(pDiagram, pPoint);
 		}
-		return aClassDiagramViewer.nodeAt(pDiagram, pPoint);
+		return aClassDiagramRenderer.nodeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -379,7 +380,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).getBounds(pDiagram);
 		}
-		return aClassDiagramViewer.getBounds(pDiagram);
+		return aClassDiagramRenderer.getBounds(pDiagram);
 	}
 	
 	public static Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
@@ -389,7 +390,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).selectableNodeAt(pDiagram, pPoint);
 		}
-		return aClassDiagramViewer.selectableNodeAt(pDiagram, pPoint);
+		return aClassDiagramRenderer.selectableNodeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -409,8 +410,8 @@ public class RenderingFacade
 		return aRenderers.get(pElement.getClass()).getBounds(pElement);
 	}
 	
-	public static ClassDiagramViewer classDiagramViewer()
+	public static ClassDiagramRenderer classDiagramRenderer()
 	{
-		return aClassDiagramViewer;
+		return aClassDiagramRenderer;
 	}
 }

@@ -48,6 +48,7 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -1996,7 +1997,7 @@ public class TestLayouter
 		EdgePath path = new EdgePath(new Point(0,0), new Point(100, 100));
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aEdgeA);
-		RenderingFacade.classDiagramViewer().store(aEdgeA, path);
+		RenderingFacade.classDiagramRenderer().store(aEdgeA, path);
 		assertEquals(path, getStoredEdgePath(aEdgeA));
 	}
 	
@@ -2755,9 +2756,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Field privateField = ClassDiagramViewer.class.getDeclaredField("aEdgeStorage");
+			Field privateField = ClassDiagramRenderer.class.getDeclaredField("aEdgeStorage");
 			privateField.setAccessible(true);
-			EdgeStorage storage = (EdgeStorage) privateField.get(RenderingFacade.classDiagramViewer());
+			EdgeStorage storage = (EdgeStorage) privateField.get(RenderingFacade.classDiagramRenderer());
 			storage.store(pEdge, pEdgePath);
 		}
 		catch(ReflectiveOperationException e)
@@ -2765,21 +2766,6 @@ public class TestLayouter
 			fail();
 		}
 	}
-	
-//	private static ClassDiagramViewer classDiagramViewerFor(Edge pEdge)
-//	{
-//		try
-//		{
-//			Method method = Layouter.class.getDeclaredMethod("classDiagramViewerFor", Edge.class);
-//			method.setAccessible(true);
-//			return (ClassDiagramViewer) method.invoke(aLayouter, pEdge);
-//		}
-//		catch(ReflectiveOperationException e)
-//		{
-//			fail();
-//			return null;
-//		}
-//	}
 	
 	private static EdgePath getStoredEdgePath(Edge pEdge)
 	{

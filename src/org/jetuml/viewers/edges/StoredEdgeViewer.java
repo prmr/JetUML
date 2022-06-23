@@ -501,7 +501,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	 */
 	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
-		assert RenderingFacade.classDiagramViewer().storageContains(pEdge);
-		return RenderingFacade.classDiagramViewer().storedEdgePath(pEdge);
+		assert RenderingFacade.classDiagramRenderer().storageContains(pEdge);
+		return RenderingFacade.classDiagramRenderer().storedEdgePath(pEdge);
 	}
 }
