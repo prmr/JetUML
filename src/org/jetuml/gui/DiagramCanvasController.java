@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.gui;
 
-import static org.jetuml.diagram.DiagramType.viewerFor;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -278,7 +276,7 @@ public class DiagramCanvasController
 				RenderingFacade.edgeAt(aDiagramBuilder.getDiagram(), mousePoint);
 		if(!element.isPresent())
 		{
-			element = viewerFor(aDiagramBuilder.getDiagram())
+			element = RenderingFacade
 					.selectableNodeAt(aDiagramBuilder.getDiagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;

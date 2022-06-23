@@ -22,7 +22,6 @@ package org.jetuml.viewers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -103,6 +102,7 @@ public class TestLayouter
 		aRectangleA = new Rectangle(200, 200, 100, 60);
 		aRectangleB = new Rectangle(200, 150, 100, 60);
 		aRectangleC = new Rectangle(100, 200, 100, 60);
+		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	
@@ -1990,27 +1990,13 @@ public class TestLayouter
 		assertEquals(NodeSide.WEST, northSouthSideUnlessTooClose(aEdgeB)); 
 	}
 	
-	
-	@Test
-	public void testClassDiagramViewerFor()
-	{
-		Diagram diagram1 = new Diagram(DiagramType.CLASS);
-		Diagram diagram2 = new Diagram(DiagramType.CLASS);
-		aEdgeA.connect(aNodeB, aNodeA, diagram1);
-		aEdgeB.connect(new ClassNode(), new ClassNode(), diagram2);
-		diagram1.addEdge(aEdgeA);
-		diagram2.addEdge(aEdgeB);
-		assertSame(DiagramType.viewerFor(diagram1), classDiagramViewerFor(aEdgeA));
-		assertNotSame(classDiagramViewerFor(aEdgeA), classDiagramViewerFor(aEdgeB));
-	}
-	
 	@Test
 	public void testGetStoredEdgePath_edgeInStorage()
 	{
 		EdgePath path = new EdgePath(new Point(0,0), new Point(100, 100));
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aEdgeA);
-		classDiagramViewerFor(aEdgeA).store(aEdgeA, path);
+		RenderingFacade.classDiagramViewer().store(aEdgeA, path);
 		assertEquals(path, getStoredEdgePath(aEdgeA));
 	}
 	
@@ -2771,7 +2757,7 @@ public class TestLayouter
 		{
 			Field privateField = ClassDiagramViewer.class.getDeclaredField("aEdgeStorage");
 			privateField.setAccessible(true);
-			EdgeStorage storage = (EdgeStorage) privateField.get(classDiagramViewerFor(pEdge));
+			EdgeStorage storage = (EdgeStorage) privateField.get(RenderingFacade.classDiagramViewer());
 			storage.store(pEdge, pEdgePath);
 		}
 		catch(ReflectiveOperationException e)
@@ -2780,20 +2766,20 @@ public class TestLayouter
 		}
 	}
 	
-	private static ClassDiagramViewer classDiagramViewerFor(Edge pEdge)
-	{
-		try
-		{
-			Method method = Layouter.class.getDeclaredMethod("classDiagramViewerFor", Edge.class);
-			method.setAccessible(true);
-			return (ClassDiagramViewer) method.invoke(aLayouter, pEdge);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return null;
-		}
-	}
+//	private static ClassDiagramViewer classDiagramViewerFor(Edge pEdge)
+//	{
+//		try
+//		{
+//			Method method = Layouter.class.getDeclaredMethod("classDiagramViewerFor", Edge.class);
+//			method.setAccessible(true);
+//			return (ClassDiagramViewer) method.invoke(aLayouter, pEdge);
+//		}
+//		catch(ReflectiveOperationException e)
+//		{
+//			fail();
+//			return null;
+//		}
+//	}
 	
 	private static EdgePath getStoredEdgePath(Edge pEdge)
 	{

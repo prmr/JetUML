@@ -39,8 +39,8 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.ClassDiagramViewer;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -343,8 +343,7 @@ public class TestStoredEdgeViewer
 	
 	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
-		ClassDiagramViewer viewer = (ClassDiagramViewer) DiagramType.viewerFor(aDiagram);
-		viewer.store(pEdge, pEdgePath);
+		RenderingFacade.classDiagramViewer().store(pEdge, pEdgePath);
 	}
 	
 }

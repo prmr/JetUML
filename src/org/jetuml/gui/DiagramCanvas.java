@@ -25,11 +25,8 @@ import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.ClassDiagramViewer;
 import org.jetuml.viewers.Grid;
 import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
@@ -61,6 +58,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public DiagramCanvas(Diagram pDiagram)
 	{
 		assert pDiagram != null;
+		RenderingFacade.prepareFor(pDiagram);
 		Dimension dimension = getDiagramCanvasWidth(pDiagram);
 		setWidth(dimension.width());
 		setHeight(dimension.height());
@@ -109,29 +107,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		RenderingFacade.draw(aDiagram, context);
 		aController.synchronizeSelectionModel();
-		aController.getSelectionModel().forEach( selected -> drawSelectionHandles(selected, context));
+		aController.getSelectionModel().forEach( selected -> RenderingFacade.drawSelectionHandles(selected, context));
 		aController.getSelectionModel().getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aController.getSelectionModel().getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
-	
-	/**
-	 * Draws the selection handles using EdgeStorage for class diagrams, or using ViewerUtils otherwise.
-	 * @param pSelected the DiagramElement selected
-	 * @param pGraphics the graphics context
-	 */
-	private void drawSelectionHandles(DiagramElement pSelected, GraphicsContext pGraphics)
-	{
-		if (getDiagram().getType() == DiagramType.CLASS)
-		{
-			ClassDiagramViewer viewer = (ClassDiagramViewer) DiagramType.viewerFor(aDiagram);
-			viewer.drawSelectionHandles(pSelected, pGraphics);
-		}
-		else
-		{
-			RenderingFacade.drawSelectionHandles(pSelected, pGraphics);
-		}
-	}
-
 	
 	@Override
 	public void selectionModelChanged()

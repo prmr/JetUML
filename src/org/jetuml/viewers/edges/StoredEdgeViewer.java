@@ -26,25 +26,25 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AggregationEdge.Type;
 import org.jetuml.diagram.edges.AssociationEdge;
+import org.jetuml.diagram.edges.AssociationEdge.Directionality;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.SingleLabelEdge;
 import org.jetuml.diagram.edges.ThreeLabelEdge;
-import org.jetuml.diagram.edges.AggregationEdge.Type;
-import org.jetuml.diagram.edges.AssociationEdge.Directionality;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.ClassDiagramViewer;
 import org.jetuml.viewers.EdgePriority;
 import org.jetuml.viewers.LineStyle;
+import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.StringViewer.Alignment;
+import org.jetuml.viewers.ToolGraphics;
 
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
@@ -501,8 +501,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	 */
 	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
-		ClassDiagramViewer classDiagramViewer = (ClassDiagramViewer) DiagramType.viewerFor(pEdge.getDiagram());
-		assert classDiagramViewer.storageContains(pEdge);
-		return classDiagramViewer.storedEdgePath(pEdge);
+		assert RenderingFacade.classDiagramViewer().storageContains(pEdge);
+		return RenderingFacade.classDiagramViewer().storedEdgePath(pEdge);
 	}
 }

@@ -80,6 +80,8 @@ public class RenderingFacade
 	private static IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = 
 			new IdentityHashMap<>();
 	
+	private static ClassDiagramViewer aClassDiagramViewer; // TODO optional
+	
 	private static Optional<Diagram> aActiveDiagram = Optional.empty();
 	
 	static
@@ -127,6 +129,11 @@ public class RenderingFacade
 	{
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
+		if( pDiagram.getType() == DiagramType.CLASS)
+		{
+			aClassDiagramViewer = new ClassDiagramViewer();
+		}
+		
 	}
 	
 	/**
@@ -236,8 +243,13 @@ public class RenderingFacade
 		}
 		else
 		{
-			aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
+			aClassDiagramViewer.drawSelectionHandles(pElement, pGraphics);
 		}
+	}
+	
+	public static void drawSelectionHandlesInternal(DiagramElement pElement, GraphicsContext pGraphics)
+	{
+		aRenderers.get(pElement.getClass()).drawSelectionHandles(pElement, pGraphics);
 	}
 	
 	/**
@@ -313,7 +325,7 @@ public class RenderingFacade
 		}
 		else
 		{
-			DiagramType.viewerFor(pDiagram).draw(pDiagram, pGraphics);
+			aClassDiagramViewer.draw(pDiagram, pGraphics);
 		}
 	}
 	
@@ -332,7 +344,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pDiagram, pPoint);
 		}
-		return DiagramType.viewerFor(pDiagram).edgeAt(pDiagram, pPoint);
+		return aClassDiagramViewer.edgeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -350,7 +362,7 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).nodeAt(pDiagram, pPoint);
 		}
-		return DiagramType.viewerFor(pDiagram).nodeAt(pDiagram, pPoint);
+		return aClassDiagramViewer.nodeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -367,7 +379,17 @@ public class RenderingFacade
 		{
 			return aDiagramRenderers.get(pDiagram.getType()).getBounds(pDiagram);
 		}
-		return DiagramType.viewerFor(pDiagram).getBounds(pDiagram);
+		return aClassDiagramViewer.getBounds(pDiagram);
+	}
+	
+	public static Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	{
+		assert pDiagram != null;
+		if( isImplemented() )
+		{
+			return aDiagramRenderers.get(pDiagram.getType()).selectableNodeAt(pDiagram, pPoint);
+		}
+		return aClassDiagramViewer.selectableNodeAt(pDiagram, pPoint);
 	}
 	
 	/**
@@ -385,5 +407,10 @@ public class RenderingFacade
 			return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
 		}
 		return aRenderers.get(pElement.getClass()).getBounds(pElement);
+	}
+	
+	public static ClassDiagramViewer classDiagramViewer()
+	{
+		return aClassDiagramViewer;
 	}
 }

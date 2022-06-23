@@ -64,7 +64,7 @@ public class TestClassDiagramViewer
 	@BeforeEach
 	public void setUp()
 	{
-		aClassDiagramViewer = (ClassDiagramViewer) DiagramType.viewerFor(aDiagram);
+		aClassDiagramViewer = RenderingFacade.classDiagramViewer();
 		aImplementationEdge = new GeneralizationEdge(GeneralizationEdge.Type.Implementation);
 		aAggregationEdge = new AggregationEdge(AggregationEdge.Type.Aggregation);
 		aDependencyEdge = new DependencyEdge();

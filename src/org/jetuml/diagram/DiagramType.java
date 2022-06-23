@@ -23,9 +23,7 @@ package org.jetuml.diagram;
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.jetuml.diagram.builder.ClassDiagramBuilder;
@@ -34,9 +32,6 @@ import org.jetuml.diagram.builder.ObjectDiagramBuilder;
 import org.jetuml.diagram.builder.SequenceDiagramBuilder;
 import org.jetuml.diagram.builder.StateDiagramBuilder;
 import org.jetuml.diagram.builder.UseCaseDiagramBuilder;
-import org.jetuml.viewers.ClassDiagramViewer;
-import org.jetuml.viewers.DiagramViewer;
-import org.jetuml.viewers.SequenceDiagramViewer;
 
 /**
  * The different types of UML diagrams supported by 
@@ -48,7 +43,6 @@ public enum DiagramType
 			"ClassDiagram",
 			".class",
 			ClassDiagramBuilder::new, 
-			new ClassDiagramViewer(), // not used
 			new DiagramElement [] { 
 					Prototypes.CLASS, 
 					Prototypes.INTERFACE, 
@@ -67,7 +61,6 @@ public enum DiagramType
 			"SequenceDiagram",
 			".sequence",
 			SequenceDiagramBuilder::new, 
-			new SequenceDiagramViewer(),
 			new DiagramElement[]{
 					Prototypes.IMPLICIT_PARAMETER,
 					Prototypes.NOTE,
@@ -79,7 +72,6 @@ public enum DiagramType
 			"StateDiagram",
 			".state",
 			StateDiagramBuilder::new, 
-			new DiagramViewer(),
 			new DiagramElement[]{
 					Prototypes.STATE,
 					Prototypes.START_STATE,
@@ -92,7 +84,6 @@ public enum DiagramType
 			"ObjectDiagram",
 			".object",
 			ObjectDiagramBuilder::new, 
-			new DiagramViewer(),
 			new DiagramElement[] {
 					Prototypes.OBJECT,
 					Prototypes.FIELD,
@@ -105,7 +96,6 @@ public enum DiagramType
 			"UseCaseDiagram",
 			".usecase",
 			UseCaseDiagramBuilder::new, 
-			new DiagramViewer(),
 			new DiagramElement[]{
 					Prototypes.ACTOR, 
 					Prototypes.USE_CASE, 
@@ -116,28 +106,21 @@ public enum DiagramType
 					Prototypes.USE_CASE_GENERALIZATION, 
 					Prototypes.NOTE_CONNECTOR}); 
 	
-	/**
-	 * Maps ClassDiagrams to ClassDiagramViewers, which hold an EdgeStorage object and are unique to each diagram. 
-	 */
-	private static final Map<Diagram, ClassDiagramViewer> CLASS_DIAGRAM_VIEWERS = new HashMap<>();
-	
 	/* aName is an internal name used for referring to objects of a certain diagram
 	 * type in externalized representations, such as persisted versions of the diagram
 	 * or property strings. It should this not be externalized. */
 	private final String aName;
 	private final String aFileExtension; // The suffix that indicates the type of files
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
-	private final DiagramViewer aViewer;
 	private final DiagramElement[] aPrototypes;
 	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
-			DiagramViewer pViewer, DiagramElement[] pPrototypes)
+			DiagramElement[] pPrototypes)
 	{
 		assert pName != null;
 		aName = pName;
 		aFileExtension = pFileExtension;
 		aBuilderSupplier = pBuilderSupplier;
-		aViewer = pViewer;
 		aPrototypes = pPrototypes;
 	}
 	
@@ -205,25 +188,5 @@ public enum DiagramType
 	public String getName()
 	{
 		return aName;
-	}
-	
-	/**
-	 * @param pDiagram The diagram for which we want a viewer.
-	 * @return The DiagramRenderer instance registered for this type of diagram.
-	 * @pre pDiagram != null;
-	 */
-	public static DiagramViewer viewerFor(Diagram pDiagram) 
-	{
-		assert pDiagram != null;
-		//Each class diagram has a unique, stateful ClassDiagramViewer
-		if(pDiagram.getType() == DiagramType.CLASS )
-		{
-			CLASS_DIAGRAM_VIEWERS.putIfAbsent(pDiagram, new ClassDiagramViewer());
-			return CLASS_DIAGRAM_VIEWERS.get(pDiagram);
-		}
-		else
-		{
-			return pDiagram.getType().aViewer;
-		}
 	}
 }
