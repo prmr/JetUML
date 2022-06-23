@@ -40,7 +40,7 @@ import org.jetuml.diagram.builder.DiagramOperation;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.gui.SelectionModel;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

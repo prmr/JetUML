@@ -31,7 +31,7 @@ import java.util.Optional;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

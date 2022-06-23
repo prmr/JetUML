@@ -33,7 +33,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.viewers.EdgePriority;
 import org.jetuml.viewers.Layouter;
-import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.jetuml.viewers.edges.StoredEdgeViewer;
 

@@ -42,7 +42,7 @@ import org.jetuml.diagram.nodes.NamedNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.PersistenceTestUtils;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

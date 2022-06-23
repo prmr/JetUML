@@ -27,7 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.ToolGraphics;

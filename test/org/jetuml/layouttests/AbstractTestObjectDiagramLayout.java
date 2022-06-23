@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ObjectNodeViewer;
 import org.junit.jupiter.api.BeforeEach;
 

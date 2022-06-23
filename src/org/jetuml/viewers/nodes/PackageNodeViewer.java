@@ -30,7 +30,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 
 /**
  * An object to render a package in a class diagram.

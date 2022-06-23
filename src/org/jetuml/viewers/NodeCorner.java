@@ -24,6 +24,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.edges.NodeIndex;
 
 /**

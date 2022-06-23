@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -45,12 +45,6 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.ObjectDiagramRenderer;
-import org.jetuml.rendering.SequenceDiagramRenderer;
-import org.jetuml.rendering.StateDiagramRenderer;
-import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.jetuml.viewers.edges.AggregationEdgeViewer;
 import org.jetuml.viewers.edges.AssociationEdgeViewer;
 import org.jetuml.viewers.edges.CallEdgeViewer;

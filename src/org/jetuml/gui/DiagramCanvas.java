@@ -27,8 +27,8 @@ import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.Grid;
-import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;

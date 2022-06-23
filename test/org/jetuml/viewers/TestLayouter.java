@@ -49,6 +49,7 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ClassDiagramRenderer;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

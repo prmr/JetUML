@@ -22,7 +22,7 @@ package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Line;
-import org.jetuml.viewers.DiagramElementRenderer;
+import org.jetuml.rendering.DiagramElementRenderer;
 
 /**
  * Abstract strategy that describes objects that can draw and

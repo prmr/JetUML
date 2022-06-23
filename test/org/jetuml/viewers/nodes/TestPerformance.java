@@ -26,7 +26,7 @@ import java.time.Instant;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.persistence.PersistenceService;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

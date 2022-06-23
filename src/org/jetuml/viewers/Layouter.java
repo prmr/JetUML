@@ -21,8 +21,8 @@
 package org.jetuml.viewers;
 
 import static java.util.stream.Collectors.toList;
+import static org.jetuml.rendering.RenderingFacade.getBounds;
 import static org.jetuml.viewers.EdgePriority.priorityOf;
-import static org.jetuml.viewers.RenderingFacade.getBounds;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -42,6 +42,7 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.edges.NodeIndex;
 
 /**

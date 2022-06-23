@@ -44,8 +44,8 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.Grid;
-import org.jetuml.viewers.RenderingFacade;
 
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;

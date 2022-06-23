@@ -32,8 +32,6 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.DiagramElementRenderer;
-import org.jetuml.viewers.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeViewer;
 import org.jetuml.viewers.edges.NoteEdgeViewer;
 import org.jetuml.viewers.nodes.NodeViewer;

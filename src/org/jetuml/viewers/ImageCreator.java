@@ -22,6 +22,7 @@ package org.jetuml.viewers;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

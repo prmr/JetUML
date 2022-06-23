@@ -33,7 +33,7 @@ import org.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 
 /**
  * A builder for object diagram.

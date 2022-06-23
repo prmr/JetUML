@@ -33,7 +33,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.nodes.AbstractNodeViewer;
 

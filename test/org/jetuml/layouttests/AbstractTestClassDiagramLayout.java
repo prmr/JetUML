@@ -28,7 +28,7 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.RenderingFacade;
+import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 import org.junit.jupiter.api.BeforeEach;
