@@ -118,7 +118,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
 		return pDiagram.rootNodes().stream().map(node -> deepFindNode(pDiagram, node, pPoint))

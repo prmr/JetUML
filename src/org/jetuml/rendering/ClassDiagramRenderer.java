@@ -42,7 +42,7 @@ import javafx.scene.canvas.GraphicsContext;
  * The renderer for class diagrams.
  */
 @Singleton
-public final class ClassDiagramRenderer// extends AbstractDiagramRenderer
+public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 {
 	private static final StoredEdgeViewer STORED_EDGE_VIEWER = new StoredEdgeViewer();
 	private final EdgeStorage aEdgeStorage = new EdgeStorage();
@@ -50,7 +50,6 @@ public final class ClassDiagramRenderer// extends AbstractDiagramRenderer
 	
 	public ClassDiagramRenderer()
 	{
-		
 	}
 	
 	/**
