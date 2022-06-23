@@ -114,23 +114,31 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		return pDiagram.edges().stream().filter(edge -> contains(edge, pPoint)).findFirst();
+		return pDiagram.edges().stream()
+				.filter(edge -> contains(edge, pPoint))
+				.findFirst();
 	}
 
 	@Override
 	public Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		return pDiagram.rootNodes().stream().map(node -> deepFindNode(pDiagram, node, pPoint))
-				.filter(Optional::isPresent).map(Optional::get).reduce((first, second) -> second);
+		return pDiagram.rootNodes().stream()
+				.map(node -> deepFindNode(pDiagram, node, pPoint))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.reduce((first, second) -> second);
 	}
 
 	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
 	{
 		assert pDiagram != null && pNode != null && pPoint != null;
 
-		return pNode.getChildren().stream().map(node -> deepFindNode(pDiagram, node, pPoint))
-				.filter(Optional::isPresent).map(Optional::get).findFirst()
+		return pNode.getChildren().stream()
+				.map(node -> deepFindNode(pDiagram, node, pPoint))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.findFirst()
 				.or(() -> Optional.of(pNode).filter(originalNode -> contains(originalNode, pPoint)));
 	}
 

@@ -21,11 +21,9 @@
 package org.jetuml.rendering;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.jetuml.annotations.Singleton;
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -39,7 +37,6 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.EdgePriority;
 import org.jetuml.viewers.Layouter;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.jetuml.viewers.edges.StoredEdgeViewer;
@@ -98,91 +95,6 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	/**
-     * Finds a node that contains the given point. Always returns
-     * the deepest child and the last one in a list.
-     * @param pDiagram The diagram to query.
-     * @param pPoint A point
-     * @return a node containing pPoint or null if no nodes contain pPoint
-     * @pre pDiagram != null && pPoint != null.
-     */
-	public final Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null && pPoint != null;
-		return pDiagram.rootNodes().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.reduce((first, second) -> second);
-	}
-	
-	/**
-     * Finds a node that contains the given point, if this is a node that can be 
-     * selected. The difference between this method and nodeAt is that it is specialized for
-     * nodes that can be selected by the users, whereas nodeAt is also used for edge creation.
-     * By default, this method has the same behavior as nodeAt.
-     * @param pDiagram The diagram to query.
-     * @param pPoint A point
-     * @return a node containing pPoint or null if no nodes contain pPoint
-     * @pre pDiagram != null && pPoint != null.
-     */
-	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
-	{
-		return nodeAt(pDiagram, pPoint);
-	}
-	
-	/**
-	 * Find the "deepest" child that contains pPoint,
-	 * where depth is measured in terms of distance from
-	 * pNode along the parent-child relation.
-	 * @param pDiagram The diagram to query.
-	 * @param pNode The starting node for the search.
-	 * @param pPoint The point to test for.
-	 * @return The deepest child containing pPoint,
-	 *     or null if pPoint is not contained by pNode or 
-	 *     any of its children.
-	 * @pre pNode != null, pPoint != null;
-	 */
-	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
-	{
-		assert pDiagram != null && pNode != null && pPoint != null;
-		
-		return pNode.getChildren().stream()
-			.map(node -> deepFindNode(pDiagram, node, pPoint))
-			.filter(Optional::isPresent)
-			.map(Optional::get)
-			.findFirst()
-			.or( () -> Optional.of(pNode).filter(originalNode -> RenderingFacade.contains(originalNode, pPoint)));
-	}
-	
-	/**
-	 * Returns the edge underneath the given point, if it exists.
-	 * 
-	 * @param pDiagram The diagram to query
-	 * @param pPoint a point
-	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
-	 * @pre pDiagram != null && pPoint != null
-	 */
-	public final Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null && pPoint != null;
-		Optional<Edge> storedEdge =  pDiagram.edges().stream()
-				.filter(edge -> STORED_EDGE_VIEWER.contains(edge, pPoint))
-				.findFirst();
-		if (storedEdge.isEmpty())
-		{
-			//check if a Note edge is is at pPoint
-			return pDiagram.edges().stream()
-					.filter(edge -> RenderingFacade.contains(edge, pPoint))
-					.findFirst();
-		}
-		else
-		{
-			return storedEdge;
-		}
-		
-	}
-	
-	/**
 	 * Gets the smallest rectangle enclosing the diagram.
 	 * @param pDiagram The diagram to query
 	 * @return The bounding rectangle
@@ -191,53 +103,13 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	public final Rectangle getBounds(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		Rectangle bounds = null;
-		for(Node node : pDiagram.rootNodes() )
-		{
-			if(bounds == null)
-			{
-				bounds = RenderingFacade.getBounds(node);
-			}
-			else
-			{
-				bounds = bounds.add(RenderingFacade.getBounds(node));
-			}
-		}
 		//When getBounds(pDiagram) is called to open an existing class diagram file,
 		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
 		if (aEdgeStorage.isEmpty())
 		{
 			aLayouter.layout(pDiagram);
 		}
-		for(Edge edge : pDiagram.edges())
-		{
-			if(EdgePriority.isStoredEdge(edge)) 
-			{
-				bounds = bounds.add(STORED_EDGE_VIEWER.getBounds(edge));
-			}
-			else //For note edges (which are not stored in EdgeStorage):
-			{
-				bounds.add(RenderingFacade.getBounds(edge));
-			}
-		}
-		if(bounds == null )
-		{
-			return new Rectangle(0, 0, 0, 0);
-		}
-		else
-		{
-			return new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-		}
-	}
-	
-	/**
-	 * Draws selection handles on selected diagram elements.
-	 * @param pSelected the diagram element of interest
-	 * @param pContext the graphics context
-	 */
-	public void drawSelectionHandles(DiagramElement pSelected, GraphicsContext pContext)
-	{
-		rendererFor(pSelected.getClass()).drawSelectionHandles(pSelected, pContext);
+		return super.getBounds(pDiagram);
 	}
 	
 	/**
@@ -249,8 +121,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	public EdgePath storedEdgePath(Edge pEdge)
 	{
 		assert aEdgeStorage.contains(pEdge);
-		return aEdgeStorage.getEdgePath(pEdge);
-				
+		return aEdgeStorage.getEdgePath(pEdge);	
 	}
 	
 	/**
@@ -263,7 +134,6 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert pEdge != null;
 		return aEdgeStorage.contains(pEdge);
-		
 	}
 	
 	/**
