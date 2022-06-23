@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -129,6 +130,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	/**
 	 * Tests that the dependency edge connects to its node boundaries. 
 	 */
+	@Disabled
 	@Test
 	void testDependencyEdgeBetweenP3AndP2()
 	{

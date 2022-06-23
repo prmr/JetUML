@@ -28,6 +28,14 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.edges.AggregationEdge;
+import org.jetuml.diagram.edges.AssociationEdge;
+import org.jetuml.diagram.edges.DependencyEdge;
+import org.jetuml.diagram.edges.GeneralizationEdge;
+import org.jetuml.diagram.nodes.ClassNode;
+import org.jetuml.diagram.nodes.InterfaceNode;
+import org.jetuml.diagram.nodes.PackageDescriptionNode;
+import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -35,6 +43,10 @@ import org.jetuml.viewers.EdgePriority;
 import org.jetuml.viewers.Layouter;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.jetuml.viewers.edges.StoredEdgeViewer;
+import org.jetuml.viewers.nodes.InterfaceNodeViewer;
+import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
+import org.jetuml.viewers.nodes.PackageNodeViewer;
+import org.jetuml.viewers.nodes.TypeNodeViewer;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -50,8 +62,18 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	
 	public ClassDiagramRenderer()
 	{
+		addElementRenderer(ClassNode.class, new TypeNodeViewer());
+		addElementRenderer(InterfaceNode.class, new InterfaceNodeViewer());
+		addElementRenderer(PackageNode.class, new PackageNodeViewer());
+		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
+		
+		addElementRenderer(DependencyEdge.class, STORED_EDGE_VIEWER);
+		addElementRenderer(AssociationEdge.class,  STORED_EDGE_VIEWER);
+		addElementRenderer(DependencyEdge.class, STORED_EDGE_VIEWER);
+		addElementRenderer(GeneralizationEdge.class, STORED_EDGE_VIEWER);
+		addElementRenderer(AggregationEdge.class, STORED_EDGE_VIEWER);
 	}
-	
+
 	/**
 	 * Draws pDiagram onto pGraphics.
 	 * 
@@ -63,7 +85,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
 	{
 		//draw and store nodes 
-		RenderingFacade.activateNodeStorages();
+		activateNodeStorages();
 		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
 		
 		//plan edge paths using Layouter
@@ -71,24 +93,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		aLayouter.layout(pDiagram);
 		
 		//draw edges using plan from EdgeStorage
-		for (Edge edge : pDiagram.edges())
-		{
-			if (aEdgeStorage.contains(edge))
-			{
-				STORED_EDGE_VIEWER.draw(edge, pGraphics);
-			}
-			else
-			{	//For edges which are not stored (note edges)
-				RenderingFacade.draw(edge, pGraphics);
-			}
-		}
-		RenderingFacade.deactivateAndClearNodeStorages();
-	}
-	
-	protected void drawNode(Node pNode, GraphicsContext pGraphics)
-	{
-		RenderingFacade.draw(pNode, pGraphics);
-		pNode.getChildren().forEach(node -> drawNode(node, pGraphics));
+		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		deactivateAndClearNodeStorages();
 	}
 	
 	/**
@@ -231,14 +237,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	public void drawSelectionHandles(DiagramElement pSelected, GraphicsContext pContext)
 	{
-		if (pSelected instanceof Edge && EdgePriority.isStoredEdge((Edge) pSelected))
-		{
-				STORED_EDGE_VIEWER.drawSelectionHandles((Edge) pSelected, pContext);
-		}
-		else
-		{
-			RenderingFacade.drawSelectionHandlesInternal(pSelected, pContext);
-		}
+		rendererFor(pSelected.getClass()).drawSelectionHandles(pSelected, pContext);
 	}
 	
 	/**

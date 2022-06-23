@@ -48,6 +48,7 @@ public abstract class AbstractTestClassDiagramLayout extends AbstractTestDiagram
 	void setup()
 	{
 		RenderingFacade.prepareFor(aDiagram);
+		RenderingFacade.getBounds(aDiagram); // Triggers a rendering pass
 	}
 	
 	protected static void verifyClassNodeDefaultDimensions(Node pNode)

@@ -79,6 +79,7 @@ public class TestPersistenceService
 	{
 		Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
 		RenderingFacade.prepareFor(diagram);
+		RenderingFacade.getBounds(diagram);
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash
@@ -89,6 +90,9 @@ public class TestPersistenceService
 		File temporaryFile = PATH_TEMPORARY_FILE.toFile();
 		PersistenceService.save(diagram, temporaryFile);
 		diagram = PersistenceService.read(temporaryFile).diagram();
+		RenderingFacade.prepareFor(diagram);
+		RenderingFacade.getBounds(diagram);
+		
 		temporaryFile.delete();
 		
 		// Check that all bounds match

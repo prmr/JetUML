@@ -41,6 +41,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.Test;
 
 public class TestSelectionModel
@@ -138,6 +139,9 @@ public class TestSelectionModel
 		aClassDiagram.addEdge(aEdge1);
 		aNode2.translate(200, 0);
 		
+		RenderingFacade.prepareFor(aClassDiagram);
+		RenderingFacade.getBounds(aClassDiagram);
+		
 		// Just Node 1
 		aModel.activateLasso(new Rectangle(0,0,105,61), aClassDiagram);
 		assertContent(aNode1);
@@ -178,6 +182,9 @@ public class TestSelectionModel
 		aEdge1.connect(aNode1, aNode2, aClassDiagram);
 		aClassDiagram.addEdge(aEdge1);
 		aNode2.translate(200, 0);
+		
+		RenderingFacade.prepareFor(aClassDiagram);
+		RenderingFacade.getBounds(aClassDiagram);
 		
 		aModel.set(extraNode);
 		// Just Node 1
