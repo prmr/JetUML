@@ -22,6 +22,8 @@ package org.jetuml.viewers.edges;
 
 import static org.jetuml.viewers.EdgePriority.priorityOf;
 
+import java.util.Optional;
+
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -501,7 +503,8 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	 */
 	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
-		assert RenderingFacade.classDiagramRenderer().storageContains(pEdge);
-		return RenderingFacade.classDiagramRenderer().storedEdgePath(pEdge);
+		Optional<EdgePath> edgePath = RenderingFacade.classDiagramRenderer().getStoredEdgePath(pEdge);
+		assert edgePath.isPresent();
+		return edgePath.get();
 	}
 }

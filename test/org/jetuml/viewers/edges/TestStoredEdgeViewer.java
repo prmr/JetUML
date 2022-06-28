@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.jetuml.diagram.Diagram;
@@ -38,8 +39,10 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
+import org.jetuml.viewers.Layouter;
 import org.jetuml.viewers.LineStyle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +79,6 @@ public class TestStoredEdgeViewer
 		
 	}
 
-	
 	@Test
 	public void testGetLineStyle()
 	{
@@ -340,10 +342,38 @@ public class TestStoredEdgeViewer
 		}
 	}
 	
-	
-	private void store(Edge pEdge, EdgePath pEdgePath)
+	/*
+	 * Returns the layouter of the active classdiagramrenderer
+	 */
+	private static Layouter layouter()
 	{
-		RenderingFacade.classDiagramRenderer().store(pEdge, pEdgePath);
+		try 
+		{
+			Field layouter = ClassDiagramRenderer.class.getDeclaredField("aLayouter");
+			layouter.setAccessible(true);
+			return (Layouter)layouter.get(RenderingFacade.classDiagramRenderer());
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
 	}
 	
+	/*
+	 * Stores an edge path in the layouter of the active classdiagramrenderer
+	 */
+	private static void store(Edge pEdge, EdgePath pEdgePath)
+	{
+		try 
+		{
+			Field edgeStorage = Layouter.class.getDeclaredField("aEdgeStorage");
+			edgeStorage.setAccessible(true);
+			((EdgeStorage)edgeStorage.get(layouter())).store(pEdge, pEdgePath);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+		}
+	}
 }

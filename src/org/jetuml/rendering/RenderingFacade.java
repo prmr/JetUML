@@ -46,8 +46,6 @@ public class RenderingFacade
 	private static IdentityHashMap<DiagramType, DiagramRenderer> 
 		aDiagramRenderers = new IdentityHashMap<>();
 	
-	private static ClassDiagramRenderer aClassDiagramRenderer; // TODO optional
-	
 	private static Optional<Diagram> aActiveDiagram = Optional.empty();
 	
 	static
@@ -76,7 +74,7 @@ public class RenderingFacade
 		aActiveDiagram = Optional.of(pDiagram);
 		if( pDiagram.getType() == DiagramType.CLASS)
 		{
-			aClassDiagramRenderer = new ClassDiagramRenderer();
+			aDiagramRenderers.put(DiagramType.CLASS, new ClassDiagramRenderer());
 		}	
 	}
 	
@@ -258,6 +256,6 @@ public class RenderingFacade
 	
 	public static ClassDiagramRenderer classDiagramRenderer()
 	{
-		return aClassDiagramRenderer;
+		return (ClassDiagramRenderer)aDiagramRenderers.get(DiagramType.CLASS);
 	}
 }
