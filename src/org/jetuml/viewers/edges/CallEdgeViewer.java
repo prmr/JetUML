@@ -170,7 +170,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	}
 	
 	/* Gets the points on a segmented path */ 
-	private static Point[] getPoints(Edge pEdge)
+	private Point[] getPoints(Edge pEdge)
 	{
 		ArrayList<Point> points = new ArrayList<>();
 		Node endNode = pEdge.getEnd();
@@ -199,7 +199,7 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 			{
 				direction = Direction.EAST;
 			}
-			Point endPoint = RenderingFacade.getConnectionPoints(endNode, direction);
+			Point endPoint = parent().getConnectionPoints(endNode, direction);
          
 			if(start.getCenter().getX() < endPoint.getX())
 			{

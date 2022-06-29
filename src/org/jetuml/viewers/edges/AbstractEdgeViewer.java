@@ -131,8 +131,8 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = Direction.fromLine(startCenter, endCenter);
-		return new Line(RenderingFacade.getConnectionPoints(pEdge.getStart(), toEnd), 
-				RenderingFacade.getConnectionPoints(pEdge.getEnd(), toEnd.rotatedBy(DEGREES_180)));
+		return new Line(parent().getConnectionPoints(pEdge.getStart(), toEnd), 
+				parent().getConnectionPoints(pEdge.getEnd(), toEnd.rotatedBy(DEGREES_180)));
 	}
 
 	@Override

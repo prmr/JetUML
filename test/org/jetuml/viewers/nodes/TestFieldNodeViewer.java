@@ -34,8 +34,6 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
-import org.jetuml.geom.Direction;
-import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
@@ -118,16 +116,6 @@ public class TestFieldNodeViewer
 		// h = text height 22
 		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), RenderingFacade.getBounds(aFieldNode1));
 	}
-	
-	@Test
-	public void testGetConnectionPointsUnattached()
-	{
-		// x = max x of the node bounds - x gap
-		// y = half-point of the default height
-		assertEquals( new Point(osDependent(62, 61, 62),10), RenderingFacade.getConnectionPoints(aFieldNode1, Direction.EAST));
-	}
-	
-	// NEW
 	
 	@Test
 	public void testDimensionsAttachedNoStrings()

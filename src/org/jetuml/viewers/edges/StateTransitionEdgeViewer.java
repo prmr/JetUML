@@ -415,7 +415,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 * The connection points are a slight offset from the center.
 	 * @return
 	 */
-	private static Line getNormalEdgeConnectionsPoints(Edge pEdge)
+	private Line getNormalEdgeConnectionsPoints(Edge pEdge)
 	{
 		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());
 		Rectangle end = RenderingFacade.getBounds(pEdge.getEnd());
@@ -428,8 +428,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		}
 		Direction d1 = Direction.fromLine(startCenter, endCenter).rotatedBy(-turn);
 		Direction d2 = Direction.fromLine(endCenter, startCenter).rotatedBy(turn);
-		return new Line(RenderingFacade.getConnectionPoints(pEdge.getStart(), d1), 
-				RenderingFacade.getConnectionPoints(pEdge.getEnd(), d2));
+		return new Line(parent().getConnectionPoints(pEdge.getStart(), d1), 
+				parent().getConnectionPoints(pEdge.getEnd(), d2));
 	}
 	
 	@Override

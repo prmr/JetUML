@@ -109,10 +109,10 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
      * 	Tests whether the node should be S- or C-shaped.
      * 	@return true if the node should be S-shaped
 	 */
-	private static boolean isSShaped(Edge pEdge)
+	private boolean isSShaped(Edge pEdge)
 	{
 		Rectangle b = RenderingFacade.getBounds(pEdge.getEnd());
-		Point p = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Point p = parent().getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}
 
@@ -140,14 +140,14 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Point point = RenderingFacade.getConnectionPoints(pEdge.getStart(), Direction.EAST);
+		Point point = parent().getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		if (isSShaped(pEdge))
 		{
-			return new Line(point, RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.WEST));
+			return new Line(point, parent().getConnectionPoints(pEdge.getEnd(), Direction.WEST));
 		}
 		else
 		{
-			return new Line(point, RenderingFacade.getConnectionPoints(pEdge.getEnd(), Direction.EAST));
+			return new Line(point, parent().getConnectionPoints(pEdge.getEnd(), Direction.EAST));
 		}
 	}
 	

@@ -29,7 +29,6 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -138,20 +137,6 @@ public class RenderingFacade
 	{
 		assert pElement != null && pGraphics != null;
 		aDiagramRenderers.get(diagramType()).drawSelectionHandles(pElement, pGraphics);
-	}
-	
-	/**
-	 * Gets the points at which pNode is connected to its nodes.
-	 * 
-	 * @param pNode The target node
-	 * @param pDirection The desired direction.
-	 * @return A connection point on the node.
-	 * @pre pNode != null && pDirection != null
-	 */
-	public static Point getConnectionPoints(Node pNode, Direction pDirection)
-	{
-		assert pNode != null;
-		return aDiagramRenderers.get(diagramType()).getConnectionPoints(pNode, pDirection);
 	}
 	
 	/**
