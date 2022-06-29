@@ -114,10 +114,10 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Edge> edgeAt(Point pPoint)
 	{
-		assert pDiagram != null && pPoint != null;
-		return pDiagram.edges().stream()
+		assert pPoint != null;
+		return aDiagram.edges().stream()
 				.filter(edge -> contains(edge, pPoint))
 				.findFirst();
 	}

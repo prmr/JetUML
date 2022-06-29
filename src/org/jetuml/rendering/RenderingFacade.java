@@ -178,7 +178,7 @@ public class RenderingFacade
 	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
 	{
 		assert pDiagram != null && pPoint != null;
-		return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pDiagram, pPoint);
+		return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pPoint);
 	}
 	
 	/**

@@ -69,12 +69,11 @@ public interface DiagramRenderer
 	/**
 	 * Returns the edge underneath the given point, if it exists.
 	 * 
-	 * @param pDiagram The diagram to query
 	 * @param pPoint a point
 	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
 	 * @pre pDiagram != null && pPoint != null
 	 */
-	Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint);
+	Optional<Edge> edgeAt(Point pPoint);
 		
 	/**
      * Returns the node underneath the given point, if it exists. Always returns
