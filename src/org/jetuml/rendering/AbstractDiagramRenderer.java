@@ -47,12 +47,14 @@ import javafx.scene.canvas.GraphicsContext;
 public abstract class AbstractDiagramRenderer implements DiagramRenderer
 {
 	private final IdentityHashMap<Class<? extends DiagramElement>, DiagramElementRenderer> aRenderers = new IdentityHashMap<>();
+	private final Diagram aDiagram;
 
 	/*
 	 * Add renderers for elements that are present in all diagrams. 
 	 */
-	protected AbstractDiagramRenderer()
+	protected AbstractDiagramRenderer(Diagram pDiagram)
 	{
+		aDiagram = pDiagram;
 		addElementRenderer(NoteNode.class, new NoteNodeViewer());
 		addElementRenderer(PointNode.class, new PointNodeViewer());
 		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
@@ -217,5 +219,11 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
 	{
 		return nodeAt(pDiagram, pPoint);
+	}
+	
+	@Override
+	public final Diagram diagram()
+	{
+		return aDiagram;
 	}
 }

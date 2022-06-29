@@ -20,7 +20,7 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
-import org.jetuml.annotations.Singleton;
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
@@ -33,13 +33,11 @@ import org.jetuml.viewers.nodes.ObjectNodeViewer;
 /**
  * The renderer for object diagrams.
  */
-@Singleton
 public final class ObjectDiagramRenderer extends AbstractDiagramRenderer
 {
-	public static final ObjectDiagramRenderer INSTANCE = new ObjectDiagramRenderer();
-	
-	private ObjectDiagramRenderer()
+	public ObjectDiagramRenderer(Diagram pDiagram)
 	{
+		super(pDiagram);
 		addElementRenderer(FieldNode.class, new FieldNodeViewer());
 		addElementRenderer(ObjectNode.class, new ObjectNodeViewer());
 		addElementRenderer(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());

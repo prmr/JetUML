@@ -48,15 +48,6 @@ public class RenderingFacade
 	
 	private static Optional<Diagram> aActiveDiagram = Optional.empty();
 	
-	static
-	{
-		aDiagramRenderers.put(DiagramType.USECASE, UseCaseDiagramRenderer.INSTANCE);
-		aDiagramRenderers.put(DiagramType.OBJECT, ObjectDiagramRenderer.INSTANCE);
-		aDiagramRenderers.put(DiagramType.STATE, StateDiagramRenderer.INSTANCE);
-		aDiagramRenderers.put(DiagramType.SEQUENCE, SequenceDiagramRenderer.INSTANCE);
-		aDiagramRenderers.put(DiagramType.CLASS, new ClassDiagramRenderer());
-	}
-	
 	private static DiagramType diagramType()
 	{
 		return aActiveDiagram.get().getType();
@@ -72,10 +63,7 @@ public class RenderingFacade
 	{
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
-		if( pDiagram.getType() == DiagramType.CLASS)
-		{
-			aDiagramRenderers.put(DiagramType.CLASS, new ClassDiagramRenderer());
-		}	
+		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
 	}
 	
 	/**

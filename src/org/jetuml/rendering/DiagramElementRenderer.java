@@ -29,7 +29,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * An object that can be used to render a diagram element.
+ * A wrapper around a Diagram object that is able to compute the geometry
+ * of the diagram and render it on a graphics context.
  */
 public interface DiagramElementRenderer
 {
@@ -75,5 +76,5 @@ public interface DiagramElementRenderer
      * @param pGraphics the graphics context
      * @pre pElement != null && pGraphics != null
 	 */
-   	void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics);
+   	void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics);  	
 }

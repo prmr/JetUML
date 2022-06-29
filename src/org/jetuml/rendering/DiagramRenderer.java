@@ -163,4 +163,9 @@ public interface DiagramRenderer
      * @pre pDiagram != null && pPoint != null.
      */
 	Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint);
+	
+   	/**
+   	 * @return The diagram wrapped by this object.
+   	 */
+   	Diagram diagram();
 }

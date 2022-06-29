@@ -51,8 +51,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private static final StoredEdgeViewer STORED_EDGE_VIEWER = new StoredEdgeViewer();
 	private final Layouter aLayouter = new Layouter();
 	
-	public ClassDiagramRenderer()
+	public ClassDiagramRenderer(Diagram pDiagram)
 	{
+		super(pDiagram);
 		addElementRenderer(ClassNode.class, new TypeNodeViewer());
 		addElementRenderer(InterfaceNode.class, new InterfaceNodeViewer());
 		addElementRenderer(PackageNode.class, new PackageNodeViewer());

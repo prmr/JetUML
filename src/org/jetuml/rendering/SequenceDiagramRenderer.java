@@ -22,7 +22,6 @@ package org.jetuml.rendering;
 
 import java.util.Optional;
 
-import org.jetuml.annotations.Singleton;
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Node;
@@ -40,13 +39,11 @@ import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 /**
  * The renderer for sequence diagrams.
  */
-@Singleton
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 {
-	public static final SequenceDiagramRenderer INSTANCE = new SequenceDiagramRenderer();
-	
-	private SequenceDiagramRenderer()
+	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
+		super(pDiagram);
 		addElementRenderer(CallNode.class, new CallNodeViewer());
 		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
 		addElementRenderer(ReturnEdge.class, new ReturnEdgeViewer());

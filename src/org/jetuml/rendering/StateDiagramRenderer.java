@@ -20,7 +20,7 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
-import org.jetuml.annotations.Singleton;
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
@@ -32,13 +32,11 @@ import org.jetuml.viewers.nodes.StateNodeViewer;
 /**
  * The renderer for state diagrams.
  */
-@Singleton
 public final class StateDiagramRenderer extends AbstractDiagramRenderer
 {
-	public static final StateDiagramRenderer INSTANCE = new StateDiagramRenderer();
-	
-	private StateDiagramRenderer()
+	public StateDiagramRenderer(Diagram pDiagram)
 	{
+		super(pDiagram);
 		addElementRenderer(FinalStateNode.class, new CircularStateNodeViewer(true));
 		addElementRenderer(InitialStateNode.class, new CircularStateNodeViewer(false));
 		addElementRenderer(StateNode.class, new StateNodeViewer());

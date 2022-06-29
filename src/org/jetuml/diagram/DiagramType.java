@@ -32,6 +32,12 @@ import org.jetuml.diagram.builder.ObjectDiagramBuilder;
 import org.jetuml.diagram.builder.SequenceDiagramBuilder;
 import org.jetuml.diagram.builder.StateDiagramBuilder;
 import org.jetuml.diagram.builder.UseCaseDiagramBuilder;
+import org.jetuml.rendering.ClassDiagramRenderer;
+import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.ObjectDiagramRenderer;
+import org.jetuml.rendering.SequenceDiagramRenderer;
+import org.jetuml.rendering.StateDiagramRenderer;
+import org.jetuml.rendering.UseCaseDiagramRenderer;
 
 /**
  * The different types of UML diagrams supported by 
@@ -43,6 +49,7 @@ public enum DiagramType
 			"ClassDiagram",
 			".class",
 			ClassDiagramBuilder::new, 
+			ClassDiagramRenderer::new,
 			new DiagramElement [] { 
 					Prototypes.CLASS, 
 					Prototypes.INTERFACE, 
@@ -61,6 +68,7 @@ public enum DiagramType
 			"SequenceDiagram",
 			".sequence",
 			SequenceDiagramBuilder::new, 
+			SequenceDiagramRenderer::new, 
 			new DiagramElement[]{
 					Prototypes.IMPLICIT_PARAMETER,
 					Prototypes.NOTE,
@@ -72,6 +80,7 @@ public enum DiagramType
 			"StateDiagram",
 			".state",
 			StateDiagramBuilder::new, 
+			StateDiagramRenderer::new, 
 			new DiagramElement[]{
 					Prototypes.STATE,
 					Prototypes.START_STATE,
@@ -84,6 +93,7 @@ public enum DiagramType
 			"ObjectDiagram",
 			".object",
 			ObjectDiagramBuilder::new, 
+			ObjectDiagramRenderer::new, 
 			new DiagramElement[] {
 					Prototypes.OBJECT,
 					Prototypes.FIELD,
@@ -96,6 +106,7 @@ public enum DiagramType
 			"UseCaseDiagram",
 			".usecase",
 			UseCaseDiagramBuilder::new, 
+			UseCaseDiagramRenderer::new, 
 			new DiagramElement[]{
 					Prototypes.ACTOR, 
 					Prototypes.USE_CASE, 
@@ -112,15 +123,18 @@ public enum DiagramType
 	private final String aName;
 	private final String aFileExtension; // The suffix that indicates the type of files
 	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
+	private final Function<Diagram, DiagramRenderer> aRendererFactory;
 	private final DiagramElement[] aPrototypes;
 	
+	
 	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
-			DiagramElement[] pPrototypes)
+			Function<Diagram, DiagramRenderer> pRendererFactory, DiagramElement[] pPrototypes)
 	{
 		assert pName != null;
 		aName = pName;
 		aFileExtension = pFileExtension;
 		aBuilderSupplier = pBuilderSupplier;
+		aRendererFactory = pRendererFactory;
 		aPrototypes = pPrototypes;
 	}
 	
@@ -180,6 +194,19 @@ public enum DiagramType
 		 * a dependency between Diagram and the GUI framework. */
 		assert pDiagram != null;
 		return pDiagram.getType().aBuilderSupplier.apply(pDiagram);
+	}
+	
+	/**
+	 * @param pDiagram The diagram for which we want to build a renderer.
+	 * @return A new instance of a renderer for this diagram type.
+	 * @pre pDiagram != null
+	 */
+	public static DiagramRenderer newRendererInstanceFor(Diagram pDiagram)
+	{
+		/* This method is not defined on class Diagram to avoid introducing 
+		 * a dependency between Diagram and the GUI framework. */
+		assert pDiagram != null;
+		return pDiagram.getType().aRendererFactory.apply(pDiagram);
 	}
 	
 	/**

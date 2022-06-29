@@ -20,7 +20,7 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
-import org.jetuml.annotations.Singleton;
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.edges.UseCaseAssociationEdge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
@@ -35,13 +35,11 @@ import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 /**
  * The renderer for use case diagrams.
  */
-@Singleton
 public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 {
-	public static final UseCaseDiagramRenderer INSTANCE = new UseCaseDiagramRenderer();
-	
-	private UseCaseDiagramRenderer()
+	public UseCaseDiagramRenderer(Diagram pDiagram)
 	{
+		super(pDiagram);
 		addElementRenderer(ActorNode.class, new ActorNodeViewer());
 		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer());
 		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
