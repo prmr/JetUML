@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 
@@ -31,8 +32,8 @@ public final class UseCaseAssociationEdgeViewer extends StraightEdgeViewer
 	/**
 	 * Creates a viewer for UseCaseAssociationEdge instances.
 	 */
-	public UseCaseAssociationEdgeViewer()
+	public UseCaseAssociationEdgeViewer(DiagramRenderer pParent)
 	{
-		super(LineStyle.SOLID, ArrowHead.NONE);
+		super(pParent, LineStyle.SOLID, ArrowHead.NONE);
 	}
 }

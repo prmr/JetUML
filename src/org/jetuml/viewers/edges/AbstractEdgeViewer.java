@@ -27,6 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
@@ -51,6 +52,18 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	private static final StringViewer SIZE_TESTER = StringViewer.get(Alignment.TOP_LEFT);
 	
 	private static final int DEGREES_180 = 180;
+	
+	private final DiagramRenderer aParent;
+	
+	protected AbstractEdgeViewer(DiagramRenderer pParent)
+	{
+		aParent = pParent;
+	}
+	
+	protected DiagramRenderer parent()
+	{
+		return aParent;
+	}
 	
 	/**
 	 * The default behavior is to draw a straight line between

@@ -27,6 +27,7 @@ import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.ToolGraphics;
@@ -54,8 +55,9 @@ public class StraightEdgeViewer extends AbstractEdgeViewer
 	 * @param pLineStyle The line style for the edge.
 	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
 	 */
-	public StraightEdgeViewer(LineStyle pLineStyle, ArrowHead pArrowHead)
+	public StraightEdgeViewer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead)
 	{
+		super(pParent);
 		aLineStyle = pLineStyle;
 		aArrowHead = pArrowHead;
 	}

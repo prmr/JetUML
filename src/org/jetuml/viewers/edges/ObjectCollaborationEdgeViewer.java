@@ -21,6 +21,7 @@
 package org.jetuml.viewers.edges;
 
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 
@@ -32,9 +33,9 @@ public final class ObjectCollaborationEdgeViewer extends LabeledStraightEdgeView
 	/**
 	 * Creates a viewer for ObjectCollaborationEdge instances.
 	 */
-	public ObjectCollaborationEdgeViewer()
+	public ObjectCollaborationEdgeViewer(DiagramRenderer pParent)
 	{
-		super(LineStyle.SOLID, ArrowHead.NONE, 
+		super(pParent, LineStyle.SOLID, ArrowHead.NONE, 
 				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
 	}
 }

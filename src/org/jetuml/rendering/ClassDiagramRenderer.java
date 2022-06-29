@@ -48,7 +48,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 {
-	private static final StoredEdgeViewer STORED_EDGE_VIEWER = new StoredEdgeViewer();
 	private final Layouter aLayouter = new Layouter();
 	
 	public ClassDiagramRenderer(Diagram pDiagram)
@@ -59,11 +58,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		addElementRenderer(PackageNode.class, new PackageNodeViewer(this));
 		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer(this));
 		
-		addElementRenderer(DependencyEdge.class, STORED_EDGE_VIEWER);
-		addElementRenderer(AssociationEdge.class,  STORED_EDGE_VIEWER);
-		addElementRenderer(DependencyEdge.class, STORED_EDGE_VIEWER);
-		addElementRenderer(GeneralizationEdge.class, STORED_EDGE_VIEWER);
-		addElementRenderer(AggregationEdge.class, STORED_EDGE_VIEWER);
+		StoredEdgeViewer storedEdgeViewer = new StoredEdgeViewer(this);
+		addElementRenderer(DependencyEdge.class, storedEdgeViewer);
+		addElementRenderer(AssociationEdge.class, storedEdgeViewer);
+		addElementRenderer(DependencyEdge.class, storedEdgeViewer);
+		addElementRenderer(GeneralizationEdge.class, storedEdgeViewer);
+		addElementRenderer(AggregationEdge.class, storedEdgeViewer);
 	}
 
 	/**

@@ -40,6 +40,7 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.EdgePriority;
@@ -72,6 +73,11 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	private static final int SIGLE_CHAR_HEIGHT = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_180 = 180;
+	
+	public StoredEdgeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	/**
 	 * Gets the line style for pEdge.

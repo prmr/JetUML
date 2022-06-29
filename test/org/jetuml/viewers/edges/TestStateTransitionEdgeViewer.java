@@ -43,18 +43,15 @@ public class TestStateTransitionEdgeViewer
 {
 	private static int userDefinedFontSize;
 
-	private StateNode aStateNode1;
+	private StateNode aStateNode1 = new StateNode();
 	private StateNode aStateNode2;
-	private StateTransitionEdge aTransitionEdge;
-	private Diagram aDiagram;
-	private StateTransitionEdgeViewer aStateTransitionEdgeViewer = new StateTransitionEdgeViewer();
+	private StateTransitionEdge aTransitionEdge = new StateTransitionEdge();
+	private Diagram aDiagram = new Diagram(DiagramType.STATE);
+	private StateTransitionEdgeViewer aStateTransitionEdgeViewer = new StateTransitionEdgeViewer(DiagramType.newRendererInstanceFor(aDiagram));
 	
 	@BeforeEach
 	void setup()
 	{
-		aDiagram = new Diagram(DiagramType.STATE);
-		aStateNode1 = new StateNode();
-		aTransitionEdge = new StateTransitionEdge();
 		RenderingFacade.prepareFor(aDiagram);
 	}
 	

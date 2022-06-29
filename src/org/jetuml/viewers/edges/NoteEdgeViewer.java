@@ -20,6 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 
@@ -31,8 +32,8 @@ public final class NoteEdgeViewer extends StraightEdgeViewer
 	/**
 	 * Creates a viewer for NoteEdge instances.
 	 */
-	public NoteEdgeViewer()
+	public NoteEdgeViewer(DiagramRenderer pParent)
 	{
-		super(LineStyle.DOTTED, ArrowHead.NONE);
+		super(pParent, LineStyle.DOTTED, ArrowHead.NONE);
 	}
 }

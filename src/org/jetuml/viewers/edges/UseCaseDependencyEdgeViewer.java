@@ -25,6 +25,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
@@ -42,9 +43,9 @@ public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
 	/**
 	 * Creates a viewer for UseCaseDependencyEdge instances.
 	 */
-	public UseCaseDependencyEdgeViewer()
+	public UseCaseDependencyEdgeViewer(DiagramRenderer pParent)
 	{
-		super(LineStyle.DOTTED, ArrowHead.V, edge -> ((UseCaseDependencyEdge)edge).getType().getLabel());
+		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((UseCaseDependencyEdge)edge).getType().getLabel());
 	}
 	
 	@Override

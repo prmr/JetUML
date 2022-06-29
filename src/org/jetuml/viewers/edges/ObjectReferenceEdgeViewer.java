@@ -27,6 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
@@ -46,6 +47,11 @@ import javafx.scene.shape.Shape;
 public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 {
 	private static final int ENDSIZE = 10;
+	
+	public ObjectReferenceEdgeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	protected Shape getShape(Edge pEdge)

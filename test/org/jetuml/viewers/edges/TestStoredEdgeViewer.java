@@ -53,7 +53,7 @@ import org.junit.jupiter.api.Test;
 public class TestStoredEdgeViewer 
 {
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	private static final StoredEdgeViewer aStoredEdgeViewer = new StoredEdgeViewer();
+	private StoredEdgeViewer aStoredEdgeViewer = new StoredEdgeViewer(DiagramType.newRendererInstanceFor(aDiagram));
 	private GeneralizationEdge aInheritanceEdge;
 	private GeneralizationEdge aImplementationEdge;
 	private AggregationEdge aAggregationEdge;
@@ -237,7 +237,7 @@ public class TestStoredEdgeViewer
 	
 	/// Private reflexive helper methods:
 	
-	private static LineStyle getLineStyle(Edge pEdge)
+	private LineStyle getLineStyle(Edge pEdge)
 	{
 		try
 		{
@@ -252,7 +252,7 @@ public class TestStoredEdgeViewer
 		}
 	}
 	
-	private static ArrowHead getArrowStart(Edge pEdge)
+	private ArrowHead getArrowStart(Edge pEdge)
 	{
 		try
 		{
@@ -267,7 +267,7 @@ public class TestStoredEdgeViewer
 		}
 	}
 
-	private static ArrowHead getArrowEnd(Edge pEdge)
+	private ArrowHead getArrowEnd(Edge pEdge)
 	{
 		try
 		{

@@ -35,6 +35,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.ArrowHeadViewer;
@@ -62,6 +63,11 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 
 	private static final int SHIFT = 5;
+	
+	public CallEdgeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	protected Shape getShape(Edge pEdge)

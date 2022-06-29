@@ -27,6 +27,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
@@ -52,10 +53,10 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
 	 * @param pLabelExtractor A function to extract for the edge's label.
 	 */
-	public LabeledStraightEdgeViewer(LineStyle pLineStyle, ArrowHead pArrowHead,
+	public LabeledStraightEdgeViewer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead,
 			Function<Edge, String> pLabelExtractor)
 	{
-		super(pLineStyle, pArrowHead);
+		super(pParent, pLineStyle, pArrowHead);
 		aLabelExtractor = pLabelExtractor;
 	}
 	

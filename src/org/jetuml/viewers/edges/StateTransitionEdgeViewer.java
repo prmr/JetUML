@@ -30,6 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
@@ -67,6 +68,11 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
+	
+	public StateTransitionEdgeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)

@@ -57,7 +57,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		aDiagram = pDiagram;
 		addElementRenderer(NoteNode.class, new NoteNodeViewer(this));
 		addElementRenderer(PointNode.class, new PointNodeViewer(this));
-		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
+		addElementRenderer(NoteEdge.class, new NoteEdgeViewer(this));
 	}
 
 	protected void addElementRenderer(Class<? extends DiagramElement> pElementClass,

@@ -28,6 +28,7 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
@@ -48,9 +49,9 @@ public final class ReturnEdgeViewer extends LabeledStraightEdgeViewer
 	/**
 	 * Creates a new viewer.
 	 */
-	public ReturnEdgeViewer()
+	public ReturnEdgeViewer(DiagramRenderer pParent)
 	{
-		super(LineStyle.DOTTED, ArrowHead.V, edge -> ((ReturnEdge)edge).getMiddleLabel());
+		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((ReturnEdge)edge).getMiddleLabel());
 	}
 	
 	@Override

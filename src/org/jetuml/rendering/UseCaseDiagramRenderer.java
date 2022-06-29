@@ -42,8 +42,8 @@ public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 		super(pDiagram);
 		addElementRenderer(ActorNode.class, new ActorNodeViewer(this));
 		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer(this));
-		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer());
-		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer());
-		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer());
+		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer(this));
+		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer(this));
+		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer(this));
 	}
 }
