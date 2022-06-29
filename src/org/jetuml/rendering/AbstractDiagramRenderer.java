@@ -123,22 +123,22 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public Optional<Node> nodeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Node> nodeAt(Point pPoint)
 	{
-		assert pDiagram != null && pPoint != null;
-		return pDiagram.rootNodes().stream()
-				.map(node -> deepFindNode(pDiagram, node, pPoint))
+		assert pPoint != null;
+		return aDiagram.rootNodes().stream()
+				.map(node -> deepFindNode(node, pPoint))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.reduce((first, second) -> second);
 	}
 
-	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
+	protected Optional<Node> deepFindNode(Node pNode, Point pPoint)
 	{
-		assert pDiagram != null && pNode != null && pPoint != null;
+		assert pNode != null && pPoint != null;
 
 		return pNode.getChildren().stream()
-				.map(node -> deepFindNode(pDiagram, node, pPoint))
+				.map(node -> deepFindNode(node, pPoint))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.findFirst()
@@ -219,7 +219,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	@Override
 	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
 	{
-		return nodeAt(pDiagram, pPoint);
+		return nodeAt(pPoint);
 	}
 	
 	@Override

@@ -52,18 +52,18 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	}
 	
 	@Override
-	protected Optional<Node> deepFindNode(Diagram pDiagram, Node pNode, Point pPoint)
+	protected Optional<Node> deepFindNode(Node pNode, Point pPoint)
 	{
 		Optional<Node> result = Optional.empty();
 		if( pNode.getClass() == CallNode.class )
 		{
-			result = new ControlFlow(pDiagram).getCallees(pNode).stream()
-				.map(node -> deepFindNode(pDiagram, node, pPoint))
+			result = new ControlFlow(diagram()).getCallees(pNode).stream()
+				.map(node -> deepFindNode(node, pPoint))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.findFirst();
 		}
-		return result.or(() -> super.deepFindNode(pDiagram, pNode, pPoint));
+		return result.or(() -> super.deepFindNode(pNode, pPoint));
 	}
 	
 	/*

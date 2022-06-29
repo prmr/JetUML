@@ -78,12 +78,11 @@ public interface DiagramRenderer
 	/**
      * Returns the node underneath the given point, if it exists. Always returns
      * the deepest child and the last one in a list.
-     * @param pDiagram The diagram to query.
      * @param pPoint A point
      * @return a node containing pPoint or Optional.empty() if no node is under pPoint
-     * @pre pDiagram != null && pPoint != null.
+     * @pre pPoint != null.
      */
-	Optional<Node> nodeAt(Diagram pDiagram, Point pPoint);
+	Optional<Node> nodeAt(Point pPoint);
 	
 	/**
 	 * Gets the smallest rectangle enclosing the diagram.

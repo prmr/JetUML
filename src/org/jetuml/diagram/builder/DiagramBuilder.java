@@ -121,8 +121,8 @@ public abstract class DiagramBuilder
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
 		
-		Optional<Node> startNode = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart);
-		Optional<Node> endNode = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
+		Optional<Node> startNode = aDiagramRenderer.nodeAt(pStart);
+		Optional<Node> endNode = aDiagramRenderer.nodeAt(pEnd);
 		
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -416,8 +416,8 @@ public abstract class DiagramBuilder
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
 		
-		Node node1 = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart).get();
-		Optional<Node> node2in = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
+		Node node1 = aDiagramRenderer.nodeAt(pStart).get();
+		Optional<Node> node2in = aDiagramRenderer.nodeAt(pEnd);
 		Node node2 = null;
 		if( node2in.isPresent() )
 		{

@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramAccessor;
 import org.jetuml.diagram.DiagramType;
@@ -41,47 +40,30 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.ObjectDiagramRenderer;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestObjectDiagramBuilder
 {
-	private Diagram aDiagram;
-	private ObjectDiagramBuilder aBuilder;
-	private DiagramAccessor aAccessor;
-	private ObjectNode aObjectNode1;
-	private ObjectNode aObjectNode2;
-	private NoteNode aNote;
-	private FieldNode aFieldNode1;
-	private FieldNode aFieldNode2;
-	private ObjectCollaborationEdge aCollaboration1;
-	private ObjectReferenceEdge aReference1;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
+	private Diagram aDiagram = new Diagram(DiagramType.OBJECT);
+	private ObjectDiagramBuilder aBuilder = new ObjectDiagramBuilder(new ObjectDiagramRenderer(aDiagram));
+	private DiagramAccessor aAccessor = new DiagramAccessor(aDiagram);
+	private ObjectNode aObjectNode1 = new ObjectNode();
+	private ObjectNode aObjectNode2 = new ObjectNode();
+	private NoteNode aNote = new NoteNode();
+	private FieldNode aFieldNode1 = new FieldNode();
+	private FieldNode aFieldNode2 = new FieldNode();
+	private ObjectCollaborationEdge aCollaboration1 = new ObjectCollaborationEdge();
+	private ObjectReferenceEdge aReference1 = new ObjectReferenceEdge();
 	
 	@BeforeEach
 	public void setUp()
 	{
-		aDiagram = new Diagram(DiagramType.OBJECT);
-		aAccessor = new DiagramAccessor(aDiagram);
-		aBuilder = new ObjectDiagramBuilder(new ObjectDiagramRenderer(aDiagram));
-		aObjectNode1 = new ObjectNode();
-		aFieldNode1 = new FieldNode();
 		aFieldNode1.setName("Field1");
 		aFieldNode1.setValue("value");
-		aFieldNode2 = new FieldNode();
 		aFieldNode1.setName("Field2");
-		aNote = new NoteNode();
 		aNote.translate(300, 300);
-		aObjectNode2 = new ObjectNode();
 		aObjectNode2.translate(100, 100);
-		aCollaboration1 = new ObjectCollaborationEdge();
-		aReference1 = new ObjectReferenceEdge();
 	}		
 		
 	@Test

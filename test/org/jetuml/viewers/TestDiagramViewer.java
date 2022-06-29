@@ -28,6 +28,8 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ClassDiagramRenderer;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,7 @@ import org.junit.jupiter.api.Test;
 public class TestDiagramViewer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private DiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
 	
 	@BeforeEach
 	void setup()
@@ -46,7 +49,7 @@ public class TestDiagramViewer
 	void testNodeAt_NoneShallow()
 	{
 		aDiagram.addRootNode(new ClassNode());
-		assertTrue(RenderingFacade.nodeAt(aDiagram, new Point(100,100)).isEmpty());
+		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
 	}
 	
 	@Test
@@ -58,7 +61,7 @@ public class TestDiagramViewer
 		p2.addChild(c);
 		p1.addChild(p2);
 		aDiagram.addRootNode(p1);
-		assertTrue(RenderingFacade.nodeAt(aDiagram, new Point(100,100)).isEmpty());
+		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
 	}
 	
 	@Test
@@ -66,7 +69,7 @@ public class TestDiagramViewer
 	{
 		ClassNode node = new ClassNode();
 		aDiagram.addRootNode(node);
-		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(20,20)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(20,20)).get());
 	}
 	
 	@Test
@@ -77,7 +80,7 @@ public class TestDiagramViewer
 		node.translate(10, 10);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(p1, RenderingFacade.nodeAt(aDiagram, new Point(5,5)).get());
+		assertSame(p1, aRenderer.nodeAt(new Point(5,5)).get());
 	}
 	
 	@Test
@@ -88,7 +91,7 @@ public class TestDiagramViewer
 		node.translate(10, 10);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(node, RenderingFacade.nodeAt(aDiagram, new Point(15,15)).get());
+		assertSame(node, aRenderer.nodeAt(new Point(15,15)).get());
 	}
 	
 	@Test
@@ -103,6 +106,6 @@ public class TestDiagramViewer
 		node.translate(20, 20);
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
-		assertSame(p2, RenderingFacade.nodeAt(aDiagram, new Point(15,15)).get());
+		assertSame(p2, aRenderer.nodeAt(new Point(15,15)).get());
 	}
 }

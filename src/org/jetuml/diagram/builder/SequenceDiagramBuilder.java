@@ -87,8 +87,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
 	{
 		assert pStart!= null && pEnd != null;
-		Optional<Node> end = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
-		Optional<Node> start = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart);
+		Optional<Node> end = aDiagramRenderer.nodeAt(pEnd);
+		Optional<Node> start = aDiagramRenderer.nodeAt(pStart);
 		if(start.isPresent() && end.isPresent())
 		{
 			Node startNode = start.get();
