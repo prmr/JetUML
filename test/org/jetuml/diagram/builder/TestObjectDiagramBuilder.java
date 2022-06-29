@@ -40,6 +40,7 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ public class TestObjectDiagramBuilder
 	{
 		aDiagram = new Diagram(DiagramType.OBJECT);
 		aAccessor = new DiagramAccessor(aDiagram);
-		aBuilder = new ObjectDiagramBuilder(aDiagram);
+		aBuilder = new ObjectDiagramBuilder(new ObjectDiagramRenderer(aDiagram));
 		aObjectNode1 = new ObjectNode();
 		aFieldNode1 = new FieldNode();
 		aFieldNode1.setName("Field1");

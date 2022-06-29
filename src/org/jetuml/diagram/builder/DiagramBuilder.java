@@ -46,35 +46,36 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
 
 /**
- * Wrapper around a Diagram that provides the logic for converting
+ * Wrapper around a DiagramRenderer that provides the logic for converting
  * requests to creates or remove nodes and edges, and convert these
  * requests into operation. An object of this class should perform
- * read-only access to the diagram. However, executing the operations
+ * read-only access to the underlying diagram. However, executing the operations
  * created by methods of this class will change the state of the 
- * diagram.
+ * underlying diagram.
  */
 public abstract class DiagramBuilder
 {
 	// Arbitrary default value, used to simplify the testing code
 	private static final int DEFAULT_DIMENSION = 1000;
 	
-	protected final Diagram aDiagram;
+	protected final DiagramRenderer aDiagramRenderer;
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
 	/**
-	 * Creates a builder for pDiagram.
+	 * Creates a builder for the diagram wrapped by pDiagramRenderer
 	 * 
-	 * @param pDiagram The diagram to wrap around.
-	 * @pre pDiagram != null;
+	 * @param pDiagramRenderer The diagram renderer to wrap around.
+	 * @pre pDiagramRenderer != null;
 	 */
-	protected DiagramBuilder( Diagram pDiagram )
+	protected DiagramBuilder( DiagramRenderer pDiagramRenderer )
 	{
-		assert pDiagram != null;
-		aDiagram = pDiagram;
+		assert pDiagramRenderer != null;
+		aDiagramRenderer = pDiagramRenderer;
 	}
 	
 	/**
@@ -82,7 +83,7 @@ public abstract class DiagramBuilder
 	 */
 	public final Diagram getDiagram()
 	{
-		return aDiagram;
+		return aDiagramRenderer.diagram();
 	}
 	
 	/**
@@ -120,8 +121,8 @@ public abstract class DiagramBuilder
 	{
 		assert pEdge != null && pStart != null && pEnd != null;
 		
-		Optional<Node> startNode = RenderingFacade.nodeAt(aDiagram, pStart);
-		Optional<Node> endNode = RenderingFacade.nodeAt(aDiagram, pEnd);
+		Optional<Node> startNode = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart);
+		Optional<Node> endNode = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
 		
 		if(startNode.isPresent() && startNode.get() instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
@@ -133,7 +134,7 @@ public abstract class DiagramBuilder
 		}
 		
 
-		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagram);
+		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagramRenderer.diagram());
 		
 	}
 	
@@ -172,8 +173,8 @@ public abstract class DiagramBuilder
 		assert pNode != null && pRequestedPosition != null;
 		assert canAdd(pNode, pRequestedPosition);
 		positionNode(pNode, pRequestedPosition);
-		return new SimpleOperation( ()-> aDiagram.addRootNode(pNode), 
-				()-> aDiagram.removeRootNode(pNode));
+		return new SimpleOperation( ()-> aDiagramRenderer.diagram().addRootNode(pNode), 
+				()-> aDiagramRenderer.diagram().removeRootNode(pNode));
 	}
 	
 	/**
@@ -192,8 +193,8 @@ public abstract class DiagramBuilder
 			if( element instanceof Node )
 			{
 				operation.add(new SimpleOperation(
-						()-> aDiagram.addRootNode((Node)element),
-						()-> aDiagram.removeRootNode((Node)element)));
+						()-> aDiagramRenderer.diagram().addRootNode((Node)element),
+						()-> aDiagramRenderer.diagram().removeRootNode((Node)element)));
 			}
 			else if( element instanceof Edge)
 			{
@@ -205,10 +206,10 @@ public abstract class DiagramBuilder
 						()-> 
 						{ 
 							Edge edge = (Edge) element;
-							aDiagram.addEdge(edge); 
-							edge.connect(edge.getStart(), edge.getEnd(), aDiagram);	
+							aDiagramRenderer.diagram().addEdge(edge); 
+							edge.connect(edge.getStart(), edge.getEnd(), aDiagramRenderer.diagram());	
 						},
-						()-> aDiagram.removeEdge((Edge)element)));
+						()-> aDiagramRenderer.diagram().removeEdge((Edge)element)));
 			}
 		}
 		
@@ -221,16 +222,16 @@ public abstract class DiagramBuilder
 	 * 
 	 * @param pElement The element to remove.
 	 * @return The list of elements that have to be removed with pElement.
-	 * @pre pElement != null && aDiagram.contains(pElement);
+	 * @pre pElement != null && aDiagramRenderer.contains(pElement);
 	 */
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
-		assert pElement != null && aDiagram.contains(pElement);
+		assert pElement != null && aDiagramRenderer.diagram().contains(pElement);
 		ArrayList<DiagramElement> result = new ArrayList<>();
 		result.add(pElement);
 		if( pElement.getClass() == PointNode.class )
 		{
-			for( Edge edge : aDiagram.edgesConnectedTo((Node)pElement))
+			for( Edge edge : aDiagramRenderer.diagram().edgesConnectedTo((Node)pElement))
 			{
 				result.add(edge);
 			}
@@ -250,7 +251,7 @@ public abstract class DiagramBuilder
 		if( pElement instanceof Node )
 		{
 			List<Node> descendants = getNodeAndAllChildren((Node)pElement);
-			for(Edge edge : aDiagram.edges())
+			for(Edge edge : aDiagramRenderer.diagram().edges())
 			{
 				if(descendants.contains(edge.getStart() ) || descendants.contains(edge.getEnd()))
 				{
@@ -319,7 +320,7 @@ public abstract class DiagramBuilder
 				result2.add(element);
 			}
 		}
-		Collections.sort(edges, (pEdge1, pEdge2) -> aDiagram.indexOf(pEdge2) - aDiagram.indexOf(pEdge1));
+		Collections.sort(edges, (pEdge1, pEdge2) -> aDiagramRenderer.diagram().indexOf(pEdge2) - aDiagramRenderer.diagram().indexOf(pEdge1));
 		Collections.sort(nodes, new Comparator<Node>() 
 		{
 			@Override
@@ -333,7 +334,7 @@ public abstract class DiagramBuilder
 				}
 				else 
 				{
-					return aDiagram.rootNodes().indexOf(parent2) - aDiagram.rootNodes().indexOf(parent1);
+					return aDiagramRenderer.diagram().rootNodes().indexOf(parent2) - aDiagramRenderer.diagram().rootNodes().indexOf(parent1);
 				}
 			}
 		});
@@ -363,10 +364,10 @@ public abstract class DiagramBuilder
 		{
 			if( element instanceof Edge )
 			{
-				int index = aDiagram.indexOf((Edge)element);
+				int index = aDiagramRenderer.diagram().indexOf((Edge)element);
 				result.add(new SimpleOperation(
-						()-> aDiagram.removeEdge((Edge)element),
-						()-> aDiagram.addEdge(index, (Edge)element)));
+						()-> aDiagramRenderer.diagram().removeEdge((Edge)element),
+						()-> aDiagramRenderer.diagram().addEdge(index, (Edge)element)));
 			}
 			else if( element instanceof Node )
 			{
@@ -379,8 +380,8 @@ public abstract class DiagramBuilder
 				else
 				{
 					result.add(new SimpleOperation(
-						()-> aDiagram.removeRootNode((Node)element),
-						()-> aDiagram.addRootNode((Node)element)));
+						()-> aDiagramRenderer.diagram().removeRootNode((Node)element),
+						()-> aDiagramRenderer.diagram().addRootNode((Node)element)));
 				}
 			}
 		}
@@ -415,8 +416,8 @@ public abstract class DiagramBuilder
 	{ 
 		assert canAdd(pEdge, pStart, pEnd);
 		
-		Node node1 = RenderingFacade.nodeAt(aDiagram, pStart).get();
-		Optional<Node> node2in = RenderingFacade.nodeAt(aDiagram, pEnd);
+		Node node1 = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart).get();
+		Optional<Node> node2in = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
 		Node node2 = null;
 		if( node2in.isPresent() )
 		{
@@ -426,11 +427,11 @@ public abstract class DiagramBuilder
 		if(node1 instanceof NoteNode && pEdge instanceof NoteEdge)
 		{
 			node2 = new PointNode();
-			node2.attach(aDiagram);
+			node2.attach(aDiagramRenderer.diagram());
 			node2.translate(pEnd.getX(), pEnd.getY());
 			Node end = node2; // Effectively final to include in closure
-			result.add(new SimpleOperation(()-> aDiagram.addRootNode(end),
-					()-> aDiagram.removeRootNode(end)));
+			result.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addRootNode(end),
+					()-> aDiagramRenderer.diagram().removeRootNode(end)));
 		}
 		assert node2 != null;
 		completeEdgeAdditionOperation(result, pEdge, node1, node2, pStart, pEnd);
@@ -452,9 +453,9 @@ public abstract class DiagramBuilder
 	protected void completeEdgeAdditionOperation( CompoundOperation pOperation, Edge pEdge, Node pStartNode, Node pEndNode,
 			Point pStartPoint, Point pEndPoint)
 	{
-		pEdge.connect(pStartNode, pEndNode, aDiagram);
-		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(pEdge),
-				()-> aDiagram.removeEdge(pEdge)));
+		pEdge.connect(pStartNode, pEndNode, aDiagramRenderer.diagram());
+		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(pEdge),
+				()-> aDiagramRenderer.diagram().removeEdge(pEdge)));
 	}
 	
 	private Runnable createReinsertOperation(Node pNode)
@@ -464,7 +465,7 @@ public abstract class DiagramBuilder
 		return ()-> 
 		{
 			parent.addChild(index, pNode);
-			pNode.attach(aDiagram);
+			pNode.attach(aDiagramRenderer.diagram());
 		};
 	}
 	
@@ -490,7 +491,7 @@ public abstract class DiagramBuilder
 	
 	private PackageNodeViewer packageNodeViewer()
 	{
-		return (PackageNodeViewer)DiagramType.newRendererInstanceFor(aDiagram).rendererFor(PackageNode.class);
+		return (PackageNodeViewer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(PackageNode.class);
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)

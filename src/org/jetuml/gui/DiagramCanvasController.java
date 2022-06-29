@@ -82,7 +82,7 @@ public class DiagramCanvasController
 	public DiagramCanvasController(DiagramCanvas pCanvas, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
 	{
 		aCanvas = pCanvas;
-		aDiagramBuilder = DiagramType.newBuilderInstanceFor(aCanvas.getDiagram());
+		aDiagramBuilder = DiagramType.newBuilderInstanceFor(DiagramType.newRendererInstanceFor(aCanvas.getDiagram()));
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) aCanvas.getWidth(), (int)aCanvas.getHeight()));
 		aSelectionModel = new SelectionModel(aCanvas);
 		aToolBar = pToolBar;

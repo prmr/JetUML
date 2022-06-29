@@ -21,11 +21,11 @@
 
 package org.jetuml.diagram.builder;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.builder.constraints.ConstraintSet;
 import org.jetuml.diagram.builder.constraints.EdgeConstraints;
 import org.jetuml.diagram.builder.constraints.StateDiagramEdgeConstraints;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * A builder for state diagrams.
@@ -53,10 +53,10 @@ public class StateDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.STATE
 	 */
-	public StateDiagramBuilder( Diagram pDiagram )
+	public StateDiagramBuilder( DiagramRenderer pDiagramRenderer )
 	{
-		super( pDiagram );
-		assert pDiagram.getType() == DiagramType.STATE;
+		super( pDiagramRenderer );
+		assert pDiagramRenderer.diagram().getType() == DiagramType.STATE;
 	}
 	
 	@Override

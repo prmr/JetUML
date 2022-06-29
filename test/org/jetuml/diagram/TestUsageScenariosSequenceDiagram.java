@@ -36,6 +36,7 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.RenderingFacade;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +56,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 	{
 		super.setup();
 		aDiagram = new Diagram(DiagramType.SEQUENCE);
-		aBuilder = new SequenceDiagramBuilder(aDiagram);
+		aBuilder = new SequenceDiagramBuilder(new SequenceDiagramRenderer(aDiagram));
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
 		aCallNode1 = new CallNode();
@@ -392,7 +393,7 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		copy();
 		
 		Diagram diagram2 = new Diagram(DiagramType.SEQUENCE);
-		SequenceDiagramBuilder builder2 = new SequenceDiagramBuilder(diagram2);
+		SequenceDiagramBuilder builder2 = new SequenceDiagramBuilder(new SequenceDiagramRenderer(diagram2));
 		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
 		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));
 		

@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -38,6 +37,7 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
@@ -63,10 +63,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	public SequenceDiagramBuilder( Diagram pDiagram )
+	public SequenceDiagramBuilder( DiagramRenderer pDiagramRenderer )
 	{
-		super( pDiagram );
-		assert pDiagram.getType() == DiagramType.SEQUENCE;
+		super( pDiagramRenderer );
+		assert pDiagramRenderer.diagram().getType() == DiagramType.SEQUENCE;
 	}
 	
 	@Override
@@ -87,8 +87,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	public boolean canCreateConstructorCall(Point pStart, Point pEnd)
 	{
 		assert pStart!= null && pEnd != null;
-		Optional<Node> end = RenderingFacade.nodeAt(aDiagram, pEnd);
-		Optional<Node> start = RenderingFacade.nodeAt(aDiagram, pStart);
+		Optional<Node> end = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pEnd);
+		Optional<Node> start = RenderingFacade.nodeAt(aDiagramRenderer.diagram(), pStart);
 		if(start.isPresent() && end.isPresent())
 		{
 			Node startNode = start.get();
@@ -102,7 +102,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	protected List<DiagramElement> getCoRemovals(DiagramElement pElement)
 	{
 		List<DiagramElement> result = super.getCoRemovals(pElement);
-		ControlFlow flow = new ControlFlow(aDiagram);
+		ControlFlow flow = new ControlFlow(aDiagramRenderer.diagram());
 		if(pElement instanceof Node)
 		{
 			result.addAll(flow.getNodeUpstreams((Node)pElement));
@@ -153,7 +153,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			ImplicitParameterNode parent = (ImplicitParameterNode) pStartNode;
 			pOperation.add(new SimpleOperation(() -> 
 			{
-				newCallNode.attach(aDiagram);
+				newCallNode.attach(aDiagramRenderer.diagram());
 				parent.addChild(newCallNode);
 			}, () -> 
 			{
@@ -176,7 +176,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		final ImplicitParameterNode parent = endParent;
 		pOperation.add(new SimpleOperation(()-> 
 		{
-			end.attach(aDiagram);
+			end.attach(aDiagramRenderer.diagram());
 			parent.addChild(end);
 		},
 		()-> 
@@ -189,21 +189,21 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		
 		// CSOFF: Needed for assigning to the final variable
 		final Edge edge = canCreateConstructorCall(pStartPoint, pEndPoint)?new ConstructorEdge():pEdge; // CSON:
-		edge.connect(start, end, aDiagram);
-		pOperation.add(new SimpleOperation(()-> aDiagram.addEdge(insertionIndex, edge),
-				()-> aDiagram.removeEdge(edge)));
+		edge.connect(start, end, aDiagramRenderer.diagram());
+		pOperation.add(new SimpleOperation(()-> aDiagramRenderer.diagram().addEdge(insertionIndex, edge),
+				()-> aDiagramRenderer.diagram().removeEdge(edge)));
 	}
 	
 	private int computeInsertionIndex( Node pCaller, int pY)
 	{
-		for( CallEdge callee : new ControlFlow(aDiagram).getCalls(pCaller))
+		for( CallEdge callee : new ControlFlow(aDiagramRenderer.diagram()).getCalls(pCaller))
 		{
 			if( RenderingFacade.getConnectionPoints(callee).getY1() > pY )
 			{
-				return aDiagram.indexOf(callee);
+				return aDiagramRenderer.diagram().indexOf(callee);
 			}
 		}
-		return aDiagram.edges().size();
+		return aDiagramRenderer.diagram().edges().size();
 	}
 	
 	@Override
@@ -217,7 +217,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			{
 				result = new SimpleOperation(()-> 
 				{ 
-					pNode.attach(aDiagram);
+					pNode.attach(aDiagramRenderer.diagram());
 					target.get().addChild(pNode); 
 				},
 				()-> 
@@ -240,7 +240,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 */
 	private Optional<ImplicitParameterNode> insideTargetArea(Point pPoint)
 	{
-		for( Node node : aDiagram.rootNodes() )
+		for( Node node : aDiagramRenderer.diagram().rootNodes() )
 		{
 			if( node instanceof ImplicitParameterNode && RenderingFacade.contains(node, pPoint) )
 			{
@@ -255,6 +255,6 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	
 	private ImplicitParameterNodeViewer implicitParameterNodeViewer()
 	{
-		return (ImplicitParameterNodeViewer)DiagramType.newRendererInstanceFor(aDiagram).rendererFor(ImplicitParameterNode.class);
+		return (ImplicitParameterNodeViewer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(ImplicitParameterNode.class);
 	}
 }

@@ -23,7 +23,6 @@ package org.jetuml.diagram.builder;
 
 import java.util.ArrayList;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
@@ -33,6 +32,7 @@ import org.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 
 /**
@@ -55,10 +55,10 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	public ObjectDiagramBuilder( Diagram pDiagram )
+	public ObjectDiagramBuilder( DiagramRenderer pDiagramRenderer )
 	{
-		super( pDiagram );
-		assert pDiagram.getType() == DiagramType.OBJECT;
+		super( pDiagramRenderer );
+		assert pDiagramRenderer.diagram().getType() == DiagramType.OBJECT;
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 	private ObjectNode findObject(FieldNode pNode, Point pPoint)
 	{
 		ArrayList<ObjectNode> candidates = new ArrayList<>();
-		for( Node node : aDiagram.rootNodes() )
+		for( Node node : aDiagramRenderer.diagram().rootNodes() )
 		{
 			if( node == pNode )
 			{
@@ -151,7 +151,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			{
 				result = new SimpleOperation( 
 						()-> 
-						{ pNode.attach(aDiagram); 
+						{ pNode.attach(aDiagramRenderer.diagram()); 
 						object.addChild(pNode); },
 						()-> 
 						{ 

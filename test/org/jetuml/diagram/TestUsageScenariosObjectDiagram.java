@@ -30,6 +30,7 @@ import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new Diagram(DiagramType.OBJECT);
-		aBuilder = new ObjectDiagramBuilder(aDiagram);
+		aBuilder = new ObjectDiagramBuilder(new ObjectDiagramRenderer(aDiagram));
 		aObjectNode1 = new ObjectNode();
 		aObjectNode2 = new ObjectNode();
 		aFieldNode1 = new FieldNode();

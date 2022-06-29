@@ -24,11 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.jetuml.JavaFXLoader;
-import org.jetuml.diagram.builder.ClassDiagramBuilder;
-import org.jetuml.diagram.builder.ObjectDiagramBuilder;
-import org.jetuml.diagram.builder.SequenceDiagramBuilder;
-import org.jetuml.diagram.builder.StateDiagramBuilder;
-import org.jetuml.diagram.builder.UseCaseDiagramBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -38,16 +33,6 @@ public class TestDiagramType
 	public static void setupClass()
 	{
 		JavaFXLoader.load();
-	}
-	
-	@Test
-	public void testNewBuilderInstance()
-	{
-		assertSame(ClassDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.CLASS)).getClass());
-		assertSame(ObjectDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.OBJECT)).getClass());
-		assertSame(SequenceDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.SEQUENCE)).getClass());
-		assertSame(StateDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.STATE)).getClass());
-		assertSame(UseCaseDiagramBuilder.class, DiagramType.newBuilderInstanceFor(new Diagram(DiagramType.USECASE)).getClass());
 	}
 	
 	@Test

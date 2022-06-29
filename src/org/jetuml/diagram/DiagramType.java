@@ -122,12 +122,12 @@ public enum DiagramType
 	 * or property strings. It should this not be externalized. */
 	private final String aName;
 	private final String aFileExtension; // The suffix that indicates the type of files
-	private final Function<Diagram, DiagramBuilder> aBuilderSupplier;
+	private final Function<DiagramRenderer, DiagramBuilder> aBuilderSupplier;
 	private final Function<Diagram, DiagramRenderer> aRendererFactory;
 	private final DiagramElement[] aPrototypes;
 	
 	
-	DiagramType(String pName, String pFileExtension, Function<Diagram, DiagramBuilder> pBuilderSupplier, 
+	DiagramType(String pName, String pFileExtension, Function<DiagramRenderer, DiagramBuilder> pBuilderSupplier, 
 			Function<Diagram, DiagramRenderer> pRendererFactory, DiagramElement[] pPrototypes)
 	{
 		assert pName != null;
@@ -188,12 +188,12 @@ public enum DiagramType
 	 * @return A new instance of a builder for this diagram type.
 	 * @pre pDiagram != null
 	 */
-	public static DiagramBuilder newBuilderInstanceFor(Diagram pDiagram)
+	public static DiagramBuilder newBuilderInstanceFor(DiagramRenderer pDiagramRenderer)
 	{
 		/* This method is not defined on class Diagram to avoid introducing 
 		 * a dependency between Diagram and the GUI framework. */
-		assert pDiagram != null;
-		return pDiagram.getType().aBuilderSupplier.apply(pDiagram);
+		assert pDiagramRenderer != null;
+		return pDiagramRenderer.diagram().getType().aBuilderSupplier.apply(pDiagramRenderer);
 	}
 	
 	/**

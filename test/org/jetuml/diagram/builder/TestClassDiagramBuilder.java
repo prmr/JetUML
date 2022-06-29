@@ -45,6 +45,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +66,7 @@ public class TestClassDiagramBuilder
 	public void setUp()
 	{
 		aDiagram = new Diagram(DiagramType.CLASS);
-		aBuilder = new ClassDiagramBuilder(aDiagram);
+		aBuilder = new ClassDiagramBuilder(new ClassDiagramRenderer(aDiagram));
 		RenderingFacade.prepareFor(aDiagram);
 	}
 	

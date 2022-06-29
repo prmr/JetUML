@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
@@ -39,6 +38,7 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 
 /**
@@ -67,10 +67,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.CLASS
 	 */
-	public ClassDiagramBuilder( Diagram pDiagram )
+	public ClassDiagramBuilder( DiagramRenderer pDiagramRenderer )
 	{
-		super( pDiagram );
-		assert pDiagram.getType() == DiagramType.CLASS;
+		super( pDiagramRenderer );
+		assert pDiagramRenderer.diagram().getType() == DiagramType.CLASS;
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		DiagramOperation result = null;
 		if( validChild(pNode))
 		{
-			Optional<PackageNode> container = findContainer(aDiagram.rootNodes(), pRequestedPosition);
+			Optional<PackageNode> container = findContainer(aDiagramRenderer.diagram().rootNodes(), pRequestedPosition);
 			if( container.isPresent() )
 			{
 				if( container.get().getChildren().size()==0 )
@@ -94,7 +94,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				}
 				result = new SimpleOperation( ()->  
 				{ 
-					pNode.attach(aDiagram);
+					pNode.attach(aDiagramRenderer.diagram());
 					container.get().addChild(pNode); 
 				},
 				()-> 
@@ -168,11 +168,11 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	private Optional<PackageNode> findPackageToAttach(List<Node> pNodes)
 	{
 		assert pNodes != null && pNodes.size() > 0;
-		List<Node> rootNodes = new ArrayList<>(aDiagram.rootNodes());
+		List<Node> rootNodes = new ArrayList<>(aDiagramRenderer.diagram().rootNodes());
 		Point requestedPosition = pNodes.get(0).position();
 		for( Node pNode: pNodes )
 		{
-			if(aDiagram.containsAsRoot(pNode))
+			if(aDiagramRenderer.diagram().containsAsRoot(pNode))
 			{
 				rootNodes.remove(pNode);
 			}
@@ -310,7 +310,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				{
 					for( Node pNode: pNodes )
 					{
-						aDiagram.removeRootNode(pNode);
+						aDiagramRenderer.diagram().removeRootNode(pNode);
 						packageNode.addChild(pNode);
 						pNode.link(packageNode);
 					}
@@ -319,7 +319,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 				{
 					for( Node pNode: pNodes )
 					{
-						aDiagram.addRootNode(pNode);
+						aDiagramRenderer.diagram().addRootNode(pNode);
 						packageNode.removeChild(pNode);
 					}
 				});	
@@ -347,7 +347,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							aDiagram.addRootNode(pNode);
+							aDiagramRenderer.diagram().addRootNode(pNode);
 							parent.removeChild(pNode);
 						}
 					},
@@ -355,7 +355,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 					{
 						for( Node pNode: pNodes )
 						{
-							aDiagram.removeRootNode(pNode);
+							aDiagramRenderer.diagram().removeRootNode(pNode);
 							parent.addChild(pNode);
 						}
 					});	
