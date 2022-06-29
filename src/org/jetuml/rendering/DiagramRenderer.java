@@ -87,11 +87,9 @@ public interface DiagramRenderer
 	/**
 	 * Gets the smallest rectangle enclosing the diagram.
 	 * 
-	 * @param pDiagram The diagram to query
 	 * @return The bounding rectangle
-	 * @pre pDiagram != null
 	 */
-	Rectangle getBounds(Diagram pDiagram);
+	Rectangle getBounds();
 	
 	/**
 	 * Tests whether pElement contains a point.

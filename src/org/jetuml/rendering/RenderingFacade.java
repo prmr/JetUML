@@ -191,7 +191,7 @@ public class RenderingFacade
 	public static Rectangle getBounds(Diagram pDiagram)
 	{
 		assert pDiagram != null;
-		return aDiagramRenderers.get(pDiagram.getType()).getBounds(pDiagram);
+		return aDiagramRenderers.get(pDiagram.getType()).getBounds();
 	}
 	
 	public static Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)

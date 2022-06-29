@@ -88,22 +88,16 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		deactivateAndClearNodeStorages();
 	}
 	
-	/**
-	 * Gets the smallest rectangle enclosing the diagram.
-	 * @param pDiagram The diagram to query
-	 * @return The bounding rectangle
-	 * @pre pDiagram != null
-	 */
-	public final Rectangle getBounds(Diagram pDiagram)
+	@Override
+	public final Rectangle getBounds()
 	{
-		assert pDiagram != null;
 		//When getBounds(pDiagram) is called to open an existing class diagram file,
 		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
 		if (aLayouter.isEmpty())
 		{
-			aLayouter.layout(pDiagram);
+			aLayouter.layout(diagram());
 		}
-		return super.getBounds(pDiagram);
+		return super.getBounds();
 	}
 	
 	public Optional<EdgePath> getStoredEdgePath(Edge pEdge)

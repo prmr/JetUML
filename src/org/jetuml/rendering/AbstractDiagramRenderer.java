@@ -146,11 +146,10 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public Rectangle getBounds(Diagram pDiagram)
+	public Rectangle getBounds()
 	{
-		assert pDiagram != null;
 		Rectangle bounds = null;
-		for (Node node : pDiagram.rootNodes())
+		for (Node node : aDiagram.rootNodes())
 		{
 			if (bounds == null)
 			{
@@ -161,7 +160,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 				bounds = bounds.add(RenderingFacade.getBounds(node));
 			}
 		}
-		for (Edge edge : pDiagram.edges())
+		for (Edge edge : aDiagram.edges())
 		{
 			bounds = bounds.add(RenderingFacade.getBounds(edge));
 		}
