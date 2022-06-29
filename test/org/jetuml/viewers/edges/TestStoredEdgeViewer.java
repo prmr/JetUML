@@ -40,7 +40,6 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.Layouter;
 import org.jetuml.viewers.LineStyle;
@@ -53,7 +52,8 @@ import org.junit.jupiter.api.Test;
 public class TestStoredEdgeViewer 
 {
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	private StoredEdgeViewer aStoredEdgeViewer = new StoredEdgeViewer(DiagramType.newRendererInstanceFor(aDiagram));
+	private final ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
+	private StoredEdgeViewer aStoredEdgeViewer = (StoredEdgeViewer) aRenderer.rendererFor(AggregationEdge.class);
 	private GeneralizationEdge aInheritanceEdge;
 	private GeneralizationEdge aImplementationEdge;
 	private AggregationEdge aAggregationEdge;
@@ -345,13 +345,13 @@ public class TestStoredEdgeViewer
 	/*
 	 * Returns the layouter of the active classdiagramrenderer
 	 */
-	private static Layouter layouter()
+	private Layouter layouter()
 	{
 		try 
 		{
 			Field layouter = ClassDiagramRenderer.class.getDeclaredField("aLayouter");
 			layouter.setAccessible(true);
-			return (Layouter)layouter.get(RenderingFacade.classDiagramRenderer());
+			return (Layouter)layouter.get(aRenderer);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -363,7 +363,7 @@ public class TestStoredEdgeViewer
 	/*
 	 * Stores an edge path in the layouter of the active classdiagramrenderer
 	 */
-	private static void store(Edge pEdge, EdgePath pEdgePath)
+	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
 		try 
 		{

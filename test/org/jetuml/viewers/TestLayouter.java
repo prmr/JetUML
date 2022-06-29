@@ -59,7 +59,8 @@ import org.junit.jupiter.api.Test;
  */
 public class TestLayouter 
 {
-	private Diagram aDiagram;
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
 	
 	private Node aNodeA;
 	private Node aNodeB;
@@ -87,7 +88,6 @@ public class TestLayouter
 	@BeforeEach
 	public void setup()
 	{
-		aDiagram = new Diagram(DiagramType.CLASS);
 		aNodeA = new ClassNode();
 		aNodeB = new ClassNode();
 		aNodeC = new ClassNode();
@@ -317,33 +317,33 @@ public class TestLayouter
 		setUpTestLayout();
 		layouter().layout(aDiagram);
 		//aEdgeA
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 190)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 155)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 155)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 120)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(50, 190)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(50, 155)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(200, 155)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(200, 120)).get());
 		//aEdgeB (the other segments of aEdgeB overlap with aEdgeA)
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 190)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(150, 190)).get());
 		//aEdgeC
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 190)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 155)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(210, 155)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(210, 120)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(250, 190)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(250, 155)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(210, 155)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(210, 120)).get());
 		//aEdgeD
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 190)).get());
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 145)).get());
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(220, 145)).get());
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(220, 120)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(350, 190)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(350, 145)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(220, 145)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(220, 120)).get());
 		//aEdgeE
-		assertEquals(aEdgeE, RenderingFacade.edgeAt(aDiagram, new Point(400, 90)).get());
-		assertEquals(aEdgeE, RenderingFacade.edgeAt(aDiagram, new Point(250, 90)).get());
+		assertEquals(aEdgeE, aRenderer.edgeAt(aDiagram, new Point(400, 90)).get());
+		assertEquals(aEdgeE, aRenderer.edgeAt(aDiagram, new Point(250, 90)).get());
 		//EdgeF
-		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(400, 30)).get());
-		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(325, 30)).get());
-		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(325, 80)).get());
-		assertEquals(aEdgeF, RenderingFacade.edgeAt(aDiagram, new Point(250, 80)).get());
+		assertEquals(aEdgeF, aRenderer.edgeAt(aDiagram, new Point(400, 30)).get());
+		assertEquals(aEdgeF, aRenderer.edgeAt(aDiagram, new Point(325, 30)).get());
+		assertEquals(aEdgeF, aRenderer.edgeAt(aDiagram, new Point(325, 80)).get());
+		assertEquals(aEdgeF, aRenderer.edgeAt(aDiagram, new Point(250, 80)).get());
 		//aEdgeG
-		assertEquals(aEdgeG, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
-		assertEquals(aEdgeG, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeG, aRenderer.edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeG, aRenderer.edgeAt(aDiagram, new Point(150, 90)).get());
 	}
 	
 	
@@ -358,12 +358,12 @@ public class TestLayouter
 		assertFalse(contains(aEdgeC));
 		assertFalse(contains(aEdgeD));
 		//aEdgeA
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 140)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 100)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(50, 60)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(50, 140)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(50, 100)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(50, 60)).get());
 		//aEdgeB
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 140)).get());
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 100)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(150, 140)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(150, 100)).get());
 		
 		//Layout aEdgeC
 		layoutSegmentedEdges(aDiagram, EdgePriority.IMPLEMENTATION);
@@ -372,8 +372,8 @@ public class TestLayouter
 		assertTrue(contains(aEdgeC));
 		assertFalse(contains(aEdgeD));
 		//aEdgeC
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 140)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(250, 90)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(250, 140)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(250, 90)).get());
 		
 		//Layout aEdgeD
 		layoutSegmentedEdges(aDiagram, EdgePriority.ASSOCIATION);
@@ -382,8 +382,8 @@ public class TestLayouter
 		assertTrue(contains(aEdgeC));
 		assertTrue(contains(aEdgeD));
 		//aEdgeD
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 140)).get());
-		assertEquals(aEdgeD, RenderingFacade.edgeAt(aDiagram, new Point(350, 80)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(350, 140)).get());
+		assertEquals(aEdgeD, aRenderer.edgeAt(aDiagram, new Point(350, 80)).get());
 		
 	}
 	
@@ -393,18 +393,18 @@ public class TestLayouter
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Aggregation);
 		layoutSegmentedEdges(aDiagram, EdgePriority.AGGREGATION);
 		//aEdgeA
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 90)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 30)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(200, 90)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(150, 30)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(100, 30)).get());
 		//aEdgeB
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 150)).get());
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(100, 150)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(150, 150)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(100, 150)).get());
 		//aEdgeC
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(300, 100)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 100)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 210)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(400, 210)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(300, 100)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(340, 100)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(340, 210)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(400, 210)).get());
 		
 	}
 	
@@ -414,20 +414,20 @@ public class TestLayouter
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Composition);
 		layoutSegmentedEdges(aDiagram, EdgePriority.COMPOSITION);
 		//aEdgeA
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(200, 90)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 90)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(150, 30)).get());
-		assertEquals(aEdgeA, RenderingFacade.edgeAt(aDiagram, new Point(100, 30)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(200, 90)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(150, 90)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(150, 30)).get());
+		assertEquals(aEdgeA, aRenderer.edgeAt(aDiagram, new Point(100, 30)).get());
 		
 		//aEdgeB
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(150, 150)).get());
-		assertEquals(aEdgeB, RenderingFacade.edgeAt(aDiagram, new Point(100, 150)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(150, 150)).get());
+		assertEquals(aEdgeB, aRenderer.edgeAt(aDiagram, new Point(100, 150)).get());
 		
 		//aEdgeC
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(300, 100)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 100)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(340, 210)).get());
-		assertEquals(aEdgeC, RenderingFacade.edgeAt(aDiagram, new Point(400, 210)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(300, 100)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(340, 100)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(340, 210)).get());
+		assertEquals(aEdgeC, aRenderer.edgeAt(aDiagram, new Point(400, 210)).get());
 		
 	}
 	
@@ -2297,13 +2297,13 @@ public class TestLayouter
 	/*
 	 * Returns the layouter of the active classdiagramrenderer
 	 */
-	private static Layouter layouter()
+	private Layouter layouter()
 	{
 		try 
 		{
 			Field layouter = ClassDiagramRenderer.class.getDeclaredField("aLayouter");
 			layouter.setAccessible(true);
-			return (Layouter)layouter.get(RenderingFacade.classDiagramRenderer());
+			return (Layouter)layouter.get(aRenderer); 
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2315,7 +2315,7 @@ public class TestLayouter
 	/*
 	 * Stores an edge path in the layouter of the active classdiagramrenderer
 	 */
-	private static void store(Edge pEdge, EdgePath pEdgePath)
+	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
 		try 
 		{
@@ -2648,7 +2648,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static boolean noOtherEdgesBetween(Edge pEdge1, Edge pEdge2, Node pNode)
+	private boolean noOtherEdgesBetween(Edge pEdge1, Edge pEdge2, Node pNode)
 	{
 		try
 		{
@@ -2663,7 +2663,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, NodeSide pAttachedSide)
+	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, NodeSide pAttachedSide)
 	{
 		try
 		{
@@ -2678,7 +2678,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static boolean noConflictingStartLabels(Edge pEdge1, Edge pEdge2)
+	private boolean noConflictingStartLabels(Edge pEdge1, Edge pEdge2)
 	{
 		try
 		{
@@ -2693,7 +2693,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static boolean noConflictingEndLabels(Edge pEdge1, Edge pEdge2)
+	private boolean noConflictingEndLabels(Edge pEdge1, Edge pEdge2)
 	{
 		try
 		{
@@ -2709,7 +2709,7 @@ public class TestLayouter
 	}
 	
 	
-	private static NodeSide attachedSide(Edge pEdge, Node pNode)
+	private NodeSide attachedSide(Edge pEdge, Node pNode)
 	{
 		try
 		{
@@ -2724,7 +2724,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static NodeSide attachedSidePreferringEastWest(Edge pEdge)
+	private NodeSide attachedSidePreferringEastWest(Edge pEdge)
 	{
 		try
 		{
@@ -2739,7 +2739,7 @@ public class TestLayouter
 		}
 	}
 
-	private static NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
+	private NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		try
 		{
@@ -2754,7 +2754,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static NodeSide eastWestSideUnlessTooClose(Edge pEdge)
+	private NodeSide eastWestSideUnlessTooClose(Edge pEdge)
 	{
 		try
 		{
@@ -2770,7 +2770,7 @@ public class TestLayouter
 	}
 	
 	
-	private static NodeSide northSouthSideUnlessTooClose(Edge pEdge)
+	private NodeSide northSouthSideUnlessTooClose(Edge pEdge)
 	{
 		try
 		{
@@ -2786,7 +2786,7 @@ public class TestLayouter
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static EdgePath getStoredEdgePath(Edge pEdge)
+	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
 		try
 		{
@@ -2801,7 +2801,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static boolean contains(Edge pEdge)
+	private boolean contains(Edge pEdge)
 	{
 		try
 		{
@@ -2816,7 +2816,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static EdgePath buildSegmentedEdgePath(NodeSide pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
+	private EdgePath buildSegmentedEdgePath(NodeSide pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
 	{
 		try
 		{
@@ -2831,7 +2831,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static NodeSide attachedSideFromStorage(Edge pEdge, Node pNode)
+	private NodeSide attachedSideFromStorage(Edge pEdge, Node pNode)
 	{
 		try
 		{
@@ -2876,7 +2876,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static int getIndexSign(Edge pEdge, Node pNode, NodeSide pSideOfNode)
+	private int getIndexSign(Edge pEdge, Node pNode, NodeSide pSideOfNode)
 	{
 		try
 		{
@@ -2891,7 +2891,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, NodeSide pSideOfNode)
+	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, NodeSide pSideOfNode)
 	{
 		try
 		{
@@ -2917,7 +2917,7 @@ public class TestLayouter
 		return result;
 	}
 	
-	private static Point getClosestPoint(Collection<Point> pPoints, NodeSide pEdgeDirection) 
+	private Point getClosestPoint(Collection<Point> pPoints, NodeSide pEdgeDirection) 
 	{
 		try
 		{
@@ -2932,7 +2932,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static Node getOtherNode(Edge pEdge, Node pNode)
+	private Node getOtherNode(Edge pEdge, Node pNode)
 	{
 		try
 		{
@@ -2947,7 +2947,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static Line getNodeFace(Rectangle pNodeBounds, NodeSide pSideOfNode)
+	private Line getNodeFace(Rectangle pNodeBounds, NodeSide pSideOfNode)
 	{
 		try
 		{
@@ -2962,7 +2962,7 @@ public class TestLayouter
 		}
 	}
 
-	private static boolean isOutgoingEdge(Edge pEdge, Node pNode)
+	private boolean isOutgoingEdge(Edge pEdge, Node pNode)
 	{
 		try
 		{
@@ -2977,7 +2977,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static NodeSide northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private NodeSide northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		try
 		{
@@ -2992,7 +2992,7 @@ public class TestLayouter
 		}
 	}
 	
-	private static NodeSide eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private NodeSide eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		try
 		{

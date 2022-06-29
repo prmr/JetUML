@@ -40,8 +40,8 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.EdgePriority;
 import org.jetuml.viewers.LineStyle;
@@ -509,7 +509,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	 */
 	private EdgePath getStoredEdgePath(Edge pEdge)
 	{
-		Optional<EdgePath> edgePath = RenderingFacade.classDiagramRenderer().getStoredEdgePath(pEdge);
+		Optional<EdgePath> edgePath = ((ClassDiagramRenderer)parent()).getStoredEdgePath(pEdge);
 		assert edgePath.isPresent();
 		return edgePath.get();
 	}

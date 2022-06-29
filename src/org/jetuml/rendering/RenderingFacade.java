@@ -226,9 +226,4 @@ public class RenderingFacade
 		assert pElement != null;
 		return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
 	}
-	
-	public static ClassDiagramRenderer classDiagramRenderer()
-	{
-		return (ClassDiagramRenderer)aDiagramRenderers.get(DiagramType.CLASS);
-	}
 }
