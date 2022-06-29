@@ -25,6 +25,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.ToolGraphics;
@@ -51,6 +52,11 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	private static final int ARMS_SIZE = 24;
 	private static final int WIDTH = ARMS_SIZE * 2;
 	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
+	
+	public ActorNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)

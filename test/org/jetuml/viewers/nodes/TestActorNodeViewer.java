@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.jetuml.JavaFXLoader;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Point;
 import org.jetuml.testutils.GeometryUtils;
@@ -39,7 +41,7 @@ public class TestActorNodeViewer
 {
 	private static int userDefinedFontSize;
 	private ActorNode aNode; 
-	private final ActorNodeViewer aViewer = new ActorNodeViewer();
+	private final ActorNodeViewer aViewer = new ActorNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
 	
 	@BeforeAll
 	public static void setupClass()

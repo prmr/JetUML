@@ -26,12 +26,13 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.Grid;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ViewerUtils;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -47,6 +48,11 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final int YGAP = 5;
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, 
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
+	
+	public ObjectNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)

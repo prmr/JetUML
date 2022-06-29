@@ -44,8 +44,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(CallNode.class, new CallNodeViewer());
-		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeViewer());
+		addElementRenderer(CallNode.class, new CallNodeViewer(this));
+		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeViewer(this));
 		addElementRenderer(ReturnEdge.class, new ReturnEdgeViewer());
 		addElementRenderer(CallEdge.class, new CallEdgeViewer());
 		addElementRenderer(ConstructorEdge.class, new CallEdgeViewer());

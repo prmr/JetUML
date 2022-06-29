@@ -26,6 +26,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -42,8 +43,9 @@ public final class CircularStateNodeViewer extends AbstractNodeViewer
 	/**
 	 * @param pFinal true if this is a final node, false if it is an initial node.
 	 */
-	public CircularStateNodeViewer(boolean pFinal)
+	public CircularStateNodeViewer(DiagramRenderer pParent, boolean pFinal)
 	{
+		super(pParent);
 		aFinal = pFinal;
 	}
 

@@ -37,9 +37,9 @@ public final class StateDiagramRenderer extends AbstractDiagramRenderer
 	public StateDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(FinalStateNode.class, new CircularStateNodeViewer(true));
-		addElementRenderer(InitialStateNode.class, new CircularStateNodeViewer(false));
-		addElementRenderer(StateNode.class, new StateNodeViewer());
+		addElementRenderer(FinalStateNode.class, new CircularStateNodeViewer(this, true));
+		addElementRenderer(InitialStateNode.class, new CircularStateNodeViewer(this, false));
+		addElementRenderer(StateNode.class, new StateNodeViewer(this));
 		addElementRenderer(StateTransitionEdge.class, new StateTransitionEdgeViewer());
 	}
 }

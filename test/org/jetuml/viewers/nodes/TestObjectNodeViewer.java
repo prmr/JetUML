@@ -45,7 +45,7 @@ public class TestObjectNodeViewer
 	private FieldNode aField1;
 	private FieldNode aField2;
 	private Diagram aDiagram; 
-	private final ObjectNodeViewer aViewer = new ObjectNodeViewer();
+	private final ObjectNodeViewer aViewer = new ObjectNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.OBJECT)));
 	
 	@BeforeAll
 	public static void setupClass()

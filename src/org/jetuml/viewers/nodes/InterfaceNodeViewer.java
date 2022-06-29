@@ -21,12 +21,18 @@
 package org.jetuml.viewers.nodes;
 
 import org.jetuml.diagram.nodes.TypeNode;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * An object to render an interface in a class diagram.
  */
 public final class InterfaceNodeViewer extends TypeNodeViewer
 {
+	public InterfaceNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
+	
 	/**
 	 * Adds the interface Stereotype to the name.
 	 * 

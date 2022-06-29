@@ -23,6 +23,8 @@ package org.jetuml.viewers.nodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jetuml.JavaFXLoader;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.geom.Direction;
@@ -36,8 +38,8 @@ public class TestCircularNodeViewer
 {
 	private FinalStateNode aFinal; 
 	private InitialStateNode aInitial;
-	private final CircularStateNodeViewer aFinalViewer = new CircularStateNodeViewer(true);
-	private final CircularStateNodeViewer aInitialViewer = new CircularStateNodeViewer(false);
+	private final CircularStateNodeViewer aFinalViewer = new CircularStateNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), true);
+	private final CircularStateNodeViewer aInitialViewer = new CircularStateNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), false);
 	
 	@BeforeAll
 	public static void setupClass()

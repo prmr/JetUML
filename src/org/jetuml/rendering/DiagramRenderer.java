@@ -168,4 +168,11 @@ public interface DiagramRenderer
    	 * @return The diagram wrapped by this object.
    	 */
    	Diagram diagram();
+   	
+   	/**
+   	 * @param pClass The class to obtain a renderer for.
+   	 * @return The diagram element renderer for a given diagram element class, that is managed
+   	 * by this renderer.
+   	 */
+   	DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass);
 }

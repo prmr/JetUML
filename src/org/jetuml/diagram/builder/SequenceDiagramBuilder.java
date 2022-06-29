@@ -47,7 +47,6 @@ import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 public class SequenceDiagramBuilder extends DiagramBuilder
 {
 	private static final int CALL_NODE_YGAP = 5;
-	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
 	private static final ConstraintSet CONSTRAINTS = new ConstraintSet(
 			EdgeConstraints.noteEdge(),
 			EdgeConstraints.noteNode(),
@@ -245,12 +244,17 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			if( node instanceof ImplicitParameterNode && RenderingFacade.contains(node, pPoint) )
 			{
-				if( !(pPoint.getY() < IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
+				if( !(pPoint.getY() < implicitParameterNodeViewer().getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
 				{
 					return Optional.of( (ImplicitParameterNode)node );
 				}
 			}
 		}
 		return Optional.empty();
+	}
+	
+	private ImplicitParameterNodeViewer implicitParameterNodeViewer()
+	{
+		return (ImplicitParameterNodeViewer)DiagramType.newRendererInstanceFor(aDiagram).rendererFor(ImplicitParameterNode.class);
 	}
 }

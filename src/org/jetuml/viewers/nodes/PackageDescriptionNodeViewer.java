@@ -28,6 +28,7 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageDescriptionNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
@@ -41,6 +42,11 @@ import javafx.scene.canvas.GraphicsContext;
 public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewer
 {
 	private static final StringViewer CONTENTS_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	
+	public PackageDescriptionNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)

@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.JavaFXLoader;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class TestUseCaseNodeViewer
 {
 	private UseCaseNode aNode; 
-	private final UseCaseNodeViewer aViewer = new UseCaseNodeViewer();
+	private final UseCaseNodeViewer aViewer = new UseCaseNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
 	
 	@BeforeAll
 	public static void setupClass()

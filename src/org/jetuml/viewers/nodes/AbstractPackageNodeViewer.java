@@ -29,6 +29,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.ViewerUtils;
 import org.jetuml.viewers.StringViewer.Alignment;
@@ -48,6 +49,11 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	protected static final int DEFAULT_TOP_WIDTH = 60;
 	protected static final int NAME_GAP = 3;
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	
+	public AbstractPackageNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)

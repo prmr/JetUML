@@ -32,6 +32,8 @@ import java.util.stream.Stream;
 import org.jetuml.JavaFXLoader;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.TypeNode;
@@ -47,7 +49,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class TestTypeNodeViewer
 {
 	private static int userDefinedFontSize;
-	private static final TypeNodeViewer aViewer = new TypeNodeViewer();
+	private static final TypeNodeViewer aViewer = new TypeNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
 	private final Method aMethodNameBoxHeight;
 	
 	public TestTypeNodeViewer() throws ReflectiveOperationException

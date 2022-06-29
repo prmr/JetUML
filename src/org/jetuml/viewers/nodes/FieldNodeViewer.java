@@ -29,6 +29,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 
@@ -49,7 +50,16 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final StringViewer VALUE_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
 	private static final StringViewer EQUALS_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
-	private static final ObjectNodeViewer OBJECT_NODE_VIEWER = new ObjectNodeViewer();
+	
+	public FieldNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
+	
+	private ObjectNodeViewer objectNodeViewer()
+	{
+		return (ObjectNodeViewer) parent().rendererFor(ObjectNode.class);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
@@ -87,7 +97,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 		if( pNode.hasParent() )
 		{
 			int yPosition = ObjectNodeViewer.getYPosition(pNode.getParent(), (FieldNode) pNode);
-			Rectangle parentBounds = OBJECT_NODE_VIEWER.getBounds(pNode.getParent());
+			Rectangle parentBounds = objectNodeViewer().getBounds(pNode.getParent());
 			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, height);
 		}
 		return new Rectangle(DEFAULT_WIDTH / 2 - leftWidth, 0, leftWidth + rightWidth(pNode), height);

@@ -30,6 +30,7 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 
 /**
@@ -37,6 +38,11 @@ import org.jetuml.rendering.RenderingFacade;
  */
 public final class PackageNodeViewer extends AbstractPackageNodeViewer
 {
+	public PackageNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
+	
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */

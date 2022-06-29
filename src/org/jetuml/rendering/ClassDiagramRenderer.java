@@ -54,10 +54,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	public ClassDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(ClassNode.class, new TypeNodeViewer());
-		addElementRenderer(InterfaceNode.class, new InterfaceNodeViewer());
-		addElementRenderer(PackageNode.class, new PackageNodeViewer());
-		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer());
+		addElementRenderer(ClassNode.class, new TypeNodeViewer(this));
+		addElementRenderer(InterfaceNode.class, new InterfaceNodeViewer(this));
+		addElementRenderer(PackageNode.class, new PackageNodeViewer(this));
+		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer(this));
 		
 		addElementRenderer(DependencyEdge.class, STORED_EDGE_VIEWER);
 		addElementRenderer(AssociationEdge.class,  STORED_EDGE_VIEWER);

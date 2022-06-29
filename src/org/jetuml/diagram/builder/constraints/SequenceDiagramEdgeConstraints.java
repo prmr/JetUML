@@ -23,6 +23,7 @@ package org.jetuml.diagram.builder.constraints;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
@@ -38,7 +39,8 @@ import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
  */
 public final class SequenceDiagramEdgeConstraints
 {
-	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
+	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = 
+			new ImplicitParameterNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.SEQUENCE)));
 	
 	private SequenceDiagramEdgeConstraints() {}
 	

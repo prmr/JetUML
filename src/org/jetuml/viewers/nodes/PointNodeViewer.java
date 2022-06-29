@@ -25,6 +25,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -34,6 +35,11 @@ import javafx.scene.canvas.GraphicsContext;
 public final class PointNodeViewer extends AbstractNodeViewer
 {
 	private static final int SELECTION_DISTANCE = 5;
+	
+	public PointNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)

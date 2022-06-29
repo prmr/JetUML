@@ -23,6 +23,8 @@ package org.jetuml.viewers.nodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jetuml.JavaFXLoader;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
@@ -33,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class TestNoteNodeViewer
 {
 	private NoteNode aNode; 
-	private final NoteNodeViewer aViewer = new NoteNodeViewer();
+	private final NoteNodeViewer aViewer = new NoteNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
 	
 	@BeforeAll
 	public static void setupClass()

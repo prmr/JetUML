@@ -27,6 +27,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
@@ -42,6 +43,17 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	public static final int OFFSET = 3;
 	
 	private NodeStorage aNodeStorage = new NodeStorage();
+	private final DiagramRenderer aParent;
+	
+	protected AbstractNodeViewer(DiagramRenderer pParent)
+	{
+		aParent = pParent;
+	}
+	
+	protected DiagramRenderer parent()
+	{
+		return aParent;
+	}
 	
 	/* 
 	 * The default behavior for containment is to return true if the point is

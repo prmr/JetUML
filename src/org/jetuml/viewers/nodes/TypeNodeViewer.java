@@ -27,11 +27,12 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ViewerUtils;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -48,6 +49,11 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	protected static final int TOP_INCREMENT = 20;
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	
+	public TypeNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)

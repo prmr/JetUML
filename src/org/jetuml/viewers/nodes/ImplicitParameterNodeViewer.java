@@ -34,12 +34,13 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ViewerUtils;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -55,7 +56,16 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int TOP_HEIGHT = 60;
 	private static final int Y_GAP_SMALL = 20; 
 	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
-	private static final CallNodeViewer CALL_NODE_VIEWER = new CallNodeViewer();
+	
+	public ImplicitParameterNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
+	
+	private CallNodeViewer callNodeViewer()
+	{
+		return (CallNodeViewer) parent().rendererFor(CallNode.class);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
@@ -137,7 +147,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		if( controlFlow.isFirstCallee(child) )
 		{
 			CallNode caller = controlFlow.getCaller(child).get(); 
-			return CALL_NODE_VIEWER.getY(caller) + Y_GAP_SMALL;
+			return callNodeViewer().getY(caller) + Y_GAP_SMALL;
 		}
 		Node prevCallee = controlFlow.getPreviousCallee(child);
 		// If the node is not the first callee but the previous callee is in constructor call
@@ -149,7 +159,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		else
 		{
 			// Returns a fixed distance from the previous callee
-			return CALL_NODE_VIEWER.getMaxY(prevCallee) + Y_GAP_SMALL;
+			return callNodeViewer().getMaxY(prevCallee) + Y_GAP_SMALL;
 		}
 	}
 

@@ -55,8 +55,8 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	protected AbstractDiagramRenderer(Diagram pDiagram)
 	{
 		aDiagram = pDiagram;
-		addElementRenderer(NoteNode.class, new NoteNodeViewer());
-		addElementRenderer(PointNode.class, new PointNodeViewer());
+		addElementRenderer(NoteNode.class, new NoteNodeViewer(this));
+		addElementRenderer(PointNode.class, new PointNodeViewer(this));
 		addElementRenderer(NoteEdge.class, new NoteEdgeViewer());
 	}
 
@@ -66,7 +66,8 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		aRenderers.put(pElementClass, pElementRenderer);
 	}
 	
-	protected DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
+	@Override
+	public DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass)
 	{
 		assert aRenderers.containsKey(pClass);
 		return aRenderers.get(pClass);

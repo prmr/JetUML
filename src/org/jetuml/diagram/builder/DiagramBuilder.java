@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.constraints.ConstraintSet;
@@ -467,14 +468,14 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private static Runnable createDetachOperation(Node pNode)
+	private Runnable createDetachOperation(Node pNode)
 	{
 		Node parent = pNode.getParent();
 		if(parent.getClass()==PackageNode.class && parent.getChildren().size()==1)
 		{
 			return ()-> 
 			{ 
-				Rectangle parentBound = new PackageNodeViewer().getBounds(parent);
+				Rectangle parentBound = packageNodeViewer().getBounds(parent);
 				pNode.detach(); 
 				parent.removeChild(pNode); 
 				parent.translate( parentBound.getX()-parent.position().getX(),  parentBound.getY()-parent.position().getY() );
@@ -485,6 +486,11 @@ public abstract class DiagramBuilder
 			pNode.detach(); 
 			parent.removeChild(pNode); 
 		};
+	}
+	
+	private PackageNodeViewer packageNodeViewer()
+	{
+		return (PackageNodeViewer)DiagramType.newRendererInstanceFor(aDiagram).rendererFor(PackageNode.class);
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)

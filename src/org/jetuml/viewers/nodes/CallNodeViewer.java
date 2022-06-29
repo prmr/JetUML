@@ -33,11 +33,12 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ViewerUtils;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.viewers.ViewerUtils;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -52,11 +53,20 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final int Y_GAP_BIG = 20;
 	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
 	private static final int Y_GAP_TINY = 5; // Was 10, changed to 20 to account for label space
-	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = new ImplicitParameterNodeViewer();
 	// Inserts gaps between call nodes so that call edge labels don't intersect
 	private static final StringViewer NODE_GAP_TESTER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	private static final String TEST_STRING = "|";
 	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
+	
+	public CallNodeViewer(DiagramRenderer pParent)
+	{
+		super(pParent);
+	}
+	
+	private ImplicitParameterNodeViewer implicitParameterNodeViewer()
+	{
+		return (ImplicitParameterNodeViewer) parent().rendererFor(ImplicitParameterNode.class);
+	}
 	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
@@ -101,7 +111,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	 * The x position is a function of the position of the implicit parameter
 	 * node and the nesting depth of the call node.
 	 */
-	private static int getX(Node pNode)
+	private int getX(Node pNode)
 	{
 		final Diagram diagram = pNode.getDiagram().get();
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
@@ -112,7 +122,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 			{
 				depth = new ControlFlow(diagram).getNestingDepth((CallNode)pNode);
 			}
-			return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getCenter().getX() -
+			return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getCenter().getX() -
 					WIDTH / 2 + depth * WIDTH/2;
 		}
 		else
@@ -160,7 +170,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		}
 		else
 		{
-			return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
+			return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
 		}
 	} 
 
@@ -195,10 +205,10 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);
 	}
 	
-	private static int getYWithConstructorCall(Node pNode) 
+	private int getYWithConstructorCall(Node pNode) 
 	{
 		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
-		return IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_TINY;
+		return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_TINY;
 	}
 
 	private static boolean isInConstructorCall(Node pNode)

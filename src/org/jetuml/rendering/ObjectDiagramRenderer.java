@@ -38,8 +38,8 @@ public final class ObjectDiagramRenderer extends AbstractDiagramRenderer
 	public ObjectDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(FieldNode.class, new FieldNodeViewer());
-		addElementRenderer(ObjectNode.class, new ObjectNodeViewer());
+		addElementRenderer(FieldNode.class, new FieldNodeViewer(this));
+		addElementRenderer(ObjectNode.class, new ObjectNodeViewer(this));
 		addElementRenderer(ObjectReferenceEdge.class, new ObjectReferenceEdgeViewer());
 		addElementRenderer(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeViewer());
 	}

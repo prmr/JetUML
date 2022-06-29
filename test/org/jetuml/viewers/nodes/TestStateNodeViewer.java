@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.JavaFXLoader;
+import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class TestStateNodeViewer
 {
 	private StateNode aNode; 
-	private final StateNodeViewer aViewer = new StateNodeViewer();
+	private final StateNodeViewer aViewer = new StateNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)));
 	
 	@BeforeAll
 	public static void setupClass()
