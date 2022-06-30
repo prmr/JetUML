@@ -29,11 +29,10 @@ import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.BooleanPreference;
 import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.application.UserPreferences.IntegerPreference;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.viewers.ToolGraphics;
 import org.jetuml.viewers.nodes.AbstractNodeViewer;
 
@@ -65,16 +64,16 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 	/**
      * Constructs the tool bar.
      * 
-     * @param pDiagram The diagram associated with this tool bar.
+     * @param pDiagramRenderer The renderer for the diagram associated with this tool bar.
 	 */
-	public DiagramTabToolBar(Diagram pDiagram)
+	public DiagramTabToolBar(DiagramRenderer pDiagramRenderer)
 	{
 		setOrientation(Orientation.VERTICAL);
 		setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;"); 
 		ToggleGroup toggleGroup = new ToggleGroup();
 		// Method setToolToBeSelect assumes the selection tool will always be the first button in the toggle group.
 		installSelectionTool(toggleGroup); 
-		installDiagramElementTools(pDiagram, toggleGroup);
+		installDiagramElementTools(pDiagramRenderer, toggleGroup);
 		installCopyToClipboard();
     	showButtonLabels( UserPreferences.instance().getBoolean(BooleanPreference.showToolHints ));
     	setToolToBeSelect();
@@ -101,18 +100,18 @@ public class DiagramTabToolBar extends ToolBar implements BooleanPreferenceChang
 		return canvas;
 	}
 	
-	private void installDiagramElementTools(Diagram pDiagram, ToggleGroup pToggleGroup)
+	private void installDiagramElementTools(DiagramRenderer pDiagramRenderer, ToggleGroup pToggleGroup)
 	{
 		final int oldFontSize = UserPreferences.instance().getInteger(IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
-		for( DiagramElement element : pDiagram.getPrototypes() )
+		for( DiagramElement element : pDiagramRenderer.diagram().getPrototypes() )
 		{
-			SelectableToolButton button = new SelectableToolButton(RenderingFacade.createIcon(pDiagram.getType(), element),
+			SelectableToolButton button = new SelectableToolButton(pDiagramRenderer.createIcon(element),
 					Prototypes.instance().tooltip(element, 
 							UserPreferences.instance().getBoolean(BooleanPreference.verboseToolTips)), 
 					pToggleGroup, element);
 			UserPreferences.instance().addBooleanPreferenceChangeHandler(button);
-			add(button, RenderingFacade.createIcon(pDiagram.getType(), element), Prototypes.instance().tooltip(element, false));
+			add(button, pDiagramRenderer.createIcon(element), Prototypes.instance().tooltip(element, false));
 		}
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, oldFontSize);
 	}

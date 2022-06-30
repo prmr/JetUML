@@ -86,6 +86,11 @@ public abstract class DiagramBuilder
 		return aDiagramRenderer.diagram();
 	}
 	
+	public final DiagramRenderer renderer()
+	{
+		return aDiagramRenderer;
+	}
+	
 	/**
 	 * Provide information to this builder about the size
 	 * of the canvas the diagram is built on.

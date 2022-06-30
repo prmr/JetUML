@@ -69,7 +69,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
 	
-	private final Diagram aDiagram;
 	private final SelectionModel aSelectionModel;
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
 	private final DiagramBuilder aDiagramBuilder;
@@ -89,19 +88,18 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * Constructs the canvas, assigns the diagram to it.
 	 * 
-	 * @param pDiagram The diagram to draw on this canvas.
-	 * @pre pDiagram != null;
+	 * @param pDiagramBuilder The builder wrapping the diagram to draw on this canvas.
+	 * @pre pDiagramBuilder != null;
 	 */
-	public DiagramCanvas(Diagram pDiagram, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
+	public DiagramCanvas(DiagramBuilder pDiagramBuilder, DiagramTabToolBar pToolBar, MouseDraggedGestureHandler pHandler)
 	{
-		assert pDiagram != null;
-		aDiagram = pDiagram;
+		assert pDiagramBuilder != null;
 		aToolBar = pToolBar;
 		aSelectionModel = new SelectionModel(this);
-		aDiagramBuilder = DiagramType.newBuilderInstanceFor(getDiagram());
+		aDiagramBuilder = pDiagramBuilder;
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
-		RenderingFacade.prepareFor(pDiagram);
-		Dimension dimension = getDiagramCanvasWidth(pDiagram);
+		RenderingFacade.prepareFor(pDiagramBuilder.diagram());
+		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());
 		setHeight(dimension.height());
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
@@ -121,7 +119,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		Set<DiagramElement> toBeRemoved = new HashSet<>();
 		for(DiagramElement selected : aSelectionModel )
 		{
-			if(!getDiagram().contains(selected)) 
+			if(!diagram().contains(selected)) 
 			{
 				toBeRemoved.add(selected);
 			}
@@ -214,9 +212,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * @return The diagram painted on this canvas.
 	 */
-	public Diagram getDiagram()
+	public Diagram diagram()
 	{
-		return aDiagram;
+		return aDiagramBuilder.diagram();
 	}
 	
 	/**
@@ -225,7 +223,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public void paintPanel()
 	{
-		RenderingFacade.prepareFor(aDiagram);
+		RenderingFacade.prepareFor(diagram());
 		GraphicsContext context = getGraphicsContext2D();
 		context.setFill(Color.WHITE); 
 		context.fillRect(0, 0, getWidth(), getHeight());
@@ -233,7 +231,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		RenderingFacade.draw(aDiagram, context);
+		RenderingFacade.draw(diagram(), context);
 		synchronizeSelectionModel();
 		aSelectionModel.forEach( selected -> RenderingFacade.drawSelectionHandles(selected, context));
 		aSelectionModel.getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
@@ -308,7 +306,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void selectAll()
 	{
 		aToolBar.setToolToBeSelect();
-		aSelectionModel.selectAll(getDiagram());
+		aSelectionModel.selectAll(diagram());
 	}
 	
 	/**
@@ -316,7 +314,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public void shiftKeyPressed()
 	{
-		if(getDiagram().getType() != DiagramType.CLASS)
+		if(diagram().getType() != DiagramType.CLASS)
 		{
 			return;
 		}
@@ -330,7 +328,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createUnlinkFromPackageOperation(selectedNodes));
 		}
 		// Place the modified nodes on the top
-		selectedNodes.forEach(node -> getDiagram().placeOnTop(node));
+		selectedNodes.forEach(node -> diagram().placeOnTop(node));
 		paintPanel();
 	}
 
@@ -452,7 +450,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			// Reorder the selected nodes to ensure that they appear on the top
 			for(Node pSelected: aSelectionModel.getSelectedNodes()) 
 			{
-				getDiagram().placeOnTop(pSelected);
+				diagram().placeOnTop(pSelected);
 			}
 			aDragMode = DragMode.DRAG_MOVE;
 			aMoveTracker.startTrackingMove(aSelectionModel);
@@ -521,7 +519,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
 			aSelectionModel.set(newNode);
-			getDiagram().placeOnTop(newNode);
+			diagram().placeOnTop(newNode);
 			paintPanel();
 			if( UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode))
 			{
@@ -672,7 +670,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			{
 				aSelectionModel.clearSelection();
 			}
-			aSelectionModel.activateLasso(computeLasso(), getDiagram());
+			aSelectionModel.activateLasso(computeLasso(), diagram());
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{

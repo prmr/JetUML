@@ -33,7 +33,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -63,19 +62,6 @@ public class RenderingFacade
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
 		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
-	}
-	
-	/**
-	 * Creates the icon for the target diagram element.
-	 * 
-	 * @param pElement The element for which we want an icon
-	 * @return An icon that represents this element
-	 * @pre pElement != null
-	 */
-	public static Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aDiagramRenderers.get(pDiagramType).createIcon(pElement);
 	}
 	
 	/**

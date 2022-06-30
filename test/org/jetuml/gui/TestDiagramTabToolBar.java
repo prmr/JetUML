@@ -41,7 +41,7 @@ import javafx.scene.control.ToolBar;
 public class TestDiagramTabToolBar
 {
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(aDiagram);
+	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(DiagramType.newRendererInstanceFor(aDiagram));
 	
 	@BeforeEach
 	void setup()

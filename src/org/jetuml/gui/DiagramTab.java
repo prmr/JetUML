@@ -30,6 +30,8 @@ import java.util.Optional;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.RenderingFacade;
 
@@ -53,7 +55,6 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	private static final double ZOOM_MAX = DEFAULT_SCALE * SCALE_MULTIPLIER * SCALE_MULTIPLIER;
 	
 	private final DoubleProperty aZoom;
-	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
 	private Optional<File> aFile = Optional.empty(); // The file associated with this diagram
 	
@@ -63,11 +64,13 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public DiagramTab(Diagram pDiagram)
 	{
-		aDiagram = pDiagram;
 		RenderingFacade.prepareFor(pDiagram);
-		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
+		DiagramBuilder builder = DiagramType.newBuilderInstanceFor(pDiagram);
+		DiagramTabToolBar sideBar = new DiagramTabToolBar(builder.renderer());
+		aDiagramCanvas = new DiagramCanvas(builder, sideBar, this);
+		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram, sideBar, this);
+		
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		UserPreferences.instance().addIntegerPreferenceChangeHandler(aDiagramCanvas);
 		aDiagramCanvas.paintPanel();
@@ -135,7 +138,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public Diagram getDiagram()
 	{
-		return aDiagram;
+		return aDiagramCanvas.diagram();
 	}
 	
 	/**
