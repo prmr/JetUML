@@ -55,7 +55,6 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	private final DoubleProperty aZoom;
 	private final Diagram aDiagram;
 	private DiagramCanvas aDiagramCanvas;
-	private final DiagramCanvasController aDiagramCanvasController;
 	private Optional<File> aFile = Optional.empty(); // The file associated with this diagram
 	
 	/**
@@ -68,11 +67,9 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 		RenderingFacade.prepareFor(pDiagram);
 		DiagramTabToolBar sideBar = new DiagramTabToolBar(pDiagram);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(sideBar);
-		aDiagramCanvas = new DiagramCanvas(pDiagram);
+		aDiagramCanvas = new DiagramCanvas(pDiagram, sideBar, this);
 		UserPreferences.instance().addBooleanPreferenceChangeHandler(aDiagramCanvas);
 		UserPreferences.instance().addIntegerPreferenceChangeHandler(aDiagramCanvas);
-		aDiagramCanvasController = new DiagramCanvasController(aDiagramCanvas, sideBar, this);
-		aDiagramCanvas.setController(aDiagramCanvasController);
 		aDiagramCanvas.paintPanel();
 		
 		BorderPane layout = new BorderPane();
@@ -146,7 +143,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void copy()
 	{
-		aDiagramCanvasController.copy();
+		aDiagramCanvas.copy();
 	}
 	
 	/**
@@ -154,7 +151,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void cut()
 	{
-		aDiagramCanvasController.cut();
+		aDiagramCanvas.cut();
 	}
 	
 	/**
@@ -162,7 +159,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void paste()
 	{
-		aDiagramCanvasController.paste();
+		aDiagramCanvas.paste();
 	}
 	
 	/**
@@ -170,7 +167,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void editSelected()
 	{
-		aDiagramCanvasController.editSelected();
+		aDiagramCanvas.editSelected();
 	}
 	
 	/**
@@ -178,7 +175,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void undo()
 	{
-		aDiagramCanvasController.undo();
+		aDiagramCanvas.undo();
 	}
 	
 	/**
@@ -186,7 +183,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void redo()
 	{
-		aDiagramCanvasController.redo();
+		aDiagramCanvas.redo();
 	}
 	
 	/**
@@ -194,7 +191,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void removeSelected()
 	{
-		aDiagramCanvasController.removeSelected();
+		aDiagramCanvas.removeSelected();
 	}
 	
 	/**
@@ -202,7 +199,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void selectAll()
 	{
-		aDiagramCanvasController.selectAll();
+		aDiagramCanvas.selectAll();
 	}
 	
 	/**
@@ -252,7 +249,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public void diagramSaved()
 	{
-		aDiagramCanvasController.diagramSaved();
+		aDiagramCanvas.diagramSaved();
 	}
 	
 	/**
@@ -261,7 +258,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	 */
 	public boolean hasUnsavedChanges()
 	{
-		return aDiagramCanvasController.hasUnsavedChanges();
+		return aDiagramCanvas.hasUnsavedChanges();
 	}
 
 	/**
@@ -309,7 +306,7 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	@Override
 	public void shiftKeyPressed() 
 	{
-		aDiagramCanvasController.shiftKeyPressed();
+		aDiagramCanvas.shiftKeyPressed();
 	}
 	
 	/* Converts the key typed to an 1-based index that represents

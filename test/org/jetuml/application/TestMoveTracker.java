@@ -58,7 +58,7 @@ public class TestMoveTracker
 	
 	private static Object createMoveTracker() throws ReflectiveOperationException
 	{
-		Constructor<?> constructor = Class.forName("org.jetuml.gui.DiagramCanvasController$MoveTracker")
+		Constructor<?> constructor = Class.forName("org.jetuml.gui.DiagramCanvas$MoveTracker")
 				.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		return constructor.newInstance();
@@ -66,7 +66,7 @@ public class TestMoveTracker
 	
 	private void startTrackingMove(Iterable<DiagramElement> pSelectedElements) throws ReflectiveOperationException
 	{
-		Method method = Class.forName("org.jetuml.gui.DiagramCanvasController$MoveTracker")
+		Method method = Class.forName("org.jetuml.gui.DiagramCanvas$MoveTracker")
 			.getDeclaredMethod("startTrackingMove", Iterable.class);
 		method.setAccessible(true);
 		method.invoke(aMoveTracker, pSelectedElements);
@@ -74,7 +74,7 @@ public class TestMoveTracker
 	
 	private CompoundOperation endTrackingMove(DiagramBuilder pDiagramBuilder) throws ReflectiveOperationException
 	{
-		Method method = Class.forName("org.jetuml.gui.DiagramCanvasController$MoveTracker")
+		Method method = Class.forName("org.jetuml.gui.DiagramCanvas$MoveTracker")
 			.getDeclaredMethod("endTrackingMove", DiagramBuilder.class);
 		method.setAccessible(true);
 		return (CompoundOperation) method.invoke(aMoveTracker, pDiagramBuilder);
