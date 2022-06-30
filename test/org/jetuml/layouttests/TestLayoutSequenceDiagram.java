@@ -34,7 +34,6 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -186,9 +185,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
 				.findFirst()
 				.get();
-		Line selfCallEdgeLine = RenderingFacade.getConnectionPoints(edgeByMiddleLabel("selfCall()"));
-		Rectangle largerCallNodeBounds = RenderingFacade.getBounds(largerCallNode);
-		Rectangle smallerCallNodeBounds = RenderingFacade.getBounds(smallerCallNode);
+		Line selfCallEdgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("selfCall()"));
+		Rectangle largerCallNodeBounds = aRenderer.getBounds(largerCallNode);
+		Rectangle smallerCallNodeBounds = aRenderer.getBounds(smallerCallNode);
 		assertEquals(largerCallNodeBounds.getMaxX(), selfCallEdgeLine.getPoint1().getX());
 		assertEquals(smallerCallNodeBounds.getMaxX(), selfCallEdgeLine.getPoint2().getX());
 	}
@@ -202,9 +201,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Edge signalCallEdge = edgeByMiddleLabel("signal");
 		Node startNode = nodeByName("object1:Type1").getChildren().get(1);
 		Node endNode = nodeByName(":Type2").getChildren().get(0);
-		Line signalCallEdgeLine = RenderingFacade.getConnectionPoints(signalCallEdge);
-		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
-		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
+		Line signalCallEdgeLine = aRenderer.getConnectionPoints(signalCallEdge);
+		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
+		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
 		assertEquals(startNodeBounds.getMaxX(), signalCallEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getX(), signalCallEdgeLine.getPoint2().getX());
 	}
@@ -226,9 +225,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(call1Edge.getEnd()))
 				.findFirst()
 				.get();
-		Line call1EdgeLine = RenderingFacade.getConnectionPoints(call1Edge);
-		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
-		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
+		Line call1EdgeLine = aRenderer.getConnectionPoints(call1Edge);
+		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
+		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
 		assertEquals(startNodeBounds.getMaxX(), call1EdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getX(), call1EdgeLine.getPoint2().getX());
 	}
@@ -250,9 +249,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(r1ReturnEdge.getEnd()))
 				.findFirst()
 				.get();
-		Line r1ReturnEdgeLine = RenderingFacade.getConnectionPoints(r1ReturnEdge);
-		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
-		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
+		Line r1ReturnEdgeLine = aRenderer.getConnectionPoints(r1ReturnEdge);
+		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
+		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
 		assertEquals(startNodeBounds.getX(), r1ReturnEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getMaxX(), r1ReturnEdgeLine.getPoint2().getX());
 	}
@@ -278,9 +277,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(returnEdge.getEnd()))
 				.findFirst()
 				.get();
-		Line returnEdgeLine = RenderingFacade.getConnectionPoints(returnEdge);
-		Rectangle startNodeBounds = RenderingFacade.getBounds(startNode);
-		Rectangle endNodeBounds = RenderingFacade.getBounds(endNode);
+		Line returnEdgeLine = aRenderer.getConnectionPoints(returnEdge);
+		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
+		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
 		assertEquals(startNodeBounds.getX(), returnEdgeLine.getPoint1().getX());
 		assertEquals(endNodeBounds.getMaxX(), returnEdgeLine.getPoint2().getX());
 	}
@@ -293,9 +292,9 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 	{
 		Node noteNode = nodeByName("A note");
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
-		Line noteEdgeLine = RenderingFacade.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
-		Rectangle noteNodeBounds = RenderingFacade.getBounds(noteNode);
-		Rectangle callNodeBounds = RenderingFacade.getBounds(callNode);
+		Line noteEdgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
+		Rectangle noteNodeBounds = aRenderer.getBounds(noteNode);
+		Rectangle callNodeBounds = aRenderer.getBounds(callNode);
 		assertEquals(noteNodeBounds.getX(), noteEdgeLine.getPoint1().getX());
 		assertTrue(callNodeBounds.contains(noteEdgeLine.getPoint2()));
 	}

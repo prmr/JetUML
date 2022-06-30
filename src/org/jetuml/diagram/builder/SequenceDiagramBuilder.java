@@ -38,7 +38,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
 /**
@@ -198,7 +197,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( CallEdge callee : new ControlFlow(aDiagramRenderer.diagram()).getCalls(pCaller))
 		{
-			if( RenderingFacade.getConnectionPoints(callee).getY1() > pY )
+			if( renderer().getConnectionPoints(callee).getY1() > pY )
 			{
 				return aDiagramRenderer.diagram().indexOf(callee);
 			}

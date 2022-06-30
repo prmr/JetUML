@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.PropertyName;
@@ -42,6 +43,7 @@ import org.jetuml.diagram.nodes.NamedNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.PersistenceTestUtils;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.AfterAll;
@@ -75,10 +77,12 @@ public abstract class AbstractTestDiagramLayout
 	private static final int BUFFER = 2; 
 	
 	protected final Diagram aDiagram; 
+	protected final DiagramRenderer aRenderer;
 	
 	AbstractTestDiagramLayout(Path pDiagramPath) throws IOException
 	{
 		aDiagram = PersistenceService.read(pDiagramPath.toFile()).diagram();
+		aRenderer = DiagramType.newRendererInstanceFor(aDiagram);
 	}
 	
 	/**

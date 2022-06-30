@@ -28,7 +28,6 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
-import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
@@ -45,11 +44,6 @@ public class RenderingFacade
 	
 	private static Optional<Diagram> aActiveDiagram = Optional.empty();
 	
-	private static DiagramType diagramType()
-	{
-		return aActiveDiagram.get().getType();
-	}
-	
 	/**
 	 * Caches the diagram to be rendered. All subsequent rendering operations
 	 * will be assumed to target this diagram, until the next call to prepare.
@@ -61,20 +55,6 @@ public class RenderingFacade
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
 		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
-	}
-	
-	/**
-	 * Gets the points at which pEdge is connected to its nodes.
-	 * 
-	 * @param pEdge The target edge
-	 * @return a line joining the two connection points
-	 * @pre pEdge != null
-	 * 
-	 */
-	public static Line getConnectionPoints(Edge pEdge)
-	{
-		assert pEdge != null;
-		return aDiagramRenderers.get(diagramType()).getConnectionPoints(pEdge);
 	}
 	
 	/**

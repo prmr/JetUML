@@ -31,6 +31,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +43,7 @@ public class TestNoteEdgeViewer
 	private PointNode aPointNode;
 	private NoteEdge aNoteEdge;
 	private Diagram aGraph;
+	private DiagramRenderer aRenderer;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -61,6 +63,7 @@ public class TestNoteEdgeViewer
 		aNoteEdge = new NoteEdge();
 		
 		aGraph = new Diagram(DiagramType.CLASS);
+		aRenderer = DiagramType.newRendererInstanceFor(aGraph);
 	}
 	
 	@Test
@@ -80,7 +83,7 @@ public class TestNoteEdgeViewer
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
 		assertEquals(new Rectangle(59,19,42,2), RenderingFacade.getBounds(aNoteEdge));
 		
-		Line connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
+		Line connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 100, connectionPoints.getX2());
@@ -90,7 +93,7 @@ public class TestNoteEdgeViewer
 		aPointNode.translate(20, 0);
 		assertEquals(new Rectangle(59,19,62,2), RenderingFacade.getBounds(aNoteEdge));
 		
-		connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
+		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 20, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());
@@ -104,7 +107,7 @@ public class TestNoteEdgeViewer
 		// yielding bounds of [x=58,y=24,width=62,height=16]
 		assertEquals(new Rectangle(58,25,62,15), RenderingFacade.getBounds(aNoteEdge));
 		
-		connectionPoints = RenderingFacade.getConnectionPoints(aNoteEdge);
+		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
 		assertEquals( 27, connectionPoints.getY1());
 		assertEquals( 120, connectionPoints.getX2());

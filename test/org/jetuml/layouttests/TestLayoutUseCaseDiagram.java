@@ -112,7 +112,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle actorNodeBounds = RenderingFacade.getBounds(actorNode);
 		Rectangle useCase1NodeBounds = RenderingFacade.getBounds(nodeByName("Use case 1"));
-		Line associationEdgeLine = RenderingFacade.getConnectionPoints(associationEdge);
+		Line associationEdgeLine = aRenderer.getConnectionPoints(associationEdge);
 		assertEquals(actorNodeBounds.getMaxX(), associationEdgeLine.getPoint1().getX());
 		assertTrue(useCase1NodeBounds.contains(associationEdgeLine.getPoint2()));
 	}
@@ -131,7 +131,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle useCase1NodeBounds = RenderingFacade.getBounds(nodeByName("Use case 1"));
 		Rectangle useCase4NodeBounds = RenderingFacade.getBounds(useCase4Node);
-		Line associationEdgeLine = RenderingFacade.getConnectionPoints(associationEdge);
+		Line associationEdgeLine = aRenderer.getConnectionPoints(associationEdge);
 		assertTrue(useCase1NodeBounds.contains(associationEdgeLine.getPoint1()));
 		assertTrue(useCase4NodeBounds.contains(associationEdgeLine.getPoint2()));
 	}
@@ -150,7 +150,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle actor2NodeBounds = RenderingFacade.getBounds(nodeByName("Actor2"));
 		Rectangle useCase2NodeBounds = RenderingFacade.getBounds(useCase2Node);
-		Line associationEdgeLine = RenderingFacade.getConnectionPoints(associationEdge);
+		Line associationEdgeLine = aRenderer.getConnectionPoints(associationEdge);
 		assertEquals(actor2NodeBounds.getMaxX(), associationEdgeLine.getPoint1().getX());
 		assertTrue(useCase2NodeBounds.contains(associationEdgeLine.getPoint2()));
 	}
@@ -169,7 +169,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle actor2NodeBounds = RenderingFacade.getBounds(nodeByName("Actor2"));
 		Rectangle useCase3NodeBounds = RenderingFacade.getBounds(useCase3Node);
-		Line associationEdgeLine = RenderingFacade.getConnectionPoints(associationEdge);
+		Line associationEdgeLine = aRenderer.getConnectionPoints(associationEdge);
 		assertEquals(actor2NodeBounds.getMaxX(), associationEdgeLine.getPoint1().getX());
 		assertEquals(useCase3NodeBounds.getX(), associationEdgeLine.getPoint2().getX());
 	}
@@ -190,7 +190,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle actor3NodeBounds = RenderingFacade.getBounds(nodeByName("Actor3"));
 		Rectangle actor2NodeBounds = RenderingFacade.getBounds(actor2Node);
-		Line extendEdgeLine = RenderingFacade.getConnectionPoints(extendEdge);
+		Line extendEdgeLine = aRenderer.getConnectionPoints(extendEdge);
 		assertEquals(actor3NodeBounds.getMaxX(), extendEdgeLine.getPoint1().getX());
 		assertEquals(actor2NodeBounds.getX(), extendEdgeLine.getPoint2().getX());
 	}
@@ -211,7 +211,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle useCase2NodeBounds = RenderingFacade.getBounds(nodeByName("Use case 2"));
 		Rectangle useCase4NodeBounds = RenderingFacade.getBounds(useCase4Node);
-		Line extendEdgeLine = RenderingFacade.getConnectionPoints(extendEdge);
+		Line extendEdgeLine = aRenderer.getConnectionPoints(extendEdge);
 		assertEquals(useCase2NodeBounds.getMaxX(), extendEdgeLine.getPoint1().getX());
 		assertEquals(useCase4NodeBounds.getX(), extendEdgeLine.getPoint2().getX());
 	}
@@ -232,7 +232,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle useCase2NodeBounds = RenderingFacade.getBounds(nodeByName("Use case 2"));
 		Rectangle useCase3NodeBounds = RenderingFacade.getBounds(useCase3Node);
-		Line includeEdgeLine = RenderingFacade.getConnectionPoints(includeEdge);
+		Line includeEdgeLine = aRenderer.getConnectionPoints(includeEdge);
 		assertEquals(useCase2NodeBounds.getMaxY(), includeEdgeLine.getPoint1().getY());
 		assertEquals(useCase3NodeBounds.getY(), includeEdgeLine.getPoint2().getY());
 	}
@@ -251,7 +251,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle actor3NodeBounds = RenderingFacade.getBounds(nodeByName("Actor3"));
 		Rectangle actorNodeBounds = RenderingFacade.getBounds(actorNode);
-		Line generalizationEdgeLine = RenderingFacade.getConnectionPoints(generalizationEdge);
+		Line generalizationEdgeLine = aRenderer.getConnectionPoints(generalizationEdge);
 		assertEquals(actor3NodeBounds.getMaxX(), generalizationEdgeLine.getPoint1().getX());
 		assertEquals(actorNodeBounds.getX(), generalizationEdgeLine.getPoint2().getX());
 	}
@@ -270,7 +270,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 				.get();
 		Rectangle useCase2NodeBounds = RenderingFacade.getBounds(nodeByName("Use case 2"));
 		Rectangle useCase1NodeBounds = RenderingFacade.getBounds(useCase1Node);
-		Line generalizationEdgeLine = RenderingFacade.getConnectionPoints(generalizationEdge);
+		Line generalizationEdgeLine = aRenderer.getConnectionPoints(generalizationEdge);
 		assertTrue(useCase2NodeBounds.contains(generalizationEdgeLine.getPoint1()));
 		assertTrue(useCase1NodeBounds.contains(generalizationEdgeLine.getPoint2()));
 	}
@@ -282,7 +282,7 @@ public class TestLayoutUseCaseDiagram extends AbstractTestUseCaseDiagramLayout
 	void testNoteEdge()
 	{
 		Rectangle noteNodeBounds = RenderingFacade.getBounds(nodeByName("A note"));
-		Line noteEdgeLine = RenderingFacade.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
+		Line noteEdgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
 		assertEquals(noteNodeBounds.getX(), noteEdgeLine.getPoint1().getX());
 	}
 }
