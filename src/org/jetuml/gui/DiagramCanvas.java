@@ -587,7 +587,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private void alignMoveToGrid()
 	{
 		Iterator<Node> selectedNodes = aSelectionModel.getSelectedNodes().iterator();
-		Rectangle entireBounds = RenderingFacade.getBoundsIncludingParents(aSelectionModel);
+		Rectangle entireBounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelectionModel);
 		
 		if( selectedNodes.hasNext() )
 		{
@@ -682,7 +682,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	// finds the point to reveal based on the entire selection
 	private Point computePointToReveal(Point pMousePoint)
 	{
-		Rectangle bounds = RenderingFacade.getBoundsIncludingParents(aSelectionModel);
+		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelectionModel);
 		int x = bounds.getMaxX();
 		int y = bounds.getMaxY();
 		
@@ -710,7 +710,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aSelectionModel.getSelectedNodes().forEach(selected -> selected.translate(dx, dy));
 		
 		// If this translation results in exceeding the canvas bounds, roll back.
-		Rectangle bounds =RenderingFacade.getBoundsIncludingParents(aSelectionModel);
+		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelectionModel);
 		int dxCorrection = Math.max(-bounds.getX(), 0) 
 				+ Math.min((int)getWidth() - bounds.getMaxX(), 0);
 		int dyCorrection = Math.max(-bounds.getY(), 0) 

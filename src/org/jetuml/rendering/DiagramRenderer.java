@@ -171,4 +171,13 @@ public interface DiagramRenderer
    	 * by this renderer.
    	 */
    	DiagramElementRenderer rendererFor(Class<? extends DiagramElement> pClass);
+   	
+   	/**
+	 * @param pElements The elements whose bounds we are interested in. 
+	 * @return A rectangle that represents the bounding box of the 
+	 *     entire selection including the bounds of their parent nodes.
+	 * @pre pElements != null
+	 * @pre pElements has at least one element.
+	 */
+	public Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements);
 }

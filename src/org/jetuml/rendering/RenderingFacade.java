@@ -21,7 +21,6 @@
 package org.jetuml.rendering;
 
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.Optional;
 
 import org.jetuml.diagram.Diagram;
@@ -62,41 +61,6 @@ public class RenderingFacade
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
 		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
-	}
-	
-	/**
-	 * @param pElements The elements whose bounds we are interested in. 
-	 * @return A rectangle that represents the bounding box of the 
-	 *     entire selection including the bounds of their parent nodes.
-	 * @pre pElements != null
-	 * @pre pElements has at least one element.
-	 */
-	public static Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
-	{
-		assert pElements != null;
-		assert pElements.iterator().hasNext();
-		Iterator<DiagramElement> elements = pElements.iterator();
-		DiagramElement next = elements.next();
-		Rectangle bounds = getBounds(next);
-		bounds = addBounds(bounds, next);
-		while( elements.hasNext() )
-		{
-			bounds = addBounds(bounds, elements.next());
-		}
-		return bounds;
-	}
-	
-	// Recursively enlarge the current rectangle to include the selected DiagramElements
-	private static Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
-	{
-		if( pElement instanceof Node && ((Node) pElement).hasParent())
-		{
-			return addBounds(pBounds, ((Node) pElement).getParent());
-		}
-		else
-		{
-			return pBounds.add(getBounds(pElement));
-		}
 	}
 	
 	/**

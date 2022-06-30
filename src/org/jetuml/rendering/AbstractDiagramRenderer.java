@@ -18,6 +18,7 @@
 package org.jetuml.rendering;
 
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.jetuml.diagram.Diagram;
@@ -225,5 +226,34 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public final Diagram diagram()
 	{
 		return aDiagram;
+	}
+	
+	@Override
+	public Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		assert pElements.iterator().hasNext();
+		Iterator<DiagramElement> elements = pElements.iterator();
+		DiagramElement next = elements.next();
+		Rectangle bounds = getBounds(next);
+		bounds = addBounds(bounds, next);
+		while( elements.hasNext() )
+		{
+			bounds = addBounds(bounds, elements.next());
+		}
+		return bounds;
+	}
+	
+	// Recursively enlarge the current rectangle to include the selected DiagramElements
+	private Rectangle addBounds(Rectangle pBounds, DiagramElement pElement)
+	{
+		if( pElement instanceof Node && ((Node) pElement).hasParent())
+		{
+			return addBounds(pBounds, ((Node) pElement).getParent());
+		}
+		else
+		{
+			return pBounds.add(getBounds(pElement));
+		}
 	}
 }
