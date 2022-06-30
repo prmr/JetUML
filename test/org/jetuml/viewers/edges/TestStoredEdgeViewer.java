@@ -41,7 +41,6 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.Layouter;
 import org.jetuml.viewers.LineStyle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -343,33 +342,15 @@ public class TestStoredEdgeViewer
 	}
 	
 	/*
-	 * Returns the layouter of the active classdiagramrenderer
-	 */
-	private Layouter layouter()
-	{
-		try 
-		{
-			Field layouter = ClassDiagramRenderer.class.getDeclaredField("aLayouter");
-			layouter.setAccessible(true);
-			return (Layouter)layouter.get(aRenderer);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	/*
 	 * Stores an edge path in the layouter of the active classdiagramrenderer
 	 */
 	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
 		try 
 		{
-			Field edgeStorage = Layouter.class.getDeclaredField("aEdgeStorage");
+			Field edgeStorage = ClassDiagramRenderer.class.getDeclaredField("aEdgeStorage");
 			edgeStorage.setAccessible(true);
-			((EdgeStorage)edgeStorage.get(layouter())).store(pEdge, pEdgePath);
+			((EdgeStorage)edgeStorage.get(aRenderer)).store(pEdge, pEdgePath);
 		}
 		catch(ReflectiveOperationException e)
 		{

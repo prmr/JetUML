@@ -315,7 +315,7 @@ public class TestLayouter
 	public void testLayout()
 	{
 		setUpTestLayout();
-		layouter().layout(aDiagram);
+		aRenderer.layout(aDiagram);
 		//aEdgeA
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(50, 190)).get());
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(50, 155)).get());
@@ -2295,33 +2295,15 @@ public class TestLayouter
 	/// REFLECTIVE HELPER METHODS ///
 	
 	/*
-	 * Returns the layouter of the active classdiagramrenderer
-	 */
-	private Layouter layouter()
-	{
-		try 
-		{
-			Field layouter = ClassDiagramRenderer.class.getDeclaredField("aLayouter");
-			layouter.setAccessible(true);
-			return (Layouter)layouter.get(aRenderer); 
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return null;
-		}
-	}
-	
-	/*
 	 * Stores an edge path in the layouter of the active classdiagramrenderer
 	 */
 	private void store(Edge pEdge, EdgePath pEdgePath)
 	{
 		try 
 		{
-			Field edgeStorage = Layouter.class.getDeclaredField("aEdgeStorage");
+			Field edgeStorage = ClassDiagramRenderer.class.getDeclaredField("aEdgeStorage");
 			edgeStorage.setAccessible(true);
-			((EdgeStorage)edgeStorage.get(layouter())).store(pEdge, pEdgePath);
+			((EdgeStorage)edgeStorage.get(aRenderer)).store(pEdge, pEdgePath);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2333,9 +2315,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("layoutSegmentedEdges", Diagram.class, EdgePriority.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSegmentedEdges", Diagram.class, EdgePriority.class);
 			method.setAccessible(true);
-			method.invoke(layouter(), pDiagram, pEdgePriority);
+			method.invoke(aRenderer, pDiagram, pEdgePriority);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2348,9 +2330,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("storeMergedEndEdges", NodeSide.class, List.class, Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedEndEdges", NodeSide.class, List.class, Diagram.class);
 			method.setAccessible(true);
-			method.invoke(layouter(), pDirection, pEdgesToMerge, pDiagram);
+			method.invoke(aRenderer, pDirection, pEdgesToMerge, pDiagram);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2362,9 +2344,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("storeMergedStartEdges", NodeSide.class, List.class, Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedStartEdges", NodeSide.class, List.class, Diagram.class);
 			method.setAccessible(true);
-			method.invoke(layouter(), pDirection, pEdgesToMerge, pDiagram);
+			method.invoke(aRenderer, pDirection, pEdgesToMerge, pDiagram);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2376,9 +2358,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("layoutDependencyEdges", Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutDependencyEdges", Diagram.class);
 			method.setAccessible(true);
-			method.invoke(layouter(), pDiagram);
+			method.invoke(aRenderer, pDiagram);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2390,9 +2372,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("layoutSelfEdges", Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSelfEdges", Diagram.class);
 			method.setAccessible(true);
-			method.invoke(layouter(), pDiagram);
+			method.invoke(aRenderer, pDiagram);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2404,9 +2386,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("buildSelfEdge", Edge.class, NodeCorner.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("buildSelfEdge", Edge.class, NodeCorner.class);
 			method.setAccessible(true);
-			return (EdgePath) method.invoke(layouter(), pEdge, pCorner);
+			return (EdgePath) method.invoke(aRenderer, pEdge, pCorner);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2418,9 +2400,9 @@ public class TestLayouter
 	{
 		try 
 		{
-			Method method = Layouter.class.getDeclaredMethod("getSelfEdgeCorner", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getSelfEdgeCorner", Edge.class);
 			method.setAccessible(true);
-			return (NodeCorner) method.invoke(layouter(), pEdge);
+			return (NodeCorner) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2436,9 +2418,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getEdgesToMergeStart", Edge.class, List.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getEdgesToMergeStart", Edge.class, List.class);
 			method.setAccessible(true);
-			return (Collection<Edge>) method.invoke(layouter(), pEdge, pEdges);
+			return (Collection<Edge>) method.invoke(aRenderer, pEdge, pEdges);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2452,9 +2434,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getEdgesToMergeEnd", Edge.class, List.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getEdgesToMergeEnd", Edge.class, List.class);
 			method.setAccessible(true);
-			return (Collection<Edge>) method.invoke(layouter(), pEdge, pEdges);
+			return (Collection<Edge>) method.invoke(aRenderer, pEdge, pEdges);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2468,9 +2450,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("storedConflictingEdges", NodeSide.class, Node.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storedConflictingEdges", NodeSide.class, Node.class, Edge.class);
 			method.setAccessible(true);
-			return (List<Edge>) method.invoke(layouter(), pNodeFace, pNode, pEdge);
+			return (List<Edge>) method.invoke(aRenderer, pNodeFace, pNode, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2483,9 +2465,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("nodeIsCloserThanSegment", Edge.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodeIsCloserThanSegment", Edge.class, Node.class, NodeSide.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge, pNode, pAttachedSide);
+			return (boolean) method.invoke(aRenderer, pEdge, pNode, pAttachedSide);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2498,9 +2480,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getHorizontalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getHorizontalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pStart, pEnd, pEdgeDirection,pEdge);
+			return (int) method.invoke(aRenderer, pStart, pEnd, pEdgeDirection,pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2514,9 +2496,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getVerticalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getVerticalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pStart, pEnd, pEdgeDirection, pEdge);
+			return (int) method.invoke(aRenderer, pStart, pEnd, pEdgeDirection, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2530,9 +2512,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("horizontalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2545,9 +2527,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("verticalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2561,9 +2543,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("closestConflictingVerticalSegment", NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingVerticalSegment", NodeSide.class, Edge.class);
 			method.setAccessible(true);
-			return (Optional<Edge>) method.invoke(layouter(), pEdgeDirection, pEdge);
+			return (Optional<Edge>) method.invoke(aRenderer, pEdgeDirection, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2577,9 +2559,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("closestConflictingHorizontalSegment", NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingHorizontalSegment", NodeSide.class, Edge.class);
 			method.setAccessible(true);
-			return (Optional<Edge>) method.invoke(layouter(), pEdgeDirection, pEdge);
+			return (Optional<Edge>) method.invoke(aRenderer, pEdgeDirection, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2592,9 +2574,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("adjacentHorizontalMidLine", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentHorizontalMidLine", Edge.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pClosestStoredEdge, pEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pClosestStoredEdge, pEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2607,9 +2589,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("adjacentVerticalMidLine", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentVerticalMidLine", Edge.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pClosestStoredEdge, pEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pClosestStoredEdge, pEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2622,9 +2604,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getSharedNode", Edge.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getSharedNode", Edge.class, Edge.class);
 			method.setAccessible(true);
-			return (Node) method.invoke(layouter(), pEdgeA, pEdgeB);
+			return (Node) method.invoke(aRenderer, pEdgeA, pEdgeB);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2637,9 +2619,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getConnectionPoint", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getConnectionPoint", Node.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (Point) method.invoke(layouter(), pNode, pEdge, pAttachmentSide);
+			return (Point) method.invoke(aRenderer, pNode, pEdge, pAttachmentSide);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2652,9 +2634,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("noOtherEdgesBetween", Edge.class, Edge.class, Node.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("noOtherEdgesBetween", Edge.class, Edge.class, Node.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge1, pEdge2, pNode);
+			return (boolean) method.invoke(aRenderer, pEdge1, pEdge2, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2667,9 +2649,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("nodesOnSameSideOfCommonNode", Node.class, Node.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodesOnSameSideOfCommonNode", Node.class, Node.class, Node.class, NodeSide.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pNode1, pNode2, pCommonNode, pAttachedSide);
+			return (boolean) method.invoke(aRenderer, pNode1, pNode2, pCommonNode, pAttachedSide);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2682,9 +2664,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("noConflictingStartLabels", Edge.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("noConflictingStartLabels", Edge.class, Edge.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge1, pEdge2);
+			return (boolean) method.invoke(aRenderer, pEdge1, pEdge2);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2697,9 +2679,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("noConflictingEndLabels", Edge.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("noConflictingEndLabels", Edge.class, Edge.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge1, pEdge2);
+			return (boolean) method.invoke(aRenderer, pEdge1, pEdge2);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2713,9 +2695,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("attachedSide", Edge.class, Node.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSide", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge, pNode);
+			return (NodeSide) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2728,9 +2710,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("attachedSidePreferringEastWest", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSidePreferringEastWest", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge);
+			return (NodeSide) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2743,9 +2725,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("attachedSidePreferringNorthSouth", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSidePreferringNorthSouth", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge);
+			return (NodeSide) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2758,9 +2740,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("eastWestSideUnlessTooClose", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("eastWestSideUnlessTooClose", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge);
+			return (NodeSide) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2774,9 +2756,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("northSouthSideUnlessTooClose", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("northSouthSideUnlessTooClose", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge);
+			return (NodeSide) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2790,9 +2772,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getStoredEdgePath", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getStoredEdgePath", Edge.class);
 			method.setAccessible(true);
-			return ((Optional<EdgePath>) method.invoke(layouter(), pEdge)).get();
+			return ((Optional<EdgePath>) method.invoke(aRenderer, pEdge)).get();
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2805,9 +2787,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("contains", Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("contains", Edge.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge);
+			return (boolean) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2820,9 +2802,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("buildSegmentedEdgePath", NodeSide.class, Point.class, int.class, Point.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("buildSegmentedEdgePath", NodeSide.class, Point.class, int.class, Point.class);
 			method.setAccessible(true);
-			return (EdgePath) method.invoke(layouter(), pEdgeDirection, pStart, pMidLine, pEnd);
+			return (EdgePath) method.invoke(aRenderer, pEdgeDirection, pStart, pMidLine, pEnd);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2835,9 +2817,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("attachedSideFromStorage", Edge.class, Node.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSideFromStorage", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pEdge, pNode);
+			return (NodeSide) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2850,9 +2832,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("verticalDistanceToNode", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalDistanceToNode", Node.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEndNode, pEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pEndNode, pEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2865,9 +2847,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("horizontalDistanceToNode", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalDistanceToNode", Node.class, Edge.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEndNode, pEdge, pEdgeDirection);
+			return (int) method.invoke(aRenderer, pEndNode, pEdge, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2880,9 +2862,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getIndexSign", Edge.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getIndexSign", Edge.class, Node.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEdge, pNode, pSideOfNode);
+			return (int) method.invoke(aRenderer, pEdge, pNode, pSideOfNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2895,9 +2877,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("indexSignOnNode", Edge.class, Node.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("indexSignOnNode", Edge.class, Node.class, Node.class, NodeSide.class);
 			method.setAccessible(true);
-			return (int) method.invoke(layouter(), pEdge, pNode, pOtherNode, pSideOfNode);
+			return (int) method.invoke(aRenderer, pEdge, pNode, pOtherNode, pSideOfNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2921,9 +2903,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getClosestPoint", Collection.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getClosestPoint", Collection.class, NodeSide.class);
 			method.setAccessible(true);
-			return (Point) method.invoke(layouter(), pPoints, pEdgeDirection);
+			return (Point) method.invoke(aRenderer, pPoints, pEdgeDirection);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2936,9 +2918,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getOtherNode", Edge.class, Node.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getOtherNode", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (Node) method.invoke(layouter(), pEdge, pNode);
+			return (Node) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2951,9 +2933,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("getNodeFace", Rectangle.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getNodeFace", Rectangle.class, NodeSide.class);
 			method.setAccessible(true);
-			return (Line) method.invoke(layouter(), pNodeBounds, pSideOfNode);
+			return (Line) method.invoke(aRenderer, pNodeBounds, pSideOfNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2966,9 +2948,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("isOutgoingEdge", Edge.class, Node.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("isOutgoingEdge", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (boolean) method.invoke(layouter(), pEdge, pNode);
+			return (boolean) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2981,9 +2963,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("northOrSouthSide", Rectangle.class, Rectangle.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("northOrSouthSide", Rectangle.class, Rectangle.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pBounds, pOtherBounds);
+			return (NodeSide) method.invoke(aRenderer, pBounds, pOtherBounds);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2996,9 +2978,9 @@ public class TestLayouter
 	{
 		try
 		{
-			Method method = Layouter.class.getDeclaredMethod("eastOrWestSide", Rectangle.class, Rectangle.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("eastOrWestSide", Rectangle.class, Rectangle.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(layouter(), pBounds, pOtherBounds);
+			return (NodeSide) method.invoke(aRenderer, pBounds, pOtherBounds);
 		}
 		catch(ReflectiveOperationException e)
 		{
