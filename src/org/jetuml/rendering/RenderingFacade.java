@@ -100,32 +100,6 @@ public class RenderingFacade
 	}
 	
 	/**
-	 * Tests whether pElement contains a point.
-	 * 
-	 * @param pElement The element to test
-	 * @param pPoint The point to test
-	 * @return true if this element contains aPoint
-	 */
-	public static boolean contains(DiagramElement pElement, Point pPoint)
-	{
-		assert pElement != null;
-		return aDiagramRenderers.get(diagramType()).contains(pElement, pPoint);
-	}
-	
-	/**
-	 * Draw selection handles around the element.
-	 * 
-	 * @param pElement The target element
-	 * @param pGraphics The graphics context
-	 * @pre pElement != null && pGraphics != null
-	 */
-	public static void drawSelectionHandles(DiagramElement pElement, GraphicsContext pGraphics)
-	{
-		assert pElement != null && pGraphics != null;
-		aDiagramRenderers.get(diagramType()).drawSelectionHandles(pElement, pGraphics);
-	}
-	
-	/**
 	 * Gets the points at which pEdge is connected to its nodes.
 	 * 
 	 * @param pEdge The target edge

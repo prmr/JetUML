@@ -242,7 +242,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	{
 		for( Node node : aDiagramRenderer.diagram().rootNodes() )
 		{
-			if( node instanceof ImplicitParameterNode && RenderingFacade.contains(node, pPoint) )
+			if( node instanceof ImplicitParameterNode && aDiagramRenderer.contains(node, pPoint) )
 			{
 				if( !(pPoint.getY() < implicitParameterNodeViewer().getTopRectangle(node).getMaxY() + CALL_NODE_YGAP) )
 				{

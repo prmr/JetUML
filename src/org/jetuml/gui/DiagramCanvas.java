@@ -233,7 +233,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		RenderingFacade.draw(diagram(), context);
 		synchronizeSelectionModel();
-		aSelectionModel.forEach( selected -> RenderingFacade.drawSelectionHandles(selected, context));
+		aSelectionModel.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, context));
 		aSelectionModel.getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
 		aSelectionModel.getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}

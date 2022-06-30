@@ -33,7 +33,6 @@ import org.jetuml.diagram.builder.constraints.ObjectDiagramEdgeConstraints;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 
 /**
  * A builder for object diagram.
@@ -109,7 +108,7 @@ public class ObjectDiagramBuilder extends DiagramBuilder
 			{
 				return (ObjectNode)node;
 			}
-			else if( RenderingFacade.contains(node, pPoint) && canAddNodeAsChild(node, pNode))
+			else if( aDiagramRenderer.contains(node, pPoint) && canAddNodeAsChild(node, pNode))
 			{
 				candidates.add((ObjectNode)node); // canAddNodeAsChild ensures the downcast is valid
 			}

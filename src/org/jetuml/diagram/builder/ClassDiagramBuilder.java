@@ -39,7 +39,6 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 
 /**
  * A builder for class diagrams.
@@ -132,7 +131,7 @@ public class ClassDiagramBuilder extends DiagramBuilder
 		PackageNode container = null;
 		for( Node node : pNodes )
 		{
-			if( node instanceof PackageNode && RenderingFacade.contains(node, pPoint) )
+			if( node instanceof PackageNode && aDiagramRenderer.contains(node, pPoint) )
 			{
 				container = (PackageNode) node;
 			}
