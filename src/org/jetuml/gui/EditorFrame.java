@@ -52,7 +52,6 @@ import org.jetuml.gui.tips.TipDialog;
 import org.jetuml.persistence.DeserializationException;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.VersionedDiagram;
-import org.jetuml.viewers.ImageCreator;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -392,7 +391,7 @@ public class EditorFrame extends BorderPane
 	public void copyToClipboard() 
 	{
 		DiagramTab frame = getSelectedDiagramTab();
-		final Image image = ImageCreator.createImage(frame.getDiagram());
+		final Image image = frame.createImage();
 		final Clipboard clipboard = Clipboard.getSystemClipboard();
 	    final ClipboardContent content = new ClipboardContent();
 	    content.putImage(image);
@@ -578,7 +577,7 @@ public class EditorFrame extends BorderPane
 		DiagramTab frame = getSelectedDiagramTab();
 		try (OutputStream out = new FileOutputStream(file)) 
 		{
-			BufferedImage image = getBufferedImage(frame.getDiagram()); 
+			BufferedImage image = getBufferedImage(frame); 
 			if("jpg".equals(format))	// to correct the display of JPEG/JPG images (removes red hue)
 			{
 				BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.OPAQUE);
@@ -636,17 +635,9 @@ public class EditorFrame extends BorderPane
 		return fileChooser;
 	}
 
-	/*
-	 * Return the image corresponding to the graph.
-	 * 
-	 * @param pDiagram The graph to convert to an image.
-	 * 
-	 * @return bufferedImage. To convert it into an image, use the syntax :
-	 * Toolkit.getDefaultToolkit().createImage(bufferedImage.getSource());
-	 */
-	private static BufferedImage getBufferedImage(Diagram pDiagram) 
+	private BufferedImage getBufferedImage(DiagramTab pDiagramTab) 
 	{
-		return SwingFXUtils.fromFXImage(ImageCreator.createImage(pDiagram), null);
+		return SwingFXUtils.fromFXImage(pDiagramTab.createImage(), null);
 	}
 	
 	private int getNumberOfUsavedDiagrams()

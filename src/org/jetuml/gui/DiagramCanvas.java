@@ -53,6 +53,8 @@ import org.jetuml.viewers.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -68,6 +70,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * preferred size. */
 	private static final int DIMENSION_BUFFER = 20;
 	private static final int GRID_SIZE = 10;
+	private static final int DIAGRAM_PADDING = 4;
 	
 	private final SelectionModel aSelectionModel;
 	private DiagramOperationProcessor aProcessor = new DiagramOperationProcessor();
@@ -417,7 +420,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	{
 		Point mousePoint = getMousePoint(pEvent);
 		Optional<? extends DiagramElement> element = 
-				RenderingFacade.edgeAt(aDiagramBuilder.diagram(), mousePoint);
+				aDiagramBuilder.renderer().edgeAt(mousePoint);
 		if(!element.isPresent())
 		{
 			element = aDiagramBuilder.renderer()
@@ -784,5 +787,25 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			}
 			return operation;
 		}
+	}
+	
+	/**
+	 * Creates an image of an entire diagram, with a white border around.
+	 * @return An image of the diagram.
+	 */
+	public Image createImage()
+	{
+		Rectangle bounds = aDiagramBuilder.renderer().getBounds();
+		Canvas canvas = new Canvas(bounds.getWidth() + DIAGRAM_PADDING * 2, 
+				bounds.getHeight() + DIAGRAM_PADDING *2);
+		GraphicsContext context = canvas.getGraphicsContext2D();
+		context.setLineWidth(LINE_WIDTH);
+		context.setFill(Color.WHITE);
+		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
+		aDiagramBuilder.renderer().draw(aDiagramBuilder.diagram(), context);
+		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
+				bounds.getHeight() + DIAGRAM_PADDING *2);
+		canvas.snapshot(null, image);
+		return image;
 	}
 }

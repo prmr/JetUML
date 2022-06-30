@@ -41,6 +41,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
@@ -348,5 +349,10 @@ public class DiagramTab extends Tab implements MouseDraggedGestureHandler, KeyEv
 	public void keyTyped(String pChar)
 	{   // -1 because the input is 1-index and setSelectedTool is 0-indexed
 		toolBar().setSelectedTool(toolIndex(pChar)-1); 
+	}
+	
+	public Image createImage()
+	{
+		return aDiagramCanvas.createImage();
 	}
 }	        

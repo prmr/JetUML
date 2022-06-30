@@ -26,8 +26,6 @@ import java.util.Optional;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.Edge;
-import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -68,20 +66,6 @@ public class RenderingFacade
 	{
 		assert pDiagram != null && pGraphics != null;
 		aDiagramRenderers.get(pDiagram.getType()).draw(pDiagram, pGraphics);
-	}
-	
-	/**
-	 * Returns the edge underneath the given point, if it exists.
-	 * 
-	 * @param pDiagram The diagram to query
-	 * @param pPoint a point
-	 * @return An edge containing pPoint or Optional.empty() if no edge is under pPoint
-	 * @pre pDiagram != null && pPoint != null
-	 */
-	public static Optional<Edge> edgeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null && pPoint != null;
-		return aDiagramRenderers.get(pDiagram.getType()).edgeAt(pPoint);
 	}
 	
 	/**
