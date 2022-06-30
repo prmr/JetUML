@@ -22,7 +22,6 @@ package org.jetuml.gui;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +35,6 @@ import org.jetuml.application.UserPreferences.BooleanPreferenceChangeHandler;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.application.UserPreferences.IntegerPreferenceChangeHandler;
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramData;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -239,8 +237,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aDiagramBuilder.renderer().draw(context);
 		synchronizeSelectionModel();
 		aSelected.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, context));
-		getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
-		getLasso().ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
+		aRubberband.ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
+		aLasso.ifPresent( lasso -> ToolGraphics.drawLasso(context, lasso));
 	}
 	
 	/**
@@ -311,7 +309,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	public void selectAll()
 	{
 		aToolBar.setToolToBeSelect();
-		selectAll(diagram());
+		clearSelection();
+		aDiagramBuilder.diagram().rootNodes().forEach(this::internalAddToSelection);
+		aDiagramBuilder.diagram().edges().forEach(this::internalAddToSelection);
+		paintPanel();
 	}
 	
 	/**
@@ -323,7 +324,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			return;
 		}
-		List<Node> selectedNodes = getSelectedNodes();
+		List<Node> selectedNodes = selectedNodes();
 		if(((ClassDiagramBuilder)aDiagramBuilder).canLinkToPackage(selectedNodes))
 		{
 			aProcessor.executeNewOperation(((ClassDiagramBuilder)aDiagramBuilder).createLinkToPackageOperation(selectedNodes));
@@ -450,10 +451,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			else if(!contains(element.get()))
 			{
 				// The test is necessary to ensure we don't undo multiple selections
-				set(element.get());
+				setSelection(element.get());
 			}
 			// Reorder the selected nodes to ensure that they appear on the top
-			for(Node pSelected: getSelectedNodes()) 
+			for(Node pSelected: selectedNodes()) 
 			{
 				diagram().placeOnTop(pSelected);
 			}
@@ -523,7 +524,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		if(aDiagramBuilder.canAdd(newNode, point))
 		{
 			aProcessor.executeNewOperation(aDiagramBuilder.createAddNodeOperation(newNode, new Point(point.getX(), point.getY())));
-			set(newNode);
+			setSelection(newNode);
 			diagram().placeOnTop(newNode);
 			paintPanel();
 			if( UserPreferences.instance().getBoolean(BooleanPreference.autoEditNode))
@@ -591,7 +592,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	private void alignMoveToGrid()
 	{
-		Iterator<Node> selectedNodes = getSelectedNodes().iterator();
+		Iterator<Node> selectedNodes = selectedNodes().iterator();
 		Rectangle entireBounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
 		
 		if( selectedNodes.hasNext() )
@@ -622,7 +623,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				dy += GRID_SIZE;
 			}
 			
-			for(Node selected : getSelectedNodes())
+			for(Node selected : selectedNodes())
 			{
 				selected.translate(dx, dy);
 			}
@@ -640,7 +641,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			{
 				aProcessor.executeNewOperation(aDiagramBuilder.createAddEdgeOperation(newEdge, 
 						aMouseDownPoint, pMousePoint));
-				set(newEdge);
+				setSelection(newEdge);
 				paintPanel();
 			}
 		}
@@ -660,7 +661,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private void mouseDragged(MouseEvent pEvent)
 	{
 		Point mousePoint = getMousePoint(pEvent);
-		if(aDragMode == DragMode.DRAG_MOVE && !isEmpty() ) 
+		if(aDragMode == DragMode.DRAG_MOVE && !aSelected.isEmpty() ) 
 		{
 			// The second condition in the if is necessary in the case where a single 
 			// element is selected with the Ctrl button is down, which immediately deselects it.
@@ -675,7 +676,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			{
 				clearSelection();
 			}
-			activateLasso(computeLasso(), diagram());
+			activateLasso();
 		}
 		else if(aDragMode == DragMode.DRAG_RUBBERBAND)
 		{
@@ -706,13 +707,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	// This will be doable by collecting all edges connected to a transitively selected node.
 	private void moveSelection(Point pMousePoint)
 	{
-		assert !isEmpty();
+		assert !aSelected.isEmpty();
 		
 		int dx = pMousePoint.getX() - aLastMousePoint.getX();
 		int dy = pMousePoint.getY() - aLastMousePoint.getY();
 		
 		// Perform the move without painting it
-		getSelectedNodes().forEach(selected -> selected.translate(dx, dy));
+		selectedNodes().forEach(selected -> selected.translate(dx, dy));
 		
 		// If this translation results in exceeding the canvas bounds, roll back.
 		Rectangle bounds = aDiagramBuilder.renderer().getBoundsIncludingParents(aSelected);
@@ -720,7 +721,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				+ Math.min((int)getWidth() - bounds.getMaxX(), 0);
 		int dyCorrection = Math.max(-bounds.getY(), 0) 
 				+ Math.min((int)getHeight() - bounds.getMaxY(), 0);
-		getSelectedNodes().forEach(selected -> selected.translate(dxCorrection, dyCorrection));
+		selectedNodes().forEach(selected -> selected.translate(dxCorrection, dyCorrection));
 		
 		aLastMousePoint = pMousePoint; 
 		paintPanel();
@@ -818,25 +819,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	private Optional<Rectangle> aLasso = Optional.empty();
 	
 	/**
-	 * Clears the selection model and selects all root nodes and 
-	 * edges in the diagram. Triggers a notification.
-	 * 
-	 * @param pDiagramData Provides the data for the selection.
-	 * @pre pDiagramData != null
-	 */
-	public void selectAll(DiagramData pDiagramData)
-	{
-		assert pDiagramData != null;
-		clearSelection();
-		pDiagramData.rootNodes().forEach(this::internalAddToSelection);
-		pDiagramData.edges().forEach(this::internalAddToSelection);
-		paintPanel();
-	}
-	
-	/**
 	 * @return A list of all the selected nodes. 
 	 */
-	public List<Node> getSelectedNodes()
+	private List<Node> selectedNodes()
 	{
 		return aSelected.stream()
 				.filter(e -> Node.class.isAssignableFrom(e.getClass()))
@@ -849,17 +834,13 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * in the lasso, and triggers a notification.
 	 * 
 	 * @param pLasso The bounds of the current lasso.
-	 * @param pDiagramData Data about the diagram whose elements are being selected with the lasso.
-	 *     only the elements in the lasso are selected.
 	 * @pre pLasso != null;
-	 * @pre pDiagramData != null;
 	 */
-	public void activateLasso(Rectangle pLasso, DiagramData pDiagramData)
+	private void activateLasso()
 	{
-		assert pLasso != null;
-		aLasso = Optional.of(pLasso);
-		pDiagramData.rootNodes().forEach( node -> selectNode(node, pLasso));
-		pDiagramData.edges().forEach( edge -> selectEdge(edge, pLasso));
+		aLasso = Optional.of(computeLasso());
+		aDiagramBuilder.diagram().rootNodes().forEach( node -> selectNode(node, aLasso.get()));
+		aDiagramBuilder.diagram().edges().forEach( edge -> selectEdge(edge, aLasso.get()));
 		paintPanel();
 	}
 	
@@ -881,17 +862,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	}
 	
 	/**
-	 * @return The active lasso, if available.
-	 */
-	public Optional<Rectangle> getLasso()
-	{
-		return aLasso;
-	}
-	
-	/**
 	 * Removes the active lasso from the model and triggers a notification.
 	 */
-	public void deactivateLasso()
+	private void deactivateLasso()
 	{
 		aLasso = Optional.empty();
 		paintPanel();
@@ -902,26 +875,17 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pLine The line that represents the rubberband.
 	 * @pre pLine != null;
 	 */
-	public void activateRubberband(Line pLine)
+	private void activateRubberband(Line pLine)
 	{
 		assert pLine != null;
 		aRubberband = Optional.of(pLine);
 		paintPanel();
 	}
 	
-	
-	/**
-	 * @return The active rubberband, if available.
-	 */
-	public Optional<Line> getRubberband()
-	{
-		return aRubberband;
-	}
-	
 	/**
 	 * Removes the active rubberband from the model and triggers a notification.
 	 */
-	public void deactivateRubberband()
+	private void deactivateRubberband()
 	{
 		aRubberband = Optional.empty();
 		paintPanel();
@@ -934,7 +898,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pNewSelection A list of elements to select.
 	 * @pre pNewSelection != null;
 	 */
-	public void setSelectionTo(List<DiagramElement> pNewSelection)
+	private void setSelectionTo(List<DiagramElement> pNewSelection)
 	{
 		assert pNewSelection != null;
 		clearSelection();
@@ -952,7 +916,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pElement The element to add to the list.
 	 * @pre pElement != null
 	 */
-	public void addToSelection(DiagramElement pElement)
+	private void addToSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
 		internalAddToSelection(pElement);
@@ -1016,7 +980,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * Removes all selections and triggers a notification.
 	 */
-	public void clearSelection()
+	private void clearSelection()
 	{
 		aSelected.clear();
 		paintPanel();
@@ -1025,7 +989,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * @return The last element that was selected, if present.
 	 */
-	public Optional<DiagramElement> getLastSelected()
+	private Optional<DiagramElement> getLastSelected()
 	{
 		if( aSelected.isEmpty() )
 		{
@@ -1041,7 +1005,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pElement The element to test.
 	 * @return True if pElement is in the list of selected elements.
 	 */
-	public boolean contains(DiagramElement pElement)
+	private boolean contains(DiagramElement pElement)
 	{
 		return aSelected.contains(pElement);
 	}
@@ -1053,7 +1017,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pElement The element to remove.
 	 * @pre pElement != null;
 	 */
-	public void removeFromSelection(DiagramElement pElement)
+	private void removeFromSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.remove(pElement);
@@ -1066,24 +1030,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * @param pElement The element to set as selected.
 	 * @pre pElement != null;
 	 */
-	public void set(DiagramElement pElement)
+	private void setSelection(DiagramElement pElement)
 	{
 		assert pElement != null;
 		aSelected.clear();
 		aSelected.add(pElement);
 		paintPanel();
-	}
-
-	public Iterator<DiagramElement> iterator()
-	{
-		return Collections.unmodifiableList(aSelected).iterator();
-	}
-	
-	/**
-	 * @return True if there is not element in the selection list.
-	 */
-	public boolean isEmpty()
-	{
-		return aSelected.isEmpty();
 	}
 }
