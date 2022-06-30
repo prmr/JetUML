@@ -27,7 +27,6 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
-import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 
@@ -96,12 +95,6 @@ public class RenderingFacade
 	{
 		assert pDiagram != null;
 		return aDiagramRenderers.get(pDiagram.getType()).getBounds();
-	}
-	
-	public static Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
-	{
-		assert pDiagram != null;
-		return aDiagramRenderers.get(pDiagram.getType()).selectableNodeAt(pDiagram, pPoint);
 	}
 	
 	/**

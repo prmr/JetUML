@@ -153,12 +153,11 @@ public interface DiagramRenderer
      * selected. The difference between this method and nodeAt is that it is specialized for
      * nodes that can be selected by the users, whereas nodeAt is also used for edge creation.
      * By default, this method has the same behavior as nodeAt.
-     * @param pDiagram The diagram to query.
      * @param pPoint A point
      * @return a node containing pPoint or null if no nodes contain pPoint
      * @pre pDiagram != null && pPoint != null.
      */
-	Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint);
+	Optional<Node> selectableNodeAt(Point pPoint);
 	
    	/**
    	 * @return The diagram wrapped by this object.

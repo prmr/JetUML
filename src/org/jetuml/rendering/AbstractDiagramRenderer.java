@@ -217,7 +217,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 	
 	@Override
-	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Node> selectableNodeAt(Point pPoint)
 	{
 		return nodeAt(pPoint);
 	}

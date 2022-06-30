@@ -71,12 +71,12 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 * selecting their top rectangle.
 	 */
 	@Override
-	public Optional<Node> selectableNodeAt(Diagram pDiagram, Point pPoint)
+	public Optional<Node> selectableNodeAt(Point pPoint)
 	{
-		Optional<Node> topRectangleSelected = pDiagram.rootNodes().stream()
+		Optional<Node> topRectangleSelected = diagram().rootNodes().stream()
 			.filter(node -> node.getClass() == ImplicitParameterNode.class)
 			.filter(node -> ((ImplicitParameterNodeViewer)rendererFor(ImplicitParameterNode.class)).getTopRectangle(node).contains(pPoint))
 			.findFirst();
-		return topRectangleSelected.or(() -> super.selectableNodeAt(pDiagram, pPoint));				
+		return topRectangleSelected.or(() -> super.selectableNodeAt(pPoint));				
 	}
 }

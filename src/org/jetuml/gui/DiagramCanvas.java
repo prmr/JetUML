@@ -420,8 +420,8 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				RenderingFacade.edgeAt(aDiagramBuilder.diagram(), mousePoint);
 		if(!element.isPresent())
 		{
-			element = RenderingFacade
-					.selectableNodeAt(aDiagramBuilder.diagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
+			element = aDiagramBuilder.renderer()
+					.selectableNodeAt(new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}
