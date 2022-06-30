@@ -39,7 +39,6 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +60,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new Diagram(DiagramType.CLASS);
-		aBuilder = new ClassDiagramBuilder(new ClassDiagramRenderer(aDiagram));
+		aBuilder = new ClassDiagramBuilder(aDiagram);
 		aClassNode1 = new ClassNode();
 		aClassNode2 = new ClassNode();
 		aInterfaceNode = new InterfaceNode();
@@ -88,7 +87,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		copy();
 		
 		Diagram diagram2 = new Diagram(DiagramType.CLASS);
-		ClassDiagramBuilder builder2 = new ClassDiagramBuilder(new ClassDiagramRenderer(diagram2));
+		ClassDiagramBuilder builder2 = new ClassDiagramBuilder(diagram2);
 		DiagramOperationProcessor processor2 = new DiagramOperationProcessor();
 		processor2.executeNewOperation(builder2.createAddElementsOperation(getClipboardContent()));
 		

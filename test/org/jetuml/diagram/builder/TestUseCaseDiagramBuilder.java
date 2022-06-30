@@ -36,7 +36,6 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.RenderingFacade;
-import org.jetuml.rendering.UseCaseDiagramRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +62,7 @@ public class TestUseCaseDiagramBuilder
 	public void setUp()
 	{
 		aDiagram = new Diagram(DiagramType.USECASE);
-		aBuilder = new UseCaseDiagramBuilder(new UseCaseDiagramRenderer(aDiagram));
+		aBuilder = new UseCaseDiagramBuilder(aDiagram);
 		
 		aActorNode1 = new ActorNode();
 		aUseCaseNode1 = new UseCaseNode();

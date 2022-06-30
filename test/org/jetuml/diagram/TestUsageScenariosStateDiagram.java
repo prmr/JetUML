@@ -34,7 +34,6 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.RenderingFacade;
-import org.jetuml.rendering.StateDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +55,7 @@ public class TestUsageScenariosStateDiagram extends AbstractTestUsageScenarios
 	{
 		super.setup();
 		aDiagram = new Diagram(DiagramType.STATE);
-		aBuilder = new StateDiagramBuilder(new StateDiagramRenderer(aDiagram));
+		aBuilder = new StateDiagramBuilder(aDiagram);
 		aStateNode1 = new StateNode();
 		aStateNode2 = new StateNode();
 		aInitialNode = new InitialStateNode();

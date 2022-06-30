@@ -39,14 +39,13 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestObjectDiagramBuilder
 {
 	private Diagram aDiagram = new Diagram(DiagramType.OBJECT);
-	private ObjectDiagramBuilder aBuilder = new ObjectDiagramBuilder(new ObjectDiagramRenderer(aDiagram));
+	private ObjectDiagramBuilder aBuilder = new ObjectDiagramBuilder(aDiagram);
 	private DiagramAccessor aAccessor = new DiagramAccessor(aDiagram);
 	private ObjectNode aObjectNode1 = new ObjectNode();
 	private ObjectNode aObjectNode2 = new ObjectNode();

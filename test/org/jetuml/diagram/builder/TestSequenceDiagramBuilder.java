@@ -42,7 +42,6 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.RenderingFacade;
-import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +67,7 @@ public class TestSequenceDiagramBuilder
 	public void setUp()
 	{
 		aDiagram = new Diagram(DiagramType.SEQUENCE);
-		aBuilder = new SequenceDiagramBuilder(new SequenceDiagramRenderer(aDiagram));
+		aBuilder = new SequenceDiagramBuilder(aDiagram);
 		aImplicitParameterNode1 = new ImplicitParameterNode();
 		aImplicitParameterNode2 = new ImplicitParameterNode();
 		aDefaultCallNode1 = new CallNode();

@@ -21,10 +21,10 @@
 
 package org.jetuml.diagram.builder;
 
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.builder.constraints.ConstraintSet;
 import org.jetuml.diagram.builder.constraints.EdgeConstraints;
-import org.jetuml.rendering.DiagramRenderer;
 
 
 /**
@@ -46,10 +46,10 @@ public class UseCaseDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	public UseCaseDiagramBuilder( DiagramRenderer pDiagramRenderer )
+	public UseCaseDiagramBuilder( Diagram pDiagram )
 	{
-		super( pDiagramRenderer );
-		assert pDiagramRenderer.diagram().getType() == DiagramType.USECASE;
+		super( pDiagram );
+		assert pDiagram.getType() == DiagramType.USECASE;
 	}
 	
 	@Override

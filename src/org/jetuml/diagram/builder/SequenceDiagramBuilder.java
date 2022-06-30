@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -37,7 +38,6 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
@@ -63,10 +63,10 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null;
 	 */
-	public SequenceDiagramBuilder( DiagramRenderer pDiagramRenderer )
+	public SequenceDiagramBuilder( Diagram pDiagram )
 	{
-		super( pDiagramRenderer );
-		assert pDiagramRenderer.diagram().getType() == DiagramType.SEQUENCE;
+		super( pDiagram );
+		assert pDiagram.getType() == DiagramType.SEQUENCE;
 	}
 	
 	@Override

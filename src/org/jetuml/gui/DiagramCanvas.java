@@ -98,7 +98,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aDiagram = pDiagram;
 		aToolBar = pToolBar;
 		aSelectionModel = new SelectionModel(this);
-		aDiagramBuilder = DiagramType.newBuilderInstanceFor(DiagramType.newRendererInstanceFor(getDiagram()));
+		aDiagramBuilder = DiagramType.newBuilderInstanceFor(getDiagram());
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
 		RenderingFacade.prepareFor(pDiagram);
 		Dimension dimension = getDiagramCanvasWidth(pDiagram);
@@ -151,12 +151,12 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public void paste()
 	{
-		if( !Clipboard.instance().validPaste(aDiagramBuilder.getDiagram()))
+		if( !Clipboard.instance().validPaste(aDiagramBuilder.diagram()))
 		{
 			return;
 		}
 		Iterable<DiagramElement> newElements = Clipboard.instance().getElements();
-		if(Clipboard.instance().overlapsWithElementOf(aDiagramBuilder.getDiagram()))
+		if(Clipboard.instance().overlapsWithElementOf(aDiagramBuilder.diagram()))
 		{
 			shiftElements(newElements, GRID_SIZE);
 		}
@@ -419,11 +419,11 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	{
 		Point mousePoint = getMousePoint(pEvent);
 		Optional<? extends DiagramElement> element = 
-				RenderingFacade.edgeAt(aDiagramBuilder.getDiagram(), mousePoint);
+				RenderingFacade.edgeAt(aDiagramBuilder.diagram(), mousePoint);
 		if(!element.isPresent())
 		{
 			element = RenderingFacade
-					.selectableNodeAt(aDiagramBuilder.getDiagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
+					.selectableNodeAt(aDiagramBuilder.diagram(), new Point(mousePoint.getX(), mousePoint.getY())); 
 		}
 		return element;
 	}

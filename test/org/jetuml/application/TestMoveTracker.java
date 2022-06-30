@@ -40,7 +40,6 @@ import org.jetuml.diagram.builder.DiagramOperation;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.gui.SelectionModel;
-import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +94,7 @@ public class TestMoveTracker
 		aDiagram.addEdge(aEdge1);
 		aOperationsField = CompoundOperation.class.getDeclaredField("aOperations");
 		aOperationsField.setAccessible(true);
-		aBuilder = DiagramType.newBuilderInstanceFor(new ClassDiagramRenderer(aDiagram));
+		aBuilder = DiagramType.newBuilderInstanceFor(aDiagram);
 		RenderingFacade.prepareFor(aDiagram);
 	}
 

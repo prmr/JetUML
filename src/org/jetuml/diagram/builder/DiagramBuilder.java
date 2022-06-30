@@ -67,21 +67,21 @@ public abstract class DiagramBuilder
 	private Dimension aCanvasDimension = new Dimension(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
 	
 	/**
-	 * Creates a builder for the diagram wrapped by pDiagramRenderer
+	 * Creates a builder for the diagram wrapped by pDiagram, and an embedded renderer.
 	 * 
-	 * @param pDiagramRenderer The diagram renderer to wrap around.
-	 * @pre pDiagramRenderer != null;
+	 * @param pDiagram The diagram renderer to wrap around.
+	 * @pre pDiagram != null;
 	 */
-	protected DiagramBuilder( DiagramRenderer pDiagramRenderer )
+	protected DiagramBuilder( Diagram pDiagram )
 	{
-		assert pDiagramRenderer != null;
-		aDiagramRenderer = pDiagramRenderer;
+		assert pDiagram != null;
+		aDiagramRenderer = DiagramType.newRendererInstanceFor(pDiagram);
 	}
 	
 	/**
 	 * @return The diagram wrapped by this builder.
 	 */
-	public final Diagram getDiagram()
+	public final Diagram diagram()
 	{
 		return aDiagramRenderer.diagram();
 	}

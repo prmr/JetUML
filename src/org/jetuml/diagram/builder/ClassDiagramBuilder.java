@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.builder.constraints.ClassDiagramEdgeConstraints;
@@ -38,7 +39,6 @@ import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 
 /**
@@ -67,10 +67,10 @@ public class ClassDiagramBuilder extends DiagramBuilder
 	 * @param pDiagram The diagram to wrap around.
 	 * @pre pDiagram != null && pDiagram.getType() == DiagramType.CLASS
 	 */
-	public ClassDiagramBuilder( DiagramRenderer pDiagramRenderer )
+	public ClassDiagramBuilder( Diagram pDiagram )
 	{
-		super( pDiagramRenderer );
-		assert pDiagramRenderer.diagram().getType() == DiagramType.CLASS;
+		super( pDiagram );
+		assert pDiagram.getType() == DiagramType.CLASS;
 	}
 	
 	@Override
