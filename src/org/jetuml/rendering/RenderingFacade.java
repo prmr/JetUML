@@ -28,8 +28,6 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.geom.Rectangle;
 
-import javafx.scene.canvas.GraphicsContext;
-
 /**
  * Meant as a single access point for all services that require rendering
  * a diagram and its elements.
@@ -52,20 +50,6 @@ public class RenderingFacade
 		assert pDiagram != null;
 		aActiveDiagram = Optional.of(pDiagram);
 		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
-	}
-	
-	/**
-	 * Draws pDiagram onto pGraphics.
-	 * 
-	 * @param pGraphics the graphics context where the
-	 *     diagram should be drawn.
-	 * @param pDiagram the diagram to draw.
-	 * @pre pDiagram != null && pGraphics != null.
-	 */
-	public static void draw(Diagram pDiagram, GraphicsContext pGraphics)
-	{
-		assert pDiagram != null && pGraphics != null;
-		aDiagramRenderers.get(pDiagram.getType()).draw(pDiagram, pGraphics);
 	}
 	
 	/**

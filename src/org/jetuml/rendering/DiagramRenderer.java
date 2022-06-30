@@ -53,10 +53,9 @@ public interface DiagramRenderer
 	 * the graphics context.
 	 * 
 	 * @param pGraphics The graphics context where the diagram should be drawn.
-	 * @param pDiagram The diagram to draw.
-	 * @pre pDiagram != null && pGraphics != null.
+	 * @pre pGraphics != null.
 	 */
-	void draw(Diagram pDiagram, GraphicsContext pGraphics);
+	void draw(GraphicsContext pGraphics);
 	
 	/**
      * Draws the element.

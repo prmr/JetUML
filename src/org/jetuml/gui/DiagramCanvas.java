@@ -234,7 +234,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			Grid.draw(context, new Rectangle(0, 0, (int) getWidth(), (int) getHeight()));
 		}
-		RenderingFacade.draw(diagram(), context);
+		aDiagramBuilder.renderer().draw(context);
 		synchronizeSelectionModel();
 		aSelectionModel.forEach( selected -> aDiagramBuilder.renderer().drawSelectionHandles(selected, context));
 		aSelectionModel.getRubberband().ifPresent( rubberband -> ToolGraphics.drawRubberband(context, rubberband));
@@ -802,7 +802,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		context.setLineWidth(LINE_WIDTH);
 		context.setFill(Color.WHITE);
 		context.translate(-bounds.getX()+DIAGRAM_PADDING, -bounds.getY()+DIAGRAM_PADDING);
-		aDiagramBuilder.renderer().draw(aDiagramBuilder.diagram(), context);
+		aDiagramBuilder.renderer().draw(context);
 		WritableImage image = new WritableImage(bounds.getWidth() + DIAGRAM_PADDING * 2, 
 				bounds.getHeight() + DIAGRAM_PADDING *2);
 		canvas.snapshot(null, image);

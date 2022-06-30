@@ -75,12 +75,12 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	}
 
 	@Override
-	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
+	public void draw(GraphicsContext pGraphics)
 	{
-		assert pDiagram != null && pGraphics != null;
+		assert pGraphics != null;
 		activateNodeStorages();
-		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
 		deactivateAndClearNodeStorages();
 	}
 

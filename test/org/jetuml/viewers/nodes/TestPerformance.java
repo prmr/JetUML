@@ -25,8 +25,9 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.persistence.PersistenceService;
-import org.jetuml.rendering.RenderingFacade;
+import org.jetuml.rendering.DiagramRenderer;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -48,12 +49,13 @@ import javafx.scene.canvas.GraphicsContext;
  		Canvas canvas = new Canvas();
  		GraphicsContext graphicContext = canvas.getGraphicsContext2D();
  		Diagram diagram = PersistenceService.read(Path.of("testdata", "performanceDiagram.class.jet").toFile()).diagram();
+ 		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 
  		double avgExecutionTime = 0.0;
  		for (int i = 0; i < NUMBER_OF_TRIALS+1; i++)
  		{
  			Instant start = Instant.now();
- 			RenderingFacade.draw(diagram, graphicContext);
+ 			renderer.draw(graphicContext);
  			Instant stop = Instant.now();
 
  			if (i == 0)
