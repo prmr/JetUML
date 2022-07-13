@@ -42,17 +42,19 @@ import org.jetuml.geom.Point;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.edges.EdgeStorage;
+import org.jetuml.rendering.edges.StoredEdgeRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the StoredEdgeViewer class.
+ * Tests the StoredEdgeRenderer class.
  */
 public class TestStoredEdgeViewer 
 {
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private final ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
-	private StoredEdgeViewer aStoredEdgeViewer = (StoredEdgeViewer) aRenderer.rendererFor(AggregationEdge.class);
+	private StoredEdgeRenderer aStoredEdgeViewer = (StoredEdgeRenderer) aRenderer.rendererFor(AggregationEdge.class);
 	private GeneralizationEdge aInheritanceEdge;
 	private GeneralizationEdge aImplementationEdge;
 	private AggregationEdge aAggregationEdge;
@@ -240,7 +242,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getLineStyle", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getLineStyle", Edge.class);
 			method.setAccessible(true);
 			return (LineStyle) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -255,7 +257,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getArrowStart", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getArrowStart", Edge.class);
 			method.setAccessible(true);
 			return (ArrowHead) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -270,7 +272,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getArrowEnd", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getArrowEnd", Edge.class);
 			method.setAccessible(true);
 			return (ArrowHead) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -285,7 +287,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getStartLabel", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getStartLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -300,7 +302,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getMiddleLabel", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getMiddleLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -315,7 +317,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getEndLabel", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getEndLabel", Edge.class);
 			method.setAccessible(true);
 			return (String) method.invoke(aStoredEdgeViewer, pEdge);
 		}
@@ -330,7 +332,7 @@ public class TestStoredEdgeViewer
 	{
 		try
 		{
-			Method method = StoredEdgeViewer.class.getDeclaredMethod("getStoredEdgePath", Edge.class);
+			Method method = StoredEdgeRenderer.class.getDeclaredMethod("getStoredEdgePath", Edge.class);
 			method.setAccessible(true);
 			return (EdgePath) method.invoke(aStoredEdgeViewer, pEdge);
 		}

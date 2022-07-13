@@ -18,22 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
+import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 
 /**
- * A straight dotted line.
+ * A straight solid line with an optional label.
  */
-public final class NoteEdgeViewer extends StraightEdgeViewer
+public final class ObjectCollaborationEdgeRenderer extends LabeledStraightEdgeRenderer
 {	
 	/**
-	 * Creates a viewer for NoteEdge instances.
+	 * Creates a viewer for ObjectCollaborationEdge instances.
 	 */
-	public NoteEdgeViewer(DiagramRenderer pParent)
+	public ObjectCollaborationEdgeRenderer(DiagramRenderer pParent)
 	{
-		super(pParent, LineStyle.DOTTED, ArrowHead.NONE);
+		super(pParent, LineStyle.SOLID, ArrowHead.NONE, 
+				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
 	}
 }

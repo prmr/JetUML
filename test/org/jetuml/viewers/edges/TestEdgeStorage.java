@@ -35,6 +35,7 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

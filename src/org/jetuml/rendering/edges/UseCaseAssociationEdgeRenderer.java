@@ -18,25 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
-import org.jetuml.diagram.Edge;
-import org.jetuml.geom.Line;
-import org.jetuml.rendering.DiagramElementRenderer;
+import org.jetuml.rendering.ArrowHead;
+import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.LineStyle;
 
 /**
- * Abstract strategy that describes objects that can draw and
- * compute various geometric properties of edges.
+ * A straight solid line.
  */
-public interface EdgeViewer extends DiagramElementRenderer
-{
-   	/**
-     * Gets the points at which pEdge is connected to
-     * its nodes.
-     * @param pEdge The target edge
-     * @return a line joining the two connection points
-     * @pre pEdge != null
-     * 
-     */
-   	Line getConnectionPoints(Edge pEdge);
+public final class UseCaseAssociationEdgeRenderer extends StraightEdgeRenderer
+{	
+	/**
+	 * Creates a viewer for UseCaseAssociationEdge instances.
+	 */
+	public UseCaseAssociationEdgeRenderer(DiagramRenderer pParent)
+	{
+		super(pParent, LineStyle.SOLID, ArrowHead.NONE);
+	}
 }

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -43,11 +43,11 @@ import javafx.scene.shape.Shape;
 /**
  * A viewer for an S- or C-shaped edge with an arrowhead.
  */
-public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
+public final class ObjectReferenceEdgeRenderer extends AbstractEdgeRenderer
 {
 	private static final int ENDSIZE = 10;
 	
-	public ObjectReferenceEdgeViewer(DiagramRenderer pParent)
+	public ObjectReferenceEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

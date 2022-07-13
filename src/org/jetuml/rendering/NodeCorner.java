@@ -21,7 +21,7 @@
 package org.jetuml.rendering;
 
 import org.jetuml.geom.Direction;
-import org.jetuml.viewers.edges.NodeIndex;
+import org.jetuml.rendering.edges.NodeIndex;
 
 /**
  * Represents the 4 corners of a node. Used to plan the placement of self-edges.

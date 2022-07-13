@@ -33,8 +33,8 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.edges.EdgeViewer;
-import org.jetuml.viewers.edges.NoteEdgeViewer;
+import org.jetuml.rendering.edges.EdgeRenderer;
+import org.jetuml.rendering.edges.NoteEdgeRenderer;
 import org.jetuml.viewers.nodes.NodeViewer;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.jetuml.viewers.nodes.PointNodeViewer;
@@ -58,7 +58,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		aDiagram = pDiagram;
 		addElementRenderer(NoteNode.class, new NoteNodeViewer(this));
 		addElementRenderer(PointNode.class, new PointNodeViewer(this));
-		addElementRenderer(NoteEdge.class, new NoteEdgeViewer(this));
+		addElementRenderer(NoteEdge.class, new NoteEdgeRenderer(this));
 	}
 
 	protected void addElementRenderer(Class<? extends DiagramElement> pElementClass,
@@ -206,7 +206,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public Line getConnectionPoints(Edge pEdge)
 	{
 		assert pEdge != null;
-		return ((EdgeViewer) aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
+		return ((EdgeRenderer) aRenderers.get(pEdge.getClass())).getConnectionPoints(pEdge);
 	}
 
 	@Override

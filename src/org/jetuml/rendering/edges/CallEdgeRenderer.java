@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import java.util.ArrayList;
 
@@ -56,14 +56,14 @@ import javafx.scene.shape.Shape;
  * edges that are either straight or self-edges, in a solid line, and 
  * have either a V or half-V arrow head.
  */
-public final class CallEdgeViewer extends AbstractEdgeViewer
+public final class CallEdgeRenderer extends AbstractEdgeRenderer
 {	
 	private static final StringRenderer CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 
 	private static final int SHIFT = 5;
 	
-	public CallEdgeViewer(DiagramRenderer pParent)
+	public CallEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

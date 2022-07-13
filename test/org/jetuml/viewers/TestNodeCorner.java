@@ -30,7 +30,7 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.NodeCorner;
-import org.jetuml.viewers.edges.NodeIndex;
+import org.jetuml.rendering.edges.NodeIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

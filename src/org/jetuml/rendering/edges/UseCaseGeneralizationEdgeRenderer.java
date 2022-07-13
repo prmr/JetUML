@@ -18,24 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
-import org.jetuml.diagram.edges.ObjectCollaborationEdge;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 
 /**
- * A straight solid line with an optional label.
+ * A straight solid line with a triangle end decoration.
  */
-public final class ObjectCollaborationEdgeViewer extends LabeledStraightEdgeViewer
+public final class UseCaseGeneralizationEdgeRenderer extends StraightEdgeRenderer
 {	
 	/**
-	 * Creates a viewer for ObjectCollaborationEdge instances.
+	 * Creates a viewer for UseCaseGeneralizationEdge instances.
 	 */
-	public ObjectCollaborationEdgeViewer(DiagramRenderer pParent)
+	public UseCaseGeneralizationEdgeRenderer(DiagramRenderer pParent)
 	{
-		super(pParent, LineStyle.SOLID, ArrowHead.NONE, 
-				edge -> ((ObjectCollaborationEdge)edge).getMiddleLabel());
+		super(pParent, LineStyle.SOLID, ArrowHead.TRIANGLE);
 	}
 }

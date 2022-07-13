@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -52,7 +52,7 @@ import javafx.scene.shape.Shape;
 /**
  * An edge view specialized for state transitions.
  */
-public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
+public final class StateTransitionEdgeRenderer extends AbstractEdgeRenderer
 {
 	private static final int SELF_EDGE_OFFSET = 15;
 	private static final int DEGREES_5 = 5;
@@ -68,7 +68,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	// before centering the edge label on one side instead of in the center.
 	private static final int VERTICAL_TOLERANCE = 20; 
 	
-	public StateTransitionEdgeViewer(DiagramRenderer pParent)
+	public StateTransitionEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

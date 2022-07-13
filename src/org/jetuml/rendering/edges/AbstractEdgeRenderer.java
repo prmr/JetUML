@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
@@ -42,7 +42,7 @@ import javafx.scene.shape.Shape;
 /**
  * Provides shared services for viewing an edge.
  */
-public abstract class AbstractEdgeViewer implements EdgeViewer
+public abstract class AbstractEdgeRenderer implements EdgeRenderer
 {
 	protected static final int MAX_DISTANCE = 3;
 	protected static final int BUTTON_SIZE = 25;
@@ -54,7 +54,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	
 	private final DiagramRenderer aParent;
 	
-	protected AbstractEdgeViewer(DiagramRenderer pParent)
+	protected AbstractEdgeRenderer(DiagramRenderer pParent)
 	{
 		aParent = pParent;
 	}

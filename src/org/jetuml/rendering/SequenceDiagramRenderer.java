@@ -31,8 +31,8 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.edges.CallEdgeViewer;
-import org.jetuml.viewers.edges.ReturnEdgeViewer;
+import org.jetuml.rendering.edges.CallEdgeRenderer;
+import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.viewers.nodes.CallNodeViewer;
 import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
 
@@ -46,9 +46,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		super(pDiagram);
 		addElementRenderer(CallNode.class, new CallNodeViewer(this));
 		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeViewer(this));
-		addElementRenderer(ReturnEdge.class, new ReturnEdgeViewer(this));
-		addElementRenderer(CallEdge.class, new CallEdgeViewer(this));
-		addElementRenderer(ConstructorEdge.class, new CallEdgeViewer(this));
+		addElementRenderer(ReturnEdge.class, new ReturnEdgeRenderer(this));
+		addElementRenderer(CallEdge.class, new CallEdgeRenderer(this));
+		addElementRenderer(ConstructorEdge.class, new CallEdgeRenderer(this));
 	}
 	
 	@Override

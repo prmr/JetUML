@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -44,7 +44,7 @@ import javafx.scene.shape.Path;
  * other. The LineStyle and end ArrowHead can be customized. The 
  * start ArrowHead is NONE. There is no label.
  */
-public class StraightEdgeViewer extends AbstractEdgeViewer
+public class StraightEdgeRenderer extends AbstractEdgeRenderer
 {	
 	private final LineStyle aLineStyle;
 	private final ArrowHead aArrowHead;
@@ -55,7 +55,7 @@ public class StraightEdgeViewer extends AbstractEdgeViewer
 	 * @param pLineStyle The line style for the edge.
 	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
 	 */
-	public StraightEdgeViewer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead)
+	public StraightEdgeRenderer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead)
 	{
 		super(pParent);
 		aLineStyle = pLineStyle;

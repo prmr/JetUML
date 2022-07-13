@@ -52,7 +52,7 @@ import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.EdgePriority;
 import org.jetuml.rendering.NodeCorner;
 import org.jetuml.rendering.NodeSide;
-import org.jetuml.viewers.edges.EdgeStorage;
+import org.jetuml.rendering.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

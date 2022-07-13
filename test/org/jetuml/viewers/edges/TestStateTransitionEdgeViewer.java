@@ -32,6 +32,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.rendering.edges.StateTransitionEdgeRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,7 +46,7 @@ public class TestStateTransitionEdgeViewer
 	private StateNode aStateNode2;
 	private StateTransitionEdge aTransitionEdge = new StateTransitionEdge();
 	private Diagram aDiagram = new Diagram(DiagramType.STATE);
-	private StateTransitionEdgeViewer aStateTransitionEdgeViewer = new StateTransitionEdgeViewer(DiagramType.newRendererInstanceFor(aDiagram));
+	private StateTransitionEdgeRenderer aStateTransitionEdgeViewer = new StateTransitionEdgeRenderer(DiagramType.newRendererInstanceFor(aDiagram));
 	
 	@BeforeAll
 	public static void setupClass()
@@ -82,7 +83,7 @@ public class TestStateTransitionEdgeViewer
 	{
 		try 
 		{
-			Method method = StateTransitionEdgeViewer.class.getDeclaredMethod("wrapLabel", StateTransitionEdge.class);
+			Method method = StateTransitionEdgeRenderer.class.getDeclaredMethod("wrapLabel", StateTransitionEdge.class);
 			method.setAccessible(true);
 			String label = (String)method.invoke(aStateTransitionEdgeViewer, pTransitionEdge);
 			return label;

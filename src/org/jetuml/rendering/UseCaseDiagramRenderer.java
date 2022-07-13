@@ -26,9 +26,9 @@ import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.edges.UseCaseGeneralizationEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.jetuml.viewers.edges.UseCaseAssociationEdgeViewer;
-import org.jetuml.viewers.edges.UseCaseDependencyEdgeViewer;
-import org.jetuml.viewers.edges.UseCaseGeneralizationEdgeViewer;
+import org.jetuml.rendering.edges.UseCaseAssociationEdgeRenderer;
+import org.jetuml.rendering.edges.UseCaseDependencyEdgeRenderer;
+import org.jetuml.rendering.edges.UseCaseGeneralizationEdgeRenderer;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
@@ -42,8 +42,8 @@ public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 		super(pDiagram);
 		addElementRenderer(ActorNode.class, new ActorNodeViewer(this));
 		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer(this));
-		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeViewer(this));
-		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeViewer(this));
-		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeViewer(this));
+		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeRenderer(this));
+		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeRenderer(this));
+		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeRenderer(this));
 	}
 }

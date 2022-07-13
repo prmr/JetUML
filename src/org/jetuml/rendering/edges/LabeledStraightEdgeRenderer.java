@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import java.util.function.Function;
 
@@ -39,7 +39,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Can draw a straight edge with a label than can be obtained dynamically. 
  */
-public class LabeledStraightEdgeViewer extends StraightEdgeViewer
+public class LabeledStraightEdgeRenderer extends StraightEdgeRenderer
 {	
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
@@ -52,7 +52,7 @@ public class LabeledStraightEdgeViewer extends StraightEdgeViewer
 	 * @param pArrowHead The arrow head for the end of the arrow. The start is always NONE.
 	 * @param pLabelExtractor A function to extract for the edge's label.
 	 */
-	public LabeledStraightEdgeViewer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead,
+	public LabeledStraightEdgeRenderer(DiagramRenderer pParent, LineStyle pLineStyle, ArrowHead pArrowHead,
 			Function<Edge, String> pLabelExtractor)
 	{
 		super(pParent, pLineStyle, pArrowHead);

@@ -48,9 +48,9 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.edges.EdgeStorage;
-import org.jetuml.viewers.edges.NodeIndex;
-import org.jetuml.viewers.edges.StoredEdgeViewer;
+import org.jetuml.rendering.edges.EdgeStorage;
+import org.jetuml.rendering.edges.NodeIndex;
+import org.jetuml.rendering.edges.StoredEdgeRenderer;
 import org.jetuml.viewers.nodes.InterfaceNodeViewer;
 import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
 import org.jetuml.viewers.nodes.PackageNodeViewer;
@@ -73,7 +73,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		addElementRenderer(PackageNode.class, new PackageNodeViewer(this));
 		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer(this));
 		
-		StoredEdgeViewer storedEdgeViewer = new StoredEdgeViewer(this);
+		StoredEdgeRenderer storedEdgeViewer = new StoredEdgeRenderer(this);
 		addElementRenderer(DependencyEdge.class, storedEdgeViewer);
 		addElementRenderer(AssociationEdge.class, storedEdgeViewer);
 		addElementRenderer(DependencyEdge.class, storedEdgeViewer);

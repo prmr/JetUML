@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import static org.jetuml.rendering.EdgePriority.priorityOf;
 
@@ -60,7 +60,7 @@ import javafx.scene.shape.Shape;
 /**
  * Renders the path of stored class diagram edges using EdgeStorage.
  */
-public class StoredEdgeViewer extends AbstractEdgeViewer
+public class StoredEdgeRenderer extends AbstractEdgeRenderer
 {
 	private static final int BUTTON_SIZE = 25;
 	private static final int OFFSET = 3;
@@ -74,7 +74,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
 	private static final int DEGREES_180 = 180;
 	
-	public StoredEdgeViewer(DiagramRenderer pParent)
+	public StoredEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

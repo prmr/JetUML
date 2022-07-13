@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -43,12 +43,12 @@ import javafx.scene.shape.Path;
  * Viewer for a labeled, straight edge with customized code to
  * compute connection points.
  */
-public final class ReturnEdgeViewer extends LabeledStraightEdgeViewer
+public final class ReturnEdgeRenderer extends LabeledStraightEdgeRenderer
 {	
 	/**
 	 * Creates a new viewer.
 	 */
-	public ReturnEdgeViewer(DiagramRenderer pParent)
+	public ReturnEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((ReturnEdge)edge).getMiddleLabel());
 	}

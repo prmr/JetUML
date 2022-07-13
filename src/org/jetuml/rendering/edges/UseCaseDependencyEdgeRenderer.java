@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.edges;
+package org.jetuml.rendering.edges;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -38,12 +38,12 @@ import javafx.scene.canvas.Canvas;
  * A straight dotted line with a V end decoration and special icons 
  * to distinguish between dependency types.
  */
-public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
+public final class UseCaseDependencyEdgeRenderer extends LabeledStraightEdgeRenderer
 {	
 	/**
 	 * Creates a viewer for UseCaseDependencyEdge instances.
 	 */
-	public UseCaseDependencyEdgeViewer(DiagramRenderer pParent)
+	public UseCaseDependencyEdgeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent, LineStyle.DOTTED, ArrowHead.V, edge -> ((UseCaseDependencyEdge)edge).getType().getLabel());
 	}
