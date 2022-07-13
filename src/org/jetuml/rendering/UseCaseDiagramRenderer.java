@@ -29,8 +29,8 @@ import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.rendering.edges.UseCaseAssociationEdgeRenderer;
 import org.jetuml.rendering.edges.UseCaseDependencyEdgeRenderer;
 import org.jetuml.rendering.edges.UseCaseGeneralizationEdgeRenderer;
-import org.jetuml.viewers.nodes.ActorNodeViewer;
-import org.jetuml.viewers.nodes.UseCaseNodeViewer;
+import org.jetuml.rendering.nodes.ActorNodeRenderer;
+import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 
 /**
  * The renderer for use case diagrams.
@@ -40,8 +40,8 @@ public final class UseCaseDiagramRenderer extends AbstractDiagramRenderer
 	public UseCaseDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(ActorNode.class, new ActorNodeViewer(this));
-		addElementRenderer(UseCaseNode.class, new UseCaseNodeViewer(this));
+		addElementRenderer(ActorNode.class, new ActorNodeRenderer(this));
+		addElementRenderer(UseCaseNode.class, new UseCaseNodeRenderer(this));
 		addElementRenderer(UseCaseAssociationEdge.class, new UseCaseAssociationEdgeRenderer(this));
 		addElementRenderer(UseCaseGeneralizationEdge.class, new UseCaseGeneralizationEdgeRenderer(this));
 		addElementRenderer(UseCaseDependencyEdge.class, new UseCaseDependencyEdgeRenderer(this));

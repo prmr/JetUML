@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ import javafx.scene.paint.Color;
 /**
  * An object to render a call node in a Sequence diagram.
  */
-public final class CallNodeViewer extends AbstractNodeViewer
+public final class CallNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
@@ -58,14 +58,14 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final String TEST_STRING = "|";
 	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
 	
-	public CallNodeViewer(DiagramRenderer pParent)
+	public CallNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}
 	
-	private ImplicitParameterNodeViewer implicitParameterNodeViewer()
+	private ImplicitParameterNodeRenderer implicitParameterNodeViewer()
 	{
-		return (ImplicitParameterNodeViewer) parent().rendererFor(ImplicitParameterNode.class);
+		return (ImplicitParameterNodeRenderer) parent().rendererFor(ImplicitParameterNode.class);
 	}
 	
 	@Override

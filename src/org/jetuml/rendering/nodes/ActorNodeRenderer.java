@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
@@ -41,7 +41,7 @@ import javafx.scene.shape.QuadCurveTo;
 /**
  * An object to render an actor in a use case diagram.
  */
-public final class ActorNodeViewer extends AbstractNodeViewer
+public final class ActorNodeRenderer extends AbstractNodeRenderer
 {
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
@@ -53,7 +53,7 @@ public final class ActorNodeViewer extends AbstractNodeViewer
 	private static final int WIDTH = ARMS_SIZE * 2;
 	private static final int HEIGHT = HEAD_SIZE + BODY_SIZE + LEG_SIZE + PADDING * 2;
 	
-	public ActorNodeViewer(DiagramRenderer pParent)
+	public ActorNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

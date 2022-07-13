@@ -30,6 +30,7 @@ import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.nodes.CircularStateNodeRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,8 @@ public class TestCircularNodeViewer
 {
 	private FinalStateNode aFinal; 
 	private InitialStateNode aInitial;
-	private final CircularStateNodeViewer aFinalViewer = new CircularStateNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), true);
-	private final CircularStateNodeViewer aInitialViewer = new CircularStateNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), false);
+	private final CircularStateNodeRenderer aFinalViewer = new CircularStateNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), true);
+	private final CircularStateNodeRenderer aInitialViewer = new CircularStateNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.STATE)), false);
 	
 	@BeforeAll
 	public static void setupClass()

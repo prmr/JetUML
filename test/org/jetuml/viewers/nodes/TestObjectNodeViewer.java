@@ -33,6 +33,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ public class TestObjectNodeViewer
 	private FieldNode aField1;
 	private FieldNode aField2;
 	private Diagram aDiagram; 
-	private final ObjectNodeViewer aViewer = new ObjectNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.OBJECT)));
+	private final ObjectNodeRenderer aViewer = new ObjectNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.OBJECT)));
 	
 	@BeforeAll
 	public static void setupClass()
@@ -80,14 +81,14 @@ public class TestObjectNodeViewer
 	@Test
 	public void testGetSplitPosition_NoField()
 	{
-		assertEquals(5, ObjectNodeViewer.getSplitPosition(aNode));
+		assertEquals(5, ObjectNodeRenderer.getSplitPosition(aNode));
 	}
 	
 	@Test
 	public void testGetSplitPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(osDependent(12, 11, 12), ObjectNodeViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(12, 11, 12), ObjectNodeRenderer.getSplitPosition(aNode));
 	}
 	
 	@Test
@@ -96,14 +97,14 @@ public class TestObjectNodeViewer
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
 		aField2.setName("XXXXX");
-		assertEquals(osDependent(47, 49, 58), ObjectNodeViewer.getSplitPosition(aNode));
+		assertEquals(osDependent(47, 49, 58), ObjectNodeRenderer.getSplitPosition(aNode));
 	}
 	
 	@Test
 	public void testGetYPosition_OneField()
 	{
 		aNode.addChild(aField1);
-		assertEquals(70, ObjectNodeViewer.getYPosition(aNode, aField1));
+		assertEquals(70, ObjectNodeRenderer.getYPosition(aNode, aField1));
 	}
 	
 	@Test
@@ -111,8 +112,8 @@ public class TestObjectNodeViewer
 	{
 		aNode.addChild(aField1);
 		aNode.addChild(aField2);
-		assertEquals(70, ObjectNodeViewer.getYPosition(aNode, aField1));
-		assertEquals(osDependent(95, 95, 101), ObjectNodeViewer.getYPosition(aNode, aField2));
+		assertEquals(70, ObjectNodeRenderer.getYPosition(aNode, aField1));
+		assertEquals(osDependent(95, 95, 101), ObjectNodeRenderer.getYPosition(aNode, aField2));
 	}
 	
 	@Test

@@ -33,8 +33,8 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
-import org.jetuml.viewers.nodes.CallNodeViewer;
-import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import org.jetuml.rendering.nodes.CallNodeRenderer;
+import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
 /**
  * The renderer for sequence diagrams.
@@ -44,8 +44,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(CallNode.class, new CallNodeViewer(this));
-		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeViewer(this));
+		addElementRenderer(CallNode.class, new CallNodeRenderer(this));
+		addElementRenderer(ImplicitParameterNode.class, new ImplicitParameterNodeRenderer(this));
 		addElementRenderer(ReturnEdge.class, new ReturnEdgeRenderer(this));
 		addElementRenderer(CallEdge.class, new CallEdgeRenderer(this));
 		addElementRenderer(ConstructorEdge.class, new CallEdgeRenderer(this));
@@ -75,7 +75,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		Optional<Node> topRectangleSelected = diagram().rootNodes().stream()
 			.filter(node -> node.getClass() == ImplicitParameterNode.class)
-			.filter(node -> ((ImplicitParameterNodeViewer)rendererFor(ImplicitParameterNode.class)).getTopRectangle(node).contains(pPoint))
+			.filter(node -> ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getTopRectangle(node).contains(pPoint))
 			.findFirst();
 		return topRectangleSelected.or(() -> super.selectableNodeAt(pPoint));				
 	}

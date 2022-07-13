@@ -28,6 +28,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.nodes.NoteNodeRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ import org.junit.jupiter.api.Test;
 public class TestNoteNodeViewer
 {
 	private NoteNode aNode; 
-	private final NoteNodeViewer aViewer = new NoteNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
+	private final NoteNodeRenderer aViewer = new NoteNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
 	
 	@BeforeAll
 	public static void setupClass()

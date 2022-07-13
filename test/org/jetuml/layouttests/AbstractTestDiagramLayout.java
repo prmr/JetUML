@@ -44,7 +44,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.PersistenceTestUtils;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.nodes.NoteNodeViewer;
+import org.jetuml.rendering.nodes.NoteNodeRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -172,8 +172,8 @@ public abstract class AbstractTestDiagramLayout
 	
 	protected void verifyNoteNodeDefaultDimensions(Node pNode)
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 }

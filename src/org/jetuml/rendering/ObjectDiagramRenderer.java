@@ -27,8 +27,8 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.rendering.edges.ObjectCollaborationEdgeRenderer;
 import org.jetuml.rendering.edges.ObjectReferenceEdgeRenderer;
-import org.jetuml.viewers.nodes.FieldNodeViewer;
-import org.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.rendering.nodes.FieldNodeRenderer;
+import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 
 /**
  * The renderer for object diagrams.
@@ -38,8 +38,8 @@ public final class ObjectDiagramRenderer extends AbstractDiagramRenderer
 	public ObjectDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(FieldNode.class, new FieldNodeViewer(this));
-		addElementRenderer(ObjectNode.class, new ObjectNodeViewer(this));
+		addElementRenderer(FieldNode.class, new FieldNodeRenderer(this));
+		addElementRenderer(ObjectNode.class, new ObjectNodeRenderer(this));
 		addElementRenderer(ObjectReferenceEdge.class, new ObjectReferenceEdgeRenderer(this));
 		addElementRenderer(ObjectCollaborationEdge.class, new ObjectCollaborationEdgeRenderer(this));
 	}

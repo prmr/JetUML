@@ -31,6 +31,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.nodes.ActorNodeRenderer;
 import org.jetuml.testutils.GeometryUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,7 +42,7 @@ public class TestActorNodeViewer
 {
 	private static int userDefinedFontSize;
 	private ActorNode aNode; 
-	private final ActorNodeViewer aViewer = new ActorNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
+	private final ActorNodeRenderer aViewer = new ActorNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
 	
 	@BeforeAll
 	public static void setupClass()

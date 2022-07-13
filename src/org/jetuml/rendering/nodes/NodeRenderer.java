@@ -18,50 +18,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
-import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.DiagramRenderer;
-
-import javafx.scene.canvas.GraphicsContext;
+import org.jetuml.rendering.DiagramElementRenderer;
 
 /**
- * An object to render a PointNode.
+ * Abstract strategy that describes objects that can draw and
+ * compute various geometric properties of nodes.
  */
-public final class PointNodeViewer extends AbstractNodeViewer
+public interface NodeRenderer extends DiagramElementRenderer
 {
-	private static final int SELECTION_DISTANCE = 5;
+   	/**
+     * Get the best connection point to connect this node 
+     * with another node. This should be a point on the boundary
+     * of the shape of this node.
+     * @param pNode The target node.
+     * @param pDirection the direction from the center 
+     *     of the bounding rectangle towards the boundary 
+     * @return the recommended connection point
+     * @pre pNode != null && pDirection != null
+	 */
+	Point getConnectionPoint(Node pNode, Direction pDirection);
 	
-	public PointNodeViewer(DiagramRenderer pParent)
-	{
-		super(pParent);
-	}
+	/**
+	 * Activates the NodeStorage.
+	 */
+	void activateNodeStorage();
 	
-	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 0, 0);
-	}
-
-	@Override
-	public boolean contains(DiagramElement pElement, Point pPoint)
-	{
-		return ((Node)pElement).position().distance(pPoint) < SELECTION_DISTANCE;
-	}
-
-	@Override
-	public Point getConnectionPoint(Node pNode, Direction pDirection)
-	{
-		return pNode.position();
-	}
-	
-	@Override
-	public void draw(DiagramElement pElement, GraphicsContext pGraphics) 
-	{
-		// Do nothing, a point is invisible.
-	}
+	/**
+	 * Deactivates and clears the NodeStorage. 
+	 */
+	void deactivateAndClearNodeStorage();
 }

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -37,7 +37,7 @@ import javafx.scene.paint.Color;
 /**
  * Basic services for drawing nodes.
  */
-public abstract class AbstractNodeViewer implements NodeViewer
+public abstract class AbstractNodeRenderer implements NodeRenderer
 {
 	public static final int BUTTON_SIZE = 25;
 	public static final int OFFSET = 3;
@@ -45,7 +45,7 @@ public abstract class AbstractNodeViewer implements NodeViewer
 	private NodeStorage aNodeStorage = new NodeStorage();
 	private final DiagramRenderer aParent;
 	
-	protected AbstractNodeViewer(DiagramRenderer pParent)
+	protected AbstractNodeRenderer(DiagramRenderer pParent)
 	{
 		aParent = pParent;
 	}

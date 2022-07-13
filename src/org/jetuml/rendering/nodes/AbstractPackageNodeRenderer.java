@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
@@ -40,7 +40,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Common functionality to view the different types of package nodes.
  */
-public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
+public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 {
 	protected static final int PADDING = 10;
 	protected static final int TOP_HEIGHT = 20;
@@ -50,7 +50,7 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	protected static final int NAME_GAP = 3;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
-	public AbstractPackageNodeViewer(DiagramRenderer pParent)
+	public AbstractPackageNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

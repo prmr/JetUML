@@ -51,10 +51,10 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.edges.EdgeStorage;
 import org.jetuml.rendering.edges.NodeIndex;
 import org.jetuml.rendering.edges.StoredEdgeRenderer;
-import org.jetuml.viewers.nodes.InterfaceNodeViewer;
-import org.jetuml.viewers.nodes.PackageDescriptionNodeViewer;
-import org.jetuml.viewers.nodes.PackageNodeViewer;
-import org.jetuml.viewers.nodes.TypeNodeViewer;
+import org.jetuml.rendering.nodes.InterfaceNodeRenderer;
+import org.jetuml.rendering.nodes.PackageDescriptionNodeRenderer;
+import org.jetuml.rendering.nodes.PackageNodeRenderer;
+import org.jetuml.rendering.nodes.TypeNodeRenderer;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -68,10 +68,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	public ClassDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(ClassNode.class, new TypeNodeViewer(this));
-		addElementRenderer(InterfaceNode.class, new InterfaceNodeViewer(this));
-		addElementRenderer(PackageNode.class, new PackageNodeViewer(this));
-		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeViewer(this));
+		addElementRenderer(ClassNode.class, new TypeNodeRenderer(this));
+		addElementRenderer(InterfaceNode.class, new InterfaceNodeRenderer(this));
+		addElementRenderer(PackageNode.class, new PackageNodeRenderer(this));
+		addElementRenderer(PackageDescriptionNode.class, new PackageDescriptionNodeRenderer(this));
 		
 		StoredEdgeRenderer storedEdgeViewer = new StoredEdgeRenderer(this);
 		addElementRenderer(DependencyEdge.class, storedEdgeViewer);

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
@@ -39,11 +39,11 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render a package in a class diagram.
  */
-public final class PackageDescriptionNodeViewer extends AbstractPackageNodeViewer
+public final class PackageDescriptionNodeRenderer extends AbstractPackageNodeRenderer
 {
 	private static final StringRenderer CONTENTS_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
-	public PackageDescriptionNodeViewer(DiagramRenderer pParent)
+	public PackageDescriptionNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

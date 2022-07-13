@@ -18,12 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.geom.Dimension;
+import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
@@ -35,17 +34,19 @@ import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
- * An object to render a StateNode.
+ * An object to render a UseCaseNode.
  */
-public final class StateNodeViewer extends AbstractNodeViewer
+public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 {
-	private static final int DEFAULT_WIDTH = 80;
-	private static final int DEFAULT_HEIGHT = 60;
+	private static final int DEFAULT_WIDTH = 110;
+	private static final int DEFAULT_HEIGHT = 40;
+	private static final int HORIZONTAL_NAME_PADDING = 30;
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
-	public StateNodeViewer(DiagramRenderer pParent)
+	public UseCaseNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}
@@ -53,22 +54,23 @@ public final class StateNodeViewer extends AbstractNodeViewer
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
-		final Rectangle bounds = getBounds(pElement);
-		RenderingUtils.drawRoundedRectangle(pGraphics, bounds);
-		NAME_VIEWER.draw(((StateNode)pElement).getName(), pGraphics, bounds);
+		Rectangle bounds = getBounds(pElement);
+		RenderingUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
+		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pGraphics, getBounds(pElement));
 	}
 	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
 		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
-				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
+				Math.max(DEFAULT_WIDTH,  NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).width()+
+						HORIZONTAL_NAME_PADDING), 
+				Math.max(DEFAULT_HEIGHT, NAME_VIEWER.getDimension(((UseCaseNode)pNode).getName()).height()));
 	}
 	
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		return GeomUtils.intersectRoundedRectangle(getBounds(pNode), pDirection);
+		return GeomUtils.intersectEllipse(getBounds(pNode), pDirection);
 	}   	
 }

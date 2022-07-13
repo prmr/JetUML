@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
@@ -35,9 +35,9 @@ import org.jetuml.rendering.DiagramRenderer;
 /**
  * An object to render a package in a class diagram.
  */
-public final class PackageNodeViewer extends AbstractPackageNodeViewer
+public final class PackageNodeRenderer extends AbstractPackageNodeRenderer
 {
-	public PackageNodeViewer(DiagramRenderer pParent)
+	public PackageNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

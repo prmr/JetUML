@@ -27,8 +27,8 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.nodes.CircularStateNodeViewer;
-import org.jetuml.viewers.nodes.StateNodeViewer;
+import org.jetuml.rendering.nodes.CircularStateNodeRenderer;
+import org.jetuml.rendering.nodes.StateNodeRenderer;
 
 /**
  * Superclass for classes that test the layout of a state diagram.
@@ -43,14 +43,14 @@ public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagram
 	
 	protected void verifyStateNodeDefaultDimensions(Node pNode)
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(StateNodeRenderer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(StateNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
 	protected void verifyCircularStateNodeDefaultDimensions(Node pNode)
 	{
-		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeViewer.class, "DIAMETER");
+		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeRenderer.class, "DIAMETER");
 		Rectangle bounds = aRenderer.getBounds(pNode);
 		assertEquals(DIAMETER, bounds.getWidth());
 		assertEquals(DIAMETER, bounds.getHeight());

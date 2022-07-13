@@ -35,7 +35,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.nodes.NoteNodeViewer;
+import org.jetuml.rendering.nodes.NoteNodeRenderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -101,7 +101,7 @@ public class TestLayoutStateDiagram extends AbstractTestStateDiagramLayout
 	@Test
 	void testNoteNodeIsExpandedHorizontally()
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeRenderer.class, "DEFAULT_WIDTH");
 		Rectangle bounds = aRenderer.getBounds(nodesByType(NoteNode.class).get(0));
 		assertTrue(bounds.getWidth() > DEFAULT_WIDTH);
 	}

@@ -29,8 +29,8 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
-import org.jetuml.viewers.nodes.ActorNodeViewer;
-import org.jetuml.viewers.nodes.UseCaseNodeViewer;
+import org.jetuml.rendering.nodes.ActorNodeRenderer;
+import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 
 /**
  * Superclass for classes that test the layout of a use case diagram.
@@ -46,15 +46,15 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 	
 	protected void verifyUseCaseNodeDefaultDimensions(Node pNode)
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(UseCaseNodeViewer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(UseCaseNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(UseCaseNodeRenderer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(UseCaseNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
 	protected void verifyActorNodeWithNameDefaultDimensions(Node pNode)
 	{
-		final int WIDTH = getStaticIntFieldValue(ActorNodeViewer.class, "WIDTH");
-		final int HEIGHT = getStaticIntFieldValue(ActorNodeViewer.class, "HEIGHT");
+		final int WIDTH = getStaticIntFieldValue(ActorNodeRenderer.class, "WIDTH");
+		final int HEIGHT = getStaticIntFieldValue(ActorNodeRenderer.class, "HEIGHT");
 		StringRenderer nameViewer = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 		Dimension nameBounds = nameViewer.getDimension(((ActorNode)pNode).getName());
 		int calculatedWidth = Math.max(WIDTH, nameBounds.width());

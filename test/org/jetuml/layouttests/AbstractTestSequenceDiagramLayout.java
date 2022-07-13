@@ -35,9 +35,9 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.AbstractDiagramRenderer;
 import org.jetuml.rendering.SequenceDiagramRenderer;
-import org.jetuml.viewers.nodes.CallNodeViewer;
-import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
-import org.jetuml.viewers.nodes.NodeViewer;
+import org.jetuml.rendering.nodes.CallNodeRenderer;
+import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
+import org.jetuml.rendering.nodes.NodeRenderer;
 
 /**
  * Superclass for classes that test the layout of a sequence diagram.
@@ -52,28 +52,28 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 	
 	protected static void verifyImplicitParameterNodeTopRectangleDefaultHeight(Node pNode)
 	{
-		final int TOP_HEIGHT = getStaticIntFieldValue(ImplicitParameterNodeViewer.class, "TOP_HEIGHT");
-		ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer(pNode);
+		final int TOP_HEIGHT = getStaticIntFieldValue(ImplicitParameterNodeRenderer.class, "TOP_HEIGHT");
+		ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = getInstanceOfImplicitParameterNodeViewer(pNode);
 		Rectangle implicitParameterTopRectangle = instanceOfImplicitParameterNodeViewer.getTopRectangle(pNode);
 		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.getHeight());
 	}
 	
 	protected void verifyCallNodeDefaultWidth(Node pNode)
 	{
-		final int WIDTH = getStaticIntFieldValue(CallNodeViewer.class, "WIDTH");
+		final int WIDTH = getStaticIntFieldValue(CallNodeRenderer.class, "WIDTH");
 		Rectangle nodeBounds = aRenderer.getBounds(pNode);
 		assertEquals(WIDTH, nodeBounds.getWidth());
 	}
 	
-	private static ImplicitParameterNodeViewer getInstanceOfImplicitParameterNodeViewer(Node pImplicitParameterNode)
+	private static ImplicitParameterNodeRenderer getInstanceOfImplicitParameterNodeViewer(Node pImplicitParameterNode)
 	{
 		try
 		{
 			Field nodeViewers = AbstractDiagramRenderer.class.getDeclaredField("aRenderers");
 			nodeViewers.setAccessible(true);
 			@SuppressWarnings("unchecked")
-			ImplicitParameterNodeViewer instanceOfImplicitParameterNodeViewer = 
-					(ImplicitParameterNodeViewer)((IdentityHashMap<Class<? extends Node>, NodeViewer>)nodeViewers.get(
+			ImplicitParameterNodeRenderer instanceOfImplicitParameterNodeViewer = 
+					(ImplicitParameterNodeRenderer)((IdentityHashMap<Class<? extends Node>, NodeRenderer>)nodeViewers.get(
 							new SequenceDiagramRenderer(new Diagram(DiagramType.SEQUENCE)))).get(ImplicitParameterNode.class);
 			return instanceOfImplicitParameterNodeViewer;
 		}

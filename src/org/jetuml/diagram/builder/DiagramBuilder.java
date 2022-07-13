@@ -47,7 +47,7 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.nodes.PackageNodeViewer;
+import org.jetuml.rendering.nodes.PackageNodeRenderer;
 
 /**
  * Wrapper around a DiagramRenderer that provides the logic for converting
@@ -493,9 +493,9 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private PackageNodeViewer packageNodeViewer()
+	private PackageNodeRenderer packageNodeViewer()
 	{
-		return (PackageNodeViewer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(PackageNode.class);
+		return (PackageNodeRenderer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(PackageNode.class);
 	}
 	
 	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)

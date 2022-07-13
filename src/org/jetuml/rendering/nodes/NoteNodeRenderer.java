@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
@@ -40,7 +40,7 @@ import javafx.scene.shape.Path;
 /**
  * An object to render a NoteNode.
  */
-public final class NoteNodeViewer extends AbstractNodeViewer
+public final class NoteNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 40;
@@ -48,7 +48,7 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
 	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
-	public NoteNodeViewer(DiagramRenderer pParent)
+	public NoteNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

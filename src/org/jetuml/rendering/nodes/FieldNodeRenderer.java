@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -40,7 +40,7 @@ import javafx.scene.paint.Color;
 /**
  * An object to render a FieldNode.
  */
-public final class FieldNodeViewer extends AbstractNodeViewer
+public final class FieldNodeRenderer extends AbstractNodeRenderer
 {
 	private static final String ICON_LABEL = "x = y";
 	private static final String EQUALS = " = ";
@@ -51,14 +51,14 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
 	private static final StringRenderer EQUALS_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
 	
-	public FieldNodeViewer(DiagramRenderer pParent)
+	public FieldNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}
 	
-	private ObjectNodeViewer objectNodeViewer()
+	private ObjectNodeRenderer objectNodeViewer()
 	{
-		return (ObjectNodeViewer) parent().rendererFor(ObjectNode.class);
+		return (ObjectNodeRenderer) parent().rendererFor(ObjectNode.class);
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 		ObjectNode parent = (ObjectNode)pNode.getParent();
 		if( parent != null )
 		{
-			return ObjectNodeViewer.getSplitPosition(parent);
+			return ObjectNodeRenderer.getSplitPosition(parent);
 		}
 		else
 		{
@@ -96,7 +96,7 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 		final int height = getHeight(pNode);
 		if( pNode.hasParent() )
 		{
-			int yPosition = ObjectNodeViewer.getYPosition(pNode.getParent(), (FieldNode) pNode);
+			int yPosition = ObjectNodeRenderer.getYPosition(pNode.getParent(), (FieldNode) pNode);
 			Rectangle parentBounds = objectNodeViewer().getBounds(pNode.getParent());
 			return new Rectangle(parentBounds.getX() + XGAP, yPosition, parentBounds.getWidth() - 2*XGAP, height);
 		}

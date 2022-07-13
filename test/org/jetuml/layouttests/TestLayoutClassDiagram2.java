@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
+import org.jetuml.rendering.nodes.AbstractPackageNodeRenderer;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,7 +88,7 @@ public class TestLayoutClassDiagram2 extends AbstractTestClassDiagramLayout
 	@Test
 	void testPackageNodeP4ContainsBothNodesI1AndC2()
 	{
-		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
+		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeRenderer.class, "PADDING");
 		Rectangle boundsI1 = aRenderer.getBounds(nodeByName("I1"));
 		Rectangle boundsC2 = aRenderer.getBounds(nodeByName("C2"));
 		Rectangle boundsPackageNode = aRenderer.getBounds(nodeByName("p4"));

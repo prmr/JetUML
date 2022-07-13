@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
-import org.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 
 /**
  * Superclass for classes that test the layout of an object diagram.
@@ -39,8 +39,8 @@ public abstract class AbstractTestObjectDiagramLayout extends AbstractTestDiagra
 	
 	protected void verifyObjectNodeDefaultDimensions(Node pNode)
 	{
-		final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_WIDTH");
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeRenderer.class, "DEFAULT_WIDTH");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeRenderer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 }

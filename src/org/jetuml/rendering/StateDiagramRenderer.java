@@ -26,8 +26,8 @@ import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.rendering.edges.StateTransitionEdgeRenderer;
-import org.jetuml.viewers.nodes.CircularStateNodeViewer;
-import org.jetuml.viewers.nodes.StateNodeViewer;
+import org.jetuml.rendering.nodes.CircularStateNodeRenderer;
+import org.jetuml.rendering.nodes.StateNodeRenderer;
 
 /**
  * The renderer for state diagrams.
@@ -37,9 +37,9 @@ public final class StateDiagramRenderer extends AbstractDiagramRenderer
 	public StateDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
-		addElementRenderer(FinalStateNode.class, new CircularStateNodeViewer(this, true));
-		addElementRenderer(InitialStateNode.class, new CircularStateNodeViewer(this, false));
-		addElementRenderer(StateNode.class, new StateNodeViewer(this));
+		addElementRenderer(FinalStateNode.class, new CircularStateNodeRenderer(this, true));
+		addElementRenderer(InitialStateNode.class, new CircularStateNodeRenderer(this, false));
+		addElementRenderer(StateNode.class, new StateNodeRenderer(this));
 		addElementRenderer(StateTransitionEdge.class, new StateTransitionEdgeRenderer(this));
 	}
 }

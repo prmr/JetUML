@@ -31,7 +31,7 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -39,8 +39,8 @@ import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
  */
 public final class SequenceDiagramEdgeConstraints
 {
-	private static final ImplicitParameterNodeViewer IMPLICIT_PARAMETER_NODE_VIEWER = 
-			new ImplicitParameterNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.SEQUENCE)));
+	private static final ImplicitParameterNodeRenderer IMPLICIT_PARAMETER_NODE_VIEWER = 
+			new ImplicitParameterNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.SEQUENCE)));
 	
 	private SequenceDiagramEdgeConstraints() {}
 	

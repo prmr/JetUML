@@ -39,6 +39,7 @@ import org.jetuml.diagram.nodes.InterfaceNode;
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.nodes.TypeNodeRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -49,12 +50,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class TestTypeNodeViewer
 {
 	private static int userDefinedFontSize;
-	private static final TypeNodeViewer aViewer = new TypeNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
+	private static final TypeNodeRenderer aViewer = new TypeNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS)));
 	private final Method aMethodNameBoxHeight;
 	
 	public TestTypeNodeViewer() throws ReflectiveOperationException
 	{
-		aMethodNameBoxHeight = TypeNodeViewer.class.getDeclaredMethod("nameBoxHeight", 
+		aMethodNameBoxHeight = TypeNodeRenderer.class.getDeclaredMethod("nameBoxHeight", 
 				TypeNode.class, int.class, int.class);
 		aMethodNameBoxHeight.setAccessible(true);
 	}

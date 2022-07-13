@@ -35,9 +35,9 @@ import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.edges.EdgeRenderer;
 import org.jetuml.rendering.edges.NoteEdgeRenderer;
-import org.jetuml.viewers.nodes.NodeViewer;
-import org.jetuml.viewers.nodes.NoteNodeViewer;
-import org.jetuml.viewers.nodes.PointNodeViewer;
+import org.jetuml.rendering.nodes.NodeRenderer;
+import org.jetuml.rendering.nodes.NoteNodeRenderer;
+import org.jetuml.rendering.nodes.PointNodeRenderer;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -56,8 +56,8 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	protected AbstractDiagramRenderer(Diagram pDiagram)
 	{
 		aDiagram = pDiagram;
-		addElementRenderer(NoteNode.class, new NoteNodeViewer(this));
-		addElementRenderer(PointNode.class, new PointNodeViewer(this));
+		addElementRenderer(NoteNode.class, new NoteNodeRenderer(this));
+		addElementRenderer(PointNode.class, new PointNodeRenderer(this));
 		addElementRenderer(NoteEdge.class, new NoteEdgeRenderer(this));
 	}
 
@@ -89,8 +89,8 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	 */
 	protected void activateNodeStorages()
 	{
-		aRenderers.values().stream().filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-				.map(NodeViewer.class::cast).forEach(NodeViewer::activateNodeStorage);
+		aRenderers.values().stream().filter(renderer -> NodeRenderer.class.isAssignableFrom(renderer.getClass()))
+				.map(NodeRenderer.class::cast).forEach(NodeRenderer::activateNodeStorage);
 	}
 
 	/**
@@ -98,8 +98,8 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	 */
 	protected void deactivateAndClearNodeStorages()
 	{
-		aRenderers.values().stream().filter(renderer -> NodeViewer.class.isAssignableFrom(renderer.getClass()))
-				.map(NodeViewer.class::cast).forEach(NodeViewer::deactivateAndClearNodeStorage);
+		aRenderers.values().stream().filter(renderer -> NodeRenderer.class.isAssignableFrom(renderer.getClass()))
+				.map(NodeRenderer.class::cast).forEach(NodeRenderer::deactivateAndClearNodeStorage);
 	}
 
 	protected void drawNode(Node pNode, GraphicsContext pGraphics)
@@ -213,7 +213,7 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 	public Point getConnectionPoints(Node pNode, Direction pDirection)
 	{
 		assert pNode != null && pDirection != null;
-		return ((NodeViewer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
+		return ((NodeRenderer) aRenderers.get(pNode.getClass())).getConnectionPoint(pNode, pDirection);
 	}
 	
 	@Override

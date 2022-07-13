@@ -30,7 +30,7 @@ import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.nodes.TypeNodeViewer;
+import org.jetuml.rendering.nodes.TypeNodeRenderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -90,7 +90,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testNode5IsExpanded()
 	{
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeRenderer.class, "DEFAULT_HEIGHT");
 		Rectangle bounds = aRenderer.getBounds(nodeByName("Node5"));
 		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}

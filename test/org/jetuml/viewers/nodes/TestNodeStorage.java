@@ -28,6 +28,7 @@ import java.util.function.Function;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.nodes.NodeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

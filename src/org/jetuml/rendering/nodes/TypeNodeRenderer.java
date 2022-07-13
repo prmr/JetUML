@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
@@ -42,7 +42,7 @@ import javafx.scene.canvas.GraphicsContext;
  * The top box, which shows the title, has a minimum height of 20 pixels,
  * minus 20 if attributes are present, minus another 20 if methods are present.
  */
-public class TypeNodeViewer extends AbstractNodeViewer
+public class TypeNodeRenderer extends AbstractNodeRenderer
 {
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
@@ -50,7 +50,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
 	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
-	public TypeNodeViewer(DiagramRenderer pParent)
+	public TypeNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

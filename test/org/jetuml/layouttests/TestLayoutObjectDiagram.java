@@ -31,7 +31,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.nodes.ObjectNodeViewer;
+import org.jetuml.rendering.nodes.ObjectNodeRenderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -82,7 +82,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	@ValueSource(strings = {":Type1", ":Type4"})
 	void testObjectNodeExpandedVertically(String pNodeName)
 	{
-		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
+		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeRenderer.class, "DEFAULT_HEIGHT");
 		Rectangle bounds = aRenderer.getBounds(nodeByName(pNodeName));
 		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.rendering.DiagramRenderer;
@@ -26,9 +26,9 @@ import org.jetuml.rendering.DiagramRenderer;
 /**
  * An object to render an interface in a class diagram.
  */
-public final class InterfaceNodeViewer extends TypeNodeViewer
+public final class InterfaceNodeRenderer extends TypeNodeRenderer
 {
-	public InterfaceNodeViewer(DiagramRenderer pParent)
+	public InterfaceNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}

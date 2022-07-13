@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
@@ -46,7 +46,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an implicit parameter in a Sequence diagram.
  */
-public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
+public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
@@ -56,14 +56,14 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int Y_GAP_SMALL = 20; 
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	
-	public ImplicitParameterNodeViewer(DiagramRenderer pParent)
+	public ImplicitParameterNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}
 	
-	private CallNodeViewer callNodeViewer()
+	private CallNodeRenderer callNodeViewer()
 	{
-		return (CallNodeViewer) parent().rendererFor(CallNode.class);
+		return (CallNodeRenderer) parent().rendererFor(CallNode.class);
 	}
 	
 	@Override

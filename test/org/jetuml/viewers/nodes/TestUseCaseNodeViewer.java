@@ -28,6 +28,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ import org.junit.jupiter.api.Test;
 public class TestUseCaseNodeViewer
 {
 	private UseCaseNode aNode; 
-	private final UseCaseNodeViewer aViewer = new UseCaseNodeViewer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
+	private final UseCaseNodeRenderer aViewer = new UseCaseNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
 	
 	@BeforeAll
 	public static void setupClass()

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
@@ -39,7 +39,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * An object to render an object in an object diagram.
  */
-public final class ObjectNodeViewer extends AbstractNodeViewer
+public final class ObjectNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -49,7 +49,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, 
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
 	
-	public ObjectNodeViewer(DiagramRenderer pParent)
+	public ObjectNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
 	}
@@ -87,7 +87,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		int leftWidth = 0;
 		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
-			leftWidth = Math.max(leftWidth, FieldNodeViewer.leftWidth(field));
+			leftWidth = Math.max(leftWidth, FieldNodeRenderer.leftWidth(field));
 		}
 		return pNode.position().getX() + leftWidth + XGAP;
 	}
@@ -105,9 +105,9 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		}
 		for(Node field : ((ObjectNode)pNode).getChildren())
 		{
-			height += FieldNodeViewer.getHeight(field) + YGAP;   
-			leftWidth = Math.max(leftWidth, FieldNodeViewer.leftWidth(field));
-			rightWidth = Math.max(rightWidth, FieldNodeViewer.rightWidth(field));
+			height += FieldNodeRenderer.getHeight(field) + YGAP;   
+			leftWidth = Math.max(leftWidth, FieldNodeRenderer.leftWidth(field));
+			rightWidth = Math.max(rightWidth, FieldNodeRenderer.rightWidth(field));
 		}
 		int width = Math.max(bounds.getWidth(), leftWidth + rightWidth + 2 * XGAP);
 		width = Grid.toMultiple(width);
@@ -131,7 +131,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 			{
 				return yPosition;
 			}
-			yPosition += FieldNodeViewer.getHeight(field);
+			yPosition += FieldNodeRenderer.getHeight(field);
 		}
 		return yPosition;
 	}

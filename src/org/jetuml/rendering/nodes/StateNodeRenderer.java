@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020 by McGill University.
+ * Copyright (C) 2020, 2021 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -18,63 +18,57 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
+import org.jetuml.diagram.nodes.StateNode;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
- * An object to render a initial or final node.
+ * An object to render a StateNode.
  */
-public final class CircularStateNodeViewer extends AbstractNodeViewer
+public final class StateNodeRenderer extends AbstractNodeRenderer
 {
-	private static final int DIAMETER = 20;
-	private final boolean aFinal;
+	private static final int DEFAULT_WIDTH = 80;
+	private static final int DEFAULT_HEIGHT = 60;
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
-	/**
-	 * @param pFinal true if this is a final node, false if it is an initial node.
-	 */
-	public CircularStateNodeViewer(DiagramRenderer pParent, boolean pFinal)
+	public StateNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
-		aFinal = pFinal;
 	}
-
+	
 	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		final Rectangle bounds = getBounds(pElement);
-		if( aFinal )
-		{
-			RenderingUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.WHITE, true);
-			int innerDiameter = DIAMETER/2;
-			RenderingUtils.drawCircle(pGraphics, bounds.getX() + innerDiameter/2, 
-					bounds.getY() + innerDiameter/2, innerDiameter, Color.BLACK, false);
-		}
-		else
-		{
-			RenderingUtils.drawCircle(pGraphics, bounds.getX(), bounds.getY(), DIAMETER, Color.BLACK, true);
-		}
+		RenderingUtils.drawRoundedRectangle(pGraphics, bounds);
+		NAME_VIEWER.draw(((StateNode)pElement).getName(), pGraphics, bounds);
+	}
+	
+	@Override
+	protected Rectangle internalGetBounds(Node pNode)
+	{
+		Dimension bounds = NAME_VIEWER.getDimension(((StateNode)pNode).getName());
+		return new Rectangle(pNode.position().getX(), pNode.position().getY(), 
+				Math.max(bounds.width(), DEFAULT_WIDTH), Math.max(bounds.height(), DEFAULT_HEIGHT));
 	}
 	
 	@Override
 	public Point getConnectionPoint(Node pNode, Direction pDirection)
 	{
-		return GeomUtils.intersectCircle(getBounds(pNode), pDirection);
-	}   	 
-
-	@Override
-	protected Rectangle internalGetBounds(Node pNode)
-	{
-		return new Rectangle(pNode.position().getX(), pNode.position().getY(), DIAMETER, DIAMETER);
-	}
+		return GeomUtils.intersectRoundedRectangle(getBounds(pNode), pDirection);
+	}   	
 }

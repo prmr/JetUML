@@ -38,7 +38,7 @@ import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.nodes.ImplicitParameterNodeViewer;
+import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
 /**
  * A builder for sequence diagrams.
@@ -252,8 +252,8 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		return Optional.empty();
 	}
 	
-	private ImplicitParameterNodeViewer implicitParameterNodeViewer()
+	private ImplicitParameterNodeRenderer implicitParameterNodeViewer()
 	{
-		return (ImplicitParameterNodeViewer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(ImplicitParameterNode.class);
+		return (ImplicitParameterNodeRenderer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(ImplicitParameterNode.class);
 	}
 }
