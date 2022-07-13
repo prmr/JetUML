@@ -36,7 +36,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.ArrowHeadViewer;
 import org.jetuml.viewers.LineStyle;
@@ -178,8 +177,8 @@ public final class CallEdgeViewer extends AbstractEdgeViewer
 		{
 			endNode = pEdge.getEnd().getParent();
 		}
-		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());	
-		Rectangle end = RenderingFacade.getBounds(endNode);
+		Rectangle start = parent().getBounds(pEdge.getStart());	
+		Rectangle end = parent().getBounds(endNode);
 		if( ((CallEdge)pEdge).isSelfEdge() )
 		{
 			Point p = new Point(start.getMaxX(), end.getY() - CallNode.CALL_YGAP / 2);

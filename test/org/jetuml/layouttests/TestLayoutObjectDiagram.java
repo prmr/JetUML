@@ -31,7 +31,6 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ObjectNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -84,7 +83,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	void testObjectNodeExpandedVertically(String pNodeName)
 	{
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");
-		Rectangle bounds = RenderingFacade.getBounds(nodeByName(pNodeName));
+		Rectangle bounds = aRenderer.getBounds(nodeByName(pNodeName));
 		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}
 	
@@ -94,9 +93,9 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	@Test
 	void testCollaborationEdge()
 	{
-		Rectangle boundsNodeType4 = RenderingFacade.getBounds(nodeByName(":Type4"));
-		Rectangle boundsNodeObject2 = RenderingFacade.getBounds(nodeByName("object2:"));
-		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e1"));
+		Rectangle boundsNodeType4 = aRenderer.getBounds(nodeByName(":Type4"));
+		Rectangle boundsNodeObject2 = aRenderer.getBounds(nodeByName("object2:"));
+		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsNodeObject2.getMaxY(), edgeBounds.getY());
 		assertWithDefaultTolerance(boundsNodeType4.getY(), edgeBounds.getMaxY());
 	}
@@ -110,13 +109,13 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	{
 		Node type1Node = nodeByName(":Type1");
 		Node noteNode = nodeByName("A note");
-		Rectangle boundsType1Node = RenderingFacade.getBounds(type1Node);
-		Rectangle boundsNoteNode = RenderingFacade.getBounds(noteNode);
+		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
+		Rectangle boundsNoteNode = aRenderer.getBounds(noteNode);
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
 				.filter(edge -> boundsType1Node.contains(edge.getStart().position()) ||
 						boundsType1Node.contains(edge.getEnd().position()))
 				.collect(toList()).get(0);
-		Rectangle boundsNoteEdge = RenderingFacade.getBounds(noteEdge);
+		Rectangle boundsNoteEdge = aRenderer.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getY(), boundsNoteEdge.getMaxY());
 		assertTrue(boundsType1Node.contains(noteEdge.getStart().position()));
 	}
@@ -130,13 +129,13 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 	{
 		Node type4Node = nodeByName(":Type4");
 		Node noteNode = nodeByName("A note");
-		Rectangle boundsType4Node = RenderingFacade.getBounds(type4Node);
-		Rectangle boundsNoteNode = RenderingFacade.getBounds(noteNode);
+		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
+		Rectangle boundsNoteNode = aRenderer.getBounds(noteNode);
 		Edge noteEdge = edgesByType(NoteEdge.class).stream()
 				.filter(edge -> boundsType4Node.contains(edge.getStart().position()) ||
 						boundsType4Node.contains(edge.getEnd().position()))
 				.collect(toList()).get(0);
-		Rectangle boundsNoteEdge = RenderingFacade.getBounds(noteEdge);
+		Rectangle boundsNoteEdge = aRenderer.getBounds(noteEdge);
 		assertWithDefaultTolerance(boundsNoteNode.getMaxX(), boundsNoteEdge.getX());
 		assertTrue(boundsType4Node.contains(noteEdge.getEnd().position()));
 	}
@@ -152,7 +151,7 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(type1Node))
 				.collect(toList()).get(0);
-		Rectangle boundsType1Node = RenderingFacade.getBounds(type1Node);
+		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
 		assertWithDefaultTolerance(boundsType1Node.getX(), referenceEdge.getEnd().position().getX());
 		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
 	}
@@ -170,9 +169,9 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 				.filter(edge -> edge.getEnd().equals(type4Node))
 				.collect(toList())
 				.get(0);
-		Rectangle boundsType1Node = RenderingFacade.getBounds(type1Node);
-		Rectangle boundsType4Node = RenderingFacade.getBounds(type4Node);
-		Rectangle boundsReferenceEdge = RenderingFacade.getBounds(referenceEdge);
+		Rectangle boundsType1Node = aRenderer.getBounds(type1Node);
+		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
+		Rectangle boundsReferenceEdge = aRenderer.getBounds(referenceEdge);
 		assertWithDefaultTolerance(boundsType4Node.getX(), boundsReferenceEdge.getMaxX());
 		assertTrue(boundsType1Node.contains(referenceEdge.getStart().position()));
 	}
@@ -189,9 +188,9 @@ public class TestLayoutObjectDiagram extends AbstractTestObjectDiagramLayout
 		Edge referenceEdge = edgesByType(ObjectReferenceEdge.class).stream()
 				.filter(edge -> edge.getEnd().equals(type3Node))
 				.collect(toList()).get(0);
-		Rectangle boundsType4Node = RenderingFacade.getBounds(type4Node);
-		Rectangle boundsType3Node = RenderingFacade.getBounds(type3Node);
-		Rectangle boundsReferenceEdge = RenderingFacade.getBounds(referenceEdge);
+		Rectangle boundsType4Node = aRenderer.getBounds(type4Node);
+		Rectangle boundsType3Node = aRenderer.getBounds(type3Node);
+		Rectangle boundsReferenceEdge = aRenderer.getBounds(referenceEdge);
 		assertWithDefaultTolerance(boundsType3Node.getX(), boundsReferenceEdge.getMaxX());
 		assertTrue(boundsType4Node.contains(referenceEdge.getStart().position()));
 	}

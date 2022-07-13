@@ -35,7 +35,6 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
@@ -98,13 +97,13 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 		}
 	}
 	
-	private static Point getMaxXYofChildren(Node pNode)
+	private Point getMaxXYofChildren(Node pNode)
 	{
 		int maxY = 0;
 		int maxX = 0;
 		for( Node child : ((ImplicitParameterNode)pNode).getChildren() )
 		{
-			Rectangle bounds = RenderingFacade.getBounds(child);
+			Rectangle bounds = parent().getBounds(child);
 			maxX = Math.max(maxX,  bounds.getMaxX());
 			maxY = Math.max(maxY, bounds.getMaxY());
 		}

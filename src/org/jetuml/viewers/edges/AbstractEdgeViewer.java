@@ -28,7 +28,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.ToolGraphics;
@@ -126,8 +125,8 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	@Override
 	public Line getConnectionPoints(Edge pEdge)
 	{
-		Rectangle startBounds = RenderingFacade.getBounds(pEdge.getStart());
-		Rectangle endBounds = RenderingFacade.getBounds(pEdge.getEnd());
+		Rectangle startBounds = parent().getBounds(pEdge.getStart());
+		Rectangle endBounds = parent().getBounds(pEdge.getEnd());
 		Point startCenter = startBounds.getCenter();
 		Point endCenter = endBounds.getCenter();
 		Direction toEnd = Direction.fromLine(startCenter, endCenter);

@@ -362,9 +362,9 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 * the preferred dimension. Otherwise, grow the dimensions to accommodate
 	 * the diagram.
 	 */
-	private static Dimension getDiagramCanvasWidth(Diagram pDiagram)
+	private Dimension getDiagramCanvasWidth(Diagram pDiagram)
 	{
-		Rectangle bounds = RenderingFacade.getBounds(pDiagram);
+		Rectangle bounds = aDiagramBuilder.renderer().getBounds();
 		return new Dimension(
 				Math.max(getPreferredDiagramWidth(), bounds.getMaxX() + DIMENSION_BUFFER),
 				Math.max(getPreferredDiagramHeight(), bounds.getMaxY() + DIMENSION_BUFFER));
@@ -599,7 +599,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			// Pick one node in the selection model, arbitrarily
 			Node firstSelected = selectedNodes.next();
-			Rectangle bounds = RenderingFacade.getBounds(firstSelected);
+			Rectangle bounds = aDiagramBuilder.renderer().getBounds(firstSelected);
 			Rectangle snappedPosition = Grid.snapped(bounds);
 			
 			int dx = snappedPosition.getX() - bounds.getX();
@@ -730,7 +730,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	/**
 	 * Tracks the movement of a set of selected diagram elements.
 	 */
-	private static final class MoveTracker
+	private final class MoveTracker
 	{
 		private final List<Node> aTrackedNodes = new ArrayList<>();
 		private final List<Rectangle> aOriginalBounds = new ArrayList<>();
@@ -754,7 +754,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				if(element instanceof Node)
 				{
 					aTrackedNodes.add((Node) element);
-					aOriginalBounds.add(RenderingFacade.getBounds((Node)element));
+					aOriginalBounds.add(aDiagramBuilder.renderer().getBounds((Node)element));
 				}
 			}
 		}
@@ -776,7 +776,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			int i = 0;
 			for(Node node : aTrackedNodes)
 			{
-				selectionBounds2[i] = RenderingFacade.getBounds(node);
+				selectionBounds2[i] = aDiagramBuilder.renderer().getBounds(node);
 				i++;
 			}
 			for(i = 0; i < aOriginalBounds.size(); i++)
@@ -846,7 +846,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private void selectNode(Node pNode, Rectangle pLasso)
 	{
-		if(pLasso.contains(RenderingFacade.getBounds(pNode)))
+		if(pLasso.contains(aDiagramBuilder.renderer().getBounds(pNode)))
 		{
 			internalAddToSelection(pNode);
 		}
@@ -855,7 +855,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private void selectEdge(Edge pEdge, Rectangle pLasso )
 	{
-		if(pLasso.contains(RenderingFacade.getBounds(pEdge)))
+		if(pLasso.contains(aDiagramBuilder.renderer().getBounds(pEdge)))
 		{
 			internalAddToSelection(pEdge);
 		}		

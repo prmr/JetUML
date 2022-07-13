@@ -28,10 +28,8 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.AbstractPackageNodeViewer;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of a class diagram.
@@ -44,14 +42,7 @@ public abstract class AbstractTestClassDiagramLayout extends AbstractTestDiagram
 		super(pDiagramPath);
 	}
 	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-		RenderingFacade.getBounds(aDiagram); // Triggers a rendering pass
-	}
-	
-	protected static void verifyClassNodeDefaultDimensions(Node pNode)
+	protected void verifyClassNodeDefaultDimensions(Node pNode)
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
@@ -61,8 +52,8 @@ public abstract class AbstractTestClassDiagramLayout extends AbstractTestDiagram
 	protected void verifyPackageNodeContainmentOfSingleNode(String pPackageName, String pInnerNodeName)
 	{
 		final int packageNodePadding = getStaticIntFieldValue(AbstractPackageNodeViewer.class, "PADDING");
-		Rectangle boundsInnerNode = RenderingFacade.getBounds(nodeByName(pInnerNodeName));
-		Rectangle boundsPackageNode = RenderingFacade.getBounds(nodeByName(pPackageName));
+		Rectangle boundsInnerNode = aRenderer.getBounds(nodeByName(pInnerNodeName));
+		Rectangle boundsPackageNode = aRenderer.getBounds(nodeByName(pPackageName));
 		assertEquals(boundsInnerNode.getX() - packageNodePadding, boundsPackageNode.getX());
 		assertEquals(boundsInnerNode.getMaxX() + packageNodePadding, boundsPackageNode.getMaxX());
 		assertEquals(boundsInnerNode.getMaxY() + packageNodePadding, boundsPackageNode.getMaxY());

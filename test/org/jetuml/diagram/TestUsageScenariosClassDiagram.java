@@ -383,7 +383,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle classNodeBounds = RenderingFacade.getBounds(aClassNode1);
+		Rectangle classNodeBounds = aBuilder.renderer().getBounds(aClassNode1);
 		
 		select(aClassNode1);
 		deleteSelected();
@@ -394,7 +394,7 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		undo();
 		assertEquals(1, numberOfEdges());
 		assertEquals(2, numberOfRootNodes());
-		assertEquals(classNodeBounds, RenderingFacade.getBounds(getRootNode(1)));
+		assertEquals(classNodeBounds, aBuilder.renderer().getBounds(getRootNode(1)));
 	}
 	
 	@Test 
@@ -403,8 +403,8 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		addNode(aClassNode1, new Point(5, 5));
 		addNode(aInterfaceNode, new Point(44, 44));
 		addEdge(aAggregationEdge, new Point(10, 10), new Point(45, 48));
-		Rectangle classNodeBounds = RenderingFacade.getBounds(aClassNode1);
-		Rectangle interfaceNodeBounds = RenderingFacade.getBounds(aInterfaceNode);
+		Rectangle classNodeBounds = aBuilder.renderer().getBounds(aClassNode1);
+		Rectangle interfaceNodeBounds = aBuilder.renderer().getBounds(aInterfaceNode);
 
 		selectAll();
 		deleteSelected();
@@ -418,11 +418,11 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		{
 			if(node instanceof ClassNode)
 			{
-				assertEquals(classNodeBounds, RenderingFacade.getBounds(node));
+				assertEquals(classNodeBounds, aBuilder.renderer().getBounds(node));
 			}
 			else
 			{
-				assertEquals(interfaceNodeBounds, RenderingFacade.getBounds(node));
+				assertEquals(interfaceNodeBounds, aBuilder.renderer().getBounds(node));
 			}
 		}
 	}

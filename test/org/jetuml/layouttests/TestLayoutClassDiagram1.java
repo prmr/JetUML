@@ -30,7 +30,6 @@ import org.jetuml.diagram.edges.AggregationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.TypeNodeViewer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,7 +91,7 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	void testNode5IsExpanded()
 	{
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(TypeNodeViewer.class, "DEFAULT_HEIGHT");
-		Rectangle bounds = RenderingFacade.getBounds(nodeByName("Node5"));
+		Rectangle bounds = aRenderer.getBounds(nodeByName("Node5"));
 		assertTrue(bounds.getHeight() > DEFAULT_HEIGHT);
 	}
 	
@@ -112,9 +111,10 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testDependencyEdge()
 	{
-		Rectangle boundsNode2 = RenderingFacade.getBounds(nodeByName("Node2"));
-		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
-		Rectangle edgeBounds = RenderingFacade.getBounds(edgeByMiddleLabel("e1"));
+		aRenderer.getBounds(); // Trigger a layout pass
+		Rectangle boundsNode2 = aRenderer.getBounds(nodeByName("Node2"));
+		Rectangle boundsNode3 = aRenderer.getBounds(nodeByName("Node3"));
+		Rectangle edgeBounds = aRenderer.getBounds(edgeByMiddleLabel("e1"));
 		assertWithDefaultTolerance(boundsNode2.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode3.getX(), edgeBounds.getMaxX());
 	}
@@ -125,13 +125,14 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testImplementationEdge()
 	{
-		Rectangle boundsNode1 = RenderingFacade.getBounds(nodeByName("Node1"));
-		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode1 = aRenderer.getBounds(nodeByName("Node1"));
+		Rectangle boundsNode3 = aRenderer.getBounds(nodeByName("Node3"));
 		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Implementation)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
+		aRenderer.getBounds(); // Triggers a layout pass
+		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode1.getMaxY(), edgeBounds.getY());
 		assertWithDefaultTolerance(boundsNode3.getY(), edgeBounds.getMaxY());
 	}
@@ -142,13 +143,14 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testInheritanceEdge()
 	{
-		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
-		Rectangle boundsNode5 = RenderingFacade.getBounds(nodeByName("Node5"));
+		Rectangle boundsNode3 = aRenderer.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode5 = aRenderer.getBounds(nodeByName("Node5"));
 		GeneralizationEdge edge = (GeneralizationEdge) edgesByType(GeneralizationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.GENERALIZATION_TYPE).get() == GeneralizationEdge.Type.Inheritance)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
+		aRenderer.getBounds(); // Trigger a layout pass
+		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode3.getMaxY(), edgeBounds.getY());
 		assertWithDefaultTolerance(boundsNode5.getY(), edgeBounds.getMaxY());
 	}
@@ -159,13 +161,14 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testAggregationEdge()
 	{
-		Rectangle boundsNode3 = RenderingFacade.getBounds(nodeByName("Node3"));
-		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode3 = aRenderer.getBounds(nodeByName("Node3"));
+		Rectangle boundsNode4 = aRenderer.getBounds(nodeByName("Node4"));
 		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Aggregation)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
+		aRenderer.getBounds(); // Triggers a layout pass
+		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode3.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
@@ -176,13 +179,14 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testCompositionEdge()
 	{
-		Rectangle boundsNode5 = RenderingFacade.getBounds(nodeByName("Node5"));
-		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode5 = aRenderer.getBounds(nodeByName("Node5"));
+		Rectangle boundsNode4 = aRenderer.getBounds(nodeByName("Node4"));
 		AggregationEdge edge = (AggregationEdge) edgesByType(AggregationEdge.class).stream()
 				.filter(e -> e.properties().get(PropertyName.AGGREGATION_TYPE).get() == AggregationEdge.Type.Composition)
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
+		aRenderer.getBounds(); // Triggers a layout pass
+		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode5.getMaxX(), edgeBounds.getX());
 		assertWithDefaultTolerance(boundsNode4.getX(), edgeBounds.getMaxX());
 	}
@@ -194,12 +198,12 @@ public class TestLayoutClassDiagram1 extends AbstractTestClassDiagramLayout
 	@Test
 	void testNoteEdge()
 	{
-		Rectangle boundsNode6 = RenderingFacade.getBounds(nodeByName("Node6"));
-		Rectangle boundsNode4 = RenderingFacade.getBounds(nodeByName("Node4"));
+		Rectangle boundsNode6 = aRenderer.getBounds(nodeByName("Node6"));
+		Rectangle boundsNode4 = aRenderer.getBounds(nodeByName("Node4"));
 		NoteEdge edge = (NoteEdge) edgesByType(NoteEdge.class).stream()
 				.findFirst()
 				.get();
-		Rectangle edgeBounds = RenderingFacade.getBounds(edge);
+		Rectangle edgeBounds = aRenderer.getBounds(edge);
 		assertWithDefaultTolerance(boundsNode6.getY(), edgeBounds.getMaxY());
 		assertTrue(boundsNode4.contains(edge.getEnd().position()));
 	}

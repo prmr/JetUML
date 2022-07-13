@@ -24,9 +24,7 @@ import java.util.IdentityHashMap;
 import java.util.Optional;
 
 import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.geom.Rectangle;
 
 /**
  * Meant as a single access point for all services that require rendering
@@ -52,29 +50,29 @@ public class RenderingFacade
 		aDiagramRenderers.put(pDiagram.getType(), DiagramType.newRendererInstanceFor(pDiagram));	
 	}
 	
-	/**
-	 * Gets the smallest rectangle enclosing the diagram.
-	 * 
-	 * @param pDiagram The diagram to query
-	 * @return The bounding rectangle
-	 * @pre pDiagram != null
-	 */
-	public static Rectangle getBounds(Diagram pDiagram)
-	{
-		assert pDiagram != null;
-		return aDiagramRenderers.get(pDiagram.getType()).getBounds();
-	}
+//	/**
+//	 * Gets the smallest rectangle enclosing the diagram.
+//	 * 
+//	 * @param pDiagram The diagram to query
+//	 * @return The bounding rectangle
+//	 * @pre pDiagram != null
+//	 */
+//	public static Rectangle getBounds(Diagram pDiagram)
+//	{
+//		assert pDiagram != null;
+//		return aDiagramRenderers.get(pDiagram.getType()).getBounds();
+//	}
 	
-	/**
-	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
-	 * 
-	 * @param pElement The element whose bounds we wish to compute.
-	 * @return The bounding rectangle
-	 * @pre pElement != null
-	 */
-	public static Rectangle getBounds(DiagramElement pElement)
-	{
-		assert pElement != null;
-		return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
-	}
+//	/**
+//	 * Gets the smallest rectangle that bounds the element. The bounding rectangle contains all labels.
+//	 * 
+//	 * @param pElement The element whose bounds we wish to compute.
+//	 * @return The bounding rectangle
+//	 * @pre pElement != null
+//	 */
+//	public static Rectangle getBounds(DiagramElement pElement)
+//	{
+//		assert pElement != null;
+//		return aDiagramRenderers.get(aActiveDiagram.get().getType()).getBounds(pElement);
+//	}
 }

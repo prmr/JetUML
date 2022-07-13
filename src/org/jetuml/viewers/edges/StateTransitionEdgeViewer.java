@@ -31,7 +31,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.StringViewer;
@@ -253,10 +252,10 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private String wrapLabel(StateTransitionEdge pEdge)
 	{
-		int distanceInX = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getX() -
-				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getX());
-		int distanceInY = Math.abs(RenderingFacade.getBounds(pEdge.getStart()).getCenter().getY() -
-				RenderingFacade.getBounds(pEdge.getEnd()).getCenter().getY());
+		int distanceInX = Math.abs(parent().getBounds(pEdge.getStart()).getCenter().getX() -
+				parent().getBounds(pEdge.getEnd()).getCenter().getX());
+		int distanceInY = Math.abs(parent().getBounds(pEdge.getStart()).getCenter().getY() -
+				parent().getBounds(pEdge.getEnd()).getCenter().getY());
 		return super.wrapLabel(pEdge.getMiddleLabel(), distanceInX, distanceInY);	
 	}
 
@@ -278,7 +277,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 		return pEdge.getStart() == pEdge.getEnd();
 	}
 	
-	private static Shape getSelfEdgeShape(Edge pEdge)
+	private Shape getSelfEdgeShape(Edge pEdge)
 	{
 		Line line = getSelfEdgeConnectionPoints(pEdge);
 		Arc arc = new Arc();
@@ -343,22 +342,22 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 * The connection points for the self-edge are an offset from the top-right
 	 * corner.
 	 */
-	private static Line getSelfEdgeConnectionPoints(Edge pEdge)
+	private Line getSelfEdgeConnectionPoints(Edge pEdge)
 	{
 		if( getPosition(pEdge) == 1 )
 		{
-			Point2D point1 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
-					RenderingFacade.getBounds(pEdge.getStart()).getY());
-			Point2D point2 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getMaxX(), 
-					RenderingFacade.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.getStart()).getMaxX() - SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.getStart()).getY());
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.getStart()).getMaxX(), 
+					parent().getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 		else
 		{
-			Point2D point1 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getX(), 
-					RenderingFacade.getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
-			Point2D point2 = new Point2D(RenderingFacade.getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
-					RenderingFacade.getBounds(pEdge.getStart()).getY());
+			Point2D point1 = new Point2D(parent().getBounds(pEdge.getStart()).getX(), 
+					parent().getBounds(pEdge.getStart()).getY() + SELF_EDGE_OFFSET);
+			Point2D point2 = new Point2D(parent().getBounds(pEdge.getStart()).getX() + SELF_EDGE_OFFSET, 
+					parent().getBounds(pEdge.getStart()).getY());
 			return new Line(Conversions.toPoint(point1), Conversions.toPoint(point2));
 		}
 	}
@@ -417,8 +416,8 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	 */
 	private Line getNormalEdgeConnectionsPoints(Edge pEdge)
 	{
-		Rectangle start = RenderingFacade.getBounds(pEdge.getStart());
-		Rectangle end = RenderingFacade.getBounds(pEdge.getEnd());
+		Rectangle start = parent().getBounds(pEdge.getStart());
+		Rectangle end = parent().getBounds(pEdge.getEnd());
 		Point startCenter = start.getCenter();
 		Point endCenter = end.getCenter();
 		int turn = DEGREES_5;

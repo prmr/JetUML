@@ -45,7 +45,7 @@ public abstract class AbstractTestObjectDiagramLayout extends AbstractTestDiagra
 		super(pDiagramPath);
 	}
 	
-	protected static void verifyObjectNodeDefaultDimensions(Node pNode)
+	protected void verifyObjectNodeDefaultDimensions(Node pNode)
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(ObjectNodeViewer.class, "DEFAULT_HEIGHT");

@@ -32,7 +32,6 @@ import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,7 +80,7 @@ public class TestNoteEdgeViewer
 	public void testBoundsCalculation()
 	{
 		aNoteEdge.connect(aNoteNode, aPointNode, aGraph);
-		assertEquals(new Rectangle(59,19,42,2), RenderingFacade.getBounds(aNoteEdge));
+		assertEquals(new Rectangle(59,19,42,2), aRenderer.getBounds(aNoteEdge));
 		
 		Line connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
@@ -91,7 +90,7 @@ public class TestNoteEdgeViewer
 		
 		
 		aPointNode.translate(20, 0);
-		assertEquals(new Rectangle(59,19,62,2), RenderingFacade.getBounds(aNoteEdge));
+		assertEquals(new Rectangle(59,19,62,2), aRenderer.getBounds(aNoteEdge));
 		
 		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());
@@ -105,7 +104,7 @@ public class TestNoteEdgeViewer
 		// The edge should intersect the note edge at x=58, y=24
 		// (basic correspondence of proportions between triangles)
 		// yielding bounds of [x=58,y=24,width=62,height=16]
-		assertEquals(new Rectangle(58,25,62,15), RenderingFacade.getBounds(aNoteEdge));
+		assertEquals(new Rectangle(58,25,62,15), aRenderer.getBounds(aNoteEdge));
 		
 		connectionPoints = aRenderer.getConnectionPoints(aNoteEdge);
 		assertEquals( 60, connectionPoints.getX1());

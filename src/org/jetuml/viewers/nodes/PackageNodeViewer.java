@@ -31,7 +31,6 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 
 /**
  * An object to render a package in a class diagram.
@@ -46,7 +45,7 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 	/*
 	 * Computes the bounding box that encompasses all children.
 	 */
-	private static Optional<Rectangle> getChildrenBounds(Node pNode)
+	private Optional<Rectangle> getChildrenBounds(Node pNode)
 	{
 		if( ((PackageNode)pNode).getChildren().isEmpty() )
 		{
@@ -57,11 +56,11 @@ public final class PackageNodeViewer extends AbstractPackageNodeViewer
 		{
 			if( childBounds == null )
 			{
-				childBounds = RenderingFacade.getBounds(child);
+				childBounds = parent().getBounds(child);
 			}
 			else
 			{
-				childBounds = childBounds.add(RenderingFacade.getBounds(child));
+				childBounds = childBounds.add(parent().getBounds(child));
 			}
 		}
 		assert childBounds != null;

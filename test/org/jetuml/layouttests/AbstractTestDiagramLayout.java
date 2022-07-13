@@ -44,7 +44,6 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.persistence.PersistenceService;
 import org.jetuml.persistence.PersistenceTestUtils;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.NoteNodeViewer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -158,9 +157,9 @@ public abstract class AbstractTestDiagramLayout
 		}
 	}
 	
-	protected static void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
+	protected void verifyDefaultDimensions(Node pNode, int pDefaultWidth, int pDefaultHeight)
 	{
-		Rectangle bounds = RenderingFacade.getBounds(pNode);
+		Rectangle bounds = aRenderer.getBounds(pNode);
 		assertEquals(pDefaultWidth, bounds.getWidth());
 		assertEquals(pDefaultHeight, bounds.getHeight());
 	}
@@ -171,7 +170,7 @@ public abstract class AbstractTestDiagramLayout
 		assertEquals(pExpectedY, pNode.position().getY());
 	}
 	
-	protected static void verifyNoteNodeDefaultDimensions(Node pNode)
+	protected void verifyNoteNodeDefaultDimensions(Node pNode)
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(NoteNodeViewer.class, "DEFAULT_HEIGHT");

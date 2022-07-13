@@ -66,6 +66,8 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 {
+	private static final int TWENTY_PIXELS = 20;
+	
 	public ClassDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
@@ -242,7 +244,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert priorityOf(pEdge) == EdgePriority.SELF_EDGE;
 		for (NodeCorner corner : NodeCorner.values())
 		{	//Get a 2D array of [startPoint, endPoint] for a self edge at the corner
-			Point[] points = NodeCorner.toPoints(corner, pEdge.getEnd());
+			Point[] points = toPoints(corner, pEdge.getEnd());
 			//Return the first corner with available start and end points
 			if(aEdgeStorage.connectionPointIsAvailable(points[0]) && 
 					aEdgeStorage.connectionPointIsAvailable(points[1]))
@@ -266,7 +268,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	{
 		assert priorityOf(pEdge) == EdgePriority.SELF_EDGE;
 		assert pCorner != null;
-		Point[] connectionPoints = NodeCorner.toPoints(pCorner, pEdge.getEnd());
+		Point[] connectionPoints = toPoints(pCorner, pEdge.getEnd());
 		Point startPoint = connectionPoints[0];
 		Point endPoint = connectionPoints[1];
 		Point firstBend;
@@ -1091,7 +1093,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		assert getOtherNode(pEdge, pNode).equals(pOtherNode);
 		if( pSideOfNode.isNorthSouth() ) //then compare X-coordinates
 		{
-			if (RenderingFacade.getBounds(pNode).getCenter().getX() <=  RenderingFacade.getBounds(pOtherNode).getCenter().getX())
+			if (getBounds(pNode).getCenter().getX() <=  getBounds(pOtherNode).getCenter().getX())
 			{
 				return 1;
 			}
@@ -1102,7 +1104,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		}
 		else //Side of node is East/West, so we need to compare Y-coordinates
 		{
-			if (RenderingFacade.getBounds(pNode).getCenter().getY() <=  RenderingFacade.getBounds(pOtherNode).getCenter().getY())
+			if (getBounds(pNode).getCenter().getY() <=  getBounds(pOtherNode).getCenter().getY())
 			{
 				return 1;
 			}
@@ -1212,8 +1214,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private NodeSide attachedSidePreferringEastWest(Edge pEdge)
 	{
 		assert pEdge != null;
-		Rectangle startNodeBounds = RenderingFacade.getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = RenderingFacade.getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = getBounds(pEdge.getStart());
+		Rectangle endNodeBounds = getBounds(pEdge.getEnd());
 		//if the start node is above or below the end node (+- 20 px) then determine whether it belongs on the N or S side
 		if (startNodeBounds.getMaxX() > endNodeBounds.getX() - (2 * TEN_PIXELS) &&
 				startNodeBounds.getX() < endNodeBounds.getMaxX() + (2 * TEN_PIXELS))
@@ -1235,8 +1237,8 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		assert pEdge!= null;
-		Rectangle startNodeBounds = RenderingFacade.getBounds(pEdge.getStart());
-		Rectangle endNodeBounds = RenderingFacade.getBounds(pEdge.getEnd());
+		Rectangle startNodeBounds = getBounds(pEdge.getStart());
+		Rectangle endNodeBounds = getBounds(pEdge.getEnd());
 		//if the start node is beside the end node (+- 20 px) then compute whether it belongs on the E or W side
 		if (startNodeBounds.getMaxY() > endNodeBounds.getY() - (2 * TEN_PIXELS) && 
 				startNodeBounds.getY() < endNodeBounds.getMaxY() + (2 * TEN_PIXELS))
@@ -1257,12 +1259,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private NodeSide northSouthSideUnlessTooClose(Edge pEdge)
 	{
-		NodeSide preferredSide = northOrSouthSide(RenderingFacade.getBounds(pEdge.getStart()), 
-				RenderingFacade.getBounds(pEdge.getEnd()));
+		NodeSide preferredSide = northOrSouthSide(getBounds(pEdge.getStart()), 
+				getBounds(pEdge.getEnd()));
 		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
-			return eastOrWestSide(RenderingFacade.getBounds(pEdge.getStart()), RenderingFacade.getBounds(pEdge.getEnd()));
+			return eastOrWestSide(getBounds(pEdge.getStart()), getBounds(pEdge.getEnd()));
 		}
 		else
 		{
@@ -1278,12 +1280,12 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private NodeSide eastWestSideUnlessTooClose(Edge pEdge)
 	{
-		NodeSide preferredSide = eastOrWestSide(RenderingFacade.getBounds(pEdge.getStart()), 
-				RenderingFacade.getBounds(pEdge.getEnd()));
+		NodeSide preferredSide = eastOrWestSide(getBounds(pEdge.getStart()), 
+				getBounds(pEdge.getEnd()));
 		if(nodeIsCloserThanSegment(pEdge, pEdge.getEnd(), preferredSide) || 
 				nodeIsCloserThanSegment(pEdge, pEdge.getStart(), preferredSide.mirrored()))
 		{
-			return northOrSouthSide(RenderingFacade.getBounds(pEdge.getStart()), RenderingFacade.getBounds(pEdge.getEnd()));
+			return northOrSouthSide(getBounds(pEdge.getStart()), getBounds(pEdge.getEnd()));
 		}
 		else
 		{
@@ -1345,7 +1347,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, NodeSide pAttachedSide)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;
-		Rectangle otherNodeBounds = RenderingFacade.getBounds(getOtherNode(pEdge, pNode));
+		Rectangle otherNodeBounds = getBounds(getOtherNode(pEdge, pNode));
 		if(pAttachedSide == NodeSide.NORTH)
 		{ //Consider the middle segments of edges attached to pNode
 			return !storedConflictingEdges(pAttachedSide.mirrored(), pNode, pEdge).stream()
@@ -1398,6 +1400,40 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		{
 			return Optional.empty();
 		}
+	}
+	
+	/**
+	 * Returns an array of [startPoint, endPoint] where a self-edge attached to the pCorner of pNode would connect.
+	 * @param pCorner the NodeCorner of interest
+	 * @param pNode the node of interest 
+	 * @return an array containing the start point and end point for a self edge attached to the pCorner corner of pNode.
+	 */
+	public Point[] toPoints(NodeCorner pCorner, Node pNode)
+	{
+		Rectangle nodeBounds = getBounds(pNode);
+		Point startPoint;
+		Point endPoint;		
+		if (pCorner == NodeCorner.TOP_RIGHT)
+		{
+			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getY());
+			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getY() + TWENTY_PIXELS);
+		}
+		else if (pCorner == NodeCorner.TOP_LEFT)
+		{
+			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getY());
+			endPoint = new Point(nodeBounds.getX(), nodeBounds.getY() + TWENTY_PIXELS);
+		}
+		else if (pCorner == NodeCorner.BOTTOM_LEFT)
+		{
+			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getMaxY());
+			endPoint = new Point(nodeBounds.getX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
+		}
+		else //BOTTOM_RIGHT
+		{
+			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getMaxY());
+			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
+		}
+		return new Point[] {startPoint, endPoint};
 	}
 }
 

@@ -154,16 +154,16 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		{
 			if (bounds == null)
 			{
-				bounds = RenderingFacade.getBounds(node);
+				bounds = getBounds(node);
 			}
 			else
 			{
-				bounds = bounds.add(RenderingFacade.getBounds(node));
+				bounds = bounds.add(getBounds(node));
 			}
 		}
 		for (Edge edge : aDiagram.edges())
 		{
-			bounds = bounds.add(RenderingFacade.getBounds(edge));
+			bounds = bounds.add(getBounds(edge));
 		}
 		if (bounds == null)
 		{

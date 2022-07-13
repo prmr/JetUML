@@ -20,11 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
-import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
-import org.jetuml.geom.Point;
-import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.edges.NodeIndex;
 
 /**
@@ -35,7 +31,6 @@ public enum NodeCorner
 {
 	TOP_RIGHT, TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT;
 	
-	private static final int TWENTY_PIXELS = 20;
 	
 	/**
 	 * Gets the horizontal (North or South) NodeIndex associated with pCorner.
@@ -107,40 +102,6 @@ public enum NodeCorner
 		{
 			return Direction.WEST;
 		}
-	}
-	
-	/**
-	 * Returns an array of [startPoint, endPoint] where a self-edge attached to the pCorner of pNode would connect.
-	 * @param pCorner the NodeCorner of interest
-	 * @param pNode the node of interest 
-	 * @return an array containing the start point and end point for a self edge attached to the pCorner corner of pNode.
-	 */
-	public static Point[] toPoints(NodeCorner pCorner, Node pNode)
-	{
-		Rectangle nodeBounds = RenderingFacade.getBounds(pNode);
-		Point startPoint;
-		Point endPoint;		
-		if (pCorner == TOP_RIGHT)
-		{
-			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getY());
-			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getY() + TWENTY_PIXELS);
-		}
-		else if (pCorner == TOP_LEFT)
-		{
-			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getY());
-			endPoint = new Point(nodeBounds.getX(), nodeBounds.getY() + TWENTY_PIXELS);
-		}
-		else if (pCorner == BOTTOM_LEFT)
-		{
-			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getMaxY());
-			endPoint = new Point(nodeBounds.getX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
-		}
-		else //BOTTOM_RIGHT
-		{
-			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getMaxY());
-			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
-		}
-		return new Point[] {startPoint, endPoint};
 	}
 }
 

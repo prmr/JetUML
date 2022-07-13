@@ -35,6 +35,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ObjectDiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -49,6 +50,7 @@ public class TestFieldNodeViewer
 	private FieldNode aFieldNode1;
 	private Graphics2D aGraphics;
 	private Diagram aDiagram;
+	private ObjectDiagramRenderer aRenderer;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -68,6 +70,7 @@ public class TestFieldNodeViewer
 		aGraphics = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB).createGraphics();
 		aDiagram = new Diagram(DiagramType.OBJECT);
 		aDiagram.addRootNode(aObjectNode1);
+		aRenderer = new ObjectDiagramRenderer(aDiagram);
 		RenderingFacade.prepareFor(aDiagram);
 	}
 	
@@ -102,7 +105,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = default length (30)/2 + 2* offset (6) = 42
 		// h = default height = 20
-		assertEquals( new Rectangle(osDependent(23, 24, 23),0,osDependent(44, 42, 44), osDependent(20,20,26)), RenderingFacade.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(23, 24, 23),0,osDependent(44, 42, 44), osDependent(20,20,26)), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -114,7 +117,7 @@ public class TestFieldNodeViewer
 		// y = 0
 		// w = 47 * 2
 		// h = text height 22
-		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), RenderingFacade.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(osDependent(-12, -14, -23), 0, osDependent(84, 88, 106), osDependent(20, 20, 23)), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@Test
@@ -164,7 +167,7 @@ public class TestFieldNodeViewer
 		// y = top node height
 		// w = left + right
 		// h = default height
-		assertEquals( new Rectangle(5,70,70, osDependent(20,20,26)), RenderingFacade.getBounds(aFieldNode1));
+		assertEquals( new Rectangle(5,70,70, osDependent(20,20,26)), aRenderer.getBounds(aFieldNode1));
 	}
 	
 	@AfterEach

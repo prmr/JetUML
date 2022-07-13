@@ -28,6 +28,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.viewers.edges.NodeIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,35 +103,41 @@ public class TestNodeCorner
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_LEFT), Direction.WEST);
 	}
 	
+	// TODO Migrate these tests to TestClassDiagramRenderer
+	
 	@Test
 	public void testToPoints_topRight()
 	{
 		setUpNode();
-		assertEquals(new Point(80, 0), NodeCorner.toPoints(NodeCorner.TOP_RIGHT, aNode)[0]);
-		assertEquals(new Point(100, 20), NodeCorner.toPoints(NodeCorner.TOP_RIGHT, aNode)[1]);
+		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
+		assertEquals(new Point(80, 0), renderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[0]);
+		assertEquals(new Point(100, 20), renderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[1]);
 	}
 	
 	@Test
 	public void testToPoints_bottomRight()
 	{
 		setUpNode();
-		assertEquals(new Point(80, 60), NodeCorner.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[0]);
-		assertEquals(new Point(100, 40), NodeCorner.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[1]);
+		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
+		assertEquals(new Point(80, 60), renderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[0]);
+		assertEquals(new Point(100, 40), renderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[1]);
 	}
 	
 	@Test
 	public void testToPoints_topLeft()
 	{
 		setUpNode();
-		assertEquals(new Point(20, 0), NodeCorner.toPoints(NodeCorner.TOP_LEFT, aNode)[0]);
-		assertEquals(new Point(0, 20), NodeCorner.toPoints(NodeCorner.TOP_LEFT, aNode)[1]);
+		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
+		assertEquals(new Point(20, 0), renderer.toPoints(NodeCorner.TOP_LEFT, aNode)[0]);
+		assertEquals(new Point(0, 20), renderer.toPoints(NodeCorner.TOP_LEFT, aNode)[1]);
 	}
 	
 	@Test
 	public void testToPoints_bottomLeft()
 	{
 		setUpNode();
-		assertEquals(new Point(20, 60), NodeCorner.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[0]);
-		assertEquals(new Point(0, 40), NodeCorner.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[1]);
+		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
+		assertEquals(new Point(20, 60), renderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[0]);
+		assertEquals(new Point(0, 40), renderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[1]);
 	}
 }

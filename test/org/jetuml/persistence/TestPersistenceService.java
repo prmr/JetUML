@@ -33,6 +33,7 @@ import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
@@ -40,6 +41,7 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -78,26 +80,29 @@ public class TestPersistenceService
 	public void test( String pFileName ) throws Exception
 	{
 		Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
+		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
+		
 		RenderingFacade.prepareFor(diagram);
-		RenderingFacade.getBounds(diagram);
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash
-		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(node), RenderingFacade.getBounds(node)));
-		diagram.edges().forEach( edge -> bounds.put(hash(edge), RenderingFacade.getBounds(edge)));
+		renderer.getBounds(); // Triggers a layout pass
+		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(node), renderer.getBounds(node)));
+		diagram.edges().forEach( edge -> bounds.put(hash(edge), renderer.getBounds(edge)));
 		
 		// Save the diagram in a new file, and re-load it
 		File temporaryFile = PATH_TEMPORARY_FILE.toFile();
 		PersistenceService.save(diagram, temporaryFile);
 		diagram = PersistenceService.read(temporaryFile).diagram();
+		DiagramRenderer renderer2 = DiagramType.newRendererInstanceFor(diagram);
+		renderer2.getBounds(); // Triggers a layout pass
 		RenderingFacade.prepareFor(diagram);
-		RenderingFacade.getBounds(diagram);
 		
 		temporaryFile.delete();
 		
 		// Check that all bounds match
-		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), RenderingFacade.getBounds(node), hash(node)));
-		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), RenderingFacade.getBounds(edge), hash(edge)));
+		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), renderer2.getBounds(node), hash(node)));
+		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), renderer2.getBounds(edge), hash(edge)));
 	}
 	
 	/*

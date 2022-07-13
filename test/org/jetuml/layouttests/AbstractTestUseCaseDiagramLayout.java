@@ -52,14 +52,14 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 		RenderingFacade.prepareFor(aDiagram);
 	}
 	
-	protected static void verifyUseCaseNodeDefaultDimensions(Node pNode)
+	protected void verifyUseCaseNodeDefaultDimensions(Node pNode)
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(UseCaseNodeViewer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(UseCaseNodeViewer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	protected static void verifyActorNodeWithNameDefaultDimensions(Node pNode)
+	protected void verifyActorNodeWithNameDefaultDimensions(Node pNode)
 	{
 		final int WIDTH = getStaticIntFieldValue(ActorNodeViewer.class, "WIDTH");
 		final int HEIGHT = getStaticIntFieldValue(ActorNodeViewer.class, "HEIGHT");

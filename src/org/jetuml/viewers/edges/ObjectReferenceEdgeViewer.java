@@ -28,7 +28,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.ArrowHead;
 import org.jetuml.viewers.LineStyle;
 import org.jetuml.viewers.ToolGraphics;
@@ -111,7 +110,7 @@ public final class ObjectReferenceEdgeViewer extends AbstractEdgeViewer
 	 */
 	private boolean isSShaped(Edge pEdge)
 	{
-		Rectangle b = RenderingFacade.getBounds(pEdge.getEnd());
+		Rectangle b = parent().getBounds(pEdge.getEnd());
 		Point p = parent().getConnectionPoints(pEdge.getStart(), Direction.EAST);
 		return b.getX() >= p.getX() + 2 * ENDSIZE;
 	}

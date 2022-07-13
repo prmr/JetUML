@@ -49,17 +49,17 @@ public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagram
 		RenderingFacade.prepareFor(aDiagram);
 	}
 	
-	protected static void verifyStateNodeDefaultDimensions(Node pNode)
+	protected void verifyStateNodeDefaultDimensions(Node pNode)
 	{
 		final int DEFAULT_WIDTH = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_WIDTH");
 		final int DEFAULT_HEIGHT = getStaticIntFieldValue(StateNodeViewer.class, "DEFAULT_HEIGHT");
 		verifyDefaultDimensions(pNode, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	protected static void verifyCircularStateNodeDefaultDimensions(Node pNode)
+	protected void verifyCircularStateNodeDefaultDimensions(Node pNode)
 	{
 		final int DIAMETER = getStaticIntFieldValue(CircularStateNodeViewer.class, "DIAMETER");
-		Rectangle bounds = RenderingFacade.getBounds(pNode);
+		Rectangle bounds = aRenderer.getBounds(pNode);
 		assertEquals(DIAMETER, bounds.getWidth());
 		assertEquals(DIAMETER, bounds.getHeight());
 	}

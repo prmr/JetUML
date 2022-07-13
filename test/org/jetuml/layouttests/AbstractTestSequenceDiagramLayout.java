@@ -66,10 +66,10 @@ public abstract class AbstractTestSequenceDiagramLayout extends AbstractTestDiag
 		assertEquals(TOP_HEIGHT, implicitParameterTopRectangle.getHeight());
 	}
 	
-	protected static void verifyCallNodeDefaultWidth(Node pNode)
+	protected void verifyCallNodeDefaultWidth(Node pNode)
 	{
 		final int WIDTH = getStaticIntFieldValue(CallNodeViewer.class, "WIDTH");
-		Rectangle nodeBounds = RenderingFacade.getBounds(pNode);
+		Rectangle nodeBounds = aRenderer.getBounds(pNode);
 		assertEquals(WIDTH, nodeBounds.getWidth());
 	}
 	
