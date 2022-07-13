@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetuml.diagram.Diagram;
@@ -39,7 +40,6 @@ import org.jetuml.diagram.builder.DiagramBuilder;
 import org.jetuml.diagram.builder.DiagramOperation;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.gui.SelectionModel;
 import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
 public class TestMoveTracker
 {
 	private Object aMoveTracker;
-	private SelectionModel aSelection;
+	private List<DiagramElement> aSelection;
 	private Diagram aDiagram;
 	private ClassNode aNode1; // Initial bounds: [x=150.0,y=150.0,w=100.0,h=60.0]
 	private ClassNode aNode2; // Initial bounds: [x=400.0,y=400.0,w=100.0,h=60.0]
@@ -83,7 +83,7 @@ public class TestMoveTracker
 	void setup() throws ReflectiveOperationException
 	{
 		aMoveTracker = createMoveTracker();
-		aSelection = new SelectionModel( () -> {} );
+		aSelection = new ArrayList<>();
 		aDiagram = new Diagram(DiagramType.CLASS);
 		aNode1 = new ClassNode();
 		aNode1.translate(150, 150);
@@ -101,7 +101,7 @@ public class TestMoveTracker
 	@Test
 	void moveSingleObjectFourTimes() throws ReflectiveOperationException
 	{
-		aSelection.addToSelection(aNode1);
+		aSelection.add(aNode1);
 		startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode1.translate(0, 200);
@@ -151,9 +151,9 @@ public class TestMoveTracker
 	@Test
 	void moveNodesAndEdges() throws ReflectiveOperationException
 	{
-		aSelection.addToSelection(aNode1);
-		aSelection.addToSelection(aNode2);
-		aSelection.addToSelection(aEdge1);
+		aSelection.add(aNode1);
+		aSelection.add(aNode2);
+		aSelection.add(aEdge1);
 		startTrackingMove(aSelection);
 		aNode1.translate(20, 20);
 		aNode2.translate(20, 20);
