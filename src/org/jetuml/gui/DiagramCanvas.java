@@ -83,7 +83,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private static final int CONNECT_THRESHOLD = 8;
 	
-	private final MoveTracker aMoveTracker = new MoveTracker();
+	private final MoveTracker aMoveTracker;
 	private DragMode aDragMode;
 	private Point aLastMousePoint;
 	private Point aMouseDownPoint;  
@@ -99,6 +99,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		assert pDiagramBuilder != null;
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
+		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
 		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());
@@ -456,7 +457,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 				diagram().placeOnTop(pSelected);
 			}
 			aDragMode = DragMode.DRAG_MOVE;
-			aMoveTracker.startTrackingMove(aSelected);
+			aMoveTracker.start(aSelected);
 		}
 		else // Nothing is selected
 		{
@@ -647,7 +648,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	
 	private void releaseMove()
 	{
-		CompoundOperation operation = aMoveTracker.endTrackingMove(aDiagramBuilder);
+		CompoundOperation operation = aMoveTracker.stop();
 		if(!operation.isEmpty())
 		{
 			aProcessor.storeAlreadyExecutedOperation(operation);
@@ -722,71 +723,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		
 		aLastMousePoint = pMousePoint; 
 		paintPanel();
-	}
-	
-	/**
-	 * Tracks the movement of a set of selected diagram elements.
-	 */
-	private final class MoveTracker
-	{
-		private final List<Node> aTrackedNodes = new ArrayList<>();
-		private final List<Rectangle> aOriginalBounds = new ArrayList<>();
-		
-		/**
-		 * Records the elements in pSelectedElements and their position at the 
-		 * time where the method is called.
-		 * 
-		 * @param pSelectedElements The elements that are being moved. Not null.
-		 */
-		void startTrackingMove(Iterable<DiagramElement> pSelectedElements)
-		{
-			assert pSelectedElements != null;
-			
-			aTrackedNodes.clear();
-			aOriginalBounds.clear();
-			
-			for(DiagramElement element : pSelectedElements)
-			{
-				assert element != null;
-				if(element instanceof Node)
-				{
-					aTrackedNodes.add((Node) element);
-					aOriginalBounds.add(aDiagramBuilder.renderer().getBounds((Node)element));
-				}
-			}
-		}
-
-		/**
-		 * Creates and returns a CompoundOperation that represents the movement
-		 * of all tracked nodes between the time where startTrackingMove was 
-		 * called and the time endTrackingMove was called.
-		 * 
-		 * @param pDiagramBuilder The Diagram containing the selected elements.
-		 * @return A CompoundCommand describing the move.
-		 * @pre pDiagramBuilder != null
-		 */
-		CompoundOperation endTrackingMove(DiagramBuilder pDiagramBuilder)
-		{
-			assert pDiagramBuilder != null;
-			CompoundOperation operation = new CompoundOperation();
-			Rectangle[] selectionBounds2 = new Rectangle[aOriginalBounds.size()];
-			int i = 0;
-			for(Node node : aTrackedNodes)
-			{
-				selectionBounds2[i] = aDiagramBuilder.renderer().getBounds(node);
-				i++;
-			}
-			for(i = 0; i < aOriginalBounds.size(); i++)
-			{
-				int dY = selectionBounds2[i].getY() - aOriginalBounds.get(i).getY();
-				int dX = selectionBounds2[i].getX() - aOriginalBounds.get(i).getX();
-				if(dX != 0 || dY != 0)
-				{
-					operation.add(DiagramBuilder.createMoveNodeOperation(aTrackedNodes.get(i), dX, dY));
-				}
-			}
-			return operation;
-		}
 	}
 	
 	/**
