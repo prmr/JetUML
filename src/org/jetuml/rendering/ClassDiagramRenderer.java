@@ -92,17 +92,18 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @param pDiagram the diagram to draw.
 	 * @pre pDiagram != null && pGraphics != null.
 	 */
-	public void draw(Diagram pDiagram, GraphicsContext pGraphics)
+	@Override
+	public void draw(GraphicsContext pGraphics)
 	{
 		//draw and store nodes 
 		activateNodeStorages();
-		pDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+		diagram().rootNodes().forEach(node -> drawNode(node, pGraphics));
 		
 		//plan edge paths using Layouter
-		layout(pDiagram);
+		layout();
 		
 		//draw edges using plan from EdgeStorage
-		pDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+		diagram().edges().forEach(edge -> draw(edge, pGraphics));
 		deactivateAndClearNodeStorages();
 	}
 	
@@ -113,7 +114,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		//aEdgeStorage is initially empty and needs to be filled in order to compute the diagram bounds.
 		if (isEmpty())
 		{
-			layout(diagram());
+			layout();
 		}
 		return super.getBounds();
 	}
@@ -128,17 +129,17 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @param pDiagram the diagram of interest
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
-	public void layout(Diagram pDiagram)
+	public void layout()
 	{
-		assert pDiagram.getType() == DiagramType.CLASS;
+		assert diagram().getType() == DiagramType.CLASS;
 		aEdgeStorage.clearStorage();
-		layoutSegmentedEdges(pDiagram, EdgePriority.INHERITANCE);	
-		layoutSegmentedEdges(pDiagram, EdgePriority.IMPLEMENTATION);
-		layoutSegmentedEdges(pDiagram, EdgePriority.AGGREGATION);
-		layoutSegmentedEdges(pDiagram, EdgePriority.COMPOSITION);
-		layoutSegmentedEdges(pDiagram, EdgePriority.ASSOCIATION);
-		layoutDependencyEdges(pDiagram);
-		layoutSelfEdges(pDiagram);
+		layoutSegmentedEdges(EdgePriority.INHERITANCE);	
+		layoutSegmentedEdges(EdgePriority.IMPLEMENTATION);
+		layoutSegmentedEdges(EdgePriority.AGGREGATION);
+		layoutSegmentedEdges(EdgePriority.COMPOSITION);
+		layoutSegmentedEdges(EdgePriority.ASSOCIATION);
+		layoutDependencyEdges();
+		layoutSelfEdges();
 	}
 	
 	public boolean isEmpty()
@@ -158,11 +159,11 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 * @pre EdgePriority.isSegmented(pEdgePriority)
 	 */
-	private void layoutSegmentedEdges(Diagram pDiagram, EdgePriority pEdgePriority)
+	private void layoutSegmentedEdges(EdgePriority pEdgePriority)
 	{
-		assert pDiagram.getType() == DiagramType.CLASS;
+		assert diagram().getType() == DiagramType.CLASS;
 		assert EdgePriority.isSegmented(pEdgePriority);
-		List<Edge> edgesToProcess = pDiagram.edges().stream()
+		List<Edge> edgesToProcess = diagram().edges().stream()
 				.filter(edge -> priorityOf(edge) == pEdgePriority)
 				.sorted(Comparator.comparing(edge -> edge.getStart().position().getX()))
 				.collect(toList());
@@ -179,13 +180,13 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 			{ 	
 				edgesToMergeStart.add(currentEdge);
 				edgesToProcess.removeAll(edgesToMergeStart);
-				storeMergedStartEdges(edgeDirection, edgesToMergeStart, pDiagram);
+				storeMergedStartEdges(edgeDirection, edgesToMergeStart);
 			}
 			else
 			{
 				edgesToMergeEnd.add(currentEdge);
 				edgesToProcess.removeAll(edgesToMergeEnd);
-				storeMergedEndEdges(edgeDirection, edgesToMergeEnd, pDiagram);
+				storeMergedEndEdges(edgeDirection, edgesToMergeEnd);
 			}
 		}
 	}
@@ -193,13 +194,11 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	
 	/**
 	 * Plans the EdgePaths for Dependency Edges.
-	 * @param pDiagram the diagram of interest
-	 * @pre pDiagram.getType() == DiagramType.CLASS;
 	 */
-	private void layoutDependencyEdges(Diagram pDiagram)
+	private void layoutDependencyEdges()
 	{
-		assert pDiagram.getType() == DiagramType.CLASS;
-		for (Edge edge : pDiagram.edges())
+		assert diagram().getType() == DiagramType.CLASS;
+		for (Edge edge : diagram().edges())
 		{
 			if (priorityOf(edge)==EdgePriority.DEPENDENCY)
 			{   //Determine the start and end connection points
@@ -214,13 +213,10 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	
 	/**
 	 * Plans the EdgePaths for self-edges in pDiagram.
-	 * @param pDiagram the diagram of interest
-	 * @pre pDiagram.getType() == DiagramType.CLASS;
 	 */
-	private void layoutSelfEdges(Diagram pDiagram)
+	private void layoutSelfEdges()
 	{
-		assert pDiagram.getType() == DiagramType.CLASS;
-		List<Edge> selfEdges = pDiagram.edges().stream()
+		List<Edge> selfEdges = diagram().edges().stream()
 			.filter(edge -> priorityOf(edge) == EdgePriority.SELF_EDGE)
 			.collect(toList());
 		for (Edge edge : selfEdges)
@@ -306,10 +302,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @pre pEdgesToMergeEnd.size() > 0
 	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
-	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMergeEnd, Diagram pDiagram)
+	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMergeEnd)
 	{
 		assert pEdgesToMergeEnd.size() > 0;
-		assert pDiagram.getType() == DiagramType.CLASS;
 		//Merged edges will share a common end point
 		Point sharedEndPoint = getConnectionPoint(pEdgesToMergeEnd.get(0).getEnd(), pEdgesToMergeEnd.get(0), pDirection.mirrored());
 		//get the individual start points for each edge
@@ -342,11 +337,9 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * Builds and stores the EdgePaths for edges in pEdgesToMergeStart so that they share a common start point.
 	 * @param pDirection the trajectory of the edges in pEdgesToMmergeStart (the direction of the first segment of the edges)
 	 * @param pEdgesToMergeStart a list of edges which should me merged at their start points
-	 * @param pDiagram the class diagram 
 	 * @pre pEdgesToMergeStart.size() > 0
-	 * @pre pDiagram.getType() == DiagramType.CLASS
 	 */
-	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMergeStart, Diagram pDiagram)
+	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMergeStart)
 	{
 		assert pEdgesToMergeStart.size() > 0;
 		//Get the shared start point for all pEdgesToMerge

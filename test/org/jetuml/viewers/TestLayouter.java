@@ -313,7 +313,7 @@ public class TestLayouter
 	public void testLayout()
 	{
 		setUpTestLayout();
-		aRenderer.layout(aDiagram);
+		aRenderer.layout();
 		//aEdgeA
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(50, 190)).get());
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(50, 155)).get());
@@ -350,7 +350,7 @@ public class TestLayouter
 	{
 		setUpLayoutMergedEndEdges();
 		//Layout aEdgeA and aEdgeB
-		layoutSegmentedEdges(aDiagram, EdgePriority.INHERITANCE);
+		layoutSegmentedEdges(EdgePriority.INHERITANCE);
 		assertTrue(contains(aEdgeA));
 		assertTrue(contains(aEdgeB));
 		assertFalse(contains(aEdgeC));
@@ -364,7 +364,7 @@ public class TestLayouter
 		assertEquals(aEdgeB, aRenderer.edgeAt(new Point(150, 100)).get());
 		
 		//Layout aEdgeC
-		layoutSegmentedEdges(aDiagram, EdgePriority.IMPLEMENTATION);
+		layoutSegmentedEdges(EdgePriority.IMPLEMENTATION);
 		assertTrue(contains(aEdgeA));
 		assertTrue(contains(aEdgeB));
 		assertTrue(contains(aEdgeC));
@@ -374,7 +374,7 @@ public class TestLayouter
 		assertEquals(aEdgeC, aRenderer.edgeAt(new Point(250, 90)).get());
 		
 		//Layout aEdgeD
-		layoutSegmentedEdges(aDiagram, EdgePriority.ASSOCIATION);
+		layoutSegmentedEdges(EdgePriority.ASSOCIATION);
 		assertTrue(contains(aEdgeA));
 		assertTrue(contains(aEdgeB));
 		assertTrue(contains(aEdgeC));
@@ -389,7 +389,7 @@ public class TestLayouter
 	public void testLayoutSegmentedEdges_aggregation()
 	{
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Aggregation);
-		layoutSegmentedEdges(aDiagram, EdgePriority.AGGREGATION);
+		layoutSegmentedEdges(EdgePriority.AGGREGATION);
 		//aEdgeA
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(200, 90)).get());
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(150, 90)).get());
@@ -410,7 +410,7 @@ public class TestLayouter
 	public void testLayoutSegmentedEdges_composition()
 	{
 		setUpLayoutMergedStartEdges(AggregationEdge.Type.Composition);
-		layoutSegmentedEdges(aDiagram, EdgePriority.COMPOSITION);
+		layoutSegmentedEdges(EdgePriority.COMPOSITION);
 		//aEdgeA
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(200, 90)).get());
 		assertEquals(aEdgeA, aRenderer.edgeAt(new Point(150, 90)).get());
@@ -443,7 +443,7 @@ public class TestLayouter
 		EdgePath expectedPathA = new EdgePath(new Point(50, 100), new Point(50, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathC = new EdgePath(new Point(250, 100), new Point(250, 80), new Point(150, 80), new Point(150, 60));
-		storeMergedEndEdges(NodeSide.NORTH, edgesToMerge, aDiagram);
+		storeMergedEndEdges(NodeSide.NORTH, edgesToMerge);
 		assertEquals(expectedPathA, getStoredEdgePath(aEdgeA));
 		assertEquals(expectedPathB, getStoredEdgePath(aEdgeB));
 		assertEquals(expectedPathC, getStoredEdgePath(aEdgeC));
@@ -463,7 +463,7 @@ public class TestLayouter
 		EdgePath expectedPathA = new EdgePath(new Point(50, 60), new Point(50, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathC = new EdgePath(new Point(250, 60), new Point(250, 80), new Point(150, 80), new Point(150, 100));
-		storeMergedEndEdges(NodeSide.SOUTH, edgesToMerge, aDiagram);
+		storeMergedEndEdges(NodeSide.SOUTH, edgesToMerge);
 		assertEquals(expectedPathA, getStoredEdgePath(aEdgeA));
 		assertEquals(expectedPathB, getStoredEdgePath(aEdgeB));
 		assertEquals(expectedPathC, getStoredEdgePath(aEdgeC));
@@ -480,7 +480,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 120));
 		aNodeD.moveTo(new Point(200, 60));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedEndEdges(NodeSide.EAST, edgesToMerge, aDiagram);
+		storeMergedEndEdges(NodeSide.EAST, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(100, 30), new Point(150, 30), new Point(150, 90), new Point(200, 90));
 		EdgePath expectedPathB = new EdgePath(new Point(100, 90), new Point(150, 90), new Point(150, 90), new Point(200, 90));
 		EdgePath expectedPathC = new EdgePath(new Point(100, 150), new Point(150, 150), new Point(150, 90), new Point(200, 90));
@@ -500,7 +500,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 120));
 		aNodeD.moveTo(new Point(0, 60));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedEndEdges(NodeSide.WEST, edgesToMerge, aDiagram);
+		storeMergedEndEdges(NodeSide.WEST, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(200, 30), new Point(150, 30), new Point(150, 90), new Point(100, 90));
 		EdgePath expectedPathB = new EdgePath(new Point(200, 90), new Point(150, 90), new Point(150, 90), new Point(100, 90));
 		EdgePath expectedPathC = new EdgePath(new Point(200, 150), new Point(150, 150), new Point(150, 90), new Point(100, 90));
@@ -520,7 +520,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 0));
 		aNodeD.moveTo(new Point(100, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.NORTH, edgesToMerge, aDiagram);
+		storeMergedStartEdges(NodeSide.NORTH, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(50, 80), new Point(50, 60));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathC = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(250, 80), new Point(250, 60));
@@ -541,7 +541,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 100));
 		aNodeD.moveTo(new Point(100, 0));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.SOUTH, edgesToMerge, aDiagram);
+		storeMergedStartEdges(NodeSide.SOUTH, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(50, 80), new Point(50, 100));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathC = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(250, 80), new Point(250, 100));
@@ -561,7 +561,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 200));
 		aNodeD.moveTo(new Point(200, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.WEST, edgesToMerge, aDiagram);
+		storeMergedStartEdges(NodeSide.WEST, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 30), new Point(100, 30));
 		EdgePath expectedPathB = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 130), new Point(100, 130));
 		EdgePath expectedPathC = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 230), new Point(100, 230));
@@ -581,7 +581,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 200));
 		aNodeD.moveTo(new Point(0, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.EAST, edgesToMerge, aDiagram);
+		storeMergedStartEdges(NodeSide.EAST, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 30), new Point(200, 30));
 		EdgePath expectedPathB = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 130), new Point(200, 130));
 		EdgePath expectedPathC = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 230), new Point(200, 230));
@@ -596,7 +596,7 @@ public class TestLayouter
 		setUpDependencyEdges();
 		aNodeA.moveTo(new Point(0,0));
 		aNodeB.moveTo(new Point(100, 120));
-		layoutDependencyEdges(aDiagram);
+		layoutDependencyEdges();
 		assertEquals(new EdgePath(new Point(150, 120), new Point(50, 60)), getStoredEdgePath(dependencyEdge));
 	}
 	
@@ -607,7 +607,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0,0));
 		aNodeB.moveTo(new Point(200, 0));
 		store(generalizationEdge, new EdgePath(new Point(200, 90), new Point(150, 90), new Point(150, 30), new Point(100, 30)));
-		layoutDependencyEdges(aDiagram);
+		layoutDependencyEdges();
 		assertEquals(new EdgePath(new Point(200, 30), new Point(100, 40)), getStoredEdgePath(dependencyEdge));
 	}
 	
@@ -624,7 +624,7 @@ public class TestLayouter
 		aDiagram.addRootNode(aNodeB);
 		aNodeA.moveTo(new Point(20, 20));
 		aNodeB.moveTo(new Point(20, 300));
-		layoutSelfEdges(aDiagram);
+		layoutSelfEdges();
 		EdgePath expectedPath = new EdgePath(new Point(100, 20), new Point(100, 0), new Point(140, 0), new Point(140, 40), new Point(120, 40));
 		assertEquals(expectedPath, getStoredEdgePath(selfEdge));
 		assertFalse(contains(nonSelfEdge));
@@ -2309,13 +2309,13 @@ public class TestLayouter
 		}
 	}
 	
-	private void layoutSegmentedEdges(Diagram pDiagram, EdgePriority pEdgePriority)
+	private void layoutSegmentedEdges(EdgePriority pEdgePriority)
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSegmentedEdges", Diagram.class, EdgePriority.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSegmentedEdges", EdgePriority.class);
 			method.setAccessible(true);
-			method.invoke(aRenderer, pDiagram, pEdgePriority);
+			method.invoke(aRenderer, pEdgePriority);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2324,13 +2324,13 @@ public class TestLayouter
 	}
 	
 	
-	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMerge, Diagram pDiagram)
+	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMerge)
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedEndEdges", NodeSide.class, List.class, Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedEndEdges", NodeSide.class, List.class);
 			method.setAccessible(true);
-			method.invoke(aRenderer, pDirection, pEdgesToMerge, pDiagram);
+			method.invoke(aRenderer, pDirection, pEdgesToMerge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2338,13 +2338,13 @@ public class TestLayouter
 		}
 	}
 	
-	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMerge, Diagram pDiagram)
+	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMerge)
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedStartEdges", NodeSide.class, List.class, Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedStartEdges", NodeSide.class, List.class);
 			method.setAccessible(true);
-			method.invoke(aRenderer, pDirection, pEdgesToMerge, pDiagram);
+			method.invoke(aRenderer, pDirection, pEdgesToMerge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2352,13 +2352,13 @@ public class TestLayouter
 		}
 	}
 	
-	private void layoutDependencyEdges(Diagram pDiagram)
+	private void layoutDependencyEdges()
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutDependencyEdges", Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutDependencyEdges");
 			method.setAccessible(true);
-			method.invoke(aRenderer, pDiagram);
+			method.invoke(aRenderer);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2366,13 +2366,13 @@ public class TestLayouter
 		}
 	}
 	
-	private void layoutSelfEdges(Diagram pDiagram)
+	private void layoutSelfEdges()
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSelfEdges", Diagram.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("layoutSelfEdges");
 			method.setAccessible(true);
-			method.invoke(aRenderer, pDiagram);
+			method.invoke(aRenderer);
 		}
 		catch(ReflectiveOperationException e)
 		{
