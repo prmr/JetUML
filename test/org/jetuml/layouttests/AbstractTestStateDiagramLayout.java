@@ -27,10 +27,8 @@ import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.CircularStateNodeViewer;
 import org.jetuml.viewers.nodes.StateNodeViewer;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of a state diagram.
@@ -41,12 +39,6 @@ public abstract class AbstractTestStateDiagramLayout extends AbstractTestDiagram
 	AbstractTestStateDiagramLayout(Path pDiagramPath) throws IOException 
 	{
 		super(pDiagramPath);
-	}
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	protected void verifyStateNodeDefaultDimensions(Node pNode)

@@ -30,20 +30,12 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestDiagramViewer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private DiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-	}
 	
 	@Test
 	void testNodeAt_NoneShallow()

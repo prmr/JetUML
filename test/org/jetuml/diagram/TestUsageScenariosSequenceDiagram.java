@@ -35,7 +35,6 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +62,6 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
 		aReturnEdge = new ReturnEdge();
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test

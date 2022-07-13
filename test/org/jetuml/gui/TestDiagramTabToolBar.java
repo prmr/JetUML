@@ -31,8 +31,6 @@ import java.util.List;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.rendering.RenderingFacade;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javafx.scene.Node;
@@ -42,12 +40,6 @@ public class TestDiagramTabToolBar
 {
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	private DiagramTabToolBar aToolbar = new DiagramTabToolBar(DiagramType.newRendererInstanceFor(aDiagram));
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-	}
 	
 	@SuppressWarnings("unchecked")
 	private SelectableToolButton getButtonAtPosition(int pPosition)

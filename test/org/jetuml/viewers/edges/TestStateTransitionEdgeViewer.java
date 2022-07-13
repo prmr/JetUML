@@ -32,10 +32,8 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.edges.StateTransitionEdge;
 import org.jetuml.diagram.nodes.StateNode;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -48,12 +46,6 @@ public class TestStateTransitionEdgeViewer
 	private StateTransitionEdge aTransitionEdge = new StateTransitionEdge();
 	private Diagram aDiagram = new Diagram(DiagramType.STATE);
 	private StateTransitionEdgeViewer aStateTransitionEdgeViewer = new StateTransitionEdgeViewer(DiagramType.newRendererInstanceFor(aDiagram));
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-	}
 	
 	@BeforeAll
 	public static void setupClass()

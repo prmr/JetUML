@@ -26,13 +26,11 @@ import java.nio.file.Path;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.StringViewer;
 import org.jetuml.viewers.StringViewer.Alignment;
 import org.jetuml.viewers.StringViewer.TextDecoration;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of a use case diagram.
@@ -44,12 +42,6 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 	AbstractTestUseCaseDiagramLayout(Path pDiagramPath) throws IOException 
 	{
 		super(pDiagramPath);
-	}
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	protected void verifyUseCaseNodeDefaultDimensions(Node pNode)

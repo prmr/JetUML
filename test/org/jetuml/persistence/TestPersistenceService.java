@@ -42,7 +42,6 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -82,7 +81,6 @@ public class TestPersistenceService
 		Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
 		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 		
-		RenderingFacade.prepareFor(diagram);
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash
@@ -96,7 +94,6 @@ public class TestPersistenceService
 		diagram = PersistenceService.read(temporaryFile).diagram();
 		DiagramRenderer renderer2 = DiagramType.newRendererInstanceFor(diagram);
 		renderer2.getBounds(); // Triggers a layout pass
-		RenderingFacade.prepareFor(diagram);
 		
 		temporaryFile.delete();
 		

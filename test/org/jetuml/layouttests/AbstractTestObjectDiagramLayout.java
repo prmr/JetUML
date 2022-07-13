@@ -24,9 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.jetuml.diagram.Node;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.nodes.ObjectNodeViewer;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Superclass for classes that test the layout of an object diagram.
@@ -34,12 +32,6 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public abstract class AbstractTestObjectDiagramLayout extends AbstractTestDiagramLayout
 {
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-	}
-	
 	AbstractTestObjectDiagramLayout(Path pDiagramPath) throws IOException
 	{
 		super(pDiagramPath);

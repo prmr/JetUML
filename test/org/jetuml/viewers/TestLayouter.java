@@ -49,7 +49,6 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,7 +102,6 @@ public class TestLayouter
 		aRectangleA = new Rectangle(200, 200, 100, 60);
 		aRectangleB = new Rectangle(200, 150, 100, 60);
 		aRectangleC = new Rectangle(100, 200, 100, 60);
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	

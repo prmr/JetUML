@@ -31,21 +31,13 @@ import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.rendering.SequenceDiagramRenderer;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramViewer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
 	private DiagramRenderer aRenderer = new SequenceDiagramRenderer(aDiagram);
-	
-	@BeforeEach
-	void setup()
-	{
-		RenderingFacade.prepareFor(aDiagram);
-	}
 	
 	@Test
 	void testNodeAt_NoneShallow()

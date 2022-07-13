@@ -39,7 +39,6 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +68,6 @@ public class TestUsageScenariosClassDiagram extends AbstractTestUsageScenarios
 		aAssociationEdge = new AssociationEdge();
 		aDependencyEdge = new DependencyEdge();
 		aGeneralizationEdge = new GeneralizationEdge();
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test

@@ -36,7 +36,6 @@ import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +77,6 @@ public class TestStateDiagramBuilder
 		aEdge2 = new StateTransitionEdge();
 		aEdge3 = new StateTransitionEdge();
 		aNoteEdge = new NoteEdge();
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	private void connectAndAdd(Edge pEdge, Node pStart, Node pEnd)

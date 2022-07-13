@@ -36,7 +36,6 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ObjectDiagramRenderer;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,7 +70,6 @@ public class TestFieldNodeViewer
 		aDiagram = new Diagram(DiagramType.OBJECT);
 		aDiagram.addRootNode(aObjectNode1);
 		aRenderer = new ObjectDiagramRenderer(aDiagram);
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@AfterAll

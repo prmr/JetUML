@@ -49,7 +49,6 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.rendering.RenderingFacade;
 import org.jetuml.viewers.Grid;
 import org.jetuml.viewers.ToolGraphics;
 
@@ -101,7 +100,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
-		RenderingFacade.prepareFor(pDiagramBuilder.diagram());
 		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());
 		setHeight(dimension.height());
@@ -226,7 +224,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 	 */
 	public void paintPanel()
 	{
-		RenderingFacade.prepareFor(diagram());
 		GraphicsContext context = getGraphicsContext2D();
 		context.setFill(Color.WHITE); 
 		context.fillRect(0, 0, getWidth(), getHeight());

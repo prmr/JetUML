@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -45,29 +44,12 @@ import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestClassDiagramBuilder
 {
-	private Diagram aDiagram;
-	private ClassDiagramBuilder aBuilder;
-	
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.CLASS);
-		aBuilder = new ClassDiagramBuilder(aDiagram);
-		RenderingFacade.prepareFor(aDiagram);
-	}
+	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private ClassDiagramBuilder aBuilder = new ClassDiagramBuilder(aDiagram);
 	
 	private int numberOfRootNodes()
 	{
@@ -85,7 +67,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationSimple()
+	void testcreateAddNodeOperationSimple()
 	{
 		ClassNode node = new ClassNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
@@ -99,7 +81,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddEdgeOperationNoteNode() // TODO: here
+	void testcreateAddEdgeOperationNoteNode() 
 	{
 		NoteNode node = new NoteNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(10,10));
@@ -118,7 +100,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testcreateAddNodeOperationReposition()
+	void testcreateAddNodeOperationReposition()
 	{
 		ClassNode node = new ClassNode();
 		aBuilder.setCanvasDimension(new Dimension(500,500));
@@ -143,7 +125,7 @@ public class TestClassDiagramBuilder
 	 * of the diagram, so, no over any other node.
 	 */
 	@Test
-	public void testCreateAddNodeOperationInvalidChildNotOverNode()
+	void testCreateAddNodeOperationInvalidChildNotOverNode()
 	{
 		NoteNode node = new NoteNode();
 		DiagramOperation operation = aBuilder.createAddNodeOperation(node, new Point(50,50));
@@ -158,7 +140,7 @@ public class TestClassDiagramBuilder
 	 * can be a parent.
 	 */
 	@Test
-	public void testCreateAddNodeOperationInvalidChildOverNode()
+	void testCreateAddNodeOperationInvalidChildOverNode()
 	{
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
@@ -170,7 +152,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateAddNodeOperationValidChildAddition()
+	void testCreateAddNodeOperationValidChildAddition()
 	{
 		PackageNode node = new PackageNode();
 		aDiagram.addRootNode(node);
@@ -190,7 +172,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateAddNodeOperationValidSubChildAddition()
+	void testCreateAddNodeOperationValidSubChildAddition()
 	{
 		PackageNode bottom = new PackageNode();
 		aDiagram.addRootNode(bottom);
@@ -214,20 +196,20 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddNode()
+	void testCanAddNode()
 	{
 		ClassNode node = new ClassNode();
 		assertTrue(aBuilder.canAdd(node, new Point(1000,1000)));
 	}
 	
 	@Test
-	public void testCanAddEdgeNoFirstNode()
+	void testCanAddEdgeNoFirstNode()
 	{
 		assertFalse(aBuilder.canAdd(new DependencyEdge(), new Point(10,10), new Point(20,20)));
 	}
 	
 	@Test
-	public void testCanAddEdgeFromNoteNode()
+	void testCanAddEdgeFromNoteNode()
 	{
 		NoteNode node = new NoteNode();
 		aDiagram.addRootNode(node);
@@ -237,7 +219,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeNoSecondNode()
+	void testCanAddEdgeNoSecondNode()
 	{
 		ClassNode node1 = new ClassNode();
 		node1.translate(10, 10);
@@ -246,7 +228,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeAlreadyExists()
+	void testCanAddEdgeAlreadyExists()
 	{
 		ClassNode node1 = new ClassNode();
 		node1.translate(10, 10);
@@ -261,7 +243,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeFromNoteNodeNotNoteEdge()
+	void testCanAddEdgeFromNoteNodeNotNoteEdge()
 	{
 		NoteNode node = new NoteNode();
 		NoteNode end = new NoteNode();
@@ -272,7 +254,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeFromNoteNodeNotNoteEdge2()
+	void testCanAddEdgeFromNoteNodeNotNoteEdge2()
 	{
 		NoteNode node = new NoteNode();
 		ClassNode end = new ClassNode();
@@ -283,7 +265,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeFromNoteNodeNotNoteEdge3()
+	void testCanAddEdgeFromNoteNodeNotNoteEdge3()
 	{
 		ClassNode node = new ClassNode();
 		NoteNode end = new NoteNode();
@@ -294,7 +276,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeToNoteNodeNotNodeEdge()
+	void testCanAddEdgeToNoteNodeNotNodeEdge()
 	{
 		NoteNode node = new NoteNode();
 		aDiagram.addRootNode(node);
@@ -302,7 +284,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeSelfGeneralization()
+	void testCanAddEdgeSelfGeneralization()
 	{
 		ClassNode node = new ClassNode();
 		aDiagram.addRootNode(node);
@@ -310,7 +292,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddEdgeNonSelfDependency()
+	void testCanAddEdgeNonSelfDependency()
 	{
 		ClassNode node1 = new ClassNode();
 		aDiagram.addRootNode(node1);
@@ -321,7 +303,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAddNoteEdgeNoNoteNode()
+	void testCanAddNoteEdgeNoNoteNode()
 	{
 		ClassNode start = new ClassNode();
 		ClassNode end = new ClassNode();
@@ -332,7 +314,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateAddElementsOperationNothing()
+	void testCreateAddElementsOperationNothing()
 	{
 		DiagramOperation operation = aBuilder.createAddElementsOperation(new ArrayList<>());
 		operation.execute();
@@ -344,7 +326,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateAddElementsOperationNodesAndEdges()
+	void testCreateAddElementsOperationNodesAndEdges()
 	{
 		ArrayList<DiagramElement> elements = new ArrayList<>();
 		ClassNode node1 = new ClassNode();
@@ -368,7 +350,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateRemoveElementsOperationEmpty()
+	void testCreateRemoveElementsOperationEmpty()
 	{
 		DiagramOperation operation = aBuilder.createRemoveElementsOperation(new ArrayList<>());
 		operation.execute();
@@ -378,7 +360,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateRemoveElementsOperationSingleNode()
+	void testCreateRemoveElementsOperationSingleNode()
 	{
 		ClassNode node1 = new ClassNode();
 		ClassNode node2 = new ClassNode();
@@ -396,7 +378,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAttachToPackageMultipleNodes()
+	void testCanAttachToPackageMultipleNodes()
 	{
 		ClassNode child1 = new ClassNode();
 		InterfaceNode child2 = new InterfaceNode();
@@ -408,19 +390,19 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAttachToPackage_EmptyList()
+	void testCanAttachToPackage_EmptyList()
 	{
 		assertFalse(aBuilder.canLinkToPackage(Arrays.asList()));
 	}
 	
 	@Test
-	public void testCanDetachFromPackage_EmptyList()
+	void testCanDetachFromPackage_EmptyList()
 	{
 		assertFalse(aBuilder.canUnlinkFromPackage(Arrays.asList()));
 	}
 	
 	@Test
-	public void testCanAttachToPackageNoNullParent()
+	void testCanAttachToPackageNoNullParent()
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
@@ -430,7 +412,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanAttachToPackageNoPackageToAttach()
+	void testCanAttachToPackageNoPackageToAttach()
 	{
 		ClassNode node1 = new ClassNode();
 		PackageNode node2 = new PackageNode();
@@ -441,7 +423,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanDetachFromPackageSimple()
+	void testCanDetachFromPackageSimple()
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
@@ -451,7 +433,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanDetachFromPackageNullParent()
+	void testCanDetachFromPackageNullParent()
 	{
 		ClassNode node1 = new ClassNode();
 		PackageNode node2 = new PackageNode();
@@ -461,7 +443,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCanDetachFromPackageNoSharedParent()
+	void testCanDetachFromPackageNoSharedParent()
 	{
 		ClassNode child1 = new ClassNode();
 		InterfaceNode child2 = new InterfaceNode();
@@ -475,7 +457,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateAttachToPackageOperation()
+	void testCreateAttachToPackageOperation()
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
@@ -496,7 +478,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateDetachFromPackageOperationSimple()
+	void testCreateDetachFromPackageOperationSimple()
 	{
 		ClassNode child = new ClassNode();
 		PackageNode parent = new PackageNode();
@@ -517,7 +499,7 @@ public class TestClassDiagramBuilder
 	}
 	
 	@Test
-	public void testCreateDetachFromPackageOperationWithOuterParent()
+	void testCreateDetachFromPackageOperationWithOuterParent()
 	{
 		ClassNode child = new ClassNode();
 		PackageNode innerParent = new PackageNode();

@@ -30,7 +30,6 @@ import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.RenderingFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +57,6 @@ public class TestUsageScenariosObjectDiagram extends AbstractTestUsageScenarios
 		aFieldNode3 = new FieldNode();
 		aReferenceEdge1 = new ObjectReferenceEdge();
 		aReferenceEdge2 = new ObjectReferenceEdge();
-		RenderingFacade.prepareFor(aDiagram);
 	}
 	
 	@Test
