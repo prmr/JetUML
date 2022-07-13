@@ -35,14 +35,14 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ArrowHead;
+import org.jetuml.rendering.ArrowHeadViewer;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.ArrowHeadViewer;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -58,8 +58,8 @@ import javafx.scene.shape.Shape;
  */
 public final class CallEdgeViewer extends AbstractEdgeViewer
 {	
-	private static final StringViewer CENTERED_STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
-	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringRenderer CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 
 	private static final int SHIFT = 5;
 	

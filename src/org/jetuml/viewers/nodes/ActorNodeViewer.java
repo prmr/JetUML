@@ -26,11 +26,11 @@ import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.LineTo;
@@ -43,7 +43,7 @@ import javafx.scene.shape.QuadCurveTo;
  */
 public final class ActorNodeViewer extends AbstractNodeViewer
 {
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	private static final int PADDING = 4;
 	private static final int HEAD_SIZE = 16;

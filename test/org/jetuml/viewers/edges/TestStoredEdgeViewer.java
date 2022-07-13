@@ -39,9 +39,9 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.LineStyle;
+import org.jetuml.rendering.LineStyle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

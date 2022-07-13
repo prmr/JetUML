@@ -19,14 +19,14 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
-import static org.jetuml.viewers.ArrowHead.BLACK_DIAMOND;
-import static org.jetuml.viewers.ArrowHead.BLACK_TRIANGLE;
-import static org.jetuml.viewers.ArrowHead.DIAMOND;
-import static org.jetuml.viewers.ArrowHead.NONE;
-import static org.jetuml.viewers.ArrowHead.TRIANGLE;
-import static org.jetuml.viewers.ArrowHead.V;
+import static org.jetuml.rendering.ArrowHead.BLACK_DIAMOND;
+import static org.jetuml.rendering.ArrowHead.BLACK_TRIANGLE;
+import static org.jetuml.rendering.ArrowHead.DIAMOND;
+import static org.jetuml.rendering.ArrowHead.NONE;
+import static org.jetuml.rendering.ArrowHead.TRIANGLE;
+import static org.jetuml.rendering.ArrowHead.V;
 
 import org.jetuml.geom.Point;
 

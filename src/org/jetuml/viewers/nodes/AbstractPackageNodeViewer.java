@@ -30,10 +30,10 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ViewerUtils;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -48,7 +48,7 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 	protected static final int DEFAULT_BOTTOM_HEIGHT = 60;
 	protected static final int DEFAULT_TOP_WIDTH = 60;
 	protected static final int NAME_GAP = 3;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	public AbstractPackageNodeViewer(DiagramRenderer pParent)
 	{
@@ -61,8 +61,8 @@ public abstract class AbstractPackageNodeViewer extends AbstractNodeViewer
 		assert pElement instanceof AbstractPackageNode;
 		Rectangle topBounds = getTopBounds((AbstractPackageNode)pElement);
 		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pElement);
-		ViewerUtils.drawRectangle(pGraphics, topBounds );
-		ViewerUtils.drawRectangle(pGraphics, bottomBounds );
+		RenderingUtils.drawRectangle(pGraphics, topBounds );
+		RenderingUtils.drawRectangle(pGraphics, bottomBounds );
 		NAME_VIEWER.draw(((AbstractPackageNode)pElement).getName(), pGraphics, new Rectangle(topBounds.getX() + NAME_GAP, 
 				topBounds.getY(), topBounds.getWidth(), topBounds.getHeight()));
 	}

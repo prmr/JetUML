@@ -35,11 +35,11 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ViewerUtils;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -54,7 +54,7 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
 	private static final int TOP_HEIGHT = 60;
 	private static final int Y_GAP_SMALL = 20; 
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	
 	public ImplicitParameterNodeViewer(DiagramRenderer pParent)
 	{
@@ -70,10 +70,10 @@ public final class ImplicitParameterNodeViewer extends AbstractNodeViewer
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		Rectangle top = getTopRectangle((Node)pElement);
-		ViewerUtils.drawRectangle(pGraphics, top);
+		RenderingUtils.drawRectangle(pGraphics, top);
 		NAME_VIEWER.draw(((ImplicitParameterNode)pElement).getName(), pGraphics, top);
 		int xmid = top.getCenter().getX();
-		ViewerUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pElement).getMaxY(), LineStyle.DOTTED);
+		RenderingUtils.drawLine(pGraphics, xmid,  top.getMaxY(), xmid, getBounds(pElement).getMaxY(), LineStyle.DOTTED);
 	}
 	
 	@Override

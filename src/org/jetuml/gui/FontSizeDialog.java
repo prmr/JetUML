@@ -21,7 +21,7 @@
 package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;

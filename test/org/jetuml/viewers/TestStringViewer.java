@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -29,8 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.geom.Dimension;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,10 +40,10 @@ import org.junit.jupiter.api.Test;
 public class TestStringViewer 
 {
 	private static int userDefinedFontSize;
-	private StringViewer topCenter;
-	private StringViewer topCenterPadded;
-	private StringViewer topCenterBold;
-	private StringViewer bottomCenterPadded;
+	private StringRenderer topCenter;
+	private StringRenderer topCenterPadded;
+	private StringRenderer topCenterBold;
+	private StringRenderer bottomCenterPadded;
 	
 	@BeforeAll
 	public static void setupClass()
@@ -54,10 +55,10 @@ public class TestStringViewer
 	@BeforeEach
 	public void setup()
 	{
-		topCenter = StringViewer.get(Alignment.TOP_CENTER);
-		topCenterPadded = StringViewer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
-		topCenterBold = StringViewer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
-		bottomCenterPadded = StringViewer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
+		topCenter = StringRenderer.get(Alignment.TOP_CENTER);
+		topCenterPadded = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.PADDED);
+		topCenterBold = StringRenderer.get(Alignment.TOP_CENTER, TextDecoration.BOLD);
+		bottomCenterPadded = StringRenderer.get(Alignment.BOTTOM_CENTER, TextDecoration.PADDED);
 	}
 	
 	@AfterAll
@@ -69,7 +70,7 @@ public class TestStringViewer
 	@Test
 	public void testFlyweightProperty()
 	{
-		StringViewer stringViewer = StringViewer.get(Alignment.TOP_CENTER);
+		StringRenderer stringViewer = StringRenderer.get(Alignment.TOP_CENTER);
 		
 		assertNotSame(topCenterPadded, stringViewer);
 		assertNotSame(bottomCenterPadded, stringViewer);
@@ -113,11 +114,11 @@ public class TestStringViewer
 	@Test
 	public void testWrapString()
 	{
-		assertEquals("Display String", StringViewer.wrapString("Display String", 15));
+		assertEquals("Display String", StringRenderer.wrapString("Display String", 15));
 		assertEquals("A really long\nstring that\nshould probably\nbe wrapped", 
-				StringViewer.wrapString("A really long string that should probably be wrapped", 15));
-		assertEquals("Display\nString", StringViewer.wrapString("Display String", 1));
+				StringRenderer.wrapString("A really long string that should probably be wrapped", 15));
+		assertEquals("Display\nString", StringRenderer.wrapString("Display String", 1));
 		assertEquals("A\nreally\nlong\nstring\nthat\nshould\nprobably\nbe\nwrapped", 
-				StringViewer.wrapString("A really long string that should probably be wrapped", 1));
+				StringRenderer.wrapString("A really long string that should probably be wrapped", 1));
 	}
 }

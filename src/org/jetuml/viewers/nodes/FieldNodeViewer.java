@@ -30,8 +30,8 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -47,9 +47,9 @@ public final class FieldNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_WIDTH = 60;
 	private static final int DEFAULT_HEIGHT = 20;
 	private static final int XGAP = 5;
-	private static final StringViewer VALUE_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
-	private static final StringViewer EQUALS_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
+	private static final StringRenderer VALUE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
+	private static final StringRenderer EQUALS_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
 	
 	public FieldNodeViewer(DiagramRenderer pParent)
 	{

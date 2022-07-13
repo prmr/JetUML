@@ -21,7 +21,7 @@
 package org.jetuml.gui;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Prototypes;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.ToolGraphics;
 import org.jetuml.viewers.nodes.AbstractNodeViewer;
 
 import javafx.geometry.Orientation;

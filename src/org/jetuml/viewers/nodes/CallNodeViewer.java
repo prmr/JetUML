@@ -34,11 +34,11 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ViewerUtils;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -54,7 +54,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
 	private static final int Y_GAP_TINY = 5; // Was 10, changed to 20 to account for label space
 	// Inserts gaps between call nodes so that call edge labels don't intersect
-	private static final StringViewer NODE_GAP_TESTER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	private static final String TEST_STRING = "|";
 	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
 	
@@ -74,7 +74,7 @@ public final class CallNodeViewer extends AbstractNodeViewer
 		if(((CallNode)pElement).isOpenBottom())
 		{
 			pGraphics.setStroke(Color.WHITE);
-			ViewerUtils.drawRectangle(pGraphics, getBounds(pElement));
+			RenderingUtils.drawRectangle(pGraphics, getBounds(pElement));
 			pGraphics.setStroke(Color.BLACK);
 			final Rectangle bounds = getBounds(pElement);
 			int x1 = bounds.getX();
@@ -82,15 +82,15 @@ public final class CallNodeViewer extends AbstractNodeViewer
 			int y1 = bounds.getY();
 			int y3 = bounds.getMaxY();
 			int y2 = y3 - CallNode.CALL_YGAP;
-			ViewerUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
-			ViewerUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
-			ViewerUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
-			ViewerUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
-			ViewerUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
+			RenderingUtils.drawLine(pGraphics, x1, y1, x2, y1, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, x1, y1, x1, y2, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, x2, y1, x2, y2, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, x1, y2, x1, y3, LineStyle.DOTTED);
+			RenderingUtils.drawLine(pGraphics, x2, y2, x2, y3, LineStyle.DOTTED);
 		}
 		else
 		{
-			ViewerUtils.drawRectangle(pGraphics, getBounds(pElement));
+			RenderingUtils.drawRectangle(pGraphics, getBounds(pElement));
 		}
 	}
 

@@ -19,28 +19,22 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 /**
- * Line styles and their properties.
+ * This class defines arrowheads of various shapes.
  */
-public enum LineStyle
+public enum ArrowHead
 {
-	SOLID( new double[] {} ), DOTTED( new double[] {3, 3} );
+	NONE, TRIANGLE, BLACK_TRIANGLE, V, HALF_V, DIAMOND, BLACK_DIAMOND;
 	
-	// The LineDashes StrokeAttribute. See Canvas API documentation.
-	private final double[] aLineDashes;
-	
-	LineStyle(double[] pDashes)
-	{
-		aLineDashes = pDashes;
-	}
+	private final ArrowHeadViewer aView = new ArrowHeadViewer(this);
 	
 	/**
-	 * @return The LineDashes stroke attribute for this line style.
+	 * @return An object that can draw this arrowhead.
 	 */
-	public double[] getLineDashes()
+	public ArrowHeadViewer view()
 	{
-		return aLineDashes;
+		return aView;
 	}
 }

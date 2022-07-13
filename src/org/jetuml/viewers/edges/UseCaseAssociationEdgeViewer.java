@@ -20,9 +20,9 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.LineStyle;
+import org.jetuml.rendering.LineStyle;
 
 /**
  * A straight solid line.

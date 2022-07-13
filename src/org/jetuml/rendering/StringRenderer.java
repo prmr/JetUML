@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -47,7 +47,7 @@ import javafx.scene.text.TextAlignment;
  */
 @Immutable 
 @Flyweight
-public final class StringViewer
+public final class StringRenderer
 {
 	private static final CanvasFont CANVAS_FONT = new CanvasFont();
 	
@@ -55,7 +55,7 @@ public final class StringViewer
 	private static final int DEFAULT_HORIZONTAL_TEXT_PADDING = 7;
 	private static final int DEFAULT_VERTICAL_TEXT_PADDING = 7;
 	
-	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringViewer>> STORE = new HashMap<>();
+	private static final Map<Alignment, Map<EnumSet<TextDecoration>, StringRenderer>> STORE = new HashMap<>();
 	
 	/**
 	 * How to align the text in this string.
@@ -109,7 +109,7 @@ public final class StringViewer
 	private int aHorizontalPadding = DEFAULT_HORIZONTAL_TEXT_PADDING;
 	private int aVerticalPadding = DEFAULT_VERTICAL_TEXT_PADDING;
 	
-	private StringViewer(Alignment pAlign, EnumSet<TextDecoration> pDecorations) 
+	private StringRenderer(Alignment pAlign, EnumSet<TextDecoration> pDecorations) 
 	{
 		if ( !pDecorations.contains(TextDecoration.PADDED) )
 		{
@@ -122,21 +122,21 @@ public final class StringViewer
 	}
 	
 	/**
-	 * Lazily creates or retrieves an instance of StringViewer.
+	 * Lazily creates or retrieves an instance of StringRenderer.
 	 * @param pAlign The alignment to use.
 	 * @param pDecorations The decorations to apply.
 	 * @pre pAlign != null
-	 * @return The StringViewer instance with the requested properties.
+	 * @return The StringRenderer instance with the requested properties.
 	 */
-	public static StringViewer get(Alignment pAlign, TextDecoration... pDecorations)
+	public static StringRenderer get(Alignment pAlign, TextDecoration... pDecorations)
 	{
 		assert pAlign != null;
 		
 		EnumSet<TextDecoration> decorationSet = EnumSet.noneOf(TextDecoration.class);
 		Collections.addAll(decorationSet, pDecorations);
 		
-		Map<EnumSet<TextDecoration>, StringViewer> innerMap = STORE.computeIfAbsent(pAlign, k -> new HashMap<>());
-		return innerMap.computeIfAbsent(decorationSet, k -> new StringViewer(pAlign, decorationSet));
+		Map<EnumSet<TextDecoration>, StringRenderer> innerMap = STORE.computeIfAbsent(pAlign, k -> new HashMap<>());
+		return innerMap.computeIfAbsent(decorationSet, k -> new StringRenderer(pAlign, decorationSet));
 	}
 	
 	/**
@@ -267,7 +267,7 @@ public final class StringViewer
 				xOffset = dimension.width();
 			}
 			
-			ViewerUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
+			RenderingUtils.drawLine(pGraphics, textX-xOffset, textY+yOffset, 
 					textX-xOffset+dimension.width(), textY+yOffset, LineStyle.SOLID);
 		}
 		pGraphics.translate(-pRectangle.getX(), -pRectangle.getY());
@@ -331,7 +331,7 @@ public final class StringViewer
 		 */
 		public void drawString(GraphicsContext pGraphics, int pTextX, int pTextY, String pString, boolean pBold)
 		{
-			ViewerUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
+			RenderingUtils.drawText(pGraphics, pTextX, pTextY, pString, getFont(pBold));
 		}
 
 		/**

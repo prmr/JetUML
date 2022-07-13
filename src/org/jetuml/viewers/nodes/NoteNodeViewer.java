@@ -26,10 +26,10 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.ToolGraphics;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -46,7 +46,7 @@ public final class NoteNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int FOLD_LENGTH = 8;
 	private static final Color NOTE_COLOR = Color.color(0.9f, 0.9f, 0.6f); // Pale yellow
-	private static final StringViewer NOTE_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringRenderer NOTE_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	public NoteNodeViewer(DiagramRenderer pParent)
 	{

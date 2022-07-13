@@ -27,12 +27,12 @@ import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.Grid;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ViewerUtils;
+import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -46,7 +46,7 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 	private static final int TEXT_HORIZONTAL_MARGIN = 5;
 	private static final int XGAP = 5;
 	private static final int YGAP = 5;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, 
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, 
 			TextDecoration.BOLD, TextDecoration.UNDERLINED, TextDecoration.PADDED);
 	
 	public ObjectNodeViewer(DiagramRenderer pParent)
@@ -61,10 +61,10 @@ public final class ObjectNodeViewer extends AbstractNodeViewer
 		Node node = (Node) pElement;
 		final Rectangle topRectangle = getTopRectangle(node);
 		int dividerPosition = topRectangle.getMaxY();
-		ViewerUtils.drawRectangle(pGraphics, bounds);
+		RenderingUtils.drawRectangle(pGraphics, bounds);
 		if( ((ObjectNode)node).getChildren().size() > 0 ) 
 		{
-			ViewerUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, bounds.getX(), dividerPosition, bounds.getMaxX(), dividerPosition, LineStyle.SOLID);
 		}
 		NAME_VIEWER.draw(((ObjectNode)node).getName(), pGraphics, 
 				new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), topRectangle.getHeight()));

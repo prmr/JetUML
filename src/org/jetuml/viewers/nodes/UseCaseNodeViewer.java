@@ -28,10 +28,10 @@ import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ViewerUtils;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -44,7 +44,7 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 	private static final int DEFAULT_WIDTH = 110;
 	private static final int DEFAULT_HEIGHT = 40;
 	private static final int HORIZONTAL_NAME_PADDING = 30;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 	
 	public UseCaseNodeViewer(DiagramRenderer pParent)
 	{
@@ -55,7 +55,7 @@ public final class UseCaseNodeViewer extends AbstractNodeViewer
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		Rectangle bounds = getBounds(pElement);
-		ViewerUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
+		RenderingUtils.drawOval(pGraphics, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Color.WHITE, true);
 		NAME_VIEWER.draw(((UseCaseNode)pElement).getName(), pGraphics, getBounds(pElement));
 	}
 	

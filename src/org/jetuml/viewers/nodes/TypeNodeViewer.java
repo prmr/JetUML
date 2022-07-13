@@ -28,11 +28,11 @@ import org.jetuml.diagram.nodes.TypeNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
-import org.jetuml.viewers.ViewerUtils;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -47,8 +47,8 @@ public class TypeNodeViewer extends AbstractNodeViewer
 	protected static final int DEFAULT_WIDTH = 100;
 	protected static final int DEFAULT_HEIGHT = 60;
 	protected static final int TOP_INCREMENT = 20;
-	private static final StringViewer NAME_VIEWER = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
-	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
+	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.BOLD, TextDecoration.PADDED);
+	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT, TextDecoration.PADDED);
 	
 	public TypeNodeViewer(DiagramRenderer pParent)
 	{
@@ -65,18 +65,18 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		final int methodHeight = methodBoxHeight(node);
 		final int nameHeight = nameBoxHeight(node, attributeHeight, methodHeight);
 
-		ViewerUtils.drawRectangle(pGraphics, bounds);	
+		RenderingUtils.drawRectangle(pGraphics, bounds);	
 		NAME_VIEWER.draw(getNameText(node), pGraphics, new Rectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), nameHeight));
 		
 		if( attributeHeight > 0 )
 		{
 			final int splitY = bounds.getY() + nameHeight;
-			ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
 			STRING_VIEWER.draw(node.getAttributes(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), attributeHeight));
 			if( methodHeight > 0 )
 			{
 				final int splitY2 = splitY + attributeHeight;
-				ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
+				RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY2, bounds.getMaxX(), splitY2, LineStyle.SOLID);
 				STRING_VIEWER.draw(node.getMethods(), pGraphics, 
 						new Rectangle(bounds.getX(), splitY2, bounds.getWidth(), methodHeight));
 			}
@@ -84,7 +84,7 @@ public class TypeNodeViewer extends AbstractNodeViewer
 		else if( methodHeight > 0 )
 		{
 			final int splitY = bounds.getY() + nameHeight;
-			ViewerUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
+			RenderingUtils.drawLine(pGraphics, bounds.getX(), splitY, bounds.getMaxX(), splitY, LineStyle.SOLID);
 			STRING_VIEWER.draw(node.getMethods(), pGraphics, new Rectangle(bounds.getX(), splitY, bounds.getWidth(), methodHeight));
 		}	
 	}

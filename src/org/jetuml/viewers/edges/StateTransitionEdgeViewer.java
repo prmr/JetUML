@@ -30,12 +30,12 @@ import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -62,7 +62,7 @@ public final class StateTransitionEdgeViewer extends AbstractEdgeViewer
 	private static final double LINE_WIDTH = 0.6;
 	
 	private static final int RADIANS_TO_PIXELS = 7;
-	private static final StringViewer STRING_VIEWER = StringViewer.get(Alignment.CENTER_CENTER);
+	private static final StringRenderer STRING_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER);
 	
 	// The amount of vertical difference in connection points to tolerate
 	// before centering the edge label on one side instead of in the center.

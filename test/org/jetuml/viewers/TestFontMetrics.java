@@ -20,14 +20,15 @@
  *******************************************************************************/
 package org.jetuml.viewers;
 
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.stream.Stream;
 
 import org.jetuml.geom.Dimension;
+import org.jetuml.rendering.FontMetrics;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

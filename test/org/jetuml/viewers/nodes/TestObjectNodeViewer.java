@@ -20,8 +20,8 @@
  *******************************************************************************/
 package org.jetuml.viewers.nodes;
 
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.jetuml.testutils.GeometryUtils.osDependent;
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

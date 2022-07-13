@@ -26,9 +26,9 @@ import java.nio.file.Path;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Dimension;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 import org.jetuml.viewers.nodes.ActorNodeViewer;
 import org.jetuml.viewers.nodes.UseCaseNodeViewer;
 
@@ -55,7 +55,7 @@ public abstract class AbstractTestUseCaseDiagramLayout extends AbstractTestDiagr
 	{
 		final int WIDTH = getStaticIntFieldValue(ActorNodeViewer.class, "WIDTH");
 		final int HEIGHT = getStaticIntFieldValue(ActorNodeViewer.class, "HEIGHT");
-		StringViewer nameViewer = StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
+		StringRenderer nameViewer = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 		Dimension nameBounds = nameViewer.getDimension(((ActorNode)pNode).getName());
 		int calculatedWidth = Math.max(WIDTH, nameBounds.width());
 		int calculatedHeight = HEIGHT + nameBounds.height();

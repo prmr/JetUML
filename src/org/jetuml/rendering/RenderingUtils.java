@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 import org.jetuml.geom.Rectangle;
 
@@ -37,12 +37,12 @@ import javafx.scene.text.Font;
  * 
  * In the method names, "draw" refers to stroke and fill.
  */
-public final class ViewerUtils
+public final class RenderingUtils
 {
 	private static final DropShadow DROP_SHADOW = new DropShadow(3, 3, 3, Color.LIGHTGRAY);
 	private static final int ARC_SIZE = 20;
 	
-	private ViewerUtils()
+	private RenderingUtils()
 	{}
 	
 	/**

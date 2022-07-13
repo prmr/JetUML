@@ -28,9 +28,9 @@ import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
@@ -48,7 +48,7 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 	protected static final int BUTTON_SIZE = 25;
 	protected static final int OFFSET = 3;
 	protected static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
-	private static final StringViewer SIZE_TESTER = StringViewer.get(Alignment.TOP_LEFT);
+	private static final StringRenderer SIZE_TESTER = StringRenderer.get(Alignment.TOP_LEFT);
 	
 	private static final int DEGREES_180 = 180;
 	
@@ -153,6 +153,6 @@ public abstract class AbstractEdgeViewer implements EdgeViewer
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInY/distanceInX));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return StringViewer.wrapString(pString, lineLength);
+		return StringRenderer.wrapString(pString, lineLength);
 	}
 }

@@ -49,8 +49,8 @@ import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
-import org.jetuml.viewers.Grid;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

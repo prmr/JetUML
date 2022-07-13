@@ -22,8 +22,8 @@ package org.jetuml.viewers.edges;
 
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
-import org.jetuml.viewers.Grid;
-import org.jetuml.viewers.NodeSide;
+import org.jetuml.rendering.Grid;
+import org.jetuml.rendering.NodeSide;
 
 /**
  * Represents indexed positions on the faces of nodes where edges can attach.

@@ -19,7 +19,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Rectangle;
@@ -120,7 +120,7 @@ public final class ToolGraphics
 	 */
 	public static void drawLasso(GraphicsContext pGraphics, Rectangle pRectangle)
 	{
-		ViewerUtils.drawRectangle(pGraphics, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
+		RenderingUtils.drawRectangle(pGraphics, SELECTION_COLOR, SELECTION_FILL_TRANSPARENT, 
 				pRectangle.getX(), pRectangle.getY(), pRectangle.getWidth(), pRectangle.getHeight());
 	}
 	

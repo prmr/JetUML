@@ -25,12 +25,12 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.StringViewer.TextDecoration;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 
 import javafx.scene.canvas.Canvas;
 
@@ -55,7 +55,7 @@ public final class UseCaseDependencyEdgeViewer extends LabeledStraightEdgeViewer
 		Canvas canvas = super.createIcon(pDiagramType, edge);
 		final float scale = 0.75f;
 		canvas.getGraphicsContext2D().scale(scale, scale);
-		StringViewer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED).draw(getIconTag(edge), 
+		StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED).draw(getIconTag(edge), 
 				canvas.getGraphicsContext2D(), new Rectangle(1, BUTTON_SIZE, 1, 1));
 		return canvas;
 	}

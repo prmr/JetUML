@@ -19,7 +19,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
 
-package org.jetuml.viewers;
+package org.jetuml.rendering;
 
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;

@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.jetuml.application;
 
-import static org.jetuml.viewers.FontMetrics.DEFAULT_FONT_SIZE;
+import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 
 import java.util.ArrayList;
 import java.util.EnumMap;

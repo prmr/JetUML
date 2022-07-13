@@ -20,7 +20,7 @@
  *******************************************************************************/
 package org.jetuml.viewers.edges;
 
-import static org.jetuml.viewers.EdgePriority.priorityOf;
+import static org.jetuml.rendering.EdgePriority.priorityOf;
 
 import java.util.Optional;
 
@@ -40,14 +40,14 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.EdgePriority;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.StringViewer;
-import org.jetuml.viewers.StringViewer.Alignment;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.EdgePriority;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.StringRenderer;
+import org.jetuml.rendering.ToolGraphics;
+import org.jetuml.rendering.StringRenderer.Alignment;
 
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
@@ -66,9 +66,9 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 	private static final int OFFSET = 3;
 	private static final int MAX_DISTANCE = 3;
 	
-	private static final StringViewer TOP_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.TOP_CENTER);
-	private static final StringViewer BOTTOM_CENTERED_STRING_VIEWER = StringViewer.get(Alignment.BOTTOM_CENTER);
-	private static final StringViewer LEFT_JUSTIFIED_STRING_VIEWER = StringViewer.get(Alignment.TOP_LEFT);
+	private static final StringRenderer TOP_CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_CENTER);
+	private static final StringRenderer BOTTOM_CENTERED_STRING_VIEWER = StringRenderer.get(Alignment.BOTTOM_CENTER);
+	private static final StringRenderer LEFT_JUSTIFIED_STRING_VIEWER = StringRenderer.get(Alignment.TOP_LEFT);
 	private static final int SINGLE_CHAR_WIDTH = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").width();
 	private static final int SIGLE_CHAR_HEIGHT = LEFT_JUSTIFIED_STRING_VIEWER.getDimension(" ").height();
 	private static final int MAX_LENGTH_FOR_NORMAL_FONT = 15;
@@ -251,7 +251,7 @@ public class StoredEdgeViewer extends AbstractEdgeViewer
 			double angleInDegrees = Math.toDegrees(Math.atan(distanceInYPerChar/distanceInXPerChar));
 			lineLength = Math.max(MAX_LENGTH_FOR_NORMAL_FONT, (int)((distanceInX / 4) * (1 - angleInDegrees / DEGREES_180)));
 		}
-		return StringViewer.wrapString(pString, lineLength);
+		return StringRenderer.wrapString(pString, lineLength);
 	}
 	
 	/**

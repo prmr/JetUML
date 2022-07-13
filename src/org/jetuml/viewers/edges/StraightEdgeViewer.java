@@ -27,10 +27,10 @@ import org.jetuml.geom.Conversions;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.viewers.ArrowHead;
-import org.jetuml.viewers.LineStyle;
-import org.jetuml.viewers.ToolGraphics;
+import org.jetuml.rendering.LineStyle;
+import org.jetuml.rendering.ToolGraphics;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
