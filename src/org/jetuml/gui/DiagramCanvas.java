@@ -100,10 +100,10 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		aToolBar = pToolBar;
 		aDiagramBuilder = pDiagramBuilder;
 		aMoveTracker = new MoveTracker(aDiagramBuilder.renderer()::getBounds);
-		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
 		Dimension dimension = getDiagramCanvasWidth(pDiagramBuilder.diagram());
 		setWidth(dimension.width());
 		setHeight(dimension.height());
+		aDiagramBuilder.setCanvasDimension(new Dimension((int) getWidth(), (int)getHeight()));
 		getGraphicsContext2D().setLineWidth(LINE_WIDTH);
 		getGraphicsContext2D().setFill(Color.WHITE);
 		aHandler = pHandler;
