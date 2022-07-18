@@ -27,8 +27,10 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.AbstractPackageNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
+import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.Side;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.RenderingUtils;
 import org.jetuml.rendering.StringRenderer;
@@ -93,6 +95,23 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 		{
 			return connectionPoint;
 		}
+	}
+	
+	/*
+	 * The top face of a package node is only the side of the bottom (main) rectangle.
+	 */
+	@Override
+	public Line getFace(Node pNode, Side pSide) 
+	{
+		assert pNode != null && pSide != null;
+		if( pSide != Side.TOP )
+		{
+			return super.getFace(pNode, pSide);
+		}
+		// We are dealing with the top side
+		Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
+		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
+		return new Line(topBounds.getMaxX(), bottomBounds.getY(), bottomBounds.getMaxX(), bottomBounds.getY());
 	}
 
 	@Override
