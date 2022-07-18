@@ -45,7 +45,6 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge.Type;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
-import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.Side;
@@ -2237,34 +2236,6 @@ public class TestLayouter
 	}
 	
 	@Test
-	public void testGetNodeFace_north()
-	{
-		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, Side.TOP).getPoint1());
-		assertEquals(new Point(300, 200), getNodeFace(aRectangleA, Side.TOP).getPoint2());
-	}
-	
-	@Test
-	public void testGetNodeFace_south()
-	{
-		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, Side.BOTTOM).getPoint1());
-		assertEquals(new Point(300, 260), getNodeFace(aRectangleA, Side.BOTTOM).getPoint2());
-	}
-	
-	@Test
-	public void testGetNodeFace_east()
-	{
-		assertEquals(new Point(300,200), getNodeFace(aRectangleA, Side.RIGHT).getPoint1());
-		assertEquals(new Point(300,260), getNodeFace(aRectangleA, Side.RIGHT).getPoint2());
-	}
-	
-	@Test
-	public void testGetNodeFace_west()
-	{
-		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, Side.LEFT).getPoint1());
-		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, Side.LEFT).getPoint2());
-	}
-	
-	@Test
 	public void testIsOutgoingEdge()
 	{
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
@@ -2930,21 +2901,6 @@ public class TestLayouter
 		}
 	}
 	
-	private Line getNodeFace(Rectangle pNodeBounds, Side pSideOfNode)
-	{
-		try
-		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getNodeFace", Rectangle.class, Side.class);
-			method.setAccessible(true);
-			return (Line) method.invoke(aRenderer, pNodeBounds, pSideOfNode);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			fail();
-			return null;
-		}
-	}
-
 	private boolean isOutgoingEdge(Edge pEdge, Node pNode)
 	{
 		try

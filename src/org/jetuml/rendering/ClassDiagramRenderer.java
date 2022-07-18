@@ -53,6 +53,7 @@ import org.jetuml.rendering.edges.EdgeStorage;
 import org.jetuml.rendering.edges.NodeIndex;
 import org.jetuml.rendering.edges.StoredEdgeRenderer;
 import org.jetuml.rendering.nodes.InterfaceNodeRenderer;
+import org.jetuml.rendering.nodes.NodeRenderer;
 import org.jetuml.rendering.nodes.PackageDescriptionNodeRenderer;
 import org.jetuml.rendering.nodes.PackageNodeRenderer;
 import org.jetuml.rendering.nodes.TypeNodeRenderer;
@@ -791,12 +792,17 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 		//Iterate over each side of pNode. Return the side which contains connectionPoint
 		for(Side side : Side.values())
 		{
-			if(getNodeFace(getBounds(pNode), side).spanning().contains(connectionPoint))
+			if(getFace(pNode, side).spanning().contains(connectionPoint))
 			{
 				return side;
 			}
 		}
 		return Side.TOP;
+	}
+	
+	private Line getFace(Node pNode, Side pSide)
+	{
+		return ((NodeRenderer)rendererFor(pNode.getClass())).getFace(pNode, pSide);
 	}
 	
 	/**
@@ -986,7 +992,7 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	private Point getConnectionPoint(Node pNode, Edge pEdge, Side pAttachmentSide)
 	{
 		assert pEdge.getStart() == pNode || pEdge.getEnd() == pNode;	
-		Line faceOfNode = getNodeFace(getBounds(pNode), pAttachmentSide);
+		Line faceOfNode = getFace(pNode, pAttachmentSide);
 		//North and South node sides have connection points: -4 ...0... +4
 		//East and West node sides have connection points: -2 ...0... +2
 		int maxIndex = 4; 
@@ -1103,39 +1109,6 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 			{
 				return -1;
 			}
-		}
-	}
-	
-	
-	/**
-	 * Gets a line representing the pSideOfNode side of pNode. 
-	 * @param pNode the node of interest
-	 * @param pNodeSide the desired side of pNode
-	 * @return a line spanning the pSideOfNode side of pNode
-	 * @pre pNodeBounds != null && pNodeSide != null
-	 */
-	private Line getNodeFace(Rectangle pNodeBounds, Side pNodeSide)
-	{
-		assert pNodeBounds !=null && pNodeSide != null;
-		Point topLeft = pNodeBounds.getOrigin();
-		Point topRight = new Point(pNodeBounds.getMaxX(), pNodeBounds.getY());
-		Point bottomLeft = new Point(pNodeBounds.getX(), pNodeBounds.getMaxY());
-		Point bottomRight = new Point(pNodeBounds.getMaxX(), pNodeBounds.getMaxY());
-		if(pNodeSide == Side.BOTTOM)
-		{
-			return new Line(bottomLeft, bottomRight);
-		}
-		else if (pNodeSide == Side.TOP)
-		{
-			return new Line(topLeft, topRight);
-		}
-		else if (pNodeSide == Side.LEFT)
-		{
-			return new Line(topLeft, bottomLeft);
-		}
-		else 
-		{
-			return new Line(topRight, bottomRight);
 		}
 	}
 	

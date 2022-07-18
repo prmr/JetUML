@@ -25,8 +25,10 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
+import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.Side;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.ToolGraphics;
 
@@ -129,4 +131,14 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
      * @return the bounding rectangle
    	 */
 	protected abstract Rectangle internalGetBounds(Node pNode);
+	
+	/*
+	 * By default we return the side of the node's bounds.
+	 */
+	@Override
+	public Line getFace(Node pNode, Side pSide) 
+	{
+		assert pNode != null && pSide != null;
+		return getBounds(pNode).getSide(pSide);
+	}
 }

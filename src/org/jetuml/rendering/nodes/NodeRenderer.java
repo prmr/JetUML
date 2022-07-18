@@ -22,7 +22,9 @@ package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Direction;
+import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Side;
 import org.jetuml.rendering.DiagramElementRenderer;
 
 /**
@@ -52,4 +54,18 @@ public interface NodeRenderer extends DiagramElementRenderer
 	 * Deactivates and clears the NodeStorage. 
 	 */
 	void deactivateAndClearNodeStorage();
+	
+	/**
+	 * The face of a node corresponds to the line to which edges can attach.
+	 * For rectangular nodes, this is the same as the side of the bound rectangle.
+	 * However, for nodes with a different geometry (e.g., Package nodes),
+	 * the side can differ from the bounds.
+	 * 
+	 * @param pSide The side of the node.
+	 * @param pNode The target node.
+	 * @return The line that corresponds to the visible edge of the node to which edges can
+	 * be attached.
+	 * @pre pSide != null && pNode != null;
+	 */
+	Line getFace(Node pNode, Side pSide);
 }
