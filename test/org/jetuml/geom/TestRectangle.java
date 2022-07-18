@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -117,13 +118,61 @@ public class TestRectangle
 	}
 	
 	@Nested
+	@DisplayName("Test method getSide(Side)")
 	class TestGetSide
 	{
 		@Test
-		void testWithEmptyRectangle()
+		@DisplayName("All sides of an empty rectangle at origin")
+		void testWithEmptyRectangleAtOrigin()
 		{
 			Rectangle rectangle = new Rectangle(0,0,0,0);
-			assertEquals(new Line(new Point(0,0), new Point(0,0)), rectangle.getSide(Side.TOP));
+			assertEquals(new Line(0,0,0,0), rectangle.getSide(Side.TOP));
+			assertEquals(new Line(0,0,0,0), rectangle.getSide(Side.BOTTOM));
+			assertEquals(new Line(0,0,0,0), rectangle.getSide(Side.RIGHT));
+			assertEquals(new Line(0,0,0,0), rectangle.getSide(Side.LEFT));
+		}
+		
+		@Test
+		@DisplayName("All sides of an empty rectangle not at origin")
+		void testWithEmptyRectangleNotAtOrigin()
+		{
+			Rectangle rectangle = new Rectangle(1,2,0,0);
+			assertEquals(new Line(1,2,1,2), rectangle.getSide(Side.TOP));
+			assertEquals(new Line(1,2,1,2), rectangle.getSide(Side.BOTTOM));
+			assertEquals(new Line(1,2,1,2), rectangle.getSide(Side.RIGHT));
+			assertEquals(new Line(1,2,1,2), rectangle.getSide(Side.LEFT));
+		}
+		
+		@Test
+		@DisplayName("For the top side")
+		void testTop()
+		{
+			Rectangle rectangle = new Rectangle(10,10,60,40);
+			assertEquals(new Line(10,10,70,10), rectangle.getSide(Side.TOP));
+		}
+		
+		@Test
+		@DisplayName("For the bottom side")
+		void testBottom()
+		{
+			Rectangle rectangle = new Rectangle(10,10,60,40);
+			assertEquals(new Line(10,50,70,50), rectangle.getSide(Side.BOTTOM));
+		}
+		
+		@Test
+		@DisplayName("For the right side")
+		void testRight()
+		{
+			Rectangle rectangle = new Rectangle(10,10,60,40);
+			assertEquals(new Line(70,10,70,50), rectangle.getSide(Side.RIGHT));
+		}
+		
+		@Test
+		@DisplayName("For the left side")
+		void testLeft()
+		{
+			Rectangle rectangle = new Rectangle(10,10,60,40);
+			assertEquals(new Line(10,10,10,50), rectangle.getSide(Side.LEFT));
 		}
 	}
 }
