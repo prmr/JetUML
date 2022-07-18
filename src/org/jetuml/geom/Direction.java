@@ -63,7 +63,7 @@ public final class Direction
 	
 	/**
 	 * @return true if and only if this direction represents one of the four
-	 *     cardinal directions, namely NORTH, SOUTH, EAST, WEST. 
+	 *     cardinal directions, namely TOP, BOTTOM, RIGHT, LEFT. 
 	 */
 	public boolean isCardinal()
 	{

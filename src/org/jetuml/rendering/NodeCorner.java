@@ -69,7 +69,7 @@ public enum NodeCorner
 	/**
 	 * Gets the Direction (either North or South) describing pCorner's horizontal position on a node.
 	 * @param pCorner the node corner of interest
-	 * @return NORTH if the corner is a top corner, SOUTH if the corner is a bottom corner.
+	 * @return TOP if the corner is a top corner, BOTTOM if the corner is a bottom corner.
 	 * @pre pCorner != null;
 	 */
 	public static Direction horizontalSide(NodeCorner pCorner)
@@ -87,9 +87,9 @@ public enum NodeCorner
 	
 	
 	/**
-	 * Gets the Direction (either EAST or WEST) describing pCorner's vertical position on a node.
+	 * Gets the Direction (either RIGHT or LEFT) describing pCorner's vertical position on a node.
 	 * @param pCorner the node corner of interest
-	 * @return EAST if the corner is a right corner, WEST if the corner is a left corner.
+	 * @return RIGHT if the corner is a right corner, LEFT if the corner is a left corner.
 	 */
 	public static Direction verticalSide(NodeCorner pCorner)
 	{

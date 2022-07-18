@@ -22,8 +22,8 @@ package org.jetuml.rendering.edges;
 
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Side;
 import org.jetuml.rendering.Grid;
-import org.jetuml.rendering.NodeSide;
 
 /**
  * Represents indexed positions on the faces of nodes where edges can attach.
@@ -45,7 +45,7 @@ public enum NodeIndex
 	 * @return a point on pNodeFace at the pNodeIndex position
 	 * @pre pNodeFace != null
 	 */
-	public Point toPoint(Line pNodeFace, NodeSide pAttachmentSide)
+	public Point toPoint(Line pNodeFace, Side pAttachmentSide)
 	{
 		//determine the offset from the center point. 
 		float spacing = spaceBetweenConnectionPoints(pNodeFace, pAttachmentSide);
@@ -53,7 +53,7 @@ public enum NodeIndex
 		
 		//Determine center point and add the offset to the center point
 		Point center;
-		if(pAttachmentSide.isNorthSouth())
+		if(pAttachmentSide.isHorizontal())
 		{
 			center = Grid.snappedHorizontally(
 					new Point(((pNodeFace.getX2() - pNodeFace.getX1())/2) + pNodeFace.getX1(), pNodeFace.getY1()));
@@ -76,10 +76,10 @@ public enum NodeIndex
 	 * @return the spacing in between connection points on pNodeFace. 
 	 * @pre pNodeFace != null && pAttachmentSide != null
 	 */
-	private static float spaceBetweenConnectionPoints(Line pNodeFace, NodeSide pAttachmentSide)
+	private static float spaceBetweenConnectionPoints(Line pNodeFace, Side pAttachmentSide)
 	{
 		assert pNodeFace != null && pAttachmentSide != null;
-		if(pAttachmentSide.isNorthSouth())
+		if(pAttachmentSide.isHorizontal())
 		{
 			return (float) (Math.abs((pNodeFace.getX2() - pNodeFace.getX1()) / NUM_SPACES_NS));
 		}

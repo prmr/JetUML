@@ -48,10 +48,10 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.geom.Side;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.EdgePriority;
 import org.jetuml.rendering.NodeCorner;
-import org.jetuml.rendering.NodeSide;
 import org.jetuml.rendering.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -446,7 +446,7 @@ public class TestLayouter
 		EdgePath expectedPathA = new EdgePath(new Point(50, 100), new Point(50, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathC = new EdgePath(new Point(250, 100), new Point(250, 80), new Point(150, 80), new Point(150, 60));
-		storeMergedEndEdges(NodeSide.NORTH, edgesToMerge);
+		storeMergedEndEdges(Side.TOP, edgesToMerge);
 		assertEquals(expectedPathA, getStoredEdgePath(aEdgeA));
 		assertEquals(expectedPathB, getStoredEdgePath(aEdgeB));
 		assertEquals(expectedPathC, getStoredEdgePath(aEdgeC));
@@ -466,7 +466,7 @@ public class TestLayouter
 		EdgePath expectedPathA = new EdgePath(new Point(50, 60), new Point(50, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathC = new EdgePath(new Point(250, 60), new Point(250, 80), new Point(150, 80), new Point(150, 100));
-		storeMergedEndEdges(NodeSide.SOUTH, edgesToMerge);
+		storeMergedEndEdges(Side.BOTTOM, edgesToMerge);
 		assertEquals(expectedPathA, getStoredEdgePath(aEdgeA));
 		assertEquals(expectedPathB, getStoredEdgePath(aEdgeB));
 		assertEquals(expectedPathC, getStoredEdgePath(aEdgeC));
@@ -483,7 +483,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 120));
 		aNodeD.moveTo(new Point(200, 60));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedEndEdges(NodeSide.EAST, edgesToMerge);
+		storeMergedEndEdges(Side.RIGHT, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(100, 30), new Point(150, 30), new Point(150, 90), new Point(200, 90));
 		EdgePath expectedPathB = new EdgePath(new Point(100, 90), new Point(150, 90), new Point(150, 90), new Point(200, 90));
 		EdgePath expectedPathC = new EdgePath(new Point(100, 150), new Point(150, 150), new Point(150, 90), new Point(200, 90));
@@ -503,7 +503,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 120));
 		aNodeD.moveTo(new Point(0, 60));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedEndEdges(NodeSide.WEST, edgesToMerge);
+		storeMergedEndEdges(Side.LEFT, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(200, 30), new Point(150, 30), new Point(150, 90), new Point(100, 90));
 		EdgePath expectedPathB = new EdgePath(new Point(200, 90), new Point(150, 90), new Point(150, 90), new Point(100, 90));
 		EdgePath expectedPathC = new EdgePath(new Point(200, 150), new Point(150, 150), new Point(150, 90), new Point(100, 90));
@@ -523,7 +523,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 0));
 		aNodeD.moveTo(new Point(100, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.NORTH, edgesToMerge);
+		storeMergedStartEdges(Side.TOP, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(50, 80), new Point(50, 60));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(150, 80), new Point(150, 60));
 		EdgePath expectedPathC = new EdgePath(new Point(150, 100), new Point(150, 80), new Point(250, 80), new Point(250, 60));
@@ -544,7 +544,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 100));
 		aNodeD.moveTo(new Point(100, 0));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.SOUTH, edgesToMerge);
+		storeMergedStartEdges(Side.BOTTOM, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(50, 80), new Point(50, 100));
 		EdgePath expectedPathB = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(150, 80), new Point(150, 100));
 		EdgePath expectedPathC = new EdgePath(new Point(150, 60), new Point(150, 80), new Point(250, 80), new Point(250, 100));
@@ -564,7 +564,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 200));
 		aNodeD.moveTo(new Point(200, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.WEST, edgesToMerge);
+		storeMergedStartEdges(Side.LEFT, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 30), new Point(100, 30));
 		EdgePath expectedPathB = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 130), new Point(100, 130));
 		EdgePath expectedPathC = new EdgePath(new Point(200, 130), new Point(150, 130), new Point(150, 230), new Point(100, 230));
@@ -584,7 +584,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 200));
 		aNodeD.moveTo(new Point(0, 100));
 		List<Edge> edgesToMerge = Arrays.asList(aEdgeA, aEdgeB, aEdgeC);
-		storeMergedStartEdges(NodeSide.EAST, edgesToMerge);
+		storeMergedStartEdges(Side.RIGHT, edgesToMerge);
 		EdgePath expectedPathA = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 30), new Point(200, 30));
 		EdgePath expectedPathB = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 130), new Point(200, 130));
 		EdgePath expectedPathC = new EdgePath(new Point(100, 130), new Point(150, 130), new Point(150, 230), new Point(200, 230));
@@ -882,7 +882,7 @@ public class TestLayouter
 		store(aEdgeB, new EdgePath(new Point(200, 100), new Point(200, 80), new Point(150, 80), new Point(150, 60)));
 		store(aEdgeD, new EdgePath(new Point(270, 30), new Point(200, 30)));
 		
-		List<Edge> conflictingEdges = storedConflictingEdges(NodeSide.SOUTH, endNode, aEdgeC);
+		List<Edge> conflictingEdges = storedConflictingEdges(Side.BOTTOM, endNode, aEdgeC);
 		assertTrue(conflictingEdges.size() == 1);
 		assertTrue(conflictingEdges.contains(aEdgeB));
 		
@@ -904,8 +904,8 @@ public class TestLayouter
 		aNodeD.moveTo(new Point(250, 50));
 		//aNodeB and aNodeC are South of aNodeA; aNodeD is East of aNodeA
 		store(aEdgeA, new EdgePath(new Point(100, 120), new Point(100, 90), new Point(50, 90), new Point(50, 60)));
-		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, NodeSide.NORTH));
-		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, NodeSide.NORTH));
+		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, Side.TOP));
+		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, Side.TOP));
 	}
 	
 	@Test
@@ -923,8 +923,8 @@ public class TestLayouter
 		aNodeD.moveTo(new Point(300, 60));
 		//aNodeB and aNodeC are North-East of aNodeA; aNodeD is North-North-East of aNodeA
 		store(aEdgeA, new EdgePath(new Point(50, 110), new Point(50, 95), new Point(150, 95), new Point(150, 60)));
-		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, NodeSide.SOUTH));
-		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, NodeSide.SOUTH));
+		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, Side.BOTTOM));
+		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, Side.BOTTOM));
 	}
 	
 	@Test
@@ -942,8 +942,8 @@ public class TestLayouter
 		aNodeD.moveTo(new Point(60, 70));
 		//aNodeB and aNodeC are SouthWest of aNodeA; aNodeD is South-SouthWest of aNodeA
 		store(aEdgeA, new EdgePath(new Point(100, 40), new Point(160, 40), new Point(160, 30), new Point(220, 30)));
-		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, NodeSide.EAST));
-		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, NodeSide.EAST));
+		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, Side.RIGHT));
+		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, Side.RIGHT));
 	}
 	
 	@Test
@@ -961,8 +961,8 @@ public class TestLayouter
 		aNodeD.moveTo(new Point(140, 60));
 		//aNodeB and aNodeC are East of aNodeA; aNodeD is South-East of aNodeA
 		store(aEdgeA, new EdgePath(new Point(200, 40), new Point(150, 40), new Point(150, 30), new Point(100, 30)));
-		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, NodeSide.WEST));
-		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, NodeSide.WEST));
+		assertFalse(nodeIsCloserThanSegment(aEdgeB, aNodeA, Side.LEFT));
+		assertTrue(nodeIsCloserThanSegment(aEdgeC, aNodeA, Side.LEFT));
 	}
 	
 	
@@ -983,7 +983,7 @@ public class TestLayouter
 		store(storedEdge, new EdgePath(new Point(50, 60), new Point(50, 90), new Point(70, 90), new Point(70, 120)));
 		Point newEdgeStart = new Point(60, 60);
 		Point newEdgeEnd = new Point(80, 120);
-		assertEquals(100, getHorizontalMidLine(newEdgeStart, newEdgeEnd, NodeSide.SOUTH, newEdge));
+		assertEquals(100, getHorizontalMidLine(newEdgeStart, newEdgeEnd, Side.BOTTOM, newEdge));
 	}
 	
 	
@@ -1002,7 +1002,7 @@ public class TestLayouter
 		Edge newEdge = new GeneralizationEdge();
 		newEdge.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(newEdge);
-		assertEquals(90, getHorizontalMidLine(new Point(50, 60), new Point(70, 120), NodeSide.SOUTH, newEdge));
+		assertEquals(90, getHorizontalMidLine(new Point(50, 60), new Point(70, 120), Side.BOTTOM, newEdge));
 	}
 	
 	@Test
@@ -1030,8 +1030,8 @@ public class TestLayouter
 		Point endPoint = new Point(50, 60);
 		//Because storedEdge is stored, the horizontal mid-segment of newEdge is shifted 10px 
 		store(storedEdge, new EdgePath(new Point(60, 120), new Point(60, 90), new Point(50, 90), new Point(50, 60)));
-		assertEquals(80, getHorizontalMidLine(startPoint, endPoint, NodeSide.NORTH, associationEdge));
-		assertEquals(80, getHorizontalMidLine(startPoint, endPoint, NodeSide.NORTH, newAggregationEdge));
+		assertEquals(80, getHorizontalMidLine(startPoint, endPoint, Side.TOP, associationEdge));
+		assertEquals(80, getHorizontalMidLine(startPoint, endPoint, Side.TOP, newAggregationEdge));
 	}
 	
 	/*
@@ -1051,7 +1051,7 @@ public class TestLayouter
 		store(storedEdge, new EdgePath(new Point(100, 30), new Point(150, 30), new Point(150, 50), new Point(200, 50)));
 		Point newEdgeStart = new Point(100, 40);
 		Point newEdgeEnd = new Point(200, 60);
-		assertEquals(160, getVerticalMidLine(newEdgeStart, newEdgeEnd, NodeSide.EAST, newEdge));
+		assertEquals(160, getVerticalMidLine(newEdgeStart, newEdgeEnd, Side.RIGHT, newEdge));
 	}
 	
 	/*
@@ -1068,7 +1068,7 @@ public class TestLayouter
 		Edge newEdge = new GeneralizationEdge();
 		newEdge.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(newEdge);
-		assertEquals(150, getVerticalMidLine(new Point(100, 30), new Point(200, 50), NodeSide.EAST, newEdge));
+		assertEquals(150, getVerticalMidLine(new Point(100, 30), new Point(200, 50), Side.RIGHT, newEdge));
 	}
 	
 	@Test
@@ -1092,12 +1092,12 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(200, 10));
 		aNodeC.moveTo(new Point(200, 60));
-		assertEquals(150, getVerticalMidLine(new Point(200, 90), new Point(100, 40), NodeSide.WEST, associationEdge));
-		assertEquals(150, getVerticalMidLine(new Point(200, 90), new Point(100, 40), NodeSide.EAST, newAggregationEdge));
+		assertEquals(150, getVerticalMidLine(new Point(200, 90), new Point(100, 40), Side.LEFT, associationEdge));
+		assertEquals(150, getVerticalMidLine(new Point(200, 90), new Point(100, 40), Side.RIGHT, newAggregationEdge));
 		//after storedEdge is stored, the vertical mid-segment of newEdge is shifted 10px
 		store(storedEdge, new EdgePath(new Point(200, 40), new Point(150, 40), new Point(150, 30), new Point(100, 30)));
-		assertEquals(140, getVerticalMidLine(new Point(200, 90), new Point(100, 40), NodeSide.WEST, associationEdge));
-		assertEquals(140, getVerticalMidLine(new Point(200, 90), new Point(100, 40), NodeSide.WEST, newAggregationEdge));
+		assertEquals(140, getVerticalMidLine(new Point(200, 90), new Point(100, 40), Side.LEFT, associationEdge));
+		assertEquals(140, getVerticalMidLine(new Point(200, 90), new Point(100, 40), Side.LEFT, newAggregationEdge));
 	}
 	
 	@Test
@@ -1118,10 +1118,10 @@ public class TestLayouter
 		associationEdgeNorth.connect(aNodeB, aNodeA, aDiagram);
 		aggregationEdgeSouth.connect(aNodeA, aNodeB, aDiagram);
 		aggregationEdgeNorth.connect(aNodeB, aNodeA, aDiagram);
-		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeSouth, NodeSide.SOUTH));
-		assertEquals(80, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeNorth, NodeSide.NORTH));
-		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeSouth, NodeSide.SOUTH));
-		assertEquals(80, horizontalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeNorth, NodeSide.NORTH));
+		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeSouth, Side.BOTTOM));
+		assertEquals(80, horizontalMidlineForSharedNodeEdges(storedEdge, associationEdgeNorth, Side.TOP));
+		assertEquals(100, horizontalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeSouth, Side.BOTTOM));
+		assertEquals(80, horizontalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeNorth, Side.TOP));
 	}
 	
 	@Test
@@ -1143,10 +1143,10 @@ public class TestLayouter
 		associationEdgeWest.connect(aNodeB, aNodeA, aDiagram);
 		aggregationEdgeEast.connect(aNodeA, aNodeB, aDiagram);
 		aggregationEdgeWest.connect(aNodeB, aNodeA, aDiagram);
-		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeEast, NodeSide.EAST));
-		assertEquals(140, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeWest, NodeSide.WEST));
-		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeEast, NodeSide.EAST));
-		assertEquals(140, verticalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeWest, NodeSide.WEST));
+		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeEast, Side.RIGHT));
+		assertEquals(140, verticalMidlineForSharedNodeEdges(storedEdge, associationEdgeWest, Side.LEFT));
+		assertEquals(160, verticalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeEast, Side.RIGHT));
+		assertEquals(140, verticalMidlineForSharedNodeEdges(storedEdge, aggregationEdgeWest, Side.LEFT));
 	
 	}
 	
@@ -1166,11 +1166,11 @@ public class TestLayouter
 		Edge newEdge = new GeneralizationEdge();
 		newEdge.connect(startNode, aNodeA, aDiagram);
 		//Without any conflicting edges in storage: returns empty
-		assertEquals(Optional.empty(), closestConflictingVerticalSegment(NodeSide.WEST, newEdge));
+		assertEquals(Optional.empty(), closestConflictingVerticalSegment(Side.LEFT, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(200, 40), new Point(150, 40), new Point(150, 30), new Point(100, 30)));
 		store(aEdgeB, new EdgePath(new Point(200, 90), new Point(140, 90), new Point(140, 40), new Point(100, 40)));
-		assertEquals(aEdgeB, closestConflictingVerticalSegment(NodeSide.WEST, newEdge).get());
+		assertEquals(aEdgeB, closestConflictingVerticalSegment(Side.LEFT, newEdge).get());
 	}
 	
 	@Test
@@ -1187,11 +1187,11 @@ public class TestLayouter
 		AggregationEdge newEdge = new AggregationEdge();
 		newEdge.connect(startNode, aNodeA, aDiagram);
 		//Without any conflicting edges in storage: returns empty
-		assertEquals(Optional.empty(), closestConflictingVerticalSegment(NodeSide.WEST, newEdge));
+		assertEquals(Optional.empty(), closestConflictingVerticalSegment(Side.LEFT, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(200, 40), new Point(150, 40), new Point(150, 30), new Point(100, 30)));
 		store(aEdgeB, new EdgePath(new Point(200, 90), new Point(140, 90), new Point(140, 40), new Point(100, 40)));
-		assertEquals(aEdgeA, closestConflictingVerticalSegment(NodeSide.WEST, newEdge).get());
+		assertEquals(aEdgeA, closestConflictingVerticalSegment(Side.LEFT, newEdge).get());
 	}
 	
 	@Test
@@ -1206,11 +1206,11 @@ public class TestLayouter
 		startNode.moveTo(new Point(300, 300));
 		Edge newEdge = new GeneralizationEdge();
 		newEdge.connect(startNode, aNodeA, aDiagram);
-		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(NodeSide.NORTH, newEdge));
+		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(Side.TOP, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(160, 300), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
 		store(aEdgeB, new EdgePath(new Point(250, 300), new Point(250, 240), new Point(150, 240), new Point(150, 200)));
-		assertEquals(aEdgeB, closestConflictingHorizontalSegment(NodeSide.NORTH, newEdge).get());
+		assertEquals(aEdgeB, closestConflictingHorizontalSegment(Side.TOP, newEdge).get());
 	}
 	
 	@Test
@@ -1225,11 +1225,11 @@ public class TestLayouter
 		startNode.moveTo(new Point(300, 300));
 		AggregationEdge newEdge = new AggregationEdge();
 		newEdge.connect(startNode, aNodeA, aDiagram);
-		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(NodeSide.NORTH, newEdge));
+		assertEquals(Optional.empty(), closestConflictingHorizontalSegment(Side.TOP, newEdge));
 		//store the edge paths of aEdgeA and aEdgeB:
 		store(aEdgeA, new EdgePath(new Point(160, 300), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
 		store(aEdgeB, new EdgePath(new Point(250, 300), new Point(250, 240), new Point(150, 240), new Point(150, 200)));
-		assertEquals(aEdgeA, closestConflictingHorizontalSegment(NodeSide.NORTH, newEdge).get());
+		assertEquals(aEdgeA, closestConflictingHorizontalSegment(Side.TOP, newEdge).get());
 	}
 	
 	@Test
@@ -1254,11 +1254,11 @@ public class TestLayouter
 		//store the EdgePath of edge1:
 		store(edge1, new EdgePath(new Point(250, 300), new Point(250, 180), new Point(150, 180), new Point(150, 60)));
 		
-		//edge2 is incoming on aNodeA and its EdgeDirection is SOUTH, so it's middle segment should be 10px below pClosestStoredEdge.
-		assertEquals(190, adjacentHorizontalMidLine(edge1, edge2, NodeSide.SOUTH));
+		//edge2 is incoming on aNodeA and its EdgeDirection is BOTTOM, so it's middle segment should be 10px below pClosestStoredEdge.
+		assertEquals(190, adjacentHorizontalMidLine(edge1, edge2, Side.BOTTOM));
 		
-		//edge3 is outgoing from aNodeA and its EdgeDirection is NORTH, so it's middle segment should be 10px below pClosestStoredEdge.
-		assertEquals(190, adjacentHorizontalMidLine(edge1, edge3, NodeSide.NORTH));
+		//edge3 is outgoing from aNodeA and its EdgeDirection is TOP, so it's middle segment should be 10px below pClosestStoredEdge.
+		assertEquals(190, adjacentHorizontalMidLine(edge1, edge3, Side.TOP));
 	}
 	
 	
@@ -1284,11 +1284,11 @@ public class TestLayouter
 		//store the EdgePath of edge1:
 		store(edge1, new EdgePath(new Point(150, 200), new Point(150, 130), new Point(50, 130), new Point(50, 60)));
 		
-		//edge2 is incoming on aNodeA and its EdgeDirection is NORTH, so it's middle segment should be 10px above pClosestStoredEdge.
-		assertEquals(120, adjacentHorizontalMidLine(edge1, edge2, NodeSide.NORTH));
+		//edge2 is incoming on aNodeA and its EdgeDirection is TOP, so it's middle segment should be 10px above pClosestStoredEdge.
+		assertEquals(120, adjacentHorizontalMidLine(edge1, edge2, Side.TOP));
 		
-		//edge3 is outgoing from aNodeA and its EdgeDirection is SOUTH, so it's middle segment should be 10px above pClosestStoredEdge.
-		assertEquals(120, adjacentHorizontalMidLine(edge1, edge3, NodeSide.SOUTH));
+		//edge3 is outgoing from aNodeA and its EdgeDirection is BOTTOM, so it's middle segment should be 10px above pClosestStoredEdge.
+		assertEquals(120, adjacentHorizontalMidLine(edge1, edge3, Side.BOTTOM));
 	}
 	
 	@Test
@@ -1312,8 +1312,8 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(200, 200));
 		//store the EdgePath of edge1:
 		store(edge1, new EdgePath(new Point(150, 200), new Point(150, 130), new Point(50, 130), new Point(50, 60)));
-		assertEquals(120, adjacentHorizontalMidLine(edge1, edge2, NodeSide.NORTH));
-		assertEquals(120, adjacentHorizontalMidLine(edge1, edge3, NodeSide.SOUTH));
+		assertEquals(120, adjacentHorizontalMidLine(edge1, edge2, Side.TOP));
+		assertEquals(120, adjacentHorizontalMidLine(edge1, edge3, Side.BOTTOM));
 	}
 	
 	@Test
@@ -1337,8 +1337,8 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 0));
 		//store the EdgePath of edge1:
 		store(edge1, new EdgePath(new Point(250, 300), new Point(250, 180), new Point(150, 180), new Point(150, 60)));
-		assertEquals(190, adjacentHorizontalMidLine(edge1, edge2, NodeSide.SOUTH));
-		assertEquals(190, adjacentHorizontalMidLine(edge1, edge3, NodeSide.NORTH));
+		assertEquals(190, adjacentHorizontalMidLine(edge1, edge2, Side.BOTTOM));
+		assertEquals(190, adjacentHorizontalMidLine(edge1, edge3, Side.TOP));
 	}
 	
 	/*
@@ -1371,10 +1371,10 @@ public class TestLayouter
 		store(edge1, new EdgePath(new Point(300, 300), new Point(200, 330), new Point(200, 130), new Point(100, 130)));
 		
 		//With edge2 incoming on aNodeA: the vertical mid-line of edge2 should be 10px to the right of the vertical mid-line of edge1
-		assertEquals(210, adjacentVerticalMidLine(edge1, edge2, NodeSide.EAST));
+		assertEquals(210, adjacentVerticalMidLine(edge1, edge2, Side.RIGHT));
 		
 		//With edge3 outgoing from aNodeA: the vertical mid-line of edge3 should be 10px to the right of the vertical mid-line of edge1
-		assertEquals(210, adjacentVerticalMidLine(edge1, edge3, NodeSide.WEST));
+		assertEquals(210, adjacentVerticalMidLine(edge1, edge3, Side.LEFT));
 				
 	}
 	
@@ -1408,10 +1408,10 @@ public class TestLayouter
 		store(edge1, new EdgePath(new Point(100, 430), new Point(200, 430), new Point(200, 230), new Point(300, 230)));
 		
 		//With edge2 incoming on aNodeA: the vertical mid-line of edge2 should be 10px to the left of the vertical mid-line of edge1
-		assertEquals(190, adjacentVerticalMidLine(edge1, edge2, NodeSide.WEST));
+		assertEquals(190, adjacentVerticalMidLine(edge1, edge2, Side.LEFT));
 		
 		//With edge3 outgoing from aNodeA: the vertical mid-line of edge2 should be 10px to the left of the vertical mid-line of edge1
-		assertEquals(190, adjacentVerticalMidLine(edge1, edge3, NodeSide.EAST));
+		assertEquals(190, adjacentVerticalMidLine(edge1, edge3, Side.RIGHT));
 	}
 	
 	/*
@@ -1442,8 +1442,8 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(300, 100));
 		//Add the path of edge1 to storage
 		store(edge1, new EdgePath(new Point(100, 430), new Point(200, 430), new Point(200, 230), new Point(300, 230)));
-		assertEquals(190, adjacentVerticalMidLine(edge1, edge2, NodeSide.WEST));
-		assertEquals(190, adjacentVerticalMidLine(edge1, edge3, NodeSide.EAST));
+		assertEquals(190, adjacentVerticalMidLine(edge1, edge2, Side.LEFT));
+		assertEquals(190, adjacentVerticalMidLine(edge1, edge3, Side.RIGHT));
 	}
 	
 	/*
@@ -1474,8 +1474,8 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 0));
 		//Store the path for edge1:
 		store(edge1, new EdgePath(new Point(300, 300), new Point(200, 330), new Point(200, 130), new Point(100, 130)));
-		assertEquals(210, adjacentVerticalMidLine(edge1, edge2, NodeSide.EAST));
-		assertEquals(210, adjacentVerticalMidLine(edge1, edge3, NodeSide.WEST));
+		assertEquals(210, adjacentVerticalMidLine(edge1, edge2, Side.RIGHT));
+		assertEquals(210, adjacentVerticalMidLine(edge1, edge3, Side.LEFT));
 	}
 	
 	
@@ -1527,28 +1527,28 @@ public class TestLayouter
 		startNode5.moveTo(new Point(800, 300));
 		startNode6.moveTo(new Point(900, 300));
 		//edge1 should attach to index 0 on the South face of endNode
-		assertEquals(new Point(250, 60), getConnectionPoint(endNode, edge1, NodeSide.SOUTH));
+		assertEquals(new Point(250, 60), getConnectionPoint(endNode, edge1, Side.BOTTOM));
 		store(edge1, new EdgePath(new Point(450, 300), new Point(450, 180), new Point(250, 180), new Point(250, 60)));
 		
 		//edge2 should attach to index +1 on the South face of endNode
-		assertEquals(new Point(260, 60), getConnectionPoint(endNode, edge2, NodeSide.SOUTH));
+		assertEquals(new Point(260, 60), getConnectionPoint(endNode, edge2, Side.BOTTOM));
 		store(edge2, new EdgePath(new Point(550, 300), new Point(550, 180), new Point(260, 180), new Point(260, 60)));
 		
 		//edge3 should attach to index +2 on the South face of endNode
-		assertEquals(new Point(270, 60), getConnectionPoint(endNode, edge3, NodeSide.SOUTH));
+		assertEquals(new Point(270, 60), getConnectionPoint(endNode, edge3, Side.BOTTOM));
 		store(edge3, new EdgePath(new Point(650, 300), new Point(650, 180), new Point(270, 180), new Point(270, 60)));
 		
 		//edge4 should attach to position +3 on the South face endNode
-		assertEquals(new Point(280, 60), getConnectionPoint(endNode, edge4, NodeSide.SOUTH));
+		assertEquals(new Point(280, 60), getConnectionPoint(endNode, edge4, Side.BOTTOM));
 		store(edge4, new EdgePath(new Point(750, 300), new Point(750, 180), new Point(280, 180), new Point(280, 60)));
 	
 		//edge5 should attach to position +4 on the South face of endNode
-		assertEquals(new Point(290, 60), getConnectionPoint(endNode, edge5, NodeSide.SOUTH));
+		assertEquals(new Point(290, 60), getConnectionPoint(endNode, edge5, Side.BOTTOM));
 		store(edge5, new EdgePath(new Point(850, 300), new Point(850, 180), new Point(290, 180), new Point(290, 60)));
 		
 		//when all other connection points on the side of pNode are taken, the default connection point for edge6 is position +4
 		//even if it is already occupied
-		assertEquals(new Point(290, 60), getConnectionPoint(endNode, edge6, NodeSide.SOUTH));
+		assertEquals(new Point(290, 60), getConnectionPoint(endNode, edge6, Side.BOTTOM));
 	}
 	
 	
@@ -1583,20 +1583,20 @@ public class TestLayouter
 		endNode.moveTo(new Point(300, 400));
 		
 		//edge1 should connect to position 0 on the West side of endNode
-		assertEquals(new Point(300, 430), getConnectionPoint(endNode, edge1, NodeSide.WEST));
+		assertEquals(new Point(300, 430), getConnectionPoint(endNode, edge1, Side.LEFT));
 		store(edge1, new EdgePath(new Point(100, 50), new Point(200, 50), new Point(200, 430), new Point(300, 430)));
 		
 		//edge2 should connect to position -1 on the West side of endNode
-		assertEquals(new Point(300, 420), getConnectionPoint(endNode, edge2, NodeSide.WEST));
+		assertEquals(new Point(300, 420), getConnectionPoint(endNode, edge2, Side.LEFT));
 		store(edge2, new EdgePath(new Point(100, 150), new Point(200, 150), new Point(200, 420), new Point(300, 420)));
 		
 		//edge3 should connect to position -2 on the West side of endNode
-		assertEquals(new Point(300, 410), getConnectionPoint(endNode, edge3, NodeSide.WEST));
+		assertEquals(new Point(300, 410), getConnectionPoint(endNode, edge3, Side.LEFT));
 		store(edge3, new EdgePath(new Point(100, 250), new Point(200, 250), new Point(200, 410), new Point(300, 410)));
 		
 		//since there are no other available negative-index connection points on the West side of endNode, edge4 attaches 
 		//to position -2 on the West side of endNode by default
-		assertEquals(new Point(300, 410), getConnectionPoint(endNode, edge4, NodeSide.WEST));
+		assertEquals(new Point(300, 410), getConnectionPoint(endNode, edge4, Side.LEFT));
 	}
 	
 	
@@ -1668,7 +1668,7 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(500, 300));
 		storedEdgeStartNode.moveTo(new Point(300, 140));
 		
-		//Store storedEdgePath so it connects to the SOUTH side of aNodeA: (which is the same side that aEdgeA and aEdgeB would connect)
+		//Store storedEdgePath so it connects to the BOTTOM side of aNodeA: (which is the same side that aEdgeA and aEdgeB would connect)
 		store(storedEdge, new EdgePath(new Point(450, 300), new Point(450, 180), new Point(450, 180), new Point(450, 60)));
 		assertFalse(noOtherEdgesBetween(aEdgeA, aEdgeB, aNodeA));
 		assertFalse(noOtherEdgesBetween(aEdgeB, aEdgeA, aNodeA));
@@ -1691,16 +1691,16 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(200, 100));
 		aNodeC.moveTo(new Point(200, 200));
 		//aNodeB and aNodeC are both above and to the right of aNodeA
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.EAST));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.RIGHT));
 		
 		//Move aNodec so that it is below and to the right of aNodeA:
 		aNodeC.moveTo(new Point(200, 400));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.EAST));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, NodeSide.EAST));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.RIGHT));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, Side.RIGHT));
 		
 		//Move aNodeB so that it is also below and to the right of aNodeA:
 		aNodeB.moveTo(new Point(200, 500));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.EAST));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.RIGHT));
 	}
 	
 	/*
@@ -1714,16 +1714,16 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(0, 100));
 		aNodeC.moveTo(new Point(0, 200));
 		aNodeA.moveTo(new Point(200, 300));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.WEST));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.LEFT));
 		
 		//move aNodeC so that it is to the left of and below aNodeA:
 		aNodeC.moveTo(new Point(0, 400));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.WEST));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, NodeSide.WEST));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.LEFT));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, Side.LEFT));
 		
 		//move aNodeB so that it is also to the left of and below aNodeA:
 		aNodeB.moveTo(new Point(0, 500));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.WEST));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.LEFT));
 		
 	}
 	
@@ -1738,16 +1738,16 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(100, 300));
 		aNodeC.moveTo(new Point(200, 300));
 		//aNodeB and aNodeC are both below and to the left of aNodeA
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.SOUTH));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.BOTTOM));
 		
 		//Move aNodeC so that it is below and to the right side of aNodeA:
 		aNodeC.moveTo(new Point(400, 300));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.SOUTH));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, NodeSide.SOUTH));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.BOTTOM));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, Side.BOTTOM));
 		
 		//Move aNodeB so that it is also below and to the right of aNodeA:
 		aNodeB.moveTo(new Point(500, 300));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.SOUTH));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.BOTTOM));
 	}
 	
 	/*
@@ -1761,16 +1761,16 @@ public class TestLayouter
 		aNodeC.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(100, 0));
 		aNodeA.moveTo(new Point(200, 200));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.NORTH));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.TOP));
 		
 		//move aNodeC so that it is above aNodeA and to the right:
 		aNodeC.moveTo(new Point(300, 0));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.NORTH));
-		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, NodeSide.NORTH));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.TOP));
+		assertFalse(nodesOnSameSideOfCommonNode(aNodeC, aNodeB, aNodeA, Side.TOP));
 		
 		//move aNodeB so it is also above aNodeA and to the right:
 		aNodeB.moveTo(new Point(400, 0));
-		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, NodeSide.NORTH));
+		assertTrue(nodesOnSameSideOfCommonNode(aNodeB, aNodeC, aNodeA, Side.TOP));
 	}
 	
 	@Test
@@ -1860,8 +1860,8 @@ public class TestLayouter
 		Edge aggregationEdge = new AggregationEdge();
 		aggregationEdge.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aggregationEdge);
-		assertEquals(NodeSide.EAST, attachedSide(aggregationEdge, aNodeA));
-		assertEquals(NodeSide.WEST, attachedSide(aggregationEdge, aNodeB));	
+		assertEquals(Side.RIGHT, attachedSide(aggregationEdge, aNodeA));
+		assertEquals(Side.LEFT, attachedSide(aggregationEdge, aNodeB));	
 	}
 	
 	@Test
@@ -1871,8 +1871,8 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(400, 400));
-		assertEquals(NodeSide.SOUTH, attachedSide(aEdgeA, aNodeA));
-		assertEquals(NodeSide.NORTH, attachedSide(aEdgeA, aNodeB));	
+		assertEquals(Side.BOTTOM, attachedSide(aEdgeA, aNodeA));
+		assertEquals(Side.TOP, attachedSide(aEdgeA, aNodeB));	
 	}
 	
 	@Test
@@ -1886,8 +1886,8 @@ public class TestLayouter
 		Edge newEdge = new AggregationEdge();
 		newEdge.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(newEdge);
-		assertEquals(NodeSide.EAST, attachedSide(newEdge, aNodeA));
-		assertEquals(NodeSide.WEST, attachedSide(newEdge, aNodeB));
+		assertEquals(Side.RIGHT, attachedSide(newEdge, aNodeA));
+		assertEquals(Side.LEFT, attachedSide(newEdge, aNodeB));
 			
 	}
 	
@@ -1900,8 +1900,8 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(0, 200));
 		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(aEdgeB);
-		assertEquals(NodeSide.SOUTH, attachedSidePreferringEastWest(aEdgeA));
-		assertEquals(NodeSide.NORTH, attachedSidePreferringEastWest(aEdgeB));
+		assertEquals(Side.BOTTOM, attachedSidePreferringEastWest(aEdgeA));
+		assertEquals(Side.TOP, attachedSidePreferringEastWest(aEdgeB));
 	}
 	
 	
@@ -1914,8 +1914,8 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(200, 0));
 		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(aEdgeB);
-		assertEquals(NodeSide.EAST, attachedSidePreferringEastWest(aEdgeA));
-		assertEquals(NodeSide.WEST, attachedSidePreferringEastWest(aEdgeB));
+		assertEquals(Side.RIGHT, attachedSidePreferringEastWest(aEdgeA));
+		assertEquals(Side.LEFT, attachedSidePreferringEastWest(aEdgeB));
 	}
 	
 	
@@ -1928,8 +1928,8 @@ public class TestLayouter
 		//Also connect aEdgeB from aNodeB to aNodeA to test the method for both East and West directions
 		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(aEdgeB);
-		assertEquals(NodeSide.SOUTH, attachedSidePreferringNorthSouth(aEdgeA));
-		assertEquals(NodeSide.NORTH, attachedSidePreferringNorthSouth(aEdgeB));
+		assertEquals(Side.BOTTOM, attachedSidePreferringNorthSouth(aEdgeA));
+		assertEquals(Side.TOP, attachedSidePreferringNorthSouth(aEdgeB));
 	}
 	
 	@Test
@@ -1941,8 +1941,8 @@ public class TestLayouter
 		//Also connect aEdgeB aNodeA <---- aNodeB to test the method for both East and West directions
 		aEdgeB.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(aEdgeB);
-		assertEquals(NodeSide.EAST, attachedSidePreferringNorthSouth(aEdgeA));
-		assertEquals(NodeSide.WEST, attachedSidePreferringNorthSouth(aEdgeB));
+		assertEquals(Side.RIGHT, attachedSidePreferringNorthSouth(aEdgeA));
+		assertEquals(Side.LEFT, attachedSidePreferringNorthSouth(aEdgeB));
 	}
 	
 	@Test
@@ -1957,7 +1957,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(300, 0));
 		//Store a segmented EdgePath going from pNodeB to pNode A
 		store(aEdgeA, new EdgePath(new Point(200, 150), new Point(250, 150), new Point(250, 30), new Point(300, 30)));
-		assertEquals(NodeSide.NORTH, eastWestSideUnlessTooClose(aEdgeB)); 
+		assertEquals(Side.TOP, eastWestSideUnlessTooClose(aEdgeB)); 
 	}
 	
 	@Test
@@ -1970,7 +1970,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(300, 0));
 		//Store a segmented EdgePath going from pNodeB to pNode A
 		store(aEdgeA, new EdgePath(new Point(200, 150), new Point(250, 150), new Point(250, 30), new Point(300, 30)));
-		assertEquals(NodeSide.EAST, eastWestSideUnlessTooClose(aEdgeB)); 
+		assertEquals(Side.RIGHT, eastWestSideUnlessTooClose(aEdgeB)); 
 	}
 	
 	@Test
@@ -1979,7 +1979,7 @@ public class TestLayouter
 		setUpThreeConnectedNodes();
 		//store the EdgePath for aEdgeA, from aNodeB to aNodeA 
 		store(aEdgeA, new EdgePath(new Point(160, 330), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
-		assertEquals(NodeSide.NORTH, northSouthSideUnlessTooClose(aEdgeB)); 
+		assertEquals(Side.TOP, northSouthSideUnlessTooClose(aEdgeB)); 
 	}
 	
 	@Test
@@ -1989,7 +1989,7 @@ public class TestLayouter
 		//aNodeC is closer to aNodeA than the mid-segment of aEdgeA is
 		aNodeC.moveTo(new Point(200, 210));
 		store(aEdgeA, new EdgePath(new Point(160, 330), new Point(160, 250), new Point(150, 250), new Point(150, 200)));
-		assertEquals(NodeSide.WEST, northSouthSideUnlessTooClose(aEdgeB)); 
+		assertEquals(Side.LEFT, northSouthSideUnlessTooClose(aEdgeB)); 
 	}
 	
 	@Test
@@ -2016,8 +2016,8 @@ public class TestLayouter
 	{
 		EdgePath expectedResult_north = new EdgePath(new Point(100,300), new Point(100, 150), new Point(300, 150), new Point(300, 0));
 		EdgePath expectedResult_south = new EdgePath(new Point(300,0), new Point(300, 150), new Point(100, 150), new Point(100, 300));
-		assertEquals(expectedResult_north, buildSegmentedEdgePath(NodeSide.NORTH, new Point(100, 300), 150, new Point(300,0)));
-		assertEquals(expectedResult_south, buildSegmentedEdgePath(NodeSide.SOUTH, new Point(300, 0), 150, new Point(100,300)));
+		assertEquals(expectedResult_north, buildSegmentedEdgePath(Side.TOP, new Point(100, 300), 150, new Point(300,0)));
+		assertEquals(expectedResult_south, buildSegmentedEdgePath(Side.BOTTOM, new Point(300, 0), 150, new Point(100,300)));
 	}
 	
 	@Test
@@ -2025,8 +2025,8 @@ public class TestLayouter
 	{
 		EdgePath expectedResult_east = new EdgePath(new Point(100,300), new Point(200, 300), new Point(200, 200), new Point(300, 200));
 		EdgePath expectedResult_west = new EdgePath(new Point(300,200), new Point(200, 200), new Point(200, 300), new Point(100, 300));
-		assertEquals(expectedResult_east, buildSegmentedEdgePath(NodeSide.EAST, new Point(100, 300), 200, new Point(300,200)));
-		assertEquals(expectedResult_west, buildSegmentedEdgePath(NodeSide.WEST, new Point(300, 200), 200, new Point(100, 300)));
+		assertEquals(expectedResult_east, buildSegmentedEdgePath(Side.RIGHT, new Point(100, 300), 200, new Point(300,200)));
+		assertEquals(expectedResult_west, buildSegmentedEdgePath(Side.LEFT, new Point(300, 200), 200, new Point(100, 300)));
 	}
 
 	@Test
@@ -2037,7 +2037,7 @@ public class TestLayouter
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(130, 60), new Point(130, 130), new Point(130, 130), new Point(130, 200)));
-		assertEquals(NodeSide.NORTH, attachedSideFromStorage(aEdgeA, aNodeB));
+		assertEquals(Side.TOP, attachedSideFromStorage(aEdgeA, aNodeB));
 	}
 	
 	@Test
@@ -2048,7 +2048,7 @@ public class TestLayouter
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(130, 60), new Point(130, 130), new Point(130, 130), new Point(130, 200)));
-		assertEquals(NodeSide.SOUTH, attachedSideFromStorage(aEdgeA, aNodeA));
+		assertEquals(Side.BOTTOM, attachedSideFromStorage(aEdgeA, aNodeA));
 	}
 	
 	@Test
@@ -2059,7 +2059,7 @@ public class TestLayouter
 		aEdgeA.connect(aNodeA, aNodeB, aDiagram);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(260, 330), new Point(280, 330), new Point(280, 330), new Point(300, 330)));
-		assertEquals(NodeSide.EAST, attachedSideFromStorage(aEdgeA, aNodeB));
+		assertEquals(Side.RIGHT, attachedSideFromStorage(aEdgeA, aNodeB));
 	}
 	
 	@Test
@@ -2070,7 +2070,7 @@ public class TestLayouter
 		aEdgeA.connect(aNodeB, aNodeA, aDiagram);
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(260, 330), new Point(280, 330), new Point(280, 330), new Point(300, 330)));
-		assertEquals(NodeSide.WEST, attachedSideFromStorage(aEdgeA, aNodeA));
+		assertEquals(Side.LEFT, attachedSideFromStorage(aEdgeA, aNodeA));
 	}
 	
 	
@@ -2081,7 +2081,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(0, 0));
 		aNodeB.moveTo(new Point(0, 400));
 		store(aEdgeA, new EdgePath(new Point(30, 60), new Point(30, 230), new Point(30, 230), new Point(30, 400)));
-		assertEquals(170, verticalDistanceToNode(aNodeB, aEdgeA, NodeSide.SOUTH));		
+		assertEquals(170, verticalDistanceToNode(aNodeB, aEdgeA, Side.BOTTOM));		
 	}
 	
 	@Test
@@ -2092,7 +2092,7 @@ public class TestLayouter
 		aNodeB.moveTo(new Point(400, 10));
 		aDiagram.addEdge(aEdgeA);
 		store(aEdgeA, new EdgePath(new Point(100, 30), new Point(225, 30), new Point(225, 40), new Point(350, 40)));
-		assertEquals(175, horizontalDistanceToNode(aNodeB, aEdgeA, NodeSide.WEST));		
+		assertEquals(175, horizontalDistanceToNode(aNodeB, aEdgeA, Side.LEFT));		
 	}
 
 	@Test
@@ -2106,8 +2106,8 @@ public class TestLayouter
 		//aEdgeA connects aNodeA --> aNodeB
 		//aEdgeB connects aNodeB --> aNodeA
 		store(aEdgeA, new EdgePath(new Point(100, 100), new Point(70, 0)));
-		assertSame( 1, getIndexSign(aEdgeB, aNodeA, NodeSide.NORTH));
-		assertSame( 1, getIndexSign(aEdgeB, aNodeB, NodeSide.SOUTH));
+		assertSame( 1, getIndexSign(aEdgeB, aNodeA, Side.TOP));
+		assertSame( 1, getIndexSign(aEdgeB, aNodeB, Side.BOTTOM));
 	}
 	
 	@Test
@@ -2117,7 +2117,7 @@ public class TestLayouter
 		aNodeA.moveTo(new Point(100, 100));
 		aNodeB.moveTo(new Point(70, 0));
 		aDiagram.addEdge(aEdgeA);
-		assertSame(-1, getIndexSign(aEdgeA, aNodeA, NodeSide.NORTH));
+		assertSame(-1, getIndexSign(aEdgeA, aNodeA, Side.TOP));
 	}
 	
 	@Test
@@ -2127,17 +2127,17 @@ public class TestLayouter
 		//Other node directly above start node
 		aNodeA.moveTo(new Point(100, 100));
 		aNodeB.moveTo(new Point(100, 0));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.NORTH));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.TOP));
 		
 		//Other node above and to the left of start node
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(450, 300));
-		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.NORTH));
+		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.TOP));
 		
 		//Other node above and to the right of start node
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(550, 300));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.NORTH));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.TOP));
 		
 	}
 	
@@ -2148,17 +2148,17 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeB.moveTo(new Point(100, 100));
 		aNodeA.moveTo(new Point(100, 400));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.SOUTH));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.BOTTOM));
 		
 		//End node above and to the left of start node
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(450, 600));
-		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.SOUTH));
+		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.BOTTOM));
 		
 		//End node above and to the right of start node
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(550, 600));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.SOUTH));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.BOTTOM));
 	}
 	
 	@Test
@@ -2168,17 +2168,17 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(100, 100));
 		aNodeB.moveTo(new Point(400, 100));
-		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.EAST), 1);
+		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.RIGHT), 1);
 		
 		//End node to the right of start node and slightly up 
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(700, 450));
-		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.EAST), -1);
+		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.RIGHT), -1);
 		
 		//End node to the right of start node and slightly down
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(700, 550));
-		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.EAST), 1);
+		assertSame(indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.RIGHT), 1);
 	}
 
 	
@@ -2189,42 +2189,42 @@ public class TestLayouter
 		setUpTwoConnectedNodes();
 		aNodeA.moveTo(new Point(200, 200));
 		aNodeB.moveTo(new Point(100, 200));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.WEST));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.LEFT));
 		
 		//End node to the left of start node and slightly up 
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(400, 450));
-		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.WEST));
+		assertSame(-1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.LEFT));
 		
 		//End node to the left of start node and slightly down
 		aNodeA.moveTo(new Point(500, 500));
 		aNodeB.moveTo(new Point(400, 550));
-		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, NodeSide.WEST));
+		assertSame(1, indexSignOnNode(aEdgeA, aNodeA, aNodeB, Side.LEFT));
 	}
 	
 	@Test 
 	public void testGetClosestPoint_north()
 	{
-		assertEquals(new Point(200, 290), getClosestPoint(getPoints(), NodeSide.NORTH));
+		assertEquals(new Point(200, 290), getClosestPoint(getPoints(), Side.TOP));
 	}
 	
 	@Test 
 	public void testGetClosestPoint_south()
 	{
-		assertEquals(new Point(200, 310), getClosestPoint(getPoints(), NodeSide.SOUTH));
+		assertEquals(new Point(200, 310), getClosestPoint(getPoints(), Side.BOTTOM));
 	}
 	
 
 	@Test 
 	public void testGetClosestPoint_east()
 	{
-		assertEquals(new Point(210, 300), getClosestPoint(getPoints(), NodeSide.EAST));
+		assertEquals(new Point(210, 300), getClosestPoint(getPoints(), Side.RIGHT));
 	}
 	
 	@Test 
 	public void testGetClosestPoint_west()
 	{
-		assertEquals(new Point(190, 300), getClosestPoint(getPoints(), NodeSide.WEST));
+		assertEquals(new Point(190, 300), getClosestPoint(getPoints(), Side.LEFT));
 	}
 	
 	
@@ -2239,29 +2239,29 @@ public class TestLayouter
 	@Test
 	public void testGetNodeFace_north()
 	{
-		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, NodeSide.NORTH).getPoint1());
-		assertEquals(new Point(300, 200), getNodeFace(aRectangleA, NodeSide.NORTH).getPoint2());
+		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, Side.TOP).getPoint1());
+		assertEquals(new Point(300, 200), getNodeFace(aRectangleA, Side.TOP).getPoint2());
 	}
 	
 	@Test
 	public void testGetNodeFace_south()
 	{
-		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, NodeSide.SOUTH).getPoint1());
-		assertEquals(new Point(300, 260), getNodeFace(aRectangleA, NodeSide.SOUTH).getPoint2());
+		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, Side.BOTTOM).getPoint1());
+		assertEquals(new Point(300, 260), getNodeFace(aRectangleA, Side.BOTTOM).getPoint2());
 	}
 	
 	@Test
 	public void testGetNodeFace_east()
 	{
-		assertEquals(new Point(300,200), getNodeFace(aRectangleA, NodeSide.EAST).getPoint1());
-		assertEquals(new Point(300,260), getNodeFace(aRectangleA, NodeSide.EAST).getPoint2());
+		assertEquals(new Point(300,200), getNodeFace(aRectangleA, Side.RIGHT).getPoint1());
+		assertEquals(new Point(300,260), getNodeFace(aRectangleA, Side.RIGHT).getPoint2());
 	}
 	
 	@Test
 	public void testGetNodeFace_west()
 	{
-		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, NodeSide.WEST).getPoint1());
-		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, NodeSide.WEST).getPoint2());
+		assertEquals(new Point(200, 200), getNodeFace(aRectangleA, Side.LEFT).getPoint1());
+		assertEquals(new Point(200, 260), getNodeFace(aRectangleA, Side.LEFT).getPoint2());
 	}
 	
 	@Test
@@ -2275,17 +2275,17 @@ public class TestLayouter
 	@Test
 	public void testNorthOrSouthSide()
 	{
-		assertEquals(NodeSide.NORTH, northOrSouthSide(aRectangleA, aRectangleB));
-		assertEquals(NodeSide.SOUTH, northOrSouthSide(aRectangleB, aRectangleA));
-		assertEquals(NodeSide.SOUTH, northOrSouthSide(aRectangleA, aRectangleA));
+		assertEquals(Side.TOP, northOrSouthSide(aRectangleA, aRectangleB));
+		assertEquals(Side.BOTTOM, northOrSouthSide(aRectangleB, aRectangleA));
+		assertEquals(Side.BOTTOM, northOrSouthSide(aRectangleA, aRectangleA));
 	}
 	
 	@Test
 	public void testEastOrWestSide()
 	{
-		assertEquals(NodeSide.WEST, eastOrWestSide(aRectangleA, aRectangleC));
-		assertEquals(NodeSide.EAST, eastOrWestSide(aRectangleC, aRectangleA));
-		assertEquals(NodeSide.EAST, eastOrWestSide(aRectangleA, aRectangleA));
+		assertEquals(Side.LEFT, eastOrWestSide(aRectangleA, aRectangleC));
+		assertEquals(Side.RIGHT, eastOrWestSide(aRectangleC, aRectangleA));
+		assertEquals(Side.RIGHT, eastOrWestSide(aRectangleA, aRectangleA));
 	}
 	
 	
@@ -2327,11 +2327,11 @@ public class TestLayouter
 	}
 	
 	
-	private void storeMergedEndEdges(NodeSide pDirection, List<Edge> pEdgesToMerge)
+	private void storeMergedEndEdges(Side pDirection, List<Edge> pEdgesToMerge)
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedEndEdges", NodeSide.class, List.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedEndEdges", Side.class, List.class);
 			method.setAccessible(true);
 			method.invoke(aRenderer, pDirection, pEdgesToMerge);
 		}
@@ -2341,11 +2341,11 @@ public class TestLayouter
 		}
 	}
 	
-	private void storeMergedStartEdges(NodeSide pDirection, List<Edge> pEdgesToMerge)
+	private void storeMergedStartEdges(Side pDirection, List<Edge> pEdgesToMerge)
 	{
 		try 
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedStartEdges", NodeSide.class, List.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storeMergedStartEdges", Side.class, List.class);
 			method.setAccessible(true);
 			method.invoke(aRenderer, pDirection, pEdgesToMerge);
 		}
@@ -2447,11 +2447,11 @@ public class TestLayouter
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<Edge> storedConflictingEdges(NodeSide pNodeFace, Node pNode, Edge pEdge)
+	private List<Edge> storedConflictingEdges(Side pNodeFace, Node pNode, Edge pEdge)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storedConflictingEdges", NodeSide.class, Node.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("storedConflictingEdges", Side.class, Node.class, Edge.class);
 			method.setAccessible(true);
 			return (List<Edge>) method.invoke(aRenderer, pNodeFace, pNode, pEdge);
 		}
@@ -2462,11 +2462,11 @@ public class TestLayouter
 		}
 	}
 	
-	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, NodeSide pAttachedSide)
+	private boolean nodeIsCloserThanSegment(Edge pEdge, Node pNode, Side pAttachedSide)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodeIsCloserThanSegment", Edge.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodeIsCloserThanSegment", Edge.class, Node.class, Side.class);
 			method.setAccessible(true);
 			return (boolean) method.invoke(aRenderer, pEdge, pNode, pAttachedSide);
 		}
@@ -2477,11 +2477,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int getHorizontalMidLine(Point pStart, Point pEnd, NodeSide pEdgeDirection, Edge pEdge)
+	private int getHorizontalMidLine(Point pStart, Point pEnd, Side pEdgeDirection, Edge pEdge)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getHorizontalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getHorizontalMidLine", Point.class, Point.class, Side.class, Edge.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pStart, pEnd, pEdgeDirection,pEdge);
 		}
@@ -2493,11 +2493,11 @@ public class TestLayouter
 	}
 	
 	
-	private int getVerticalMidLine(Point pStart, Point pEnd, NodeSide pEdgeDirection, Edge pEdge)
+	private int getVerticalMidLine(Point pStart, Point pEnd, Side pEdgeDirection, Edge pEdge)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getVerticalMidLine", Point.class, Point.class, NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getVerticalMidLine", Point.class, Point.class, Side.class, Edge.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pStart, pEnd, pEdgeDirection, pEdge);
 		}
@@ -2509,11 +2509,11 @@ public class TestLayouter
 	}
 	
 	
-	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection)
+	private int horizontalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Side pEdgeDirection)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalMidlineForSharedNodeEdges", Edge.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
 		}
@@ -2524,11 +2524,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, NodeSide pEdgeDirection) 
+	private int verticalMidlineForSharedNodeEdges(Edge pEdgeWithSameNodes, Edge pNewEdge, Side pEdgeDirection) 
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalMidlineForSharedNodeEdges", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalMidlineForSharedNodeEdges", Edge.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEdgeWithSameNodes, pNewEdge, pEdgeDirection);
 		}
@@ -2540,11 +2540,11 @@ public class TestLayouter
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Optional<Edge> closestConflictingVerticalSegment(NodeSide pEdgeDirection,Edge pEdge) 
+	private Optional<Edge> closestConflictingVerticalSegment(Side pEdgeDirection,Edge pEdge) 
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingVerticalSegment", NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingVerticalSegment", Side.class, Edge.class);
 			method.setAccessible(true);
 			return (Optional<Edge>) method.invoke(aRenderer, pEdgeDirection, pEdge);
 		}
@@ -2556,11 +2556,11 @@ public class TestLayouter
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Optional<Edge> closestConflictingHorizontalSegment( NodeSide pEdgeDirection, Edge pEdge)
+	private Optional<Edge> closestConflictingHorizontalSegment( Side pEdgeDirection, Edge pEdge)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingHorizontalSegment", NodeSide.class, Edge.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("closestConflictingHorizontalSegment", Side.class, Edge.class);
 			method.setAccessible(true);
 			return (Optional<Edge>) method.invoke(aRenderer, pEdgeDirection, pEdge);
 		}
@@ -2571,11 +2571,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int adjacentHorizontalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection)
+	private int adjacentHorizontalMidLine(Edge pClosestStoredEdge, Edge pEdge, Side pEdgeDirection)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentHorizontalMidLine", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentHorizontalMidLine", Edge.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pClosestStoredEdge, pEdge, pEdgeDirection);
 		}
@@ -2586,11 +2586,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int adjacentVerticalMidLine(Edge pClosestStoredEdge, Edge pEdge, NodeSide pEdgeDirection)
+	private int adjacentVerticalMidLine(Edge pClosestStoredEdge, Edge pEdge, Side pEdgeDirection)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentVerticalMidLine", Edge.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("adjacentVerticalMidLine", Edge.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pClosestStoredEdge, pEdge, pEdgeDirection);
 		}
@@ -2616,11 +2616,11 @@ public class TestLayouter
 		}
 	}
 	
-	private Point getConnectionPoint(Node pNode, Edge pEdge, NodeSide pAttachmentSide)
+	private Point getConnectionPoint(Node pNode, Edge pEdge, Side pAttachmentSide)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getConnectionPoint", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getConnectionPoint", Node.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (Point) method.invoke(aRenderer, pNode, pEdge, pAttachmentSide);
 		}
@@ -2646,11 +2646,11 @@ public class TestLayouter
 		}
 	}
 	
-	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, NodeSide pAttachedSide)
+	private boolean nodesOnSameSideOfCommonNode(Node pNode1, Node pNode2, Node pCommonNode, Side pAttachedSide)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodesOnSameSideOfCommonNode", Node.class, Node.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("nodesOnSameSideOfCommonNode", Node.class, Node.class, Node.class, Side.class);
 			method.setAccessible(true);
 			return (boolean) method.invoke(aRenderer, pNode1, pNode2, pCommonNode, pAttachedSide);
 		}
@@ -2692,13 +2692,13 @@ public class TestLayouter
 	}
 	
 	
-	private NodeSide attachedSide(Edge pEdge, Node pNode)
+	private Side attachedSide(Edge pEdge, Node pNode)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSide", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge, pNode);
+			return (Side) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2707,13 +2707,13 @@ public class TestLayouter
 		}
 	}
 	
-	private NodeSide attachedSidePreferringEastWest(Edge pEdge)
+	private Side attachedSidePreferringEastWest(Edge pEdge)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSidePreferringEastWest", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge);
+			return (Side) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2722,13 +2722,13 @@ public class TestLayouter
 		}
 	}
 
-	private NodeSide attachedSidePreferringNorthSouth(Edge pEdge)
+	private Side attachedSidePreferringNorthSouth(Edge pEdge)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSidePreferringNorthSouth", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge);
+			return (Side) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2737,13 +2737,13 @@ public class TestLayouter
 		}
 	}
 	
-	private NodeSide eastWestSideUnlessTooClose(Edge pEdge)
+	private Side eastWestSideUnlessTooClose(Edge pEdge)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("eastWestSideUnlessTooClose", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge);
+			return (Side) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2753,13 +2753,13 @@ public class TestLayouter
 	}
 	
 	
-	private NodeSide northSouthSideUnlessTooClose(Edge pEdge)
+	private Side northSouthSideUnlessTooClose(Edge pEdge)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("northSouthSideUnlessTooClose", Edge.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge);
+			return (Side) method.invoke(aRenderer, pEdge);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2799,11 +2799,11 @@ public class TestLayouter
 		}
 	}
 	
-	private EdgePath buildSegmentedEdgePath(NodeSide pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
+	private EdgePath buildSegmentedEdgePath(Side pEdgeDirection, Point pStart, int pMidLine, Point pEnd)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("buildSegmentedEdgePath", NodeSide.class, Point.class, int.class, Point.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("buildSegmentedEdgePath", Side.class, Point.class, int.class, Point.class);
 			method.setAccessible(true);
 			return (EdgePath) method.invoke(aRenderer, pEdgeDirection, pStart, pMidLine, pEnd);
 		}
@@ -2814,26 +2814,26 @@ public class TestLayouter
 		}
 	}
 	
-	private NodeSide attachedSideFromStorage(Edge pEdge, Node pNode)
+	private Side attachedSideFromStorage(Edge pEdge, Node pNode)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("attachedSideFromStorage", Edge.class, Node.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pEdge, pNode);
+			return (Side) method.invoke(aRenderer, pEdge, pNode);
 		}
 		catch(ReflectiveOperationException e)
 		{
 			fail();
-			return (NodeSide) null;
+			return (Side) null;
 		}
 	}
 	
-	private int verticalDistanceToNode(Node pEndNode, Edge pEdge, NodeSide pEdgeDirection)
+	private int verticalDistanceToNode(Node pEndNode, Edge pEdge, Side pEdgeDirection)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalDistanceToNode", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("verticalDistanceToNode", Node.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEndNode, pEdge, pEdgeDirection);
 		}
@@ -2844,11 +2844,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int horizontalDistanceToNode(Node pEndNode, Edge pEdge, NodeSide pEdgeDirection)
+	private int horizontalDistanceToNode(Node pEndNode, Edge pEdge, Side pEdgeDirection)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalDistanceToNode", Node.class, Edge.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("horizontalDistanceToNode", Node.class, Edge.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEndNode, pEdge, pEdgeDirection);
 		}
@@ -2859,11 +2859,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int getIndexSign(Edge pEdge, Node pNode, NodeSide pSideOfNode)
+	private int getIndexSign(Edge pEdge, Node pNode, Side pSideOfNode)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getIndexSign", Edge.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getIndexSign", Edge.class, Node.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEdge, pNode, pSideOfNode);
 		}
@@ -2874,11 +2874,11 @@ public class TestLayouter
 		}
 	}
 	
-	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, NodeSide pSideOfNode)
+	private int indexSignOnNode(Edge pEdge, Node pNode, Node pOtherNode, Side pSideOfNode)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("indexSignOnNode", Edge.class, Node.class, Node.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("indexSignOnNode", Edge.class, Node.class, Node.class, Side.class);
 			method.setAccessible(true);
 			return (int) method.invoke(aRenderer, pEdge, pNode, pOtherNode, pSideOfNode);
 		}
@@ -2900,11 +2900,11 @@ public class TestLayouter
 		return result;
 	}
 	
-	private Point getClosestPoint(Collection<Point> pPoints, NodeSide pEdgeDirection) 
+	private Point getClosestPoint(Collection<Point> pPoints, Side pEdgeDirection) 
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getClosestPoint", Collection.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getClosestPoint", Collection.class, Side.class);
 			method.setAccessible(true);
 			return (Point) method.invoke(aRenderer, pPoints, pEdgeDirection);
 		}
@@ -2930,11 +2930,11 @@ public class TestLayouter
 		}
 	}
 	
-	private Line getNodeFace(Rectangle pNodeBounds, NodeSide pSideOfNode)
+	private Line getNodeFace(Rectangle pNodeBounds, Side pSideOfNode)
 	{
 		try
 		{
-			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getNodeFace", Rectangle.class, NodeSide.class);
+			Method method = ClassDiagramRenderer.class.getDeclaredMethod("getNodeFace", Rectangle.class, Side.class);
 			method.setAccessible(true);
 			return (Line) method.invoke(aRenderer, pNodeBounds, pSideOfNode);
 		}
@@ -2960,13 +2960,13 @@ public class TestLayouter
 		}
 	}
 	
-	private NodeSide northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private Side northOrSouthSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("northOrSouthSide", Rectangle.class, Rectangle.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pBounds, pOtherBounds);
+			return (Side) method.invoke(aRenderer, pBounds, pOtherBounds);
 		}
 		catch(ReflectiveOperationException e)
 		{
@@ -2975,13 +2975,13 @@ public class TestLayouter
 		}
 	}
 	
-	private NodeSide eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
+	private Side eastOrWestSide(Rectangle pBounds, Rectangle pOtherBounds)
 	{
 		try
 		{
 			Method method = ClassDiagramRenderer.class.getDeclaredMethod("eastOrWestSide", Rectangle.class, Rectangle.class);
 			method.setAccessible(true);
-			return (NodeSide) method.invoke(aRenderer, pBounds, pOtherBounds);
+			return (Side) method.invoke(aRenderer, pBounds, pOtherBounds);
 		}
 		catch(ReflectiveOperationException e)
 		{

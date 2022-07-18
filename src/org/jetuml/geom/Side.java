@@ -18,52 +18,54 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.rendering;
+package org.jetuml.geom;
 
 /**
  * Represents one side of a rectangular node.
  */
-public enum NodeSide 
+public enum Side 
 {
-	NORTH, SOUTH, EAST, WEST;
+	TOP, BOTTOM, RIGHT, LEFT;
 	
 	/**
-	 * @return True if this is the North or South side.
+	 * @return True if this side is a horizontal line, that is, 
+	 * the top or the bottom side.
 	 */
-	public boolean isNorthSouth()
+	public boolean isHorizontal()
 	{
-		return this == NORTH || this == SOUTH;
+		return this == TOP || this == BOTTOM;
 	}
 	
 	/**
-	 * @return True if this is the East or West side.
+	 * @return True if this side is a vertical line, that is, the 
+	 * right or the left side.
 	 */
-	public boolean isEastWest()
+	public boolean isVertical()
 	{
-		return this == EAST || this == WEST;
+		return this == RIGHT || this == LEFT;
 	}
 	
 	/**
 	 * @return The side opposite the current side on
 	 *     the rectangle.
 	 */
-	public NodeSide mirrored()
+	public Side mirrored()
 	{
-		if( this == NORTH )
+		if( this == TOP )
 		{
-			return SOUTH;
+			return BOTTOM;
 		}
-		else if( this == SOUTH)
+		else if( this == BOTTOM)
 		{
-			return NORTH;
+			return TOP;
 		}
-		else if( this == EAST)
+		else if( this == RIGHT)
 		{
-			return WEST;
+			return LEFT;
 		}
 		else 
 		{
-			return EAST;
+			return RIGHT;
 		}
 	}
 }
