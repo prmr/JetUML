@@ -1373,27 +1373,31 @@ public final class ClassDiagramRenderer extends AbstractDiagramRenderer
 	 * @return an array containing the start point and end point for a self edge attached to the pCorner corner of pNode.
 	 */
 	public Point[] toPoints(NodeCorner pCorner, Node pNode)
-	{
-		Rectangle nodeBounds = getBounds(pNode);
+	{ 
 		Point startPoint;
 		Point endPoint;		
-		if (pCorner == NodeCorner.TOP_RIGHT)
+		if(pCorner == NodeCorner.TOP_RIGHT)
 		{
-			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getY());
-			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getY() + TWENTY_PIXELS);
+			Line topFace = getFace(pNode, Side.TOP);
+			startPoint = new Point(topFace.getX2() - TWENTY_PIXELS, topFace.getY2());
+			Line rightFace = getFace(pNode, Side.RIGHT);
+			endPoint = new Point(rightFace.getX1(), rightFace.getY1() + TWENTY_PIXELS);
 		}
-		else if (pCorner == NodeCorner.TOP_LEFT)
+		else if(pCorner == NodeCorner.TOP_LEFT)
 		{
+			Rectangle nodeBounds = getBounds(pNode);
 			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getY());
 			endPoint = new Point(nodeBounds.getX(), nodeBounds.getY() + TWENTY_PIXELS);
 		}
-		else if (pCorner == NodeCorner.BOTTOM_LEFT)
+		else if(pCorner == NodeCorner.BOTTOM_LEFT)
 		{
+			Rectangle nodeBounds = getBounds(pNode);
 			startPoint = new Point(nodeBounds.getX() + TWENTY_PIXELS, nodeBounds.getMaxY());
 			endPoint = new Point(nodeBounds.getX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
 		}
 		else //BOTTOM_RIGHT
 		{
+			Rectangle nodeBounds = getBounds(pNode);
 			startPoint = new Point(nodeBounds.getMaxX() - TWENTY_PIXELS, nodeBounds.getMaxY());
 			endPoint = new Point(nodeBounds.getMaxX(), nodeBounds.getMaxY() - TWENTY_PIXELS);
 		}

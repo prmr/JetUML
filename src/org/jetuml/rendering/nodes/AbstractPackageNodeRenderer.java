@@ -104,14 +104,22 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	public Line getFace(Node pNode, Side pSide) 
 	{
 		assert pNode != null && pSide != null;
-		if( pSide != Side.TOP )
+		if( pSide == Side.TOP )
+		{
+			Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
+			Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
+			return new Line(topBounds.getMaxX(), bottomBounds.getY(), bottomBounds.getMaxX(), bottomBounds.getY());
+			
+		}
+		else if( pSide == Side.RIGHT )
+		{
+			return getBottomBounds((AbstractPackageNode)pNode).getSide(pSide);
+		}
+		else
 		{
 			return super.getFace(pNode, pSide);
 		}
-		// We are dealing with the top side
-		Rectangle topBounds = getTopBounds((AbstractPackageNode)pNode);
-		Rectangle bottomBounds = getBottomBounds((AbstractPackageNode)pNode);
-		return new Line(topBounds.getMaxX(), bottomBounds.getY(), bottomBounds.getMaxX(), bottomBounds.getY());
+		
 	}
 
 	@Override
