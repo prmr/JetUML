@@ -22,12 +22,14 @@ package org.jetuml.geom;
 
 import static java.lang.Math.min;
 
+import java.util.Objects;
+
 import org.jetuml.annotations.Immutable;
 
 import static java.lang.Math.abs;
 
 /**
- * A pair of points in the integer space.
+ * A pair of connected points in the integer space.
  */
 @Immutable
 public class Line
@@ -48,6 +50,19 @@ public class Line
 		assert pPoint1 != null && pPoint2 != null;
 		aPoint1 = pPoint1; 
 		aPoint2 = pPoint2;
+	}
+	
+	/**
+	 * Creates a new line.
+	 * 
+	 * @param pX1 The X-coordinate of the start of the line.
+	 * @param pY1 The Y-coordinate of the start of the line.
+	 * @param pX2 The X-coordinate of the end of the line.
+	 * @param pY2 The Y-coordinate of the end of the line.
+	 */
+	public Line(int pX1, int pY1, int pX2, int pY2)
+	{
+		this( new Point(pX1, pY1), new Point(pX2, pY2));
 	}
 
 	/**
@@ -105,6 +120,31 @@ public class Line
 	{
 		return new Rectangle(min(getX1(), getX2()), min(getY1(), getY2()), 
 				abs(getX2() - getX1()), abs(getY2() - getY1()));
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(aPoint1, aPoint2);
+	}
+
+	@Override
+	public boolean equals(Object pObject)
+	{
+		if(this == pObject)
+		{
+			return true;
+		}
+		if(pObject == null)
+		{
+			return false;
+		}
+		if(getClass() != pObject.getClass())
+		{
+			return false;
+		}
+		Line other = (Line) pObject;
+		return Objects.equals(aPoint1, other.aPoint1) && Objects.equals(aPoint2, other.aPoint2);
 	}
 	
 	@Override

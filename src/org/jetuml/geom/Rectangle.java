@@ -29,8 +29,8 @@ import org.jetuml.annotations.Immutable;
 @Immutable
 public class Rectangle
 {
-	private int aX;
-	private int aY;
+	private final int aX;
+	private final int aY;
 	private final int aWidth;
 	private final int aHeight;
 	
@@ -101,6 +101,37 @@ public class Rectangle
 	{
 		return aHeight;
 	}
+	
+	/**
+	 * Returns a new Line object that corresponds to the specified
+	 * side of the rectangle.
+	 * 
+	 * @param pSide The required side.
+	 * @return A line with the geometry of the required side.
+	 * @pre pSide != null
+	 */
+	public Line getSide(Side pSide)
+	{
+		assert pSide != null;
+		if( pSide == Side.TOP )
+		{
+			return new Line(new Point(getX(), getY()), new Point(getMaxX(), getY()));
+		}
+		else if( pSide == Side.BOTTOM)
+		{
+			return new Line(new Point(getX(), getMaxY()), new Point(getMaxX(), getMaxY()));
+		}
+		else if( pSide == Side.RIGHT)
+		{
+			return new Line(new Point(getMaxX(), getY()), new Point(getMaxX(), getMaxY()));
+		}
+		else
+		{
+			assert pSide == Side.LEFT;
+			return new Line(new Point(getX(), getY()), new Point(getX(), getMaxY()));
+		}
+	}
+	
 	/**
 	 * @param pDeltaX The amount to translate in the X-coordinate.
 	 * @param pDeltaY The amount to translate in the Y-coordinate.

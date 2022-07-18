@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 public class TestRectangle
@@ -32,13 +33,13 @@ public class TestRectangle
 	private static final Rectangle RECTANGLE_2 = new Rectangle(100,20,1,1);
 	
 	@Test
-	public void testToString()
+	void testToString()
 	{
 		assertEquals("[x=0, y=0, w=60, h=40]", RECTANGLE_1.toString());
 	}
 	
 	@Test
-	public void testMaxXY()
+	void testMaxXY()
 	{
 		assertEquals(60, RECTANGLE_1.getMaxX());
 		assertEquals(40, RECTANGLE_1.getMaxY());
@@ -47,14 +48,14 @@ public class TestRectangle
 	}
 	
 	@Test
-	public void testHashCode()
+	void testHashCode()
 	{
 		assertEquals(2172821, RECTANGLE_1.hashCode());
 		assertEquals(957393, RECTANGLE_2.hashCode());
 	}
 	
 	@Test
-	public void tesEquals()
+	void tesEquals()
 	{
 		assertTrue(RECTANGLE_1.equals(RECTANGLE_1));
 		assertFalse(RECTANGLE_1.equals(null));
@@ -63,14 +64,14 @@ public class TestRectangle
 	}
 	
 	@Test
-	public void testTranslated()
+	void testTranslated()
 	{
 		assertEquals(new Rectangle(10,20,60,40), RECTANGLE_1.translated(10, 20));
 		assertEquals(new Rectangle(-10,-20,60,40), RECTANGLE_1.translated(-10, -20));
 	}
 	
 	@Test
-	public void testContainsPoint()
+	void testContainsPoint()
 	{
 		assertTrue(RECTANGLE_1.contains(new Point(10,20)));
 		assertTrue(RECTANGLE_1.contains(new Point(0,0)));
@@ -80,7 +81,7 @@ public class TestRectangle
 	}
 	
 	@Test
-	public void testGetCenter()
+	void testGetCenter()
 	{
 		Point center = RECTANGLE_1.getCenter();
 		assertEquals(30, center.getX());
@@ -94,7 +95,7 @@ public class TestRectangle
 	}
 	
 	@Test
-	public void testAddPoint()
+	void testAddPoint()
 	{
 		Rectangle rectangle = new Rectangle(10,10,0,0);
 		rectangle = rectangle.add(new Point(20,30));
@@ -108,10 +109,21 @@ public class TestRectangle
 	}
 	
 	@Test
-	public void testAddRectangle()
+	void testAddRectangle()
 	{
 		Rectangle rectangle = new Rectangle(10,10,0,0);
 		rectangle = rectangle.add( new Rectangle(0,0,20,20));
 		assertEquals( new Rectangle(0,0,20,20), rectangle);
+	}
+	
+	@Nested
+	class TestGetSide
+	{
+		@Test
+		void testWithEmptyRectangle()
+		{
+			Rectangle rectangle = new Rectangle(0,0,0,0);
+			assertEquals(new Line(new Point(0,0), new Point(0,0)), rectangle.getSide(Side.TOP));
+		}
 	}
 }
