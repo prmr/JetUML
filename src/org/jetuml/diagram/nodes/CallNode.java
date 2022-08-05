@@ -112,4 +112,10 @@ public class CallNode extends AbstractNode
 	{
 		return aImplicitParameter.isPresent();
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[Call node #%d of %s]", getParent().getChildren().indexOf(this)+1, getParent().toString());
+	}
 }

@@ -20,12 +20,18 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
@@ -45,7 +51,16 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 {
+	private static final int INITIAL_Y_POSITION = 80;
+	private static final int DROP_NORMAL = 20;
+	private static final int DROP_CONSTRUCTOR = 85;
+	private static final int DROP_LIFELINE = 80;
+
+	
 	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
+	private final Map<Node, Integer> aLifelineYPositions = new IdentityHashMap<>();
+	private final Map<Node, Integer> aCallNodeYPositions = new IdentityHashMap<>();
+
 	
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
@@ -62,7 +77,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		super.draw(pGraphics); // TODO Remove
 		assert pGraphics != null;
-		computeLifelineXPositions();
+		computeLifelinePositions();
+		computeYPositions();
+		System.out.println(aCallNodeYPositions);
 //		activateNodeStorages();
 		// 1. Compute lifeline x positions by iterating through implicit parameter nodes
 		// 2. Compute call node y positions by iterating through call nodes in call sequence order
@@ -74,16 +91,128 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 //		deactivateAndClearNodeStorages();
 	}
 	
-	private void computeLifelineXPositions()
+	private void computeLifelinePositions()
 	{
 		aLifelineXPositions.clear();
+		aLifelineYPositions.clear();
 		for( Node node : diagram().rootNodes() )
 		{
 			if(node.getClass() == ImplicitParameterNode.class)
 			{
 				aLifelineXPositions.put(node, implicitParameterNodeRenderer().getCenterXCoordinate(node));
+				aLifelineYPositions.put(node, 0);
 			}
 		}
+	}
+	
+	/**
+	 * Returns the caller of a node, if it exists.
+	 * 
+	 * @param pNode The node to obtain the caller for.
+	 * @return The CallNode that has a outgoing edge terminated
+	 *     at pNode, if there is one.
+	 * @pre pNode != null && contains(pNode)
+	 */
+	private Optional<CallNode> getCaller(Node pNode)
+	{
+		assert pNode != null && diagram().contains(pNode);
+		return diagram().edges().stream()
+			.filter(CallEdge.class::isInstance)
+			.filter(edge -> edge.getEnd() == pNode)
+			.map(Edge::getStart)
+			.map(CallNode.class::cast)
+			.findFirst();
+	}
+	
+	public int getNestingDepth(CallNode pNode)
+	{
+		assert pNode != null;
+		int result = 0;
+		Optional<CallNode> node = getCaller(pNode);
+		while( node.isPresent() )
+		{
+			if( node.get().getParent() == pNode.getParent() )
+			{
+				result++;
+			}
+			node = getCaller(node.get());
+		}
+		return result;
+	}
+	
+	private void computeYPositions()
+	{
+		aCallNodeYPositions.clear();
+		Optional<Node> root = findRoot();
+		if( root.isEmpty() )
+		{
+			return; // Empty call graph, normal case when creating a new diagram
+		}
+		int currentYPosition = INITIAL_Y_POSITION;
+		// Position root node
+		aLifelineYPositions.put(root.get().getParent(), 0);
+		aCallNodeYPositions.put(root.get(), currentYPosition);
+		for( Node callee : getCallees(root.get()))
+		{
+			currentYPosition = computeYPosition(callee, currentYPosition);
+		}
+	}
+	
+	/*
+	 * Computes the y position of the pNode call node, and all its callees,
+	 * through recursive descent. Also adjust the parent in case it's a constructor call.
+	 */
+	private int computeYPosition(Node pNode, int pCurrentPosition)
+	{
+		int currentPosition = pCurrentPosition;
+		// If this is a constructor call, also adjust the parent.
+		if( isConstructorCall(pNode) )
+		{
+			currentPosition += DROP_CONSTRUCTOR;
+			aLifelineYPositions.put(pNode.getParent(), pCurrentPosition + DROP_LIFELINE);
+		}
+		else
+		{
+			currentPosition += DROP_NORMAL;
+		}
+		aCallNodeYPositions.put(pNode, currentPosition);
+		for( Node callee : getCallees(pNode))
+		{
+			currentPosition = computeYPosition(callee, currentPosition);
+		}
+		return currentPosition;
+	}
+	
+	private boolean isConstructorCall(Node pNode)
+	{
+		assert pNode.getClass() == CallNode.class;
+		return getIncomingCall(pNode) instanceof ConstructorEdge;
+	}
+	
+	private CallEdge getIncomingCall(Node pNode)
+	{
+		assert pNode.getClass() == CallNode.class;
+		return (CallEdge) diagram().edges().stream()
+			.filter(edge -> edge.getEnd() == pNode)
+			.findFirst()
+			.get();
+	}
+	
+	
+	
+	/*
+	 * The root of the call sequence is the call node without a callee
+	 */
+	private Optional<Node> findRoot()
+	{
+		Set<Node> calledNodes = diagram().edges().stream()
+				.filter(edge -> edge.getClass().isAssignableFrom(CallEdge.class)) // Includes subclasses, such as constructor edges
+				.map(Edge::getEnd)
+				.collect(Collectors.toSet());
+		return diagram().allNodes().stream()
+			.filter(node -> node.getClass() == CallNode.class)
+			.filter(node -> !calledNodes.contains(node))
+			.findFirst();
 	}
 	
 	private ImplicitParameterNodeRenderer implicitParameterNodeRenderer()
@@ -104,6 +233,25 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 				.findFirst();
 		}
 		return result.or(() -> super.deepFindNode(pNode, pPoint));
+	}
+	
+	/**
+	 * Returns the list of nodes directly called by pNode,
+	 * in the order of the call sequence.
+	 * 
+	 * @param pNode The node to obtain the callees for.
+	 * @return All Nodes pointed to by an outgoing edge starting
+	 *     at pNode, or the empty list if there are none.
+	 * @pre pNode != null && contains(pNode)
+	 */
+	private List<Node> getCallees(Node pNode)
+	{
+		assert pNode != null && diagram().contains(pNode);
+		return diagram().edges().stream()
+				.filter(CallEdge.class::isInstance)
+				.filter(edge -> edge.getStart() == pNode)
+				.map(Edge::getEnd)
+				.collect(toList());
 	}
 	
 	/*

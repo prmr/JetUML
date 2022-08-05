@@ -65,7 +65,7 @@ public abstract class AbstractNode extends AbstractDiagramElement implements Nod
 	}
 	
 	@Override
-	public final String toString()
+	public String toString()
 	{
 		return getClass().getSimpleName() + " at " + position();
 	}
