@@ -39,6 +39,7 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
+import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
@@ -55,12 +56,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private static final int DROP_NORMAL = 20;
 	private static final int DROP_CONSTRUCTOR = 85;
 	private static final int DROP_LIFELINE = 80;
+	private static final int BOTTOM_PADDING = 20;
+	private static final int LEAF_NODE_LENGTH = 30;
 
-	
 	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
 	private final Map<Node, Integer> aLifelineYPositions = new IdentityHashMap<>();
-	private final Map<Node, Integer> aCallNodeYPositions = new IdentityHashMap<>();
-
+	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
+	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
 	
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
@@ -77,9 +79,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		super.draw(pGraphics); // TODO Remove
 		assert pGraphics != null;
-		computeLifelinePositions();
-		computeYPositions();
-		System.out.println(aCallNodeYPositions);
+		layout();
+		System.out.println(aCallNodeBottomCoordinate);
 //		activateNodeStorages();
 		// 1. Compute lifeline x positions by iterating through implicit parameter nodes
 		// 2. Compute call node y positions by iterating through call nodes in call sequence order
@@ -89,6 +90,37 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 //		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
 //		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
 //		deactivateAndClearNodeStorages();
+	}
+	
+	/**
+	 * @return true if no computations of nodes are found. This could be because the 
+	 * diagram is empty, but also because it has been loaded from disk and before a rendering pass 
+	 * has been done.
+	 */
+	private boolean noComputedPositionFound()
+	{
+		return aLifelineXPositions.isEmpty();
+	}
+	
+	@Override
+	public final Rectangle getBounds()
+	{
+		//When getBounds(pDiagram) is called to open an existing class diagram file,
+		//the positions have not yet been computed and need to be.
+		if(noComputedPositionFound())
+		{
+			layout();
+		}
+		return super.getBounds();
+	}
+	
+	/**
+	 * Precomputes the position of the nodes.
+	 */
+	private void layout()
+	{
+		computeLifelinePositions();
+		computeYPositions();
 	}
 	
 	private void computeLifelinePositions()
@@ -142,7 +174,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	
 	private void computeYPositions()
 	{
-		aCallNodeYPositions.clear();
+		aCallNodeTopCoordinate.clear();
+		aCallNodeBottomCoordinate.clear();
 		Optional<Node> root = findRoot();
 		if( root.isEmpty() )
 		{
@@ -151,11 +184,12 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		int currentYPosition = INITIAL_Y_POSITION;
 		// Position root node
 		aLifelineYPositions.put(root.get().getParent(), 0);
-		aCallNodeYPositions.put(root.get(), currentYPosition);
+		aCallNodeTopCoordinate.put(root.get(), currentYPosition);
 		for( Node callee : getCallees(root.get()))
 		{
 			currentYPosition = computeYPosition(callee, currentYPosition);
 		}
+		aCallNodeBottomCoordinate.put(root.get(), currentYPosition + BOTTOM_PADDING);
 	}
 	
 	/*
@@ -175,11 +209,21 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		{
 			currentPosition += DROP_NORMAL;
 		}
-		aCallNodeYPositions.put(pNode, currentPosition);
-		for( Node callee : getCallees(pNode))
+		aCallNodeTopCoordinate.put(pNode, currentPosition);
+		List<Node> callees = getCallees(pNode);
+		if( callees.isEmpty() )
 		{
-			currentPosition = computeYPosition(callee, currentPosition);
+			currentPosition += LEAF_NODE_LENGTH;
 		}
+		else
+		{
+			for( Node callee : callees)
+			{
+				currentPosition = computeYPosition(callee, currentPosition);
+			}
+			currentPosition += BOTTOM_PADDING;
+		} 
+		aCallNodeBottomCoordinate.put(pNode, currentPosition);
 		return currentPosition;
 	}
 	
