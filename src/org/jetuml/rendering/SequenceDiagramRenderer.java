@@ -20,6 +20,8 @@
  ******************************************************************************/
 package org.jetuml.rendering;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.jetuml.diagram.ControlFlow;
@@ -36,11 +38,15 @@ import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
 import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
+import javafx.scene.canvas.GraphicsContext;
+
 /**
  * The renderer for sequence diagrams.
  */
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 {
+	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
+	
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
 		super(pDiagram);
@@ -49,6 +55,40 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		addElementRenderer(ReturnEdge.class, new ReturnEdgeRenderer(this));
 		addElementRenderer(CallEdge.class, new CallEdgeRenderer(this));
 		addElementRenderer(ConstructorEdge.class, new CallEdgeRenderer(this));
+	}
+	
+	@Override
+	public void draw(GraphicsContext pGraphics)
+	{
+		super.draw(pGraphics); // TODO Remove
+		assert pGraphics != null;
+		computeLifelineXPositions();
+//		activateNodeStorages();
+		// 1. Compute lifeline x positions by iterating through implicit parameter nodes
+		// 2. Compute call node y positions by iterating through call nodes in call sequence order
+		// 3. Compute call node bottom y coordinate by iterating through call nodes in reverse call sequence order
+		// 4. Render nodes
+		// 4. Render edges
+//		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
+//		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
+//		deactivateAndClearNodeStorages();
+	}
+	
+	private void computeLifelineXPositions()
+	{
+		aLifelineXPositions.clear();
+		for( Node node : diagram().rootNodes() )
+		{
+			if(node.getClass() == ImplicitParameterNode.class)
+			{
+				aLifelineXPositions.put(node, implicitParameterNodeRenderer().getCenterXCoordinate(node));
+			}
+		}
+	}
+	
+	private ImplicitParameterNodeRenderer implicitParameterNodeRenderer()
+	{
+		return (ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class);
 	}
 	
 	@Override

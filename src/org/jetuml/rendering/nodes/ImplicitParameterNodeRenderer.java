@@ -126,6 +126,17 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		}
 		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
 	}
+	
+	/**
+	 * @return The x-coordinate of the center of pNode.
+	 * @pre pNode != null;
+	 */
+	public int getCenterXCoordinate(Node pNode)
+	{
+		assert pNode != null;
+		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
+				HORIZONTAL_PADDING, DEFAULT_WIDTH)/2 + pNode.position().getX();
+	}
 
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
