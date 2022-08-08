@@ -40,6 +40,8 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
+import org.jetuml.rendering.StringRenderer.Alignment;
+import org.jetuml.rendering.StringRenderer.TextDecoration;
 import org.jetuml.rendering.edges.CallEdgeRenderer;
 import org.jetuml.rendering.edges.ReturnEdgeRenderer;
 import org.jetuml.rendering.nodes.CallNodeRenderer;
@@ -51,14 +53,34 @@ import javafx.scene.canvas.GraphicsContext;
  * The renderer for sequence diagrams.
  */
 public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
-{
+{ 
+	/* Initial position of the lifeline of an object if it is not the target of a constructor call.  */
 	private static final int INITIAL_Y_POSITION = 80;
-	private static final int DROP_NORMAL = 20;
+	
+	/* Minimun number of pixels to drop a new call edge from the current position in the call sequence.
+	 * Should then be adjusted based on font size. See method getDropDistance() */
+	private static final int DROP_MIN = 20;
+	
+	/* Number of pixels to drop a constructor call node from the current position in the call sequence. 
+	 * Independent of font size. */
 	private static final int DROP_CONSTRUCTOR = 85;
+	
+	/* Number of pixels to drop the lifeline from the current positions in the call sequence for a constructor call.
+	 * Independent of font size. */
 	private static final int DROP_LIFELINE = 80;
+	
+	/* Number of pixels to add to a call node below the bottom of its last callee. */
 	private static final int BOTTOM_PADDING = 20;
-	private static final int LEAF_NODE_LENGTH = 30;
+	
+	/* Height, in number of pixels, of a call node without any callees. */
+	private static final int LEAF_NODE_HEIGHT = 30;
+	
+	/* Number of pixels to shift a call node that is nested within another call on the same object. */
 	private static final int NESTING_SHIFT_DISTANCE = 10;
+	
+	/* Constants to test the height of the font. */
+	private static final String TEST_STRING = "|";
+	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 
 	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
 	private final Map<Node, Integer> aLifelineYPositions = new IdentityHashMap<>();
@@ -83,6 +105,16 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		super.draw(pGraphics); 
 	}
 	
+	/*
+	 * Computes the position of the nodes in the sequence diagram, except the note nodes.
+	 */
+	private void layout()
+	{
+		computeLifelineInitialPositions();
+		computeYPositions();
+		computeCallNodeXPositions();
+	}
+	
 	/**
 	 * @return true if no computations of nodes are found. This could be because the 
 	 * diagram is empty, but also because it has been loaded from disk and before a rendering pass 
@@ -105,17 +137,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		return super.getBounds();
 	}
 	
-	/**
-	 * Precomputes the position of the nodes.
+	/* 
+	 * Computes the final X-coordinate of each lifeline, and positions each 
+	 * lifeline's Y coordinate at 0. If the corresponding object is the 
+	 * target of a constructor call, the lifeline will get repositioned
+	 * lower in computeYPositions()
 	 */
-	private void layout()
-	{
-		computeLifelinePositions();
-		computeYPositions();
-		computeCallNodeXPositions();
-	}
-	
-	private void computeLifelinePositions()
+	private void computeLifelineInitialPositions()
 	{
 		aLifelineXPositions.clear();
 		aLifelineYPositions.clear();
@@ -129,7 +157,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 	}
 	
-	/**
+	/*
 	 * Returns the caller of a node, if it exists.
 	 * 
 	 * @param pNode The node to obtain the caller for.
@@ -148,6 +176,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			.findFirst();
 	}
 	
+	/*
+	 * @return The number of call nodes active on the same parent when
+	 * this call nodes gets executed. An initial (non-nested) call 
+	 * node on an implicit parameter get result 0. Nesting is generated
+	 * not only by self-calls, but also by any call back to the 
+	 * parent object.
+	 */
 	private int getNestingDepth(CallNode pNode)
 	{
 		assert pNode != null;
@@ -213,13 +248,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 		else
 		{
-			currentPosition += DROP_NORMAL;
+			currentPosition += getDropDistance();
 		}
 		aCallNodeTopCoordinate.put(pNode, currentPosition);
 		List<Node> callees = getCallees(pNode);
 		if( callees.isEmpty() )
 		{
-			currentPosition += LEAF_NODE_LENGTH;
+			currentPosition += LEAF_NODE_HEIGHT;
 		}
 		else
 		{
@@ -316,5 +351,16 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			.filter(node -> ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getTopRectangle(node).contains(pPoint))
 			.findFirst();
 		return topRectangleSelected.or(() -> super.selectableNodeAt(pPoint));				
+	}
+	
+	/*
+	 * @return The number of pixels to drop the call edges from the current position in the call sequence.
+	 * Takes into account the size of the font to ensure labels on call edges do not overlap.
+	 * 
+	 */
+	private int getDropDistance()
+	{
+		// Multiple of 10 greater or equal to DROP_MIN
+		return Math.max(DROP_MIN, (NODE_GAP_TESTER.getDimension(TEST_STRING).height() * 2)/10*10);
 	}
 }
