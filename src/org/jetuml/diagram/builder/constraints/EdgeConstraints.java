@@ -28,6 +28,7 @@ import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Methods to create edge addition constraints that apply to
@@ -44,7 +45,7 @@ public final class EdgeConstraints
 	 */
 	public static Constraint noteEdge()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 				!( pEdge.getClass() == NoteEdge.class && 
 						!((pStart.getClass() == NoteNode.class && pEnd.getClass() == PointNode.class) ||
 								(pEnd.getClass() == NoteNode.class)));
@@ -56,7 +57,7 @@ public final class EdgeConstraints
 	 */
 	public static Constraint noteNode()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			if( pStart.getClass() == NoteNode.class || pEnd.getClass() == NoteNode.class )
 			{
@@ -72,9 +73,9 @@ public final class EdgeConstraints
 	public static Constraint maxEdges(int pNumber)
 	{
 		assert pNumber > 0;
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
-			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pDiagram) <= pNumber-1;
+			return numberOfEdges(pEdge.getClass(), pStart, pEnd, pRenderer.diagram()) <= pNumber-1;
 		};
 	}
 	
@@ -83,7 +84,7 @@ public final class EdgeConstraints
 	 */
 	public static Constraint noSelfEdge()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)-> { return pStart != pEnd; };
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)-> { return pStart != pEnd; };
 	}
 
 	/*

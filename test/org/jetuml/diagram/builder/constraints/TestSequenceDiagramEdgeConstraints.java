@@ -32,11 +32,13 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramEdgeConstraints
 {
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
+	private DiagramRenderer aRenderer = DiagramType.newRendererInstanceFor(aDiagram);
 	private ImplicitParameterNode aParameter1 = new ImplicitParameterNode();
 	private ImplicitParameterNode aParameter2  = new ImplicitParameterNode();
 	private CallNode aCallNode1 = new CallNode();
@@ -90,49 +92,49 @@ public class TestSequenceDiagramEdgeConstraints
 	void testNoEdgeFromParameterTopNotParameterNode()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aCallNode1, aCallNode1, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aCallNode1, aCallNode1, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testNoEdgeFromParameterTopParameterFalse()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1,new Point(5,5),aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1,new Point(5,5),aPoint, aRenderer));
 	}
 	
 	@Test
 	void testNoEdgeFromParameterTopParameterTrue()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1, new Point(40,65), aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1, new Point(40,65), aPoint, aRenderer));
 	}
 	
 	@Test
 	void testreturnEdgeNotReturnEdge()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aCallEdge, aCallNode1, aCallNode2, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aCallEdge, aCallNode1, aCallNode2, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testreturnEdgeIncompatibleStart()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aParameter1, aCallNode2, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aParameter1, aCallNode2, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testreturnEdgeIncompatibleEnd()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode1, aParameter2, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode1, aParameter2, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testreturnEdgeEndNoCaller()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode1, aCallNode2, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode1, aCallNode2, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
@@ -141,7 +143,7 @@ public class TestSequenceDiagramEdgeConstraints
 		createDiagram();
 		aCallEdge.connect(aCallNode1, aCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge);
-		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode3, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode3, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
@@ -150,7 +152,7 @@ public class TestSequenceDiagramEdgeConstraints
 		createDiagram();
 		aCallEdge.connect(aCallNode1, aCallNode3, aDiagram);
 		aDiagram.addEdge(aCallEdge);
-		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode3, aCallNode1, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode3, aCallNode1, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
@@ -159,62 +161,62 @@ public class TestSequenceDiagramEdgeConstraints
 		createDiagram();
 		aCallEdge.connect(aCallNode1, aCallNode2, aDiagram);
 		aDiagram.addEdge(aCallEdge);
-		assertTrue(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode1, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.returnEdge().satisfied(aReturnEdge, aCallNode2, aCallNode1, aPoint, aPoint, aRenderer));
 	}	
 	
 	@Test
 	void testCallEdgeEndNotCallEdge()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aReturnEdge, aCallNode2, aCallNode1, aPoint, new Point(10,10), aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aReturnEdge, aCallNode2, aCallNode1, aPoint, new Point(10,10), aRenderer));
 	}	
 	
 	@Test
 	void testCallEdgeEndEndNotParameter()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aCallNode2, aCallNode1, aPoint, new Point(10,10), aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aCallNode2, aCallNode1, aPoint, new Point(10,10), aRenderer));
 	}	
 	
 	@Test
 	void testCallEdgeEndEndOnLifeLine()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aParameter2, aCallNode1, aPoint, new Point(0,85), aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aParameter2, aCallNode1, aPoint, new Point(0,85), aRenderer));
 	}	
 	
 	@Test
 	void testCallEdgeEndEndOnTopRectangle()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aParameter2, aCallNode1, aPoint, new Point(0,5), aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.callEdgeEnd().satisfied(aCallEdge, aParameter2, aCallNode1, aPoint, new Point(0,5), aRenderer));
 	}	
 	
 	@Test
 	void testSingleEntryPointNotACallEdge()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aReturnEdge, aParameter1, aParameter1, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aReturnEdge, aParameter1, aParameter1, aPoint, aPoint, aRenderer));
 	}	
 	
 	@Test
 	void testSingleEntryPointNotStartingOnAParameterNode()
 	{
 		createDiagram();
-		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aCallNode1, aCallNode1, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aCallNode1, aCallNode1, aPoint, aPoint, aRenderer));
 	}	
 	
 	@Test
 	void testSingleEntryPointStartingOnParameterNodeNotSatisfied()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aParameter1, aParameter1, aPoint, aPoint, aDiagram));
+		assertFalse(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aParameter1, aParameter1, aPoint, aPoint, aRenderer));
 	}	
 	
 	@Test
 	void testSingleEntryPointStartingOnParameterNodeSatisfied()
 	{
 		aDiagram.addRootNode(aParameter1);
-		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aParameter1, aParameter1, aPoint, aPoint, aDiagram));
+		assertTrue(SequenceDiagramEdgeConstraints.singleEntryPoint().satisfied(aCallEdge, aParameter1, aParameter1, aPoint, aPoint, aRenderer));
 	}	
 }

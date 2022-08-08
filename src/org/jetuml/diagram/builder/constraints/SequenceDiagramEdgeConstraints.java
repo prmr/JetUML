@@ -31,6 +31,7 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
 /**
@@ -49,7 +50,7 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint noEdgesFromParameterTop()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pStart.getClass() == ImplicitParameterNode.class && 
 					IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pStart).contains(pStartPoint));
@@ -63,9 +64,9 @@ public final class SequenceDiagramEdgeConstraints
 	public static Constraint returnEdge()
 	{
 		//ControlFlow flow = new ControlFlow(pDiagram);
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
-			ControlFlow flow = new ControlFlow(pDiagram);
+			ControlFlow flow = new ControlFlow(pRenderer.diagram());
 			return !(pEdge.getClass() == ReturnEdge.class && 
 					(pStart.getClass() != CallNode.class ||
 					 pEnd.getClass() != CallNode.class ||
@@ -81,7 +82,7 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint callEdgeEnd()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEnd.getClass() == ImplicitParameterNode.class &&
@@ -122,11 +123,11 @@ public final class SequenceDiagramEdgeConstraints
 	 */
 	public static Constraint singleEntryPoint()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					pStart.getClass() == ImplicitParameterNode.class &&
-					new ControlFlow(pDiagram).hasEntryPoint());
+					new ControlFlow(pRenderer.diagram()).hasEntryPoint());
 		};
 	}
 }

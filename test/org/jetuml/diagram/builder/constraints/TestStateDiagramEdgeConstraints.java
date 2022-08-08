@@ -24,7 +24,6 @@ package org.jetuml.diagram.builder.constraints;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.edges.NoteEdge;
@@ -33,36 +32,19 @@ import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.jetuml.rendering.DiagramRenderer;
 import org.junit.jupiter.api.Test;
 
 public class TestStateDiagramEdgeConstraints
 {
-	private Diagram aDiagram;
-	private StateNode aState;
-	private InitialStateNode aInitialNode;
-	private FinalStateNode aFinalNode;
-	private StateTransitionEdge aEdge;
-	private Point aPoint;
+	private Diagram aDiagram = new Diagram(DiagramType.STATE);
+	private DiagramRenderer aRenderer = DiagramType.newRendererInstanceFor(aDiagram);
+	private StateNode aState = new StateNode();
+	private InitialStateNode aInitialNode = new InitialStateNode();
+	private FinalStateNode aFinalNode = new FinalStateNode();
+	private StateTransitionEdge aEdge = new StateTransitionEdge();
+	private Point aPoint = new Point(0,0);
 
-	@BeforeAll
-	public static void setupClass()
-	{
-		JavaFXLoader.load();
-	}
-	
-	@BeforeEach
-	public void setUp()
-	{
-		aDiagram = new Diagram(DiagramType.STATE);
-		aState = new StateNode();
-		aInitialNode = new InitialStateNode();
-		aFinalNode = new FinalStateNode();
-		aEdge = new StateTransitionEdge();
-		aPoint = new Point(0,0);
-	}
-	
 	private void createDiagram()
 	{
 		aDiagram.addRootNode(aState);
@@ -71,37 +53,37 @@ public class TestStateDiagramEdgeConstraints
 	}
 	
 	@Test
-	public void testNoEdgeToInitialNodeFalse()
+	void testNoEdgeToInitialNodeFalse()
 	{
 		createDiagram();
-		assertFalse(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aState, aInitialNode, aPoint, aPoint, aDiagram));
+		assertFalse(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aState, aInitialNode, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
-	public void testNoEdgeToInitialNodeTrue()
+	void testNoEdgeToInitialNodeTrue()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aInitialNode, aState, aPoint, aPoint, aDiagram));
+		assertTrue(StateDiagramEdgeConstraints.noEdgeToInitialNode().satisfied(aEdge, aInitialNode, aState, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
-	public void testNoEdgeFromFinalNodeInapplicableEdge()
+	void testNoEdgeFromFinalNodeInapplicableEdge()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(new NoteEdge(), aFinalNode, aState, aPoint, aPoint, aDiagram));
+		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(new NoteEdge(), aFinalNode, aState, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
-	public void testNoEdgeFromFinalNodeApplicableEdgeFalse()
+	void testNoEdgeFromFinalNodeApplicableEdgeFalse()
 	{
 		createDiagram();
-		assertFalse(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aFinalNode, aState, aPoint, aPoint, aDiagram));
+		assertFalse(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aFinalNode, aState, aPoint, aPoint, aRenderer));
 	}
 	
 	@Test
-	public void testNoEdgeFromFinalNodeApplicableEdgeTrue()
+	void testNoEdgeFromFinalNodeApplicableEdgeTrue()
 	{
 		createDiagram();
-		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aState, aState, aPoint, aPoint, aDiagram));
+		assertTrue(StateDiagramEdgeConstraints.noEdgeFromFinalNode().satisfied(aEdge, aState, aState, aPoint, aPoint, aRenderer));
 	}
 }

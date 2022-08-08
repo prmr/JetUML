@@ -21,13 +21,13 @@
 
 package org.jetuml.diagram.builder.constraints;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.FinalStateNode;
 import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -42,7 +42,7 @@ public final class StateDiagramEdgeConstraints
 	 */
 	public static Constraint noEdgeToInitialNode()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return pEnd.getClass() != InitialStateNode.class;
 		};
@@ -53,7 +53,7 @@ public final class StateDiagramEdgeConstraints
 	 */
 	public static Constraint noEdgeFromFinalNode()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pStart.getClass() == FinalStateNode.class && pEdge.getClass() != NoteEdge.class );
 		};

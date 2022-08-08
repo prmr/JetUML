@@ -24,9 +24,6 @@ package org.jetuml.diagram.builder.constraints;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
@@ -34,55 +31,47 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeEach;
+import org.jetuml.rendering.DiagramRenderer;
 import org.junit.jupiter.api.Test;
 
 public class TestConstraintSet
 {
-	private Set<String> aMessages;
-	private DependencyEdge aEdge1;
+	private DependencyEdge aEdge1 = new DependencyEdge();
+	private DiagramRenderer aRenderer = DiagramType.newRendererInstanceFor(new Diagram(DiagramType.CLASS));
 	
-	private Constraint constraint(String pMessage, boolean pReturn)
+	private Constraint createStubConstraint(boolean pReturn)
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
-			aMessages.add(pMessage);
 			return pReturn;
 		};
 	}
 	
-	@BeforeEach
-	public void setUp()
-	{
-		aMessages = new HashSet<>();
-		aEdge1 = new DependencyEdge();
-	}
-	
 	@Test
-	public void testEmpty()
+	void testEmpty()
 	{
 		ConstraintSet constraints = new ConstraintSet();
-		assertTrue(constraints.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
+		assertTrue(constraints.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), aRenderer));
 	}
 
 	@Test
-	public void testSatisfiedAllFalse()
+	void testSatisfiedAllFalse()
 	{
-		ConstraintSet set1 = new ConstraintSet(constraint("X", false), constraint("Y", false), constraint("Z", false));
-		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
+		ConstraintSet set1 = new ConstraintSet(createStubConstraint(false), createStubConstraint(false), createStubConstraint(false));
+		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), aRenderer));
 	}
 	
 	@Test
-	public void testSatisfiedSomeFalse()
+	void testSatisfiedSomeFalse()
 	{
-		ConstraintSet set1 = new ConstraintSet(constraint("X", true), constraint("Y", true), constraint("Z", false));
-		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
+		ConstraintSet set1 = new ConstraintSet(createStubConstraint(true), createStubConstraint(true), createStubConstraint(false));
+		assertFalse(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), aRenderer));
 	}
 	
 	@Test
-	public void testSatisfiedTrue()
+	void testSatisfiedTrue()
 	{
-		ConstraintSet set1 = new ConstraintSet(constraint("X", true), constraint("Y", true), constraint("Z", true));
-		assertTrue(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), new Diagram(DiagramType.CLASS)));
+		ConstraintSet set1 = new ConstraintSet(createStubConstraint(true), createStubConstraint(true), createStubConstraint(true));
+		assertTrue(set1.satisfied(aEdge1, new ClassNode(), new ClassNode(), new Point(0,0), new Point(0,0), aRenderer));
 	}
 }

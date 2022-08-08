@@ -21,7 +21,6 @@
 
 package org.jetuml.diagram.builder.constraints;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.AggregationEdge;
@@ -29,6 +28,7 @@ import org.jetuml.diagram.edges.AssociationEdge;
 import org.jetuml.diagram.edges.DependencyEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -43,7 +43,7 @@ public final class ClassDiagramEdgeConstraints
 	 */
 	public static Constraint noSelfGeneralization()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)-> 
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)-> 
 		{
 			return !( pEdge.getClass() == GeneralizationEdge.class && pStart == pEnd );
 		};
@@ -54,7 +54,7 @@ public final class ClassDiagramEdgeConstraints
 	 */
 	public static Constraint noSelfDependency()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer) ->
 		{
 			return !( pEdge.getClass() == DependencyEdge.class && pStart == pEnd );
 		};
@@ -65,7 +65,7 @@ public final class ClassDiagramEdgeConstraints
 	 */
 	public static Constraint noDirectCycles(Class<? extends Edge> pEdgeType)
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer) ->
 		{
 			if( pEdge.getClass() != pEdgeType )
 			{
@@ -87,7 +87,7 @@ public final class ClassDiagramEdgeConstraints
 	 */
 	public static Constraint noCombinedAssociationAggregation()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram) ->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer) ->
 		{
 			if( pEdge.getClass() != AssociationEdge.class && pEdge.getClass() != AggregationEdge.class )
 			{

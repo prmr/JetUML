@@ -138,7 +138,7 @@ public abstract class DiagramBuilder
 		}
 		
 
-		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagramRenderer.diagram());
+		return getEdgeConstraints().satisfied(pEdge, startNode.get(), endNode.get(), pStart, pEnd, aDiagramRenderer);
 		
 	}
 	

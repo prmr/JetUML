@@ -26,10 +26,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jetuml.annotations.Immutable;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Represents a set of constraints.
@@ -60,14 +60,14 @@ public class ConstraintSet
 	 * @param pEnd The end node for the edge.
 	 * @param pStartPoint The point on the canvas where the edge rubber band starts.
 	 * @param pEndPoint The point on the canvas where the edge rubber band ends.
-	 * @param pDiagram The diagram in which the edge is to be added.
+	 * @param pRenderer The renderer for the diagram in which the edge is to be added.
 	 * @return True if and only if all the constraints in the set are satisfied.
 	 */
-	public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)
+	public boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)
 	{
 		for( Constraint constraint : aConstraints )
 		{
-			if( !constraint.satisfied(pEdge, pStart, pEnd, pStartPoint, pEndPoint, pDiagram))
+			if( !constraint.satisfied(pEdge, pStart, pEnd, pStartPoint, pEndPoint, pRenderer))
 			{
 				return false;
 			}

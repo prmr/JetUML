@@ -21,7 +21,6 @@
 
 package org.jetuml.diagram.builder.constraints;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.ObjectCollaborationEdge;
@@ -29,6 +28,7 @@ import org.jetuml.diagram.edges.ObjectReferenceEdge;
 import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -43,7 +43,7 @@ public final class ObjectDiagramEdgeConstraints
 	 */
 	public static Constraint collaboration()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pEdge.getClass() == ObjectCollaborationEdge.class && 
 					(pStart.getClass() != ObjectNode.class || pEnd.getClass() != ObjectNode.class));
@@ -55,7 +55,7 @@ public final class ObjectDiagramEdgeConstraints
 	 */
 	public static Constraint reference()
 	{
-		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram)->
+		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
 			return !(pEdge.getClass() == ObjectReferenceEdge.class &&
 					(pStart.getClass() != FieldNode.class || pEnd.getClass() != ObjectNode.class));

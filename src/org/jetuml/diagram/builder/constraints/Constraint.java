@@ -21,10 +21,10 @@
 
 package org.jetuml.diagram.builder.constraints;
 
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.DiagramRenderer;
 
 /**
  * Represents a generic constraint on how an edge can be created.
@@ -37,8 +37,8 @@ public interface Constraint
 	 * @param pEnd The end node for the edge.
 	 * @param pStartPoint The point on the canvas where the edge rubber band starts.
 	 * @param pEndPoint The point on the canvas where the edge rubber band ends.
-	 * @param pDiagram The diagram in which the edge is to be added.
+	 * @param pRenderer The renderer for the diagram in which the edge is to be added.
 	 * @return True if this constraint is satisfied.
 	 */
-	boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, Diagram pDiagram);
+	boolean satisfied(Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer);
 }
