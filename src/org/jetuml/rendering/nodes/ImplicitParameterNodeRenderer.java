@@ -28,7 +28,6 @@ import java.util.Optional;
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -38,14 +37,11 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingUtils;
-import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -63,6 +59,11 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public ImplicitParameterNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
+	}
+	
+	private CallNodeRenderer callNodeViewer()
+	{
+		return (CallNodeRenderer) parent().rendererFor(CallNode.class);
 	}
 	
 	@Override
@@ -96,22 +97,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	/**
-	 * @return The width of the top rectangle.
-	 */
-	public int getWidth(DiagramElement pElement)
-	{
-		assert pElement != null;
-		assert pElement instanceof ImplicitParameterNode;
-		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pElement).getName()).width()+ 
-				HORIZONTAL_PADDING, DEFAULT_WIDTH);
-	}
-	
-	private CallNodeRenderer callNodeViewer()
-	{
-		return (CallNodeRenderer) parent().rendererFor(CallNode.class);
-	}
-	
 	private Point getMaxXYofChildren(Node pNode)
 	{
 		int maxY = 0;
@@ -132,11 +117,14 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	 */
 	public Rectangle getTopRectangle(Node pNode)
 	{
-		return new Rectangle(pNode.position().getX(), 						// x
-				((SequenceDiagramRenderer)parent()).getLifelineTop(pNode),  // y
-				getWidth(pNode), 											// width
-				DEFAULT_HEIGHT);											// height
-
+		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
+				HORIZONTAL_PADDING, DEFAULT_WIDTH);
+		int yVal = 0;
+		if( isInConstructorCall(pNode) )
+		{
+			yVal = getYWithConstructorCall(pNode);
+		}
+		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
 	}
 	
 	/**
@@ -146,7 +134,8 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public int getCenterXCoordinate(Node pNode)
 	{
 		assert pNode != null;
-		return pNode.position().getX() + getWidth(pNode)/2;
+		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
+				HORIZONTAL_PADDING, DEFAULT_WIDTH)/2 + pNode.position().getX();
 	}
 
 	@Override
@@ -212,26 +201,5 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 			return Optional.of(children.get(0));
 		}
 		return Optional.empty();
-	}
-	
-	@Override
-	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
-	{
-		int width = 80;
-		int height = 120;
-		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
-		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
-		double scale = Math.min(scaleX, scaleY);
-		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
-		GraphicsContext graphics = canvas.getGraphicsContext2D();
-		graphics.scale(scale, scale);
-		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
-		graphics.setFill(Color.WHITE);
-		graphics.setStroke(Color.BLACK);
-		Rectangle top = new Rectangle(0,0, DEFAULT_WIDTH, TOP_HEIGHT);
-		RenderingUtils.drawRectangle(canvas.getGraphicsContext2D(), top);
-		int xmid = DEFAULT_WIDTH/2;
-		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.getMaxY(), xmid, height, LineStyle.DOTTED);
-		return canvas;
 	}
 }
