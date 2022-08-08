@@ -92,7 +92,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		{
 			Node startNode = start.get();
 			Node endNode = end.get();
-			return 	SequenceDiagramEdgeConstraints.canCreateConstructor(startNode, endNode, pEnd);
+			return 	SequenceDiagramEdgeConstraints.canCreateConstructor(startNode, endNode, pEnd, renderer());
 		}
 		return false;
 	}

@@ -136,6 +136,19 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 		return super.getBounds();
 	}
+
+	/**
+	 * @param pNode The implicit paramter node to check.
+	 * @param pPoint The point to check.
+	 * @return True if the top rectangle of pNode contains pPoint
+	 */
+	public boolean topRectangleContains(Node pNode, Point pPoint)
+	{
+		assert pNode != null && pNode instanceof ImplicitParameterNode;
+		assert pPoint != null;
+		return ((ImplicitParameterNodeRenderer)rendererFor(pNode.getClass())).
+				getTopRectangle(pNode).contains(pPoint);
+	}
 	
 	/* 
 	 * Computes the final X-coordinate of each lifeline, and positions each 

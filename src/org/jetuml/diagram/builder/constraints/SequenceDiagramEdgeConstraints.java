@@ -22,8 +22,6 @@
 package org.jetuml.diagram.builder.constraints;
 
 import org.jetuml.diagram.ControlFlow;
-import org.jetuml.diagram.Diagram;
-import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
@@ -32,7 +30,7 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
 import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 
 /**
  * Methods to create edge addition constraints that only apply to
@@ -40,9 +38,6 @@ import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
  */
 public final class SequenceDiagramEdgeConstraints
 {
-	private static final ImplicitParameterNodeRenderer IMPLICIT_PARAMETER_NODE_VIEWER = 
-			new ImplicitParameterNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.SEQUENCE)));
-	
 	private SequenceDiagramEdgeConstraints() {}
 	
 	/*
@@ -52,8 +47,9 @@ public final class SequenceDiagramEdgeConstraints
 	{
 		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
+			assert pRenderer instanceof SequenceDiagramRenderer;
 			return !(pStart.getClass() == ImplicitParameterNode.class && 
-					IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pStart).contains(pStartPoint));
+					((SequenceDiagramRenderer)pRenderer).topRectangleContains(pStart, pStartPoint));
 		};
 	}
 	
@@ -86,8 +82,8 @@ public final class SequenceDiagramEdgeConstraints
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					 pEnd.getClass() == ImplicitParameterNode.class &&
-							 IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEnd).contains(pEndPoint) && 
-							 	!canCreateConstructor(pStart, pEnd, pEndPoint));
+							 ((SequenceDiagramRenderer)pRenderer).topRectangleContains(pEnd, pEndPoint) && 
+							 	!canCreateConstructor(pStart, pEnd, pEndPoint, pRenderer));
 		};
 	}
 	
@@ -101,19 +97,20 @@ public final class SequenceDiagramEdgeConstraints
 	 * 
 	 * @param pStartNode The desired start node for the "creates" edge.
 	 * @param pEndNode The desired end node of the "creates" edge.
-	 * @param pPoint The point on the canvas selected by the user.
+	 * @param pEndPoint The point on the canvas selected by the user.
+	 * @param pRenderer The renderer for the diagram
 	 * @return True if pStartNode is a CallNode or and ImplicitParameterNode and pEndNode
 	 *     is an ImplicitParameterNode with no child node and pPoint is within the top rectangular bound of pNode.
 	 * @pre pNode != null && pPoint != null
 	 */
-	public static boolean canCreateConstructor(Node pStartNode, Node pEndNode, Point pEndPoint)
+	public static boolean canCreateConstructor(Node pStartNode, Node pEndNode, Point pEndPoint, DiagramRenderer pRenderer)
 	{
 		if( !(pStartNode instanceof ImplicitParameterNode || pStartNode instanceof CallNode) )
 		{
 			return false;
 		}
 		return pEndNode instanceof ImplicitParameterNode && 
-				IMPLICIT_PARAMETER_NODE_VIEWER.getTopRectangle(pEndNode).contains(pEndPoint) && 
+				((SequenceDiagramRenderer)pRenderer).topRectangleContains(pEndNode, pEndPoint) && 
 				pEndNode.getChildren().isEmpty();
 	}
 	

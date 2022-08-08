@@ -60,32 +60,32 @@ public class TestSequenceDiagramEdgeConstraints
 	@Test
 	void testCanCreateConstructor_StartNodeIncorrect()
 	{
-		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(new NoteNode(), aCallNode1, aPoint));
+		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(new NoteNode(), aCallNode1, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testCanCreateConstructor_EndNodeNotAnImplicitParameterNode()
 	{
-		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aCallNode1, aCallNode2, aPoint));
+		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aCallNode1, aCallNode2, aPoint, aRenderer));
 	}
 	
 	@Test
 	void testCanCreateConstructor_EndNodeDoesNotContainPoint()
 	{
-		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(1000,1000)));
+		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(1000,1000), aRenderer));
 	}
 	
 	@Test
 	void testCanCreateConstructor_EndNodeContainsPointButNotChildless()
 	{
 		createDiagram();
-		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(10,10)));
+		assertFalse(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(10,10), aRenderer));
 	}
 	
 	@Test
 	void testCanCreateConstructor_EndNodeContainsPointButAndChildless()
 	{
-		assertTrue(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(10,10)));
+		assertTrue(SequenceDiagramEdgeConstraints.canCreateConstructor(aParameter1, aParameter2, new Point(10,10), aRenderer));
 	}
 	
 	@Test
