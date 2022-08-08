@@ -28,6 +28,7 @@ import java.util.Optional;
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
@@ -41,7 +42,9 @@ import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * An object to render an implicit parameter in a Sequence diagram.
@@ -201,5 +204,26 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 			return Optional.of(children.get(0));
 		}
 		return Optional.empty();
+	}
+	
+	@Override
+	public Canvas createIcon(DiagramType pDiagramType, DiagramElement pElement)
+	{
+		int width = 80;
+		int height = 120;
+		double scaleX = (BUTTON_SIZE - OFFSET)/ (double) width;
+		double scaleY = (BUTTON_SIZE - OFFSET)/ (double) height;
+		double scale = Math.min(scaleX, scaleY);
+		Canvas canvas = new Canvas(BUTTON_SIZE, BUTTON_SIZE);
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.scale(scale, scale);
+		graphics.translate(Math.max((height - width) / 2, 0), Math.max((width - height) / 2, 0));
+		graphics.setFill(Color.WHITE);
+		graphics.setStroke(Color.BLACK);
+		Rectangle top = new Rectangle(0,0, DEFAULT_WIDTH, TOP_HEIGHT);
+		RenderingUtils.drawRectangle(canvas.getGraphicsContext2D(), top);
+		int xmid = DEFAULT_WIDTH/2;
+		RenderingUtils.drawLine(canvas.getGraphicsContext2D(), xmid,  top.getMaxY(), xmid, height, LineStyle.DOTTED);
+		return canvas;
 	}
 }
