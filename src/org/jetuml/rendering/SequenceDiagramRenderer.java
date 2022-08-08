@@ -157,6 +157,18 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 	}
 	
+	/**
+	 * @param pNode The node whose lifeline we're interested in.
+	 * @return The y-coordinate of the top of the lifeline.
+	 */
+	public int getLifelineTop(Node pNode)
+	{
+		assert pNode != null;
+		assert pNode instanceof ImplicitParameterNode;
+		assert aLifelineYPositions.containsKey(pNode);
+		return aLifelineYPositions.get(pNode);
+	}
+	
 	/*
 	 * Returns the caller of a node, if it exists.
 	 * 
