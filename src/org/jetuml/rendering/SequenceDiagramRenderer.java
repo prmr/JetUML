@@ -58,11 +58,13 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private static final int DROP_LIFELINE = 80;
 	private static final int BOTTOM_PADDING = 20;
 	private static final int LEAF_NODE_LENGTH = 30;
+	private static final int NESTING_SHIFT_DISTANCE = 10;
 
 	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
 	private final Map<Node, Integer> aLifelineYPositions = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
+	private final Map<Node, Integer> aCallNodeXCoordinate = new IdentityHashMap<>();
 	
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
@@ -77,19 +79,8 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	@Override
 	public void draw(GraphicsContext pGraphics)
 	{
-		super.draw(pGraphics); // TODO Remove
-		assert pGraphics != null;
 		layout();
-		System.out.println(aCallNodeBottomCoordinate);
-//		activateNodeStorages();
-		// 1. Compute lifeline x positions by iterating through implicit parameter nodes
-		// 2. Compute call node y positions by iterating through call nodes in call sequence order
-		// 3. Compute call node bottom y coordinate by iterating through call nodes in reverse call sequence order
-		// 4. Render nodes
-		// 4. Render edges
-//		aDiagram.rootNodes().forEach(node -> drawNode(node, pGraphics));
-//		aDiagram.edges().forEach(edge -> draw(edge, pGraphics));
-//		deactivateAndClearNodeStorages();
+		super.draw(pGraphics); 
 	}
 	
 	/**
@@ -121,6 +112,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		computeLifelinePositions();
 		computeYPositions();
+		computeCallNodeXPositions();
 	}
 	
 	private void computeLifelinePositions()
@@ -156,7 +148,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			.findFirst();
 	}
 	
-	public int getNestingDepth(CallNode pNode)
+	private int getNestingDepth(CallNode pNode)
 	{
 		assert pNode != null;
 		int result = 0;
@@ -190,6 +182,20 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			currentYPosition = computeYPosition(callee, currentYPosition);
 		}
 		aCallNodeBottomCoordinate.put(root.get(), currentYPosition + BOTTOM_PADDING);
+	}
+	
+	private void computeCallNodeXPositions()
+	{
+		aCallNodeXCoordinate.clear();
+		for( Node node : diagram().allNodes() )
+		{
+			if( node instanceof CallNode )
+			{
+				final int nestingDepth = getNestingDepth((CallNode)node);
+				final int lifelineXCoordinate = aLifelineXPositions.get(node.getParent());
+				aCallNodeXCoordinate.put(node, lifelineXCoordinate - NESTING_SHIFT_DISTANCE + (NESTING_SHIFT_DISTANCE * nestingDepth));
+			}
+		}
 	}
 	
 	/*
