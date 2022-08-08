@@ -22,15 +22,9 @@ package org.jetuml.rendering.nodes;
 
 import static org.jetuml.geom.GeomUtils.max;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.jetuml.diagram.ControlFlow;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
-import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
@@ -59,7 +53,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
-	private static final int Y_GAP_SMALL = 20; 
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	
 	public ImplicitParameterNodeRenderer(DiagramRenderer pParent)
@@ -71,11 +64,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	public Dimension getDefaultDimension(Node pNode)
 	{
 		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-	}
-	
-	private CallNodeRenderer callNodeViewer()
-	{
-		return (CallNodeRenderer) parent().rendererFor(CallNode.class);
 	}
 	
 	@Override
@@ -133,23 +121,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		return new Point(maxX, maxY);
 	}
 	
-//	/**
-//     * Returns the rectangle at the top of the object node.
-//     * @param pNode the node.
-//     * @return the top rectangle
-//	 */
-//	public Rectangle getTopRectangle(Node pNode)
-//	{
-//		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
-//				HORIZONTAL_PADDING, DEFAULT_WIDTH);
-//		int yVal = 0;
-//		if( isInConstructorCall(pNode) )
-//		{
-//			yVal = getYWithConstructorCall(pNode);
-//		}
-//		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
-//	}
-	
 	/**
      * Returns the rectangle at the top of the object node.
      * @param pNode the node.
@@ -161,7 +132,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 				((SequenceDiagramRenderer)parent()).getLifelineTop((ImplicitParameterNode) pNode) - TOP_HEIGHT,
 				getWidth(pNode), 									
 				TOP_HEIGHT);										
-
 	}
 	
 	/**
@@ -183,61 +153,6 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		int width = max(topRectangle.getWidth(), DEFAULT_WIDTH, childrenMaxXY.getX() - pNode.position().getX());
 		int height = max(DEFAULT_HEIGHT, childrenMaxXY.getY() + TAIL_HEIGHT) - topRectangle.getY();	
 		return new Rectangle(pNode.position().getX(), topRectangle.getY(), width, height);
-	}
-	
-	private int getYWithConstructorCall(Node pNode) 
-	{
-		assert isInConstructorCall(pNode);
-		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
-		CallNode child = (CallNode) getFirstChild(pNode).get();
-		// If the node is the first callee, set a fix distance from its caller
-		if( controlFlow.isFirstCallee(child) )
-		{
-			CallNode caller = controlFlow.getCaller(child).get(); 
-			return callNodeViewer().getY(caller) + Y_GAP_SMALL;
-		}
-		Node prevCallee = controlFlow.getPreviousCallee(child);
-		// If the node is not the first callee but the previous callee is in constructor call
-		if( controlFlow.isConstructorExecution(prevCallee) )
-		{
-			// Returns a fixed distance from the bound of the previous callee's parent
-			return getBounds(prevCallee.getParent()).getMaxY();
-		}
-		else
-		{
-			// Returns a fixed distance from the previous callee
-			return callNodeViewer().getMaxY(prevCallee) + Y_GAP_SMALL;
-		}
-	}
-
-	/*
-	 * Returns true if the ImplicitParameterNode is in the constructor call
-	 */
-	private static boolean isInConstructorCall(Node pNode) 
-	{
-		Optional<Diagram> diagram = pNode.getDiagram();
-		if(diagram.isPresent())
-		{
-			ControlFlow flow = new ControlFlow(diagram.get());
-			Optional<Node> child = getFirstChild(pNode);
-			return child.isPresent() && flow.isConstructorExecution(child.get());
-		}	
-		return false;
-	}
-	
-	/*
-	 * Returns the Optional of the first child node of the ImplicitParameterNode if exists;
-	 * otherwise, returns Optional.empty().
-	 */
-	private static Optional<Node> getFirstChild(Node pNode)
-	{
-		assert pNode!=null;
-		List<Node> children = pNode.getChildren();
-		if(!children.isEmpty()) 
-		{
-			return Optional.of(children.get(0));
-		}
-		return Optional.empty();
 	}
 	
 	@Override
