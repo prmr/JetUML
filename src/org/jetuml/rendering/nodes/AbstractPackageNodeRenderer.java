@@ -58,6 +58,12 @@ public abstract class AbstractPackageNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(DEFAULT_WIDTH, TOP_HEIGHT + DEFAULT_BOTTOM_HEIGHT);
+	}
+	
+	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		assert pElement instanceof AbstractPackageNode;

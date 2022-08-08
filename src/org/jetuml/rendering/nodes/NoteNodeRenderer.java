@@ -54,6 +54,12 @@ public final class NoteNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		Node node = (Node) pElement;

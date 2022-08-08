@@ -21,6 +21,7 @@
 package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.Node;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -68,4 +69,11 @@ public interface NodeRenderer extends DiagramElementRenderer
 	 * @pre pSide != null && pNode != null;
 	 */
 	Line getFace(Node pNode, Side pSide);
+	
+	/**
+	 * @param pNode The node of interest.
+	 * @return The dimensions of the default version of this node, when it's just been
+	 * added to a diagram.
+	 */
+	Dimension getDefaultDimension(Node pNode);
 }

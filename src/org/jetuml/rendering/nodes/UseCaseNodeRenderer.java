@@ -23,6 +23,7 @@ package org.jetuml.rendering.nodes;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.UseCaseNode;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.GeomUtils;
 import org.jetuml.geom.Point;
@@ -49,6 +50,12 @@ public final class UseCaseNodeRenderer extends AbstractNodeRenderer
 	public UseCaseNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
+	}
+	
+	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 	
 	@Override

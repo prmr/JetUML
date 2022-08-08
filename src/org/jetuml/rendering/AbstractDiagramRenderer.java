@@ -29,6 +29,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -255,5 +256,12 @@ public abstract class AbstractDiagramRenderer implements DiagramRenderer
 		{
 			return pBounds.add(getBounds(pElement));
 		}
+	}
+	
+	
+	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return ((NodeRenderer)rendererFor(pNode.getClass())).getDefaultDimension(pNode);
 	}
 }

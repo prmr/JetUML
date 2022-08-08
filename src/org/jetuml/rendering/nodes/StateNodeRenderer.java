@@ -51,6 +51,12 @@ public final class StateNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
+	@Override
 	public void draw(DiagramElement pElement, GraphicsContext pGraphics)
 	{
 		final Rectangle bounds = getBounds(pElement);

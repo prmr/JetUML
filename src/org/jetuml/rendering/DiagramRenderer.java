@@ -26,6 +26,7 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
@@ -177,5 +178,12 @@ public interface DiagramRenderer
 	 * @pre pElements != null
 	 * @pre pElements has at least one element.
 	 */
-	public Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements);
+	Rectangle getBoundsIncludingParents(Iterable<DiagramElement> pElements);
+	
+	/**
+	 * @param pNode The node of interest.
+	 * @return The dimensions of the default version of this node, when it's just been
+	 * added to a diagram.
+	 */
+	Dimension getDefaultDimension(Node pNode);
 }

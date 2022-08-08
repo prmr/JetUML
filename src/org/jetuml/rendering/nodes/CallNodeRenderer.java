@@ -30,6 +30,7 @@ import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -61,6 +62,12 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	public CallNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
+	}
+	
+	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(WIDTH, DEFAULT_HEIGHT);
 	}
 	
 	private ImplicitParameterNodeRenderer implicitParameterNodeViewer()

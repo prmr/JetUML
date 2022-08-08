@@ -498,17 +498,17 @@ public abstract class DiagramBuilder
 		return (PackageNodeRenderer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(PackageNode.class);
 	}
 	
-	private Point computePosition(Rectangle pBounds, Point pRequestedPosition)
+	private Point computePosition(Dimension pDimension, Point pRequestedPosition)
 	{
 		int newX = pRequestedPosition.getX();
 		int newY = pRequestedPosition.getY();
-		if(newX + pBounds.getWidth() > aCanvasDimension.width())
+		if(newX + pDimension.width() > aCanvasDimension.width())
 		{
-			newX = aCanvasDimension.width() - pBounds.getWidth();
+			newX = aCanvasDimension.width() - pDimension.width();
 		}
-		if (newY + pBounds.getHeight() > aCanvasDimension.height())
+		if (newY + pDimension.height() > aCanvasDimension.height())
 		{
-			newY = aCanvasDimension.height() - pBounds.getHeight();
+			newY = aCanvasDimension.height() - pDimension.height();
 		}
 		return new Point(newX, newY);
 	}
@@ -523,8 +523,8 @@ public abstract class DiagramBuilder
 	protected void positionNode(Node pNode, Point pRequestedPosition)
 	{
 		assert pNode != null && pRequestedPosition != null;
-		Rectangle bounds = renderer().getBounds(pNode);
+		Dimension bounds = renderer().getDefaultDimension(pNode);
 		Point position = computePosition(bounds, pRequestedPosition);
-		pNode.translate(position.getX() - bounds.getX(), position.getY() - bounds.getY());
+		pNode.translate(position.getX(), position.getY());
 	}
 }

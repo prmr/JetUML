@@ -59,6 +59,12 @@ public final class ActorNodeRenderer extends AbstractNodeRenderer
 	}
 	
 	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(WIDTH, HEIGHT);
+	}
+	
+	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
 		Dimension nameBounds = NAME_VIEWER.getDimension(((ActorNode)pNode).getName());

@@ -22,6 +22,7 @@ package org.jetuml.rendering.nodes;
 
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
+import org.jetuml.geom.Dimension;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
@@ -39,6 +40,12 @@ public final class PointNodeRenderer extends AbstractNodeRenderer
 	public PointNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
+	}
+	
+	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(0, 0);
 	}
 	
 	@Override

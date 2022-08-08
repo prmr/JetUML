@@ -56,6 +56,12 @@ public final class FieldNodeRenderer extends AbstractNodeRenderer
 		super(pParent);
 	}
 	
+	@Override
+	public Dimension getDefaultDimension(Node pNode)
+	{
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
+	
 	private ObjectNodeRenderer objectNodeViewer()
 	{
 		return (ObjectNodeRenderer) parent().rendererFor(ObjectNode.class);
