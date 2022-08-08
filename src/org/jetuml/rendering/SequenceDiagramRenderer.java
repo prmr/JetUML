@@ -22,6 +22,7 @@ package org.jetuml.rendering;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 		return super.getBounds();
 	}
-
+	
 	/**
 	 * @param pNode The implicit paramter node to check.
 	 * @param pPoint The point to check.
@@ -223,7 +224,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		}
 		int currentYPosition = INITIAL_Y_POSITION;
 		// Position root node
-		aLifelineYPositions.put(root.get().getParent(), 0);
 		aCallNodeTopCoordinate.put(root.get(), currentYPosition);
 		for( Node callee : getCallees(root.get()))
 		{
@@ -284,19 +284,40 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private boolean isConstructorCall(Node pNode)
 	{
 		assert pNode.getClass() == CallNode.class;
-		return getIncomingCall(pNode) instanceof ConstructorEdge;
+		return getIncomingCall(pNode)
+					.filter(edge -> edge instanceof ConstructorEdge) // Exists and is a constructor edge
+					.isPresent();
 	}
 	
-	private CallEdge getIncomingCall(Node pNode)
+	private Optional<Edge> getIncomingCall(Node pNode)
 	{
 		assert pNode.getClass() == CallNode.class;
-		return (CallEdge) diagram().edges().stream()
+		return diagram().edges().stream()
 			.filter(edge -> edge.getEnd() == pNode)
-			.findFirst()
-			.get();
+			.findFirst();
 	}
 	
-	
+	/**
+	 * @param pNode
+	 * @return The y-coordinate of the top of this node's lifeline
+	 */
+	public int getLifelineTop(ImplicitParameterNode pNode)
+	{
+		// 20 if it's a normal call, 5 if a constructor call
+		Optional<Node> topNode = diagram().allNodes().stream()
+			.filter(CallNode.class::isInstance)
+			.filter(node -> node.getParent() == pNode)
+			.sorted(Comparator.comparing(aCallNodeTopCoordinate::get))
+			.findFirst();
+		if(topNode.isEmpty() || !isConstructorCall(topNode.get()))
+		{
+			return INITIAL_Y_POSITION - DROP_MIN;
+		}
+		else
+		{
+			return aCallNodeTopCoordinate.get(topNode.get()) - 5;
+		}
+	}
 	
 	/*
 	 * The root of the call sequence is the call node without a callee
@@ -373,7 +394,15 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private int getDropDistance()
 	{
-		// Multiple of 10 greater or equal to DROP_MIN
-		return Math.max(DROP_MIN, (NODE_GAP_TESTER.getDimension(TEST_STRING).height() * 2)/10*10);
+		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
+		// Only apply shift if necessary
+		if ( shift < 10 )
+		{
+			return DROP_MIN;
+		}
+		else
+		{
+			return DROP_MIN + 10;
+		}
 	}
 }

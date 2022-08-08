@@ -115,6 +115,9 @@ public class TestImplicitParameterNodeViewer
 		
 		aConstructorEdge1.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge1);
+		
+		aRenderer.getBounds(); // Trigger rendering pass
+		
 		assertEquals(new Rectangle(0, 0, 80, 235), aRenderer.getBounds(aImplicitParameterNode1));
 		assertEquals(new Rectangle(100, 100, 80, 115), aRenderer.getBounds(aImplicitParameterNode2));
 	}
@@ -140,6 +143,8 @@ public class TestImplicitParameterNodeViewer
 		aConstructorEdge1.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge1);
 		aDiagram.addEdge(aConstructorEdge1);
+		
+		aRenderer.getBounds(); // Trigger rendering pass
 		
 		assertEquals(new Rectangle(0, 0, 80, 285), aRenderer.getBounds(aImplicitParameterNode1));
 		assertEquals(new Rectangle(100, 0, 80, 150), aRenderer.getBounds(aImplicitParameterNode2));
@@ -167,6 +172,8 @@ public class TestImplicitParameterNodeViewer
 		aConstructorEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aConstructorEdge1);
 		aDiagram.addEdge(aConstructorEdge2);
+		
+		aRenderer.getBounds(); // Trigger rendering pass
 		
 		assertEquals(new Rectangle(0, 0, 80, 350), aRenderer.getBounds(aImplicitParameterNode1));
 		assertEquals(new Rectangle(100, 100, 80, 115), aRenderer.getBounds(aImplicitParameterNode2));

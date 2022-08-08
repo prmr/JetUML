@@ -98,14 +98,15 @@ public class TestSequenceDiagramEdgeConstraints
 	@Test
 	void testNoEdgeFromParameterTopParameterFalse()
 	{
-		createDiagram();
+		aDiagram.addRootNode(aParameter1);
 		assertFalse(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1,new Point(5,5),aPoint, aRenderer));
 	}
 	
 	@Test
 	void testNoEdgeFromParameterTopParameterTrue()
 	{
-		createDiagram();
+		aDiagram.addRootNode(aParameter1);
+		aRenderer.getBounds(); // Trigger rendering pass
 		assertTrue(SequenceDiagramEdgeConstraints.noEdgesFromParameterTop().satisfied(aCallEdge, aParameter1, aParameter1, new Point(40,65), aPoint, aRenderer));
 	}
 	

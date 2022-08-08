@@ -23,7 +23,6 @@ package org.jetuml.viewers.nodes;
 import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jetuml.JavaFXLoader;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.Diagram;
@@ -58,11 +57,10 @@ public class TestCallNodeViewer
 	{
 		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
 		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
-		JavaFXLoader.load();
 	}
 	
 	@BeforeEach
-	public void setup()
+	void setup()
 	{
 		aDiagram = new Diagram(DiagramType.SEQUENCE);
 		aRenderer = new SequenceDiagramRenderer(aDiagram);
@@ -83,7 +81,7 @@ public class TestCallNodeViewer
 	}
 	
 	@Test
-	public void testGetBoundsSecondCalleeOfCaller()
+	void testGetBoundsSecondCalleeOfCaller()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		aDefaultCallNode1.attach(aDiagram);
@@ -101,13 +99,15 @@ public class TestCallNodeViewer
 		aCallEdge2.connect(aDefaultCallNode1, aCallNode1, aDiagram);
 		aDiagram.addEdge(aCallEdge2);
 		
+		aRenderer.getBounds(); // Trigger rendering pass
+		
 		assertEquals(new Rectangle(32, 80, 16, 120), aRenderer.getBounds(aDefaultCallNode1));
 		assertEquals(new Rectangle(232, 100, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
 		assertEquals(new Rectangle(232, 150, 16, 30), aRenderer.getBounds(aCallNode1));
 	}	
 	
 	@Test
-	public void testGetBoundsWithConstructorCall()
+	void testGetBoundsWithConstructorCall()
 	{
 		aImplicitParameterNode1.addChild(aDefaultCallNode1);
 		aDefaultCallNode1.attach(aDiagram);
@@ -118,6 +118,8 @@ public class TestCallNodeViewer
 		
 		aConstructorEdge.connect(aDefaultCallNode1, aDefaultCallNode2, aDiagram);
 		aDiagram.addEdge(aConstructorEdge);
+		
+		aRenderer.getBounds(); // Trigger rendering pass
 		
 		assertEquals(new Rectangle(32, 80, 16, 135), aRenderer.getBounds(aDefaultCallNode1));
 		assertEquals(new Rectangle(32, 165, 16, 30), aRenderer.getBounds(aDefaultCallNode2));

@@ -39,6 +39,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingUtils;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
@@ -52,11 +53,12 @@ import javafx.scene.paint.Color;
  */
 public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 {
+	public static final int TOP_HEIGHT = 60;
+	
 	private static final int DEFAULT_WIDTH = 80;
 	private static final int DEFAULT_HEIGHT = 120;
 	private static final int HORIZONTAL_PADDING = 10; // 2x the left and right padding around the name of the implicit parameter
 	private static final int TAIL_HEIGHT = 20; // Piece of the life line below the last call node
-	private static final int TOP_HEIGHT = 60;
 	private static final int Y_GAP_SMALL = 20; 
 	private static final StringRenderer NAME_VIEWER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED, TextDecoration.UNDERLINED);
 	
@@ -107,6 +109,17 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
+	/**
+	 * @return The width of the top rectangle.
+	 */
+	public int getWidth(DiagramElement pElement)
+	{
+		assert pElement != null;
+		assert pElement instanceof ImplicitParameterNode;
+		return Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pElement).getName()).width()+ 
+				HORIZONTAL_PADDING, DEFAULT_WIDTH);
+	}
+	
 	private Point getMaxXYofChildren(Node pNode)
 	{
 		int maxY = 0;
@@ -120,6 +133,23 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		return new Point(maxX, maxY);
 	}
 	
+//	/**
+//     * Returns the rectangle at the top of the object node.
+//     * @param pNode the node.
+//     * @return the top rectangle
+//	 */
+//	public Rectangle getTopRectangle(Node pNode)
+//	{
+//		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
+//				HORIZONTAL_PADDING, DEFAULT_WIDTH);
+//		int yVal = 0;
+//		if( isInConstructorCall(pNode) )
+//		{
+//			yVal = getYWithConstructorCall(pNode);
+//		}
+//		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
+//	}
+	
 	/**
      * Returns the rectangle at the top of the object node.
      * @param pNode the node.
@@ -127,14 +157,11 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 	 */
 	public Rectangle getTopRectangle(Node pNode)
 	{
-		int width = Math.max(NAME_VIEWER.getDimension(((ImplicitParameterNode)pNode).getName()).width()+ 
-				HORIZONTAL_PADDING, DEFAULT_WIDTH);
-		int yVal = 0;
-		if( isInConstructorCall(pNode) )
-		{
-			yVal = getYWithConstructorCall(pNode);
-		}
-		return new Rectangle(pNode.position().getX(), yVal, width, TOP_HEIGHT);
+		return new Rectangle(pNode.position().getX(), 				
+				((SequenceDiagramRenderer)parent()).getLifelineTop((ImplicitParameterNode) pNode) - TOP_HEIGHT,
+				getWidth(pNode), 									
+				TOP_HEIGHT);										
+
 	}
 	
 	/**

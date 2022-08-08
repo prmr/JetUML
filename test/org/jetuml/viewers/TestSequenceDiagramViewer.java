@@ -43,6 +43,7 @@ public class TestSequenceDiagramViewer
 	void testNodeAt_NoneShallow()
 	{
 		aDiagram.addRootNode(new ImplicitParameterNode());
+		triggerRenderingPass();
 		assertTrue(aRenderer.nodeAt(new Point(100,100)).isEmpty());
 	}
 	
@@ -52,6 +53,7 @@ public class TestSequenceDiagramViewer
 		NoteNode note = new NoteNode();
 		note.translate(50, 50);
 		aDiagram.addRootNode(note);
+		triggerRenderingPass();
 		assertSame(note, aRenderer.nodeAt(new Point(55,55)).get());
 	}
 	
@@ -61,6 +63,7 @@ public class TestSequenceDiagramViewer
 		ImplicitParameterNode node = new ImplicitParameterNode();
 		node.translate(50, 0);
 		aDiagram.addRootNode(node);
+		triggerRenderingPass();
 		// Inside top rectangle
 		assertSame(node, aRenderer.nodeAt(new Point(60,10)).get());
 		// Below top rectangle
@@ -78,6 +81,8 @@ public class TestSequenceDiagramViewer
 		node2.translate(20, 0);
 		aDiagram.addRootNode(node1);
 		aDiagram.addRootNode(node2);
+		triggerRenderingPass();
+		
 		// Inside top rectangle
 		assertSame(node1, aRenderer.nodeAt(new Point(10,10)).get());
 		assertSame(node2, aRenderer.nodeAt(new Point(25,10)).get());
@@ -103,6 +108,8 @@ public class TestSequenceDiagramViewer
 		edge.connect(callNode1, callNode2, aDiagram);
 		aDiagram.addEdge(edge);
 		
+		triggerRenderingPass();
+		
 		assertSame(callNode1, aRenderer.nodeAt(new Point(35,85)).get());
 		assertSame(callNode2, aRenderer.nodeAt(new Point(135,105)).get());
 	}
@@ -122,8 +129,15 @@ public class TestSequenceDiagramViewer
 		CallEdge edge = new CallEdge();
 		edge.connect(callNode1, callNode2, aDiagram);
 		aDiagram.addEdge(edge);
+		
+		triggerRenderingPass();
 
 		assertSame(callNode1, aRenderer.nodeAt(new Point(38,105)).get());
 		assertSame(callNode2, aRenderer.nodeAt(new Point(42,105)).get());
+	}
+	
+	private void triggerRenderingPass()
+	{
+		aRenderer.getBounds();
 	}
 }

@@ -134,6 +134,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
 				.findFirst()
 				.get();
+		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(largerCallNode);
 		verifyCallNodeDefaultWidth(smallerCallNode);
 	}
@@ -145,6 +146,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 	void testCallNodeDefaultWidthBelowType2Node()
 	{
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
+		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(callNode);
 	}
 	
@@ -155,6 +157,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 	void testCallNodeDefaultWidthBelowObject3Node()
 	{
 		Node callNode = nodeByName("object3:").getChildren().get(0);
+		aRenderer.getBounds(); // Trigger rendering pass
 		verifyCallNodeDefaultWidth(callNode);
 	}
 	
@@ -185,6 +188,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(edgeByMiddleLabel("selfCall()").getEnd()))
 				.findFirst()
 				.get();
+		aRenderer.getBounds(); // Trigger rendering pass
 		Line selfCallEdgeLine = aRenderer.getConnectionPoints(edgeByMiddleLabel("selfCall()"));
 		Rectangle largerCallNodeBounds = aRenderer.getBounds(largerCallNode);
 		Rectangle smallerCallNodeBounds = aRenderer.getBounds(smallerCallNode);
@@ -198,6 +202,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 	@Test
 	void testSignalCallEdge()
 	{
+		aRenderer.getBounds(); // Trigger rendering pass
 		Edge signalCallEdge = edgeByMiddleLabel("signal");
 		Node startNode = nodeByName("object1:Type1").getChildren().get(1);
 		Node endNode = nodeByName(":Type2").getChildren().get(0);
@@ -225,6 +230,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(call1Edge.getEnd()))
 				.findFirst()
 				.get();
+		aRenderer.getBounds(); // Trigger rendering pass
 		Line call1EdgeLine = aRenderer.getConnectionPoints(call1Edge);
 		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
 		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
@@ -249,6 +255,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(r1ReturnEdge.getEnd()))
 				.findFirst()
 				.get();
+		aRenderer.getBounds(); // Trigger rendering pass
 		Line r1ReturnEdgeLine = aRenderer.getConnectionPoints(r1ReturnEdge);
 		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
 		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
@@ -277,6 +284,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 				.filter(node -> node.equals(returnEdge.getEnd()))
 				.findFirst()
 				.get();
+		aRenderer.getBounds(); // Trigger rendering pass
 		Line returnEdgeLine = aRenderer.getConnectionPoints(returnEdge);
 		Rectangle startNodeBounds = aRenderer.getBounds(startNode);
 		Rectangle endNodeBounds = aRenderer.getBounds(endNode);
@@ -293,6 +301,7 @@ public class TestLayoutSequenceDiagram extends AbstractTestSequenceDiagramLayout
 		Node noteNode = nodeByName("A note");
 		Node callNode = nodeByName(":Type2").getChildren().get(0);
 		Line noteEdgeLine = aRenderer.getConnectionPoints(edgesByType(NoteEdge.class).get(0));
+		aRenderer.getBounds(); // Trigger rendering pass
 		Rectangle noteNodeBounds = aRenderer.getBounds(noteNode);
 		Rectangle callNodeBounds = aRenderer.getBounds(callNode);
 		assertEquals(noteNodeBounds.getX(), noteEdgeLine.getPoint1().getX());
