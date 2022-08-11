@@ -97,10 +97,10 @@ public final class ImplicitParameterNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	/**
+	/*
 	 * @return The width of the top rectangle.
 	 */
-	public int getWidth(DiagramElement pElement)
+	private int getWidth(DiagramElement pElement)
 	{
 		assert pElement != null;
 		assert pElement instanceof ImplicitParameterNode;

@@ -20,10 +20,6 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
@@ -37,9 +33,7 @@ import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
 import org.jetuml.rendering.LineStyle;
 import org.jetuml.rendering.RenderingUtils;
-import org.jetuml.rendering.StringRenderer;
-import org.jetuml.rendering.StringRenderer.Alignment;
-import org.jetuml.rendering.StringRenderer.TextDecoration;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -51,13 +45,6 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 {
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
-	private static final int Y_GAP_BIG = 20;
-	private static final int Y_GAP_SMALL = 20; // Was 10, changed to 20 to account for label space
-	private static final int Y_GAP_TINY = 5; // Was 10, changed to 20 to account for label space
-	// Inserts gaps between call nodes so that call edge labels don't intersect
-	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
-	private static final String TEST_STRING = "|";
-	private static final int MINIMUM_SHIFT_THRESHOLD = 10;
 	
 	public CallNodeRenderer(DiagramRenderer pParent)
 	{
@@ -138,112 +125,17 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 		}
 	}
 	
-	/*
-	 * If the node has a caller, the Y coordinate is a gap below the last return Y value
-	 * of the caller or a set distance before the previous call node, whatever is lower.
-	 * If not, it's simply a set distance below the previous call node.
-	 */
-	private int getYWithNoConstructorCall(Node pNode)
-	{
-		final CallNode callNode = (CallNode) pNode;
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) callNode.getParent();
-		final Diagram diagram = callNode.getDiagram().get();
-		if( implicitParameterNode == null || diagram == null )
-		{
-			return 0; // Only used for the ImageCreator
-		}
-		ControlFlow flow = new ControlFlow(diagram);
-		Optional<CallNode> caller = flow.getCaller(callNode);
-		if( caller.isPresent() )
-		{
-			int result = 0;
-			if( flow.isNested(callNode) && flow.isFirstCallee(callNode))
-			{
-				result = getY(caller.get()) + Y_GAP_BIG;
-			}
-			else if( flow.isNested(callNode) && !flow.isFirstCallee(callNode) )
-			{
-				result = getMaxY(flow.getPreviousCallee(callNode)) + Y_GAP_SMALL;
-			}
-			else if( !flow.isNested(callNode) && flow.isFirstCallee(callNode) )
-			{
-				result = getY(caller.get()) + Y_GAP_SMALL;
-			}
-			else
-			{
-				result = getMaxY(flow.getPreviousCallee(callNode)) + Y_GAP_SMALL;
-			}
-			return result;
-		}
-		else
-		{
-			return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_SMALL;
-		}
-	} 
-
-	/**
-	 * @param pNode the node.
-	 * @return If there's no callee, returns a fixed offset from the y position.
-	 *     Otherwise, return with a gap from last callee.
-	 */
-	public int getMaxY(Node pNode)
-	{
-		final CallNode callNode = (CallNode) pNode;
-		final Diagram diagram = callNode.getDiagram().get();
-		List<Node> callees = new ArrayList<>();
-		if( diagram != null )
-		{
-			callees = new ControlFlow(diagram).getCallees(callNode);
-		}
-		if( callees.isEmpty() )
-		{
-			return getY(callNode) + DEFAULT_HEIGHT;
-		}
-		else
-		{
-			return getMaxY(callees.get(callees.size()-1)) + Y_GAP_SMALL;
-		}
-	}
-	
 	@Override
 	protected Rectangle internalGetBounds(Node pNode)
 	{
-		int y = getY(pNode);
-		return new Rectangle(getX(pNode), y, WIDTH, getMaxY(pNode) - y);
+		final int y = parent().getY(pNode);
+		final int maxY = parent().getMaxY(pNode);
+		return new Rectangle(getX(pNode), y, WIDTH, maxY-y);
 	}
 	
-	private int getYWithConstructorCall(Node pNode) 
+	@Override
+	protected SequenceDiagramRenderer parent()
 	{
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
-		return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getMaxY() + Y_GAP_TINY;
-	}
-
-	private static boolean isInConstructorCall(Node pNode)
-	{
-		Optional<Diagram> diagram = pNode.getDiagram();
-		if(diagram.isPresent())
-		{
-			ControlFlow flow = new ControlFlow(diagram.get());
-			return flow.isConstructorExecution(pNode);
-		}
-		return false;
-	}
-	
-	protected int getY(Node pNode)
-	{
-		int shift = NODE_GAP_TESTER.getDimension(TEST_STRING).height() / 3;
-		// Only apply shift if necessary
-		if ( shift < MINIMUM_SHIFT_THRESHOLD )
-		{
-			shift = 0;
-		}
-		if(isInConstructorCall(pNode))
-		{
-			return getYWithConstructorCall(pNode) + shift;
-		}
-		else 
-		{
-			return getYWithNoConstructorCall(pNode) + shift;
-		}
+		return (SequenceDiagramRenderer) super.parent();
 	}
 }

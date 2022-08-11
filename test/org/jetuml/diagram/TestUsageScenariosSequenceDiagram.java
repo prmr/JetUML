@@ -109,6 +109,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addEdge(aCallEdge1, new Point(45, 85), new Point(115,75));
 		assertEquals(1, numberOfEdges());
 		
+		aBuilder.renderer().getBounds(); // Trigger rendering pass
+		
 		ReturnEdge returnEdge1 = new ReturnEdge();
 		addEdge(returnEdge1, new Point(145,105), new Point(45, 90));
 		assertEquals(2, numberOfEdges());
@@ -124,6 +126,8 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(aParameterNode1, new Point(10, 0));
 		addNode(aParameterNode2, new Point(110, 0));
 		addEdge(aCallEdge1, new Point(45, 85), new Point(145,85));
+		
+		aBuilder.renderer().getBounds(); // Trigger rendering pass
 		
 		NoteNode noteNode = new NoteNode();
 		NoteEdge noteEdge1 = new NoteEdge();
@@ -203,6 +207,9 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		addNode(newParameterNode, new Point(210, 0));
 		addEdge(aCallEdge1, new Point(45, 85), new Point(115,85));
 		ReturnEdge returnEdge1 = new ReturnEdge();
+		
+		aBuilder.renderer().getBounds(); // Trigger rendering pass
+		
 		addEdge(returnEdge1, new Point(145,105), new Point(45, 90));		
 		CallEdge callEdge2 = new CallEdge();
 		addEdge(callEdge2, new Point(45, 85), new Point(210,75));

@@ -111,9 +111,10 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private void layout()
 	{
-		computeLifelineInitialPositions();
+		//computeLifelineInitialPositions();
 		computeYPositions();
-		computeCallNodeXPositions();
+//		computeCallNodeXPositions();
+//		System.out.println(aCallNodeBottomCoordinate);
 	}
 	
 	/**
@@ -230,6 +231,28 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			currentYPosition = computeYPosition(callee, currentYPosition);
 		}
 		aCallNodeBottomCoordinate.put(root.get(), currentYPosition + BOTTOM_PADDING);
+	}
+	
+	/**
+	 * @param pNode A callnode in this sequence diagram
+	 * @return The Y-coordinate of the top of the node.
+	 */
+	public int getY(Node pNode)
+	{
+		assert pNode != null;
+		assert aCallNodeTopCoordinate.containsKey(pNode);
+		return aCallNodeTopCoordinate.get(pNode);
+	}
+	
+	/**
+	 * @param pNode A callnode in this sequence diagram
+	 * @return The Y-coordinate of the bottom of the node.
+	 */
+	public int getMaxY(Node pNode)
+	{
+		assert pNode != null;
+		assert aCallNodeBottomCoordinate.containsKey(pNode);
+		return aCallNodeBottomCoordinate.get(pNode);
 	}
 	
 	private void computeCallNodeXPositions()
