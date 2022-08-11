@@ -101,9 +101,9 @@ public class TestCallNodeViewer
 		
 		aRenderer.getBounds(); // Trigger rendering pass
 		
-		assertEquals(new Rectangle(32, 80, 16, 120), aRenderer.getBounds(aDefaultCallNode1));
-		assertEquals(new Rectangle(232, 100, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
-		assertEquals(new Rectangle(232, 150, 16, 30), aRenderer.getBounds(aCallNode1));
+		assertEquals(new Rectangle(30, 80, 16, 120), aRenderer.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(230, 100, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(230, 150, 16, 30), aRenderer.getBounds(aCallNode1));
 	}	
 	
 	@Test
@@ -121,7 +121,7 @@ public class TestCallNodeViewer
 		
 		aRenderer.getBounds(); // Trigger rendering pass
 		
-		assertEquals(new Rectangle(32, 80, 16, 135), aRenderer.getBounds(aDefaultCallNode1));
-		assertEquals(new Rectangle(32, 165, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
+		assertEquals(new Rectangle(30, 80, 16, 135), aRenderer.getBounds(aDefaultCallNode1));
+		assertEquals(new Rectangle(30, 165, 16, 30), aRenderer.getBounds(aDefaultCallNode2));
 	}
 }

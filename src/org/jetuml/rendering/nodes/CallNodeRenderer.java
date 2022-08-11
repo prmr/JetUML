@@ -20,8 +20,6 @@
  *******************************************************************************/
 package org.jetuml.rendering.nodes;
 
-import org.jetuml.diagram.ControlFlow;
-import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.CallNode;
@@ -46,6 +44,9 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	private static final int WIDTH = 16;
 	private static final int DEFAULT_HEIGHT = 30;
 	
+	/* Number of pixels to shift a call node that is nested within another call on the same object. */
+	private static final int NESTING_SHIFT_DISTANCE = 10;
+	
 	public CallNodeRenderer(DiagramRenderer pParent)
 	{
 		super(pParent);
@@ -57,7 +58,7 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 		return new Dimension(WIDTH, DEFAULT_HEIGHT);
 	}
 	
-	private ImplicitParameterNodeRenderer implicitParameterNodeViewer()
+	private ImplicitParameterNodeRenderer implicitParameterNodeRenderer()
 	{
 		return (ImplicitParameterNodeRenderer) parent().rendererFor(ImplicitParameterNode.class);
 	}
@@ -107,22 +108,9 @@ public final class CallNodeRenderer extends AbstractNodeRenderer
 	 */
 	private int getX(Node pNode)
 	{
-		final Diagram diagram = pNode.getDiagram().get();
-		final ImplicitParameterNode implicitParameterNode = (ImplicitParameterNode) pNode.getParent();
-		if(implicitParameterNode != null )
-		{
-			int depth = 0;
-			if( diagram != null )
-			{
-				depth = new ControlFlow(diagram).getNestingDepth((CallNode)pNode);
-			}
-			return implicitParameterNodeViewer().getTopRectangle(implicitParameterNode).getCenter().getX() -
-					WIDTH / 2 + depth * WIDTH/2;
-		}
-		else
-		{
-			return 0;
-		}
+		final int nestingDepth = parent().getNestingDepth((CallNode)pNode);
+		final int lifelineXCoordinate = implicitParameterNodeRenderer().getCenterXCoordinate(pNode.getParent());
+		return lifelineXCoordinate - NESTING_SHIFT_DISTANCE + (NESTING_SHIFT_DISTANCE * nestingDepth);
 	}
 	
 	@Override

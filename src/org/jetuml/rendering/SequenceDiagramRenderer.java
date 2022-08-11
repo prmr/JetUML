@@ -76,7 +76,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	/* Height, in number of pixels, of a call node without any callees. */
 	private static final int LEAF_NODE_HEIGHT = 30;
 	
-	/* Number of pixels to shift a call node that is nested within another call on the same object. */
 	private static final int NESTING_SHIFT_DISTANCE = 10;
 	
 	/* Constants to test the height of the font. */
@@ -191,14 +190,14 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			.findFirst();
 	}
 	
-	/*
+	/**
 	 * @return The number of call nodes active on the same parent when
 	 * this call nodes gets executed. An initial (non-nested) call 
 	 * node on an implicit parameter get result 0. Nesting is generated
 	 * not only by self-calls, but also by any call back to the 
 	 * parent object.
 	 */
-	private int getNestingDepth(CallNode pNode)
+	public int getNestingDepth(CallNode pNode)
 	{
 		assert pNode != null;
 		int result = 0;
