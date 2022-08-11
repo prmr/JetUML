@@ -58,7 +58,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	/* Initial position of the lifeline of an object if it is not the target of a constructor call.  */
 	private static final int INITIAL_Y_POSITION = 80;
 	
-	/* Minimun number of pixels to drop a new call edge from the current position in the call sequence.
+	/* Minimum number of pixels to drop a new call edge from the current position in the call sequence.
 	 * Should then be adjusted based on font size. See method getDropDistance() */
 	private static final int DROP_MIN = 20;
 	
@@ -66,27 +66,18 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 * Independent of font size. */
 	private static final int DROP_CONSTRUCTOR = 85;
 	
-	/* Number of pixels to drop the lifeline from the current positions in the call sequence for a constructor call.
-	 * Independent of font size. */
-	private static final int DROP_LIFELINE = 80;
-	
 	/* Number of pixels to add to a call node below the bottom of its last callee. */
 	private static final int BOTTOM_PADDING = 20;
 	
 	/* Height, in number of pixels, of a call node without any callees. */
 	private static final int LEAF_NODE_HEIGHT = 30;
 	
-	private static final int NESTING_SHIFT_DISTANCE = 10;
-	
 	/* Constants to test the height of the font. */
 	private static final String TEST_STRING = "|";
 	private static final StringRenderer NODE_GAP_TESTER = StringRenderer.get(Alignment.CENTER_CENTER, TextDecoration.PADDED);
 
-	private final Map<Node, Integer> aLifelineXPositions = new IdentityHashMap<>();
-	private final Map<Node, Integer> aLifelineYPositions = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeTopCoordinate = new IdentityHashMap<>();
 	private final Map<Node, Integer> aCallNodeBottomCoordinate = new IdentityHashMap<>();
-	private final Map<Node, Integer> aCallNodeXCoordinate = new IdentityHashMap<>();
 	
 	public SequenceDiagramRenderer(Diagram pDiagram)
 	{
@@ -110,10 +101,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private void layout()
 	{
-		//computeLifelineInitialPositions();
 		computeYPositions();
-//		computeCallNodeXPositions();
-//		System.out.println(aCallNodeBottomCoordinate);
 	}
 	
 	/**
@@ -123,7 +111,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 */
 	private boolean noComputedPositionFound()
 	{
-		return aLifelineXPositions.isEmpty();
+		return aCallNodeTopCoordinate.isEmpty();
 	}
 	
 	@Override
@@ -149,26 +137,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		assert pPoint != null;
 		return ((ImplicitParameterNodeRenderer)rendererFor(pNode.getClass())).
 				getTopRectangle(pNode).contains(pPoint);
-	}
-	
-	/* 
-	 * Computes the final X-coordinate of each lifeline, and positions each 
-	 * lifeline's Y coordinate at 0. If the corresponding object is the 
-	 * target of a constructor call, the lifeline will get repositioned
-	 * lower in computeYPositions()
-	 */
-	private void computeLifelineInitialPositions()
-	{
-		aLifelineXPositions.clear();
-		aLifelineYPositions.clear();
-		for( Node node : diagram().rootNodes() )
-		{
-			if(node.getClass() == ImplicitParameterNode.class)
-			{
-				aLifelineXPositions.put(node, implicitParameterNodeRenderer().getCenterXCoordinate(node));
-				aLifelineYPositions.put(node, 0);
-			}
-		}
 	}
 	
 	/*
@@ -254,20 +222,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		return aCallNodeBottomCoordinate.get(pNode);
 	}
 	
-	private void computeCallNodeXPositions()
-	{
-		aCallNodeXCoordinate.clear();
-		for( Node node : diagram().allNodes() )
-		{
-			if( node instanceof CallNode )
-			{
-				final int nestingDepth = getNestingDepth((CallNode)node);
-				final int lifelineXCoordinate = aLifelineXPositions.get(node.getParent());
-				aCallNodeXCoordinate.put(node, lifelineXCoordinate - NESTING_SHIFT_DISTANCE + (NESTING_SHIFT_DISTANCE * nestingDepth));
-			}
-		}
-	}
-	
 	/*
 	 * Computes the y position of the pNode call node, and all its callees,
 	 * through recursive descent. Also adjust the parent in case it's a constructor call.
@@ -279,7 +233,6 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		if( isConstructorCall(pNode) )
 		{
 			currentPosition += DROP_CONSTRUCTOR;
-			aLifelineYPositions.put(pNode.getParent(), pCurrentPosition + DROP_LIFELINE);
 		}
 		else
 		{
@@ -356,9 +309,9 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			.findFirst();
 	}
 	
-	private ImplicitParameterNodeRenderer implicitParameterNodeRenderer()
+	public int getCenterXCoordinate(ImplicitParameterNode pNode)
 	{
-		return (ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class);
+		return ((ImplicitParameterNodeRenderer)rendererFor(ImplicitParameterNode.class)).getCenterXCoordinate(pNode);
 	}
 	
 	@Override
