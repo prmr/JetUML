@@ -98,59 +98,6 @@ public class TestControlFlow
 		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall2, aCall5);
 	}
 	
-	/*
-	 * Recursive calls.
-	 * 
-	 * aCall1-4 is on aParameter1
-	 * aCall1 calls aCall2
-	 * aCall2 calls aCall3 etc.
-	 */
-	private void createSampleDiagram2()
-	{
-		aDiagram.addRootNode(aParameter1);
-		aParameter1.addChild(aCall1);
-		aParameter1.addChild(aCall2);
-		aParameter1.addChild(aCall3);
-		aParameter1.addChild(aCall4);
-		aDiagramAccessor.connectAndAdd(aCallEdge1, aCall1, aCall2);
-		aDiagramAccessor.connectAndAdd(aCallEdge2, aCall2, aCall3);
-		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall3, aCall4);
-	}
-	
-	@Test
-	void testGetNestingDepth_0()
-	{
-		createSampleDiagram2();
-		assertEquals(0, aFlow.getNestingDepth(aCall1));
-	}
-	
-	@Test
-	void testGetNestingDepth_1()
-	{
-		createSampleDiagram2();
-		assertEquals(1, aFlow.getNestingDepth(aCall2));
-	}
-	
-	@Test
-	void testGetNestingDepth_2()
-	{
-		createSampleDiagram2();
-		assertEquals(2, aFlow.getNestingDepth(aCall3));
-	}
-	
-	@Test
-	void testGetNestingDepth_3()
-	{
-		createSampleDiagram2();
-		assertEquals(3, aFlow.getNestingDepth(aCall4));
-	}
-	
-	@Test
-	void testGetNestingDepth_DifferentParents()
-	{
-		assertEquals(0, aFlow.getNestingDepth(aCall2));
-	}
-	
 	@Test
 	void testHasEntryPoint_No()
 	{
@@ -210,49 +157,6 @@ public class TestControlFlow
 		assertEquals(2, callees.size());
 		assertTrue(callees.contains(aCall3));
 		assertTrue(callees.contains(aCall5));
-	}
-	
-	@Test
-	void testIsNestedNoCaller()
-	{
-		assertFalse(aFlow.isNested(aCall1));
-	}
-	
-	@Test
-	void testIsNestedTrue()
-	{
-		assertTrue(aFlow.isNested(aCall3));
-	}
-	
-	@Test
-	void testIsNestedFalse()
-	{
-		assertFalse(aFlow.isNested(aCall2));
-		assertFalse(aFlow.isNested(aCall4));
-		assertFalse(aFlow.isNested(aCall5));
-	}
-	
-	@Test
-	void testIsFirstCalleeTrue()
-	{
-		assertTrue(aFlow.isFirstCallee(aCall2));
-		assertTrue(aFlow.isFirstCallee(aCall3));
-		assertTrue(aFlow.isFirstCallee(aCall4));
-	}
-	
-	@Test
-	void testIsFirstCalleeFalse()
-	{
-		assertFalse(aFlow.isFirstCallee(aCall5));
-	}
-	
-	@Test
-	void testGetPreviousCallee()
-	{
-		CallNode callNode = new CallNode();
-		aParameter2.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
-		assertSame(aCall2, aFlow.getPreviousCallee(callNode));
 	}
 	
 	@Test
