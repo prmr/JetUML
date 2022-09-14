@@ -60,25 +60,6 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * Returns the list of nodes directly called by pNode,
-	 * in the order of the call sequence.
-	 * 
-	 * @param pNode The node to obtain the callees for.
-	 * @return All Nodes pointed to by an outgoing edge starting
-	 *     at pNode, or the empty list if there are none.
-	 * @pre pNode != null && contains(pNode)
-	 */
-	public List<Node> getCallees(Node pNode)
-	{
-		assert pNode != null && aDiagram.contains(pNode);
-		return aDiagram.edges().stream()
-				.filter(CallEdge.class::isInstance)
-				.filter(edge -> edge.getStart() == pNode)
-				.map(Edge::getEnd)
-				.collect(toList());
-	}
-	
-	/**
 	 * @param pCaller The caller node.
 	 * @return The list of call edges starting at pCaller
 	 * @pre pCaller != null

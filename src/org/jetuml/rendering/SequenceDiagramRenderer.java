@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
@@ -320,7 +319,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 		Optional<Node> result = Optional.empty();
 		if( pNode.getClass() == CallNode.class )
 		{
-			result = new ControlFlow(diagram()).getCallees(pNode).stream()
+			result = getCallees(pNode).stream()
 				.map(node -> deepFindNode(node, pPoint))
 				.filter(Optional::isPresent)
 				.map(Optional::get)

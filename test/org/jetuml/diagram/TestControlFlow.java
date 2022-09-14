@@ -132,34 +132,6 @@ public class TestControlFlow
 	}
 	
 	@Test
-	void testGetCalleesEmpty()
-	{
-		assertTrue( aFlow.getCallees(aCall4).isEmpty());
-		assertTrue( aFlow.getCallees(aCall5).isEmpty());
-	}
-	
-	@Test
-	void testGetCalleesSingle()
-	{
-		List<Node> callees = aFlow.getCallees(aCall1);
-		assertEquals(1, callees.size());
-		assertSame(aCall2, callees.get(0));
-		
-		callees = aFlow.getCallees(aCall3);
-		assertEquals(1, callees.size());
-		assertSame(aCall4, callees.get(0));
-	}
-	
-	@Test
-	void testGetCalleesMultiple()
-	{
-		List<Node> callees = aFlow.getCallees(aCall2);
-		assertEquals(2, callees.size());
-		assertTrue(callees.contains(aCall3));
-		assertTrue(callees.contains(aCall5));
-	}
-	
-	@Test
 	void testIsConstructorExecutionInConstructorCall()
 	{
 		assertTrue(aFlow.isConstructorExecution(aCall2));
