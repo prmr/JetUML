@@ -21,8 +21,11 @@
 
 package org.jetuml.diagram.builder;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
@@ -35,6 +38,7 @@ import org.jetuml.diagram.builder.constraints.EdgeConstraints;
 import org.jetuml.diagram.builder.constraints.SequenceDiagramEdgeConstraints;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
+import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
@@ -116,7 +120,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			}
 			result.addAll(flow.getEdgeDownStreams((Edge)pElement));
 		}	
-		result.addAll(flow.getCorrespondingReturnEdges(result));
+		result.addAll(getCorrespondingReturnEdges(result));
 		//Implicit parameter nodes downstream of constructor calls should not be removed
 		if (pElement instanceof ConstructorEdge) 
 		{
@@ -255,5 +259,36 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 	private ImplicitParameterNodeRenderer implicitParameterNodeViewer()
 	{
 		return (ImplicitParameterNodeRenderer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(ImplicitParameterNode.class);
+	}
+	
+	/**
+	 * @param pElements The DiagramElements to obtain the corresponding ReturnEdges for.
+	 * @return The Collection of corresponding ReturnEdges for pElements.
+	 */
+	private Collection<DiagramElement> getCorrespondingReturnEdges(List<DiagramElement> pElements)
+	{
+		assert pElements != null;
+		Set<DiagramElement> returnEdges = new HashSet<>();
+		for( DiagramElement element: pElements )
+		{
+			if( element instanceof CallEdge )
+			{
+				Optional<Edge> returnEdge = getReturnEdge((Edge) element);
+				if( returnEdge.isPresent() )
+				{
+					returnEdges.add(returnEdge.get());
+				}
+			}
+		}
+		return returnEdges;
+	}
+	
+	private Optional<Edge> getReturnEdge(Edge pEdge)
+	{
+		return renderer().diagram().edges().stream()
+			.filter(ReturnEdge.class::isInstance)
+			.filter(edge -> edge.getStart() == pEdge.getEnd())
+			.filter(edge -> edge.getEnd() == pEdge.getStart())
+			.findFirst();
 	}
 }

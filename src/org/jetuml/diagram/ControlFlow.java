@@ -32,7 +32,6 @@ import java.util.Set;
 import org.jetuml.annotations.Immutable;
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
-import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 
@@ -321,35 +320,4 @@ public final class ControlFlow
 		}
 		return Optional.empty();
 	}	
-	
-	/**
-	 * @param pElements The DiagramElements to obtain the corresponding ReturnEdges for.
-	 * @return The Collection of corresponding ReturnEdges for pElements.
-	 */
-	public Collection<DiagramElement> getCorrespondingReturnEdges(List<DiagramElement> pElements)
-	{
-		assert pElements != null;
-		Set<DiagramElement> returnEdges = new HashSet<>();
-		for( DiagramElement element: pElements )
-		{
-			if( element instanceof CallEdge )
-			{
-				Optional<Edge> returnEdge = getReturnEdge((Edge) element);
-				if( returnEdge.isPresent() )
-				{
-					returnEdges.add(returnEdge.get());
-				}
-			}
-		}
-		return returnEdges;
-	}
-	
-	private Optional<Edge> getReturnEdge(Edge pEdge)
-	{
-		return aDiagram.edges().stream()
-			.filter(ReturnEdge.class::isInstance)
-			.filter(edge -> edge.getStart() == pEdge.getEnd())
-			.filter(edge -> edge.getEnd() == pEdge.getStart())
-			.findFirst();
-	}
 }

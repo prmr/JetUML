@@ -25,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.jetuml.diagram.edges.CallEdge;
@@ -359,22 +357,5 @@ public class TestControlFlow
 		
 		Optional<DiagramElement> start = aFlow.getEdgeStart(constructorEdge);
 		assertTrue(start.isEmpty());
-	}
-	
-	@Test
-	void testGetCorrespondingReturnEdges()
-	{
-		ReturnEdge returnEdge1 = new ReturnEdge();
-		aDiagramAccessor.connectAndAdd(returnEdge1, aCall4, aCall3);
-		List<DiagramElement> elements = new ArrayList<>();
-		elements.add(aConstructorEdge);
-		elements.add(aCallEdge2);
-		elements.add(aCallEdge3);
-		elements.add(aCall1);
-		
-		Collection<DiagramElement> returnEdges = aFlow.getCorrespondingReturnEdges(elements);
-		assertEquals(2, returnEdges.size());
-		assertTrue(returnEdges.contains(aReturnEdge));
-		assertTrue(returnEdges.contains(returnEdge1));
 	}
 }
