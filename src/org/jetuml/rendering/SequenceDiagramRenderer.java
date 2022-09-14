@@ -379,4 +379,18 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 			return DROP_MIN + 10;
 		}
 	}
+	
+	/**
+	 * @return True if there is at least one call node in the diagram.
+	 */
+	public boolean hasEntryPoint()
+	{
+		return diagram().rootNodes().stream().anyMatch(SequenceDiagramRenderer::hasCallNode);
+	}
+	
+	private static boolean hasCallNode(Node pNode)
+	{
+		return pNode.getClass() == ImplicitParameterNode.class &&
+				!pNode.getChildren().isEmpty();
+	}
 }

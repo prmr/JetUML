@@ -99,18 +99,6 @@ public class TestControlFlow
 	}
 	
 	@Test
-	void testHasEntryPoint_No()
-	{
-		assertFalse(new ControlFlow(new Diagram(DiagramType.SEQUENCE)).hasEntryPoint());
-	}
-	
-	@Test
-	void testHasEntryPoint_Yes()
-	{
-		assertTrue(aFlow.hasEntryPoint());
-	}
-	
-	@Test
 	void testGetCallerNoCaller()
 	{
 		assertFalse( aFlow.getCaller(aCall1).isPresent());

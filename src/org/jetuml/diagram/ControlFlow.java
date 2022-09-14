@@ -94,20 +94,6 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * @return True if there is at least one call node in the diagram.
-	 */
-	public boolean hasEntryPoint()
-	{
-		return aDiagram.rootNodes().stream().anyMatch(ControlFlow::hasCallNode);
-	}
-	
-	private static boolean hasCallNode(Node pNode)
-	{
-		return pNode.getClass() == ImplicitParameterNode.class &&
-				!pNode.getChildren().isEmpty();
-	}
-	
-	/**
 	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */

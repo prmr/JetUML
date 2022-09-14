@@ -124,7 +124,7 @@ public final class SequenceDiagramEdgeConstraints
 		{
 			return !(pEdge.getClass() == CallEdge.class && 
 					pStart.getClass() == ImplicitParameterNode.class &&
-					new ControlFlow(pRenderer.diagram()).hasEntryPoint());
+					((SequenceDiagramRenderer)pRenderer).hasEntryPoint());
 		};
 	}
 }
