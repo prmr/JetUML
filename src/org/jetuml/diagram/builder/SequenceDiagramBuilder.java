@@ -42,6 +42,7 @@ import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.jetuml.rendering.nodes.ImplicitParameterNodeRenderer;
 
 /**
@@ -113,7 +114,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		}
 		else if(pElement instanceof Edge)
 		{
-			Optional<DiagramElement> edgeStart = flow.getEdgeStart((Edge)pElement);
+			Optional<DiagramElement> edgeStart = ((SequenceDiagramRenderer)renderer()).getStartNodeIfExclusive((Edge)pElement);
 			if(edgeStart.isPresent())
 			{
 				result.add(edgeStart.get());

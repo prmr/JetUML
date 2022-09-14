@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import org.jetuml.diagram.edges.CallEdge;
 import org.jetuml.diagram.edges.ConstructorEdge;
@@ -303,59 +302,5 @@ public class TestControlFlow
 	void testGetNodeUpstreamsParameterWithNestedCallers()
 	{
 		assertEquals(0, aFlow.getNodeUpstreams(aParameter3).size());
-	}
-	
-	@Test 
-	void testGetEdgeStartNoteEdge()
-	{
-		NoteNode noteNode = new NoteNode();
-		NoteEdge noteEdge = new NoteEdge();
-		aDiagramAccessor.connectAndAdd(noteEdge, aCall1, noteNode);
-		assertTrue(aFlow.getEdgeStart(noteEdge).isEmpty());
-	}
-	
-	@Test 
-	void testGetEdgeStartHasNoOtherFlows()
-	{
-		Optional<DiagramElement> start = aFlow.getEdgeStart(aConstructorEdge);
-		assertTrue(start.isPresent());
-		assertSame(aCall1, start.get());
-	}
-	
-	@Test 
-	void testGetEdgeStartHasOtherFlowsInConstructorCall()
-	{
-		CallNode callNode = new CallNode();
-		aParameter2.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
-		
-		Optional<DiagramElement> start = aFlow.getEdgeStart(aConstructorEdge);
-		assertTrue(start.isPresent());
-		assertSame(aCall1, start.get());
-	}
-	
-	@Test 
-	void testGetEdgeStartHasOtherFlowsBesidesConstructorCall()
-	{
-		CallNode callNode = new CallNode();
-		aParameter3.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
-		
-		Optional<DiagramElement> start = aFlow.getEdgeStart(aConstructorEdge);
-		assertTrue(start.isEmpty());
-	}
-	
-	@Test 
-	void testGetEdgeStartHasOtherFlowsNestedConstructorCall()
-	{
-		ImplicitParameterNode parameter = new ImplicitParameterNode();
-		CallNode  callNode = new CallNode();
-		ConstructorEdge constructorEdge = new ConstructorEdge();
-		aDiagram.addRootNode(parameter);
-		parameter.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(constructorEdge, aCall2, callNode);
-		
-		Optional<DiagramElement> start = aFlow.getEdgeStart(constructorEdge);
-		assertTrue(start.isEmpty());
 	}
 }

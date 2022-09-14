@@ -240,19 +240,10 @@ public final class ControlFlow
 		return downstreamElements;
 	}
 	
-	private boolean onlyCallsOneObject(Node pCaller, Node pParentNode)
+	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
 	{
 		assert pCaller!= null && pParentNode != null;
 		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
-	}
-	
-	private boolean onlyConnectedToOneEdge(Node pNode, Edge pEdge)
-	{
-		assert pNode != null && pEdge != null;
-		List<CallEdge> calls = getCalls(pNode);
-		return  getCaller(pNode).isEmpty() &&
-				calls.size() == 1 &&
-				calls.contains(pEdge);
 	}
 	
 	/**
@@ -280,7 +271,7 @@ public final class ControlFlow
 				{
 					getCalls(callerNode).stream().filter(e -> e.getEnd().getParent() == pNode.getParent())
 												 .forEach(e -> elements.add(e));
-					if( onlyCallsOneObject(callerNode, pNode.getParent()) )
+					if( onlyCallsToASingleImplicitParameterNode(callerNode, pNode.getParent()) )
 					{
 						elements.add(callerNode);
 					}
@@ -290,34 +281,11 @@ public final class ControlFlow
 		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 )
 		{
 			Optional<CallNode> caller = getCaller(firstChildOf(pNode));
-			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsOneObject(caller.get(), pNode) )
+			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsToASingleImplicitParameterNode(caller.get(), pNode) )
 			{
 				elements.add(caller.get());
 			}
 		}
 		return elements;
 	}
-	
-	/**
-	 * @param pEdge The Edge to obtain the edge start for.
-	 * @return The Optional value of the start Node for pEdge.
-	 * @pre pEdge != null
-	 */
-	public Optional<DiagramElement> getEdgeStart(Edge pEdge)
-	{
-		assert pEdge != null;
-		Node start = pEdge.getStart();
-		if( onlyConnectedToOneEdge(start, pEdge) )
-		{
-			return Optional.of(start);
-		}
-		else if( pEdge.getClass() == ConstructorEdge.class )
-		{
-			if ( getCaller(start).isEmpty() && onlyCallsOneObject(start, pEdge.getEnd().getParent()) )
-			{
-				return Optional.of(start);
-			}
-		}
-		return Optional.empty();
-	}	
 }

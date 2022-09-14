@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jetuml.diagram.Diagram;
+import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
@@ -392,5 +393,66 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	{
 		return pNode.getClass() == ImplicitParameterNode.class &&
 				!pNode.getChildren().isEmpty();
+	}
+	
+	/**
+	 * Returns the start node for pEdge if it is exclusive
+	 * to pEdge, namely if it only has pEdge as an outgoing 
+	 * call edge.
+	 * 
+	 * @param pEdge The Edge to obtain the edge start for.
+	 * @return The Optional value of the start Node for pEdge.
+	 * @pre pEdge != null
+	 */
+	public Optional<DiagramElement> getStartNodeIfExclusive(Edge pEdge)
+	{
+		assert pEdge != null;
+		if( startNodeOnlyCalls(pEdge) )
+		{
+			return Optional.of(pEdge.getStart());
+		}
+		else if( pEdge.getClass() == ConstructorEdge.class )
+		{
+			// We delete the start node of pEdge if it does not have any caller and only makes calls to the 
+			// object being constructed.
+			if ( getCaller(pEdge.getStart()).isEmpty() && onlyCallsToASingleImplicitParameterNode(pEdge.getStart(), pEdge.getEnd().getParent()) )
+			{
+				return Optional.of(pEdge.getStart());
+			}
+		}
+		return Optional.empty();
+	}
+	
+	/* 
+	 * returns true iif pEdge's start node only calls pEdge.
+	 */
+	private boolean startNodeOnlyCalls(Edge pEdge)
+	{
+		assert pEdge != null && pEdge.getStart() != null;
+		List<CallEdge> calls = getCalls(pEdge.getStart());
+		return  getCaller(pEdge.getStart()).isEmpty() &&
+				calls.size() == 1 &&
+				calls.contains(pEdge);
+	}
+	
+	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
+	{
+		assert pCaller!= null && pParentNode != null;
+		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
+	}
+	
+	/**
+	 * @param pCaller The caller node.
+	 * @return The list of call edges starting at pCaller
+	 * @pre pCaller != null
+	 */
+	private List<CallEdge> getCalls(Node pCaller)
+	{
+		assert pCaller != null;
+		return diagram().edges().stream()
+				.filter(CallEdge.class::isInstance)
+				.map(CallEdge.class::cast)
+				.filter(edge -> edge.getStart() == pCaller)
+				.collect(toList());
 	}
 }
