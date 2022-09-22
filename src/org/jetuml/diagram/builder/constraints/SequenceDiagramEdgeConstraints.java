@@ -21,7 +21,6 @@
 
 package org.jetuml.diagram.builder.constraints;
 
-import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
@@ -62,12 +61,11 @@ public final class SequenceDiagramEdgeConstraints
 		//ControlFlow flow = new ControlFlow(pDiagram);
 		return (Edge pEdge, Node pStart, Node pEnd, Point pStartPoint, Point pEndPoint, DiagramRenderer pRenderer)->
 		{
-			ControlFlow flow = new ControlFlow(pRenderer.diagram());
 			return !(pEdge.getClass() == ReturnEdge.class && 
 					(pStart.getClass() != CallNode.class ||
 					 pEnd.getClass() != CallNode.class ||
-					 !flow.getCaller(pStart).isPresent() ||
-					 pEnd != flow.getCaller(pStart).get() ||
+					 !((SequenceDiagramRenderer)pRenderer).getCaller(pStart).isPresent() ||
+					 pEnd != ((SequenceDiagramRenderer)pRenderer).getCaller(pStart).get() ||
 					 pStart.getParent() == pEnd.getParent()));
 		};
 	}

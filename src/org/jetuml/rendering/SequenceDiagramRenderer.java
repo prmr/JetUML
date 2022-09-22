@@ -147,7 +147,7 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	 *     at pNode, if there is one.
 	 * @pre pNode != null && contains(pNode)
 	 */
-	private Optional<CallNode> getCaller(Node pNode)
+	public Optional<CallNode> getCaller(Node pNode)
 	{
 		assert pNode != null && diagram().contains(pNode);
 		return diagram().edges().stream()

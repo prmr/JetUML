@@ -74,25 +74,6 @@ public final class ControlFlow
 	}
 	
 	/**
-	 * Returns the caller of a node, if it exists.
-	 * 
-	 * @param pNode The node to obtain the caller for.
-	 * @return The CallNode that has a outgoing edge terminated
-	 *     at pNode, if there is one.
-	 * @pre pNode != null && contains(pNode)
-	 */
-	public Optional<CallNode> getCaller(Node pNode)
-	{
-		assert pNode != null && aDiagram.contains(pNode);
-		return aDiagram.edges().stream()
-			.filter(CallEdge.class::isInstance)
-			.filter(edge -> edge.getEnd() == pNode)
-			.map(Edge::getStart)
-			.map(CallNode.class::cast)
-			.findFirst();
-	}
-	
-	/**
 	 * @param pNode The node to check.
 	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
 	 */
@@ -238,54 +219,5 @@ public final class ControlFlow
 			}
 		}
 		return downstreamElements;
-	}
-	
-	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
-	{
-		assert pCaller!= null && pParentNode != null;
-		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
-	}
-	
-	/**
-	 * @param pNode The Node to obtain the caller and upstream DiagramElements for.
-	 * @return The Collection of DiagramElements in the upstream of pNode.
-	 *     Excludes pNode and elements returned by getCoRemovals method in the DiagramBuilder class.
-	 * @pre pNode != null
-	 */
-	public Collection<DiagramElement> getNodeUpstreams(Node pNode)
-	{
-		assert pNode != null;
-		Set<DiagramElement> elements = new HashSet<>();
-		if( pNode.getClass() == CallNode.class )
-		{
-			Optional<CallNode> caller = getCaller(pNode);
-			if( caller.isPresent() && getCaller(caller.get()).isEmpty() )
-			{
-				CallNode callerNode = caller.get();
-				// If the caller is only connected to one call
-				if( getCalls(callerNode).size() == 1 && getCalls(callerNode).get(0).getEnd() == pNode )
-				{
-					elements.add(callerNode);
-				}
-				else if( isConstructorExecution(pNode) )
-				{
-					getCalls(callerNode).stream().filter(e -> e.getEnd().getParent() == pNode.getParent())
-												 .forEach(e -> elements.add(e));
-					if( onlyCallsToASingleImplicitParameterNode(callerNode, pNode.getParent()) )
-					{
-						elements.add(callerNode);
-					}
-				}
-			}
-		}
-		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 )
-		{
-			Optional<CallNode> caller = getCaller(firstChildOf(pNode));
-			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsToASingleImplicitParameterNode(caller.get(), pNode) )
-			{
-				elements.add(caller.get());
-			}
-		}
-		return elements;
 	}
 }

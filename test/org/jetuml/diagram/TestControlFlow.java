@@ -22,7 +22,6 @@ package org.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
@@ -95,26 +94,26 @@ public class TestControlFlow
 		aDiagramAccessor.connectAndAdd(aCallEdge3, aCall2, aCall5);
 	}
 	
-	@Test
-	void testGetCallerNoCaller()
-	{
-		assertFalse( aFlow.getCaller(aCall1).isPresent());
-	}
-	
-	@Test
-	void testGetCallerSameParameter()
-	{
-		assertSame( aCall2, aFlow.getCaller(aCall3).get());
-	}
-	
-	@Test
-	void testGetCallerDifferentParameter()
-	{
-		assertSame( aCall1, aFlow.getCaller(aCall2).get());
-		assertSame( aCall2, aFlow.getCaller(aCall3).get());
-		assertSame( aCall3, aFlow.getCaller(aCall4).get());
-		assertSame( aCall2, aFlow.getCaller(aCall5).get());
-	}
+//	@Test
+//	void testGetCallerNoCaller()
+//	{
+//		assertFalse( aFlow.getCaller(aCall1).isPresent());
+//	}
+//	
+//	@Test
+//	void testGetCallerSameParameter()
+//	{
+//		assertSame( aCall2, aFlow.getCaller(aCall3).get());
+//	}
+//	
+//	@Test
+//	void testGetCallerDifferentParameter()
+//	{
+//		assertSame( aCall1, aFlow.getCaller(aCall2).get());
+//		assertSame( aCall2, aFlow.getCaller(aCall3).get());
+//		assertSame( aCall3, aFlow.getCaller(aCall4).get());
+//		assertSame( aCall2, aFlow.getCaller(aCall5).get());
+//	}
 	
 	@Test
 	void testIsConstructorExecutionInConstructorCall()
@@ -214,93 +213,93 @@ public class TestControlFlow
 		assertTrue(downstreams.contains(aConstructorEdge));
 	}
 	
-	@Test
-	void testGetNodeUpstreamsIfNoOtherFlows()
-	{
-		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
-		assertEquals(1, upstreams.size());
-		assertTrue(upstreams.contains(aCall1));
-	}
-
-	@Test
-	void testGetNodeUpstreamsIfHasOtherFlows()
-	{
-		CallNode callNode = new CallNode();
-		aParameter3.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
-		assertEquals(0, aFlow.getNodeUpstreams(callNode).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsIfHasOtherFlowsInConstructorExecution()
-	{
-		CallNode callNode = new CallNode();
-		aParameter2.addChild(callNode);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
-		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
-		assertEquals(3, upstreams.size());
-		assertTrue(upstreams.contains(aConstructorEdge));
-		assertTrue(upstreams.contains(aCall1));
-		assertTrue(upstreams.contains(aCallEdge4));
-	}
-	
-	@Test
-	void testGetNodeUpstreamsHasOtherFlowBesidesConstructorCall()
-	{
-		CallNode call1 = new CallNode();
-		CallNode call2 = new CallNode();
-		CallEdge callEdge = new CallEdge();
-		aParameter2.addChild(call1);
-		aParameter3.addChild(call2);
-		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, call1);
-		aDiagramAccessor.connectAndAdd(callEdge, aCall1, call2);
-		
-		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
-		assertEquals(2, upstreams.size());
-		assertTrue(upstreams.contains(aConstructorEdge));
-		assertTrue(upstreams.contains(aCallEdge4));
-		assertEquals(0, aFlow.getNodeUpstreams(aParameter2).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsWithNestedCallers()
-	{
-		assertEquals(0, aFlow.getNodeUpstreams(aCall4).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsNoteNode()
-	{
-		NoteNode noteNode = new NoteNode();
-		aDiagram.addRootNode(noteNode);
-		assertEquals(0, aFlow.getNodeUpstreams(noteNode).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsConstructedObject()
-	{
-		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aParameter2);
-		assertEquals(1, upstreams.size());
-		assertTrue(upstreams.contains(aCall1));
-	}
-	
-	@Test
-	void testGetNodeUpstreamsUnconnectedParameter()
-	{
-		ImplicitParameterNode parameter = new ImplicitParameterNode();
-		aDiagram.addRootNode(parameter);
-		assertEquals(0, aFlow.getNodeUpstreams(parameter).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsParameterWithNoCaller()
-	{
-		assertEquals(0, aFlow.getNodeUpstreams(aParameter1).size());
-	}
-	
-	@Test
-	void testGetNodeUpstreamsParameterWithNestedCallers()
-	{
-		assertEquals(0, aFlow.getNodeUpstreams(aParameter3).size());
-	}
+//	@Test
+//	void testGetNodeUpstreamsIfNoOtherFlows()
+//	{
+//		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
+//		assertEquals(1, upstreams.size());
+//		assertTrue(upstreams.contains(aCall1));
+//	}
+//
+//	@Test
+//	void testGetNodeUpstreamsIfHasOtherFlows()
+//	{
+//		CallNode callNode = new CallNode();
+//		aParameter3.addChild(callNode);
+//		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
+//		assertEquals(0, aFlow.getNodeUpstreams(callNode).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsIfHasOtherFlowsInConstructorExecution()
+//	{
+//		CallNode callNode = new CallNode();
+//		aParameter2.addChild(callNode);
+//		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, callNode);
+//		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
+//		assertEquals(3, upstreams.size());
+//		assertTrue(upstreams.contains(aConstructorEdge));
+//		assertTrue(upstreams.contains(aCall1));
+//		assertTrue(upstreams.contains(aCallEdge4));
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsHasOtherFlowBesidesConstructorCall()
+//	{
+//		CallNode call1 = new CallNode();
+//		CallNode call2 = new CallNode();
+//		CallEdge callEdge = new CallEdge();
+//		aParameter2.addChild(call1);
+//		aParameter3.addChild(call2);
+//		aDiagramAccessor.connectAndAdd(aCallEdge4, aCall1, call1);
+//		aDiagramAccessor.connectAndAdd(callEdge, aCall1, call2);
+//		
+//		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aCall2);
+//		assertEquals(2, upstreams.size());
+//		assertTrue(upstreams.contains(aConstructorEdge));
+//		assertTrue(upstreams.contains(aCallEdge4));
+//		assertEquals(0, aFlow.getNodeUpstreams(aParameter2).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsWithNestedCallers()
+//	{
+//		assertEquals(0, aFlow.getNodeUpstreams(aCall4).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsNoteNode()
+//	{
+//		NoteNode noteNode = new NoteNode();
+//		aDiagram.addRootNode(noteNode);
+//		assertEquals(0, aFlow.getNodeUpstreams(noteNode).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsConstructedObject()
+//	{
+//		Collection<DiagramElement> upstreams = aFlow.getNodeUpstreams(aParameter2);
+//		assertEquals(1, upstreams.size());
+//		assertTrue(upstreams.contains(aCall1));
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsUnconnectedParameter()
+//	{
+//		ImplicitParameterNode parameter = new ImplicitParameterNode();
+//		aDiagram.addRootNode(parameter);
+//		assertEquals(0, aFlow.getNodeUpstreams(parameter).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsParameterWithNoCaller()
+//	{
+//		assertEquals(0, aFlow.getNodeUpstreams(aParameter1).size());
+//	}
+//	
+//	@Test
+//	void testGetNodeUpstreamsParameterWithNestedCallers()
+//	{
+//		assertEquals(0, aFlow.getNodeUpstreams(aParameter3).size());
+//	}
 }

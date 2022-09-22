@@ -21,6 +21,8 @@
 
 package org.jetuml.diagram.builder;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -109,7 +111,7 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 		ControlFlow flow = new ControlFlow(aDiagramRenderer.diagram());
 		if(pElement instanceof Node)
 		{
-			result.addAll(flow.getNodeUpstreams((Node)pElement));
+			result.addAll(getNodeUpstreams((Node)pElement));
 			result.addAll(flow.getNodeDownStreams((Node)pElement));
 		}
 		else if(pElement instanceof Edge)
@@ -291,5 +293,101 @@ public class SequenceDiagramBuilder extends DiagramBuilder
 			.filter(edge -> edge.getStart() == pEdge.getEnd())
 			.filter(edge -> edge.getEnd() == pEdge.getStart())
 			.findFirst();
+	}
+	
+	/**
+	 * @param pNode The node to check.
+	 * @return True if pNode is a CallNode and is at the end of a ConstructorEdge.
+	 */
+	private boolean isConstructorExecution(Node pNode)
+	{
+		assert pNode != null;
+		if( pNode.getClass() != CallNode.class )
+		{
+			return false;
+		}
+		for( Edge edge : diagram().edges() )
+		{
+			if ( edge.getEnd() == pNode && edge.getClass() == ConstructorEdge.class )
+			{
+				return true;
+			}
+		}
+		return false;	
+	}
+	
+	/**
+	 * @param pNode The Node to obtain the caller and upstream DiagramElements for.
+	 * @return The Collection of DiagramElements in the upstream of pNode.
+	 *     Excludes pNode and elements returned by getCoRemovals method in the DiagramBuilder class.
+	 * @pre pNode != null
+	 */
+	private Collection<DiagramElement> getNodeUpstreams(Node pNode)
+	{
+		assert pNode != null;
+		Set<DiagramElement> elements = new HashSet<>();
+		if( pNode.getClass() == CallNode.class )
+		{
+			Optional<CallNode> caller = getCaller(pNode);
+			if( caller.isPresent() && getCaller(caller.get()).isEmpty() )
+			{
+				CallNode callerNode = caller.get();
+				// If the caller is only connected to one call
+				if( getCalls(callerNode).size() == 1 && getCalls(callerNode).get(0).getEnd() == pNode )
+				{
+					elements.add(callerNode);
+				}
+				else if( isConstructorExecution(pNode) )
+				{
+					getCalls(callerNode).stream().filter(e -> e.getEnd().getParent() == pNode.getParent())
+												 .forEach(e -> elements.add(e));
+					if( onlyCallsToASingleImplicitParameterNode(callerNode, pNode.getParent()) )
+					{
+						elements.add(callerNode);
+					}
+				}
+			}
+		}
+		else if( pNode.getClass() == ImplicitParameterNode.class && pNode.getChildren().size() > 0 )
+		{
+			Optional<CallNode> caller = getCaller(firstChildOf(pNode));
+			if( caller.isPresent() && getCaller(caller.get()).isEmpty() && onlyCallsToASingleImplicitParameterNode(caller.get(), pNode) )
+			{
+				elements.add(caller.get());
+			}
+		}
+		return elements;
+	}
+	
+	private Optional<CallNode> getCaller(Node pNode)
+	{
+		return ((SequenceDiagramRenderer)renderer()).getCaller(pNode);
+	}
+	
+	private boolean onlyCallsToASingleImplicitParameterNode(Node pCaller, Node pParentNode)
+	{
+		assert pCaller!= null && pParentNode != null;
+		return getCalls(pCaller).stream().allMatch(edge -> edge.getEnd().getParent() == pParentNode);
+	}
+	
+	private static Node firstChildOf(Node pNode)
+	{
+		assert pNode.getChildren().size() > 0;
+		return pNode.getChildren().get(0);
+	}
+	
+	/**
+	 * @param pCaller The caller node.
+	 * @return The list of call edges starting at pCaller
+	 * @pre pCaller != null
+	 */
+	private List<CallEdge> getCalls(Node pCaller)
+	{
+		assert pCaller != null;
+		return diagram().edges().stream()
+				.filter(CallEdge.class::isInstance)
+				.map(CallEdge.class::cast)
+				.filter(edge -> edge.getStart() == pCaller)
+				.collect(toList());
 	}
 }

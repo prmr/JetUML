@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 import org.jetuml.JavaFXLoader;
-import org.jetuml.diagram.ControlFlow;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
 import org.jetuml.diagram.DiagramType;
@@ -42,6 +41,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.PointNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.DiagramRenderer;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -78,35 +78,35 @@ public class TestPersistenceService
 							"testPersistenceService.usecase.jet"})
 	public void test( String pFileName ) throws Exception
 	{
-		Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
+		final Diagram diagram = PersistenceService.read(PATH_TEST_FILES.resolve(pFileName).toFile()).diagram();
 		DiagramRenderer renderer = DiagramType.newRendererInstanceFor(diagram);
 		
 		Map<String, Rectangle> bounds = new HashMap<>();
 		
 		// Create a list of all bounds, indexed by object hash
 		renderer.getBounds(); // Triggers a layout pass
-		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(node), renderer.getBounds(node)));
-		diagram.edges().forEach( edge -> bounds.put(hash(edge), renderer.getBounds(edge)));
+		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> bounds.put(hash(diagram, node), renderer.getBounds(node)));
+		diagram.edges().forEach( edge -> bounds.put(hash(diagram, edge), renderer.getBounds(edge)));
 		
 		// Save the diagram in a new file, and re-load it
 		File temporaryFile = PATH_TEMPORARY_FILE.toFile();
 		PersistenceService.save(diagram, temporaryFile);
-		diagram = PersistenceService.read(temporaryFile).diagram();
-		DiagramRenderer renderer2 = DiagramType.newRendererInstanceFor(diagram);
+		Diagram diagram2 = PersistenceService.read(temporaryFile).diagram();
+		DiagramRenderer renderer2 = DiagramType.newRendererInstanceFor(diagram2);
 		renderer2.getBounds(); // Triggers a layout pass
 		
 		temporaryFile.delete();
 		
 		// Check that all bounds match
-		PersistenceTestUtils.getAllNodes(diagram).forEach( node -> assertEquals(bounds.get(hash(node)), renderer2.getBounds(node), hash(node)));
-		diagram.edges().forEach( edge -> assertEquals(bounds.get(hash(edge)), renderer2.getBounds(edge), hash(edge)));
+		PersistenceTestUtils.getAllNodes(diagram2).forEach( node -> assertEquals(bounds.get(hash(diagram2, node)), renderer2.getBounds(node), hash(diagram2, node)));
+		diagram2.edges().forEach( edge -> assertEquals(bounds.get(hash(diagram2, edge)), renderer2.getBounds(edge), hash(diagram2, edge)));
 	}
 	
 	/*
 	 * @return A string that is intended to uniquely represent the diagram element within a diagram,
 	 * in a way that is resilient to serialization.
 	 */
-	private static String hash(DiagramElement pElement)
+	private static String hash(Diagram pDiagram, DiagramElement pElement)
 	{
 		StringJoiner result = new StringJoiner("|");
 		
@@ -118,15 +118,15 @@ public class TestPersistenceService
 		// start and end nodes
 		if( pElement instanceof Edge )
 		{
-			result.add(hash(((Edge)pElement).getStart()));
-			result.add(hash(((Edge)pElement).getEnd()));
+			result.add(hash(pDiagram, ((Edge)pElement).getStart()));
+			result.add(hash(pDiagram, ((Edge)pElement).getEnd()));
 		}
 		
 		// Call nodes don't have any properties, so we add their order in the control flow
 		// as a unique indicator.
 		if( pElement instanceof CallNode )
 		{
-			result.add(Integer.toString(getNumberOfCallers((CallNode) pElement)));
+			result.add(Integer.toString(getNumberOfCallers(pDiagram, (CallNode) pElement)));
 		}
 		
 		// Point nodes don't have any properties, so we add the properties of the other node
@@ -148,7 +148,7 @@ public class TestPersistenceService
 			{
 				node = ((NoteEdge)pElement).getEnd();
 			}
-			result.add(hash(node));
+			result.add(hash(pDiagram, node));
 		}
 		return result.toString();
 	}
@@ -157,16 +157,16 @@ public class TestPersistenceService
 	 * This method is located here instead of in ControlFlow because the only usage
 	 * scenario is for testing, so we prefer not to pollute the classe's interface.
 	 */
-	private static int getNumberOfCallers(CallNode pNode) 
+	private static int getNumberOfCallers(Diagram pDiagram, CallNode pNode) 
 	{
-		assert pNode.getDiagram().isPresent();
-		ControlFlow controlFlow = new ControlFlow(pNode.getDiagram().get());
-		Optional<CallNode> caller = controlFlow.getCaller(pNode);
+		SequenceDiagramRenderer renderer = (SequenceDiagramRenderer)DiagramType.newRendererInstanceFor(pDiagram);
+		renderer.getBounds();
+		Optional<CallNode> caller = renderer.getCaller(pNode);
 		int result = 0;
 		while( caller.isPresent() )
 		{
 			result++;
-			caller = controlFlow.getCaller(caller.get());
+			caller = renderer.getCaller(caller.get());
 		}
 		return result;
 	}
