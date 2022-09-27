@@ -36,7 +36,6 @@ import org.jetuml.diagram.nodes.FieldNode;
 import org.jetuml.diagram.nodes.ObjectNode;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.rendering.ObjectDiagramRenderer;
-import org.jetuml.rendering.nodes.FieldNodeRenderer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

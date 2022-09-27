@@ -42,8 +42,6 @@ import org.jetuml.geom.Point;
 import org.jetuml.rendering.ArrowHead;
 import org.jetuml.rendering.ClassDiagramRenderer;
 import org.jetuml.rendering.LineStyle;
-import org.jetuml.rendering.edges.EdgeStorage;
-import org.jetuml.rendering.edges.StoredEdgeRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

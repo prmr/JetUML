@@ -28,8 +28,6 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.rendering.DiagramRenderer;
 import org.junit.jupiter.api.Test;
 
 public class TestDiagramViewer

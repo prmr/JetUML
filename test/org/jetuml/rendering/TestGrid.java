@@ -23,7 +23,6 @@ package org.jetuml.rendering;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.Grid;
 import org.junit.jupiter.api.Test;
 
 public class TestGrid

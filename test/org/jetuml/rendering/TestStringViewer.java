@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.jetuml.application.UserPreferences;
 import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.geom.Dimension;
-import org.jetuml.rendering.StringRenderer;
 import org.jetuml.rendering.StringRenderer.Alignment;
 import org.jetuml.rendering.StringRenderer.TextDecoration;
 import org.junit.jupiter.api.AfterAll;

@@ -35,7 +35,6 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge.Type;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.jetuml.rendering.EdgePriority;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

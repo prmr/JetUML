@@ -31,7 +31,6 @@ import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.nodes.ActorNodeRenderer;
 import org.jetuml.testutils.GeometryUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

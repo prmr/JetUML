@@ -30,8 +30,6 @@ import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.DiagramRenderer;
-import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.Test;
 
 public class TestSequenceDiagramViewer

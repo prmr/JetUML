@@ -48,9 +48,6 @@ import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Rectangle;
 import org.jetuml.geom.Side;
-import org.jetuml.rendering.ClassDiagramRenderer;
-import org.jetuml.rendering.EdgePriority;
-import org.jetuml.rendering.NodeCorner;
 import org.jetuml.rendering.edges.EdgeStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -2781,7 +2778,7 @@ public class TestLayouter
 		catch(ReflectiveOperationException e)
 		{
 			fail();
-			return (EdgePath) null;
+			return null;
 		}
 	}
 	
@@ -2796,7 +2793,7 @@ public class TestLayouter
 		catch(ReflectiveOperationException e)
 		{
 			fail();
-			return (Side) null;
+			return null;
 		}
 	}
 	

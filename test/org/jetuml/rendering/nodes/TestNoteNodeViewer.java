@@ -28,7 +28,6 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Direction;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.nodes.NoteNodeRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
