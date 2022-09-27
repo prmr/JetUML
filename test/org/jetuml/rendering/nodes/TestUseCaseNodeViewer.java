@@ -1,7 +1,7 @@
 /*******************************************************************************
  * JetUML - A desktop application for fast UML diagramming.
  *
- * Copyright (C) 2020, 2021 by McGill University.
+ * Copyright (C) 2020 by McGill University.
  *     
  * See: https://github.com/prmr/JetUML
  *
@@ -18,50 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses.
  *******************************************************************************/
-package org.jetuml.viewers.nodes;
+package org.jetuml.rendering.nodes;
 
-import static org.jetuml.rendering.FontMetrics.DEFAULT_FONT_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.JavaFXLoader;
-import org.jetuml.application.UserPreferences;
-import org.jetuml.application.UserPreferences.IntegerPreference;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
-import org.jetuml.diagram.nodes.ActorNode;
+import org.jetuml.diagram.nodes.UseCaseNode;
 import org.jetuml.geom.Point;
-import org.jetuml.rendering.nodes.ActorNodeRenderer;
-import org.jetuml.testutils.GeometryUtils;
-import org.junit.jupiter.api.AfterAll;
+import org.jetuml.rendering.nodes.UseCaseNodeRenderer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestActorNodeViewer
+public class TestUseCaseNodeViewer
 {
-	private static int userDefinedFontSize;
-	private ActorNode aNode; 
-	private final ActorNodeRenderer aViewer = new ActorNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
+	private UseCaseNode aNode; 
+	private final UseCaseNodeRenderer aViewer = new UseCaseNodeRenderer(DiagramType.newRendererInstanceFor(new Diagram(DiagramType.USECASE)));
 	
 	@BeforeAll
 	public static void setupClass()
 	{
-		userDefinedFontSize = UserPreferences.instance().getInteger(UserPreferences.IntegerPreference.fontSize);
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, DEFAULT_FONT_SIZE);
 		JavaFXLoader.load();
 	}
 	
 	@BeforeEach
 	public void setup()
 	{
-		aNode = new ActorNode();
-	}
-	
-	@AfterAll
-	public static void restorePreferences()
-	{
-		UserPreferences.instance().setInteger(IntegerPreference.fontSize, userDefinedFontSize);
+		aNode = new UseCaseNode();
 	}
 	
 	@Test
@@ -69,8 +55,8 @@ public class TestActorNodeViewer
 	{
 		aNode.setName("");
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-		assertEquals(48, aViewer.getBounds(aNode).getWidth());
-		assertEquals(64, aViewer.getBounds(aNode).getHeight());
+		assertEquals(110, aViewer.getBounds(aNode).getWidth());
+		assertEquals(40, aViewer.getBounds(aNode).getHeight());
 	}
 	
 	@Test
@@ -78,16 +64,16 @@ public class TestActorNodeViewer
 	{
 		aNode.setName("X");
 		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
-		assertEquals(48, aViewer.getBounds(aNode).getWidth());
-		assertTrue(aViewer.getBounds(aNode).getHeight() > 64);
+		assertEquals(110, aViewer.getBounds(aNode).getWidth());
+		assertEquals(40, aViewer.getBounds(aNode).getHeight());
 	}
 	
 	@Test
 	public void testGetBounds_LongName()
 	{
-		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		assertEquals(new Point(GeometryUtils.osDependent(-153,-166,-166),0), aViewer.getBounds(aNode).getOrigin());
-		assertTrue(aViewer.getBounds(aNode).getWidth() > 48);
-		assertTrue(aViewer.getBounds(aNode).getHeight() > 64);
+		aNode.setName("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		assertEquals(new Point(0,0), aViewer.getBounds(aNode).getOrigin());
+		assertTrue(aViewer.getBounds(aNode).getWidth() > 110);
+		assertEquals(40, aViewer.getBounds(aNode).getHeight());
 	}
 }

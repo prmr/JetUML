@@ -60,7 +60,7 @@ public abstract class AbstractNodeRenderer implements NodeRenderer
 	/* 
 	 * The default behavior for containment is to return true if the point is
 	 * within the bounding box of the node view.
-	 * @see org.jetuml.viewers.DiagramElementView#contains(org.jetuml.geom.Point)
+	 * @see org.jetuml.rendering.DiagramElementView#contains(org.jetuml.geom.Point)
 	 */
 	@Override
 	public boolean contains(DiagramElement pElement, Point pPoint)
