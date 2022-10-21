@@ -22,19 +22,23 @@ package org.jetuml.diagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.jetuml.diagram.builder.DiagramOperationProcessor;
 import org.jetuml.diagram.builder.SequenceDiagramBuilder;
 import org.jetuml.diagram.edges.CallEdge;
+import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.edges.ReturnEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
+import org.jetuml.rendering.SequenceDiagramRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,12 +46,20 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 {
 	private ImplicitParameterNode aParameterNode1;
 	private ImplicitParameterNode aParameterNode2;
+	private ImplicitParameterNode aParameterNode3;
 	private CallNode aCallNode1;
 	private CallNode aCallNode2;
+	private CallNode aCallNode3;
+	private CallNode aCallNode4;
+	private CallNode aCallNode5;
 	private CallEdge aCallEdge1;
 	private CallEdge aCallEdge2;
+	private CallEdge aCallEdge3;
+	private CallEdge aCallEdge4;
 	private ReturnEdge aReturnEdge;
-	
+	private DiagramAccessor aDiagramAccessor;
+	private ConstructorEdge aConstructorEdge;
+
 	@BeforeEach
 	@Override
 	public void setup()
@@ -57,11 +69,36 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		aBuilder = new SequenceDiagramBuilder(aDiagram);
 		aParameterNode1 = new ImplicitParameterNode();
 		aParameterNode2 = new ImplicitParameterNode();
+		aParameterNode3 = new ImplicitParameterNode();
 		aCallNode1 = new CallNode();
 		aCallNode2 = new CallNode();
+		aCallNode3 = new CallNode();
+		aCallNode4 = new CallNode();
+		aCallNode5 = new CallNode();
 		aCallEdge1 = new CallEdge();
 		aCallEdge2 = new CallEdge();
+		aCallEdge3 = new CallEdge();
+		aCallEdge4 = new CallEdge();
 		aReturnEdge = new ReturnEdge();
+		aConstructorEdge = new ConstructorEdge();
+		aDiagramAccessor = new DiagramAccessor(aDiagram);
+	}
+
+	private void createSampleDiagram()
+	{
+		aDiagram.addRootNode(aParameterNode1);
+		aDiagram.addRootNode(aParameterNode2);
+		aDiagram.addRootNode(aParameterNode3);
+		aParameterNode1.addChild(aCallNode1);
+		aParameterNode2.addChild(aCallNode2);
+		aParameterNode2.addChild(aCallNode3);
+		aParameterNode3.addChild(aCallNode4);
+		aParameterNode3.addChild(aCallNode5);
+		aDiagramAccessor.connectAndAdd(aConstructorEdge, aCallNode1, aCallNode2);
+		aDiagramAccessor.connectAndAdd(aReturnEdge, aCallNode2, aCallNode1);
+		aDiagramAccessor.connectAndAdd(aCallEdge1, aCallNode2, aCallNode3);
+		aDiagramAccessor.connectAndAdd(aCallEdge2, aCallNode3, aCallNode4);
+		aDiagramAccessor.connectAndAdd(aCallEdge3, aCallNode2, aCallNode5);
 	}
 	
 	@Test
@@ -331,7 +368,120 @@ public class TestUsageScenariosSequenceDiagram extends AbstractTestUsageScenario
 		undo();
 		assertEquals(2, numberOfEdges());
 	}
+
+	@Test
+	void testGetNestingDepth()
+	{
+		createSampleDiagram();
+		assertEquals(0, ((SequenceDiagramRenderer) aBuilder.renderer()).getNestingDepth(aCallNode1));
+		assertEquals(0, ((SequenceDiagramRenderer) aBuilder.renderer()).getNestingDepth(aCallNode2));
+		assertEquals(1, ((SequenceDiagramRenderer) aBuilder.renderer()).getNestingDepth(aCallNode3));
+		assertEquals(0, ((SequenceDiagramRenderer) aBuilder.renderer()).getNestingDepth(aCallNode4));
+		assertEquals(0, ((SequenceDiagramRenderer) aBuilder.renderer()).getNestingDepth(aCallNode5));
+	}
 	
+	@Test
+	void testHasEntryPoint_No()
+	{
+		assertFalse(new SequenceDiagramRenderer(new Diagram(DiagramType.SEQUENCE)).hasEntryPoint());
+	}
+
+	@Test
+	void testHasEntryPoint_Yes()
+	{
+		createSampleDiagram();
+		assertTrue(((SequenceDiagramRenderer) aBuilder.renderer()).hasEntryPoint());
+	}
+
+	@Test
+	void testGetCallerNoCaller()
+	{
+		createSampleDiagram();
+		assertFalse(((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode1).isPresent());
+	}
+
+	@Test
+	void testGetCallerSameParameter()
+	{
+		createSampleDiagram();
+		assertSame(aCallNode2, ((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode3).get());
+	}
+
+	@Test
+	void testGetCallerDifferentParameter()
+	{
+		createSampleDiagram();
+		assertSame(aCallNode1, ((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode2).get());
+		assertSame(aCallNode2, ((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode3).get());
+		assertSame(aCallNode3, ((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode4).get());
+		assertSame(aCallNode2, ((SequenceDiagramRenderer) aBuilder.renderer()).getCaller(aCallNode5).get());
+	}
+
+	@Test
+	void testGetEdgeStartNoteEdge()
+	{
+		createSampleDiagram();
+		NoteNode noteNode = new NoteNode();
+		NoteEdge noteEdge = new NoteEdge();
+		aDiagramAccessor.connectAndAdd(noteEdge, aCallNode1, noteNode);
+		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
+				.getStartNodeIfExclusive((Edge) noteEdge);
+		assertTrue(start.isEmpty());
+	}
+
+	@Test
+	void testGetEdgeStartHasNoOtherFlows()
+	{
+		createSampleDiagram();
+		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
+				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+		assertTrue(start.isPresent());
+		assertSame(aCallNode1, start.get());
+	}
+
+	@Test
+	void testGetEdgeStartHasOtherFlowsInConstructorCall()
+	{
+		createSampleDiagram();
+		CallNode callNode = new CallNode();
+		aParameterNode2.addChild(callNode);
+		aDiagramAccessor.connectAndAdd(aCallEdge4, aCallNode1, callNode);
+
+		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
+				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+		assertTrue(start.isPresent());
+		assertSame(aCallNode1, start.get());
+	}
+
+	@Test
+	void testGetEdgeStartHasOtherFlowsBesidesConstructorCall()
+	{
+		createSampleDiagram();
+		CallNode callNode = new CallNode();
+		aParameterNode3.addChild(callNode);
+		aDiagramAccessor.connectAndAdd(aCallEdge4, aCallNode1, callNode);
+
+		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
+				.getStartNodeIfExclusive((Edge) aConstructorEdge);
+		assertTrue(start.isEmpty());
+	}
+
+	@Test
+	void testGetEdgeStartHasOtherFlowsNestedConstructorCall()
+	{
+		createSampleDiagram();
+		ImplicitParameterNode parameter = new ImplicitParameterNode();
+		CallNode callNode = new CallNode();
+		ConstructorEdge constructorEdge = new ConstructorEdge();
+		aDiagram.addRootNode(parameter);
+		parameter.addChild(callNode);
+		aDiagramAccessor.connectAndAdd(constructorEdge, aCallNode2, callNode);
+
+		Optional<DiagramElement> start = ((SequenceDiagramRenderer) aBuilder.renderer())
+				.getStartNodeIfExclusive((Edge) constructorEdge);
+		assertTrue(start.isEmpty());
+	}
+
 	@Test
 	public void testCopyPasteParameterNode()
 	{
