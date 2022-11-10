@@ -23,16 +23,32 @@ Starting with Release 3.0, JetUML is distributed in two formats:
 
 Download file `JetUML-<Version>.jar` from the [latest release page](https://github.com/prmr/JetUML/releases), to a local directory. 
 
-To run JetUML, open a command-line terminal window and enter the command below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
+To run JetUML, open a command-line terminal window and enter one of the commands below from the same directory where you downloaded the file, or write a script to execute it more conveniently.
+
+#### Windows
 
 ```shell
 javaw --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
 ```
 
-Where `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
+#### MacOS / Linux
+
+```shell
+java --module-path "PATH_TO_JAVAFX_LIB" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JETUML_FILE
+```
+
+In these commands, `PATH_TO_JAVAFX_LIB` is the full path to the `lib` directory of the `javafx` installation and `JETUML_FILE` is the path to the JetUML jar downloaded. For example:
+
+#### Windows
 
 ```shell
 javaw --module-path "C:\local\Java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.4.jar
+```
+
+#### MacOS / Linux
+
+```shell
+java --module-path "~/javafx-sdk-17.0.2/lib" --add-modules=javafx.controls,javafx.swing,java.desktop,java.prefs -jar JetUML-3.4.jar
 ```
 
 ## Package Managers
