@@ -309,7 +309,7 @@ public class EditorFrame extends BorderPane
 				alert.showAndWait();
 			}
 		}
-		catch(IOException | DeserializationException exception) 
+		catch(IOException | DeserializationException | IllegalStateException exception) 
 		{
 			Alert alert = new Alert(AlertType.ERROR, RESOURCES.getString("error.open_file"), ButtonType.OK);
 			alert.initOwner(aMainStage);
