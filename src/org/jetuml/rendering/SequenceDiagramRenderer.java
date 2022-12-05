@@ -300,13 +300,20 @@ public final class SequenceDiagramRenderer extends AbstractDiagramRenderer
 	private Optional<Node> findRoot()
 	{
 		Set<Node> calledNodes = diagram().edges().stream()
-				.filter(edge -> edge.getClass().isAssignableFrom(CallEdge.class)) // Includes subclasses, such as constructor edges
+				.filter(edge -> CallEdge.class.isAssignableFrom(edge.getClass())) // Includes subclasses, such as constructor edges
 				.map(Edge::getEnd)
 				.collect(Collectors.toSet());
-		return diagram().allNodes().stream()
-			.filter(node -> node.getClass() == CallNode.class)
-			.filter(node -> !calledNodes.contains(node))
-			.findFirst();
+		List<Node> rootNode = diagram().allNodes().stream()
+				.filter(node -> node.getClass() == CallNode.class)
+				.filter(node -> !calledNodes.contains(node))
+				.collect(Collectors.toList());
+		assert rootNode.size() <= 1; 
+		Optional<Node> result = Optional.empty();
+		if( !rootNode.isEmpty() )
+		{
+			result = Optional.of(rootNode.get(0));
+		}
+		return result;
 	}
 	
 	public int getCenterXCoordinate(ImplicitParameterNode pNode)
