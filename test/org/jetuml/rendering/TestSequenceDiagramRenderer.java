@@ -22,10 +22,16 @@ package org.jetuml.rendering;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.Node;
 import org.jetuml.diagram.edges.CallEdge;
+import org.jetuml.diagram.edges.ConstructorEdge;
 import org.jetuml.diagram.nodes.CallNode;
 import org.jetuml.diagram.nodes.ImplicitParameterNode;
 import org.jetuml.diagram.nodes.NoteNode;
@@ -134,8 +140,103 @@ public class TestSequenceDiagramRenderer
 		assertSame(callNode2, aRenderer.nodeAt(new Point(42,105)).get());
 	}
 	
+	@Test
+	void testFindRoot_Empty()
+	{
+		assertTrue(reflectivelyCallFindRoot().isEmpty());
+	}
+	
+	@Test
+	void testFindRoot_NoCallNode()
+	{
+		ImplicitParameterNode node1 = new ImplicitParameterNode();
+		aDiagram.addRootNode(node1);
+		assertTrue(reflectivelyCallFindRoot().isEmpty());
+	}
+	
+	@Test
+	void testFindRoot_SingleCallNode()
+	{
+		ImplicitParameterNode node1 = new ImplicitParameterNode();
+		aDiagram.addRootNode(node1);
+		
+		CallNode callNode1 = new CallNode();
+		callNode1.attach(aDiagram);
+		node1.addChild(callNode1);
+				
+		assertSame(callNode1, reflectivelyCallFindRoot().get());
+	}
+	
+	@Test
+	void testFindRoot_TwoCallNodes()
+	{
+		ImplicitParameterNode node1 = new ImplicitParameterNode();
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		
+		CallNode callNode1 = new CallNode();
+		callNode1.attach(aDiagram);
+		node1.addChild(callNode1);
+		CallNode callNode2 = new CallNode();
+		callNode2.attach(aDiagram);
+		node2.addChild(callNode2);
+		
+		CallEdge edge = new CallEdge();
+		edge.connect(callNode1, callNode2, aDiagram);
+		aDiagram.addEdge(edge);
+				
+		assertSame(callNode1, reflectivelyCallFindRoot().get());
+	}
+	
+	// Exercises bug #478
+	@Test
+	void testFindRoot_ThreeCallNodesWithConstructor()
+	{
+		ImplicitParameterNode node1 = new ImplicitParameterNode();
+		ImplicitParameterNode node2 = new ImplicitParameterNode();
+		ImplicitParameterNode node3 = new ImplicitParameterNode();
+		aDiagram.addRootNode(node1);
+		aDiagram.addRootNode(node2);
+		
+		CallNode callNode1 = new CallNode();
+		callNode1.attach(aDiagram);
+		node1.addChild(callNode1);
+		CallNode callNode2 = new CallNode();
+		callNode2.attach(aDiagram);
+		node2.addChild(callNode2);
+		CallNode callNode3 = new CallNode();
+		callNode3.attach(aDiagram);
+		node3.addChild(callNode3);
+		
+		CallEdge edge = new CallEdge();
+		edge.connect(callNode1, callNode2, aDiagram);
+		aDiagram.addEdge(edge);
+		ConstructorEdge create = new ConstructorEdge();
+		create.connect(callNode2, callNode3, aDiagram);
+		aDiagram.addEdge(create);
+				
+		assertSame(callNode1, reflectivelyCallFindRoot().get());
+	}
+	
 	private void triggerRenderingPass()
 	{
 		aRenderer.getBounds();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Optional<Node> reflectivelyCallFindRoot()
+	{
+		try
+		{
+			Method findRootMethod = SequenceDiagramRenderer.class.getDeclaredMethod("findRoot");
+			findRootMethod.setAccessible(true);
+			return (Optional<Node>) findRootMethod.invoke(aRenderer);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
 	}
 }
