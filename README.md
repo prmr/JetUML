@@ -11,17 +11,20 @@ A lightweight desktop application for interactively creating and editing diagram
 
 ![JetUML Class Diagram](docs/banner.png)
 
-## Download and Installation
+## Endorsements
 
-JetUML is available both as a self-contained application and as a Java archive file under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation guide](docs/install.md).
+> I do a fair bit of modeling with some commercial tools which can be quite heavyweight. Whenever I need to quickly sketch out a design before writing code I prefer JetUML in most cases.
+  — Randall Hudson, Mitre Corporation
+
+## Download
+
+JetUML is available both as a self-contained application and as a Java archive file under the terms of the [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html). Download the application from the [latest release](https://github.com/prmr/JetUML/releases) page and if necessary see the [installation guide](docs/install.md). Please consider supporting the project by starring this repo and by [writing an endorsement](mailto:jetuml@cs.mcgill.ca).
 
 ## Privacy Policy
 
 JetUML does not collect any information, personal or otherwise. The application only accesses the network to open web pages via the commands in the Help menu.
 
-## Support JetUML
 
-JetUML is entirely free. You can support the project by starring this repo and by writing an endorsement ([contact us](mailto:jetuml@cs.mcgill.ca)).
 
 ## Documentation
 
