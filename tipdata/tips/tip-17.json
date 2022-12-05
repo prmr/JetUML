@@ -1,7 +1,7 @@
 { 
   "title": "Cutting, Copying, and Pasting",
   "content": [ 
-    { "text": "You can cut or copy one or more diagram elements and paste them either within the same diagram or into a different diagram. It is only possible to paste a selection to another diagram if all the elements in the selection are compatible with the destination diagram type." },
+    { "text": "You can cut or copy one or more diagram elements and paste them either within the same diagram or into a different diagram. It is only possible to paste a selection to another diagram if all the elements in the selection are compatible with the destination diagram type. It is also not possible to paste elements into a sequence diagram as this would result in an invalid control-flow sequence." },
   	{ "image": "tip17.png"}
   ]
 }
