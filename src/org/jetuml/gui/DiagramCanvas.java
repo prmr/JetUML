@@ -168,7 +168,7 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		}
 		setSelectionTo(newElementList);
 		Clipboard.instance().copy(newElements);
-		paintPanel();
+		paintPanel(); // TODO double-check if this is necessary since it's already called in setSelectionTo
 	}
 	
 	/**
@@ -352,7 +352,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 		{
 			paintPanel();
 		}
-
 	}
 	
 	/*
@@ -544,8 +543,6 @@ public class DiagramCanvas extends Canvas implements SelectionObserver, BooleanP
 			aDragMode = DragMode.DRAG_RUBBERBAND;
 		}
 	}
-
-	
 
 	private void mousePressed(MouseEvent pEvent)
 	{

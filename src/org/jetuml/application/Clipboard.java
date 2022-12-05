@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import org.jetuml.annotations.Singleton;
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramElement;
+import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.PointNode;
@@ -54,6 +55,9 @@ import org.jetuml.geom.Point;
  * 
  * The clipboard is a singleton. This is necessary to allow copying elements
  * between diagrams of the same type.
+ * 
+ * Currently pasting into a sequence diagram is not permitted as the semantics are 
+ * ambiguous.
  */
 @Singleton
 public final class Clipboard 
@@ -273,6 +277,10 @@ public final class Clipboard
 	 */
 	public boolean validPaste(Diagram pDiagram)
 	{
+		if( pDiagram.getType() == DiagramType.SEQUENCE )
+		{
+			return false;
+		}
 		for( Edge edge : aEdges )
 		{
 			if( !validElementFor(edge, pDiagram ))
