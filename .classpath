@@ -4,12 +4,12 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="icons"/>
 	<classpathentry kind="src" path="tipdata"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-17.0.2">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX14">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
