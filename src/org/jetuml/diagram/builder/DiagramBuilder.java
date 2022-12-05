@@ -480,7 +480,7 @@ public abstract class DiagramBuilder
 		{
 			return ()-> 
 			{ 
-				Rectangle parentBound = packageNodeViewer().getBounds(parent);
+				Rectangle parentBound = packageNodeRenderer().getBounds(parent);
 				pNode.detach(); 
 				parent.removeChild(pNode); 
 				parent.translate( parentBound.getX()-parent.position().getX(),  parentBound.getY()-parent.position().getY() );
@@ -493,9 +493,9 @@ public abstract class DiagramBuilder
 		};
 	}
 	
-	private PackageNodeRenderer packageNodeViewer()
+	private PackageNodeRenderer packageNodeRenderer()
 	{
-		return (PackageNodeRenderer)DiagramType.newRendererInstanceFor(aDiagramRenderer.diagram()).rendererFor(PackageNode.class);
+		return (PackageNodeRenderer)aDiagramRenderer.rendererFor(PackageNode.class);
 	}
 	
 	private Point computePosition(Dimension pDimension, Point pRequestedPosition)
