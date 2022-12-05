@@ -35,7 +35,6 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.edges.GeneralizationEdge.Type;
 import org.jetuml.diagram.edges.NoteEdge;
 import org.jetuml.diagram.nodes.ClassNode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestEdgePriority 
@@ -51,62 +50,61 @@ public class TestEdgePriority
 	private Edge aNoteEdge = new NoteEdge();
 	private Node aNode1 = new ClassNode();
 
-	@BeforeEach
-	private void setUp()
+	TestEdgePriority()
 	{
 		aSelfEdge.connect(aNode1, aNode1, aDiagram);
 	}
 	
 	@Test
-	public void testPriorityOf_inheritance()
+	void testPriorityOf_inheritance()
 	{
 		assertEquals(EdgePriority.priorityOf(aInheritanceEdge), EdgePriority.INHERITANCE);
 	}
 	
 	@Test
-	public void testPriorityOf_implementation()
+	void testPriorityOf_implementation()
 	{
 		assertEquals(EdgePriority.priorityOf(aImplementationEdge), EdgePriority.IMPLEMENTATION);
 	}
 	
 	@Test
-	public void testPriorityOf_aggregation()
+	void testPriorityOf_aggregation()
 	{
 		assertEquals(EdgePriority.priorityOf(aAggregationEdge), EdgePriority.AGGREGATION);
 	}
 	
 	@Test
-	public void testPriorityOf_composition()
+	void testPriorityOf_composition()
 	{
 		assertEquals(EdgePriority.priorityOf(aCompositionEdge), EdgePriority.COMPOSITION);
 	}
 	
 	@Test
-	public void testPriorityOf_association()
+	void testPriorityOf_association()
 	{
 		assertEquals(EdgePriority.priorityOf(aAssociationEdge), EdgePriority.ASSOCIATION);
 	}
 	
 	@Test
-	public void testPriorityOf_dependency()
+	void testPriorityOf_dependency()
 	{
 		assertEquals(EdgePriority.priorityOf(aDependencyEdge), EdgePriority.DEPENDENCY);
 	}
 	
 	@Test
-	public void testPriorityOf_selfEdge()
+	void testPriorityOf_selfEdge()
 	{
 		assertEquals(EdgePriority.priorityOf(aSelfEdge), EdgePriority.SELF_EDGE);
 	}
 	
 	@Test
-	public void testPriorityOf_other()
+	void testPriorityOf_other()
 	{
 		assertEquals(EdgePriority.priorityOf(aNoteEdge), EdgePriority.OTHER);
 	}
 	
 	@Test
-	public void testIsSegmented_givenPriority()
+	void testIsSegmented_givenPriority()
 	{
 		assertTrue(EdgePriority.isSegmented(EdgePriority.INHERITANCE));
 		assertTrue(EdgePriority.isSegmented(EdgePriority.IMPLEMENTATION));
@@ -119,7 +117,7 @@ public class TestEdgePriority
 	}
 	
 	@Test
-	public void testIsSegmented_givenEdge()
+	void testIsSegmented_givenEdge()
 	{
 		assertTrue(EdgePriority.isSegmented(aInheritanceEdge));
 		assertTrue(EdgePriority.isSegmented(aImplementationEdge));
@@ -132,7 +130,7 @@ public class TestEdgePriority
 	}
 	
 	@Test
-	public void testIsClassDiagramEdge()
+	void testIsClassDiagramEdge()
 	{
 		assertTrue(EdgePriority.isStoredEdge(aInheritanceEdge));
 		assertTrue(EdgePriority.isStoredEdge(aImplementationEdge));

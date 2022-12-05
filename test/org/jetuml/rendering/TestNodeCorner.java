@@ -27,9 +27,7 @@ import org.jetuml.diagram.DiagramType;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Direction;
-import org.jetuml.geom.Point;
 import org.jetuml.rendering.edges.NodeIndex;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -37,106 +35,67 @@ import org.junit.jupiter.api.Test;
  */
 public class TestNodeCorner 
 {
-	private static final Node aNode = new ClassNode();
-	private static final Diagram aDiagram = new Diagram(DiagramType.CLASS);
+	private final Node aNode = new ClassNode();
+	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	
-	@BeforeEach
-	private void setUpNode()
+	TestNodeCorner()
 	{
 		aDiagram.addRootNode(aNode);
 	}
 
 	@Test
-	public void testGetHorizontalIndex_right()
+	void testGetHorizontalIndex_right()
 	{
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.TOP_RIGHT), NodeIndex.PLUS_THREE);
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.BOTTOM_RIGHT), NodeIndex.PLUS_THREE);
 	}
 	
 	@Test
-	public void testGetHorizontalIndex_left()
+	void testGetHorizontalIndex_left()
 	{
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.TOP_LEFT), NodeIndex.MINUS_THREE);
 		assertEquals(NodeCorner.getHorizontalIndex(NodeCorner.BOTTOM_LEFT), NodeIndex.MINUS_THREE);
 	}
 	
 	@Test
-	public void testGetVerticalIndex_top()
+	void testGetVerticalIndex_top()
 	{
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.TOP_LEFT), NodeIndex.MINUS_ONE);
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.TOP_RIGHT), NodeIndex.MINUS_ONE);
 	}
 	
 	@Test
-	public void testGetVerticalIndex_bottom()
+	void testGetVerticalIndex_bottom()
 	{
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.BOTTOM_LEFT), NodeIndex.PLUS_ONE);
 		assertEquals(NodeCorner.getVerticalIndex(NodeCorner.BOTTOM_RIGHT), NodeIndex.PLUS_ONE);
 	}
 	
 	@Test
-	public void testHorizontalSide_top()
+	void testHorizontalSide_top()
 	{
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.TOP_LEFT), Direction.NORTH);
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.TOP_RIGHT), Direction.NORTH);
 	}
 	
 	@Test
-	public void testHorizontalSide_bottom()
+	void testHorizontalSide_bottom()
 	{
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.BOTTOM_LEFT), Direction.SOUTH);
 		assertEquals(NodeCorner.horizontalSide(NodeCorner.BOTTOM_RIGHT), Direction.SOUTH);
 	}
 	
 	@Test
-	public void testGetVerticalSide_right()
+	void testGetVerticalSide_right()
 	{
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_RIGHT), Direction.EAST);
 		assertEquals(NodeCorner.verticalSide(NodeCorner.BOTTOM_RIGHT), Direction.EAST);
 	}
 	
 	@Test
-	public void testGetVerticalSide_left()
+	void testGetVerticalSide_left()
 	{
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_LEFT), Direction.WEST);
 		assertEquals(NodeCorner.verticalSide(NodeCorner.TOP_LEFT), Direction.WEST);
-	}
-	
-	// TODO Migrate these tests to TestClassDiagramRenderer
-	
-	@Test
-	public void testToPoints_topRight()
-	{
-		setUpNode();
-		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
-		assertEquals(new Point(80, 0), renderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[0]);
-		assertEquals(new Point(100, 20), renderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[1]);
-	}
-	
-	@Test
-	public void testToPoints_bottomRight()
-	{
-		setUpNode();
-		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
-		assertEquals(new Point(80, 60), renderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[0]);
-		assertEquals(new Point(100, 40), renderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[1]);
-	}
-	
-	@Test
-	public void testToPoints_topLeft()
-	{
-		setUpNode();
-		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
-		assertEquals(new Point(20, 0), renderer.toPoints(NodeCorner.TOP_LEFT, aNode)[0]);
-		assertEquals(new Point(0, 20), renderer.toPoints(NodeCorner.TOP_LEFT, aNode)[1]);
-	}
-	
-	@Test
-	public void testToPoints_bottomLeft()
-	{
-		setUpNode();
-		ClassDiagramRenderer renderer = new ClassDiagramRenderer(aDiagram);
-		assertEquals(new Point(20, 60), renderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[0]);
-		assertEquals(new Point(0, 40), renderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[1]);
 	}
 }

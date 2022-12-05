@@ -32,7 +32,6 @@ import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.Line;
 import org.jetuml.geom.Point;
 import org.jetuml.geom.Side;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -43,16 +42,14 @@ public class TestNodeIndex
 	private final Node aNode = new ClassNode();
 	private final Diagram aDiagram = new Diagram(DiagramType.CLASS);
 	
-	
-	@BeforeEach
-	private void setUp()
+	TestNodeIndex()
 	{
 		aDiagram.addRootNode(aNode);
 		aNode.moveTo(new Point(0, 0));
 	}
 	
 	@Test
-	public void testToPoint_north()
+	void testToPoint_north()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(100, 0));
 		assertEquals(new Point(30, 0), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.TOP));
@@ -61,7 +58,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testToPoint_south()
+	void testToPoint_south()
 	{
 		Line nodeFace = new Line(new Point(0, 60), new Point(100, 60));
 		assertEquals(new Point(30, 60), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.BOTTOM));
@@ -70,7 +67,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testToPoint_west()
+	void testToPoint_west()
 	{
 		Line nodeFace = new Line(new Point(0, 0), new Point(0, 60));
 		assertEquals(new Point(0, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.LEFT));
@@ -79,7 +76,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testToPoint_east()
+	void testToPoint_east()
 	{
 		Line nodeFace = new Line(new Point(100, 0), new Point(100, 60));
 		assertEquals(new Point(100, 10), NodeIndex.MINUS_TWO.toPoint(nodeFace, Side.RIGHT));
@@ -88,7 +85,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testSpaceBetweenConnectionPoints_north()
+	void testSpaceBetweenConnectionPoints_north()
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
@@ -97,7 +94,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testSpaceBetweenConnectionPoints_south()
+	void testSpaceBetweenConnectionPoints_south()
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(100, 0));
 		Line largerSize = new Line(new Point(0, 0), new Point(200, 0));
@@ -106,7 +103,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testSpaceBetweenConnectionPoints_east()
+	void testSpaceBetweenConnectionPoints_east()
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));
@@ -115,7 +112,7 @@ public class TestNodeIndex
 	}
 	
 	@Test
-	public void testSpaceBetweenConnectionPoints_west()
+	void testSpaceBetweenConnectionPoints_west()
 	{
 		Line regularSize = new Line(new Point(0, 0), new Point(0, 60));
 		Line largerSize = new Line(new Point(0, 0), new Point(0, 120));

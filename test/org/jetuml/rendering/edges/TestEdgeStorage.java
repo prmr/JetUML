@@ -35,7 +35,6 @@ import org.jetuml.diagram.edges.GeneralizationEdge;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.geom.EdgePath;
 import org.jetuml.geom.Point;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -55,8 +54,7 @@ public class TestEdgeStorage
 	private Node nodeB;
 	private Node nodeC;
 	
-	@BeforeEach
-	private void setUp()
+	TestEdgeStorage()
 	{
 		edge1 = new AggregationEdge();
 		edge2 = new DependencyEdge();
@@ -72,35 +70,32 @@ public class TestEdgeStorage
 	}
 	
 	@Test
-	public void testContains()
+	void testContains()
 	{
 		aEdgeStorage.store(edge1, path1);
 		assertTrue(aEdgeStorage.contains(edge1));
 		assertFalse(aEdgeStorage.contains(edge3));
 	}
 	
-	
 	@Test
-	public void testGetEdgePath()
+	void testGetEdgePath()
 	{
 		aEdgeStorage.store(edge1, path1);
 		assertSame(aEdgeStorage.getEdgePath(edge1), path1);
 	}
 	
-	
 	@Test
-	public void testStore()
+	void testStore()
 	{
 		assertFalse(aEdgeStorage.contains(edge3));
 		aEdgeStorage.store(edge3, path3);
 		assertSame(aEdgeStorage.getEdgePath(edge3), path3);
 		aEdgeStorage.store(edge3, path1);
 		assertSame(aEdgeStorage.getEdgePath(edge3), path1);
-		
 	}
 	
 	@Test
-	public void testEdgesConnectedTo()
+	void testEdgesConnectedTo()
 	{
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
@@ -116,8 +111,9 @@ public class TestEdgeStorage
 		assertTrue(edgesConnectedToNodeA.contains(edge2));
 		assertFalse(edgesConnectedToNodeA.contains(edge3));
 	}
+	
 	@Test
-	public void testIsEmpty()
+	void testIsEmpty()
 	{
 		assertTrue(aEdgeStorage.isEmpty());
 		aEdgeStorage.store(edge1, path1);
@@ -125,7 +121,7 @@ public class TestEdgeStorage
 	}
 	
 	@Test
-	public void testConnectionPointIsAvailable()
+	void testConnectionPointIsAvailable()
 	{
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
@@ -137,7 +133,7 @@ public class TestEdgeStorage
 	}
 	
 	@Test
-	public void testEdgesWithSameNodes()
+	void testEdgesWithSameNodes()
 	{
 		nodeA = new ClassNode();
 		nodeB = new ClassNode();
@@ -153,7 +149,7 @@ public class TestEdgeStorage
 	}
 	
 	@Test
-	public void testClearStorage()
+	void testClearStorage()
 	{
 		aEdgeStorage.store(edge1, path1);
 		aEdgeStorage.store(edge2, path2);
@@ -162,7 +158,5 @@ public class TestEdgeStorage
 		assertFalse(aEdgeStorage.contains(edge1));
 		assertFalse(aEdgeStorage.contains(edge2));
 		assertFalse(aEdgeStorage.contains(edge3));
-	}
-	
-	
+	}	
 }

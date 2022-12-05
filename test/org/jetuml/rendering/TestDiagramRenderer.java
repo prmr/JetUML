@@ -20,20 +20,28 @@
  *******************************************************************************/
 package org.jetuml.rendering;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jetuml.diagram.Diagram;
 import org.jetuml.diagram.DiagramType;
+import org.jetuml.diagram.Node;
 import org.jetuml.diagram.nodes.ClassNode;
 import org.jetuml.diagram.nodes.PackageNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
 
-public class TestDiagramViewer
+public class TestDiagramRenderer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.CLASS);
-	private DiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
+	private ClassDiagramRenderer aRenderer = new ClassDiagramRenderer(aDiagram);
+	private final Node aNode = new ClassNode();
+
+	TestDiagramRenderer()
+	{
+		aDiagram.addRootNode(aNode);
+	}
 	
 	@Test
 	void testNodeAt_NoneShallow()
@@ -97,5 +105,33 @@ public class TestDiagramViewer
 		p1.addChild(node);
 		aDiagram.addRootNode(p1);
 		assertSame(p2, aRenderer.nodeAt(new Point(15,15)).get());
+	}
+	
+	@Test
+	void testToPoints_topRight()
+	{
+		assertEquals(new Point(80, 0), aRenderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[0]);
+		assertEquals(new Point(100, 20), aRenderer.toPoints(NodeCorner.TOP_RIGHT, aNode)[1]);
+	}
+	
+	@Test
+	public void testToPoints_bottomRight()
+	{
+		assertEquals(new Point(80, 60), aRenderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[0]);
+		assertEquals(new Point(100, 40), aRenderer.toPoints(NodeCorner.BOTTOM_RIGHT, aNode)[1]);
+	}
+	
+	@Test
+	public void testToPoints_topLeft()
+	{
+		assertEquals(new Point(20, 0), aRenderer.toPoints(NodeCorner.TOP_LEFT, aNode)[0]);
+		assertEquals(new Point(0, 20), aRenderer.toPoints(NodeCorner.TOP_LEFT, aNode)[1]);
+	}
+	
+	@Test
+	public void testToPoints_bottomLeft()
+	{
+		assertEquals(new Point(20, 60), aRenderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[0]);
+		assertEquals(new Point(0, 40), aRenderer.toPoints(NodeCorner.BOTTOM_LEFT, aNode)[1]);
 	}
 }
