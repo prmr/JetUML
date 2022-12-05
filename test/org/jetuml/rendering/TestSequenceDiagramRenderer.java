@@ -32,7 +32,7 @@ import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.geom.Point;
 import org.junit.jupiter.api.Test;
 
-public class TestSequenceDiagramViewer
+public class TestSequenceDiagramRenderer
 {
 	private Diagram aDiagram = new Diagram(DiagramType.SEQUENCE);
 	private DiagramRenderer aRenderer = new SequenceDiagramRenderer(aDiagram);
