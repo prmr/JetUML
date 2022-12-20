@@ -1,5 +1,7 @@
 package org.json;
 
+import static java.lang.Character.isWhitespace;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -102,8 +104,9 @@ public class JSONTokener
     private String next(int pNumberOfCharacters)
     {
         assert pNumberOfCharacters > 0 && hasMore(pNumberOfCharacters);
+        String result = aInput.substring(aPosition+1, aPosition+1 + pNumberOfCharacters);
         aPosition += pNumberOfCharacters;
-        return aInput.substring(aPosition+1, aPosition+1 + pNumberOfCharacters);
+        return result;
     }
     
     /*
@@ -111,25 +114,40 @@ public class JSONTokener
      */
     private boolean hasMore(int pNumberOfCharacters)
     {
+    	assert pNumberOfCharacters > 0;
     	return aPosition + pNumberOfCharacters < aInput.length();
     }
 
     /**
      * Get the next char in the string, skipping whitespace.
-     * @throws JSONException Thrown if there is an error reading the source string.
-     * @return  A character, or 0 if there are no more characters.
+     * @return  The next non-whitespace character, assumed to exist.
+     * @pre hasMoreNonWhitespace()
      */
-    public char nextClean()
+    public char nextNonWhitespace()
     {
-        for(int i = aPosition; i < aInput.length(); i++ )
+    	assert hasMoreNonWhitespace();
+       	while(hasNext())
         {
-            char c = next();
-            if(c == 0 || c > ' ') 
+            char character = next();
+            if( !isWhitespace(character) ) 
             {
-                return c;
+                return character;
             }
         }
+        assert false; // Precondition violated
         return 0;
+    }
+    
+    /**
+     * @return True iif there is at least one non-whitespace 
+     * character left to read, as defined by !Character#isWhitespace
+     */
+    public boolean hasMoreNonWhitespace()
+    {
+    	return aInput
+    			.substring(aPosition + 1)
+    			.replaceAll("\\s+", "")
+    			.length() > 0;
     }
 
     /**
@@ -214,7 +232,7 @@ public class JSONTokener
      */
     public Object nextValue()
     {
-        char c = nextClean();
+        char c = nextNonWhitespace();
         String string;
 
         switch (c) 

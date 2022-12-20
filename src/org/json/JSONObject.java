@@ -186,11 +186,11 @@ public class JSONObject {
         char c;
         String key;
 
-        if (x.nextClean() != '{') {
+        if (x.nextNonWhitespace() != '{') {
             throw x.syntaxError("A JSONObject text must begin with '{'");
         }
         for (;;) {
-            c = x.nextClean();
+            c = x.nextNonWhitespace();
             switch (c) {
             case 0:
                 throw x.syntaxError("A JSONObject text must end with '}'");
@@ -203,7 +203,7 @@ public class JSONObject {
 
             // The key is followed by ':'.
 
-            c = x.nextClean();
+            c = x.nextNonWhitespace();
             if (c != ':') {
                 throw x.syntaxError("Expected a ':' after a key");
             }
@@ -225,10 +225,10 @@ public class JSONObject {
 
             // Pairs are separated by ','.
 
-            switch (x.nextClean()) {
+            switch (x.nextNonWhitespace()) {
             case ';':
             case ',':
-                if (x.nextClean() == '}') {
+                if (x.nextNonWhitespace() == '}') {
                     return;
                 }
                 x.backUp();

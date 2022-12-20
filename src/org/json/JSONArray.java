@@ -98,12 +98,12 @@ public class JSONArray implements Iterable<Object>
     public JSONArray(JSONTokener pTokener) 
     {
         this();
-        if(pTokener.nextClean() != '[')
+        if(pTokener.nextNonWhitespace() != '[')
         {
             throw pTokener.syntaxError("A JSONArray text must start with '['");
         }
         
-        char nextChar = pTokener.nextClean();
+        char nextChar = pTokener.nextNonWhitespace();
         if(nextChar == 0) 
         {
             // array is unclosed. No ']' found, instead EOF
@@ -112,19 +112,19 @@ public class JSONArray implements Iterable<Object>
         if (nextChar != ']') {
             pTokener.backUp();
             for (;;) {
-                if (pTokener.nextClean() == ',') {
+                if (pTokener.nextNonWhitespace() == ',') {
                     pTokener.backUp();
                     this.aElements.add(JSONObject.NULL);
                 } else {
                     pTokener.backUp();
                     this.aElements.add(pTokener.nextValue());
                 }
-                switch (pTokener.nextClean()) {
+                switch (pTokener.nextNonWhitespace()) {
                 case 0:
                     // array is unclosed. No ']' found, instead EOF
                     throw pTokener.syntaxError("Expected a ',' or ']'");
                 case ',':
-                    nextChar = pTokener.nextClean();
+                    nextChar = pTokener.nextNonWhitespace();
                     if (nextChar == 0) {
                         // array is unclosed. No ']' found, instead EOF
                         throw pTokener.syntaxError("Expected a ',' or ']'");

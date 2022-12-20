@@ -3,6 +3,9 @@ package org.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,28 +18,28 @@ public class TestTokener
 	@Test
 	void testNextClean()
 	{
-		assertEquals('{', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals('n', aTokener.nextClean());
-		assertEquals('a', aTokener.nextClean());
-		assertEquals('m', aTokener.nextClean());
-		assertEquals('e', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals(':', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals('J', aTokener.nextClean());
-		assertEquals('o', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals(',', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals('a', aTokener.nextClean());
-		assertEquals('g', aTokener.nextClean());
-		assertEquals('e', aTokener.nextClean());
-		assertEquals('"', aTokener.nextClean());
-		assertEquals(':', aTokener.nextClean());
-		assertEquals('2', aTokener.nextClean());
-		assertEquals('7', aTokener.nextClean());
-		assertEquals('}', aTokener.nextClean());
+		assertEquals('{', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals('n', aTokener.nextNonWhitespace());
+		assertEquals('a', aTokener.nextNonWhitespace());
+		assertEquals('m', aTokener.nextNonWhitespace());
+		assertEquals('e', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals(':', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals('J', aTokener.nextNonWhitespace());
+		assertEquals('o', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals(',', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals('a', aTokener.nextNonWhitespace());
+		assertEquals('g', aTokener.nextNonWhitespace());
+		assertEquals('e', aTokener.nextNonWhitespace());
+		assertEquals('"', aTokener.nextNonWhitespace());
+		assertEquals(':', aTokener.nextNonWhitespace());
+		assertEquals('2', aTokener.nextNonWhitespace());
+		assertEquals('7', aTokener.nextNonWhitespace());
+		assertEquals('}', aTokener.nextNonWhitespace());
 		assertFalse(aTokener.hasNext());
 	}
 	
@@ -122,5 +125,161 @@ public class TestTokener
 		assertEquals('a', tokener.next());
 		assertEquals('b', tokener.next());
 		assertFalse(tokener.hasNext());
+	}
+	
+	@Test
+	void testHasMore_BeginningOfString_No()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		assertFalse(hasMore(tokener,5));
+	}
+	
+	@Test
+	void testHasMore_MiddleOfString_No()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		tokener.next();
+		assertFalse(hasMore(tokener,4));
+	}
+	
+	@Test
+	void testHasMore_BeginningOfString_Yes()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		assertTrue(hasMore(tokener,3));
+	}
+	
+	@Test
+	void testHasMore_MiddleOfString_Yes()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		tokener.next();
+		assertTrue(hasMore(tokener,2));
+	}
+	
+	@Test
+	void testHasMore_EndOfString_Yes()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		tokener.next();
+		assertTrue(hasMore(tokener,3));
+	}
+	
+	@Test
+	void testNextInt_Beginning()
+	{
+		JSONTokener tokener = new JSONTokener("abcd");
+		assertEquals("abc", next(tokener,3));
+	}
+	
+	@Test
+	void testNextInt_Middle()
+	{
+		JSONTokener tokener = new JSONTokener("abcde");
+		tokener.next();
+		assertEquals("bc", next(tokener,2));
+	}
+	
+	@Test
+	void testNextInt_All()
+	{
+		JSONTokener tokener = new JSONTokener("abcde");
+		assertEquals("abcde", next(tokener,5));
+	}
+	
+	@Test
+	void testHasMoreNonWhiteSpace()
+	{
+		JSONTokener tokener = new JSONTokener("b  \ncd\ne\r\n");
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();  // e
+		assertTrue(hasMoreNonWhitespace(tokener));
+		tokener.next();  
+		assertFalse(hasMoreNonWhitespace(tokener));
+		tokener.next();  
+		assertFalse(hasMoreNonWhitespace(tokener));
+	}
+	
+	@Test
+	void testNextNonWhiteSpace()
+	{
+		JSONTokener tokener = new JSONTokener("b  \ncd\ne\r\n");
+		assertEquals('b', nextNonWhitespace(tokener));
+		assertEquals('c', nextNonWhitespace(tokener));
+		assertEquals('d', nextNonWhitespace(tokener));
+		assertEquals('e', nextNonWhitespace(tokener));
+	}
+	
+	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("hasMore", int.class);
+			method.setAccessible(true);
+			return (boolean) method.invoke(pTokener, pNumberOfCharacters);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+			return false;
+		}
+	}
+	
+	private static boolean hasMoreNonWhitespace(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("hasMoreNonWhitespace");
+			method.setAccessible(true);
+			return (boolean) method.invoke(pTokener);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+			return false;
+		}
+	}
+	
+	private static char nextNonWhitespace(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("nextNonWhitespace");
+			method.setAccessible(true);
+			return (char) method.invoke(pTokener);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+			return 0;
+		}
+	}
+	
+	private static String next(JSONTokener pTokener, int pNumberOfCharacters)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("next", int.class);
+			method.setAccessible(true);
+			return (String) method.invoke(pTokener, pNumberOfCharacters);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			exception.printStackTrace();
+			fail();
+			return "";
+		}
 	}
 }
