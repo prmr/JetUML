@@ -142,7 +142,7 @@ public class JSONTokener
      * @return True iif there is at least one non-whitespace 
      * character left to read, as defined by !Character#isWhitespace
      */
-    public boolean hasMoreNonWhitespace()
+    private boolean hasMoreNonWhitespace()
     {
     	return aInput
     			.substring(aPosition + 1)
@@ -151,17 +151,16 @@ public class JSONTokener
     }
 
     /**
-     * Return the characters up to the next close quote character.
-     * Backslash processing is done. The formal JSON format does not
-     * allow strings in single quotes, but an implementation is allowed to
-     * accept them.
-     * @param quote The quoting character, either
-     *      <code>"</code>&nbsp;<small>(double quote)</small> or
-     *      <code>'</code>&nbsp;<small>(single quote)</small>.
-     * @return      A String.
-     * @throws JSONException Unterminated string.
+     * Return the characters up to the next quote character. For 
+     * a given string, the first (opening) quote character should 
+     * already have been read. This method is intended to properly 
+     * process escapes. The formal JSON format does not allow strings
+     * in single quotes, and they are not accepted by this method.
+     * Strings are not allowed to span multiple lines
+     * @return A string
+     * @throws JSONException If there's is an unanticipated error processing the string.
      */
-    public String nextString(char quote)
+    private String nextString()
     {
         char c;
         StringBuilder sb = new StringBuilder();
@@ -214,7 +213,7 @@ public class JSONTokener
                 }
                 break;
             default:
-                if (c == quote) 
+                if (c == '"') 
                 {
                     return sb.toString();
                 }
@@ -238,8 +237,7 @@ public class JSONTokener
         switch (c) 
         {
         case '"':
-        case '\'':
-            return nextString(c);
+            return nextString();
         case '{':
             backUp();
             return new JSONObject(this);

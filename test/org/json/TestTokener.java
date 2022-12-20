@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class TestTokener
 {
@@ -18,28 +20,28 @@ public class TestTokener
 	@Test
 	void testNextClean()
 	{
-		assertEquals('{', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals('n', aTokener.nextNonWhitespace());
-		assertEquals('a', aTokener.nextNonWhitespace());
-		assertEquals('m', aTokener.nextNonWhitespace());
-		assertEquals('e', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals(':', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals('J', aTokener.nextNonWhitespace());
-		assertEquals('o', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals(',', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals('a', aTokener.nextNonWhitespace());
-		assertEquals('g', aTokener.nextNonWhitespace());
-		assertEquals('e', aTokener.nextNonWhitespace());
-		assertEquals('"', aTokener.nextNonWhitespace());
-		assertEquals(':', aTokener.nextNonWhitespace());
-		assertEquals('2', aTokener.nextNonWhitespace());
-		assertEquals('7', aTokener.nextNonWhitespace());
-		assertEquals('}', aTokener.nextNonWhitespace());
+		assertEquals('{', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals('n', nextNonWhitespace(aTokener));
+		assertEquals('a', nextNonWhitespace(aTokener));
+		assertEquals('m', nextNonWhitespace(aTokener));
+		assertEquals('e', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals(':', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals('J', nextNonWhitespace(aTokener));
+		assertEquals('o', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals(',', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals('a', nextNonWhitespace(aTokener));
+		assertEquals('g', nextNonWhitespace(aTokener));
+		assertEquals('e', nextNonWhitespace(aTokener));
+		assertEquals('"', nextNonWhitespace(aTokener));
+		assertEquals(':', nextNonWhitespace(aTokener));
+		assertEquals('2', nextNonWhitespace(aTokener));
+		assertEquals('7', nextNonWhitespace(aTokener));
+		assertEquals('}', nextNonWhitespace(aTokener));
 		assertFalse(aTokener.hasNext());
 	}
 	
@@ -222,6 +224,21 @@ public class TestTokener
 		assertEquals('e', nextNonWhitespace(tokener));
 	}
 	
+	@ParameterizedTest
+	@CsvSource({"abc,abc\"d", 
+				"e,e\"de", 
+				"sd's,sd's\"d"})
+	void testNextString(String pOracle, String pInput) 
+	{
+		assertEquals(pOracle, nextString(new JSONTokener(pInput)));
+	}
+	
+	@Test
+	void testNextString_Empty()
+	{
+		assertEquals("", nextString(new JSONTokener("\"sds")));
+	}
+	
 	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
 	{
 		try 
@@ -274,6 +291,21 @@ public class TestTokener
 			Method method = JSONTokener.class.getDeclaredMethod("next", int.class);
 			method.setAccessible(true);
 			return (String) method.invoke(pTokener, pNumberOfCharacters);
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
+			return "";
+		}
+	}
+	
+	private static String nextString(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("nextString");
+			method.setAccessible(true);
+			return (String) method.invoke(pTokener);
 		}
 		catch(ReflectiveOperationException exception)
 		{
