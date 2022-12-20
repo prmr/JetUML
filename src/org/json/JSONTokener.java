@@ -1,9 +1,5 @@
 package org.json;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
 /*
 Copyright (c) 2002 JSON.org
 
@@ -34,29 +30,21 @@ SOFTWARE.
  */
 public class JSONTokener 
 {
-    /* Flag to indicate if the end of the input has been found. */
-    private boolean aEndOfInputReached = false;
-    
-    /* Current read index of the input. */
-    private long aPosition = 0;
-    
-    /* Previous character read from the input. */
-    private char aPreviouslyReadCharacter = 0;
-    
-    /* Reader for the input. */
-    private final Reader aReader;
-    
-    /* Flag to indicate that a previous character was requested. */
-    private boolean aUsePreviousCharacter = false;
-    
+	/* Complete input to traverse. */
+	private final String aInput;
+	
+	/* Current position in the input. Represents the position
+	 * of the next character to read. Initialized at -1. */
+	private int aPosition2 = -1;
+	
     /**
      * Construct a JSONTokener from a string.
      *
-     * @param s     A source string.
+     * @param pInput A string to use as a complete source of characters for the tokenizer.
      */
-    public JSONTokener(String s) 
+    public JSONTokener(String pInput) 
     {
-        aReader = new StringReader(s);
+        aInput = pInput;
     }
 
     /**
@@ -68,13 +56,11 @@ public class JSONTokener
      */
     public void back()
     {
-        if (aUsePreviousCharacter || aPosition <= 0) 
-        {
-            throw new JSONException("Stepping back two steps is not supported");
-        }
-        aPosition--;
-        aUsePreviousCharacter = true;
-        aEndOfInputReached = false;
+    	if( aPosition2 < 0 )
+    	{
+    		throw new JSONException("Cannot step back: already at the beginning of the buffer.");
+    	}
+    	aPosition2--;
     }
 
     /**
@@ -84,7 +70,7 @@ public class JSONTokener
      */
     public boolean end() 
     {
-        return aEndOfInputReached && !aUsePreviousCharacter;
+    	return aPosition2 == aInput.length()-1;
     }
 
     /**
@@ -95,65 +81,28 @@ public class JSONTokener
      */
     public char next()
     {
-        int c;
-        if(aUsePreviousCharacter) 
-        {
-            aUsePreviousCharacter = false;
-            c = aPreviouslyReadCharacter;
-        } 
-        else 
-        {
-            try 
-            {
-                c = aReader.read();
-            } 
-            catch(IOException exception) 
-            {
-                throw new JSONException(exception);
-            }
-        }
-        if (c <= 0) 
-        { // End of stream
-            aEndOfInputReached = true;
-            return 0;
-        }
-        if(c > 0) 
-        {
-            aPosition++;
-        }
-        aPreviouslyReadCharacter = (char) c;
-        return aPreviouslyReadCharacter;
+    	if( end() )
+    	{
+    		throw new JSONException("Cannot read past last character");
+    	}
+    	aPosition2++;
+    	return aInput.charAt(aPosition2);
     }
 
     /**
      * Get the next n characters.
      *
-     * @param n     The number of characters to take.
+     * @param pNumberOfCharacters     The number of characters to take.
      * @return      A string of n characters.
      * @throws JSONException
      *   Substring bounds error if there are not
      *   n characters remaining in the source string.
      */
-    public String next(int n)
+    public String next(int pNumberOfCharacters)
     {
-        if (n == 0)
-        {
-            return "";
-        }
-
-        char[] chars = new char[n];
-        int pos = 0;
-
-        while (pos < n) 
-        {
-            chars[pos] = next();
-            if (this.end()) 
-            {
-                throw this.syntaxError("Substring bounds error");
-            }
-            pos += 1;
-        }
-        return new String(chars);
+        assert pNumberOfCharacters > 0 && aPosition2 + pNumberOfCharacters < aInput.length();
+        aPosition2 += pNumberOfCharacters;
+        return aInput.substring(aPosition2+1, aPosition2+1 + pNumberOfCharacters);
     }
 
     /**
@@ -163,14 +112,16 @@ public class JSONTokener
      */
     public char nextClean()
     {
-        for (;;)
+    	assert !end();
+        for(int i = aPosition2; i < aInput.length(); i++ )
         {
-            char c = this.next();
-            if (c == 0 || c > ' ') 
+            char c = next();
+            if(c == 0 || c > ' ') 
             {
                 return c;
             }
         }
+        return 0;
     }
 
     /**
@@ -198,8 +149,9 @@ public class JSONTokener
             case '\r':
                 throw syntaxError("Unterminated string");
             case '\\':
-                c = this.next();
-                switch (c) {
+                c = next();
+                switch (c)
+                {
                 case 'b':
                     sb.append('\b');
                     break;

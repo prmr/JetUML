@@ -12,6 +12,15 @@ public class TestTokener
 	
 	private final JSONTokener aTokener = new JSONTokener(TEST);
 	
+//	@Test
+//	void content()
+//	{
+//		for( int i =0; i < TEST.length(); i++ )
+//		{
+//			System.out.println(i + ":" + TEST.charAt(i));
+//		}
+//	}
+	
 	@Test
 	void testNextClean()
 	{
@@ -37,9 +46,6 @@ public class TestTokener
 		assertEquals('2', aTokener.nextClean());
 		assertEquals('7', aTokener.nextClean());
 		assertEquals('}', aTokener.nextClean());
-		assertEquals(0, aTokener.next());
-		assertEquals(0, aTokener.next()); // Always returns 0 past the end
-		assertEquals(0, aTokener.next());
 		assertTrue(aTokener.end());
 	}
 	
@@ -79,21 +85,12 @@ public class TestTokener
 		assertEquals('7', aTokener.next());
 		assertEquals(10, aTokener.next()); // New line
 		assertEquals('}', aTokener.next());
-		assertEquals(0, aTokener.next());
 		assertTrue(aTokener.end());
 	}
 	
 	@Test
 	void testBack_FromStart()
 	{
-		assertThrows(JSONException.class, ()-> aTokener.back());
-	}
-	
-	@Test
-	void testBack_Twice()
-	{
-		aTokener.next(7); // Now next is 'a'
-		aTokener.back();
 		assertThrows(JSONException.class, ()-> aTokener.back());
 	}
 	
