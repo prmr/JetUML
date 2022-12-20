@@ -1,6 +1,5 @@
 package org.json;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -51,26 +50,14 @@ public class JSONTokener
     private boolean aUsePreviousCharacter = false;
     
     /**
-     * Construct a JSONTokener from a Reader. The caller must close the Reader.
-     *
-     * @param reader A reader.
-     */
-    public JSONTokener(Reader reader) 
-    {
-        aReader = reader.markSupported()
-                ? reader : new BufferedReader(reader);
-    }
-
-    /**
      * Construct a JSONTokener from a string.
      *
      * @param s     A source string.
      */
     public JSONTokener(String s) 
     {
-        this(new StringReader(s));
+        aReader = new StringReader(s);
     }
-
 
     /**
      * Back up one character. This provides a sort of lookahead capability,

@@ -24,6 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -55,14 +58,14 @@ public class TestTipLoader
 	}
 	
 	@Test
-	public void testTipLoader_loadTipCanLoadTipFromCorrectId()
+	void testTipLoader_loadTipCanLoadTipFromCorrectId()
 	{
 		Tip tip = TipLoader.loadTip(1);
 		assertTrue(tip != null);
 	}
 	
 	@Test
-	public void testTipLoader_loadTipCreatesTipsWithRightId()
+	void testTipLoader_loadTipCreatesTipsWithRightId()
 	{
 		Tip tip1 = TipLoader.loadTip(1);
 		assertEquals(tip1.getId(), 1);
@@ -71,14 +74,14 @@ public class TestTipLoader
 	}
 	
 	@Test
-	public void testTipConvertJSONObjectToTipElements_listHasRightSize()
+	void testTipConvertJSONObjectToTipElements_listHasRightSize()
 	{
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		assertEquals(tipElements.size(), 2);
 	}
 	
 	@Test
-	public void testTipConvertJSONObjectToTipElements_elementsHaveRightMedia()
+	void testTipConvertJSONObjectToTipElements_elementsHaveRightMedia()
 	{
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		TipElement tipElement1 = tipElements.get(0);
@@ -89,7 +92,7 @@ public class TestTipLoader
 	}
 	
 	@Test
-	public void testTipConvertJSONObjectToTipElements_elementsHaveRightContent()
+	void testTipConvertJSONObjectToTipElements_elementsHaveRightContent()
 	{
 		List<TipElement> tipElements = convertJSONObjectToTipElements(WELL_FORMATTED_TIP);
 		TipElement tipElement1 = tipElements.get(0);
@@ -97,6 +100,20 @@ public class TestTipLoader
 		
 		assertEquals(tipElement1.getContent(), "sample text");
 		assertEquals(tipElement2.getContent(), "image.png");
+	}
+	
+	@Test
+	void testinputStreamToString()
+	{
+		try(InputStream stream = new FileInputStream("testdata/streamtest.txt"))
+		{
+			String result = inputStreamToString(stream);
+			assertEquals("ABCDE", result);
+		}
+		catch( IOException e )
+		{
+			fail();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -107,6 +124,21 @@ public class TestTipLoader
 			Method method = TipLoader.Tip.class.getDeclaredMethod("convertJSONObjectToTipElements", JSONObject.class);
 			method.setAccessible(true);
 			return (List<TipElement>) method.invoke(null, pTip);
+		}
+		catch(ReflectiveOperationException e)
+		{
+			fail();
+			return null;
+		}
+	}
+	
+	static String inputStreamToString(InputStream pStream)
+	{
+		try
+		{
+			Method method = TipLoader.class.getDeclaredMethod("inputStreamToString", InputStream.class);
+			method.setAccessible(true);
+			return (String) method.invoke(null, pStream);
 		}
 		catch(ReflectiveOperationException e)
 		{

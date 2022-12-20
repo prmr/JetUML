@@ -29,11 +29,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
@@ -172,7 +170,8 @@ public class TestTipJsons {
 	{
 		try( InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
-			JSONTokener jTok = new JSONTokener(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+			String input = TestTipLoader.inputStreamToString(inputStream);
+			JSONTokener jTok = new JSONTokener(input);
 			JSONObject jObj = new JSONObject(jTok);
 			return jObj;
 		}

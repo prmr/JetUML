@@ -22,10 +22,9 @@ package org.jetuml.gui.tips;
 
 import static org.jetuml.application.ApplicationResources.RESOURCES;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +59,7 @@ final class TipLoader
 		try(InputStream tipsInputStream = TipLoader.class.getResourceAsStream(
 				String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
-			InputStreamReader tipsReader = new InputStreamReader(tipsInputStream, StandardCharsets.UTF_8);
-			JSONTokener jsonTokener = new JSONTokener(tipsReader);
+			JSONTokener jsonTokener = new JSONTokener(inputStreamToString(tipsInputStream));
 			JSONObject jsonObject = new JSONObject(jsonTokener); 
 			Tip tip = new Tip(pId, jsonObject);
 			return tip;
@@ -71,6 +69,17 @@ final class TipLoader
 			assert false;
 			return null;
 		}
+	}
+	
+	private static String inputStreamToString(InputStream pStream) throws IOException
+	{
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		for (int length; (length = pStream.read(buffer)) != -1; )
+		{
+			result.write(buffer, 0, length);
+		}
+		return result.toString("UTF-8");
 	}
 	
 	/**

@@ -38,6 +38,8 @@ public class TestTokener
 		assertEquals('7', aTokener.nextClean());
 		assertEquals('}', aTokener.nextClean());
 		assertEquals(0, aTokener.next());
+		assertEquals(0, aTokener.next()); // Always returns 0 past the end
+		assertEquals(0, aTokener.next());
 		assertTrue(aTokener.end());
 	}
 	
