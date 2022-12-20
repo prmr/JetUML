@@ -25,8 +25,9 @@ SOFTWARE.
  */
 
 /**
- * A JSONTokener takes a source string and extracts characters and tokens from
- * it. 
+ * An object to step through a string character by characters, with
+ * the possibility of going backward. The JsonParser is not meant to 
+ * be reused to parse different strings.
  */
 public class JSONTokener 
 {
@@ -34,17 +35,41 @@ public class JSONTokener
 	private final String aInput;
 	
 	/* Current position in the input. Represents the position
-	 * of the next character to read. Initialized at -1. */
-	private int aPosition2 = -1;
+	 * of the last character read. Initialized at -1. */
+	private int aPosition = -1;
 	
     /**
-     * Construct a JSONTokener from a string.
+     * Constructs a new JsonParser initialized at the beginning of the input.
      *
-     * @param pInput A string to use as a complete source of characters for the tokenizer.
+     * @param pInput A string to use as a complete source of characters.
+     * @pre pInput != null;
      */
     public JSONTokener(String pInput) 
     {
+    	assert pInput != null;
         aInput = pInput;
+    }
+    
+    /**
+     * Get the next character.
+     *
+     * @return The next character, assumed to exist.
+     * @pre hasNext()
+     */
+    public char next()
+    {
+    	assert hasNext();
+    	aPosition++;
+    	return aInput.charAt(aPosition);
+    }
+    
+    /**
+     * @return True iif there is at least one more character 
+     * to read.
+     */
+    public boolean hasNext()
+    {
+    	return aPosition + 1 < aInput.length();
     }
 
     /**
@@ -56,11 +81,11 @@ public class JSONTokener
      */
     public void back()
     {
-    	if( aPosition2 < 0 )
+    	if( aPosition < 0 )
     	{
     		throw new JSONException("Cannot step back: already at the beginning of the buffer.");
     	}
-    	aPosition2--;
+    	aPosition--;
     }
 
     /**
@@ -70,24 +95,10 @@ public class JSONTokener
      */
     public boolean end() 
     {
-    	return aPosition2 == aInput.length()-1;
+    	return !hasNext();
     }
 
-    /**
-     * Get the next character in the source string.
-     *
-     * @return The next character, or 0 if past the end of the source string.
-     * @throws JSONException Thrown if there is an error reading the source string.
-     */
-    public char next()
-    {
-    	if( end() )
-    	{
-    		throw new JSONException("Cannot read past last character");
-    	}
-    	aPosition2++;
-    	return aInput.charAt(aPosition2);
-    }
+
 
     /**
      * Get the next n characters.
@@ -100,9 +111,9 @@ public class JSONTokener
      */
     public String next(int pNumberOfCharacters)
     {
-        assert pNumberOfCharacters > 0 && aPosition2 + pNumberOfCharacters < aInput.length();
-        aPosition2 += pNumberOfCharacters;
-        return aInput.substring(aPosition2+1, aPosition2+1 + pNumberOfCharacters);
+        assert pNumberOfCharacters > 0 && aPosition + pNumberOfCharacters < aInput.length();
+        aPosition += pNumberOfCharacters;
+        return aInput.substring(aPosition+1, aPosition+1 + pNumberOfCharacters);
     }
 
     /**
@@ -113,7 +124,7 @@ public class JSONTokener
     public char nextClean()
     {
     	assert !end();
-        for(int i = aPosition2; i < aInput.length(); i++ )
+        for(int i = aPosition; i < aInput.length(); i++ )
         {
             char c = next();
             if(c == 0 || c > ' ') 

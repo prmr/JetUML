@@ -1,6 +1,7 @@
 package org.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,15 +12,6 @@ public class TestTokener
 	private static final String TEST = "{\n   \"name\": \"Jo\",\n   \"age\": 27\n}";
 	
 	private final JSONTokener aTokener = new JSONTokener(TEST);
-	
-//	@Test
-//	void content()
-//	{
-//		for( int i =0; i < TEST.length(); i++ )
-//		{
-//			System.out.println(i + ":" + TEST.charAt(i));
-//		}
-//	}
 	
 	@Test
 	void testNextClean()
@@ -100,5 +92,22 @@ public class TestTokener
 		aTokener.next(7); // Now next is 'a'
 		aTokener.back();  // Now next is 'n'
 		assertEquals('n', aTokener.next());
+	}
+	
+	@Test
+	void testNext_One()
+	{
+		JSONTokener tokener = new JSONTokener("a");
+		assertEquals('a', tokener.next());
+		assertFalse(tokener.hasNext());
+	}
+	
+	@Test
+	void testNext_Two()
+	{
+		JSONTokener tokener = new JSONTokener("ab");
+		assertEquals('a', tokener.next());
+		assertEquals('b', tokener.next());
+		assertFalse(tokener.hasNext());
 	}
 }
