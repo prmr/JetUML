@@ -1,0 +1,105 @@
+package org.json;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+public class TestTokener
+{
+	private static final String TEST = "{\n   \"name\": \"Jo\",\n   \"age\": 27\n}";
+	
+	private final JSONTokener aTokener = new JSONTokener(TEST);
+	
+	@Test
+	void testNextClean()
+	{
+		assertEquals('{', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals('n', aTokener.nextClean());
+		assertEquals('a', aTokener.nextClean());
+		assertEquals('m', aTokener.nextClean());
+		assertEquals('e', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals(':', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals('J', aTokener.nextClean());
+		assertEquals('o', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals(',', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals('a', aTokener.nextClean());
+		assertEquals('g', aTokener.nextClean());
+		assertEquals('e', aTokener.nextClean());
+		assertEquals('"', aTokener.nextClean());
+		assertEquals(':', aTokener.nextClean());
+		assertEquals('2', aTokener.nextClean());
+		assertEquals('7', aTokener.nextClean());
+		assertEquals('}', aTokener.nextClean());
+		assertEquals(0, aTokener.next());
+		assertTrue(aTokener.end());
+	}
+	
+	@Test
+	void testNext()
+	{
+		assertEquals('{', aTokener.next());
+		assertEquals(10, aTokener.next()); // New line
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals('"', aTokener.next());
+		assertEquals('n', aTokener.next());
+		assertEquals('a', aTokener.next());
+		assertEquals('m', aTokener.next());
+		assertEquals('e', aTokener.next());
+		assertEquals('"', aTokener.next());
+		assertEquals(':', aTokener.next());
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals('"', aTokener.next());
+		assertEquals('J', aTokener.next());
+		assertEquals('o', aTokener.next());
+		assertEquals('"', aTokener.next());
+		assertEquals(',', aTokener.next());
+		assertEquals(10, aTokener.next()); // New line
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals('"', aTokener.next());
+		assertEquals('a', aTokener.next());
+		assertEquals('g', aTokener.next());
+		assertEquals('e', aTokener.next());
+		assertEquals('"', aTokener.next());
+		assertEquals(':', aTokener.next());
+		assertEquals(32, aTokener.next()); // Space
+		assertEquals('2', aTokener.next());
+		assertEquals('7', aTokener.next());
+		assertEquals(10, aTokener.next()); // New line
+		assertEquals('}', aTokener.next());
+		assertEquals(0, aTokener.next());
+		assertTrue(aTokener.end());
+	}
+	
+	@Test
+	void testBack_FromStart()
+	{
+		assertThrows(JSONException.class, ()-> aTokener.back());
+	}
+	
+	@Test
+	void testBack_Twice()
+	{
+		aTokener.next(7); // Now next is 'a'
+		aTokener.back();
+		assertThrows(JSONException.class, ()-> aTokener.back());
+	}
+	
+	@Test
+	void testBack_Normal()
+	{
+		aTokener.next(7); // Now next is 'a'
+		aTokener.back();  // Now next is 'n'
+		assertEquals('n', aTokener.next());
+	}
+}
