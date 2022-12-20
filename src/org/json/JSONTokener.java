@@ -35,17 +35,11 @@ SOFTWARE.
  */
 public class JSONTokener 
 {
-	/* Current 1-indexed character position on the current line. */
-    private long aCharacterIndexOnLine = 1;
-    
     /* Flag to indicate if the end of the input has been found. */
     private boolean aEndOfInputReached = false;
     
     /* Current read index of the input. */
-    private long aCharacterIndexInInput = 0;
-    
-    /* Current line of the input. */
-    private long aLineIndex = 1;
+    private long aPosition = 0;
     
     /* Previous character read from the input. */
     private char aPreviouslyReadCharacter = 0;
@@ -56,9 +50,6 @@ public class JSONTokener
     /* Flag to indicate that a previous character was requested. */
     private boolean aUsePreviousCharacter = false;
     
-    /* The number of characters read in the previous line. */
-    private long aNumberOfCharactersOnPreviousLine = 0;
-
     /**
      * Construct a JSONTokener from a Reader. The caller must close the Reader.
      *
@@ -90,30 +81,13 @@ public class JSONTokener
      */
     public void back()
     {
-        if (aUsePreviousCharacter || aCharacterIndexInInput <= 0) 
+        if (aUsePreviousCharacter || aPosition <= 0) 
         {
             throw new JSONException("Stepping back two steps is not supported");
         }
-        decrementIndexes();
+        aPosition--;
         aUsePreviousCharacter = true;
         aEndOfInputReached = false;
-    }
-
-    /**
-     * Decrements the indexes for the {@link #back()} method based on the previous character read.
-     */
-    private void decrementIndexes() 
-    {
-        aCharacterIndexInInput--;
-        if(aPreviouslyReadCharacter == '\r' || aPreviouslyReadCharacter == '\n') 
-        {
-            aLineIndex--;
-            aCharacterIndexOnLine = aNumberOfCharactersOnPreviousLine;
-        } 
-        else if(aCharacterIndexOnLine > 0)
-        {
-            aCharacterIndexOnLine--;
-        }
     }
 
     /**
@@ -156,41 +130,12 @@ public class JSONTokener
             aEndOfInputReached = true;
             return 0;
         }
-        incrementIndexes(c);
-        aPreviouslyReadCharacter = (char) c;
-        return aPreviouslyReadCharacter;
-    }
-
-    /**
-     * Increments the internal indexes according to the previous character
-     * read and the character passed as the current character.
-     * @param c the current character read.
-     */
-    private void incrementIndexes(int c) 
-    {
         if(c > 0) 
         {
-            aCharacterIndexInInput++;
-            if(c=='\r') 
-            {
-                aLineIndex++;
-                aNumberOfCharactersOnPreviousLine = aCharacterIndexOnLine;
-                aCharacterIndexOnLine=0;
-            }
-            else if(c=='\n') 
-            {
-                if(aPreviouslyReadCharacter != '\r') 
-                {
-                    aLineIndex++;
-                    aNumberOfCharactersOnPreviousLine = aCharacterIndexOnLine;
-                }
-                aCharacterIndexOnLine=0;
-            } 
-            else 
-            {
-                aCharacterIndexOnLine++;
-            }
+            aPosition++;
         }
+        aPreviouslyReadCharacter = (char) c;
+        return aPreviouslyReadCharacter;
     }
 
     /**
@@ -383,17 +328,5 @@ public class JSONTokener
     public JSONException syntaxError(String message, Throwable causedBy) 
     {
         return new JSONException(message + toString(), causedBy);
-    }
-
-    /**
-     * Make a printable string of this JSONTokener.
-     *
-     * @return " at {index} [character {character} line {line}]"
-     */
-    @Override
-    public String toString() 
-    {
-        return " at " + aCharacterIndexInInput + " [character " + aCharacterIndexOnLine + " line " +
-                aLineIndex + "]";
     }
 }
