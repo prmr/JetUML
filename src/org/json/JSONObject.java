@@ -197,7 +197,7 @@ public class JSONObject {
             case '}':
                 return;
             default:
-                x.back();
+                x.backUp();
                 key = x.nextValue().toString();
             }
 
@@ -231,7 +231,7 @@ public class JSONObject {
                 if (x.nextClean() == '}') {
                     return;
                 }
-                x.back();
+                x.backUp();
                 break;
             case '}':
                 return;

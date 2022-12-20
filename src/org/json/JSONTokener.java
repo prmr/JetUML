@@ -73,47 +73,45 @@ public class JSONTokener
     }
 
     /**
-     * Back up one character. This provides a sort of lookahead capability,
-     * so that you can test for a digit or letter before attempting to parse
-     * the next number or identifier.
-     * @throws JSONException Thrown if trying to step back more than 1 step
-     *  or if already at the start of the string
+     * Back up one character. 
+     * @pre canBackUp()
      */
-    public void back()
+    public void backUp()
     {
-    	if( aPosition < 0 )
-    	{
-    		throw new JSONException("Cannot step back: already at the beginning of the buffer.");
-    	}
     	aPosition--;
     }
-
+    
     /**
-     * Checks if the end of the input has been reached.
-     *  
-     * @return true if at the end of the file and we didn't step back
+     * @return True if it is possible to back up one character. This is possible
+     * iff the position is not at the beginning of the input, before the first character.
      */
-    public boolean end() 
+    public boolean canBackUp()
     {
-    	return !hasNext();
+    	return aPosition >= 0;
     }
 
-
-
-    /**
-     * Get the next n characters.
+    /* All methods below should be implemented using the methods above,
+     * as opposed to direct field manipulation. */
+    
+    /*
+     * Get the next pNumberOfCharacters characters as a string.
      *
-     * @param pNumberOfCharacters     The number of characters to take.
-     * @return      A string of n characters.
-     * @throws JSONException
-     *   Substring bounds error if there are not
-     *   n characters remaining in the source string.
+     * @param pNumberOfCharacters The number of characters to take.
+     * @return A string of pNumberOfCharacters characters.
      */
-    public String next(int pNumberOfCharacters)
+    private String next(int pNumberOfCharacters)
     {
-        assert pNumberOfCharacters > 0 && aPosition + pNumberOfCharacters < aInput.length();
+        assert pNumberOfCharacters > 0 && hasMore(pNumberOfCharacters);
         aPosition += pNumberOfCharacters;
         return aInput.substring(aPosition+1, aPosition+1 + pNumberOfCharacters);
+    }
+    
+    /*
+     * @return True if there are still pNumberOfCharacters or more to read.
+     */
+    private boolean hasMore(int pNumberOfCharacters)
+    {
+    	return aPosition + pNumberOfCharacters < aInput.length();
     }
 
     /**
@@ -123,7 +121,6 @@ public class JSONTokener
      */
     public char nextClean()
     {
-    	assert !end();
         for(int i = aPosition; i < aInput.length(); i++ )
         {
             char c = next();
@@ -226,10 +223,10 @@ public class JSONTokener
         case '\'':
             return nextString(c);
         case '{':
-            back();
+            backUp();
             return new JSONObject(this);
         case '[':
-            back();
+            backUp();
             return new JSONArray(this);
         }
 
@@ -248,7 +245,7 @@ public class JSONTokener
             sb.append(c);
             c = next();
         }
-        back();
+        backUp();
 
         string = sb.toString().trim();
         if ("".equals(string)) {

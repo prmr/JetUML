@@ -110,13 +110,13 @@ public class JSONArray implements Iterable<Object>
             throw pTokener.syntaxError("Expected a ',' or ']'");
         }
         if (nextChar != ']') {
-            pTokener.back();
+            pTokener.backUp();
             for (;;) {
                 if (pTokener.nextClean() == ',') {
-                    pTokener.back();
+                    pTokener.backUp();
                     this.aElements.add(JSONObject.NULL);
                 } else {
-                    pTokener.back();
+                    pTokener.backUp();
                     this.aElements.add(pTokener.nextValue());
                 }
                 switch (pTokener.nextClean()) {
@@ -132,7 +132,7 @@ public class JSONArray implements Iterable<Object>
                     if (nextChar == ']') {
                         return;
                     }
-                    pTokener.back();
+                    pTokener.backUp();
                     break;
                 case ']':
                     return;

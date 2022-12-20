@@ -2,7 +2,6 @@ package org.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ public class TestTokener
 		assertEquals('2', aTokener.nextClean());
 		assertEquals('7', aTokener.nextClean());
 		assertEquals('}', aTokener.nextClean());
-		assertTrue(aTokener.end());
+		assertFalse(aTokener.hasNext());
 	}
 	
 	@Test
@@ -77,20 +76,34 @@ public class TestTokener
 		assertEquals('7', aTokener.next());
 		assertEquals(10, aTokener.next()); // New line
 		assertEquals('}', aTokener.next());
-		assertTrue(aTokener.end());
+		assertFalse(aTokener.hasNext());
 	}
 	
 	@Test
-	void testBack_FromStart()
+	void testCanBackUp_Yes()
 	{
-		assertThrows(JSONException.class, ()-> aTokener.back());
+		aTokener.next();
+		aTokener.next();
+		assertTrue(aTokener.canBackUp());
+	}
+	
+	@Test
+	void testCanBackUp_No()
+	{
+		assertFalse(aTokener.canBackUp());
 	}
 	
 	@Test
 	void testBack_Normal()
 	{
-		aTokener.next(7); // Now next is 'a'
-		aTokener.back();  // Now next is 'n'
+		aTokener.next();
+		aTokener.next();
+		aTokener.next();
+		aTokener.next();
+		aTokener.next();
+		aTokener.next();
+		aTokener.next(); // Now next is 'a'
+		aTokener.backUp();  // Now next is 'n'
 		assertEquals('n', aTokener.next());
 	}
 	
