@@ -239,6 +239,71 @@ public class TestTokener
 		assertEquals("", nextString(new JSONTokener("\"sds")));
 	}
 	
+	@Test
+	void testNextString_EscapedBackspace()
+	{
+		assertEquals("\b", nextString(new JSONTokener("\b\"")));
+	}
+	
+	@Test
+	void testNextString_EscapedSolidus()
+	{
+		// Creating a string with an escaped forward slash is not easy
+		char[] characters = {'a', 'b', '\\', '/', 'c', '"', 'e' };
+		assertEquals("ab/c", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_EscapedReverseSolidus()
+	{
+		// Creating a string with an escaped back slash is not easy
+		char[] characters = {'a', 'b', '\\', '\\', 'c', '"', 'e' };
+		assertEquals("ab\\c", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_EscapedQuote()
+	{
+		char[] characters = {'a', 'b', '\\', '"', 'c', '"', 'e' };
+		assertEquals("ab\"c", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_EscapedUnicode()
+	{
+		char[] characters = {'a', 'b', '\\', 'u', '0', '0', 'C', '2', 'c', '"', 'd' };
+		System.out.println(new String(characters));
+		assertEquals("abÂc", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_EscapedTab()
+	{
+		assertEquals("\t", nextString(new JSONTokener("\t\"")));
+	}
+	
+	@Test
+	void testNextString_EscapedNewLine()
+	{
+		// a JSON string with '\' '\n' is different from the string literal \n
+		char[] characters = {'a', 'b', '\\', 'n', 'c', '"', 'e' };
+		assertEquals("ab\nc", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_EscapedFormFeed()
+	{
+		assertEquals("\f", nextString(new JSONTokener("\f\"")));
+	}
+	
+	@Test
+	void testNextString_EscapedCarriageReturn()
+	{
+		// a JSON string with '\' '\r' is different from the string literal \r
+		char[] characters = {'a', 'b', '\\', 'r', 'c', '"', 'e' };
+		assertEquals("ab\rc", nextString(new JSONTokener( new String(characters))));
+	}
+	
 	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
 	{
 		try 

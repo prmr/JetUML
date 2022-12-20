@@ -156,7 +156,7 @@ public class JSONTokener
      * already have been read. This method is intended to properly 
      * process escapes. The formal JSON format does not allow strings
      * in single quotes, and they are not accepted by this method.
-     * Strings are not allowed to span multiple lines
+     * Strings are not allowed to span lines.
      * @return A string
      * @throws JSONException If there's is an unanticipated error processing the string.
      */
