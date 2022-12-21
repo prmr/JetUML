@@ -33,8 +33,8 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
 import org.jetuml.diagram.PropertyName;
-import org.json.JsonArray;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonObject;
 
 /**
  * Utilities to facilitate writing tests for the persistence

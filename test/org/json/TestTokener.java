@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonObject;
+import org.jetuml.persistence.json.JsonParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -672,7 +675,7 @@ public class TestTokener
 		}
 		catch(InvocationTargetException exception)
 		{
-			if( exception.getTargetException().getClass() != org.json.JsonException.class)
+			if( exception.getTargetException().getClass() != org.jetuml.persistence.json.JsonException.class)
 			{
 				fail();
 			}
@@ -697,7 +700,7 @@ public class TestTokener
 		}
 		catch(InvocationTargetException exception)
 		{
-			if( exception.getTargetException().getClass() != org.json.JsonException.class)
+			if( exception.getTargetException().getClass() != org.jetuml.persistence.json.JsonException.class)
 			{
 				fail();
 			}

@@ -26,9 +26,9 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Property;
 import org.jetuml.geom.Point;
-import org.json.JsonArray;
-import org.json.JsonException;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonException;
+import org.jetuml.persistence.json.JsonObject;
 
 /**
  * Converts a JSONObject to a versioned diagram.

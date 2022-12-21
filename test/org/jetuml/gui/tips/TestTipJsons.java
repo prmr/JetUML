@@ -36,9 +36,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.json.JsonArray;
-import org.json.JsonObject;
-import org.json.JsonParser;
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonObject;
+import org.jetuml.persistence.json.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.jetuml.gui.tips.TipLoader.Tip;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

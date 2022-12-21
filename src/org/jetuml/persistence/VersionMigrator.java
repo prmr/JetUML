@@ -33,9 +33,9 @@ import java.util.Set;
 
 import org.jetuml.JetUML;
 import org.jetuml.application.Version;
-import org.json.JsonArray;
-import org.json.JsonException;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonException;
+import org.jetuml.persistence.json.JsonObject;
 
 /**
  * Utility class to migrate a pre-3.0 saved diagram to post 3.0.

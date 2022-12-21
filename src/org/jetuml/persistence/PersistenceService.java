@@ -31,8 +31,8 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 import org.jetuml.diagram.Diagram;
-import org.json.JsonException;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonException;
+import org.jetuml.persistence.json.JsonObject;
 
 /**
  * Services for saving and loading Diagram objects. The files are encoded

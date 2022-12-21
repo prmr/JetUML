@@ -18,7 +18,7 @@
  * The code in this class was originally based on JSON.org.
  * 
  ******************************************************************************/
-package org.json;
+package org.jetuml.persistence.json;
 
 import static java.lang.Character.isWhitespace;
 

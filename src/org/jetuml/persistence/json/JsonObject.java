@@ -1,4 +1,4 @@
-package org.json;
+package org.jetuml.persistence.json;
 
 import java.io.Closeable;
 

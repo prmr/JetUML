@@ -1,4 +1,4 @@
-package org.json;
+package org.jetuml.persistence.json;
 
 /*
  Copyright (c) 2002 JSON.org

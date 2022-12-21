@@ -19,7 +19,7 @@
  * 
  ******************************************************************************/
 
-package org.json;
+package org.jetuml.persistence.json;
 
 /**
  * Represents an error while processing JSON data.

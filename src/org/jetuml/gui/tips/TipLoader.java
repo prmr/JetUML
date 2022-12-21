@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JsonObject;
-import org.json.JsonParser;
+import org.jetuml.persistence.json.JsonObject;
+import org.jetuml.persistence.json.JsonParser;
 
 /**
  * Class that statically loads the tips.

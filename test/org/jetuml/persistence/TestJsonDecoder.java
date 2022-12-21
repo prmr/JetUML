@@ -23,7 +23,7 @@ package org.jetuml.persistence;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.jetuml.JavaFXLoader;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

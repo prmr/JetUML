@@ -26,8 +26,8 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
-import org.json.JsonArray;
-import org.json.JsonObject;
+import org.jetuml.persistence.json.JsonArray;
+import org.jetuml.persistence.json.JsonObject;
 
 /**
  * Converts a graph to JSON notation. The notation includes:
