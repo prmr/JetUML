@@ -26,7 +26,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JSONObject;
 
 /**
@@ -57,9 +57,9 @@ public final class JsonEncoder
 		return object;
 	}
 	
-	private static JSONArray encodeNodes(SerializationContext pContext)
+	private static JsonArray encodeNodes(SerializationContext pContext)
 	{
-		JSONArray nodes = new JSONArray();
+		JsonArray nodes = new JsonArray();
 		for( Node node : pContext ) 
 		{
 			nodes.put(encodeNode(node, pContext));
@@ -81,16 +81,16 @@ public final class JsonEncoder
 		return object;
 	}
 	
-	private static JSONArray encodeChildren(Node pNode, SerializationContext pContext)
+	private static JsonArray encodeChildren(Node pNode, SerializationContext pContext)
 	{
-		JSONArray children = new JSONArray();
+		JsonArray children = new JsonArray();
 		pNode.getChildren().forEach(child -> children.put(pContext.getId(child)));
 		return children;
 	}
 	
-	private static JSONArray encodeEdges(AbstractContext pContext)
+	private static JsonArray encodeEdges(AbstractContext pContext)
 	{
-		JSONArray edges = new JSONArray();
+		JsonArray edges = new JsonArray();
 		for( Edge edge : pContext.pDiagram().edges() ) 
 		{
 			JSONObject object = toJSONObject(edge.properties());

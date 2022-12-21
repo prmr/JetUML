@@ -33,7 +33,7 @@ import java.util.Set;
 
 import org.jetuml.JetUML;
 import org.jetuml.application.Version;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JsonException;
 import org.json.JSONObject;
 
@@ -114,7 +114,7 @@ public final class VersionMigrator
 
 	private void convertPackageNodeToPackageDescriptionNode(JSONObject pDiagram)
 	{
-		JSONArray nodes = pDiagram.getJSONArray("nodes");
+		JsonArray nodes = pDiagram.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			JSONObject object = nodes.getJSONObject(i);
@@ -128,7 +128,7 @@ public final class VersionMigrator
 	
 	private void removeInterfaceStereotype(JSONObject pDiagram)
 	{
-		JSONArray nodes = pDiagram.getJSONArray("nodes");
+		JsonArray nodes = pDiagram.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			JSONObject object = nodes.getJSONObject(i);
@@ -145,7 +145,7 @@ public final class VersionMigrator
 
 	private void removeSelfDependencies(JSONObject pDiagram)
 	{
-		JSONArray edges = pDiagram.getJSONArray("edges");
+		JsonArray edges = pDiagram.getJSONArray("edges");
 		List<JSONObject> newEdges = new ArrayList<>();
 		for( int i = 0; i < edges.length(); i++ )
 		{
@@ -159,12 +159,12 @@ public final class VersionMigrator
 				newEdges.add(object);
 			}
 		}
-		pDiagram.put("edges", new JSONArray(newEdges));
+		pDiagram.put("edges", new JsonArray(newEdges));
 	}
 
 	private void addDirectionalityPropertyToDependencyEdges(JSONObject pDiagram)
 	{
-		JSONArray edges = pDiagram.getJSONArray("edges");
+		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			JSONObject object = edges.getJSONObject(i);
@@ -182,7 +182,7 @@ public final class VersionMigrator
 	 */
 	private void flipInversedAssociations(JSONObject pDiagram)
 	{
-		JSONArray edges = pDiagram.getJSONArray("edges");
+		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			JSONObject object = edges.getJSONObject(i);
@@ -200,7 +200,7 @@ public final class VersionMigrator
 	
 	private void renameAssociationDirectionality(JSONObject pDiagram)
 	{
-		JSONArray edges = pDiagram.getJSONArray("edges");
+		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			JSONObject object = edges.getJSONObject(i);
@@ -228,7 +228,7 @@ public final class VersionMigrator
 		Map<Set<Integer>, JSONObject> links = new HashMap<>();
 		List<JSONObject> newEdges = new ArrayList<>();
 		
-		JSONArray edges = pDiagram.getJSONArray("edges");
+		JsonArray edges = pDiagram.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			JSONObject object = edges.getJSONObject(i);
@@ -249,6 +249,6 @@ public final class VersionMigrator
 				}
 			}
 		}
-		pDiagram.put("edges", new JSONArray(newEdges));
+		pDiagram.put("edges", new JsonArray(newEdges));
 	}
 }

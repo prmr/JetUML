@@ -26,7 +26,7 @@ import org.jetuml.diagram.Edge;
 import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Property;
 import org.jetuml.geom.Point;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JsonException;
 import org.json.JSONObject;
 
@@ -72,7 +72,7 @@ public final class JsonDecoder
 	 */
 	private static void decodeNodes(DeserializationContext pContext, JSONObject pObject)
 	{
-		JSONArray nodes = pObject.getJSONArray("nodes");
+		JsonArray nodes = pObject.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			try
@@ -114,14 +114,14 @@ public final class JsonDecoder
 	 */
 	private static void restoreChildren(DeserializationContext pContext, JSONObject pObject)
 	{
-		JSONArray nodes = pObject.getJSONArray("nodes");
+		JsonArray nodes = pObject.getJSONArray("nodes");
 		for( int i = 0; i < nodes.length(); i++ )
 		{
 			JSONObject object = nodes.getJSONObject(i);
 			if( object.has("children"))
 			{
 				Node node = pContext.getNode( object.getInt("id"));
-				JSONArray children = object.getJSONArray("children");
+				JsonArray children = object.getJSONArray("children");
 				for( int j = 0; j < children.length(); j++ )
 				{
 					node.addChild(pContext.getNode(children.getInt(j)));
@@ -137,7 +137,7 @@ public final class JsonDecoder
 	 */
 	private static void decodeEdges(DeserializationContext pContext, JSONObject pObject)
 	{
-		JSONArray edges = pObject.getJSONArray("edges");
+		JsonArray edges = pObject.getJSONArray("edges");
 		for( int i = 0; i < edges.length(); i++ )
 		{
 			try

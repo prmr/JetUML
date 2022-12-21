@@ -38,7 +38,7 @@ import org.jetuml.diagram.nodes.InitialStateNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.StateNode;
 import org.jetuml.geom.Point;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,13 +174,13 @@ public class TestJsonEncodingStateDiagram
 		assertEquals(4, object.getJSONArray("nodes").length());	
 		assertEquals(3, object.getJSONArray("edges").length());	
 		
-		JSONArray nodes = object.getJSONArray("nodes");
+		JsonArray nodes = object.getJSONArray("nodes");
 		JSONObject node1b = find(nodes, "StateNode", build(PropertyName.NAME, "Start"));
 		JSONObject node2b = find(nodes, "StateNode", build(PropertyName.NAME, "End"));
 		JSONObject startb = find(nodes, "InitialStateNode", build());
 		JSONObject endb = find(nodes, "FinalStateNode", build());
 		
-		JSONArray edges = object.getJSONArray("edges");
+		JsonArray edges = object.getJSONArray("edges");
 		JSONObject edge1b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge1"));
 		JSONObject edge2b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge2"));
 		JSONObject edge3b = find(edges, "StateTransitionEdge", build(PropertyName.MIDDLE_LABEL, "edge3"));

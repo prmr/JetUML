@@ -441,7 +441,7 @@ public class TestTokener
 	void testNextValue_array()
 	{
 		JSONTokener tokener = new JSONTokener("[]");
-		assertTrue(nextValue(tokener).getClass() == JSONArray.class);
+		assertTrue(nextValue(tokener).getClass() == JsonArray.class);
 	}
 	
 	@Test

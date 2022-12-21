@@ -33,7 +33,7 @@ import org.jetuml.diagram.Node;
 import org.jetuml.diagram.Properties;
 import org.jetuml.diagram.Property;
 import org.jetuml.diagram.PropertyName;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JSONObject;
 
 /**
@@ -97,7 +97,7 @@ public final class PersistenceTestUtils
 	/*
 	 * Finds the object in an array with the specified properties
 	 */
-	static JSONObject find(JSONArray pArray, String pType, Properties pProperties)
+	static JSONObject find(JsonArray pArray, String pType, Properties pProperties)
 	{
 		JSONObject found = null;
 		for( int i = 0; i < pArray.length(); i++ )

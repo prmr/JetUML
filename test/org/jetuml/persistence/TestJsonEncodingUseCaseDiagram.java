@@ -37,7 +37,7 @@ import org.jetuml.diagram.edges.UseCaseDependencyEdge;
 import org.jetuml.diagram.nodes.ActorNode;
 import org.jetuml.diagram.nodes.NoteNode;
 import org.jetuml.diagram.nodes.UseCaseNode;
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,11 +137,11 @@ public class TestJsonEncodingUseCaseDiagram
 		assertEquals(2, object.getJSONArray("nodes").length());	
 		assertEquals(1, object.getJSONArray("edges").length());	
 		
-		JSONArray nodes = object.getJSONArray("nodes");
+		JsonArray nodes = object.getJSONArray("nodes");
 		JSONObject actor = find(nodes, "ActorNode", build(PropertyName.NAME, "Mr. Bob"));
 		JSONObject useCase = find(nodes, "UseCaseNode", build(PropertyName.NAME, "Do it"));
 				
-		JSONArray edges = object.getJSONArray("edges");
+		JsonArray edges = object.getJSONArray("edges");
 		JSONObject edge1 = find(edges, "UseCaseAssociationEdge", build());
 
 		assertEquals(edge1.getInt("start"), actor.getInt("id"));

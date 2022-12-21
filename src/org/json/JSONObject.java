@@ -357,10 +357,10 @@ public class JSONObject {
      * @throws JsonException
      *             if the key is not found or if the value is not a JSONArray.
      */
-    public JSONArray getJSONArray(String key) throws JsonException {
+    public JsonArray getJSONArray(String key) throws JsonException {
         Object object = this.get(key);
-        if (object instanceof JSONArray) {
-            return (JSONArray) object;
+        if (object instanceof JsonArray) {
+            return (JsonArray) object;
         }
         throw new JsonException("JSONObject[" + quote(key)
                 + "] is not a JSONArray.");
@@ -856,7 +856,7 @@ public class JSONObject {
             if (object == null) {
                 return NULL;
             }
-            if (object instanceof JSONObject || object instanceof JSONArray
+            if (object instanceof JSONObject || object instanceof JsonArray
                     || NULL.equals(object)
                     || object instanceof Byte || object instanceof Character
                     || object instanceof Short || object instanceof Integer
@@ -869,10 +869,10 @@ public class JSONObject {
 
             if (object instanceof Collection) {
                 Collection<?> coll = (Collection<?>) object;
-                return new JSONArray(coll);
+                return new JsonArray(coll);
             }
             if (object.getClass().isArray()) {
-                return new JSONArray(object);
+                return new JsonArray(object);
             }
             if (object instanceof Map) {
                 Map<?, ?> map = (Map<?, ?>) object;
@@ -919,16 +919,16 @@ public class JSONObject {
     		writer.write(quote(((Enum<?>)value).name()));
     	} else if (value instanceof JSONObject) {
     		((JSONObject) value).write(writer, indentFactor, indent);
-    	} else if (value instanceof JSONArray) {
-    		((JSONArray) value).write(writer, indentFactor, indent);
+    	} else if (value instanceof JsonArray) {
+    		((JsonArray) value).write(writer, indentFactor, indent);
     	} else if (value instanceof Map) {
     		Map<?, ?> map = (Map<?, ?>) value;
     		new JSONObject(map).write(writer, indentFactor, indent);
     	} else if (value instanceof Collection) {
     		Collection<?> coll = (Collection<?>) value;
-    		new JSONArray(coll).write(writer, indentFactor, indent);
+    		new JsonArray(coll).write(writer, indentFactor, indent);
     	} else if (value.getClass().isArray()) {
-    		new JSONArray(value).write(writer, indentFactor, indent);
+    		new JsonArray(value).write(writer, indentFactor, indent);
     	} else {
     		quote(value.toString(), writer);
     	}
@@ -1036,8 +1036,8 @@ public class JSONObject {
                 value = null;
             } else if (entry.getValue() instanceof JSONObject) {
                 value = ((JSONObject) entry.getValue()).toMap();
-            } else if (entry.getValue() instanceof JSONArray) {
-                value = ((JSONArray) entry.getValue()).toList();
+            } else if (entry.getValue() instanceof JsonArray) {
+                value = ((JsonArray) entry.getValue()).toList();
             } else {
                 value = entry.getValue();
             }

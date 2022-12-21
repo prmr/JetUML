@@ -420,7 +420,7 @@ public class JSONTokener
         else if(next ==  CHAR_START_ARRAY)
         {
         	backUp();
-        	return new JSONArray(this);
+        	return new JsonArray(this);
         }
         else if(next == CHAR_START_TRUE || next == CHAR_START_FALSE)
         {

@@ -77,14 +77,14 @@ import java.util.List;
  * @author JSON.org
  * @version 2016-08/15
  */
-public class JSONArray implements Iterable<Object>
+public class JsonArray implements Iterable<Object>
 {
     private final ArrayList<Object> aElements;
 
     /**
      * Construct an empty JSONArray.
      */
-    public JSONArray() 
+    public JsonArray() 
     {
         aElements = new ArrayList<>();
     }
@@ -95,7 +95,7 @@ public class JSONArray implements Iterable<Object>
      * @param pTokener A JSONTokener
      * @throws JsonException If there is a syntax error.
      */
-    public JSONArray(JSONTokener pTokener) 
+    public JsonArray(JSONTokener pTokener) 
     {
         this();
         if(pTokener.nextNonWhitespace() != '[')
@@ -149,7 +149,7 @@ public class JSONArray implements Iterable<Object>
      * @param collection
      *            A Collection.
      */
-    public JSONArray(Collection<?> collection) {
+    public JsonArray(Collection<?> collection) {
         if (collection == null) {
             this.aElements = new ArrayList<>();
         } else {
@@ -166,7 +166,7 @@ public class JSONArray implements Iterable<Object>
      * @throws JsonException
      *             If not an array.
      */
-    public JSONArray(Object array) throws JsonException {
+    public JsonArray(Object array) throws JsonException {
         this();
         if (array.getClass().isArray()) {
             int length = Array.getLength(array);
@@ -284,7 +284,7 @@ public class JSONArray implements Iterable<Object>
      *            An int value.
      * @return this.
      */
-    public JSONArray put(int value) {
+    public JsonArray put(int value) {
         this.put(Integer.valueOf(value));
         return this;
     }
@@ -298,7 +298,7 @@ public class JSONArray implements Iterable<Object>
      *            JSONObject.NULL object.
      * @return this.
      */
-    public JSONArray put(Object value) {
+    public JsonArray put(Object value) {
         this.aElements.add(value);
         return this;
     }
@@ -327,7 +327,7 @@ public class JSONArray implements Iterable<Object>
     /**
      * Make a pretty-printed JSON text of this JSONArray.
      * 
-     * <p>If <code>indentFactor > 0</code> and the {@link JSONArray} has only
+     * <p>If <code>indentFactor > 0</code> and the {@link JsonArray} has only
      * one element, then the array will be output on a single line:
      * <pre>{@code [1]}</pre>
      * 
@@ -363,7 +363,7 @@ public class JSONArray implements Iterable<Object>
    /**
      * Write the contents of the JSONArray as JSON text to a writer.
      * 
-     * <p>If <code>indentFactor > 0</code> and the {@link JSONArray} has only
+     * <p>If <code>indentFactor > 0</code> and the {@link JsonArray} has only
      * one element, then the array will be output on a single line:
      * <pre>{@code [1]}</pre>
      * 
@@ -446,8 +446,8 @@ public class JSONArray implements Iterable<Object>
         for (Object element : this.aElements) {
             if (element == null || JSONObject.NULL.equals(element)) {
                 results.add(null);
-            } else if (element instanceof JSONArray) {
-                results.add(((JSONArray) element).toList());
+            } else if (element instanceof JsonArray) {
+                results.add(((JsonArray) element).toList());
             } else if (element instanceof JSONObject) {
                 results.add(((JSONObject) element).toMap());
             } else {

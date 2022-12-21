@@ -36,7 +36,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import org.json.JSONArray;
+import org.json.JsonArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.BeforeAll;
@@ -130,8 +130,8 @@ public class TestTipJsons {
 		{
 			JSONObject jObj = loadTipAsJsonObject(id);
 			Object obj = jObj.get(TipFieldName.CONTENT.asString());
-			assertTrue(obj instanceof JSONArray);
-			JSONArray jArr = (JSONArray) obj;
+			assertTrue(obj instanceof JsonArray);
+			JsonArray jArr = (JsonArray) obj;
 			for(Object contentElement : jArr)
 			{
 				assertTrue(contentElement instanceof JSONObject);
