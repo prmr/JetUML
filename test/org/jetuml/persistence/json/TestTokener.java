@@ -15,82 +15,82 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class TestTokener
 {
 	@ParameterizedTest
-	@CsvSource({"abc,abc\"d", 
-				"e,e\"de", 
-				"sd's,sd's\"d"})
+	@CsvSource({"abc,\"abc\"d", 
+				"e,\"e\"\"de", 
+				"sd's,\"sd's\"d"})
 	void testNextString(String pOracle, String pInput) 
 	{
-		assertEquals(pOracle, nextString(new JsonParser(pInput)));
+		assertEquals(pOracle, parseString(new JsonParser(pInput)));
 	}
 	
 	@Test
 	void testNextString_Empty()
 	{
-		assertEquals("", nextString(new JsonParser("\"sds")));
+		assertEquals("", parseString(new JsonParser("\"\"sds")));
 	}
 	
 	@Test
 	void testNextString_EscapedBackspace()
 	{
-		assertEquals("\b", nextString(new JsonParser("\b\"")));
+		assertEquals("\b", parseString(new JsonParser("\"\b\"")));
 	}
 	
 	@Test
 	void testNextString_EscapedSolidus()
 	{
 		// Creating a string with an escaped forward slash is not easy
-		char[] characters = {'a', 'b', '\\', '/', 'c', '"', 'e' };
-		assertEquals("ab/c", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"', 'a', 'b', '\\', '/', 'c', '"', 'e' };
+		assertEquals("ab/c", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedReverseSolidus()
 	{
 		// Creating a string with an escaped back slash is not easy
-		char[] characters = {'a', 'b', '\\', '\\', 'c', '"', 'e' };
-		assertEquals("ab\\c", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"', 'a', 'b', '\\', '\\', 'c', '"', 'e' };
+		assertEquals("ab\\c", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedQuote()
 	{
-		char[] characters = {'a', 'b', '\\', '"', 'c', '"', 'e' };
-		assertEquals("ab\"c", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"','a', 'b', '\\', '"', 'c', '"', 'e' };
+		assertEquals("ab\"c", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedUnicode()
 	{
-		char[] characters = {'a', 'b', '\\', 'u', '0', '0', 'C', '2', 'c', '"', 'd' };
-		assertEquals("abÂc", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"','a', 'b', '\\', 'u', '0', '0', 'C', '2', 'c', '"', 'd' };
+		assertEquals("abÂc", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedTab()
 	{
-		assertEquals("\t", nextString(new JsonParser("\t\"")));
+		assertEquals("\t", parseString(new JsonParser("\"\t\"")));
 	}
 	
 	@Test
 	void testNextString_EscapedNewLine()
 	{
 		// a JSON string with '\' '\n' is different from the string literal \n
-		char[] characters = {'a', 'b', '\\', 'n', 'c', '"', 'e' };
-		assertEquals("ab\nc", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"','a', 'b', '\\', 'n', 'c', '"', 'e' };
+		assertEquals("ab\nc", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedFormFeed()
 	{
-		assertEquals("\f", nextString(new JsonParser("\f\"")));
+		assertEquals("\f", parseString(new JsonParser("\"\f\"")));
 	}
 	
 	@Test
 	void testNextString_EscapedCarriageReturn()
 	{
 		// a JSON string with '\' '\r' is different from the string literal \r
-		char[] characters = {'a', 'b', '\\', 'r', 'c', '"', 'e' };
-		assertEquals("ab\rc", nextString(new JsonParser( new String(characters))));
+		char[] characters = {'"','a', 'b', '\\', 'r', 'c', '"', 'e' };
+		assertEquals("ab\rc", parseString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ public class TestTokener
 	{
 		JsonParser tokener = new JsonParser("a\"");
 		moveToPosition(tokener, 2);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ public class TestTokener
 	{
 		JsonParser tokener = new JsonParser("a\"bcd");
 		moveToPosition(tokener, 2);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class TestTokener
 	{
 		JsonParser tokener = new JsonParser("\"a\nb\"");
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -122,7 +122,7 @@ public class TestTokener
 	{
 		JsonParser tokener = new JsonParser("\"a\rb\"");
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -131,7 +131,7 @@ public class TestTokener
 		char[] characters = {'"', 'a', '\\' };
 		JsonParser tokener = new JsonParser(new String(characters));
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -140,7 +140,7 @@ public class TestTokener
 		char[] characters = {'"', 'a', '\\' , 'x'};
 		JsonParser tokener = new JsonParser(new String(characters));
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -149,7 +149,7 @@ public class TestTokener
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3'};
 		JsonParser tokener = new JsonParser(new String(characters));
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -158,7 +158,7 @@ public class TestTokener
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
 		JsonParser tokener = new JsonParser(new String(characters));
 		moveToPosition(tokener, 1);
-		testNextStringWithException(tokener);
+		testParseStringWithException(tokener);
 	}
 	
 	@Test
@@ -370,7 +370,7 @@ public class TestTokener
 		}
 	}
 	
-	private static String nextString(JsonParser pTokener)
+	private static String parseString(JsonParser pTokener)
 	{
 		try 
 		{
@@ -388,7 +388,7 @@ public class TestTokener
 	/**
 	 * Checks that calling nextString throws a JSONException 
 	 */
-	private static void testNextStringWithException(JsonParser pTokener)
+	private static void testParseStringWithException(JsonParser pTokener)
 	{
 		try 
 		{

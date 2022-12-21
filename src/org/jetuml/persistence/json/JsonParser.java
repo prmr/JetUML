@@ -85,6 +85,18 @@ public class JsonParser
     	assert pInput != null;
         aInput = new CharacterBuffer(pInput);
     }
+    
+    /*
+     * Check that the next non-blank character is pSymbol, and read it.
+     */
+    private void consume(char pSymbol)
+    {
+    	aInput.skipBlanks();
+    	if(!aInput.hasMore() || aInput.next() != pSymbol)
+    	{
+    		throw new JsonException(String.format("Expecting '%s' at position %d", pSymbol, aInput.position()));
+    	}
+    }
 
     /**
      * Return the characters up to the next quote character. For 
@@ -96,12 +108,9 @@ public class JsonParser
      * @return A string
      * @throws JsonException If there's is an unanticipated error processing the string.
      */
-    private String nextString()
+    private String parseString()
     {
-    	if( !aInput.hasMore() )
-    	{
-    		throw new JsonException("Unterminated string");
-    	}
+    	consume(CHAR_QUOTE);
     	
     	StringBuilder result = new StringBuilder();
     	while(aInput.hasMore())
@@ -306,7 +315,8 @@ public class JsonParser
 
         if(next == CHAR_QUOTE)
         {
-        	return nextString();
+        	aInput.backUp();
+        	return parseString();
         }
         else if(next == CHAR_START_OBJECT)
         {
@@ -388,7 +398,8 @@ public class JsonParser
         			throw new JsonException("Invalid key");
         		}
         	}
-        	String key = nextString();
+        	aInput.backUp();
+        	String key = parseString();
         	if( !aInput.hasMoreNonBlank() )
         	{
         		throw new JsonException("Incomplete object");
