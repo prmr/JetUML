@@ -38,7 +38,7 @@ import java.util.Set;
 
 import org.json.JsonArray;
 import org.json.JsonObject;
-import org.json.JSONTokener;
+import org.json.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -171,7 +171,7 @@ public class TestTipJsons {
 		try( InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
 			String input = TestTipLoader.inputStreamToString(inputStream);
-			JSONTokener jTok = new JSONTokener(input);
+			JsonParser jTok = new JsonParser(input);
 			JsonObject jObj = new JsonObject(jTok);
 			return jObj;
 		}

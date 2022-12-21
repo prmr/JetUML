@@ -95,7 +95,7 @@ public class JsonArray implements Iterable<Object>
      * @param pTokener A JSONTokener
      * @throws JsonException If there is a syntax error.
      */
-    public JsonArray(JSONTokener pTokener) 
+    public JsonArray(JsonParser pTokener) 
     {
         this();
         if(pTokener.nextNonWhitespace() != '[')

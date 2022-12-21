@@ -16,7 +16,7 @@ public class TestTokener
 {
 	private static final String TEST = "{\n   \"name\": \"Jo\",\n   \"age\": 27\n}";
 	
-	private final JSONTokener aTokener = new JSONTokener(TEST);
+	private final JsonParser aTokener = new JsonParser(TEST);
 	
 	@Test
 	void testNextClean()
@@ -116,7 +116,7 @@ public class TestTokener
 	@Test
 	void testNext_One()
 	{
-		JSONTokener tokener = new JSONTokener("a");
+		JsonParser tokener = new JsonParser("a");
 		assertEquals('a', tokener.next());
 		assertFalse(tokener.hasNext());
 	}
@@ -124,7 +124,7 @@ public class TestTokener
 	@Test
 	void testNext_Two()
 	{
-		JSONTokener tokener = new JSONTokener("ab");
+		JsonParser tokener = new JsonParser("ab");
 		assertEquals('a', tokener.next());
 		assertEquals('b', tokener.next());
 		assertFalse(tokener.hasNext());
@@ -133,14 +133,14 @@ public class TestTokener
 	@Test
 	void testHasMore_BeginningOfString_No()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		assertFalse(hasMore(tokener,5));
 	}
 	
 	@Test
 	void testHasMore_MiddleOfString_No()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		tokener.next();
 		assertFalse(hasMore(tokener,4));
 	}
@@ -148,14 +148,14 @@ public class TestTokener
 	@Test
 	void testHasMore_BeginningOfString_Yes()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		assertTrue(hasMore(tokener,3));
 	}
 	
 	@Test
 	void testHasMore_MiddleOfString_Yes()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		tokener.next();
 		assertTrue(hasMore(tokener,2));
 	}
@@ -163,7 +163,7 @@ public class TestTokener
 	@Test
 	void testHasMore_EndOfString_Yes()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		tokener.next();
 		assertTrue(hasMore(tokener,3));
 	}
@@ -171,14 +171,14 @@ public class TestTokener
 	@Test
 	void testNextInt_Beginning()
 	{
-		JSONTokener tokener = new JSONTokener("abcd");
+		JsonParser tokener = new JsonParser("abcd");
 		assertEquals("abc", next(tokener,3));
 	}
 	
 	@Test
 	void testNextInt_Middle()
 	{
-		JSONTokener tokener = new JSONTokener("abcde");
+		JsonParser tokener = new JsonParser("abcde");
 		tokener.next();
 		assertEquals("bc", next(tokener,2));
 	}
@@ -186,14 +186,14 @@ public class TestTokener
 	@Test
 	void testNextInt_All()
 	{
-		JSONTokener tokener = new JSONTokener("abcde");
+		JsonParser tokener = new JsonParser("abcde");
 		assertEquals("abcde", next(tokener,5));
 	}
 	
 	@Test
 	void testHasMoreNonWhiteSpace()
 	{
-		JSONTokener tokener = new JSONTokener("b  \ncd\ne\r\n");
+		JsonParser tokener = new JsonParser("b  \ncd\ne\r\n");
 		assertTrue(hasMoreNonWhitespace(tokener));
 		tokener.next();
 		assertTrue(hasMoreNonWhitespace(tokener));
@@ -218,7 +218,7 @@ public class TestTokener
 	@Test
 	void testNextNonWhiteSpace()
 	{
-		JSONTokener tokener = new JSONTokener("b  \ncd\ne\r\n");
+		JsonParser tokener = new JsonParser("b  \ncd\ne\r\n");
 		assertEquals('b', nextNonWhitespace(tokener));
 		assertEquals('c', nextNonWhitespace(tokener));
 		assertEquals('d', nextNonWhitespace(tokener));
@@ -231,19 +231,19 @@ public class TestTokener
 				"sd's,sd's\"d"})
 	void testNextString(String pOracle, String pInput) 
 	{
-		assertEquals(pOracle, nextString(new JSONTokener(pInput)));
+		assertEquals(pOracle, nextString(new JsonParser(pInput)));
 	}
 	
 	@Test
 	void testNextString_Empty()
 	{
-		assertEquals("", nextString(new JSONTokener("\"sds")));
+		assertEquals("", nextString(new JsonParser("\"sds")));
 	}
 	
 	@Test
 	void testNextString_EscapedBackspace()
 	{
-		assertEquals("\b", nextString(new JSONTokener("\b\"")));
+		assertEquals("\b", nextString(new JsonParser("\b\"")));
 	}
 	
 	@Test
@@ -251,7 +251,7 @@ public class TestTokener
 	{
 		// Creating a string with an escaped forward slash is not easy
 		char[] characters = {'a', 'b', '\\', '/', 'c', '"', 'e' };
-		assertEquals("ab/c", nextString(new JSONTokener( new String(characters))));
+		assertEquals("ab/c", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
@@ -259,27 +259,27 @@ public class TestTokener
 	{
 		// Creating a string with an escaped back slash is not easy
 		char[] characters = {'a', 'b', '\\', '\\', 'c', '"', 'e' };
-		assertEquals("ab\\c", nextString(new JSONTokener( new String(characters))));
+		assertEquals("ab\\c", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedQuote()
 	{
 		char[] characters = {'a', 'b', '\\', '"', 'c', '"', 'e' };
-		assertEquals("ab\"c", nextString(new JSONTokener( new String(characters))));
+		assertEquals("ab\"c", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedUnicode()
 	{
 		char[] characters = {'a', 'b', '\\', 'u', '0', '0', 'C', '2', 'c', '"', 'd' };
-		assertEquals("abÂc", nextString(new JSONTokener( new String(characters))));
+		assertEquals("abÂc", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedTab()
 	{
-		assertEquals("\t", nextString(new JSONTokener("\t\"")));
+		assertEquals("\t", nextString(new JsonParser("\t\"")));
 	}
 	
 	@Test
@@ -287,13 +287,13 @@ public class TestTokener
 	{
 		// a JSON string with '\' '\n' is different from the string literal \n
 		char[] characters = {'a', 'b', '\\', 'n', 'c', '"', 'e' };
-		assertEquals("ab\nc", nextString(new JSONTokener( new String(characters))));
+		assertEquals("ab\nc", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_EscapedFormFeed()
 	{
-		assertEquals("\f", nextString(new JSONTokener("\f\"")));
+		assertEquals("\f", nextString(new JsonParser("\f\"")));
 	}
 	
 	@Test
@@ -301,13 +301,13 @@ public class TestTokener
 	{
 		// a JSON string with '\' '\r' is different from the string literal \r
 		char[] characters = {'a', 'b', '\\', 'r', 'c', '"', 'e' };
-		assertEquals("ab\rc", nextString(new JSONTokener( new String(characters))));
+		assertEquals("ab\rc", nextString(new JsonParser( new String(characters))));
 	}
 	
 	@Test
 	void testNextString_Unterminated_OneCharacter()
 	{
-		JSONTokener tokener = new JSONTokener("a\"");
+		JsonParser tokener = new JsonParser("a\"");
 		tokener.next();
 		tokener.next();
 		testNextStringWithException(tokener);
@@ -316,7 +316,7 @@ public class TestTokener
 	@Test
 	void testNextString_Unterminated_MultipleCharacters()
 	{
-		JSONTokener tokener = new JSONTokener("a\"bcd");
+		JsonParser tokener = new JsonParser("a\"bcd");
 		tokener.next();
 		tokener.next();
 		testNextStringWithException(tokener);
@@ -325,7 +325,7 @@ public class TestTokener
 	@Test
 	void testNextString_NewLineInString1()
 	{
-		JSONTokener tokener = new JSONTokener("\"a\nb\"");
+		JsonParser tokener = new JsonParser("\"a\nb\"");
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -333,7 +333,7 @@ public class TestTokener
 	@Test
 	void testNextString_NewLineInString2()
 	{
-		JSONTokener tokener = new JSONTokener("\"a\rb\"");
+		JsonParser tokener = new JsonParser("\"a\rb\"");
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -342,7 +342,7 @@ public class TestTokener
 	void testNextString_IncompleteEscape()
 	{
 		char[] characters = {'"', 'a', '\\' };
-		JSONTokener tokener = new JSONTokener(new String(characters));
+		JsonParser tokener = new JsonParser(new String(characters));
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -351,7 +351,7 @@ public class TestTokener
 	void testNextString_InvalidEscape()
 	{
 		char[] characters = {'"', 'a', '\\' , 'x'};
-		JSONTokener tokener = new JSONTokener(new String(characters));
+		JsonParser tokener = new JsonParser(new String(characters));
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -360,7 +360,7 @@ public class TestTokener
 	void testNextString_MissingUnicodeDigits()
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3'};
-		JSONTokener tokener = new JSONTokener(new String(characters));
+		JsonParser tokener = new JsonParser(new String(characters));
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -369,7 +369,7 @@ public class TestTokener
 	void testNextString_InvalidUnicodeDigits()
 	{
 		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
-		JSONTokener tokener = new JSONTokener(new String(characters));
+		JsonParser tokener = new JsonParser(new String(characters));
 		tokener.next();
 		testNextStringWithException(tokener);
 	}
@@ -377,7 +377,7 @@ public class TestTokener
 	@Test
 	void testNextValue_String()
 	{
-		JSONTokener tokener = new JSONTokener("\"a\" : \"bc\"");
+		JsonParser tokener = new JsonParser("\"a\" : \"bc\"");
 		next(tokener,5);
 		assertEquals("bc", nextValue(tokener));
 	}
@@ -385,7 +385,7 @@ public class TestTokener
 	@Test
 	void testNextValue_true()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : true}");
+		JsonParser tokener = new JsonParser("{\"a\" : true}");
 		next(tokener,6);
 		assertEquals(true, nextValue(tokener));
 	}
@@ -393,7 +393,7 @@ public class TestTokener
 	@Test
 	void testNextValue_false()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : false}");
+		JsonParser tokener = new JsonParser("{\"a\" : false}");
 		next(tokener,6);
 		assertEquals(false, nextValue(tokener));
 	}
@@ -401,7 +401,7 @@ public class TestTokener
 	@Test
 	void testNextValue_null()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : null}");
+		JsonParser tokener = new JsonParser("{\"a\" : null}");
 		next(tokener,6);
 		assertEquals(JsonObject.NULL, nextValue(tokener));
 	}
@@ -409,7 +409,7 @@ public class TestTokener
 	@Test
 	void testNextValue_positiveInteger()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : 54}");
+		JsonParser tokener = new JsonParser("{\"a\" : 54}");
 		next(tokener,6);
 		assertEquals(54, nextValue(tokener));
 	}
@@ -417,7 +417,7 @@ public class TestTokener
 	@Test
 	void testNextValue_negativeInteger()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");
+		JsonParser tokener = new JsonParser("{\"a\" : -54}");
 		next(tokener,6);
 		assertEquals(-54, nextValue(tokener));
 	}
@@ -425,7 +425,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Zero()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : 0}");
+		JsonParser tokener = new JsonParser("{\"a\" : 0}");
 		next(tokener,6);
 		assertEquals(0, nextValue(tokener));
 	}
@@ -433,21 +433,21 @@ public class TestTokener
 	@Test
 	void testNextValue_object()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");
+		JsonParser tokener = new JsonParser("{\"a\" : -54}");
 		assertTrue(nextValue(tokener).getClass() == JsonObject.class);
 	}
 	
 	@Test
 	void testNextValue_array()
 	{
-		JSONTokener tokener = new JSONTokener("[]");
+		JsonParser tokener = new JsonParser("[]");
 		assertTrue(nextValue(tokener).getClass() == JsonArray.class);
 	}
 	
 	@Test
 	void testNextValue_NumberEndsBuffer()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : -54");
+		JsonParser tokener = new JsonParser("{\"a\" : -54");
 		next(tokener,6);
 		assertEquals(-54, nextValue(tokener));
 	}
@@ -455,7 +455,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_IncompleteBoolean1()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : tru");
+		JsonParser tokener = new JsonParser("{\"a\" : tru");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -463,7 +463,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_IncompleteBoolean2()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : tru }");
+		JsonParser tokener = new JsonParser("{\"a\" : tru }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -471,7 +471,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_IncompleteNull()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : nul");
+		JsonParser tokener = new JsonParser("{\"a\" : nul");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -479,7 +479,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_InvalidNull()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : nulx }");
+		JsonParser tokener = new JsonParser("{\"a\" : nulx }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -487,7 +487,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_UnrecognizedValue()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : xxx }");
+		JsonParser tokener = new JsonParser("{\"a\" : xxx }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -495,7 +495,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_NumberStartsWith0()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : 0123 }");
+		JsonParser tokener = new JsonParser("{\"a\" : 0123 }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -503,7 +503,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_MinusNotANumber()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : -A123 }");
+		JsonParser tokener = new JsonParser("{\"a\" : -A123 }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -511,7 +511,7 @@ public class TestTokener
 	@Test
 	void testNextValue_Invalid_NumberOverflowsInt()
 	{
-		JSONTokener tokener = new JSONTokener("{\"a\" : 21474836470 }");
+		JsonParser tokener = new JsonParser("{\"a\" : 21474836470 }");
 		next(tokener,6);
 		testNextValueWithException(tokener);
 	}
@@ -519,7 +519,7 @@ public class TestTokener
 	@Test 
 	void testParseObject_Empty()
 	{
-		JSONTokener tokener = new JSONTokener("{  }");
+		JsonParser tokener = new JsonParser("{  }");
 		JsonObject object = tokener.parseObject();
 		assertTrue(object.keySet().isEmpty());
 	}
@@ -527,7 +527,7 @@ public class TestTokener
 	@Test 
 	void testParseObject_OnePair()
 	{
-		JSONTokener tokener = new JSONTokener("{\n \"key\" : \"value\" \n}");
+		JsonParser tokener = new JsonParser("{\n \"key\" : \"value\" \n}");
 		JsonObject object = tokener.parseObject();
 		assertEquals(1, object.keySet().size());
 		assertTrue(object.has("key"));
@@ -537,7 +537,7 @@ public class TestTokener
 	@Test 
 	void testParseObject_TwoPairs()
 	{
-		JSONTokener tokener = new JSONTokener("""
+		JsonParser tokener = new JsonParser("""
 				{ \"key\" : \"value\", 
 				  \"k2\" : 12
 				}""");
@@ -552,7 +552,7 @@ public class TestTokener
 	@Test 
 	void testParseObject_ThreePairs()
 	{
-		JSONTokener tokener = new JSONTokener("""
+		JsonParser tokener = new JsonParser("""
 				{ \"key\" : \"value\", 
 				  \"k2\" : 12,
 				  \"k3\" : true
@@ -567,11 +567,11 @@ public class TestTokener
 		assertEquals(true, object.get("k3"));
 	}
 	
-	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
+	private static boolean hasMore(JsonParser pTokener, int pNumberOfCharacters)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("hasMore", int.class);
+			Method method = JsonParser.class.getDeclaredMethod("hasMore", int.class);
 			method.setAccessible(true);
 			return (boolean) method.invoke(pTokener, pNumberOfCharacters);
 		}
@@ -582,11 +582,11 @@ public class TestTokener
 		}
 	}
 	
-	private static boolean hasMoreNonWhitespace(JSONTokener pTokener)
+	private static boolean hasMoreNonWhitespace(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("hasMoreNonWhitespace");
+			Method method = JsonParser.class.getDeclaredMethod("hasMoreNonWhitespace");
 			method.setAccessible(true);
 			return (boolean) method.invoke(pTokener);
 		}
@@ -597,11 +597,11 @@ public class TestTokener
 		}
 	}
 	
-	private static char nextNonWhitespace(JSONTokener pTokener)
+	private static char nextNonWhitespace(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("nextNonWhitespace");
+			Method method = JsonParser.class.getDeclaredMethod("nextNonWhitespace");
 			method.setAccessible(true);
 			return (char) method.invoke(pTokener);
 		}
@@ -612,11 +612,11 @@ public class TestTokener
 		}
 	}
 	
-	private static String next(JSONTokener pTokener, int pNumberOfCharacters)
+	private static String next(JsonParser pTokener, int pNumberOfCharacters)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("next", int.class);
+			Method method = JsonParser.class.getDeclaredMethod("next", int.class);
 			method.setAccessible(true);
 			return (String) method.invoke(pTokener, pNumberOfCharacters);
 		}
@@ -627,11 +627,11 @@ public class TestTokener
 		}
 	}
 	
-	private static Object nextValue(JSONTokener pTokener)
+	private static Object nextValue(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("nextValue");
+			Method method = JsonParser.class.getDeclaredMethod("nextValue");
 			method.setAccessible(true);
 			return method.invoke(pTokener);
 		}
@@ -643,11 +643,11 @@ public class TestTokener
 		}
 	}
 	
-	private static String nextString(JSONTokener pTokener)
+	private static String nextString(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("nextString");
+			Method method = JsonParser.class.getDeclaredMethod("nextString");
 			method.setAccessible(true);
 			return (String) method.invoke(pTokener);
 		}
@@ -661,11 +661,11 @@ public class TestTokener
 	/**
 	 * Checks that calling nextString throws a JSONException 
 	 */
-	private static void testNextStringWithException(JSONTokener pTokener)
+	private static void testNextStringWithException(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("nextString");
+			Method method = JsonParser.class.getDeclaredMethod("nextString");
 			method.setAccessible(true);
 			method.invoke(pTokener);
 			fail();
@@ -686,11 +686,11 @@ public class TestTokener
 	/**
 	 * Checks that calling nextString throws a JSONException 
 	 */
-	private static void testNextValueWithException(JSONTokener pTokener)
+	private static void testNextValueWithException(JsonParser pTokener)
 	{
 		try 
 		{
-			Method method = JSONTokener.class.getDeclaredMethod("nextValue");
+			Method method = JsonParser.class.getDeclaredMethod("nextValue");
 			method.setAccessible(true);
 			method.invoke(pTokener);
 			fail();

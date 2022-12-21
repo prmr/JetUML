@@ -30,7 +30,7 @@ import java.util.Map;
  * the possibility of going backward. The JsonParser is not meant to 
  * be reused to parse different strings.
  */
-public class JSONTokener 
+public class JsonParser 
 {
 	/*
 	 * Maps a character in an escape (after the slash) to the escaped character,
@@ -86,7 +86,7 @@ public class JSONTokener
      * @param pInput A string to use as a complete source of characters.
      * @pre pInput != null;
      */
-    public JSONTokener(String pInput) 
+    public JsonParser(String pInput) 
     {
     	assert pInput != null;
         aInput = pInput;

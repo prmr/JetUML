@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JsonObject;
-import org.json.JSONTokener;
+import org.json.JsonParser;
 
 /**
  * Class that statically loads the tips.
@@ -59,7 +59,7 @@ final class TipLoader
 		try(InputStream tipsInputStream = TipLoader.class.getResourceAsStream(
 				String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
-			JSONTokener jsonTokener = new JSONTokener(inputStreamToString(tipsInputStream));
+			JsonParser jsonTokener = new JsonParser(inputStreamToString(tipsInputStream));
 			JsonObject jsonObject = new JsonObject(jsonTokener); 
 			Tip tip = new Tip(pId, jsonObject);
 			return tip;

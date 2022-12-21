@@ -182,7 +182,7 @@ public class JsonObject
      *             If there is a syntax error in the source string or a
      *             duplicated key.
      */
-    public JsonObject(JSONTokener x) throws JsonException {
+    public JsonObject(JsonParser x) throws JsonException {
         this();
         char c;
         String key;
@@ -305,7 +305,7 @@ public class JsonObject
      *                duplicated key.
      */
     public JsonObject(String source) throws JsonException {
-        this(new JSONTokener(source));
+        this(new JsonParser(source));
     }
 
       /**
