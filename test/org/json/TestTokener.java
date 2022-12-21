@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
@@ -272,7 +273,6 @@ public class TestTokener
 	void testNextString_EscapedUnicode()
 	{
 		char[] characters = {'a', 'b', '\\', 'u', '0', '0', 'C', '2', 'c', '"', 'd' };
-		System.out.println(new String(characters));
 		assertEquals("abÂc", nextString(new JSONTokener( new String(characters))));
 	}
 	
@@ -302,6 +302,76 @@ public class TestTokener
 		// a JSON string with '\' '\r' is different from the string literal \r
 		char[] characters = {'a', 'b', '\\', 'r', 'c', '"', 'e' };
 		assertEquals("ab\rc", nextString(new JSONTokener( new String(characters))));
+	}
+	
+	@Test
+	void testNextString_Unterminated_OneCharacter()
+	{
+		JSONTokener tokener = new JSONTokener("a\"");
+		tokener.next();
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_Unterminated_MultipleCharacters()
+	{
+		JSONTokener tokener = new JSONTokener("a\"bcd");
+		tokener.next();
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_NewLineInString1()
+	{
+		JSONTokener tokener = new JSONTokener("\"a\nb\"");
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_NewLineInString2()
+	{
+		JSONTokener tokener = new JSONTokener("\"a\rb\"");
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_IncompleteEscape()
+	{
+		char[] characters = {'"', 'a', '\\' };
+		JSONTokener tokener = new JSONTokener(new String(characters));
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_InvalidEscape()
+	{
+		char[] characters = {'"', 'a', '\\' , 'x'};
+		JSONTokener tokener = new JSONTokener(new String(characters));
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_MissingUnicodeDigits()
+	{
+		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3'};
+		JSONTokener tokener = new JSONTokener(new String(characters));
+		tokener.next();
+		testNextStringWithException(tokener);
+	}
+	
+	@Test
+	void testNextString_InvalidUnicodeDigits()
+	{
+		char[] characters = {'"', 'a', '\\' , 'u', '1', '2', '3', 'X', '"'};
+		JSONTokener tokener = new JSONTokener(new String(characters));
+		tokener.next();
+		testNextStringWithException(tokener);
 	}
 	
 	private static boolean hasMore(JSONTokener pTokener, int pNumberOfCharacters)
@@ -374,9 +444,33 @@ public class TestTokener
 		}
 		catch(ReflectiveOperationException exception)
 		{
-			exception.printStackTrace();
 			fail();
 			return "";
+		}
+	}
+	
+	/**
+	 * Checks that calling nextString throws a JSONException 
+	 */
+	private static void testNextStringWithException(JSONTokener pTokener)
+	{
+		try 
+		{
+			Method method = JSONTokener.class.getDeclaredMethod("nextString");
+			method.setAccessible(true);
+			method.invoke(pTokener);
+			fail();
+		}
+		catch(InvocationTargetException exception)
+		{
+			if( exception.getTargetException().getClass() != org.json.JSONException.class)
+			{
+				fail();
+			}
+		}
+		catch(ReflectiveOperationException exception)
+		{
+			fail();
 		}
 	}
 }

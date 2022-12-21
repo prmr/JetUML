@@ -2,6 +2,9 @@ package org.json;
 
 import static java.lang.Character.isWhitespace;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
 Copyright (c) 2002 JSON.org
 
@@ -33,6 +36,34 @@ SOFTWARE.
  */
 public class JSONTokener 
 {
+	/*
+	 * Maps a character in an escape (after the slash) to the escaped character,
+	 * e.g., b -> \b
+	 */
+	private static final Map<Character,Character> ESCAPE_CHARACTERS = new HashMap<>();
+	
+	private static final int NUMBER_OF_UNICODE_DIGITS = 4;
+	private static final int RADIX_HEXADECIMAL = 16;
+	private static final char CHAR_UNICODE_ESCAPE = 'u';
+	private static final char CHAR_NEWLINE = '\n';
+	private static final char CHAR_CARRIAGE_RETURN = '\r';
+	private static final char CHAR_ESCAPE = '\\';
+	private static final char CHAR_QUOTE = '"';
+	
+	static
+	{
+		// The first five are re-escaped
+		ESCAPE_CHARACTERS.put('b','\b');
+		ESCAPE_CHARACTERS.put('t','\t');
+		ESCAPE_CHARACTERS.put('n','\n');
+		ESCAPE_CHARACTERS.put('f','\f');
+		ESCAPE_CHARACTERS.put('r','\r');
+		// The last three remain unescaped
+		ESCAPE_CHARACTERS.put('"','"');
+		ESCAPE_CHARACTERS.put('\\','\\');
+		ESCAPE_CHARACTERS.put('/','/');
+	}
+	
 	/* Complete input to traverse. */
 	private final String aInput;
 	
@@ -162,64 +193,78 @@ public class JSONTokener
      */
     private String nextString()
     {
-        char c;
-        StringBuilder sb = new StringBuilder();
-        for (;;) 
-        {
-            c = next();
-            switch (c) 
-            {
-            case 0:
-            case '\n':
-            case '\r':
-                throw syntaxError("Unterminated string");
-            case '\\':
-                c = next();
-                switch (c)
-                {
-                case 'b':
-                    sb.append('\b');
-                    break;
-                case 't':
-                    sb.append('\t');
-                    break;
-                case 'n':
-                    sb.append('\n');
-                    break;
-                case 'f':
-                    sb.append('\f');
-                    break;
-                case 'r':
-                    sb.append('\r');
-                    break;
-                case 'u':
-                    try 
-                    {
-                        sb.append((char)Integer.parseInt(next(4), 16));
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        throw syntaxError("Illegal escape.", e);
-                    }
-                    break;
-                case '"':
-                case '\'':
-                case '\\':
-                case '/':
-                    sb.append(c);
-                    break;
-                default:
-                    throw syntaxError("Illegal escape.");
-                }
-                break;
-            default:
-                if (c == '"') 
-                {
-                    return sb.toString();
-                }
-                sb.append(c);
-            }
-        }
+    	if( !hasNext() )
+    	{
+    		throw new JSONException("Unterminated string");
+    	}
+    	
+    	StringBuilder result = new StringBuilder();
+    	while(hasNext())
+    	{
+    		char next = next();
+    		if( next == CHAR_NEWLINE || next == CHAR_CARRIAGE_RETURN )
+    		{
+    			throw new JSONException("Newline in string");
+    		}
+    		else if(next == CHAR_ESCAPE )
+    		{
+    			result.append(nextEscaped());
+    		}
+    		else if(next == CHAR_QUOTE )
+    		{
+    			return result.toString();
+    		}
+    		else
+    		{
+    			result.append(next);
+    		}
+    	}
+    	throw new JSONException("Unterminated string");
+    }
+    
+    /*
+     * Call after the escaping character '\' is detected in 
+     * the input, to complete the decoding of the escaped character.
+     */
+    private char nextEscaped()
+    {
+    	if( !hasNext() )
+    	{
+    		throw new JSONException("Invalid escape sequence found");
+    	}
+    	char next = next();
+    	if( ESCAPE_CHARACTERS.containsKey(next))
+    	{
+    		return ESCAPE_CHARACTERS.get(next);
+    	}
+    	else if( next == CHAR_UNICODE_ESCAPE ) 
+    	{
+    		return nextUnicode();
+    	}
+    	else
+    	{
+    		throw new JSONException("Invalid escape sequence found");
+    	}
+    }
+    
+    /*
+     * Call after the escaping characters '\' and 'u' are detected in 
+     * the input, to complete the decoding of the escaped unicode character.
+     */
+    private char nextUnicode()
+    {
+    	if( !hasMore(NUMBER_OF_UNICODE_DIGITS) )
+    	{
+    		throw new JSONException("Invalid escape sequence found");
+    	}
+    	try
+    	{
+    		return (char) Integer.parseInt(next(NUMBER_OF_UNICODE_DIGITS), RADIX_HEXADECIMAL);
+    	}
+    	catch( NumberFormatException exception )
+    	{
+    		throw new JSONException("Invalid unicode");
+    	}
     }
 
     /**
