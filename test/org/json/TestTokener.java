@@ -423,6 +423,14 @@ public class TestTokener
 	}
 	
 	@Test
+	void testNextValue_Zero()
+	{
+		JSONTokener tokener = new JSONTokener("{\"a\" : 0}");
+		next(tokener,6);
+		assertEquals(0, nextValue(tokener));
+	}
+	
+	@Test
 	void testNextValue_object()
 	{
 		JSONTokener tokener = new JSONTokener("{\"a\" : -54}");

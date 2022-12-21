@@ -48,7 +48,6 @@ public class JSONTokener
 	private static final char CHAR_QUOTE = '"';
 	private static final char CHAR_MINUS = '-';
 	private static final char CHAR_ZERO = '0';
-	private static final char CHAR_ONE = '1';
 	private static final char CHAR_NINE = '9';
 	private static final char CHAR_START_OBJECT = '{';
 	private static final char CHAR_END_OBJECT = '}';
@@ -354,6 +353,10 @@ public class JSONTokener
     {
     	try
     	{
+    		if( illegalNumber(pNumber) )
+    		{
+    			throw new JSONException("Illegal integer value: " + pNumber);
+    		}
     		return Integer.parseInt(pNumber);
     	}
     	catch(NumberFormatException exception)
@@ -362,21 +365,37 @@ public class JSONTokener
     	}
     }
     
+    private static boolean illegalNumber(String pNumber)
+    {
+    	if(pNumber.isBlank())
+    	{
+    		return true;
+    	}
+    	if(pNumber.startsWith("-0"))
+    	{
+    		return true;
+    	}
+    	if( pNumber.length() >=2 && pNumber.charAt(0) == CHAR_ZERO && isDigit(pNumber.charAt(1)))
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
     /*
      * @return True if the character can be the valid first
      * character of an integer, which is - or [1-9]
      */
     private static boolean startsInteger(char pCharacter)
     {
-    	return pCharacter == CHAR_MINUS ||
-    			(pCharacter >= CHAR_ONE && pCharacter <= CHAR_NINE);
+    	return pCharacter == CHAR_MINUS || isDigit(pCharacter);
     }
     
     private static boolean isDigit(char pCharacter)
     {
     	return pCharacter >= CHAR_ZERO && pCharacter <= CHAR_NINE;
     }
-
+    
     /**
      * Get the next value. The value can be a Boolean, Double, Integer,
      * JSONArray, JSONObject, Long, or String, or the JSONObject.NULL object.
