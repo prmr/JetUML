@@ -56,6 +56,14 @@ class CharacterBuffer
 	}
 	
 	/**
+	 * @return The position of the last read character.
+	 */
+	int position()
+	{
+		return aPosition;
+	}
+	
+	/**
 	 * @param pNumberOfCharacters To check
 	 * @return True iif there is at least pNumberOfCharacters more character to read.
 	 */
@@ -93,6 +101,25 @@ class CharacterBuffer
     {
 		assert canBackUp();
     	aPosition--;
+    }
+    
+    /**
+     * Move the position ahead until the first non-blank character
+     * is found, or the end of the buffer is reached. Positions
+     * the buffer before the next non-blank character, so that the 
+     * next call to next() returns that character.
+     */
+    void skipBlanks()
+    {
+    	while(hasMore())
+        {
+            char character = next();
+            if( !isWhitespace(character) ) 
+            {
+                backUp();
+                return;
+            }
+        }
     }
     
     /**

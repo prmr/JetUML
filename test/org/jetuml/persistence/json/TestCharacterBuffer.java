@@ -34,6 +34,47 @@ public class TestCharacterBuffer
 	private final CharacterBuffer aBuffer2 = new CharacterBuffer("a  r  ");
 	
 	@Test
+	void testSkipBlanks_Empty()
+	{
+		aEmpty.skipBlanks(); // Test that this does not raise an exception, but nothing happens
+	}
+	
+	@Test
+	void testSkipBlanks_None()
+	{
+		aBuffer1.skipBlanks(); 
+		assertEquals('a', aBuffer1.next());
+	}
+	
+	@Test
+	void testSkipBlanks_One()
+	{
+		aBuffer1.next();
+		aBuffer1.next();
+		aBuffer1.next();
+		aBuffer1.skipBlanks();
+		assertEquals('d', aBuffer1.next());
+	}
+	
+	@Test
+	void testSkipBlanks_Multiple()
+	{
+		aBuffer2.next();
+		aBuffer2.skipBlanks();
+		assertEquals('r', aBuffer2.next());
+	}
+	
+	@Test
+	void testSkipBlanks_ToEnd()
+	{
+		aBuffer2.next();
+		aBuffer2.skipBlanks();
+		aBuffer2.next();
+		aBuffer2.skipBlanks();
+		assertFalse(aBuffer2.hasMore());
+	}
+	
+	@Test
 	void testBackUp()
 	{
 		assertEquals('a', aBuffer1.next());
