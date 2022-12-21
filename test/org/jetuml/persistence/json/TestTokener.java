@@ -1,4 +1,4 @@
-package org.json;
+package org.jetuml.persistence.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
