@@ -59,8 +59,7 @@ final class TipLoader
 		try(InputStream tipsInputStream = TipLoader.class.getResourceAsStream(
 				String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
-			JsonParser jsonTokener = new JsonParser(inputStreamToString(tipsInputStream));
-			JsonObject jsonObject = new JsonObject(jsonTokener); 
+			JsonObject jsonObject = JsonParser.parse(inputStreamToString(tipsInputStream));
 			Tip tip = new Tip(pId, jsonObject);
 			return tip;
 		}

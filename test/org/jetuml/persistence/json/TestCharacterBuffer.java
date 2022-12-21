@@ -83,20 +83,6 @@ public class TestCharacterBuffer
 	}
 	
 	@Test
-	void testNextNonBlank()
-	{
-		assertEquals('a', aBuffer1.nextNonBlank());
-		assertEquals('b', aBuffer1.nextNonBlank());
-		assertEquals('c', aBuffer1.nextNonBlank());
-		assertEquals('d', aBuffer1.nextNonBlank());
-		assertEquals('e', aBuffer1.nextNonBlank());
-		assertEquals('\b', aBuffer1.nextNonBlank()); // \b is non-blank
-		assertEquals('f', aBuffer1.nextNonBlank());
-		assertEquals('g', aBuffer1.nextNonBlank());
-		assertEquals('h', aBuffer1.nextNonBlank());
-	}
-	
-	@Test
 	void testNext_Int()
 	{
 		assertEquals("abc", aBuffer1.next(3));
@@ -124,26 +110,10 @@ public class TestCharacterBuffer
 	}
 	
 	@Test
-	void testCanBackUp()
-	{
-		assertFalse(aBuffer1.canBackUp());
-		aBuffer1.next();
-		assertTrue(aBuffer1.canBackUp());
-		aBuffer1.next();
-		assertTrue(aBuffer1.canBackUp());
-		aBuffer1.backUp();
-		assertTrue(aBuffer1.canBackUp());
-		aBuffer1.backUp();
-		assertFalse(aBuffer1.canBackUp());
-	}
-	
-	@Test
 	void testEmpty()
 	{
-		assertFalse(aEmpty.canBackUp());
 		assertFalse(aEmpty.hasMore());
 		assertFalse(aEmpty.hasMore(2));
-		assertFalse(aEmpty.hasMoreNonBlank());
 	}
 	
 	@Test
@@ -195,18 +165,5 @@ public class TestCharacterBuffer
 		assertTrue(aBuffer1.hasMore());
 		aBuffer1.next();
 		assertFalse(aBuffer1.hasMore());
-	}
-	
-	@Test
-	void testHasMoreNonBlank()
-	{
-		assertTrue(aBuffer2.hasMoreNonBlank());
-		aBuffer2.next();
-		aBuffer2.next();
-		assertTrue(aBuffer2.hasMoreNonBlank());
-		aBuffer2.next();
-		assertTrue(aBuffer2.hasMoreNonBlank());
-		aBuffer2.next();
-		assertFalse(aBuffer2.hasMoreNonBlank());
 	}
 }

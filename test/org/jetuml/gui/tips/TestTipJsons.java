@@ -171,8 +171,7 @@ public class TestTipJsons {
 		try( InputStream inputStream = TipLoader.class.getResourceAsStream(String.format(TIP_FILE_PATH_FORMAT, pId)))
 		{
 			String input = TestTipLoader.inputStreamToString(inputStream);
-			JsonParser jTok = new JsonParser(input);
-			JsonObject jObj = new JsonObject(jTok);
+			JsonObject jObj = JsonParser.parse(input);
 			return jObj;
 		}
 	}

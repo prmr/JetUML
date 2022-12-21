@@ -89,59 +89,59 @@ public class JsonArray implements Iterable<Object>
         aElements = new ArrayList<>();
     }
 
-    /**
-     * Construct a JSONArray from a JSONTokener.
-     *
-     * @param pTokener A JSONTokener
-     * @throws JsonException If there is a syntax error.
-     */
-    public JsonArray(JsonParser pTokener) 
-    {
-        this();
-        if(pTokener.nextNonWhitespace() != '[')
-        {
-            throw new JsonException("A JSONArray text must start with '['");
-        }
-        
-        char nextChar = pTokener.nextNonWhitespace();
-        if(nextChar == 0) 
-        {
-            // array is unclosed. No ']' found, instead EOF
-            throw new JsonException("Expected a ',' or ']'");
-        }
-        if (nextChar != ']') {
-            pTokener.backUp();
-            for (;;) {
-                if (pTokener.nextNonWhitespace() == ',') {
-                    pTokener.backUp();
-                    this.aElements.add(JsonObject.NULL);
-                } else {
-                    pTokener.backUp();
-                    this.aElements.add(pTokener.nextValue());
-                }
-                switch (pTokener.nextNonWhitespace()) {
-                case 0:
-                    // array is unclosed. No ']' found, instead EOF
-                    throw new JsonException("Expected a ',' or ']'");
-                case ',':
-                    nextChar = pTokener.nextNonWhitespace();
-                    if (nextChar == 0) {
-                        // array is unclosed. No ']' found, instead EOF
-                        throw new JsonException("Expected a ',' or ']'");
-                    }
-                    if (nextChar == ']') {
-                        return;
-                    }
-                    pTokener.backUp();
-                    break;
-                case ']':
-                    return;
-                default:
-                    throw new JsonException("Expected a ',' or ']'");
-                }
-            }
-        }
-    }
+//    /**
+//     * Construct a JSONArray from a JSONTokener.
+//     *
+//     * @param pTokener A JSONTokener
+//     * @throws JsonException If there is a syntax error.
+//     */
+//    public JsonArray(JsonParser pTokener) 
+//    {
+//        this();
+//        if(pTokener.nextNonWhitespace() != '[')
+//        {
+//            throw new JsonException("A JSONArray text must start with '['");
+//        }
+//        
+//        char nextChar = pTokener.nextNonWhitespace();
+//        if(nextChar == 0) 
+//        {
+//            // array is unclosed. No ']' found, instead EOF
+//            throw new JsonException("Expected a ',' or ']'");
+//        }
+//        if (nextChar != ']') {
+//            pTokener.backUp();
+//            for (;;) {
+//                if (pTokener.nextNonWhitespace() == ',') {
+//                    pTokener.backUp();
+//                    this.aElements.add(JsonObject.NULL);
+//                } else {
+//                    pTokener.backUp();
+//                    this.aElements.add(pTokener.nextValue());
+//                }
+//                switch (pTokener.nextNonWhitespace()) {
+//                case 0:
+//                    // array is unclosed. No ']' found, instead EOF
+//                    throw new JsonException("Expected a ',' or ']'");
+//                case ',':
+//                    nextChar = pTokener.nextNonWhitespace();
+//                    if (nextChar == 0) {
+//                        // array is unclosed. No ']' found, instead EOF
+//                        throw new JsonException("Expected a ',' or ']'");
+//                    }
+//                    if (nextChar == ']') {
+//                        return;
+//                    }
+//                    pTokener.backUp();
+//                    break;
+//                case ']':
+//                    return;
+//                default:
+//                    throw new JsonException("Expected a ',' or ']'");
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Construct a JSONArray from a Collection.

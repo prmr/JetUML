@@ -165,7 +165,7 @@ public class TestTokener
 	void testNextValue_String()
 	{
 		JsonParser tokener = new JsonParser("\"a\" : \"bc\"");
-		moveToPosition(tokener, 5);
+		moveToPosition(tokener, 6);
 		assertEquals("bc", nextValue(tokener));
 	}
 	
@@ -173,7 +173,7 @@ public class TestTokener
 	void testNextValue_true()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : true}");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(true, nextValue(tokener));
 	}
 	
@@ -181,7 +181,7 @@ public class TestTokener
 	void testNextValue_false()
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : false}");
-		moveToPosition(tokener, 6);
+		moveToPosition(tokener, 7);
 		assertEquals(false, nextValue(tokener));
 	}
 	
@@ -190,7 +190,7 @@ public class TestTokener
 	{
 		JsonParser tokener = new JsonParser("{\"a\" : null}");
 		moveToPosition(tokener, 6);
-		assertEquals(JsonObject.NULL, nextValue(tokener));
+		testNextValueWithException(tokener);
 	}
 	
 	@Test
@@ -306,16 +306,14 @@ public class TestTokener
 	@Test 
 	void testParseObject_Empty()
 	{
-		JsonParser tokener = new JsonParser("{  }");
-		JsonObject object = tokener.parseObject();
+		JsonObject object = JsonParser.parse("{  }");
 		assertTrue(object.keySet().isEmpty());
 	}
 	
 	@Test 
 	void testParseObject_OnePair()
 	{
-		JsonParser tokener = new JsonParser("{\n \"key\" : \"value\" \n}");
-		JsonObject object = tokener.parseObject();
+		JsonObject object = JsonParser.parse("{\n \"key\" : \"value\" \n}");
 		assertEquals(1, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertEquals("value", object.getString("key"));
@@ -324,11 +322,10 @@ public class TestTokener
 	@Test 
 	void testParseObject_TwoPairs()
 	{
-		JsonParser tokener = new JsonParser("""
+		JsonObject object = JsonParser.parse("""
 				{ \"key\" : \"value\", 
 				  \"k2\" : 12
 				}""");
-		JsonObject object = tokener.parseObject();
 		assertEquals(2, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertTrue(object.has("k2"));
@@ -339,12 +336,11 @@ public class TestTokener
 	@Test 
 	void testParseObject_ThreePairs()
 	{
-		JsonParser tokener = new JsonParser("""
+		JsonObject object = JsonParser.parse("""
 				{ \"key\" : \"value\", 
 				  \"k2\" : 12,
 				  \"k3\" : true
 				}""");
-		JsonObject object = tokener.parseObject();
 		assertEquals(3, object.keySet().size());
 		assertTrue(object.has("key"));
 		assertTrue(object.has("k2"));

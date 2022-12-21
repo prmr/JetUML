@@ -20,13 +20,17 @@
  ******************************************************************************/
 package org.jetuml.persistence.json;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * An object to step through a string character by characters, with
  * the possibility of going backward. The JsonParser is not meant to 
  * be reused to parse different strings.
+ * 
+ * Null values are not supported.
  */
 public class JsonParser 
 {
@@ -45,17 +49,16 @@ public class JsonParser
 	private static final char CHAR_ESCAPE = '\\';
 	private static final char CHAR_QUOTE = '"';
 	private static final char CHAR_MINUS = '-';
+	private static final char CHAR_COMMA = ',';
 	private static final char CHAR_ZERO = '0';
 	private static final char CHAR_NINE = '9';
 	private static final char CHAR_START_OBJECT = '{';
 	private static final char CHAR_END_OBJECT = '}';
 	private static final char CHAR_START_ARRAY = '[';
+	private static final char CHAR_END_ARRAY = ']';
 	private static final char CHAR_START_TRUE = 't';
 	private static final char CHAR_START_FALSE = 'f';
-	private static final char CHAR_START_NULL = 'n';
 	private static final char CHAR_COLON = ':';
-	
-	private static final String VALUE_STRING_NULL = "null";
 	
 	static
 	{
@@ -83,7 +86,7 @@ public class JsonParser
     public JsonParser(String pInput) 
     {
     	assert pInput != null;
-        aInput = new CharacterBuffer(pInput);
+        aInput = new CharacterBuffer(pInput.trim());
     }
     
     /*
@@ -91,13 +94,12 @@ public class JsonParser
      */
     private void consume(char pSymbol)
     {
-    	aInput.skipBlanks();
     	if(!aInput.hasMore() || aInput.next() != pSymbol)
     	{
     		throw new JsonException(String.format("Expecting '%s' at position %d", pSymbol, aInput.position()));
     	}
     }
-
+    
     /**
      * Return the characters up to the next quote character. For 
      * a given string, the first (opening) quote character should 
@@ -213,22 +215,6 @@ public class JsonParser
     	}
     }
     
-    private Object nextNull()
-    {
-    	if(!aInput.hasMore(VALUE_STRING_NULL.length()))
-    	{
-    		throw new JsonException("Cannot parse null");
-    	}
-    	else if(aInput.next(VALUE_STRING_NULL.length()).equals(VALUE_STRING_NULL))
-    	{
-    		return JsonObject.NULL;
-    	}
-    	else
-    	{
-    		throw new JsonException("Cannot parse null");
-    	}
-    }
-    
     /*
      * @pre the next character is a valid integer start number
      */
@@ -236,7 +222,6 @@ public class JsonParser
     {
     	StringBuffer numberAsString = new StringBuffer();
     	char next = aInput.next();
-    	assert startsInteger(next);
     	numberAsString.append(next);
     	while( aInput.hasMore() )
     	{
@@ -288,12 +273,19 @@ public class JsonParser
     }
     
     /*
-     * @return True if the character can be the valid first
+     * @return True if the next non-blank character can be the valid first
      * character of an integer, which is - or [1-9]
      */
-    private static boolean startsInteger(char pCharacter)
+    private boolean startsInteger()
     {
-    	return pCharacter == CHAR_MINUS || isDigit(pCharacter);
+    	aInput.skipBlanks();
+    	if (!aInput.hasMore() )
+    	{
+    		return false;
+    	}
+    	char next = aInput.next();
+    	aInput.backUp();
+		return next == CHAR_MINUS || isDigit(next);
     }
     
     private static boolean isDigit(char pCharacter)
@@ -309,38 +301,26 @@ public class JsonParser
      *
      * @return An object.
      */
-    public Object nextValue()
+    private Object nextValue()
     {
-        char next = aInput.nextNonBlank();
-
-        if(next == CHAR_QUOTE)
+    	if(aInput.isNext(CHAR_QUOTE))
         {
-        	aInput.backUp();
         	return parseString();
         }
-        else if(next == CHAR_START_OBJECT)
+    	else if(aInput.isNext(CHAR_START_OBJECT))
         {
-        	aInput.backUp();
-        	return new JsonObject(this);
+        	return parseObject();
         }
-        else if(next ==  CHAR_START_ARRAY)
+        else if(aInput.isNext(CHAR_START_ARRAY))
         {
-        	aInput.backUp();
-        	return new JsonArray(this);
+        	return parseArray();
         }
-        else if(next == CHAR_START_TRUE || next == CHAR_START_FALSE)
+        else if(aInput.isNext(CHAR_START_TRUE) || aInput.isNext(CHAR_START_FALSE))
         {
-        	aInput.backUp();
         	return nextBoolean();
         }
-        else if(next == CHAR_START_NULL )
+        else if(startsInteger())
         {
-        	aInput.backUp();
-        	return nextNull();
-        }
-        else if(startsInteger(next))
-        {
-        	aInput.backUp();
         	return nextInteger();
         }
         else
@@ -349,76 +329,79 @@ public class JsonParser
         }
     }
     
-    // TODO Remove
-    public char nextNonWhitespace()
+    private void whitespace()
     {
-    	return aInput.nextNonBlank();
+    	aInput.skipBlanks();
     }
     
-    // TODO Remove
-    public void backUp()
-    {
-    	aInput.backUp();
-    }
-    
-    public JsonObject parseObject() 
+    private JsonObject parseObject() 
     {
         JsonObject object = new JsonObject();
         
-        if(aInput.nextNonBlank() != CHAR_START_OBJECT) 
-        {
-            throw new JsonException("A JSONObject text must begin with '{'");
-        }
+        consume(CHAR_START_OBJECT);
+			
+        while(true)
+		{
+        	whitespace();
+            if( aInput.isNext(CHAR_END_OBJECT))
+            {
+            	consume(CHAR_END_OBJECT);
+            	return object;
+            }
+            
+            if(object.entrySet().size() > 0)
+            {
+            	consume(CHAR_COMMA);
+            	whitespace();
+            }
+       
+        	String key = parseString();
+        	whitespace();
+			consume(CHAR_COLON);
+			whitespace();
+			Object value = nextValue();
+			if( object.has(key))
+			{
+				throw new JsonException("Duplicate key");
+			}
+			else
+			{
+				object.put(key, value);
+			}
+		}
+    }
+    
+    private JsonArray parseArray() 
+    {
+        List<Object> values = new ArrayList<>();
+        
+        consume(CHAR_START_ARRAY);
+        
         while(true)
         {
-        	if( !aInput.hasMoreNonBlank())
+        	whitespace();
+        	if(aInput.isNext(CHAR_END_ARRAY))
         	{
-        		throw new JsonException("Incomplete object");
+        		consume(CHAR_END_ARRAY);
+        		return new JsonArray(values);
         	}
-        	char next = aInput.nextNonBlank();
-        	if( next == CHAR_END_OBJECT )
+        	if( values.size() > 0 )
         	{
-        		return object;
+        		consume(CHAR_COMMA);
+        		whitespace();
         	}
-        	else
-        	{
-        		if( !object.keySet().isEmpty() )
-        		{
-        			if( next != ',' )
-        			{
-        				throw new JsonException("Missing comma");
-        			}
-        			else
-        			{
-        				next = aInput.nextNonBlank();
-        			}
-        		}
-        		if( next != CHAR_QUOTE )
-        		{
-        			throw new JsonException("Invalid key");
-        		}
-        	}
-        	aInput.backUp();
-        	String key = parseString();
-        	if( !aInput.hasMoreNonBlank() )
-        	{
-        		throw new JsonException("Incomplete object");
-        	}
-        	next = aInput.nextNonBlank();
-        	if( next != CHAR_COLON )
-        	{
-        		throw new JsonException("Expecting a key-value separator");
-        	}
-        	if( object.has(key))
-        	{
-        		throw new JsonException("Duplicate key");
-        	}
-        	if( !aInput.hasMoreNonBlank() )
-        	{
-        		throw new JsonException("Incomplete object");
-        	}
-        	Object value = nextValue();
-        	object.put(key, value);
+        	values.add(nextValue());
         }
+    }
+    
+    @Override
+	public String toString()
+    {
+    	return aInput.toString();
+    }
+    
+    public static JsonObject parse(String pInput)
+    {
+    	return new JsonParser(pInput).parseObject();
     }
 }

@@ -73,33 +73,13 @@ class CharacterBuffer
     	return aPosition + pNumberOfCharacters < aCharacters.length();
 	}
 	
-	/**
-	 * @return True iif there is at least one more non-blank character to read.
-	 */
-	boolean hasMoreNonBlank()
-	{
-		return aCharacters
-    			.substring(aPosition + 1)
-    			.replaceAll("\\s+", "")
-    			.length() > 0;
-	}
-	
-	/**
-     * @return True if it is possible to back up one character. This is possible
-     * iff the position is not at the beginning of the input, before the first character.
-     */
-    boolean canBackUp()
-    {
-    	return aPosition >= 0;
-    }
-    
     /**
      * More the position back by one.
      * @pre canBackUp()
      */
     void backUp()
     {
-		assert canBackUp();
+		assert aPosition >= 0;
     	aPosition--;
     }
     
@@ -136,6 +116,15 @@ class CharacterBuffer
     }
     
     /**
+     * @param pCharacter A character to check
+     * @return True iif there is another character in the buffer and it is pCharacter.
+     */
+    boolean isNext(char pCharacter)
+    {
+    	return hasMore() && aCharacters.charAt(aPosition+1) == pCharacter;
+    }
+    
+    /**
      * Get the next pNumberOfCharacters characters as a string.
      *
      * @return The next pNumberOfCharacters characters, assumed to exist.
@@ -149,23 +138,20 @@ class CharacterBuffer
         return result;
     }
     
-    /**
-     * Get the next char in the string, skipping whitespace.
-     * @return  The next non-blank character, assumed to exist.
-     * @pre hasMoreNonWhitespace()
-     */
-    char nextNonBlank()
+    @Override
+	public String toString()
     {
-    	assert hasMoreNonBlank();
-       	while(hasMore())
-        {
-            char character = next();
-            if( !isWhitespace(character) ) 
-            {
-                return character;
-            }
-        }
-        assert false; // Precondition violated
-        return 0;
+    	if( aPosition >=0 && aPosition < aCharacters.length() )
+    	{
+    		return String.format("At position %d [%s]", aPosition, aCharacters.charAt(aPosition));
+    	}
+    	else if( aPosition < 0 )
+    	{
+    		return "Positioned at the beginning";
+    	}
+    	else
+    	{
+    		return "Positioned at the end";
+    	}
     }
 }

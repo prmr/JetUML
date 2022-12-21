@@ -36,6 +36,7 @@ import org.jetuml.application.Version;
 import org.jetuml.persistence.json.JsonArray;
 import org.jetuml.persistence.json.JsonException;
 import org.jetuml.persistence.json.JsonObject;
+import org.jetuml.persistence.json.JsonParser;
 
 /**
  * Utility class to migrate a pre-3.0 saved diagram to post 3.0.
@@ -76,7 +77,7 @@ public final class VersionMigrator
 		try (BufferedReader in = new BufferedReader(
 				new InputStreamReader(new FileInputStream("test.class.jet"), StandardCharsets.UTF_8)))
 		{
-			new VersionMigrator().migrate(new JsonObject(in.readLine()));
+			new VersionMigrator().migrate(JsonParser.parse(in.readLine()));
 		}
 		catch( JsonException e )
 		{

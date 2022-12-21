@@ -182,65 +182,65 @@ public class JsonObject
      *             If there is a syntax error in the source string or a
      *             duplicated key.
      */
-    public JsonObject(JsonParser x) throws JsonException {
-        this();
-        char c;
-        String key;
-
-        if (x.nextNonWhitespace() != '{') {
-            throw new JsonException("A JSONObject text must begin with '{'");
-        }
-        for (;;) {
-            c = x.nextNonWhitespace();
-            switch (c) {
-            case 0:
-                throw new JsonException("A JSONObject text must end with '}'");
-            case '}':
-                return;
-            default:
-                x.backUp();
-                key = x.nextValue().toString();
-            }
-
-            // The key is followed by ':'.
-
-            c = x.nextNonWhitespace();
-            if (c != ':') {
-                throw new JsonException("Expected a ':' after a key");
-            }
-            
-            // Use syntaxError(..) to include error location
-            
-            if (key != null) {
-                // Check if key exists
-                if (this.opt(key) != null) {
-                    // key already exists
-                    throw new JsonException("Duplicate key \"" + key + "\"");
-                }
-                // Only add value if non-null
-                Object value = x.nextValue();
-                if (value!=null) {
-                    this.put(key, value);
-                }
-            }
-
-            // Pairs are separated by ','.
-
-            switch (x.nextNonWhitespace()) {
-            case ';':
-            case ',':
-                if (x.nextNonWhitespace() == '}') {
-                    return;
-                }
-                x.backUp();
-                break;
-            case '}':
-                return;
-            default:
-                throw new JsonException("Expected a ',' or '}'");
-            }
-        }
-    }
+//    public JsonObject(JsonParser x) throws JsonException {
+//        this();
+//        char c;
+//        String key;
+//
+//        if (x.nextNonWhitespace() != '{') {
+//            throw new JsonException("A JSONObject text must begin with '{'");
+//        }
+//        for (;;) {
+//            c = x.nextNonWhitespace();
+//            switch (c) {
+//            case 0:
+//                throw new JsonException("A JSONObject text must end with '}'");
+//            case '}':
+//                return;
+//            default:
+//                x.backUp();
+//                key = x.nextValue().toString();
+//            }
+//
+//            // The key is followed by ':'.
+//
+//            c = x.nextNonWhitespace();
+//            if (c != ':') {
+//                throw new JsonException("Expected a ':' after a key");
+//            }
+//            
+//            // Use syntaxError(..) to include error location
+//            
+//            if (key != null) {
+//                // Check if key exists
+//                if (this.opt(key) != null) {
+//                    // key already exists
+//                    throw new JsonException("Duplicate key \"" + key + "\"");
+//                }
+//                // Only add value if non-null
+//                Object value = x.nextValue();
+//                if (value!=null) {
+//                    this.put(key, value);
+//                }
+//            }
+//
+//            // Pairs are separated by ','.
+//
+//            switch (x.nextNonWhitespace()) {
+//            case ';':
+//            case ',':
+//                if (x.nextNonWhitespace() == '}') {
+//                    return;
+//                }
+//                x.backUp();
+//                break;
+//            case '}':
+//                return;
+//            default:
+//                throw new JsonException("Expected a ',' or '}'");
+//            }
+//        }
+//    }
 
     /**
      * Construct a JSONObject from a Map.
@@ -292,21 +292,21 @@ public class JsonObject
         this.populateMap(bean);
     }
 
-    /**
-     * Construct a JSONObject from a source JSON text string. This is the most
-     * commonly used JSONObject constructor.
-     *
-     * @param source
-     *            A string beginning with <code>{</code>&nbsp;<small>(left
-     *            brace)</small> and ending with <code>}</code>
-     *            &nbsp;<small>(right brace)</small>.
-     * @exception JsonException
-     *                If there is a syntax error in the source string or a
-     *                duplicated key.
-     */
-    public JsonObject(String source) throws JsonException {
-        this(new JsonParser(source));
-    }
+//    /**
+//     * Construct a JSONObject from a source JSON text string. This is the most
+//     * commonly used JSONObject constructor.
+//     *
+//     * @param source
+//     *            A string beginning with <code>{</code>&nbsp;<small>(left
+//     *            brace)</small> and ending with <code>}</code>
+//     *            &nbsp;<small>(right brace)</small>.
+//     * @exception JsonException
+//     *                If there is a syntax error in the source string or a
+//     *                duplicated key.
+//     */
+//    public JsonObject(String source) throws JsonException {
+//        this(new JsonParser(source));
+//    }
 
       /**
      * Get the value object associated with a key.

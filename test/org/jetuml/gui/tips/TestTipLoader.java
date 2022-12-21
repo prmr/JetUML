@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.jetuml.gui.tips.TipLoader.Tip;
 import org.jetuml.persistence.json.JsonObject;
+import org.jetuml.persistence.json.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,7 @@ public class TestTipLoader
 	@BeforeAll
 	public static void setupClass()
 	{
-		WELL_FORMATTED_TIP = new JsonObject(WELL_FORMATTED_TIP_STRING);
+		WELL_FORMATTED_TIP = JsonParser.parse(WELL_FORMATTED_TIP_STRING);
 	}
 	
 	@Test
